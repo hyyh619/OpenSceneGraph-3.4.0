@@ -265,5 +265,7 @@ Android_MinGW/
 Android_MinGW_Dynamic_Library/
 project/
 Android/
+Android_Studio_gnustl_static/
 
 *.Po
+Android_Build.xls
