@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/NodeVisitor>
 
 #include <osg/Billboard>
@@ -39,159 +39,158 @@
 
 using namespace osg;
 
-NodeVisitor::NodeVisitor(TraversalMode tm):
+NodeVisitor::NodeVisitor(TraversalMode tm) :
     Object(true)
 {
-    _visitorType = NODE_VISITOR;
+    _visitorType     = NODE_VISITOR;
     _traversalNumber = osg::UNINITIALIZED_FRAME_NUMBER;
 
-    _traversalMode = tm;
-    _traversalMask = 0xffffffff;
+    _traversalMode    = tm;
+    _traversalMask    = 0xffffffff;
     _nodeMaskOverride = 0x0;
 }
 
-NodeVisitor::NodeVisitor(VisitorType type,TraversalMode tm):
+NodeVisitor::NodeVisitor(VisitorType type, TraversalMode tm) :
     Object(true)
 {
-    _visitorType = type;
+    _visitorType     = type;
     _traversalNumber = osg::UNINITIALIZED_FRAME_NUMBER;
 
-    _traversalMode = tm;
-    _traversalMask = 0xffffffff;
+    _traversalMode    = tm;
+    _traversalMask    = 0xffffffff;
     _nodeMaskOverride = 0x0;
 }
 
-NodeVisitor::NodeVisitor(const NodeVisitor& nv, const osg::CopyOp& copyop):
+NodeVisitor::NodeVisitor(const NodeVisitor&nv, const osg::CopyOp&copyop) :
     Object(nv, copyop),
     _visitorType(nv._visitorType),
     _traversalNumber(nv._traversalNumber),
     _traversalMode(nv._traversalMode),
     _traversalMask(nv._traversalMask),
     _nodeMaskOverride(nv._nodeMaskOverride)
-{
-}
+{}
 
 NodeVisitor::~NodeVisitor()
 {
     // if (_traversalVisitor) detach from _traversalVisitor;
 }
 
-void NodeVisitor::apply(Node& node)
+void NodeVisitor::apply(Node&node)
 {
     traverse(node);
 }
 
-void NodeVisitor::apply(Drawable& drawable)
+void NodeVisitor::apply(Drawable&drawable)
 {
     apply(static_cast<Node&>(drawable));
 }
 
-void NodeVisitor::apply(Geometry& drawable)
+void NodeVisitor::apply(Geometry&drawable)
 {
     apply(static_cast<Drawable&>(drawable));
 }
 
-void NodeVisitor::apply(Geode& node)
+void NodeVisitor::apply(Geode&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(Billboard& node)
+void NodeVisitor::apply(Billboard&node)
 {
     apply(static_cast<Geode&>(node));
 }
 
-void NodeVisitor::apply(Group& node)
+void NodeVisitor::apply(Group&node)
 {
     apply(static_cast<Node&>(node));
 }
 
-void NodeVisitor::apply(ProxyNode& node)
+void NodeVisitor::apply(ProxyNode&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(Projection& node)
+void NodeVisitor::apply(Projection&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(CoordinateSystemNode& node)
+void NodeVisitor::apply(CoordinateSystemNode&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(ClipNode& node)
+void NodeVisitor::apply(ClipNode&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(TexGenNode& node)
+void NodeVisitor::apply(TexGenNode&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(LightSource& node)
+void NodeVisitor::apply(LightSource&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(Transform& node)
+void NodeVisitor::apply(Transform&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(Camera& node)
+void NodeVisitor::apply(Camera&node)
 {
     apply(static_cast<Transform&>(node));
 }
 
-void NodeVisitor::apply(CameraView& node)
+void NodeVisitor::apply(CameraView&node)
 {
     apply(static_cast<Transform&>(node));
 }
 
-void NodeVisitor::apply(MatrixTransform& node)
+void NodeVisitor::apply(MatrixTransform&node)
 {
     apply(static_cast<Transform&>(node));
 }
 
-void NodeVisitor::apply(PositionAttitudeTransform& node)
+void NodeVisitor::apply(PositionAttitudeTransform&node)
 {
     apply(static_cast<Transform&>(node));
 }
 
-void NodeVisitor::apply(Switch& node)
+void NodeVisitor::apply(Switch&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(Sequence& node)
+void NodeVisitor::apply(Sequence&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(LOD& node)
+void NodeVisitor::apply(LOD&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(PagedLOD& node)
+void NodeVisitor::apply(PagedLOD&node)
 {
     apply(static_cast<LOD&>(node));
 }
 
-void NodeVisitor::apply(ClearNode& node)
+void NodeVisitor::apply(ClearNode&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(OccluderNode& node)
+void NodeVisitor::apply(OccluderNode&node)
 {
     apply(static_cast<Group&>(node));
 }
 
-void NodeVisitor::apply(OcclusionQueryNode& node)
+void NodeVisitor::apply(OcclusionQueryNode&node)
 {
     apply(static_cast<Group&>(node));
 }

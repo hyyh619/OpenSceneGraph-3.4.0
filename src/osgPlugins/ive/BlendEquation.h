@@ -4,11 +4,13 @@
 #include <osg/BlendEquation>
 #include "ReadWrite.h"
 
-namespace ive{
-class BlendEquation : public osg::BlendEquation, public ReadWrite {
+namespace ive
+{
+class BlendEquation : public osg::BlendEquation, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

@@ -9,71 +9,72 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgVolume/VolumeTechnique>
 #include <osgVolume/VolumeTile>
 
 using namespace osgVolume;
 
-VolumeTechnique::VolumeTechnique():
+VolumeTechnique::VolumeTechnique() :
     _volumeTile(0)
 {
     setThreadSafeRefUnref(true);
 }
 
-VolumeTechnique::VolumeTechnique(const VolumeTechnique& rhs,const osg::CopyOp& copyop):
-    osg::Object(rhs,copyop),
+VolumeTechnique::VolumeTechnique(const VolumeTechnique&rhs, const osg::CopyOp&copyop) :
+    osg::Object(rhs, copyop),
     _volumeTile(0)
-{
-}
+{}
 
 VolumeTechnique::~VolumeTechnique()
-{
-}
+{}
 
 void VolumeTechnique::init()
 {
-    OSG_NOTICE<<className()<<"::initialize(..) not implementated yet"<<std::endl;
+    OSG_NOTICE << className() << "::initialize(..) not implementated yet" << std::endl;
 }
 
-void VolumeTechnique::update(osgUtil::UpdateVisitor* uv)
+void VolumeTechnique::update(osgUtil::UpdateVisitor *uv)
 {
-    OSG_NOTICE<<className()<<"::update(..) not implementated yet"<<std::endl;
-    if (_volumeTile) _volumeTile->osg::Group::traverse(*uv);
+    OSG_NOTICE << className() << "::update(..) not implementated yet" << std::endl;
+    if (_volumeTile)
+        _volumeTile->osg::Group::traverse(*uv);
 }
 
-void VolumeTechnique::cull(osgUtil::CullVisitor* cv)
+void VolumeTechnique::cull(osgUtil::CullVisitor *cv)
 {
-    OSG_NOTICE<<className()<<"::cull(..) not implementated yet"<<std::endl;
-    if (_volumeTile) _volumeTile->osg::Group::traverse(*cv);
+    OSG_NOTICE << className() << "::cull(..) not implementated yet" << std::endl;
+    if (_volumeTile)
+        _volumeTile->osg::Group::traverse(*cv);
 }
 
 void VolumeTechnique::cleanSceneGraph()
 {
-    OSG_NOTICE<<className()<<"::cleanSceneGraph(..) not implementated yet"<<std::endl;
+    OSG_NOTICE << className() << "::cleanSceneGraph(..) not implementated yet" << std::endl;
 }
 
-void VolumeTechnique::traverse(osg::NodeVisitor& nv)
+void VolumeTechnique::traverse(osg::NodeVisitor&nv)
 {
-    if (!_volumeTile) return;
+    if (!_volumeTile)
+        return;
 
     // if app traversal update the frame count.
-    if (nv.getVisitorType()==osg::NodeVisitor::UPDATE_VISITOR)
+    if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
-        if (_volumeTile->getDirty()) _volumeTile->init();
+        if (_volumeTile->getDirty())
+            _volumeTile->init();
 
-        osgUtil::UpdateVisitor* uv = dynamic_cast<osgUtil::UpdateVisitor*>(&nv);
+        osgUtil::UpdateVisitor *uv = dynamic_cast<osgUtil::UpdateVisitor*>(&nv);
         if (uv)
         {
             update(uv);
             return;
         }
-
     }
-    else if (nv.getVisitorType()==osg::NodeVisitor::CULL_VISITOR)
+    else if (nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR)
     {
-        osgUtil::CullVisitor* cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
+        osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
         if (cv)
         {
             cull(cv);
@@ -81,23 +82,25 @@ void VolumeTechnique::traverse(osg::NodeVisitor& nv)
         }
     }
 
-    if (_volumeTile->getDirty()) _volumeTile->init();
+    if (_volumeTile->getDirty())
+        _volumeTile->init();
 
     // otherwise fallback to the Group::traverse()
     _volumeTile->osg::Group::traverse(nv);
 }
 
-bool VolumeTechnique::isMoving(osgUtil::CullVisitor* cv)
+bool VolumeTechnique::isMoving(osgUtil::CullVisitor *cv)
 {
     bool moving = false;
 
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
     ModelViewMatrixMap::iterator itr = _modelViewMatrixMap.find(cv->getIdentifier());
-    if (itr!=_modelViewMatrixMap.end())
+
+    if (itr != _modelViewMatrixMap.end())
     {
-        osg::Matrix newModelViewMatrix = *(cv->getModelViewMatrix());
-        osg::Matrix& previousModelViewMatrix = itr->second;
+        osg::Matrix newModelViewMatrix       = *(cv->getModelViewMatrix());
+        osg::Matrix &previousModelViewMatrix = itr->second;
         moving = (newModelViewMatrix != previousModelViewMatrix);
 
         previousModelViewMatrix = newModelViewMatrix;
@@ -106,5 +109,6 @@ bool VolumeTechnique::isMoving(osgUtil::CullVisitor* cv)
     {
         _modelViewMatrixMap[cv->getIdentifier()] = *(cv->getModelViewMatrix());
     }
+
     return moving;
 }

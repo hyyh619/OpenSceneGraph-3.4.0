@@ -4,11 +4,13 @@
 #include <osg/Camera>
 #include "ReadWrite.h"
 
-namespace ive{
-class Camera : public osg::Camera, public ReadWrite {
+namespace ive
+{
+class Camera : public osg::Camera, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

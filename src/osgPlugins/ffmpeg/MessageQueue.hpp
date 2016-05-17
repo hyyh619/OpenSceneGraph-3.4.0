@@ -10,65 +10,59 @@
 
 
 
-namespace osgFFmpeg {
-
-
-
-template <class T>
+namespace osgFFmpeg
+{
+template<class T>
 class MessageQueue
 {
 public:
 
-    typedef T value_type;
-    typedef size_t size_type;
+typedef T value_type;
+typedef size_t size_type;
 
-    MessageQueue();
-    ~MessageQueue();
+MessageQueue();
+~MessageQueue();
 
-    void clear();
+void clear();
 
-    void push(const T & value);
+void push(const T&value);
 
-    value_type pop();
-    value_type tryPop(bool & is_empty);
-    value_type timedPop(bool & is_empty, unsigned long ms);
+value_type pop();
+value_type tryPop(bool&is_empty);
+value_type timedPop(bool&is_empty, unsigned long ms);
 
 private:
 
-    MessageQueue(const MessageQueue &);
-    MessageQueue & operator = (const MessageQueue &);
+MessageQueue(const MessageQueue&);
+MessageQueue&operator =(const MessageQueue&);
 
-    typedef std::deque<T> Queue;
-    typedef OpenThreads::Condition Condition;
-    typedef OpenThreads::Mutex Mutex;
-    typedef OpenThreads::ScopedLock<Mutex> ScopedLock;
+typedef std::deque<T> Queue;
+typedef OpenThreads::Condition Condition;
+typedef OpenThreads::Mutex Mutex;
+typedef OpenThreads::ScopedLock<Mutex> ScopedLock;
 
-    Mutex        m_mutex;
-    Condition    m_not_empty;
-    Queue        m_queue;
+Mutex     m_mutex;
+Condition m_not_empty;
+Queue     m_queue;
 };
 
 
 
 
 
-template <class T>
+template<class T>
 MessageQueue<T>::MessageQueue()
-{
-
-}
+{}
 
 
 
-template <class T>
+template<class T>
 MessageQueue<T>::~MessageQueue()
-{
-
-}
+{}
 
 
 
-template <class T>
+template<class T>
 void MessageQueue<T>::clear()
 {
     ScopedLock lock(m_mutex);
@@ -78,8 +72,8 @@ void MessageQueue<T>::clear()
 
 
 
-template <class T>
-void MessageQueue<T>::push(const T & value)
+template<class T>
+void MessageQueue<T>::push(const T&value)
 {
     {
         ScopedLock lock(m_mutex);
@@ -91,7 +85,7 @@ void MessageQueue<T>::push(const T & value)
 
 
 
-template <class T>
+template<class T>
 typename MessageQueue<T>::value_type MessageQueue<T>::pop()
 {
     ScopedLock lock(m_mutex);
@@ -107,8 +101,8 @@ typename MessageQueue<T>::value_type MessageQueue<T>::pop()
 
 
 
-template <class T>
-typename MessageQueue<T>::value_type MessageQueue<T>::tryPop(bool & is_empty)
+template<class T>
+typename MessageQueue<T>::value_type MessageQueue<T>::tryPop(bool&is_empty)
 {
     ScopedLock lock(m_mutex);
 
@@ -125,8 +119,8 @@ typename MessageQueue<T>::value_type MessageQueue<T>::tryPop(bool & is_empty)
 
 
 
-template <class T>
-typename MessageQueue<T>::value_type MessageQueue<T>::timedPop(bool & is_empty, const unsigned long ms)
+template<class T>
+typename MessageQueue<T>::value_type MessageQueue<T>::timedPop(bool&is_empty, const unsigned long ms)
 {
     ScopedLock lock(m_mutex);
 
@@ -146,9 +140,6 @@ typename MessageQueue<T>::value_type MessageQueue<T>::timedPop(bool & is_empty, 
 
     return value;
 }
-
-
-
 } // namespace osgFFmpeg
 
 

@@ -4,11 +4,13 @@
 #include <osg/PagedLOD>
 #include "ReadWrite.h"
 
-namespace ive{
-class PagedLOD : public osg::PagedLOD, public ReadWrite {
+namespace ive
+{
+class PagedLOD : public osg::PagedLOD, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

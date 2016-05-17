@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Stencil>
 #include <osg/GLExtensions>
 #include <osg/State>
@@ -20,8 +20,8 @@ using namespace osg;
 Stencil::Stencil()
 {
     // set up same defaults as glStencilFunc.
-    _func = ALWAYS;
-    _funcRef = 0;
+    _func     = ALWAYS;
+    _funcRef  = 0;
     _funcMask = ~0u;
 
     // set up same defaults as glStencilOp.
@@ -34,10 +34,9 @@ Stencil::Stencil()
 }
 
 Stencil::~Stencil()
-{
-}
+{}
 
-static Stencil::Operation validateOperation(const GLExtensions* extensions, Stencil::Operation op)
+static Stencil::Operation validateOperation(const GLExtensions *extensions, Stencil::Operation op)
 {
     // only wrap requires validation
     if (op != Stencil::INCR_WRAP && op != Stencil::DECR_WRAP)
@@ -47,17 +46,17 @@ static Stencil::Operation validateOperation(const GLExtensions* extensions, Sten
     if (extensions->isStencilWrapSupported)
         return op;
     else
-        return op==Stencil::INCR_WRAP ? Stencil::INCR : Stencil::DECR;
+        return op == Stencil::INCR_WRAP ? Stencil::INCR : Stencil::DECR;
 }
 
-void Stencil::apply(State& state) const
+void Stencil::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
-    Operation sf = validateOperation(extensions, _sfail);
-    Operation zf = validateOperation(extensions, _zfail);
-    Operation zp = validateOperation(extensions, _zpass);
+    const GLExtensions *extensions = state.get<GLExtensions>();
+    Operation          sf          = validateOperation(extensions, _sfail);
+    Operation          zf          = validateOperation(extensions, _zfail);
+    Operation          zp          = validateOperation(extensions, _zpass);
 
-    glStencilFunc((GLenum)_func,_funcRef,_funcMask);
-    glStencilOp((GLenum)sf,(GLenum)zf,(GLenum)zp);
+    glStencilFunc((GLenum)_func, _funcRef, _funcMask);
+    glStencilOp((GLenum)sf, (GLenum)zf, (GLenum)zp);
     glStencilMask(_writeMask);
 }

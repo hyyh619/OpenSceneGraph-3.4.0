@@ -4,11 +4,13 @@
 #include <osg/ConvexPlanarOccluder>
 #include "ReadWrite.h"
 
-namespace ive{
-class ConvexPlanarOccluder : public osg::ConvexPlanarOccluder, public ReadWrite {
+namespace ive
+{
+class ConvexPlanarOccluder : public osg::ConvexPlanarOccluder, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

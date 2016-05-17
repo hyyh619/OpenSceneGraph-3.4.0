@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "CompositeLayer.h"
@@ -17,14 +17,14 @@
 
 using namespace ive;
 
-void CompositeLayer::write(DataOutputStream* out)
+void CompositeLayer::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVECOMPOSITELAYER);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osgTerrain::Layer*  layer = dynamic_cast<osgTerrain::Layer*>(this);
-    if  (layer)
+    osgTerrain::Layer *layer = dynamic_cast<osgTerrain::Layer*>(this);
+    if (layer)
         ((ive::Layer*)(layer))->write(out);
     else
         out_THROW_EXCEPTION("CompositeLayer::write(): Could not cast this osgLayer::CompositeLayer to an osgTerrain::Layer.");
@@ -32,9 +32,10 @@ void CompositeLayer::write(DataOutputStream* out)
     LayerHelper helper;
 
     out->writeUInt(getNumLayers());
-    for(unsigned int i=0; i<getNumLayers(); ++i)
+
+    for (unsigned int i = 0; i < getNumLayers(); ++i)
     {
-        if(getLayer(i))
+        if (getLayer(i))
         {
             out->writeBool(true);
             helper.writeLayer(out, getLayer(i));
@@ -47,10 +48,11 @@ void CompositeLayer::write(DataOutputStream* out)
     }
 }
 
-void CompositeLayer::read(DataInputStream* in)
+void CompositeLayer::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVECOMPOSITELAYER)
         in_THROW_EXCEPTION("CompositeLayer::read(): Expected CompositeLayer identification.");
 
@@ -58,7 +60,7 @@ void CompositeLayer::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osgTerrain::Layer*  layer = dynamic_cast<osgTerrain::Layer*>(this);
+    osgTerrain::Layer *layer = dynamic_cast<osgTerrain::Layer*>(this);
     if (layer)
         ((ive::Layer*)(layer))->read(in);
     else
@@ -67,7 +69,8 @@ void CompositeLayer::read(DataInputStream* in)
     LayerHelper helper;
 
     unsigned int numLayers = in->readUInt();
-    for(unsigned int i=0; i<numLayers; ++i)
+
+    for (unsigned int i = 0; i < numLayers; ++i)
     {
         bool readInlineLayer = in->readBool();
         if (readInlineLayer)

@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool ScalarProperty_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool ScalarProperty_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool ScalarProperty_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool ScalarProperty_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ScalarProperty_Proxy)
 (
@@ -63,14 +63,15 @@ REGISTER_DOTOSGWRAPPER(TransparencyProperty_Proxy)
 
 
 
-bool ScalarProperty_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool ScalarProperty_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgVolume::ScalarProperty& sp = static_cast<osgVolume::ScalarProperty&>(obj);
+    osgVolume::ScalarProperty&sp = static_cast<osgVolume::ScalarProperty&>(obj);
 
     bool itrAdvanced = false;
 
-    float value=0;
-    if (fr.read("value",value))
+    float value = 0;
+
+    if (fr.read("value", value))
     {
         itrAdvanced = true;
         sp.setValue(value);
@@ -79,11 +80,11 @@ bool ScalarProperty_readLocalData(osg::Object& obj, osgDB::Input &fr)
     return itrAdvanced;
 }
 
-bool ScalarProperty_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool ScalarProperty_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgVolume::ScalarProperty& sp = static_cast<const osgVolume::ScalarProperty&>(obj);
+    const osgVolume::ScalarProperty&sp = static_cast<const osgVolume::ScalarProperty&>(obj);
 
-    fw.indent()<<"value "<<sp.getValue()<<std::endl;
+    fw.indent() << "value " << sp.getValue() << std::endl;
 
     return true;
 }

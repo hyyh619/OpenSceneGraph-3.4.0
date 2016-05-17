@@ -39,11 +39,11 @@
 
     Change History (most recent first):
 
-$Log: ClientCommon.h,v $
-Revision 1.1  2008/05/08 00:25:48  cheshire
-<rdar://problem/5919272> GetNextLabel insufficiently defensive
+   $Log: ClientCommon.h,v $
+   Revision 1.1  2008/05/08 00:25:48  cheshire
+   <rdar://problem/5919272> GetNextLabel insufficiently defensive
 
 
-*/
+ */
 
-extern const char *GetNextLabel(const char *cstr, char label[64]);
+extern const char*GetNextLabel(const char *cstr, char label[64]);

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/PrimitiveRestartIndex>
 #include <osg/State>
@@ -28,37 +28,37 @@ PrimitiveRestartIndex::PrimitiveRestartIndex(unsigned int restartIndex)
     _restartIndex = restartIndex;
 }
 
-PrimitiveRestartIndex::PrimitiveRestartIndex(const PrimitiveRestartIndex& primitiveRestartIndex,const CopyOp& copyop):
-    StateAttribute(primitiveRestartIndex,copyop)
+PrimitiveRestartIndex::PrimitiveRestartIndex(const PrimitiveRestartIndex&primitiveRestartIndex, const CopyOp&copyop) :
+    StateAttribute(primitiveRestartIndex, copyop)
 {
     _restartIndex = primitiveRestartIndex._restartIndex;
 }
 
 PrimitiveRestartIndex::~PrimitiveRestartIndex()
-{
-}
+{}
 
-int PrimitiveRestartIndex::compare(const StateAttribute& sa) const
+int PrimitiveRestartIndex::compare(const StateAttribute&sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
-    COMPARE_StateAttribute_Types(PrimitiveRestartIndex,sa)
+    COMPARE_StateAttribute_Types(PrimitiveRestartIndex, sa)
 
     COMPARE_StateAttribute_Parameter(_restartIndex)
 
     return 0; // passed all the above comparison macros, must be equal.
 }
 
-void PrimitiveRestartIndex::apply(State& state) const
+void PrimitiveRestartIndex::apply(State&state) const
 {
     // get "per-context" extensions
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (extensions->glPrimitiveRestartIndex)
     {
-        extensions->glPrimitiveRestartIndex( _restartIndex );
+        extensions->glPrimitiveRestartIndex(_restartIndex);
         return;
     }
 
     OSG_WARN << "PrimitiveRestartIndex failed as the required graphics capabilities were not found\n"
-                "   OpenGL 3.1 or GL_NV_primitive_restart extension is required." << std::endl;
+        "   OpenGL 3.1 or GL_NV_primitive_restart extension is required." << std::endl;
 }

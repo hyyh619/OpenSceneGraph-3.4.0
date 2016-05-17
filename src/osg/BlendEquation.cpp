@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/BlendEquation>
 #include <osg/GLExtensions>
 #include <osg/State>
@@ -19,47 +19,43 @@
 
 using namespace osg;
 
-BlendEquation::BlendEquation():
+BlendEquation::BlendEquation() :
     _equationRGB(FUNC_ADD),
     _equationAlpha(FUNC_ADD)
-{
-}
+{}
 
-BlendEquation::BlendEquation(Equation equation):
+BlendEquation::BlendEquation(Equation equation) :
     _equationRGB(equation),
     _equationAlpha(equation)
-{
-}
+{}
 
-BlendEquation::BlendEquation(Equation equationRGB, Equation equationAlpha):
+BlendEquation::BlendEquation(Equation equationRGB, Equation equationAlpha) :
     _equationRGB(equationRGB),
     _equationAlpha(equationAlpha)
-{
-}
+{}
 
 BlendEquation::~BlendEquation()
-{
-}
+{}
 
-void BlendEquation::apply(State& state) const
+void BlendEquation::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
 
     if (!extensions->isBlendEquationSupported)
     {
-        OSG_WARN<<"Warning: BlendEquation::apply(..) failed, BlendEquation is not support by OpenGL driver."<<std::endl;
+        OSG_WARN << "Warning: BlendEquation::apply(..) failed, BlendEquation is not support by OpenGL driver." << std::endl;
         return;
     }
 
-    if((_equationRGB == ALPHA_MIN || _equationRGB == ALPHA_MAX) && !extensions->isSGIXMinMaxSupported)
+    if ((_equationRGB == ALPHA_MIN || _equationRGB == ALPHA_MAX) && !extensions->isSGIXMinMaxSupported)
     {
-        OSG_WARN<<"Warning: BlendEquation::apply(..) failed, SGIX_blend_alpha_minmax extension is not supported by OpenGL driver." << std::endl;
+        OSG_WARN << "Warning: BlendEquation::apply(..) failed, SGIX_blend_alpha_minmax extension is not supported by OpenGL driver." << std::endl;
         return;
     }
 
-    if(_equationRGB == LOGIC_OP && !extensions->isLogicOpSupported)
+    if (_equationRGB == LOGIC_OP && !extensions->isLogicOpSupported)
     {
-        OSG_WARN<<"Warning: BlendEquation::apply(..) failed, EXT_blend_logic_op extension is not supported by OpenGL driver." << std::endl;
+        OSG_WARN << "Warning: BlendEquation::apply(..) failed, EXT_blend_logic_op extension is not supported by OpenGL driver." << std::endl;
         return;
     }
 
@@ -75,7 +71,7 @@ void BlendEquation::apply(State& state) const
         }
         else
         {
-            OSG_WARN<<"Warning: BlendEquation::apply(..) failed, EXT_blend_equation_separate extension is not supported by OpenGL driver." << std::endl;
+            OSG_WARN << "Warning: BlendEquation::apply(..) failed, EXT_blend_equation_separate extension is not supported by OpenGL driver." << std::endl;
             return;
         }
     }

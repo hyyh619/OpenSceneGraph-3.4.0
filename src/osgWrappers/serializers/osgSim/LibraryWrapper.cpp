@@ -21,4 +21,3 @@ USE_SERIALIZER_WRAPPER(osgSim_SphereSegment)
 USE_SERIALIZER_WRAPPER(osgSim_VisibilityGroup)
 
 extern "C" void wrapper_serializer_library_osgSim(void) {}
-

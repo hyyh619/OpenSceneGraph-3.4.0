@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgVolume/VolumeTile>
 #include <osgVolume/Volume>
@@ -22,28 +22,26 @@ using namespace osgVolume;
 //
 // TileID
 //
-TileID::TileID():
+TileID::TileID() :
     level(-1),
     x(-1),
     y(-1),
     z(-1)
-{
-}
+{}
 
-TileID::TileID(int in_level, int in_x, int in_y, int in_z):
+TileID::TileID(int in_level, int in_x, int in_y, int in_z) :
     level(in_level),
     x(in_x),
     y(in_y),
     z(in_z)
-{
-}
+{}
 
 
 /////////////////////////////////////////////////////////////////////////////////
 //
 // VolumeTile
 //
-VolumeTile::VolumeTile():
+VolumeTile::VolumeTile() :
     _volume(0),
     _dirty(false),
     _hasBeenTraversal(false)
@@ -51,8 +49,8 @@ VolumeTile::VolumeTile():
     setThreadSafeRefUnref(true);
 }
 
-VolumeTile::VolumeTile(const VolumeTile& volumeTile,const osg::CopyOp& copyop):
-    Group(volumeTile,copyop),
+VolumeTile::VolumeTile(const VolumeTile&volumeTile, const osg::CopyOp&copyop) :
+    Group(volumeTile, copyop),
     _volume(0),
     _dirty(false),
     _hasBeenTraversal(false),
@@ -66,49 +64,56 @@ VolumeTile::VolumeTile(const VolumeTile& volumeTile,const osg::CopyOp& copyop):
 
 VolumeTile::~VolumeTile()
 {
-    if (_volume) setVolume(0);
+    if (_volume)
+        setVolume(0);
 }
 
-void VolumeTile::setVolume(Volume* volume)
+void VolumeTile::setVolume(Volume *volume)
 {
-    if (_volume == volume) return;
+    if (_volume == volume)
+        return;
 
-    if (_volume) _volume->unregisterVolumeTile(this);
+    if (_volume)
+        _volume->unregisterVolumeTile(this);
 
     _volume = volume;
 
-    if (_volume) _volume->registerVolumeTile(this);
+    if (_volume)
+        _volume->registerVolumeTile(this);
 }
 
-void VolumeTile::setTileID(const TileID& tileID)
+void VolumeTile::setTileID(const TileID&tileID)
 {
-    if (_tileID == tileID) return;
+    if (_tileID == tileID)
+        return;
 
-    if (_volume) _volume->unregisterVolumeTile(this);
+    if (_volume)
+        _volume->unregisterVolumeTile(this);
 
     _tileID = tileID;
 
-    if (_volume) _volume->registerVolumeTile(this);
+    if (_volume)
+        _volume->registerVolumeTile(this);
 }
 
 
-void VolumeTile::traverse(osg::NodeVisitor& nv)
+void VolumeTile::traverse(osg::NodeVisitor&nv)
 {
     if (!_hasBeenTraversal)
     {
         if (!_volume)
         {
-            osg::NodePath& nodePath = nv.getNodePath();
+            osg::NodePath&nodePath = nv.getNodePath();
             if (!nodePath.empty())
             {
-                for(osg::NodePath::reverse_iterator itr = nodePath.rbegin();
-                    itr != nodePath.rend() && !_volume;
-                    ++itr)
+                for (osg::NodePath::reverse_iterator itr = nodePath.rbegin();
+                     itr != nodePath.rend() && !_volume;
+                     ++itr)
                 {
-                    osgVolume::Volume* volume = dynamic_cast<Volume*>(*itr);
+                    osgVolume::Volume *volume = dynamic_cast<Volume*>(*itr);
                     if (volume)
                     {
-                        OSG_INFO<<"Assigning volume system "<<volume<<std::endl;
+                        OSG_INFO << "Assigning volume system " << volume << std::endl;
                         setVolume(volume);
                     }
                 }
@@ -118,7 +123,7 @@ void VolumeTile::traverse(osg::NodeVisitor& nv)
         _hasBeenTraversal = true;
     }
 
-    if (nv.getVisitorType()==osg::NodeVisitor::UPDATE_VISITOR &&
+    if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR &&
         _layer->requiresUpdateTraversal())
     {
         _layer->update(nv);
@@ -144,14 +149,15 @@ void VolumeTile::init()
     }
 }
 
-void VolumeTile::setLayer(Layer* layer)
+void VolumeTile::setLayer(Layer *layer)
 {
     _layer = layer;
 }
 
-void VolumeTile::setVolumeTechnique(VolumeTechnique* volumeTechnique)
+void VolumeTile::setVolumeTechnique(VolumeTechnique *volumeTechnique)
 {
-    if (_volumeTechnique == volumeTechnique) return;
+    if (_volumeTechnique == volumeTechnique)
+        return;
 
     int dirtyDelta = _dirty ? -1 : 0;
 
@@ -168,29 +174,33 @@ void VolumeTile::setVolumeTechnique(VolumeTechnique* volumeTechnique)
         ++dirtyDelta;
     }
 
-    if (dirtyDelta>0) setDirty(true);
-    else if (dirtyDelta<0) setDirty(false);
+    if (dirtyDelta > 0)
+        setDirty(true);
+    else if (dirtyDelta < 0)
+        setDirty(false);
 }
 
 void VolumeTile::setDirty(bool dirty)
 {
-    if (_dirty==dirty) return;
+    if (_dirty == dirty)
+        return;
 
     _dirty = dirty;
 
     if (_dirty)
     {
-        setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal()+1);
+        setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal() + 1);
     }
-    else if (getNumChildrenRequiringUpdateTraversal()>0)
+    else if (getNumChildrenRequiringUpdateTraversal() > 0)
     {
-        setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal()-1);
+        setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal() - 1);
     }
 }
 
 osg::BoundingSphere VolumeTile::computeBound() const
 {
-    const Locator* masterLocator = getLocator();
+    const Locator *masterLocator = getLocator();
+
     if (_layer.valid() && !masterLocator)
     {
         masterLocator = _layer->getLocator();
@@ -201,12 +211,12 @@ osg::BoundingSphere VolumeTile::computeBound() const
         osg::Vec3d left, right;
         masterLocator->computeLocalBounds(left, right);
 
-        return osg::BoundingSphere((left+right)*0.5, (right-left).length()*0.5);
+        return osg::BoundingSphere((left + right) * 0.5, (right - left).length() * 0.5);
     }
     else if (_layer.valid())
     {
         // we have a layer but no Locator defined so will assume a Identity Locator
-        return osg::BoundingSphere( osg::Vec3(0.5,0.5,0.5), 0.867);
+        return osg::BoundingSphere(osg::Vec3(0.5, 0.5, 0.5), 0.867);
     }
     else
     {

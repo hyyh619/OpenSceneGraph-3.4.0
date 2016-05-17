@@ -13,8 +13,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Point_readLocalData(Object& obj, Input& fr);
-bool Point_writeLocalData(const Object& obj, Output& fw);
+bool Point_readLocalData(Object&obj, Input&fr);
+bool Point_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Point)
@@ -27,26 +27,25 @@ REGISTER_DOTOSGWRAPPER(Point)
 );
 
 
-bool Point_readLocalData(Object& obj, Input& fr)
+bool Point_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    Point& point = static_cast<Point&>(obj);
+    Point&point = static_cast<Point&>(obj);
 
     float data;
+
     if (fr[0].matchWord("size") && fr[1].getFloat(data))
     {
-
         point.setSize(data);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
     if (fr[0].matchWord("fade_threshold_size") && fr[1].getFloat(data))
     {
-
         point.setFadeThresholdSize(data);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -54,9 +53,8 @@ bool Point_readLocalData(Object& obj, Input& fr)
     if (fr[0].matchWord("distance_attenuation") &&
         fr[1].getFloat(distAtten[0]) && fr[2].getFloat(distAtten[1]) && fr[3].getFloat(distAtten[2]))
     {
-
         point.setDistanceAttenuation(distAtten);
-        fr+=4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -64,12 +62,12 @@ bool Point_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool Point_writeLocalData(const Object& obj, Output& fw)
+bool Point_writeLocalData(const Object&obj, Output&fw)
 {
-    const Point& point = static_cast<const Point&>(obj);
+    const Point&point = static_cast<const Point&>(obj);
 
-    fw.indent() << "size " << point.getSize() << std::endl;
-    fw.indent() << "fade_threshold_size  " << point.getFadeThresholdSize() << std::endl;
+    fw.indent() << "size " <<                  point.getSize() << std::endl;
+    fw.indent() << "fade_threshold_size  " <<  point.getFadeThresholdSize() << std::endl;
     fw.indent() << "distance_attenuation  " << point.getDistanceAttenuation() << std::endl;
     return true;
 }

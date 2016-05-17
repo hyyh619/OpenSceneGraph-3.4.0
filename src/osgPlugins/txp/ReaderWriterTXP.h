@@ -54,48 +54,47 @@ class ReaderWriterTXP : public osgDB::ReaderWriter
 {
 public:
 
-    ReaderWriterTXP()
-    {
-        supportsExtension("txp","Terrapage txp format");
-    }
+ReaderWriterTXP()
+{
+    supportsExtension("txp", "Terrapage txp format");
+}
 
-    virtual const char* className() const
-    {
-        return "TXP Reader/Writer";
-    }
+virtual const char* className() const
+{
+    return "TXP Reader/Writer";
+}
 
-    virtual ReadResult readNode(const std::string& file, const osgDB::ReaderWriter::Options* options) const
-    {
-        if( !acceptsExtension(osgDB::getFileExtension(file) ))
-            return ReadResult::FILE_NOT_HANDLED;
+virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    if (!acceptsExtension(osgDB::getFileExtension(file)))
+        return ReadResult::FILE_NOT_HANDLED;
 
-        OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_serializerMutex);
+    OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_serializerMutex);
 
-        return const_cast<ReaderWriterTXP*>(this)->local_readNode(file, options);
-    }
+    return const_cast<ReaderWriterTXP*>(this)->local_readNode(file, options);
+}
 
-    bool removeArchive( int id );
+bool removeArchive(int id);
 
 protected:
 
 
-    ReadResult local_readNode(const std::string& file, const osgDB::ReaderWriter::Options* options);
+ReadResult local_readNode(const std::string&file, const osgDB::ReaderWriter::Options *options);
 
-    std::string getArchiveName(const std::string& dir);
-    osg::ref_ptr< TXPArchive > createArchive(int id, const std::string& dir);
-    osg::ref_ptr< TXPArchive > getArchive(int id, const std::string&);
+std::string getArchiveName(const std::string&dir);
+osg::ref_ptr<TXPArchive> createArchive(int id, const std::string&dir);
+osg::ref_ptr<TXPArchive> getArchive(int id, const std::string&);
 
-    osg::Node* getTileContent(const TXPArchive::TileInfo &info, int x, int y, int lod, TXPArchive* archive,  std::vector<TXPArchive::TileLocationInfo>& childrenLoc);
-    osg::Node* getTileContent(const TXPArchive::TileInfo &info, const TXPArchive::TileLocationInfo& loc, TXPArchive* archive,  std::vector<TXPArchive::TileLocationInfo>& childrenLoc);
-    void createChildrenLocationString(const std::vector<TXPArchive::TileLocationInfo>& locs, std::string& locString) const;
-    bool extractChildrenLocations(const std::string& name, int parentLod, std::vector<TXPArchive::TileLocationInfo>& locs, int nbChild) const;
+osg::Node* getTileContent(const TXPArchive::TileInfo&info, int x, int y, int lod, TXPArchive *archive,  std::vector<TXPArchive::TileLocationInfo>&childrenLoc);
+osg::Node* getTileContent(const TXPArchive::TileInfo&info, const TXPArchive::TileLocationInfo&loc, TXPArchive *archive,  std::vector<TXPArchive::TileLocationInfo>&childrenLoc);
+void createChildrenLocationString(const std::vector<TXPArchive::TileLocationInfo>&locs, std::string&locString) const;
+bool extractChildrenLocations(const std::string&name, int parentLod, std::vector<TXPArchive::TileLocationInfo>&locs, int nbChild) const;
 
-    mutable OpenThreads::ReentrantMutex               _serializerMutex;
+mutable OpenThreads::ReentrantMutex _serializerMutex;
 
-    std::map< int,osg::ref_ptr<TXPArchive> >    _archives;
-    static int                                  _archiveId;
+std::map<int, osg::ref_ptr<TXPArchive> > _archives;
+static int                               _archiveId;
 };
-
 } // namespace
 
 #endif // __READERWRITER_TXP_H_

@@ -9,23 +9,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgUtil/UpdateVisitor>
 
 using namespace osg;
 using namespace osgUtil;
 
-UpdateVisitor::UpdateVisitor():
+UpdateVisitor::UpdateVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::UPDATE_VISITOR, osg::NodeVisitor::TRAVERSE_ALL_CHILDREN)
-{
-}
+{}
 
 
 UpdateVisitor::~UpdateVisitor()
-{
-}
+{}
 
 
 void UpdateVisitor::reset()
-{
-}
+{}

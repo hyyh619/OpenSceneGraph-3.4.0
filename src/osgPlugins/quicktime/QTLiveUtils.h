@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifdef __APPLE__
     #include <QuickTime/QuickTime.h>
@@ -28,9 +28,9 @@
     #include <ImageCompression.h>
     #include <TextUtils.h>
 #endif
-//QT
-//#include "Components.h"
-//#include "QuickTimeComponents.h"
+// QT
+// #include "Components.h"
+// #include "QuickTimeComponents.h"
 
 // QTML
 void initialize_quicktime_qtml();
@@ -39,11 +39,11 @@ void terminite_quicktime_qtml();
 class QTScopedQTMLInitialiser
 {
 public:
-    QTScopedQTMLInitialiser();
-   ~QTScopedQTMLInitialiser();
+QTScopedQTMLInitialiser();
+~QTScopedQTMLInitialiser();
 private:
-    QTScopedQTMLInitialiser(const QTScopedQTMLInitialiser&);
-    const QTScopedQTMLInitialiser& operator=(const QTScopedQTMLInitialiser&);
+QTScopedQTMLInitialiser(const QTScopedQTMLInitialiser&);
+const QTScopedQTMLInitialiser&operator=(const QTScopedQTMLInitialiser&);
 };
 
 // QT Movies
@@ -53,11 +53,11 @@ void leave_quicktime_movies();
 class QTScopedMovieInitialiser
 {
 public:
-    QTScopedMovieInitialiser();
-   ~QTScopedMovieInitialiser();
+QTScopedMovieInitialiser();
+~QTScopedMovieInitialiser();
 private:
-    QTScopedMovieInitialiser(const QTScopedMovieInitialiser&);
-    const QTScopedMovieInitialiser& operator=(const QTScopedMovieInitialiser&);
+QTScopedMovieInitialiser(const QTScopedMovieInitialiser&);
+const QTScopedMovieInitialiser&operator=(const QTScopedMovieInitialiser&);
 };
 
 #if TARGET_OS_MAC
@@ -74,18 +74,18 @@ void leave_quicktime_movies_mt();
 class QTScopedMovieInitialiser_MT
 {
 public:
-    QTScopedMovieInitialiser_MT();
-   ~QTScopedMovieInitialiser_MT();
+QTScopedMovieInitialiser_MT();
+~QTScopedMovieInitialiser_MT();
 private:
-    QTScopedMovieInitialiser_MT(const QTScopedMovieInitialiser_MT&);
-    const QTScopedMovieInitialiser_MT& operator=(const QTScopedMovieInitialiser_MT&);
+QTScopedMovieInitialiser_MT(const QTScopedMovieInitialiser_MT&);
+const QTScopedMovieInitialiser_MT&operator=(const QTScopedMovieInitialiser_MT&);
 };
 #endif
 
 // Utils
 char* pstr_printable(StringPtr src);
 
-typedef std::pair<std::string,std::string> OSG_SGDevicePair;
+typedef std::pair<std::string, std::string> OSG_SGDevicePair;
 typedef std::vector<OSG_SGDevicePair>      OSG_SGDeviceList;
 
 // Capability Video
@@ -95,15 +95,5 @@ void probe_video_digitizer_components();
 OSG_SGDeviceList              print_sequence_grabber_device_list(SGDeviceList deviceList);
 std::vector<OSG_SGDeviceList> probe_sequence_grabber_components();
 //
-void get_video_device_bounds_idstr(short videoDeviceID, short videoDeviceInputID, short& out_width, short& out_height, Str63& out_videoDeviceIDStr);
-void get_sound_device_idstr(short soundDeviceID, short soundDeviceInputID, Str63& out_soundDeviceIDStr);
-
-
-
-
-
-
-
-
-
-
+void get_video_device_bounds_idstr(short videoDeviceID, short videoDeviceInputID, short&out_width, short&out_height, Str63&out_videoDeviceIDStr);
+void get_sound_device_idstr(short soundDeviceID, short soundDeviceInputID, Str63&out_soundDeviceIDStr);

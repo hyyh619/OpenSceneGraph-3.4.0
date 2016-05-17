@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Switch>
 #include <osg/BoundingBox>
 #include <osg/Transform>
@@ -19,25 +19,24 @@
 
 using namespace osg;
 
-Switch::Switch():
+Switch::Switch() :
     _newChildDefaultValue(true)
-{
-}
+{}
 
-Switch::Switch(const Switch& sw,const CopyOp& copyop):
-    Group(sw,copyop),
+Switch::Switch(const Switch&sw, const CopyOp&copyop) :
+    Group(sw, copyop),
     _newChildDefaultValue(sw._newChildDefaultValue),
     _values(sw._values)
-{
-}
+{}
 
-void Switch::traverse(NodeVisitor& nv)
+void Switch::traverse(NodeVisitor&nv)
 {
-    if (nv.getTraversalMode()==NodeVisitor::TRAVERSE_ACTIVE_CHILDREN)
+    if (nv.getTraversalMode() == NodeVisitor::TRAVERSE_ACTIVE_CHILDREN)
     {
-        for(unsigned int pos=0;pos<_children.size();++pos)
+        for (unsigned int pos = 0; pos < _children.size(); ++pos)
         {
-            if (_values[pos]) _children[pos]->accept(nv);
+            if (_values[pos])
+                _children[pos]->accept(nv);
         }
     }
     else
@@ -46,94 +45,109 @@ void Switch::traverse(NodeVisitor& nv)
     }
 }
 
-bool Switch::addChild( Node *child )
+bool Switch::addChild(Node *child)
 {
     if (Group::addChild(child))
     {
-        if (_children.size()>_values.size())
+        if (_children.size() > _values.size())
         {
-            _values.resize(_children.size(),_newChildDefaultValue);
+            _values.resize(_children.size(), _newChildDefaultValue);
         }
+
         // note, we don't override any pre-existing _values[childPosition] setting
         // like in addChild(child,value) below.
         return true;
     }
+
     return false;
 }
 
-bool Switch::addChild( Node *child, bool value )
+bool Switch::addChild(Node *child, bool value)
 {
     unsigned int childPosition = _children.size();
+
     if (Group::addChild(child))
     {
-        if (_children.size()>_values.size())
+        if (_children.size() > _values.size())
         {
-            _values.resize(_children.size(),_newChildDefaultValue);
+            _values.resize(_children.size(), _newChildDefaultValue);
         }
-        _values[childPosition]=value;
+
+        _values[childPosition] = value;
         return true;
     }
+
     return false;
 }
 
-bool Switch::insertChild( unsigned int index, Node *child )
+bool Switch::insertChild(unsigned int index, Node *child)
 {
-    return insertChild(index,child,_newChildDefaultValue);
+    return insertChild(index, child, _newChildDefaultValue);
 }
 
-bool Switch::insertChild( unsigned int index, Node *child, bool value )
+bool Switch::insertChild(unsigned int index, Node *child, bool value)
 {
-    if (Group::insertChild(index,child))
+    if (Group::insertChild(index, child))
     {
-        if (index>=_values.size())
+        if (index >= _values.size())
         {
             _values.push_back(value);
         }
         else
         {
-            _values.insert(_values.begin()+index, value);
+            _values.insert(_values.begin() + index, value);
         }
 
         return true;
     }
+
     return false;
 }
 
-bool Switch::removeChildren(unsigned int pos,unsigned int numChildrenToRemove)
+bool Switch::removeChildren(unsigned int pos, unsigned int numChildrenToRemove)
 {
-    if (pos<_values.size()) _values.erase(_values.begin()+pos, osg::minimum(_values.begin()+(pos+numChildrenToRemove), _values.end()) );
+    if (pos < _values.size())
+        _values.erase(_values.begin() + pos, osg::minimum(_values.begin() + (pos + numChildrenToRemove), _values.end()));
 
-    return Group::removeChildren(pos,numChildrenToRemove);
+    return Group::removeChildren(pos, numChildrenToRemove);
 }
 
-void Switch::setValue(unsigned int pos,bool value)
+void Switch::setValue(unsigned int pos, bool value)
 {
-    if (pos>=_values.size()) _values.resize(pos+1,_newChildDefaultValue);
-    _values[pos]=value;
+    if (pos >= _values.size())
+        _values.resize(pos + 1, _newChildDefaultValue);
+
+    _values[pos] = value;
     dirtyBound();
 }
 
-void Switch::setChildValue(const Node* child,bool value)
+void Switch::setChildValue(const Node *child, bool value)
 {
     // find the child's position.
-    unsigned int pos=getChildIndex(child);
-    if (pos==_children.size()) return;
+    unsigned int pos = getChildIndex(child);
 
-    _values[pos]=value;
+    if (pos == _children.size())
+        return;
+
+    _values[pos] = value;
     dirtyBound();
 }
 
 bool Switch::getValue(unsigned int pos) const
 {
-    if (pos>=_values.size()) return false;
+    if (pos >= _values.size())
+        return false;
+
     return _values[pos];
 }
 
-bool Switch::getChildValue(const Node* child) const
+bool Switch::getChildValue(const Node *child) const
 {
     // find the child's position.
-    unsigned int pos=getChildIndex(child);
-    if (pos==_children.size()) return false;
+    unsigned int pos = getChildIndex(child);
+
+    if (pos == _children.size())
+        return false;
 
     return _values[pos];
 }
@@ -141,12 +155,14 @@ bool Switch::getChildValue(const Node* child) const
 bool Switch::setAllChildrenOff()
 {
     _newChildDefaultValue = false;
-    for(ValueList::iterator itr=_values.begin();
-        itr!=_values.end();
-        ++itr)
+
+    for (ValueList::iterator itr = _values.begin();
+         itr != _values.end();
+         ++itr)
     {
         *itr = false;
     }
+
     dirtyBound();
     return true;
 }
@@ -154,31 +170,35 @@ bool Switch::setAllChildrenOff()
 bool Switch::setAllChildrenOn()
 {
     _newChildDefaultValue = true;
-    for(ValueList::iterator itr=_values.begin();
-        itr!=_values.end();
-        ++itr)
+
+    for (ValueList::iterator itr = _values.begin();
+         itr != _values.end();
+         ++itr)
     {
         *itr = true;
     }
+
     dirtyBound();
     return true;
 }
 
 bool Switch::setSingleChildOn(unsigned int pos)
 {
-    for(ValueList::iterator itr=_values.begin();
-        itr!=_values.end();
-        ++itr)
+    for (ValueList::iterator itr = _values.begin();
+         itr != _values.end();
+         ++itr)
     {
         *itr = false;
     }
-    setValue(pos,true);
+
+    setValue(pos, true);
     return true;
 }
 
 BoundingSphere Switch::computeBound() const
 {
     BoundingSphere bsphere;
+
     if (_children.empty())
     {
         return bsphere;
@@ -190,14 +210,15 @@ BoundingSphere Switch::computeBound() const
 
     BoundingBox bb;
     bb.init();
-    for(unsigned int pos=0;pos<_children.size();++pos)
+
+    for (unsigned int pos = 0; pos < _children.size(); ++pos)
     {
-        const osg::Transform* transform = _children[pos]->asTransform();
-        if (!transform || transform->getReferenceFrame()==osg::Transform::RELATIVE_RF)
+        const osg::Transform *transform = _children[pos]->asTransform();
+        if (!transform || transform->getReferenceFrame() == osg::Transform::RELATIVE_RF)
         {
-            if( _values[pos] == true )
+            if (_values[pos] == true)
             {
-                const osg::BoundingSphere& bs = _children[pos]->getBound();
+                const osg::BoundingSphere&bs = _children[pos]->getBound();
                 bb.expandBy(bs);
             }
         }
@@ -210,18 +231,19 @@ BoundingSphere Switch::computeBound() const
 
     bsphere._center = bb.center();
     bsphere._radius = 0.0f;
-    for(unsigned int pos=0;pos<_children.size();++pos)
+
+    for (unsigned int pos = 0; pos < _children.size(); ++pos)
     {
-        const osg::Transform* transform = _children[pos]->asTransform();
-        if (!transform || transform->getReferenceFrame()==osg::Transform::RELATIVE_RF)
+        const osg::Transform *transform = _children[pos]->asTransform();
+        if (!transform || transform->getReferenceFrame() == osg::Transform::RELATIVE_RF)
         {
-            if( _values[pos] == true )
+            if (_values[pos] == true)
             {
-                const osg::BoundingSphere& bs = _children[pos]->getBound();
+                const osg::BoundingSphere&bs = _children[pos]->getBound();
                 bsphere.expandRadiusBy(bs);
             }
         }
     }
+
     return bsphere;
 }
-

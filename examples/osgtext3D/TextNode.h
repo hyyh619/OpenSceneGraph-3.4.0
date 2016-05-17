@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGTEXT_TEXTNODE
 #define OSGTEXT_TEXTNODE 1
@@ -24,131 +24,214 @@
 #include <osgText/Glyph>
 #include <osgText/Style>
 
-namespace osgText {
-
+namespace osgText
+{
 // forward declare
 class TextNode;
 
 class /*OSGTEXT_EXPORT*/ Layout : public osg::Object
 {
-    public:
+public:
 
-        Layout();
-        Layout(const Layout& layout, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+Layout();
+Layout(const Layout&layout, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-        META_Object(osgText,Layout)
+META_Object(osgText, Layout)
 
-        /// default Layout implementation used if no other is specified on TextNode
-        static osg::ref_ptr<Layout>& getDefaultLayout();
+/// default Layout implementation used if no other is specified on TextNode
+static osg::ref_ptr<Layout>&getDefaultLayout();
 
-        virtual void layout(TextNode& text) const;
+virtual void layout(TextNode&text) const;
 
-    protected:
+protected:
 };
 
 class /*OSGTEXT_EXPORT*/ TextTechnique : public osg::Object
 {
-    public:
+public:
 
-        TextTechnique();
-        TextTechnique(const TextTechnique& technique, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+TextTechnique();
+TextTechnique(const TextTechnique&technique, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-        META_Object(osgText, TextTechnique)
+META_Object(osgText, TextTechnique)
 
-        TextNode* getTextNode() { return _textNode; }
-        const TextNode* getTextNode() const { return _textNode; }
+TextNode * getTextNode()
+{
+    return _textNode;
+}
+const TextNode* getTextNode() const
+{
+    return _textNode;
+}
 
-        /// default TextTechnique implementation used if no other is specified on TextNode
-        static osg::ref_ptr<TextTechnique>& getDefaultTextTechinque();
+/// default TextTechnique implementation used if no other is specified on TextNode
+static osg::ref_ptr<TextTechnique>&getDefaultTextTechinque();
 
-        /// start building a new charater layout
-        virtual void start();
+/// start building a new charater layout
+virtual void start();
 
-        /// called by Layout engine to place individual characters
-        virtual void addCharacter(const osg::Vec3& position, const osg::Vec3& size, Glyph* glyph, Style* style);
+/// called by Layout engine to place individual characters
+virtual void addCharacter(const osg::Vec3&position, const osg::Vec3&size, Glyph *glyph, Style *style);
 
-        /// called by Layout engine to place individual characters
-        virtual void addCharacter(const osg::Vec3& position, const osg::Vec3& size, Glyph3D* glyph, Style* style);
+/// called by Layout engine to place individual characters
+virtual void addCharacter(const osg::Vec3&position, const osg::Vec3&size, Glyph3D *glyph, Style *style);
 
-        /// finish building new charater layout
-        virtual void finish();
+/// finish building new charater layout
+virtual void finish();
 
-        /// provide traversal control
-        virtual void traverse(osg::NodeVisitor& nv);
+/// provide traversal control
+virtual void traverse(osg::NodeVisitor&nv);
 
-    protected:
+protected:
 
-        friend class TextNode;
+friend class TextNode;
 
-        void setTextNode(TextNode* textNode) { _textNode = textNode; }
+void setTextNode(TextNode *textNode)
+{
+    _textNode = textNode;
+}
 
-        TextNode* _textNode;
+TextNode *_textNode;
 };
 
 class /*OSGTEXT_EXPORT*/ TextNode : public osg::Group
 {
-    public:
+public:
 
-        TextNode();
-        TextNode(const TextNode& text, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+TextNode();
+TextNode(const TextNode&text, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-        META_Node(osgText, TextNode)
+META_Node(osgText, TextNode)
 
-        virtual void traverse(osg::NodeVisitor& nv);
+virtual void traverse(osg::NodeVisitor&nv);
 
-        void setFont(Font* font) { _font = font; }
-        Font* getFont() { return _font.get(); }
-        const Font* getFont() const { return _font.get(); }
-        Font* getActiveFont() { return _font.valid() ? _font.get() : Font::getDefaultFont().get(); }
-        const Font* getActiveFont() const { return _font.valid() ? _font.get() : Font::getDefaultFont().get(); }
+void setFont(Font *font)
+{
+    _font = font;
+}
+Font* getFont()
+{
+    return _font.get();
+}
+const Font* getFont() const
+{
+    return _font.get();
+}
+Font* getActiveFont()
+{
+    return _font.valid() ? _font.get() : Font::getDefaultFont().get();
+}
+const Font* getActiveFont() const
+{
+    return _font.valid() ? _font.get() : Font::getDefaultFont().get();
+}
 
-        void setStyle(Style* style) { _style = style; }
-        Style* getStyle() { return _style.get(); }
-        const Style* getStyle() const { return _style.get(); }
-        Style* getActiveStyle() { return _style.valid() ? _style.get() : Style::getDefaultStyle().get(); }
-        const Style* getActiveStyle() const { return _style.valid() ? _style.get() : Style::getDefaultStyle().get(); }
+void setStyle(Style *style)
+{
+    _style = style;
+}
+Style* getStyle()
+{
+    return _style.get();
+}
+const Style* getStyle() const
+{
+    return _style.get();
+}
+Style* getActiveStyle()
+{
+    return _style.valid() ? _style.get() : Style::getDefaultStyle().get();
+}
+const Style* getActiveStyle() const
+{
+    return _style.valid() ? _style.get() : Style::getDefaultStyle().get();
+}
 
-        void setLayout(Layout* layout) { _layout = layout; }
-        Layout* getLayout() { return _layout.get(); }
-        const Layout* getLayout() const { return _layout.get(); }
-        const Layout* getActiveLayout() const { return _layout.valid() ? _layout.get() : Layout::getDefaultLayout().get(); }
+void setLayout(Layout *layout)
+{
+    _layout = layout;
+}
+Layout* getLayout()
+{
+    return _layout.get();
+}
+const Layout* getLayout() const
+{
+    return _layout.get();
+}
+const Layout* getActiveLayout() const
+{
+    return _layout.valid() ? _layout.get() : Layout::getDefaultLayout().get();
+}
 
-        void setTextTechnique(TextTechnique* technique);
-        TextTechnique* getTextTechnique() { return _technique.get(); }
-        const TextTechnique* getTextTechnique() const { return _technique.get(); }
+void setTextTechnique(TextTechnique *technique);
+TextTechnique* getTextTechnique()
+{
+    return _technique.get();
+}
+const TextTechnique* getTextTechnique() const
+{
+    return _technique.get();
+}
 
-        void setText(const std::string& str);
-        void setText(const String& str) { _string = str; }
-        String& getText() { return _string; }
-        const String& getText() const { return _string; }
+void setText(const std::string&str);
+void setText(const String&str)
+{
+    _string = str;
+}
+String&getText()
+{
+    return _string;
+}
+const String&getText() const
+{
+    return _string;
+}
 
-        void setPosition(const osg::Vec3d& position) { _position  = position; }
-        const osg::Vec3d& getPosition() const { return _position; }
+void setPosition(const osg::Vec3d&position)
+{
+    _position = position;
+}
+const osg::Vec3d&getPosition() const
+{
+    return _position;
+}
 
-        void setRotation(const osg::Quat& rotation) { _rotation  = rotation; }
-        const osg::Quat& getRotation() const { return _rotation; }
+void setRotation(const osg::Quat&rotation)
+{
+    _rotation = rotation;
+}
+const osg::Quat&getRotation() const
+{
+    return _rotation;
+}
 
-        void setCharacterSize(float characterSize) { _characterSize = characterSize; }
-        float getCharacterSize() const { return _characterSize; }
+void setCharacterSize(float characterSize)
+{
+    _characterSize = characterSize;
+}
+float getCharacterSize() const
+{
+    return _characterSize;
+}
 
-        /// force a regeneration of the rendering backend required to represent the text.
-        virtual void update();
+/// force a regeneration of the rendering backend required to represent the text.
+virtual void update();
 
-    protected:
+protected:
 
-        virtual ~TextNode();
+virtual ~TextNode();
 
-        osg::ref_ptr<Font>              _font;
-        osg::ref_ptr<Style>             _style;
-        osg::ref_ptr<Layout>            _layout;
-        osg::ref_ptr<TextTechnique>     _technique;
+osg::ref_ptr<Font>          _font;
+osg::ref_ptr<Style>         _style;
+osg::ref_ptr<Layout>        _layout;
+osg::ref_ptr<TextTechnique> _technique;
 
-        String                          _string;
-        osg::Vec3d                      _position;
-        osg::Quat                       _rotation;
-        float                           _characterSize;
+String     _string;
+osg::Vec3d _position;
+osg::Quat  _rotation;
+float      _characterSize;
 };
-
 }
 
 #endif

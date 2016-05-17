@@ -16,7 +16,7 @@
 using namespace osg;
 using namespace osgGA;
 
-StateSetManipulator::StateSetManipulator(osg::StateSet* stateset):
+StateSetManipulator::StateSetManipulator(osg::StateSet *stateset) :
     _initialized(false),
     _backface(false),
     _lighting(false),
@@ -31,8 +31,7 @@ StateSetManipulator::StateSetManipulator(osg::StateSet* stateset):
 }
 
 StateSetManipulator::~StateSetManipulator()
-{
-}
+{}
 
 void StateSetManipulator::setStateSet(StateSet *stateset)
 {
@@ -46,129 +45,141 @@ void StateSetManipulator::setStateSet(StateSet *stateset)
 #endif
 }
 
-StateSet *StateSetManipulator::getStateSet()
+StateSet* StateSetManipulator::getStateSet()
 {
     return _stateset.get();
 }
 
-const StateSet *StateSetManipulator::getStateSet() const
+const StateSet* StateSetManipulator::getStateSet() const
 {
     return _stateset.get();
 }
 
 void StateSetManipulator::clone()
 {
-    if (!_stateset) return;
+    if (!_stateset)
+        return;
 
     // we clone the StateSet so that any draw traversals that might be running at the time of the
     // event traversal won't change the same StateSet that is being read.  One could just set the
     // DataVariance to DYNAMIC to avoid this overlap, but this would introduce a performance penalty.
 
-    StateSet::ParentList parents = _stateset->getParents();
+    StateSet::ParentList        parents     = _stateset->getParents();
     osg::ref_ptr<osg::StateSet> newStateSet = dynamic_cast<osg::StateSet*>(_stateset->clone(osg::CopyOp::SHALLOW_COPY));
 
     // change the parents of the original StateSet to point to the new stateset
-    for(StateSet::ParentList::iterator itr = parents.begin();
-        itr !=  parents.end();
-        ++itr)
+    for (StateSet::ParentList::iterator itr = parents.begin();
+         itr != parents.end();
+         ++itr)
     {
-        osg::Node* node = *itr;
+        osg::Node *node = *itr;
         node->setStateSet(newStateSet.get());
     }
 
     _stateset = newStateSet;
 }
 
-bool StateSetManipulator::handle(const GUIEventAdapter& ea,GUIActionAdapter& aa)
+bool StateSetManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&aa)
 {
-    if(!_stateset.valid()) return false;
+    if (!_stateset.valid())
+        return false;
 
     if (!_initialized)
     {
         _initialized = true;
-        _backface = (_stateset->getMode(GL_CULL_FACE)&osg::StateAttribute::ON);
-        _lighting =(_stateset->getMode(GL_LIGHTING)&osg::StateAttribute::ON);
+        _backface    = (_stateset->getMode(GL_CULL_FACE) & osg::StateAttribute::ON);
+        _lighting    = (_stateset->getMode(GL_LIGHTING) & osg::StateAttribute::ON);
 
-        unsigned int mode = osg::StateAttribute::INHERIT|osg::StateAttribute::ON;
+        unsigned int mode = osg::StateAttribute::INHERIT | osg::StateAttribute::ON;
 
-        _texture = (_stateset->getTextureMode(0,GL_TEXTURE_2D)&mode)!=0 ||
-                   (_stateset->getTextureMode(0,GL_TEXTURE_3D)&mode)!=0 ||
-                   (_stateset->getTextureMode(0,GL_TEXTURE_RECTANGLE)&mode)!=0 ||
-                   (_stateset->getTextureMode(0,GL_TEXTURE_CUBE_MAP)&mode)!=0;
+        _texture = (_stateset->getTextureMode(0, GL_TEXTURE_2D) & mode) != 0 ||
+                   (_stateset->getTextureMode(0, GL_TEXTURE_3D) & mode) != 0 ||
+                   (_stateset->getTextureMode(0, GL_TEXTURE_RECTANGLE) & mode) != 0 ||
+                   (_stateset->getTextureMode(0, GL_TEXTURE_CUBE_MAP) & mode) != 0;
 
         #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
-            _texture |= ((_stateset->getTextureMode(0,GL_TEXTURE_1D)&mode)!=0);
+        _texture |= ((_stateset->getTextureMode(0, GL_TEXTURE_1D) & mode) != 0);
         #endif
     }
 
-    if (ea.getHandled()) return false;
+    if (ea.getHandled())
+        return false;
 
-    if (ea.getEventType()==osgGA::GUIEventAdapter::KEYDOWN)
+    if (ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
     {
-
-        if ( ea.getKey() == _keyEventToggleBackfaceCulling )
+        if (ea.getKey() == _keyEventToggleBackfaceCulling)
         {
             setBackfaceEnabled(!getBackfaceEnabled());
             aa.requestRedraw();
             return true;
         }
-        if ( ea.getKey() == _keyEventToggleLighting )
+
+        if (ea.getKey() == _keyEventToggleLighting)
         {
-                setLightingEnabled(!getLightingEnabled());
-                aa.requestRedraw();
-                return true;
+            setLightingEnabled(!getLightingEnabled());
+            aa.requestRedraw();
+            return true;
         }
-        if ( ea.getKey() == _keyEventToggleTexturing )
+
+        if (ea.getKey() == _keyEventToggleTexturing)
         {
-                setTextureEnabled(!getTextureEnabled());
-                aa.requestRedraw();
-                return true;
+            setTextureEnabled(!getTextureEnabled());
+            aa.requestRedraw();
+            return true;
         }
-        if ( ea.getKey() == _keyEventCyclePolygonMode )
+
+        if (ea.getKey() == _keyEventCyclePolygonMode)
         {
-                cyclePolygonMode();
-                aa.requestRedraw();
-                return true;
+            cyclePolygonMode();
+            aa.requestRedraw();
+            return true;
         }
     }
 
     return false;
 }
 
-void StateSetManipulator::getUsage(osg::ApplicationUsage& usage) const
+void StateSetManipulator::getUsage(osg::ApplicationUsage&usage) const
 {
-    usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventToggleBackfaceCulling),"Toggle backface culling");
-    usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventToggleLighting),"Toggle lighting");
-    usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventToggleTexturing),"Toggle texturing");
-    usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventCyclePolygonMode),"Toggle polygon fill mode between fill, line (wire frame) and points");
+    usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventToggleBackfaceCulling), "Toggle backface culling");
+    usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventToggleLighting), "Toggle lighting");
+    usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventToggleTexturing), "Toggle texturing");
+    usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventCyclePolygonMode), "Toggle polygon fill mode between fill, line (wire frame) and points");
 }
 
 
 void StateSetManipulator::setBackfaceEnabled(bool newbackface)
 {
-    if (_backface == newbackface) return;
+    if (_backface == newbackface)
+        return;
 
     clone();
 
     _backface = newbackface;
-    if( _backface ) _stateset->setMode(GL_CULL_FACE,osg::StateAttribute::ON);
-    else _stateset->setMode(GL_CULL_FACE,osg::StateAttribute::OVERRIDE|osg::StateAttribute::OFF);
+    if (_backface)
+        _stateset->setMode(GL_CULL_FACE, osg::StateAttribute::ON);
+    else
+        _stateset->setMode(GL_CULL_FACE, osg::StateAttribute::OVERRIDE | osg::StateAttribute::OFF);
 }
 
 void StateSetManipulator::setLightingEnabled(bool newlighting)
 {
-    if (_lighting == newlighting) return;
+    if (_lighting == newlighting)
+        return;
 
     clone();
 
     _lighting = newlighting;
-    if( _lighting ) _stateset->setMode(GL_LIGHTING,osg::StateAttribute::ON);
-    else _stateset->setMode(GL_LIGHTING,osg::StateAttribute::OVERRIDE|osg::StateAttribute::OFF);
+    if (_lighting)
+        _stateset->setMode(GL_LIGHTING, osg::StateAttribute::ON);
+    else
+        _stateset->setMode(GL_LIGHTING, osg::StateAttribute::OVERRIDE | osg::StateAttribute::OFF);
 }
 
 void StateSetManipulator::setTextureEnabled(bool newtexture)
 {
-    if (_texture==newtexture) return;
+    if (_texture == newtexture)
+        return;
 
     clone();
 
@@ -177,17 +188,19 @@ void StateSetManipulator::setTextureEnabled(bool newtexture)
 //        ( _stateset->getAttribute( osg::StateAttribute::TEXTURE ) );
 //    cout << tex->numTextureUnits() << endl;
 
-    unsigned int mode = osg::StateAttribute::OVERRIDE|osg::StateAttribute::OFF;
-    if ( _texture ) mode = osg::StateAttribute::INHERIT|osg::StateAttribute::ON;
-    for( unsigned int ii=0; ii<_maxNumOfTextureUnits; ii++ )
+    unsigned int mode = osg::StateAttribute::OVERRIDE | osg::StateAttribute::OFF;
+    if (_texture)
+        mode = osg::StateAttribute::INHERIT | osg::StateAttribute::ON;
+
+    for (unsigned int ii = 0; ii < _maxNumOfTextureUnits; ii++)
     {
         #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
-            _stateset->setTextureMode( ii, GL_TEXTURE_1D, mode );
+        _stateset->setTextureMode(ii, GL_TEXTURE_1D, mode);
         #endif
-        _stateset->setTextureMode( ii, GL_TEXTURE_2D, mode );
-        _stateset->setTextureMode( ii, GL_TEXTURE_3D, mode );
-        _stateset->setTextureMode( ii, GL_TEXTURE_RECTANGLE, mode );
-        _stateset->setTextureMode( ii, GL_TEXTURE_CUBE_MAP, mode);
+        _stateset->setTextureMode(ii, GL_TEXTURE_2D, mode);
+        _stateset->setTextureMode(ii, GL_TEXTURE_3D, mode);
+        _stateset->setTextureMode(ii, GL_TEXTURE_RECTANGLE, mode);
+        _stateset->setTextureMode(ii, GL_TEXTURE_CUBE_MAP, mode);
     }
 }
 
@@ -195,41 +208,49 @@ void StateSetManipulator::setPolygonMode(osg::PolygonMode::Mode newpolygonmode)
 {
     clone();
 
-    osg::PolygonMode* polyModeObj = getOrCreatePolygonMode();
+    osg::PolygonMode *polyModeObj = getOrCreatePolygonMode();
 
-    polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK,newpolygonmode);
+    polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK, newpolygonmode);
 }
 
 void StateSetManipulator::cyclePolygonMode()
 {
     clone();
 
-    osg::PolygonMode* polyModeObj = getOrCreatePolygonMode();
+    osg::PolygonMode *polyModeObj = getOrCreatePolygonMode();
 
     osg::PolygonMode::Mode currentMode = getPolygonMode();
+
     // cycle through the available modes.
-    switch(currentMode)
+    switch (currentMode)
     {
-        case osg::PolygonMode::FILL : polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK,osg::PolygonMode::LINE); break;
-        case osg::PolygonMode::LINE : polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK,osg::PolygonMode::POINT); break;
-        case osg::PolygonMode::POINT : polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK,osg::PolygonMode::FILL); break;
+    case osg::PolygonMode::FILL: polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE); break;
+
+    case osg::PolygonMode::LINE: polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::POINT); break;
+
+    case osg::PolygonMode::POINT: polyModeObj->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::FILL); break;
     }
 }
 
 osg::PolygonMode::Mode StateSetManipulator::getPolygonMode() const
 {
-    osg::PolygonMode* polyModeObj = dynamic_cast<osg::PolygonMode*>(_stateset->getAttribute(osg::StateAttribute::POLYGONMODE));
-    if (polyModeObj) return polyModeObj->getMode(osg::PolygonMode::FRONT_AND_BACK);
-    else return osg::PolygonMode::FILL;
+    osg::PolygonMode *polyModeObj = dynamic_cast<osg::PolygonMode*>(_stateset->getAttribute(osg::StateAttribute::POLYGONMODE));
+
+    if (polyModeObj)
+        return polyModeObj->getMode(osg::PolygonMode::FRONT_AND_BACK);
+    else
+        return osg::PolygonMode::FILL;
 }
 
 osg::PolygonMode* StateSetManipulator::getOrCreatePolygonMode()
 {
-    osg::PolygonMode* polyModeObj = dynamic_cast<osg::PolygonMode*>(_stateset->getAttribute(osg::StateAttribute::POLYGONMODE));
+    osg::PolygonMode *polyModeObj = dynamic_cast<osg::PolygonMode*>(_stateset->getAttribute(osg::StateAttribute::POLYGONMODE));
+
     if (!polyModeObj)
     {
         polyModeObj = new osg::PolygonMode;
         _stateset->setAttribute(polyModeObj);
     }
+
     return polyModeObj;
 }

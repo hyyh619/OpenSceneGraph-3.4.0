@@ -4,11 +4,13 @@
 #include <osg/CullFace>
 #include "ReadWrite.h"
 
-namespace ive{
-class CullFace : public osg::CullFace, public ReadWrite {
+namespace ive
+{
+class CullFace : public osg::CullFace, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

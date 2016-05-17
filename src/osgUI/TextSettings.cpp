@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgUI/TextSettings>
 #include <osg/Geode>
@@ -17,15 +17,12 @@
 
 using namespace osgUI;
 
-TextSettings::TextSettings():
+TextSettings::TextSettings() :
     _characterSize(1.0)
-{
-}
+{}
 
-TextSettings::TextSettings(const TextSettings& textSettings, const osg::CopyOp& copyop):
+TextSettings::TextSettings(const TextSettings&textSettings, const osg::CopyOp&copyop) :
     osg::Object(textSettings, copyop),
     _font(textSettings._font),
     _characterSize(textSettings._characterSize)
-{
-}
-
+{}

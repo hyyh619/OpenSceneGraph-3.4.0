@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #include <osgManipulator/TabPlaneTrackballDragger>
 
@@ -38,8 +38,7 @@ TabPlaneTrackballDragger::TabPlaneTrackballDragger()
 }
 
 TabPlaneTrackballDragger::~TabPlaneTrackballDragger()
-{
-}
+{}
 
 void TabPlaneTrackballDragger::setupDefaultGeometry()
 {

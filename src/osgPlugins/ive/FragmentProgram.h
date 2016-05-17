@@ -4,11 +4,13 @@
 #include <osg/FragmentProgram>
 #include "ReadWrite.h"
 
-namespace ive{
-class FragmentProgram : public osg::FragmentProgram, public ReadWrite {
+namespace ive
+{
+class FragmentProgram : public osg::FragmentProgram, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

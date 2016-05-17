@@ -12,4 +12,3 @@ USE_DOTOSGWRAPPER(g_osgWidget_NullWidgetProxy)
 USE_DOTOSGWRAPPER(g_osgWidget_WindowManagerProxy)
 
 extern "C" void dotosgwrapper_library_osgWidget(void) {}
-

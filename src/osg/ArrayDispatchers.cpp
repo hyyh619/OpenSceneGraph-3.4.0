@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/ArrayDispatchers>
 #include <osg/State>
 #include <osg/Drawable>
@@ -20,70 +20,96 @@
 
 namespace osg
 {
-
 #if defined(OSG_GLES1_AVAILABLE)
-inline void GL_APIENTRY glColor4ubv(const GLubyte* c) { glColor4ub(c[0], c[1], c[2], c[3]); }
-inline void GL_APIENTRY glColor3fv(const GLfloat* c) { glColor4f(c[0], c[1], c[2], 1.0f); }
-inline void GL_APIENTRY glColor4fv(const GLfloat* c) { glColor4f(c[0], c[1], c[2], c[3]); }
-inline void GL_APIENTRY glColor3dv(const GLdouble* c) { glColor4f(c[0], c[1], c[2], 1.0f); }
-inline void GL_APIENTRY glColor4dv(const GLdouble* c) { glColor4f(c[0], c[1], c[2], c[3]); }
+inline void GL_APIENTRY glColor4ubv(const GLubyte *c)
+{
+    glColor4ub(c[0], c[1], c[2], c[3]);
+}
+inline void GL_APIENTRY glColor3fv(const GLfloat *c)
+{
+    glColor4f(c[0], c[1], c[2], 1.0f);
+}
+inline void GL_APIENTRY glColor4fv(const GLfloat *c)
+{
+    glColor4f(c[0], c[1], c[2], c[3]);
+}
+inline void GL_APIENTRY glColor3dv(const GLdouble *c)
+{
+    glColor4f(c[0], c[1], c[2], 1.0f);
+}
+inline void GL_APIENTRY glColor4dv(const GLdouble *c)
+{
+    glColor4f(c[0], c[1], c[2], c[3]);
+}
 
-inline void GL_APIENTRY glNormal3bv(const GLbyte* n) { const float div = 1.0f/128.0f; glNormal3f(float(n[0])*div, float(n[1])*div, float(n[3])*div); }
-inline void GL_APIENTRY glNormal3sv(const GLshort* n) { const float div = 1.0f/32768.0f; glNormal3f(float(n[0])*div, float(n[1])*div, float(n[3])*div); }
-inline void GL_APIENTRY glNormal3fv(const GLfloat* n) { glNormal3f(n[0], n[1], n[3]); }
-inline void GL_APIENTRY glNormal3dv(const GLdouble* n) { glNormal3f(n[0], n[1], n[3]); }
+inline void GL_APIENTRY glNormal3bv(const GLbyte *n)
+{
+    const float div = 1.0f / 128.0f; glNormal3f(float(n[0]) * div, float(n[1]) * div, float(n[3]) * div);
+}
+inline void GL_APIENTRY glNormal3sv(const GLshort *n)
+{
+    const float div = 1.0f / 32768.0f; glNormal3f(float(n[0]) * div, float(n[1]) * div, float(n[3]) * div);
+}
+inline void GL_APIENTRY glNormal3fv(const GLfloat *n)
+{
+    glNormal3f(n[0], n[1], n[3]);
+}
+inline void GL_APIENTRY glNormal3dv(const GLdouble *n)
+{
+    glNormal3f(n[0], n[1], n[3]);
+}
 #endif
 
 template<typename T>
 class TemplateAttributeDispatch : public AttributeDispatch
 {
-    public:
+public:
 
-        typedef void (GL_APIENTRY * F) (const T*);
+typedef void (GL_APIENTRY * F)(const T*);
 
-        TemplateAttributeDispatch(F functionPtr, unsigned int stride):
-            _functionPtr(functionPtr), _stride(stride), _array(0) {}
+TemplateAttributeDispatch(F functionPtr, unsigned int stride) :
+    _functionPtr(functionPtr), _stride(stride), _array(0) {}
 
-        virtual void assign(const GLvoid* array)
-        {
-            _array = reinterpret_cast<const T*>(array);
-        }
+virtual void assign(const GLvoid *array)
+{
+    _array = reinterpret_cast<const T*>(array);
+}
 
-        virtual void operator () (unsigned int pos)
-        {
-            _functionPtr(&(_array[pos*_stride]));
-        }
+virtual void operator ()(unsigned int pos)
+{
+    _functionPtr(&(_array[pos * _stride]));
+}
 
-        F               _functionPtr;
-        unsigned int    _stride;
-        const T*        _array;
+F            _functionPtr;
+unsigned int _stride;
+const T      *_array;
 };
 
 
 template<typename I, typename T>
 class TemplateTargetAttributeDispatch : public AttributeDispatch
 {
-    public:
+public:
 
-        typedef void (GL_APIENTRY * F) (I, const T*);
+typedef void (GL_APIENTRY * F)(I, const T*);
 
-        TemplateTargetAttributeDispatch(I target, F functionPtr, unsigned int stride):
-            _functionPtr(functionPtr), _target(target), _stride(stride), _array(0) {}
+TemplateTargetAttributeDispatch(I target, F functionPtr, unsigned int stride) :
+    _functionPtr(functionPtr), _target(target), _stride(stride), _array(0) {}
 
-        virtual void assign(const GLvoid* array)
-        {
-            _array = reinterpret_cast<const T*>(array);
-        }
+virtual void assign(const GLvoid *array)
+{
+    _array = reinterpret_cast<const T*>(array);
+}
 
-        virtual void operator () (unsigned int pos)
-        {
-            _functionPtr(_target, &(_array[pos * _stride]));
-        }
+virtual void operator ()(unsigned int pos)
+{
+    _functionPtr(_target, &(_array[pos * _stride]));
+}
 
-        F                       _functionPtr;
-        I                       _target;
-        unsigned int            _stride;
-        const T*                _array;
+F            _functionPtr;
+I            _target;
+unsigned int _stride;
+const T      *_array;
 };
 
 
@@ -91,57 +117,62 @@ class AttributeDispatchMap
 {
 public:
 
-    AttributeDispatchMap() {}
+AttributeDispatchMap() {}
 
-    template<typename T>
-    void assign(Array::Type type, void (GL_APIENTRY *functionPtr) (const T*), unsigned int stride)
+template<typename T>
+void assign(Array::Type type, void (GL_APIENTRY * functionPtr)(const T*), unsigned int stride)
+{
+    if ((unsigned int)type >= _attributeDispatchList.size())
+        _attributeDispatchList.resize(type + 1);
+
+    _attributeDispatchList[type] = functionPtr ? new TemplateAttributeDispatch<T>(functionPtr, stride) : 0;
+}
+
+template<typename I, typename T>
+void targetAssign(I target, Array::Type type, void (GL_APIENTRY * functionPtr)(I, const T*), unsigned int stride)
+{
+    if ((unsigned int)type >= _attributeDispatchList.size())
+        _attributeDispatchList.resize(type + 1);
+
+    _attributeDispatchList[type] = functionPtr ? new TemplateTargetAttributeDispatch<I, T>(target, functionPtr, stride) : 0;
+}
+
+AttributeDispatch* dispatcher(const Array *array)
+{
+    // OSG_NOTICE<<"dispatcher("<<array<<")"<<std::endl;
+
+    if (!array)
+        return 0;
+
+    Array::Type       type        = array->getType();
+    AttributeDispatch *dispatcher = 0;
+
+    // OSG_NOTICE<<"    array->getType()="<<type<<std::endl;
+    // OSG_NOTICE<<"    _attributeDispatchList.size()="<<_attributeDispatchList.size()<<std::endl;
+
+    if ((unsigned int)type < _attributeDispatchList.size())
     {
-        if ((unsigned int)type >= _attributeDispatchList.size()) _attributeDispatchList.resize(type+1);
-        _attributeDispatchList[type] = functionPtr ? new TemplateAttributeDispatch<T>(functionPtr, stride) : 0;
+        dispatcher = _attributeDispatchList[array->getType()].get();
     }
 
-    template<typename I, typename T>
-    void targetAssign(I target, Array::Type type, void (GL_APIENTRY *functionPtr) (I, const T*), unsigned int stride)
+    if (dispatcher)
     {
-        if ((unsigned int)type >= _attributeDispatchList.size()) _attributeDispatchList.resize(type+1);
-        _attributeDispatchList[type] = functionPtr ? new TemplateTargetAttributeDispatch<I,T>(target, functionPtr, stride) : 0;
+        // OSG_NOTICE<<"   returning dispatcher="<<dispatcher<<std::endl;
+        dispatcher->assign(array->getDataPointer());
+        return dispatcher;
     }
-
-    AttributeDispatch* dispatcher(const Array* array)
+    else
     {
-        // OSG_NOTICE<<"dispatcher("<<array<<")"<<std::endl;
-
-        if (!array) return 0;
-
-        Array::Type type = array->getType();
-        AttributeDispatch* dispatcher = 0;
-
-        // OSG_NOTICE<<"    array->getType()="<<type<<std::endl;
-        // OSG_NOTICE<<"    _attributeDispatchList.size()="<<_attributeDispatchList.size()<<std::endl;
-
-        if ((unsigned int)type<_attributeDispatchList.size())
-        {
-            dispatcher = _attributeDispatchList[array->getType()].get();
-        }
-
-        if (dispatcher)
-        {
-            // OSG_NOTICE<<"   returning dispatcher="<<dispatcher<<std::endl;
-            dispatcher->assign(array->getDataPointer());
-            return dispatcher;
-        }
-        else
-        {
-            // OSG_NOTICE<<"   no dispatcher found"<<std::endl;
-            return 0;
-        }
+        // OSG_NOTICE<<"   no dispatcher found"<<std::endl;
+        return 0;
     }
+}
 
-    typedef std::vector< ref_ptr<AttributeDispatch> >  AttributeDispatchList;
-    AttributeDispatchList               _attributeDispatchList;
+typedef std::vector<ref_ptr<AttributeDispatch> >  AttributeDispatchList;
+AttributeDispatchList _attributeDispatchList;
 };
 
-ArrayDispatchers::ArrayDispatchers():
+ArrayDispatchers::ArrayDispatchers() :
     _initialized(false),
     _state(0),
     _vertexDispatchers(0),
@@ -150,9 +181,7 @@ ArrayDispatchers::ArrayDispatchers():
     _secondaryColorDispatchers(0),
     _fogCoordDispatchers(0),
     _useVertexAttribAlias(false)
-{
-
-}
+{}
 
 ArrayDispatchers::~ArrayDispatchers()
 {
@@ -162,47 +191,48 @@ ArrayDispatchers::~ArrayDispatchers()
     delete _secondaryColorDispatchers;
     delete _fogCoordDispatchers;
 
-    for(AttributeDispatchMapList::iterator itr = _texCoordDispatchers.begin();
-        itr != _texCoordDispatchers.end();
-        ++itr)
+    for (AttributeDispatchMapList::iterator itr = _texCoordDispatchers.begin();
+         itr != _texCoordDispatchers.end();
+         ++itr)
     {
         delete *itr;
     }
 
-    for(AttributeDispatchMapList::iterator itr = _vertexAttribDispatchers.begin();
-        itr != _vertexAttribDispatchers.end();
-        ++itr)
+    for (AttributeDispatchMapList::iterator itr = _vertexAttribDispatchers.begin();
+         itr != _vertexAttribDispatchers.end();
+         ++itr)
     {
         delete *itr;
     }
 }
 
-void ArrayDispatchers::setState(osg::State* state)
+void ArrayDispatchers::setState(osg::State *state)
 {
     _state = state;
 }
 
 void ArrayDispatchers::init()
 {
-    if (_initialized) return;
+    if (_initialized)
+        return;
 
     _initialized = true;
 
-    _vertexDispatchers = new AttributeDispatchMap();
-    _normalDispatchers = new AttributeDispatchMap();
-    _colorDispatchers = new AttributeDispatchMap();
-    _secondaryColorDispatchers  = new AttributeDispatchMap();
-    _fogCoordDispatchers = new AttributeDispatchMap();
+    _vertexDispatchers         = new AttributeDispatchMap();
+    _normalDispatchers         = new AttributeDispatchMap();
+    _colorDispatchers          = new AttributeDispatchMap();
+    _secondaryColorDispatchers = new AttributeDispatchMap();
+    _fogCoordDispatchers       = new AttributeDispatchMap();
 
 
 #ifdef OSG_GL_VERTEX_FUNCS_AVAILABLE
-    GLExtensions* extensions = _state->get<GLExtensions>();
+    GLExtensions *extensions = _state->get<GLExtensions>();
 
     #ifndef OSG_GLES1_AVAILABLE
-        _vertexDispatchers->assign<GLfloat>(Array::Vec2ArrayType, glVertex2fv, 2);
-        _vertexDispatchers->assign<GLfloat>(Array::Vec3ArrayType, glVertex3fv, 3);
-        _vertexDispatchers->assign<GLdouble>(Array::Vec2dArrayType, glVertex2dv, 2);
-        _vertexDispatchers->assign<GLdouble>(Array::Vec3dArrayType, glVertex3dv, 3);
+    _vertexDispatchers->assign<GLfloat>(Array::Vec2ArrayType, glVertex2fv, 2);
+    _vertexDispatchers->assign<GLfloat>(Array::Vec3ArrayType, glVertex3fv, 3);
+    _vertexDispatchers->assign<GLdouble>(Array::Vec2dArrayType, glVertex2dv, 2);
+    _vertexDispatchers->assign<GLdouble>(Array::Vec3dArrayType, glVertex3dv, 3);
     #endif
 
     _normalDispatchers->assign<GLbyte>(Array::Vec3bArrayType, glNormal3bv, 3);
@@ -229,66 +259,71 @@ void ArrayDispatchers::init()
 //
 //  With inidices
 //
-AttributeDispatch* ArrayDispatchers::vertexDispatcher(Array* array)
+AttributeDispatch* ArrayDispatchers::vertexDispatcher(Array *array)
 {
     return _useVertexAttribAlias ?
            vertexAttribDispatcher(_state->getVertexAlias()._location, array) :
            _vertexDispatchers->dispatcher(array);
 }
 
-AttributeDispatch* ArrayDispatchers::normalDispatcher(Array* array)
+AttributeDispatch* ArrayDispatchers::normalDispatcher(Array *array)
 {
     return _useVertexAttribAlias ?
            vertexAttribDispatcher(_state->getNormalAlias()._location, array) :
            _normalDispatchers->dispatcher(array);
 }
 
-AttributeDispatch* ArrayDispatchers::colorDispatcher(Array* array)
+AttributeDispatch* ArrayDispatchers::colorDispatcher(Array *array)
 {
     return _useVertexAttribAlias ?
            vertexAttribDispatcher(_state->getColorAlias()._location, array) :
            _colorDispatchers->dispatcher(array);
 }
 
-AttributeDispatch* ArrayDispatchers::secondaryColorDispatcher(Array* array)
+AttributeDispatch* ArrayDispatchers::secondaryColorDispatcher(Array *array)
 {
     return _useVertexAttribAlias ?
            vertexAttribDispatcher(_state->getSecondaryColorAlias()._location, array) :
            _secondaryColorDispatchers->dispatcher(array);
 }
 
-AttributeDispatch* ArrayDispatchers::fogCoordDispatcher(Array* array)
+AttributeDispatch* ArrayDispatchers::fogCoordDispatcher(Array *array)
 {
     return _useVertexAttribAlias ?
            vertexAttribDispatcher(_state->getFogCoordAlias()._location, array) :
            _fogCoordDispatchers->dispatcher(array);
 }
 
-AttributeDispatch* ArrayDispatchers::texCoordDispatcher(unsigned int unit, Array* array)
+AttributeDispatch* ArrayDispatchers::texCoordDispatcher(unsigned int unit, Array *array)
 {
-    if (_useVertexAttribAlias) return vertexAttribDispatcher(_state->getTexCoordAliasList()[unit]._location, array);
+    if (_useVertexAttribAlias)
+        return vertexAttribDispatcher(_state->getTexCoordAliasList()[unit]._location, array);
 
-    if (unit>=_texCoordDispatchers.size()) assignTexCoordDispatchers(unit);
+    if (unit >= _texCoordDispatchers.size())
+        assignTexCoordDispatchers(unit);
+
     return _texCoordDispatchers[unit]->dispatcher(array);
 }
 
-AttributeDispatch* ArrayDispatchers::vertexAttribDispatcher(unsigned int unit, Array* array)
+AttributeDispatch* ArrayDispatchers::vertexAttribDispatcher(unsigned int unit, Array *array)
 {
-    if (unit>=_vertexAttribDispatchers.size()) assignVertexAttribDispatchers(unit);
+    if (unit >= _vertexAttribDispatchers.size())
+        assignVertexAttribDispatchers(unit);
+
     return _vertexAttribDispatchers[unit]->dispatcher(array);
 }
 
 void ArrayDispatchers::assignTexCoordDispatchers(unsigned int unit)
 {
     #if defined(OSG_GL_VERTEX_FUNCS_AVAILABLE) && !defined(OSG_GLES1_AVAILABLE)
-    GLExtensions* extensions = _state->get<GLExtensions>();
+    GLExtensions *extensions = _state->get<GLExtensions>();
     #endif
 
-    for(unsigned int i=_texCoordDispatchers.size(); i<=unit; ++i)
+    for (unsigned int i = _texCoordDispatchers.size(); i <= unit; ++i)
     {
         _texCoordDispatchers.push_back(new AttributeDispatchMap());
-        AttributeDispatchMap& texCoordDispatcher = *_texCoordDispatchers[i];
-        if (i==0)
+        AttributeDispatchMap&texCoordDispatcher = *_texCoordDispatchers[i];
+        if (i == 0)
         {
             #if defined(OSG_GL_VERTEX_FUNCS_AVAILABLE) && !defined(OSG_GLES1_AVAILABLE)
             texCoordDispatcher.assign<GLfloat>(Array::FloatArrayType, glTexCoord1fv, 1);
@@ -300,24 +335,23 @@ void ArrayDispatchers::assignTexCoordDispatchers(unsigned int unit)
         else
         {
             #if defined(OSG_GL_VERTEX_FUNCS_AVAILABLE) && !defined(OSG_GLES1_AVAILABLE)
-            texCoordDispatcher.targetAssign<GLenum, GLfloat>((GLenum)(GL_TEXTURE0+i), Array::FloatArrayType, extensions->glMultiTexCoord1fv, 1);
-            texCoordDispatcher.targetAssign<GLenum, GLfloat>((GLenum)(GL_TEXTURE0+i), Array::Vec2ArrayType, extensions->glMultiTexCoord2fv, 2);
-            texCoordDispatcher.targetAssign<GLenum, GLfloat>((GLenum)(GL_TEXTURE0+i), Array::Vec3ArrayType, extensions->glMultiTexCoord3fv, 3);
-            texCoordDispatcher.targetAssign<GLenum, GLfloat>((GLenum)(GL_TEXTURE0+i), Array::Vec4ArrayType, extensions->glMultiTexCoord4fv, 4);
+            texCoordDispatcher.targetAssign<GLenum, GLfloat>((GLenum)(GL_TEXTURE0 + i), Array::FloatArrayType, extensions->glMultiTexCoord1fv, 1);
+            texCoordDispatcher.targetAssign<GLenum, GLfloat>((GLenum)(GL_TEXTURE0 + i), Array::Vec2ArrayType, extensions->glMultiTexCoord2fv, 2);
+            texCoordDispatcher.targetAssign<GLenum, GLfloat>((GLenum)(GL_TEXTURE0 + i), Array::Vec3ArrayType, extensions->glMultiTexCoord3fv, 3);
+            texCoordDispatcher.targetAssign<GLenum, GLfloat>((GLenum)(GL_TEXTURE0 + i), Array::Vec4ArrayType, extensions->glMultiTexCoord4fv, 4);
             #endif
         }
     }
-
 }
 
 void ArrayDispatchers::assignVertexAttribDispatchers(unsigned int unit)
 {
-    GLExtensions* extensions = _state->get<GLExtensions>();
+    GLExtensions *extensions = _state->get<GLExtensions>();
 
-    for(unsigned int i=_vertexAttribDispatchers.size(); i<=unit; ++i)
+    for (unsigned int i = _vertexAttribDispatchers.size(); i <= unit; ++i)
     {
         _vertexAttribDispatchers.push_back(new AttributeDispatchMap());
-        AttributeDispatchMap& vertexAttribDispatcher = *_vertexAttribDispatchers[i];
+        AttributeDispatchMap&vertexAttribDispatcher = *_vertexAttribDispatchers[i];
         vertexAttribDispatcher.targetAssign<GLuint, GLfloat>(i, Array::FloatArrayType, extensions->glVertexAttrib1fv, 1);
         vertexAttribDispatcher.targetAssign<GLuint, GLfloat>(i, Array::Vec2ArrayType, extensions->glVertexAttrib2fv, 2);
         vertexAttribDispatcher.targetAssign<GLuint, GLfloat>(i, Array::Vec3ArrayType, extensions->glVertexAttrib3fv, 3);
@@ -327,16 +361,16 @@ void ArrayDispatchers::assignVertexAttribDispatchers(unsigned int unit)
 
 void ArrayDispatchers::reset()
 {
-    if (!_initialized) init();
+    if (!_initialized)
+        init();
 
     _useVertexAttribAlias = false;
 
-    for(ActiveDispatchList::iterator itr = _activeDispatchList.begin();
-        itr != _activeDispatchList.end();
-        ++itr)
+    for (ActiveDispatchList::iterator itr = _activeDispatchList.begin();
+         itr != _activeDispatchList.end();
+         ++itr)
     {
         (*itr).clear();
     }
 }
-
 }

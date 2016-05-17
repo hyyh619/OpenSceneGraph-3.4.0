@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkData( const osgSim::ObjectRecordData& data )
+static bool checkData(const osgSim::ObjectRecordData&data)
 {
     return true;
 }
 
-static bool readData( osgDB::InputStream& is, osgSim::ObjectRecordData& data )
+static bool readData(osgDB::InputStream&is, osgSim::ObjectRecordData&data)
 {
     is >> is.PROPERTY("Flags") >> data._flags;
     is >> is.PROPERTY("RelativePriority") >> data._relativePriority;
@@ -19,7 +19,7 @@ static bool readData( osgDB::InputStream& is, osgSim::ObjectRecordData& data )
     return true;
 }
 
-static bool writeData( osgDB::OutputStream& os, const osgSim::ObjectRecordData& data )
+static bool writeData(osgDB::OutputStream&os, const osgSim::ObjectRecordData&data)
 {
     os << os.PROPERTY("Flags") << data._flags << std::endl;
     os << os.PROPERTY("RelativePriority") << data._relativePriority << std::endl;
@@ -30,10 +30,10 @@ static bool writeData( osgDB::OutputStream& os, const osgSim::ObjectRecordData& 
     return true;
 }
 
-REGISTER_OBJECT_WRAPPER( osgSim_ObjectRecordData,
-                         new osgSim::ObjectRecordData,
-                         osgSim::ObjectRecordData,
-                         "osg::Object osgSim::ObjectRecordData" )
+REGISTER_OBJECT_WRAPPER(osgSim_ObjectRecordData,
+                        new osgSim::ObjectRecordData,
+                        osgSim::ObjectRecordData,
+                        "osg::Object osgSim::ObjectRecordData")
 {
-    ADD_USER_SERIALIZER( Data );
+    ADD_USER_SERIALIZER(Data);
 }

@@ -6,12 +6,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( NodeTrackerCallback,
-                         new osg::NodeTrackerCallback,
-                         osg::NodeTrackerCallback,
-                         "osg::Object osg::NodeCallback osg::NodeTrackerCallback" )
+REGISTER_OBJECT_WRAPPER(NodeTrackerCallback,
+                        new osg::NodeTrackerCallback,
+                        osg::NodeTrackerCallback,
+                        "osg::Object osg::NodeCallback osg::NodeTrackerCallback")
 {
-    ADD_OBJECT_SERIALIZER( TrackNode, osg::Node, NULL );  // _trackNodePath
+    ADD_OBJECT_SERIALIZER(TrackNode, osg::Node, NULL);    // _trackNodePath
 }
 
 #undef OBJECT_CAST

@@ -12,7 +12,7 @@
 using namespace osg;
 
 osgParticle::ParticleProcessor::ParticleProcessor()
-:    osg::Node(),
+    :    osg::Node(),
     _rf(RELATIVE_RF),
     _enabled(true),
     _t0(-1),
@@ -32,12 +32,12 @@ osgParticle::ParticleProcessor::ParticleProcessor()
     setCullingActive(false);
 }
 
-osgParticle::ParticleProcessor::ParticleProcessor(const ParticleProcessor& copy, const osg::CopyOp& copyop)
-:    osg::Node(copy, copyop),
+osgParticle::ParticleProcessor::ParticleProcessor(const ParticleProcessor&copy, const osg::CopyOp&copyop)
+    :    osg::Node(copy, copyop),
     _rf(copy._rf),
     _enabled(copy._enabled),
     _t0(copy._t0),
-    _ps(static_cast<ParticleSystem* >(copyop(copy._ps.get()))),
+    _ps(static_cast<ParticleSystem*>(copyop(copy._ps.get()))),
     _first_ltw_compute(copy._first_ltw_compute),
     _need_ltw_matrix(copy._need_ltw_matrix),
     _first_wtl_compute(copy._first_wtl_compute),
@@ -49,17 +49,16 @@ osgParticle::ParticleProcessor::ParticleProcessor(const ParticleProcessor& copy,
     _currentTime(copy._currentTime),
     _resetTime(copy._resetTime),
     _frameNumber(copy._frameNumber)
-{
-}
+{}
 
-void osgParticle::ParticleProcessor::traverse(osg::NodeVisitor& nv)
+void osgParticle::ParticleProcessor::traverse(osg::NodeVisitor&nv)
 {
     // typecast the NodeVisitor to CullVisitor
-    osgUtil::CullVisitor* cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
+    osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
 
     // continue only if the visitor actually is a cull visitor
-    if (cv) {
-
+    if (cv)
+    {
         // continue only if the particle system is valid
         if (_ps.valid())
         {
@@ -67,12 +66,10 @@ void osgParticle::ParticleProcessor::traverse(osg::NodeVisitor& nv)
             {
                 ParticleSystem::ScopedWriteLock lock(*(_ps->getReadWriteMutex()));
 
-                //added- 1/17/06- bgandere@nps.edu
-                //a check to make sure we havent updated yet this frame
-                if(_frameNumber < nv.getFrameStamp()->getFrameNumber())
+                // added- 1/17/06- bgandere@nps.edu
+                // a check to make sure we havent updated yet this frame
+                if (_frameNumber < nv.getFrameStamp()->getFrameNumber())
                 {
-
-
                     // retrieve the current time
                     double t = nv.getFrameStamp()->getSimulationTime();
 
@@ -80,13 +77,12 @@ void osgParticle::ParticleProcessor::traverse(osg::NodeVisitor& nv)
                     if ((_currentTime >= _resetTime) && (_resetTime > 0))
                     {
                         _currentTime = 0;
-                        _t0 = -1;
+                        _t0          = -1;
                     }
 
                     // skip if we haven't initialized _t0 yet
                     if (_t0 != -1)
                     {
-
                         // check whether the processor is alive
                         bool alive = false;
                         if (_currentTime >= _startTime)
@@ -102,35 +98,38 @@ void osgParticle::ParticleProcessor::traverse(osg::NodeVisitor& nv)
                         if (alive &&
                             _enabled &&
                             !_ps->isFrozen() &&
-                            ((_ps->getLastFrameNumber()+1) >= (nv.getFrameStamp()->getFrameNumber()) || !_ps->getFreezeOnCull()))
+                            ((_ps->getLastFrameNumber() + 1) >= (nv.getFrameStamp()->getFrameNumber()) || !_ps->getFreezeOnCull()))
                         {
                             // initialize matrix flags
-                            _need_ltw_matrix = true;
-                            _need_wtl_matrix = true;
+                            _need_ltw_matrix     = true;
+                            _need_wtl_matrix     = true;
                             _current_nodevisitor = &nv;
 
                             // do some process (unimplemented in this base class)
-                            process( t - _t0 );
-                        } else {
-                            //The values of _previous_wtl_matrix and _previous_ltw_matrix will be invalid
-                            //since processing was skipped for this frame
+                            process(t - _t0);
+                        }
+                        else
+                        {
+                            // The values of _previous_wtl_matrix and _previous_ltw_matrix will be invalid
+                            // since processing was skipped for this frame
                             _first_ltw_compute = true;
                             _first_wtl_compute = true;
                         }
                     }
+
                     _t0 = t;
                 }
 
-                //added- 1/17/06- bgandere@nps.edu
-                //updates the _frameNumber, keeping it current
+                // added- 1/17/06- bgandere@nps.edu
+                // updates the _frameNumber, keeping it current
                 _frameNumber = nv.getFrameStamp()->getFrameNumber();
             }
             else
             {
                 OSG_WARN << "osgParticle::ParticleProcessor::traverse(NodeVisitor&) requires a valid FrameStamp to function, particles not updated.\n";
             }
-
-        } else
+        }
+        else
         {
             OSG_WARN << "ParticleProcessor \"" << getName() << "\": invalid particle system\n";
         }
@@ -145,4 +144,3 @@ osg::BoundingSphere osgParticle::ParticleProcessor::computeBound() const
 {
     return osg::BoundingSphere();
 }
-

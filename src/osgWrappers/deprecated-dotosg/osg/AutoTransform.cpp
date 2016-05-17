@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool AutoTransform_readLocalData(Object& obj, Input& fr);
-bool AutoTransform_writeLocalData(const Object& obj, Output& fw);
+bool AutoTransform_readLocalData(Object&obj, Input&fr);
+bool AutoTransform_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(AutoTransform)
@@ -23,11 +23,11 @@ REGISTER_DOTOSGWRAPPER(AutoTransform)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool AutoTransform_readLocalData(Object& obj, Input& fr)
+bool AutoTransform_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    AutoTransform& transform = static_cast<AutoTransform&>(obj);
+    AutoTransform&transform = static_cast<AutoTransform&>(obj);
 
     if (fr.matchSequence("position %f %f %f"))
     {
@@ -38,7 +38,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setPosition(pos);
 
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -52,7 +52,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setRotation(att);
 
-        fr += 5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
@@ -65,7 +65,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setScale(scale);
 
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -76,7 +76,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setMinimumScale(scale);
 
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -87,7 +87,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setMaximumScale(scale);
 
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -100,7 +100,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setPivotPoint(pivot);
 
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -109,7 +109,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
         float f;
         fr[1].getFloat(f);
         transform.setAutoUpdateEyeMovementTolerance(f);
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -117,18 +117,21 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
     {
         std::string w(fr[1].getStr());
         transform.setAutoRotateMode((w == "TRUE") ? osg::AutoTransform::ROTATE_TO_SCREEN : osg::AutoTransform::NO_ROTATION);
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
     if (fr.matchSequence("autoRotateMode %w"))
     {
         std::string w(fr[1].getStr());
-                if (w=="ROTATE_TO_SCREEN") transform.setAutoRotateMode(osg::AutoTransform::ROTATE_TO_SCREEN);
-                else if (w=="ROTATE_TO_CAMERA") transform.setAutoRotateMode(osg::AutoTransform::ROTATE_TO_CAMERA);
-                else if (w=="NO_ROTATION") transform.setAutoRotateMode(osg::AutoTransform::NO_ROTATION);
+        if (w == "ROTATE_TO_SCREEN")
+            transform.setAutoRotateMode(osg::AutoTransform::ROTATE_TO_SCREEN);
+        else if (w == "ROTATE_TO_CAMERA")
+            transform.setAutoRotateMode(osg::AutoTransform::ROTATE_TO_CAMERA);
+        else if (w == "NO_ROTATION")
+            transform.setAutoRotateMode(osg::AutoTransform::NO_ROTATION);
 
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -136,7 +139,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
     {
         std::string w(fr[1].getStr());
         transform.setAutoScaleToScreen(w == "TRUE");
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -148,7 +151,7 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setAutoScaleTransitionWidthRatio(ratio);
 
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -157,34 +160,40 @@ bool AutoTransform_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool AutoTransform_writeLocalData(const Object& obj, Output& fw)
+bool AutoTransform_writeLocalData(const Object&obj, Output&fw)
 {
-    const AutoTransform& transform = static_cast<const AutoTransform&>(obj);
+    const AutoTransform&transform = static_cast<const AutoTransform&>(obj);
 
-    fw.indent()<<"position "<<transform.getPosition()<<std::endl;
-    fw.indent()<<"rotation "<<transform.getRotation()<<std::endl;
-    fw.indent()<<"scale "<<transform.getScale()<<std::endl;
+    fw.indent() << "position " << transform.getPosition() << std::endl;
+    fw.indent() << "rotation " << transform.getRotation() << std::endl;
+    fw.indent() << "scale " <<    transform.getScale() << std::endl;
 
-    if (transform.getMinimumScale()>0.0) fw.indent()<<"minimumScale "<<transform.getMinimumScale()<<std::endl;
-    if (transform.getMaximumScale()<FLT_MAX) fw.indent()<<"maximumScale "<<transform.getMaximumScale()<<std::endl;
+    if (transform.getMinimumScale() > 0.0)
+        fw.indent() << "minimumScale " << transform.getMinimumScale() << std::endl;
+
+    if (transform.getMaximumScale() < FLT_MAX)
+        fw.indent() << "maximumScale " << transform.getMaximumScale() << std::endl;
 
 
-    fw.indent()<<"pivotPoint "<<transform.getPivotPoint()<<std::endl;
-    fw.indent()<<"autoUpdateEyeMovementTolerance "<<transform.getAutoUpdateEyeMovementTolerance()<<std::endl;
-    fw.indent()<<"autoRotateMode ";
-    switch(transform.getAutoRotateMode())
+    fw.indent() << "pivotPoint " <<                     transform.getPivotPoint() << std::endl;
+    fw.indent() << "autoUpdateEyeMovementTolerance " << transform.getAutoUpdateEyeMovementTolerance() << std::endl;
+    fw.indent() << "autoRotateMode ";
+
+    switch (transform.getAutoRotateMode())
     {
-      case(osg::AutoTransform::ROTATE_TO_SCREEN): fw<<"ROTATE_TO_SCREEN"<<std::endl; break;
-      case(osg::AutoTransform::ROTATE_TO_CAMERA): fw<<"ROTATE_TO_CAMERA"<<std::endl; break;
-      case(osg::AutoTransform::NO_ROTATION):
-      default: fw<<"NO_ROTATION"<<std::endl; break;
+    case (osg::AutoTransform::ROTATE_TO_SCREEN): fw << "ROTATE_TO_SCREEN" << std::endl; break;
+
+    case (osg::AutoTransform::ROTATE_TO_CAMERA): fw << "ROTATE_TO_CAMERA" << std::endl; break;
+
+    case (osg::AutoTransform::NO_ROTATION):
+    default: fw << "NO_ROTATION" << std::endl; break;
     }
 
-    fw.indent()<<"autoScaleToScreen "<<(transform.getAutoScaleToScreen()?"TRUE":"FALSE")<<std::endl;
+    fw.indent() << "autoScaleToScreen " << (transform.getAutoScaleToScreen() ? "TRUE" : "FALSE") << std::endl;
 
-    if (transform.getAutoScaleTransitionWidthRatio()!=0.25)
+    if (transform.getAutoScaleTransitionWidthRatio() != 0.25)
     {
-            fw.indent()<<"autoScaleTransitionWidthRatio "<<transform.getAutoScaleTransitionWidthRatio()<<std::endl;
+        fw.indent() << "autoScaleTransitionWidthRatio " << transform.getAutoScaleTransitionWidthRatio() << std::endl;
     }
 
     return true;

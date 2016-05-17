@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // OpenFlight® loader for OpenSceneGraph
@@ -30,8 +30,3 @@ REGISTER_FLTRECORD(DummyRecord, 120)
 REGISTER_FLTRECORD(DummyRecord, 121)
 REGISTER_FLTRECORD(DummyRecord, 124)
 REGISTER_FLTRECORD(DummyRecord, 125)
-
-
-
-
-

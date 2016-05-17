@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/ClearNode>
 
 #include <algorithm>
@@ -19,14 +19,13 @@ using namespace osg;
 /**
  * ClearNode constructor.
  */
-ClearNode::ClearNode():
+ClearNode::ClearNode() :
     _requiresClear(true),
-    _clearColor(0.0f,0.0f,0.0f,1.0f),
+    _clearColor(0.0f, 0.0f, 0.0f, 1.0f),
     _clearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 {
     setCullingActive(false);
-    StateSet* stateset = new StateSet;
-    stateset->setRenderBinDetails(-1,"RenderBin");
+    StateSet *stateset = new StateSet;
+    stateset->setRenderBinDetails(-1, "RenderBin");
     setStateSet(stateset);
 }
-

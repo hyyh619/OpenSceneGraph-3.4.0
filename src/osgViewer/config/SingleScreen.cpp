@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgViewer/config/SingleScreen>
 #include <osgViewer/Renderer>
@@ -22,9 +22,10 @@
 
 using namespace osgViewer;
 
-void SingleScreen::configure(osgViewer::View& view) const
+void SingleScreen::configure(osgViewer::View&view) const
 {
-    osg::ref_ptr<osgViewer::SingleWindow> singleWindow = new SingleWindow(0,0,-1,-1,_screenNum);
+    osg::ref_ptr<osgViewer::SingleWindow> singleWindow = new SingleWindow(0, 0, -1, -1, _screenNum);
+
     singleWindow->setWindowDecoration(false);
     singleWindow->configure(view);
 }

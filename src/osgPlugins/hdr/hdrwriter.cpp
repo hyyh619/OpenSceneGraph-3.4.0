@@ -1,8 +1,8 @@
 /*
- The following code was based on code from the following location:
+   The following code was based on code from the following location:
     http://www.graphics.cornell.edu/online/formats/rgbe/
 
- It includes the following information :
+   It includes the following information :
 
     "This file contains code to read and write four byte rgbe file format
     developed by Greg Ward.  It handles the conversions between rgbe and
@@ -18,12 +18,12 @@
     written by Bruce Walter  (bjw@graphics.cornell.edu)  5/26/95
     based on code written by Greg Ward"
 
- Modified for OSG September 2007 david.spilling@gmail.com :
+   Modified for OSG September 2007 david.spilling@gmail.com :
     The file format is described fully in http://radsite.lbl.gov/radiance/refer/filefmts.pdf
     For the moment, we don't output most of the header fields
 
 
-*/
+ */
 
 #include <stdlib.h>
 
@@ -36,35 +36,37 @@
 #include <ctype.h>
 
 
-bool HDRWriter::writeRAW(const osg::Image *img, std::ostream& fout)
+bool HDRWriter::writeRAW(const osg::Image *img, std::ostream&fout)
 {
     bool result = true;
-    for(int row=0; result && row<img->t(); ++row)
+
+    for (int row = 0; result && row < img->t(); ++row)
     {
-        result = writePixelsRAW(fout,(unsigned char*) img->data(0, row), img->s());
+        result = writePixelsRAW(fout, (unsigned char*) img->data(0, row), img->s());
     }
+
     return result;
 }
 
 /* number of floats per pixel */
-#define RGBE_DATA_SIZE   3
+#define RGBE_DATA_SIZE 3
 
 /* offsets to red, green, and blue components in a data (float) pixel */
-#define R            0
-#define G            1
-#define B            2
-#define E            3
+#define R 0
+#define G 1
+#define B 2
+#define E 3
 
-#define  MINELEN    8                // minimum scanline length for encoding
-#define  MAXELEN    0x7fff            // maximum scanline length for encoding
+#define  MINELEN 8                   // minimum scanline length for encoding
+#define  MAXELEN 0x7fff               // maximum scanline length for encoding
 
 /* default minimal header. modify if you want more information in header */
-bool HDRWriter::writeHeader(const osg::Image *img, std::ostream& fout)
+bool HDRWriter::writeHeader(const osg::Image *img, std::ostream&fout)
 {
     std::stringstream stream;    // for conversion to strings
 
     stream << "#?RADIANCE\n";    // Could be RGBE, but some 3rd party software doesn't interpret the file correctly
-                                // if it is.
+                                 // if it is.
     stream << "FORMAT=32-bit_rle_rgbe\n\n";
 
     // Our image data is usually arranged row major, with the origin at the bottom left of the image.
@@ -72,7 +74,7 @@ bool HDRWriter::writeHeader(const osg::Image *img, std::ostream& fout)
     // HDRShop v1!) seems to support this; they all expect -Y blah +X blah, and then flip the image. This
     // is unfortunate, and is what provokes the default behaviour of OSG having to flip the image prior to
     // write.
-    stream << "-Y "<<img->s()<<" +X "<<img->t()<<"\n";
+    stream << "-Y " << img->s() << " +X " << img->t() << "\n";
 
     fout.write(stream.str().c_str(), stream.str().length());
 
@@ -82,128 +84,139 @@ bool HDRWriter::writeHeader(const osg::Image *img, std::ostream& fout)
 /* simple write routine that does not use run length encoding */
 /* These routines can be made faster by allocating a larger buffer and
    fread-ing and fwrite-ing the data in larger chunks */
-bool HDRWriter::writeNoRLE( std::ostream& fout, const osg::Image* img)
+bool HDRWriter::writeNoRLE(std::ostream&fout, const osg::Image *img)
 {
-  unsigned char rgbe[4];
+    unsigned char rgbe[4];
 
-  for(int row=0; row<img->t(); ++row)
-  {
-    float* data = (float*)img->data(0,row);
-    for(int column=0; column<img->s(); ++column)
+    for (int row = 0; row < img->t(); ++row)
     {
-      float2rgbe(
-        rgbe,
-        data[R],
-        data[G],
-        data[B]
-        );
-      data += RGBE_DATA_SIZE;
-      fout.write(reinterpret_cast<const char*>(rgbe), sizeof(rgbe));
-    }
-  }
+        float *data = (float*)img->data(0, row);
 
-  return true;
+        for (int column = 0; column < img->s(); ++column)
+        {
+            float2rgbe(
+                rgbe,
+                data[R],
+                data[G],
+                data[B]
+                );
+            data += RGBE_DATA_SIZE;
+            fout.write(reinterpret_cast<const char*>(rgbe), sizeof(rgbe));
+        }
+    }
+
+    return true;
 }
 
-bool HDRWriter::writePixelsRAW( std::ostream& fout, unsigned char* data, int numpixels)
+bool HDRWriter::writePixelsRAW(std::ostream&fout, unsigned char *data, int numpixels)
 {
-  unsigned char rgbe[4];
+    unsigned char rgbe[4];
 
-  while (numpixels-- > 0)
-  {
-    rgbe[0] = (unsigned char) *(data+R);
-    rgbe[1] = (unsigned char) *(data+G);
-    rgbe[2] = (unsigned char) *(data+B);
-    rgbe[3] = (unsigned char) *(data+E);
-    data += RGBE_DATA_SIZE;
-    fout.write(reinterpret_cast<const char*>(rgbe), sizeof(rgbe)); //img->getTotalSizeInBytesIncludingMipmaps()
-  }
-  return true;
+    while (numpixels-- > 0)
+    {
+        rgbe[0] = (unsigned char) *(data + R);
+        rgbe[1] = (unsigned char) *(data + G);
+        rgbe[2] = (unsigned char) *(data + B);
+        rgbe[3] = (unsigned char) *(data + E);
+        data   += RGBE_DATA_SIZE;
+        fout.write(reinterpret_cast<const char*>(rgbe), sizeof(rgbe)); // img->getTotalSizeInBytesIncludingMipmaps()
+    }
+
+    return true;
 }
 
 /* The code below is only needed for the run-length encoded files. */
 /* Run length encoding adds considerable complexity but does */
 /* save some space.  For each scanline, each channel (r,g,b,e) is */
 /* encoded separately for better compression. */
-bool HDRWriter::writeBytesRLE(std::ostream& fout, unsigned char *data, int numbytes)
+bool HDRWriter::writeBytesRLE(std::ostream&fout, unsigned char *data, int numbytes)
 {
 #define MINRUNLENGTH 4
-    int cur, beg_run, run_count, old_run_count, nonrun_count;
+    int           cur, beg_run, run_count, old_run_count, nonrun_count;
     unsigned char buf[2];
 
     cur = 0;
-    while(cur < numbytes)
+
+    while (cur < numbytes)
     {
         beg_run = cur;
         /* find next run of length at least 4 if one exists */
         run_count = old_run_count = 0;
-        while((run_count < MINRUNLENGTH) && (beg_run < numbytes))
+
+        while ((run_count < MINRUNLENGTH) && (beg_run < numbytes))
         {
-            beg_run += run_count;
+            beg_run      += run_count;
             old_run_count = run_count;
-            run_count = 1;
-            while((data[beg_run] == data[beg_run + run_count])
-                && (beg_run + run_count < numbytes)
-                && (run_count < 127))
+            run_count     = 1;
+
+            while ((data[beg_run] == data[beg_run + run_count])
+                   && (beg_run + run_count < numbytes)
+                   && (run_count < 127))
             {
                 run_count++;
             }
         }
+
         /* if data before next big run is a short run then write it as such */
-        if ((old_run_count > 1)&&(old_run_count == beg_run - cur))
+        if ((old_run_count > 1) && (old_run_count == beg_run - cur))
         {
             buf[0] = 128 + old_run_count;   /*write short run*/
             buf[1] = data[cur];
-            fout.write(reinterpret_cast<const char*>(buf), sizeof(buf[0])*2);
-            //if (fwrite(buf,sizeof(buf[0])*2,1,fp) < 1) return false
+            fout.write(reinterpret_cast<const char*>(buf), sizeof(buf[0]) * 2);
+            // if (fwrite(buf,sizeof(buf[0])*2,1,fp) < 1) return false
             cur = beg_run;
         }
+
         /* write out bytes until we reach the start of the next run */
-        while(cur < beg_run)
+        while (cur < beg_run)
         {
             nonrun_count = beg_run - cur;
-            if (nonrun_count > 128) nonrun_count = 128;
+            if (nonrun_count > 128)
+                nonrun_count = 128;
+
             buf[0] = nonrun_count;
-            fout.write(reinterpret_cast<const char*>(buf),sizeof(buf[0]));
-            //if (fwrite(buf,sizeof(buf[0]),1,fp) < 1) return false
-            fout.write(reinterpret_cast<const char*>(&data[cur]),sizeof(data[0])*nonrun_count);
+            fout.write(reinterpret_cast<const char*>(buf), sizeof(buf[0]));
+            // if (fwrite(buf,sizeof(buf[0]),1,fp) < 1) return false
+            fout.write(reinterpret_cast<const char*>(&data[cur]), sizeof(data[0]) * nonrun_count);
             // if (fwrite(&data[cur],sizeof(data[0])*nonrun_count,1,fp) < 1) return false;
             cur += nonrun_count;
         }
+
         /* write out next run if one was found */
         if (run_count >= MINRUNLENGTH)
         {
             buf[0] = 128 + run_count;
             buf[1] = data[beg_run];
-            fout.write(reinterpret_cast<const char*>(buf),sizeof(buf[0])*2);
-            //if (fwrite(buf,sizeof(buf[0])*2,1,fp) < 1) return false;
+            fout.write(reinterpret_cast<const char*>(buf), sizeof(buf[0]) * 2);
+            // if (fwrite(buf,sizeof(buf[0])*2,1,fp) < 1) return false;
             cur += run_count;
         }
     }
+
     return true;
 #undef MINRUNLENGTH
 }
 
-bool HDRWriter::writeRLE( const osg::Image* img, std::ostream& fout)
+bool HDRWriter::writeRLE(const osg::Image *img, std::ostream&fout)
 {
     int scanline_width = img->s();
-    int num_scanlines = img->t();
+    int num_scanlines  = img->t();
 
     unsigned char rgbe[4];
     unsigned char *buffer;
 
-    if ((scanline_width < MINELEN)||(scanline_width > MAXELEN))
+    if ((scanline_width < MINELEN) || (scanline_width > MAXELEN))
         // run length encoding is not allowed so write flat
-        return writeNoRLE(fout,img);
+        return writeNoRLE(fout, img);
 
-    buffer = (unsigned char *)malloc(sizeof(unsigned char)*4*scanline_width);
+    buffer = (unsigned char*)malloc(sizeof(unsigned char) * 4 * scanline_width);
     if (buffer == NULL)
         // no buffer space so write flat
-        return writeNoRLE(fout,img);
+        return writeNoRLE(fout, img);
 
-    for(int row = 0; row<num_scanlines; ++row)
+    for (int row = 0; row < num_scanlines; ++row)
     {
-        float* data = (float*) img->data(0, row);
+        float *data = (float*) img->data(0, row);
 
         rgbe[0] = 2;
         rgbe[1] = 2;
@@ -211,27 +224,29 @@ bool HDRWriter::writeRLE( const osg::Image* img, std::ostream& fout)
         rgbe[3] = scanline_width & 0xFF;
 
         fout.write(reinterpret_cast<const char*>(rgbe), sizeof(rgbe));
+
         /*
-        if (fwrite(rgbe, sizeof(rgbe), 1, fp) < 1)
-        {
+           if (fwrite(rgbe, sizeof(rgbe), 1, fp) < 1)
+           {
             free(buffer);
             return rgbe_error(rgbe_write_error,NULL);
-        }
-        */
-        for(int i=0;i<scanline_width;i++)
+           }
+         */
+        for (int i = 0; i < scanline_width; i++)
         {
-            float2rgbe(rgbe,data[R], data[G],data[B]);
-            buffer[i] = rgbe[0];
-            buffer[i+scanline_width] = rgbe[1];
-            buffer[i+2*scanline_width] = rgbe[2];
-            buffer[i+3*scanline_width] = rgbe[3];
-            data += RGBE_DATA_SIZE;
+            float2rgbe(rgbe, data[R], data[G], data[B]);
+            buffer[i]                      = rgbe[0];
+            buffer[i + scanline_width]     = rgbe[1];
+            buffer[i + 2 * scanline_width] = rgbe[2];
+            buffer[i + 3 * scanline_width] = rgbe[3];
+            data                          += RGBE_DATA_SIZE;
         }
+
         /* write out each of the four channels separately run length encoded */
         /* first red, then green, then blue, then exponent */
-        for(int i=0;i<4;i++)
+        for (int i = 0; i < 4; i++)
         {
-            if (writeBytesRLE(fout,&buffer[i*scanline_width],scanline_width) != true)
+            if (writeBytesRLE(fout, &buffer[i * scanline_width], scanline_width) != true)
             {
                 free(buffer);
                 return false;

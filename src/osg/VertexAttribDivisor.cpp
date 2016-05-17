@@ -9,34 +9,32 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/VertexAttribDivisor>
 #include <osg/GLExtensions>
 #include <osg/State>
 
 using namespace osg;
 
-VertexAttribDivisor::VertexAttribDivisor():
+VertexAttribDivisor::VertexAttribDivisor() :
     _index(0),
     _divisor(0)
-{
-}
+{}
 
-VertexAttribDivisor::VertexAttribDivisor(unsigned int index, unsigned int divisor):
+VertexAttribDivisor::VertexAttribDivisor(unsigned int index, unsigned int divisor) :
     _index(index),
     _divisor(divisor)
-{
-}
+{}
 
 VertexAttribDivisor::~VertexAttribDivisor()
-{
-}
+{}
 
-void VertexAttribDivisor::apply(State& state) const
+void VertexAttribDivisor::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (extensions->glVertexAttribDivisor)
     {
-        extensions->glVertexAttribDivisor( _index, _divisor );
+        extensions->glVertexAttribDivisor(_index, _divisor);
     }
 }

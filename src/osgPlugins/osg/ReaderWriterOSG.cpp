@@ -106,305 +106,333 @@ USE_DOTOSGWRAPPER(Viewport)
 
 class OSGReaderWriter : public ReaderWriter
 {
-    public:
+public:
 
-        mutable OpenThreads::Mutex _mutex;
-        mutable bool _wrappersLoaded;
+mutable OpenThreads::Mutex _mutex;
+mutable bool               _wrappersLoaded;
 
-        OSGReaderWriter():
-            _wrappersLoaded(false)
-        {
+OSGReaderWriter() :
+    _wrappersLoaded(false)
+{
+    supportsExtension("osg", "OpenSceneGraph Ascii file format");
+    supportsExtension("osgs", "Pseudo OpenSceneGraph file loaded, with file encoded in filename string");
+    supportsOption("precision", "Set the floating point precision when writing out files");
+    supportsOption("OutputTextureFiles", "Write out the texture images to file");
+    supportsOption("includeExternalReferences", "Export option");
+    supportsOption("writeExternalReferenceFiles", "Export option");
+}
 
-            supportsExtension("osg","OpenSceneGraph Ascii file format");
-            supportsExtension("osgs","Pseudo OpenSceneGraph file loaded, with file encoded in filename string");
-            supportsOption("precision","Set the floating point precision when writing out files");
-            supportsOption("OutputTextureFiles","Write out the texture images to file");
-            supportsOption("includeExternalReferences","Export option");
-            supportsOption("writeExternalReferenceFiles","Export option");
+virtual const char* className() const
+{
+    return "OSG Reader/Writer";
+}
 
-        }
-
-        virtual const char* className() const { return "OSG Reader/Writer"; }
-
-        bool loadWrappers() const
-        {
+bool loadWrappers() const
+{
 #ifndef OSG_LIBRARY_STATIC
-            if (_wrappersLoaded) return true;
+    if (_wrappersLoaded)
+        return true;
 
-            OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-            if (_wrappersLoaded) return true;
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+    if (_wrappersLoaded)
+        return true;
 
-            std::string filename = osgDB::Registry::instance()->createLibraryNameForExtension("deprecated_osg");
-            if (osgDB::Registry::instance()->loadLibrary(filename)==osgDB::Registry::LOADED)
-            {
-                OSG_INFO<<"OSGReaderWriter wrappers loaded OK"<<std::endl;
-                _wrappersLoaded = true;
-                return true;
-            }
-            else
-            {
-                OSG_NOTICE<<"OSGReaderWriter wrappers failed to load"<<std::endl;
-                _wrappersLoaded = true;
-                return false;
-            }
+    std::string filename = osgDB::Registry::instance()->createLibraryNameForExtension("deprecated_osg");
+    if (osgDB::Registry::instance()->loadLibrary(filename) == osgDB::Registry::LOADED)
+    {
+        OSG_INFO << "OSGReaderWriter wrappers loaded OK" << std::endl;
+        _wrappersLoaded = true;
+        return true;
+    }
+    else
+    {
+        OSG_NOTICE << "OSGReaderWriter wrappers failed to load" << std::endl;
+        _wrappersLoaded = true;
+        return false;
+    }
+
 #else
-            return true;
+    return true;
 #endif
-        }
+}
 
-        virtual ReadResult readObject(const std::string& file, const Options* opt) const
+virtual ReadResult readObject(const std::string&file, const Options *opt) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(file);
+
+    if (equalCaseInsensitive(ext, "osgs"))
+    {
+        std::istringstream fin(osgDB::getNameLessExtension(file));
+        if (fin)
+            return readNode(fin, opt);
+
+        return ReadResult::ERROR_IN_READING_FILE;
+    }
+
+    if (!acceptsExtension(ext))
+        return ReadResult::FILE_NOT_HANDLED;
+
+    std::string fileName = osgDB::findDataFile(file, opt);
+    if (fileName.empty())
+        return ReadResult::FILE_NOT_FOUND;
+
+    // code for setting up the database path so that internally referenced file are searched for on relative paths.
+    osg::ref_ptr<Options> local_opt = opt ? static_cast<Options*>(opt->clone(osg::CopyOp::SHALLOW_COPY)) : new Options;
+    local_opt->getDatabasePathList().push_front(osgDB::getFilePath(fileName));
+
+    osgDB::ifstream fin(fileName.c_str());
+    if (fin)
+    {
+        return readObject(fin, local_opt.get());
+    }
+
+    return 0L;
+}
+
+virtual ReadResult readObject(std::istream&fin, const Options *options) const
+{
+    loadWrappers();
+
+    fin.imbue(std::locale::classic());
+
+    Input fr;
+    fr.attach(&fin);
+    fr.setOptions(options);
+
+    typedef std::vector<osg::Object*> ObjectList;
+    ObjectList objectList;
+
+    // load all nodes in file, placing them in a group.
+    while (!fr.eof())
+    {
+        Object *object = fr.readObject();
+        if (object)
+            objectList.push_back(object);
+        else
+            fr.advanceOverCurrentFieldOrBlock();
+    }
+
+    if (objectList.empty())
+    {
+        return ReadResult("No data loaded");
+    }
+    else if (objectList.size() == 1)
+    {
+        return objectList.front();
+    }
+    else
+    {
+        return objectList.front();
+    }
+}
+
+virtual ReadResult readNode(const std::string&file, const Options *opt) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(file);
+
+    if (equalCaseInsensitive(ext, "osgs"))
+    {
+        std::istringstream fin(osgDB::getNameLessExtension(file));
+        if (fin)
+            return readNode(fin, opt);
+
+        return ReadResult::ERROR_IN_READING_FILE;
+    }
+
+    if (!acceptsExtension(ext))
+        return ReadResult::FILE_NOT_HANDLED;
+
+    std::string fileName = osgDB::findDataFile(file, opt);
+    if (fileName.empty())
+        return ReadResult::FILE_NOT_FOUND;
+
+    // code for setting up the database path so that internally referenced file are searched for on relative paths.
+    osg::ref_ptr<Options> local_opt = opt ? static_cast<Options*>(opt->clone(osg::CopyOp::SHALLOW_COPY)) : new Options;
+    local_opt->getDatabasePathList().push_front(osgDB::getFilePath(fileName));
+
+    osgDB::ifstream fin(fileName.c_str());
+    if (fin)
+    {
+        return readNode(fin, local_opt.get());
+    }
+
+    return 0L;
+}
+
+virtual ReadResult readNode(std::istream&fin, const Options *options) const
+{
+    loadWrappers();
+
+    fin.imbue(std::locale::classic());
+
+    Input fr;
+    fr.attach(&fin);
+    fr.setOptions(options);
+
+    typedef std::vector<osg::Node*> NodeList;
+    NodeList nodeList;
+
+    // load all nodes in file, placing them in a group.
+    while (!fr.eof())
+    {
+        Node *node = fr.readNode();
+        if (node)
+            nodeList.push_back(node);
+        else
+            fr.advanceOverCurrentFieldOrBlock();
+    }
+
+    if (nodeList.empty())
+    {
+        return ReadResult("No data loaded");
+    }
+    else if (nodeList.size() == 1)
+    {
+        return nodeList.front();
+    }
+    else
+    {
+        Group *group = new Group;
+        group->setName("import group");
+
+        for (NodeList::iterator itr = nodeList.begin();
+             itr != nodeList.end();
+             ++itr)
         {
-            std::string ext = osgDB::getLowerCaseFileExtension(file);
-
-            if (equalCaseInsensitive(ext,"osgs"))
-            {
-                std::istringstream fin(osgDB::getNameLessExtension(file));
-                if (fin) return readNode(fin,opt);
-                return ReadResult::ERROR_IN_READING_FILE;
-            }
-
-            if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
-
-            std::string fileName = osgDB::findDataFile( file, opt );
-            if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
-
-            // code for setting up the database path so that internally referenced file are searched for on relative paths.
-            osg::ref_ptr<Options> local_opt = opt ? static_cast<Options*>(opt->clone(osg::CopyOp::SHALLOW_COPY)) : new Options;
-            local_opt->getDatabasePathList().push_front(osgDB::getFilePath(fileName));
-
-            osgDB::ifstream fin(fileName.c_str());
-            if (fin)
-            {
-                return readObject(fin, local_opt.get());
-            }
-            return 0L;
+            group->addChild(*itr);
         }
 
-        virtual ReadResult readObject(std::istream& fin, const Options* options) const
+        return group;
+    }
+}
+
+void setPrecision(Output&fout, const osgDB::ReaderWriter::Options *options) const
+{
+    if (options)
+    {
+        std::istringstream iss(options->getOptionString());
+        std::string        opt;
+
+        while (iss >> opt)
         {
-            loadWrappers();
-
-            fin.imbue(std::locale::classic());
-
-            Input fr;
-            fr.attach(&fin);
-            fr.setOptions(options);
-
-            typedef std::vector<osg::Object*> ObjectList;
-            ObjectList objectList;
-
-            // load all nodes in file, placing them in a group.
-            while(!fr.eof())
+            if (opt == "PRECISION" || opt == "precision")
             {
-                Object *object = fr.readObject();
-                if (object) objectList.push_back(object);
-                else fr.advanceOverCurrentFieldOrBlock();
+                int prec;
+                iss >> prec;
+                fout.precision(prec);
             }
 
-            if  (objectList.empty())
+            if (opt == "OutputTextureFiles")
             {
-                return ReadResult("No data loaded");
+                fout.setOutputTextureFiles(true);
             }
-            else if (objectList.size()==1)
+
+            if (opt == "OutputShaderFiles")
             {
-                return objectList.front();
-            }
-            else
-            {
-                return objectList.front();
+                fout.setOutputShaderFiles(true);
             }
         }
+    }
+}
 
-        virtual ReadResult readNode(const std::string& file, const Options* opt) const
-        {
-            std::string ext = osgDB::getLowerCaseFileExtension(file);
+virtual WriteResult writeObject(const Object&obj, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 
-            if (equalCaseInsensitive(ext,"osgs"))
-            {
-                std::istringstream fin(osgDB::getNameLessExtension(file));
-                if (fin) return readNode(fin,opt);
-                return ReadResult::ERROR_IN_READING_FILE;
-            }
+    if (!acceptsExtension(ext))
+        return WriteResult::FILE_NOT_HANDLED;
 
-            if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
+    Output fout(fileName.c_str());
+    if (fout)
+    {
+        loadWrappers();
 
-            std::string fileName = osgDB::findDataFile( file, opt );
-            if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
+        fout.setOptions(options);
 
-            // code for setting up the database path so that internally referenced file are searched for on relative paths.
-            osg::ref_ptr<Options> local_opt = opt ? static_cast<Options*>(opt->clone(osg::CopyOp::SHALLOW_COPY)) : new Options;
-            local_opt->getDatabasePathList().push_front(osgDB::getFilePath(fileName));
+        setPrecision(fout, options);
 
-            osgDB::ifstream fin(fileName.c_str());
-            if (fin)
-            {
-                return readNode(fin, local_opt.get());
-            }
-            return 0L;
+        fout.imbue(std::locale::classic());
 
-        }
+        fout.writeObject(obj);
+        fout.close();
+        return WriteResult::FILE_SAVED;
+    }
 
-        virtual ReadResult readNode(std::istream& fin, const Options* options) const
-        {
-            loadWrappers();
+    return WriteResult("Unable to open file for output");
+}
 
-            fin.imbue(std::locale::classic());
+virtual WriteResult writeObject(const Object&obj, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+{
+    if (fout)
+    {
+        loadWrappers();
 
-            Input fr;
-            fr.attach(&fin);
-            fr.setOptions(options);
+        Output foutput;
+        foutput.setOptions(options);
 
-            typedef std::vector<osg::Node*> NodeList;
-            NodeList nodeList;
+        std::ios&fios = foutput;
+        fios.rdbuf(fout.rdbuf());
 
-            // load all nodes in file, placing them in a group.
-            while(!fr.eof())
-            {
-                Node *node = fr.readNode();
-                if (node) nodeList.push_back(node);
-                else fr.advanceOverCurrentFieldOrBlock();
-            }
+        fout.imbue(std::locale::classic());
 
-            if  (nodeList.empty())
-            {
-                return ReadResult("No data loaded");
-            }
-            else if (nodeList.size()==1)
-            {
-                return nodeList.front();
-            }
-            else
-            {
-                Group* group = new Group;
-                group->setName("import group");
-                for(NodeList::iterator itr=nodeList.begin();
-                    itr!=nodeList.end();
-                    ++itr)
-                {
-                    group->addChild(*itr);
-                }
-                return group;
-            }
+        setPrecision(foutput, options);
 
-        }
+        foutput.writeObject(obj);
+        return WriteResult::FILE_SAVED;
+    }
 
-        void setPrecision(Output& fout, const osgDB::ReaderWriter::Options* options) const
-        {
-            if (options)
-            {
-                std::istringstream iss(options->getOptionString());
-                std::string opt;
-                while (iss >> opt)
-                {
-                    if(opt=="PRECISION" || opt=="precision")
-                    {
-                        int prec;
-                        iss >> prec;
-                        fout.precision(prec);
-                    }
-                    if (opt=="OutputTextureFiles")
-                    {
-                        fout.setOutputTextureFiles(true);
-                    }
-                    if (opt=="OutputShaderFiles")
-                    {
-                        fout.setOutputShaderFiles(true);
-                    }
-                }
-            }
-        }
-
-        virtual WriteResult writeObject(const Object& obj, const std::string& fileName, const osgDB::ReaderWriter::Options* options) const
-        {
-            std::string ext = osgDB::getLowerCaseFileExtension(fileName);
-            if (!acceptsExtension(ext)) return WriteResult::FILE_NOT_HANDLED;
-
-            Output fout(fileName.c_str());
-            if (fout)
-            {
-                loadWrappers();
-
-                fout.setOptions(options);
-
-                setPrecision(fout,options);
-
-                fout.imbue(std::locale::classic());
-
-                fout.writeObject(obj);
-                fout.close();
-                return WriteResult::FILE_SAVED;
-            }
-            return WriteResult("Unable to open file for output");
-        }
-
-        virtual WriteResult writeObject(const Object& obj,std::ostream& fout, const osgDB::ReaderWriter::Options* options) const
-        {
-            if (fout)
-            {
-                loadWrappers();
-
-                Output foutput;
-                foutput.setOptions(options);
-
-                std::ios &fios = foutput;
-                fios.rdbuf(fout.rdbuf());
-
-                fout.imbue(std::locale::classic());
-
-                setPrecision(foutput,options);
-
-                foutput.writeObject(obj);
-                return WriteResult::FILE_SAVED;
-            }
-            return WriteResult("Unable to write to output stream");
-        }
+    return WriteResult("Unable to write to output stream");
+}
 
 
-        virtual WriteResult writeNode(const Node& node, const std::string& fileName, const osgDB::ReaderWriter::Options* options) const
-        {
-            std::string ext = getFileExtension(fileName);
-            if (!acceptsExtension(ext)) return WriteResult::FILE_NOT_HANDLED;
+virtual WriteResult writeNode(const Node&node, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+{
+    std::string ext = getFileExtension(fileName);
 
-            Output fout(fileName.c_str());
-            if (fout)
-            {
-                loadWrappers();
+    if (!acceptsExtension(ext))
+        return WriteResult::FILE_NOT_HANDLED;
 
-                fout.setOptions(options);
+    Output fout(fileName.c_str());
+    if (fout)
+    {
+        loadWrappers();
 
-                fout.imbue(std::locale::classic());
+        fout.setOptions(options);
 
-                setPrecision(fout,options);
+        fout.imbue(std::locale::classic());
 
-                fout.writeObject(node);
-                fout.close();
-                return WriteResult::FILE_SAVED;
-            }
-            return WriteResult("Unable to open file for output");
-        }
+        setPrecision(fout, options);
 
-        virtual WriteResult writeNode(const Node& node, std::ostream& fout, const osgDB::ReaderWriter::Options* options) const
-        {
-            if (fout)
-            {
-                loadWrappers();
+        fout.writeObject(node);
+        fout.close();
+        return WriteResult::FILE_SAVED;
+    }
 
-                Output foutput;
-                foutput.setOptions(options);
+    return WriteResult("Unable to open file for output");
+}
 
-                std::ios &fios = foutput;
-                fios.rdbuf(fout.rdbuf());
+virtual WriteResult writeNode(const Node&node, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+{
+    if (fout)
+    {
+        loadWrappers();
 
-                foutput.imbue(std::locale::classic());
+        Output foutput;
+        foutput.setOptions(options);
 
-                setPrecision(foutput,options);
+        std::ios&fios = foutput;
+        fios.rdbuf(fout.rdbuf());
 
-                foutput.writeObject(node);
-                return WriteResult::FILE_SAVED;
-            }
-            return WriteResult("Unable to write to output stream");
-        }
+        foutput.imbue(std::locale::classic());
 
+        setPrecision(foutput, options);
+
+        foutput.writeObject(node);
+        return WriteResult::FILE_SAVED;
+    }
+
+    return WriteResult("Unable to write to output stream");
+}
 };
 
 // now register with Registry to instantiate the above

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "TerrainTile.h"
@@ -22,13 +22,13 @@
 
 using namespace ive;
 
-void TerrainTile::write(DataOutputStream* out)
+void TerrainTile::write(DataOutputStream *out)
 {
     // Write Terrain's identification.
     out->writeInt(IVETERRAINTILE);
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Group*  group = dynamic_cast<osg::Group*>(this);
-    if(group)
+    osg::Group *group = dynamic_cast<osg::Group*>(this);
+    if (group)
         ((ive::Group*)(group))->write(out);
     else
         out_THROW_EXCEPTION("Terrain::write(): Could not cast this osgTerrain::Terrain to an osg::Group.");
@@ -51,7 +51,8 @@ void TerrainTile::write(DataOutputStream* out)
         out->writeLayer(getElevationLayer());
 
         out->writeUInt(getNumColorLayers());
-        for(unsigned int i=0; i<getNumColorLayers(); ++i)
+
+        for (unsigned int i = 0; i < getNumColorLayers(); ++i)
         {
             out->writeLayer(getColorLayer(i));
         }
@@ -66,27 +67,28 @@ void TerrainTile::write(DataOutputStream* out)
 
         out->writeUInt(getNumColorLayers());
 
-        for(unsigned int i=0; i<getNumColorLayers(); ++i)
+        for (unsigned int i = 0; i < getNumColorLayers(); ++i)
         {
             helper.writeLayer(out, getColorLayer(i));
         }
     }
 
     writeTerrainTechnique(out, getTerrainTechnique());
-
 }
 
-void TerrainTile::read(DataInputStream* in)
+void TerrainTile::read(DataInputStream *in)
 {
     // Peek on Terrain's identification.
     int id = in->peekInt();
-    if (id != IVETERRAINTILE) in_THROW_EXCEPTION("TerrainTile::read(): Expected Terrain identification.");
+
+    if (id != IVETERRAINTILE)
+        in_THROW_EXCEPTION("TerrainTile::read(): Expected Terrain identification.");
 
     // Read Terrain's identification.
     id = in->readInt();
     // If the osg class is inherited by any other class we should also read this from file.
-    osg::Group*  group = dynamic_cast<osg::Group*>(this);
-    if(group)
+    osg::Group *group = dynamic_cast<osg::Group*>(this);
+    if (group)
         ((ive::Group*)(group))->read(in);
     else
         in_THROW_EXCEPTION("Terrain::read(): Could not cast this osgTerrain::Terrain to an osg::Group.");
@@ -98,11 +100,10 @@ void TerrainTile::read(DataInputStream* in)
 
     if (in->getVersion() >= VERSION_0026)
     {
-
         int level = in->readInt();
-        int x = in->readInt();
-        int y = in->readInt();
-        setTileID(osgTerrain::TileID(level,x,y));
+        int x     = in->readInt();
+        int y     = in->readInt();
+        setTileID(osgTerrain::TileID(level, x, y));
 
         // OSG_NOTICE<<"Read TileID("<<level<<", "<<x<<", "<<y<<")"<<std::endl;
     }
@@ -112,7 +113,8 @@ void TerrainTile::read(DataInputStream* in)
         setLocator(in->readLocator());
         setElevationLayer(in->readLayer());
         unsigned int numColorLayers = in->readUInt();
-        for(unsigned int i=0; i<numColorLayers; ++i)
+
+        for (unsigned int i = 0; i < numColorLayers; ++i)
         {
             setColorLayer(i, in->readLayer());
         }
@@ -126,7 +128,8 @@ void TerrainTile::read(DataInputStream* in)
         setElevationLayer(helper.readLayer(in));
 
         unsigned int numColorLayers = in->readUInt();
-        for(unsigned int i=0; i<numColorLayers; ++i)
+
+        for (unsigned int i = 0; i < numColorLayers; ++i)
         {
             setColorLayer(i, helper.readLayer(in));
         }
@@ -147,7 +150,7 @@ void TerrainTile::read(DataInputStream* in)
         osgTerrain::TerrainTile::getTileLoadedCallback()->loaded(this, in->getOptions());
 }
 
-void TerrainTile::writeTerrainTechnique(DataOutputStream* out, osgTerrain::TerrainTechnique* technique)
+void TerrainTile::writeTerrainTechnique(DataOutputStream *out, osgTerrain::TerrainTechnique *technique)
 {
     if (dynamic_cast<osgTerrain::GeometryTechnique*>(technique))
     {
@@ -160,13 +163,15 @@ void TerrainTile::writeTerrainTechnique(DataOutputStream* out, osgTerrain::Terra
     }
 }
 
-osgTerrain::TerrainTechnique* TerrainTile::readTerrainTechnique(DataInputStream* in)
+osgTerrain::TerrainTechnique* TerrainTile::readTerrainTechnique(DataInputStream *in)
 {
     bool hasTechnique = in->readBool();
-    if (!hasTechnique) return 0;
+
+    if (!hasTechnique)
+        return 0;
 
     int id = in->readInt();
-    if (id==IVEGEOMETRYTECHNIQUE)
+    if (id == IVEGEOMETRYTECHNIQUE)
     {
         return new osgTerrain::GeometryTechnique;
     }

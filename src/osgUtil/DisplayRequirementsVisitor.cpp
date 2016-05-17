@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #if defined(_MSC_VER)
     #pragma warning( disable : 4786 )
 #endif
@@ -29,40 +29,44 @@ DisplayRequirementsVisitor::DisplayRequirementsVisitor()
     setTraversalMode(NodeVisitor::TRAVERSE_ALL_CHILDREN);
 }
 
-void DisplayRequirementsVisitor::applyStateSet(StateSet& stateset)
+void DisplayRequirementsVisitor::applyStateSet(StateSet&stateset)
 {
-    if (!_ds) _ds = new osg::DisplaySettings;
+    if (!_ds)
+        _ds = new osg::DisplaySettings;
 
-   unsigned int min = 0; // assume stencil not needed by this stateset.
+    unsigned int min = 0; // assume stencil not needed by this stateset.
 
-   if (stateset.getMode(GL_STENCIL_TEST) & StateAttribute::ON)
-   {
+    if (stateset.getMode(GL_STENCIL_TEST) & StateAttribute::ON)
+    {
         min = 1; // number stencil bits we need at least.
-   }
+    }
 
-   if (stateset.getAttribute(StateAttribute::STENCIL))
-   {
+    if (stateset.getAttribute(StateAttribute::STENCIL))
+    {
         min = 1; // number stencil bits we need at least.
-   }
+    }
 
-   if (min>_ds->getMinimumNumStencilBits())
-   {
+    if (min > _ds->getMinimumNumStencilBits())
+    {
         // only update if new minimum exceeds previous minimum.
         _ds->setMinimumNumStencilBits(min);
-   }
+    }
 }
 
-void DisplayRequirementsVisitor::apply(Node& node)
+void DisplayRequirementsVisitor::apply(Node&node)
 {
-    osg::StateSet* stateset = node.getStateSet();
-    if (stateset) applyStateSet(*stateset);
+    osg::StateSet *stateset = node.getStateSet();
 
-    if (strcmp(node.className(),"Impostor")==0)
+    if (stateset)
+        applyStateSet(*stateset);
+
+    if (strcmp(node.className(), "Impostor") == 0)
     {
-        if (!_ds) _ds = new osg::DisplaySettings;
+        if (!_ds)
+            _ds = new osg::DisplaySettings;
 
         unsigned int min = 1; // number alpha bits we need at least.
-        if (min>_ds->getMinimumNumAlphaBits())
+        if (min > _ds->getMinimumNumAlphaBits())
         {
             // only update if new minimum exceeds previous minimum.
             _ds->setMinimumNumAlphaBits(min);
@@ -72,14 +76,17 @@ void DisplayRequirementsVisitor::apply(Node& node)
     traverse(node);
 }
 
-void DisplayRequirementsVisitor::apply(Geode& geode)
+void DisplayRequirementsVisitor::apply(Geode&geode)
 {
-    osg::StateSet* geode_stateset = geode.getStateSet();
-    if (geode_stateset) applyStateSet(*geode_stateset);
+    osg::StateSet *geode_stateset = geode.getStateSet();
 
-    for(unsigned int i = 0; i < geode.getNumDrawables(); i++ )
+    if (geode_stateset)
+        applyStateSet(*geode_stateset);
+
+    for (unsigned int i = 0; i < geode.getNumDrawables(); i++)
     {
-        osg::StateSet* stateset = geode.getDrawable(i)->getStateSet();
-        if (stateset) applyStateSet(*stateset);
+        osg::StateSet *stateset = geode.getDrawable(i)->getStateSet();
+        if (stateset)
+            applyStateSet(*stateset);
     }
 }

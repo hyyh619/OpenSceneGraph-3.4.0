@@ -9,20 +9,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "PythonScriptEngine.h"
 
 using namespace python;
 
-PythonScriptEngine::PythonScriptEngine():
+PythonScriptEngine::PythonScriptEngine() :
     osg::ScriptEngine("python"),
     _py_main(0)
 {
     initialize();
 }
 
-PythonScriptEngine::PythonScriptEngine(const PythonScriptEngine& rhs, const osg::CopyOp&):
+PythonScriptEngine::PythonScriptEngine(const PythonScriptEngine&rhs, const osg::CopyOp&) :
     osg::ScriptEngine("python"),
     _py_main(0)
 {
@@ -41,16 +41,19 @@ void PythonScriptEngine::initialize()
     _py_main = PyModule_GetDict(PyImport_AddModule("__main__"));
 }
 
-bool PythonScriptEngine::run(osg::Script* script, const std::string& entryPoint, osg::Parameters& inputParameters, osg::Parameters& outputParameters)
+bool PythonScriptEngine::run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters)
 {
-    if (!script || !_py_main) return false;
+    if (!script || !_py_main)
+        return false;
 
-    PyObject* r = PyRun_String(script->getScript().c_str(), Py_file_input, _py_main, _py_main);
+    PyObject *r = PyRun_String(script->getScript().c_str(), Py_file_input, _py_main, _py_main);
 
-    if(!r) {
+    if (!r)
+    {
         r = PyErr_Occurred();
 
-        if(r) {
+        if (r)
+        {
             PyErr_Print();
             PyErr_Clear();
         }

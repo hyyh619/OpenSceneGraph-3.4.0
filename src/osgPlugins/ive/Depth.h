@@ -4,11 +4,13 @@
 #include <osg/Depth>
 #include "ReadWrite.h"
 
-namespace ive{
-class Depth : public osg::Depth, public ReadWrite {
+namespace ive
+{
+class Depth : public osg::Depth, public ReadWrite
+{
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

@@ -34,4 +34,3 @@ USE_SERIALIZER_WRAPPER(osgAnimation_UpdateVec3fUniform)
 
 
 extern "C" void wrapper_serializer_library_osgAnimation(void) {}
-

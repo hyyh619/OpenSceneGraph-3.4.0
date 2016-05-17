@@ -1,7 +1,7 @@
 #include <sstream>
 #include <memory>
 #ifndef WIN32
-#include <strings.h>//for strncasecmp
+#include <strings.h>// for strncasecmp
 #endif
 
 #include <osg/Notify>
@@ -34,9 +34,10 @@
 /// Returns true if the given node is a basic root group with no special information.
 /// Used in conjunction with UseFbxRoot option.
 /// Identity transforms are considered as basic root nodes.
-bool isBasicRootNode(const osg::Node& node)
+bool isBasicRootNode(const osg::Node&node)
 {
-    const osg::Group* osgGroup = node.asGroup();
+    const osg::Group *osgGroup = node.asGroup();
+
     if (!osgGroup || node.asGeode())        // WriterNodeVisitor handles Geodes the "old way" (= Derived from Node, not Group as for now). Geodes may be considered "basic root nodes" when WriterNodeVisitor will be adapted.
     {
         // Geodes & such are not basic root nodes
@@ -44,10 +45,10 @@ bool isBasicRootNode(const osg::Node& node)
     }
 
     // Test if we've got an empty transform (= a group!)
-    const osg::Transform* transform = osgGroup->asTransform();
+    const osg::Transform *transform = osgGroup->asTransform();
     if (transform)
     {
-        if (const osg::MatrixTransform* matrixTransform = transform->asMatrixTransform())
+        if (const osg::MatrixTransform *matrixTransform = transform->asMatrixTransform())
         {
             if (!matrixTransform->getMatrix().isIdentity())
             {
@@ -55,7 +56,7 @@ bool isBasicRootNode(const osg::Node& node)
                 return false;
             }
         }
-        else if (const osg::PositionAttitudeTransform* pat = transform->asPositionAttitudeTransform())
+        else if (const osg::PositionAttitudeTransform *pat = transform->asPositionAttitudeTransform())
         {
             if (pat->getPosition() != osg::Vec3d() ||
                 pat->getAttitude() != osg::Quat() ||
@@ -89,30 +90,30 @@ bool isBasicRootNode(const osg::Node& node)
 
 class CleanUpFbx
 {
-    FbxManager* m_pSdkManager;
+FbxManager *m_pSdkManager;
 public:
-    explicit CleanUpFbx(FbxManager* pSdkManager) : m_pSdkManager(pSdkManager)
-    {}
+explicit CleanUpFbx(FbxManager *pSdkManager) : m_pSdkManager(pSdkManager)
+{}
 
-    ~CleanUpFbx()
-    {
-        m_pSdkManager->Destroy();
-    }
+~CleanUpFbx()
+{
+    m_pSdkManager->Destroy();
+}
 };
 
-//Some files don't correctly mark their skeleton nodes, so this function infers
-//them from the nodes that skin deformers linked to.
-void findLinkedFbxSkeletonNodes(FbxNode* pNode, std::set<const FbxNode*>& fbxSkeletons)
+// Some files don't correctly mark their skeleton nodes, so this function infers
+// them from the nodes that skin deformers linked to.
+void findLinkedFbxSkeletonNodes(FbxNode *pNode, std::set<const FbxNode*>&fbxSkeletons)
 {
-    if (const FbxGeometry* pMesh = FbxCast<FbxGeometry>(pNode->GetNodeAttribute()))
+    if (const FbxGeometry *pMesh = FbxCast<FbxGeometry>(pNode->GetNodeAttribute()))
     {
         for (int i = 0; i < pMesh->GetDeformerCount(FbxDeformer::eSkin); ++i)
         {
-            const FbxSkin* pSkin = (const FbxSkin*)pMesh->GetDeformer(i, FbxDeformer::eSkin);
+            const FbxSkin *pSkin = (const FbxSkin*)pMesh->GetDeformer(i, FbxDeformer::eSkin);
 
             for (int j = 0; j < pSkin->GetClusterCount(); ++j)
             {
-                const FbxNode* pSkeleton = pSkin->GetCluster(j)->GetLink();
+                const FbxNode *pSkeleton = pSkin->GetCluster(j)->GetLink();
                 fbxSkeletons.insert(pSkeleton);
             }
         }
@@ -125,33 +126,36 @@ void findLinkedFbxSkeletonNodes(FbxNode* pNode, std::set<const FbxNode*>& fbxSke
 }
 
 void resolveBindMatrices(
-    osg::Node& root,
-    const BindMatrixMap& boneBindMatrices,
-    const std::map<FbxNode*, osg::Node*>& nodeMap)
+    osg::Node&root,
+    const BindMatrixMap&boneBindMatrices,
+    const std::map<FbxNode*, osg::Node*>&nodeMap)
 {
     std::set<std::string> nodeNames;
+
     for (std::map<FbxNode*, osg::Node*>::const_iterator it = nodeMap.begin(); it != nodeMap.end(); ++it)
     {
         nodeNames.insert(it->second->getName());
     }
 
     for (BindMatrixMap::const_iterator it = boneBindMatrices.begin();
-        it != boneBindMatrices.end();)
+         it != boneBindMatrices.end();)
     {
-        FbxNode* const fbxBone = it->first.first;
-        std::map<FbxNode*, osg::Node*>::const_iterator nodeIt = nodeMap.find(fbxBone);
+        FbxNode* const                                 fbxBone = it->first.first;
+        std::map<FbxNode*, osg::Node*>::const_iterator nodeIt  = nodeMap.find(fbxBone);
         if (nodeIt != nodeMap.end())
         {
             const osg::Matrix bindMatrix = it->second;
-            osgAnimation::Bone& osgBone = dynamic_cast<osgAnimation::Bone&>(*nodeIt->second);
+            osgAnimation::Bone&osgBone   = dynamic_cast<osgAnimation::Bone&>(*nodeIt->second);
             osgBone.setInvBindMatrixInSkeletonSpace(bindMatrix);
 
             ++it;
+
             for (; it != boneBindMatrices.end() && it->first.first == fbxBone; ++it)
             {
                 if (it->second != bindMatrix)
                 {
                     std::string name;
+
                     for (int i = 0;; ++i)
                     {
                         std::stringstream ss;
@@ -162,14 +166,15 @@ void resolveBindMatrices(
                             break;
                         }
                     }
-                    osgAnimation::Bone* newBone = new osgAnimation::Bone(name);
+
+                    osgAnimation::Bone *newBone = new osgAnimation::Bone(name);
                     newBone->setDefaultUpdateCallback();
                     newBone->setInvBindMatrixInSkeletonSpace(it->second);
                     osgBone.addChild(newBone);
 
-                    osgAnimation::RigGeometry* pRigGeometry = it->first.second;
+                    osgAnimation::RigGeometry *pRigGeometry = it->first.second;
 
-                    osgAnimation::VertexInfluenceMap* vertexInfluences = pRigGeometry->getInfluenceMap();
+                    osgAnimation::VertexInfluenceMap *vertexInfluences = pRigGeometry->getInfluenceMap();
 
                     osgAnimation::VertexInfluenceMap::iterator vimIt = vertexInfluences->find(osgBone.getName());
                     if (vimIt != vertexInfluences->end())
@@ -177,7 +182,7 @@ void resolveBindMatrices(
                         osgAnimation::VertexInfluence vi;
                         vi.swap(vimIt->second);
                         vertexInfluences->erase(vimIt);
-                        osgAnimation::VertexInfluence& vi2 = (*vertexInfluences)[name];
+                        osgAnimation::VertexInfluence&vi2 = (*vertexInfluences)[name];
                         vi.swap(vi2);
                         vi2.setName(name);
                     }
@@ -197,18 +202,20 @@ void resolveBindMatrices(
 }
 
 osgDB::ReaderWriter::ReadResult
-ReaderWriterFBX::readNode(const std::string& filenameInit,
-                          const Options* options) const
+ReaderWriterFBX::readNode(const std::string&filenameInit,
+                          const Options *options) const
 {
     try
     {
         std::string ext(osgDB::getLowerCaseFileExtension(filenameInit));
-        if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
+        if (!acceptsExtension(ext))
+            return ReadResult::FILE_NOT_HANDLED;
 
         std::string filename(osgDB::findDataFile(filenameInit, options));
-        if (filename.empty()) return ReadResult::FILE_NOT_FOUND;
+        if (filename.empty())
+            return ReadResult::FILE_NOT_FOUND;
 
-        FbxManager* pSdkManager = FbxManager::Create();
+        FbxManager *pSdkManager = FbxManager::Create();
 
         if (!pSdkManager)
         {
@@ -219,16 +226,16 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
 
         pSdkManager->SetIOSettings(FbxIOSettings::Create(pSdkManager, IOSROOT));
 
-        FbxScene* pScene = FbxScene::Create(pSdkManager, "");
+        FbxScene *pScene = FbxScene::Create(pSdkManager, "");
 
         // The FBX SDK interprets the filename as UTF-8
 #ifdef OSG_USE_UTF8_FILENAME
-        const std::string& utf8filename(filename);
+        const std::string&utf8filename(filename);
 #else
         std::string utf8filename(osgDB::convertStringFromCurrentCodePageToUTF8(filename));
 #endif
 
-        FbxImporter* lImporter = FbxImporter::Create(pSdkManager, "");
+        FbxImporter *lImporter = FbxImporter::Create(pSdkManager, "");
 
         if (!lImporter->Initialize(utf8filename.c_str(), -1, pSdkManager->GetIOSettings()))
         {
@@ -244,7 +251,7 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
             return ReadResult::ERROR_IN_READING_FILE;
         }
 
-        for (int i = 0; FbxTakeInfo* lTakeInfo = lImporter->GetTakeInfo(i); i++)
+        for (int i = 0; FbxTakeInfo *lTakeInfo = lImporter->GetTakeInfo(i); i++)
         {
             lTakeInfo->mSelect = true;
         }
@@ -253,37 +260,41 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
         {
 #if FBXSDK_VERSION_MAJOR < 2014
             return std::string(lImporter->GetLastErrorString());
-#else 
+#else
             return std::string(lImporter->GetStatus().GetErrorString());
 #endif
         }
 
-        //FbxAxisSystem::OpenGL.ConvertScene(pScene);        // Doesn't work as expected. Still need to transform vertices.
+        // FbxAxisSystem::OpenGL.ConvertScene(pScene);        // Doesn't work as expected. Still need to transform vertices.
 
-        if (FbxNode* pNode = pScene->GetRootNode())
+        if (FbxNode *pNode = pScene->GetRootNode())
         {
-            bool useFbxRoot = false;
-            bool lightmapTextures = false;
+            bool useFbxRoot         = false;
+            bool lightmapTextures   = false;
             bool tessellatePolygons = false;
-            bool zUp = false;
+            bool zUp                = false;
             if (options)
             {
                 std::istringstream iss(options->getOptionString());
-                std::string opt;
+                std::string        opt;
+
                 while (iss >> opt)
                 {
                     if (opt == "UseFbxRoot")
                     {
                         useFbxRoot = true;
                     }
+
                     if (opt == "LightmapTextures")
                     {
                         lightmapTextures = true;
                     }
+
                     if (opt == "TessellatePolygons")
                     {
                         tessellatePolygons = true;
                     }
+
                     if (opt == "ZUp")
                     {
                         zUp = true;
@@ -291,31 +302,33 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
                 }
             }
 
-            bool bIsBone = false;
-            int nLightCount = 0;
+            bool                  bIsBone      = false;
+            int                   nLightCount  = 0;
             osg::ref_ptr<Options> localOptions = NULL;
             if (options)
                 localOptions = options->cloneOptions();
             else
                 localOptions = new osgDB::Options();
+
             localOptions->setObjectCacheHint(osgDB::ReaderWriter::Options::CACHE_IMAGES);
 
-            std::string filePath = osgDB::getFilePath(filename);
+            std::string              filePath = osgDB::getFilePath(filename);
             FbxMaterialToOsgStateSet fbxMaterialToOsgStateSet(filePath, localOptions.get(), lightmapTextures);
 
             std::set<const FbxNode*> fbxSkeletons;
             findLinkedFbxSkeletonNodes(pNode, fbxSkeletons);
 
             OsgFbxReader::AuthoringTool authoringTool = OsgFbxReader::UNKNOWN;
-            if (FbxDocumentInfo* pDocInfo = pScene->GetDocumentInfo())
+            if (FbxDocumentInfo *pDocInfo = pScene->GetDocumentInfo())
             {
                 struct ToolName
                 {
-                    const char* name;
+                    const char                  *name;
                     OsgFbxReader::AuthoringTool tool;
                 };
 
-                ToolName authoringTools[] = {
+                ToolName authoringTools[] =
+                {
                     {"OpenSceneGraph", OsgFbxReader::OPENSCENEGRAPH},
                     {"3ds Max", OsgFbxReader::AUTODESK_3DSTUDIO_MAX}
                 };
@@ -330,7 +343,7 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
 #else
                         strncasecmp
 #endif
-                        (appName, authoringTools[i].name, strlen(authoringTools[i].name)))
+                            (appName, authoringTools[i].name, strlen(authoringTools[i].name)))
                     {
                         authoringTool = authoringTools[i].tool;
                         break;
@@ -340,13 +353,13 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
 
 
             OsgFbxReader reader(*pSdkManager,
-                *pScene,
-                fbxMaterialToOsgStateSet,
-                fbxSkeletons,
-                *localOptions,
-                authoringTool,
-                lightmapTextures,
-                tessellatePolygons);
+                                *pScene,
+                                fbxMaterialToOsgStateSet,
+                                fbxSkeletons,
+                                *localOptions,
+                                authoringTool,
+                                lightmapTextures,
+                                tessellatePolygons);
 
             ReadResult res = reader.readFbxNode(pNode, bIsBone, nLightCount);
 
@@ -356,75 +369,82 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
 
                 resolveBindMatrices(*res.getNode(), reader.boneBindMatrices, reader.nodeMap);
 
-                osg::Node* osgNode = res.getNode();
-                osgNode->getOrCreateStateSet()->setMode(GL_RESCALE_NORMAL,osg::StateAttribute::ON);
-                osgNode->getOrCreateStateSet()->setMode(GL_NORMALIZE,osg::StateAttribute::ON);
+                osg::Node *osgNode = res.getNode();
+                osgNode->getOrCreateStateSet()->setMode(GL_RESCALE_NORMAL, osg::StateAttribute::ON);
+                osgNode->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
 
                 if (reader.pAnimationManager.valid())
                 {
                     if (osgNode->getUpdateCallback())
                     {
-                        osg::Group* osgGroup = new osg::Group;
+                        osg::Group *osgGroup = new osg::Group;
                         osgGroup->addChild(osgNode);
                         osgNode = osgGroup;
                     }
 
-                    //because the animations may be altered after registering
+                    // because the animations may be altered after registering
                     reader.pAnimationManager->buildTargetReference();
                     osgNode->setUpdateCallback(reader.pAnimationManager.get());
                 }
 
                 FbxAxisSystem fbxAxis = pScene->GetGlobalSettings().GetAxisSystem();
-                // some reminder: http://www.realtimerendering.com/blog/left-handed-vs-right-handed-world-coordinates/                
-                int upSign;
-                FbxAxisSystem::EUpVector eUp = fbxAxis.GetUpVector(upSign);
-                bool bLeftHanded = fbxAxis.GetCoorSystem() == FbxAxisSystem::eLeftHanded;
-                float fSign = upSign < 0 ? 1.0f : -1.0f;
-                float HorizSign = bLeftHanded ? -1.0f : 1.0f;
+                // some reminder: http://www.realtimerendering.com/blog/left-handed-vs-right-handed-world-coordinates/
+                int                      upSign;
+                FbxAxisSystem::EUpVector eUp         = fbxAxis.GetUpVector(upSign);
+                bool                     bLeftHanded = fbxAxis.GetCoorSystem() == FbxAxisSystem::eLeftHanded;
+                float                    fSign       = upSign < 0 ? 1.0f : -1.0f;
+                float                    HorizSign   = bLeftHanded ? -1.0f : 1.0f;
 
-                bool refCoordSysChange = false;
+                bool        refCoordSysChange = false;
                 osg::Matrix mat;
-               
+
                 if (zUp)
                 {
-                    if (eUp != FbxAxisSystem::eZAxis || fSign != 1.0  || upSign != 1.0)
-                    {                    
+                    if (eUp != FbxAxisSystem::eZAxis || fSign != 1.0 || upSign != 1.0)
+                    {
                         switch (eUp)
                         {
                         case FbxAxisSystem::eXAxis:
-                            mat.set(0,fSign,0,0,-fSign,0,0,0,0,0,HorizSign,0,0,0,0,1);
+                            mat.set(0, fSign, 0, 0, -fSign, 0, 0, 0, 0, 0, HorizSign, 0, 0, 0, 0, 1);
                             break;
+
                         case FbxAxisSystem::eYAxis:
-                            mat.set(1,0,0,0,0,0,-fSign*HorizSign,0,0,fSign,0,0,0,0,0,1);
+                            mat.set(1, 0, 0, 0, 0, 0, -fSign * HorizSign, 0, 0, fSign, 0, 0, 0, 0, 0, 1);
                             break;
+
                         case FbxAxisSystem::eZAxis:
-                            mat.set(1,0,0,0,0,fSign,0,0,0,0,fSign*HorizSign,0,0,0,0,1);
+                            mat.set(1, 0, 0, 0, 0, fSign, 0, 0, 0, 0, fSign * HorizSign, 0, 0, 0, 0, 1);
                             break;
                         }
+
                         refCoordSysChange = true;
                     }
-                } 
+                }
                 else if (fbxAxis != FbxAxisSystem::OpenGL)
                 {
                     switch (eUp)
                     {
                     case FbxAxisSystem::eXAxis:
-                        mat.set(0,fSign,0,0,-fSign,0,0,0,0,0,HorizSign,0,0,0,0,1);
+                        mat.set(0, fSign, 0, 0, -fSign, 0, 0, 0, 0, 0, HorizSign, 0, 0, 0, 0, 1);
                         break;
+
                     case FbxAxisSystem::eYAxis:
-                        mat.set(1,0,0,0,0,fSign,0,0,0,0,fSign*HorizSign,0,0,0,0,1);
+                        mat.set(1, 0, 0, 0, 0, fSign, 0, 0, 0, 0, fSign * HorizSign, 0, 0, 0, 0, 1);
                         break;
+
                     case FbxAxisSystem::eZAxis:
-                        mat.set(1,0,0,0,0,0,-fSign*HorizSign,0,0,fSign,0,0,0,0,0,1);
+                        mat.set(1, 0, 0, 0, 0, 0, -fSign * HorizSign, 0, 0, fSign, 0, 0, 0, 0, 0, 1);
                         break;
-                    } 
+                    }
+
                     refCoordSysChange = true;
                 }
+
                 if (refCoordSysChange)
                 {
-                    osg::Transform* pTransformTemp = osgNode->asTransform();
-                    osg::MatrixTransform* pMatrixTransform = pTransformTemp ?
-                        pTransformTemp->asMatrixTransform() : NULL;
+                    osg::Transform       *pTransformTemp   = osgNode->asTransform();
+                    osg::MatrixTransform *pMatrixTransform = pTransformTemp ?
+                                                             pTransformTemp->asMatrixTransform() : NULL;
                     if (pMatrixTransform)
                     {
                         pMatrixTransform->setMatrix(pMatrixTransform->getMatrix() * mat);
@@ -435,11 +455,13 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
                         if (useFbxRoot && isBasicRootNode(*osgNode))
                         {
                             // If root node is a simple group, put all FBX elements under the OSG root
-                            osg::Group* osgGroup = osgNode->asGroup();
-                            for(unsigned int i = 0; i < osgGroup->getNumChildren(); ++i)
+                            osg::Group *osgGroup = osgNode->asGroup();
+
+                            for (unsigned int i = 0; i < osgGroup->getNumChildren(); ++i)
                             {
                                 pMatrixTransform->addChild(osgGroup->getChild(i));
                             }
+
                             pMatrixTransform->setName(osgGroup->getName());
                         }
                         else
@@ -447,6 +469,7 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
                             pMatrixTransform->addChild(osgNode);
                         }
                     }
+
                     osgNode = pMatrixTransform;
                 }
 
@@ -464,20 +487,21 @@ ReaderWriterFBX::readNode(const std::string& filenameInit,
 }
 
 osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
-    const osg::Node& node,
-    const std::string& filename,
-    const Options* options) const
+    const osg::Node&node,
+    const std::string&filename,
+    const Options *options) const
 {
     try
     {
         std::string ext = osgDB::getLowerCaseFileExtension(filename);
-        if (!acceptsExtension(ext)) return WriteResult::FILE_NOT_HANDLED;
+        if (!acceptsExtension(ext))
+            return WriteResult::FILE_NOT_HANDLED;
 
         osg::ref_ptr<Options> localOptions = options ?
-            static_cast<Options*>(options->clone(osg::CopyOp::SHALLOW_COPY)) : new Options;
+                                             static_cast<Options*>(options->clone(osg::CopyOp::SHALLOW_COPY)) : new Options;
         localOptions->getDatabasePathList().push_front(osgDB::getFilePath(filename));
 
-        FbxManager* pSdkManager = FbxManager::Create();
+        FbxManager *pSdkManager = FbxManager::Create();
 
         if (!pSdkManager)
         {
@@ -488,13 +512,14 @@ osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
 
         pSdkManager->SetIOSettings(FbxIOSettings::Create(pSdkManager, IOSROOT));
 
-        bool useFbxRoot = false;
-        bool ascii(false);
+        bool        useFbxRoot = false;
+        bool        ascii(false);
         std::string exportVersion;
         if (options)
         {
             std::istringstream iss(options->getOptionString());
-            std::string opt;
+            std::string        opt;
+
             while (iss >> opt)
             {
                 if (opt == "Embedded")
@@ -516,40 +541,43 @@ osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
             }
         }
 
-        FbxScene* pScene = FbxScene::Create(pSdkManager, "");
+        FbxScene *pScene = FbxScene::Create(pSdkManager, "");
 
         if (options)
         {
             if (options->getPluginData("FBX-AssetUnitMeter"))
             {
-                float unit = *static_cast<const float*>(options->getPluginData("FBX-AssetUnitMeter"));
-                FbxSystemUnit kFbxSystemUnit(unit*100);
+                float         unit = *static_cast<const float*>(options->getPluginData("FBX-AssetUnitMeter"));
+                FbxSystemUnit kFbxSystemUnit(unit * 100);
                 pScene->GetGlobalSettings().SetSystemUnit(kFbxSystemUnit);
             }
         }
 
         pluginfbx::WriterNodeVisitor writerNodeVisitor(pScene, pSdkManager, filename,
-            options, osgDB::getFilePath(node.getName().empty() ? filename : node.getName()));
+                                                       options, osgDB::getFilePath(node.getName().empty() ? filename : node.getName()));
         if (useFbxRoot && isBasicRootNode(node))
         {
             // If root node is a simple group, put all elements under the FBX root
-            const osg::Group * osgGroup = node.asGroup();
+            const osg::Group *osgGroup = node.asGroup();
+
             for (unsigned int child = 0; child < osgGroup->getNumChildren(); ++child)
             {
-                const_cast<osg::Node *>(osgGroup->getChild(child))->accept(writerNodeVisitor);
+                const_cast<osg::Node*>(osgGroup->getChild(child))->accept(writerNodeVisitor);
             }
         }
-        else {
+        else
+        {
             // Normal scene
             const_cast<osg::Node&>(node).accept(writerNodeVisitor);
         }
 
-        FbxDocumentInfo* pDocInfo = pScene->GetDocumentInfo();
-        bool needNewDocInfo = pDocInfo != NULL;
+        FbxDocumentInfo *pDocInfo      = pScene->GetDocumentInfo();
+        bool            needNewDocInfo = pDocInfo != NULL;
         if (needNewDocInfo)
         {
             pDocInfo = FbxDocumentInfo::Create(pSdkManager, "");
         }
+
         pDocInfo->LastSaved_ApplicationName.Set(FbxString("OpenSceneGraph"));
         pDocInfo->LastSaved_ApplicationVersion.Set(FbxString(osgGetVersion()));
         if (needNewDocInfo)
@@ -557,36 +585,37 @@ osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
             pScene->SetDocumentInfo(pDocInfo);
         }
 
-        FbxExporter* lExporter = FbxExporter::Create(pSdkManager, "");
+        FbxExporter *lExporter = FbxExporter::Create(pSdkManager, "");
         pScene->GetGlobalSettings().SetAxisSystem(FbxAxisSystem::eOpenGL);
 
         // Ensure the directory exists or else the FBX SDK will fail
-        if (!osgDB::makeDirectoryForFile(filename)) {
+        if (!osgDB::makeDirectoryForFile(filename))
+        {
             OSG_NOTICE << "Can't create directory for file '" << filename << "'. FBX SDK may fail creating the file." << std::endl;
         }
 
         // The FBX SDK interprets the filename as UTF-8
 #ifdef OSG_USE_UTF8_FILENAME
-        const std::string& utf8filename(filename);
+        const std::string&utf8filename(filename);
 #else
         std::string utf8filename(osgDB::convertStringFromCurrentCodePageToUTF8(filename));
 #endif
 
         // Output format selection. Here we only handle "recent" FBX, binary or ASCII.
         // pSdkManager->GetIOPluginRegistry()->GetWriterFormatDescription() / GetReaderFormatCount() gives the following list:
-        //FBX binary (*.fbx)
-        //FBX ascii (*.fbx)
-        //FBX encrypted (*.fbx)
-        //FBX 6.0 binary (*.fbx)
-        //FBX 6.0 ascii (*.fbx)
-        //FBX 6.0 encrypted (*.fbx)
-        //AutoCAD DXF (*.dxf)
-        //Alias OBJ (*.obj)
-        //Collada DAE (*.dae)
-        //Biovision BVH (*.bvh)
-        //Motion Analysis HTR (*.htr)
-        //Motion Analysis TRC (*.trc)
-        //Acclaim ASF (*.asf)
+        // FBX binary (*.fbx)
+        // FBX ascii (*.fbx)
+        // FBX encrypted (*.fbx)
+        // FBX 6.0 binary (*.fbx)
+        // FBX 6.0 ascii (*.fbx)
+        // FBX 6.0 encrypted (*.fbx)
+        // AutoCAD DXF (*.dxf)
+        // Alias OBJ (*.obj)
+        // Collada DAE (*.dae)
+        // Biovision BVH (*.bvh)
+        // Motion Analysis HTR (*.htr)
+        // Motion Analysis TRC (*.trc)
+        // Acclaim ASF (*.asf)
         int format = ascii ? pSdkManager->GetIOPluginRegistry()->FindWriterIDByDescription("FBX ascii (*.fbx)") : -1;        // -1 = Default
         if (!lExporter->Initialize(utf8filename.c_str(), format))
         {
@@ -597,10 +626,14 @@ osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
 #endif
         }
 
-        if (!exportVersion.empty() && !lExporter->SetFileExportVersion(FbxString(exportVersion.c_str()), FbxSceneRenamer::eNone)) {
+        if (!exportVersion.empty() && !lExporter->SetFileExportVersion(FbxString(exportVersion.c_str()), FbxSceneRenamer::eNone))
+        {
             std::stringstream versionsStr;
-            char const * const * versions = lExporter->GetCurrentWritableVersions();
-            if (versions) for(; *versions; ++versions) versionsStr << " " << *versions;
+            char const* const *versions = lExporter->GetCurrentWritableVersions();
+            if (versions)
+                for (; *versions; ++versions)
+                    versionsStr << " " << *versions;
+
             OSG_WARN << "Can't set FBX export version to '" << exportVersion << "'. Using default. Available export versions are:" << versionsStr.str() << std::endl;
         }
 
@@ -615,17 +648,16 @@ osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
 
         return WriteResult::FILE_SAVED;
     }
-    catch (const std::string& s)
+    catch (const std::string&s)
     {
         return s;
     }
-    catch (const char* s)
+    catch (const char *s)
     {
         return std::string(s);
     }
     catch (...)
-    {
-    }
+    {}
 
     return WriteResult::ERROR_IN_WRITING_FILE;
 }

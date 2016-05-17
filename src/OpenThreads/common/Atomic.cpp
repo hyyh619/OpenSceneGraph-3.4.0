@@ -1,15 +1,15 @@
 /* -*-c++-*- OpenThreads library, Copyright (C) 2008  The Open Thread Group
  *
- * This library is open source and may be redistributed and/or modified under  
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
  * (at your option) any later version.  The full license is in LICENSE file
  * included with this distribution, and on the openscenegraph.org website.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <OpenThreads/Atomic>
 
@@ -21,10 +21,9 @@
 #pragma intrinsic(_InterlockedXor)
 #endif
 
-namespace OpenThreads {
-
+namespace OpenThreads
+{
 #if defined(_OPENTHREADS_ATOMIC_USE_LIBRARY_ROUTINES)
-
 // Non inline implementations for two special cases:
 // * win32
 // * i386 gcc
@@ -73,7 +72,7 @@ Atomic::AND(unsigned value)
 #elif defined(_OPENTHREADS_ATOMIC_USE_WIN32_INTERLOCKED)
     return _InterlockedAnd(&_value, value);
 #elif defined(_OPENTHREADS_ATOMIC_USE_BSD_ATOMIC)
-    return OSAtomicAnd32((uint32_t)value, (uint32_t *)&_value);
+    return OSAtomicAnd32((uint32_t)value, (uint32_t*)&_value);
 #else
 # error This implementation should happen inline in the include file
 #endif
@@ -87,7 +86,7 @@ Atomic::OR(unsigned value)
 #elif defined(_OPENTHREADS_ATOMIC_USE_WIN32_INTERLOCKED)
     return _InterlockedOr(&_value, value);
 #elif defined(_OPENTHREADS_ATOMIC_USE_BSD_ATOMIC)
-    return OSAtomicOr32((uint32_t)value, (uint32_t *)&_value);
+    return OSAtomicOr32((uint32_t)value, (uint32_t*)&_value);
 #else
 # error This implementation should happen inline in the include file
 #endif
@@ -101,7 +100,7 @@ Atomic::XOR(unsigned value)
 #elif defined(_OPENTHREADS_ATOMIC_USE_WIN32_INTERLOCKED)
     return _InterlockedXor(&_value, value);
 #elif defined(_OPENTHREADS_ATOMIC_USE_BSD_ATOMIC)
-    return OSAtomicXor32((uint32_t)value, (uint32_t *)&_value);
+    return OSAtomicXor32((uint32_t)value, (uint32_t*)&_value);
 #else
 # error This implementation should happen inline in the include file
 #endif
@@ -140,14 +139,14 @@ Atomic::operator unsigned() const
 }
 
 bool
-AtomicPtr::assign(void* ptrNew, const void* const ptrOld)
+AtomicPtr::assign(void *ptrNew, const void* const ptrOld)
 {
 #if defined(_OPENTHREADS_ATOMIC_USE_GCC_BUILTINS)
     return __sync_bool_compare_and_swap(&_ptr, (void*)ptrOld, ptrNew);
 #elif defined(_OPENTHREADS_ATOMIC_USE_WIN32_INTERLOCKED)
     return ptrOld == InterlockedCompareExchangePointer((PVOID volatile*)&_ptr, (PVOID)ptrNew, (PVOID)ptrOld);
 #elif defined(_OPENTHREADS_ATOMIC_USE_BSD_ATOMIC)
-    return OSAtomicCompareAndSwapPtr((void *)ptrOld, (void *)ptrNew, (void* volatile *)&_ptr);
+    return OSAtomicCompareAndSwapPtr((void*)ptrOld, (void*)ptrNew, (void* volatile*)&_ptr);
 #else
 # error This implementation should happen inline in the include file
 #endif
@@ -169,7 +168,5 @@ AtomicPtr::get() const
 # error This implementation should happen inline in the include file
 #endif
 }
-
 #endif // defined(_OPENTHREADS_ATOMIC_USE_LIBRARY_ROUTINES)
-
 }

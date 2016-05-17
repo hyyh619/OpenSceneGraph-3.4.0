@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Geode_readLocalData(Object& obj, Input& fr);
-bool Geode_writeLocalData(const Object& obj, Output& fw);
+bool Geode_readLocalData(Object&obj, Input&fr);
+bool Geode_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Geode)
@@ -21,23 +21,25 @@ REGISTER_DOTOSGWRAPPER(Geode)
     &Geode_writeLocalData
 );
 
-bool Geode_readLocalData(Object& obj, Input& fr)
+bool Geode_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    Geode& geode = static_cast<Geode&>(obj);
+    Geode&geode = static_cast<Geode&>(obj);
 
     int num_drawables;
+
     if ((fr[0].matchWord("num_drawables") || fr[0].matchWord("num_geosets")) &&
         fr[1].getInt(num_drawables))
     {
         // could allocate space for children here...
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
-    Drawable* drawable = NULL;
-    while((drawable=fr.readDrawable())!=NULL)
+    Drawable *drawable = NULL;
+
+    while ((drawable = fr.readDrawable()) != NULL)
     {
         geode.addDrawable(drawable);
         iteratorAdvanced = true;
@@ -47,13 +49,13 @@ bool Geode_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool Geode_writeLocalData(const osg::Object& obj, Output& fw)
+bool Geode_writeLocalData(const osg::Object&obj, Output&fw)
 {
-    const Geode& geode = static_cast<const Geode&>(obj);
+    const Geode&geode = static_cast<const Geode&>(obj);
 
     fw.indent() << "num_drawables " << geode.getNumDrawables() << std::endl;
 
-    for(unsigned int i=0;i<geode.getNumDrawables();++i)
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
         fw.writeObject(*geode.getDrawable(i));
     }

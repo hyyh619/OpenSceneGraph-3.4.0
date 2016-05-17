@@ -4,29 +4,29 @@
 
 using namespace osgGA;
 
-AnimationPathManipulator::AnimationPathManipulator(osg::AnimationPath* animationPath)
+AnimationPathManipulator::AnimationPathManipulator(osg::AnimationPath *animationPath)
 {
     _printOutTimingInfo = true;
 
     _animationPath = animationPath;
-    _timeOffset = 0.0;
-    _timeScale = 1.0;
-    _isPaused = false;
+    _timeOffset    = 0.0;
+    _timeScale     = 1.0;
+    _isPaused      = false;
 
-    _realStartOfTimedPeriod = 0.0;
-    _animStartOfTimedPeriod = 0.0;
+    _realStartOfTimedPeriod             = 0.0;
+    _animStartOfTimedPeriod             = 0.0;
     _numOfFramesSinceStartOfTimedPeriod = -1; // need to init.
 }
 
-AnimationPathManipulator::AnimationPathManipulator( const std::string& filename )
+AnimationPathManipulator::AnimationPathManipulator(const std::string&filename)
 {
     _printOutTimingInfo = true;
 
     _animationPath = new osg::AnimationPath;
     _animationPath->setLoopMode(osg::AnimationPath::LOOP);
     _timeOffset = 0.0;
-    _timeScale = 1.0;
-    _isPaused = false;
+    _timeScale  = 1.0;
+    _isPaused   = false;
 
 
     osgDB::ifstream in(filename.c_str());
@@ -41,135 +41,140 @@ AnimationPathManipulator::AnimationPathManipulator( const std::string& filename 
     _animationPath->read(in);
 
     in.close();
-
 }
 
 void AnimationPathManipulator::home(double currentTime)
 {
     if (_animationPath.valid())
     {
-        _timeOffset = _animationPath->getFirstTime()-currentTime;
-
+        _timeOffset = _animationPath->getFirstTime() - currentTime;
     }
+
     // reset the timing of the animation.
-    _numOfFramesSinceStartOfTimedPeriod=-1;
+    _numOfFramesSinceStartOfTimedPeriod = -1;
 }
 
-void AnimationPathManipulator::home(const GUIEventAdapter& ea,GUIActionAdapter&)
+void AnimationPathManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&)
 {
     home(ea.getTime());
 }
 
-void AnimationPathManipulator::init(const GUIEventAdapter& ea,GUIActionAdapter& aa)
+void AnimationPathManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&aa)
 {
-    home(ea,aa);
+    home(ea, aa);
 }
 
-bool AnimationPathManipulator::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& us)
+bool AnimationPathManipulator::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us)
 {
-    if( !valid() ) return false;
+    if (!valid())
+        return false;
 
-    switch( ea.getEventType() )
+    switch (ea.getEventType())
     {
     case GUIEventAdapter::FRAME:
-        if( _isPaused )
+        if (_isPaused)
         {
-            handleFrame( _pauseTime );
+            handleFrame(_pauseTime);
         }
         else
         {
-            handleFrame( ea.getTime() );
+            handleFrame(ea.getTime());
         }
+
         return false;
+
     case GUIEventAdapter::KEYDOWN:
-            if (ea.getKey()==' ')
+        if (ea.getKey() == ' ')
+        {
+            _isPaused = false;
+
+            home(ea, us);
+            us.requestRedraw();
+            us.requestContinuousUpdate(false);
+
+            return true;
+        }
+        else if (ea.getKey() == ')')
+        {
+            double time          = _isPaused ? _pauseTime : ea.getTime();
+            double animationTime = (time + _timeOffset) * _timeScale;
+
+            _timeScale *= 1.1;
+
+            OSG_NOTICE << "Animation speed = " << _timeScale * 100 << "%" << std::endl;
+
+            // adjust timeOffset so the current animationTime does change.
+            _timeOffset = animationTime / _timeScale - time;
+
+            return true;
+        }
+        else if (ea.getKey() == '(')
+        {
+            double time          = _isPaused ? _pauseTime : ea.getTime();
+            double animationTime = (time + _timeOffset) * _timeScale;
+
+            _timeScale /= 1.1;
+
+            OSG_NOTICE << "Animation speed = " << _timeScale * 100 << "%" << std::endl;
+
+            // adjust timeOffset so the current animationTime does change.
+            _timeOffset = animationTime / _timeScale - time;
+
+            return true;
+        }
+        else if (ea.getKey() == 'p')
+        {
+            if (_isPaused)
             {
-                _isPaused = false;
-
-                home(ea,us);
-                us.requestRedraw();
-                us.requestContinuousUpdate(false);
-
-                return true;
+                _isPaused    = false;
+                _timeOffset -= ea.getTime() - _pauseTime;
             }
-            else if (ea.getKey()==')')
+            else
             {
-                double time = _isPaused ? _pauseTime : ea.getTime();
-                double animationTime = (time+_timeOffset)*_timeScale;
-
-                _timeScale *= 1.1;
-
-                OSG_NOTICE<<"Animation speed = "<<_timeScale*100<<"%"<<std::endl;
-
-                // adjust timeOffset so the current animationTime does change.
-                _timeOffset = animationTime/_timeScale - time;
-
-                return true;
+                _isPaused  = true;
+                _pauseTime = ea.getTime();
             }
-            else if (ea.getKey()=='(')
-            {
-                double time = _isPaused ? _pauseTime : ea.getTime();
-                double animationTime = (time+_timeOffset)*_timeScale;
 
-                _timeScale /= 1.1;
-
-                OSG_NOTICE<<"Animation speed = "<<_timeScale*100<<"%"<<std::endl;
-
-                // adjust timeOffset so the current animationTime does change.
-                _timeOffset = animationTime/_timeScale - time;
-
-                return true;
-            }
-            else if(ea.getKey() == 'p')
-            {
-                if( _isPaused )
-                {
-                    _isPaused = false;
-                    _timeOffset -= ea.getTime() - _pauseTime;
-                }
-                else
-                {
-                    _isPaused = true;
-                    _pauseTime = ea.getTime();
-                }
-                us.requestRedraw();
-                us.requestContinuousUpdate(false);
-                return true;
-            }
+            us.requestRedraw();
+            us.requestContinuousUpdate(false);
+            return true;
+        }
 
         break;
-        default:
-            break;
+
+    default:
+        break;
     }
+
     return false;
 }
 
-void AnimationPathManipulator::getUsage(osg::ApplicationUsage& usage) const
+void AnimationPathManipulator::getUsage(osg::ApplicationUsage&usage) const
 {
-    usage.addKeyboardMouseBinding("AnimationPath: Space","Reset the viewing position to start of animation");
-    usage.addKeyboardMouseBinding("AnimationPath: p","Pause/resume animation.");
-    usage.addKeyboardMouseBinding("AnimationPath: (","Slow down animation speed.");
-    usage.addKeyboardMouseBinding("AnimationPath: )","Speed up animation speed.");
+    usage.addKeyboardMouseBinding("AnimationPath: Space", "Reset the viewing position to start of animation");
+    usage.addKeyboardMouseBinding("AnimationPath: p", "Pause/resume animation.");
+    usage.addKeyboardMouseBinding("AnimationPath: (", "Slow down animation speed.");
+    usage.addKeyboardMouseBinding("AnimationPath: )", "Speed up animation speed.");
 }
 
-void AnimationPathManipulator::handleFrame( double time )
+void AnimationPathManipulator::handleFrame(double time)
 {
     osg::AnimationPath::ControlPoint cp;
 
-    double animTime = (time+_timeOffset)*_timeScale;
-    _animationPath->getInterpolatedControlPoint( animTime, cp );
+    double animTime = (time + _timeOffset) * _timeScale;
 
-    if (_numOfFramesSinceStartOfTimedPeriod==-1)
+    _animationPath->getInterpolatedControlPoint(animTime, cp);
+
+    if (_numOfFramesSinceStartOfTimedPeriod == -1)
     {
         _realStartOfTimedPeriod = time;
         _animStartOfTimedPeriod = animTime;
-
     }
 
     ++_numOfFramesSinceStartOfTimedPeriod;
 
-    double animDelta = (animTime-_animStartOfTimedPeriod);
-    if (animDelta>=_animationPath->getPeriod())
+    double animDelta = (animTime - _animStartOfTimedPeriod);
+    if (animDelta >= _animationPath->getPeriod())
     {
         if (_animationCompletedCallback.valid())
         {
@@ -178,17 +183,17 @@ void AnimationPathManipulator::handleFrame( double time )
 
         if (_printOutTimingInfo)
         {
-            double delta = time-_realStartOfTimedPeriod;
-            double frameRate = (double)_numOfFramesSinceStartOfTimedPeriod/delta;
-            OSG_NOTICE <<"AnimatonPath completed in "<<delta<<" seconds, completing "<<_numOfFramesSinceStartOfTimedPeriod<<" frames,"<<std::endl;
-            OSG_NOTICE <<"             average frame rate = "<<frameRate<<std::endl;
+            double delta     = time - _realStartOfTimedPeriod;
+            double frameRate = (double)_numOfFramesSinceStartOfTimedPeriod / delta;
+            OSG_NOTICE << "AnimatonPath completed in " << delta << " seconds, completing " << _numOfFramesSinceStartOfTimedPeriod << " frames," << std::endl;
+            OSG_NOTICE << "             average frame rate = " << frameRate << std::endl;
         }
 
         // reset counters for next loop.
-        _realStartOfTimedPeriod = time;
-        _animStartOfTimedPeriod = animTime;
+        _realStartOfTimedPeriod             = time;
+        _animStartOfTimedPeriod             = animTime;
         _numOfFramesSinceStartOfTimedPeriod = 0;
     }
 
-    cp.getMatrix( _matrix );
+    cp.getMatrix(_matrix);
 }

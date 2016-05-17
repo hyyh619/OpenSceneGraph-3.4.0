@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef IVE_VOLUMESCALARPROPERTY_H
 #define IVE_VOLUMESCALARPROPERTY_H 1
@@ -20,14 +20,12 @@
 
 namespace ive
 {
-
 class VolumeScalarProperty : public osgVolume::ScalarProperty, public ReadWrite
 {
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
-
 }
 
 #endif

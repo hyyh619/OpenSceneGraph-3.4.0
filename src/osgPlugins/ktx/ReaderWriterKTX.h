@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgDB/ReaderWriter>
 #include <osg/Types>
@@ -36,17 +36,17 @@ struct KTXTexHeader
 class ReaderWriterKTX : public osgDB::ReaderWriter
 {
 public:
-    static const unsigned char FileSignature[12];
-    static const uint32_t MyEndian = 0x04030201;
-    static const uint32_t NotMyEndian = 0x01020304;
+static const unsigned char FileSignature[12];
+static const uint32_t      MyEndian    = 0x04030201;
+static const uint32_t      NotMyEndian = 0x01020304;
 
-    ReaderWriterKTX();
+ReaderWriterKTX();
 
-    virtual const char* className() const;
-    virtual ReadResult readImage(std::istream& fin,const osgDB::ReaderWriter::Options* =NULL) const;
-    virtual ReadResult readKTXStream(std::istream& fin) const;
-    virtual ReadResult readImage(const std::string& file, const osgDB::ReaderWriter::Options* options) const;
+virtual const char* className() const;
+virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options* = NULL) const;
+virtual ReadResult readKTXStream(std::istream&fin) const;
+virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const;
 
 private:
-    bool correctByteOrder(KTXTexHeader& header) const;
+bool correctByteOrder(KTXTexHeader&header) const;
 };

@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 
 #include <osgManipulator/AntiSquish>
@@ -18,22 +18,19 @@
 using namespace osgManipulator;
 
 
-AntiSquish::AntiSquish() : _usePivot(true), _usePosition(false), _cacheDirty( true )
-{
-}
+AntiSquish::AntiSquish() : _usePivot(true), _usePosition(false), _cacheDirty(true)
+{}
 
-AntiSquish::AntiSquish(const osg::Vec3d& pivot) : _pivot(pivot), _usePivot(true), _usePosition(false), _cacheDirty( true )
-{
-}
+AntiSquish::AntiSquish(const osg::Vec3d&pivot) : _pivot(pivot), _usePivot(true), _usePosition(false), _cacheDirty(true)
+{}
 
-AntiSquish::AntiSquish(const osg::Vec3d& pivot, const osg::Vec3d& pos)
-    : _pivot(pivot), _usePivot(true), _position(pos), _usePosition(true), _cacheDirty( true )
-{
-}
+AntiSquish::AntiSquish(const osg::Vec3d&pivot, const osg::Vec3d&pos)
+    : _pivot(pivot), _usePivot(true), _position(pos), _usePosition(true), _cacheDirty(true)
+{}
 
 
-AntiSquish::AntiSquish(const AntiSquish& pat,const osg::CopyOp& copyop) :
-    Transform(pat,copyop),
+AntiSquish::AntiSquish(const AntiSquish&pat, const osg::CopyOp&copyop) :
+    Transform(pat, copyop),
     _pivot(pat._pivot),
     _usePivot(pat._usePivot),
     _position(pat._position),
@@ -41,23 +38,22 @@ AntiSquish::AntiSquish(const AntiSquish& pat,const osg::CopyOp& copyop) :
     _cacheDirty(pat._cacheDirty),
     _cacheLocalToWorld(pat._cacheLocalToWorld),
     _cache(pat._cache)
-{
-}
+{}
 
 AntiSquish::~AntiSquish()
-{
-}
+{}
 
 
-bool AntiSquish::computeLocalToWorldMatrix(osg::Matrix& matrix,osg::NodeVisitor* nv) const
+bool AntiSquish::computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
 {
     osg::Matrix unsquishedMatrix;
-    if ( !computeUnSquishedMatrix( unsquishedMatrix ) )
+
+    if (!computeUnSquishedMatrix(unsquishedMatrix))
     {
         return false;
     }
 
-    if (_referenceFrame==RELATIVE_RF)
+    if (_referenceFrame == RELATIVE_RF)
     {
         matrix.preMult(unsquishedMatrix);
     }
@@ -70,18 +66,19 @@ bool AntiSquish::computeLocalToWorldMatrix(osg::Matrix& matrix,osg::NodeVisitor*
 }
 
 
-bool AntiSquish::computeWorldToLocalMatrix(osg::Matrix& matrix,osg::NodeVisitor*) const
+bool AntiSquish::computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor*) const
 {
     osg::Matrix unsquishedMatrix;
-    if ( !computeUnSquishedMatrix( unsquishedMatrix ) )
+
+    if (!computeUnSquishedMatrix(unsquishedMatrix))
     {
         return false;
     }
 
     osg::Matrixd inverse;
-    inverse.invert( unsquishedMatrix );
+    inverse.invert(unsquishedMatrix);
 
-    if (_referenceFrame==RELATIVE_RF)
+    if (_referenceFrame == RELATIVE_RF)
     {
         matrix.postMult(inverse);
     }
@@ -89,19 +86,23 @@ bool AntiSquish::computeWorldToLocalMatrix(osg::Matrix& matrix,osg::NodeVisitor*
     {
         matrix = inverse;
     }
+
     return true;
 }
 
 
-bool AntiSquish::computeUnSquishedMatrix(osg::Matrix& unsquished) const
+bool AntiSquish::computeUnSquishedMatrix(osg::Matrix&unsquished) const
 {
-    OpenThreads::ScopedLock<OpenThreads::Mutex> lock( _cacheLock );
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_cacheLock);
 
     osg::NodePathList nodePaths = getParentalNodePaths();
-    if (nodePaths.empty()) return false;
+
+    if (nodePaths.empty())
+        return false;
 
     osg::NodePath np = nodePaths.front();
-    if (np.empty()) return false;
+    if (np.empty())
+        return false;
 
     // Remove the last node which is the anti squish node itself.
     np.pop_back();
@@ -110,20 +111,20 @@ bool AntiSquish::computeUnSquishedMatrix(osg::Matrix& unsquished) const
     const osg::Matrix localToWorld = osg::computeLocalToWorld(np);
 
     // reuse cached value
-    if ( !_cacheDirty && _cacheLocalToWorld==localToWorld )
+    if (!_cacheDirty && _cacheLocalToWorld == localToWorld)
     {
         unsquished = _cache;
         return true;
     }
 
     osg::Vec3d t, s;
-    osg::Quat r, so;
+    osg::Quat  r, so;
 
     localToWorld.decompose(t, r, s, so);
 
     // Let's take an average of the scale.
-    double av = (s[0] + s[1] + s[2])/3.0;
-    s[0] = av; s[1] = av; s[2]=av;
+    double av = (s[0] + s[1] + s[2]) / 3.0;
+    s[0] = av; s[1] = av; s[2] = av;
 
     if (av == 0)
         return false;
@@ -141,15 +142,15 @@ bool AntiSquish::computeUnSquishedMatrix(osg::Matrix& unsquished) const
         if (!invtmps.invert(tmps))
             return false;
 
-        //SO^
+        // SO^
         unsquished.postMult(invtmps);
-        //S
+        // S
         unsquished.postMultScale(s);
-        //SO
+        // SO
         unsquished.postMult(tmps);
-        //R
+        // R
         unsquished.postMultRotate(r);
-        //T
+        // T
         unsquished.postMultTranslate(t);
 
         osg::Matrix invltw;
@@ -157,7 +158,7 @@ bool AntiSquish::computeUnSquishedMatrix(osg::Matrix& unsquished) const
             return false;
 
         // LTW^
-        unsquished.postMult( invltw );
+        unsquished.postMult(invltw);
 
         // Position
         if (_usePosition)
@@ -180,22 +181,20 @@ bool AntiSquish::computeUnSquishedMatrix(osg::Matrix& unsquished) const
         osg::Matrix invltw;
         if (!invltw.invert(localToWorld))
             return false;
-        unsquished.postMult( invltw );
+
+        unsquished.postMult(invltw);
     }
 
     if (unsquished.isNaN())
         return false;
 
-    _cache = unsquished;
+    _cache             = unsquished;
     _cacheLocalToWorld = localToWorld;
-    _cacheDirty = false;
+    _cacheDirty        = false;
 
-    //As Transform::computeBounde calls us without a node-path it relies on
-    //The cache. Hence a new _cache affects the bound.
+    // As Transform::computeBounde calls us without a node-path it relies on
+    // The cache. Hence a new _cache affects the bound.
     const_cast<AntiSquish*>(this)->dirtyBound();
 
     return true;
 }
-
-
-

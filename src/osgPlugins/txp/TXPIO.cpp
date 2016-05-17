@@ -9,8 +9,8 @@
 
 using namespace osg;
 
-bool TXPNode_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool TXPNode_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool TXPNode_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool TXPNode_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 osgDB::RegisterDotOsgWrapperProxy TXPNode_Proxy
 (
@@ -21,15 +21,15 @@ osgDB::RegisterDotOsgWrapperProxy TXPNode_Proxy
     TXPNode_writeLocalData
 );
 
-bool TXPNode_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool TXPNode_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    txp::TXPNode &txpNode = static_cast<txp::TXPNode &>(obj);
-    bool itrAdvanced = false;
+    txp::TXPNode&txpNode    = static_cast<txp::TXPNode&>(obj);
+    bool        itrAdvanced = false;
 
     if (fr.matchSequence("databaseOptions %s"))
     {
         txpNode.setOptions(fr[1].getStr());
-        fr += 2;
+        fr         += 2;
         itrAdvanced = true;
     }
 
@@ -37,12 +37,12 @@ bool TXPNode_readLocalData(osg::Object &obj, osgDB::Input &fr)
     {
         txpNode.setArchiveName(fr[1].getStr());
 
-        //modified by Brad Anderegg on May-27-08
-        //this function now takes the archive to load as a parameter
-        //passing in NULL will have the same effect as before.
+        // modified by Brad Anderegg on May-27-08
+        // this function now takes the archive to load as a parameter
+        // passing in NULL will have the same effect as before.
         txpNode.loadArchive(NULL);
 
-        fr += 2;
+        fr         += 2;
         itrAdvanced = true;
     }
 
@@ -53,37 +53,39 @@ bool TXPNode_readLocalData(osg::Object &obj, osgDB::Input &fr)
 class Dump2Osg : public osg::NodeVisitor
 {
 public:
-    Dump2Osg( osgDB::Output &fw ) : osg::NodeVisitor( osg::NodeVisitor::TRAVERSE_ALL_CHILDREN ), _fw( fw )
-    {}
+Dump2Osg(osgDB::Output&fw) : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN), _fw(fw)
+{}
 
-    virtual void apply(osg::Node& node)
-    {
-        _fw.writeObject(node);
-        NodeVisitor::apply(node);
-    }
-    osgDB::Output &_fw;
+virtual void apply(osg::Node&node)
+{
+    _fw.writeObject(node);
+    NodeVisitor::apply(node);
+}
+osgDB::Output&_fw;
 
 protected:
 
-    Dump2Osg& operator = (const Dump2Osg&) { return *this; }
+Dump2Osg&operator =(const Dump2Osg&)
+{
+    return *this;
+}
 };
 
 
-bool TXPNode_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool TXPNode_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const txp::TXPNode &txpNode = static_cast<const txp::TXPNode&>(obj);
+    const txp::TXPNode&txpNode = static_cast<const txp::TXPNode&>(obj);
 
-    if ( !txpNode.getOptions().empty() )
+    if (!txpNode.getOptions().empty())
         fw.indent() << "databaseOptions \"" << txpNode.getOptions() << "\"" << std::endl;
-    if ( !txpNode.getArchiveName().empty() )
+
+    if (!txpNode.getArchiveName().empty())
         fw.indent() << "databaseName \"" << txpNode.getArchiveName() << "\"" << std::endl;
 
-    osg::Group* grp = const_cast<osg::Group*>(txpNode.asGroup());
+    osg::Group *grp = const_cast<osg::Group*>(txpNode.asGroup());
 
     Dump2Osg wrt(fw);
     grp->accept(wrt);
 
     return true;
 }
-
-

@@ -11,21 +11,17 @@
 
 
 
-namespace osgFFmpeg {
-
-
-
-FFmpegAudioStream::FFmpegAudioStream(FFmpegDecoder* decoder):
+namespace osgFFmpeg
+{
+FFmpegAudioStream::FFmpegAudioStream(FFmpegDecoder *decoder) :
     m_decoder(decoder)
-{
-}
+{}
 
 
 
-FFmpegAudioStream::FFmpegAudioStream(const FFmpegAudioStream & audio, const osg::CopyOp & copyop) :
+FFmpegAudioStream::FFmpegAudioStream(const FFmpegAudioStream&audio, const osg::CopyOp&copyop) :
     osg::AudioStream(audio, copyop)
-{
-}
+{}
 
 FFmpegAudioStream::~FFmpegAudioStream()
 {
@@ -33,14 +29,14 @@ FFmpegAudioStream::~FFmpegAudioStream()
     setAudioSink(0);
 }
 
-void FFmpegAudioStream::setAudioSink(osg::AudioSink* audio_sink)
+void FFmpegAudioStream::setAudioSink(osg::AudioSink *audio_sink)
 {
-    OSG_NOTICE<<"FFmpegAudioStream::setAudioSink( "<<audio_sink<<")"<<std::endl;
+    OSG_NOTICE << "FFmpegAudioStream::setAudioSink( " << audio_sink << ")" << std::endl;
     m_decoder->audio_decoder().setAudioSink(audio_sink);
 }
 
 
-void FFmpegAudioStream::consumeAudioBuffer(void * const buffer, const size_t size)
+void FFmpegAudioStream::consumeAudioBuffer(void* const buffer, const size_t size)
 {
     m_decoder->audio_decoder().fillBuffer(buffer, size);
 }
@@ -70,6 +66,4 @@ osg::AudioStream::SampleFormat FFmpegAudioStream::audioSampleFormat() const
 {
     return m_decoder->audio_decoder().sampleFormat();
 }
-
-
 } // namespace osgFFmpeg

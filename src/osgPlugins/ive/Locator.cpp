@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 #include "Exception.h"
@@ -19,13 +19,13 @@
 
 using namespace ive;
 
-void Locator::write(DataOutputStream* out)
+void Locator::write(DataOutputStream *out)
 {
     // Write Locator's identification.
     out->writeInt(IVELOCATOR);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Object*  object = dynamic_cast<osg::Object*>(this);
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
     if (object)
         ((ive::Object*)(object))->write(out);
     else
@@ -35,8 +35,8 @@ void Locator::write(DataOutputStream* out)
     out->writeString(getFormat());
     out->writeString(getCoordinateSystem());
 
-    out->writeBool(getEllipsoidModel()!=0);
-    if(getEllipsoidModel())
+    out->writeBool(getEllipsoidModel() != 0);
+    if (getEllipsoidModel())
     {
         ((ive::EllipsoidModel*)(getEllipsoidModel()))->write(out);
     }
@@ -46,11 +46,12 @@ void Locator::write(DataOutputStream* out)
     out->writeMatrixd(getTransform());
 }
 
-void Locator::read(DataInputStream* in)
+void Locator::read(DataInputStream *in)
 {
     // Peek on Locator's identification.
     int id = in->peekInt();
-    if(id != IVELOCATOR)
+
+    if (id != IVELOCATOR)
     {
         in_THROW_EXCEPTION("Locator::read(): Expected Locator identification.");
     }
@@ -59,8 +60,8 @@ void Locator::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osg::Object*  object = dynamic_cast<osg::Object*>(this);
-    if(object)
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
+    if (object)
         ((ive::Object*)(object))->read(in);
     else
         in_THROW_EXCEPTION("Locator::read(): Could not cast this osgLocator::Locator to an osg::Group.");
@@ -72,7 +73,7 @@ void Locator::read(DataInputStream* in)
     bool readEllipsoidModel = in->readBool();
     if (readEllipsoidModel)
     {
-        osg::EllipsoidModel* em = new osg::EllipsoidModel();
+        osg::EllipsoidModel *em = new osg::EllipsoidModel();
         ((ive::EllipsoidModel*)(em))->read(in);
         setEllipsoidModel(em);
     }
@@ -80,5 +81,4 @@ void Locator::read(DataInputStream* in)
     setDefinedInFile(in->readBool());
     setTransformScaledByResolution(in->readBool());
     setTransform(in->readMatrixd());
-
 }

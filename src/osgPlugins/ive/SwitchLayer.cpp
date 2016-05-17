@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "SwitchLayer.h"
@@ -17,14 +17,14 @@
 
 using namespace ive;
 
-void SwitchLayer::write(DataOutputStream* out)
+void SwitchLayer::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVESWITCHLAYER);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osgTerrain::CompositeLayer*  layer = dynamic_cast<osgTerrain::CompositeLayer*>(this);
-    if  (layer)
+    osgTerrain::CompositeLayer *layer = dynamic_cast<osgTerrain::CompositeLayer*>(this);
+    if (layer)
         ((ive::CompositeLayer*)(layer))->write(out);
     else
         out_THROW_EXCEPTION("SwitchLayer::write(): Could not cast this osgLayer::SwitchLayer to an osgTerrain::Layer.");
@@ -33,10 +33,11 @@ void SwitchLayer::write(DataOutputStream* out)
     out->writeInt(getActiveLayer());
 }
 
-void SwitchLayer::read(DataInputStream* in)
+void SwitchLayer::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVESWITCHLAYER)
         in_THROW_EXCEPTION("SwitchLayer::read(): Expected SwitchLayer identification.");
 
@@ -44,7 +45,7 @@ void SwitchLayer::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osgTerrain::CompositeLayer*  layer = dynamic_cast<osgTerrain::CompositeLayer*>(this);
+    osgTerrain::CompositeLayer *layer = dynamic_cast<osgTerrain::CompositeLayer*>(this);
     if (layer)
         ((ive::CompositeLayer*)(layer))->read(in);
     else

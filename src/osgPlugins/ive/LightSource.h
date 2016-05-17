@@ -4,11 +4,13 @@
 #include <osg/LightSource>
 #include "ReadWrite.h"
 
-namespace ive{
-class LightSource : public osg::LightSource, public ReadWrite {
+namespace ive
+{
+class LightSource : public osg::LightSource, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

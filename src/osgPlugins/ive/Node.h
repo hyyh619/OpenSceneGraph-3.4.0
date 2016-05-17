@@ -5,11 +5,13 @@
 #include "ReadWrite.h"
 #include <iostream>
 
-namespace ive{
-class Node :  public osg::Node, public ReadWrite{
+namespace ive
+{
+class Node :  public osg::Node, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

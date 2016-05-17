@@ -4,11 +4,13 @@
 #include <osgSim/Sector>
 #include "ReadWrite.h"
 
-namespace ive{
-class ConeSector : public osgSim::ConeSector, public ReadWrite {
+namespace ive
+{
+class ConeSector : public osgSim::ConeSector, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

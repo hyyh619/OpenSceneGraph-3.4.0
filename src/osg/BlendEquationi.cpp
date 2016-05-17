@@ -9,26 +9,25 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/BlendEquationi>
 #include <osg/GLExtensions>
 #include <osg/State>
 
 using namespace osg;
 
-BlendEquationi::BlendEquationi():
+BlendEquationi::BlendEquationi() :
     _index(0)
-{
-}
+{}
 
 
 BlendEquationi::~BlendEquationi()
-{
-}
+{}
 
-void BlendEquationi::apply(State& state) const
+void BlendEquationi::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (_equationRGB == _equationAlpha)
     {
         if (extensions->glBlendEquationi)
@@ -37,7 +36,7 @@ void BlendEquationi::apply(State& state) const
         }
         else
         {
-            OSG_WARN<<"Warning: BlendEquationi::apply(..) not supported by OpenGL driver." << std::endl;
+            OSG_WARN << "Warning: BlendEquationi::apply(..) not supported by OpenGL driver." << std::endl;
         }
     }
     else
@@ -48,8 +47,7 @@ void BlendEquationi::apply(State& state) const
         }
         else
         {
-            OSG_WARN<<"Warning: BlendEquation::apply(..) failed, glBlendEquationSeparatei not supported by OpenGL driver." << std::endl;
+            OSG_WARN << "Warning: BlendEquation::apply(..) failed, glBlendEquationSeparatei not supported by OpenGL driver." << std::endl;
         }
     }
 }
-

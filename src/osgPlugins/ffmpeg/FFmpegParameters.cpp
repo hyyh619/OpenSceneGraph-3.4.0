@@ -19,13 +19,14 @@ extern "C"
     #include <libavutil/pixdesc.h>
 }
 
-inline PixelFormat osg_av_get_pix_fmt(const char *name) { return av_get_pix_fmt(name); }
+inline PixelFormat osg_av_get_pix_fmt(const char *name)
+{
+    return av_get_pix_fmt(name);
+}
 
 
-namespace osgFFmpeg {
-
-
-
+namespace osgFFmpeg
+{
 FFmpegParameters::FFmpegParameters() :
     m_format(0),
     m_context(0),
@@ -41,12 +42,13 @@ FFmpegParameters::~FFmpegParameters()
 }
 
 
-void FFmpegParameters::parse(const std::string& name, const std::string& value)
+void FFmpegParameters::parse(const std::string&name, const std::string&value)
 {
     if (value.empty())
     {
         return;
     }
+
     if (name == "format")
     {
 #ifndef ANDROID
@@ -54,14 +56,11 @@ void FFmpegParameters::parse(const std::string& name, const std::string& value)
 #endif
         m_format = av_find_input_format(value.c_str());
         if (!m_format)
-            OSG_NOTICE<<"Failed to apply input video format: "<<value.c_str()<<std::endl;
+            OSG_NOTICE << "Failed to apply input video format: " << value.c_str() << std::endl;
     }
     else if (name == "frame_rate")
         av_dict_set(&m_options, "framerate", value.c_str(), 0);
     else
         av_dict_set(&m_options, name.c_str(), value.c_str(), 0);
 }
-
-
-
 } // namespace osgFFmpeg

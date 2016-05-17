@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgUtil/GLObjectsVisitor>
 
 #include <osg/Drawable>
@@ -18,7 +18,6 @@
 
 namespace osgUtil
 {
-
 /////////////////////////////////////////////////////////////////
 //
 // GLObjectsVisitor
@@ -28,10 +27,9 @@ GLObjectsVisitor::GLObjectsVisitor(Mode mode)
     setTraversalMode(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN);
 
     _mode = mode;
-
 }
 
-void GLObjectsVisitor::apply(osg::Node& node)
+void GLObjectsVisitor::apply(osg::Node&node)
 {
     bool programSetBefore = _lastCompiledProgram.valid();
 
@@ -42,18 +40,18 @@ void GLObjectsVisitor::apply(osg::Node& node)
 
     traverse(node);
 
-    bool programSetAfter = _renderInfo.getState()!=0 && _renderInfo.getState()->getLastAppliedProgramObject()!=0;
+    bool programSetAfter = _renderInfo.getState() != 0 && _renderInfo.getState()->getLastAppliedProgramObject() != 0;
     if (programSetBefore && !programSetAfter)
     {
-        osg::State* state = _renderInfo.getState();
-        osg::GLExtensions* extensions = state->get<osg::GLExtensions>();
+        osg::State        *state      = _renderInfo.getState();
+        osg::GLExtensions *extensions = state->get<osg::GLExtensions>();
         extensions->glUseProgram(0);
         state->setLastAppliedProgramObject(0);
         _lastCompiledProgram = 0;
     }
 }
 
-void GLObjectsVisitor::apply(osg::Geode& node)
+void GLObjectsVisitor::apply(osg::Geode&node)
 {
     bool programSetBefore = _lastCompiledProgram.valid();
 
@@ -67,47 +65,48 @@ void GLObjectsVisitor::apply(osg::Geode& node)
     bool programSetAfter = _lastCompiledProgram.valid();
     if (!programSetBefore && programSetAfter)
     {
-        osg::State* state = _renderInfo.getState();
-        osg::GLExtensions* extensions = state->get<osg::GLExtensions>();
+        osg::State        *state      = _renderInfo.getState();
+        osg::GLExtensions *extensions = state->get<osg::GLExtensions>();
         extensions->glUseProgram(0);
         state->setLastAppliedProgramObject(0);
         _lastCompiledProgram = 0;
     }
 }
 
-void GLObjectsVisitor::apply(osg::Drawable& drawable)
+void GLObjectsVisitor::apply(osg::Drawable&drawable)
 {
-    if (_drawablesAppliedSet.count(&drawable)!=0) return;
+    if (_drawablesAppliedSet.count(&drawable) != 0)
+        return;
 
     _drawablesAppliedSet.insert(&drawable);
 
-    if (_mode&SWITCH_OFF_DISPLAY_LISTS)
+    if (_mode & SWITCH_OFF_DISPLAY_LISTS)
     {
         drawable.setUseDisplayList(false);
     }
 
-    if (_mode&SWITCH_ON_DISPLAY_LISTS)
+    if (_mode & SWITCH_ON_DISPLAY_LISTS)
     {
         drawable.setUseDisplayList(true);
     }
 
-    if (_mode&SWITCH_ON_VERTEX_BUFFER_OBJECTS)
+    if (_mode & SWITCH_ON_VERTEX_BUFFER_OBJECTS)
     {
         drawable.setUseVertexBufferObjects(true);
     }
 
-    if (_mode&SWITCH_OFF_VERTEX_BUFFER_OBJECTS)
+    if (_mode & SWITCH_OFF_VERTEX_BUFFER_OBJECTS)
     {
         drawable.setUseVertexBufferObjects(false);
     }
 
-    if (_mode&COMPILE_DISPLAY_LISTS && _renderInfo.getState() &&
+    if (_mode & COMPILE_DISPLAY_LISTS && _renderInfo.getState() &&
         (drawable.getUseDisplayList() || drawable.getUseVertexBufferObjects()))
     {
         drawable.compileGLObjects(_renderInfo);
     }
 
-    if (_mode&RELEASE_DISPLAY_LISTS)
+    if (_mode & RELEASE_DISPLAY_LISTS)
     {
         drawable.releaseGLObjects(_renderInfo.getState());
     }
@@ -118,9 +117,10 @@ void GLObjectsVisitor::apply(osg::Drawable& drawable)
     }
 }
 
-void GLObjectsVisitor::apply(osg::StateSet& stateset)
+void GLObjectsVisitor::apply(osg::StateSet&stateset)
 {
-    if (_stateSetAppliedSet.count(&stateset)!=0) return;
+    if (_stateSetAppliedSet.count(&stateset) != 0)
+        return;
 
     _stateSetAppliedSet.insert(&stateset);
 
@@ -128,9 +128,10 @@ void GLObjectsVisitor::apply(osg::StateSet& stateset)
     {
         stateset.compileGLObjects(*_renderInfo.getState());
 
-        osg::Program* program = dynamic_cast<osg::Program*>(stateset.getAttribute(osg::StateAttribute::PROGRAM));
-        if (program) {
-            if( program->isFixedFunction() )
+        osg::Program *program = dynamic_cast<osg::Program*>(stateset.getAttribute(osg::StateAttribute::PROGRAM));
+        if (program)
+        {
+            if (program->isFixedFunction())
                 _lastCompiledProgram = NULL; // It does not make sense to apply uniforms on fixed pipe
             else
                 _lastCompiledProgram = program;
@@ -138,30 +139,30 @@ void GLObjectsVisitor::apply(osg::StateSet& stateset)
 
         if (_lastCompiledProgram.valid() && !stateset.getUniformList().empty())
         {
-            osg::Program::PerContextProgram* pcp = _lastCompiledProgram->getPCP(*_renderInfo.getState());
+            osg::Program::PerContextProgram *pcp = _lastCompiledProgram->getPCP(*_renderInfo.getState());
             if (pcp)
             {
                 pcp->useProgram();
 
                 _renderInfo.getState()->setLastAppliedProgramObject(pcp);
 
-                const osg::StateSet::UniformList& ul = stateset.getUniformList();
-                for(osg::StateSet::UniformList::const_iterator itr = ul.begin();
-                    itr != ul.end();
-                    ++itr)
+                const osg::StateSet::UniformList&ul = stateset.getUniformList();
+
+                for (osg::StateSet::UniformList::const_iterator itr = ul.begin();
+                     itr != ul.end();
+                     ++itr)
                 {
                     pcp->apply(*(itr->second.first));
                 }
             }
         }
-        else if(_renderInfo.getState()->getLastAppliedProgramObject())
+        else if (_renderInfo.getState()->getLastAppliedProgramObject())
         {
-            osg::State* state = _renderInfo.getState();
-            osg::GLExtensions* extensions = state->get<osg::GLExtensions>();
+            osg::State        *state      = _renderInfo.getState();
+            osg::GLExtensions *extensions = state->get<osg::GLExtensions>();
             extensions->glUseProgram(0);
             _renderInfo.getState()->setLastAppliedProgramObject(0);
         }
-
     }
 
     if (_mode & RELEASE_STATE_ATTRIBUTES)
@@ -180,22 +181,20 @@ void GLObjectsVisitor::apply(osg::StateSet& stateset)
 // GLObjectsOperation
 //
 
-GLObjectsOperation::GLObjectsOperation(GLObjectsVisitor::Mode mode):
+GLObjectsOperation::GLObjectsOperation(GLObjectsVisitor::Mode mode) :
     osg::Referenced(true),
-    osg::GraphicsOperation("GLObjectOperation",false),
+    osg::GraphicsOperation("GLObjectOperation", false),
     _mode(mode)
-{
-}
+{}
 
-GLObjectsOperation::GLObjectsOperation(osg::Node* subgraph, GLObjectsVisitor::Mode mode):
+GLObjectsOperation::GLObjectsOperation(osg::Node *subgraph, GLObjectsVisitor::Mode mode) :
     osg::Referenced(true),
-    osg::GraphicsOperation("GLObjectOperation",false),
+    osg::GraphicsOperation("GLObjectOperation", false),
     _subgraph(subgraph),
     _mode(mode)
-{
-}
+{}
 
-void GLObjectsOperation::operator () (osg::GraphicsContext* context)
+void GLObjectsOperation::operator ()(osg::GraphicsContext *context)
 {
     GLObjectsVisitor glObjectsVisitor(_mode);
 
@@ -210,15 +209,14 @@ void GLObjectsOperation::operator () (osg::GraphicsContext* context)
     }
     else
     {
-        for(osg::GraphicsContext::Cameras::iterator itr = context->getCameras().begin();
-            itr != context->getCameras().end();
-            ++itr)
+        for (osg::GraphicsContext::Cameras::iterator itr = context->getCameras().begin();
+             itr != context->getCameras().end();
+             ++itr)
         {
             (*itr)->accept(glObjectsVisitor);
         }
     }
+
     // OSG_NOTICE<<"GLObjectsOperation::after >>>>>>>>>>> "<<std::endl;
 }
-
-
 } // end of namespace osgUtil

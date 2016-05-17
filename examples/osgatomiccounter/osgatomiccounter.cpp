@@ -7,7 +7,7 @@
  * This application is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
+ */
 
 #include <osg/BufferIndexBinding>
 #include <osg/BufferObject>
@@ -34,98 +34,99 @@
 
 class AdaptNumPixelUniform : public osg::Camera::DrawCallback
 {
-    public:
-        AdaptNumPixelUniform()
-        {
-            _atomicCounterArray = new osg::UIntArray;
-            _atomicCounterArray->push_back(0);
-        }
+public:
+AdaptNumPixelUniform()
+{
+    _atomicCounterArray = new osg::UIntArray;
+    _atomicCounterArray->push_back(0);
+}
 
-        virtual void operator () (osg::RenderInfo& renderInfo) const
-        {
-            _acbb->readData(*renderInfo.getState(), *_atomicCounterArray);
-            unsigned int numPixel = osg::maximum(1u, _atomicCounterArray->front());
+virtual void operator ()(osg::RenderInfo&renderInfo) const
+{
+    _acbb->readData(*renderInfo.getState(), *_atomicCounterArray);
+    unsigned int numPixel = osg::maximum(1u, _atomicCounterArray->front());
 
-            if ((renderInfo.getView()->getFrameStamp()->getFrameNumber() % 10) == 0)
-            {
-                OSG_INFO << "osgatomiccounter : draw " << numPixel << " pixels." << std::endl;
-            }
+    if ((renderInfo.getView()->getFrameStamp()->getFrameNumber() % 10) == 0)
+    {
+        OSG_INFO << "osgatomiccounter : draw " << numPixel << " pixels." << std::endl;
+    }
 
-            _invNumPixelUniform->set( 1.0f / static_cast<float>(numPixel) );
-        }
+    _invNumPixelUniform->set(1.0f / static_cast<float>(numPixel));
+}
 
-        osg::ref_ptr<osg::Uniform> _invNumPixelUniform;
-        osg::ref_ptr<osg::UIntArray> _atomicCounterArray;
-        osg::ref_ptr<osg::AtomicCounterBufferBinding> _acbb;
+osg::ref_ptr<osg::Uniform>                    _invNumPixelUniform;
+osg::ref_ptr<osg::UIntArray>                  _atomicCounterArray;
+osg::ref_ptr<osg::AtomicCounterBufferBinding> _acbb;
 };
 
 
-osg::Program * createProgram()
+osg::Program* createProgram()
 {
+    std::stringstream vp;
 
-  std::stringstream vp;
-  vp << "#version 420 compatibility\n"
-     << "\n"
-     << "void main(void)\n"
-     << "{\n"
-     << "    gl_Position = ftransform();\n"
-     << "}\n";
-  osg::Shader * vpShader = new osg::Shader( osg::Shader::VERTEX, vp.str() );
+    vp << "#version 420 compatibility\n"
+       << "\n"
+       << "void main(void)\n"
+       << "{\n"
+       << "    gl_Position = ftransform();\n"
+       << "}\n";
+    osg::Shader *vpShader = new osg::Shader(osg::Shader::VERTEX, vp.str());
 
 
 
-  std::stringstream fp;
-  fp << "#version 420 compatibility\n"
-     << "\n"
-     << "layout(binding = 0) uniform atomic_uint acRed;\n"
-     << "layout(binding = 0, offset = 4) uniform atomic_uint acGreen;\n"
-     << "layout(binding = 2) uniform atomic_uint acBlue;\n"
-     << "\n"
-     << "uniform float invNumPixel;\n"
-     << "\n"
-     << "void main(void)\n"
-     << "{\n"
-     << "    float r = float(atomicCounterIncrement(acRed)) * invNumPixel;\n"
-     << "    float g = float(atomicCounterIncrement(acGreen)) * invNumPixel;\n"
-     << "    float b = float(atomicCounterIncrement(acBlue)) * invNumPixel;\n"
-     << "    gl_FragColor = vec4(r, g, b, 1.0);\n"
-     << "}\n"
-     << "\n";
-  osg::Shader * fpShader = new osg::Shader( osg::Shader::FRAGMENT, fp.str() );
+    std::stringstream fp;
+    fp << "#version 420 compatibility\n"
+       << "\n"
+       << "layout(binding = 0) uniform atomic_uint acRed;\n"
+       << "layout(binding = 0, offset = 4) uniform atomic_uint acGreen;\n"
+       << "layout(binding = 2) uniform atomic_uint acBlue;\n"
+       << "\n"
+       << "uniform float invNumPixel;\n"
+       << "\n"
+       << "void main(void)\n"
+       << "{\n"
+       << "    float r = float(atomicCounterIncrement(acRed)) * invNumPixel;\n"
+       << "    float g = float(atomicCounterIncrement(acGreen)) * invNumPixel;\n"
+       << "    float b = float(atomicCounterIncrement(acBlue)) * invNumPixel;\n"
+       << "    gl_FragColor = vec4(r, g, b, 1.0);\n"
+       << "}\n"
+       << "\n";
+    osg::Shader *fpShader = new osg::Shader(osg::Shader::FRAGMENT, fp.str());
 
-  osg::Program * program = new osg::Program;
-  program->addShader(vpShader);
-  program->addShader(fpShader);
+    osg::Program *program = new osg::Program;
+    program->addShader(vpShader);
+    program->addShader(fpShader);
 
-  return program;
+    return program;
 }
 
 class ResetAtomicCounter : public osg::StateAttributeCallback
 {
-    public:
-        virtual void operator () (osg::StateAttribute* sa, osg::NodeVisitor*)
+public:
+virtual void operator ()(osg::StateAttribute *sa, osg::NodeVisitor*)
+{
+    osg::AtomicCounterBufferBinding *acbb = dynamic_cast<osg::AtomicCounterBufferBinding*>(sa);
+
+    if (acbb)
+    {
+        osg::AtomicCounterBufferObject *acbo = dynamic_cast<osg::AtomicCounterBufferObject*>(acbb->getBufferObject());
+        if (acbo && acbo->getBufferData(0))
         {
-            osg::AtomicCounterBufferBinding * acbb = dynamic_cast<osg::AtomicCounterBufferBinding *>(sa);
-            if (acbb)
-            {
-                osg::AtomicCounterBufferObject * acbo = dynamic_cast<osg::AtomicCounterBufferObject*>(acbb->getBufferObject());
-                if (acbo && acbo->getBufferData(0))
-                {
-                    acbo->getBufferData(0)->dirty();
-                }
-            }
+            acbo->getBufferData(0)->dirty();
         }
+    }
+}
 };
 
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     arguments.getApplicationUsage()->setApplicationName(arguments.getApplicationName());
-    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName()+" is a simple example which show draw order of pixel.");
-    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName()+" [options] filename ...");
+    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName() + " is a simple example which show draw order of pixel.");
+    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName() + " [options] filename ...");
 
     osgViewer::Viewer viewer(arguments);
 
@@ -144,10 +145,10 @@ int main(int argc, char** argv)
     }
 
     // set up the camera manipulators.
-    viewer.setCameraManipulator( new osgGA::TrackballManipulator() );
+    viewer.setCameraManipulator(new osgGA::TrackballManipulator());
 
     // add the state manipulator
-    viewer.addEventHandler( new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()) );
+    viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 
     // add the thread model handler
     viewer.addEventHandler(new osgViewer::ThreadingHandler);
@@ -168,11 +169,11 @@ int main(int argc, char** argv)
     osg::ref_ptr<osg::Node> loadedModel = osgDB::readNodeFiles(arguments);
     if (!loadedModel)
     {
-        osg::Geometry * quad = osg::createTexturedQuadGeometry(osg::Vec3f(-2.0f, 0.0f, -2.0f),
-                                                          osg::Vec3f(2.0f, 0.0f, 0.0f),
-                                                          osg::Vec3f(0.0f, 0.0f, 2.0f) );
+        osg::Geometry *quad = osg::createTexturedQuadGeometry(osg::Vec3f(-2.0f, 0.0f, -2.0f),
+                                                              osg::Vec3f(2.0f, 0.0f, 0.0f),
+                                                              osg::Vec3f(0.0f, 0.0f, 2.0f));
 
-        osg::Geode * geode = new osg::Geode;
+        osg::Geode *geode = new osg::Geode;
         geode->addDrawable(quad);
         loadedModel = geode;
     }
@@ -188,8 +189,8 @@ int main(int argc, char** argv)
     }
 
 
-    osg::StateSet * ss = loadedModel->asGeode()->getDrawable(0)->getOrCreateStateSet();
-    ss->setAttributeAndModes( createProgram(), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE | osg::StateAttribute::PROTECTED );
+    osg::StateSet *ss = loadedModel->asGeode()->getDrawable(0)->getOrCreateStateSet();
+    ss->setAttributeAndModes(createProgram(), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE | osg::StateAttribute::PROTECTED);
 
     ss = loadedModel->getOrCreateStateSet();
     osg::ref_ptr<osg::UIntArray> atomicCounterArrayRedAndGreen = new osg::UIntArray;
@@ -207,7 +208,7 @@ int main(int argc, char** argv)
     acboBlue->setUsage(GL_STREAM_COPY);
     atomicCounterArrayBlue->setBufferObject(acboBlue.get());
 
-    osg::ref_ptr<osg::AtomicCounterBufferBinding> acbbRedAndGreen = new osg::AtomicCounterBufferBinding(0, acboRedAndGreen.get(), 0, sizeof(GLuint)*3);
+    osg::ref_ptr<osg::AtomicCounterBufferBinding> acbbRedAndGreen = new osg::AtomicCounterBufferBinding(0, acboRedAndGreen.get(), 0, sizeof(GLuint) * 3);
     ss->setAttributeAndModes(acbbRedAndGreen.get());
 
     osg::ref_ptr<osg::AtomicCounterBufferBinding> acbbBlue = new osg::AtomicCounterBufferBinding(2, acboBlue.get(), 0, sizeof(GLuint));
@@ -216,12 +217,12 @@ int main(int argc, char** argv)
     acbbRedAndGreen->setUpdateCallback(new ResetAtomicCounter);
     acbbBlue->setUpdateCallback(new ResetAtomicCounter);
 
-    osg::ref_ptr<osg::Uniform> invNumPixelUniform = new osg::Uniform("invNumPixel", 1.0f/(800.0f*600.0f));
-    ss->addUniform( invNumPixelUniform.get() );
+    osg::ref_ptr<osg::Uniform> invNumPixelUniform = new osg::Uniform("invNumPixel", 1.0f / (800.0f * 600.0f));
+    ss->addUniform(invNumPixelUniform.get());
 
-    AdaptNumPixelUniform * drawCallback = new AdaptNumPixelUniform;
+    AdaptNumPixelUniform *drawCallback = new AdaptNumPixelUniform;
     drawCallback->_invNumPixelUniform = invNumPixelUniform;
-    drawCallback->_acbb = acbbBlue;
+    drawCallback->_acbb               = acbbBlue;
 
     viewer.getCamera()->setFinalDrawCallback(drawCallback);
 
@@ -229,10 +230,9 @@ int main(int argc, char** argv)
     osgUtil::Optimizer optimizer;
     optimizer.optimize(loadedModel.get());
 
-    viewer.setSceneData( loadedModel.get() );
+    viewer.setSceneData(loadedModel.get());
 
     viewer.realize();
 
     return viewer.run();
-
 }

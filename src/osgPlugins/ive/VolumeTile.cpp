@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "VolumeTile.h"
@@ -21,13 +21,13 @@
 
 using namespace ive;
 
-void VolumeTile::write(DataOutputStream* out)
+void VolumeTile::write(DataOutputStream *out)
 {
     // Write VolumeTile's identification.
     out->writeInt(IVEVOLUMETILE);
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Group*  group = dynamic_cast<osg::Group*>(this);
-    if(group)
+    osg::Group *group = dynamic_cast<osg::Group*>(this);
+    if (group)
         ((ive::Group*)(group))->write(out);
     else
         out_THROW_EXCEPTION("VolumeTile::write(): Could not cast this osgVolume::VolumeTile to an osg::Group.");
@@ -37,20 +37,21 @@ void VolumeTile::write(DataOutputStream* out)
     out->writeVolumeLayer(getLayer());
 
     writeVolumeTechnique(out, getVolumeTechnique());
-
 }
 
-void VolumeTile::read(DataInputStream* in)
+void VolumeTile::read(DataInputStream *in)
 {
     // Peek on VolumeTile's identification.
     int id = in->peekInt();
-    if (id != IVEVOLUMETILE) in_THROW_EXCEPTION("VolumeTile::read(): Expected Volume identification.");
+
+    if (id != IVEVOLUMETILE)
+        in_THROW_EXCEPTION("VolumeTile::read(): Expected Volume identification.");
 
     // Read VolumeTile's identification.
     id = in->readInt();
     // If the osg class is inherited by any other class we should also read this from file.
-    osg::Group*  group = dynamic_cast<osg::Group*>(this);
-    if(group)
+    osg::Group *group = dynamic_cast<osg::Group*>(this);
+    if (group)
         ((ive::Group*)(group))->read(in);
     else
         in_THROW_EXCEPTION("VolumeTile::read(): Could not cast this osgVolume::VolumeTile to an osg::Group.");
@@ -61,13 +62,14 @@ void VolumeTile::read(DataInputStream* in)
     setVolumeTechnique(readVolumeTechnique(in));
 }
 
-void VolumeTile::writeVolumeTechnique(DataOutputStream* out, osgVolume::VolumeTechnique* technique)
+void VolumeTile::writeVolumeTechnique(DataOutputStream *out, osgVolume::VolumeTechnique *technique)
 {
     if (dynamic_cast<osgVolume::RayTracedTechnique*>(technique))
     {
         out->writeBool(true);
         out->writeInt(IVEVOLUMERAYTRACEDTECHNIQUE);
     }
+
     if (dynamic_cast<osgVolume::FixedFunctionTechnique*>(technique))
     {
         out->writeBool(true);
@@ -79,17 +81,19 @@ void VolumeTile::writeVolumeTechnique(DataOutputStream* out, osgVolume::VolumeTe
     }
 }
 
-osgVolume::VolumeTechnique* VolumeTile::readVolumeTechnique(DataInputStream* in)
+osgVolume::VolumeTechnique* VolumeTile::readVolumeTechnique(DataInputStream *in)
 {
     bool hasTechnique = in->readBool();
-    if (!hasTechnique) return 0;
+
+    if (!hasTechnique)
+        return 0;
 
     int id = in->readInt();
-    if (id==IVEVOLUMERAYTRACEDTECHNIQUE)
+    if (id == IVEVOLUMERAYTRACEDTECHNIQUE)
     {
         return new osgVolume::RayTracedTechnique;
     }
-    else if (id==IVEVOLUMEFIXEDPIPELINETECHNIQUE)
+    else if (id == IVEVOLUMEFIXEDPIPELINETECHNIQUE)
     {
         return new osgVolume::FixedFunctionTechnique;
     }

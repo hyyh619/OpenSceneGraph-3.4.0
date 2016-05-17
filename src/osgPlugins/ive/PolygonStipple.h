@@ -4,11 +4,13 @@
 #include <osg/PolygonStipple>
 #include "ReadWrite.h"
 
-namespace ive{
-class PolygonStipple : public osg::PolygonStipple, public ReadWrite {
+namespace ive
+{
+class PolygonStipple : public osg::PolygonStipple, public ReadWrite
+{
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

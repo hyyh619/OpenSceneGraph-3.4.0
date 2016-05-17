@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool TerrainTile_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool TerrainTile_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool TerrainTile_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool TerrainTile_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(TerrainTile_Proxy)
 (
@@ -25,60 +25,73 @@ REGISTER_DOTOSGWRAPPER(TerrainTile_Proxy)
     TerrainTile_writeLocalData
 );
 
-bool TerrainTile_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool TerrainTile_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgTerrain::TerrainTile& terrainTile = static_cast<osgTerrain::TerrainTile&>(obj);
+    osgTerrain::TerrainTile&terrainTile = static_cast<osgTerrain::TerrainTile&>(obj);
 
     bool itrAdvanced = false;
 
     osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgTerrain::Locator>());
-    if (readObject.valid()) itrAdvanced = true;
+
+    if (readObject.valid())
+        itrAdvanced = true;
 
     std::string blendingPolicy;
-    if (fr.read("BlendingPolicy",blendingPolicy))
+    if (fr.read("BlendingPolicy", blendingPolicy))
     {
-        if (blendingPolicy == "INHERIT") terrainTile.setBlendingPolicy(osgTerrain::TerrainTile::INHERIT);
-        else if (blendingPolicy == "DO_NOT_SET_BLENDING") terrainTile.setBlendingPolicy(osgTerrain::TerrainTile::DO_NOT_SET_BLENDING);
-        else if (blendingPolicy == "ENABLE_BLENDING") terrainTile.setBlendingPolicy(osgTerrain::TerrainTile::ENABLE_BLENDING);
-        else if (blendingPolicy == "ENABLE_BLENDING_WHEN_ALPHA_PRESENT") terrainTile.setBlendingPolicy(osgTerrain::TerrainTile::ENABLE_BLENDING_WHEN_ALPHA_PRESENT);
+        if (blendingPolicy == "INHERIT")
+            terrainTile.setBlendingPolicy(osgTerrain::TerrainTile::INHERIT);
+        else if (blendingPolicy == "DO_NOT_SET_BLENDING")
+            terrainTile.setBlendingPolicy(osgTerrain::TerrainTile::DO_NOT_SET_BLENDING);
+        else if (blendingPolicy == "ENABLE_BLENDING")
+            terrainTile.setBlendingPolicy(osgTerrain::TerrainTile::ENABLE_BLENDING);
+        else if (blendingPolicy == "ENABLE_BLENDING_WHEN_ALPHA_PRESENT")
+            terrainTile.setBlendingPolicy(osgTerrain::TerrainTile::ENABLE_BLENDING_WHEN_ALPHA_PRESENT);
     }
 
-    osgTerrain::Locator* locator = dynamic_cast<osgTerrain::Locator*>(readObject.get());
-    if (locator) terrainTile.setLocator(locator);
+    osgTerrain::Locator *locator = dynamic_cast<osgTerrain::Locator*>(readObject.get());
+    if (locator)
+        terrainTile.setLocator(locator);
 
     if (fr.matchSequence("ElevationLayer {"))
     {
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
             bool localAdvanced = false;
 
             osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgTerrain::Locator>());
-            osgTerrain::Locator* locator = dynamic_cast<osgTerrain::Locator*>(readObject.get());
-            if (readObject.valid()) localAdvanced = true;
+            osgTerrain::Locator       *locator   = dynamic_cast<osgTerrain::Locator*>(readObject.get());
+            if (readObject.valid())
+                localAdvanced = true;
 
-            unsigned int minLevel=0;
-            if (fr.read("MinLevel",minLevel))
+            unsigned int minLevel = 0;
+            if (fr.read("MinLevel", minLevel))
             {
                 itrAdvanced = true;
             }
 
             unsigned int maxLevel = MAXIMUM_NUMBER_OF_LEVELS;
-            if (fr.read("MaxLevel",maxLevel))
+            if (fr.read("MaxLevel", maxLevel))
             {
                 itrAdvanced = true;
             }
 
-            if (fr.matchSequence("ProxyLayer %s") || fr.matchSequence("ProxyLayer %w") )
+            if (fr.matchSequence("ProxyLayer %s") || fr.matchSequence("ProxyLayer %w"))
             {
-                osgTerrain::ProxyLayer* proxyLayer = new osgTerrain::ProxyLayer;
+                osgTerrain::ProxyLayer *proxyLayer = new osgTerrain::ProxyLayer;
                 proxyLayer->setFileName(fr[1].getStr());
 
-                if (locator) proxyLayer->setLocator(locator);
-                if (minLevel!=0) proxyLayer->setMinLevel(minLevel);
-                if (maxLevel!=MAXIMUM_NUMBER_OF_LEVELS) proxyLayer->setMaxLevel(maxLevel);
+                if (locator)
+                    proxyLayer->setLocator(locator);
+
+                if (minLevel != 0)
+                    proxyLayer->setMinLevel(minLevel);
+
+                if (maxLevel != MAXIMUM_NUMBER_OF_LEVELS)
+                    proxyLayer->setMaxLevel(maxLevel);
 
                 terrainTile.setElevationLayer(proxyLayer);
 
@@ -89,27 +102,34 @@ bool TerrainTile_readLocalData(osg::Object& obj, osgDB::Input &fr)
             else
             {
                 osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgTerrain::Layer>());
-                osgTerrain::Layer* readLayer = dynamic_cast<osgTerrain::Layer*>(readObject.get());
+                osgTerrain::Layer         *readLayer = dynamic_cast<osgTerrain::Layer*>(readObject.get());
                 if (readLayer)
                 {
-                    if (locator) readLayer->setLocator(locator);
-                    if (minLevel!=0) readLayer->setMinLevel(minLevel);
-                    if (maxLevel!=MAXIMUM_NUMBER_OF_LEVELS) readLayer->setMaxLevel(maxLevel);
+                    if (locator)
+                        readLayer->setLocator(locator);
+
+                    if (minLevel != 0)
+                        readLayer->setMinLevel(minLevel);
+
+                    if (maxLevel != MAXIMUM_NUMBER_OF_LEVELS)
+                        readLayer->setMaxLevel(maxLevel);
 
                     terrainTile.setElevationLayer(readLayer);
                 }
 
-                if (readObject.valid()) localAdvanced = true;
+                if (readObject.valid())
+                    localAdvanced = true;
             }
 
-            if (!localAdvanced) ++fr;
+            if (!localAdvanced)
+                ++fr;
         }
 
         itrAdvanced = true;
     }
 
     bool firstMatched = false;
-    if ((firstMatched = fr.matchSequence("ColorLayer %i {")) || fr.matchSequence("ColorLayer {") )
+    if ((firstMatched = fr.matchSequence("ColorLayer %i {")) || fr.matchSequence("ColorLayer {"))
     {
         unsigned int layerNum = 0;
         if (firstMatched)
@@ -121,35 +141,41 @@ bool TerrainTile_readLocalData(osg::Object& obj, osgDB::Input &fr)
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
             bool localAdvanced = false;
 
             osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgTerrain::Locator>());
-            osgTerrain::Locator* locator = dynamic_cast<osgTerrain::Locator*>(readObject.get());
-            if (readObject.valid()) localAdvanced = true;
+            osgTerrain::Locator       *locator   = dynamic_cast<osgTerrain::Locator*>(readObject.get());
+            if (readObject.valid())
+                localAdvanced = true;
 
-            unsigned int minLevel=0;
-            if (fr.read("MinLevel",minLevel))
+            unsigned int minLevel = 0;
+            if (fr.read("MinLevel", minLevel))
             {
                 itrAdvanced = true;
             }
 
             unsigned int maxLevel = MAXIMUM_NUMBER_OF_LEVELS;
-            if (fr.read("MaxLevel",maxLevel))
+            if (fr.read("MaxLevel", maxLevel))
             {
                 itrAdvanced = true;
             }
 
-            if (fr.matchSequence("ProxyFile %s") || fr.matchSequence("ProxyFile %w") )
+            if (fr.matchSequence("ProxyFile %s") || fr.matchSequence("ProxyFile %w"))
             {
-                osg::ref_ptr<osg::Object> image = osgDB::readObjectFile(std::string(fr[1].getStr())+".gdal");
-                osgTerrain::ProxyLayer* proxyLayer = dynamic_cast<osgTerrain::ProxyLayer*>(image.get());
+                osg::ref_ptr<osg::Object> image       = osgDB::readObjectFile(std::string(fr[1].getStr()) + ".gdal");
+                osgTerrain::ProxyLayer    *proxyLayer = dynamic_cast<osgTerrain::ProxyLayer*>(image.get());
                 if (proxyLayer)
                 {
-                    if (locator) proxyLayer->setLocator(locator);
-                    if (minLevel!=0) proxyLayer->setMinLevel(minLevel);
-                    if (maxLevel!=MAXIMUM_NUMBER_OF_LEVELS) proxyLayer->setMaxLevel(maxLevel);
+                    if (locator)
+                        proxyLayer->setLocator(locator);
+
+                    if (minLevel != 0)
+                        proxyLayer->setMinLevel(minLevel);
+
+                    if (maxLevel != MAXIMUM_NUMBER_OF_LEVELS)
+                        proxyLayer->setMaxLevel(maxLevel);
 
                     terrainTile.setColorLayer(layerNum, proxyLayer);
                 }
@@ -161,20 +187,27 @@ bool TerrainTile_readLocalData(osg::Object& obj, osgDB::Input &fr)
             else
             {
                 osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgTerrain::Layer>());
-                osgTerrain::Layer* readLayer = dynamic_cast<osgTerrain::Layer*>(readObject.get());
+                osgTerrain::Layer         *readLayer = dynamic_cast<osgTerrain::Layer*>(readObject.get());
                 if (readLayer)
                 {
-                    if (locator) readLayer->setLocator(locator);
-                    if (minLevel!=0) readLayer->setMinLevel(minLevel);
-                    if (maxLevel!=MAXIMUM_NUMBER_OF_LEVELS) readLayer->setMaxLevel(maxLevel);
+                    if (locator)
+                        readLayer->setLocator(locator);
+
+                    if (minLevel != 0)
+                        readLayer->setMinLevel(minLevel);
+
+                    if (maxLevel != MAXIMUM_NUMBER_OF_LEVELS)
+                        readLayer->setMaxLevel(maxLevel);
 
                     terrainTile.setColorLayer(layerNum, readLayer);
                 }
 
-                if (readObject.valid()) localAdvanced = true;
+                if (readObject.valid())
+                    localAdvanced = true;
             }
 
-            if (!localAdvanced) ++fr;
+            if (!localAdvanced)
+                ++fr;
         }
 
         itrAdvanced = true;
@@ -203,19 +236,23 @@ bool TerrainTile_readLocalData(osg::Object& obj, osgDB::Input &fr)
     return itrAdvanced;
 }
 
-bool TerrainTile_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool TerrainTile_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgTerrain::TerrainTile& terrainTile = static_cast<const osgTerrain::TerrainTile&>(obj);
+    const osgTerrain::TerrainTile&terrainTile = static_cast<const osgTerrain::TerrainTile&>(obj);
 
     int prec = fw.precision();
+
     fw.precision(15);
 
-    switch(terrainTile.getBlendingPolicy())
+    switch (terrainTile.getBlendingPolicy())
     {
-        case(osgTerrain::TerrainTile::INHERIT): fw.indent()<<"BlendingPolicy INHERIT"<<std::endl; break;
-        case(osgTerrain::TerrainTile::DO_NOT_SET_BLENDING): fw.indent()<<"BlendingPolicy DO_NOT_SET_BLENDING"<<std::endl; break;
-        case(osgTerrain::TerrainTile::ENABLE_BLENDING): fw.indent()<<"BlendingPolicy ENABLE_BLENDING"<<std::endl; break;
-        case(osgTerrain::TerrainTile::ENABLE_BLENDING_WHEN_ALPHA_PRESENT): fw.indent()<<"BlendingPolicy ENABLE_BLENDING_WHEN_ALPHA_PRESENT"<<std::endl; break;
+    case (osgTerrain::TerrainTile::INHERIT): fw.indent() << "BlendingPolicy INHERIT" << std::endl; break;
+
+    case (osgTerrain::TerrainTile::DO_NOT_SET_BLENDING): fw.indent() << "BlendingPolicy DO_NOT_SET_BLENDING" << std::endl; break;
+
+    case (osgTerrain::TerrainTile::ENABLE_BLENDING): fw.indent() << "BlendingPolicy ENABLE_BLENDING" << std::endl; break;
+
+    case (osgTerrain::TerrainTile::ENABLE_BLENDING_WHEN_ALPHA_PRESENT): fw.indent() << "BlendingPolicy ENABLE_BLENDING_WHEN_ALPHA_PRESENT" << std::endl; break;
     }
 
     if (terrainTile.getLocator())
@@ -225,32 +262,32 @@ bool TerrainTile_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
 
     if (terrainTile.getElevationLayer())
     {
-        fw.indent()<<"ElevationLayer {"<<std::endl;
+        fw.indent() << "ElevationLayer {" << std::endl;
 
         fw.moveIn();
 
-        const osgTerrain::ProxyLayer* proxyLayer = dynamic_cast<const osgTerrain::ProxyLayer*>(terrainTile.getElevationLayer());
+        const osgTerrain::ProxyLayer *proxyLayer = dynamic_cast<const osgTerrain::ProxyLayer*>(terrainTile.getElevationLayer());
         if (proxyLayer)
         {
             if (!proxyLayer->getFileName().empty())
             {
-                const osgTerrain::Locator* locator = proxyLayer->getLocator();
+                const osgTerrain::Locator *locator = proxyLayer->getLocator();
                 if (locator && !locator->getDefinedInFile())
                 {
                     fw.writeObject(*locator);
                 }
 
-                if (proxyLayer->getMinLevel()!=0)
+                if (proxyLayer->getMinLevel() != 0)
                 {
-                    fw.indent()<<"MinLevel "<<proxyLayer->getMinLevel()<<std::endl;
+                    fw.indent() << "MinLevel " << proxyLayer->getMinLevel() << std::endl;
                 }
 
-                if (proxyLayer->getMaxLevel()!=MAXIMUM_NUMBER_OF_LEVELS)
+                if (proxyLayer->getMaxLevel() != MAXIMUM_NUMBER_OF_LEVELS)
                 {
-                    fw.indent()<<"MaxLevel "<<proxyLayer->getMaxLevel()<<std::endl;
+                    fw.indent() << "MaxLevel " << proxyLayer->getMaxLevel() << std::endl;
                 }
 
-                fw.indent()<<"ProxyLayer "<<proxyLayer->getFileName()<<std::endl;
+                fw.indent() << "ProxyLayer " << proxyLayer->getFileName() << std::endl;
             }
         }
         else if (terrainTile.getElevationLayer())
@@ -260,45 +297,46 @@ bool TerrainTile_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
 
         fw.moveOut();
 
-        fw.indent()<<"}"<<std::endl;
+        fw.indent() << "}" << std::endl;
     }
 
-    for(unsigned int i=0; i<terrainTile.getNumColorLayers(); ++i)
+    for (unsigned int i = 0; i < terrainTile.getNumColorLayers(); ++i)
     {
-        const osgTerrain::Layer* layer = terrainTile.getColorLayer(i);
+        const osgTerrain::Layer *layer = terrainTile.getColorLayer(i);
         if (layer)
         {
-            if (i>0)
+            if (i > 0)
             {
-                fw.indent()<<"ColorLayer "<<i<<" {"<<std::endl;
+                fw.indent() << "ColorLayer " << i << " {" << std::endl;
             }
             else
             {
-                fw.indent()<<"ColorLayer {"<<std::endl;
+                fw.indent() << "ColorLayer {" << std::endl;
             }
 
             fw.moveIn();
 
-            const osgTerrain::ProxyLayer* proxyLayer = dynamic_cast<const osgTerrain::ProxyLayer*>(layer);
+            const osgTerrain::ProxyLayer *proxyLayer = dynamic_cast<const osgTerrain::ProxyLayer*>(layer);
             if (proxyLayer)
             {
-                const osgTerrain::Locator* locator = proxyLayer->getLocator();
+                const osgTerrain::Locator *locator = proxyLayer->getLocator();
                 if (locator && !locator->getDefinedInFile())
                 {
                     fw.writeObject(*locator);
                 }
 
-                if (proxyLayer->getMinLevel()!=0)
+                if (proxyLayer->getMinLevel() != 0)
                 {
-                    fw.indent()<<"MinLevel "<<proxyLayer->getMinLevel()<<std::endl;
+                    fw.indent() << "MinLevel " << proxyLayer->getMinLevel() << std::endl;
                 }
 
-                if (proxyLayer->getMaxLevel()!=MAXIMUM_NUMBER_OF_LEVELS)
+                if (proxyLayer->getMaxLevel() != MAXIMUM_NUMBER_OF_LEVELS)
                 {
-                    fw.indent()<<"MaxLevel "<<proxyLayer->getMaxLevel()<<std::endl;
+                    fw.indent() << "MaxLevel " << proxyLayer->getMaxLevel() << std::endl;
                 }
 
-                if (!proxyLayer->getFileName().empty()) fw.indent()<<"ProxyLayer "<<proxyLayer->getFileName()<<std::endl;
+                if (!proxyLayer->getFileName().empty())
+                    fw.indent() << "ProxyLayer " << proxyLayer->getFileName() << std::endl;
             }
             else if (layer)
             {
@@ -307,7 +345,7 @@ bool TerrainTile_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
 
             fw.moveOut();
 
-            fw.indent()<<"}"<<std::endl;
+            fw.indent() << "}" << std::endl;
         }
     }
 

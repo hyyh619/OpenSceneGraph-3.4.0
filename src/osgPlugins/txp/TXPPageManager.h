@@ -45,13 +45,11 @@ namespace txp
 class TXPPageManager : public trpgPageManager, public osg::Referenced
 {
 public:
-    TXPPageManager();
+TXPPageManager();
 
 protected:
-    virtual ~TXPPageManager();
-
+virtual ~TXPPageManager();
 };
-
 } // namespace
 
 #endif // __TXPPAGEMANAGER_H_

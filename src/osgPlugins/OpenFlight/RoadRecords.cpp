@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // OpenFlight® loader for OpenSceneGraph
@@ -24,78 +24,78 @@
 #include "RecordInputStream.h"
 
 
-namespace flt {
-
+namespace flt
+{
 /** RoadSegment
-*/
+ */
 class RoadSegment : public PrimaryRecord
 {
-    osg::ref_ptr<osg::Group> _roadSegment;
+osg::ref_ptr<osg::Group> _roadSegment;
 
-    public:
+public:
 
-        RoadSegment() {}
+RoadSegment() {}
 
-        META_Record(RoadSegment)
+META_Record(RoadSegment)
 
-        META_setID(_roadSegment)
-        META_setComment(_roadSegment)
-        META_setMultitexture(_roadSegment)
-        META_addChild(_roadSegment)
-        META_dispose(_roadSegment)
+META_setID(_roadSegment)
+META_setComment(_roadSegment)
+META_setMultitexture(_roadSegment)
+META_addChild(_roadSegment)
+META_dispose(_roadSegment)
 
-    protected:
+protected:
 
-        virtual ~RoadSegment() {}
-        virtual void readRecord(RecordInputStream& in, Document& /*document*/)
-        {
-            _roadSegment = new osg::Group;
-            std::string id = in.readString(8);
+virtual ~RoadSegment() {}
+virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+{
+    _roadSegment = new osg::Group;
+    std::string id = in.readString(8);
 
-            _roadSegment->setName(id);
+    _roadSegment->setName(id);
 
-            // Add to parent.
-            if (_parent.valid())
-                _parent->addChild(*_roadSegment);
-        }
+    // Add to parent.
+    if (_parent.valid())
+        _parent->addChild(*_roadSegment);
+}
 };
 
 REGISTER_FLTRECORD(RoadSegment, ROAD_SEGMENT_OP)
 
 
 /** RoadConstruction
-*/
+ */
 class RoadConstruction : public PrimaryRecord
 {
-    osg::ref_ptr<osg::Group> _roadConstruction;
+osg::ref_ptr<osg::Group> _roadConstruction;
 
-    public:
+public:
 
-        RoadConstruction() {}
+RoadConstruction() {}
 
-        META_Record(RoadConstruction)
+META_Record(RoadConstruction)
 
-        META_setID(_roadConstruction)
-        META_setComment(_roadConstruction)
-        META_setMultitexture(_roadConstruction)
-        META_addChild(_roadConstruction)
-        META_dispose(_roadConstruction)
+META_setID(_roadConstruction)
+META_setComment(_roadConstruction)
+META_setMultitexture(_roadConstruction)
+META_addChild(_roadConstruction)
+META_dispose(_roadConstruction)
 
-    protected:
+protected:
 
-        virtual ~RoadConstruction() {}
-        virtual void readRecord(RecordInputStream& in, Document& /*document*/)
-        {
-            _roadConstruction = new osg::Group;
+virtual ~RoadConstruction() {}
+virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+{
+    _roadConstruction = new osg::Group;
 
-            std::string id = in.readString(8);
+    std::string id = in.readString(8);
 
-            _roadConstruction->setName(id);
+    _roadConstruction->setName(id);
 
-            // Add to parent.
-            if (_parent.valid())
-                _parent->addChild(*_roadConstruction);
-        }
+    // Add to parent.
+    if (_parent.valid())
+        _parent->addChild(*_roadConstruction);
+}
 };
 
 REGISTER_FLTRECORD(RoadConstruction, ROAD_CONSTRUCTION_OP)
@@ -103,38 +103,35 @@ REGISTER_FLTRECORD(RoadConstruction, ROAD_CONSTRUCTION_OP)
 
 
 /** RoadPath
-*/
+ */
 class RoadPath : public PrimaryRecord
 {
-    osg::ref_ptr<osg::Group> _roadPath;
+osg::ref_ptr<osg::Group> _roadPath;
 
-    public:
+public:
 
-        RoadPath() {}
+RoadPath() {}
 
-        META_Record(RoadPath)
+META_Record(RoadPath)
 
-        META_setID(_roadPath)
-        META_setComment(_roadPath)
-        META_setMultitexture(_roadPath)
-        META_addChild(_roadPath)
-        META_dispose(_roadPath)
+META_setID(_roadPath)
+META_setComment(_roadPath)
+META_setMultitexture(_roadPath)
+META_addChild(_roadPath)
+META_dispose(_roadPath)
 
-    protected:
+protected:
 
-        virtual ~RoadPath() {}
-        virtual void readRecord(RecordInputStream& /*in*/, Document& /*document*/)
-        {
-            _roadPath = new osg::Group;
+virtual ~RoadPath() {}
+virtual void readRecord(RecordInputStream& /*in*/, Document& /*document*/)
+{
+    _roadPath = new osg::Group;
 
-            // Add to parent.
-            if (_parent.valid())
-                _parent->addChild(*_roadPath);
-        }
+    // Add to parent.
+    if (_parent.valid())
+        _parent->addChild(*_roadPath);
+}
 };
 
 REGISTER_FLTRECORD(RoadPath, ROAD_PATH_OP)
-
-
-
 } // end namespace

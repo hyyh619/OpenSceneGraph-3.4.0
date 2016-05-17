@@ -13,8 +13,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ClipPlane_readLocalData(Object& obj, Input& fr);
-bool ClipPlane_writeLocalData(const Object& obj, Output& fw);
+bool ClipPlane_readLocalData(Object&obj, Input&fr);
+bool ClipPlane_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(ClipPlane)
@@ -27,11 +27,11 @@ REGISTER_DOTOSGWRAPPER(ClipPlane)
 );
 
 
-bool ClipPlane_readLocalData(Object& obj, Input& fr)
+bool ClipPlane_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    ClipPlane& clipplane = static_cast<ClipPlane&>(obj);
+    ClipPlane&clipplane = static_cast<ClipPlane&>(obj);
 
     if (fr.matchSequence("clipPlaneNum %i"))
     {
@@ -39,7 +39,7 @@ bool ClipPlane_readLocalData(Object& obj, Input& fr)
         fr[1].getUInt(num);
         clipplane.setClipPlaneNum(num);
 
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -51,9 +51,9 @@ bool ClipPlane_readLocalData(Object& obj, Input& fr)
         fr[2].getFloat(plane[1]);
         fr[3].getFloat(plane[2]);
         fr[4].getFloat(plane[3]);
-        clipplane.setClipPlane(plane[0],plane[1],plane[2],plane[3]);
+        clipplane.setClipPlane(plane[0], plane[1], plane[2], plane[3]);
 
-        fr+=5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
@@ -61,13 +61,12 @@ bool ClipPlane_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool ClipPlane_writeLocalData(const Object& obj,Output& fw)
+bool ClipPlane_writeLocalData(const Object&obj, Output&fw)
 {
-    const ClipPlane& clipplane = static_cast<const ClipPlane&>(obj);
+    const ClipPlane&clipplane = static_cast<const ClipPlane&>(obj);
 
-    fw.indent() << "clipPlaneNum " << clipplane.getClipPlaneNum() <<std::endl;
+    fw.indent() << "clipPlaneNum " << clipplane.getClipPlaneNum() << std::endl;
 
-    fw.indent() << "plane " << clipplane.getClipPlane()<< std::endl;
+    fw.indent() << "plane " << clipplane.getClipPlane() << std::endl;
     return true;
 }
-

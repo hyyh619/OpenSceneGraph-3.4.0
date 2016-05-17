@@ -6,12 +6,11 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgAnimation_TimelineAnimationManager,
-                         new osgAnimation::TimelineAnimationManager,
-                         osgAnimation::TimelineAnimationManager,
-                         "osg::Object osg::NodeCallback osgAnimation::AnimationManagerBase osgAnimation::TimelineAnimationManager" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgAnimation_TimelineAnimationManager,
+                        new osgAnimation::TimelineAnimationManager,
+                        osgAnimation::TimelineAnimationManager,
+                        "osg::Object osg::NodeCallback osgAnimation::AnimationManagerBase osgAnimation::TimelineAnimationManager")
+{}
 
 #undef OBJECT_CAST
 #define OBJECT_CAST static_cast

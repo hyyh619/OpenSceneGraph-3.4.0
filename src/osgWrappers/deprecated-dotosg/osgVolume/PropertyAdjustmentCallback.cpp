@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool PropertyAdjustmentCallback_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool PropertyAdjustmentCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool PropertyAdjustmentCallback_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool PropertyAdjustmentCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(PropertyAdjustmentCallback_Proxy)
 (
@@ -26,12 +26,12 @@ REGISTER_DOTOSGWRAPPER(PropertyAdjustmentCallback_Proxy)
 );
 
 
-bool PropertyAdjustmentCallback_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool PropertyAdjustmentCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
     return false;
 }
 
-bool PropertyAdjustmentCallback_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool PropertyAdjustmentCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
     return true;
 }

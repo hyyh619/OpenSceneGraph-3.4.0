@@ -1,14 +1,14 @@
 /**********************************************************************
- *
- *    FILE:           Scribe.cpp
- *
- *    DESCRIPTION:    Read/Write osgFX::Scribe in binary format to disk.
- *
- *    CREATED BY:     Liang Aibin
- *
- *    HISTORY:        Created 23.8.2008
- *
- **********************************************************************/
+*
+*    FILE:           Scribe.cpp
+*
+*    DESCRIPTION:    Read/Write osgFX::Scribe in binary format to disk.
+*
+*    CREATED BY:     Liang Aibin
+*
+*    HISTORY:        Created 23.8.2008
+*
+**********************************************************************/
 
 #include "Exception.h"
 #include "Scribe.h"
@@ -16,12 +16,14 @@
 
 using namespace ive;
 
-void Scribe::write(DataOutputStream* out){
+void Scribe::write(DataOutputStream *out)
+{
     // Write Scribe's identification.
     out->writeInt(IVESCRIBE);
     // If the osg class is inherited by any other class we should also write this to file.
-    osgFX::Effect*  effect = dynamic_cast<osgFX::Effect*>(this);
-    if(effect){
+    osgFX::Effect *effect = dynamic_cast<osgFX::Effect*>(this);
+    if (effect)
+    {
         ((ive::Effect*)(effect))->write(out);
     }
     else
@@ -32,16 +34,20 @@ void Scribe::write(DataOutputStream* out){
     out->writeFloat(getWireframeLineWidth());
 }
 
-void Scribe::read(DataInputStream* in){
+void Scribe::read(DataInputStream *in)
+{
     // Peek on Scribe's identification.
     int id = in->peekInt();
-    if(id == IVESCRIBE){
+
+    if (id == IVESCRIBE)
+    {
         // Read Scribe's identification.
         id = in->readInt();
 
         // If the osg class is inherited by any other class we should also read this from file.
-        osgFX::Effect*  effect = dynamic_cast<osgFX::Effect*>(this);
-        if(effect){
+        osgFX::Effect *effect = dynamic_cast<osgFX::Effect*>(this);
+        if (effect)
+        {
             ((ive::Effect*)(effect))->read(in);
         }
         else
@@ -51,7 +57,8 @@ void Scribe::read(DataInputStream* in){
         setWireframeColor(in->readVec4());
         setWireframeLineWidth(in->readFloat());
     }
-    else{
+    else
+    {
         in_THROW_EXCEPTION("Scribe::read(): Expected Scribe identification.");
     }
 }

@@ -18,15 +18,19 @@ using namespace osgAnimation;
 
 ActionAnimation::ActionAnimation() {}
 
-ActionAnimation::ActionAnimation(const ActionAnimation& a, const osg::CopyOp& c) : Action(a,c) { _animation = a._animation;}
+ActionAnimation::ActionAnimation(const ActionAnimation&a, const osg::CopyOp&c) : Action(a, c)
+{
+    _animation = a._animation;
+}
 
-ActionAnimation::ActionAnimation(Animation* animation) : _animation(animation)
+ActionAnimation::ActionAnimation(Animation *animation) : _animation(animation)
 {
     Action::setDuration(animation->getDuration());
+
     setName(animation->getName());
 }
 
 void ActionAnimation::updateAnimation(unsigned int frame, int priority)
 {
-    _animation->update(frame * 1.0/_fps, priority);
+    _animation->update(frame * 1.0 / _fps, priority);
 }

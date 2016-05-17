@@ -7,65 +7,73 @@
 
 class ReaderWriterFreeType : public osgDB::ReaderWriter
 {
-    public:
-        ReaderWriterFreeType()
-        {
-            supportsExtension("ttf","true type font format");
-            supportsExtension("ttc","true type format");
-            supportsExtension("pfb","type1 binary format");
-            supportsExtension("pfa","type2 ascii format");
-            supportsExtension("cid","Postscript CID-Fonts format");
-            supportsExtension("cff","OpenType format");
-            supportsExtension("cef","OpenType format");
-            supportsExtension("fon","Windows bitmap fonts format");
-            supportsExtension("fnt","Windows bitmap fonts format");
-            supportsExtension("text3d","use 3D Font instead of 2D Font");
+public:
+ReaderWriterFreeType()
+{
+    supportsExtension("ttf", "true type font format");
+    supportsExtension("ttc", "true type format");
+    supportsExtension("pfb", "type1 binary format");
+    supportsExtension("pfa", "type2 ascii format");
+    supportsExtension("cid", "Postscript CID-Fonts format");
+    supportsExtension("cff", "OpenType format");
+    supportsExtension("cef", "OpenType format");
+    supportsExtension("fon", "Windows bitmap fonts format");
+    supportsExtension("fnt", "Windows bitmap fonts format");
+    supportsExtension("text3d", "use 3D Font instead of 2D Font");
 
-            supportsOption("monochrome","Select monochrome font.");
-        }
+    supportsOption("monochrome", "Select monochrome font.");
+}
 
-        virtual const char* className() const { return "FreeType Font Reader/Writer"; }
+virtual const char* className() const
+{
+    return "FreeType Font Reader/Writer";
+}
 
-        static unsigned int getFlags(const osgDB::ReaderWriter::Options* options)
-        {
-            unsigned int flags = 0;
-            if (options && options->getOptionString().find("monochrome") != std::string::npos)
-            {
-                flags |= FT_LOAD_MONOCHROME;
-            }
+static unsigned int getFlags(const osgDB::ReaderWriter::Options *options)
+{
+    unsigned int flags = 0;
 
-            return flags;
-        }
+    if (options && options->getOptionString().find("monochrome") != std::string::npos)
+    {
+        flags |= FT_LOAD_MONOCHROME;
+    }
 
-        virtual ReadResult readObject(const std::string& file, const osgDB::ReaderWriter::Options* options) const
-        {
-            std::string ext = osgDB::getLowerCaseFileExtension(file);
-            if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
+    return flags;
+}
 
-            std::string fileName = osgDB::findDataFile( file, options );
-            if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
+virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(file);
 
-            FreeTypeLibrary* freeTypeLibrary = FreeTypeLibrary::instance();
-            if (!freeTypeLibrary)
-            {
-                OSG_WARN<<"Warning:: cannot create freetype font after freetype library has been deleted."<<std::endl;
-                return ReadResult::ERROR_IN_READING_FILE;
-            }
+    if (!acceptsExtension(ext))
+        return ReadResult::FILE_NOT_HANDLED;
 
-            return freeTypeLibrary->getFont(fileName,0,getFlags(options));
-        }
+    std::string fileName = osgDB::findDataFile(file, options);
+    if (fileName.empty())
+        return ReadResult::FILE_NOT_FOUND;
 
-        virtual ReadResult readObject(std::istream& stream, const osgDB::ReaderWriter::Options* options) const
-        {
-            FreeTypeLibrary* freeTypeLibrary = FreeTypeLibrary::instance();
-            if (!freeTypeLibrary)
-            {
-                OSG_WARN<<"Warning:: cannot create freetype font after freetype library has been deleted."<<std::endl;
-                return ReadResult::ERROR_IN_READING_FILE;
-            }
+    FreeTypeLibrary *freeTypeLibrary = FreeTypeLibrary::instance();
+    if (!freeTypeLibrary)
+    {
+        OSG_WARN << "Warning:: cannot create freetype font after freetype library has been deleted." << std::endl;
+        return ReadResult::ERROR_IN_READING_FILE;
+    }
 
-            return freeTypeLibrary->getFont(stream, 0, getFlags(options));
-        }
+    return freeTypeLibrary->getFont(fileName, 0, getFlags(options));
+}
+
+virtual ReadResult readObject(std::istream&stream, const osgDB::ReaderWriter::Options *options) const
+{
+    FreeTypeLibrary *freeTypeLibrary = FreeTypeLibrary::instance();
+
+    if (!freeTypeLibrary)
+    {
+        OSG_WARN << "Warning:: cannot create freetype font after freetype library has been deleted." << std::endl;
+        return ReadResult::ERROR_IN_READING_FILE;
+    }
+
+    return freeTypeLibrary->getFont(stream, 0, getFlags(options));
+}
 };
 
 // now register with Registry to instantiate the above

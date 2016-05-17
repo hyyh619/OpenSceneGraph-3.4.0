@@ -30,9 +30,10 @@
 #include <osg/NodeVisitor>
 #include <stack>
 
-namespace osg {
-   class Light;
-   class Transform;
+namespace osg
+{
+class Light;
+class Transform;
 }
 
 
@@ -40,53 +41,56 @@ class POVWriterNodeVisitor : public osg::NodeVisitor
 {
 public:
 
-   POVWriterNodeVisitor( std::ostream& fout, const osg::BoundingSphere& bound );
-   virtual ~POVWriterNodeVisitor();
+POVWriterNodeVisitor(std::ostream&fout, const osg::BoundingSphere&bound);
+virtual ~POVWriterNodeVisitor();
 
-   void traverse( osg::Node& node );
+void traverse(osg::Node&node);
 
-   virtual void apply( osg::Node &node );
-   virtual void apply( osg::Geode &node );
-  //virtual void apply(osg::Group &node);
+virtual void apply(osg::Node&node);
+virtual void apply(osg::Geode&node);
+// virtual void apply(osg::Group &node);
 
-  //virtual void apply(osg::Billboard& node);
-  //virtual void apply(ProxyNode& node)                 { apply((Group&)node); }
-  //virtual void apply(Projection& node)                { apply((Group&)node); }
-  //virtual void apply(CoordinateSystemNode& node)      { apply((Group&)node); }
+// virtual void apply(osg::Billboard& node);
+// virtual void apply(ProxyNode& node)                 { apply((Group&)node); }
+// virtual void apply(Projection& node)                { apply((Group&)node); }
+// virtual void apply(CoordinateSystemNode& node)      { apply((Group&)node); }
 
-  //virtual void apply(ClipNode& node)                  { apply((Group&)node); }
-  //virtual void apply(TexGenNode& node)                { apply((Group&)node); }
-  //virtual void apply(LightSource& node)               { apply((Group&)node); }
+// virtual void apply(ClipNode& node)                  { apply((Group&)node); }
+// virtual void apply(TexGenNode& node)                { apply((Group&)node); }
+// virtual void apply(LightSource& node)               { apply((Group&)node); }
 
-  virtual void apply( osg::Transform& node );
-  //virtual void apply(Camera& node)                    { apply((Transform&)node); }
-  //virtual void apply(CameraView& node)                { apply((Transform&)node); }
-  //virtual void apply(osg::MatrixTransform& node);
-  //virtual void apply(osg::PositionAttitudeTransform& node);
+virtual void apply(osg::Transform&node);
+// virtual void apply(Camera& node)                    { apply((Transform&)node); }
+// virtual void apply(CameraView& node)                { apply((Transform&)node); }
+// virtual void apply(osg::MatrixTransform& node);
+// virtual void apply(osg::PositionAttitudeTransform& node);
 
-  //virtual void apply(Switch& node)                    { apply((Group&)node); }
-  //virtual void apply(Sequence& node)                  { apply((Group&)node); }
-  //virtual void apply(osg::LOD& node);
-  //virtual void apply(PagedLOD& node)                  { apply((LOD&)node); }
-  //virtual void apply(ClearNode& node)                 { apply((Group&)node); }
-  //virtual void apply(OccluderNode& node)              { apply((Group&)node); }
+// virtual void apply(Switch& node)                    { apply((Group&)node); }
+// virtual void apply(Sequence& node)                  { apply((Group&)node); }
+// virtual void apply(osg::LOD& node);
+// virtual void apply(PagedLOD& node)                  { apply((LOD&)node); }
+// virtual void apply(ClearNode& node)                 { apply((Group&)node); }
+// virtual void apply(OccluderNode& node)              { apply((Group&)node); }
 
-   unsigned int getNumProducedTriangles() const  { return numProducedTriangles; }
+unsigned int getNumProducedTriangles() const
+{
+    return numProducedTriangles;
+}
 protected:
 
-   std::ostream& _fout;
-   osg::BoundingSphere bound;
-   std::stack< osg::ref_ptr< osg::StateSet > > _stateSetStack;
-   std::stack< osg::Matrix > _transformationStack;
-   unsigned int numProducedTriangles;
-   std::map< osg::Light*, int > lights;
+std::ostream                             &_fout;
+osg::BoundingSphere                      bound;
+std::stack<osg::ref_ptr<osg::StateSet> > _stateSetStack;
+std::stack<osg::Matrix>                  _transformationStack;
+unsigned int                             numProducedTriangles;
+std::map<osg::Light*, int>               lights;
 
-   void pushStateSet( const osg::StateSet *ss );
-   void popStateSet( const osg::StateSet *ss );
+void pushStateSet(const osg::StateSet *ss);
+void popStateSet(const osg::StateSet *ss);
 
-   virtual void processGeometry( const osg::Geometry *g,
-                                 const osg::StateSet *ss, const osg::Matrix &m );
-   virtual void processLights( const osg::StateSet *ss, const osg::Matrix &m );
+virtual void processGeometry(const osg::Geometry *g,
+                             const osg::StateSet *ss, const osg::Matrix&m);
+virtual void processLights(const osg::StateSet *ss, const osg::Matrix&m);
 };
 
 

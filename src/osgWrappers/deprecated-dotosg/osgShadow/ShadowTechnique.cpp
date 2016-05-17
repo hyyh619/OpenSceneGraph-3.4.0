@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool ShadowTechnique_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool ShadowTechnique_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool ShadowTechnique_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool ShadowTechnique_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ShadowTechnique_Proxy)
 (
@@ -26,7 +26,7 @@ REGISTER_DOTOSGWRAPPER(ShadowTechnique_Proxy)
 
 bool ShadowTechnique_readLocalData(osg::Object& /*obj*/, osgDB::Input& /*fr*/)
 {
-    //osgShadow::ShadowTechnique& ss = static_cast<osgShadow::ShadowTechnique&>(obj);
+    // osgShadow::ShadowTechnique& ss = static_cast<osgShadow::ShadowTechnique&>(obj);
     bool itAdvanced = false;
 
     return itAdvanced;
@@ -34,7 +34,7 @@ bool ShadowTechnique_readLocalData(osg::Object& /*obj*/, osgDB::Input& /*fr*/)
 
 bool ShadowTechnique_writeLocalData(const osg::Object& /*obj*/, osgDB::Output& /*fw*/)
 {
-    //const osgShadow::ShadowTechnique& ss = static_cast<const osgShadow::ShadowTechnique &>(obj);
+    // const osgShadow::ShadowTechnique& ss = static_cast<const osgShadow::ShadowTechnique &>(obj);
 
     return true;
 }

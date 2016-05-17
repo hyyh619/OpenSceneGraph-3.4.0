@@ -4,11 +4,13 @@
 #include <osg/Switch>
 #include "ReadWrite.h"
 
-namespace ive{
-class Switch : public osg::Switch, public ReadWrite {
+namespace ive
+{
+class Switch : public osg::Switch, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

@@ -4,11 +4,13 @@
 #include <osg/TexEnvCombine>
 #include "ReadWrite.h"
 
-namespace ive{
-class TexEnvCombine : public osg::TexEnvCombine, public ReadWrite {
+namespace ive
+{
+class TexEnvCombine : public osg::TexEnvCombine, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

@@ -4,11 +4,13 @@
 #include <osgFX/Effect>
 #include "ReadWrite.h"
 
-namespace ive{
-class Effect : public osgFX::Effect, public ReadWrite {
+namespace ive
+{
+class Effect : public osgFX::Effect, public ReadWrite
+{
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

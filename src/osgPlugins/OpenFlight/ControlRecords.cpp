@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // OpenFlight® loader for OpenSceneGraph
@@ -24,28 +24,26 @@
 #include "Document.h"
 #include "RecordInputStream.h"
 
-namespace flt {
-
-
-
+namespace flt
+{
 /** PushLevel
-*/
+ */
 class PushLevel : public Record
 {
-    public:
+public:
 
-        PushLevel() {}
+PushLevel() {}
 
-        META_Record(PushLevel)
+META_Record(PushLevel)
 
-        virtual void readRecord(RecordInputStream& /*in*/, Document& document)
-        {
-            document.pushLevel();
-        }
+virtual void readRecord(RecordInputStream& /*in*/, Document&document)
+{
+    document.pushLevel();
+}
 
-    protected:
+protected:
 
-        virtual ~PushLevel() {}
+virtual ~PushLevel() {}
 };
 
 REGISTER_FLTRECORD(PushLevel, PUSH_LEVEL_OP)
@@ -53,38 +51,38 @@ REGISTER_FLTRECORD(PushLevel, PUSH_LEVEL_OP)
 
 
 /** PophLevel
-*/
+ */
 class PopLevel : public Record
 {
-    public:
+public:
 
-        PopLevel() {}
+PopLevel() {}
 
-        META_Record(PopLevel)
+META_Record(PopLevel)
 
-        virtual void read(RecordInputStream& /*in*/, Document& document)
-        {
-            PrimaryRecord* parentPrimary = document.getTopOfLevelStack();
-            PrimaryRecord* currentPrimary = document.getCurrentPrimaryRecord();
+virtual void read(RecordInputStream& /*in*/, Document&document)
+{
+    PrimaryRecord *parentPrimary  = document.getTopOfLevelStack();
+    PrimaryRecord *currentPrimary = document.getCurrentPrimaryRecord();
 
-            // Call dispose() for primary without push, pop level pair.
-            if (currentPrimary && currentPrimary!=parentPrimary)
-            {
-                currentPrimary->dispose(document);
-            }
+    // Call dispose() for primary without push, pop level pair.
+    if (currentPrimary && currentPrimary != parentPrimary)
+    {
+        currentPrimary->dispose(document);
+    }
 
-            // Call dispose() for primary with push, pop level pair.
-            if (parentPrimary)
-            {
-                parentPrimary->dispose(document);
-            }
+    // Call dispose() for primary with push, pop level pair.
+    if (parentPrimary)
+    {
+        parentPrimary->dispose(document);
+    }
 
-            document.popLevel();
-        }
+    document.popLevel();
+}
 
-    protected:
+protected:
 
-        virtual ~PopLevel() {}
+virtual ~PopLevel() {}
 };
 
 REGISTER_FLTRECORD(PopLevel, POP_LEVEL_OP)
@@ -92,23 +90,23 @@ REGISTER_FLTRECORD(PopLevel, POP_LEVEL_OP)
 
 
 /** PushSubface
-*/
+ */
 class PushSubface : public Record
 {
-    public:
+public:
 
-        PushSubface() {}
+PushSubface() {}
 
-        META_Record(PushSubface)
+META_Record(PushSubface)
 
-        virtual void read(RecordInputStream& /*in*/, Document& document)
-        {
-            document.pushSubface();
-        }
+virtual void read(RecordInputStream& /*in*/, Document&document)
+{
+    document.pushSubface();
+}
 
-    protected:
+protected:
 
-        virtual ~PushSubface() {}
+virtual ~PushSubface() {}
 };
 
 REGISTER_FLTRECORD(PushSubface, PUSH_SUBFACE_OP)
@@ -116,23 +114,23 @@ REGISTER_FLTRECORD(PushSubface, PUSH_SUBFACE_OP)
 
 
 /** PopSubface
-*/
+ */
 class PopSubface : public Record
 {
-    public:
+public:
 
-        PopSubface() {}
+PopSubface() {}
 
-        META_Record(PopSubface)
+META_Record(PopSubface)
 
-        virtual void read(RecordInputStream& /*in*/, Document& document)
-        {
-            document.popSubface();
-        }
+virtual void read(RecordInputStream& /*in*/, Document&document)
+{
+    document.popSubface();
+}
 
-    protected:
+protected:
 
-        virtual ~PopSubface() {}
+virtual ~PopSubface() {}
 };
 
 REGISTER_FLTRECORD(PopSubface, POP_SUBFACE_OP)
@@ -140,24 +138,24 @@ REGISTER_FLTRECORD(PopSubface, POP_SUBFACE_OP)
 
 
 /** PushExtension
-*/
+ */
 class PushExtension : public Record
 {
-    public:
+public:
 
-        PushExtension() {}
+PushExtension() {}
 
-        META_Record(PushExtension)
+META_Record(PushExtension)
 
-        virtual void read(RecordInputStream& in, Document& document)
-        {
-            readRecord(in,document);
-            document.pushExtension();
-        }
+virtual void read(RecordInputStream&in, Document&document)
+{
+    readRecord(in, document);
+    document.pushExtension();
+}
 
-    protected:
+protected:
 
-        virtual ~PushExtension() {}
+virtual ~PushExtension() {}
 };
 
 REGISTER_FLTRECORD(PushExtension, PUSH_EXTENSION_OP)
@@ -165,24 +163,24 @@ REGISTER_FLTRECORD(PushExtension, PUSH_EXTENSION_OP)
 
 
 /** PopExtension
-*/
+ */
 class PopExtension : public Record
 {
-    public:
+public:
 
-        PopExtension() {}
+PopExtension() {}
 
-        META_Record(PopExtension)
+META_Record(PopExtension)
 
-        virtual void read(RecordInputStream& in, Document& document)
-        {
-            readRecord(in,document);
-            document.popExtension();
-        }
+virtual void read(RecordInputStream&in, Document&document)
+{
+    readRecord(in, document);
+    document.popExtension();
+}
 
-    protected:
+protected:
 
-        virtual ~PopExtension() {}
+virtual ~PopExtension() {}
 };
 
 REGISTER_FLTRECORD(PopExtension, POP_EXTENSION_OP)
@@ -190,23 +188,23 @@ REGISTER_FLTRECORD(PopExtension, POP_EXTENSION_OP)
 
 
 /** PushAttribute - Reserved subtree
-*/
+ */
 class PushAttribute : public Record
 {
-    public:
+public:
 
-        PushAttribute() {}
+PushAttribute() {}
 
-        META_Record(PushAttribute)
+META_Record(PushAttribute)
 
-        virtual void read(RecordInputStream& in, Document& document)
-        {
-            readRecord(in,document);
-        }
+virtual void read(RecordInputStream&in, Document&document)
+{
+    readRecord(in, document);
+}
 
-    protected:
+protected:
 
-        virtual ~PushAttribute() {}
+virtual ~PushAttribute() {}
 };
 
 REGISTER_FLTRECORD(PushAttribute, PUSH_ATTRIBUTE_OP)
@@ -214,30 +212,24 @@ REGISTER_FLTRECORD(PushAttribute, PUSH_ATTRIBUTE_OP)
 
 
 /** PopAttribute
-*/
+ */
 class PopAttribute : public Record
 {
-    public:
+public:
 
-        PopAttribute() {}
+PopAttribute() {}
 
-        META_Record(PopAttribute)
+META_Record(PopAttribute)
 
-        virtual void read(RecordInputStream& in, Document& document)
-        {
-            readRecord(in,document);
-        }
+virtual void read(RecordInputStream&in, Document&document)
+{
+    readRecord(in, document);
+}
 
-    protected:
+protected:
 
-        virtual ~PopAttribute() {}
+virtual ~PopAttribute() {}
 };
 
 REGISTER_FLTRECORD(PopAttribute, POP_ATTRIBUTE_OP)
-
-
-
 } // end namespace
-
-
-

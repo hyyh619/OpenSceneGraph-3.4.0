@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/Notify>
 #include <osg/Object>
@@ -24,47 +24,64 @@
 using namespace osg;
 using namespace osgDB;
 
-bool osgDB::writeObjectFile(const Object& object,const std::string& filename, const Options* options )
+bool osgDB::writeObjectFile(const Object&object, const std::string&filename, const Options *options)
 {
-    ReaderWriter::WriteResult wr = Registry::instance()->writeObject( object, filename, options );
-    if (wr.error()) OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+    ReaderWriter::WriteResult wr = Registry::instance()->writeObject(object, filename, options);
+
+    if (wr.error())
+        OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+
     return wr.success();
 }
 
 
-bool osgDB::writeImageFile(const Image& image,const std::string& filename, const Options* options )
+bool osgDB::writeImageFile(const Image&image, const std::string&filename, const Options *options)
 {
-    ReaderWriter::WriteResult wr = Registry::instance()->writeImage( image, filename, options );
-    if (wr.error()) OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+    ReaderWriter::WriteResult wr = Registry::instance()->writeImage(image, filename, options);
+
+    if (wr.error())
+        OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+
     return wr.success();
 }
 
 
-bool osgDB::writeHeightFieldFile(const HeightField& HeightField,const std::string& filename, const Options* options )
+bool osgDB::writeHeightFieldFile(const HeightField&HeightField, const std::string&filename, const Options *options)
 {
-    ReaderWriter::WriteResult wr = Registry::instance()->writeHeightField( HeightField, filename, options );
-    if (wr.error()) OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+    ReaderWriter::WriteResult wr = Registry::instance()->writeHeightField(HeightField, filename, options);
+
+    if (wr.error())
+        OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+
     return wr.success();
 }
 
-bool osgDB::writeNodeFile(const Node& node,const std::string& filename, const Options* options )
+bool osgDB::writeNodeFile(const Node&node, const std::string&filename, const Options *options)
 {
-    ReaderWriter::WriteResult wr = Registry::instance()->writeNode( node, filename, options );
-    if (wr.error()) OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+    ReaderWriter::WriteResult wr = Registry::instance()->writeNode(node, filename, options);
+
+    if (wr.error())
+        OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+
     return wr.success();
 }
 
-bool osgDB::writeShaderFile(const Shader& shader,const std::string& filename, const Options* options )
+bool osgDB::writeShaderFile(const Shader&shader, const std::string&filename, const Options *options)
 {
-    ReaderWriter::WriteResult wr = Registry::instance()->writeShader( shader, filename, options );
-    if (wr.error()) OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+    ReaderWriter::WriteResult wr = Registry::instance()->writeShader(shader, filename, options);
+
+    if (wr.error())
+        OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+
     return wr.success();
 }
 
-bool osgDB::writeScriptFile(const Script& image,const std::string& filename, const Options* options )
+bool osgDB::writeScriptFile(const Script&image, const std::string&filename, const Options *options)
 {
-    ReaderWriter::WriteResult wr = Registry::instance()->writeScript( image, filename, options );
-    if (wr.error()) OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+    ReaderWriter::WriteResult wr = Registry::instance()->writeScript(image, filename, options);
+
+    if (wr.error())
+        OSG_WARN << "Error writing file " << filename << ": " << wr.message() << std::endl;
+
     return wr.success();
 }
-

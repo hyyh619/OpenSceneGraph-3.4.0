@@ -40,11 +40,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define ERROR_NO_ERROR         0
-#define ERROR_READING_HEADER   1
-#define ERROR_READING_PALETTE  2
-#define ERROR_MEMORY           3
-#define ERROR_READ_ERROR       4
+#define ERROR_NO_ERROR        0
+#define ERROR_READING_HEADER  1
+#define ERROR_READING_PALETTE 2
+#define ERROR_MEMORY          3
+#define ERROR_READ_ERROR      4
 
 static int picerror = ERROR_NO_ERROR;
 
@@ -53,19 +53,23 @@ simage_pic_error(char *buffer, int bufferlen)
 {
     switch (picerror)
     {
-        case ERROR_READING_HEADER:
-            strncpy(buffer, "PIC loader: Error reading header", bufferlen);
-            break;
-        case ERROR_READING_PALETTE:
-            strncpy(buffer, "PIC loader: Error reading palette", bufferlen);
-            break;
-        case ERROR_MEMORY:
-            strncpy(buffer, "PIC loader: Out of memory error", bufferlen);
-            break;
-        case ERROR_READ_ERROR:
-            strncpy(buffer, "PIC loader: Read error", bufferlen);
-            break;
+    case ERROR_READING_HEADER:
+        strncpy(buffer, "PIC loader: Error reading header", bufferlen);
+        break;
+
+    case ERROR_READING_PALETTE:
+        strncpy(buffer, "PIC loader: Error reading palette", bufferlen);
+        break;
+
+    case ERROR_MEMORY:
+        strncpy(buffer, "PIC loader: Out of memory error", bufferlen);
+        break;
+
+    case ERROR_READ_ERROR:
+        strncpy(buffer, "PIC loader: Read error", bufferlen);
+        break;
     }
+
     return picerror;
 }
 
@@ -73,43 +77,55 @@ simage_pic_error(char *buffer, int bufferlen)
 /* byte order workaround *sigh* */
 
 static int
-readint16(FILE *fp, int * res)
+readint16(FILE *fp, int *res)
 {
     unsigned char tmp = 0;
-    unsigned int tmp2;
-    if (fread(&tmp, 1, 1, fp) != 1) return 0;
+    unsigned int  tmp2;
+
+    if (fread(&tmp, 1, 1, fp) != 1)
+        return 0;
+
     *res = tmp;
-    if (fread(&tmp, 1, 1, fp) != 1) return 0;
-    tmp2 = tmp;
+    if (fread(&tmp, 1, 1, fp) != 1)
+        return 0;
+
+    tmp2   = tmp;
     tmp2 <<= 8;
-    *res |= tmp2;
+    *res  |= tmp2;
     return 1;
 }
 
 
 int
-simage_pic_identify(const char *, const unsigned char *header, int headerlen)
+simage_pic_identify(const char*, const unsigned char *header, int headerlen)
 {
     static unsigned char piccmp[] = {0x19, 0x91};
-    if (headerlen < 2) return 0;
+
+    if (headerlen < 2)
+        return 0;
+
     if (memcmp((const void*)header,
-        (const void*)piccmp, 2) == 0) return 1;
+               (const void*)piccmp, 2) == 0)
+        return 1;
+
     return 0;
 }
 
 
-unsigned char *
+unsigned char*
 simage_pic_load(const char *filename,
-int *width_ret,
-int *height_ret,
-int *numComponents_ret)
+                int *width_ret,
+                int *height_ret,
+                int *numComponents_ret)
 {
-    int w, h, width, height, i, j, format;
+    int           w, h, width, height, i, j, format;
     unsigned char palette[256][3];
-    unsigned char * tmpbuf, * buffer, * ptr;
+    unsigned char *tmpbuf, *buffer, *ptr;
 
     FILE *fp = osgDB::fopen(filename, "rb");
-    if (!fp) return NULL;
+
+    if (!fp)
+        return NULL;
 
     picerror = ERROR_NO_ERROR;
 
@@ -129,7 +145,7 @@ int *numComponents_ret)
         return NULL;
     }
 
-    width = w;
+    width  = w;
     height = h;
 
     if (width <= 0 || height <= 0)
@@ -137,6 +153,7 @@ int *numComponents_ret)
         fclose(fp);
         return NULL;
     }
+
     fseek(fp, 32, SEEK_SET);
 
     if (fread(&palette, 3, 256, fp) != 256)
@@ -144,29 +161,40 @@ int *numComponents_ret)
         picerror = ERROR_READING_PALETTE;
     }
 
-    tmpbuf = new unsigned char [width];
-    buffer = new unsigned char [3*width*height];
+    tmpbuf = new unsigned char[width];
+    buffer = new unsigned char[3 * width * height];
     if (tmpbuf == NULL || buffer == NULL)
     {
         picerror = ERROR_MEMORY;
-        if (tmpbuf) delete [] tmpbuf;
-        if (buffer) delete [] buffer;
+        if (tmpbuf)
+            delete[] tmpbuf;
+
+        if (buffer)
+            delete[] buffer;
+
         fclose(fp);
         return NULL;
     }
+
     ptr = buffer;
+
     for (i = 0; i < height; i++)
     {
         if (fread(tmpbuf, 1, width, fp) != (size_t) width)
         {
             picerror = ERROR_READ_ERROR;
             fclose(fp);
-            if (tmpbuf) delete [] tmpbuf;
-            if (buffer) delete [] buffer;
+            if (tmpbuf)
+                delete[] tmpbuf;
+
+            if (buffer)
+                delete[] buffer;
+
             buffer = NULL;
-            width = height = 0;
+            width  = height = 0;
             return NULL;
         }
+
         for (j = 0; j < width; j++)
         {
             int idx = tmpbuf[j];
@@ -175,14 +203,16 @@ int *numComponents_ret)
             *ptr++ = palette[idx][2];
         }
     }
+
     format = 3;
     fclose(fp);
 
-    *width_ret = width;
-    *height_ret = height;
+    *width_ret         = width;
+    *height_ret        = height;
     *numComponents_ret = format;
 
-    if (tmpbuf) delete [] tmpbuf;
+    if (tmpbuf)
+        delete[] tmpbuf;
 
     return buffer;
 }
@@ -190,62 +220,68 @@ int *numComponents_ret)
 
 class ReaderWriterPIC : public osgDB::ReaderWriter
 {
-    public:
-        ReaderWriterPIC()
-        {
-            supportsExtension("pic","PIC Image format");
-        }
+public:
+ReaderWriterPIC()
+{
+    supportsExtension("pic", "PIC Image format");
+}
 
-        virtual const char* className() const { return "PIC Image Reader"; }
+virtual const char* className() const
+{
+    return "PIC Image Reader";
+}
 
-        virtual ReadResult readObject(const std::string& file, const osgDB::ReaderWriter::Options* options =NULL) const
-        {
-            return readImage(file, options);
-        }
+virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+{
+    return readImage(file, options);
+}
 
-        virtual ReadResult readImage(const std::string& file, const osgDB::ReaderWriter::Options* options) const
-        {
-            std::string ext = osgDB::getLowerCaseFileExtension(file);
-            if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
+virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(file);
 
-            std::string fileName = osgDB::findDataFile( file, options );
-            if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
+    if (!acceptsExtension(ext))
+        return ReadResult::FILE_NOT_HANDLED;
 
-            unsigned char *imageData = NULL;
-            int width_ret;
-            int height_ret;
-            int numComponents_ret;
+    std::string fileName = osgDB::findDataFile(file, options);
+    if (fileName.empty())
+        return ReadResult::FILE_NOT_FOUND;
 
-            imageData = simage_pic_load(fileName.c_str(),&width_ret,&height_ret,&numComponents_ret);
+    unsigned char *imageData = NULL;
+    int           width_ret;
+    int           height_ret;
+    int           numComponents_ret;
 
-            if (imageData==NULL) return ReadResult::FILE_NOT_HANDLED;
+    imageData = simage_pic_load(fileName.c_str(), &width_ret, &height_ret, &numComponents_ret);
 
-            int s = width_ret;
-            int t = height_ret;
-            int r = 1;
+    if (imageData == NULL)
+        return ReadResult::FILE_NOT_HANDLED;
 
-            int internalFormat = numComponents_ret;
+    int s = width_ret;
+    int t = height_ret;
+    int r = 1;
 
-            unsigned int pixelFormat =
-                numComponents_ret == 1 ? GL_LUMINANCE :
-            numComponents_ret == 2 ? GL_LUMINANCE_ALPHA :
-            numComponents_ret == 3 ? GL_RGB :
-            numComponents_ret == 4 ? GL_RGBA : (GLenum)-1;
+    int internalFormat = numComponents_ret;
 
-            unsigned int dataType = GL_UNSIGNED_BYTE;
+    unsigned int pixelFormat =
+        numComponents_ret == 1 ? GL_LUMINANCE :
+        numComponents_ret == 2 ? GL_LUMINANCE_ALPHA :
+        numComponents_ret == 3 ? GL_RGB :
+        numComponents_ret == 4 ? GL_RGBA : (GLenum) - 1;
 
-            osg::Image* pOsgImage = new osg::Image;
-            pOsgImage->setFileName(fileName.c_str());
-            pOsgImage->setImage(s,t,r,
-                internalFormat,
-                pixelFormat,
-                dataType,
-                imageData,
-                osg::Image::USE_NEW_DELETE);
+    unsigned int dataType = GL_UNSIGNED_BYTE;
 
-            return pOsgImage;
+    osg::Image *pOsgImage = new osg::Image;
+    pOsgImage->setFileName(fileName.c_str());
+    pOsgImage->setImage(s, t, r,
+                        internalFormat,
+                        pixelFormat,
+                        dataType,
+                        imageData,
+                        osg::Image::USE_NEW_DELETE);
 
-        }
+    return pOsgImage;
+}
 };
 
 // now register with Registry to instantiate the above

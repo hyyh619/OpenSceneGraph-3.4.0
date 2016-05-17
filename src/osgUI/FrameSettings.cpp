@@ -9,23 +9,21 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgUI/FrameSettings>
 
 using namespace osgUI;
 
-FrameSettings::FrameSettings():
+FrameSettings::FrameSettings() :
     _shape(FrameSettings::NO_FRAME),
     _shadow(FrameSettings::PLAIN),
     _lineWidth(0.01)
-{
-}
+{}
 
-FrameSettings::FrameSettings(const FrameSettings& frameSettings, const osg::CopyOp& copyop):
+FrameSettings::FrameSettings(const FrameSettings&frameSettings, const osg::CopyOp&copyop) :
     osg::Object(frameSettings, copyop),
     _shape(frameSettings._shape),
     _shadow(frameSettings._shadow),
     _lineWidth(frameSettings._lineWidth)
-{
-}
+{}

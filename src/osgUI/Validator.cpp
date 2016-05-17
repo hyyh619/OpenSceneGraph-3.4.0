@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgUI/Validator>
 #include <osg/ValueObject>
@@ -20,145 +20,156 @@
 using namespace osgUI;
 
 Validator::Validator()
-{
-}
+{}
 
-Validator::Validator(const osgUI::Validator& validator, const osg::CopyOp& copyop):
+Validator::Validator(const osgUI::Validator&validator, const osg::CopyOp&copyop) :
     osg::Object(validator, copyop)
-{
-}
+{}
 
-Validator::State Validator::validate(std::string& text, int& cursorpos) const
+Validator::State Validator::validate(std::string&text, int&cursorpos) const
 {
-    const osg::CallbackObject* co = getCallbackObject(this, "validate");
+    const osg::CallbackObject *co = getCallbackObject(this, "validate");
+
     if (co)
     {
-        osg::ref_ptr<osg::StringValueObject> textInput = new osg::StringValueObject("text",text);
-        osg::ref_ptr<osg::IntValueObject> cursorposInput = new osg::IntValueObject("cursorpos",cursorpos);
+        osg::ref_ptr<osg::StringValueObject> textInput      = new osg::StringValueObject("text", text);
+        osg::ref_ptr<osg::IntValueObject>    cursorposInput = new osg::IntValueObject("cursorpos", cursorpos);
 
         osg::Parameters inputParameters, outputParameters;
         inputParameters.push_back(textInput.get());
         inputParameters.push_back(cursorposInput.get());
         if (co->run(const_cast<Validator*>(this), inputParameters, outputParameters))
         {
-            if (textInput->getValue()!=text)
+            if (textInput->getValue() != text)
             {
-                OSG_NOTICE<<"Updating text in CallbackObject "<<textInput->getValue()<<std::endl;
+                OSG_NOTICE << "Updating text in CallbackObject " << textInput->getValue() << std::endl;
                 text = textInput->getValue();
             }
-            if (cursorposInput->getValue()!=cursorpos)
+
+            if (cursorposInput->getValue() != cursorpos)
             {
-                OSG_NOTICE<<"Updating cursor pos in CallbackObject "<<cursorposInput->getValue()<<std::endl;
+                OSG_NOTICE << "Updating cursor pos in CallbackObject " << cursorposInput->getValue() << std::endl;
                 cursorpos = cursorposInput->getValue();
             }
 
-            if (outputParameters.size()>=1)
+            if (outputParameters.size() >= 1)
             {
-                osg::Object* object = outputParameters[0].get();
-                osg::StringValueObject* svo = dynamic_cast<osg::StringValueObject*>(object);
+                osg::Object            *object = outputParameters[0].get();
+                osg::StringValueObject *svo    = dynamic_cast<osg::StringValueObject*>(object);
                 if (svo)
                 {
-                    OSG_NOTICE<<"Have string return value from validate "<<svo->getValue()<<std::endl;
+                    OSG_NOTICE << "Have string return value from validate " << svo->getValue() << std::endl;
 
                     std::string returnString = svo->getValue();
-                    if (returnString=="INVALID") return INVALID;
-                    else if (returnString=="INTERMEDITATE") return INTERMEDIATE;
-                    else if (returnString=="ACCEPTABLE") return ACCEPTABLE;
+                    if (returnString == "INVALID")
+                        return INVALID;
+                    else if (returnString == "INTERMEDITATE")
+                        return INTERMEDIATE;
+                    else if (returnString == "ACCEPTABLE")
+                        return ACCEPTABLE;
                 }
-                OSG_NOTICE<<"Called validate CallbackObject but didn't get string return value."<<object->className()<<std::endl;
+
+                OSG_NOTICE << "Called validate CallbackObject but didn't get string return value." << object->className() << std::endl;
             }
         }
     }
+
     return validateImplementation(text, cursorpos);
 }
 
-Validator::State Validator::validateImplementation(std::string& text, int& cursorpos) const
+Validator::State Validator::validateImplementation(std::string&text, int&cursorpos) const
 {
-    OSG_NOTICE<<"Validator::validateImplemetation("<<text<<", "<<cursorpos<<")"<<std::endl;
+    OSG_NOTICE << "Validator::validateImplemetation(" << text << ", " << cursorpos << ")" << std::endl;
     return ACCEPTABLE;
 }
 
-void Validator::fixup(std::string& text) const
+void Validator::fixup(std::string&text) const
 {
-    const osg::CallbackObject* co = getCallbackObject(this, "fixup");
+    const osg::CallbackObject *co = getCallbackObject(this, "fixup");
+
     if (co)
     {
-        osg::ref_ptr<osg::StringValueObject> textInput = new osg::StringValueObject("text",text);
+        osg::ref_ptr<osg::StringValueObject> textInput = new osg::StringValueObject("text", text);
 
         osg::Parameters inputParameters, outputParameters;
         inputParameters.push_back(textInput.get());
         if (co->run(const_cast<Validator*>(this), inputParameters, outputParameters))
         {
-            if (textInput->getValue()!=text)
+            if (textInput->getValue() != text)
             {
-                OSG_NOTICE<<"Updating text in CallbackObject "<<textInput->getValue()<<std::endl;
+                OSG_NOTICE << "Updating text in CallbackObject " << textInput->getValue() << std::endl;
                 text = textInput->getValue();
             }
         }
     }
+
     return fixupImplementation(text);
 }
 
-void Validator::fixupImplementation(std::string& text) const
+void Validator::fixupImplementation(std::string&text) const
 {
-    OSG_NOTICE<<"Validator::fixupImplemetation("<<text<<")"<<std::endl;
+    OSG_NOTICE << "Validator::fixupImplemetation(" << text << ")" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // IntValidator
 //
-IntValidator::IntValidator():
+IntValidator::IntValidator() :
     _bottom(-INT_MAX),
     _top(-INT_MAX)
-{
-}
+{}
 
-IntValidator::IntValidator(const IntValidator& validator, const osg::CopyOp& copyop):
+IntValidator::IntValidator(const IntValidator&validator, const osg::CopyOp&copyop) :
     Validator(validator, copyop),
     _bottom(validator._bottom),
     _top(validator._top)
-{
-}
+{}
 
-IntValidator::State IntValidator::validateImplementation(std::string& str, int& cursorpos) const
+IntValidator::State IntValidator::validateImplementation(std::string&str, int&cursorpos) const
 {
     std::string newstring;
-    bool canBeNegative = _bottom<0.0;
+    bool        canBeNegative = _bottom < 0.0;
 
     int numNegative = 0;
-    for(std::size_t pos = 0; pos<str.size(); ++pos)
+
+    for (std::size_t pos = 0; pos < str.size(); ++pos)
     {
         char c = str[pos];
 
         bool validChar = false;
-        if (c>='0' && c<='9')
+        if (c >= '0' && c <= '9')
         {
             validChar = true;
         }
-        else if (c=='-')
+        else if (c == '-')
         {
             if (canBeNegative)
             {
-                if (numNegative==0) validChar = true;
+                if (numNegative == 0)
+                    validChar = true;
+
                 ++numNegative;
             }
         }
 
-        if (validChar) newstring.push_back(c);
+        if (validChar)
+            newstring.push_back(c);
     }
 
     str = newstring;
 
-    if (str.empty()) return INTERMEDIATE;
+    if (str.empty())
+        return INTERMEDIATE;
 
 
     int v = static_cast<int>(osg::asciiToDouble(str.c_str()));
-    if (v<_bottom)
+    if (v < _bottom)
     {
         return INTERMEDIATE;
     }
-    if (v>_top)
+
+    if (v > _top)
     {
         return INTERMEDIATE;
     }
@@ -166,22 +177,24 @@ IntValidator::State IntValidator::validateImplementation(std::string& str, int& 
     return ACCEPTABLE;
 }
 
-void IntValidator::fixupImplementation(std::string& str) const
+void IntValidator::fixupImplementation(std::string&str) const
 {
-    if (str.empty()) return;
+    if (str.empty())
+        return;
 
     int v = static_cast<int>(osg::asciiToDouble(str.c_str()));
-    if (v<_bottom)
+    if (v < _bottom)
     {
         v = _bottom;
     }
-    if (v>_top)
+
+    if (v > _top)
     {
         v = _top;
     }
 
     std::stringstream buffer;
-    buffer<<v<<std::endl;
+    buffer << v << std::endl;
     str = buffer.str();
 }
 
@@ -190,78 +203,83 @@ void IntValidator::fixupImplementation(std::string& str) const
 //
 // DoubleValidator
 //
-DoubleValidator::DoubleValidator():
+DoubleValidator::DoubleValidator() :
     _decimals(-1),
     _bottom(-DBL_MAX),
     _top(DBL_MAX)
-{
-}
+{}
 
-DoubleValidator::DoubleValidator(const DoubleValidator& validator, const osg::CopyOp& copyop):
+DoubleValidator::DoubleValidator(const DoubleValidator&validator, const osg::CopyOp&copyop) :
     Validator(validator, copyop),
     _decimals(validator._decimals),
     _bottom(validator._bottom),
     _top(validator._top)
-{
-}
+{}
 
-DoubleValidator::State DoubleValidator::validateImplementation(std::string& str, int& cursorpos) const
+DoubleValidator::State DoubleValidator::validateImplementation(std::string&str, int&cursorpos) const
 {
     std::string newstring;
-    bool canBeNegative = _bottom<0.0;
-    int maxNumDecimalPlaces = _decimals>=0 ? _decimals : str.size();
+    bool        canBeNegative       = _bottom < 0.0;
+    int         maxNumDecimalPlaces = _decimals >= 0 ? _decimals : str.size();
 
-    int numPlacesAfterDecimal = 0;
-    int numNegative = 0;
-    bool hasDecimal = false;
-    for(std::size_t pos = 0; pos<str.size(); ++pos)
+    int  numPlacesAfterDecimal = 0;
+    int  numNegative           = 0;
+    bool hasDecimal            = false;
+
+    for (std::size_t pos = 0; pos < str.size(); ++pos)
     {
         char c = str[pos];
 
         bool validChar = false;
-        if (c>='0' && c<='9')
+        if (c >= '0' && c <= '9')
         {
             if (hasDecimal)
             {
                 ++numPlacesAfterDecimal;
-                if (numPlacesAfterDecimal<=maxNumDecimalPlaces) validChar = true;
+                if (numPlacesAfterDecimal <= maxNumDecimalPlaces)
+                    validChar = true;
             }
             else
             {
                 validChar = true;
             }
         }
-        else if (c=='-')
+        else if (c == '-')
         {
             if (canBeNegative)
             {
-                if (numNegative==0) validChar = true;
+                if (numNegative == 0)
+                    validChar = true;
+
                 ++numNegative;
             }
         }
-        else if (c=='.')
+        else if (c == '.')
         {
             if (!hasDecimal)
             {
-                validChar = true;
+                validChar  = true;
                 hasDecimal = true;
             }
         }
 
-        if (validChar) newstring.push_back(c);
+        if (validChar)
+            newstring.push_back(c);
     }
 
     str = newstring;
 
-    if (str.empty()) return INTERMEDIATE;
+    if (str.empty())
+        return INTERMEDIATE;
 
 
     double v = osg::asciiToDouble(str.c_str());
-    if (v<_bottom)
+    if (v < _bottom)
     {
         return INTERMEDIATE;
     }
-    if (v>_top)
+
+    if (v > _top)
     {
         return INTERMEDIATE;
     }
@@ -269,22 +287,23 @@ DoubleValidator::State DoubleValidator::validateImplementation(std::string& str,
     return ACCEPTABLE;
 }
 
-void DoubleValidator::fixupImplementation(std::string& str) const
+void DoubleValidator::fixupImplementation(std::string&str) const
 {
-    if (str.empty()) return;
+    if (str.empty())
+        return;
 
     double v = osg::asciiToDouble(str.c_str());
-    if (v<_bottom)
+    if (v < _bottom)
     {
         v = _bottom;
     }
-    if (v>_top)
+
+    if (v > _top)
     {
         v = _top;
     }
 
     std::stringstream buffer;
-    buffer<<v<<std::endl;
+    buffer << v << std::endl;
     str = buffer.str();
 }
-

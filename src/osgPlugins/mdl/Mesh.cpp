@@ -5,7 +5,7 @@
 using namespace mdl;
 
 
-Mesh::Mesh(MDLMesh * myMesh)
+Mesh::Mesh(MDLMesh *myMesh)
 {
     // Save the mesh information
     my_mesh = myMesh;
@@ -22,19 +22,19 @@ Mesh::~Mesh()
 }
 
 
-void Mesh::setStateSet(osg::StateSet * stateSet)
+void Mesh::setStateSet(osg::StateSet *stateSet)
 {
     state_set = stateSet;
 }
 
 
-osg::StateSet * Mesh::getStateSet()
+osg::StateSet* Mesh::getStateSet()
 {
     return state_set.get();
 }
 
 
-MDLMesh * Mesh::getMesh()
+MDLMesh* Mesh::getMesh()
 {
     return my_mesh;
 }

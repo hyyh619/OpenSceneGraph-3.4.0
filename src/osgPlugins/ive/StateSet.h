@@ -4,11 +4,13 @@
 #include <osg/StateSet>
 #include "ReadWrite.h"
 
-namespace ive{
-class StateSet : public ReadWrite, public osg::StateSet{
+namespace ive
+{
+class StateSet : public ReadWrite, public osg::StateSet
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* out);
+void write(DataOutputStream *out);
+void read(DataInputStream *out);
 };
 }
 

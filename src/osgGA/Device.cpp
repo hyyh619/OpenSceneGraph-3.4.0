@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgGA/Device>
 
@@ -22,8 +22,8 @@ Device::Device()
     setEventQueue(new EventQueue);
 }
 
-Device::Device(const Device& es, const osg::CopyOp& copyop):
-    osg::Object(es,copyop)
+Device::Device(const Device&es, const osg::CopyOp&copyop) :
+    osg::Object(es, copyop)
 {
     setEventQueue(new EventQueue);
 }
@@ -34,9 +34,9 @@ void Device::sendEvent(const Event& /*event*/)
 }
 
 
-void Device::sendEvents(const EventQueue::Events& events)
+void Device::sendEvents(const EventQueue::Events&events)
 {
-    for(EventQueue::Events::const_iterator i = events.begin(); i != events.end(); i++)
+    for (EventQueue::Events::const_iterator i = events.begin(); i != events.end(); i++)
     {
         sendEvent(**i);
     }
@@ -44,5 +44,4 @@ void Device::sendEvents(const EventQueue::Events& events)
 
 
 Device::~Device()
-{
-}
+{}

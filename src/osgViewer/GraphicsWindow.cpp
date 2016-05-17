@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgViewer/GraphicsWindow>
 #include <osgViewer/View>
@@ -18,14 +18,14 @@
 using namespace osgViewer;
 
 
-void GraphicsWindow::getViews(Views& views)
+void GraphicsWindow::getViews(Views&views)
 {
     views.clear();
     osgViewer::View *prev = NULL;
 
-    for(Cameras::iterator it = _cameras.begin();
-        it != _cameras.end();
-        it++)
+    for (Cameras::iterator it = _cameras.begin();
+         it != _cameras.end();
+         it++)
     {
         osgViewer::View *v = dynamic_cast<osgViewer::View*>((*it)->getView());
         if (v)
@@ -43,6 +43,7 @@ void GraphicsWindow::getViews(Views& views)
 void GraphicsWindow::requestRedraw()
 {
     Views views;
+
     getViews(views);
 
     if (views.empty())
@@ -51,9 +52,9 @@ void GraphicsWindow::requestRedraw()
         return;
     }
 
-    for(Views::iterator it = views.begin();
-        it != views.end();
-        it++)
+    for (Views::iterator it = views.begin();
+         it != views.end();
+         it++)
     {
         (*it)->requestRedraw();
     }

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <stdio.h>
 
 #include <osg/Notify>
@@ -30,122 +30,122 @@ using namespace osg;
 using namespace osgUtil;
 
 // register a RenderStage prototype with the RenderBin prototype list.
-//RegisterRenderBinProxy<RenderStage> s_registerRenderStageProxy;
+// RegisterRenderBinProxy<RenderStage> s_registerRenderStageProxy;
 
-RenderStage::RenderStage():
+RenderStage::RenderStage() :
     RenderBin(getDefaultRenderBinSortMode()),
     _disableFboAfterRender(true)
 {
     // point RenderBin's _stage to this to ensure that references to
     // stage don't go tempted away to any other stage.
-    _stage = this;
+    _stage               = this;
     _stageDrawnThisFrame = false;
 
-    _drawBuffer = GL_NONE;
+    _drawBuffer          = GL_NONE;
     _drawBufferApplyMask = false;
-    _readBuffer = GL_NONE;
+    _readBuffer          = GL_NONE;
     _readBufferApplyMask = false;
 
     _clearMask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
-    _clearColor.set(0.0f,0.0f,0.0f,0.0f);
-    _clearAccum.set(0.0f,0.0f,0.0f,0.0f);
-    _clearDepth = 1.0;
+    _clearColor.set(0.0f, 0.0f, 0.0f, 0.0f);
+    _clearAccum.set(0.0f, 0.0f, 0.0f, 0.0f);
+    _clearDepth   = 1.0;
     _clearStencil = 0;
 
-    _cameraRequiresSetUp = false;
+    _cameraRequiresSetUp              = false;
     _cameraAttachmentMapModifiedCount = 0;
-    _camera = 0;
+    _camera                           = 0;
 
     _level = 0;
-    _face = 0;
+    _face  = 0;
 
-    _imageReadPixelFormat = GL_RGBA;
+    _imageReadPixelFormat   = GL_RGBA;
     _imageReadPixelDataType = GL_UNSIGNED_BYTE;
 }
 
-RenderStage::RenderStage(SortMode mode):
+RenderStage::RenderStage(SortMode mode) :
     RenderBin(mode),
     _disableFboAfterRender(true)
 {
     // point RenderBin's _stage to this to ensure that references to
     // stage don't go tempted away to any other stage.
-    _stage = this;
+    _stage               = this;
     _stageDrawnThisFrame = false;
 
-    _drawBuffer = GL_NONE;
+    _drawBuffer          = GL_NONE;
     _drawBufferApplyMask = false;
-    _readBuffer = GL_NONE;
+    _readBuffer          = GL_NONE;
     _readBufferApplyMask = false;
 
     _clearMask = GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT;
-    _clearColor.set(0.0f,0.0f,0.0f,0.0f);
-    _clearAccum.set(0.0f,0.0f,0.0f,0.0f);
-    _clearDepth = 1.0;
+    _clearColor.set(0.0f, 0.0f, 0.0f, 0.0f);
+    _clearAccum.set(0.0f, 0.0f, 0.0f, 0.0f);
+    _clearDepth   = 1.0;
     _clearStencil = 0;
 
-    _cameraRequiresSetUp = false;
+    _cameraRequiresSetUp              = false;
     _cameraAttachmentMapModifiedCount = 0;
-    _camera = 0;
+    _camera                           = 0;
 
     _level = 0;
-    _face = 0;
+    _face  = 0;
 
-    _imageReadPixelFormat = GL_RGBA;
+    _imageReadPixelFormat   = GL_RGBA;
     _imageReadPixelDataType = GL_UNSIGNED_BYTE;
 }
 
-RenderStage::RenderStage(const RenderStage& rhs,const osg::CopyOp& copyop):
-        RenderBin(rhs,copyop),
-        _stageDrawnThisFrame(false),
-        _preRenderList(rhs._preRenderList),
-        _postRenderList(rhs._postRenderList),
-        _viewport(rhs._viewport),
-        _drawBuffer(rhs._drawBuffer),
-        _drawBufferApplyMask(rhs._drawBufferApplyMask),
-        _readBuffer(rhs._readBuffer),
-        _readBufferApplyMask(rhs._readBufferApplyMask),
-        _clearMask(rhs._clearMask),
-        _colorMask(rhs._colorMask),
-        _clearColor(rhs._clearColor),
-        _clearAccum(rhs._clearAccum),
-        _clearDepth(rhs._clearDepth),
-        _clearStencil(rhs._clearStencil),
-        _cameraRequiresSetUp(rhs._cameraRequiresSetUp),
-        _cameraAttachmentMapModifiedCount(rhs._cameraAttachmentMapModifiedCount),
-        _camera(rhs._camera),
-        _level(rhs._level),
-        _face(rhs._face),
-        _imageReadPixelFormat(rhs._imageReadPixelFormat),
-        _imageReadPixelDataType(rhs._imageReadPixelDataType),
-        _disableFboAfterRender(rhs._disableFboAfterRender),
-        _renderStageLighting(rhs._renderStageLighting)
+RenderStage::RenderStage(const RenderStage&rhs, const osg::CopyOp&copyop) :
+    RenderBin(rhs, copyop),
+    _stageDrawnThisFrame(false),
+    _preRenderList(rhs._preRenderList),
+    _postRenderList(rhs._postRenderList),
+    _viewport(rhs._viewport),
+    _drawBuffer(rhs._drawBuffer),
+    _drawBufferApplyMask(rhs._drawBufferApplyMask),
+    _readBuffer(rhs._readBuffer),
+    _readBufferApplyMask(rhs._readBufferApplyMask),
+    _clearMask(rhs._clearMask),
+    _colorMask(rhs._colorMask),
+    _clearColor(rhs._clearColor),
+    _clearAccum(rhs._clearAccum),
+    _clearDepth(rhs._clearDepth),
+    _clearStencil(rhs._clearStencil),
+    _cameraRequiresSetUp(rhs._cameraRequiresSetUp),
+    _cameraAttachmentMapModifiedCount(rhs._cameraAttachmentMapModifiedCount),
+    _camera(rhs._camera),
+    _level(rhs._level),
+    _face(rhs._face),
+    _imageReadPixelFormat(rhs._imageReadPixelFormat),
+    _imageReadPixelDataType(rhs._imageReadPixelDataType),
+    _disableFboAfterRender(rhs._disableFboAfterRender),
+    _renderStageLighting(rhs._renderStageLighting)
 {
     _stage = this;
 }
 
 
 RenderStage::~RenderStage()
-{
-}
+{}
 
 void RenderStage::reset()
 {
     _stageDrawnThisFrame = false;
 
-    if (_renderStageLighting.valid()) _renderStageLighting->reset();
+    if (_renderStageLighting.valid())
+        _renderStageLighting->reset();
 
-    for(RenderStageList::iterator pre_itr = _preRenderList.begin();
-        pre_itr != _preRenderList.end();
-        ++pre_itr)
+    for (RenderStageList::iterator pre_itr = _preRenderList.begin();
+         pre_itr != _preRenderList.end();
+         ++pre_itr)
     {
         pre_itr->second->reset();
     }
 
     RenderBin::reset();
 
-    for(RenderStageList::iterator post_itr = _postRenderList.begin();
-        post_itr != _postRenderList.end();
-        ++post_itr)
+    for (RenderStageList::iterator post_itr = _postRenderList.begin();
+         post_itr != _postRenderList.end();
+         ++post_itr)
     {
         post_itr->second->reset();
     }
@@ -156,227 +156,252 @@ void RenderStage::reset()
 
 void RenderStage::sort()
 {
-    for(RenderStageList::iterator pre_itr = _preRenderList.begin();
-        pre_itr != _preRenderList.end();
-        ++pre_itr)
+    for (RenderStageList::iterator pre_itr = _preRenderList.begin();
+         pre_itr != _preRenderList.end();
+         ++pre_itr)
     {
         pre_itr->second->sort();
     }
 
     RenderBin::sort();
 
-    for(RenderStageList::iterator post_itr = _postRenderList.begin();
-        post_itr != _postRenderList.end();
-        ++post_itr)
+    for (RenderStageList::iterator post_itr = _postRenderList.begin();
+         post_itr != _postRenderList.end();
+         ++post_itr)
     {
         post_itr->second->sort();
     }
 }
 
-void RenderStage::addPreRenderStage(RenderStage* rs, int order)
+void RenderStage::addPreRenderStage(RenderStage *rs, int order)
 {
     if (rs)
     {
         RenderStageList::iterator itr;
-        for(itr = _preRenderList.begin(); itr != _preRenderList.end(); ++itr) {
-            if(order < itr->first) {
+
+        for (itr = _preRenderList.begin(); itr != _preRenderList.end(); ++itr)
+        {
+            if (order < itr->first)
+            {
                 break;
             }
         }
-        if(itr == _preRenderList.end()) {
-            _preRenderList.push_back(RenderStageOrderPair(order,rs));
-        } else {
-            _preRenderList.insert(itr,RenderStageOrderPair(order,rs));
+
+        if (itr == _preRenderList.end())
+        {
+            _preRenderList.push_back(RenderStageOrderPair(order, rs));
+        }
+        else
+        {
+            _preRenderList.insert(itr, RenderStageOrderPair(order, rs));
         }
     }
 }
 
-void RenderStage::addPostRenderStage(RenderStage* rs, int order)
+void RenderStage::addPostRenderStage(RenderStage *rs, int order)
 {
     if (rs)
     {
         RenderStageList::iterator itr;
-        for(itr = _postRenderList.begin(); itr != _postRenderList.end(); ++itr) {
-            if(order < itr->first) {
+
+        for (itr = _postRenderList.begin(); itr != _postRenderList.end(); ++itr)
+        {
+            if (order < itr->first)
+            {
                 break;
             }
         }
-        if(itr == _postRenderList.end()) {
-            _postRenderList.push_back(RenderStageOrderPair(order,rs));
-        } else {
-            _postRenderList.insert(itr,RenderStageOrderPair(order,rs));
+
+        if (itr == _postRenderList.end())
+        {
+            _postRenderList.push_back(RenderStageOrderPair(order, rs));
+        }
+        else
+        {
+            _postRenderList.insert(itr, RenderStageOrderPair(order, rs));
         }
     }
 }
 
-void RenderStage::drawPreRenderStages(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
+void RenderStage::drawPreRenderStages(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
 {
-    if (_preRenderList.empty()) return;
+    if (_preRenderList.empty())
+        return;
 
-    //cout << "Drawing prerendering stages "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
-    for(RenderStageList::iterator itr=_preRenderList.begin();
-        itr!=_preRenderList.end();
-        ++itr)
+    // cout << "Drawing prerendering stages "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
+    for (RenderStageList::iterator itr = _preRenderList.begin();
+         itr != _preRenderList.end();
+         ++itr)
     {
-        itr->second->draw(renderInfo,previous);
+        itr->second->draw(renderInfo, previous);
     }
-    //cout << "Done Drawing prerendering stages "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
+
+    // cout << "Done Drawing prerendering stages "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
 }
 
 
-void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
+void RenderStage::runCameraSetUp(osg::RenderInfo&renderInfo)
 {
     _cameraRequiresSetUp = false;
 
-    if (!_camera) return;
+    if (!_camera)
+        return;
 
-    OSG_INFO<<"RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo) "<<this<<std::endl;
+    OSG_INFO << "RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo) " << this << std::endl;
 
     _cameraAttachmentMapModifiedCount = _camera->getAttachmentMapModifiedCount();
 
-    osg::State& state = *renderInfo.getState();
+    osg::State&state = *renderInfo.getState();
 
     osg::Camera::RenderTargetImplementation renderTargetImplementation = _camera->getRenderTargetImplementation();
-    osg::Camera::RenderTargetImplementation renderTargetFallback = _camera->getRenderTargetFallback();
+    osg::Camera::RenderTargetImplementation renderTargetFallback       = _camera->getRenderTargetFallback();
 
-    osg::Camera::BufferAttachmentMap& bufferAttachments = _camera->getBufferAttachmentMap();
+    osg::Camera::BufferAttachmentMap&bufferAttachments = _camera->getBufferAttachmentMap();
 
     _bufferAttachmentMap.clear();
 
     // compute the required dimensions
-    int width = static_cast<int>(_viewport->x() + _viewport->width());
-    int height = static_cast<int>(_viewport->y() + _viewport->height());
-    int depth = 1;
+    int                                        width  = static_cast<int>(_viewport->x() + _viewport->width());
+    int                                        height = static_cast<int>(_viewport->y() + _viewport->height());
+    int                                        depth  = 1;
     osg::Camera::BufferAttachmentMap::iterator itr;
-    for(itr = bufferAttachments.begin();
-        itr != bufferAttachments.end();
-        ++itr)
+
+    for (itr = bufferAttachments.begin();
+         itr != bufferAttachments.end();
+         ++itr)
     {
-        width = osg::maximum(width,itr->second.width());
-        height = osg::maximum(height,itr->second.height());
-        depth = osg::maximum(depth,itr->second.depth());
+        width  = osg::maximum(width, itr->second.width());
+        height = osg::maximum(height, itr->second.height());
+        depth  = osg::maximum(depth, itr->second.depth());
     }
 
     // OSG_NOTICE<<"RenderStage::runCameraSetUp viewport "<<_viewport->x()<<" "<<_viewport->y()<<" "<<_viewport->width()<<" "<<_viewport->height()<<std::endl;
     // OSG_NOTICE<<"RenderStage::runCameraSetUp computed "<<width<<" "<<height<<" "<<depth<<std::endl;
 
     // attach images that need to be copied after the stage is drawn.
-    for(itr = bufferAttachments.begin();
-        itr != bufferAttachments.end();
-        ++itr)
+    for (itr = bufferAttachments.begin();
+         itr != bufferAttachments.end();
+         ++itr)
     {
         // if one exist attach image to the RenderStage.
         if (itr->second._image.valid())
         {
-            osg::Image* image = itr->second._image.get();
-            GLenum pixelFormat = image->getPixelFormat();
-            GLenum dataType = image->getDataType();
+            osg::Image *image      = itr->second._image.get();
+            GLenum     pixelFormat = image->getPixelFormat();
+            GLenum     dataType    = image->getDataType();
 
-            if (image->data()==0)
+            if (image->data() == 0)
             {
-                if (pixelFormat==0) pixelFormat = itr->second._internalFormat;
-                if (pixelFormat==0) pixelFormat = _imageReadPixelFormat;
-                if (pixelFormat==0) pixelFormat = GL_RGBA;
+                if (pixelFormat == 0)
+                    pixelFormat = itr->second._internalFormat;
 
-                if (dataType==0) dataType = _imageReadPixelDataType;
-                if (dataType==0) dataType = GL_UNSIGNED_BYTE;
+                if (pixelFormat == 0)
+                    pixelFormat = _imageReadPixelFormat;
+
+                if (pixelFormat == 0)
+                    pixelFormat = GL_RGBA;
+
+                if (dataType == 0)
+                    dataType = _imageReadPixelDataType;
+
+                if (dataType == 0)
+                    dataType = GL_UNSIGNED_BYTE;
             }
 
-            _bufferAttachmentMap[itr->first]._imageReadPixelFormat = pixelFormat;
+            _bufferAttachmentMap[itr->first]._imageReadPixelFormat   = pixelFormat;
             _bufferAttachmentMap[itr->first]._imageReadPixelDataType = dataType;
-            _bufferAttachmentMap[itr->first]._image = image;
+            _bufferAttachmentMap[itr->first]._image                  = image;
         }
 
         if (itr->second._texture.valid())
         {
-            osg::Texture* texture = itr->second._texture.get();
-            osg::Texture1D* texture1D = 0;
-            osg::Texture2D* texture2D = 0;
-            osg::Texture2DMultisample* texture2DMS = 0;
-            osg::Texture3D* texture3D = 0;
-            osg::TextureCubeMap* textureCubeMap = 0;
-            osg::TextureRectangle* textureRectangle = 0;
-            if (0 != (texture1D=dynamic_cast<osg::Texture1D*>(texture)))
+            osg::Texture              *texture          = itr->second._texture.get();
+            osg::Texture1D            *texture1D        = 0;
+            osg::Texture2D            *texture2D        = 0;
+            osg::Texture2DMultisample *texture2DMS      = 0;
+            osg::Texture3D            *texture3D        = 0;
+            osg::TextureCubeMap       *textureCubeMap   = 0;
+            osg::TextureRectangle     *textureRectangle = 0;
+            if (0 != (texture1D = dynamic_cast<osg::Texture1D*>(texture)))
             {
-                if (texture1D->getTextureWidth()==0)
+                if (texture1D->getTextureWidth() == 0)
                 {
                     texture1D->setTextureWidth(width);
                 }
             }
             else if (0 != (texture2D = dynamic_cast<osg::Texture2D*>(texture)))
             {
-                if (texture2D->getTextureWidth()==0 || texture2D->getTextureHeight()==0)
+                if (texture2D->getTextureWidth() == 0 || texture2D->getTextureHeight() == 0)
                 {
-                    texture2D->setTextureSize(width,height);
+                    texture2D->setTextureSize(width, height);
                 }
             }
             else if (0 != (texture2DMS = dynamic_cast<osg::Texture2DMultisample*>(texture)))
             {
-                if (texture2DMS->getTextureWidth()==0 || texture2DMS->getTextureHeight()==0)
+                if (texture2DMS->getTextureWidth() == 0 || texture2DMS->getTextureHeight() == 0)
                 {
-                    texture2DMS->setTextureSize(width,height);
+                    texture2DMS->setTextureSize(width, height);
                 }
             }
             else if (0 != (texture3D = dynamic_cast<osg::Texture3D*>(texture)))
             {
-                if (texture3D->getTextureWidth()==0 || texture3D->getTextureHeight()==0 || texture3D->getTextureDepth()==0 )
+                if (texture3D->getTextureWidth() == 0 || texture3D->getTextureHeight() == 0 || texture3D->getTextureDepth() == 0)
                 {
                     // note we dont' have the depth here, so we'll heave to assume that height and depth are the same..
-                    texture3D->setTextureSize(width,height,height);
+                    texture3D->setTextureSize(width, height, height);
                 }
             }
             else if (0 != (textureCubeMap = dynamic_cast<osg::TextureCubeMap*>(texture)))
             {
-                if (textureCubeMap->getTextureWidth()==0 || textureCubeMap->getTextureHeight()==0)
+                if (textureCubeMap->getTextureWidth() == 0 || textureCubeMap->getTextureHeight() == 0)
                 {
-                    textureCubeMap->setTextureSize(width,height);
+                    textureCubeMap->setTextureSize(width, height);
                 }
             }
             else if (0 != (textureRectangle = dynamic_cast<osg::TextureRectangle*>(texture)))
             {
-                if (textureRectangle->getTextureWidth()==0 || textureRectangle->getTextureHeight()==0)
+                if (textureRectangle->getTextureWidth() == 0 || textureRectangle->getTextureHeight() == 0)
                 {
-                    textureRectangle->setTextureSize(width,height);
+                    textureRectangle->setTextureSize(width, height);
                 }
             }
-
         }
     }
 
-    if (renderTargetImplementation==osg::Camera::FRAME_BUFFER_OBJECT)
+    if (renderTargetImplementation == osg::Camera::FRAME_BUFFER_OBJECT)
     {
-        osg::GLExtensions* ext = state.get<osg::GLExtensions>();
-        bool fbo_supported = ext->isFrameBufferObjectSupported;
+        osg::GLExtensions *ext          = state.get<osg::GLExtensions>();
+        bool              fbo_supported = ext->isFrameBufferObjectSupported;
 
         if (fbo_supported)
         {
-            OSG_INFO<<"Setting up osg::Camera::FRAME_BUFFER_OBJECT"<<std::endl;
+            OSG_INFO << "Setting up osg::Camera::FRAME_BUFFER_OBJECT" << std::endl;
 
             OpenThreads::ScopedLock<OpenThreads::Mutex> lock(*(_camera->getDataChangeMutex()));
 
             osg::ref_ptr<osg::FrameBufferObject> fbo = new osg::FrameBufferObject;
             osg::ref_ptr<osg::FrameBufferObject> fbo_multisample;
 
-            bool colorAttached = false;
-            bool depthAttached = false;
-            bool stencilAttached = false;
-            unsigned samples = 0;
-            unsigned colorSamples = 0;
+            bool     colorAttached   = false;
+            bool     depthAttached   = false;
+            bool     stencilAttached = false;
+            unsigned samples         = 0;
+            unsigned colorSamples    = 0;
 
             // This is not a cut and paste error. Set BOTH local masks
             // to the value of the Camera's use render buffers mask.
             // We'll change this if and only if we decide we're doing MSFBO.
-            unsigned int renderBuffersMask = _camera->getImplicitBufferAttachmentRenderMask(true);
+            unsigned int renderBuffersMask  = _camera->getImplicitBufferAttachmentRenderMask(true);
             unsigned int resolveBuffersMask = _camera->getImplicitBufferAttachmentRenderMask(true);
 
             if (ext->isRenderbufferMultisampleSupported())
             {
-                for(osg::Camera::BufferAttachmentMap::iterator itr = bufferAttachments.begin();
-                    itr != bufferAttachments.end();
-                    ++itr)
+                for (osg::Camera::BufferAttachmentMap::iterator itr = bufferAttachments.begin();
+                     itr != bufferAttachments.end();
+                     ++itr)
                 {
-                    osg::Camera::Attachment& attachment = itr->second;
-                    samples = maximum(samples, attachment._multisampleSamples);
+                    osg::Camera::Attachment&attachment = itr->second;
+                    samples      = maximum(samples, attachment._multisampleSamples);
                     colorSamples = maximum(colorSamples, attachment._multisampleColorSamples);
                 }
 
@@ -397,13 +422,12 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
                 }
             }
 
-            for(osg::Camera::BufferAttachmentMap::iterator itr = bufferAttachments.begin();
-                itr != bufferAttachments.end();
-                ++itr)
+            for (osg::Camera::BufferAttachmentMap::iterator itr = bufferAttachments.begin();
+                 itr != bufferAttachments.end();
+                 ++itr)
             {
-
-                osg::Camera::BufferComponent buffer = itr->first;
-                osg::Camera::Attachment& attachment = itr->second;
+                osg::Camera::BufferComponent buffer      = itr->first;
+                osg::Camera::Attachment      &attachment = itr->second;
 
                 if (attachment._texture.valid() || attachment._image.valid())
                     fbo->setAttachment(buffer, osg::FrameBufferAttachment(attachment));
@@ -420,9 +444,11 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
                         case Camera::DEPTH_BUFFER:
                             internalFormat = GL_DEPTH_COMPONENT24;
                             break;
+
                         case Camera::STENCIL_BUFFER:
                             internalFormat = GL_STENCIL_INDEX8_EXT;
                             break;
+
                         case Camera::PACKED_DEPTH_STENCIL_BUFFER:
                             internalFormat = GL_DEPTH_STENCIL_EXT;
                             break;
@@ -434,24 +460,28 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
                                 internalFormat = attachment._texture->getInternalFormat();
                             else
                                 internalFormat = GL_RGBA;
+
                             break;
                         }
                     }
+
                     fbo_multisample->setAttachment(buffer,
-                        osg::FrameBufferAttachment(new osg::RenderBuffer(
-                        width, height, internalFormat,
-                        samples, colorSamples)));
+                                                   osg::FrameBufferAttachment(new osg::RenderBuffer(
+                                                                                  width, height, internalFormat,
+                                                                                  samples, colorSamples)));
                 }
 
-                if (buffer==osg::Camera::DEPTH_BUFFER) depthAttached = true;
-                else if (buffer==osg::Camera::STENCIL_BUFFER) stencilAttached = true;
-                else if (buffer==osg::Camera::PACKED_DEPTH_STENCIL_BUFFER)
-                {
+                if (buffer == osg::Camera::DEPTH_BUFFER)
                     depthAttached = true;
+                else if (buffer == osg::Camera::STENCIL_BUFFER)
+                    stencilAttached = true;
+                else if (buffer == osg::Camera::PACKED_DEPTH_STENCIL_BUFFER)
+                {
+                    depthAttached   = true;
                     stencilAttached = true;
                 }
-                else if (buffer>=osg::Camera::COLOR_BUFFER) colorAttached = true;
-
+                else if (buffer >= osg::Camera::COLOR_BUFFER)
+                    colorAttached = true;
             }
 
             if (!depthAttached)
@@ -464,48 +494,52 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
                 // is the value set by the app for the resolve buffers. But if not using
                 // MSFBO, then resolveBuffersMask is the value set by the app for render
                 // buffers. In both cases, resolveBuffersMask is used to configure "fbo".
-                if( resolveBuffersMask & osg::Camera::IMPLICIT_DEPTH_BUFFER_ATTACHMENT )
+                if (resolveBuffersMask & osg::Camera::IMPLICIT_DEPTH_BUFFER_ATTACHMENT)
                 {
                     fbo->setAttachment(osg::Camera::DEPTH_BUFFER, osg::FrameBufferAttachment(new osg::RenderBuffer(width, height, GL_DEPTH_COMPONENT24)));
                     depthAttached = true;
                 }
+
                 if (fbo_multisample.valid() &&
-                    ( renderBuffersMask & osg::Camera::IMPLICIT_DEPTH_BUFFER_ATTACHMENT ) )
+                    (renderBuffersMask & osg::Camera::IMPLICIT_DEPTH_BUFFER_ATTACHMENT))
                 {
                     fbo_multisample->setAttachment(osg::Camera::DEPTH_BUFFER,
-                        osg::FrameBufferAttachment(new osg::RenderBuffer(width,
-                        height, GL_DEPTH_COMPONENT24, samples, colorSamples)));
+                                                   osg::FrameBufferAttachment(new osg::RenderBuffer(width,
+                                                                                                    height, GL_DEPTH_COMPONENT24, samples, colorSamples)));
                 }
             }
+
             if (!stencilAttached)
             {
-                if( resolveBuffersMask & osg::Camera::IMPLICIT_STENCIL_BUFFER_ATTACHMENT )
+                if (resolveBuffersMask & osg::Camera::IMPLICIT_STENCIL_BUFFER_ATTACHMENT)
                 {
                     fbo->setAttachment(osg::Camera::STENCIL_BUFFER, osg::FrameBufferAttachment(new osg::RenderBuffer(width, height, GL_STENCIL_INDEX8_EXT)));
                     stencilAttached = true;
                 }
+
                 if (fbo_multisample.valid() &&
-                    ( renderBuffersMask & osg::Camera::IMPLICIT_STENCIL_BUFFER_ATTACHMENT ) )
+                    (renderBuffersMask & osg::Camera::IMPLICIT_STENCIL_BUFFER_ATTACHMENT))
                 {
                     fbo_multisample->setAttachment(osg::Camera::STENCIL_BUFFER,
-                        osg::FrameBufferAttachment(new osg::RenderBuffer(width,
-                        height, GL_STENCIL_INDEX8_EXT, samples, colorSamples)));
+                                                   osg::FrameBufferAttachment(new osg::RenderBuffer(width,
+                                                                                                    height, GL_STENCIL_INDEX8_EXT, samples, colorSamples)));
                 }
             }
 
             if (!colorAttached)
             {
-                if( resolveBuffersMask & osg::Camera::IMPLICIT_COLOR_BUFFER_ATTACHMENT )
+                if (resolveBuffersMask & osg::Camera::IMPLICIT_COLOR_BUFFER_ATTACHMENT)
                 {
                     fbo->setAttachment(osg::Camera::COLOR_BUFFER, osg::FrameBufferAttachment(new osg::RenderBuffer(width, height, GL_RGB)));
                     colorAttached = true;
                 }
+
                 if (fbo_multisample.valid() &&
-                    ( renderBuffersMask & osg::Camera::IMPLICIT_COLOR_BUFFER_ATTACHMENT ) )
+                    (renderBuffersMask & osg::Camera::IMPLICIT_COLOR_BUFFER_ATTACHMENT))
                 {
                     fbo_multisample->setAttachment(osg::Camera::COLOR_BUFFER,
-                        osg::FrameBufferAttachment(new osg::RenderBuffer(width,
-                        height, GL_RGB, samples, colorSamples)));
+                                                   osg::FrameBufferAttachment(new osg::RenderBuffer(width,
+                                                                                                    height, GL_RGB, samples, colorSamples)));
                 }
             }
 
@@ -515,13 +549,13 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
             // otherwise glCheckFramebufferStatus will fail
             // It has to be done after call to glBindFramebuffer (fbo->apply)
             // and before call to glCheckFramebufferStatus
-            if ( !colorAttached )
+            if (!colorAttached)
             {
-                setDrawBuffer( GL_NONE, true );
-                setReadBuffer( GL_NONE, true );
+                setDrawBuffer(GL_NONE, true);
+                setReadBuffer(GL_NONE, true);
                 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
-                    glDrawBuffer( GL_NONE );
-                    glReadBuffer( GL_NONE );
+                glDrawBuffer(GL_NONE);
+                glReadBuffer(GL_NONE);
                 #endif
             }
 
@@ -529,7 +563,7 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
 
             if (status != GL_FRAMEBUFFER_COMPLETE_EXT)
             {
-                OSG_NOTICE<<"RenderStage::runCameraSetUp(), FBO setup failed, FBO status= 0x"<<std::hex<<status<<std::dec<<std::endl;
+                OSG_NOTICE << "RenderStage::runCameraSetUp(), FBO setup failed, FBO status= 0x" << std::hex << status << std::dec << std::endl;
 
                 fbo_supported = false;
                 GLuint fboId = state.getGraphicsContext() ? state.getGraphicsContext()->getDefaultFboId() : 0;
@@ -538,16 +572,14 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
 
                 // clean up.
                 double availableTime = 100.0f;
-                double currentTime = state.getFrameStamp()?state.getFrameStamp()->getReferenceTime():0.0;
-                osg::RenderBuffer::flushDeletedRenderBuffers(state.getContextID(),currentTime,availableTime);
-                osg::FrameBufferObject::flushDeletedFrameBufferObjects(state.getContextID(),currentTime,availableTime);
-
-
+                double currentTime   = state.getFrameStamp() ? state.getFrameStamp()->getReferenceTime() : 0.0;
+                osg::RenderBuffer::flushDeletedRenderBuffers(state.getContextID(), currentTime, availableTime);
+                osg::FrameBufferObject::flushDeletedFrameBufferObjects(state.getContextID(), currentTime, availableTime);
             }
             else
             {
-                setDrawBuffer(GL_NONE, false );
-                setReadBuffer(GL_NONE, false );
+                setDrawBuffer(GL_NONE, false);
+                setReadBuffer(GL_NONE, false);
 
                 _fbo = fbo;
 
@@ -561,17 +593,17 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
                     {
                         OSG_NOTICE << "RenderStage::runCameraSetUp(), "
                             "multisample FBO setup failed, FBO status = 0x"
-                            << std::hex << status << std::dec << std::endl;
+                                   << std::hex << status << std::dec << std::endl;
 
                         fbo->apply(state);
                         fbo_multisample = 0;
-                        _resolveFbo = 0;
+                        _resolveFbo     = 0;
 
                         // clean up.
                         double availableTime = 100.0f;
-                        double currentTime = state.getFrameStamp()?state.getFrameStamp()->getReferenceTime():0.0;
-                        osg::RenderBuffer::flushDeletedRenderBuffers(state.getContextID(),currentTime,availableTime);
-                        osg::FrameBufferObject::flushDeletedFrameBufferObjects(state.getContextID(),currentTime,availableTime);
+                        double currentTime   = state.getFrameStamp() ? state.getFrameStamp()->getReferenceTime() : 0.0;
+                        osg::RenderBuffer::flushDeletedRenderBuffers(state.getContextID(), currentTime, availableTime);
+                        osg::FrameBufferObject::flushDeletedFrameBufferObjects(state.getContextID(), currentTime, availableTime);
                     }
                     else
                     {
@@ -588,7 +620,7 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
 
         if (!fbo_supported)
         {
-            if (renderTargetImplementation<renderTargetFallback)
+            if (renderTargetImplementation < renderTargetFallback)
                 renderTargetImplementation = renderTargetFallback;
             else
                 renderTargetImplementation = osg::Camera::PIXEL_BUFFER_RTT;
@@ -596,10 +628,10 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
     }
 
     // check whether PBuffer-RTT is supported or not
-    if (renderTargetImplementation==osg::Camera::PIXEL_BUFFER_RTT &&
+    if (renderTargetImplementation == osg::Camera::PIXEL_BUFFER_RTT &&
         !osg::isGLExtensionSupported(state.getContextID(), "WGL_ARB_render_texture"))
     {
-        if (renderTargetImplementation<renderTargetFallback)
+        if (renderTargetImplementation < renderTargetFallback)
             renderTargetImplementation = renderTargetFallback;
         else
             renderTargetImplementation = osg::Camera::PIXEL_BUFFER;
@@ -608,110 +640,114 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
     // if any of the renderTargetImplementations require a separate graphics context such as with pbuffer try in turn to
     // set up, but if each level fails then resort to the next level down.
     while (!getGraphicsContext() &&
-           (renderTargetImplementation==osg::Camera::PIXEL_BUFFER_RTT ||
-            renderTargetImplementation==osg::Camera::PIXEL_BUFFER ||
-            renderTargetImplementation==osg::Camera::SEPARATE_WINDOW) )
+           (renderTargetImplementation == osg::Camera::PIXEL_BUFFER_RTT ||
+            renderTargetImplementation == osg::Camera::PIXEL_BUFFER ||
+            renderTargetImplementation == osg::Camera::SEPARATE_WINDOW))
     {
         osg::ref_ptr<osg::GraphicsContext> context = getGraphicsContext();
         if (!context)
         {
-
             // set up the traits of the graphics context that we want
             osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
 
-            traits->width = width;
+            traits->width  = width;
             traits->height = height;
 
             // OSG_NOTICE<<"traits = "<<traits->width<<" "<<traits->height<<std::endl;
 
-            traits->pbuffer = (renderTargetImplementation==osg::Camera::PIXEL_BUFFER || renderTargetImplementation==osg::Camera::PIXEL_BUFFER_RTT);
-            traits->windowDecoration = (renderTargetImplementation==osg::Camera::SEPARATE_WINDOW);
-            traits->doubleBuffer = (renderTargetImplementation==osg::Camera::SEPARATE_WINDOW);
+            traits->pbuffer          = (renderTargetImplementation == osg::Camera::PIXEL_BUFFER || renderTargetImplementation == osg::Camera::PIXEL_BUFFER_RTT);
+            traits->windowDecoration = (renderTargetImplementation == osg::Camera::SEPARATE_WINDOW);
+            traits->doubleBuffer     = (renderTargetImplementation == osg::Camera::SEPARATE_WINDOW);
 
-            osg::Texture* pBufferTexture = 0;
-            GLenum bufferFormat = GL_NONE;
-            unsigned int level = 0;
-            unsigned int face = 0;
+            osg::Texture *pBufferTexture = 0;
+            GLenum       bufferFormat    = GL_NONE;
+            unsigned int level           = 0;
+            unsigned int face            = 0;
 
             bool colorAttached = false;
             bool depthAttached = false;
-            for(osg::Camera::BufferAttachmentMap::iterator itr = bufferAttachments.begin();
-                itr != bufferAttachments.end();
-                ++itr)
+
+            for (osg::Camera::BufferAttachmentMap::iterator itr = bufferAttachments.begin();
+                 itr != bufferAttachments.end();
+                 ++itr)
             {
+                osg::Camera::BufferComponent buffer      = itr->first;
+                osg::Camera::Attachment      &attachment = itr->second;
 
-                osg::Camera::BufferComponent buffer = itr->first;
-                osg::Camera::Attachment& attachment = itr->second;
-                switch(buffer)
+                switch (buffer)
                 {
-                    case(osg::Camera::DEPTH_BUFFER):
+                case (osg::Camera::DEPTH_BUFFER):
+                {
+                    traits->depth = 24;
+                    depthAttached = true;
+                    break;
+                }
+
+                case (osg::Camera::STENCIL_BUFFER):
+                {
+                    traits->stencil = 8;
+                    break;
+                }
+
+                case (osg::Camera::PACKED_DEPTH_STENCIL_BUFFER):
+                {
+                    traits->depth   = 24;
+                    depthAttached   = true;
+                    traits->stencil = 8;
+                }
+
+                case (osg::Camera::COLOR_BUFFER):
+                {
+                    if (attachment._internalFormat != GL_NONE)
                     {
-                        traits->depth = 24;
-                        depthAttached = true;
-                        break;
+                        bufferFormat = attachment._internalFormat;
                     }
-                    case(osg::Camera::STENCIL_BUFFER):
+                    else
                     {
-                        traits->stencil = 8;
-                        break;
-                    }
-                    case(osg::Camera::PACKED_DEPTH_STENCIL_BUFFER):
-                    {
-                        traits->depth = 24;
-                        depthAttached = true;
-                        traits->stencil = 8;
-                    }
-                    case(osg::Camera::COLOR_BUFFER):
-                    {
-                        if (attachment._internalFormat!=GL_NONE)
+                        if (attachment._texture.valid())
                         {
-                            bufferFormat = attachment._internalFormat;
+                            pBufferTexture = attachment._texture.get();
+                            bufferFormat   = attachment._texture->getInternalFormat();
+                        }
+                        else if (attachment._image.valid())
+                        {
+                            bufferFormat = attachment._image->getInternalTextureFormat();
                         }
                         else
                         {
-                            if (attachment._texture.valid())
-                            {
-                                pBufferTexture = attachment._texture.get();
-                                bufferFormat = attachment._texture->getInternalFormat();
-                            }
-                            else if (attachment._image.valid())
-                            {
-                                bufferFormat = attachment._image->getInternalTextureFormat();
-                            }
-                            else
-                            {
-                                bufferFormat = GL_RGBA;
-                            }
+                            bufferFormat = GL_RGBA;
                         }
-
-                        level = attachment._level;
-                        face = attachment._face;
-
-                        if (renderTargetImplementation==osg::Camera::PIXEL_BUFFER_RTT)
-                        {
-                            traits->target = attachment._texture.valid() ? attachment._texture->getTextureTarget() : 0;
-                            traits->format = bufferFormat;
-                            traits->level = level;
-                            traits->face = face;
-                            traits->mipMapGeneration = attachment._mipMapGeneration;
-                        }
-                        break;
                     }
-                    default:
+
+                    level = attachment._level;
+                    face  = attachment._face;
+
+                    if (renderTargetImplementation == osg::Camera::PIXEL_BUFFER_RTT)
                     {
-                        if (renderTargetImplementation==osg::Camera::SEPARATE_WINDOW)
-                        {
-                            OSG_NOTICE<<"Warning: RenderStage::runCameraSetUp(State&) Window ";
-                        }
-                        else
-                        {
-                            OSG_NOTICE<<"Warning: RenderStage::runCameraSetUp(State&) Pbuffer ";
-                        }
-
-                        OSG_NOTICE<<"does not support multiple color outputs."<<std::endl;
-                        break;
+                        traits->target           = attachment._texture.valid() ? attachment._texture->getTextureTarget() : 0;
+                        traits->format           = bufferFormat;
+                        traits->level            = level;
+                        traits->face             = face;
+                        traits->mipMapGeneration = attachment._mipMapGeneration;
                     }
 
+                    break;
+                }
+
+                default:
+                {
+                    if (renderTargetImplementation == osg::Camera::SEPARATE_WINDOW)
+                    {
+                        OSG_NOTICE << "Warning: RenderStage::runCameraSetUp(State&) Window ";
+                    }
+                    else
+                    {
+                        OSG_NOTICE << "Warning: RenderStage::runCameraSetUp(State&) Pbuffer ";
+                    }
+
+                    OSG_NOTICE << "does not support multiple color outputs." << std::endl;
+                    break;
+                }
                 }
             }
 
@@ -722,12 +758,13 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
 
             if (!colorAttached)
             {
-                if (bufferFormat == GL_NONE) bufferFormat = GL_RGB;
+                if (bufferFormat == GL_NONE)
+                    bufferFormat = GL_RGB;
 
-                traits->red = 8;
+                traits->red   = 8;
                 traits->green = 8;
-                traits->blue = 8;
-                traits->alpha = (bufferFormat==GL_RGBA) ? 8 : 0;
+                traits->blue  = 8;
+                traits->alpha = (bufferFormat == GL_RGBA) ? 8 : 0;
             }
 
             // share OpenGL objects if possible...
@@ -735,12 +772,12 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
             {
                 traits->sharedContext = state.getGraphicsContext();
 
-                const osg::GraphicsContext::Traits* sharedTraits = traits->sharedContext->getTraits();
+                const osg::GraphicsContext::Traits *sharedTraits = traits->sharedContext->getTraits();
                 if (sharedTraits)
                 {
-                    traits->hostName = sharedTraits->hostName;
+                    traits->hostName   = sharedTraits->hostName;
                     traits->displayNum = sharedTraits->displayNum;
-                    traits->screenNum = sharedTraits->screenNum;
+                    traits->screenNum  = sharedTraits->screenNum;
                 }
             }
 
@@ -749,7 +786,7 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
 
             if (context.valid() && context->realize())
             {
-                OSG_INFO<<"RenderStage::runCameraSetUp(State&) Context has been realized "<<std::endl;
+                OSG_INFO << "RenderStage::runCameraSetUp(State&) Context has been realized " << std::endl;
 
                 // successfully set up graphics context as requested,
                 // will assign this graphics context to the RenderStage and
@@ -762,25 +799,25 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
                 setDrawBuffer(GL_FRONT);
                 setReadBuffer(GL_FRONT);
 
-                if (pBufferTexture && renderTargetImplementation==osg::Camera::PIXEL_BUFFER_RTT)
+                if (pBufferTexture && renderTargetImplementation == osg::Camera::PIXEL_BUFFER_RTT)
                 {
-                   OSG_INFO<<"RenderStage::runCameraSetUp(State&) Assign graphis context to Texture"<<std::endl;
-                   pBufferTexture->setReadPBuffer(context.get());
+                    OSG_INFO << "RenderStage::runCameraSetUp(State&) Assign graphis context to Texture" << std::endl;
+                    pBufferTexture->setReadPBuffer(context.get());
                 }
                 else
                 {
-                    OSG_INFO<<"RenderStage::runCameraSetUp(State&) Assigning texture to RenderStage so that it does the copy"<<std::endl;
+                    OSG_INFO << "RenderStage::runCameraSetUp(State&) Assigning texture to RenderStage so that it does the copy" << std::endl;
                     setTexture(pBufferTexture, level, face);
                 }
             }
             else
             {
-                OSG_INFO<<"Failed to acquire Graphics Context"<<std::endl;
+                OSG_INFO << "Failed to acquire Graphics Context" << std::endl;
 
-                if (renderTargetImplementation==osg::Camera::PIXEL_BUFFER_RTT)
+                if (renderTargetImplementation == osg::Camera::PIXEL_BUFFER_RTT)
                 {
                     // fallback to using standard PBuffer, this will allow this while loop to continue
-                    if (renderTargetImplementation<renderTargetFallback)
+                    if (renderTargetImplementation < renderTargetFallback)
                         renderTargetImplementation = renderTargetFallback;
                     else
                         renderTargetImplementation = osg::Camera::PIXEL_BUFFER;
@@ -790,43 +827,42 @@ void RenderStage::runCameraSetUp(osg::RenderInfo& renderInfo)
                     renderTargetImplementation = osg::Camera::FRAME_BUFFER;
                 }
             }
-
         }
     }
 
     // finally if all else has failed, then the frame buffer fallback will come in to play.
-    if (renderTargetImplementation==osg::Camera::FRAME_BUFFER)
+    if (renderTargetImplementation == osg::Camera::FRAME_BUFFER)
     {
-        OSG_INFO<<"Setting up osg::Camera::FRAME_BUFFER"<<std::endl;
+        OSG_INFO << "Setting up osg::Camera::FRAME_BUFFER" << std::endl;
 
-        for(osg::Camera::BufferAttachmentMap::iterator itr = bufferAttachments.begin();
-            itr != bufferAttachments.end();
-            ++itr)
+        for (osg::Camera::BufferAttachmentMap::iterator itr = bufferAttachments.begin();
+             itr != bufferAttachments.end();
+             ++itr)
         {
             // assign the texture...
-            if (itr->second._texture.valid()) setTexture(itr->second._texture.get(), itr->second._level, itr->second._face);
+            if (itr->second._texture.valid())
+                setTexture(itr->second._texture.get(), itr->second._level, itr->second._face);
         }
     }
-
 }
 
-void RenderStage::copyTexture(osg::RenderInfo& renderInfo)
+void RenderStage::copyTexture(osg::RenderInfo&renderInfo)
 {
-    osg::State& state = *renderInfo.getState();
+    osg::State&state = *renderInfo.getState();
 
-    if ( _readBufferApplyMask )
+    if (_readBufferApplyMask)
     {
         #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
-            glReadBuffer(_readBuffer);
+        glReadBuffer(_readBuffer);
         #endif
     }
 
     // need to implement texture cube map etc...
-    osg::Texture1D* texture1D = 0;
-    osg::Texture2D* texture2D = 0;
-    osg::Texture3D* texture3D = 0;
-    osg::TextureRectangle* textureRec = 0;
-    osg::TextureCubeMap* textureCubeMap = 0;
+    osg::Texture1D        *texture1D      = 0;
+    osg::Texture2D        *texture2D      = 0;
+    osg::Texture3D        *texture3D      = 0;
+    osg::TextureRectangle *textureRec     = 0;
+    osg::TextureCubeMap   *textureCubeMap = 0;
 
     // use TexCopySubImage with the offset of the viewport into the texture
     // note, this path mirrors the pbuffer and fbo means for updating the texture.
@@ -844,12 +880,12 @@ void RenderStage::copyTexture(osg::RenderInfo& renderInfo)
     else if ((textureRec = dynamic_cast<osg::TextureRectangle*>(_texture.get())) != 0)
     {
         textureRec->copyTexSubImage2D(state,
-                                     static_cast<int>(_viewport->x()),
-                                     static_cast<int>(_viewport->y()),
-                                     static_cast<int>(_viewport->x()),
-                                     static_cast<int>(_viewport->y()),
-                                     static_cast<int>(_viewport->width()),
-                                     static_cast<int>(_viewport->height()));
+                                      static_cast<int>(_viewport->x()),
+                                      static_cast<int>(_viewport->y()),
+                                      static_cast<int>(_viewport->x()),
+                                      static_cast<int>(_viewport->y()),
+                                      static_cast<int>(_viewport->width()),
+                                      static_cast<int>(_viewport->height()));
     }
     else if ((texture1D = dynamic_cast<osg::Texture1D*>(_texture.get())) != 0)
     {
@@ -876,21 +912,21 @@ void RenderStage::copyTexture(osg::RenderInfo& renderInfo)
     {
         // need to implement
         textureCubeMap->copyTexSubImageCubeMap(state, _face,
-                                     static_cast<int>(_viewport->x()),
-                                     static_cast<int>(_viewport->y()),
-                                     static_cast<int>(_viewport->x()),
-                                     static_cast<int>(_viewport->y()),
-                                     static_cast<int>(_viewport->width()),
-                                     static_cast<int>(_viewport->height()));
+                                               static_cast<int>(_viewport->x()),
+                                               static_cast<int>(_viewport->y()),
+                                               static_cast<int>(_viewport->x()),
+                                               static_cast<int>(_viewport->y()),
+                                               static_cast<int>(_viewport->width()),
+                                               static_cast<int>(_viewport->height()));
     }
 }
 
-void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, bool& doCopyTexture)
+void RenderStage::drawInner(osg::RenderInfo&renderInfo, RenderLeaf*&previous, bool&doCopyTexture)
 {
     struct SubFunc
     {
-        static void applyReadFBO(bool& apply_read_fbo,
-            const FrameBufferObject* read_fbo, osg::State& state)
+        static void applyReadFBO(bool&apply_read_fbo,
+                                 const FrameBufferObject *read_fbo, osg::State&state)
         {
             if (read_fbo->isMultisample())
             {
@@ -908,23 +944,21 @@ void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, b
         }
     };
 
-    osg::State& state = *renderInfo.getState();
+    osg::State&state = *renderInfo.getState();
 
-    osg::GLExtensions* ext = _fbo.valid() ? state.get<osg::GLExtensions>() : 0;
-    bool fbo_supported = ext && ext->isFrameBufferObjectSupported;
+    osg::GLExtensions *ext          = _fbo.valid() ? state.get<osg::GLExtensions>() : 0;
+    bool              fbo_supported = ext && ext->isFrameBufferObjectSupported;
 
     bool using_multiple_render_targets = fbo_supported && _fbo->hasMultipleRenderingTargets();
 
     if (!using_multiple_render_targets)
     {
         #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
+        if (getDrawBufferApplyMask())
+            glDrawBuffer(_drawBuffer);
 
-            if( getDrawBufferApplyMask() )
-                glDrawBuffer(_drawBuffer);
-
-            if( getReadBufferApplyMask() )
-                glReadBuffer(_readBuffer);
-
+        if (getReadBufferApplyMask())
+            glReadBuffer(_readBuffer);
         #endif
     }
 
@@ -934,51 +968,55 @@ void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, b
     }
 
     // do the drawing itself.
-    RenderBin::draw(renderInfo,previous);
+    RenderBin::draw(renderInfo, previous);
 
 
-    if(state.getCheckForGLErrors()!=osg::State::NEVER_CHECK_GL_ERRORS)
+    if (state.getCheckForGLErrors() != osg::State::NEVER_CHECK_GL_ERRORS)
     {
         if (state.checkGLErrors("after RenderBin::draw(..)"))
         {
-            if ( ext )
+            if (ext)
             {
                 GLenum fbstatus = ext->glCheckFramebufferStatus(GL_FRAMEBUFFER_EXT);
-                if ( fbstatus != GL_FRAMEBUFFER_COMPLETE_EXT )
+                if (fbstatus != GL_FRAMEBUFFER_COMPLETE_EXT)
                 {
-                    OSG_NOTICE<<"RenderStage::drawInner(,) FBO status = 0x"<<std::hex<<fbstatus<<std::dec<<std::endl;
+                    OSG_NOTICE << "RenderStage::drawInner(,) FBO status = 0x" << std::hex << fbstatus << std::dec << std::endl;
                 }
             }
         }
     }
 
-    const FrameBufferObject* read_fbo = fbo_supported ? _fbo.get() : 0;
-    bool apply_read_fbo = false;
+    const FrameBufferObject *read_fbo      = fbo_supported ? _fbo.get() : 0;
+    bool                    apply_read_fbo = false;
 
     if (fbo_supported && _resolveFbo.valid() && ext->glBlitFramebuffer)
     {
-        GLbitfield blitMask = 0;
-        bool needToBlitColorBuffers = false;
+        GLbitfield blitMask               = 0;
+        bool       needToBlitColorBuffers = false;
 
-        //find which buffer types should be copied
+        // find which buffer types should be copied
         for (FrameBufferObject::AttachmentMap::const_iterator
-            it = _resolveFbo->getAttachmentMap().begin(),
-            end =_resolveFbo->getAttachmentMap().end(); it != end; ++it)
+             it = _resolveFbo->getAttachmentMap().begin(),
+             end = _resolveFbo->getAttachmentMap().end(); it != end; ++it)
         {
             switch (it->first)
             {
             case Camera::DEPTH_BUFFER:
                 blitMask |= GL_DEPTH_BUFFER_BIT;
                 break;
+
             case Camera::STENCIL_BUFFER:
                 blitMask |= GL_STENCIL_BUFFER_BIT;
                 break;
+
             case Camera::PACKED_DEPTH_STENCIL_BUFFER:
                 blitMask |= GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT;
                 break;
+
             case Camera::COLOR_BUFFER:
                 blitMask |= GL_COLOR_BUFFER_BIT;
                 break;
+
             default:
                 needToBlitColorBuffers = true;
                 break;
@@ -1007,11 +1045,11 @@ void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, b
         if (needToBlitColorBuffers)
         {
             for (FrameBufferObject::AttachmentMap::const_iterator
-                it = _resolveFbo->getAttachmentMap().begin(),
-                end =_resolveFbo->getAttachmentMap().end(); it != end; ++it)
+                 it = _resolveFbo->getAttachmentMap().begin(),
+                 end = _resolveFbo->getAttachmentMap().end(); it != end; ++it)
             {
                 osg::Camera::BufferComponent attachment = it->first;
-                if (attachment >=osg::Camera::COLOR_BUFFER0)
+                if (attachment >= osg::Camera::COLOR_BUFFER0)
                 {
                     glReadBuffer(GL_COLOR_ATTACHMENT0_EXT + (attachment - osg::Camera::COLOR_BUFFER0));
                     glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT + (attachment - osg::Camera::COLOR_BUFFER0));
@@ -1024,6 +1062,7 @@ void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, b
                         GL_COLOR_BUFFER_BIT, GL_NEAREST);
                 }
             }
+
             // reset the read and draw buffers?  will comment out for now with the assumption that
             // the buffers will be set explicitly when needed elsewhere.
             // glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
@@ -1032,7 +1071,7 @@ void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, b
 #endif
 
         apply_read_fbo = true;
-        read_fbo = _resolveFbo.get();
+        read_fbo       = _resolveFbo.get();
 
         using_multiple_render_targets = read_fbo->hasMultipleRenderingTargets();
     }
@@ -1040,46 +1079,59 @@ void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, b
     // now copy the rendered image to attached texture.
     if (doCopyTexture)
     {
-        if (read_fbo) SubFunc::applyReadFBO(apply_read_fbo, read_fbo, state);
+        if (read_fbo)
+            SubFunc::applyReadFBO(apply_read_fbo, read_fbo, state);
+
         copyTexture(renderInfo);
     }
 
-    std::map< osg::Camera::BufferComponent, Attachment>::const_iterator itr;
-    for(itr = _bufferAttachmentMap.begin();
-        itr != _bufferAttachmentMap.end();
-        ++itr)
+    std::map<osg::Camera::BufferComponent, Attachment>::const_iterator itr;
+
+    for (itr = _bufferAttachmentMap.begin();
+         itr != _bufferAttachmentMap.end();
+         ++itr)
     {
         if (itr->second._image.valid())
         {
-            if (read_fbo) SubFunc::applyReadFBO(apply_read_fbo, read_fbo, state);
+            if (read_fbo)
+                SubFunc::applyReadFBO(apply_read_fbo, read_fbo, state);
 
             #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
-
-                if (using_multiple_render_targets)
+            if (using_multiple_render_targets)
+            {
+                int attachment = itr->first;
+                if (attachment == osg::Camera::DEPTH_BUFFER || attachment == osg::Camera::STENCIL_BUFFER)
                 {
-                    int attachment=itr->first;
-                    if (attachment==osg::Camera::DEPTH_BUFFER || attachment==osg::Camera::STENCIL_BUFFER) {
-                        // assume first buffer rendered to is the one we want
-                        glReadBuffer(read_fbo->getMultipleRenderingTargets()[0]);
-                    } else {
-                        glReadBuffer(GL_COLOR_ATTACHMENT0_EXT + (attachment - osg::Camera::COLOR_BUFFER0));
-                    }
-                } else {
-                    if (_readBuffer != GL_NONE)
-                    {
-                        glReadBuffer(_readBuffer);
-                    }
+                    // assume first buffer rendered to is the one we want
+                    glReadBuffer(read_fbo->getMultipleRenderingTargets()[0]);
                 }
-
+                else
+                {
+                    glReadBuffer(GL_COLOR_ATTACHMENT0_EXT + (attachment - osg::Camera::COLOR_BUFFER0));
+                }
+            }
+            else
+            {
+                if (_readBuffer != GL_NONE)
+                {
+                    glReadBuffer(_readBuffer);
+                }
+            }
             #endif
 
             GLenum pixelFormat = itr->second._image->getPixelFormat();
-            if (pixelFormat==0) pixelFormat = _imageReadPixelFormat;
-            if (pixelFormat==0) pixelFormat = GL_RGB;
+            if (pixelFormat == 0)
+                pixelFormat = _imageReadPixelFormat;
+
+            if (pixelFormat == 0)
+                pixelFormat = GL_RGB;
 
             GLenum dataType = itr->second._image->getDataType();
-            if (dataType==0) dataType = _imageReadPixelDataType;
-            if (dataType==0) dataType = GL_UNSIGNED_BYTE;
+            if (dataType == 0)
+                dataType = _imageReadPixelDataType;
+
+            if (dataType == 0)
+                dataType = GL_UNSIGNED_BYTE;
 
             itr->second._image->readPixels(static_cast<int>(_viewport->x()),
                                            static_cast<int>(_viewport->y()),
@@ -1104,10 +1156,11 @@ void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, b
     if (fbo_supported && _camera.valid())
     {
         // now generate mipmaps if they are required.
-        const osg::Camera::BufferAttachmentMap& bufferAttachments = _camera->getBufferAttachmentMap();
-        for(osg::Camera::BufferAttachmentMap::const_iterator itr = bufferAttachments.begin();
-            itr != bufferAttachments.end();
-            ++itr)
+        const osg::Camera::BufferAttachmentMap&bufferAttachments = _camera->getBufferAttachmentMap();
+
+        for (osg::Camera::BufferAttachmentMap::const_iterator itr = bufferAttachments.begin();
+             itr != bufferAttachments.end();
+             ++itr)
         {
             if (itr->second._texture.valid() && itr->second._mipMapGeneration)
             {
@@ -1121,40 +1174,45 @@ void RenderStage::drawInner(osg::RenderInfo& renderInfo,RenderLeaf*& previous, b
 
 struct DrawInnerOperation : public osg::Operation
 {
-    DrawInnerOperation(RenderStage* stage, osg::RenderInfo& renderInfo) :
+    DrawInnerOperation(RenderStage *stage, osg::RenderInfo&renderInfo) :
         osg::Referenced(true),
-        osg::Operation("DrawInnerStage",false),
+        osg::Operation("DrawInnerStage", false),
         _stage(stage),
         _renderInfo(renderInfo) {}
 
-    virtual void operator () (osg::Object* object)
+    virtual void operator ()(osg::Object *object)
     {
-        osg::GraphicsContext* context = dynamic_cast<osg::GraphicsContext*>(object);
-        if (!context) return;
+        osg::GraphicsContext *context = dynamic_cast<osg::GraphicsContext*>(object);
+
+        if (!context)
+            return;
 
         // OSG_NOTICE<<"DrawInnerOperation operator"<<std::endl;
         if (_stage && context)
         {
-            RenderLeaf* previous = 0;
-            bool doCopyTexture = false;
+            RenderLeaf *previous     = 0;
+            bool       doCopyTexture = false;
             _renderInfo.setState(context->getState());
             _stage->drawInner(_renderInfo, previous, doCopyTexture);
         }
     }
 
-    RenderStage* _stage;
-    RenderInfo _renderInfo;
+    RenderStage *_stage;
+    RenderInfo  _renderInfo;
 };
 
 
-void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
+void RenderStage::draw(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
 {
-    if (_stageDrawnThisFrame) return;
+    if (_stageDrawnThisFrame)
+        return;
 
-    if(_initialViewMatrix.valid()) renderInfo.getState()->setInitialViewMatrix(_initialViewMatrix.get());
+    if (_initialViewMatrix.valid())
+        renderInfo.getState()->setInitialViewMatrix(_initialViewMatrix.get());
 
     // push the stages camera so that drawing code can query it
-    if (_camera.valid()) renderInfo.pushCamera(_camera.get());
+    if (_camera.valid())
+        renderInfo.pushCamera(_camera.get());
 
     _stageDrawnThisFrame = true;
 
@@ -1166,22 +1224,22 @@ void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
 
     // note, SceneView does call to drawPreRenderStages explicitly
     // so there is no need to call it here.
-    drawPreRenderStages(renderInfo,previous);
+    drawPreRenderStages(renderInfo, previous);
 
-    if (_cameraRequiresSetUp || (_camera.valid() && _cameraAttachmentMapModifiedCount!=_camera->getAttachmentMapModifiedCount()))
+    if (_cameraRequiresSetUp || (_camera.valid() && _cameraAttachmentMapModifiedCount != _camera->getAttachmentMapModifiedCount()))
     {
         runCameraSetUp(renderInfo);
     }
 
-    osg::State& state = *renderInfo.getState();
+    osg::State&state = *renderInfo.getState();
 
-    osg::State* useState = &state;
-    osg::GraphicsContext* callingContext = state.getGraphicsContext();
-    osg::GraphicsContext* useContext = callingContext;
-    osg::OperationThread* useThread = 0;
-    osg::RenderInfo useRenderInfo(renderInfo);
+    osg::State           *useState       = &state;
+    osg::GraphicsContext *callingContext = state.getGraphicsContext();
+    osg::GraphicsContext *useContext     = callingContext;
+    osg::OperationThread *useThread      = 0;
+    osg::RenderInfo      useRenderInfo(renderInfo);
 
-    RenderLeaf* saved_previous = previous;
+    RenderLeaf *saved_previous = previous;
 
     if (_graphicsContext.valid() && _graphicsContext != callingContext)
     {
@@ -1191,9 +1249,9 @@ void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
 
         // OSG_NOTICE<<"  enclosing state before - "<<state.getStateSetStackSize()<<std::endl;
 
-        useState = _graphicsContext->getState();
+        useState   = _graphicsContext->getState();
         useContext = _graphicsContext.get();
-        useThread = useContext->getGraphicsThread();
+        useThread  = useContext->getGraphicsThread();
         useRenderInfo.setState(useState);
 
         // synchronize the frame stamps
@@ -1221,15 +1279,15 @@ void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
     }
 
     bool doCopyTexture = _texture.valid() ?
-                        (callingContext != useContext) :
-                        false;
+                         (callingContext != useContext) :
+                         false;
 
     if (useThread)
     {
 #if 1
         ref_ptr<osg::BlockAndFlushOperation> block = new osg::BlockAndFlushOperation;
 
-        useThread->add(new DrawInnerOperation( this, renderInfo ));
+        useThread->add(new DrawInnerOperation(this, renderInfo));
 
         useThread->add(block.get());
 
@@ -1239,20 +1297,19 @@ void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
         doCopyTexture = false;
 
 #else
-        useThread->add(new DrawInnerOperation( this, renderInfo ), true);
+        useThread->add(new DrawInnerOperation(this, renderInfo), true);
 
         doCopyTexture = false;
 #endif
     }
     else
     {
-        drawInner( useRenderInfo, previous, doCopyTexture);
+        drawInner(useRenderInfo, previous, doCopyTexture);
 
         if (useRenderInfo.getUserData() != renderInfo.getUserData())
         {
             renderInfo.setUserData(useRenderInfo.getUserData());
         }
-
     }
 
     if (useState != &state)
@@ -1266,7 +1323,7 @@ void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
     // now copy the rendered image to attached texture.
     if (_texture.valid() && !doCopyTexture)
     {
-        if (callingContext && useContext!= callingContext)
+        if (callingContext && useContext != callingContext)
         {
             // make the calling context use the pbuffer context for reading.
             callingContext->makeContextCurrent(useContext);
@@ -1287,8 +1344,6 @@ void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
 
         if (!useThread)
         {
-
-
             // flush any command left in the useContex's FIFO
             // to ensure that textures are updated before main thread commenses.
             glFlush();
@@ -1311,7 +1366,7 @@ void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
     }
 
     // render all the post draw callbacks
-    drawPostRenderStages(renderInfo,previous);
+    drawPostRenderStages(renderInfo, previous);
 
     if (_camera.valid() && _camera->getFinalDrawCallback())
     {
@@ -1320,76 +1375,79 @@ void RenderStage::draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
     }
 
     // pop the render stages camera.
-    if (_camera.valid()) renderInfo.popCamera();
+    if (_camera.valid())
+        renderInfo.popCamera();
 }
 
-void RenderStage::drawImplementation(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
+void RenderStage::drawImplementation(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
 {
-    osg::State& state = *renderInfo.getState();
+    osg::State&state = *renderInfo.getState();
 
     if (!_viewport)
     {
-        OSG_FATAL << "Error: cannot draw stage due to undefined viewport."<< std::endl;
+        OSG_FATAL << "Error: cannot draw stage due to undefined viewport." << std::endl;
         return;
     }
 
     // set up the back buffer.
     state.applyAttribute(_viewport.get());
 
-    glScissor( static_cast<int>(_viewport->x()),
-               static_cast<int>(_viewport->y()),
-               static_cast<int>(_viewport->width()),
-               static_cast<int>(_viewport->height()) );
-    //cout << "    clearing "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
-    state.applyMode( GL_SCISSOR_TEST, true );
+    glScissor(static_cast<int>(_viewport->x()),
+              static_cast<int>(_viewport->y()),
+              static_cast<int>(_viewport->width()),
+              static_cast<int>(_viewport->height()));
+    // cout << "    clearing "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
+    state.applyMode(GL_SCISSOR_TEST, true);
 
     // glEnable( GL_DEPTH_TEST );
 
     // set which color planes to operate on.
-    if (_colorMask.valid()) _colorMask->apply(state);
-    else glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
+    if (_colorMask.valid())
+        _colorMask->apply(state);
+    else
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
     if (_clearMask & GL_COLOR_BUFFER_BIT)
     {
-        glClearColor( _clearColor[0], _clearColor[1], _clearColor[2], _clearColor[3]);
+        glClearColor(_clearColor[0], _clearColor[1], _clearColor[2], _clearColor[3]);
     }
 
     if (_clearMask & GL_DEPTH_BUFFER_BIT)
     {
         #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
-            glClearDepth( _clearDepth);
+        glClearDepth(_clearDepth);
         #else
-            glClearDepthf( _clearDepth);
+        glClearDepthf(_clearDepth);
         #endif
 
-        glDepthMask ( GL_TRUE );
-        state.haveAppliedAttribute( osg::StateAttribute::DEPTH );
+        glDepthMask (GL_TRUE);
+        state.haveAppliedAttribute(osg::StateAttribute::DEPTH);
     }
 
     if (_clearMask & GL_STENCIL_BUFFER_BIT)
     {
-        glClearStencil( _clearStencil);
-        glStencilMask ( ~0u );
-        state.haveAppliedAttribute( osg::StateAttribute::STENCIL );
+        glClearStencil(_clearStencil);
+        glStencilMask (~0u);
+        state.haveAppliedAttribute(osg::StateAttribute::STENCIL);
     }
 
     #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
-        if (_clearMask & GL_ACCUM_BUFFER_BIT)
-        {
-            glClearAccum( _clearAccum[0], _clearAccum[1], _clearAccum[2], _clearAccum[3]);
-        }
+    if (_clearMask & GL_ACCUM_BUFFER_BIT)
+    {
+        glClearAccum(_clearAccum[0], _clearAccum[1], _clearAccum[2], _clearAccum[3]);
+    }
     #endif
 
 
-    glClear( _clearMask );
+    glClear(_clearMask);
 
     #ifdef USE_SCISSOR_TEST
-        glDisable( GL_SCISSOR_TEST );
+    glDisable(GL_SCISSOR_TEST);
     #endif
 
     #ifdef OSG_GL_MATRICES_AVAILABLE
-        glMatrixMode( GL_MODELVIEW );
-        glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     #endif
 
     // apply the positional state.
@@ -1405,34 +1463,35 @@ void RenderStage::drawImplementation(osg::RenderInfo& renderInfo,RenderLeaf*& pr
     }
 
     // draw the children and local.
-    RenderBin::drawImplementation(renderInfo,previous);
+    RenderBin::drawImplementation(renderInfo, previous);
 
     state.apply();
-
 }
 
-void RenderStage::drawPostRenderStages(osg::RenderInfo& renderInfo,RenderLeaf*& previous)
+void RenderStage::drawPostRenderStages(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
 {
-    if (_postRenderList.empty()) return;
+    if (_postRenderList.empty())
+        return;
 
-    //cout << "Drawing prerendering stages "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
-    for(RenderStageList::iterator itr=_postRenderList.begin();
-        itr!=_postRenderList.end();
-        ++itr)
+    // cout << "Drawing prerendering stages "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
+    for (RenderStageList::iterator itr = _postRenderList.begin();
+         itr != _postRenderList.end();
+         ++itr)
     {
-        itr->second->draw(renderInfo,previous);
+        itr->second->draw(renderInfo, previous);
     }
-    //cout << "Done Drawing prerendering stages "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
+
+    // cout << "Done Drawing prerendering stages "<<this<< "  "<<_viewport->x()<<","<< _viewport->y()<<","<< _viewport->width()<<","<< _viewport->height()<<std::endl;
 }
 
 // Statistics features
-bool RenderStage::getStats(Statistics& stats) const
+bool RenderStage::getStats(Statistics&stats) const
 {
     bool statsCollected = false;
 
-    for(RenderStageList::const_iterator pre_itr = _preRenderList.begin();
-        pre_itr != _preRenderList.end();
-        ++pre_itr)
+    for (RenderStageList::const_iterator pre_itr = _preRenderList.begin();
+         pre_itr != _preRenderList.end();
+         ++pre_itr)
     {
         if (pre_itr->second->getStats(stats))
         {
@@ -1440,9 +1499,9 @@ bool RenderStage::getStats(Statistics& stats) const
         }
     }
 
-    for(RenderStageList::const_iterator post_itr = _postRenderList.begin();
-        post_itr != _postRenderList.end();
-        ++post_itr)
+    for (RenderStageList::const_iterator post_itr = _postRenderList.begin();
+         post_itr != _postRenderList.end();
+         ++post_itr)
     {
         if (post_itr->second->getStats(stats))
         {
@@ -1454,10 +1513,11 @@ bool RenderStage::getStats(Statistics& stats) const
     {
         statsCollected = true;
     }
+
     return statsCollected;
 }
 
-void RenderStage::attach(osg::Camera::BufferComponent buffer, osg::Image* image)
+void RenderStage::attach(osg::Camera::BufferComponent buffer, osg::Image *image)
 {
     _bufferAttachmentMap[buffer]._image = image;
 }
@@ -1466,18 +1526,18 @@ unsigned int RenderStage::computeNumberOfDynamicRenderLeaves() const
 {
     unsigned int count = 0;
 
-    for(RenderStageList::const_iterator pre_itr = _preRenderList.begin();
-        pre_itr != _preRenderList.end();
-        ++pre_itr)
+    for (RenderStageList::const_iterator pre_itr = _preRenderList.begin();
+         pre_itr != _preRenderList.end();
+         ++pre_itr)
     {
         count += pre_itr->second->computeNumberOfDynamicRenderLeaves();
     }
 
     count += RenderBin::computeNumberOfDynamicRenderLeaves();
 
-    for(RenderStageList::const_iterator post_itr = _postRenderList.begin();
-        post_itr != _postRenderList.end();
-        ++post_itr)
+    for (RenderStageList::const_iterator post_itr = _postRenderList.begin();
+         post_itr != _postRenderList.end();
+         ++post_itr)
     {
         count += post_itr->second->computeNumberOfDynamicRenderLeaves();
     }
@@ -1486,13 +1546,14 @@ unsigned int RenderStage::computeNumberOfDynamicRenderLeaves() const
 }
 
 
-void RenderStage::setMultisampleResolveFramebufferObject(osg::FrameBufferObject* fbo)
+void RenderStage::setMultisampleResolveFramebufferObject(osg::FrameBufferObject *fbo)
 {
     if (fbo && fbo->isMultisample())
     {
         OSG_WARN << "Resolve framebuffer must not be"
             " multisampled." << std::endl;
     }
+
     _resolveFbo = fbo;
 }
 
@@ -1500,37 +1561,39 @@ void RenderStage::collateReferencesToDependentCameras()
 {
     _dependentCameras.clear();
 
-    for(RenderStageList::iterator itr = _preRenderList.begin();
-        itr != _preRenderList.end();
-        ++itr)
+    for (RenderStageList::iterator itr = _preRenderList.begin();
+         itr != _preRenderList.end();
+         ++itr)
     {
         itr->second->collateReferencesToDependentCameras();
-        osg::Camera* camera = itr->second->getCamera();
-        if (camera) _dependentCameras.push_back(camera);
+        osg::Camera *camera = itr->second->getCamera();
+        if (camera)
+            _dependentCameras.push_back(camera);
     }
 
-    for(RenderStageList::iterator itr = _postRenderList.begin();
-        itr != _postRenderList.end();
-        ++itr)
+    for (RenderStageList::iterator itr = _postRenderList.begin();
+         itr != _postRenderList.end();
+         ++itr)
     {
         itr->second->collateReferencesToDependentCameras();
-        osg::Camera* camera = itr->second->getCamera();
-        if (camera) _dependentCameras.push_back(camera);
+        osg::Camera *camera = itr->second->getCamera();
+        if (camera)
+            _dependentCameras.push_back(camera);
     }
 }
 
 void RenderStage::clearReferencesToDependentCameras()
 {
-    for(RenderStageList::iterator itr = _preRenderList.begin();
-        itr != _preRenderList.end();
-        ++itr)
+    for (RenderStageList::iterator itr = _preRenderList.begin();
+         itr != _preRenderList.end();
+         ++itr)
     {
         itr->second->clearReferencesToDependentCameras();
     }
 
-    for(RenderStageList::iterator itr = _postRenderList.begin();
-        itr != _postRenderList.end();
-        ++itr)
+    for (RenderStageList::iterator itr = _postRenderList.begin();
+         itr != _postRenderList.end();
+         ++itr)
     {
         itr->second->clearReferencesToDependentCameras();
     }
@@ -1538,34 +1601,40 @@ void RenderStage::clearReferencesToDependentCameras()
     _dependentCameras.clear();
 }
 
-void RenderStage::releaseGLObjects(osg::State* state) const
+void RenderStage::releaseGLObjects(osg::State *state) const
 {
     RenderBin::releaseGLObjects(state);
 
-    for(RenderStageList::const_iterator itr = _preRenderList.begin();
-        itr != _preRenderList.end();
-        ++itr)
+    for (RenderStageList::const_iterator itr = _preRenderList.begin();
+         itr != _preRenderList.end();
+         ++itr)
     {
         itr->second->releaseGLObjects(state);
     }
 
-    for(RenderStageList::const_iterator itr = _postRenderList.begin();
-        itr != _postRenderList.end();
-        ++itr)
+    for (RenderStageList::const_iterator itr = _postRenderList.begin();
+         itr != _postRenderList.end();
+         ++itr)
     {
         itr->second->releaseGLObjects(state);
     }
 
-    for(Cameras::const_iterator itr = _dependentCameras.begin();
-        itr != _dependentCameras.end();
-        ++itr)
+    for (Cameras::const_iterator itr = _dependentCameras.begin();
+         itr != _dependentCameras.end();
+         ++itr)
     {
         (*itr)->releaseGLObjects(state);
     }
 
-    if (_texture.valid()) _texture->releaseGLObjects(state);
+    if (_texture.valid())
+        _texture->releaseGLObjects(state);
 
-    if (_fbo.valid()) _fbo->releaseGLObjects(state);
-    if (_resolveFbo.valid()) _resolveFbo->releaseGLObjects(state);
-    if (_graphicsContext.valid())  _graphicsContext->releaseGLObjects(state);
+    if (_fbo.valid())
+        _fbo->releaseGLObjects(state);
+
+    if (_resolveFbo.valid())
+        _resolveFbo->releaseGLObjects(state);
+
+    if (_graphicsContext.valid())
+        _graphicsContext->releaseGLObjects(state);
 }

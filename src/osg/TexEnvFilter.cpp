@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GLExtensions>
 #include <osg/TexEnvFilter>
 #include <osg/State>
@@ -18,27 +18,26 @@
 using namespace osg;
 
 TexEnvFilter::TexEnvFilter(float lodBias) :
-        _lodBias(lodBias)
-{
-}
+    _lodBias(lodBias)
+{}
 
 
 TexEnvFilter::~TexEnvFilter()
-{
-}
+{}
 
-void TexEnvFilter::apply(State& state) const
+void TexEnvFilter::apply(State&state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     // note from RO, need to adapt to do testing per graphics context.
-    static float glVersion = asciiToFloat( (const char *)glGetString( GL_VERSION ) );
-    static bool s_isTexLodBias = glVersion>=1.4 || isGLExtensionSupported(state.getContextID(),"GL_EXT_texture_lod_bias");
+    static float glVersion      = asciiToFloat((const char*)glGetString(GL_VERSION));
+    static bool  s_isTexLodBias = glVersion >= 1.4 || isGLExtensionSupported(state.getContextID(), "GL_EXT_texture_lod_bias");
 
     if (s_isTexLodBias)
     {
         glTexEnvf(GL_TEXTURE_FILTER_CONTROL_EXT, GL_TEXTURE_LOD_BIAS_EXT, _lodBias);
     }
+
 #else
-    OSG_NOTICE<<"Warning: TexEnvFilter::apply(State&) - not supported."<<std::endl;
+    OSG_NOTICE << "Warning: TexEnvFilter::apply(State&) - not supported." << std::endl;
 #endif
 }

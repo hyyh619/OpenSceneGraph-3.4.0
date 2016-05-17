@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #include <osgManipulator/TabBoxDragger>
 
@@ -23,7 +23,7 @@ using namespace osgManipulator;
 
 TabBoxDragger::TabBoxDragger()
 {
-    for (int i=0; i<6; ++i)
+    for (int i = 0; i < 6; ++i)
     {
         _planeDraggers.push_back(new TabPlaneDragger());
         addChild(_planeDraggers[i].get());
@@ -31,47 +31,46 @@ TabBoxDragger::TabBoxDragger()
     }
 
     {
-        _planeDraggers[0]->setMatrix(osg::Matrix::translate(osg::Vec3(0.0,0.5,0.0)));
+        _planeDraggers[0]->setMatrix(osg::Matrix::translate(osg::Vec3(0.0, 0.5, 0.0)));
     }
     {
         osg::Quat rotation; rotation.makeRotate(osg::Vec3(0.0f, -1.0f, 0.0f), osg::Vec3(0.0f, 1.0f, 0.0f));
-        _planeDraggers[1]->setMatrix(osg::Matrix(rotation)*osg::Matrix::translate(osg::Vec3(0.0,-0.5,0.0)));
+        _planeDraggers[1]->setMatrix(osg::Matrix(rotation) * osg::Matrix::translate(osg::Vec3(0.0, -0.5, 0.0)));
     }
     {
         osg::Quat rotation; rotation.makeRotate(osg::Vec3(0.0f, 0.0f, 1.0f), osg::Vec3(0.0f, 1.0f, 0.0f));
-        _planeDraggers[2]->setMatrix(osg::Matrix(rotation)*osg::Matrix::translate(osg::Vec3(0.0,0.0,-0.5)));
+        _planeDraggers[2]->setMatrix(osg::Matrix(rotation) * osg::Matrix::translate(osg::Vec3(0.0, 0.0, -0.5)));
     }
 
     {
         osg::Quat rotation; rotation.makeRotate(osg::Vec3(0.0f, 1.0f, 0.0f), osg::Vec3(0.0f, 0.0f, 1.0f));
-        _planeDraggers[3]->setMatrix(osg::Matrix(rotation)*osg::Matrix::translate(osg::Vec3(0.0,0.0,0.5)));
+        _planeDraggers[3]->setMatrix(osg::Matrix(rotation) * osg::Matrix::translate(osg::Vec3(0.0, 0.0, 0.5)));
     }
 
     {
         osg::Quat rotation; rotation.makeRotate(osg::Vec3(1.0f, 0.0f, 0.0f), osg::Vec3(0.0f, 1.0f, 0.0f));
-        _planeDraggers[4]->setMatrix(osg::Matrix(rotation)*osg::Matrix::translate(osg::Vec3(-0.5,0.0,0.0)));
+        _planeDraggers[4]->setMatrix(osg::Matrix(rotation) * osg::Matrix::translate(osg::Vec3(-0.5, 0.0, 0.0)));
     }
 
     {
         osg::Quat rotation; rotation.makeRotate(osg::Vec3(0.0f, 1.0f, 0.0f), osg::Vec3(1.0f, 0.0f, 0.0f));
-        _planeDraggers[5]->setMatrix(osg::Matrix(rotation)*osg::Matrix::translate(osg::Vec3(0.5,0.0,0.0)));
+        _planeDraggers[5]->setMatrix(osg::Matrix(rotation) * osg::Matrix::translate(osg::Vec3(0.5, 0.0, 0.0)));
     }
 
     setParentDragger(getParentDragger());
 }
 
 TabBoxDragger::~TabBoxDragger()
-{
-}
+{}
 
 void TabBoxDragger::setupDefaultGeometry()
 {
-    for (unsigned int i=0; i<_planeDraggers.size(); ++i)
+    for (unsigned int i = 0; i < _planeDraggers.size(); ++i)
         _planeDraggers[i]->setupDefaultGeometry(false);
 }
 
-void TabBoxDragger::setPlaneColor(const osg::Vec4& color)
+void TabBoxDragger::setPlaneColor(const osg::Vec4&color)
 {
-    for (unsigned int i=0; i<_planeDraggers.size(); ++i)
+    for (unsigned int i = 0; i < _planeDraggers.size(); ++i)
         _planeDraggers[i]->setPlaneColor(color);
 }

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/Matrixf>
 #include <osg/Matrixd>
@@ -17,18 +17,18 @@
 // specialise Matrix_implementaiton to be Matrixf
 #define  Matrix_implementation Matrixf
 
-osg::Matrixf::Matrixf( const osg::Matrixd& mat )
+osg::Matrixf::Matrixf(const osg::Matrixd&mat)
 {
     set(mat.ptr());
 }
 
-osg::Matrixf& osg::Matrixf::operator = (const osg::Matrixd& rhs)
+osg::Matrixf&osg::Matrixf::operator =(const osg::Matrixd&rhs)
 {
     set(rhs.ptr());
     return *this;
 }
 
-void osg::Matrixf::set(const osg::Matrixd& rhs)
+void osg::Matrixf::set(const osg::Matrixd&rhs)
 {
     set(rhs.ptr());
 }

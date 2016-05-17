@@ -27,238 +27,286 @@
 // from multiply defined symbols.
 namespace pluginfbx
 {
-
-
 /** writes all primitives of a primitive-set out to a stream, decomposes quads to triangles, line-strips to lines etc */
 class PrimitiveIndexWriter : public osg::PrimitiveIndexFunctor
 {
 public:
-    PrimitiveIndexWriter(const osg::Geometry* geo,
-                         ListTriangle&        listTriangles,
-                         unsigned int         drawable_n,
-                         unsigned int         material) :
-        _drawable_n(drawable_n),
-        _listTriangles(listTriangles),
-        _modeCache(0),
-        _hasNormalCoords(geo->getNormalArray() != NULL),
-        _hasTexCoords(geo->getTexCoordArray(0) != NULL),
-        _geo(geo),
-        _lastFaceIndex(0),
-        _material(material),
-        _curNormalIndex(0),
-        _normalBinding(osg::Geometry::BIND_OFF),
-        _mesh(0)
+PrimitiveIndexWriter(const osg::Geometry *geo,
+                     ListTriangle&listTriangles,
+                     unsigned int drawable_n,
+                     unsigned int material) :
+    _drawable_n(drawable_n),
+    _listTriangles(listTriangles),
+    _modeCache(0),
+    _hasNormalCoords(geo->getNormalArray() != NULL),
+    _hasTexCoords(geo->getTexCoordArray(0) != NULL),
+    _geo(geo),
+    _lastFaceIndex(0),
+    _material(material),
+    _curNormalIndex(0),
+    _normalBinding(osg::Geometry::BIND_OFF),
+    _mesh(0)
+{
+    _normalBinding = geo->getNormalBinding();
+    if (!geo->getNormalArray() || geo->getNormalArray()->getNumElements() == 0)
     {
-        _normalBinding = geo->getNormalBinding();
-        if (!geo->getNormalArray() || geo->getNormalArray()->getNumElements()==0)
-        {
-            _normalBinding = osg::Geometry::BIND_OFF;        // Turn off binding if there is no normal data
-        }
-        reset();
+        _normalBinding = osg::Geometry::BIND_OFF;            // Turn off binding if there is no normal data
     }
 
-    void reset() { _curNormalIndex = 0; }
+    reset();
+}
 
-    unsigned int getNextFaceIndex() { return _lastFaceIndex; }
+void reset()
+{
+    _curNormalIndex = 0;
+}
 
-    virtual void setVertexArray(unsigned int, const osg::Vec2*) {}
+unsigned int getNextFaceIndex()
+{
+    return _lastFaceIndex;
+}
 
-    virtual void setVertexArray(unsigned int, const osg::Vec3*) {}
+virtual void setVertexArray(unsigned int, const osg::Vec2*) {}
 
-    virtual void setVertexArray(unsigned int, const osg::Vec4*) {}
+virtual void setVertexArray(unsigned int, const osg::Vec3*) {}
 
-    virtual void setVertexArray(unsigned int, const osg::Vec2d*) {}
+virtual void setVertexArray(unsigned int, const osg::Vec4*) {}
 
-    virtual void setVertexArray(unsigned int, const osg::Vec3d*) {}
+virtual void setVertexArray(unsigned int, const osg::Vec2d*) {}
 
-    virtual void setVertexArray(unsigned int, const osg::Vec4d*) {}
+virtual void setVertexArray(unsigned int, const osg::Vec3d*) {}
 
-    // operator for triangles
-    void writeTriangle(unsigned int i1, unsigned int i2, unsigned int i3)
+virtual void setVertexArray(unsigned int, const osg::Vec4d*) {}
+
+// operator for triangles
+void writeTriangle(unsigned int i1, unsigned int i2, unsigned int i3)
+{
+    Triangle triangle;
+
+    triangle.t1 = i1;
+    triangle.t2 = i2;
+    triangle.t3 = i3;
+    if (_normalBinding == osg::Geometry::BIND_PER_VERTEX)
     {
-        Triangle triangle;
-        triangle.t1 = i1;
-        triangle.t2 = i2;
-        triangle.t3 = i3;
-        if (_normalBinding == osg::Geometry::BIND_PER_VERTEX){
-            triangle.normalIndex1 = i1;
-            triangle.normalIndex2 = i2;
-            triangle.normalIndex3 = i3;
-        }
-        else{
-            triangle.normalIndex1 = _curNormalIndex;
-            triangle.normalIndex2 = _curNormalIndex;
-            triangle.normalIndex3 = _curNormalIndex;
-        }
-        triangle.material = _material;
-        _listTriangles.push_back(std::make_pair(triangle, _drawable_n));
+        triangle.normalIndex1 = i1;
+        triangle.normalIndex2 = i2;
+        triangle.normalIndex3 = i3;
+    }
+    else
+    {
+        triangle.normalIndex1 = _curNormalIndex;
+        triangle.normalIndex2 = _curNormalIndex;
+        triangle.normalIndex3 = _curNormalIndex;
     }
 
-    virtual void begin(GLenum mode)
-    {
-        _modeCache = mode;
-        _indexCache.clear();
-    }
+    triangle.material = _material;
+    _listTriangles.push_back(std::make_pair(triangle, _drawable_n));
+}
 
-    virtual void vertex(unsigned int vert)
-    {
-        _indexCache.push_back(vert);
-    }
+virtual void begin(GLenum mode)
+{
+    _modeCache = mode;
+    _indexCache.clear();
+}
 
-    virtual void end()
-    {
-        if (!_indexCache.empty())
-        {
-            drawElements(_modeCache, _indexCache.size(), &_indexCache.front());
-        }
-    }
+virtual void vertex(unsigned int vert)
+{
+    _indexCache.push_back(vert);
+}
 
-    virtual void drawArrays(GLenum mode, GLint first, GLsizei count);
-
-    virtual void drawElements(GLenum mode, GLsizei count, const GLubyte* indices)
+virtual void end()
+{
+    if (!_indexCache.empty())
     {
-        drawElementsImplementation<GLubyte>(mode, count, indices);
+        drawElements(_modeCache, _indexCache.size(), &_indexCache.front());
     }
+}
 
-    virtual void drawElements(GLenum mode, GLsizei count, const GLushort* indices)
-    {
-        drawElementsImplementation<GLushort>(mode, count, indices);
-    }
+virtual void drawArrays(GLenum mode, GLint first, GLsizei count);
 
-    virtual void drawElements(GLenum mode, GLsizei count, const GLuint* indices)
-    {
-        drawElementsImplementation<GLuint>(mode, count, indices);
-    }
+virtual void drawElements(GLenum mode, GLsizei count, const GLubyte *indices)
+{
+    drawElementsImplementation<GLubyte>(mode, count, indices);
+}
+
+virtual void drawElements(GLenum mode, GLsizei count, const GLushort *indices)
+{
+    drawElementsImplementation<GLushort>(mode, count, indices);
+}
+
+virtual void drawElements(GLenum mode, GLsizei count, const GLuint *indices)
+{
+    drawElementsImplementation<GLuint>(mode, count, indices);
+}
 
 protected:
-    template <typename T> void drawElementsImplementation(GLenum mode, GLsizei count, const T* indices)
-    {
-        if (indices==0 || count==0) return;
-
-        typedef const T* IndexPointer;
-
-        switch (mode)
-        {
-        case GL_TRIANGLES:
-            {
-                IndexPointer ilast = indices + count;
-                for (IndexPointer iptr = indices; iptr < ilast; iptr+=3)
-                {
-                    writeTriangle(iptr[0], iptr[1], iptr[2]);
-                }
-                break;
-            }
-        case GL_TRIANGLE_STRIP:
-            {
-                IndexPointer iptr = indices;
-                for (GLsizei i = 2; i < count; ++i, ++iptr)
-                {
-                    if (i & 1) writeTriangle(iptr[0], iptr[2], iptr[1]);
-                    else       writeTriangle(iptr[0], iptr[1], iptr[2]);
-                }
-                break;
-            }
-        case GL_QUADS:
-            {
-                IndexPointer iptr = indices;
-                for (GLsizei i = 3; i < count; i += 4, iptr += 4)
-                {
-                    writeTriangle(iptr[0], iptr[1], iptr[2]);
-                    writeTriangle(iptr[0], iptr[2], iptr[3]);
-                }
-                break;
-            }
-        case GL_QUAD_STRIP:
-            {
-                IndexPointer iptr = indices;
-                for (GLsizei i = 3; i < count; i += 2, iptr += 2)
-                {
-                    writeTriangle(iptr[0], iptr[1], iptr[2]);
-                    writeTriangle(iptr[1], iptr[3], iptr[2]);
-                }
-                break;
-            }
-        case GL_POLYGON: // treat polygons as GL_TRIANGLE_FAN
-        case GL_TRIANGLE_FAN:
-            {
-                IndexPointer iptr = indices;
-                unsigned int first = *iptr;
-                ++iptr;
-                for (GLsizei i = 2; i < count; ++i, ++iptr)
-                {
-                    writeTriangle(first, iptr[0], iptr[1]);
-                }
-                break;
-            }
-        case GL_POINTS:
-        case GL_LINES:
-        case GL_LINE_STRIP:
-        case GL_LINE_LOOP:
-            // Not handled
-            break;
-        default:
-            // uhm should never come to this point :)
-            break;
-        }
-        if (_normalBinding == osg::Geometry::BIND_PER_PRIMITIVE_SET) ++_curNormalIndex;
-    }
-
-private:
-    PrimitiveIndexWriter& operator = (const PrimitiveIndexWriter&); // { return *this; }
-
-    unsigned int         _drawable_n;
-    ListTriangle&        _listTriangles;
-    GLenum               _modeCache;
-    std::vector<GLuint>  _indexCache;
-    bool                 _hasNormalCoords, _hasTexCoords;
-    const osg::Geometry* _geo;
-    unsigned int         _lastFaceIndex;
-    int                  _material;
-    unsigned int         _curNormalIndex;
-    osg::Geometry::AttributeBinding _normalBinding;
-    FbxMesh*            _mesh;
-};
-
-void PrimitiveIndexWriter::drawArrays(GLenum mode,GLint first,GLsizei count)
+template<typename T> void drawElementsImplementation(GLenum mode, GLsizei count, const T *indices)
 {
-    unsigned int pos=first;
+    if (indices == 0 || count == 0)
+        return;
+
+    typedef const T*IndexPointer;
+
     switch (mode)
     {
     case GL_TRIANGLES:
+    {
+        IndexPointer ilast = indices + count;
+
+        for (IndexPointer iptr = indices; iptr < ilast; iptr += 3)
+        {
+            writeTriangle(iptr[0], iptr[1], iptr[2]);
+        }
+
+        break;
+    }
+
+    case GL_TRIANGLE_STRIP:
+    {
+        IndexPointer iptr = indices;
+
+        for (GLsizei i = 2; i < count; ++i, ++iptr)
+        {
+            if (i & 1)
+                writeTriangle(iptr[0], iptr[2], iptr[1]);
+            else
+                writeTriangle(iptr[0], iptr[1], iptr[2]);
+        }
+
+        break;
+    }
+
+    case GL_QUADS:
+    {
+        IndexPointer iptr = indices;
+
+        for (GLsizei i = 3; i < count; i += 4, iptr += 4)
+        {
+            writeTriangle(iptr[0], iptr[1], iptr[2]);
+            writeTriangle(iptr[0], iptr[2], iptr[3]);
+        }
+
+        break;
+    }
+
+    case GL_QUAD_STRIP:
+    {
+        IndexPointer iptr = indices;
+
+        for (GLsizei i = 3; i < count; i += 2, iptr += 2)
+        {
+            writeTriangle(iptr[0], iptr[1], iptr[2]);
+            writeTriangle(iptr[1], iptr[3], iptr[2]);
+        }
+
+        break;
+    }
+
+    case GL_POLYGON:     // treat polygons as GL_TRIANGLE_FAN
+    case GL_TRIANGLE_FAN:
+    {
+        IndexPointer iptr  = indices;
+        unsigned int first = *iptr;
+        ++iptr;
+
+        for (GLsizei i = 2; i < count; ++i, ++iptr)
+        {
+            writeTriangle(first, iptr[0], iptr[1]);
+        }
+
+        break;
+    }
+
+    case GL_POINTS:
+    case GL_LINES:
+    case GL_LINE_STRIP:
+    case GL_LINE_LOOP:
+        // Not handled
+        break;
+
+    default:
+        // uhm should never come to this point :)
+        break;
+    }
+
+    if (_normalBinding == osg::Geometry::BIND_PER_PRIMITIVE_SET)
+        ++_curNormalIndex;
+}
+
+private:
+PrimitiveIndexWriter&operator =(const PrimitiveIndexWriter&);       // { return *this; }
+
+unsigned int                    _drawable_n;
+ListTriangle                    &_listTriangles;
+GLenum                          _modeCache;
+std::vector<GLuint>             _indexCache;
+bool                            _hasNormalCoords, _hasTexCoords;
+const osg::Geometry             *_geo;
+unsigned int                    _lastFaceIndex;
+int                             _material;
+unsigned int                    _curNormalIndex;
+osg::Geometry::AttributeBinding _normalBinding;
+FbxMesh                         *_mesh;
+};
+
+void PrimitiveIndexWriter::drawArrays(GLenum mode, GLint first, GLsizei count)
+{
+    unsigned int pos = first;
+
+    switch (mode)
+    {
+    case GL_TRIANGLES:
+
         for (GLsizei i = 2; i < count; i += 3, pos += 3)
         {
             writeTriangle(pos, pos + 1, pos + 2);
         }
+
         break;
+
     case GL_TRIANGLE_STRIP:
+
         for (GLsizei i = 2; i < count; ++i, ++pos)
         {
-            if (i & 1) writeTriangle(pos, pos + 2, pos + 1);
-            else       writeTriangle(pos, pos + 1, pos + 2);
+            if (i & 1)
+                writeTriangle(pos, pos + 2, pos + 1);
+            else
+                writeTriangle(pos, pos + 1, pos + 2);
         }
+
         break;
+
     case GL_QUADS:
+
         for (GLsizei i = 3; i < count; i += 4, pos += 4)
         {
             writeTriangle(pos, pos + 1, pos + 2);
             writeTriangle(pos, pos + 2, pos + 3);
         }
+
         break;
+
     case GL_QUAD_STRIP:
+
         for (GLsizei i = 3; i < count; i += 2, pos += 2)
         {
             writeTriangle(pos, pos + 1, pos + 2);
             writeTriangle(pos + 1, pos + 3, pos + 2);
         }
+
         break;
+
     case GL_POLYGON: // treat polygons as GL_TRIANGLE_FAN
     case GL_TRIANGLE_FAN:
         pos = first + 1;
+
         for (GLsizei i = 2; i < count; ++i, ++pos)
         {
-            writeTriangle(first, pos, pos+1);
+            writeTriangle(first, pos, pos + 1);
         }
+
         break;
+
     case GL_POINTS:
     case GL_LINES:
     case GL_LINE_STRIP:
@@ -267,26 +315,28 @@ void PrimitiveIndexWriter::drawArrays(GLenum mode,GLint first,GLsizei count)
         OSG_WARN << "WriterNodeVisitor :: can't handle mode " << mode << std::endl;
         break;
     }
-    if (_normalBinding == osg::Geometry::BIND_PER_PRIMITIVE_SET) ++_curNormalIndex;
+
+    if (_normalBinding == osg::Geometry::BIND_PER_PRIMITIVE_SET)
+        ++_curNormalIndex;
 }
 
-WriterNodeVisitor::Material::Material(WriterNodeVisitor& writerNodeVisitor,
-                                      osgDB::ExternalFileWriter & externalWriter,
-                                      const osg::StateSet* stateset,
-                                      const osg::Material* mat,
-                                      const osg::Texture* tex,
-                                      FbxManager* pSdkManager,
-                                      const osgDB::ReaderWriter::Options * options,
+WriterNodeVisitor::Material::Material(WriterNodeVisitor&writerNodeVisitor,
+                                      osgDB::ExternalFileWriter&externalWriter,
+                                      const osg::StateSet *stateset,
+                                      const osg::Material *mat,
+                                      const osg::Texture *tex,
+                                      FbxManager *pSdkManager,
+                                      const osgDB::ReaderWriter::Options *options,
                                       int index) :
     _fbxMaterial(NULL),
     _fbxTexture(NULL),
     _index(index),
     _osgImage(NULL)
 {
-    osg::Vec4 diffuse(1,1,1,1),
-              ambient(0.2,0.2,0.2,1),
-              specular(0,0,0,1),
-              emission(1,1,1,1);
+    osg::Vec4 diffuse(1, 1, 1, 1),
+    ambient(0.2, 0.2, 0.2, 1),
+    specular(0, 0, 0, 1),
+    emission(1, 1, 1, 1);
 
     float shininess(0);
     float transparency(0);
@@ -294,14 +344,14 @@ WriterNodeVisitor::Material::Material(WriterNodeVisitor& writerNodeVisitor,
     if (mat)
     {
         assert(stateset);
-        diffuse = mat->getDiffuse(osg::Material::FRONT);
-        ambient = mat->getAmbient(osg::Material::FRONT);
-        specular = mat->getSpecular(osg::Material::FRONT);
-        shininess = mat->getShininess(osg::Material::FRONT);
-        emission = mat->getEmission(osg::Material::FRONT);
+        diffuse      = mat->getDiffuse(osg::Material::FRONT);
+        ambient      = mat->getAmbient(osg::Material::FRONT);
+        specular     = mat->getSpecular(osg::Material::FRONT);
+        shininess    = mat->getShininess(osg::Material::FRONT);
+        emission     = mat->getEmission(osg::Material::FRONT);
         transparency = 1 - diffuse.w();
 
-        const osg::StateAttribute* attribute = stateset->getAttribute(osg::StateAttribute::CULLFACE);
+        const osg::StateAttribute *attribute = stateset->getAttribute(osg::StateAttribute::CULLFACE);
         if (attribute)
         {
             assert(dynamic_cast<const osg::CullFace*>(attribute));
@@ -322,30 +372,31 @@ WriterNodeVisitor::Material::Material(WriterNodeVisitor& writerNodeVisitor,
         {
             _fbxMaterial->DiffuseFactor.Set(1);
             _fbxMaterial->Diffuse.Set(FbxDouble3(
-                diffuse.x(),
-                diffuse.y(),
-                diffuse.z()));
+                                          diffuse.x(),
+                                          diffuse.y(),
+                                          diffuse.z()));
 
             _fbxMaterial->TransparencyFactor.Set(transparency);
 
             _fbxMaterial->Ambient.Set(FbxDouble3(
-                ambient.x(),
-                ambient.y(),
-                ambient.z()));
+                                          ambient.x(),
+                                          ambient.y(),
+                                          ambient.z()));
 
             _fbxMaterial->Emissive.Set(FbxDouble3(
-                emission.x(),
-                emission.y(),
-                emission.z()));
+                                           emission.x(),
+                                           emission.y(),
+                                           emission.z()));
 
             _fbxMaterial->Specular.Set(FbxDouble3(
-                specular.x(),
-                specular.y(),
-                specular.z()));
+                                           specular.x(),
+                                           specular.y(),
+                                           specular.z()));
 
             _fbxMaterial->Shininess.Set(shininess);
         }
     }
+
     if (tex && tex->getImage(0))
     {
         _osgImage = tex->getImage(0);
@@ -360,6 +411,7 @@ WriterNodeVisitor::Material::Material(WriterNodeVisitor& writerNodeVisitor,
         {
             _fbxMaterial = FbxSurfacePhong::Create(pSdkManager, relativePath.c_str());
         }
+
         // Connect texture to material's diffuse
         // Note there should be no reason FbxSurfacePhong::Create() would return NULL, but as previous code made this secirity test, here we keep the same way.
         if (_fbxMaterial)
@@ -369,45 +421,50 @@ WriterNodeVisitor::Material::Material(WriterNodeVisitor& writerNodeVisitor,
     }
 }
 
-int WriterNodeVisitor::processStateSet(const osg::StateSet* ss)
+int WriterNodeVisitor::processStateSet(const osg::StateSet *ss)
 {
-    //OSG_ALWAYS << "Trying Adding " << ss->getAttribute(osg::StateAttribute::MATERIAL)->getName() << std::endl;
+    // OSG_ALWAYS << "Trying Adding " << ss->getAttribute(osg::StateAttribute::MATERIAL)->getName() << std::endl;
     MaterialMap::iterator itr = _materialMap.find(MaterialMap::key_type(ss));
+
     if (itr != _materialMap.end())
     {
         if (itr->second.getIndex() < 0)
             itr->second.setIndex(_lastMaterialIndex++);
+
         return itr->second.getIndex();
     }
 
-    const osg::Material* mat = dynamic_cast<const osg::Material*>(ss->getAttribute(osg::StateAttribute::MATERIAL));
-    const osg::Texture* tex = dynamic_cast<const osg::Texture*>(ss->getTextureAttribute(0, osg::StateAttribute::TEXTURE));
+    const osg::Material *mat = dynamic_cast<const osg::Material*>(ss->getAttribute(osg::StateAttribute::MATERIAL));
+    const osg::Texture  *tex = dynamic_cast<const osg::Texture*>(ss->getTextureAttribute(0, osg::StateAttribute::TEXTURE));
 
     if (mat || tex)
     {
         int matNum = _lastMaterialIndex;
         _materialMap.insert(MaterialMap::value_type(MaterialMap::key_type(ss),
-            Material(*this, _externalWriter, ss, mat, tex, _pSdkManager, _options, matNum)));
+                                                    Material(*this, _externalWriter, ss, mat, tex, _pSdkManager, _options, matNum)));
         ++_lastMaterialIndex;
         return matNum;
     }
+
     return -1;
 }
 
-unsigned int addPolygon(MapIndices & index_vert, unsigned int vertIndex, unsigned int normIndex, unsigned int drawableNum)
+unsigned int addPolygon(MapIndices&index_vert, unsigned int vertIndex, unsigned int normIndex, unsigned int drawableNum)
 {
-    VertexIndex vert(vertIndex, drawableNum, normIndex);
+    VertexIndex          vert(vertIndex, drawableNum, normIndex);
     MapIndices::iterator itIndex = index_vert.find(vert);
+
     if (itIndex == index_vert.end())
     {
         unsigned int indexMesh = index_vert.size();
         index_vert.insert(std::make_pair(vert, indexMesh));
         return indexMesh;
     }
+
     return itIndex->second;
 }
 
-void addPolygon(FbxMesh * mesh, MapIndices & index_vert, const Triangle & tri, unsigned int drawableNum)
+void addPolygon(FbxMesh *mesh, MapIndices&index_vert, const Triangle&tri, unsigned int drawableNum)
 {
     mesh->AddPolygon(addPolygon(index_vert, tri.t1, tri.normalIndex1, drawableNum));
     mesh->AddPolygon(addPolygon(index_vert, tri.t2, tri.normalIndex2, drawableNum));
@@ -416,13 +473,14 @@ void addPolygon(FbxMesh * mesh, MapIndices & index_vert, const Triangle & tri, u
 
 
 void
-WriterNodeVisitor::setLayerTextureAndMaterial(FbxMesh* mesh)
+WriterNodeVisitor::setLayerTextureAndMaterial(FbxMesh *mesh)
 {
-    FbxLayerElementTexture* lTextureDiffuseLayer = FbxLayerElementTexture::Create(mesh, "Diffuse");
+    FbxLayerElementTexture *lTextureDiffuseLayer = FbxLayerElementTexture::Create(mesh, "Diffuse");
+
     lTextureDiffuseLayer->SetMappingMode(FbxLayerElement::eByPolygon);
     lTextureDiffuseLayer->SetReferenceMode(FbxLayerElement::eIndexToDirect);
 
-    FbxLayerElementMaterial* lMaterialLayer = FbxLayerElementMaterial::Create(mesh, "materialLayer");
+    FbxLayerElementMaterial *lMaterialLayer = FbxLayerElementMaterial::Create(mesh, "materialLayer");
     lMaterialLayer->SetMappingMode(FbxLayerElement::eByPolygon);
     lMaterialLayer->SetReferenceMode(FbxLayerElement::eIndexToDirect);
 
@@ -433,30 +491,31 @@ WriterNodeVisitor::setLayerTextureAndMaterial(FbxMesh* mesh)
     {
         if (it->second.getIndex() != -1)
         {
-            FbxSurfaceMaterial* lMaterial = it->second.getFbxMaterial();
-            FbxFileTexture* lTexture = it->second.getFbxTexture();
+            FbxSurfaceMaterial *lMaterial = it->second.getFbxMaterial();
+            FbxFileTexture     *lTexture  = it->second.getFbxTexture();
             lTextureDiffuseLayer->GetDirectArray().SetAt(it->second.getIndex(), lTexture);
             lMaterialLayer->mDirectArray->SetAt(it->second.getIndex(), lMaterial);
         }
     }
+
     mesh->GetLayer(0)->SetMaterials(lMaterialLayer);
     mesh->GetLayer(0)->SetTextures(FbxLayerElement::eTextureDiffuse, lTextureDiffuseLayer);
 }
 
 void
-WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode& geo,
-                                                  MapIndices&       index_vert,
-                                                  bool              texcoords,
-                                                  FbxMesh*         mesh)
+WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode&geo,
+                                                  MapIndices&index_vert,
+                                                  bool texcoords,
+                                                  FbxMesh *mesh)
 {
     mesh->InitControlPoints(index_vert.size());
-    FbxLayerElementNormal* lLayerElementNormal= FbxLayerElementNormal::Create(mesh, "");
+    FbxLayerElementNormal *lLayerElementNormal = FbxLayerElementNormal::Create(mesh, "");
     // For now, FBX writer only supports normals bound per vertices
     lLayerElementNormal->SetMappingMode(FbxLayerElement::eByControlPoint);
     lLayerElementNormal->SetReferenceMode(FbxLayerElement::eDirect);
     lLayerElementNormal->GetDirectArray().SetCount(index_vert.size());
     mesh->GetLayer(0)->SetNormals(lLayerElementNormal);
-    FbxLayerElementUV* lUVDiffuseLayer = FbxLayerElementUV::Create(mesh, "DiffuseUV");
+    FbxLayerElementUV *lUVDiffuseLayer = FbxLayerElementUV::Create(mesh, "DiffuseUV");
 
     if (texcoords)
     {
@@ -468,92 +527,94 @@ WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode& geo,
 
     for (MapIndices::iterator it = index_vert.begin(); it != index_vert.end(); ++it)
     {
-        const osg::Geometry* pGeometry = geo.getDrawable(it->first.drawableIndex)->asGeometry();
-        unsigned int vertexIndex = it->first.vertexIndex;
-        unsigned int normalIndex = it->first.normalIndex;
+        const osg::Geometry *pGeometry  = geo.getDrawable(it->first.drawableIndex)->asGeometry();
+        unsigned int        vertexIndex = it->first.vertexIndex;
+        unsigned int        normalIndex = it->first.normalIndex;
 
-        const osg::Array * basevecs = pGeometry->getVertexArray();
+        const osg::Array *basevecs = pGeometry->getVertexArray();
         assert(basevecs);
-        if (!basevecs || basevecs->getNumElements()==0)
+        if (!basevecs || basevecs->getNumElements() == 0)
         {
-            //OSG_NOTIFY()
+            // OSG_NOTIFY()
             continue;
         }
+
         FbxVector4 vertex;
         if (basevecs->getType() == osg::Array::Vec3ArrayType)
         {
-            const osg::Vec3  & vec = (*static_cast<const osg::Vec3Array  *>(basevecs))[vertexIndex];
+            const osg::Vec3&vec = (*static_cast<const osg::Vec3Array*>(basevecs))[vertexIndex];
             vertex.Set(vec.x(), vec.y(), vec.z());
         }
         else if (basevecs->getType() == osg::Array::Vec3dArrayType)
         {
-            const osg::Vec3d & vec = (*static_cast<const osg::Vec3dArray *>(basevecs))[vertexIndex];
+            const osg::Vec3d&vec = (*static_cast<const osg::Vec3dArray*>(basevecs))[vertexIndex];
             vertex.Set(vec.x(), vec.y(), vec.z());
         }
         else
         {
             OSG_NOTIFY(osg::FATAL) << "Vertex array is not Vec3 or Vec3d. Not implemented" << std::endl;
             throw "Vertex array is not Vec3 or Vec3d. Not implemented";
-            //_succeeded = false;
-            //return;
+            // _succeeded = false;
+            // return;
         }
+
         mesh->SetControlPointAt(vertex, it->second);
 
 
-        const osg::Array * basenormals = pGeometry->getNormalArray();
+        const osg::Array *basenormals = pGeometry->getNormalArray();
 
-        if (basenormals && basenormals->getNumElements()>0)
+        if (basenormals && basenormals->getNumElements() > 0)
         {
             FbxVector4 normal;
             if (basenormals->getType() == osg::Array::Vec3ArrayType)
             {
-                const osg::Vec3  & vec = (*static_cast<const osg::Vec3Array  *>(basenormals))[normalIndex];
+                const osg::Vec3&vec = (*static_cast<const osg::Vec3Array*>(basenormals))[normalIndex];
                 normal.Set(vec.x(), vec.y(), vec.z(), 0);
             }
             else if (basenormals->getType() == osg::Array::Vec3dArrayType)
             {
-                const osg::Vec3d & vec = (*static_cast<const osg::Vec3dArray *>(basenormals))[normalIndex];
+                const osg::Vec3d&vec = (*static_cast<const osg::Vec3dArray*>(basenormals))[normalIndex];
                 normal.Set(vec.x(), vec.y(), vec.z(), 0);
             }
             else
             {
                 OSG_NOTIFY(osg::FATAL) << "Normal array is not Vec3 or Vec3d. Not implemented" << std::endl;
                 throw "Normal array is not Vec3 or Vec3d. Not implemented";
-                //_succeeded = false;
-                //return;
+                // _succeeded = false;
+                // return;
             }
 
-            //switch (pGeometry->getNormalBinding())
-            //{
-            //case osg::Geometry::BIND_PER_PRIMITIVE_SET:
-            //case osg::Geometry::BIND_PER_VERTEX:
+            // switch (pGeometry->getNormalBinding())
+            // {
+            // case osg::Geometry::BIND_PER_PRIMITIVE_SET:
+            // case osg::Geometry::BIND_PER_VERTEX:
             //    break;
-            //}
+            // }
             lLayerElementNormal->GetDirectArray().SetAt(it->second, normal);
         }
 
         if (texcoords)
         {
-            const osg::Array * basetexcoords = pGeometry->getTexCoordArray(0);
-            if (basetexcoords && basetexcoords->getNumElements()>0)
+            const osg::Array *basetexcoords = pGeometry->getTexCoordArray(0);
+            if (basetexcoords && basetexcoords->getNumElements() > 0)
             {
                 FbxVector2 texcoord;
                 if (basetexcoords->getType() == osg::Array::Vec2ArrayType)
                 {
-                    const osg::Vec2 & vec = (*static_cast<const osg::Vec2Array *>(basetexcoords))[vertexIndex];
+                    const osg::Vec2&vec = (*static_cast<const osg::Vec2Array*>(basetexcoords))[vertexIndex];
                     texcoord.Set(vec.x(), vec.y());
                 }
                 else if (basetexcoords->getType() == osg::Array::Vec2dArrayType)
                 {
-                    const osg::Vec2d & vec = (*static_cast<const osg::Vec2dArray *>(basetexcoords))[vertexIndex];
+                    const osg::Vec2d&vec = (*static_cast<const osg::Vec2dArray*>(basetexcoords))[vertexIndex];
                     texcoord.Set(vec.x(), vec.y());
                 }
                 else
                 {
                     OSG_NOTIFY(osg::FATAL) << "Texture coords array is not Vec2 or Vec2d. Not implemented" << std::endl;
                     throw "Texture coords array is not Vec2 or Vec2d. Not implemented";
-                    //_succeeded = false;
-                    //return;
+                    // _succeeded = false;
+                    // return;
                 }
 
                 lUVDiffuseLayer->GetDirectArray().SetAt(it->second, texcoord);
@@ -562,26 +623,29 @@ WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode& geo,
     }
 }
 
-void WriterNodeVisitor::buildFaces(const osg::Geode& geo,
-                                   ListTriangle&     listTriangles,
-                                   bool              texcoords)
+void WriterNodeVisitor::buildFaces(const osg::Geode&geo,
+                                   ListTriangle&listTriangles,
+                                   bool texcoords)
 {
     MapIndices index_vert;
-    FbxMesh* mesh = FbxMesh::Create(_pSdkManager, geo.getName().c_str());
+    FbxMesh    *mesh = FbxMesh::Create(_pSdkManager, geo.getName().c_str());
+
     _curFbxNode->AddNodeAttribute(mesh);
     _curFbxNode->SetShadingMode(FbxNode::eTextureShading);
-    FbxLayer* lLayer = mesh->GetLayer(0);
+    FbxLayer *lLayer = mesh->GetLayer(0);
     if (lLayer == NULL)
     {
         mesh->CreateLayer();
         lLayer = mesh->GetLayer(0);
     }
+
     setLayerTextureAndMaterial(mesh);
     lLayer->GetTextures(FbxLayerElement::eTextureDiffuse)->GetIndexArray().SetCount(listTriangles.size());
     lLayer->GetMaterials()->GetIndexArray().SetCount(listTriangles.size());
 
     unsigned int i = 0;
-    for (ListTriangle::iterator it = listTriangles.begin(); it != listTriangles.end(); ++it, ++i) //Go through the triangle list to define meshs
+
+    for (ListTriangle::iterator it = listTriangles.begin(); it != listTriangles.end(); ++it, ++i) // Go through the triangle list to define meshs
     {
         if (it->first.material == -1)
         {
@@ -593,30 +657,33 @@ void WriterNodeVisitor::buildFaces(const osg::Geode& geo,
             lLayer->GetTextures(FbxLayerElement::eTextureDiffuse)->GetIndexArray().SetAt(i, it->first.material);
             lLayer->GetMaterials()->GetIndexArray().SetAt(i, it->first.material);
         }
+
         addPolygon(mesh, index_vert, it->first, it->second);
         mesh->EndPolygon();
     }
+
     setControlPointAndNormalsAndUV(geo, index_vert, texcoords, mesh);
 }
 
-void WriterNodeVisitor::createListTriangle(const osg::Geometry* geo,
-                                           ListTriangle&        listTriangles,
-                                           bool&                texcoords,
-                                           unsigned int&        drawable_n)
+void WriterNodeVisitor::createListTriangle(const osg::Geometry *geo,
+                                           ListTriangle&listTriangles,
+                                           bool&texcoords,
+                                           unsigned int&drawable_n)
 {
     unsigned int nbVertices = 0;
     {
-        const osg::Array * vecs = geo->getVertexArray();
+        const osg::Array *vecs = geo->getVertexArray();
         if (vecs)
         {
             nbVertices = vecs->getNumElements();
 
             // Texture coords
-            const osg::Array * texvec = geo->getTexCoordArray(0);
+            const osg::Array *texvec = geo->getTexCoordArray(0);
             if (texvec)
             {
                 unsigned int nb = texvec->getNumElements();
-                if (nb == nbVertices) texcoords = true;
+                if (nb == nbVertices)
+                    texcoords = true;
                 else
                 {
                     OSG_WARN << "There are more/less texture coords than vertices! Ignoring texture coords.";
@@ -625,36 +692,43 @@ void WriterNodeVisitor::createListTriangle(const osg::Geometry* geo,
         }
     }
 
-    if (nbVertices==0) return;
+    if (nbVertices == 0)
+        return;
 
     int material = processStateSet(_currentStateSet.get());
 
     PrimitiveIndexWriter pif(geo, listTriangles, drawable_n, material);
-    for (unsigned int iPrimSet = 0; iPrimSet < geo->getNumPrimitiveSets(); ++iPrimSet) //Fill the Triangle List
+
+    for (unsigned int iPrimSet = 0; iPrimSet < geo->getNumPrimitiveSets(); ++iPrimSet) // Fill the Triangle List
     {
-        const osg::PrimitiveSet* ps = geo->getPrimitiveSet(iPrimSet);
+        const osg::PrimitiveSet *ps = geo->getPrimitiveSet(iPrimSet);
         const_cast<osg::PrimitiveSet*>(ps)->accept(pif);
     }
 }
 
-void WriterNodeVisitor::apply(osg::Geode& node)
+void WriterNodeVisitor::apply(osg::Geode&node)
 {
-    FbxNode* parent = _curFbxNode;
-    FbxNode* nodeFBX = FbxNode::Create(_pSdkManager, node.getName().empty() ? "DefaultName" : node.getName().c_str());
+    FbxNode *parent  = _curFbxNode;
+    FbxNode *nodeFBX = FbxNode::Create(_pSdkManager, node.getName().empty() ? "DefaultName" : node.getName().c_str());
+
     _curFbxNode->AddChild(nodeFBX);
     _curFbxNode = nodeFBX;
     unsigned int count = node.getNumDrawables();
     ListTriangle listTriangles;
-    bool texcoords = false;
+    bool         texcoords = false;
+
     for (MaterialMap::iterator it = _materialMap.begin(); it != _materialMap.end(); ++it)
         it->second.setIndex(-1);
+
     _lastMaterialIndex = 0;
-    if(node.getStateSet()){
+    if (node.getStateSet())
+    {
         pushStateSet(node.getStateSet());
     }
+
     for (unsigned int i = 0; i < count; ++i)
     {
-        const osg::Geometry* g = node.getDrawable(i)->asGeometry();
+        const osg::Geometry *g = node.getDrawable(i)->asGeometry();
         if (g != NULL)
         {
             pushStateSet(g->getStateSet());
@@ -662,38 +736,45 @@ void WriterNodeVisitor::apply(osg::Geode& node)
             popStateSet(g->getStateSet());
         }
     }
-    if(node.getStateSet()){
+
+    if (node.getStateSet())
+    {
         popStateSet(node.getStateSet());
     }
+
     if (count > 0)
     {
         buildFaces(node, listTriangles, texcoords);
     }
+
     if (succeedLastApply())
         traverse(node);
+
     _curFbxNode = parent;
 }
 
-void WriterNodeVisitor::apply(osg::Group& node)
+void WriterNodeVisitor::apply(osg::Group&node)
 {
-    FbxNode* parent = _curFbxNode;
+    FbxNode *parent = _curFbxNode;
 
-    FbxNode* nodeFBX = FbxNode::Create(_pSdkManager, node.getName().empty() ? "DefaultName" : node.getName().c_str());
+    FbxNode *nodeFBX = FbxNode::Create(_pSdkManager, node.getName().empty() ? "DefaultName" : node.getName().c_str());
+
     _curFbxNode->AddChild(nodeFBX);
     _curFbxNode = nodeFBX;
     traverse(node);
     _curFbxNode = parent;
 }
 
-void WriterNodeVisitor::apply(osg::MatrixTransform& node)
+void WriterNodeVisitor::apply(osg::MatrixTransform&node)
 {
-    FbxNode* parent = _curFbxNode;
+    FbxNode *parent = _curFbxNode;
+
     _curFbxNode = FbxNode::Create(_pSdkManager, node.getName().empty() ? "DefaultName" : node.getName().c_str());
     parent->AddChild(_curFbxNode);
 
-    const osg::Matrix& matrix = node.getMatrix();
-    osg::Vec3d pos, scl;
-    osg::Quat rot, so;
+    const osg::Matrix&matrix = node.getMatrix();
+    osg::Vec3d       pos, scl;
+    osg::Quat        rot, so;
 
     matrix.decompose(pos, rot, scl, so);
     _curFbxNode->LclTranslation.Set(FbxDouble3(pos.x(), pos.y(), pos.z()));

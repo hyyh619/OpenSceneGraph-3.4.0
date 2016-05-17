@@ -14,10 +14,10 @@ using namespace osgDB;
 
 
 // "VBSP" for Valve BSP files
-const int VBSP_MAGIC_NUMBER  = (('P'<<24)+('S'<<16)+('B'<<8)+'V');
+const int VBSP_MAGIC_NUMBER = (('P' << 24) + ('S' << 16) + ('B' << 8) + 'V');
 
 // "IBSP" for id (Quake 3) BSP files
-const int IBSP_MAGIC_NUMBER = (('P'<<24)+('S'<<16)+('B'<<8)+'I');
+const int IBSP_MAGIC_NUMBER = (('P' << 24) + ('S' << 16) + ('B' << 8) + 'I');
 
 
 
@@ -28,7 +28,7 @@ const char* ReaderWriterBSP::className() const
 }
 
 
-bool ReaderWriterBSP::acceptsExtension(const std::string& extension) const
+bool ReaderWriterBSP::acceptsExtension(const std::string&extension) const
 {
     // If the extension is empty or "bsp", we accept it
     return osgDB::equalCaseInsensitive(extension, "bsp") || extension.empty();
@@ -36,15 +36,16 @@ bool ReaderWriterBSP::acceptsExtension(const std::string& extension) const
 
 
 ReaderWriter::ReadResult ReaderWriterBSP::readNode(
-                                  const std::string& file,
-                                  const ReaderWriter::Options* options) const
+    const std::string&file,
+    const ReaderWriter::Options *options) const
 {
-    VBSPReader *               vbspReader;
-    Q3BSPReader *              q3bspReader;
-    ref_ptr<Node>              result;
-    osgDB::ifstream            stream;
-    int                        magicNumber;
-    int                        version;
+    VBSPReader  *vbspReader;
+    Q3BSPReader *q3bspReader;
+
+    ref_ptr<Node>   result;
+    osgDB::ifstream stream;
+    int             magicNumber;
+    int             version;
 
     // See if we handle this kind of file
     if (!acceptsExtension(osgDB::getFileExtension(file)))
@@ -57,8 +58,8 @@ ReaderWriter::ReadResult ReaderWriterBSP::readNode(
 
     // Open the file and read the magic number and version
     stream.open(fileName.c_str(), std::ios::binary);
-    stream.read((char *) &magicNumber, sizeof(int));
-    stream.read((char *) &version, sizeof(int));
+    stream.read((char*) &magicNumber, sizeof(int));
+    stream.read((char*) &version, sizeof(int));
     stream.close();
 
     // See which kind of BSP file this is
@@ -117,4 +118,3 @@ ReaderWriter::ReadResult ReaderWriterBSP::readNode(
 
 
 REGISTER_OSGPLUGIN(bsp, ReaderWriterBSP)
-

@@ -44,69 +44,68 @@ using namespace std;
 
 struct PointData
 {
-  PointData():
-    point_index(0),
-    coord(Vec3(0.0f, 0.0f, 0.0f)),
-       texcoord(Vec2(-1.0f, -1.0f)) {}
+    PointData() :
+        point_index(0),
+        coord(Vec3(0.0f, 0.0f, 0.0f)),
+        texcoord(Vec2(-1.0f, -1.0f)) {}
 
-  short point_index;
-  Vec3 coord;
-  Vec2 texcoord;
+    short point_index;
+    Vec3  coord;
+    Vec2  texcoord;
 
-  inline bool operator == (const PointData& p) const
-  {
-    return coord == p.coord && texcoord == p.texcoord;
-  }
-
+    inline bool operator ==(const PointData&p) const
+    {
+        return coord == p.coord && texcoord == p.texcoord;
+    }
 };
 
 struct Lwo2Surface
 {
-    Lwo2Surface():
+    Lwo2Surface() :
         image_index(-1),
         state_set(0) {}
 
-    short image_index;
-    string name;
-    Vec3 color;
-    StateSet* state_set;
+    short    image_index;
+    string   name;
+    Vec3     color;
+    StateSet *state_set;
 };
 
-typedef vector< PointData > PointsList;
-typedef vector< PointsList > PolygonsList;
+typedef vector<PointData> PointsList;
+typedef vector<PointsList> PolygonsList;
 typedef PolygonsList::iterator IteratorPolygonsList;
 
-typedef map< int, int > DrawableToTagMapping;
-typedef pair< int, int > PairDrawableToTag;
+typedef map<int, int> DrawableToTagMapping;
+typedef pair<int, int> PairDrawableToTag;
 
-typedef vector< PointData >::iterator IteratorPoint;
-typedef vector< Vec2 >::iterator IteratorVec2;
-typedef vector< short >::iterator IteratorShort;
+typedef vector<PointData>::iterator IteratorPoint;
+typedef vector<Vec2>::iterator IteratorVec2;
+typedef vector<short>::iterator IteratorShort;
 
 class Lwo2Layer
 {
- public:
-  friend class Lwo2;
-  Lwo2Layer();
-  ~Lwo2Layer();
-  void notify(NotifySeverity);
-  void GenerateGeode( Geode&, short, DrawableToTagMapping& );
+public:
+friend class Lwo2;
+Lwo2Layer();
+~Lwo2Layer();
+void notify(NotifySeverity);
+void GenerateGeode(Geode&, short, DrawableToTagMapping&);
 
- private:
-  bool _find_triangle_fans(PolygonsList&, PolygonsList&);
-  bool _find_triangle_fan(PolygonsList&, PolygonsList&);
-  bool _find_triangle_strips(PolygonsList&, PolygonsList&);
-  bool _find_triangle_strip(PolygonsList&, PolygonsList&);
-  int _find_triangle_begins_with(PolygonsList&, PointData&, PointData&);
+private:
+bool _find_triangle_fans(PolygonsList&, PolygonsList&);
+bool _find_triangle_fan(PolygonsList&, PolygonsList&);
+bool _find_triangle_strips(PolygonsList&, PolygonsList&);
+bool _find_triangle_strip(PolygonsList&, PolygonsList&);
+int _find_triangle_begins_with(PolygonsList&, PointData&, PointData&);
 
-  short _number;
-  short _flags;
-  short _parent;
-  Vec3 _pivot;
-  string _name;
-  vector< PointData > _points;
-  PolygonsList _polygons;
-  vector< short > _polygons_tag;
+short             _number;
+short             _flags;
+short             _parent;
+Vec3              _pivot;
+string            _name;
+vector<PointData> _points;
+PolygonsList      _polygons;
+vector<short>     _polygons_tag;
 };
 
 #endif

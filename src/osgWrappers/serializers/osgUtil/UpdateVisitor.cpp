@@ -7,12 +7,11 @@
 #include <osgDB/OutputStream>
 
 
-REGISTER_OBJECT_WRAPPER( UpdateVisitor,
-                         new osgUtil::UpdateVisitor,
-                         osgUtil::UpdateVisitor,
-                         "osg::Object osg::NodeVisitor osgUtil::UpdateVisitor" )
-{
-}
+REGISTER_OBJECT_WRAPPER(UpdateVisitor,
+                        new osgUtil::UpdateVisitor,
+                        osgUtil::UpdateVisitor,
+                        "osg::Object osg::NodeVisitor osgUtil::UpdateVisitor")
+{}
 
 #undef OBJECT_CAST
 #define OBJECT_CAST static_cast

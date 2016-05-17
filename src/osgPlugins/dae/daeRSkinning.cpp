@@ -24,10 +24,11 @@
 
 using namespace osgDAE;
 
-domNode* daeReader::getRootJoint(domNode* joint) const
+domNode* daeReader::getRootJoint(domNode *joint) const
 {
     int depth = 0;
-    while (domNode* parent = daeSafeCast<domNode>(joint->getParent()))
+
+    while (domNode *parent = daeSafeCast<domNode>(joint->getParent()))
     {
         if (isJoint(parent))
         {
@@ -39,54 +40,56 @@ domNode* daeReader::getRootJoint(domNode* joint) const
             break;
         }
     }
+
     return joint;
 }
 
-domNode* daeReader::findJointNode(daeElement* searchFrom, domInstance_controller* pDomInstanceController) const
+domNode* daeReader::findJointNode(daeElement *searchFrom, domInstance_controller *pDomInstanceController) const
 {
-    domController *pDomController = daeSafeCast<domController>(getElementFromURI(pDomInstanceController->getUrl()));
-    domSkin::domJoints* pDomSkinJoints = pDomController->getSkin()->getJoints();
+    domController      *pDomController = daeSafeCast<domController>(getElementFromURI(pDomInstanceController->getUrl()));
+    domSkin::domJoints *pDomSkinJoints = pDomController->getSkin()->getJoints();
 
     domInputLocal_Array domInputs = pDomSkinJoints->getInput_array();
 
-    domSource* pDomJointsSource = NULL;
-    for (size_t i=0; i < domInputs.getCount(); i++)
+    domSource *pDomJointsSource = NULL;
+
+    for (size_t i = 0; i < domInputs.getCount(); i++)
     {
         if (!strcmp(domInputs[i]->getSemantic(), COMMON_PROFILE_INPUT_JOINT))
         {
             pDomJointsSource = daeSafeCast<domSource>(getElementFromURI(domInputs[i]->getSource()));
             if (!pDomJointsSource)
             {
-                OSG_WARN << "Could not find skin joints source '" << domInputs[i]->getSource().getURI() << "'" <<std::endl;
+                OSG_WARN << "Could not find skin joints source '" << domInputs[i]->getSource().getURI() << "'" << std::endl;
                 return NULL;
             }
         }
     }
 
-    if (domIDREF_array* pDomIDREFs = pDomJointsSource->getIDREF_array())
+    if (domIDREF_array *pDomIDREFs = pDomJointsSource->getIDREF_array())
     {
         if (pDomIDREFs->getCount())
         {
-            return daeSafeCast< domNode >(getElementFromIDRef(pDomIDREFs->getValue().get(0)));
+            return daeSafeCast<domNode>(getElementFromIDRef(pDomIDREFs->getValue().get(0)));
         }
     }
-    else if (domName_array* pDomNames = pDomJointsSource->getName_array())
+    else if (domName_array *pDomNames = pDomJointsSource->getName_array())
     {
         if (pDomNames->getCount())
         {
-            daeString target = pDomNames->getValue().get(0);
+            daeString      target = pDomNames->getValue().get(0);
             daeSIDResolver resolver(searchFrom, target);
             return daeSafeCast<domNode>(resolver.getElement());
         }
     }
 
-    OSG_WARN << "No valid names or IDREFS array in <skin>" <<std::endl;
+    OSG_WARN << "No valid names or IDREFS array in <skin>" << std::endl;
     return NULL;
 }
 
-domNode* daeReader::findSkeletonNode(daeElement* searchFrom, domInstance_controller* pDomInstanceController) const
+domNode* daeReader::findSkeletonNode(daeElement *searchFrom, domInstance_controller *pDomInstanceController) const
 {
-    domNode* pDomNode = findJointNode(searchFrom, pDomInstanceController);
+    domNode *pDomNode = findJointNode(searchFrom, pDomInstanceController);
 
     if (!pDomNode)
     {
@@ -106,17 +109,17 @@ void daeReader::processSkins()
     typedef std::map<domNode* /*Skeleton root*/, domInstance_controllerList> SkelSkinMap;
     SkelSkinMap skelSkinMap;
 
-    //group the skins according to which group of joints they're attached to.
+    // group the skins according to which group of joints they're attached to.
     for (size_t i = 0; i < _skinInstanceControllers.size(); ++i)
     {
-        domInstance_controller* pDomInstanceController = _skinInstanceControllers[i];
+        domInstance_controller *pDomInstanceController = _skinInstanceControllers[i];
 
-        const domInstance_controller::domSkeleton_Array& pDomSkeletons =
+        const domInstance_controller::domSkeleton_Array&pDomSkeletons =
             pDomInstanceController->getSkeleton_array();
 
         if (pDomSkeletons.getCount() == 0)
         {
-            domNode* skelNode = findSkeletonNode(_skeletonMap.begin()->first, pDomInstanceController);
+            domNode *skelNode = findSkeletonNode(_skeletonMap.begin()->first, pDomInstanceController);
             if (skelNode)
             {
                 skelSkinMap[skelNode].push_back(pDomInstanceController);
@@ -124,9 +127,9 @@ void daeReader::processSkins()
         }
         else
         {
-            if (daeElement* pDaeElement = pDomSkeletons.get(0)->getValue().getElement())
+            if (daeElement *pDaeElement = pDomSkeletons.get(0)->getValue().getElement())
             {
-                if (domNode* skelNode = findSkeletonNode(pDaeElement, pDomInstanceController))
+                if (domNode *skelNode = findSkeletonNode(pDaeElement, pDomInstanceController))
                 {
                     skelSkinMap[skelNode].push_back(pDomInstanceController);
                 }
@@ -140,32 +143,33 @@ void daeReader::processSkins()
     }
 }
 
-void getJointsAndInverseObjectspaceBindMatrices(domInstance_controller* pDomInstanceController,
-    domNode* pDomSkeletonNode,
-    std::vector<std::pair<domNode*, osg::Matrix> >& jointsAndBindMatrices)
+void getJointsAndInverseObjectspaceBindMatrices(domInstance_controller *pDomInstanceController,
+                                                domNode *pDomSkeletonNode,
+                                                std::vector<std::pair<domNode*, osg::Matrix> >&jointsAndBindMatrices)
 {
-    domController* pDomController = daeSafeCast< domController >(getElementFromURI(pDomInstanceController->getUrl()));
+    domController *pDomController = daeSafeCast<domController>(getElementFromURI(pDomInstanceController->getUrl()));
 
-    domSkin* pDomSkin = pDomController->getSkin();
+    domSkin *pDomSkin = pDomController->getSkin();
 
-    domSkin::domJoints* pDomSkinJoints = pDomSkin->getJoints();
-    domInputLocal_Array domInputs = pDomSkinJoints->getInput_array();
+    domSkin::domJoints  *pDomSkinJoints = pDomSkin->getJoints();
+    domInputLocal_Array domInputs       = pDomSkinJoints->getInput_array();
 
     if (domInputs.getCount() > 2)
     {
         OSG_WARN << "Only a single pair of skin joints inputs is supported." << std::endl;
     }
 
-    domSource* pDomJointsSource = NULL;
-    domSource* pDomInvBindMatricesSource = NULL;
-    for (size_t i=0; i < domInputs.getCount(); i++)
+    domSource *pDomJointsSource          = NULL;
+    domSource *pDomInvBindMatricesSource = NULL;
+
+    for (size_t i = 0; i < domInputs.getCount(); i++)
     {
         if (!strcmp(domInputs[i]->getSemantic(), COMMON_PROFILE_INPUT_JOINT))
         {
             pDomJointsSource = daeSafeCast<domSource>(getElementFromURI(domInputs[i]->getSource()));
             if (!pDomJointsSource)
             {
-                OSG_WARN << "Could not find skin joints source '" << domInputs[i]->getSource().getURI() << "'" <<std::endl;
+                OSG_WARN << "Could not find skin joints source '" << domInputs[i]->getSource().getURI() << "'" << std::endl;
                 return;
             }
         }
@@ -174,24 +178,25 @@ void getJointsAndInverseObjectspaceBindMatrices(domInstance_controller* pDomInst
             pDomInvBindMatricesSource = daeSafeCast<domSource>(getElementFromURI(domInputs[i]->getSource()));
             if (!pDomInvBindMatricesSource)
             {
-                OSG_WARN << "Could not find skin inverse bind matrices source '" << domInputs[i]->getSource().getURI() << "'" <<std::endl;
+                OSG_WARN << "Could not find skin inverse bind matrices source '" << domInputs[i]->getSource().getURI() << "'" << std::endl;
                 return;
             }
         }
     }
 
-    domFloat_array* pDomFloatArray = pDomInvBindMatricesSource->getFloat_array();
-    domListOfFloats matrices = pDomFloatArray->getValue();
+    domFloat_array  *pDomFloatArray = pDomInvBindMatricesSource->getFloat_array();
+    domListOfFloats matrices        = pDomFloatArray->getValue();
 
     osg::Matrix parentInverseSkeletonBindMatrix;
 
-    if (domIDREF_array* pDomIDREFs = pDomJointsSource->getIDREF_array())
+    if (domIDREF_array *pDomIDREFs = pDomJointsSource->getIDREF_array())
     {
         // IDREFS refer to an absolute joint and therefore do not allow a different skeleton
-        xsIDREFS* pIDREFS = &(pDomIDREFs->getValue());
-        for (size_t i=0; i < pIDREFS->getCount(); i++)
+        xsIDREFS *pIDREFS = &(pDomIDREFs->getValue());
+
+        for (size_t i = 0; i < pIDREFS->getCount(); i++)
         {
-            domNode* pDomNode = daeSafeCast< domNode >(getElementFromIDRef(pIDREFS->get(i)));
+            domNode *pDomNode = daeSafeCast<domNode>(getElementFromIDRef(pIDREFS->get(i)));
 
             if (pDomNode)
             {
@@ -203,15 +208,16 @@ void getJointsAndInverseObjectspaceBindMatrices(domInstance_controller* pDomInst
             }
         }
     }
-    else if (domName_array* pDomNames = pDomJointsSource->getName_array())
+    else if (domName_array *pDomNames = pDomJointsSource->getName_array())
     {
         // Using a list of names is the preferred way of referring to joints, because
         // this refers to a joint relative to the given skeletons
-        domListOfNames* pNames = &(pDomNames->getValue());
-        for (size_t i=0; i < pNames->getCount(); i++)
+        domListOfNames *pNames = &(pDomNames->getValue());
+
+        for (size_t i = 0; i < pNames->getCount(); i++)
         {
             daeSIDResolver resolver(pDomSkeletonNode, pNames->get(i));
-            domNode* pDomNode = daeSafeCast< domNode >(resolver.getElement());
+            domNode        *pDomNode = daeSafeCast<domNode>(resolver.getElement());
 
             if (pDomNode)
             {
@@ -225,56 +231,58 @@ void getJointsAndInverseObjectspaceBindMatrices(domInstance_controller* pDomInst
     }
     else
     {
-        OSG_WARN << "No valid names or IDREFS array in <skin>" <<std::endl;
+        OSG_WARN << "No valid names or IDREFS array in <skin>" << std::endl;
     }
 
     for (size_t i = 0; i < jointsAndBindMatrices.size(); ++i)
     {
         osg::Matrix invMat(
-            matrices.get(i*16 + 0), matrices.get(i*16 + 4), matrices.get(i*16 + 8), matrices.get(i*16 + 12),
-            matrices.get(i*16 + 1), matrices.get(i*16 + 5), matrices.get(i*16 + 9), matrices.get(i*16 + 13),
-            matrices.get(i*16 + 2), matrices.get(i*16 + 6), matrices.get(i*16 + 10), matrices.get(i*16 + 14),
-            matrices.get(i*16 + 3), matrices.get(i*16 + 7), matrices.get(i*16 + 11), matrices.get(i*16 + 15));
+            matrices.get(i * 16 + 0), matrices.get(i * 16 + 4), matrices.get(i * 16 + 8), matrices.get(i * 16 + 12),
+            matrices.get(i * 16 + 1), matrices.get(i * 16 + 5), matrices.get(i * 16 + 9), matrices.get(i * 16 + 13),
+            matrices.get(i * 16 + 2), matrices.get(i * 16 + 6), matrices.get(i * 16 + 10), matrices.get(i * 16 + 14),
+            matrices.get(i * 16 + 3), matrices.get(i * 16 + 7), matrices.get(i * 16 + 11), matrices.get(i * 16 + 15));
         jointsAndBindMatrices[i].second = invMat;
     }
 }
 
-void daeReader::processSkeletonSkins(domNode* skeletonRoot, const domInstance_controllerList& instanceControllers)
+void daeReader::processSkeletonSkins(domNode *skeletonRoot, const domInstance_controllerList&instanceControllers)
 {
     for (size_t i = 0; i < instanceControllers.size(); ++i)
     {
-        domInstance_controller* instanceController = instanceControllers[i];
+        domInstance_controller *instanceController = instanceControllers[i];
 
         std::vector<std::pair<domNode*, osg::Matrix> > jointsAndInverseBindMatrices;
         getJointsAndInverseObjectspaceBindMatrices(instanceController, skeletonRoot, jointsAndInverseBindMatrices);
 
         for (size_t j = 0; j < jointsAndInverseBindMatrices.size(); ++j)
         {
-            osgAnimation::Bone* pOsgBone = getOrCreateBone(jointsAndInverseBindMatrices[j].first);
+            osgAnimation::Bone *pOsgBone = getOrCreateBone(jointsAndInverseBindMatrices[j].first);
             pOsgBone->setInvBindMatrixInSkeletonSpace(jointsAndInverseBindMatrices[j].second);
         }
     }
 
-    osgAnimation::Skeleton* skeleton = getOrCreateSkeleton(skeletonRoot);
+    osgAnimation::Skeleton *skeleton = getOrCreateSkeleton(skeletonRoot);
 
     for (size_t i = 0; i < instanceControllers.size(); ++i)
     {
         domInstance_controller *pDomInstanceController = instanceControllers[i];
-        domController *pDomController = daeSafeCast< domController >(getElementFromURI(pDomInstanceController->getUrl()));
+        domController          *pDomController         = daeSafeCast<domController>(getElementFromURI(pDomInstanceController->getUrl()));
         processSkin(pDomController->getSkin(), skeletonRoot, skeleton, pDomInstanceController->getBind_material());
     }
 }
 
-osgAnimation::VertexInfluence& getVertexInfluence(
-    osgAnimation::VertexInfluenceMap& vim, const std::string& name)
+osgAnimation::VertexInfluence&getVertexInfluence(
+    osgAnimation::VertexInfluenceMap&vim, const std::string&name)
 {
     osgAnimation::VertexInfluenceMap::iterator it = vim.lower_bound(name);
+
     if (it == vim.end() || name != it->first)
     {
         it = vim.insert(it, osgAnimation::VertexInfluenceMap::value_type(
-            name, osgAnimation::VertexInfluence()));
+                            name, osgAnimation::VertexInfluence()));
         it->second.setName(name);
     }
+
     return it->second;
 }
 
@@ -290,9 +298,9 @@ osgAnimation::VertexInfluence& getVertexInfluence(
 //        0..1    <v>
 //        0.*        <extra>
 // 0..*    <extra>
-void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimation::Skeleton* pOsgSkeleton, domBind_material* pDomBindMaterial)
+void daeReader::processSkin(domSkin *pDomSkin, domNode *skeletonRoot, osgAnimation::Skeleton *pOsgSkeleton, domBind_material *pDomBindMaterial)
 {
-    daeElement* pDaeSkinSource = getElementFromURI( pDomSkin->getSource());
+    daeElement *pDaeSkinSource = getElementFromURI(pDomSkin->getSource());
 
     if (!pDaeSkinSource)
     {
@@ -300,7 +308,7 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
         return;
     }
 
-    domGeometry* pDomGeometry = daeSafeCast< domGeometry >(pDaeSkinSource);
+    domGeometry *pDomGeometry = daeSafeCast<domGeometry>(pDaeSkinSource);
 
     if (!pDomGeometry)
     {
@@ -309,14 +317,14 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
     }
 
     // Base mesh
-    const osg::Geode* pOriginalGeode = NULL;
-    osg::Geode* pOsgGeode = getOrCreateGeometry(pDomGeometry, pDomBindMaterial, &pOriginalGeode);
+    const osg::Geode *pOriginalGeode = NULL;
+    osg::Geode       *pOsgGeode      = getOrCreateGeometry(pDomGeometry, pDomBindMaterial, &pOriginalGeode);
     if (!pOsgGeode)
         return;
 
-    domMesh* pDomMesh = pDomGeometry->getMesh();
+    domMesh *pDomMesh = pDomGeometry->getMesh();
 
-    osg::Geode* pOsgRigGeode = new osg::Geode;
+    osg::Geode *pOsgRigGeode = new osg::Geode;
     pOsgRigGeode->setDataVariance(osg::Object::DYNAMIC);
 
     typedef std::map<const osg::Geometry*, osgAnimation::RigGeometry*> GeometryRigGeometryMap;
@@ -324,16 +332,16 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
 
     for (unsigned i = 0; i < pOsgGeode->getNumDrawables(); ++i)
     {
-        if (osg::Geometry* pOsgGeometry = dynamic_cast<osg::Geometry*>(pOsgGeode->getDrawable(i)))
+        if (osg::Geometry *pOsgGeometry = dynamic_cast<osg::Geometry*>(pOsgGeode->getDrawable(i)))
         {
-            const osg::Geometry* pOriginalGeometry = dynamic_cast<const osg::Geometry*>(pOriginalGeode->getDrawable(i));
+            const osg::Geometry *pOriginalGeometry = dynamic_cast<const osg::Geometry*>(pOriginalGeode->getDrawable(i));
 
-            osgAnimation::RigGeometry* pOsgRigGeometry = new osgAnimation::RigGeometry();
+            osgAnimation::RigGeometry *pOsgRigGeometry = new osgAnimation::RigGeometry();
             pOsgRigGeometry->setSourceGeometry(pOsgGeometry);
             pOsgRigGeometry->copyFrom(*pOsgGeometry);
             old2newGeometryMap.insert(GeometryRigGeometryMap::value_type(pOriginalGeometry, pOsgRigGeometry));
             pOsgRigGeometry->setDataVariance(osg::Object::DYNAMIC);
-            pOsgRigGeometry->setUseDisplayList( false );
+            pOsgRigGeometry->setUseDisplayList(false);
             pOsgRigGeode->addDrawable(pOsgRigGeometry);
         }
         else
@@ -345,7 +353,7 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
     pOsgSkeleton->addChild(pOsgRigGeode);
 
     // <bind_shape_matrix>
-    if (domSkin::domBind_shape_matrix* pDomBindShapeMatrix = pDomSkin->getBind_shape_matrix())
+    if (domSkin::domBind_shape_matrix *pDomBindShapeMatrix = pDomSkin->getBind_shape_matrix())
     {
         domFloat4x4 matrix = pDomBindShapeMatrix->getValue();
         osg::Matrix bindMatrix(
@@ -356,16 +364,17 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
 
         for (unsigned d = 0; d < pOsgRigGeode->getNumDrawables(); ++d)
         {
-            osgAnimation::RigGeometry* pOsgRigGeometry = dynamic_cast<osgAnimation::RigGeometry*>(pOsgRigGeode->getDrawable(d));
+            osgAnimation::RigGeometry *pOsgRigGeometry = dynamic_cast<osgAnimation::RigGeometry*>(pOsgRigGeode->getDrawable(d));
             if (!pOsgRigGeometry)
                 continue;
 
-            osg::Array * vert = pOsgRigGeometry->getVertexArray();
-            osg::Vec3Array * vertf = NULL;
-            osg::Vec3dArray* vertd = NULL;
+            osg::Array      *vert  = pOsgRigGeometry->getVertexArray();
+            osg::Vec3Array  *vertf = NULL;
+            osg::Vec3dArray *vertd = NULL;
             if (vert->getType() == osg::Array::Vec3ArrayType)
             {
                 vertf = static_cast<osg::Vec3Array*>(vert);
+
                 for (size_t i = 0; i < vertf->size(); ++i)
                 {
                     (*vertf)[i] = (*vertf)[i] * bindMatrix;
@@ -374,6 +383,7 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
             else if (vert->getType() == osg::Array::Vec3dArrayType)
             {
                 vertd = static_cast<osg::Vec3dArray*>(vert);
+
                 for (size_t i = 0; i < vertd->size(); ++i)
                 {
                     (*vertd)[i] = (*vertd)[i] * bindMatrix;
@@ -385,14 +395,15 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
                 continue;
             }
 
-            osg::Array * norm = pOsgRigGeometry->getNormalArray();
+            osg::Array *norm = pOsgRigGeometry->getNormalArray();
             if (norm)
             {
-                osg::Vec3Array * normf = NULL;
-                osg::Vec3dArray* normd = NULL;
+                osg::Vec3Array  *normf = NULL;
+                osg::Vec3dArray *normd = NULL;
                 if (norm->getType() == osg::Array::Vec3ArrayType)
                 {
                     normf = static_cast<osg::Vec3Array*>(norm);
+
                     for (size_t i = 0; i < normf->size(); ++i)
                     {
                         (*normf)[i] = osg::Matrix::transform3x3((*normf)[i], bindMatrix);
@@ -401,6 +412,7 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
                 else if (norm->getType() == osg::Array::Vec3dArrayType)
                 {
                     normd = static_cast<osg::Vec3dArray*>(norm);
+
                     for (size_t i = 0; i < normd->size(); ++i)
                     {
                         (*normd)[i] = osg::Matrix::transform3x3((*normd)[i], bindMatrix);
@@ -409,33 +421,33 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
                 else
                 {
                     OSG_NOTIFY(osg::WARN) << "Normals vector type isn't supported." << std::endl;
-                    //continue;
+                    // continue;
                 }
             }
-
         }
     }
 
     // 1    <vertex_weights count>
 
-    domSkin::domVertex_weights* pDomVertexWeights = pDomSkin->getVertex_weights();
-    domInputLocalOffset_Array domInputs = pDomVertexWeights->getInput_array();
+    domSkin::domVertex_weights *pDomVertexWeights = pDomSkin->getVertex_weights();
+    domInputLocalOffset_Array  domInputs          = pDomVertexWeights->getInput_array();
 
     if (domInputs.getCount() > 2)
     {
         OSG_WARN << "Only a single pair of skin vertex weights inputs is supported." << std::endl;
     }
 
-    domSource* pDomJointsSource = NULL;
-    domSource* pDomWeightsSource = NULL;
-    for (size_t i=0; i < 2; i++)
+    domSource *pDomJointsSource  = NULL;
+    domSource *pDomWeightsSource = NULL;
+
+    for (size_t i = 0; i < 2; i++)
     {
         if (!strcmp(domInputs[i]->getSemantic(), COMMON_PROFILE_INPUT_JOINT))
         {
             pDomJointsSource = daeSafeCast<domSource>(getElementFromURI(domInputs[i]->getSource()));
             if (!pDomJointsSource)
             {
-                OSG_WARN << "Could not find skin joints source '" << domInputs[i]->getSource().getURI() << "'" <<std::endl;
+                OSG_WARN << "Could not find skin joints source '" << domInputs[i]->getSource().getURI() << "'" << std::endl;
                 return;
             }
         }
@@ -444,34 +456,34 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
             pDomWeightsSource = daeSafeCast<domSource>(getElementFromURI(domInputs[i]->getSource()));
             if (!pDomWeightsSource)
             {
-                OSG_WARN << "Could not find skin weights source '" << domInputs[i]->getSource().getURI() << "'" <<std::endl;
+                OSG_WARN << "Could not find skin weights source '" << domInputs[i]->getSource().getURI() << "'" << std::endl;
                 return;
             }
         }
     }
 
-    domFloat_array* pDomFloatArray = pDomWeightsSource->getFloat_array();
-    domListOfFloats weights = pDomFloatArray->getValue();
+    domFloat_array  *pDomFloatArray = pDomWeightsSource->getFloat_array();
+    domListOfFloats weights         = pDomFloatArray->getValue();
 
-    domSkin::domVertex_weights::domVcount* pDomVcount = pDomVertexWeights->getVcount();
-    domListOfUInts influenceCounts = pDomVcount->getValue();
+    domSkin::domVertex_weights::domVcount *pDomVcount     = pDomVertexWeights->getVcount();
+    domListOfUInts                        influenceCounts = pDomVcount->getValue();
 
-    domSkin::domVertex_weights::domV* pDomV= pDomVertexWeights->getV();
-    domListOfInts jointWeightIndices = pDomV->getValue();
+    domSkin::domVertex_weights::domV *pDomV             = pDomVertexWeights->getV();
+    domListOfInts                    jointWeightIndices = pDomV->getValue();
 
     std::vector<std::string> jointNames;
 
-    if (domName_array* pDomNames = pDomJointsSource->getName_array())
+    if (domName_array *pDomNames = pDomJointsSource->getName_array())
     {
-        domListOfNames* pNames = &(pDomNames->getValue());
+        domListOfNames *pNames = &(pDomNames->getValue());
 
         jointNames.reserve(pNames->getCount());
 
         for (size_t i = 0; i < pNames->getCount(); ++i)
         {
-            const char* szName = pNames->get(i);
-            daeSIDResolver resolver(skeletonRoot, szName);
-            osgAnimation::Bone* pOsgBone = _jointMap[daeSafeCast<domNode>(resolver.getElement())].get();
+            const char         *szName = pNames->get(i);
+            daeSIDResolver     resolver(skeletonRoot, szName);
+            osgAnimation::Bone *pOsgBone = _jointMap[daeSafeCast < domNode > (resolver.getElement())].get();
             if (pOsgBone)
             {
                 jointNames.push_back(pOsgBone->getName());
@@ -483,15 +495,15 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
             }
         }
     }
-    else if (domIDREF_array* pDomIDREFs = pDomJointsSource->getIDREF_array())
+    else if (domIDREF_array *pDomIDREFs = pDomJointsSource->getIDREF_array())
     {
-        xsIDREFS* pIDREFs = &(pDomIDREFs->getValue());
+        xsIDREFS *pIDREFs = &(pDomIDREFs->getValue());
 
         jointNames.reserve(pIDREFs->getCount());
 
         for (size_t i = 0; i < pIDREFs->getCount(); ++i)
         {
-            osgAnimation::Bone* pOsgBone = _jointMap[daeSafeCast<domNode>(pIDREFs->get(i).getElement())].get();
+            osgAnimation::Bone *pOsgBone = _jointMap[daeSafeCast < domNode > (pIDREFs->get(i).getElement())].get();
             if (pOsgBone)
             {
                 jointNames.push_back(pOsgBone->getName());
@@ -505,13 +517,13 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
     }
     else
     {
-        OSG_WARN << "No valid names or IDREFS array in <skin>" <<std::endl;
+        OSG_WARN << "No valid names or IDREFS array in <skin>" << std::endl;
         return;
     }
 
     for (size_t i = 0, vIndex = 0; i < influenceCounts.getCount(); i++)
     {
-        OldToNewIndexMap::key_type indexID(pDomMesh, i);
+        OldToNewIndexMap::key_type             indexID(pDomMesh, i);
         const OldToNewIndexMap::const_iterator start = _oldToNewIndexMap.find(indexID);
 
         const size_t nInfluences = influenceCounts[i];
@@ -519,7 +531,7 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
         if (start == _oldToNewIndexMap.end())
         {
             vIndex += nInfluences * 2;
-            //this vertex isn't used
+            // this vertex isn't used
             continue;
         }
 
@@ -529,34 +541,35 @@ void daeReader::processSkin(domSkin* pDomSkin, domNode* skeletonRoot, osgAnimati
         {
             if (vIndex + 2 > jointWeightIndices.getCount())
             {
-                OSG_WARN << "vIndex is larger than number of v values" <<std::endl;
+                OSG_WARN << "vIndex is larger than number of v values" << std::endl;
                 break;
             }
 
-            size_t jointIndex = jointWeightIndices[vIndex++];
+            size_t jointIndex  = jointWeightIndices[vIndex++];
             size_t weightIndex = jointWeightIndices[vIndex++];
 
             if (jointIndex >= jointNames.size())
             {
-                OSG_WARN << "Joint index is larger the number of joints" <<std::endl;
+                OSG_WARN << "Joint index is larger the number of joints" << std::endl;
                 break;
             }
+
             if (weightIndex >= weights.getCount())
             {
-                OSG_WARN << "Weight index is larger the number of weights" <<std::endl;
+                OSG_WARN << "Weight index is larger the number of weights" << std::endl;
                 break;
             }
 
             float weight = weights[weightIndex];
             if (weight > 0.0f)
             {
-                const std::string& name = jointNames[jointIndex];
+                const std::string&name = jointNames[jointIndex];
 
                 for (OldToNewIndexMap::const_iterator it = start; it != end; ++it)
                 {
-                    osgAnimation::RigGeometry* pRigGeometry = old2newGeometryMap[it->second.first.get()];
+                    osgAnimation::RigGeometry *pRigGeometry = old2newGeometryMap[it->second.first.get()];
 
-                    osgAnimation::VertexInfluenceMap* vim = pRigGeometry->getInfluenceMap();
+                    osgAnimation::VertexInfluenceMap *vim = pRigGeometry->getInfluenceMap();
                     if (!vim)
                     {
                         pRigGeometry->setInfluenceMap(vim = new osgAnimation::VertexInfluenceMap);

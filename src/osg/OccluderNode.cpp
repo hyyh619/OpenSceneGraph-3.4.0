@@ -9,20 +9,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/OccluderNode>
 
 using namespace osg;
 
 OccluderNode::OccluderNode()
-{
-}
+{}
 
-OccluderNode::OccluderNode(const OccluderNode& node,const CopyOp& copyop):
-    Group(node,copyop),
+OccluderNode::OccluderNode(const OccluderNode&node, const CopyOp&copyop) :
+    Group(node, copyop),
     _occluder(dynamic_cast<ConvexPlanarOccluder*>(copyop(node._occluder.get())))
-{
-}
+{}
 
 BoundingSphere OccluderNode::computeBound() const
 {
@@ -30,18 +28,21 @@ BoundingSphere OccluderNode::computeBound() const
 
     if (getOccluder())
     {
-        BoundingBox bb;
-        const ConvexPlanarPolygon::VertexList& vertexList = getOccluder()->getOccluder().getVertexList();
-        for(ConvexPlanarPolygon::VertexList::const_iterator itr=vertexList.begin();
-            itr!=vertexList.end();
-            ++itr)
+        BoundingBox                          bb;
+        const ConvexPlanarPolygon::VertexList&vertexList = getOccluder()->getOccluder().getVertexList();
+
+        for (ConvexPlanarPolygon::VertexList::const_iterator itr = vertexList.begin();
+             itr != vertexList.end();
+             ++itr)
         {
             bb.expandBy(*itr);
         }
+
         if (bb.valid())
         {
             bsphere.expandBy(bb);
         }
     }
+
     return bsphere;
 }

@@ -8,7 +8,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // Copyright(c) 2008 Skew Matrix Software LLC.
@@ -21,55 +21,54 @@
 
 #include <set>
 
-namespace osg {
-    class Light;
+namespace osg
+{
+class Light;
 }
 
 
 namespace flt
 {
-
-
 class DataOutputStream;
 
 
 class LightSourcePaletteManager
 {
-  public:
-      LightSourcePaletteManager();
+public:
+LightSourcePaletteManager();
 
-    // Add a light to the palette and auto-assign it the next available index
-    int add(osg::Light const* light);
+// Add a light to the palette and auto-assign it the next available index
+int add(osg::Light const *light);
 
-    // Write the light palette records out to a DataOutputStream
-    void write( DataOutputStream& dos ) const;
+// Write the light palette records out to a DataOutputStream
+void write(DataOutputStream&dos) const;
 
 
-  private:
-    int _currIndex;
+private:
+int _currIndex;
 
-    // Helper struct to hold light palette records
-    struct LightRecord
-    {
-        LightRecord(osg::Light const* light, int i)
-            : Light(light)
-            , Index(i) { }
+// Helper struct to hold light palette records
+struct LightRecord
+{
+    LightRecord(osg::Light const *light, int i)
+        : Light(light)
+        , Index(i) { }
 
-        osg::Light const* Light;
-        int Index;
+    osg::Light const *Light;
+    int              Index;
+};
 
-    };
-
-    // Map to allow lookups by Light pointer
-    typedef std::map<osg::Light const*, LightRecord> LightPalette;
-    LightPalette _lightPalette;
+// Map to allow lookups by Light pointer
+typedef std::map<osg::Light const*, LightRecord> LightPalette;
+LightPalette _lightPalette;
 
 protected:
 
-    LightSourcePaletteManager& operator = (const LightSourcePaletteManager&) { return *this; }
+LightSourcePaletteManager&operator =(const LightSourcePaletteManager&)
+{
+    return *this;
+}
 };
-
-
 }  // End namespace fltexp
 
 #endif  // !__FLTEXP_LIGHT_SOURCE_PALETTE_MANAGER_H__

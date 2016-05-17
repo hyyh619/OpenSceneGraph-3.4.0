@@ -7,22 +7,22 @@
 // Callback for handling the SoShuttle node
 class ShuttleCallback : public osg::NodeCallback
 {
-    public:
+public:
 
-        ShuttleCallback(const osg::Vec3& startPos, const osg::Vec3& endPos,
-                        float frequency);
+ShuttleCallback(const osg::Vec3&startPos, const osg::Vec3&endPos,
+                float frequency);
 
-        virtual void operator() (osg::Node* node, osg::NodeVisitor* nv);
+virtual void operator()(osg::Node *node, osg::NodeVisitor *nv);
 
-    protected:
+protected:
 
-        osg::Vec3 _startPos;
-        osg::Vec3 _endPos;
-        float _frequency;
+osg::Vec3 _startPos;
+osg::Vec3 _endPos;
+float     _frequency;
 
-        unsigned int _previousTraversalNumber;
-        double _previousTime;
-        float _angle;
+unsigned int _previousTraversalNumber;
+double       _previousTime;
+float        _angle;
 };
 
 #endif

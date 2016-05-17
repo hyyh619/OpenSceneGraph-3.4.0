@@ -7,23 +7,23 @@
 // Callback for handling the SoPendulum node
 class PendulumCallback : public osg::NodeCallback
 {
-    public:
+public:
 
-        PendulumCallback(const osg::Vec3& axis, float startAngle,
-                         float endAngle, float frequency);
+PendulumCallback(const osg::Vec3&axis, float startAngle,
+                 float endAngle, float frequency);
 
-        virtual void operator() (osg::Node* node, osg::NodeVisitor* nv);
+virtual void operator()(osg::Node *node, osg::NodeVisitor *nv);
 
-    protected:
+protected:
 
-        float _startAngle;
-        float _endAngle;
-        float _frequency;
-        osg::Vec3 _axis;
+float     _startAngle;
+float     _endAngle;
+float     _frequency;
+osg::Vec3 _axis;
 
-        unsigned int _previousTraversalNumber;
-        double _previousTime;
-        float _angle;
+unsigned int _previousTraversalNumber;
+double       _previousTime;
+float        _angle;
 };
 
 #endif

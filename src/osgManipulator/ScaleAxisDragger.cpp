@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #include <osgManipulator/ScaleAxisDragger>
 
@@ -36,28 +36,27 @@ ScaleAxisDragger::ScaleAxisDragger()
     addDragger(_zDragger.get());
 
     _axisLineWidth = 2.0f;
-    _boxSize = 0.05f;
+    _boxSize       = 0.05f;
 
     setParentDragger(getParentDragger());
 }
 
 ScaleAxisDragger::~ScaleAxisDragger()
-{
-}
+{}
 
 void ScaleAxisDragger::setupDefaultGeometry()
 {
     // Create a line.
     _lineGeode = new osg::Geode;
     {
-        osg::Geometry* geometry = new osg::Geometry();
+        osg::Geometry *geometry = new osg::Geometry();
 
-        osg::Vec3Array* vertices = new osg::Vec3Array(2);
-        (*vertices)[0] = osg::Vec3(0.0f,0.0f,0.0f);
-        (*vertices)[1] = osg::Vec3(1.0f,0.0f,0.0f);
+        osg::Vec3Array *vertices = new osg::Vec3Array(2);
+        (*vertices)[0] = osg::Vec3(0.0f, 0.0f, 0.0f);
+        (*vertices)[1] = osg::Vec3(1.0f, 0.0f, 0.0f);
 
         geometry->setVertexArray(vertices);
-        geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES,0,2));
+        geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, 2));
 
         _lineGeode->addDrawable(geometry);
     }
@@ -67,7 +66,7 @@ void ScaleAxisDragger::setupDefaultGeometry()
         _lineWidth = new osg::LineWidth();
         _lineWidth->setWidth(_axisLineWidth);
         _lineGeode->getOrCreateStateSet()->setAttributeAndModes(_lineWidth.get(), osg::StateAttribute::ON);
-        _lineGeode->getOrCreateStateSet()->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
+        _lineGeode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
     }
 
     // Add line to all the individual 1D draggers.
@@ -75,10 +74,10 @@ void ScaleAxisDragger::setupDefaultGeometry()
     _yDragger->addChild(_lineGeode.get());
     _zDragger->addChild(_lineGeode.get());
 
-    osg::Geode* geode = new osg::Geode;
+    osg::Geode *geode = new osg::Geode;
 
     // Create a box.
-    _box = new osg::Box(osg::Vec3(1.0f,0.0f,0.0f), _boxSize);
+    _box = new osg::Box(osg::Vec3(1.0f, 0.0f, 0.0f), _boxSize);
     geode->addDrawable(new osg::ShapeDrawable(_box.get()));
 
     // This ensures correct lighting for scaled draggers.
@@ -104,9 +103,9 @@ void ScaleAxisDragger::setupDefaultGeometry()
     }
 
     // Send different colors for each dragger.
-    _xDragger->setColor(osg::Vec4(1.0f,0.0f,0.0f,1.0f));
-    _yDragger->setColor(osg::Vec4(0.0f,1.0f,0.0f,1.0f));
-    _zDragger->setColor(osg::Vec4(0.0f,0.0f,1.0f,1.0f));
+    _xDragger->setColor(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f));
+    _yDragger->setColor(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    _zDragger->setColor(osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f));
 }
 
 void ScaleAxisDragger::setAxisLineWidth(float linePixelWidth)

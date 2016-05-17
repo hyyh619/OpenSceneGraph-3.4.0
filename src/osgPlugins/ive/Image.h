@@ -4,11 +4,13 @@
 #include <osg/Image>
 #include "ReadWrite.h"
 
-namespace ive{
-class Image : public osg::Image, public ReadWrite {
+namespace ive
+{
+class Image : public osg::Image, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

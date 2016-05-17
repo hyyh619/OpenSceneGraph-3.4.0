@@ -4,11 +4,13 @@
 #include <osg/Drawable>
 #include "ReadWrite.h"
 
-namespace ive{
-class Drawable : public ReadWrite, public osg::Drawable{
+namespace ive
+{
+class Drawable : public ReadWrite, public osg::Drawable
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

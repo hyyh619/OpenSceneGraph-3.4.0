@@ -1,22 +1,22 @@
 /* -*-c++-*-
-* 
-*  OpenSceneGraph example, osgviewerCacoa.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  OpenSceneGraph example, osgviewerCacoa.
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 //
 //  ViewerCocoa.h
@@ -32,19 +32,19 @@
  *
  * One thing to remember is that any Objective-C files that include this header
  * must also be compiled as Objective-C++ because there are C++ constructs in
- * this file (such as namespaces) which the normal Objective-C compiler 
- * won't understand. (The easy way to do this is rename the .m files to .mm.) 
+ * this file (such as namespaces) which the normal Objective-C compiler
+ * won't understand. (The easy way to do this is rename the .m files to .mm.)
  *
  * In the event that you have a large, pre-existing code base written in
  * pure Objective-C and you find that the header include propagates to a
  * large number of your files, forcing you to mark many files to be compiled as
  * Objective-C++, and you find that you don't want to change these files because
- * they are shared with other pure Obj-C projects, you might consider further 
- * wrapping the C++ code so there are only C or Obj-C constructs in 
- * this header. There are several different techniques ranging from, wrapping 
+ * they are shared with other pure Obj-C projects, you might consider further
+ * wrapping the C++ code so there are only C or Obj-C constructs in
+ * this header. There are several different techniques ranging from, wrapping
  * the C++ code in pure C interfaces, to simply using void pointers in this
 
-* file for any C++ pointers and casting appropriately in the implementation
+ * file for any C++ pointers and casting appropriately in the implementation
  * file.
  */
 
@@ -53,9 +53,9 @@
 
 namespace osgViewer
 {
-    // Just a forward declaration so I don't need the #include in the header.
-    class Viewer;
-    class GraphicsWindowEmbedded;
+// Just a forward declaration so I don't need the #include in the header.
+class Viewer;
+class GraphicsWindowEmbedded;
 }
 
 // Subclass NSOpenGLView. We could subclass NSView instead, but NSOpenGLView is easy.
@@ -70,20 +70,19 @@ namespace osgViewer
     // Is SimpleViewer supposed use ref_ptr? (Doesn't look like it to me.)
     // If so, remember ref_ptr is an object on the stack and the cdtors option must be activated.
     // We could also make simpleViewer an object instead of a pointer, but again, turn on the option.
-    osgViewer::Viewer* theViewer;
-    osgViewer::GraphicsWindowEmbedded* graphicsWindow;
-        
+    osgViewer::Viewer                 *theViewer;
+    osgViewer::GraphicsWindowEmbedded *graphicsWindow;
+
 
     // This timer is used to trigger animation callbacks since everything is event driven.
-    NSTimer* animationTimer;
+    NSTimer *animationTimer;
 
     // Flags to help track whether ctrl-clicking or option-clicking is being used
     BOOL isUsingCtrlClick;
     BOOL isUsingOptionClick;
-    
+
     // Flag to track whether the OpenGL multithreading engine is enabled or not
     BOOL isUsingMultithreadedOpenGLEngine;
-    
 }
 
 // My custom static method to create a basic pixel format
@@ -168,18 +167,18 @@ namespace osgViewer
 
 
 // Official methods for drag and drop (view as target)
-- (unsigned int) draggingEntered:(id <NSDraggingInfo>)the_sender;
-- (void) draggingExited:(id <NSDraggingInfo>)the_sender;
-- (BOOL) prepareForDragOperation:(id <NSDraggingInfo>)the_sender;
-- (BOOL) performDragOperation:(id <NSDraggingInfo>)the_sender;
-- (void) concludeDragOperation:(id <NSDraggingInfo>)the_sender;
+- (unsigned int) draggingEntered:(id<NSDraggingInfo>)the_sender;
+- (void) draggingExited:(id<NSDraggingInfo>)the_sender;
+- (BOOL) prepareForDragOperation:(id<NSDraggingInfo>)the_sender;
+- (BOOL) performDragOperation:(id<NSDraggingInfo>)the_sender;
+- (void) concludeDragOperation:(id<NSDraggingInfo>)the_sender;
 
 // Official method for copy (i.e. copy & paste)
 - (IBAction) copy:(id)sender;
 
 // Private helper methods for drag and drop and copy/paste (view as source)
 - (NSData*) dataWithTIFFOfContentView;
-- (NSData*) contentsAsDataOfType:(NSString *)pboardType;
+- (NSData*) contentsAsDataOfType:(NSString*)pboardType;
 - (void) startDragAndDropAsSource:(NSEvent*)the_event;
 
 
@@ -190,4 +189,3 @@ namespace osgViewer
 
 
 @end
-

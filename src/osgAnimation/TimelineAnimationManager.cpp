@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgAnimation/Timeline>
 #include <osgAnimation/TimelineAnimationManager>
@@ -22,12 +22,12 @@ TimelineAnimationManager::TimelineAnimationManager()
     _timeline = new Timeline;
 }
 
-TimelineAnimationManager::TimelineAnimationManager(const AnimationManagerBase& manager) : AnimationManagerBase(manager)
+TimelineAnimationManager::TimelineAnimationManager(const AnimationManagerBase&manager) : AnimationManagerBase(manager)
 {
     _timeline = new Timeline;
 }
 
-TimelineAnimationManager::TimelineAnimationManager(const TimelineAnimationManager& nc,const osg::CopyOp& co) : AnimationManagerBase(nc, co)
+TimelineAnimationManager::TimelineAnimationManager(const TimelineAnimationManager&nc, const osg::CopyOp&co) : AnimationManagerBase(nc, co)
 {
     _timeline = new Timeline(*nc.getTimeline());
 }

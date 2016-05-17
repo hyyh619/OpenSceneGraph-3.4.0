@@ -10,15 +10,15 @@ using namespace osg;
 using namespace bsp;
 
 
-VBSPGeometry::VBSPGeometry(VBSPData * bspData)
+VBSPGeometry::VBSPGeometry(VBSPData *bspData)
 {
     // Keep track of the bsp data, as it has all of the data lists that we
     // need
     bsp_data = bspData;
 
     // Create arrays for the vertex attributes
-    vertex_array = new Vec3Array();
-    normal_array = new Vec3Array();
+    vertex_array   = new Vec3Array();
+    normal_array   = new Vec3Array();
     texcoord_array = new Vec2Array();
 
     // Create a primitive set for drawing variable length primitives (VBSP
@@ -26,9 +26,9 @@ VBSPGeometry::VBSPGeometry(VBSPData * bspData)
     primitive_set = new DrawArrayLengths(PrimitiveSet::POLYGON);
 
     // Create a second set of arrays for displacement surfaces
-    disp_vertex_array = new Vec3Array();
-    disp_normal_array = new Vec3Array();
-    disp_texcoord_array = new Vec2Array();
+    disp_vertex_array      = new Vec3Array();
+    disp_normal_array      = new Vec3Array();
+    disp_texcoord_array    = new Vec2Array();
     disp_vertex_attr_array = new Vec4Array();
 
     // Create a second primitive set for drawing indexed triangles, which is
@@ -38,8 +38,7 @@ VBSPGeometry::VBSPGeometry(VBSPData * bspData)
 
 
 VBSPGeometry::~VBSPGeometry()
-{
-}
+{}
 
 
 bool VBSPGeometry::doesEdgeExist(int row, int col, int direction,
@@ -51,36 +50,36 @@ bool VBSPGeometry::doesEdgeExist(int row, int col, int direction,
     // same way)
     switch (direction)
     {
-        case 0:
-            // False if we're on the left edge, otherwise true
-            if ((row - 1) < 0)
-                return false;
-            else
-                return true;
-
-        case 1:
-            // False if we're on the top edge, otherwise true
-            if ((col + 1) >= vertsPerEdge)
-                return false;
-            else
-                return true;
-
-        case 2:
-            // False if we're on the right edge, otherwise true
-            if ((row + 1) >= vertsPerEdge)
-                return false;
-            else
-                return true;
-
-        case 3:
-            // False if we're on the bottom edge, otherwise true
-            if ((col - 1) < 0)
-                return false;
-            else
-                return true;
-
-        default:
+    case 0:
+        // False if we're on the left edge, otherwise true
+        if ((row - 1) < 0)
             return false;
+        else
+            return true;
+
+    case 1:
+        // False if we're on the top edge, otherwise true
+        if ((col + 1) >= vertsPerEdge)
+            return false;
+        else
+            return true;
+
+    case 2:
+        // False if we're on the right edge, otherwise true
+        if ((row + 1) >= vertsPerEdge)
+            return false;
+        else
+            return true;
+
+    case 3:
+        // False if we're on the bottom edge, otherwise true
+        if ((col - 1) < 0)
+            return false;
+        else
+            return true;
+
+    default:
+        return false;
     }
 }
 
@@ -89,32 +88,32 @@ osg::Vec3 VBSPGeometry::getNormalFromEdges(int row, int col,
                                            unsigned char edgeBits,
                                            int firstVertex, int vertsPerEdge)
 {
-    osg::Vec3 *   vertexData;
-    osg::Vec3 *   surfaceVerts;
-    osg::Vec3     finalNormal;
-    osg::Vec3     v1, v2, v3;
-    osg::Vec3     e1, e2;
-    osg::Vec3     tempNormal;
-    int           normalCount;
+    osg::Vec3 *vertexData;
+    osg::Vec3 *surfaceVerts;
+    osg::Vec3 finalNormal;
+    osg::Vec3 v1, v2, v3;
+    osg::Vec3 e1, e2;
+    osg::Vec3 tempNormal;
+    int       normalCount;
 
     // Constants for direction.  If the bit is set in the edgeBits, then
     // there is an edge connected to the current vertex in that direction
-    const unsigned char   NEG_X = 1 << 0;
-    const unsigned char   POS_Y = 1 << 1;
-    const unsigned char   POS_X = 1 << 2;
-    const unsigned char   NEG_Y = 1 << 3;
+    const unsigned char NEG_X = 1 << 0;
+    const unsigned char POS_Y = 1 << 1;
+    const unsigned char POS_X = 1 << 2;
+    const unsigned char NEG_Y = 1 << 3;
 
     // Constants for quadrants.  If both bits are set, then there are
     // exactly two triangles in that quadrant
-    const unsigned char   QUAD_1 = POS_X | POS_Y;
-    const unsigned char   QUAD_2 = NEG_X | POS_Y;
-    const unsigned char   QUAD_3 = NEG_X | NEG_Y;
-    const unsigned char   QUAD_4 = POS_X | NEG_Y;
+    const unsigned char QUAD_1 = POS_X | POS_Y;
+    const unsigned char QUAD_2 = NEG_X | POS_Y;
+    const unsigned char QUAD_3 = NEG_X | NEG_Y;
+    const unsigned char QUAD_4 = POS_X | NEG_Y;
 
 
     // Grab the vertex data from the displaced vertex array (if there's a
     // better way to randomly access the data in this array, I'm all ears)
-    vertexData = (osg::Vec3 *)disp_vertex_array->getDataPointer();
+    vertexData = (osg::Vec3*)disp_vertex_array->getDataPointer();
 
     // Move to the surface we're interested in, and start counting vertices
     // from there
@@ -134,22 +133,22 @@ osg::Vec3 VBSPGeometry::getNormalFromEdges(int row, int col,
     if ((edgeBits & QUAD_1) == QUAD_1)
     {
         // First triangle
-        v1 = surfaceVerts[(col+1) * vertsPerEdge + row];
-        v2 = surfaceVerts[col * vertsPerEdge + row];
-        v3 = surfaceVerts[col * vertsPerEdge + (row+1)];
-        e1 = v1 - v2;
-        e2 = v3 - v2;
+        v1         = surfaceVerts[(col + 1) * vertsPerEdge + row];
+        v2         = surfaceVerts[col * vertsPerEdge + row];
+        v3         = surfaceVerts[col * vertsPerEdge + (row + 1)];
+        e1         = v1 - v2;
+        e2         = v3 - v2;
         tempNormal = e2 ^ e1;
         tempNormal.normalize();
         finalNormal += tempNormal;
         normalCount++;
 
         // Second triangle
-        v1 = surfaceVerts[(col+1) * vertsPerEdge + row];
-        v2 = surfaceVerts[col * vertsPerEdge + (row+1)];
-        v3 = surfaceVerts[(col+1) * vertsPerEdge + (row+1)];
-        e1 = v1 - v2;
-        e2 = v3 - v2;
+        v1         = surfaceVerts[(col + 1) * vertsPerEdge + row];
+        v2         = surfaceVerts[col * vertsPerEdge + (row + 1)];
+        v3         = surfaceVerts[(col + 1) * vertsPerEdge + (row + 1)];
+        e1         = v1 - v2;
+        e2         = v3 - v2;
         tempNormal = e2 ^ e1;
         tempNormal.normalize();
         finalNormal += tempNormal;
@@ -160,22 +159,22 @@ osg::Vec3 VBSPGeometry::getNormalFromEdges(int row, int col,
     if ((edgeBits & QUAD_2) == QUAD_2)
     {
         // First triangle
-        v1 = surfaceVerts[(col+1) * vertsPerEdge + (row-1)];
-        v2 = surfaceVerts[col * vertsPerEdge + (row-1)];
-        v3 = surfaceVerts[col * vertsPerEdge + row];
-        e1 = v1 - v2;
-        e2 = v3 - v2;
+        v1         = surfaceVerts[(col + 1) * vertsPerEdge + (row - 1)];
+        v2         = surfaceVerts[col * vertsPerEdge + (row - 1)];
+        v3         = surfaceVerts[col * vertsPerEdge + row];
+        e1         = v1 - v2;
+        e2         = v3 - v2;
         tempNormal = e2 ^ e1;
         tempNormal.normalize();
         finalNormal += tempNormal;
         normalCount++;
 
         // Second triangle
-        v1 = surfaceVerts[(col+1) * vertsPerEdge + (row-1)];
-        v2 = surfaceVerts[col * vertsPerEdge + row];
-        v3 = surfaceVerts[(col+1) * vertsPerEdge + row];
-        e1 = v1 - v2;
-        e2 = v3 - v2;
+        v1         = surfaceVerts[(col + 1) * vertsPerEdge + (row - 1)];
+        v2         = surfaceVerts[col * vertsPerEdge + row];
+        v3         = surfaceVerts[(col + 1) * vertsPerEdge + row];
+        e1         = v1 - v2;
+        e2         = v3 - v2;
         tempNormal = e2 ^ e1;
         tempNormal.normalize();
         finalNormal += tempNormal;
@@ -186,22 +185,22 @@ osg::Vec3 VBSPGeometry::getNormalFromEdges(int row, int col,
     if ((edgeBits & QUAD_3) == QUAD_3)
     {
         // First triangle
-        v1 = surfaceVerts[col * vertsPerEdge + (row-1)];
-        v2 = surfaceVerts[(col-1) * vertsPerEdge + (row-1)];
-        v3 = surfaceVerts[(col-1) * vertsPerEdge + row];
-        e1 = v1 - v2;
-        e2 = v3 - v2;
+        v1         = surfaceVerts[col * vertsPerEdge + (row - 1)];
+        v2         = surfaceVerts[(col - 1) * vertsPerEdge + (row - 1)];
+        v3         = surfaceVerts[(col - 1) * vertsPerEdge + row];
+        e1         = v1 - v2;
+        e2         = v3 - v2;
         tempNormal = e2 ^ e1;
         tempNormal.normalize();
         finalNormal += tempNormal;
         normalCount++;
 
         // Second triangle
-        v1 = surfaceVerts[col * vertsPerEdge + (row-1)];
-        v2 = surfaceVerts[(col-1) * vertsPerEdge + row];
-        v3 = surfaceVerts[col * vertsPerEdge + row];
-        e1 = v1 - v2;
-        e2 = v3 - v2;
+        v1         = surfaceVerts[col * vertsPerEdge + (row - 1)];
+        v2         = surfaceVerts[(col - 1) * vertsPerEdge + row];
+        v3         = surfaceVerts[col * vertsPerEdge + row];
+        e1         = v1 - v2;
+        e2         = v3 - v2;
         tempNormal = e2 ^ e1;
         tempNormal.normalize();
         finalNormal += tempNormal;
@@ -212,22 +211,22 @@ osg::Vec3 VBSPGeometry::getNormalFromEdges(int row, int col,
     if ((edgeBits & QUAD_4) == QUAD_4)
     {
         // First triangle
-        v1 = surfaceVerts[col * vertsPerEdge + row];
-        v2 = surfaceVerts[(col-1) * vertsPerEdge + row];
-        v3 = surfaceVerts[(col-1) * vertsPerEdge + (row+1)];
-        e1 = v1 - v2;
-        e2 = v3 - v2;
+        v1         = surfaceVerts[col * vertsPerEdge + row];
+        v2         = surfaceVerts[(col - 1) * vertsPerEdge + row];
+        v3         = surfaceVerts[(col - 1) * vertsPerEdge + (row + 1)];
+        e1         = v1 - v2;
+        e2         = v3 - v2;
         tempNormal = e2 ^ e1;
         tempNormal.normalize();
         finalNormal += tempNormal;
         normalCount++;
 
         // Second triangle
-        v1 = surfaceVerts[col * vertsPerEdge + row];
-        v2 = surfaceVerts[(col-1) * vertsPerEdge + (row+1)];
-        v3 = surfaceVerts[col * vertsPerEdge + (row+1)];
-        e1 = v1 - v2;
-        e2 = v3 - v2;
+        v1         = surfaceVerts[col * vertsPerEdge + row];
+        v2         = surfaceVerts[(col - 1) * vertsPerEdge + (row + 1)];
+        v3         = surfaceVerts[col * vertsPerEdge + (row + 1)];
+        e1         = v1 - v2;
+        e2         = v3 - v2;
         tempNormal = e2 ^ e1;
         tempNormal.normalize();
         finalNormal += tempNormal;
@@ -242,42 +241,42 @@ osg::Vec3 VBSPGeometry::getNormalFromEdges(int row, int col,
 }
 
 
-void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
+void VBSPGeometry::createDispSurface(Face&face, DisplaceInfo&dispInfo)
 {
-    TexInfo           currentTexInfo;
-    TexData           currentTexData;
-    Vec3              texU;
-    float             texUOffset;
-    float             texUScale;
-    Vec3              texV;
-    float             texVOffset;
-    float             texVScale;
-    int               i, j;
-    unsigned int      k;
-    double            dist, minDist;
-    int               minIndex = 0;
-    osg::Vec3         temp;
-    int               edgeIndex;
-    int               currentSurfEdge;
-    Edge              currentEdge;
-    osg::Vec3         currentVertex;
-    osg::Vec3         vertices[4];
-    unsigned int      firstVertex;
-    int               numEdgeVertices;
-    double            subdivideScale;
-    osg::Vec3         leftEdge, rightEdge;
-    osg::Vec3         leftEdgeStep, rightEdgeStep;
-    osg::Vec3         leftEnd, rightEnd;
-    osg::Vec3         leftRightSeg, leftRightStep;
-    unsigned int      dispVertIndex;
-    DisplacedVertex   dispVertInfo;
-    osg::Vec3         flatVertex, dispVertex;
-    unsigned int      index;
-    osg::Vec3         normal;
-    float             u, v;
-    osg::Vec2         texCoord;
-    float             alphaBlend;
-    unsigned char     edgeBits;
+    TexInfo         currentTexInfo;
+    TexData         currentTexData;
+    Vec3            texU;
+    float           texUOffset;
+    float           texUScale;
+    Vec3            texV;
+    float           texVOffset;
+    float           texVScale;
+    int             i, j;
+    unsigned int    k;
+    double          dist, minDist;
+    int             minIndex = 0;
+    osg::Vec3       temp;
+    int             edgeIndex;
+    int             currentSurfEdge;
+    Edge            currentEdge;
+    osg::Vec3       currentVertex;
+    osg::Vec3       vertices[4];
+    unsigned int    firstVertex;
+    int             numEdgeVertices;
+    double          subdivideScale;
+    osg::Vec3       leftEdge, rightEdge;
+    osg::Vec3       leftEdgeStep, rightEdgeStep;
+    osg::Vec3       leftEnd, rightEnd;
+    osg::Vec3       leftRightSeg, leftRightStep;
+    unsigned int    dispVertIndex;
+    DisplacedVertex dispVertInfo;
+    osg::Vec3       flatVertex, dispVertex;
+    unsigned int    index;
+    osg::Vec3       normal;
+    float           u, v;
+    osg::Vec2       texCoord;
+    float           alphaBlend;
+    unsigned char   edgeBits;
 
 
     // Get the texture info for this face
@@ -314,7 +313,7 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
         // index might be negative (see below), so take the absolute
         // value
         currentSurfEdge = bsp_data->getSurfaceEdge(edgeIndex);
-        currentEdge = bsp_data->getEdge(abs(currentSurfEdge));
+        currentEdge     = bsp_data->getEdge(abs(currentSurfEdge));
 
         // The sign of the surface edge index specifies which vertex is
         // "first" for this face.  A negative index means the edge should
@@ -334,24 +333,25 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
     // Rotate the base coordinates for the surface until the first vertex
     // matches the start position
     minDist = 1.0e9;
+
     for (i = 0; i < 4; i++)
     {
-       // Calculate the distance of the start position from this vertex
-       dist = (vertices[i] - dispInfo.start_position * 0.0254f).length();
+        // Calculate the distance of the start position from this vertex
+        dist = (vertices[i] - dispInfo.start_position * 0.0254f).length();
 
-       // If this is the smallest distance we've seen, remember it
-       if (dist < minDist)
-       {
-          minDist = dist;
-          minIndex = i;
-       }
+        // If this is the smallest distance we've seen, remember it
+        if (dist < minDist)
+        {
+            minDist  = dist;
+            minIndex = i;
+        }
     }
 
     // Rotate the displacement surface quad until we get the starting vertex
     // in the 0th position
     for (i = 0; i < minIndex; i++)
     {
-        temp = vertices[0];
+        temp        = vertices[0];
         vertices[0] = vertices[1];
         vertices[1] = vertices[2];
         vertices[2] = vertices[3];
@@ -360,7 +360,7 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
 
     // Calculate the vectors for the left and right edges of the surface
     // (remembering that the surface is wound clockwise)
-    leftEdge = vertices[1] - vertices[0];
+    leftEdge  = vertices[1] - vertices[0];
     rightEdge = vertices[2] - vertices[3];
 
     // Calculate the number of vertices along each edge of the surface
@@ -371,7 +371,7 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
     subdivideScale = 1.0 / (double)(numEdgeVertices - 1);
 
     // Calculate the step size between vertices on the left and right edges
-    leftEdgeStep = leftEdge * subdivideScale;
+    leftEdgeStep  = leftEdge * subdivideScale;
     rightEdgeStep = rightEdge * subdivideScale;
 
     // Remember the first vertex index in the vertex array
@@ -382,22 +382,22 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
     for (i = 0; i < numEdgeVertices; i++)
     {
         // Calculate the two endpoints for this section of the surface
-        leftEnd = leftEdgeStep * (double) i;
-        leftEnd += vertices[0];
-        rightEnd = rightEdgeStep * (double) i;
+        leftEnd   = leftEdgeStep * (double) i;
+        leftEnd  += vertices[0];
+        rightEnd  = rightEdgeStep * (double) i;
         rightEnd += vertices[3];
 
         // Now, get the vector from left to right, and subdivide it as well
-        leftRightSeg = rightEnd - leftEnd;
+        leftRightSeg  = rightEnd - leftEnd;
         leftRightStep = leftRightSeg * subdivideScale;
 
         // Generate the vertices for this section
         for (j = 0; j < numEdgeVertices; j++)
         {
             // Get the displacement info for this vertex
-            dispVertIndex = dispInfo.disp_vert_start;
+            dispVertIndex  = dispInfo.disp_vert_start;
             dispVertIndex += i * numEdgeVertices + j;
-            dispVertInfo = bsp_data->getDispVertex(dispVertIndex);
+            dispVertInfo   = bsp_data->getDispVertex(dispVertIndex);
 
             // Calculate the flat vertex
             flatVertex = leftEnd + (leftRightStep * (double) j);
@@ -414,9 +414,9 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
             // Calculate the texture coordinates for this vertex.  Texture
             // coordinates are calculated using a planar projection, so we need
             // to use the non-displaced vertex position here
-            u = texU * flatVertex + texUOffset;
+            u  = texU * flatVertex + texUOffset;
             u *= texUScale;
-            v = texV * flatVertex + texVOffset;
+            v  = texV * flatVertex + texVOffset;
             v *= texVScale;
             texCoord.set(u, v);
 
@@ -441,6 +441,7 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
             // See which of the 4 possible edges (left, up, right, or down) are
             // incident on this vertex
             edgeBits = 0;
+
             for (k = 0; k < 4; k++)
             {
                 if (doesEdgeExist(j, i, k, numEdgeVertices))
@@ -457,9 +458,9 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
     }
 
     // Now, triangulate the surface (this technique comes from the Source SDK)
-    for (i = 0; i < numEdgeVertices-1; i++)
+    for (i = 0; i < numEdgeVertices - 1; i++)
     {
-        for (j = 0; j < numEdgeVertices-1; j++)
+        for (j = 0; j < numEdgeVertices - 1; j++)
         {
             // Get the current vertex index (local to this surface)
             index = i * numEdgeVertices + j;
@@ -502,24 +503,24 @@ void VBSPGeometry::createDispSurface(Face & face, DisplaceInfo & dispInfo)
 
 void VBSPGeometry::addFace(int faceIndex)
 {
-    Face                  currentFace;
-    Edge                  currentEdge;
-    DisplaceInfo          currentDispInfo;
-    TexInfo               currentTexInfo;
-    TexData               currentTexData;
-    Vec3                  normal;
-    int                   edgeIndex;
-    int                   i;
-    int                   currentSurfEdge;
-    Vec3                  currentVertex;
-    Vec3                  texU;
-    float                 texUOffset;
-    float                 texUScale;
-    Vec3                  texV;
-    float                 texVOffset;
-    float                 texVScale;
-    float                 u, v;
-    Vec2f                 texCoord;
+    Face         currentFace;
+    Edge         currentEdge;
+    DisplaceInfo currentDispInfo;
+    TexInfo      currentTexInfo;
+    TexData      currentTexData;
+    Vec3         normal;
+    int          edgeIndex;
+    int          i;
+    int          currentSurfEdge;
+    Vec3         currentVertex;
+    Vec3         texU;
+    float        texUOffset;
+    float        texUScale;
+    Vec3         texV;
+    float        texVOffset;
+    float        texVScale;
+    float        u, v;
+    Vec2f        texCoord;
 
     // Make sure this face is not "on node" (an internal node of the BSP tree).
     // These faces are not used for visible geometry
@@ -580,7 +581,7 @@ void VBSPGeometry::addFace(int faceIndex)
             // index might be negative (see below), so take the absolute
             // value
             currentSurfEdge = bsp_data->getSurfaceEdge(edgeIndex);
-            currentEdge = bsp_data->getEdge(abs(currentSurfEdge));
+            currentEdge     = bsp_data->getEdge(abs(currentSurfEdge));
 
             // The sign of the surface edge index specifies which vertex is
             // "first" for this face.  A negative index means the edge should
@@ -597,9 +598,9 @@ void VBSPGeometry::addFace(int faceIndex)
             normal_array->push_back(normal);
 
             // Calculate the texture coordinates for this vertex
-            u = texU * currentVertex + texUOffset;
+            u  = texU * currentVertex + texUOffset;
             u *= texUScale;
-            v = texV * currentVertex + texVOffset;
+            v  = texV * currentVertex + texVOffset;
             v *= texVScale;
             texCoord.set(u, v);
 
@@ -615,11 +616,11 @@ void VBSPGeometry::addFace(int faceIndex)
 
 ref_ptr<Group> VBSPGeometry::createGeometry()
 {
-    ref_ptr<Group>       rootGroup;
-    ref_ptr<Geode>       geode;
-    ref_ptr<Geometry>    geometry;
-    Vec4f                color;
-    ref_ptr<Vec4Array>   colorArray;
+    ref_ptr<Group>     rootGroup;
+    ref_ptr<Geode>     geode;
+    ref_ptr<Geometry>  geometry;
+    Vec4f              color;
+    ref_ptr<Vec4Array> colorArray;
 
     // Create the root group (we'll attach everything to this group and
     // return it)
@@ -681,4 +682,3 @@ ref_ptr<Group> VBSPGeometry::createGeometry()
     // Return the root group
     return rootGroup;
 }
-

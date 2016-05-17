@@ -5,9 +5,8 @@
 #include <osgDB/OutputStream>
 
 
-REGISTER_OBJECT_WRAPPER( Popup,
-                         new osgUI::Popup,
-                         osgUI::Popup,
-                         "osg::Object osg::Node osg::Group osgUI::Widget osgUI::Popup" )
-{
-}
+REGISTER_OBJECT_WRAPPER(Popup,
+                        new osgUI::Popup,
+                        osgUI::Popup,
+                        "osg::Object osg::Node osg::Group osgUI::Widget osgUI::Popup")
+{}

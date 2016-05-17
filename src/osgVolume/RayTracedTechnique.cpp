@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgVolume/RayTracedTechnique>
 #include <osgVolume/VolumeTile>
@@ -29,19 +29,15 @@
 
 namespace osgVolume
 {
-
 RayTracedTechnique::RayTracedTechnique()
-{
-}
+{}
 
-RayTracedTechnique::RayTracedTechnique(const RayTracedTechnique& fft,const osg::CopyOp& copyop):
-    VolumeTechnique(fft,copyop)
-{
-}
+RayTracedTechnique::RayTracedTechnique(const RayTracedTechnique&fft, const osg::CopyOp&copyop) :
+    VolumeTechnique(fft, copyop)
+{}
 
 RayTracedTechnique::~RayTracedTechnique()
-{
-}
+{}
 
 enum ShadingModel
 {
@@ -53,28 +49,28 @@ enum ShadingModel
 
 void RayTracedTechnique::init()
 {
-    OSG_INFO<<"RayTracedTechnique::init()"<<std::endl;
+    OSG_INFO << "RayTracedTechnique::init()" << std::endl;
 
     if (!_volumeTile)
     {
-        OSG_NOTICE<<"RayTracedTechnique::init(), error no volume tile assigned."<<std::endl;
+        OSG_NOTICE << "RayTracedTechnique::init(), error no volume tile assigned." << std::endl;
         return;
     }
 
-    if (_volumeTile->getLayer()==0)
+    if (_volumeTile->getLayer() == 0)
     {
-        OSG_NOTICE<<"RayTracedTechnique::init(), error no layer assigend to volume tile."<<std::endl;
+        OSG_NOTICE << "RayTracedTechnique::init(), error no layer assigend to volume tile." << std::endl;
         return;
     }
 
-    if (_volumeTile->getLayer()->getImage()==0)
+    if (_volumeTile->getLayer()->getImage() == 0)
     {
-        OSG_NOTICE<<"RayTracedTechnique::init(), error no image assigned to layer."<<std::endl;
+        OSG_NOTICE << "RayTracedTechnique::init(), error no image assigned to layer." << std::endl;
         return;
     }
 
-     ShadingModel shadingModel = Isosurface;
-     float alphaFuncValue = 0.1;
+    ShadingModel shadingModel   = Isosurface;
+    float        alphaFuncValue = 0.1;
 
     _transform = new osg::MatrixTransform;
 
@@ -82,10 +78,10 @@ void RayTracedTechnique::init()
 
     _transform->addChild(geode.get());
 
-    osg::Image* image_3d = 0;
-    osg::TransferFunction1D* tf = 0;
-    Locator* masterLocator = _volumeTile->getLocator();
-    Locator* layerLocator = _volumeTile->getLayer()->getLocator();
+    osg::Image              *image_3d      = 0;
+    osg::TransferFunction1D *tf            = 0;
+    Locator                 *masterLocator = _volumeTile->getLocator();
+    Locator                 *layerLocator  = _volumeTile->getLayer()->getLocator();
 
     image_3d = _volumeTile->getLayer()->getImage();
 
@@ -98,7 +94,7 @@ void RayTracedTechnique::init()
 
     if (cpv._isoProperty.valid())
     {
-        shadingModel = Isosurface;
+        shadingModel   = Isosurface;
         alphaFuncValue = cpv._isoProperty->getValue();
     }
     else if (cpv._mipProperty.valid())
@@ -125,8 +121,11 @@ void RayTracedTechnique::init()
     }
 
 
-    if (!masterLocator && layerLocator) masterLocator = layerLocator;
-    if (!layerLocator && masterLocator) layerLocator = masterLocator;
+    if (!masterLocator && layerLocator)
+        masterLocator = layerLocator;
+
+    if (!layerLocator && masterLocator)
+        layerLocator = masterLocator;
 
 
     osg::Matrix geometryMatrix;
@@ -143,21 +142,20 @@ void RayTracedTechnique::init()
         imageMatrix = layerLocator->getTransform();
     }
 
-    OSG_INFO<<"RayTracedTechnique::init() : geometryMatrix = "<<geometryMatrix<<std::endl;
-    OSG_INFO<<"RayTracedTechnique::init() : imageMatrix = "<<imageMatrix<<std::endl;
+    OSG_INFO << "RayTracedTechnique::init() : geometryMatrix = " << geometryMatrix << std::endl;
+    OSG_INFO << "RayTracedTechnique::init() : imageMatrix = " << imageMatrix << std::endl;
 
     osg::Texture::InternalFormatMode internalFormatMode = osg::Texture::USE_IMAGE_DATA_FORMAT;
 
     {
-
         osg::Texture::FilterMode minFilter = osg::Texture::LINEAR;
         osg::Texture::FilterMode magFilter = osg::Texture::LINEAR;
 
-        osg::StateSet* stateset = geode->getOrCreateStateSet();
+        osg::StateSet *stateset = geode->getOrCreateStateSet();
 
-        stateset->setMode(GL_ALPHA_TEST,osg::StateAttribute::ON);
+        stateset->setMode(GL_ALPHA_TEST, osg::StateAttribute::ON);
 
-        osg::Program* program = new osg::Program;
+        osg::Program *program = new osg::Program;
         stateset->setAttribute(program);
 
         // get shaders from source
@@ -178,16 +176,16 @@ void RayTracedTechnique::init()
             // note, well set the filtering up so that mip mapping is disabled,
             // gluBuild3DMipsmaps doesn't do a very good job of handled the
             // imbalanced dimensions of the 256x256x4 texture.
-            osg::Texture3D* texture3D = new osg::Texture3D;
+            osg::Texture3D *texture3D = new osg::Texture3D;
             texture3D->setResizeNonPowerOfTwoHint(false);
-            texture3D->setFilter(osg::Texture3D::MIN_FILTER,minFilter);
+            texture3D->setFilter(osg::Texture3D::MIN_FILTER, minFilter);
             texture3D->setFilter(osg::Texture3D::MAG_FILTER, magFilter);
-            texture3D->setWrap(osg::Texture3D::WRAP_R,osg::Texture3D::CLAMP_TO_BORDER);
-            texture3D->setWrap(osg::Texture3D::WRAP_S,osg::Texture3D::CLAMP_TO_BORDER);
-            texture3D->setWrap(osg::Texture3D::WRAP_T,osg::Texture3D::CLAMP_TO_BORDER);
-            texture3D->setBorderColor(osg::Vec4(0.0,0.0,0.0,0.0));
-            if (image_3d->getPixelFormat()==GL_ALPHA ||
-                image_3d->getPixelFormat()==GL_LUMINANCE)
+            texture3D->setWrap(osg::Texture3D::WRAP_R, osg::Texture3D::CLAMP_TO_BORDER);
+            texture3D->setWrap(osg::Texture3D::WRAP_S, osg::Texture3D::CLAMP_TO_BORDER);
+            texture3D->setWrap(osg::Texture3D::WRAP_T, osg::Texture3D::CLAMP_TO_BORDER);
+            texture3D->setBorderColor(osg::Vec4(0.0, 0.0, 0.0, 0.0));
+            if (image_3d->getPixelFormat() == GL_ALPHA ||
+                image_3d->getPixelFormat() == GL_LUMINANCE)
             {
                 texture3D->setInternalFormatMode(osg::Texture3D::USE_USER_DEFINED_FORMAT);
                 texture3D->setInternalFormat(GL_INTENSITY);
@@ -196,11 +194,12 @@ void RayTracedTechnique::init()
             {
                 texture3D->setInternalFormatMode(internalFormatMode);
             }
+
             texture3D->setImage(image_3d);
 
-            stateset->setTextureAttributeAndModes(0,texture3D,osg::StateAttribute::ON);
+            stateset->setTextureAttributeAndModes(0, texture3D, osg::StateAttribute::ON);
 
-            osg::Uniform* baseTextureSampler = new osg::Uniform("baseTexture",0);
+            osg::Uniform *baseTextureSampler = new osg::Uniform("baseTexture", 0);
             stateset->addUniform(baseTextureSampler);
         }
 
@@ -209,36 +208,36 @@ void RayTracedTechnique::init()
 
         if (tf)
         {
-            float tfScale = 1.0f;
+            float tfScale  = 1.0f;
             float tfOffset = 0.0f;
 
-            ImageLayer* imageLayer = dynamic_cast<ImageLayer*>(_volumeTile->getLayer());
+            ImageLayer *imageLayer = dynamic_cast<ImageLayer*>(_volumeTile->getLayer());
             if (imageLayer)
             {
                 tfOffset = (imageLayer->getTexelOffset()[3] - tf->getMinimum()) / (tf->getMaximum() - tf->getMinimum());
-                tfScale = imageLayer->getTexelScale()[3] / (tf->getMaximum() - tf->getMinimum());
+                tfScale  = imageLayer->getTexelScale()[3] / (tf->getMaximum() - tf->getMinimum());
             }
             else
             {
-                tfOffset = -tf->getMinimum() / (tf->getMaximum()-tf->getMinimum());
-                tfScale = 1.0f / (tf->getMaximum()-tf->getMinimum());
+                tfOffset = -tf->getMinimum() / (tf->getMaximum() - tf->getMinimum());
+                tfScale  = 1.0f / (tf->getMaximum() - tf->getMinimum());
             }
+
             osg::ref_ptr<osg::Texture1D> tf_texture = new osg::Texture1D;
             tf_texture->setImage(tf->getImage());
 
             tf_texture->setResizeNonPowerOfTwoHint(false);
             tf_texture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR);
             tf_texture->setFilter(osg::Texture::MAG_FILTER, osg::Texture::LINEAR);
-            tf_texture->setWrap(osg::Texture::WRAP_R,osg::Texture::CLAMP_TO_EDGE);
+            tf_texture->setWrap(osg::Texture::WRAP_R, osg::Texture::CLAMP_TO_EDGE);
 
             stateset->setTextureAttributeAndModes(1, tf_texture.get(), osg::StateAttribute::ON);
-            stateset->addUniform(new osg::Uniform("tfTexture",1));
-            stateset->addUniform(new osg::Uniform("tfOffset",tfOffset));
-            stateset->addUniform(new osg::Uniform("tfScale",tfScale));
-
+            stateset->addUniform(new osg::Uniform("tfTexture", 1));
+            stateset->addUniform(new osg::Uniform("tfOffset", tfOffset));
+            stateset->addUniform(new osg::Uniform("tfScale", tfScale));
         }
 
-        if (shadingModel==MaximumIntensityProjection)
+        if (shadingModel == MaximumIntensityProjection)
         {
             enableBlending = true;
 
@@ -255,9 +254,8 @@ void RayTracedTechnique::init()
                     program->addShader(new osg::Shader(osg::Shader::FRAGMENT, volume_tf_mip_frag));
                 }
 
-                osg::Uniform* tfTextureSampler = new osg::Uniform("tfTexture",1);
+                osg::Uniform *tfTextureSampler = new osg::Uniform("tfTexture", 1);
                 stateset->addUniform(tfTextureSampler);
-
             }
             else
             {
@@ -273,9 +271,8 @@ void RayTracedTechnique::init()
                 }
             }
         }
-        else if (shadingModel==Isosurface)
+        else if (shadingModel == Isosurface)
         {
-
             enableBlending = true;
 
             stateset->addUniform(cpv._isoProperty->getUniform());
@@ -298,20 +295,20 @@ void RayTracedTechnique::init()
                 osg::ref_ptr<osg::Shader> fragmentShader = osgDB::readRefShaderFile(osg::Shader::FRAGMENT, "shaders/volume_iso.frag");
                 if (fragmentShader.valid())
                 {
-                    OSG_INFO<<"Shader found"<<std::endl;
+                    OSG_INFO << "Shader found" << std::endl;
 
                     program->addShader(fragmentShader.get());
                 }
                 else
                 {
-                    OSG_INFO<<"No Shader found"<<std::endl;
+                    OSG_INFO << "No Shader found" << std::endl;
 
                     #include "Shaders/volume_iso_frag.cpp"
                     program->addShader(new osg::Shader(osg::Shader::FRAGMENT, volume_iso_frag));
                 }
             }
         }
-        else if (shadingModel==Light)
+        else if (shadingModel == Light)
         {
             enableBlending = true;
 
@@ -327,7 +324,6 @@ void RayTracedTechnique::init()
                     #include "Shaders/volume_lit_tf_frag.cpp"
                     program->addShader(new osg::Shader(osg::Shader::FRAGMENT, volume_lit_tf_frag));
                 }
-
             }
             else
             {
@@ -359,7 +355,6 @@ void RayTracedTechnique::init()
                     #include "Shaders/volume_tf_frag.cpp"
                     program->addShader(new osg::Shader(osg::Shader::FRAGMENT, volume_tf_frag));
                 }
-
             }
             else
             {
@@ -379,19 +374,19 @@ void RayTracedTechnique::init()
         if (cpv._sampleDensityProperty.valid())
             stateset->addUniform(cpv._sampleDensityProperty->getUniform());
         else
-            stateset->addUniform(new osg::Uniform("SampleDensityValue",0.0005f));
+            stateset->addUniform(new osg::Uniform("SampleDensityValue", 0.0005f));
 
 
         if (cpv._transparencyProperty.valid())
             stateset->addUniform(cpv._transparencyProperty->getUniform());
         else
-            stateset->addUniform(new osg::Uniform("TransparencyValue",1.0f));
+            stateset->addUniform(new osg::Uniform("TransparencyValue", 1.0f));
 
 
         if (cpv._afProperty.valid())
             stateset->addUniform(cpv._afProperty->getUniform());
         else
-            stateset->addUniform(new osg::Uniform("AlphaFuncValue",alphaFuncValue));
+            stateset->addUniform(new osg::Uniform("AlphaFuncValue", alphaFuncValue));
 
 
         if (enableBlending)
@@ -403,9 +398,9 @@ void RayTracedTechnique::init()
 
         stateset->setMode(GL_CULL_FACE, osg::StateAttribute::ON);
 
-        osg::TexGen* texgen = new osg::TexGen;
+        osg::TexGen *texgen = new osg::TexGen;
         texgen->setMode(osg::TexGen::OBJECT_LINEAR);
-        texgen->setPlanesFromMatrix( geometryMatrix * osg::Matrix::inverse(imageMatrix));
+        texgen->setPlanesFromMatrix(geometryMatrix * osg::Matrix::inverse(imageMatrix));
 
         if (masterLocator)
         {
@@ -413,33 +408,33 @@ void RayTracedTechnique::init()
             masterLocator->addCallback(locatorCallback.get());
             if (masterLocator != layerLocator)
             {
-                if (layerLocator) layerLocator->addCallback(locatorCallback.get());
+                if (layerLocator)
+                    layerLocator->addCallback(locatorCallback.get());
             }
         }
 
         stateset->setTextureAttributeAndModes(0, texgen, osg::StateAttribute::ON);
-
     }
 
     {
-        osg::Geometry* geom = new osg::Geometry;
+        osg::Geometry *geom = new osg::Geometry;
 
-        osg::Vec3Array* coords = new osg::Vec3Array(8);
-        (*coords)[0] = osg::Vec3d(0.0,0.0,0.0);
-        (*coords)[1] = osg::Vec3d(1.0,0.0,0.0);
-        (*coords)[2] = osg::Vec3d(1.0,1.0,0.0);
-        (*coords)[3] = osg::Vec3d(0.0,1.0,0.0);
-        (*coords)[4] = osg::Vec3d(0.0,0.0,1.0);
-        (*coords)[5] = osg::Vec3d(1.0,0.0,1.0);
-        (*coords)[6] = osg::Vec3d(1.0,1.0,1.0);
-        (*coords)[7] = osg::Vec3d(0.0,1.0,1.0);
+        osg::Vec3Array *coords = new osg::Vec3Array(8);
+        (*coords)[0] = osg::Vec3d(0.0, 0.0, 0.0);
+        (*coords)[1] = osg::Vec3d(1.0, 0.0, 0.0);
+        (*coords)[2] = osg::Vec3d(1.0, 1.0, 0.0);
+        (*coords)[3] = osg::Vec3d(0.0, 1.0, 0.0);
+        (*coords)[4] = osg::Vec3d(0.0, 0.0, 1.0);
+        (*coords)[5] = osg::Vec3d(1.0, 0.0, 1.0);
+        (*coords)[6] = osg::Vec3d(1.0, 1.0, 1.0);
+        (*coords)[7] = osg::Vec3d(0.0, 1.0, 1.0);
         geom->setVertexArray(coords);
 
-        osg::Vec4Array* colours = new osg::Vec4Array(1);
-        (*colours)[0].set(1.0f,1.0f,1.0,1.0f);
+        osg::Vec4Array *colours = new osg::Vec4Array(1);
+        (*colours)[0].set(1.0f, 1.0f, 1.0, 1.0f);
         geom->setColorArray(colours, osg::Array::BIND_OVERALL);
 
-        osg::DrawElementsUShort* drawElements = new osg::DrawElementsUShort(GL_QUADS);
+        osg::DrawElementsUShort *drawElements = new osg::DrawElementsUShort(GL_QUADS);
         // bottom
         drawElements->push_back(0);
         drawElements->push_back(1);
@@ -479,7 +474,6 @@ void RayTracedTechnique::init()
         geom->addPrimitiveSet(drawElements);
 
         geode->addDrawable(geom);
-
     }
 
     if (cpv._sampleDensityWhenMovingProperty.valid())
@@ -494,9 +488,10 @@ void RayTracedTechnique::update(osgUtil::UpdateVisitor* /*uv*/)
 //    OSG_NOTICE<<"RayTracedTechnique:update(osgUtil::UpdateVisitor* nv):"<<std::endl;
 }
 
-void RayTracedTechnique::cull(osgUtil::CullVisitor* cv)
+void RayTracedTechnique::cull(osgUtil::CullVisitor *cv)
 {
-    if (!_transform.valid()) return;
+    if (!_transform.valid())
+        return;
 
     if (_whenMovingStateSet.valid() && isMoving(cv))
     {
@@ -512,30 +507,31 @@ void RayTracedTechnique::cull(osgUtil::CullVisitor* cv)
 
 void RayTracedTechnique::cleanSceneGraph()
 {
-    OSG_NOTICE<<"RayTracedTechnique::cleanSceneGraph()"<<std::endl;
+    OSG_NOTICE << "RayTracedTechnique::cleanSceneGraph()" << std::endl;
 }
 
-void RayTracedTechnique::traverse(osg::NodeVisitor& nv)
+void RayTracedTechnique::traverse(osg::NodeVisitor&nv)
 {
     // OSG_NOTICE<<"RayTracedTechnique::traverse(osg::NodeVisitor& nv)"<<std::endl;
-    if (!_volumeTile) return;
+    if (!_volumeTile)
+        return;
 
     // if app traversal update the frame count.
-    if (nv.getVisitorType()==osg::NodeVisitor::UPDATE_VISITOR)
+    if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
-        if (_volumeTile->getDirty()) _volumeTile->init();
+        if (_volumeTile->getDirty())
+            _volumeTile->init();
 
-        osgUtil::UpdateVisitor* uv = dynamic_cast<osgUtil::UpdateVisitor*>(&nv);
+        osgUtil::UpdateVisitor *uv = dynamic_cast<osgUtil::UpdateVisitor*>(&nv);
         if (uv)
         {
             update(uv);
             return;
         }
-
     }
-    else if (nv.getVisitorType()==osg::NodeVisitor::CULL_VISITOR)
+    else if (nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR)
     {
-        osgUtil::CullVisitor* cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
+        osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
         if (cv)
         {
             cull(cv);
@@ -546,10 +542,8 @@ void RayTracedTechnique::traverse(osg::NodeVisitor& nv)
 
     if (_volumeTile->getDirty())
     {
-        OSG_INFO<<"******* Doing init ***********"<<std::endl;
+        OSG_INFO << "******* Doing init ***********" << std::endl;
         _volumeTile->init();
     }
 }
-
-
 } // end of osgVolume namespace

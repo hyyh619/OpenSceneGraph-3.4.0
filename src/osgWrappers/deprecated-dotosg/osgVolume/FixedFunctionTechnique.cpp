@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool FixedFunctionTechnique_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool FixedFunctionTechnique_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool FixedFunctionTechnique_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool FixedFunctionTechnique_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(FixedFunctionTechnique_Proxy)
 (
@@ -26,15 +26,16 @@ REGISTER_DOTOSGWRAPPER(FixedFunctionTechnique_Proxy)
 );
 
 
-bool FixedFunctionTechnique_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool FixedFunctionTechnique_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    //osgVolume::FixedFunctionTechnique& fft = static_cast<osgVolume::FixedFunctionTechnique&>(obj);
+    // osgVolume::FixedFunctionTechnique& fft = static_cast<osgVolume::FixedFunctionTechnique&>(obj);
     bool itrAdvanced = false;
+
     return itrAdvanced;
 }
 
-bool FixedFunctionTechnique_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool FixedFunctionTechnique_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    //const osgVolume::FixedFunctionTechnique& fft = static_cast<const osgVolume::FixedFunctionTechnique&>(obj);
+    // const osgVolume::FixedFunctionTechnique& fft = static_cast<const osgVolume::FixedFunctionTechnique&>(obj);
     return true;
 }

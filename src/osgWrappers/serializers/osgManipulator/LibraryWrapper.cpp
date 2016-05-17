@@ -19,4 +19,3 @@ USE_SERIALIZER_WRAPPER(osgManipulator_TranslateAxisDragger)
 USE_SERIALIZER_WRAPPER(osgManipulator_TranslatePlaneDragger)
 
 extern "C" void wrapper_serializer_library_osgManipulator(void) {}
-

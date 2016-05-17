@@ -10,13 +10,13 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 /* trpage_range.cpp
     Methods for the Range Table.  Consult trpg_geom.h for details
     on what this is and how it works.
-    */
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -27,12 +27,12 @@
 
 /* *******************
     Range Methods
-   *******************
+ *******************
  */
 
 trpgRange::trpgRange(void)
 {
-    category = NULL;
+    category    = NULL;
     subCategory = NULL;
     Reset();
 }
@@ -42,68 +42,81 @@ trpgRange::~trpgRange(void)
     Reset();
 }
 
-trpgRange::trpgRange(const trpgRange &in):
+trpgRange::trpgRange(const trpgRange&in) :
     trpgReadWriteable(in)
 {
-    category = NULL;
+    category    = NULL;
     subCategory = NULL;
-    *this = in;
+    *this       = in;
 }
 
 void trpgRange::Reset(void)
 {
     errMess[0] = '\0';
     if (category)
-        delete [] category;
+        delete[] category;
+
     category = NULL;
     if (subCategory)
-        delete [] subCategory;
+        delete[] subCategory;
+
     subCategory = NULL;
 
-    inLod = outLod = 0.0;
-    priority = 0;
-    handle = -1;
+    inLod       = outLod = 0.0;
+    priority    = 0;
+    handle      = -1;
     writeHandle = false;
 }
 
-void trpgRange::SetCategory(const char *cat,const char *subCat)
+void trpgRange::SetCategory(const char *cat, const char *subCat)
 {
-    if (category)  delete [] category;
+    if (category)
+        delete[] category;
+
     category = NULL;
-    if (cat) {
-        category = new char[strlen(cat)+1];
-        strcpy(category,cat);
+    if (cat)
+    {
+        category = new char[strlen(cat) + 1];
+        strcpy(category, cat);
     }
 
-    if (subCategory)  delete [] subCategory;
+    if (subCategory)
+        delete[] subCategory;
+
     subCategory = NULL;
-    if (subCat) {
-        subCategory = new char[strlen(subCat)+1];
-        strcpy(subCategory,subCat);
+    if (subCat)
+    {
+        subCategory = new char[strlen(subCat) + 1];
+        strcpy(subCategory, subCat);
     }
 }
 
-void trpgRange::GetCategory(char *cat,int catLen,char *subCat,int subCatLen) const
+void trpgRange::GetCategory(char *cat, int catLen, char *subCat, int subCatLen) const
 {
-    if (category && cat) {
-        strncpy(cat,category,catLen);
-    } else
+    if (category && cat)
+    {
+        strncpy(cat, category, catLen);
+    }
+    else
         *cat = 0;
-    if (subCategory && subCat) {
-        strncpy(subCat,subCategory,subCatLen);
-    } else
+
+    if (subCategory && subCat)
+    {
+        strncpy(subCat, subCategory, subCatLen);
+    }
+    else
         *subCat = 0;
 }
 
-void trpgRange::SetLodInfo(double in,double out)
+void trpgRange::SetLodInfo(double in, double out)
 {
-    inLod = in;
+    inLod  = in;
     outLod = out;
 }
 
-void trpgRange::GetLodInfo(double &in,double &out) const
+void trpgRange::GetLodInfo(double&in, double&out) const
 {
-    in = inLod;
+    in  = inLod;
     out = outLod;
 }
 
@@ -112,54 +125,65 @@ void trpgRange::SetPriority(int prior)
     priority = prior;
 }
 
-void trpgRange::GetPriority(int &prior) const
+void trpgRange::GetPriority(int&prior) const
 {
     prior = priority;
 }
 
-trpgRange & trpgRange::operator = (const trpgRange &other)
+trpgRange&trpgRange::operator =(const trpgRange&other)
 {
     Reset();
-    inLod = other.inLod;
+    inLod  = other.inLod;
     outLod = other.outLod;
-    SetCategory(other.category,other.subCategory);
-    priority = other.priority;
-    handle = other.handle;
+    SetCategory(other.category, other.subCategory);
+    priority    = other.priority;
+    handle      = other.handle;
     writeHandle = other.writeHandle;
     return *this;
 }
 
-bool trpgRange::operator == (const trpgRange &in) const
+bool trpgRange::operator ==(const trpgRange&in) const
 {
     if (inLod != in.inLod || outLod != in.outLod)
         return false;
-    if (priority != in.priority)  return false;
 
-    if (category && in.category) {
-        if (strcmp(category,in.category))
+    if (priority != in.priority)
+        return false;
+
+    if (category && in.category)
+    {
+        if (strcmp(category, in.category))
             return false;
-    } else {
+    }
+    else
+    {
         if ((category && !in.category) ||
-            (!category && in.category) )
+            (!category && in.category))
             return false;
     }
 
-    if (subCategory && in.subCategory) {
-        if (strcmp(subCategory,in.subCategory))
+    if (subCategory && in.subCategory)
+    {
+        if (strcmp(subCategory, in.subCategory))
             return false;
-    } else {
+    }
+    else
+    {
         if ((subCategory && !in.subCategory) ||
             (subCategory && in.subCategory))
             return false;
     }
-    if(handle != in.handle)
+
+    if (handle != in.handle)
         return false;
-    if(writeHandle != in.writeHandle)
+
+    if (writeHandle != in.writeHandle)
         return false;
+
     return true;
 }
 
-bool trpgRange::Write(trpgWriteBuffer &buf)
+bool trpgRange::Write(trpgWriteBuffer&buf)
 {
     buf.Begin(TRPG_RANGE);
     buf.Add(inLod);
@@ -167,33 +191,37 @@ bool trpgRange::Write(trpgWriteBuffer &buf)
     buf.Add(priority);
     buf.Add((category ? category : ""));
     buf.Add((subCategory ? subCategory : ""));
-    if(writeHandle) {
+    if (writeHandle)
+    {
         buf.Add((int32)handle);
     }
+
     buf.End();
 
     return true;
 }
 
-bool trpgRange::Read(trpgReadBuffer &buf)
+bool trpgRange::Read(trpgReadBuffer&buf)
 {
-    char catStr[1024],subStr[1024];
+    char catStr[1024], subStr[1024];
 
     Reset();
     valid = false;
 
-    try {
+    try
+    {
         buf.Get(inLod);
         buf.Get(outLod);
         buf.Get(priority);
-        buf.Get(catStr,1024);
-        buf.Get(subStr,1024);
-        SetCategory(catStr,subStr);
+        buf.Get(catStr, 1024);
+        buf.Get(subStr, 1024);
+        SetCategory(catStr, subStr);
 
         // Read the handle if we can..
-        try {
+        try
+        {
             int32 tempHandle;
-            if(buf.Get(tempHandle))
+            if (buf.Get(tempHandle))
             {
                 handle = tempHandle;
             }
@@ -202,13 +230,15 @@ bool trpgRange::Read(trpgReadBuffer &buf)
                 handle = -1;
             }
         }
-        catch (...) {
+        catch (...)
+        {
             handle = -1;
         }
         valid = true;
     }
 
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -217,7 +247,7 @@ bool trpgRange::Read(trpgReadBuffer &buf)
 
 /*  ***************
     Range Table methods
-    ***************
+ ***************
  */
 
 trpgRangeTable::trpgRangeTable(void)
@@ -236,7 +266,7 @@ void trpgRangeTable::Reset(void)
     valid = true;
 }
 
-bool trpgRangeTable::GetRange(int id,trpgRange &ret) const
+bool trpgRangeTable::GetRange(int id, trpgRange&ret) const
 {
     if (!isValid())
         return false;
@@ -245,14 +275,16 @@ bool trpgRangeTable::GetRange(int id,trpgRange &ret) const
         return false;
 
     RangeMapType::const_iterator itr = rangeMap.find(id);
-    if(itr == rangeMap.end()) {
+    if (itr == rangeMap.end())
+    {
         return false;
     }
+
     ret = itr->second;
     return true;
 }
 
-bool trpgRangeTable::SetRange(int id,trpgRange &inRange)
+bool trpgRangeTable::SetRange(int id, trpgRange&inRange)
 {
     if (!isValid())
         return false;
@@ -265,27 +297,32 @@ bool trpgRangeTable::SetRange(int id,trpgRange &inRange)
     return true;
 }
 
-int trpgRangeTable::AddRange(trpgRange &range)
+int trpgRangeTable::AddRange(trpgRange&range)
 {
     int handle = range.GetHandle();
-    if(handle==-1) {
+
+    if (handle == -1)
+    {
         handle = rangeMap.size();
     }
+
     rangeMap[handle] = range;
     return handle;
-
 }
 
-int trpgRangeTable::FindAddRange(trpgRange &range)
+int trpgRangeTable::FindAddRange(trpgRange&range)
 {
     RangeMapType::iterator itr = rangeMap.begin();
-    for (  ; itr != rangeMap.end( ); itr++) {
-        if(itr->second==range)
+
+    for (; itr != rangeMap.end(); itr++)
+    {
+        if (itr->second == range)
             return itr->first;
     }
 
 #if 0
-    for (int i=0;i<rangeList.size();i++) {
+    for (int i = 0; i < rangeList.size(); i++)
+    {
         if (range == rangeList[i])
             return i;
     }
@@ -293,7 +330,7 @@ int trpgRangeTable::FindAddRange(trpgRange &range)
     return AddRange(range);
 }
 
-bool trpgRangeTable::Write(trpgWriteBuffer &buf)
+bool trpgRangeTable::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -302,8 +339,10 @@ bool trpgRangeTable::Write(trpgWriteBuffer &buf)
     buf.Add((int32)rangeMap.size());
 
     RangeMapType::iterator itr = rangeMap.begin();
-    for (  ; itr != rangeMap.end( ); itr++) {
-        trpgRange &range = itr->second;
+
+    for (; itr != rangeMap.end(); itr++)
+    {
+        trpgRange&range = itr->second;
         range.Write(buf);
     }
 
@@ -312,47 +351,58 @@ bool trpgRangeTable::Write(trpgWriteBuffer &buf)
     return true;
 }
 
-bool trpgRangeTable::Read(trpgReadBuffer &buf)
+bool trpgRangeTable::Read(trpgReadBuffer&buf)
 {
-    int32 numRange;
+    int32     numRange;
     trpgToken tok;
-    int32 len;
+    int32     len;
+
     valid = false;
 
-    try {
+    try
+    {
         buf.Get(numRange);
-        if (numRange < 0) throw 1;
-        for (int i=0;i<numRange;i++) {
+        if (numRange < 0)
+            throw 1;
+
+        for (int i = 0; i < numRange; i++)
+        {
             // Read in the individual range
-            buf.GetToken(tok,len);
-            if (tok != TRPG_RANGE) throw 1;
+            buf.GetToken(tok, len);
+            if (tok != TRPG_RANGE)
+                throw 1;
+
             buf.PushLimit(len);
             trpgRange range;
-            bool status = range.Read(buf);
+            bool      status = range.Read(buf);
             buf.PopLimit();
-            if (!status) throw 1;
+            if (!status)
+                throw 1;
+
             AddRange(range);
         }
 
         valid = true;
     }
 
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
     return isValid();
 }
 
-trpgRangeTable & trpgRangeTable::operator = (const trpgRangeTable &inTab)
+trpgRangeTable&trpgRangeTable::operator =(const trpgRangeTable&inTab)
 {
     Reset();
     RangeMapType::const_iterator itr = inTab.rangeMap.begin();
-    for (  ; itr != inTab.rangeMap.end( ); itr++)
+
+    for (; itr != inTab.rangeMap.end(); itr++)
         rangeMap[itr->first] = itr->second;
 
 #if 0
-    for (int i=0;i<inTab.rangeList.size();i++)
+    for (int i = 0; i < inTab.rangeList.size(); i++)
         rangeList.push_back(inTab.rangeList[i]);
 #endif
     return *this;

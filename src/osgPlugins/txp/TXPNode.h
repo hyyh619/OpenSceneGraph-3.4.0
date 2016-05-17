@@ -44,69 +44,68 @@
 
 namespace txp
 {
-
 class TXPNode : public osg::Group
 {
 public:
 
-    TXPNode();
+TXPNode();
 
-    /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-    TXPNode(const TXPNode&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+/** Copy constructor using CopyOp to manage deep vs shallow copy.*/
+TXPNode(const TXPNode&, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-    META_Node(txp, TXPNode);
+META_Node(txp, TXPNode);
 
-    virtual void traverse(osg::NodeVisitor& nv);
+virtual void traverse(osg::NodeVisitor&nv);
 
-    void setArchiveName(const std::string& archiveName);
-    void setOptions(const std::string& options);
+void setArchiveName(const std::string&archiveName);
+void setOptions(const std::string&options);
 
-    const std::string& getOptions() const;
-    const std::string& getArchiveName() const;
+const std::string&getOptions() const;
+const std::string&getArchiveName() const;
 
-    //modified by Brad Anderegg on May-27-08
-    //because the TXPArchives are kept in an std::map and referenced later
-    //we do not want to create a new one, so we pass it in.
-    //If NULL is passed into loadArchive it will do the same thing it used to.
-    bool loadArchive(TXPArchive*);
+// modified by Brad Anderegg on May-27-08
+// because the TXPArchives are kept in an std::map and referenced later
+// we do not want to create a new one, so we pass it in.
+// If NULL is passed into loadArchive it will do the same thing it used to.
+bool loadArchive(TXPArchive*);
 
-    TXPArchive* getArchive() { return _archive.get(); }
+TXPArchive* getArchive()
+{
+    return _archive.get();
+}
 
-    void setArchive( TXPArchive* archive )
-    {
-        _archive = archive;
-    }
+void setArchive(TXPArchive *archive)
+{
+    _archive = archive;
+}
 
-    virtual osg::BoundingSphere computeBound() const;
+virtual osg::BoundingSphere computeBound() const;
 
 protected:
 
-    virtual ~TXPNode();
+virtual ~TXPNode();
 
-    void updateEye(osg::NodeVisitor& nv);
-    void updateSceneGraph();
+void updateEye(osg::NodeVisitor&nv);
+void updateSceneGraph();
 
-    // Create a page lod for lod 0 with givin grid location (x,y)
-    osg::Node* addPagedLODTile(int x, int y);
+// Create a page lod for lod 0 with givin grid location (x,y)
+osg::Node* addPagedLODTile(int x, int y);
 
-    std::string                     _archiveName;
-    std::string                     _options;
+std::string _archiveName;
+std::string _options;
 
-    OpenThreads::Mutex              _mutex;
+OpenThreads::Mutex _mutex;
 
-    osg::ref_ptr<TXPArchive>        _archive;
-    osg::ref_ptr<TXPPageManager>    _pageManager;
+osg::ref_ptr<TXPArchive>     _archive;
+osg::ref_ptr<TXPPageManager> _pageManager;
 
-    double                          _originX;
-    double                          _originY;
-    osg::BoundingBox                _extents;
+double           _originX;
+double           _originY;
+osg::BoundingBox _extents;
 
-    std::vector<osg::Node*>         _nodesToAdd;
-    std::vector<osg::Node*>         _nodesToRemove;
-
+std::vector<osg::Node*> _nodesToAdd;
+std::vector<osg::Node*> _nodesToRemove;
 };
-
-
 } // namespace
 
 #endif // __TXPNODE_H_

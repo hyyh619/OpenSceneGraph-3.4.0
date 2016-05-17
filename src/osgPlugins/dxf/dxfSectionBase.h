@@ -22,9 +22,9 @@ class codeValue;
 class dxfSectionBase : public osg::Referenced
 {
 public:
-	dxfSectionBase() {}
-	virtual ~dxfSectionBase() {}
-	virtual void assign(dxfFile* dxf, codeValue& cv) = 0;
+dxfSectionBase() {}
+virtual ~dxfSectionBase() {}
+virtual void assign(dxfFile *dxf, codeValue&cv) = 0;
 };
 
 #endif

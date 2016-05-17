@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgAnimation/Skeleton>
 #include <osgAnimation/Bone>
@@ -20,11 +20,11 @@ using namespace osgAnimation;
 
 Skeleton::Skeleton() {}
 
-Skeleton::Skeleton(const Skeleton& b, const osg::CopyOp& copyop) : osg::MatrixTransform(b,copyop) {}
+Skeleton::Skeleton(const Skeleton&b, const osg::CopyOp&copyop) : osg::MatrixTransform(b, copyop) {}
 
 Skeleton::UpdateSkeleton::UpdateSkeleton() : _needValidate(true) {}
 
-Skeleton::UpdateSkeleton::UpdateSkeleton(const UpdateSkeleton& us, const osg::CopyOp& copyop) :
+Skeleton::UpdateSkeleton::UpdateSkeleton(const UpdateSkeleton&us, const osg::CopyOp&copyop) :
     osg::Object(us, copyop),
     osg::NodeCallback(us, copyop)
 {
@@ -40,60 +40,68 @@ bool Skeleton::UpdateSkeleton::needToValidate() const
 class ValidateSkeletonVisitor : public osg::NodeVisitor
 {
 public:
-    ValidateSkeletonVisitor(): osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
-    void apply(osg::Node& /*node*/) { return; }
-    void apply(osg::Transform& node)
+ValidateSkeletonVisitor() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
+void apply(osg::Node& /*node*/)
+{
+    return;
+}
+void apply(osg::Transform&node)
+{
+    // the idea is to traverse the skeleton or bone but to stop if other node is found
+    Bone *bone = dynamic_cast<Bone*>(&node);
+
+    if (!bone)
+        return;
+
+    bool foundNonBone = false;
+
+    for (unsigned int i = 0; i < bone->getNumChildren(); ++i)
     {
-        // the idea is to traverse the skeleton or bone but to stop if other node is found
-        Bone* bone = dynamic_cast<Bone*>(&node);
-        if (!bone)
-            return;
-
-        bool foundNonBone = false;
-
-        for (unsigned int i = 0; i < bone->getNumChildren(); ++i)
+        if (dynamic_cast<Bone*>(bone->getChild(i)))
         {
-            if (dynamic_cast<Bone*>(bone->getChild(i)))
+            if (foundNonBone)
             {
-                if (foundNonBone)
-                {
-                    OSG_WARN <<
-                        "Warning: a Bone was found after a non-Bone child "
-                        "within a Skeleton. Children of a Bone must be ordered "
-                        "with all child Bones first for correct update order." << std::endl;
-                    setTraversalMode(TRAVERSE_NONE);
-                    return;
-                }
-            }
-            else
-            {
-                foundNonBone = true;
+                OSG_WARN <<
+                    "Warning: a Bone was found after a non-Bone child "
+                    "within a Skeleton. Children of a Bone must be ordered "
+                    "with all child Bones first for correct update order." << std::endl;
+                setTraversalMode(TRAVERSE_NONE);
+                return;
             }
         }
-        traverse(node);
+        else
+        {
+            foundNonBone = true;
+        }
     }
+
+    traverse(node);
+}
 };
 
-void Skeleton::UpdateSkeleton::operator()(osg::Node* node, osg::NodeVisitor* nv)
+void Skeleton::UpdateSkeleton::operator()(osg::Node *node, osg::NodeVisitor *nv)
 {
     if (nv->getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
-        Skeleton* skeleton = dynamic_cast<Skeleton*>(node);
+        Skeleton *skeleton = dynamic_cast<Skeleton*>(node);
         if (_needValidate && skeleton)
         {
             ValidateSkeletonVisitor visitor;
+
             for (unsigned int i = 0; i < skeleton->getNumChildren(); ++i)
             {
-                osg::Node* child = skeleton->getChild(i);
+                osg::Node *child = skeleton->getChild(i);
                 child->accept(visitor);
             }
+
             _needValidate = false;
         }
     }
-    traverse(node,nv);
+
+    traverse(node, nv);
 }
 
 void Skeleton::setDefaultUpdateCallback()
 {
-    setUpdateCallback(new Skeleton::UpdateSkeleton );
+    setUpdateCallback(new Skeleton::UpdateSkeleton);
 }

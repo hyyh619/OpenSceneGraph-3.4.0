@@ -12,10 +12,10 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool Cone_readLocalData(Object& obj, Input& fr);
-bool Cone_writeLocalData(const Object& obj, Output& fw);
+bool Cone_readLocalData(Object&obj, Input&fr);
+bool Cone_writeLocalData(const Object&obj, Output&fw);
 
-//register the read and write functions with the osgDB::Registry.
+// register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Cone)
 (
     new osg::Cone,
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(Cone)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Cone_readLocalData(Object& obj, Input& fr)
+bool Cone_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    Cone& cone = static_cast<Cone&>(obj);
+    Cone&cone = static_cast<Cone&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -39,7 +39,7 @@ bool Cone_readLocalData(Object& obj, Input& fr)
         fr[2].getFloat(center.y());
         fr[3].getFloat(center.z());
         cone.setCenter(center);
-        fr+=4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -48,7 +48,7 @@ bool Cone_readLocalData(Object& obj, Input& fr)
         float radius;
         fr[1].getFloat(radius);
         cone.setRadius(radius);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -57,7 +57,7 @@ bool Cone_readLocalData(Object& obj, Input& fr)
         float height;
         fr[1].getFloat(height);
         cone.setHeight(height);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -69,21 +69,21 @@ bool Cone_readLocalData(Object& obj, Input& fr)
         fr[3].getFloat(rotation.z());
         fr[4].getFloat(rotation.w());
         cone.setRotation(rotation);
-        fr+=5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
     return iteratorAdvanced;
 }
 
-bool Cone_writeLocalData(const Object& obj, Output& fw)
+bool Cone_writeLocalData(const Object&obj, Output&fw)
 {
-    const Cone& cone = static_cast<const Cone&>(obj);
+    const Cone&cone = static_cast<const Cone&>(obj);
 
-    fw.indent()<<"Center "<<cone.getCenter()<<std::endl;
-    fw.indent()<<"Radius "<<cone.getRadius()<<std::endl;
-    fw.indent()<<"Height "<<cone.getHeight()<<std::endl;
-    fw.indent()<<"Rotation "<<cone.getRotation()<<std::endl;
+    fw.indent() << "Center " <<   cone.getCenter() << std::endl;
+    fw.indent() << "Radius " <<   cone.getRadius() << std::endl;
+    fw.indent() << "Height " <<   cone.getHeight() << std::endl;
+    fw.indent() << "Rotation " << cone.getRotation() << std::endl;
 
     return true;
 }

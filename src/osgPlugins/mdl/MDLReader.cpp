@@ -30,65 +30,66 @@ using namespace osgDB;
 
 namespace
 {
-    // Turn any '\' into '/', so that the path is usable on Windows and Unix.
-    void sanitizePath(std::string& path)
+// Turn any '\' into '/', so that the path is usable on Windows and Unix.
+void sanitizePath(std::string&path)
+{
+    size_t pos = 0;
+
+    while ((pos = path.find_first_of("\\", pos)) != std::string::npos)
     {
-        size_t pos = 0;
-        while ((pos = path.find_first_of("\\", pos)) != std::string::npos)
-        {
-            path[pos] = '/';
-            ++pos;
-        }
+        path[pos] = '/';
+        ++pos;
+    }
+}
+
+// Try to find 'searchPath'/'filename'.'extension' in 'materials' directory.
+std::string findFileInPath(const std::string&searchPath,
+                           const std::string&filename,
+                           const std::string&extension)
+{
+    std::string filepath;
+
+    if ((filename[0] == '\\') || (filename[0] == '/'))
+    {
+        filepath = searchPath + filename + extension;
+    }
+    else
+    {
+        filepath = searchPath + "/" + filename + extension;
     }
 
-    // Try to find 'searchPath'/'filename'.'extension' in 'materials' directory.
-    std::string findFileInPath(const std::string& searchPath,
-            const std::string& filename,
-            const std::string& extension)
+    // Look for the texture at this location
+    // std::cerr << "findFileInPath trying '" << filepath << "'\n";
+    filepath = findDataFile(filepath, CASE_INSENSITIVE);
+    // std::cerr << "findFileInPath found '" << filepath << "'\n";
+
+    return filepath;
+}
+
+// Try to find 'searchPath'/'path'/'filename'.'extension' in 'materials' directory.
+std::string findFileInPath(const std::string&searchPath,
+                           const std::string&path,
+                           const std::string&filename,
+                           const std::string&extension)
+{
+    std::string filepath;
+
+    if ((path[0] == '\\') || (path[0] == '/'))
     {
-        std::string filepath;
-
-        if ((filename[0] == '\\') || (filename[0] == '/'))
-        {
-            filepath = searchPath + filename + extension;
-        }
-        else
-        {
-            filepath = searchPath + "/" + filename + extension;
-        }
-
-        // Look for the texture at this location
-        //std::cerr << "findFileInPath trying '" << filepath << "'\n";
-        filepath = findDataFile(filepath, CASE_INSENSITIVE);
-        //std::cerr << "findFileInPath found '" << filepath << "'\n";
-
-        return filepath;
+        filepath = searchPath + path + filename + extension;
+    }
+    else
+    {
+        filepath = searchPath + "/" + path + filename + extension;
     }
 
-    // Try to find 'searchPath'/'path'/'filename'.'extension' in 'materials' directory.
-    std::string findFileInPath(const std::string& searchPath,
-            const std::string& path,
-            const std::string& filename,
-            const std::string& extension)
-    {
-        std::string filepath;
+    // Look for the texture at this location
+    // std::cerr << "findFileInPath trying '" << filepath << "'\n";
+    filepath = findDataFile(filepath, CASE_INSENSITIVE);
+    // std::cerr << "findFileInPath found '" << filepath << "'\n";
 
-        if ((path[0] == '\\') || (path[0] == '/'))
-        {
-            filepath = searchPath + path + filename + extension;
-        }
-        else
-        {
-            filepath = searchPath + "/" + path + filename + extension;
-        }
-
-        // Look for the texture at this location
-        //std::cerr << "findFileInPath trying '" << filepath << "'\n";
-        filepath = findDataFile(filepath, CASE_INSENSITIVE);
-        //std::cerr << "findFileInPath found '" << filepath << "'\n";
-
-        return filepath;
-    }
+    return filepath;
+}
 }
 
 MDLReader::MDLReader()
@@ -99,27 +100,26 @@ MDLReader::MDLReader()
 
 
 MDLReader::~MDLReader()
-{
-}
+{}
 
 
-std::string MDLReader::getToken(std::string str, const char * delim,
-                                size_t & index)
+std::string MDLReader::getToken(std::string str, const char *delim,
+                                size_t&index)
 {
-    size_t start;
-    size_t end = std::string::npos;
-    std::string   token;
+    size_t      start;
+    size_t      end = std::string::npos;
+    std::string token;
 
     // Look for the first non-occurrence of the delimiters
     start = str.find_first_not_of(" \t\n\r\"", index);
     if (start != std::string::npos)
     {
         // From there, look for the first occurrence of a delimiter
-        end = str.find_first_of(" \t\n\r\"", start+1);
+        end = str.find_first_of(" \t\n\r\"", start + 1);
         if (end != std::string::npos)
         {
             // Found a delimiter, so grab the string in between
-            token = str.substr(start, end-start);
+            token = str.substr(start, end - start);
         }
         else
         {
@@ -137,7 +137,7 @@ std::string MDLReader::getToken(std::string str, const char * delim,
     // Update the index (in case we want to keep looking for tokens in this
     // string)
     if (end != std::string::npos)
-        index = end+1;
+        index = end + 1;
     else
         index = std::string::npos;
 
@@ -150,9 +150,10 @@ ref_ptr<Texture> MDLReader::readTextureFile(std::string textureName)
 {
     // Find the texture's image file
     std::string texExtension = osgDB::getFileExtensionIncludingDot(textureName);
-    std::string texBaseName = osgDB::getNameLessExtension(textureName);
+    std::string texBaseName  = osgDB::getNameLessExtension(textureName);
 
-    if (texExtension.empty()) texExtension = ".vtf";
+    if (texExtension.empty())
+        texExtension = ".vtf";
 
     std::string texFile = texBaseName + texExtension;
     std::string texPath = findDataFile(texFile, CASE_INSENSITIVE);
@@ -224,39 +225,40 @@ ref_ptr<Texture> MDLReader::readTextureFile(std::string textureName)
         // No texture
         return NULL;
     }
-
 }
 
 
 ref_ptr<StateSet> MDLReader::readMaterialFile(std::string materialName)
 {
-    std::string              mtlFileName;
-    std::string              mtlPath;
-    StringList::iterator     searchItr;
-    std::ifstream *          mtlFile;
-    std::string              line;
-    size_t                   start;
-    std::string              token;
-    bool                     found;
-    ref_ptr<StateSet>        stateSet;
-    std::string              shaderName;
-    std::string              texName;
-    std::string              tex2Name;
-    ref_ptr<Texture>         texture;
-    ref_ptr<Texture>         texture2;
-    ref_ptr<Material>        material;
-    ref_ptr<BlendFunc>       blend;
-    bool                     translucent;
-    double                   alpha;
+    std::string          mtlFileName;
+    std::string          mtlPath;
+    StringList::iterator searchItr;
+    std::ifstream        *mtlFile;
+    std::string          line;
+    size_t               start;
+    std::string          token;
+    bool                 found;
+
+    ref_ptr<StateSet>  stateSet;
+    std::string        shaderName;
+    std::string        texName;
+    std::string        tex2Name;
+    ref_ptr<Texture>   texture;
+    ref_ptr<Texture>   texture2;
+    ref_ptr<Material>  material;
+    ref_ptr<BlendFunc> blend;
+    bool               translucent;
+    double             alpha;
 
     // Find the material file
     mtlFileName = std::string(materialName) + ".vmt";
-    mtlPath = findDataFile(mtlFileName, CASE_INSENSITIVE);
+    mtlPath     = findDataFile(mtlFileName, CASE_INSENSITIVE);
 
     // If we don't find it right away, search the texture file search paths
     if (mtlPath.empty())
     {
         searchItr = texture_paths.begin();
+
         while ((mtlPath.empty()) && (searchItr != texture_paths.end()))
         {
             std::string path = *searchItr;
@@ -277,6 +279,7 @@ ref_ptr<StateSet> MDLReader::readMaterialFile(std::string materialName)
         if (mtlPath.empty())
         {
             searchItr = texture_paths.begin();
+
             while ((mtlPath.empty()) && (searchItr != texture_paths.end()))
             {
                 std::string path = *searchItr;
@@ -310,6 +313,7 @@ ref_ptr<StateSet> MDLReader::readMaterialFile(std::string materialName)
 
     // First, look for the shader name
     found = false;
+
     while ((!found) && (!mtlFile->eof()))
     {
         // Read a line from the file
@@ -323,7 +327,7 @@ ref_ptr<StateSet> MDLReader::readMaterialFile(std::string materialName)
         if ((!token.empty()) && (token.compare(0, 2, "//") != 0))
         {
             shaderName = token;
-            found = true;
+            found      = true;
         }
     }
 
@@ -336,7 +340,7 @@ ref_ptr<StateSet> MDLReader::readMaterialFile(std::string materialName)
     }
 
     // No textures loaded yet
-    texture = NULL;
+    texture  = NULL;
     texture2 = NULL;
 
     // Assume not translucent unless the properties say otherwise
@@ -396,7 +400,7 @@ ref_ptr<StateSet> MDLReader::readMaterialFile(std::string materialName)
                 // Interpret the setting
                 if (!token.empty())
                 {
-                   alpha = osg::asciiToDouble(token.c_str());
+                    alpha = osg::asciiToDouble(token.c_str());
                 }
             }
 
@@ -452,14 +456,14 @@ ref_ptr<StateSet> MDLReader::readMaterialFile(std::string materialName)
         // Add a material to the state set
         material = new Material();
         material->setAmbient(Material::FRONT_AND_BACK,
-                             Vec4(1.0, 1.0, 1.0, 1.0) );
+                             Vec4(1.0, 1.0, 1.0, 1.0));
         material->setDiffuse(Material::FRONT_AND_BACK,
-                             Vec4(1.0, 1.0, 1.0, 1.0) );
+                             Vec4(1.0, 1.0, 1.0, 1.0));
         material->setSpecular(Material::FRONT_AND_BACK,
-                             Vec4(0.0, 0.0, 0.0, 1.0) );
+                              Vec4(0.0, 0.0, 0.0, 1.0));
         material->setShininess(Material::FRONT_AND_BACK, 1.0);
         material->setEmission(Material::FRONT_AND_BACK,
-                              Vec4(0.0, 0.0, 0.0, 1.0) );
+                              Vec4(0.0, 0.0, 0.0, 1.0));
         material->setAlpha(Material::FRONT_AND_BACK, alpha);
         stateSet->setAttributeAndModes(material.get(), StateAttribute::ON);
 
@@ -498,19 +502,19 @@ ref_ptr<StateSet> MDLReader::readMaterialFile(std::string materialName)
 }
 
 
-BodyPart * MDLReader::processBodyPart(std::istream * str, int offset)
+BodyPart* MDLReader::processBodyPart(std::istream *str, int offset)
 {
-    int              i;
-    MDLBodyPart *    part;
-    BodyPart *       partNode;
-    Model *          modelNode;
+    int         i;
+    MDLBodyPart *part;
+    BodyPart    *partNode;
+    Model       *modelNode;
 
     // Seek to the body part
     str->seekg(offset);
 
     // Read it
     part = new MDLBodyPart;
-    str->read((char *) part, sizeof(MDLBodyPart));
+    str->read((char*) part, sizeof(MDLBodyPart));
 
     // Create the body part node
     partNode = new BodyPart(part);
@@ -520,7 +524,7 @@ BodyPart * MDLReader::processBodyPart(std::istream * str, int offset)
     {
         // Process the model
         modelNode = processModel(str, offset + part->model_offset +
-                                      (i * sizeof(MDLModel)));
+                                 (i * sizeof(MDLModel)));
 
         // Add the model to the body part
         partNode->addModel(modelNode);
@@ -531,19 +535,19 @@ BodyPart * MDLReader::processBodyPart(std::istream * str, int offset)
 }
 
 
-Model * MDLReader::processModel(std::istream * str, int offset)
+Model* MDLReader::processModel(std::istream *str, int offset)
 {
-    int            i;
-    MDLModel *     model;
-    Model *        modelNode;
-    Mesh *         meshNode;
+    int      i;
+    MDLModel *model;
+    Model    *modelNode;
+    Mesh     *meshNode;
 
     // Seek to the model
     str->seekg(offset);
 
     // Read it
     model = new MDLModel;
-    str->read((char *) model, sizeof(MDLModel));
+    str->read((char*) model, sizeof(MDLModel));
 
     // Create the model node
     modelNode = new Model(model);
@@ -553,7 +557,7 @@ Model * MDLReader::processModel(std::istream * str, int offset)
     {
         // Process the mesh
         meshNode = processMesh(str, offset + model->mesh_offset +
-                                    (i * sizeof(MDLMesh)));
+                               (i * sizeof(MDLMesh)));
 
         // Add the mesh to the model
         modelNode->addMesh(meshNode);
@@ -564,17 +568,17 @@ Model * MDLReader::processModel(std::istream * str, int offset)
 }
 
 
-Mesh * MDLReader::processMesh(std::istream * str, int offset)
+Mesh* MDLReader::processMesh(std::istream *str, int offset)
 {
-    MDLMesh *      mesh;
-    Mesh *         meshNode;
+    MDLMesh *mesh;
+    Mesh    *meshNode;
 
     // Seek to the mesh
     str->seekg(offset);
 
     // Read it
     mesh = new MDLMesh;
-    str->read((char *) mesh, sizeof(MDLMesh));
+    str->read((char*) mesh, sizeof(MDLMesh));
 
     // Create the mesh node
     meshNode = new Mesh(mesh);
@@ -587,28 +591,28 @@ Mesh * MDLReader::processMesh(std::istream * str, int offset)
 }
 
 
-bool MDLReader::readFile(const std::string & file)
+bool MDLReader::readFile(const std::string&file)
 {
-    std::string       baseName;
-    std::string       fileName;
-    std::ifstream *   mdlFile;
-    MDLHeader         header;
-    int               i;
-    unsigned int      j;
-    int               offset;
-    MDLRoot *         mdlRoot;
-    BodyPart *        partNode;
-    std::string       vvdFile;
-    VVDReader *       vvdReader;
-    std::string       vtxFile;
-    VTXReader *       vtxReader;
+    std::string   baseName;
+    std::string   fileName;
+    std::ifstream *mdlFile;
+    MDLHeader     header;
+    int           i;
+    unsigned int  j;
+    int           offset;
+    MDLRoot       *mdlRoot;
+    BodyPart      *partNode;
+    std::string   vvdFile;
+    VVDReader     *vvdReader;
+    std::string   vtxFile;
+    VTXReader     *vtxReader;
 
     // Remember the model name
     mdl_name = getStrippedName(file);
 
     // Try to open the file
     fileName = findDataFile(file, CASE_INSENSITIVE);
-    mdlFile = new osgDB::ifstream(fileName.c_str(), std::ios::binary);
+    mdlFile  = new osgDB::ifstream(fileName.c_str(), std::ios::binary);
     if (!mdlFile)
     {
         OSG_NOTICE << "MDL file not found" << std::endl;
@@ -616,7 +620,7 @@ bool MDLReader::readFile(const std::string & file)
     }
 
     // Read the header
-    mdlFile->read((char *) &header, sizeof(MDLHeader));
+    mdlFile->read((char*) &header, sizeof(MDLHeader));
 
     // Make sure the file is a valid Valve MDL file
     if (header.magic_number != MDL_MAGIC_NUMBER)
@@ -637,23 +641,24 @@ bool MDLReader::readFile(const std::string & file)
     // for each texture that we load)
     for (i = 0; i < header.num_texture_paths; i++)
     {
-        int               texPathBase;
-        int               texPathOffset;
-        char              texPath[256];
+        int  texPathBase;
+        int  texPathOffset;
+        char texPath[256];
 
         texPathBase = header.texture_path_offset + (i * sizeof(int));
         mdlFile->seekg(texPathBase);
-        mdlFile->read((char *) &texPathOffset, sizeof(int));
+        mdlFile->read((char*) &texPathOffset, sizeof(int));
         mdlFile->seekg(texPathOffset);
 
         // Read characters from the file until we reach the end of this path
         j = 0;
+
         do
         {
             mdlFile->get(texPath[j]);
             j++;
         }
-        while ((j < sizeof(texPath)) && (texPath[j-1] != 0));
+        while ((j < sizeof(texPath)) && (texPath[j - 1] != 0));
 
         // Store this path
         texture_paths.push_back(texPath);
@@ -663,22 +668,23 @@ bool MDLReader::readFile(const std::string & file)
     // one
     for (i = 0; i < header.num_textures; i++)
     {
-        int                  texBase;
-        MDLTexture           tempTex;
-        char                 texName[256];
-        ref_ptr<StateSet>    stateSet;
+        int               texBase;
+        MDLTexture        tempTex;
+        char              texName[256];
+        ref_ptr<StateSet> stateSet;
 
         texBase = header.texture_offset + (i * sizeof(MDLTexture));
         mdlFile->seekg(texBase);
-        mdlFile->read((char *) &tempTex, sizeof(MDLTexture));
+        mdlFile->read((char*) &tempTex, sizeof(MDLTexture));
         mdlFile->seekg(texBase + tempTex.tex_name_offset);
         j = 0;
+
         do
         {
             mdlFile->get(texName[j]);
             j++;
         }
-        while ((j < sizeof(texName)) && (texName[j-1] != 0));
+        while ((j < sizeof(texName)) && (texName[j - 1] != 0));
 
         // Load this texture
         stateSet = readMaterialFile(texName);
@@ -740,5 +746,3 @@ ref_ptr<Node> MDLReader::getRootNode()
 {
     return root_node;
 }
-
-

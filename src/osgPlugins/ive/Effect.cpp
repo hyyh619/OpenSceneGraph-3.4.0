@@ -1,14 +1,14 @@
 /**********************************************************************
- *
- *    FILE:           Effect.cpp
- *
- *    DESCRIPTION:    Read/Write osgFX::Effect in binary format to disk.
- *
- *    CREATED BY:     Liang Aibin
- *
- *    HISTORY:        Created 23.8.2008
- *
- **********************************************************************/
+*
+*    FILE:           Effect.cpp
+*
+*    DESCRIPTION:    Read/Write osgFX::Effect in binary format to disk.
+*
+*    CREATED BY:     Liang Aibin
+*
+*    HISTORY:        Created 23.8.2008
+*
+**********************************************************************/
 
 #include "Exception.h"
 #include "Effect.h"
@@ -16,12 +16,14 @@
 
 using namespace ive;
 
-void Effect::write(DataOutputStream* out){
+void Effect::write(DataOutputStream *out)
+{
     // Write Effect's identification.
     out->writeInt(IVEEFFECT);
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Group*  group = dynamic_cast<osg::Group*>(this);
-    if(group){
+    osg::Group *group = dynamic_cast<osg::Group*>(this);
+    if (group)
+    {
         ((ive::Group*)(group))->write(out);
     }
     else
@@ -33,16 +35,20 @@ void Effect::write(DataOutputStream* out){
     out->writeInt(getSelectedTechnique());
 }
 
-void Effect::read(DataInputStream* in){
+void Effect::read(DataInputStream *in)
+{
     // Peek on Effect's identification.
     int id = in->peekInt();
-    if(id == IVEEFFECT){
+
+    if (id == IVEEFFECT)
+    {
         // Read Effect's identification.
         id = in->readInt();
 
         // If the osg class is inherited by any other class we should also read this from file.
-        osg::Group*  group = dynamic_cast<osg::Group*>(this);
-        if(group){
+        osg::Group *group = dynamic_cast<osg::Group*>(this);
+        if (group)
+        {
             ((ive::Group*)(group))->read(in);
         }
         else
@@ -53,7 +59,8 @@ void Effect::read(DataInputStream* in){
 
         selectTechnique(in->readInt());
     }
-    else{
+    else
+    {
         in_THROW_EXCEPTION("Effect::read(): Expected Effect identification.");
     }
 }

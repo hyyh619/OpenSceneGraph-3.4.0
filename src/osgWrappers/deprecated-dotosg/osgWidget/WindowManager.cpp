@@ -7,27 +7,27 @@
 #include <osgDB/FileUtils>
 #include <osgWidget/WindowManager>
 
-bool osgWidget_WindowManager_readData(osg::Object& /*obj*/, osgDB::Input& fr)
+bool osgWidget_WindowManager_readData(osg::Object& /*obj*/, osgDB::Input&fr)
 {
-	osgWidget::warn() << "WindowManager read" << std::endl;
+    osgWidget::warn() << "WindowManager read" << std::endl;
 
-	return false;
+    return false;
 }
 
-bool osgWidget_WindowManager_writeData(const osg::Object& /*obj*/, osgDB::Output& fw)
+bool osgWidget_WindowManager_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
 {
-	// const osgWidget::WindowManager& model = static_cast<const osgWidget::WindowManager&>(obj);
+    // const osgWidget::WindowManager& model = static_cast<const osgWidget::WindowManager&>(obj);
 
-	fw.indent() << fw.wrapString("WindowManager stuff...") << std::endl;
+    fw.indent() << fw.wrapString("WindowManager stuff...") << std::endl;
 
-	return true;
+    return true;
 }
 
 REGISTER_DOTOSGWRAPPER(g_osgWidget_WindowManagerProxy)
 (
-	new osgWidget::WindowManager(),
-	"osgWidget::WindowManager",
-	"Object Node Group Switch osgWidget::WindowManager",
-	&osgWidget_WindowManager_readData,
-	&osgWidget_WindowManager_writeData
+    new osgWidget::WindowManager(),
+    "osgWidget::WindowManager",
+    "Object Node Group Switch osgWidget::WindowManager",
+    &osgWidget_WindowManager_readData,
+    &osgWidget_WindowManager_writeData
 );

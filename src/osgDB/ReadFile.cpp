@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Notify>
 #include <osg/Object>
 #include <osg/Image>
@@ -29,67 +29,95 @@
 using namespace osg;
 using namespace osgDB;
 
-Object* osgDB::readObjectFile(const std::string& filename,const Options* options)
+Object* osgDB::readObjectFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readObject(filename,options);
-    if (rr.validObject()) return rr.takeObject();
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readObject(filename, options);
+
+    if (rr.validObject())
+        return rr.takeObject();
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
 
-Image* osgDB::readImageFile(const std::string& filename,const Options* options)
+Image* osgDB::readImageFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readImage(filename,options);
-    if (rr.validImage()) return rr.takeImage();
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readImage(filename, options);
+
+    if (rr.validImage())
+        return rr.takeImage();
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
-Shader* osgDB::readShaderFile(const std::string& filename,const Options* options)
+Shader* osgDB::readShaderFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readShader(filename,options);
-    if (rr.validShader()) return rr.takeShader();
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readShader(filename, options);
+
+    if (rr.validShader())
+        return rr.takeShader();
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
 
-HeightField* osgDB::readHeightFieldFile(const std::string& filename,const Options* options)
+HeightField* osgDB::readHeightFieldFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readHeightField(filename,options);
-    if (rr.validHeightField()) return rr.takeHeightField();
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readHeightField(filename, options);
+
+    if (rr.validHeightField())
+        return rr.takeHeightField();
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
 
-Node* osgDB::readNodeFile(const std::string& filename,const Options* options)
+Node* osgDB::readNodeFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readNode(filename,options);
-    if (rr.validNode()) return rr.takeNode();
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
-    if (rr.notEnoughMemory()) OSG_INFO << "Not enought memory to load file "<<filename << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readNode(filename, options);
+
+    if (rr.validNode())
+        return rr.takeNode();
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
+    if (rr.notEnoughMemory())
+        OSG_INFO << "Not enought memory to load file " << filename << std::endl;
+
     return NULL;
 }
 
-Node* osgDB::readNodeFiles(std::vector<std::string>& fileList,const Options* options)
+Node* osgDB::readNodeFiles(std::vector<std::string>&fileList, const Options *options)
 {
     typedef std::vector<osg::Node*> NodeList;
     NodeList nodeList;
 
-    for(std::vector<std::string>::iterator itr=fileList.begin();
-        itr!=fileList.end();
-        ++itr)
+    for (std::vector<std::string>::iterator itr = fileList.begin();
+         itr != fileList.end();
+         ++itr)
     {
-        osg::Node *node = osgDB::readNodeFile( *itr , options );
+        osg::Node *node = osgDB::readNodeFile(*itr, options);
 
-        if( node != (osg::Node *)0L )
+        if (node != (osg::Node*)0L)
         {
-            if (node->getName().empty()) node->setName( *itr );
+            if (node->getName().empty())
+                node->setName(*itr);
+
             nodeList.push_back(node);
         }
-
     }
 
     if (nodeList.empty())
@@ -97,48 +125,47 @@ Node* osgDB::readNodeFiles(std::vector<std::string>& fileList,const Options* opt
         return NULL;
     }
 
-    if (nodeList.size()==1)
+    if (nodeList.size() == 1)
     {
         return nodeList.front();
     }
     else  // size >1
     {
-        osg::Group* group = new osg::Group;
-        for(NodeList::iterator itr=nodeList.begin();
-            itr!=nodeList.end();
-            ++itr)
+        osg::Group *group = new osg::Group;
+
+        for (NodeList::iterator itr = nodeList.begin();
+             itr != nodeList.end();
+             ++itr)
         {
             group->addChild(*itr);
         }
 
         return group;
     }
-
 }
 
-Node* osgDB::readNodeFiles(osg::ArgumentParser& arguments,const Options* options)
+Node* osgDB::readNodeFiles(osg::ArgumentParser&arguments, const Options *options)
 {
-
-    typedef std::vector< osg::ref_ptr<osg::Node> > NodeList;
+    typedef std::vector<osg::ref_ptr<osg::Node> > NodeList;
     NodeList nodeList;
 
     std::string filename;
 
-    while (arguments.read("--file-cache",filename))
+    while (arguments.read("--file-cache", filename))
     {
         osgDB::Registry::instance()->setFileCache(new osgDB::FileCache(filename));
     }
 
-    while (arguments.read("--image",filename))
+    while (arguments.read("--image", filename))
     {
         osg::ref_ptr<osg::Image> image = readImageFile(filename.c_str(), options);
         if (image.valid())
         {
-            osg::Geode* geode = osg::createGeodeForImage(image.get());
+            osg::Geode *geode = osg::createGeodeForImage(image.get());
 
             if (image->isImageTranslucent())
             {
-                OSG_INFO<<"Image "<<image->getFileName()<<" is translucent; setting up blending."<<std::endl;
+                OSG_INFO << "Image " << image->getFileName() << " is translucent; setting up blending." << std::endl;
                 geode->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::ON);
                 geode->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
             }
@@ -147,13 +174,13 @@ Node* osgDB::readNodeFiles(osg::ArgumentParser& arguments,const Options* options
         }
     }
 
-    while (arguments.read("--movie",filename))
+    while (arguments.read("--movie", filename))
     {
-        osg::ref_ptr<osg::Image> image = readImageFile(filename.c_str(), options);
+        osg::ref_ptr<osg::Image>       image       = readImageFile(filename.c_str(), options);
         osg::ref_ptr<osg::ImageStream> imageStream = dynamic_cast<osg::ImageStream*>(image.get());
         if (imageStream.valid())
         {
-            bool flip = image->getOrigin()==osg::Image::TOP_LEFT;
+            bool flip = image->getOrigin() == osg::Image::TOP_LEFT;
 
             // start the stream playing.
             imageStream->play();
@@ -163,25 +190,25 @@ Node* osgDB::readNodeFiles(osg::ArgumentParser& arguments,const Options* options
             bool useTextureRectangle = true;
             if (useTextureRectangle)
             {
-                pictureQuad = osg::createTexturedQuadGeometry(osg::Vec3(0.0f,0.0f,0.0f),
-                                                   osg::Vec3(image->s(),0.0f,0.0f),
-                                                   osg::Vec3(0.0f,0.0f,image->t()),
-                                                   0.0f, flip ? image->t() : 0.0, image->s(), flip ? 0.0 : image->t());
+                pictureQuad = osg::createTexturedQuadGeometry(osg::Vec3(0.0f, 0.0f, 0.0f),
+                                                              osg::Vec3(image->s(), 0.0f, 0.0f),
+                                                              osg::Vec3(0.0f, 0.0f, image->t()),
+                                                              0.0f, flip ? image->t() : 0.0, image->s(), flip ? 0.0 : image->t());
 
                 pictureQuad->getOrCreateStateSet()->setTextureAttributeAndModes(0,
-                            new osg::TextureRectangle(image.get()),
-                            osg::StateAttribute::ON);
+                                                                                new osg::TextureRectangle(image.get()),
+                                                                                osg::StateAttribute::ON);
             }
             else
             {
-                pictureQuad = osg::createTexturedQuadGeometry(osg::Vec3(0.0f,0.0f,0.0f),
-                                                   osg::Vec3(image->s(),0.0f,0.0f),
-                                                   osg::Vec3(0.0f,0.0f,image->t()),
-                                                   0.0f, flip ? 1.0f : 0.0f , 1.0f, flip ? 0.0f : 1.0f);
+                pictureQuad = osg::createTexturedQuadGeometry(osg::Vec3(0.0f, 0.0f, 0.0f),
+                                                              osg::Vec3(image->s(), 0.0f, 0.0f),
+                                                              osg::Vec3(0.0f, 0.0f, image->t()),
+                                                              0.0f, flip ? 1.0f : 0.0f, 1.0f, flip ? 0.0f : 1.0f);
 
                 pictureQuad->getOrCreateStateSet()->setTextureAttributeAndModes(0,
-                            new osg::Texture2D(image.get()),
-                            osg::StateAttribute::ON);
+                                                                                new osg::Texture2D(image.get()),
+                                                                                osg::StateAttribute::ON);
             }
 
             if (pictureQuad.valid())
@@ -189,7 +216,6 @@ Node* osgDB::readNodeFiles(osg::ArgumentParser& arguments,const Options* options
                 osg::ref_ptr<osg::Geode> geode = new osg::Geode;
                 geode->addDrawable(pictureQuad.get());
                 nodeList.push_back(geode.get());
-
             }
         }
         else if (image.valid())
@@ -198,31 +224,32 @@ Node* osgDB::readNodeFiles(osg::ArgumentParser& arguments,const Options* options
         }
     }
 
-    while (arguments.read("--dem",filename))
+    while (arguments.read("--dem", filename))
     {
-        osg::HeightField* hf = readHeightFieldFile(filename.c_str(), options);
+        osg::HeightField *hf = readHeightFieldFile(filename.c_str(), options);
         if (hf)
         {
-            osg::Geode* geode = new osg::Geode;
+            osg::Geode *geode = new osg::Geode;
             geode->addDrawable(new osg::ShapeDrawable(hf));
             nodeList.push_back(geode);
         }
     }
 
     // note currently doesn't delete the loaded file entries from the command line yet...
-    for(int pos=1;pos<arguments.argc();++pos)
+    for (int pos = 1; pos < arguments.argc(); ++pos)
     {
         if (!arguments.isOption(pos))
         {
             // not an option so assume string is a filename.
-            osg::Node *node = osgDB::readNodeFile( arguments[pos], options);
+            osg::Node *node = osgDB::readNodeFile(arguments[pos], options);
 
-            if(node)
+            if (node)
             {
-                if (node->getName().empty()) node->setName( arguments[pos] );
+                if (node->getName().empty())
+                    node->setName(arguments[pos]);
+
                 nodeList.push_back(node);
             }
-
         }
     }
 
@@ -231,79 +258,114 @@ Node* osgDB::readNodeFiles(osg::ArgumentParser& arguments,const Options* options
         return NULL;
     }
 
-    if (nodeList.size()==1)
+    if (nodeList.size() == 1)
     {
         return nodeList.front().release();
     }
     else  // size >1
     {
-        osg::Group* group = new osg::Group;
-        for(NodeList::iterator itr=nodeList.begin();
-            itr!=nodeList.end();
-            ++itr)
+        osg::Group *group = new osg::Group;
+
+        for (NodeList::iterator itr = nodeList.begin();
+             itr != nodeList.end();
+             ++itr)
         {
             group->addChild((*itr).get());
         }
 
         return group;
     }
-
 }
 
 
-Script* osgDB::readScriptFile(const std::string& filename,const Options* options)
+Script* osgDB::readScriptFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readScript(filename,options);
-    if (rr.validScript()) return rr.takeScript();
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readScript(filename, options);
+
+    if (rr.validScript())
+        return rr.takeScript();
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
 
-osg::ref_ptr<osg::Object> osgDB::readRefObjectFile(const std::string& filename,const Options* options)
+osg::ref_ptr<osg::Object> osgDB::readRefObjectFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readObject(filename,options);
-    if (rr.validObject()) return osg::ref_ptr<osg::Object>(rr.getObject());
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readObject(filename, options);
+
+    if (rr.validObject())
+        return osg::ref_ptr<osg::Object>(rr.getObject());
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
-osg::ref_ptr<osg::Image> osgDB::readRefImageFile(const std::string& filename,const Options* options)
+osg::ref_ptr<osg::Image> osgDB::readRefImageFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readImage(filename,options);
-    if (rr.validImage()) return osg::ref_ptr<osg::Image>(rr.getImage());
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readImage(filename, options);
+
+    if (rr.validImage())
+        return osg::ref_ptr<osg::Image>(rr.getImage());
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
-osg::ref_ptr<osg::Shader> osgDB::readRefShaderFile(const std::string& filename,const Options* options)
+osg::ref_ptr<osg::Shader> osgDB::readRefShaderFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readShader(filename,options);
-    if (rr.validShader()) return osg::ref_ptr<osg::Shader>(rr.getShader());
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readShader(filename, options);
+
+    if (rr.validShader())
+        return osg::ref_ptr<osg::Shader>(rr.getShader());
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
-osg::ref_ptr<osg::HeightField> osgDB::readRefHeightFieldFile(const std::string& filename,const Options* options)
+osg::ref_ptr<osg::HeightField> osgDB::readRefHeightFieldFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readHeightField(filename,options);
-    if (rr.validHeightField()) return osg::ref_ptr<osg::HeightField>(rr.getHeightField());
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readHeightField(filename, options);
+
+    if (rr.validHeightField())
+        return osg::ref_ptr<osg::HeightField>(rr.getHeightField());
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
-osg::ref_ptr<osg::Node> osgDB::readRefNodeFile(const std::string& filename,const Options* options)
+osg::ref_ptr<osg::Node> osgDB::readRefNodeFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readNode(filename,options);
-    if (rr.validNode()) return osg::ref_ptr<osg::Node>(rr.getNode());
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readNode(filename, options);
+
+    if (rr.validNode())
+        return osg::ref_ptr<osg::Node>(rr.getNode());
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }
 
-osg::ref_ptr<osg::Script> osgDB::readRefScriptFile(const std::string& filename,const Options* options)
+osg::ref_ptr<osg::Script> osgDB::readRefScriptFile(const std::string&filename, const Options *options)
 {
-    ReaderWriter::ReadResult rr = Registry::instance()->readScript(filename,options);
-    if (rr.validScript()) return osg::ref_ptr<osg::Script>(rr.getScript());
-    if (rr.error()) OSG_WARN << rr.message() << std::endl;
+    ReaderWriter::ReadResult rr = Registry::instance()->readScript(filename, options);
+
+    if (rr.validScript())
+        return osg::ref_ptr<osg::Script>(rr.getScript());
+
+    if (rr.error())
+        OSG_WARN << rr.message() << std::endl;
+
     return NULL;
 }

@@ -4,11 +4,13 @@
 #include <osg/ClusterCullingCallback>
 #include "ReadWrite.h"
 
-namespace ive{
-class ClusterCullingCallback : public osg::ClusterCullingCallback, public ReadWrite {
+namespace ive
+{
+class ClusterCullingCallback : public osg::ClusterCullingCallback, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

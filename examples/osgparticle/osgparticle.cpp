@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgparticle.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <osgViewer/Viewer>
 #include <osgViewer/ViewerEventHandlers>
@@ -42,72 +42,76 @@
 // This class demonstrates Operator subclassing. This way you can create
 // custom operators to apply your motion effects to the particles. See docs
 // for more details.
-class VortexOperator: public osgParticle::Operator {
+class VortexOperator : public osgParticle::Operator
+{
 public:
-    VortexOperator() 
-        : osgParticle::Operator(), center_(0, 0, 0), axis_(0, 0, 1), intensity_(0.1f) {}
+VortexOperator()
+    : osgParticle::Operator(), center_(0, 0, 0), axis_(0, 0, 1), intensity_(0.1f) {}
 
-    VortexOperator(const VortexOperator &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY)
-        : osgParticle::Operator(copy, copyop), center_(copy.center_), axis_(copy.axis_), intensity_(copy.intensity_) {}
+VortexOperator(const VortexOperator&copy, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY)
+    : osgParticle::Operator(copy, copyop), center_(copy.center_), axis_(copy.axis_), intensity_(copy.intensity_) {}
 
-    META_Object(osgParticle, VortexOperator);
+META_Object(osgParticle, VortexOperator);
 
-    void setCenter(const osg::Vec3 &c)
+void setCenter(const osg::Vec3&c)
+{
+    center_ = c;
+}
+
+void setAxis(const osg::Vec3&a)
+{
+    axis_ = a / a.length();
+}
+
+// this method is called by ModularProgram before applying
+// operators on the particle set via the operate() method.
+void beginOperate(osgParticle::Program *prg)
+{
+    // we have to check whether the reference frame is RELATIVE_RF to parents
+    // or it's absolute; in the first case, we must transform the vectors
+    // from local to world space.
+    if (prg->getReferenceFrame() == osgParticle::Program::RELATIVE_RF)
     {
-        center_ = c;
+        // transform the center point (full transformation)
+        xf_center_ = prg->transformLocalToWorld(center_);
+        // transform the axis vector (only rotation and scale)
+        xf_axis_ = prg->rotateLocalToWorld(axis_);
     }
-
-    void setAxis(const osg::Vec3 &a)
+    else
     {
-        axis_ = a / a.length();
+        xf_center_ = center_;
+        xf_axis_   = axis_;
     }
+}
 
-    // this method is called by ModularProgram before applying
-    // operators on the particle set via the operate() method.    
-    void beginOperate(osgParticle::Program *prg)
-    {
-        // we have to check whether the reference frame is RELATIVE_RF to parents
-        // or it's absolute; in the first case, we must transform the vectors
-        // from local to world space.
-        if (prg->getReferenceFrame() == osgParticle::Program::RELATIVE_RF) {
-            // transform the center point (full transformation)
-            xf_center_ = prg->transformLocalToWorld(center_);
-            // transform the axis vector (only rotation and scale)
-            xf_axis_ = prg->rotateLocalToWorld(axis_);
-        } else {
-            xf_center_ = center_;
-            xf_axis_ = axis_;
-        }
-    }
+// apply a vortex-like acceleration. This code is not optimized,
+// it's here only for demonstration purposes.
+void operate(osgParticle::Particle *P, double dt)
+{
+    float     l  = xf_axis_ * (P->getPosition() - xf_center_);
+    osg::Vec3 lc = xf_center_ + xf_axis_ * l;
+    osg::Vec3 R  = P->getPosition() - lc;
+    osg::Vec3 v  = (R ^ xf_axis_) * P->getMassInv() * intensity_;
 
-    // apply a vortex-like acceleration. This code is not optimized,
-    // it's here only for demonstration purposes.
-    void operate(osgParticle::Particle *P, double dt)
-    {
-        float l = xf_axis_ * (P->getPosition() - xf_center_);
-        osg::Vec3 lc = xf_center_ + xf_axis_ * l;
-        osg::Vec3 R = P->getPosition() - lc;
-        osg::Vec3 v = (R ^ xf_axis_) * P->getMassInv() * intensity_;
+    // compute new position
+    osg::Vec3 newpos = P->getPosition() + v * dt;
 
-        // compute new position
-        osg::Vec3 newpos = P->getPosition() + v * dt;
-
-        // update the position of the particle without modifying its
-        // velocity vector (this is unusual, normally you should call
-        // the Particle::setVelocity() or Particle::addVelocity()
-        // methods).
-        P->setPosition(newpos);    
-    }
+    // update the position of the particle without modifying its
+    // velocity vector (this is unusual, normally you should call
+    // the Particle::setVelocity() or Particle::addVelocity()
+    // methods).
+    P->setPosition(newpos);
+}
 
 protected:
-    virtual ~VortexOperator() {}
+virtual ~VortexOperator() {}
 
 private:
-    osg::Vec3 center_;
-    osg::Vec3 xf_center_;
-    osg::Vec3 axis_;
-    osg::Vec3 xf_axis_;
-    float intensity_;
+osg::Vec3 center_;
+osg::Vec3 xf_center_;
+osg::Vec3 axis_;
+osg::Vec3 xf_axis_;
+float     intensity_;
 };
 
 
@@ -116,9 +120,8 @@ private:
 //////////////////////////////////////////////////////////////////////////////
 
 
-osgParticle::ParticleSystem *create_simple_particle_system(osg::Group *root)
+osgParticle::ParticleSystem* create_simple_particle_system(osg::Group *root)
 {
-
     // Ok folks, this is the first particle system we build; it will be
     // very simple, with no textures and no special effects, just default
     // values except for a couple of attributes.
@@ -141,7 +144,7 @@ osgParticle::ParticleSystem *create_simple_particle_system(osg::Group *root)
     ps->setDefaultAttributes("", true, false);
 
     // Now that our particle system is set we have to create an emitter, that is
-    // an object (actually a Node descendant) that generate new particles at 
+    // an object (actually a Node descendant) that generate new particles at
     // each frame. The best choice is to use a ModularEmitter, which allow us to
     // achieve a wide variety of emitting styles by composing the emitter using
     // three objects: a "counter", a "placer" and a "shooter". The counter must
@@ -168,8 +171,8 @@ osgParticle::ParticleSystem *create_simple_particle_system(osg::Group *root)
     // but since the default counter is already a RandomRateCounter, we
     // just get a pointer to it and change a value.
 
-    osgParticle::RandomRateCounter *rrc = 
-        static_cast<osgParticle::RandomRateCounter *>(emitter->getCounter());
+    osgParticle::RandomRateCounter *rrc =
+        static_cast<osgParticle::RandomRateCounter*>(emitter->getCounter());
 
     // Now set the rate range to a better value. The actual rate at each frame
     // will be chosen randomly within that range.
@@ -182,19 +185,18 @@ osgParticle::ParticleSystem *create_simple_particle_system(osg::Group *root)
 
     root->addChild(emitter);
 
-    // Ok folks, we have almost finished. We don't add any particle modifier 
+    // Ok folks, we have almost finished. We don't add any particle modifier
     // here (see ModularProgram and Operator classes), so all we still need is
     // to create a Geode and add the particle system to it, so it can be
     // displayed.
 
-    osg::Geode *geode = new osg::Geode;    
+    osg::Geode *geode = new osg::Geode;
     geode->addDrawable(ps);
 
     // add the geode to the scene graph
     root->addChild(geode);
 
     return ps;
-
 }
 
 
@@ -204,7 +206,7 @@ osgParticle::ParticleSystem *create_simple_particle_system(osg::Group *root)
 //////////////////////////////////////////////////////////////////////////////
 
 
-osgParticle::ParticleSystem *create_complex_particle_system(osg::Group *root)
+osgParticle::ParticleSystem* create_complex_particle_system(osg::Group *root)
 {
     // Are you ready for a more complex particle system? Well, read on!
 
@@ -222,13 +224,13 @@ osgParticle::ParticleSystem *create_complex_particle_system(osg::Group *root)
 
     ptemplate.setLifeTime(3);        // 3 seconds of life
 
-    // the following ranges set the envelope of the respective 
+    // the following ranges set the envelope of the respective
     // graphical properties in time.
     ptemplate.setSizeRange(osgParticle::rangef(0.75f, 3.0f));
     ptemplate.setAlphaRange(osgParticle::rangef(0.0f, 1.5f));
     ptemplate.setColorRange(osgParticle::rangev4(
-        osg::Vec4(1, 0.5f, 0.3f, 1.5f), 
-        osg::Vec4(0, 0.7f, 1.0f, 0.0f)));
+                                osg::Vec4(1, 0.5f, 0.3f, 1.5f),
+                                osg::Vec4(0, 0.7f, 1.0f, 0.0f)));
 
     // these are physical properties of the particle
     ptemplate.setRadius(0.05f);    // 5 cm wide particles
@@ -329,10 +331,9 @@ osgParticle::ParticleSystem *create_complex_particle_system(osg::Group *root)
 //////////////////////////////////////////////////////////////////////////////
 
 
-osgParticle::ParticleSystem *create_animated_particle_system(osg::Group *root)
+osgParticle::ParticleSystem* create_animated_particle_system(osg::Group *root)
 {
-
-    // Now we will create a particle system that uses two emitters to 
+    // Now we will create a particle system that uses two emitters to
     // display two animated particles, one showing an explosion, the other
     // a smoke cloud. A particle system can only use one texture, so
     // the animations for both particles are stored in a single bitmap.
@@ -345,7 +346,7 @@ osgParticle::ParticleSystem *create_animated_particle_system(osg::Group *root)
     osgParticle::Particle pexplosion;
 
     // The frames of the explosion particle are played from birth to
-    // death of the particle. So if lifetime is one second, all 16 images 
+    // death of the particle. So if lifetime is one second, all 16 images
     // of the particle are shown in this second.
     pexplosion.setLifeTime(1);
 
@@ -353,15 +354,15 @@ osgParticle::ParticleSystem *create_animated_particle_system(osg::Group *root)
     pexplosion.setSizeRange(osgParticle::rangef(0.75f, 3.0f));
     pexplosion.setAlphaRange(osgParticle::rangef(0.5f, 1.0f));
     pexplosion.setColorRange(osgParticle::rangev4(
-        osg::Vec4(1, 1, 1, 1), 
-        osg::Vec4(1, 1, 1, 1)));
+                                 osg::Vec4(1, 1, 1, 1),
+                                 osg::Vec4(1, 1, 1, 1)));
     pexplosion.setRadius(0.05f);
     pexplosion.setMass(0.05f);
 
     // This command sets the animation tiles to be shown for the particle.
     // The first two parameters define the tile layout of the texture image.
     // 8, 8 means the texture has eight rows of tiles with eight columns each.
-    // 0, 15 defines the start and end tile 
+    // 0, 15 defines the start and end tile
     pexplosion.setTextureTileRange(8, 8, 0, 15);
 
     // The smoke particle is just the same, only plays another tile range.
@@ -407,15 +408,15 @@ osgParticle::ParticleSystem *create_animated_particle_system(osg::Group *root)
 
     // give particles a little spin
     shooter->setInitialRotationalSpeedRange(osgParticle::rangev3(
-       osg::Vec3(0, 0, -1),
-       osg::Vec3(0, 0, 1)));
+                                                osg::Vec3(0, 0, -1),
+                                                osg::Vec3(0, 0, 1)));
     emitter1->setShooter(shooter);
     emitter2->setShooter(shooter);
 
     // add both emitters to the scene graph
     root->addChild(emitter1);
     root->addChild(emitter2);
-   
+
     // create a program, just as before
     osgParticle::ModularProgram *program = new osgParticle::ModularProgram;
     program->setParticleSystem(ps);
@@ -423,7 +424,7 @@ osgParticle::ParticleSystem *create_animated_particle_system(osg::Group *root)
     // create an operator that moves the particles upwards
     osgParticle::AccelOperator *op1 = new osgParticle::AccelOperator;
     op1->setAcceleration(osg::Vec3(0, 0, 2.0f));
-    program->addOperator(op1);  
+    program->addOperator(op1);
 
     // add the program to the scene graph
     root->addChild(program);
@@ -445,7 +446,6 @@ osgParticle::ParticleSystem *create_animated_particle_system(osg::Group *root)
 
 void build_world(osg::Group *root)
 {
-
     // In this function we are going to create two particle systems;
     // the first one will be very simple, based mostly on default properties;
     // the second one will be a little bit more complex, showing how to
@@ -463,13 +463,13 @@ void build_world(osg::Group *root)
     // will react to cull traversal by updating the specified particles system.
 
     osgParticle::ParticleSystemUpdater *psu = new osgParticle::ParticleSystemUpdater;
+
     psu->addParticleSystem(ps1);
     psu->addParticleSystem(ps2);
     psu->addParticleSystem(ps3);
 
     // add the updater node to the scene graph
     root->addChild(psu);
-
 }
 
 
@@ -478,19 +478,20 @@ void build_world(osg::Group *root)
 //////////////////////////////////////////////////////////////////////////////
 
 
-int main(int, char **)
+int main(int, char**)
 {
     // construct the viewer.
     osgViewer::Viewer viewer;
-    
+
     osg::Group *root = new osg::Group;
+
     build_world(root);
-   
+
     // add the stats handler
     viewer.addEventHandler(new osgViewer::StatsHandler);
 
     // add a viewport to the viewer and attach the scene graph.
     viewer.setSceneData(root);
-        
+
     return viewer.run();
 }

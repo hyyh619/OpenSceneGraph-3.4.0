@@ -35,210 +35,230 @@
 using namespace std;
 
 
-namespace DX {
+namespace DX
+{
+// Tokenize a string
+void tokenize(const string&str, vector<string>&tokens, const string&delimiters)
+{
+    string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+    string::size_type pos     = str.find_first_of(delimiters, lastPos);
 
-    // Tokenize a string
-    void tokenize(const string & str, vector<string> & tokens, const string & delimiters)
+    while (string::npos != pos || string::npos != lastPos)
     {
-        string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-        string::size_type pos     = str.find_first_of(delimiters, lastPos);
-
-        while (string::npos != pos || string::npos != lastPos) {
-            tokens.push_back(str.substr(lastPos, pos - lastPos));
-            lastPos = str.find_first_not_of(delimiters, pos);
-            pos = str.find_first_of(delimiters, lastPos);
-        }
+        tokens.push_back(str.substr(lastPos, pos - lastPos));
+        lastPos = str.find_first_not_of(delimiters, pos);
+        pos     = str.find_first_of(delimiters, lastPos);
     }
+}
 
-    // Read 'TextureFilename'
-    void readTexFilename(istream & fin, TextureFilename & texture)
+// Read 'TextureFilename'
+void readTexFilename(istream&fin, TextureFilename&texture)
+{
+    char buf[256];
+
+    vector<string> token;
+
+    // cerr << "*** TexFilename\n";
+    while (fin.getline(buf, sizeof(buf)))
     {
-        char buf[256];
-        vector<string> token;
+        // Tokenize
+        token.clear();
+        tokenize(buf, token);
+        if (token.size() == 0)
+            continue;
 
-        //cerr << "*** TexFilename\n";
-        while (fin.getline(buf, sizeof(buf))) {
+        if (token[0] == "}")
+            break;
 
-            // Tokenize
-            token.clear();
-            tokenize(buf, token);
-            if (token.size() == 0)
-                continue;
-            if (token[0] == "}")
-                break;
+        // Strip " if present
+        std::string            line = buf;
+        std::string::size_type pos  = line.find('"');
+        if (pos != string::npos)
+        {
+            std::string::size_type end = line.rfind('"');
+            int                    len = (end != std::string::npos ? (end - pos - 1) : (line.size() - pos));
+            texture = line.substr(pos + 1, len);
+        }
+        else
+            texture = token[0];
 
-            // Strip " if present
-            std::string line = buf;
-            std::string::size_type pos = line.find('"');
-            if (pos != string::npos) {
-                std::string::size_type end = line.rfind('"');
-                int len = (end != std::string::npos ? (end-pos-1) : (line.size()-pos));
-                texture = line.substr(pos+1, len);
+        // cerr << "* tex='" << texture << "'" << endl;
+    }
+}
+
+// Read 'Coords2d'
+void readCoords2d(istream&fin, vector<Coords2d>&v, unsigned int count)
+{
+    char buf[256];
+
+    vector<string> token;
+
+    unsigned int i = 0;
+
+    // cerr << "*** Coords2d\n";
+    while (i < count && fin.getline(buf, sizeof(buf)))
+    {
+        // Tokenize
+        token.clear();
+        tokenize(buf, token);
+        if (token.size() == 0)
+            continue;
+
+        Coords2d c;
+        c.u = osg::asciiToFloat(token[0].c_str());
+        c.v = osg::asciiToFloat(token[1].c_str());
+        v.push_back(c);
+        i++;
+    }
+}
+
+// Read 'Vector'
+void readVector(istream&fin, vector<Vector>&v, unsigned int count)
+{
+    char buf[256];
+
+    vector<string> token;
+
+    unsigned int i = 0;
+
+    // cerr << "*** Vector\n";
+    while (i < count && fin.getline(buf, sizeof(buf)))
+    {
+        // Tokenize
+        token.clear();
+        tokenize(buf, token);
+        if (token.size() == 0)
+            continue;
+
+        Vector vec;
+        vec.x = osg::asciiToFloat(token[0].c_str());
+        vec.y = osg::asciiToFloat(token[1].c_str());
+        vec.z = osg::asciiToFloat(token[2].c_str());
+        v.push_back(vec);
+        i++;
+    }
+}
+
+// Parse 'Material'
+void parseMaterial(istream&fin, Material&material)
+{
+    char buf[256];
+
+    vector<string> token;
+
+    unsigned int i = 0;
+
+    // cerr << "*** Material\n";
+    while (fin.getline(buf, sizeof(buf)))
+    {
+        // Tokenize
+        token.clear();
+        tokenize(buf, token);
+        if (token.size() == 0)
+            continue;
+
+        if (token[0] == "}")
+            break;
+
+        if (token[0] == "TextureFilename")
+        {
+            TextureFilename tf;
+            readTexFilename(fin, tf);
+            material.texture.push_back(tf);
+            // cerr << "* num tex=" << material.texture.size() << endl;
+        }
+        else
+        {
+            switch (i)
+            {
+            case 0: {
+                // ColorRGBA
+                material.faceColor.red   = osg::asciiToFloat(token[0].c_str());
+                material.faceColor.green = osg::asciiToFloat(token[1].c_str());
+                material.faceColor.blue  = osg::asciiToFloat(token[2].c_str());
+                material.faceColor.alpha = osg::asciiToFloat(token[3].c_str());
+                i++;
+            } break;
+
+            case 1: {
+                // Power
+                material.power = osg::asciiToFloat(token[0].c_str());
+                i++;
+            } break;
+
+            case 2: {
+                // ColorRGB
+                material.specularColor.red   = osg::asciiToFloat(token[0].c_str());
+                material.specularColor.green = osg::asciiToFloat(token[1].c_str());
+                material.specularColor.blue  = osg::asciiToFloat(token[2].c_str());
+                i++;
+            } break;
+
+            case 3: {
+                // ColorRGB
+                material.emissiveColor.red   = osg::asciiToFloat(token[0].c_str());
+                material.emissiveColor.green = osg::asciiToFloat(token[1].c_str());
+                material.emissiveColor.blue  = osg::asciiToFloat(token[2].c_str());
+                i++;
+            } break;
             }
-            else
-                texture = token[0];
-            //cerr << "* tex='" << texture << "'" << endl;
         }
     }
+}
 
-    // Read 'Coords2d'
-    void readCoords2d(istream & fin, vector<Coords2d> & v, unsigned int count)
+// Read index list
+void readIndexList(istream&fin, vector<unsigned int>&v, unsigned int count)
+{
+    char buf[256];
+
+    vector<string> token;
+
+    unsigned int i = 0;
+
+    // cerr << "*** IndexList\n";
+    while (i < count && fin.getline(buf, sizeof(buf)))
     {
-        char buf[256];
-        vector<string> token;
+        // Tokenize
+        token.clear();
+        tokenize(buf, token);
+        if (token.size() == 0)
+            continue;
 
-        unsigned int i = 0;
-
-        //cerr << "*** Coords2d\n";
-        while (i < count && fin.getline(buf, sizeof(buf))) {
-
-            // Tokenize
-            token.clear();
-            tokenize(buf, token);
-            if (token.size() == 0)
-                continue;
-
-            Coords2d c;
-            c.u = osg::asciiToFloat(token[0].c_str());
-            c.v = osg::asciiToFloat(token[1].c_str());
-            v.push_back(c);
-            i++;
-        }
+        unsigned int idx = atoi(token[0].c_str());
+        v.push_back(idx);
+        i++;
     }
+}
 
-    // Read 'Vector'
-    void readVector(istream & fin, vector<Vector> & v, unsigned int count)
+// Read 'MeshFace'
+void readMeshFace(istream&fin, vector<MeshFace>&v, unsigned int count)
+{
+    char buf[256];
+
+    vector<string> token;
+
+    unsigned int i = 0;
+
+    // cerr << "*** MeshFace\n";
+    while (i < count && fin.getline(buf, sizeof(buf)))
     {
-        char buf[256];
-        vector<string> token;
+        // Tokenize
+        token.clear();
+        tokenize(buf, token);
+        if (token.size() == 0)
+            continue;
 
-        unsigned int i = 0;
+        MeshFace     mf;
+        unsigned int n = atoi(token[0].c_str());
 
-        //cerr << "*** Vector\n";
-        while (i < count && fin.getline(buf, sizeof(buf))) {
-
-            // Tokenize
-            token.clear();
-            tokenize(buf, token);
-            if (token.size() == 0)
-                continue;
-
-            Vector vec;
-            vec.x = osg::asciiToFloat(token[0].c_str());
-            vec.y = osg::asciiToFloat(token[1].c_str());
-            vec.z = osg::asciiToFloat(token[2].c_str());
-            v.push_back(vec);
-            i++;
+        for (unsigned int j = 0; j < n; j++)
+        {
+            unsigned int idx = atoi(token[j + 1].c_str());
+            mf.push_back(idx);
         }
+
+        v.push_back(mf);
+        i++;
     }
-
-    // Parse 'Material'
-    void parseMaterial(istream & fin, Material & material)
-    {
-        char buf[256];
-        vector<string> token;
-
-        unsigned int i = 0;
-
-        //cerr << "*** Material\n";
-        while (fin.getline(buf, sizeof(buf))) {
-
-            // Tokenize
-            token.clear();
-            tokenize(buf, token);
-            if (token.size() == 0)
-                continue;
-            if (token[0] == "}")
-                break;
-            if (token[0] == "TextureFilename") {
-                TextureFilename tf;
-                readTexFilename(fin, tf);
-                material.texture.push_back(tf);
-                //cerr << "* num tex=" << material.texture.size() << endl;
-            } else {
-                switch (i) {
-                    case 0: {
-                                // ColorRGBA
-                                material.faceColor.red = osg::asciiToFloat(token[0].c_str());
-                                material.faceColor.green = osg::asciiToFloat(token[1].c_str());
-                                material.faceColor.blue = osg::asciiToFloat(token[2].c_str());
-                                material.faceColor.alpha = osg::asciiToFloat(token[3].c_str());
-                                i++;
-                            } break;
-                    case 1: {
-                                // Power
-                                material.power = osg::asciiToFloat(token[0].c_str());
-                                i++;
-                            } break;
-                    case 2: {
-                                // ColorRGB
-                                material.specularColor.red = osg::asciiToFloat(token[0].c_str());
-                                material.specularColor.green = osg::asciiToFloat(token[1].c_str());
-                                material.specularColor.blue = osg::asciiToFloat(token[2].c_str());
-                                i++;
-                            } break;
-                    case 3: {
-                                // ColorRGB
-                                material.emissiveColor.red = osg::asciiToFloat(token[0].c_str());
-                                material.emissiveColor.green = osg::asciiToFloat(token[1].c_str());
-                                material.emissiveColor.blue = osg::asciiToFloat(token[2].c_str());
-                                i++;
-                            } break;
-                }
-            }
-        }
-    }
-
-    // Read index list
-    void readIndexList(istream & fin, vector<unsigned int> & v, unsigned int count)
-    {
-        char buf[256];
-        vector<string> token;
-
-        unsigned int i = 0;
-
-        //cerr << "*** IndexList\n";
-        while (i < count && fin.getline(buf, sizeof(buf))) {
-
-            // Tokenize
-            token.clear();
-            tokenize(buf, token);
-            if (token.size() == 0)
-                continue;
-
-            unsigned int idx = atoi(token[0].c_str());
-            v.push_back(idx);
-            i++;
-        }
-    }
-
-    // Read 'MeshFace'
-    void readMeshFace(istream & fin, vector<MeshFace> & v, unsigned int count)
-    {
-        char buf[256];
-        vector<string> token;
-
-        unsigned int i = 0;
-
-        //cerr << "*** MeshFace\n";
-        while (i < count && fin.getline(buf, sizeof(buf))) {
-
-            // Tokenize
-            token.clear();
-            tokenize(buf, token);
-            if (token.size() == 0)
-                continue;
-
-            MeshFace mf;
-            unsigned int n = atoi(token[0].c_str());
-
-            for (unsigned int j = 0; j < n; j++) {
-                unsigned int idx = atoi(token[j+1].c_str());
-                mf.push_back(idx);
-            }
-            v.push_back(mf);
-            i++;
-        }
-    }
-
+}
 }

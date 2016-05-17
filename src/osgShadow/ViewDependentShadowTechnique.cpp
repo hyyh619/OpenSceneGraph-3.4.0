@@ -12,7 +12,7 @@
  *
  * ViewDependentShadow codes Copyright (C) 2008 Wojciech Lewandowski
  * Thanks to to my company http://www.ai.com.pl for allowing me free this work.
-*/
+ */
 
 #include <osgShadow/ViewDependentShadowTechnique>
 #include <osgShadow/ShadowedScene>
@@ -26,18 +26,16 @@ ViewDependentShadowTechnique::ViewDependentShadowTechnique()
 }
 
 ViewDependentShadowTechnique::ViewDependentShadowTechnique
-    (const ViewDependentShadowTechnique& copy, const osg::CopyOp& copyop):
-        ShadowTechnique(copy,copyop)
+    (const ViewDependentShadowTechnique&copy, const osg::CopyOp&copyop) :
+    ShadowTechnique(copy, copyop)
 {
     dirty();
 }
 
 ViewDependentShadowTechnique::~ViewDependentShadowTechnique(void)
-{
+{}
 
-}
-
-void ViewDependentShadowTechnique::traverse(osg::NodeVisitor& nv)
+void ViewDependentShadowTechnique::traverse(osg::NodeVisitor&nv)
 {
     osgShadow::ShadowTechnique::traverse(nv);
 }
@@ -48,80 +46,84 @@ void ViewDependentShadowTechnique::dirty()
 
     osgShadow::ShadowTechnique::_dirty = true;
 
-    for( ViewDataMap::iterator mitr = _viewDataMap.begin();
+    for (ViewDataMap::iterator mitr = _viewDataMap.begin();
          mitr != _viewDataMap.end();
-         ++mitr )
+         ++mitr)
     {
-        mitr->second->dirty( true );
+        mitr->second->dirty(true);
     }
 }
 
 void ViewDependentShadowTechnique::init()
 {
-    //osgShadow::ShadowTechnique::init( );
+    // osgShadow::ShadowTechnique::init( );
     osgShadow::ShadowTechnique::_dirty = false;
 }
 
-void ViewDependentShadowTechnique::update(osg::NodeVisitor& nv)
+void ViewDependentShadowTechnique::update(osg::NodeVisitor&nv)
 {
-    //osgShadow::ShadowTechnique::update( nv );
+    // osgShadow::ShadowTechnique::update( nv );
     osgShadow::ShadowTechnique::_shadowedScene->osg::Group::traverse(nv);
 }
 
-void ViewDependentShadowTechnique::cull(osgUtil::CullVisitor& cv)
+void ViewDependentShadowTechnique::cull(osgUtil::CullVisitor&cv)
 {
-    //osgShadow::ShadowTechnique::cull( cv );
+    // osgShadow::ShadowTechnique::cull( cv );
 
-    ViewData * vd = getViewDependentData( &cv );
+    ViewData *vd = getViewDependentData(&cv);
 
-    if ( !vd || vd->_dirty || vd->_cv != &cv || vd->_st != this ) {
-        vd = initViewDependentData( &cv, vd );
-        setViewDependentData( &cv, vd );
+    if (!vd || vd->_dirty || vd->_cv != &cv || vd->_st != this)
+    {
+        vd = initViewDependentData(&cv, vd);
+        setViewDependentData(&cv, vd);
     }
 
-    if( vd ) {
+    if (vd)
+    {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(vd->_mutex);
         vd->cull();
-    } else {
+    }
+    else
+    {
         osgShadow::ShadowTechnique::_shadowedScene->osg::Group::traverse(cv);
     }
 }
 
 void ViewDependentShadowTechnique::cleanSceneGraph()
 {
-    //osgShadow::ShadowTechnique::cleanSceneGraph( );
+    // osgShadow::ShadowTechnique::cleanSceneGraph( );
 }
 
-ViewDependentShadowTechnique::ViewData *
-ViewDependentShadowTechnique::getViewDependentData( osgUtil::CullVisitor * cv )
+ViewDependentShadowTechnique::ViewData*
+ViewDependentShadowTechnique::getViewDependentData(osgUtil::CullVisitor *cv)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_viewDataMapMutex);
-    return _viewDataMap[ cv ].get();
+
+    return _viewDataMap[cv].get();
 }
 
 void ViewDependentShadowTechnique::setViewDependentData
-    ( osgUtil::CullVisitor * cv, ViewData * data )
+    (osgUtil::CullVisitor *cv, ViewData *data)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_viewDataMapMutex);
-    _viewDataMap[ cv ] = data;
+
+    _viewDataMap[cv] = data;
 }
 
-void ViewDependentShadowTechnique::ViewData::dirty( bool flag )
+void ViewDependentShadowTechnique::ViewData::dirty(bool flag)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     _dirty = flag;
 }
 
 void ViewDependentShadowTechnique::ViewData::init
-    (  ViewDependentShadowTechnique *st, osgUtil::CullVisitor * cv )
+    (ViewDependentShadowTechnique *st, osgUtil::CullVisitor *cv)
 {
     _cv = cv;
     _st = st;
-    dirty( false );
+    dirty(false);
 }
 
-void ViewDependentShadowTechnique::ViewData::cull( void )
-{
-
-}
-
+void ViewDependentShadowTechnique::ViewData::cull(void)
+{}

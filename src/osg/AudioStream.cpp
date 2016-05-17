@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/AudioStream>
 
@@ -17,14 +17,11 @@ using namespace osg;
 
 AudioSink::AudioSink() :
     _delay(0.0)
-{
-}
+{}
 
 AudioStream::AudioStream()
-{
-}
+{}
 
-AudioStream::AudioStream(const AudioStream& audio,const CopyOp& copyop):
+AudioStream::AudioStream(const AudioStream&audio, const CopyOp&copyop) :
     osg::Object(audio, copyop)
-{
-}
+{}

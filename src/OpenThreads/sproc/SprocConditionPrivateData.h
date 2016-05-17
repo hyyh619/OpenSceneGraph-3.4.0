@@ -1,15 +1,15 @@
 /* -*-c++-*- OpenThreads library, Copyright (C) 2002 - 2007  The Open Thread Group
  *
- * This library is open source and may be redistributed and/or modified under  
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
  * (at your option) any later version.  The full license is in LICENSE file
  * included with this distribution, and on the openscenegraph.org website.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 //
@@ -29,54 +29,49 @@
 #include <OpenThreads/Mutex>
 #include <OpenThreads/Condition>
 
-namespace OpenThreads {
+namespace OpenThreads
+{
+class SemaLink
+{
+friend class SprocConditionPrivatedata;
 
-class SemaLink {
-    
-    friend class SprocConditionPrivatedata;
-    
-    friend class Condition;
+friend class Condition;
 
-    friend class ConditionDebug;
-
-private:
-
-    SemaLink() {};
-
-    virtual ~SemaLink() {};
-
-    SemaLink *next;
-
-    usema_t *sema;
-
-    int select_cond;  // 0=pre-select, 1=in-select, 2=post-select
-    
-};
-
-class SprocConditionPrivateData {
-
-    friend class Condition;
+friend class ConditionDebug;
 
 private:
 
-    SprocConditionPrivateData() {
-	
-	pid_list.clear();
+SemaLink() {};
 
-    };
+virtual ~SemaLink() {};
 
-    virtual ~SprocConditionPrivateData() {
+SemaLink *next;
 
-	pid_list.clear();
+usema_t *sema;
 
-    };
-
-    std::list<pid_t> pid_list;
-
-    Mutex mutex;
-
+int select_cond;      // 0=pre-select, 1=in-select, 2=post-select
 };
 
+class SprocConditionPrivateData
+{
+friend class Condition;
+
+private:
+
+SprocConditionPrivateData()
+{
+    pid_list.clear();
+};
+
+virtual ~SprocConditionPrivateData()
+{
+    pid_list.clear();
+};
+
+std::list<pid_t> pid_list;
+
+Mutex mutex;
+};
 }
 
 #endif // !_SPROCCONDITIONPRIVATEDATA_H_

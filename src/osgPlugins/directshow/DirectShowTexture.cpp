@@ -12,7 +12,7 @@
  *
  * Authors:
  *         Cedric Pinson <cedric.pinson@plopbyte.net>
-*/
+ */
 
 #include "DirectShowTexture"
 #include <osg/Notify>
@@ -27,164 +27,164 @@
 #include <locale>
 #include <string>
 
-HRESULT GetPin(IBaseFilter* pFilter, LPCWSTR pName, IPin** ppPin);
-HRESULT GetPin(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTION PinDir, IPin** ppPin);
+HRESULT GetPin(IBaseFilter *pFilter, LPCWSTR pName, IPin **ppPin);
+HRESULT GetPin(IBaseFilter *pFilter, const GUID *pFormat, PIN_DIRECTION PinDir, IPin **ppPin);
 
 
 struct NamedGuid
 {
-    const GUID *pguid;
+    const GUID  *pguid;
     const TCHAR *psz;
 };
 
 // 73646976-0000-0010-8000-00AA00389B71  'vids' == WMMEDIATYPE_Video
 EXTERN_GUID(WMMEDIATYPE_Video,
-0x73646976, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x73646976, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 73647561-0000-0010-8000-00AA00389B71  'auds' == WMMEDIATYPE_Audio
 EXTERN_GUID(WMMEDIATYPE_Audio,
-0x73647561, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x73647561, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 73636d64-0000-0010-8000-00AA00389B71  'scmd' == MEDIATYPE_Script
 EXTERN_GUID(WMMEDIATYPE_Script,
-0x73636d64, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x73636d64, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 34A50FD8-8AA5-4386-81FE-A0EFE0488E31            WMMEDIATYPE_Image
 EXTERN_GUID(WMMEDIATYPE_Image,
-0x34a50fd8, 0x8aa5, 0x4386, 0x81, 0xfe, 0xa0, 0xef, 0xe0, 0x48, 0x8e, 0x31);
+            0x34a50fd8, 0x8aa5, 0x4386, 0x81, 0xfe, 0xa0, 0xef, 0xe0, 0x48, 0x8e, 0x31);
 // D9E47579-930E-4427-ADFC-AD80F290E470  'fxfr' == WMMEDIATYPE_FileTransfer
 EXTERN_GUID(WMMEDIATYPE_FileTransfer,
-0xd9e47579, 0x930e, 0x4427, 0xad, 0xfc, 0xad, 0x80, 0xf2, 0x90, 0xe4, 0x70);
+            0xd9e47579, 0x930e, 0x4427, 0xad, 0xfc, 0xad, 0x80, 0xf2, 0x90, 0xe4, 0x70);
 // 9BBA1EA7-5AB2-4829-BA57-0940209BCF3E      'text' == WMMEDIATYPE_Text
 EXTERN_GUID(WMMEDIATYPE_Text,
-0x9bba1ea7, 0x5ab2, 0x4829, 0xba, 0x57, 0x9, 0x40, 0x20, 0x9b, 0xcf, 0x3e);
+            0x9bba1ea7, 0x5ab2, 0x4829, 0xba, 0x57, 0x9, 0x40, 0x20, 0x9b, 0xcf, 0x3e);
 
 // 00000000-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_Base
 EXTERN_GUID(WMMEDIASUBTYPE_Base,
-0x00000000, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000000, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // e436eb78-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB1
 EXTERN_GUID(WMMEDIASUBTYPE_RGB1,
-0xe436eb78, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+            0xe436eb78, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb79-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB4
 EXTERN_GUID(WMMEDIASUBTYPE_RGB4,
-0xe436eb79, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+            0xe436eb79, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7a-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB8
 EXTERN_GUID(WMMEDIASUBTYPE_RGB8,
-0xe436eb7a, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+            0xe436eb7a, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7b-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB565
 EXTERN_GUID(WMMEDIASUBTYPE_RGB565,
-0xe436eb7b, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+            0xe436eb7b, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7c-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB555
 EXTERN_GUID(WMMEDIASUBTYPE_RGB555,
-0xe436eb7c, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+            0xe436eb7c, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7d-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB24
 EXTERN_GUID(WMMEDIASUBTYPE_RGB24,
-0xe436eb7d, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+            0xe436eb7d, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // e436eb7e-524f-11ce-9f53-0020af0ba770            MEDIASUBTYPE_RGB32
 EXTERN_GUID(WMMEDIASUBTYPE_RGB32,
-0xe436eb7e, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
+            0xe436eb7e, 0x524f, 0x11ce, 0x9f, 0x53, 0x00, 0x20, 0xaf, 0x0b, 0xa7, 0x70);
 // 30323449-0000-0010-8000-00AA00389B71  'YV12' ==  MEDIASUBTYPE_I420
 EXTERN_GUID(WMMEDIASUBTYPE_I420,
-0x30323449, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x30323449, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 56555949-0000-0010-8000-00AA00389B71  'YV12' ==  MEDIASUBTYPE_IYUV
 EXTERN_GUID(WMMEDIASUBTYPE_IYUV,
-0x56555949, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x56555949, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 31313259-0000-0010-8000-00AA00389B71  'YV12' ==  MEDIASUBTYPE_YV12
 EXTERN_GUID(WMMEDIASUBTYPE_YV12,
-0x32315659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x32315659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 32595559-0000-0010-8000-00AA00389B71  'YUY2' == MEDIASUBTYPE_YUY2
 EXTERN_GUID(WMMEDIASUBTYPE_YUY2,
-0x32595559, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x32595559, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 59565955-0000-0010-8000-00AA00389B71  'UYVY' ==  MEDIASUBTYPE_UYVY
 EXTERN_GUID(WMMEDIASUBTYPE_UYVY,
-0x59565955, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x59565955, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 55595659-0000-0010-8000-00AA00389B71  'YVYU' == MEDIASUBTYPE_YVYU
 EXTERN_GUID(WMMEDIASUBTYPE_YVYU,
-0x55595659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x55595659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 39555659-0000-0010-8000-00AA00389B71  'YVU9' == MEDIASUBTYPE_YVU9
 EXTERN_GUID(WMMEDIASUBTYPE_YVU9,
-0x39555659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+            0x39555659, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 // 3334504D-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MP43
 EXTERN_GUID(WMMEDIASUBTYPE_MP43,
-0x3334504D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x3334504D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 5334504D-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MP4S
 EXTERN_GUID(WMMEDIASUBTYPE_MP4S,
-0x5334504D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x5334504D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 31564D57-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMV1
 EXTERN_GUID(WMMEDIASUBTYPE_WMV1,
-0x31564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x31564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 32564D57-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMV2
 EXTERN_GUID(WMMEDIASUBTYPE_WMV2,
-0x32564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x32564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 3153534D-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MSS1
 EXTERN_GUID(WMMEDIASUBTYPE_MSS1,
-0x3153534D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x3153534D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // e06d8026-db46-11cf-b4d1-00805f6cbbea            WMMEDIASUBTYPE_MPEG2_VIDEO
 EXTERN_GUID(WMMEDIASUBTYPE_MPEG2_VIDEO,
-0xe06d8026, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x5f, 0x6c, 0xbb, 0xea);
+            0xe06d8026, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x5f, 0x6c, 0xbb, 0xea);
 // 00000001-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_PCM
 EXTERN_GUID(WMMEDIASUBTYPE_PCM,
-0x00000001, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000001, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000009-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_DRM
 EXTERN_GUID(WMMEDIASUBTYPE_DRM,
-0x00000009, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000009, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000162-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudioV9
 EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV9,
-0x00000162, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000162, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000163-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudio_Lossless
 EXTERN_GUID(WMMEDIASUBTYPE_WMAudio_Lossless,
-0x00000163, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000163, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 3253534D-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MSS2
 EXTERN_GUID(WMMEDIASUBTYPE_MSS2,
-0x3253534D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x3253534D, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 0000000A-0000-0010-8000-00AA00389B71        WMMEDIASUBTYPE_WMSP1
-EXTERN_GUID( WMMEDIASUBTYPE_WMSP1,
-0x0000000A,0x0000,0x0010,0x80,0x00,0x00,0xAA,0x00,0x38,0x9B,0x71);
+EXTERN_GUID(WMMEDIASUBTYPE_WMSP1,
+            0x0000000A, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 33564D57-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMV3
 EXTERN_GUID(WMMEDIASUBTYPE_WMV3,
-0x33564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x33564D57, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000161-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudioV8
 EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV8,
-0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000161-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudioV7
 EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV7,
-0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000161-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_WMAudioV2
 EXTERN_GUID(WMMEDIASUBTYPE_WMAudioV2,
-0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000161, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000130-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_ACELPnet
 EXTERN_GUID(WMMEDIASUBTYPE_ACELPnet,
-0x00000130, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000130, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 00000050-0000-0010-8000-00AA00389B71            WMMEDIASUBTYPE_MP3
 EXTERN_GUID(WMMEDIASUBTYPE_MP3,
-0x00000055, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
+            0x00000055, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xAA, 0x00, 0x38, 0x9B, 0x71);
 // 776257d4-c627-41cb-8f81-7ac7ff1c40cc            WMMEDIASUBTYPE_WebStream
 EXTERN_GUID(WMMEDIASUBTYPE_WebStream,
-0x776257d4, 0xc627, 0x41cb, 0x8f, 0x81, 0x7a, 0xc7, 0xff, 0x1c, 0x40, 0xcc);
+            0x776257d4, 0xc627, 0x41cb, 0x8f, 0x81, 0x7a, 0xc7, 0xff, 0x1c, 0x40, 0xcc);
 
 // 05589f80-c356-11ce-bf01-00aa0055595a        WMFORMAT_VideoInfo
 EXTERN_GUID(WMFORMAT_VideoInfo,
-0x05589f80, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
+            0x05589f80, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
 // 05589f81-c356-11ce-bf01-00aa0055595a        WMFORMAT_WaveFormatEx
 EXTERN_GUID(WMFORMAT_WaveFormatEx,
-0x05589f81, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
+            0x05589f81, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
 // 5C8510F2-DEBE-4ca7-BBA5-F07A104F8DFF        WMFORMAT_Script
 EXTERN_GUID(WMFORMAT_Script,
-0x5c8510f2, 0xdebe, 0x4ca7, 0xbb, 0xa5, 0xf0, 0x7a, 0x10, 0x4f, 0x8d, 0xff);
+            0x5c8510f2, 0xdebe, 0x4ca7, 0xbb, 0xa5, 0xf0, 0x7a, 0x10, 0x4f, 0x8d, 0xff);
 
 // 82f38a70-c29f-11d1-97ad-00a0c95ea850        WMSCRIPTTYPE_TwoStrings
-EXTERN_GUID( WMSCRIPTTYPE_TwoStrings,
-0x82f38a70,0xc29f,0x11d1,0x97,0xad,0x00,0xa0,0xc9,0x5e,0xa8,0x50);
+EXTERN_GUID(WMSCRIPTTYPE_TwoStrings,
+            0x82f38a70, 0xc29f, 0x11d1, 0x97, 0xad, 0x00, 0xa0, 0xc9, 0x5e, 0xa8, 0x50);
 
 // e06d80e3-db46-11cf-b4d1-00805f6cbbea        WMFORMAT_MPEG2Video
 EXTERN_GUID(WMFORMAT_MPEG2Video,
-0xe06d80e3, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x05f, 0x6c, 0xbb, 0xea);
+            0xe06d80e3, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x05f, 0x6c, 0xbb, 0xea);
 
-EXTERN_GUID( CLSID_WMMUTEX_Language, 0xD6E22A00,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE );
-EXTERN_GUID( CLSID_WMMUTEX_Bitrate, 0xD6E22A01,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE );
-EXTERN_GUID( CLSID_WMMUTEX_Presentation, 0xD6E22A02,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE );
-EXTERN_GUID( CLSID_WMMUTEX_Unknown, 0xD6E22A03,0x35DA,0x11D1,0x90,0x34,0x00,0xA0,0xC9,0x03,0x49,0xBE );
-EXTERN_GUID( CLSID_WMBandwidthSharing_Exclusive, 0xaf6060aa,0x5197,0x11d2,0xb6,0xaf,0x00,0xc0,0x4f,0xd9,0x08,0xe9 );
-EXTERN_GUID( CLSID_WMBandwidthSharing_Partial, 0xaf6060ab,0x5197,0x11d2,0xb6,0xaf,0x00,0xc0,0x4f,0xd9,0x08,0xe9 );
+EXTERN_GUID(CLSID_WMMUTEX_Language, 0xD6E22A00, 0x35DA, 0x11D1, 0x90, 0x34, 0x00, 0xA0, 0xC9, 0x03, 0x49, 0xBE);
+EXTERN_GUID(CLSID_WMMUTEX_Bitrate, 0xD6E22A01, 0x35DA, 0x11D1, 0x90, 0x34, 0x00, 0xA0, 0xC9, 0x03, 0x49, 0xBE);
+EXTERN_GUID(CLSID_WMMUTEX_Presentation, 0xD6E22A02, 0x35DA, 0x11D1, 0x90, 0x34, 0x00, 0xA0, 0xC9, 0x03, 0x49, 0xBE);
+EXTERN_GUID(CLSID_WMMUTEX_Unknown, 0xD6E22A03, 0x35DA, 0x11D1, 0x90, 0x34, 0x00, 0xA0, 0xC9, 0x03, 0x49, 0xBE);
+EXTERN_GUID(CLSID_WMBandwidthSharing_Exclusive, 0xaf6060aa, 0x5197, 0x11d2, 0xb6, 0xaf, 0x00, 0xc0, 0x4f, 0xd9, 0x08, 0xe9);
+EXTERN_GUID(CLSID_WMBandwidthSharing_Partial, 0xaf6060ab, 0x5197, 0x11d2, 0xb6, 0xaf, 0x00, 0xc0, 0x4f, 0xd9, 0x08, 0xe9);
 
-const NamedGuid MediaType[]=
+const NamedGuid MediaType[] =
 {
     {&MEDIASUBTYPE_AIFF, TEXT("AIFF\0")},
     {&MEDIASUBTYPE_AU, TEXT("AU\0")},
@@ -552,22 +552,23 @@ const NamedGuid MediaType[]=
     {0, 0},
 };
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // GetPin
 // Find the pin of the specified format type on the given filter
 // This method leaves an outstanding reference on the pin if successful
-HRESULT GetPin(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTION PinDir, IPin** ppPin)
+HRESULT GetPin(IBaseFilter *pFilter, const GUID *pFormat, PIN_DIRECTION PinDir, IPin **ppPin)
 {
     HRESULT hr = S_OK;
 
     if (pFilter && pFormat && ppPin)
     {
-        IEnumPins* pIEnumPins = NULL;
+        IEnumPins *pIEnumPins = NULL;
         hr = pFilter->EnumPins(&pIEnumPins);
         if (SUCCEEDED(hr))
         {
             // find the pin with the specified format
-            IPin* pIPin = NULL;
+            IPin *pIPin = NULL;
+
             while (S_OK == pIEnumPins->Next(1, &pIPin, NULL))
             {
                 // match the pin direction
@@ -576,11 +577,11 @@ HRESULT GetPin(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTION PinDir, 
                 if (pinDir == PinDir)
                 {
                     // match pin direction check the first media type returned from the upstream pin
-                    IEnumMediaTypes* pIEnumMT = NULL;
+                    IEnumMediaTypes *pIEnumMT = NULL;
                     hr = pIPin->EnumMediaTypes(&pIEnumMT);
                     if (SUCCEEDED(hr))
                     {
-                        AM_MEDIA_TYPE* pmt = NULL;
+                        AM_MEDIA_TYPE *pmt = NULL;
                         hr = pIEnumMT->Next(1, &pmt, NULL);
                         if (S_OK == hr)
                         {
@@ -596,10 +597,15 @@ HRESULT GetPin(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTION PinDir, 
                                 DeleteMediaType(pmt);
                             }
                         }
+
                         pIEnumMT->Release();
                     }
                 }
-                if (pIPin) pIPin->Release(); pIPin = 0;
+
+                if (pIPin)
+                    pIPin->Release();
+
+                pIPin = 0;
             }
 
             if (NULL == *ppPin)
@@ -607,7 +613,8 @@ HRESULT GetPin(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTION PinDir, 
                 // failed to find the named pin
                 hr = E_FAIL;
             }
-        pIEnumPins->Release();
+
+            pIEnumPins->Release();
         }
     }
     else
@@ -617,28 +624,32 @@ HRESULT GetPin(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTION PinDir, 
 
     return hr;
 }
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // GetPin
 // Find the pin of the specified name on the given filter
 // This method leaves an outstanding reference on the pin if successful
-HRESULT GetPin(IBaseFilter* pFilter, LPCWSTR pName, IPin** ppPin)
+HRESULT GetPin(IBaseFilter *pFilter, LPCWSTR pName, IPin **ppPin)
 {
     HRESULT hr = S_OK;
 
     if (pFilter && pName && ppPin)
     {
-        IEnumPins* pIEnumPins = NULL;
+        IEnumPins *pIEnumPins = NULL;
         hr = pFilter->EnumPins(&pIEnumPins);
         if (SUCCEEDED(hr))
         {
-            IPin* pIPin = NULL;
+            IPin *pIPin = NULL;
+
             while (S_OK == pIEnumPins->Next(1, &pIPin, NULL))
             {
                 PIN_INFO info = {0};
                 hr = pIPin->QueryPinInfo(&info);
                 if (SUCCEEDED(hr))
                 {
-                    if (info.pFilter) info.pFilter->Release(); info.pFilter = 0;
+                    if (info.pFilter)
+                        info.pFilter->Release();
+
+                    info.pFilter = 0;
 
                     if (0 == wcsncmp(info.achName, pName, wcslen(pName)))
                     {
@@ -647,8 +658,13 @@ HRESULT GetPin(IBaseFilter* pFilter, LPCWSTR pName, IPin** ppPin)
                         break;
                     }
                 }
-                if (pIPin) pIPin->Release(); pIPin = 0;
+
+                if (pIPin)
+                    pIPin->Release();
+
+                pIPin = 0;
             }
+
             pIEnumPins->Release();
         }
 
@@ -666,29 +682,30 @@ HRESULT GetPin(IBaseFilter* pFilter, LPCWSTR pName, IPin** ppPin)
     return hr;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // FindPinInterface
 // Attempt to locate the interface on the pin with the specified format or on the first pin if no
 // format is provided.
-HRESULT FindPinInterface(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTION PinDir, const IID& riid, void** ppvInterface)
+HRESULT FindPinInterface(IBaseFilter *pFilter, const GUID *pFormat, PIN_DIRECTION PinDir, const IID&riid, void **ppvInterface)
 {
     HRESULT hr = S_OK;
 
     if (pFilter && ppvInterface)
     {
-        IPin* pIPin = NULL;
+        IPin *pIPin = NULL;
         if (pFormat)
         {
             hr = GetPin(pFilter, pFormat, PinDir, &pIPin);
         }
         else
         {
-            IEnumPins* pIEnumPins = NULL;
+            IEnumPins *pIEnumPins = NULL;
             hr = pFilter->EnumPins(&pIEnumPins);
             if (SUCCEEDED(hr))
             {
                 hr = pIEnumPins->Next(1, &pIPin, NULL);
             }
+
             pIEnumPins->Release();
         }
 
@@ -696,6 +713,7 @@ HRESULT FindPinInterface(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTIO
         {
             hr = pIPin->QueryInterface(riid, ppvInterface);
         }
+
         pIPin->Release();
     }
     else
@@ -708,37 +726,42 @@ HRESULT FindPinInterface(IBaseFilter* pFilter, const GUID* pFormat, PIN_DIRECTIO
 
 std::string getStringFromGUID(const GUID *pGUID)
 {
-    int i=0;
+    int i = 0;
+
     // Find format GUID's name in the named guids table
     while (MediaType[i].pguid != 0)
     {
-        if(*pGUID == *(MediaType[i].pguid))
+        if (*pGUID == *(MediaType[i].pguid))
         {
             return std::string(MediaType[i].psz);
         }
+
         i++;
     }
 
     // return the guid if does not recognize the type
-    const int maxChar = 60;
-    LPOLESTR pwszClsid = (LPOLESTR) CoTaskMemAlloc(maxChar*2);
-    CHAR  szCLSID[maxChar];
-    int nchar = StringFromGUID2(*pGUID, pwszClsid, maxChar);
+    const int maxChar   = 60;
+    LPOLESTR  pwszClsid = (LPOLESTR) CoTaskMemAlloc(maxChar * 2);
+    CHAR      szCLSID[maxChar];
+    int       nchar = StringFromGUID2(*pGUID, pwszClsid, maxChar);
     // Convert result to ANSI
     WideCharToMultiByte(CP_ACP, 0, pwszClsid, -1, szCLSID, nchar, NULL, NULL);
     CoTaskMemFree(pwszClsid);
     return std::string(szCLSID);
 }
-const GUID* getGUIDFromString(const std::string& str)
+const GUID* getGUIDFromString(const std::string&str)
 {
-    int i=0;
+    int i = 0;
+
     // Find format GUID's name in the named guids table
     while (MediaType[i].pguid != 0)
     {
-        if(str == std::string((MediaType[i].psz)))
+        if (str == std::string((MediaType[i].psz)))
             return MediaType[i].pguid;
+
         i++;
     }
+
     return 0;
 }
 static std::string getErrorMessage(HRESULT hr)
@@ -751,12 +774,14 @@ static std::string getErrorMessage(HRESULT hr)
         {
             StringCchPrintf(szErr, MAX_ERROR_TEXT_LEN, "Unknown Error: 0x%2x", hr);
         }
+
         return std::string (szErr);
     }
+
     return std::string("");
 }
 
-static bool checkError(const std::string& prefix, HRESULT hr)
+static bool checkError(const std::string&prefix, HRESULT hr)
 {
     if (FAILED(hr))
     {
@@ -765,16 +790,22 @@ static bool checkError(const std::string& prefix, HRESULT hr)
 
     if (hr == E_ABORT)
         return false;
+
     if (hr == E_FAIL)
         return false;
+
     if (hr == E_OUTOFMEMORY)
         return false;
+
     if (hr == E_POINTER)
         return false;
+
     if (hr == VFW_E_CANNOT_CONNECT)
         return false;
+
     if (hr == 0x80040256)
         return false;
+
     if (hr == 0x80040216)
         return false;
 
@@ -785,21 +816,22 @@ bool CTextureRenderer::initBuildGraph()
 {
     std::string prefixForMessage;
     {
-    std::stringstream ss;
-    ss << _imageStream.get();
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get();
+        prefixForMessage = ss.str();
     }
 
     HRESULT hr;
-    hr = CoCreateInstance( CLSID_FilterGraph, 0, CLSCTX_INPROC,IID_IGraphBuilder, (void **)&_graphBuilder );
+
+    hr = CoCreateInstance(CLSID_FilterGraph, 0, CLSCTX_INPROC, IID_IGraphBuilder, (void**)&_graphBuilder);
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    hr = _graphBuilder->QueryInterface( IID_IMediaControl, (void **)&_mediaControl );
+    hr = _graphBuilder->QueryInterface(IID_IMediaControl, (void**)&_mediaControl);
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    hr = _graphBuilder->QueryInterface( IID_IMediaSeeking, (void **)&_mediaSeeking );
+    hr = _graphBuilder->QueryInterface(IID_IMediaSeeking, (void**)&_mediaSeeking);
     if (!checkError(prefixForMessage, hr))
         return false;
 
@@ -808,8 +840,8 @@ bool CTextureRenderer::initBuildGraph()
         return false;
 
 
-    hr = _graphBuilder->QueryInterface( IID_IBasicAudio, (void **)&_basicAudio);
-    checkError(prefixForMessage, hr); //May be no sound so dont effect return result
+    hr = _graphBuilder->QueryInterface(IID_IBasicAudio, (void**)&_basicAudio);
+    checkError(prefixForMessage, hr); // May be no sound so dont effect return result
 
     return true;
 }
@@ -821,11 +853,11 @@ struct ListDeviceAvailable
     {
         std::string _name;
         std::string _clsid;
-        IMoniker* _device;
-        DeviceEntry(const std::string& name = "" , const std::string& clsid = "", IMoniker* device = 0) : _name(name), _clsid(clsid), _device(device) {}
+        IMoniker    *_device;
+        DeviceEntry(const std::string&name = "", const std::string&clsid = "", IMoniker *device = 0) : _name(name), _clsid(clsid), _device(device) {}
     };
     std::vector<DeviceEntry> _listDevice;
-    IEnumMoniker* _enumMoniker;
+    IEnumMoniker             *_enumMoniker;
     ListDeviceAvailable(IEnumMoniker *enumMoniker) : _enumMoniker(enumMoniker)
     {
         createList();
@@ -837,7 +869,7 @@ struct ListDeviceAvailable
                 _listDevice[i]._device->Release();
     }
 
-    void displayDevicesFound(const std::string& prefixForMessage, osg::NotifySeverity serverity = osg::NOTICE) const
+    void displayDevicesFound(const std::string&prefixForMessage, osg::NotifySeverity serverity = osg::NOTICE) const
     {
         for (int i = 0; i < (int)_listDevice.size(); i++)
         {
@@ -845,17 +877,18 @@ struct ListDeviceAvailable
         }
     }
 
-    DeviceEntry getDevice(const std::string& name)
+    DeviceEntry getDevice(const std::string&name)
     {
         for (int i = 0; i < (int)_listDevice.size(); i++)
             if (_listDevice[i]._name == name)
                 return _listDevice[i];
-        //if (!_listDevice.empty())
+
+        // if (!_listDevice.empty())
         //    return _listDevice.front();
 
         int deviceId = atoi(name.c_str());
-        if(deviceId >= 0 && deviceId < (int)_listDevice.size())
-          return _listDevice[deviceId];
+        if (deviceId >= 0 && deviceId < (int)_listDevice.size())
+            return _listDevice[deviceId];
 
         return DeviceEntry();
     }
@@ -863,12 +896,13 @@ struct ListDeviceAvailable
     void createList()
     {
         IMoniker *device = NULL;
-        HRESULT hr;
+        HRESULT  hr;
+
         // Enumerate all items associated with the moniker
         while (_enumMoniker->Next(1, &device, NULL) == S_OK)
         {
             IPropertyBag *pPropBag = NULL;
-            CLSID clsidFilter;
+            CLSID        clsidFilter;
 
             VARIANT varName;
             VARIANT varFilterClsid;
@@ -878,7 +912,7 @@ struct ListDeviceAvailable
 
             // Associate moniker with a file
             hr = device->BindToStorage(0, 0, IID_IPropertyBag,
-                                         (void **)&pPropBag);
+                                       (void**)&pPropBag);
 
             // Read filter name from property bag
             if (SUCCEEDED(hr))
@@ -906,28 +940,29 @@ struct ListDeviceAvailable
                 else if (hr == E_PROP_ID_UNSUPPORTED)
                 {
                     clsidFilter = GUID_NULL; // No CLSID is listed.
-                    hr = S_OK;
+                    hr          = S_OK;
                 }
             }
 
             // covert to std::string
-            _bstr_t bstr_t(varName.bstrVal);
+            _bstr_t     bstr_t(varName.bstrVal);
             std::string deviceName(bstr_t);
             std::string deviceGUID;
 
             // Add filter name and filename to list
-            if(SUCCEEDED(hr))
+            if (SUCCEEDED(hr))
             {
                 LPOLESTR pwszClsid;
-                CHAR  szCLSID[60];
+                CHAR     szCLSID[60];
                 hr = StringFromCLSID(clsidFilter, &pwszClsid);
                 if (!FAILED(hr))
                 {
                     // Convert result to ANSI
                     WideCharToMultiByte(CP_ACP, 0, pwszClsid, -1, szCLSID, 60, NULL, NULL);
-                    //OSG_NOTICE << "device \"" << truename << "\" id " << szCLSID << std::endl;
+                    // OSG_NOTICE << "device \"" << truename << "\" id " << szCLSID << std::endl;
                     deviceGUID = std::string(szCLSID);
                 }
+
                 CoTaskMemFree(pwszClsid);
             }
 
@@ -935,22 +970,21 @@ struct ListDeviceAvailable
             VariantClear(&varFilterClsid);
 
             // Cleanup interfaces
-            if (pPropBag) pPropBag->Release();
+            if (pPropBag)
+                pPropBag->Release();
 
             _listDevice.push_back(DeviceEntry(deviceName, deviceGUID, device));
         }
     }
-
-
 };
 
 
 struct ListCapDeviceAvailable
 {
-    typedef std::pair<AM_MEDIA_TYPE*, VIDEOINFOHEADER *> CapEntry;
+    typedef std::pair<AM_MEDIA_TYPE*, VIDEOINFOHEADER*> CapEntry;
     std::vector<CapEntry> _capsList;
-    IAMStreamConfig* _config;
-    ListCapDeviceAvailable(IAMStreamConfig* config) : _config(config)
+    IAMStreamConfig       *_config;
+    ListCapDeviceAvailable(IAMStreamConfig *config) : _config(config)
     {
         createList();
     }
@@ -961,74 +995,81 @@ struct ListCapDeviceAvailable
                 DeleteMediaType(_capsList[i].first);
     }
 
-    void displayCapsFound(const std::string& prefixForMessage = "") const
+    void displayCapsFound(const std::string&prefixForMessage = "") const
     {
         for (int i = 0; i < (int)_capsList.size(); i++)
         {
-            VIDEOINFOHEADER* video= _capsList[i].second;
+            VIDEOINFOHEADER *video = _capsList[i].second;
             displayCap(video, prefixForMessage);
         }
     }
 
-    static void displayCap(VIDEOINFOHEADER* video, const std::string& prefix = "")
+    static void displayCap(VIDEOINFOHEADER *video, const std::string&prefix = "")
     {
         if (!video)
             return;
-        double fps = 1.0/ (video->AvgTimePerFrame * 100.0 * 1e-9);
+
+        double    fps = 1.0 / (video->AvgTimePerFrame * 100.0 * 1e-9);
         FOURCCMap fccMap(video->bmiHeader.biCompression);
-        GUID g1 = (GUID)fccMap;
+        GUID      g1 = (GUID)fccMap;
         OSG_NOTICE << prefix << " cap " << video->bmiHeader.biWidth << " x " << video->bmiHeader.biHeight << " bit per pixel " << video->bmiHeader.biBitCount << " (" << getStringFromGUID(&g1) << ") at " << fps << " fps" << std::endl;
     }
 
-    std::pair<AM_MEDIA_TYPE*, VIDEOINFOHEADER *> getCaps(int width, int height, double fps)
+    std::pair<AM_MEDIA_TYPE*, VIDEOINFOHEADER*> getCaps(int width, int height, double fps)
     {
         std::vector<CapEntry> filterResolution;
+
         for (int i = 0; i < (int)_capsList.size(); i++)
         {
-            VIDEOINFOHEADER* video= _capsList[i].second;
+            VIDEOINFOHEADER *video = _capsList[i].second;
             if (video->bmiHeader.biWidth == width && video->bmiHeader.biHeight == height)
             {
                 filterResolution.push_back(_capsList[i]);
             }
         }
+
         // get the max fps if the fps are not reach on the desired resolution
         typedef std::multimap<double, CapEntry> ContainerFrameRateSorted;
         ContainerFrameRateSorted filterFrameRate;
+
         for (int i = 0; i < (int)filterResolution.size(); i++)
         {
-            VIDEOINFOHEADER* video= filterResolution[i].second;
-            double capfps = 1.0/  (video->AvgTimePerFrame * 100.0 * 1e-9);
-            double error = fabs(capfps - fps);
+            VIDEOINFOHEADER *video = filterResolution[i].second;
+            double          capfps = 1.0 / (video->AvgTimePerFrame * 100.0 * 1e-9);
+            double          error  = fabs(capfps - fps);
             filterFrameRate.insert(std::pair<double, CapEntry>(error, filterResolution[i]));
         }
 
         CapEntry nullCapEntry(static_cast<AM_MEDIA_TYPE*>(NULL), static_cast<VIDEOINFOHEADER*>(NULL));
-        CapEntry best = nullCapEntry;
+        CapEntry best  = nullCapEntry;
         CapEntry first = nullCapEntry;
 
         for (ContainerFrameRateSorted::iterator it = filterFrameRate.begin();
-               it != filterFrameRate.end();
-               ++it)
+             it != filterFrameRate.end();
+             ++it)
         {
             if (first == nullCapEntry)
                 first = it->second;
 
             if (it->first < 1e-3)
             {
-                VIDEOINFOHEADER* video= it->second.second;
-                FOURCCMap fccMap(video->bmiHeader.biCompression);
-                GUID g1 = (GUID)fccMap;
+                VIDEOINFOHEADER *video = it->second.second;
+                FOURCCMap       fccMap(video->bmiHeader.biCompression);
+                GUID            g1 = (GUID)fccMap;
                 if (getStringFromGUID(&g1) == std::string("YUY2"))
                     best = it->second;
             }
         }
+
         if (best != nullCapEntry)
             return best;
+
         if (first != nullCapEntry)
             return first;
 
         if (!_capsList.empty())
             return _capsList.front();
+
         return nullCapEntry;
     }
 
@@ -1038,22 +1079,23 @@ struct ListCapDeviceAvailable
         // Use the IPin to get the interface:
 
         // get the number of formats and make sure the strutucre size matches
-        int iCount, iSize;
+        int                      iCount, iSize;
         VIDEO_STREAM_CONFIG_CAPS caps;
+
         _config->GetNumberOfCapabilities(&iCount, &iSize);
-        if( sizeof(caps) != iSize )
+        if (sizeof(caps) != iSize)
             return;
 
         // now go through all formats and use the one you like
-        for(int i=0; i < iCount; i++)
+        for (int i = 0; i < iCount; i++)
         {
             // GetStreamCaps allocats the AM_MEDIA_TYPE, which must be deleted by using DeleteMediaType
             AM_MEDIA_TYPE *pmt = NULL;
-            if( _config->GetStreamCaps(i, &pmt, (BYTE*)&caps) == S_OK )
+            if (_config->GetStreamCaps(i, &pmt, (BYTE*)&caps) == S_OK)
             {
                 if (pmt->formattype == FORMAT_VideoInfo && pmt->cbFormat >= sizeof(VIDEOINFOHEADER))
                 {
-                    VIDEOINFOHEADER *video=
+                    VIDEOINFOHEADER *video =
                         reinterpret_cast<VIDEOINFOHEADER*>(pmt->pbFormat);
                     _capsList.push_back(CapEntry(pmt, video));
                 }
@@ -1067,23 +1109,24 @@ struct ListCapDeviceAvailable
 };
 
 
-bool CTextureRenderer::setupOutputSoundDevice(ICreateDevEnum* devs)
+bool CTextureRenderer::setupOutputSoundDevice(ICreateDevEnum *devs)
 {
     if (!devs)
         return false;
 
     std::string prefixForMessage;
     {
-    std::stringstream ss;
-    ss << _imageStream.get();
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get();
+        prefixForMessage = ss.str();
     }
 
-    HRESULT hr;
-    std::string outputdevice = "Default DirectSound Device";
-    IEnumMoniker*   audioRenderer = 0; hr = devs?devs->CreateClassEnumerator (CLSID_AudioRendererCategory, &audioRenderer, 0):0;
+    HRESULT      hr;
+    std::string  outputdevice   = "Default DirectSound Device";
+    IEnumMoniker *audioRenderer = 0; hr = devs ? devs->CreateClassEnumerator (CLSID_AudioRendererCategory, &audioRenderer, 0) : 0;
     if (!checkError(prefixForMessage, hr))
         return false;
+
     ListDeviceAvailable deviceFinder(audioRenderer);
 
     deviceFinder.displayDevicesFound(prefixForMessage + " sounddevice", osg::INFO);
@@ -1096,46 +1139,50 @@ bool CTextureRenderer::setupOutputSoundDevice(ICreateDevEnum* devs)
     }
 
     _soundOutputDeviceName = device._name;
-    IMoniker* mon  = device._device;
-    hr = mon?mon->BindToObject(0,0,IID_IBaseFilter, (void**)&_soundOutputDevice):0;
+    IMoniker *mon = device._device;
+    hr = mon ? mon->BindToObject(0, 0, IID_IBaseFilter, (void**)&_soundOutputDevice) : 0;
     checkError(prefixForMessage, hr);
     if (FAILED(hr))
         return false;
 
-    hr = _graphBuilder->AddFilter(_soundOutputDevice,NULL);
+    hr = _graphBuilder->AddFilter(_soundOutputDevice, NULL);
     checkError(prefixForMessage, hr);
     if (FAILED(hr))
     {
-        if (_soundOutputDevice) _soundOutputDevice->Release(); _soundOutputDevice = 0;
+        if (_soundOutputDevice)
+            _soundOutputDevice->Release();
+
+        _soundOutputDevice = 0;
         return false;
     }
 
     return true;
 }
 
-bool CTextureRenderer::openVideoCaptureDevice(const std::string& capture, int wantWidth, int wantHeight, double wantFps)
+bool CTextureRenderer::openVideoCaptureDevice(const std::string&capture, int wantWidth, int wantHeight, double wantFps)
 {
     std::string prefixForMessage;
     {
-    std::stringstream ss;
-    ss << _imageStream.get();
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get();
+        prefixForMessage = ss.str();
     }
 
-    HRESULT hr;
-    ICreateDevEnum* devs = 0; hr = CoCreateInstance (CLSID_SystemDeviceEnum, 0, CLSCTX_INPROC, IID_ICreateDevEnum, (void **) &devs);
+    HRESULT        hr;
+    ICreateDevEnum *devs = 0; hr = CoCreateInstance (CLSID_SystemDeviceEnum, 0, CLSCTX_INPROC, IID_ICreateDevEnum, (void**) &devs);
+
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    IEnumMoniker*   cams = 0; hr = devs?devs->CreateClassEnumerator (CLSID_VideoInputDeviceCategory, &cams, 0):0;
+    IEnumMoniker *cams = 0; hr = devs ? devs->CreateClassEnumerator (CLSID_VideoInputDeviceCategory, &cams, 0) : 0;
     if (!checkError(prefixForMessage, hr))
         return false;
 
     ListDeviceAvailable deviceFinder(cams);
     {
-    std::stringstream ss;
-    ss << std::hex << _imageStream.get() << " capture";
-    deviceFinder.displayDevicesFound(ss.str(), osg::INFO);
+        std::stringstream ss;
+        ss << std::hex << _imageStream.get() << " capture";
+        deviceFinder.displayDevicesFound(ss.str(), osg::INFO);
     }
     ListDeviceAvailable::DeviceEntry device = deviceFinder.getDevice(capture);
 
@@ -1144,33 +1191,37 @@ bool CTextureRenderer::openVideoCaptureDevice(const std::string& capture, int wa
         OSG_WARN << _imageStream.get() << " no capture device \"" << capture << "\" found" << std::endl;
         return false;
     }
+
     _videoCaptureDeviceName = device._name;
     OSG_NOTICE << _imageStream.get() << " use capture device \"" << getVideoCaptureDeviceName() << "\"" << std::endl;
 
     {
-    std::stringstream ss;
-    ss << _imageStream.get() << " \"" << getVideoCaptureDeviceName() << "\"";
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get() << " \"" << getVideoCaptureDeviceName() << "\"";
+        prefixForMessage = ss.str();
     }
 
 
-    IMoniker* mon  = device._device;
+    IMoniker *mon = device._device;
 
-    hr = mon?mon->BindToObject(0,0,IID_IBaseFilter, (void**)&_videoCaptureDevice):0;
+    hr = mon ? mon->BindToObject(0, 0, IID_IBaseFilter, (void**)&_videoCaptureDevice) : 0;
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    IEnumPins* pins = 0; hr = _videoCaptureDevice?_videoCaptureDevice->EnumPins(&pins):0;
+    IEnumPins *pins = 0; hr = _videoCaptureDevice ? _videoCaptureDevice->EnumPins(&pins) : 0;
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    IPin* cap  = 0; hr = pins?pins->Next(1,&cap, 0):0;
-    if (pins) pins->Release(); pins = 0;
+    IPin *cap = 0; hr = pins ? pins->Next(1, &cap, 0) : 0;
+    if (pins)
+        pins->Release();
+
+    pins = 0;
     if (!checkError(prefixForMessage, hr))
         return false;
 
 
-    IAMStreamConfig* capConfig = 0; hr = cap->QueryInterface( IID_IAMStreamConfig, (void **)&capConfig);
+    IAMStreamConfig *capConfig = 0; hr = cap->QueryInterface(IID_IAMStreamConfig, (void**)&capConfig);
     if (capConfig)
     {
         ListCapDeviceAvailable capsDevice(capConfig);
@@ -1181,6 +1232,7 @@ bool CTextureRenderer::openVideoCaptureDevice(const std::string& capture, int wa
             ListCapDeviceAvailable::displayCap(found.second,  prefixForMessage + " use ");
             capConfig->SetFormat(found.first);
         }
+
         capConfig->Release();
     }
 
@@ -1188,44 +1240,48 @@ bool CTextureRenderer::openVideoCaptureDevice(const std::string& capture, int wa
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    IPin*           rnd  = 0;
+    IPin *rnd = 0;
     hr = FindPin(L"In", &rnd);
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    hr = _graphBuilder->Connect(cap,rnd);
+    hr = _graphBuilder->Connect(cap, rnd);
 
-    if (rnd) rnd->Release();
-    if (cap) cap->Release();
+    if (rnd)
+        rnd->Release();
+
+    if (cap)
+        cap->Release();
 
     bool result = checkError(prefixForMessage, hr);
     return result;
 }
 
 
-bool CTextureRenderer::openSoundCaptureDevice(const std::string& capture, int nbChannels)
+bool CTextureRenderer::openSoundCaptureDevice(const std::string&capture, int nbChannels)
 {
     std::string prefixForMessage;
     {
-    std::stringstream ss;
-    ss << _imageStream.get();
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get();
+        prefixForMessage = ss.str();
     }
 
-    HRESULT hr;
-    ICreateDevEnum* devs = 0; hr = CoCreateInstance (CLSID_SystemDeviceEnum, 0, CLSCTX_INPROC, IID_ICreateDevEnum, (void **) &devs);
+    HRESULT        hr;
+    ICreateDevEnum *devs = 0; hr = CoCreateInstance (CLSID_SystemDeviceEnum, 0, CLSCTX_INPROC, IID_ICreateDevEnum, (void**) &devs);
+
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    IEnumMoniker*   captureDevices = 0; hr = devs?devs->CreateClassEnumerator (CLSID_AudioInputDeviceCategory, &captureDevices, 0):0;
+    IEnumMoniker *captureDevices = 0; hr = devs ? devs->CreateClassEnumerator (CLSID_AudioInputDeviceCategory, &captureDevices, 0) : 0;
     if (!checkError(prefixForMessage, hr))
         return false;
 
     ListDeviceAvailable deviceFinder(captureDevices);
     {
-    std::stringstream ss;
-    ss << std::hex << _imageStream.get() << " capture sound ";
-    deviceFinder.displayDevicesFound(ss.str(), osg::INFO);
+        std::stringstream ss;
+        ss << std::hex << _imageStream.get() << " capture sound ";
+        deviceFinder.displayDevicesFound(ss.str(), osg::INFO);
     }
     ListDeviceAvailable::DeviceEntry device = deviceFinder.getDevice(capture);
 
@@ -1234,32 +1290,34 @@ bool CTextureRenderer::openSoundCaptureDevice(const std::string& capture, int nb
         OSG_WARN << _imageStream.get() << " no sound capture device \"" << capture << "\" found" << std::endl;
         return false;
     }
+
     _soundCaptureDeviceName = device._name;
     OSG_NOTICE << _imageStream.get() << " use sound capture device \"" << getSoundCaptureDeviceName() << "\"" << std::endl;
 
     {
-    std::stringstream ss;
-    ss << _imageStream.get() << " \"" << getSoundCaptureDeviceName() << "\"";
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get() << " \"" << getSoundCaptureDeviceName() << "\"";
+        prefixForMessage = ss.str();
     }
 
 
-    IMoniker* mon  = device._device;
+    IMoniker *mon = device._device;
 
-    hr = mon?mon->BindToObject(0,0,IID_IBaseFilter, (void**)&_soundCaptureDevice):0;
+    hr = mon ? mon->BindToObject(0, 0, IID_IBaseFilter, (void**)&_soundCaptureDevice) : 0;
     if (FAILED(hr))
     {
         checkError(prefixForMessage, hr);
         return false;
     }
 
-    IAMStreamConfig* pISC = NULL;
+    IAMStreamConfig *pISC = NULL;
     hr = FindPinInterface(_soundCaptureDevice, &MEDIATYPE_Audio, PINDIR_OUTPUT, IID_IAMStreamConfig, reinterpret_cast<void**>(&pISC));
     if (FAILED(hr))
     {
         checkError(prefixForMessage, hr);
         return false;
     }
+
     // loop through all the capabilities (audio formats) and populate the control
     int count, size;
     hr = pISC->GetNumberOfCapabilities(&count, &size);
@@ -1267,11 +1325,11 @@ bool CTextureRenderer::openSoundCaptureDevice(const std::string& capture, int nb
     {
         if (sizeof(AUDIO_STREAM_CONFIG_CAPS) == size)
         {
-            AM_MEDIA_TYPE* pmt = NULL;
+            AM_MEDIA_TYPE            *pmt = NULL;
             AUDIO_STREAM_CONFIG_CAPS ascc;
-            WAVEFORMATEX* pwfex = NULL;
+            WAVEFORMATEX             *pwfex = NULL;
 
-            for (int index=0; index<count; ++index)
+            for (int index = 0; index < count; ++index)
             {
                 hr = pISC->GetStreamCaps(index, &pmt, reinterpret_cast<BYTE*>(&ascc));
                 if (SUCCEEDED(hr))
@@ -1303,7 +1361,6 @@ bool CTextureRenderer::openSoundCaptureDevice(const std::string& capture, int nb
                     {
                         OSG_NOTICE << prefixForMessage << buffer << std::endl;
                     }
-
                 }
             }
         }
@@ -1312,9 +1369,14 @@ bool CTextureRenderer::openSoundCaptureDevice(const std::string& capture, int nb
             OSG_WARN << prefixForMessage << " can t retrieve informations pins" << std::endl;
         }
     }
-    if (pISC) pISC->Release(); pISC = 0;
-    IPin* captureOutputDevicePinOut = 0; hr = _soundCaptureDevice? ::GetPin(_soundCaptureDevice,L"Capture",&captureOutputDevicePinOut) : 0;
-    if (FAILED(hr)) {
+
+    if (pISC)
+        pISC->Release();
+
+    pISC = 0;
+    IPin *captureOutputDevicePinOut = 0; hr = _soundCaptureDevice ? ::GetPin(_soundCaptureDevice, L"Capture", &captureOutputDevicePinOut) : 0;
+    if (FAILED(hr))
+    {
         checkError(prefixForMessage, hr);
         return false;
     }
@@ -1329,32 +1391,48 @@ bool CTextureRenderer::openSoundCaptureDevice(const std::string& capture, int nb
     if (!setupOutputSoundDevice(devs))
     {
         devs->Release(); devs = 0;
-        if (captureOutputDevicePinOut) captureOutputDevicePinOut->Release(); captureOutputDevicePinOut = 0;
+        if (captureOutputDevicePinOut)
+            captureOutputDevicePinOut->Release();
+
+        captureOutputDevicePinOut = 0;
         return false;
     }
+
     devs->Release(); devs = 0;
 
     std::string prefixForMessageSound;
     {
-    std::stringstream ss;
-    ss << _imageStream.get() << " " << getSoundOutputDeviceName();
-    prefixForMessageSound = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get() << " " << getSoundOutputDeviceName();
+        prefixForMessageSound = ss.str();
     }
 
-    IPin* soundOutputDevicePinIn = 0;
+    IPin *soundOutputDevicePinIn = 0;
     hr = _soundOutputDevice->FindPin(L"Audio Input pin (rendered)", &soundOutputDevicePinIn);
     if (FAILED(hr))
     {
         checkError(prefixForMessageSound, hr);
-        if (soundOutputDevicePinIn)    soundOutputDevicePinIn->Release(); soundOutputDevicePinIn = 0;
-        if (captureOutputDevicePinOut) captureOutputDevicePinOut->Release(); captureOutputDevicePinOut = 0;
+        if (soundOutputDevicePinIn)
+            soundOutputDevicePinIn->Release();
+
+        soundOutputDevicePinIn = 0;
+        if (captureOutputDevicePinOut)
+            captureOutputDevicePinOut->Release();
+
+        captureOutputDevicePinOut = 0;
         return false;
     }
 
     hr = _graphBuilder->Connect(captureOutputDevicePinOut, soundOutputDevicePinIn);
 
-    if (soundOutputDevicePinIn)    soundOutputDevicePinIn->Release(); soundOutputDevicePinIn = 0;
-    if (captureOutputDevicePinOut) captureOutputDevicePinOut->Release(); captureOutputDevicePinOut = 0;
+    if (soundOutputDevicePinIn)
+        soundOutputDevicePinIn->Release();
+
+    soundOutputDevicePinIn = 0;
+    if (captureOutputDevicePinOut)
+        captureOutputDevicePinOut->Release();
+
+    captureOutputDevicePinOut = 0;
 
     if (FAILED(hr))
     {
@@ -1366,16 +1444,17 @@ bool CTextureRenderer::openSoundCaptureDevice(const std::string& capture, int nb
 }
 
 
-bool CTextureRenderer::openCaptureDevices(const DirectShowImageStream::Options& o)
+bool CTextureRenderer::openCaptureDevices(const DirectShowImageStream::Options&o)
 {
     std::string prefixForMessage;
     {
-    std::stringstream ss;
-    ss << _imageStream.get();
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get();
+        prefixForMessage = ss.str();
     }
 
     DirectShowImageStream::Options options = o;
+
     syncStreams(false);
 
     for (DirectShowImageStream::Options::iterator it = options.begin(); it != options.end(); it++)
@@ -1387,9 +1466,9 @@ bool CTextureRenderer::openCaptureDevices(const DirectShowImageStream::Options& 
     std::string videoCaptureDevice = options["captureVideoDevice"];
 
     OSG_NOTICE << prefixForMessage << " try to open video capture device " << videoCaptureDevice;
-    if (!soundCaptureDevice .empty())
+    if (!soundCaptureDevice.empty())
     {
-        OSG_NOTICE << " and sound capture device " << soundCaptureDevice ;
+        OSG_NOTICE << " and sound capture device " << soundCaptureDevice;
     }
 
     OSG_NOTICE << std::endl;
@@ -1397,50 +1476,51 @@ bool CTextureRenderer::openCaptureDevices(const DirectShowImageStream::Options& 
     if (!initBuildGraph())
         return false;
 
-    int wantWidth = atoi(options["captureWantedWidth"].c_str());
-    int wantHeight = atoi(options["captureWantedHeight"].c_str());
-    float wantFps = atof(options["captureWantedFps"].c_str());
+    int   wantWidth  = atoi(options["captureWantedWidth"].c_str());
+    int   wantHeight = atoi(options["captureWantedHeight"].c_str());
+    float wantFps    = atof(options["captureWantedFps"].c_str());
     if (!openVideoCaptureDevice(videoCaptureDevice, wantWidth, wantHeight, wantFps))
         return false;
 
-    if (!soundCaptureDevice.empty() && !openSoundCaptureDevice(soundCaptureDevice ))
+    if (!soundCaptureDevice.empty() && !openSoundCaptureDevice(soundCaptureDevice))
     {
-        OSG_WARN << prefixForMessage << " failed to setup sound capture device " << soundCaptureDevice  << std::endl;
+        OSG_WARN << prefixForMessage << " failed to setup sound capture device " << soundCaptureDevice << std::endl;
     }
+
     return true;
 }
 
 
-bool CTextureRenderer::openFile(const std::string& file)
+bool CTextureRenderer::openFile(const std::string&file)
 {
     syncStreams(true);
     WCHAR wFileName[MAX_PATH];
-    wFileName[MAX_PATH-1] = 0;    // NULL-terminate
+    wFileName[MAX_PATH - 1] = 0;    // NULL-terminate
     if (file.empty())
         return false;
 
     _filename = file;
     std::string prefixForMessage;
     {
-    std::stringstream ss;
-    ss << _imageStream.get() << " " << getFilename();
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << _imageStream.get() << " " << getFilename();
+        prefixForMessage = ss.str();
     }
 
     const char *ansistr = file.c_str();
-    int lenA = lstrlenA(ansistr);
-    int lenW;
-    BSTR unicodestr = 0;
+    int        lenA     = lstrlenA(ansistr);
+    int        lenW;
+    BSTR       unicodestr = 0;
 
     lenW = ::MultiByteToWideChar(CP_ACP, 0, ansistr, lenA, 0, 0);
     if (lenW > 0)
     {
-      // Check whether conversion was successful
-      unicodestr = ::SysAllocStringLen(0, lenW);
-      ::MultiByteToWideChar(CP_ACP, 0, ansistr, lenA, unicodestr, lenW);
+        // Check whether conversion was successful
+        unicodestr = ::SysAllocStringLen(0, lenW);
+        ::MultiByteToWideChar(CP_ACP, 0, ansistr, lenA, unicodestr, lenW);
     }
 
-    if (unicodestr!=0)
+    if (unicodestr != 0)
     {
         (void)StringCchCopyW(wFileName, NUMELMS(wFileName), unicodestr);
 
@@ -1452,7 +1532,7 @@ bool CTextureRenderer::openFile(const std::string& file)
     if (!initBuildGraph())
         return false;
 
-    IPin* videoOutputPin = 0;
+    IPin *videoOutputPin = 0;
 
     std::string lowercase = file;
     std::transform(lowercase.begin(), lowercase.end(), lowercase.begin(), tolower);
@@ -1461,39 +1541,47 @@ bool CTextureRenderer::openFile(const std::string& file)
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    //Find the video pin
-    hr = _fileSource? ::GetPin(_fileSource, &MEDIATYPE_Video, PINDIR_OUTPUT, &videoOutputPin):0;
+    // Find the video pin
+    hr = _fileSource ? ::GetPin(_fileSource, &MEDIATYPE_Video, PINDIR_OUTPUT, &videoOutputPin) : 0;
 
     if (!checkError(prefixForMessage, hr))
         return false;
 
-    IPin*           rnd  = 0;
+    IPin *rnd = 0;
     hr = FindPin(L"In", &rnd);
     if (!checkError(prefixForMessage, hr))
         return false;
 
     hr = _graphBuilder->Connect(videoOutputPin, rnd);
-    if (videoOutputPin) videoOutputPin->Release(); videoOutputPin = 0;
+    if (videoOutputPin)
+        videoOutputPin->Release();
 
-    if (rnd) rnd->Release(); rnd = 0;
+    videoOutputPin = 0;
+
+    if (rnd)
+        rnd->Release();
+
+    rnd = 0;
     if (!checkError(prefixForMessage, hr))
         return false;
 
     // check if we find the sounds output pin on the streams
-    IBaseFilter* soundFilter;
+    IBaseFilter *soundFilter;
     hr = _graphBuilder->FindFilterByName(L"AVI Splitter", &soundFilter);
     if (FAILED(hr))
     {
-        //Could not find the AVI Splitter filter, try the main source itself
+        // Could not find the AVI Splitter filter, try the main source itself
         soundFilter = _fileSource;
     }
 
     if (soundFilter)
     {
-        IPin* soundStreamPinOut = 0;
-        //Try to find the audio pin
+        IPin *soundStreamPinOut = 0;
+        // Try to find the audio pin
         hr = ::GetPin(soundFilter, &MEDIATYPE_Audio, PINDIR_OUTPUT, &soundStreamPinOut);
-        if (soundFilter != _fileSource) soundFilter->Release();
+        if (soundFilter != _fileSource)
+            soundFilter->Release();
+
         soundFilter = 0;
 
         if (FAILED(hr))
@@ -1504,26 +1592,32 @@ bool CTextureRenderer::openFile(const std::string& file)
         if (soundStreamPinOut)
         {
             // connect sounds to graph
-            ICreateDevEnum* devs = 0; hr = CoCreateInstance (CLSID_SystemDeviceEnum, 0, CLSCTX_INPROC, IID_ICreateDevEnum, (void **) &devs);
+            ICreateDevEnum *devs = 0; hr = CoCreateInstance (CLSID_SystemDeviceEnum, 0, CLSCTX_INPROC, IID_ICreateDevEnum, (void**) &devs);
             checkError(prefixForMessage, hr);
             if (devs && setupOutputSoundDevice(devs))
             {
                 devs->Release(); devs = 0;
                 std::string prefixForMessageSound;
                 {
-                std::stringstream ss;
-                ss << _imageStream.get() << " " << getSoundOutputDeviceName();
-                prefixForMessageSound = ss.str();
+                    std::stringstream ss;
+                    ss << _imageStream.get() << " " << getSoundOutputDeviceName();
+                    prefixForMessageSound = ss.str();
                 }
 
-                IPin* soundOutputDevicePinIn = 0;
+                IPin *soundOutputDevicePinIn = 0;
                 hr = _soundOutputDevice->FindPin(L"Audio Input pin (rendered)", &soundOutputDevicePinIn);
                 checkError(prefixForMessageSound, hr);
 
                 hr = _graphBuilder->Connect(soundStreamPinOut, soundOutputDevicePinIn);
 
-                if (soundOutputDevicePinIn)    soundOutputDevicePinIn->Release(); soundOutputDevicePinIn = 0;
-                if (soundStreamPinOut) soundStreamPinOut->Release(); soundStreamPinOut = 0;
+                if (soundOutputDevicePinIn)
+                    soundOutputDevicePinIn->Release();
+
+                soundOutputDevicePinIn = 0;
+                if (soundStreamPinOut)
+                    soundStreamPinOut->Release();
+
+                soundStreamPinOut = 0;
 
                 if (!checkError(prefixForMessageSound, hr) && _soundOutputDevice)
                 {
@@ -1539,28 +1633,42 @@ bool CTextureRenderer::openFile(const std::string& file)
 
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // CleanupDShow
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 void CTextureRenderer::releaseRessources()
 {
     // Shut down the graph
-    if (_mediaControl) _mediaControl->Stop();
+    if (_mediaControl)
+        _mediaControl->Stop();
+
     _imageStream = 0;
 
-    if (_mediaControl) _mediaControl->Release(); _mediaControl = 0;
-    if (_mediaEvent) _mediaEvent->Release(); _mediaEvent = 0;
-    if (_mediaSeeking) _mediaSeeking->Release(); _mediaSeeking = 0;
-    if (_basicAudio) _basicAudio->Release(); _basicAudio = 0;
+    if (_mediaControl)
+        _mediaControl->Release();
+
+    _mediaControl = 0;
+    if (_mediaEvent)
+        _mediaEvent->Release();
+
+    _mediaEvent = 0;
+    if (_mediaSeeking)
+        _mediaSeeking->Release();
+
+    _mediaSeeking = 0;
+    if (_basicAudio)
+        _basicAudio->Release();
+
+    _basicAudio = 0;
     // remove filter outside because this is a filter too.
 }
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // CTextureRenderer constructor
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
-CTextureRenderer::CTextureRenderer( DirectShowImageStream* is, HRESULT* valid)
+CTextureRenderer::CTextureRenderer(DirectShowImageStream *is, HRESULT *valid)
     : CBaseVideoRenderer(__uuidof(CLSID_TextureRenderer),
                          NAME("Texture Renderer"),
                          NULL,
@@ -1568,60 +1676,60 @@ CTextureRenderer::CTextureRenderer( DirectShowImageStream* is, HRESULT* valid)
 {
     std::string prefixForMessage;
     {
-    std::stringstream ss;
-    ss << is;
-    prefixForMessage = ss.str();
+        std::stringstream ss;
+        ss << is;
+        prefixForMessage = ss.str();
     }
 
     if (FAILED(*valid))
         checkError(prefixForMessage, *valid);
 
-    _imageStream = is;
-    _fileSource = 0;
-    _mediaControl = 0;
-    _mediaEvent = 0;
-    _mediaSeeking = 0;
-    _graphBuilder = 0;
+    _imageStream        = is;
+    _fileSource         = 0;
+    _mediaControl       = 0;
+    _mediaEvent         = 0;
+    _mediaSeeking       = 0;
+    _graphBuilder       = 0;
     _videoCaptureDevice = 0;
-    _soundOutputDevice = 0;
+    _soundOutputDevice  = 0;
     _soundCaptureDevice = 0;
-    _basicAudio = 0;
+    _basicAudio         = 0;
 }
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // CTextureRenderer destructor
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 CTextureRenderer::~CTextureRenderer()
-{
-}
+{}
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // CheckMediaType: This method forces the graph to give us an R8G8B8 video
 // type, making our copy to texture memory trivial.
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 HRESULT CTextureRenderer::CheckMediaType(const CMediaType *pmt)
 {
-    HRESULT   hr = E_FAIL;
-    VIDEOINFO *pvi=0;
+    HRESULT   hr   = E_FAIL;
+    VIDEOINFO *pvi = 0;
 
-    CheckPointer(pmt,E_POINTER);
+    CheckPointer(pmt, E_POINTER);
 
     // Reject the connection if this is not a video type
-    if( *pmt->FormatType() != FORMAT_VideoInfo ) {
+    if (*pmt->FormatType() != FORMAT_VideoInfo)
+    {
         return E_INVALIDARG;
     }
 
     // Only accept RGB24 video
-    pvi = (VIDEOINFO *)pmt->Format();
+    pvi = (VIDEOINFO*)pmt->Format();
 
-    if (!IsEqualGUID( *pmt->Type(),    MEDIATYPE_Video))
+    if (!IsEqualGUID(*pmt->Type(),    MEDIATYPE_Video))
     {
         OSG_WARN << _imageStream.get() << " media type not a video format" << std::endl;
     }
 
-    if( IsEqualGUID( *pmt->Subtype(), MEDIASUBTYPE_RGB24))
+    if (IsEqualGUID(*pmt->Subtype(), MEDIASUBTYPE_RGB24))
     {
         OSG_NOTICE << _imageStream.get() << " Texture Renderer use media " << getStringFromGUID(pmt->Subtype()) << std::endl;
         hr = S_OK;
@@ -1634,14 +1742,15 @@ HRESULT CTextureRenderer::CheckMediaType(const CMediaType *pmt)
     return hr;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // SetMediaType: Graph connection has been made.
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 HRESULT CTextureRenderer::SetMediaType(const CMediaType *pmt)
 {
     // Retrive the size of this media type
     VIDEOINFO *pviBmp;                      // Bitmap info header
-    pviBmp = (VIDEOINFO *)pmt->Format();
+
+    pviBmp = (VIDEOINFO*)pmt->Format();
 
     _width  = pviBmp->bmiHeader.biWidth;
     _height = abs(pviBmp->bmiHeader.biHeight);
@@ -1650,18 +1759,20 @@ HRESULT CTextureRenderer::SetMediaType(const CMediaType *pmt)
     return S_OK;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // DoRenderSample: A sample has been delivered. Copy it to the texture.
-//-----------------------------------------------------------------------------
-HRESULT CTextureRenderer::DoRenderSample( IMediaSample * pSample )
+// -----------------------------------------------------------------------------
+HRESULT CTextureRenderer::DoRenderSample(IMediaSample *pSample)
 {
-    BYTE  *pBmpBuffer; // Bitmap buffer, texture buffer
-    CheckPointer(pSample,E_POINTER);
+    BYTE *pBmpBuffer;  // Bitmap buffer, texture buffer
+
+    CheckPointer(pSample, E_POINTER);
 
     // Get the video bitmap buffer
-    pSample->GetPointer( &pBmpBuffer );
+    pSample->GetPointer(&pBmpBuffer);
     if (_imageStream.valid())
         _imageStream->setImage(_width, _height, 1, GL_RGB, GL_BGR, GL_UNSIGNED_BYTE, pBmpBuffer, osg::Image::NO_DELETE);
+
     return S_OK;
 }
 
@@ -1672,13 +1783,15 @@ void CTextureRenderer::syncStreams(bool state)
     else
         _dropFrame = S_OK;
 }
-HRESULT CTextureRenderer::ShouldDrawSampleNow(IMediaSample *sample, REFERENCE_TIME *start, REFERENCE_TIME *stop) {
+HRESULT CTextureRenderer::ShouldDrawSampleNow(IMediaSample *sample, REFERENCE_TIME *start, REFERENCE_TIME *stop)
+{
     return _dropFrame; // disable droping of frames
 }
 
 bool CTextureRenderer::StopFilters()
 {
     HRESULT hr;
+
     if (_mediaControl)
     {
         hr = _mediaControl->Stop();
@@ -1688,23 +1801,23 @@ bool CTextureRenderer::StopFilters()
             return false;
         }
     }
+
     return true;
 }
 
 DirectShowImageStream::DirectShowImageStream()
 {
-    _options["captureWantedWidth"] = "1920";
+    _options["captureWantedWidth"]  = "1920";
     _options["captureWantedHeight"] = "1080";
-    _options["captureWantedFps"] = "30";
+    _options["captureWantedFps"]    = "30";
 
     HRESULT hr = CoInitialize (NULL);
     if (FAILED(hr))
     {
         OSG_WARN << this << " error in constructor " << getErrorMessage(hr) << std::endl;
     }
-
 }
-DirectShowImageStream::DirectShowImageStream(const DirectShowImageStream& d,const osg::CopyOp& c) : osg::ImageStream(d, c)
+DirectShowImageStream::DirectShowImageStream(const DirectShowImageStream&d, const osg::CopyOp&c) : osg::ImageStream(d, c)
 {
     // i guess it's invalid
 }
@@ -1715,29 +1828,34 @@ DirectShowImageStream::~DirectShowImageStream()
     CoUninitialize();
 }
 
-bool DirectShowImageStream::openFile(const std::string& file)
+bool DirectShowImageStream::openFile(const std::string&file)
 {
     HRESULT valid = S_OK;
+
     _renderer = new CTextureRenderer(this, &valid);
     if (FAILED(valid))
     {
         return false;
     }
+
     if (!_renderer->openFile(file))
     {
         return false;
     }
+
     return true;
 }
 
 bool DirectShowImageStream::openCaptureDevices()
 {
     HRESULT valid = S_OK;
+
     _renderer = new CTextureRenderer(this, &valid);
     if (FAILED(valid))
     {
         return false;
     }
+
     if (!_renderer->openCaptureDevices(_options))
     {
         return false;
@@ -1751,6 +1869,7 @@ bool DirectShowImageStream::openCaptureDevices()
 void DirectShowImageStream::play()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     if (_status == PLAYING)
         return;
 
@@ -1761,7 +1880,7 @@ void DirectShowImageStream::play()
         // Start the graph running;
         if (FAILED(hr))
         {
-            OSG_WARN << this << " can't run the graph " <<  getErrorMessage(hr) <<  std::endl;
+            OSG_WARN << this << " can't run the graph " << getErrorMessage(hr) << std::endl;
         }
         else
         {
@@ -1773,6 +1892,7 @@ void DirectShowImageStream::play()
 void DirectShowImageStream::pause()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     if (_status == PAUSED)
         return;
 
@@ -1799,48 +1919,50 @@ void DirectShowImageStream::rewind()
 osg::ImageStream::StreamStatus DirectShowImageStream::getStatus()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     return _status;
 }
 
 void DirectShowImageStream::seek(double time)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     if (_renderer.valid() && _renderer->_mediaSeeking)
     {
-        double start = time / (100 * 1e-9);
+        double   start  = time / (100 * 1e-9);
         LONGLONG start2 = static_cast<LONGLONG>(start);
-        HRESULT hr = _renderer->_mediaSeeking->SetPositions(&start2,AM_SEEKING_AbsolutePositioning, NULL, AM_SEEKING_NoPositioning);
+        HRESULT  hr     = _renderer->_mediaSeeking->SetPositions(&start2, AM_SEEKING_AbsolutePositioning, NULL, AM_SEEKING_NoPositioning);
         if (FAILED(hr))
         {
             OSG_NOTICE << this << " " << getErrorMessage(hr) << std::endl;
         }
     }
-
 }
 
 double DirectShowImageStream::getCurrentTime() const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-    double currentTime = -1;
+    double                                      currentTime = -1;
+
     if (_renderer.valid() && _renderer->_mediaSeeking)
     {
-
-       LONGLONG curTimeLL = 0;
-       HRESULT hr = _renderer->_mediaSeeking->GetCurrentPosition(&curTimeLL);
-       if (FAILED(hr))
-       {
+        LONGLONG curTimeLL = 0;
+        HRESULT  hr        = _renderer->_mediaSeeking->GetCurrentPosition(&curTimeLL);
+        if (FAILED(hr))
+        {
             OSG_NOTICE << this << " " << getErrorMessage(hr) << std::endl;
-       }
-       else
-       {
-           currentTime = static_cast<double>(curTimeLL);
-           currentTime = currentTime * (100.0 * 1e-9); // default unit in directshow IMediaSeeking
-       }
+        }
+        else
+        {
+            currentTime = static_cast<double>(curTimeLL);
+            currentTime = currentTime * (100.0 * 1e-9); // default unit in directshow IMediaSeeking
+        }
     }
+
     return currentTime;
 }
 
-void DirectShowImageStream::setOptions(const Options& map)
+void DirectShowImageStream::setOptions(const Options&map)
 {
     for (Options::const_iterator it = map.begin(); it != map.end(); it++)
         _options[it->first] = it->second;
@@ -1854,7 +1976,8 @@ void DirectShowImageStream::quit(bool waitForThreadToExit)
 double DirectShowImageStream::getLength() const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-    double duration = 0;
+    double                                      duration = 0;
+
     if (_renderer.valid() && _renderer->_mediaSeeking)
     {
         LONGLONG d = 0;
@@ -1862,21 +1985,25 @@ double DirectShowImageStream::getLength() const
         duration = static_cast<double>(d);
         duration = duration * (100.0 * 1e-9); // default unit in directshow IMediaSeeking
     }
+
     return duration;
 }
 
 double DirectShowImageStream::getFrameRate() const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-    int frameRate = 0;
+    int                                         frameRate = 0;
+
     if (_renderer.valid())
         _renderer->get_AvgFrameRate(&frameRate);
+
     return static_cast<double>(frameRate) * 1e-2;
 }
 
 void DirectShowImageStream::setTimeMultiplier(double rate)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     if (_renderer.valid() && _renderer->_mediaSeeking)
         _renderer->_mediaSeeking->SetRate(rate);
 }
@@ -1884,35 +2011,43 @@ void DirectShowImageStream::setTimeMultiplier(double rate)
 double DirectShowImageStream::getTimeMultiplier() const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-    double rate = 1.0;
+    double                                      rate = 1.0;
+
     if (_renderer.valid() && _renderer->_mediaSeeking)
         _renderer->_mediaSeeking->GetRate(&rate);
+
     return rate;
 }
 
-void DirectShowImageStream::setVolume(float vol) {
-   OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-   if (_renderer.valid() && _renderer->_basicAudio)
-   {
-     _renderer->_basicAudio->put_Volume(vol);
-   }
+void DirectShowImageStream::setVolume(float vol)
+{
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
+    if (_renderer.valid() && _renderer->_basicAudio)
+    {
+        _renderer->_basicAudio->put_Volume(vol);
+    }
 }
 
-float DirectShowImageStream::getVolume() const {
-  OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-  double vol = 0;
-  if (_renderer.valid() && _renderer->_basicAudio)
-  {
-    long d = 0;
-    _renderer->_basicAudio->get_Volume(&d);
-    vol = static_cast<double>(d);
-  }
-  return vol;
+float DirectShowImageStream::getVolume() const
+{
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+    double                                      vol = 0;
+
+    if (_renderer.valid() && _renderer->_basicAudio)
+    {
+        long d = 0;
+        _renderer->_basicAudio->get_Volume(&d);
+        vol = static_cast<double>(d);
+    }
+
+    return vol;
 }
 
 void DirectShowImageStream::stop()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     if (!_renderer.valid())
         return;
 
@@ -1923,24 +2058,31 @@ void DirectShowImageStream::stop()
 
     _renderer->releaseRessources();
     // Enumerate the filters in the graph.
-    IEnumFilters *pEnum = NULL;
-    IGraphBuilder* gb = _renderer->getGraphBuilder();
+    IEnumFilters  *pEnum = NULL;
+    IGraphBuilder *gb    = _renderer->getGraphBuilder();
     if (!gb)
         return;
+
     HRESULT hr = gb->EnumFilters(&pEnum);
     if (SUCCEEDED(hr))
     {
         IBaseFilter *pFilter = NULL;
+
         while (S_OK == pEnum->Next(1, &pFilter, NULL))
-         {
-             // Remove the filter.
-             gb->RemoveFilter(pFilter);
-             // Reset the enumerator.
-             pEnum->Reset();
-             pFilter->Release();
+        {
+            // Remove the filter.
+            gb->RemoveFilter(pFilter);
+            // Reset the enumerator.
+            pEnum->Reset();
+            pFilter->Release();
         }
+
         pEnum->Release();
     }
-    if (gb) gb->Release(); gb = 0;
+
+    if (gb)
+        gb->Release();
+
+    gb        = 0;
     _renderer = 0;
 }

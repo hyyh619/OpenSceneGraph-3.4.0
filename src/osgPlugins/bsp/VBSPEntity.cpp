@@ -19,11 +19,11 @@ using namespace osgDB;
 
 // strcasecmp for MSVC
 #ifdef _MSC_VER
-    #define strcasecmp  _stricmp
+    #define strcasecmp _stricmp
 #endif
 
 
-VBSPEntity::VBSPEntity(std::string & entityText, VBSPData * bspData)
+VBSPEntity::VBSPEntity(std::string&entityText, VBSPData *bspData)
 {
     // Save a handle to the bsp data, as we'll need this to construct the
     // entity
@@ -48,8 +48,7 @@ VBSPEntity::VBSPEntity(std::string & entityText, VBSPData * bspData)
 
 
 VBSPEntity::~VBSPEntity()
-{
-}
+{}
 
 
 void VBSPEntity::processWorldSpawn()
@@ -88,7 +87,7 @@ void VBSPEntity::processFuncBrush()
         // leading asterisk), and then parse the model number
         if (value[0] == '*')
         {
-            value = value.substr(1, std::string::npos);
+            value              = value.substr(1, std::string::npos);
             entity_model_index = atoi(value.c_str());
 
             // Make the entity visible
@@ -117,6 +116,7 @@ void VBSPEntity::processFuncBrush()
         // Parse the value into a vector
         entity_origin = getVector(value);
     }
+
     param = entity_parameters.find("angles");
     if (param != entity_parameters.end())
     {
@@ -155,6 +155,7 @@ void VBSPEntity::processProp()
         // Parse the value into a vector
         entity_origin = getVector(value);
     }
+
     param = entity_parameters.find("angles");
     if (param != entity_parameters.end())
     {
@@ -190,23 +191,23 @@ Vec3f VBSPEntity::getVector(std::string str)
     std::string::size_type end = str.find_first_of(" \t\r\n", start);
 
     if ((end > start) && (start != std::string::npos))
-        x = osg::asciiToFloat(str.substr(start, end-start).c_str());
+        x = osg::asciiToFloat(str.substr(start, end - start).c_str());
     else
         return Vec3f();
 
     // Look for the next non-whitespace
-    start = str.find_first_not_of(" \t\r\n", end+1);
+    start = str.find_first_not_of(" \t\r\n", end + 1);
 
     // Look for the first whitespace after this
     end = str.find_first_of(" \t\r\n", start);
 
     if ((end > start) && (start != std::string::npos))
-        y = osg::asciiToFloat(str.substr(start, end-start).c_str());
+        y = osg::asciiToFloat(str.substr(start, end - start).c_str());
     else
         return Vec3f();
 
     // Look for the next non-whitespace
-    start = str.find_first_not_of(" \t\r\n", end+1);
+    start = str.find_first_not_of(" \t\r\n", end + 1);
 
     // Look for the first whitespace after this
     end = str.find_first_of(" \t\r\n", start);
@@ -214,7 +215,7 @@ Vec3f VBSPEntity::getVector(std::string str)
         end = str.length();
 
     if ((end > start) && (start != std::string::npos))
-        z = osg::asciiToFloat(str.substr(start, end-start).c_str());
+        z = osg::asciiToFloat(str.substr(start, end - start).c_str());
     else
         return Vec3f();
 
@@ -223,13 +224,14 @@ Vec3f VBSPEntity::getVector(std::string str)
 }
 
 
-std::string VBSPEntity::getToken(std::string str, size_t & index)
+std::string VBSPEntity::getToken(std::string str, size_t&index)
 {
     std::string::size_type end = std::string::npos;
-    std::string   token;
+    std::string            token;
 
     // Look for the first quotation mark
     std::string::size_type start = str.find_first_of("\"", index);
+
     if (start != std::string::npos)
     {
         // From there, look for the next occurrence of a delimiter
@@ -238,7 +240,7 @@ std::string VBSPEntity::getToken(std::string str, size_t & index)
         if (end != std::string::npos)
         {
             // Found a delimiter, so grab the string in between
-            token = str.substr(start, end-start);
+            token = str.substr(start, end - start);
         }
         else
         {
@@ -256,7 +258,7 @@ std::string VBSPEntity::getToken(std::string str, size_t & index)
     // Update the index (in case we want to keep looking for tokens in this
     // string)
     if (end != std::string::npos)
-        index = end+1;
+        index = end + 1;
     else
         index = std::string::npos;
 
@@ -265,7 +267,7 @@ std::string VBSPEntity::getToken(std::string str, size_t & index)
 }
 
 
-void VBSPEntity::parseParameters(std::string & entityText)
+void VBSPEntity::parseParameters(std::string&entityText)
 {
     // Create a string stream on the entity text
     std::istringstream str(entityText, std::istringstream::in);
@@ -278,7 +280,7 @@ void VBSPEntity::parseParameters(std::string & entityText)
         std::getline(str, line);
 
         // Look for the first quotation mark on the line
-        size_t start = 0;
+        size_t      start = 0;
         std::string token = getToken(line, start);
 
         // If we have a valid token it will be the parameter name (the key),
@@ -367,31 +369,32 @@ void VBSPEntity::parseParameters(std::string & entityText)
 
 ref_ptr<Group> VBSPEntity::createBrushGeometry()
 {
-    int                 i;
-    int                 numGeoms;
-    VBSPGeometry **     vbspGeomList;
-    Model               currentModel;
-    Face                currentFace;
-    TexInfo             currentTexInfo;
-    TexData             currentTexData;
-    const char *        texName;
-    char                currentTexName[256];
-    int                 currentGeomIndex;
-    VBSPGeometry *      currentGeom;
-    ref_ptr<Group>      entityGroup;
-    ref_ptr<Group>      geomGroup;
-    std::stringstream   groupName;
+    int          i;
+    int          numGeoms;
+    VBSPGeometry **vbspGeomList;
+    Model        currentModel;
+    Face         currentFace;
+    TexInfo      currentTexInfo;
+    TexData      currentTexData;
+    const char   *texName;
+    char         currentTexName[256];
+    int          currentGeomIndex;
+    VBSPGeometry *currentGeom;
+
+    ref_ptr<Group>    entityGroup;
+    ref_ptr<Group>    geomGroup;
+    std::stringstream groupName;
 
     // Create a list of VBSPGeometry objects for each texdata entry in the
     // scene.  These objects will hold the necessary geometry data until we
     // convert them back into OSG geometry objects.  We potentially will need
     // one for each state set in the map
-    numGeoms = bsp_data->getNumStateSets();
-    vbspGeomList = new VBSPGeometry *[numGeoms];
+    numGeoms     = bsp_data->getNumStateSets();
+    vbspGeomList = new VBSPGeometry*[numGeoms];
 
     // Initialize the list to all NULL for now.  We'll create the geometry
     // objects as we need them
-    memset(vbspGeomList, 0, sizeof(VBSPGeometry *) * numGeoms);
+    memset(vbspGeomList, 0, sizeof(VBSPGeometry*) * numGeoms);
 
     // Get this entity's internal model from the bsp data
     currentModel = bsp_data->getModel(entity_model_index);
@@ -409,7 +412,7 @@ ref_ptr<Group> VBSPEntity::createBrushGeometry()
 
         // Get the texture name
         texName = bsp_data->
-            getTexDataString(currentTexData.name_string_table_id).c_str();
+                  getTexDataString(currentTexData.name_string_table_id).c_str();
         strcpy(currentTexName, texName);
 
         // See if this is a non-drawable surface
@@ -435,12 +438,12 @@ ref_ptr<Group> VBSPEntity::createBrushGeometry()
             // Get or create the corresponding VBSPGeometry object from the
             // list
             currentGeomIndex = currentTexInfo.texdata_index;
-            currentGeom = vbspGeomList[currentGeomIndex];
+            currentGeom      = vbspGeomList[currentGeomIndex];
             if (currentGeom == NULL)
             {
                 // Create the geometry object
                 vbspGeomList[currentGeomIndex] = new VBSPGeometry(bsp_data);
-                currentGeom = vbspGeomList[currentGeomIndex];
+                currentGeom                    = vbspGeomList[currentGeomIndex];
             }
 
             // Add the face to the appropriate VBSPGeometry object
@@ -452,12 +455,12 @@ ref_ptr<Group> VBSPEntity::createBrushGeometry()
     if (entity_transformed)
     {
         // Create a matrix transform
-        MatrixTransform * entityXform = new MatrixTransform();
+        MatrixTransform *entityXform = new MatrixTransform();
 
         // Set it up with the entity's transform information (scale the
         // position from inches to meters)
         Matrixf transMat, rotMat;
-        Quat roll, yaw, pitch;
+        Quat    roll, yaw, pitch;
         transMat.makeTranslate(entity_origin * 0.0254);
         pitch.makeRotate(osg::DegreesToRadians(entity_angles.x()),
                          Vec3f(0.0, 1.0, 0.0));
@@ -513,9 +516,10 @@ ref_ptr<Group> VBSPEntity::createBrushGeometry()
 
 ref_ptr<Group> VBSPEntity::createModelGeometry()
 {
-    std::string      modelFile;
-    ref_ptr<Node>    modelNode;
-    ref_ptr<Group>   entityGroup;
+    std::string modelFile;
+
+    ref_ptr<Node>  modelNode;
+    ref_ptr<Group> entityGroup;
 
     // Try to load the model
     modelNode = osgDB::readNodeFile(entity_model);
@@ -525,12 +529,12 @@ ref_ptr<Group> VBSPEntity::createModelGeometry()
         if (entity_transformed)
         {
             // Create a matrix transform
-            MatrixTransform * entityXform = new MatrixTransform();
+            MatrixTransform *entityXform = new MatrixTransform();
 
             // Set it up with the entity's transform information (scale
             // the position from inches to meters)
             Matrixf transMat, rotMat;
-            Quat roll, yaw, pitch;
+            Quat    roll, yaw, pitch;
             transMat.makeTranslate(entity_origin * 0.0254);
             pitch.makeRotate(osg::DegreesToRadians(entity_angles.x()),
                              Vec3f(0.0, 1.0, 0.0));
@@ -603,4 +607,3 @@ ref_ptr<Group> VBSPEntity::createGeometry()
     // If we get here, we don't handle this kind of entity (yet)
     return NULL;
 }
-

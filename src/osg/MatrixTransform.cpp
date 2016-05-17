@@ -9,40 +9,37 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/MatrixTransform>
 
 using namespace osg;
 
-MatrixTransform::MatrixTransform():
+MatrixTransform::MatrixTransform() :
     _inverseDirty(false)
-{
-}
+{}
 
-MatrixTransform::MatrixTransform(const MatrixTransform& transform,const CopyOp& copyop):
-    Transform(transform,copyop),
+MatrixTransform::MatrixTransform(const MatrixTransform&transform, const CopyOp&copyop) :
+    Transform(transform, copyop),
     _matrix(transform._matrix),
     _inverse(transform._inverse),
     _inverseDirty(transform._inverseDirty)
-{
-}
+{}
 
-MatrixTransform::MatrixTransform(const Matrix& mat )
+MatrixTransform::MatrixTransform(const Matrix&mat)
 {
     _referenceFrame = RELATIVE_RF;
 
-    _matrix = mat;
+    _matrix       = mat;
     _inverseDirty = true;
 }
 
 
 MatrixTransform::~MatrixTransform()
-{
-}
+{}
 
-bool MatrixTransform::computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const
+bool MatrixTransform::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
 {
-    if (_referenceFrame==RELATIVE_RF)
+    if (_referenceFrame == RELATIVE_RF)
     {
         matrix.preMult(_matrix);
     }
@@ -50,14 +47,15 @@ bool MatrixTransform::computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) con
     {
         matrix = _matrix;
     }
+
     return true;
 }
 
-bool MatrixTransform::computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const
+bool MatrixTransform::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
 {
-    const Matrix& inverse = getInverseMatrix();
+    const Matrix&inverse = getInverseMatrix();
 
-    if (_referenceFrame==RELATIVE_RF)
+    if (_referenceFrame == RELATIVE_RF)
     {
         matrix.postMult(inverse);
     }
@@ -65,5 +63,6 @@ bool MatrixTransform::computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) con
     {
         matrix = inverse;
     }
+
     return true;
 }

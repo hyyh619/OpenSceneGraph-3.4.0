@@ -18,4 +18,3 @@ USE_SERIALIZER_WRAPPER(osgShadow_StandardShadowMap)
 USE_SERIALIZER_WRAPPER(osgShadow_ViewDependentShadowTechnique)
 
 extern "C" void wrapper_serializer_library_osgShadow(void) {}
-

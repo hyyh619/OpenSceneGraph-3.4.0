@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef IVE_VOLUMETRANSHERFUNCTIONRPROPERTY_H
 #define IVE_VOLUMETRANSHERFUNCTIONRPROPERTY_H 1
@@ -20,14 +20,12 @@
 
 namespace ive
 {
-
 class VolumeTransferFunctionProperty : public osgVolume::TransferFunctionProperty, public ReadWrite
 {
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
-
 }
 
 #endif

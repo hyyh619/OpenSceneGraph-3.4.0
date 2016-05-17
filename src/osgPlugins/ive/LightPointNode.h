@@ -4,11 +4,13 @@
 #include <osgSim/LightPointNode>
 #include "ReadWrite.h"
 
-namespace ive{
-class LightPointNode : public osgSim::LightPointNode, public ReadWrite {
+namespace ive
+{
+class LightPointNode : public osgSim::LightPointNode, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

@@ -14,7 +14,7 @@
  * while some pieces of code were taken from OSG.
  * Thanks to company Cadwork (www.cadwork.ch) and
  * Brno University of Technology (www.fit.vutbr.cz) for open-sourcing this work.
-*/
+ */
 
 #include <osgGA/FirstPersonManipulator>
 #include <cassert>
@@ -24,62 +24,61 @@ using namespace osgGA;
 
 
 
-int FirstPersonManipulator::_accelerationFlagIndex = allocateRelativeFlag();
-int FirstPersonManipulator::_maxVelocityFlagIndex = allocateRelativeFlag();
+int FirstPersonManipulator::_accelerationFlagIndex  = allocateRelativeFlag();
+int FirstPersonManipulator::_maxVelocityFlagIndex   = allocateRelativeFlag();
 int FirstPersonManipulator::_wheelMovementFlagIndex = allocateRelativeFlag();
 
 
 /// Constructor.
-FirstPersonManipulator::FirstPersonManipulator( int flags )
-   : inherited( flags ),
-     _velocity( 0. )
+FirstPersonManipulator::FirstPersonManipulator(int flags)
+    : inherited(flags),
+    _velocity(0.)
 {
-   setAcceleration( 1.0, true );
-   setMaxVelocity( 0.25, true );
-   setWheelMovement( 0.05, true );
-   if( _flags & SET_CENTER_ON_WHEEL_FORWARD_MOVEMENT )
-      setAnimationTime( 0.2 );
+    setAcceleration(1.0, true);
+    setMaxVelocity(0.25, true);
+    setWheelMovement(0.05, true);
+    if (_flags & SET_CENTER_ON_WHEEL_FORWARD_MOVEMENT)
+        setAnimationTime(0.2);
 }
 
 
 /// Constructor.
-FirstPersonManipulator::FirstPersonManipulator( const FirstPersonManipulator& fpm, const CopyOp& copyOp )
-   : osg::Callback(fpm, copyOp),
-     inherited( fpm, copyOp ),
-     _eye( fpm._eye ),
-     _rotation( fpm._rotation ),
-     _velocity( fpm._velocity ),
-     _acceleration( fpm._acceleration ),
-     _maxVelocity( fpm._maxVelocity ),
-     _wheelMovement( fpm._wheelMovement )
+FirstPersonManipulator::FirstPersonManipulator(const FirstPersonManipulator&fpm, const CopyOp&copyOp)
+    : osg::Callback(fpm, copyOp),
+    inherited(fpm, copyOp),
+    _eye(fpm._eye),
+    _rotation(fpm._rotation),
+    _velocity(fpm._velocity),
+    _acceleration(fpm._acceleration),
+    _maxVelocity(fpm._maxVelocity),
+    _wheelMovement(fpm._wheelMovement)
+{}
+
+
+/** Set the position of the manipulator using a 4x4 matrix.*/
+void FirstPersonManipulator::setByMatrix(const Matrixd&matrix)
 {
+    // set variables
+    _eye      = matrix.getTrans();
+    _rotation = matrix.getRotate();
+
+    // fix current rotation
+    if (getVerticalAxisFixed())
+        fixVerticalAxis(_eye, _rotation, true);
 }
 
 
 /** Set the position of the manipulator using a 4x4 matrix.*/
-void FirstPersonManipulator::setByMatrix( const Matrixd& matrix )
+void FirstPersonManipulator::setByInverseMatrix(const Matrixd&matrix)
 {
-   // set variables
-   _eye = matrix.getTrans();
-   _rotation = matrix.getRotate();
-
-   // fix current rotation
-   if( getVerticalAxisFixed() )
-      fixVerticalAxis( _eye, _rotation, true );
-}
-
-
-/** Set the position of the manipulator using a 4x4 matrix.*/
-void FirstPersonManipulator::setByInverseMatrix( const Matrixd& matrix )
-{
-   setByMatrix( Matrixd::inverse( matrix ) );
+    setByMatrix(Matrixd::inverse(matrix));
 }
 
 
 /** Get the position of the manipulator as 4x4 matrix.*/
 Matrixd FirstPersonManipulator::getMatrix() const
 {
-   return Matrixd::rotate( _rotation ) * Matrixd::translate( _eye );
+    return Matrixd::rotate(_rotation) * Matrixd::translate(_eye);
 }
 
 
@@ -87,51 +86,52 @@ Matrixd FirstPersonManipulator::getMatrix() const
     typically used as a model view matrix.*/
 Matrixd FirstPersonManipulator::getInverseMatrix() const
 {
-   return Matrixd::translate( -_eye ) * Matrixd::rotate( _rotation.inverse() );
+    return Matrixd::translate(-_eye) * Matrixd::rotate(_rotation.inverse());
 }
 
 
 // doc in parent
-void FirstPersonManipulator::setTransformation( const osg::Vec3d& eye, const osg::Quat& rotation )
+void FirstPersonManipulator::setTransformation(const osg::Vec3d&eye, const osg::Quat&rotation)
 {
-   // set variables
-   _eye = eye;
-   _rotation = rotation;
+    // set variables
+    _eye      = eye;
+    _rotation = rotation;
 
-   // fix current rotation
-   if( getVerticalAxisFixed() )
-      fixVerticalAxis( _eye, _rotation, true );
+    // fix current rotation
+    if (getVerticalAxisFixed())
+        fixVerticalAxis(_eye, _rotation, true);
 }
 
 
 // doc in parent
-void FirstPersonManipulator::getTransformation( osg::Vec3d& eye, osg::Quat& rotation ) const
+void FirstPersonManipulator::getTransformation(osg::Vec3d&eye, osg::Quat&rotation) const
 {
-   eye = _eye;
-   rotation = _rotation;
+    eye      = _eye;
+    rotation = _rotation;
 }
 
 
 // doc in parent
-void FirstPersonManipulator::setTransformation( const osg::Vec3d& eye, const osg::Vec3d& center, const osg::Vec3d& up )
+void FirstPersonManipulator::setTransformation(const osg::Vec3d&eye, const osg::Vec3d&center, const osg::Vec3d&up)
 {
-   // set variables
-   osg::Matrixd m( osg::Matrixd::lookAt( eye, center, up ) );
-   _eye = eye;
-   _rotation = m.getRotate().inverse();
+    // set variables
+    osg::Matrixd m(osg::Matrixd::lookAt(eye, center, up));
 
-   // fix current rotation
-   if( getVerticalAxisFixed() )
-      fixVerticalAxis( _eye, _rotation, true );
+    _eye      = eye;
+    _rotation = m.getRotate().inverse();
+
+    // fix current rotation
+    if (getVerticalAxisFixed())
+        fixVerticalAxis(_eye, _rotation, true);
 }
 
 
 // doc in parent
-void FirstPersonManipulator::getTransformation( osg::Vec3d& eye, osg::Vec3d& center, osg::Vec3d& up ) const
+void FirstPersonManipulator::getTransformation(osg::Vec3d&eye, osg::Vec3d&center, osg::Vec3d&up) const
 {
-   center = _eye + _rotation * osg::Vec3d( 0.,0.,-1. );
-   eye = _eye;
-   up = _rotation * osg::Vec3d( 0.,1.,0. );
+    center = _eye + _rotation * osg::Vec3d(0., 0., -1.);
+    eye    = _eye;
+    up     = _rotation * osg::Vec3d(0., 1., 0.);
 }
 
 
@@ -139,9 +139,9 @@ void FirstPersonManipulator::getTransformation( osg::Vec3d& eye, osg::Vec3d& cen
  *
  *  There are no checks for maximum velocity applied.
  */
-void FirstPersonManipulator::setVelocity( const double& velocity )
+void FirstPersonManipulator::setVelocity(const double&velocity)
 {
-   _velocity = velocity;
+    _velocity = velocity;
 }
 
 
@@ -151,20 +151,20 @@ void FirstPersonManipulator::setVelocity( const double& velocity )
  *  Then, there will be no acceleration and object will reach its
  *  maximum velocity immediately.
  */
-void FirstPersonManipulator::setAcceleration( const double& acceleration, bool relativeToModelSize )
+void FirstPersonManipulator::setAcceleration(const double&acceleration, bool relativeToModelSize)
 {
-   _acceleration = acceleration;
-   setRelativeFlag( _accelerationFlagIndex, relativeToModelSize );
+    _acceleration = acceleration;
+    setRelativeFlag(_accelerationFlagIndex, relativeToModelSize);
 }
 
 
 /// Returns acceleration speed.
-double FirstPersonManipulator::getAcceleration( bool *relativeToModelSize ) const
+double FirstPersonManipulator::getAcceleration(bool *relativeToModelSize) const
 {
-   if( relativeToModelSize )
-      *relativeToModelSize = getRelativeFlag( _accelerationFlagIndex );
+    if (relativeToModelSize)
+        *relativeToModelSize = getRelativeFlag(_accelerationFlagIndex);
 
-   return _acceleration;
+    return _acceleration;
 }
 
 
@@ -173,230 +173,230 @@ double FirstPersonManipulator::getAcceleration( bool *relativeToModelSize ) cons
  *  If acceleration is set to DBL_MAX, there is no speeding up.
  *  Instead, maximum velocity is used for velocity at once without acceleration.
  */
-void FirstPersonManipulator::setMaxVelocity( const double& maxVelocity, bool relativeToModelSize )
+void FirstPersonManipulator::setMaxVelocity(const double&maxVelocity, bool relativeToModelSize)
 {
-   _maxVelocity = maxVelocity;
-   setRelativeFlag( _maxVelocityFlagIndex, relativeToModelSize );
+    _maxVelocity = maxVelocity;
+    setRelativeFlag(_maxVelocityFlagIndex, relativeToModelSize);
 }
 
 
 /// Returns maximum velocity.
-double FirstPersonManipulator::getMaxVelocity( bool *relativeToModelSize ) const
+double FirstPersonManipulator::getMaxVelocity(bool *relativeToModelSize) const
 {
-   if( relativeToModelSize )
-      *relativeToModelSize = getRelativeFlag( _maxVelocityFlagIndex );
+    if (relativeToModelSize)
+        *relativeToModelSize = getRelativeFlag(_maxVelocityFlagIndex);
 
-   return _maxVelocity;
+    return _maxVelocity;
 }
 
 
 /// Sets movement size on single wheel step.
-void FirstPersonManipulator::setWheelMovement( const double& wheelMovement, bool relativeToModelSize )
+void FirstPersonManipulator::setWheelMovement(const double&wheelMovement, bool relativeToModelSize)
 {
-   _wheelMovement = wheelMovement;
-   setRelativeFlag( _wheelMovementFlagIndex, relativeToModelSize );
+    _wheelMovement = wheelMovement;
+    setRelativeFlag(_wheelMovementFlagIndex, relativeToModelSize);
 }
 
 
 /// Returns movement size on single wheel step.
-double FirstPersonManipulator::getWheelMovement( bool *relativeToModelSize ) const
+double FirstPersonManipulator::getWheelMovement(bool *relativeToModelSize) const
 {
-   if( relativeToModelSize )
-      *relativeToModelSize = getRelativeFlag( _wheelMovementFlagIndex );
+    if (relativeToModelSize)
+        *relativeToModelSize = getRelativeFlag(_wheelMovementFlagIndex);
 
-   return _wheelMovement;
+    return _wheelMovement;
 }
 
 
-void FirstPersonManipulator::home( double currentTime )
+void FirstPersonManipulator::home(double currentTime)
 {
-   inherited::home( currentTime );
-   _velocity = 0.;
+    inherited::home(currentTime);
+
+    _velocity = 0.;
 }
 
 
-void FirstPersonManipulator::home( const GUIEventAdapter& ea, GUIActionAdapter& us )
+void FirstPersonManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
 {
-   inherited::home( ea, us );
-   _velocity = 0.;
+    inherited::home(ea, us);
+
+    _velocity = 0.;
 }
 
 
-void FirstPersonManipulator::init( const GUIEventAdapter& ea, GUIActionAdapter& us )
+void FirstPersonManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
 {
-   inherited::init( ea, us );
+    inherited::init(ea, us);
 
-   // stop movement
-   _velocity = 0.;
+    // stop movement
+    _velocity = 0.;
 }
 
 
 // doc in parent
-bool FirstPersonManipulator::handleMouseWheel( const GUIEventAdapter& ea, GUIActionAdapter& us )
+bool FirstPersonManipulator::handleMouseWheel(const GUIEventAdapter&ea, GUIActionAdapter&us)
 {
     osgGA::GUIEventAdapter::ScrollingMotion sm = ea.getScrollingMotion();
 
     // handle centering
-    if( _flags & SET_CENTER_ON_WHEEL_FORWARD_MOVEMENT )
+    if (_flags & SET_CENTER_ON_WHEEL_FORWARD_MOVEMENT)
     {
-
-        if( ((sm == GUIEventAdapter::SCROLL_DOWN) && (_wheelMovement > 0.)) ||
-            ((sm == GUIEventAdapter::SCROLL_UP)   && (_wheelMovement < 0.)) )
+        if (((sm == GUIEventAdapter::SCROLL_DOWN) && (_wheelMovement > 0.)) ||
+            ((sm == GUIEventAdapter::SCROLL_UP) && (_wheelMovement < 0.)))
         {
-
             // stop thrown animation
             _thrown = false;
 
-            if( getAnimationTime() <= 0. )
+            if (getAnimationTime() <= 0.)
 
                 // center by mouse intersection (no animation)
-                setCenterByMousePointerIntersection( ea, us );
+                setCenterByMousePointerIntersection(ea, us);
 
-            else {
-
+            else
+            {
                 // start new animation only if there is no animation in progress
-                if( !isAnimating() )
-                    startAnimationByMousePointerIntersection( ea, us );
-
+                if (!isAnimating())
+                    startAnimationByMousePointerIntersection(ea, us);
             }
         }
     }
 
-    switch( sm )
+    switch (sm)
     {
+    // mouse scroll up event
+    case GUIEventAdapter::SCROLL_UP:
+    {
+        // move forward
+        moveForward(isAnimating() ? dynamic_cast<FirstPersonAnimationData*>(_animationData.get())->_targetRot : _rotation,
+                    -_wheelMovement * (getRelativeFlag(_wheelMovementFlagIndex) ? _modelSize : 1.));
+        us.requestRedraw();
+        us.requestContinuousUpdate(isAnimating() || _thrown);
+        return true;
+    }
 
-        // mouse scroll up event
-        case GUIEventAdapter::SCROLL_UP:
-        {
-            // move forward
-            moveForward( isAnimating() ? dynamic_cast< FirstPersonAnimationData* >( _animationData.get() )->_targetRot : _rotation,
-                         -_wheelMovement * (getRelativeFlag( _wheelMovementFlagIndex ) ? _modelSize : 1. ));
-            us.requestRedraw();
-            us.requestContinuousUpdate( isAnimating() || _thrown );
-            return true;
-        }
+    // mouse scroll down event
+    case GUIEventAdapter::SCROLL_DOWN:
+    {
+        // move backward
+        moveForward(_wheelMovement * (getRelativeFlag(_wheelMovementFlagIndex) ? _modelSize : 1.));
+        _thrown = false;
+        us.requestRedraw();
+        us.requestContinuousUpdate(isAnimating() || _thrown);
+        return true;
+    }
 
-        // mouse scroll down event
-        case GUIEventAdapter::SCROLL_DOWN:
-        {
-            // move backward
-            moveForward( _wheelMovement * (getRelativeFlag( _wheelMovementFlagIndex ) ? _modelSize : 1. ));
-            _thrown = false;
-            us.requestRedraw();
-            us.requestContinuousUpdate( isAnimating() || _thrown );
-            return true;
-        }
-
-        // unhandled mouse scrolling motion
-        default:
-            return false;
+    // unhandled mouse scrolling motion
+    default:
+        return false;
     }
 }
 
 
 // doc in parent
-bool FirstPersonManipulator::performMovementLeftMouseButton( const double /*eventTimeDelta*/, const double dx, const double dy )
+bool FirstPersonManipulator::performMovementLeftMouseButton(const double /*eventTimeDelta*/, const double dx, const double dy)
 {
-   // world up vector
-   CoordinateFrame coordinateFrame = getCoordinateFrame( _eye );
-   Vec3d localUp = getUpVector( coordinateFrame );
+    // world up vector
+    CoordinateFrame coordinateFrame = getCoordinateFrame(_eye);
+    Vec3d           localUp         = getUpVector(coordinateFrame);
 
-   rotateYawPitch( _rotation, dx, dy, localUp );
+    rotateYawPitch(_rotation, dx, dy, localUp);
 
-   return true;
+    return true;
 }
 
 
-bool FirstPersonManipulator::performMouseDeltaMovement( const float dx, const float dy )
+bool FirstPersonManipulator::performMouseDeltaMovement(const float dx, const float dy)
 {
-   // rotate camera
-   if( getVerticalAxisFixed() ) {
+    // rotate camera
+    if (getVerticalAxisFixed())
+    {
+        // world up vector
+        CoordinateFrame coordinateFrame = getCoordinateFrame(_eye);
+        Vec3d           localUp         = getUpVector(coordinateFrame);
 
-      // world up vector
-      CoordinateFrame coordinateFrame = getCoordinateFrame( _eye );
-      Vec3d localUp = getUpVector( coordinateFrame );
+        rotateYawPitch(_rotation, dx, dy, localUp);
+    }
+    else
 
-      rotateYawPitch( _rotation, dx, dy, localUp );
+        rotateYawPitch(_rotation, dx, dy);
 
-   } else
-
-      rotateYawPitch( _rotation, dx, dy );
-
-   return true;
-}
-
-
-/// Move camera forward by distance parameter.
-void FirstPersonManipulator::moveForward( const double distance )
-{
-   moveForward( _rotation, distance );
+    return true;
 }
 
 
 /// Move camera forward by distance parameter.
-void FirstPersonManipulator::moveForward( const Quat& rotation, const double distance )
+void FirstPersonManipulator::moveForward(const double distance)
 {
-   _eye += rotation * Vec3d( 0., 0., -distance );
+    moveForward(_rotation, distance);
+}
+
+
+/// Move camera forward by distance parameter.
+void FirstPersonManipulator::moveForward(const Quat&rotation, const double distance)
+{
+    _eye += rotation * Vec3d(0., 0., -distance);
 }
 
 
 /// Move camera right by distance parameter.
-void FirstPersonManipulator::moveRight( const double distance )
+void FirstPersonManipulator::moveRight(const double distance)
 {
-   _eye += _rotation * Vec3d( distance, 0., 0. );
+    _eye += _rotation * Vec3d(distance, 0., 0.);
 }
 
 
 /// Move camera up by distance parameter.
-void FirstPersonManipulator::moveUp( const double distance )
+void FirstPersonManipulator::moveUp(const double distance)
 {
-   _eye += _rotation * Vec3d( 0., distance, 0. );
+    _eye += _rotation * Vec3d(0., distance, 0.);
 }
 
 
-void FirstPersonManipulator::applyAnimationStep( const double currentProgress, const double /*prevProgress*/ )
+void FirstPersonManipulator::applyAnimationStep(const double currentProgress, const double /*prevProgress*/)
 {
-   FirstPersonAnimationData *ad = dynamic_cast< FirstPersonAnimationData* >( _animationData.get() );
-   assert( ad );
+    FirstPersonAnimationData *ad = dynamic_cast<FirstPersonAnimationData*>(_animationData.get());
 
-   // compute new rotation
-   _rotation.slerp( currentProgress, ad->_startRot, ad->_targetRot );
+    assert(ad);
 
-   // fix vertical axis
-   if( getVerticalAxisFixed() )
-      fixVerticalAxis( _eye, _rotation, false );
+    // compute new rotation
+    _rotation.slerp(currentProgress, ad->_startRot, ad->_targetRot);
+
+    // fix vertical axis
+    if (getVerticalAxisFixed())
+        fixVerticalAxis(_eye, _rotation, false);
 }
 
 
 // doc in parent
 bool FirstPersonManipulator::startAnimationByMousePointerIntersection(
-      const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us )
+    const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us)
 {
-   // get current transformation
-   osg::Vec3d prevEye;
-   osg::Quat prevRot;
-   getTransformation( prevEye, prevRot );
+    // get current transformation
+    osg::Vec3d prevEye;
+    osg::Quat  prevRot;
 
-   // center by mouse intersection
-   if( !setCenterByMousePointerIntersection( ea, us ) )
-      return false;
+    getTransformation(prevEye, prevRot);
 
-   FirstPersonAnimationData *ad = dynamic_cast< FirstPersonAnimationData*>( _animationData.get() );
-   assert( ad );
+    // center by mouse intersection
+    if (!setCenterByMousePointerIntersection(ea, us))
+        return false;
 
-   // setup animation data and restore original transformation
-   ad->start( prevRot, _rotation, ea.getTime() );
-   setTransformation( _eye, prevRot );
+    FirstPersonAnimationData *ad = dynamic_cast<FirstPersonAnimationData*>(_animationData.get());
+    assert(ad);
 
-   return true;
+    // setup animation data and restore original transformation
+    ad->start(prevRot, _rotation, ea.getTime());
+    setTransformation(_eye, prevRot);
+
+    return true;
 }
 
 
-void FirstPersonManipulator::FirstPersonAnimationData::start( const Quat& startRotation, const Quat& targetRotation,
-                                                              const double startTime )
+void FirstPersonManipulator::FirstPersonAnimationData::start(const Quat&startRotation, const Quat&targetRotation,
+                                                             const double startTime)
 {
-   AnimationData::start( startTime );
+    AnimationData::start(startTime);
 
-   _startRot = startRotation;
-   _targetRot = targetRotation;
+    _startRot  = startRotation;
+    _targetRot = targetRotation;
 }

@@ -17,10 +17,10 @@
 class OSG_EXPORT OsgAndroidNotifyHandler : public osg::NotifyHandler
 {
 private:
-    std::string _tag;
+std::string _tag;
 public:
-    void setTag(std::string tag);
-    void notify(osg::NotifySeverity severity, const char *message);
+void setTag(std::string tag);
+void notify(osg::NotifySeverity severity, const char *message);
 };
 
 #endif /* OSGANDROIDNOTIFYHANDLER_HPP_ */

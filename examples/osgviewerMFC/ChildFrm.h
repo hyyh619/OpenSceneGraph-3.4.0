@@ -7,9 +7,9 @@
 
 class CChildFrame : public CMDIChildWnd
 {
-    DECLARE_DYNCREATE(CChildFrame)
+DECLARE_DYNCREATE(CChildFrame)
 public:
-    CChildFrame();
+CChildFrame();
 
 public:
 
@@ -17,18 +17,18 @@ public:
 public:
 
 // Overrides
-    public:
-    virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+public:
+virtual BOOL PreCreateWindow(CREATESTRUCT&cs);
 
 // Implementation
 public:
-    virtual ~CChildFrame();
+virtual ~CChildFrame();
 #ifdef _DEBUG
-    virtual void AssertValid() const;
-    virtual void Dump(CDumpContext& dc) const;
+virtual void AssertValid() const;
+virtual void Dump(CDumpContext&dc) const;
 #endif
 
 // Generated message map functions
 protected:
-    DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 };

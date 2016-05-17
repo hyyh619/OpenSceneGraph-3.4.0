@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // QtThread.cpp - C++ Thread class built on top of Qt threads.
@@ -21,31 +21,35 @@
 
 using namespace OpenThreads;
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Initialize thread master priority level
 //
 Thread::ThreadPriority Thread::s_masterThreadPriority = Thread::THREAD_PRIORITY_DEFAULT;
-bool Thread::s_isInitialized = false;
+bool                   Thread::s_isInitialized        = false;
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 // Description: Set the concurrency level (no-op)
 //
 // Use static public
 //
 int Thread::SetConcurrency(int concurrencyLevel)
-{ return -1; }
+{
+    return -1;
+}
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 // Description: Get the concurrency level
 //
 // Use static public
 //
 int Thread::GetConcurrency()
-{ return -1; }
+{
+    return -1;
+}
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 // Decription: Constructor
 //
@@ -53,23 +57,24 @@ int Thread::GetConcurrency()
 //
 Thread::Thread()
 {
-    if (!s_isInitialized) Init();
+    if (!s_isInitialized)
+        Init();
 
-    QtThreadPrivateData* pd = new QtThreadPrivateData(this);
-    pd->isRunning = false;
-    pd->detached = false;
-    pd->cancelled = false;
-    pd->cancelMode = 0;
-    pd->uniqueId = QtThreadPrivateData::createUniqueID();
-    pd->cpunum = -1;
-    pd->stackSize = 0;
-    pd->threadPolicy = Thread::THREAD_SCHEDULE_DEFAULT;
+    QtThreadPrivateData *pd = new QtThreadPrivateData(this);
+    pd->isRunning      = false;
+    pd->detached       = false;
+    pd->cancelled      = false;
+    pd->cancelMode     = 0;
+    pd->uniqueId       = QtThreadPrivateData::createUniqueID();
+    pd->cpunum         = -1;
+    pd->stackSize      = 0;
+    pd->threadPolicy   = Thread::THREAD_SCHEDULE_DEFAULT;
     pd->threadPriority = Thread::THREAD_PRIORITY_DEFAULT;
 
     _prvData = static_cast<void*>(pd);
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 // Description: Destructor
 //
@@ -77,27 +82,30 @@ Thread::Thread()
 //
 Thread::~Thread()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     if (pd->isRunning)
     {
-        std::cout<<"Error: Thread "<< this <<" still running in destructor"<<std::endl;
+        std::cout << "Error: Thread " << this << " still running in destructor" << std::endl;
         cancel();
 
         join();
     }
+
     delete pd;
     _prvData = 0;
 }
 
 Thread* Thread::CurrentThread()
 {
-    if (!s_isInitialized) Thread::Init();
+    if (!s_isInitialized)
+        Thread::Init();
 
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(QThread::currentThread());
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(QThread::currentThread());
     return (pd ? pd->getMasterThread() : 0);
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Initialize Threading
 //
@@ -108,7 +116,7 @@ void Thread::Init()
     s_isInitialized = true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Get a unique identifier for this thread.
 //
@@ -116,11 +124,12 @@ void Thread::Init()
 //
 int Thread::getThreadId()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     return pd->uniqueId;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Get the thread's process id
 //
@@ -131,7 +140,7 @@ size_t Thread::getProcessId()
     return (size_t)QCoreApplication::applicationPid();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Determine if the thread is running
 //
@@ -139,11 +148,12 @@ size_t Thread::getProcessId()
 //
 bool Thread::isRunning()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     return pd->isRunning;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Start the thread.
 //
@@ -151,10 +161,11 @@ bool Thread::isRunning()
 //
 int Thread::start()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     pd->threadStartedBlock.reset();
 
-    pd->setStackSize( pd->stackSize );
+    pd->setStackSize(pd->stackSize);
     pd->start();
 
     // wait till the thread has actually started.
@@ -162,7 +173,7 @@ int Thread::start()
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Alternate thread start routine.
 //
@@ -170,11 +181,13 @@ int Thread::start()
 //
 int Thread::startThread()
 {
-    if (_prvData) return start();
-    else return 0;
+    if (_prvData)
+        return start();
+    else
+        return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Join the thread.
 //
@@ -182,12 +195,13 @@ int Thread::startThread()
 //
 int Thread::detach()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     pd->detached = true;
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Join the thread.
 //
@@ -195,12 +209,15 @@ int Thread::detach()
 //
 int Thread::join()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
-    if (pd->detached) return -1;
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
+    if (pd->detached)
+        return -1;
+
     return pd->wait() ? 0 : -1;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: test the cancel state of the thread.
 //
@@ -208,20 +225,21 @@ int Thread::join()
 //
 int Thread::testCancel()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     if (!pd->cancelled)
         return 0;
 
     if (pd->cancelMode == 2)
         return -1;
 
-    if (pd!=QThread::currentThread())
+    if (pd != QThread::currentThread())
         return -1;
 
     throw QtThreadCanceled();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Cancel the thread.
 //
@@ -229,7 +247,8 @@ int Thread::testCancel()
 //
 int Thread::cancel()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     if (pd->isRunning)
     {
         if (pd->cancelMode == 2)
@@ -242,10 +261,11 @@ int Thread::cancel()
             pd->terminate();
         }
     }
+
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: set the thread to cancel at the next convenient point.
 //
@@ -253,13 +273,14 @@ int Thread::cancel()
 //
 int Thread::setCancelModeDeferred()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     pd->cancelMode = 0;
     pd->setAsynchronousTermination(false);
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: set the thread to cancel immediately
 //
@@ -267,13 +288,14 @@ int Thread::setCancelModeDeferred()
 //
 int Thread::setCancelModeAsynchronous()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     pd->cancelMode = 1;
     pd->setAsynchronousTermination(true);
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Disable cancelibility
 //
@@ -281,12 +303,13 @@ int Thread::setCancelModeAsynchronous()
 //
 int Thread::setCancelModeDisable()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     pd->cancelMode = 2;
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Set the thread's schedule priority (if able)
 //
@@ -294,15 +317,17 @@ int Thread::setCancelModeDisable()
 //
 int Thread::setSchedulePriority(ThreadPriority priority)
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     pd->threadPriority = priority;
 
     if (pd->isRunning)
         pd->applyPriority();
+
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Get the thread's schedule priority (if able)
 //
@@ -310,11 +335,12 @@ int Thread::setSchedulePriority(ThreadPriority priority)
 //
 int Thread::getSchedulePriority()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     return pd->threadPriority;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Set the thread's scheduling policy (if able)
 //
@@ -322,12 +348,13 @@ int Thread::getSchedulePriority()
 //
 int Thread::setSchedulePolicy(ThreadPolicy policy)
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     pd->threadPolicy = policy;
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Set the thread's scheduling policy (if able)
 //
@@ -335,11 +362,12 @@ int Thread::setSchedulePolicy(ThreadPolicy policy)
 //
 int Thread::getSchedulePolicy()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     return pd->threadPolicy;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Set the thread's desired stack size
 //
@@ -347,13 +375,17 @@ int Thread::getSchedulePolicy()
 //
 int Thread::setStackSize(size_t stackSize)
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
-    if (pd->isRunning) return 13;  // return EACESS
-    else pd->stackSize = stackSize;
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
+    if (pd->isRunning)
+        return 13;                 // return EACESS
+    else
+        pd->stackSize = stackSize;
+
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Get the thread's stack size.
 //
@@ -361,11 +393,12 @@ int Thread::setStackSize(size_t stackSize)
 //
 size_t Thread::getStackSize()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     return pd->stackSize;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  set processor affinity for the thread
 //
@@ -373,9 +406,11 @@ size_t Thread::getStackSize()
 //
 int Thread::setProcessorAffinity(unsigned int cpunum)
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+
     pd->cpunum = cpunum;
-    if (!pd->isRunning) return 0;
+    if (!pd->isRunning)
+        return 0;
 
     // FIXME:
     // Qt doesn't have a platform-independent thread affinity method at present.
@@ -383,7 +418,7 @@ int Thread::setProcessorAffinity(unsigned int cpunum)
     return -1;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  Print the thread's scheduling information to stdout.
 //
@@ -391,31 +426,35 @@ int Thread::setProcessorAffinity(unsigned int cpunum)
 //
 void Thread::printSchedulingInfo()
 {
-    QtThreadPrivateData* pd = static_cast<QtThreadPrivateData*>(_prvData);
-    std::cout << "Thread "<< pd->getMasterThread() <<" priority: ";
+    QtThreadPrivateData *pd = static_cast<QtThreadPrivateData*>(_prvData);
+    std::cout << "Thread " << pd->getMasterThread() << " priority: ";
 
     switch (pd->threadPriority)
     {
     case Thread::THREAD_PRIORITY_MAX:
         std::cout << "MAXIMAL" << std::endl;
         break;
+
     case Thread::THREAD_PRIORITY_HIGH:
         std::cout << "HIGH" << std::endl;
         break;
+
     case Thread::THREAD_PRIORITY_DEFAULT:
     case Thread::THREAD_PRIORITY_NOMINAL:
         std::cout << "NORMAL" << std::endl;
         break;
+
     case Thread::THREAD_PRIORITY_LOW:
         std::cout << "LOW" << std::endl;
         break;
+
     case Thread::THREAD_PRIORITY_MIN:
         std::cout << "MINIMAL" << std::endl;
         break;
     }
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  Yield the processor
 //
@@ -424,10 +463,11 @@ void Thread::printSchedulingInfo()
 int Thread::YieldCurrentThread()
 {
     QThread::yieldCurrentThread();
+
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  sleep
 //
@@ -436,10 +476,11 @@ int Thread::YieldCurrentThread()
 int Thread::microSleep(unsigned int microsec)
 {
     QtThreadPrivateData::microSleep(microsec);
+
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  Get the number of processors
 //
@@ -448,16 +489,17 @@ int OpenThreads::GetNumberOfProcessors()
     return QThread::idealThreadCount();
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  set processor affinity for current thread
 //
 int OpenThreads::SetProcessorAffinityOfCurrentThread(unsigned int cpunum)
 {
-    if (cpunum<0) return -1;
+    if (cpunum < 0)
+        return -1;
 
     Thread::Init();
-    Thread* thread = Thread::CurrentThread();
+    Thread *thread = Thread::CurrentThread();
     if (thread)
         return thread->setProcessorAffinity(cpunum);
     else

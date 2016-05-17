@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgpackeddepthstencil.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <osg/GLExtensions>
 #include <osg/Node>
@@ -34,6 +34,7 @@
 osg::Geode* createMask()
 {
     osg::Vec3Array *vertices = new osg::Vec3Array;
+
     vertices->push_back(osg::Vec3(-0.5, -0.5, 0.0));
     vertices->push_back(osg::Vec3(0.5, -0.5, 0.0));
     vertices->push_back(osg::Vec3(0.5, 0.5, 0.0));
@@ -46,41 +47,42 @@ osg::Geode* createMask()
     osg::Geode *geode = new osg::Geode;
     geode->addDrawable(geom);
 
-    osg::Stencil* stencil = new osg::Stencil;
+    osg::Stencil *stencil = new osg::Stencil;
     stencil->setFunction(osg::Stencil::ALWAYS, 1, ~0u);
     stencil->setOperation(osg::Stencil::KEEP, osg::Stencil::KEEP, osg::Stencil::REPLACE);
 
     osg::StateSet *ss = geode->getOrCreateStateSet();
-    ss->setAttributeAndModes(stencil, 
-        osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
-    ss->setAttribute(new osg::ColorMask(false, false, false, false), 
-        osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+    ss->setAttributeAndModes(stencil,
+                             osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+    ss->setAttribute(new osg::ColorMask(false, false, false, false),
+                     osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 
     return geode;
 }
 
 osg::Geode* createGeometry()
 {
-    osg::Vec3Array* vertices = new osg::Vec3Array;
+    osg::Vec3Array *vertices = new osg::Vec3Array;
+
     vertices->push_back(osg::Vec3(-1.0, -1.0, 0.0));
     vertices->push_back(osg::Vec3(1.0, -1.0, 0.0));
     vertices->push_back(osg::Vec3(1.0, 1.0, 0.0));
     vertices->push_back(osg::Vec3(-1.0, 1.0, 0.0));
 
-    osg::Geometry* geom = new osg::Geometry;
+    osg::Geometry *geom = new osg::Geometry;
     geom->setVertexArray(vertices);
     geom->addPrimitiveSet(new osg::DrawArrays(GL_QUADS, 0, 4));
 
-    osg::Geode* geode = new osg::Geode;
+    osg::Geode *geode = new osg::Geode;
     geode->addDrawable(geom);
 
-    osg::Stencil* stencil = new osg::Stencil;
+    osg::Stencil *stencil = new osg::Stencil;
     stencil->setFunction(osg::Stencil::NOTEQUAL, 1, ~0u);
     stencil->setOperation(osg::Stencil::KEEP, osg::Stencil::KEEP, osg::Stencil::KEEP);
 
     osg::StateSet *ss = geode->getOrCreateStateSet();
     ss->setAttributeAndModes(stencil,
-        osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+                             osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 
     return geode;
 }
@@ -88,6 +90,7 @@ osg::Geode* createGeometry()
 osg::Geode* createTextureQuad(osg::Texture2D *texture)
 {
     osg::Vec3Array *vertices = new osg::Vec3Array;
+
     vertices->push_back(osg::Vec3(-0.8, 0.0, -0.8));
     vertices->push_back(osg::Vec3(0.8, 0.0, -0.8));
     vertices->push_back(osg::Vec3(0.8, 0.0, 0.8));
@@ -112,22 +115,22 @@ osg::Geode* createTextureQuad(osg::Texture2D *texture)
 }
 
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
-    arguments.getApplicationUsage()->addCommandLineOption("--fbo","Use Frame Buffer Object for render to texture, where supported.");
-    arguments.getApplicationUsage()->addCommandLineOption("--pbuffer-rtt","Use Pixel Buffer for render to texture, where supported.");
+    arguments.getApplicationUsage()->addCommandLineOption("--fbo", "Use Frame Buffer Object for render to texture, where supported.");
+    arguments.getApplicationUsage()->addCommandLineOption("--pbuffer-rtt", "Use Pixel Buffer for render to texture, where supported.");
     arguments.getApplicationUsage()->addCommandLineOption("--nopds", "Don't use packed depth stencil.");
-    arguments.getApplicationUsage()->addCommandLineOption("--fbo-samples","");
+    arguments.getApplicationUsage()->addCommandLineOption("--fbo-samples", "");
     arguments.getApplicationUsage()->addCommandLineOption("--color-samples", "");
 
     // construct the viewer.
     osgViewer::Viewer viewer(arguments);
 
     // add stats
-    viewer.addEventHandler( new osgViewer::StatsHandler() );
+    viewer.addEventHandler(new osgViewer::StatsHandler());
 
     // if user request help write it out to cout.
     if (arguments.read("-h") || arguments.read("--help"))
@@ -137,17 +140,32 @@ int main( int argc, char **argv )
     }
 
     osg::Camera::RenderTargetImplementation renderImplementation = osg::Camera::FRAME_BUFFER_OBJECT;
-    int colorSamples = 0, samples = 0;
-    bool usePDS = true;
+    int                                     colorSamples         = 0, samples = 0;
+    bool                                    usePDS               = true;
 
-    while (arguments.read("--fbo")) { renderImplementation = osg::Camera::FRAME_BUFFER_OBJECT; }
-    while (arguments.read("--pbuffer-rtt")) { renderImplementation = osg::Camera::PIXEL_BUFFER_RTT; }
-    while (arguments.read("--nopds")) { usePDS = false; } 
-    while (arguments.read("--fbo-samples", samples)) {}
-    while (arguments.read("--color-samples", colorSamples)) {}
-    
+    while (arguments.read("--fbo"))
+    {
+        renderImplementation = osg::Camera::FRAME_BUFFER_OBJECT;
+    }
 
-    osg::Group* rootNode = new osg::Group;
+    while (arguments.read("--pbuffer-rtt"))
+    {
+        renderImplementation = osg::Camera::PIXEL_BUFFER_RTT;
+    }
+
+    while (arguments.read("--nopds"))
+    {
+        usePDS = false;
+    }
+
+    while (arguments.read("--fbo-samples", samples))
+    {}
+
+    while (arguments.read("--color-samples", colorSamples))
+    {}
+
+
+    osg::Group *rootNode = new osg::Group;
     rootNode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
     // creates texture to be rendered
@@ -171,7 +189,7 @@ int main( int argc, char **argv )
     rttCamera->setRenderOrder(osg::Camera::PRE_RENDER);
     rttCamera->setRenderTargetImplementation(renderImplementation);
 
-    if(usePDS)
+    if (usePDS)
     {
         rttCamera->attach(osg::Camera::PACKED_DEPTH_STENCIL_BUFFER, GL_DEPTH_STENCIL_EXT);
     }
@@ -187,7 +205,7 @@ int main( int argc, char **argv )
     rttCamera->setCullingMode(osg::Camera::VIEW_FRUSTUM_SIDES_CULLING);
 
     // creates rtt subtree
-    osg::Group* g0 = new osg::Group;
+    osg::Group *g0 = new osg::Group;
     g0->addChild(createMask());
     g0->addChild(createGeometry());
     rttCamera->addChild(g0);
@@ -195,9 +213,9 @@ int main( int argc, char **argv )
 
     // creates textured quad with result
     rootNode->addChild(createTextureQuad(texture));
-    
+
     // add model to the viewer.
-    viewer.setSceneData( rootNode );
+    viewer.setSceneData(rootNode);
 
     return viewer.run();
 }

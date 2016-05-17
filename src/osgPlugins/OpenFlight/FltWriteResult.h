@@ -8,7 +8,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // Copyright(c) 2008 Skew Matrix Software LLC.
@@ -29,8 +29,6 @@
 
 namespace flt
 {
-
-
 /*!
    Custom WriteResult to support proxy/validation ("validate" Option).
    If the application is able to #include this header and obtain the Writeresult
@@ -40,34 +38,32 @@ namespace flt
 class FltWriteResult : public osgDB::ReaderWriter::WriteResult
 {
 public:
-    FltWriteResult( WriteResult::WriteStatus status=WriteResult::FILE_SAVED )
-      : WriteResult( status )
-        {}
+FltWriteResult(WriteResult::WriteStatus status = WriteResult::FILE_SAVED)
+    : WriteResult(status)
+{}
 
-    void setNumErrors( int n );
-    int getNumErrors() const;
+void setNumErrors(int n);
+int getNumErrors() const;
 
-    void setNumWarnings( int n );
-    int getNumWarnings() const;
+void setNumWarnings(int n);
+int getNumWarnings() const;
 
-    typedef std::pair< osg::NotifySeverity, std::string > MessagePair;
-    typedef std::vector< MessagePair > MessageVector;
+typedef std::pair<osg::NotifySeverity, std::string> MessagePair;
+typedef std::vector<MessagePair> MessageVector;
 
-    void warn( const std::string &ss )
-    {
-        messages_.push_back( std::make_pair( osg::WARN, ss ) );
-    }
+void warn(const std::string&ss)
+{
+    messages_.push_back(std::make_pair(osg::WARN, ss));
+}
 
-    void error( const std::string &ss )
-    {
-        messages_.push_back( std::make_pair( osg::FATAL, ss ) );
-    }
+void error(const std::string&ss)
+{
+    messages_.push_back(std::make_pair(osg::FATAL, ss));
+}
 
 protected:
-    MessageVector messages_;
+MessageVector messages_;
 };
-
-
 }
 
 #endif /* __OPEN_FLIGHT_WRITER_H__ */

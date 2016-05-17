@@ -4,13 +4,15 @@
 #include <osg/ConvexPlanarPolygon>
 #include "ReadWrite.h"
 
-namespace ive{
-class ConvexPlanarPolygon : public osg::ConvexPlanarPolygon, public ReadWrite {
+namespace ive
+{
+class ConvexPlanarPolygon : public osg::ConvexPlanarPolygon, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 
-        virtual ~ConvexPlanarPolygon() {}
+virtual ~ConvexPlanarPolygon() {}
 };
 }
 

@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
-*/
+ */
 
 #ifndef POINTSEVENTHANDLER
 #define POINTSEVENTHANDLER 1
@@ -20,30 +20,38 @@
 
 class PointsEventHandler : public osgGA::GUIEventHandler
 {
-    public:
-        PointsEventHandler();
+public:
+PointsEventHandler();
 
-        virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter&);
+virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&);
 
-        void getUsage(osg::ApplicationUsage& usage) const;
+void getUsage(osg::ApplicationUsage&usage) const;
 
-        void setStateSet(osg::StateSet* stateset) { _stateset=stateset; }
+void setStateSet(osg::StateSet *stateset)
+{
+    _stateset = stateset;
+}
 
-        osg::StateSet* getStateSet() { return _stateset.get(); }
+osg::StateSet* getStateSet()
+{
+    return _stateset.get();
+}
 
-        const osg::StateSet* getStateSet() const { return _stateset.get(); }
+const osg::StateSet* getStateSet() const
+{
+    return _stateset.get();
+}
 
-        void setPointSize(float psize);
+void setPointSize(float psize);
 
-        float getPointSize() const;
+float getPointSize() const;
 
-        void changePointSize(float delta);
+void changePointSize(float delta);
 
-        void changePointAttenuation(float scale);
+void changePointAttenuation(float scale);
 
-        osg::ref_ptr<osg::StateSet> _stateset;
-        osg::ref_ptr<osg::Point>    _point;
-
+osg::ref_ptr<osg::StateSet> _stateset;
+osg::ref_ptr<osg::Point>    _point;
 };
 
 #endif

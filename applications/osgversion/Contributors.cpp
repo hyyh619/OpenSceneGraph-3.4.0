@@ -36,7 +36,7 @@ NamePair NameRobertOsfield("Robert", "Osfield");
 NamePair NameDonBurns     ("Don",    "Burns");
 
 
-const char* validNames[] =
+const char *validNames[] =
 {
     "de",
     "den",
@@ -44,7 +44,7 @@ const char* validNames[] =
     "von"
 };
 
-const char* invalidNames[] =
+const char *invalidNames[] =
 {
     "Added",
     "AnimationPath",
@@ -267,8 +267,8 @@ const char* invalidNames[] =
 
 struct TypoCorrection
 {
-    const char* original;
-    const char* corrected;
+    const char *original;
+    const char *corrected;
 };
 
 TypoCorrection typoCorrections[] =
@@ -458,27 +458,27 @@ TypoCorrection typoCorrections[] =
     {"Katherina",      "Katharina"},
     {"Biyfarguine",    "Boufarguine"},
     {"Dickenson",       "Dickinson"},
-    {"Jahannes","Johannes"},
-    {"Eskland","Ekstrand"},
-    {"Baeuerele","Baeuerle"},
-    {"Bauerle","Baeuerle"},
-    {"Baeurele","Baeuerle"},
-    {"Nillson","Nilsson"},
-    {"Bjorn","Björn"},
-    {"BjÃ¶rn","Björn"},
-    {"Stepan","Stephan"},
-    {"Kristoger","Kristofer"},
-    {"Blessing","Blissing"},
-    {"Dannahuer","Dannhauer"},
+    {"Jahannes", "Johannes"},
+    {"Eskland", "Ekstrand"},
+    {"Baeuerele", "Baeuerle"},
+    {"Bauerle", "Baeuerle"},
+    {"Baeurele", "Baeuerle"},
+    {"Nillson", "Nilsson"},
+    {"Bjorn", "Björn"},
+    {"BjÃ¶rn", "Björn"},
+    {"Stepan", "Stephan"},
+    {"Kristoger", "Kristofer"},
+    {"Blessing", "Blissing"},
+    {"Dannahuer", "Dannhauer"},
     {"Chebeav", "Chebaev"},
-    {"Messershmidt","Messerschmidt"},
-    {"Auelien","Aurelien"},
-    {"AurÃ©lien","Aurélien"},
-    {"McDonnel","Mc Donnell"},
-    {"McDonnell","Mc Donnell"},
-    {"DelallÃ©e","Delallée"},
-    {"GjÃ¸l","Gjøl"},
-    {"RavÅ¡elj","Rav¨elj"},
+    {"Messershmidt", "Messerschmidt"},
+    {"Auelien", "Aurelien"},
+    {"AurÃ©lien", "Aurélien"},
+    {"McDonnel", "Mc Donnell"},
+    {"McDonnell", "Mc Donnell"},
+    {"DelallÃ©e", "Delallée"},
+    {"GjÃ¸l", "Gjøl"},
+    {"RavÅ¡elj", "Rav¨elj"},
     {"Ravsel",  "Rav¨elj"},
     {"Ravselj", "Rav¨elj"},
     {"Janik", "Jannik"},
@@ -490,43 +490,43 @@ TypoCorrection typoCorrections[] =
 
 struct NameCorrection
 {
-    const char* originalFirst;
-    const char* originalSecond;
-    const char* correctedFirst;
-    const char* correctedSecond;
+    const char *originalFirst;
+    const char *originalSecond;
+    const char *correctedFirst;
+    const char *correctedSecond;
 };
 
 NameCorrection nameCorrections[] =
 {
-    {"FrancoisTigeot","",
+    {"FrancoisTigeot", "",
      "Francois", "Tigeot"},
-    {"Juan","Manuel",
+    {"Juan", "Manuel",
      "Juan", "Manuel Alvarez"},
-    {"Jaap","Gas",
+    {"Jaap", "Gas",
      "Jaap", "Glas"},
-    {"Philip","Lamp",
+    {"Philip", "Lamp",
      "Philip", "Lamb"},
-    {"Dimi","Christop",
+    {"Dimi", "Christop",
      "Dimi", "Christopoulos"},
-    {"Jorge","Ciges",
+    {"Jorge", "Ciges",
      "Jorge", "Izquierdo Ciges"},
-    {"Jorge","Izquierdo",
+    {"Jorge", "Izquierdo",
      "Jorge", "Izquierdo Ciges"},
-    {"Rafa","Gata",
+    {"Rafa", "Gata",
      "Rafa", "Gaitan"},
-    {"Sukender","I",
+    {"Sukender", "I",
      "Sukender", ""},
-    {"Sukender","Here",
+    {"Sukender", "Here",
      "Sukender", ""},
-    {"Sukender","Fix",
+    {"Sukender", "Fix",
      "Sukender", ""},
-    {"Ewe","Woessner",
+    {"Ewe", "Woessner",
      "Uwe", "Woessner"},
-    {"Martin","von",
+    {"Martin", "von",
      "Martin", "von Gargern"},
-    {"Alexandre","Irion",
+    {"Alexandre", "Irion",
      "Alexander", "Irion"},
-    {"WojciechLewandowski","",
+    {"WojciechLewandowski", "",
      "Wojciech", "Lewandowski"},
     {"Marin",          "Platings",
      "Michael",        "Platings"},
@@ -662,22 +662,22 @@ NameCorrection nameCorrections[] =
      "Laurens",        "Voerman"},
     {"Pjotr",          "Sventachov",
      "Pjotr",          "Svetachov"},
-     {"Bradley",       "Baker",
-      "Bradley",       "Baker Searles"},
-     {"PawelKsiezopolski", "",
-      "Pawel",          "Ksiezopolski"},
-     {"Albert", "Luaces",
-      "Alberto","Luaces"},
-     {"KOS", "",
-      "Konstantin","Matveyev"},
-     {"WeSee", "",
-       "Alois", "Wismer"},
-     {"We", "See",
-       "Alois", "Wismer"}
+    {"Bradley",       "Baker",
+     "Bradley",       "Baker Searles"},
+    {"PawelKsiezopolski", "",
+     "Pawel",          "Ksiezopolski"},
+    {"Albert", "Luaces",
+     "Alberto", "Luaces"},
+    {"KOS", "",
+     "Konstantin", "Matveyev"},
+    {"WeSee", "",
+     "Alois", "Wismer"},
+    {"We", "See",
+     "Alois", "Wismer"}
 };
 
 
-bool validName(const string& first)
+bool validName(const string&first)
 {
     // Check for valid names
     for (unsigned int i = 0; i < sizeof(validNames) / sizeof(char*); ++i)
@@ -688,11 +688,14 @@ bool validName(const string& first)
         }
     }
 
-    if (first.empty()) return false;
+    if (first.empty())
+        return false;
 
-    if (first[0] < 'A' || first[0] > 'Z') return false;
+    if (first[0] < 'A' || first[0] > 'Z')
+        return false;
 
-    if (first.size() >= 2 && (first[1] < 'a' || first[1] > 'z') && (first[1] != '.') && (first[1] != ',')) return false;
+    if (first.size() >= 2 && (first[1] < 'a' || first[1] > 'z') && (first[1] != '.') && (first[1] != ','))
+        return false;
 
     // Check for invalid names
     for (unsigned int i = 0; i < sizeof(invalidNames) / sizeof(char*); ++i)
@@ -708,7 +711,7 @@ bool validName(const string& first)
 }
 
 
-string typoCorrection(const string& name)
+string typoCorrection(const string&name)
 {
     // Loop over all known typo corrections
     for (unsigned int i = 0; i < sizeof(typoCorrections) / sizeof(TypoCorrection); ++i)
@@ -725,13 +728,13 @@ string typoCorrection(const string& name)
 }
 
 
-void nameCorrection(NamePair& name)
+void nameCorrection(NamePair&name)
 {
     // Loop over all known name corrections
     for (unsigned int i = 0; i < sizeof(nameCorrections) / sizeof(NameCorrection); ++i)
     {
         // If a matching name is found
-        if (name.first  == nameCorrections[i].originalFirst &&
+        if (name.first == nameCorrections[i].originalFirst &&
             name.second == nameCorrections[i].originalSecond)
         {
             // Return the correction
@@ -745,7 +748,7 @@ void nameCorrection(NamePair& name)
 }
 
 
-void lastValidCharacter(const string& name, unsigned int& pos, char c)
+void lastValidCharacter(const string&name, unsigned int&pos, char c)
 {
     for (unsigned int i = 0; i < pos; ++i)
     {
@@ -758,7 +761,7 @@ void lastValidCharacter(const string& name, unsigned int& pos, char c)
 }
 
 
-void lastValidCharacter(const string& name, unsigned int& last)
+void lastValidCharacter(const string&name, unsigned int&last)
 {
     lastValidCharacter(name, last, '.');
     lastValidCharacter(name, last, ',');
@@ -771,22 +774,25 @@ void lastValidCharacter(const string& name, unsigned int& last)
 }
 
 
-NamePair createName(const string& first, const string& second)
+NamePair createName(const string&first, const string&second)
 {
-    if (first.empty()) return EmptyNamePair;
+    if (first.empty())
+        return EmptyNamePair;
 
 //  cout << "first = " << first << " second = " << second << endl;
 
     unsigned int last = first.size();
     lastValidCharacter(first, last);
 
-    if (last == 0) return EmptyNamePair;
+    if (last == 0)
+        return EmptyNamePair;
 
     string name;
 
     name.append(first.begin(), first.begin() + last);
 
-    if (!validName(name)) return EmptyNamePair;
+    if (!validName(name))
+        return EmptyNamePair;
 
     name = typoCorrection(name);
 
@@ -794,7 +800,8 @@ NamePair createName(const string& first, const string& second)
         !validName(second))
     {
         // filter any single or two letter words as unlike to be names.
-        if (name.size() <= 2) return EmptyNamePair;
+        if (name.size() <= 2)
+            return EmptyNamePair;
 
         return NamePair(name, "");
     }
@@ -815,24 +822,28 @@ NamePair createName(const string& first, const string& second)
     }
 
     // filter any single or two letter words as unlike to be names.
-    if (name.size() <= 2) return EmptyNamePair;
+    if (name.size() <= 2)
+        return EmptyNamePair;
 
     return NamePair(name, "");
 }
 
 
-bool submissionsSequence(const Words& words, unsigned int& i)
+bool submissionsSequence(const Words&words, unsigned int&i)
 {
-    if (i + 1 >= words.size()) return false;
+    if (i + 1 >= words.size())
+        return false;
 
-    if (words[i] == "From"   ||
-        words[i] == "from"   ||
-        words[i] == "From:"  ||
-        words[i] == "from:"  ||
+    if (words[i] == "From" ||
+        words[i] == "from" ||
+        words[i] == "From:" ||
+        words[i] == "from:" ||
         words[i] == "Merged" ||
-        words[i] == "Integrated") return true;
+        words[i] == "Integrated")
+        return true;
 
-    if (i + 2 >= words.size()) return false;
+    if (i + 2 >= words.size())
+        return false;
 
     if (words[i] == "submitted" && words[i + 1] == "by")
     {
@@ -858,7 +869,8 @@ bool submissionsSequence(const Words& words, unsigned int& i)
         return true;
     }
 
-    if (i + 3 >= words.size()) return false;
+    if (i + 3 >= words.size())
+        return false;
 
     if (words[i] == "sent" && words[i + 1] == "in" && words[i + 2] == "by")
     {
@@ -870,12 +882,13 @@ bool submissionsSequence(const Words& words, unsigned int& i)
 }
 
 
-void readContributors(NameMap& names, const string& file)
+void readContributors(NameMap&names, const string&file)
 {
     osgDB::ifstream fin(file.c_str());
 
     Words words;
-    while(fin)
+
+    while (fin)
     {
         string keyword;
         fin >> keyword;
@@ -884,7 +897,7 @@ void readContributors(NameMap& names, const string& file)
 
     string blank_string;
 
-    for(unsigned int i = 0; i < words.size(); ++i)
+    for (unsigned int i = 0; i < words.size(); ++i)
     {
         if (submissionsSequence(words, i))
         {
@@ -892,14 +905,18 @@ void readContributors(NameMap& names, const string& file)
             {
                 NamePair name = createName(words[i + 1], words[i + 2]);
                 nameCorrection(name);
-                if (!name.first.empty()) ++names[name];
+                if (!name.first.empty())
+                    ++names[name];
+
                 i += 2;
             }
             else if (i + 1 < words.size() && validName(words[i + 1]))
             {
                 NamePair name = createName(words[i + 1], blank_string);
                 nameCorrection(name);
-                if (!name.first.empty()) ++names[name];
+                if (!name.first.empty())
+                    ++names[name];
+
                 i += 1;
             }
         }
@@ -919,7 +936,7 @@ void readContributors(NameMap& names, const string& file)
     // reassign fisrt name entries to their full names entries
     if (names.size() > 1)
     {
-        for (NameMap::iterator itr = names.begin(); itr != names.end(); )
+        for (NameMap::iterator itr = names.begin(); itr != names.end();)
         {
             if (itr->first.second.empty())
             {
@@ -958,7 +975,7 @@ void readContributors(NameMap& names, const string& file)
 }
 
 
-void buildContributors(NameMap& names)
+void buildContributors(NameMap&names)
 {
     // top five contributors
     ++names[NamePair("Robert",     "Osfield")];
@@ -980,9 +997,10 @@ void buildContributors(NameMap& names)
 }
 
 
-void printContributors(const std::string& changeLog, bool printNumEntries)
+void printContributors(const std::string&changeLog, bool printNumEntries)
 {
     NameMap names;
+
     buildContributors(names);
     if (!changeLog.empty())
     {
@@ -992,6 +1010,7 @@ void printContributors(const std::string& changeLog, bool printNumEntries)
     typedef multimap<unsigned int, NamePair> SortedNameMap;
 
     SortedNameMap sortedNames;
+
     for (NameMap::iterator itr = names.begin(); itr != names.end(); ++itr)
     {
         sortedNames.insert(SortedNameMap::value_type(itr->second, itr->first));
@@ -1003,10 +1022,13 @@ void printContributors(const std::string& changeLog, bool printNumEntries)
     {
         cout << "Entries Firstname Surname" << endl;
         cout << "-------------------------" << endl;
+
         for (SortedNameMap::reverse_iterator sitr = sortedNames.rbegin(); sitr != sortedNames.rend(); ++sitr)
         {
             cout << sitr->first << "\t" << sitr->second.first;
-            if (!sitr->second.second.empty()) cout << " " << sitr->second.second;
+            if (!sitr->second.second.empty())
+                cout << " " << sitr->second.second;
+
             cout << endl;
         }
     }
@@ -1014,10 +1036,13 @@ void printContributors(const std::string& changeLog, bool printNumEntries)
     {
         cout << "Firstname Surname" << endl;
         cout << "-----------------" << endl;
+
         for (SortedNameMap::reverse_iterator sitr = sortedNames.rbegin(); sitr != sortedNames.rend(); ++sitr)
         {
             cout << sitr->second.first;
-            if (!sitr->second.second.empty()) cout << " " << sitr->second.second;
+            if (!sitr->second.second.empty())
+                cout << " " << sitr->second.second;
+
             cout << endl;
         }
     }

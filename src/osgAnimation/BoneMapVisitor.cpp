@@ -22,21 +22,26 @@ using namespace osgAnimation;
 
 BoneMapVisitor::BoneMapVisitor() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-void BoneMapVisitor::apply(osg::Node&) { return; }
-void BoneMapVisitor::apply(osg::Transform& node)
+void BoneMapVisitor::apply(osg::Node&)
 {
-    Bone* bone = dynamic_cast<Bone*>(&node);
+    return;
+}
+void BoneMapVisitor::apply(osg::Transform&node)
+{
+    Bone *bone = dynamic_cast<Bone*>(&node);
+
     if (bone)
     {
         _map[bone->getName()] = bone;
         traverse(node);
     }
-    Skeleton* skeleton = dynamic_cast<Skeleton*>(&node);
+
+    Skeleton *skeleton = dynamic_cast<Skeleton*>(&node);
     if (skeleton)
         traverse(node);
 }
 
-const BoneMap& BoneMapVisitor::getBoneMap() const
+const BoneMap&BoneMapVisitor::getBoneMap() const
 {
     return _map;
 }

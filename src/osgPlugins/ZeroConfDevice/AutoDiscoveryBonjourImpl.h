@@ -6,7 +6,7 @@
  *  Copyright 2011 Digital Mind. All rights reserved.
  *
  */
- 
+
 #pragma once
 
 #include <string>
@@ -25,36 +25,44 @@ class ClientController;
 class DiscoveredServicesCallback;
 
 
-class AutoDiscoveryServerImpl {
-
+class AutoDiscoveryServerImpl
+{
 public:
-    AutoDiscoveryServerImpl(const std::string& type, unsigned int port);
-    ~AutoDiscoveryServerImpl();
-    
-    bool needsTimer() const { return false; }
-    void update() {}
-private:
-    ServerController* _controller;
+AutoDiscoveryServerImpl(const std::string&type, unsigned int port);
+~AutoDiscoveryServerImpl();
 
+bool needsTimer() const
+{
+    return false;
+}
+void update() {}
+private:
+ServerController *_controller;
 };
 
-class AutoDiscoveryClientImpl {
+class AutoDiscoveryClientImpl
+{
 public:
-    typedef std::pair< std::string, unsigned int> Address;
-    typedef std::vector<Address> AddressVector;
-    typedef std::map<void*, AddressVector> AddressMap;
-    
-    AutoDiscoveryClientImpl(const std::string& type, DiscoveredServicesCallback* cb);
-    ~AutoDiscoveryClientImpl();
-    DiscoveredServicesCallback* getCallback() { return _cb.get(); }
-    
-    void serviceAdded(void* key, const std::string& address, unsigned int port, bool is_ip6);
-    void servicesRemoved(void* key);
-    bool needsTimer() const { return false; }
-    void update() {}
+typedef std::pair<std::string, unsigned int> Address;
+typedef std::vector<Address> AddressVector;
+typedef std::map<void*, AddressVector> AddressMap;
+
+AutoDiscoveryClientImpl(const std::string&type, DiscoveredServicesCallback *cb);
+~AutoDiscoveryClientImpl();
+DiscoveredServicesCallback* getCallback()
+{
+    return _cb.get();
+}
+
+void serviceAdded(void *key, const std::string&address, unsigned int port, bool is_ip6);
+void servicesRemoved(void *key);
+bool needsTimer() const
+{
+    return false;
+}
+void update() {}
 private:
-    ClientController* _controller;
-    osg::ref_ptr<DiscoveredServicesCallback> _cb;
-    AddressMap _addresses;
-    
+ClientController                         *_controller;
+osg::ref_ptr<DiscoveredServicesCallback> _cb;
+AddressMap                               _addresses;
 };

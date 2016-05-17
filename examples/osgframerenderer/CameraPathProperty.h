@@ -7,40 +7,56 @@
 
 namespace gsc
 {
-
 class CameraPathProperty : public gsc::UpdateProperty
 {
 public:
 
-    CameraPathProperty() {}
-    CameraPathProperty(const std::string& filename) { setAnimationPathFileName(filename); }
-    CameraPathProperty(const CameraPathProperty& cpp, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY) {}
- 
-    META_Object(gsc, CameraPathProperty);
+CameraPathProperty() {}
+CameraPathProperty(const std::string&filename)
+{
+    setAnimationPathFileName(filename);
+}
+CameraPathProperty(const CameraPathProperty&cpp, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) {}
 
-    void setAnimationPathFileName(const std::string& filename) { _filename = filename; loadAnimationPath(); }
-    const std::string& getAnimationPathFileName() const { return _filename; }
+META_Object(gsc, CameraPathProperty);
 
-    void setAnimationPath(osg::AnimationPath* ap) { _animationPath = ap; }
-    osg::AnimationPath* getAnimationPath() { return _animationPath.get(); }
-    const osg::AnimationPath* getAnimationPath() const { return _animationPath.get(); }
+void setAnimationPathFileName(const std::string&filename)
+{
+    _filename = filename; loadAnimationPath();
+}
+const std::string&getAnimationPathFileName() const
+{
+    return _filename;
+}
 
-    bool getTimeRange(double& startTime, double& endTime) const;
+void setAnimationPath(osg::AnimationPath *ap)
+{
+    _animationPath = ap;
+}
+osg::AnimationPath* getAnimationPath()
+{
+    return _animationPath.get();
+}
+const osg::AnimationPath* getAnimationPath() const
+{
+    return _animationPath.get();
+}
 
-    void resetTimeRange(double startTime, double endTime);
+bool getTimeRange(double&startTime, double&endTime) const;
 
-    virtual void update(osgViewer::View* view);
+void resetTimeRange(double startTime, double endTime);
+
+virtual void update(osgViewer::View *view);
 
 protected:
 
-    virtual ~CameraPathProperty() {}
+virtual ~CameraPathProperty() {}
 
-    void loadAnimationPath();
+void loadAnimationPath();
 
-    std::string                         _filename;
-    osg::ref_ptr<osg::AnimationPath>    _animationPath;
+std::string                      _filename;
+osg::ref_ptr<osg::AnimationPath> _animationPath;
 };
-
 }
 
 #endif

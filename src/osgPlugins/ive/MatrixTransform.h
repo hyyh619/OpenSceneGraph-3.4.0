@@ -4,11 +4,13 @@
 #include <osg/MatrixTransform>
 #include "ReadWrite.h"
 
-namespace ive{
-class MatrixTransform : public osg::MatrixTransform, public ReadWrite {
+namespace ive
+{
+class MatrixTransform : public osg::MatrixTransform, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

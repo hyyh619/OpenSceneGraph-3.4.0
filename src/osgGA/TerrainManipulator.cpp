@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgGA/TerrainManipulator>
 #include <osgUtil/LineSegmentIntersector>
@@ -21,27 +21,25 @@ using namespace osgGA;
 
 
 /// Constructor.
-TerrainManipulator::TerrainManipulator( int flags )
-    : inherited( flags )
-{
-}
+TerrainManipulator::TerrainManipulator(int flags)
+    : inherited(flags)
+{}
 
 
 /// Constructor.
-TerrainManipulator::TerrainManipulator( const TerrainManipulator& tm, const CopyOp& copyOp )
+TerrainManipulator::TerrainManipulator(const TerrainManipulator&tm, const CopyOp&copyOp)
     : osg::Callback(tm, copyOp),
-      inherited( tm, copyOp ),
-      _previousUp( tm._previousUp )
-{
-}
+    inherited(tm, copyOp),
+    _previousUp(tm._previousUp)
+{}
 
 
 /** Sets the manipulator rotation mode. RotationMode is now deprecated by
     osgGA::StandardManipulator::setVerticalAxisFixed() functionality,
     that is used across StandardManipulator derived classes.*/
-void TerrainManipulator::setRotationMode( TerrainManipulator::RotationMode mode )
+void TerrainManipulator::setRotationMode(TerrainManipulator::RotationMode mode)
 {
-    setVerticalAxisFixed( mode == ELEVATION_AZIM );
+    setVerticalAxisFixed(mode == ELEVATION_AZIM);
 }
 
 
@@ -52,16 +50,16 @@ TerrainManipulator::RotationMode TerrainManipulator::getRotationMode() const
 }
 
 
-void TerrainManipulator::setNode( Node* node )
+void TerrainManipulator::setNode(Node *node)
 {
-    inherited::setNode( node );
+    inherited::setNode(node);
 
     // update model size
-    if( _flags & UPDATE_MODEL_SIZE )
+    if (_flags & UPDATE_MODEL_SIZE)
     {
-        if( _node.valid() )
+        if (_node.valid())
         {
-            setMinimumDistance( clampBetween( _modelSize * 0.001, 0.00001, 1.0 ) );
+            setMinimumDistance(clampBetween(_modelSize * 0.001, 0.00001, 1.0));
             OSG_INFO << "TerrainManipulator: setting _minimumDistance to "
                      << _minimumDistance << std::endl;
         }
@@ -69,18 +67,17 @@ void TerrainManipulator::setNode( Node* node )
 }
 
 
-void TerrainManipulator::setByMatrix(const Matrixd& matrix)
+void TerrainManipulator::setByMatrix(const Matrixd&matrix)
 {
+    Vec3d lookVector(-matrix(2, 0), -matrix(2, 1), -matrix(2, 2));
+    Vec3d eye(matrix(3, 0), matrix(3, 1), matrix(3, 2));
 
-    Vec3d lookVector(- matrix(2,0),-matrix(2,1),-matrix(2,2));
-    Vec3d eye(matrix(3,0),matrix(3,1),matrix(3,2));
-
-    OSG_INFO<<"eye point "<<eye<<std::endl;
-    OSG_INFO<<"lookVector "<<lookVector<<std::endl;
+    OSG_INFO << "eye point " << eye << std::endl;
+    OSG_INFO << "lookVector " << lookVector << std::endl;
 
     if (!_node)
     {
-        _center = eye+ lookVector;
+        _center   = eye + lookVector;
         _distance = lookVector.length();
         _rotation = matrix.getRotate();
         return;
@@ -88,22 +85,22 @@ void TerrainManipulator::setByMatrix(const Matrixd& matrix)
 
 
     // need to reintersect with the terrain
-    const BoundingSphere& bs = _node->getBound();
-    float distance = (eye-bs.center()).length() + _node->getBound().radius();
-    Vec3d start_segment = eye;
-    Vec3d end_segment = eye + lookVector*distance;
+    const BoundingSphere&bs           = _node->getBound();
+    float               distance      = (eye - bs.center()).length() + _node->getBound().radius();
+    Vec3d               start_segment = eye;
+    Vec3d               end_segment   = eye + lookVector * distance;
 
     Vec3d ip;
-    bool hitFound = false;
+    bool  hitFound = false;
     if (intersect(start_segment, end_segment, ip))
     {
-        OSG_INFO << "Hit terrain ok A"<< std::endl;
+        OSG_INFO << "Hit terrain ok A" << std::endl;
         _center = ip;
 
-        _distance = (eye-ip).length();
+        _distance = (eye - ip).length();
 
-        Matrixd rotation_matrix = Matrixd::translate(0.0,0.0,-_distance)*
-                                  matrix*
+        Matrixd rotation_matrix = Matrixd::translate(0.0, 0.0, -_distance) *
+                                  matrix *
                                   Matrixd::translate(-_center);
 
         _rotation = rotation_matrix.getRotate();
@@ -113,17 +110,17 @@ void TerrainManipulator::setByMatrix(const Matrixd& matrix)
 
     if (!hitFound)
     {
-        CoordinateFrame eyePointCoordFrame = getCoordinateFrame( eye );
+        CoordinateFrame eyePointCoordFrame = getCoordinateFrame(eye);
 
-        if (intersect(eye+getUpVector(eyePointCoordFrame)*distance,
-                      eye-getUpVector(eyePointCoordFrame)*distance,
+        if (intersect(eye + getUpVector(eyePointCoordFrame) * distance,
+                      eye - getUpVector(eyePointCoordFrame) * distance,
                       ip))
         {
             _center = ip;
 
-            _distance = (eye-ip).length();
+            _distance = (eye - ip).length();
 
-            _rotation.set(0,0,0,1);
+            _rotation.set(0, 0, 0, 1);
 
             hitFound = true;
         }
@@ -137,36 +134,38 @@ void TerrainManipulator::setByMatrix(const Matrixd& matrix)
 }
 
 
-void TerrainManipulator::setTransformation( const osg::Vec3d& eye, const osg::Vec3d& center, const osg::Vec3d& up )
+void TerrainManipulator::setTransformation(const osg::Vec3d&eye, const osg::Vec3d&center, const osg::Vec3d&up)
 {
-    if (!_node) return;
+    if (!_node)
+        return;
 
     // compute rotation matrix
-    Vec3d lv(center-eye);
+    Vec3d lv(center - eye);
     _distance = lv.length();
-    _center = center;
+    _center   = center;
 
-    OSG_INFO << "In compute"<< std::endl;
+    OSG_INFO << "In compute" << std::endl;
 
     if (_node.valid())
     {
         bool hitFound = false;
 
-        double distance = lv.length();
-        double maxDistance = distance+2*(eye-_node->getBound().center()).length();
-        Vec3d farPosition = eye+lv*(maxDistance/distance);
-        Vec3d endPoint = center;
-        for(int i=0;
-            !hitFound && i<2;
-            ++i, endPoint = farPosition)
+        double distance    = lv.length();
+        double maxDistance = distance + 2 * (eye - _node->getBound().center()).length();
+        Vec3d  farPosition = eye + lv * (maxDistance / distance);
+        Vec3d  endPoint    = center;
+
+        for (int i = 0;
+             !hitFound && i < 2;
+             ++i, endPoint = farPosition)
         {
             // compute the intersection with the scene.
 
             Vec3d ip;
             if (intersect(eye, endPoint, ip))
             {
-                _center = ip;
-                _distance = (ip-eye).length();
+                _center   = ip;
+                _distance = (ip - eye).length();
 
                 hitFound = true;
             }
@@ -176,7 +175,7 @@ void TerrainManipulator::setTransformation( const osg::Vec3d& eye, const osg::Ve
     // note LookAt = inv(CF)*inv(RM)*inv(T) which is equivalent to:
     // inv(R) = CF*LookAt.
 
-    Matrixd rotation_matrix = Matrixd::lookAt(eye,center,up);
+    Matrixd rotation_matrix = Matrixd::lookAt(eye, center, up);
 
     _rotation = rotation_matrix.getRotate().inverse();
 
@@ -187,9 +186,9 @@ void TerrainManipulator::setTransformation( const osg::Vec3d& eye, const osg::Ve
 }
 
 
-bool TerrainManipulator::intersect( const Vec3d& start, const Vec3d& end, Vec3d& intersection ) const
+bool TerrainManipulator::intersect(const Vec3d&start, const Vec3d&end, Vec3d&intersection) const
 {
-    ref_ptr<osgUtil::LineSegmentIntersector> lsi = new osgUtil::LineSegmentIntersector(start,end);
+    ref_ptr<osgUtil::LineSegmentIntersector> lsi = new osgUtil::LineSegmentIntersector(start, end);
 
     osgUtil::IntersectionVisitor iv(lsi.get());
     iv.setTraversalMask(_intersectTraversalMask);
@@ -201,16 +200,18 @@ bool TerrainManipulator::intersect( const Vec3d& start, const Vec3d& end, Vec3d&
         intersection = lsi->getIntersections().begin()->getWorldIntersectPoint();
         return true;
     }
+
     return false;
 }
 
 
-bool TerrainManipulator::performMovementMiddleMouseButton( const double eventTimeDelta, const double dx, const double dy )
+bool TerrainManipulator::performMovementMiddleMouseButton(const double eventTimeDelta, const double dx, const double dy)
 {
     // pan model.
-    double scale = -0.3f * _distance * getThrowScale( eventTimeDelta );
+    double scale = -0.3f * _distance * getThrowScale(eventTimeDelta);
 
     Matrixd rotation_matrix;
+
     rotation_matrix.makeRotate(_rotation);
 
 
@@ -221,13 +222,13 @@ bool TerrainManipulator::performMovementMiddleMouseButton( const double eventTim
     // Vec3d localUp = getUpVector(coordinateFrame);
     Vec3d localUp = _previousUp;
 
-    Vec3d forwardVector =localUp^sideVector;
-    sideVector = forwardVector^localUp;
+    Vec3d forwardVector = localUp ^ sideVector;
+    sideVector = forwardVector ^ localUp;
 
     forwardVector.normalize();
     sideVector.normalize();
 
-    Vec3d dv = forwardVector * (dy*scale) + sideVector * (dx*scale);
+    Vec3d dv = forwardVector * (dy * scale) + sideVector * (dx * scale);
 
     _center += dv;
 
@@ -238,41 +239,41 @@ bool TerrainManipulator::performMovementMiddleMouseButton( const double eventTim
     if (_node.valid())
     {
         // now reorientate the coordinate frame to the frame coords.
-        CoordinateFrame coordinateFrame =  getCoordinateFrame(_center);
+        CoordinateFrame coordinateFrame = getCoordinateFrame(_center);
 
         // need to reintersect with the terrain
-        double distance = _node->getBound().radius()*0.25f;
+        double distance = _node->getBound().radius() * 0.25f;
 
         Vec3d ip1;
         Vec3d ip2;
-        bool hit_ip1 = intersect(_center, _center + getUpVector(coordinateFrame) * distance, ip1);
-        bool hit_ip2 = intersect(_center, _center - getUpVector(coordinateFrame) * distance, ip2);
+        bool  hit_ip1 = intersect(_center, _center + getUpVector(coordinateFrame) * distance, ip1);
+        bool  hit_ip2 = intersect(_center, _center - getUpVector(coordinateFrame) * distance, ip2);
         if (hit_ip1)
         {
             if (hit_ip2)
             {
-                _center = (_center-ip1).length2() < (_center-ip2).length2() ?
-                            ip1 :
-                            ip2;
+                _center = (_center - ip1).length2() < (_center - ip2).length2() ?
+                          ip1 :
+                          ip2;
 
                 hitFound = true;
             }
             else
             {
-                _center = ip1;
+                _center  = ip1;
                 hitFound = true;
             }
         }
         else if (hit_ip2)
         {
-            _center = ip2;
+            _center  = ip2;
             hitFound = true;
         }
 
         if (!hitFound)
         {
             // ??
-            OSG_INFO<<"TerrainManipulator unable to intersect with terrain."<<std::endl;
+            OSG_INFO << "TerrainManipulator unable to intersect with terrain." << std::endl;
         }
 
         coordinateFrame = getCoordinateFrame(_center);
@@ -280,19 +281,19 @@ bool TerrainManipulator::performMovementMiddleMouseButton( const double eventTim
 
 
         Quat pan_rotation;
-        pan_rotation.makeRotate(localUp,new_localUp);
+        pan_rotation.makeRotate(localUp, new_localUp);
 
         if (!pan_rotation.zeroRotation())
         {
-            _rotation = _rotation * pan_rotation;
+            _rotation   = _rotation * pan_rotation;
             _previousUp = new_localUp;
-            //OSG_NOTICE<<"Rotating from "<<localUp<<" to "<<new_localUp<<"  angle = "<<acos(localUp*new_localUp/(localUp.length()*new_localUp.length()))<<std::endl;
+            // OSG_NOTICE<<"Rotating from "<<localUp<<" to "<<new_localUp<<"  angle = "<<acos(localUp*new_localUp/(localUp.length()*new_localUp.length()))<<std::endl;
 
-            //clampOrientation();
+            // clampOrientation();
         }
         else
         {
-            OSG_INFO<<"New up orientation nearly inline - no need to rotate"<<std::endl;
+            OSG_INFO << "New up orientation nearly inline - no need to rotate" << std::endl;
         }
     }
 
@@ -300,10 +301,10 @@ bool TerrainManipulator::performMovementMiddleMouseButton( const double eventTim
 }
 
 
-bool TerrainManipulator::performMovementRightMouseButton( const double eventTimeDelta, const double /*dx*/, const double dy )
+bool TerrainManipulator::performMovementRightMouseButton(const double eventTimeDelta, const double /*dx*/, const double dy)
 {
     // zoom model
-    zoomModel( dy * getThrowScale( eventTimeDelta ), false );
+    zoomModel(dy * getThrowScale(eventTimeDelta), false);
     return true;
 }
 
@@ -316,27 +317,27 @@ void TerrainManipulator::clampOrientation()
         rotation_matrix.makeRotate(_rotation);
 
         Vec3d lookVector = -getUpVector(rotation_matrix);
-        Vec3d upVector = getFrontVector(rotation_matrix);
+        Vec3d upVector   = getFrontVector(rotation_matrix);
 
         CoordinateFrame coordinateFrame = getCoordinateFrame(_center);
-        Vec3d localUp = getUpVector(coordinateFrame);
-        //Vec3d localUp = _previousUp;
+        Vec3d           localUp         = getUpVector(coordinateFrame);
+        // Vec3d localUp = _previousUp;
 
         Vec3d sideVector = lookVector ^ localUp;
 
-        if (sideVector.length()<0.1)
+        if (sideVector.length() < 0.1)
         {
-            OSG_INFO<<"Side vector short "<<sideVector.length()<<std::endl;
+            OSG_INFO << "Side vector short " << sideVector.length() << std::endl;
 
-            sideVector = upVector^localUp;
+            sideVector = upVector ^ localUp;
             sideVector.normalize();
         }
 
-        Vec3d newUpVector = sideVector^lookVector;
+        Vec3d newUpVector = sideVector ^ lookVector;
         newUpVector.normalize();
 
         Quat rotate_roll;
-        rotate_roll.makeRotate(upVector,newUpVector);
+        rotate_roll.makeRotate(upVector, newUpVector);
 
         if (!rotate_roll.zeroRotation())
         {

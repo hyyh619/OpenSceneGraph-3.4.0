@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/CollectOccludersVisitor>
 #include <osg/Transform>
 #include <osg/Switch>
@@ -21,55 +21,60 @@
 
 using namespace osg;
 
-CollectOccludersVisitor::CollectOccludersVisitor():
-    NodeVisitor(COLLECT_OCCLUDER_VISITOR,TRAVERSE_ACTIVE_CHILDREN)
+CollectOccludersVisitor::CollectOccludersVisitor() :
+    NodeVisitor(COLLECT_OCCLUDER_VISITOR, TRAVERSE_ACTIVE_CHILDREN)
 {
-
-    setCullingMode(VIEW_FRUSTUM_CULLING|
-                   NEAR_PLANE_CULLING|
-                   FAR_PLANE_CULLING|
+    setCullingMode(VIEW_FRUSTUM_CULLING |
+                   NEAR_PLANE_CULLING |
+                   FAR_PLANE_CULLING |
                    SMALL_FEATURE_CULLING);
 
-    _minimumShadowOccluderVolume = 0.005f;
+    _minimumShadowOccluderVolume    = 0.005f;
     _maximumNumberOfActiveOccluders = 10;
-    _createDrawables = false;
-
+    _createDrawables                = false;
 }
 
 CollectOccludersVisitor::~CollectOccludersVisitor()
-{
-}
+{}
 
 void CollectOccludersVisitor::reset()
 {
     CullStack::reset();
+
     _occluderSet.clear();
 }
 
-float CollectOccludersVisitor::getDistanceToEyePoint(const Vec3& pos, bool withLODScale) const
+float CollectOccludersVisitor::getDistanceToEyePoint(const Vec3&pos, bool withLODScale) const
 {
-    if (withLODScale) return (pos-getEyeLocal()).length()*getLODScale();
-    else return (pos-getEyeLocal()).length();
+    if (withLODScale)
+        return (pos - getEyeLocal()).length() * getLODScale();
+    else
+        return (pos - getEyeLocal()).length();
 }
 
-float CollectOccludersVisitor::getDistanceToViewPoint(const Vec3& pos, bool withLODScale) const
+float CollectOccludersVisitor::getDistanceToViewPoint(const Vec3&pos, bool withLODScale) const
 {
-    if (withLODScale) return (pos-getViewPointLocal()).length()*getLODScale();
-    else return (pos-getViewPointLocal()).length();
+    if (withLODScale)
+        return (pos - getViewPointLocal()).length() * getLODScale();
+    else
+        return (pos - getViewPointLocal()).length();
 }
 
-float CollectOccludersVisitor::getDistanceFromEyePoint(const Vec3& pos, bool withLODScale) const
+float CollectOccludersVisitor::getDistanceFromEyePoint(const Vec3&pos, bool withLODScale) const
 {
-    const Matrix& matrix = *_modelviewStack.back();
-    float dist = -(pos[0]*matrix(0,2)+pos[1]*matrix(1,2)+pos[2]*matrix(2,2)+matrix(3,2));
+    const Matrix&matrix = *_modelviewStack.back();
+    float       dist    = -(pos[0] * matrix(0, 2) + pos[1] * matrix(1, 2) + pos[2] * matrix(2, 2) + matrix(3, 2));
 
-    if (withLODScale) return dist*getLODScale();
-    else return dist*getLODScale();
+    if (withLODScale)
+        return dist * getLODScale();
+    else
+        return dist * getLODScale();
 }
 
-void CollectOccludersVisitor::apply(osg::Node& node)
+void CollectOccludersVisitor::apply(osg::Node&node)
 {
-    if (isCulled(node)) return;
+    if (isCulled(node))
+        return;
 
     // push the culling mode.
     pushCurrentMask();
@@ -80,15 +85,16 @@ void CollectOccludersVisitor::apply(osg::Node& node)
     popCurrentMask();
 }
 
-void CollectOccludersVisitor::apply(osg::Transform& node)
+void CollectOccludersVisitor::apply(osg::Transform&node)
 {
-    if (isCulled(node)) return;
+    if (isCulled(node))
+        return;
 
     // push the culling mode.
     pushCurrentMask();
 
     ref_ptr<osg::RefMatrix> matrix = createOrReuseMatrix(*getModelViewMatrix());
-    node.computeLocalToWorldMatrix(*matrix,this);
+    node.computeLocalToWorldMatrix(*matrix, this);
     pushModelViewMatrix(matrix.get(), node.getReferenceFrame());
 
     handle_cull_callbacks_and_traverse(node);
@@ -99,9 +105,10 @@ void CollectOccludersVisitor::apply(osg::Transform& node)
     popCurrentMask();
 }
 
-void CollectOccludersVisitor::apply(osg::Projection& node)
+void CollectOccludersVisitor::apply(osg::Projection&node)
 {
-    if (isCulled(node)) return;
+    if (isCulled(node))
+        return;
 
     // push the culling mode.
     pushCurrentMask();
@@ -117,14 +124,15 @@ void CollectOccludersVisitor::apply(osg::Projection& node)
     popCurrentMask();
 }
 
-void CollectOccludersVisitor::apply(osg::Switch& node)
+void CollectOccludersVisitor::apply(osg::Switch&node)
 {
     apply((Group&)node);
 }
 
-void CollectOccludersVisitor::apply(osg::LOD& node)
+void CollectOccludersVisitor::apply(osg::LOD&node)
 {
-    if (isCulled(node)) return;
+    if (isCulled(node))
+        return;
 
     // push the culling mode.
     pushCurrentMask();
@@ -135,7 +143,7 @@ void CollectOccludersVisitor::apply(osg::LOD& node)
     popCurrentMask();
 }
 
-void CollectOccludersVisitor::apply(osg::OccluderNode& node)
+void CollectOccludersVisitor::apply(osg::OccluderNode&node)
 {
     // need to check if occlusion node is in the occluder
     // list, if so disable the appropriate ShadowOccluderVolume
@@ -162,18 +170,17 @@ void CollectOccludersVisitor::apply(osg::OccluderNode& node)
         // planes, all with their normals facing inward towards the volume,
         // and then transform them back into projection space.
         ShadowVolumeOccluder svo;
-        if (svo.computeOccluder(_nodePath, *node.getOccluder(), *this,_createDrawables))
+        if (svo.computeOccluder(_nodePath, *node.getOccluder(), *this, _createDrawables))
         {
-
-            if (svo.getVolume()>_minimumShadowOccluderVolume)
+            if (svo.getVolume() > _minimumShadowOccluderVolume)
             {
                 // need to test occluder against view frustum.
-                //std::cout << "    adding in Occluder"<<std::endl;
+                // std::cout << "    adding in Occluder"<<std::endl;
                 _occluderSet.insert(svo);
             }
             else
             {
-                //std::cout << "    rejecting Occluder as its volume is too small "<<svo.getVolume()<<std::endl;
+                // std::cout << "    rejecting Occluder as its volume is too small "<<svo.getVolume()<<std::endl;
             }
         }
     }
@@ -189,33 +196,33 @@ void CollectOccludersVisitor::apply(osg::OccluderNode& node)
 
 void CollectOccludersVisitor::removeOccludedOccluders()
 {
-    if (_occluderSet.empty()) return;
+    if (_occluderSet.empty())
+        return;
 
-    ShadowVolumeOccluderSet::iterator occludeeItr=_occluderSet.begin();
+    ShadowVolumeOccluderSet::iterator occludeeItr = _occluderSet.begin();
 
     // skip the first element as this can't be occluded by anything else.
     occludeeItr++;
 
     // step through the rest of the occluders, remove occluders which are themselves occluded.
-    for(;
-        occludeeItr!=_occluderSet.end();
-        ++occludeeItr)
+    for (;
+         occludeeItr != _occluderSet.end();
+         ++occludeeItr)
     {
-
         // search for any occluders that occlude the current occluder,
         // we only need to test any occluder near the front of the set since
         // you can't be occluder by something smaller than you.
-        ShadowVolumeOccluder& occludee = const_cast<ShadowVolumeOccluder&>(*occludeeItr);
-        ShadowVolumeOccluder::HoleList& holeList = occludee.getHoleList();
+        ShadowVolumeOccluder          &occludee = const_cast<ShadowVolumeOccluder&>(*occludeeItr);
+        ShadowVolumeOccluder::HoleList&holeList = occludee.getHoleList();
 
-        for(ShadowVolumeOccluderSet::iterator occluderItr=_occluderSet.begin();
-            occluderItr!=occludeeItr;
-            ++occluderItr)
+        for (ShadowVolumeOccluderSet::iterator occluderItr = _occluderSet.begin();
+             occluderItr != occludeeItr;
+             ++occluderItr)
         {
             // cast away constness of the std::set element since ShadowVolumeOccluder::contains() is non const,
             // and the std::set is a const, just for the invariance of the operator <!! Ahhhhh. oh well the below
             // should be robust since contains won't change the getVolume which is used by the operator <.  Honest,  :-)
-            ShadowVolumeOccluder* occluder = const_cast<ShadowVolumeOccluder*>(&(*occluderItr));
+            ShadowVolumeOccluder *occluder = const_cast<ShadowVolumeOccluder*>(&(*occluderItr));
             if (occluder->contains(occludee.getOccluder().getReferenceVertexList()))
             {
                 // erase occluder from set.
@@ -227,11 +234,12 @@ void CollectOccludersVisitor::removeOccludedOccluders()
 
             // now check all the holes in the occludee against the occluder, and remove the ones that won't be valid
             unsigned int previous_valid_hole_i = 0;
-            for(unsigned int i=0; i<holeList.size(); ++i)
+
+            for (unsigned int i = 0; i < holeList.size(); ++i)
             {
                 if (!occluder->contains(holeList[i].getReferenceVertexList()))
                 {
-                    if (previous_valid_hole_i<i)
+                    if (previous_valid_hole_i < i)
                     {
                         // copy valid holes into gaps left by invalid ones
                         holeList[previous_valid_hole_i] = holeList[i];
@@ -242,23 +250,23 @@ void CollectOccludersVisitor::removeOccludedOccluders()
             }
 
             // remove the tail of the holeList if holes have been removed.
-            if (previous_valid_hole_i<holeList.size())
+            if (previous_valid_hole_i < holeList.size())
             {
-                holeList.erase(holeList.begin()+previous_valid_hole_i,holeList.end());
+                holeList.erase(holeList.begin() + previous_valid_hole_i, holeList.end());
             }
-
         }
     }
 
 
-    if (_occluderSet.size()<=_maximumNumberOfActiveOccluders) return;
+    if (_occluderSet.size() <= _maximumNumberOfActiveOccluders)
+        return;
 
     // move the iterator to the _maximumNumberOfActiveOccluders th occluder.
     occludeeItr = _occluderSet.begin();
-    for(unsigned int i=0;i<_maximumNumberOfActiveOccluders;++i)
+
+    for (unsigned int i = 0; i < _maximumNumberOfActiveOccluders; ++i)
         ++occludeeItr;
 
     // discard last occluders.
-    _occluderSet.erase(occludeeItr,_occluderSet.end());
-
+    _occluderSet.erase(occludeeItr, _occluderSet.end());
 }

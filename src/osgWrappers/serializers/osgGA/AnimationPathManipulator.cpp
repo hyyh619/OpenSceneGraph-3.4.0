@@ -6,9 +6,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgGA_AnimationPathManipulator,
-                         new osgGA::AnimationPathManipulator,
-                         osgGA::AnimationPathManipulator,
-                         "osg::Object osgGA::AnimationPathManipulator" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgGA_AnimationPathManipulator,
+                        new osgGA::AnimationPathManipulator,
+                        osgGA::AnimationPathManipulator,
+                        "osg::Object osgGA::AnimationPathManipulator")
+{}

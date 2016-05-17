@@ -4,10 +4,10 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgViewer_WoWVxDisplay,
-                         new osgViewer::WoWVxDisplay,
-                         osgViewer::WoWVxDisplay,
-                         "osg::Object osgViewer::ViewConfig osgViewer::WoWVxDisplay" )
+REGISTER_OBJECT_WRAPPER(osgViewer_WoWVxDisplay,
+                        new osgViewer::WoWVxDisplay,
+                        osgViewer::WoWVxDisplay,
+                        "osg::Object osgViewer::ViewConfig osgViewer::WoWVxDisplay")
 {
     ADD_UINT_SERIALIZER(ScreenNum, 0u);
 #if 0

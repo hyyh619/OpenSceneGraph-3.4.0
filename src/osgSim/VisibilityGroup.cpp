@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgSim/VisibilityGroup>
 
@@ -19,60 +19,59 @@
 using namespace osgSim;
 using namespace osg;
 
-VisibilityGroup::VisibilityGroup():
+VisibilityGroup::VisibilityGroup() :
     _volumeIntersectionMask(0xFFFFFFFF),
     _segmentLength(0.f)
-{
-}
+{}
 
-VisibilityGroup::VisibilityGroup(const VisibilityGroup& sw,const osg::CopyOp& copyop):
-    osg::Group(sw,copyop),
+VisibilityGroup::VisibilityGroup(const VisibilityGroup&sw, const osg::CopyOp&copyop) :
+    osg::Group(sw, copyop),
     _volumeIntersectionMask(0xFFFFFFFF),
     _segmentLength(0.f)
-{
-}
+{}
 
-void VisibilityGroup::traverse(osg::NodeVisitor& nv)
+void VisibilityGroup::traverse(osg::NodeVisitor&nv)
 {
-    if (nv.getTraversalMode()==osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN && nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR)
+    if (nv.getTraversalMode() == osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN && nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR)
     {
         // cast to cullvisitor
-        osgUtil::CullVisitor& cv = (osgUtil::CullVisitor&) nv;
+        osgUtil::CullVisitor&cv = (osgUtil::CullVisitor&) nv;
 
         // here we test if we are inside the visibilityvolume
 
         // first get the eyepoint and in local coordinates
-        osg::Vec3 eye = cv.getEyeLocal();
+        osg::Vec3 eye  = cv.getEyeLocal();
         osg::Vec3 look = cv.getLookVectorLocal();
 
         // now scale the segment to the segment length - if 0 use the group bounding sphere radius
         float length = _segmentLength;
-        if(length == 0.f)
-            length = 2.0f*getBound().radius();
+        if (length == 0.f)
+            length = 2.0f * getBound().radius();
+
         look *= length;
         osg::Vec3 center = eye + look;
 
         osg::Vec3 seg = center - eye;
 
         // perform the intersection using the given mask
-        osgUtil::IntersectVisitor iv;
+        osgUtil::IntersectVisitor      iv;
         osg::ref_ptr<osg::LineSegment> lineseg = new osg::LineSegment;
         lineseg->set(eye, center);
         iv.addLineSegment(lineseg.get());
         iv.setTraversalMask(_volumeIntersectionMask);
 
-        if(_visibilityVolume.valid())
+        if (_visibilityVolume.valid())
             _visibilityVolume->accept(iv);
 
         // now examine the hit record
-        if(iv.hits())
+        if (iv.hits())
         {
-            osgUtil::IntersectVisitor::HitList& hitList = iv.getHitList(lineseg.get());
-            if(!hitList.empty()) // we actually hit something
+            osgUtil::IntersectVisitor::HitList&hitList = iv.getHitList(lineseg.get());
+            if (!hitList.empty()) // we actually hit something
             {
                 //                OSG_INFO << "Hit obstruction"<< std::endl;
                 osg::Vec3 normal = hitList.front().getWorldIntersectNormal();
-                if((normal*seg) > 0.f ) // we are inside
+                if ((normal * seg) > 0.f) // we are inside
                     Group::traverse(nv);
             }
         }
@@ -82,4 +81,3 @@ void VisibilityGroup::traverse(osg::NodeVisitor& nv)
         Group::traverse(nv);
     }
 }
-

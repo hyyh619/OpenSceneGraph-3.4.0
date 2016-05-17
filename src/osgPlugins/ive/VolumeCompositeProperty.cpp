@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "VolumeCompositeProperty.h"
@@ -19,30 +19,31 @@
 
 using namespace ive;
 
-void VolumeCompositeProperty::write(DataOutputStream* out)
+void VolumeCompositeProperty::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVEVOLUMECOMPOSITEPROPERTY);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Object* object = dynamic_cast<osg::Object*>(this);
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
     if (object)
         ((ive::Object*)(object))->write(out);
     else
         out_THROW_EXCEPTION("VolumeCompositeProperty::write(): Could not cast this osgVolume::CompositeProperty to an osg::Object.");
 
     out->writeUInt(getNumProperties());
-    for(unsigned int i=0; i<getNumProperties(); ++i)
+
+    for (unsigned int i = 0; i < getNumProperties(); ++i)
     {
         out->writeVolumeProperty(getProperty(i));
     }
-
 }
 
-void VolumeCompositeProperty::read(DataInputStream* in)
+void VolumeCompositeProperty::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVEVOLUMECOMPOSITEPROPERTY)
         in_THROW_EXCEPTION("VolumeCompositeProperty::read(): Expected CompositeProperty identification.");
 
@@ -50,14 +51,15 @@ void VolumeCompositeProperty::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osg::Object* object = dynamic_cast<osg::Object*>(this);
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
     if (object)
         ((ive::Object*)(object))->read(in);
     else
         in_THROW_EXCEPTION("VolumeCompositeProperty::write(): Could not cast this osgVolume::CompositeProperty to an osg::Object.");
 
     unsigned int numProperties = in->readUInt();
-    for(unsigned int i=0; i<numProperties; ++i)
+
+    for (unsigned int i = 0; i < numProperties; ++i)
     {
         addProperty(in->readVolumeProperty());
     }

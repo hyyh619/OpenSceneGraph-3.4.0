@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef IVE_LAYER
 #define IVE_LAYER 1
@@ -19,31 +19,28 @@
 
 namespace ive
 {
-
 class LayerHelper
 {
-    public:
+public:
 
-        LayerHelper() {}
+LayerHelper() {}
 
-        void writeLayer(DataOutputStream* out, osgTerrain::Layer* layer);
-        osgTerrain::Layer* readLayer(DataInputStream* in);
+void writeLayer(DataOutputStream *out, osgTerrain::Layer *layer);
+osgTerrain::Layer* readLayer(DataInputStream *in);
 
-        void writeLocator(DataOutputStream* out, osgTerrain::Locator* locator);
-        osgTerrain::Locator* readLocator(DataInputStream* in);
+void writeLocator(DataOutputStream *out, osgTerrain::Locator *locator);
+osgTerrain::Locator* readLocator(DataInputStream *in);
 };
 
 class Layer : public osgTerrain::Layer, public ReadWrite
 {
-    public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+public:
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 
-    void writeValidDataOperator(DataOutputStream* out, osgTerrain::ValidDataOperator* validDataOperator);
-    osgTerrain::ValidDataOperator* readValidDataOperator(DataInputStream* in);
+void writeValidDataOperator(DataOutputStream *out, osgTerrain::ValidDataOperator *validDataOperator);
+osgTerrain::ValidDataOperator* readValidDataOperator(DataInputStream *in);
 };
-
-
 }
 
 #endif

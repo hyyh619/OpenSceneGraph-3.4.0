@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <stdlib.h>
 #include <string.h>
 
@@ -53,108 +53,151 @@ using namespace osgUtil;
 // #define GEOMETRYDEPRECATED
 
 void Optimizer::reset()
-{
-}
+{}
 
-static osg::ApplicationUsageProxy Optimizer_e0(osg::ApplicationUsage::ENVIRONMENTAL_VARIABLE,"OSG_OPTIMIZER \"<type> [<type>]\"","OFF | DEFAULT | FLATTEN_STATIC_TRANSFORMS | FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS | REMOVE_REDUNDANT_NODES | COMBINE_ADJACENT_LODS | SHARE_DUPLICATE_STATE | MERGE_GEOMETRY | MERGE_GEODES | SPATIALIZE_GROUPS  | COPY_SHARED_NODES  | TRISTRIP_GEOMETRY | OPTIMIZE_TEXTURE_SETTINGS | REMOVE_LOADED_PROXY_NODES | TESSELLATE_GEOMETRY | CHECK_GEOMETRY |  FLATTEN_BILLBOARDS | TEXTURE_ATLAS_BUILDER | STATIC_OBJECT_DETECTION | INDEX_MESH | VERTEX_POSTTRANSFORM | VERTEX_PRETRANSFORM");
+static osg::ApplicationUsageProxy Optimizer_e0(osg::ApplicationUsage::ENVIRONMENTAL_VARIABLE, "OSG_OPTIMIZER \"<type> [<type>]\"", "OFF | DEFAULT | FLATTEN_STATIC_TRANSFORMS | FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS | REMOVE_REDUNDANT_NODES | COMBINE_ADJACENT_LODS | SHARE_DUPLICATE_STATE | MERGE_GEOMETRY | MERGE_GEODES | SPATIALIZE_GROUPS  | COPY_SHARED_NODES  | TRISTRIP_GEOMETRY | OPTIMIZE_TEXTURE_SETTINGS | REMOVE_LOADED_PROXY_NODES | TESSELLATE_GEOMETRY | CHECK_GEOMETRY |  FLATTEN_BILLBOARDS | TEXTURE_ATLAS_BUILDER | STATIC_OBJECT_DETECTION | INDEX_MESH | VERTEX_POSTTRANSFORM | VERTEX_PRETRANSFORM");
 
-void Optimizer::optimize(osg::Node* node)
+void Optimizer::optimize(osg::Node *node)
 {
     unsigned int options = 0;
 
 
-    const char* env = getenv("OSG_OPTIMIZER");
+    const char *env = getenv("OSG_OPTIMIZER");
+
     if (env)
     {
         std::string str(env);
 
-        if(str.find("OFF")!=std::string::npos) options = 0;
+        if (str.find("OFF") != std::string::npos)
+            options = 0;
 
-        if(str.find("~DEFAULT")!=std::string::npos) options ^= DEFAULT_OPTIMIZATIONS;
-        else if(str.find("DEFAULT")!=std::string::npos) options |= DEFAULT_OPTIMIZATIONS;
+        if (str.find("~DEFAULT") != std::string::npos)
+            options ^= DEFAULT_OPTIMIZATIONS;
+        else if (str.find("DEFAULT") != std::string::npos)
+            options |= DEFAULT_OPTIMIZATIONS;
 
-        if(str.find("~FLATTEN_STATIC_TRANSFORMS")!=std::string::npos) options ^= FLATTEN_STATIC_TRANSFORMS;
-        else if(str.find("FLATTEN_STATIC_TRANSFORMS")!=std::string::npos) options |= FLATTEN_STATIC_TRANSFORMS;
+        if (str.find("~FLATTEN_STATIC_TRANSFORMS") != std::string::npos)
+            options ^= FLATTEN_STATIC_TRANSFORMS;
+        else if (str.find("FLATTEN_STATIC_TRANSFORMS") != std::string::npos)
+            options |= FLATTEN_STATIC_TRANSFORMS;
 
-        if(str.find("~FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS")!=std::string::npos) options ^= FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS;
-        else if(str.find("FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS")!=std::string::npos) options |= FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS;
+        if (str.find("~FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS") != std::string::npos)
+            options ^= FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS;
+        else if (str.find("FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS") != std::string::npos)
+            options |= FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS;
 
-        if(str.find("~REMOVE_REDUNDANT_NODES")!=std::string::npos) options ^= REMOVE_REDUNDANT_NODES;
-        else if(str.find("REMOVE_REDUNDANT_NODES")!=std::string::npos) options |= REMOVE_REDUNDANT_NODES;
+        if (str.find("~REMOVE_REDUNDANT_NODES") != std::string::npos)
+            options ^= REMOVE_REDUNDANT_NODES;
+        else if (str.find("REMOVE_REDUNDANT_NODES") != std::string::npos)
+            options |= REMOVE_REDUNDANT_NODES;
 
-        if(str.find("~REMOVE_LOADED_PROXY_NODES")!=std::string::npos) options ^= REMOVE_LOADED_PROXY_NODES;
-        else if(str.find("REMOVE_LOADED_PROXY_NODES")!=std::string::npos) options |= REMOVE_LOADED_PROXY_NODES;
+        if (str.find("~REMOVE_LOADED_PROXY_NODES") != std::string::npos)
+            options ^= REMOVE_LOADED_PROXY_NODES;
+        else if (str.find("REMOVE_LOADED_PROXY_NODES") != std::string::npos)
+            options |= REMOVE_LOADED_PROXY_NODES;
 
-        if(str.find("~COMBINE_ADJACENT_LODS")!=std::string::npos) options ^= COMBINE_ADJACENT_LODS;
-        else if(str.find("COMBINE_ADJACENT_LODS")!=std::string::npos) options |= COMBINE_ADJACENT_LODS;
+        if (str.find("~COMBINE_ADJACENT_LODS") != std::string::npos)
+            options ^= COMBINE_ADJACENT_LODS;
+        else if (str.find("COMBINE_ADJACENT_LODS") != std::string::npos)
+            options |= COMBINE_ADJACENT_LODS;
 
-        if(str.find("~SHARE_DUPLICATE_STATE")!=std::string::npos) options ^= SHARE_DUPLICATE_STATE;
-        else if(str.find("SHARE_DUPLICATE_STATE")!=std::string::npos) options |= SHARE_DUPLICATE_STATE;
+        if (str.find("~SHARE_DUPLICATE_STATE") != std::string::npos)
+            options ^= SHARE_DUPLICATE_STATE;
+        else if (str.find("SHARE_DUPLICATE_STATE") != std::string::npos)
+            options |= SHARE_DUPLICATE_STATE;
 
-        if(str.find("~MERGE_GEODES")!=std::string::npos) options ^= MERGE_GEODES;
-        else if(str.find("MERGE_GEODES")!=std::string::npos) options |= MERGE_GEODES;
+        if (str.find("~MERGE_GEODES") != std::string::npos)
+            options ^= MERGE_GEODES;
+        else if (str.find("MERGE_GEODES") != std::string::npos)
+            options |= MERGE_GEODES;
 
-        if(str.find("~MERGE_GEOMETRY")!=std::string::npos) options ^= MERGE_GEOMETRY;
-        else if(str.find("MERGE_GEOMETRY")!=std::string::npos) options |= MERGE_GEOMETRY;
+        if (str.find("~MERGE_GEOMETRY") != std::string::npos)
+            options ^= MERGE_GEOMETRY;
+        else if (str.find("MERGE_GEOMETRY") != std::string::npos)
+            options |= MERGE_GEOMETRY;
 
-        if(str.find("~SPATIALIZE_GROUPS")!=std::string::npos) options ^= SPATIALIZE_GROUPS;
-        else if(str.find("SPATIALIZE_GROUPS")!=std::string::npos) options |= SPATIALIZE_GROUPS;
+        if (str.find("~SPATIALIZE_GROUPS") != std::string::npos)
+            options ^= SPATIALIZE_GROUPS;
+        else if (str.find("SPATIALIZE_GROUPS") != std::string::npos)
+            options |= SPATIALIZE_GROUPS;
 
-        if(str.find("~COPY_SHARED_NODES")!=std::string::npos) options ^= COPY_SHARED_NODES;
-        else if(str.find("COPY_SHARED_NODES")!=std::string::npos) options |= COPY_SHARED_NODES;
+        if (str.find("~COPY_SHARED_NODES") != std::string::npos)
+            options ^= COPY_SHARED_NODES;
+        else if (str.find("COPY_SHARED_NODES") != std::string::npos)
+            options |= COPY_SHARED_NODES;
 
-        if(str.find("~TESSELLATE_GEOMETRY")!=std::string::npos) options ^= TESSELLATE_GEOMETRY;
-        else if(str.find("TESSELLATE_GEOMETRY")!=std::string::npos) options |= TESSELLATE_GEOMETRY;
+        if (str.find("~TESSELLATE_GEOMETRY") != std::string::npos)
+            options ^= TESSELLATE_GEOMETRY;
+        else if (str.find("TESSELLATE_GEOMETRY") != std::string::npos)
+            options |= TESSELLATE_GEOMETRY;
 
-        if(str.find("~TRISTRIP_GEOMETRY")!=std::string::npos) options ^= TRISTRIP_GEOMETRY;
-        else if(str.find("TRISTRIP_GEOMETRY")!=std::string::npos) options |= TRISTRIP_GEOMETRY;
+        if (str.find("~TRISTRIP_GEOMETRY") != std::string::npos)
+            options ^= TRISTRIP_GEOMETRY;
+        else if (str.find("TRISTRIP_GEOMETRY") != std::string::npos)
+            options |= TRISTRIP_GEOMETRY;
 
-        if(str.find("~OPTIMIZE_TEXTURE_SETTINGS")!=std::string::npos) options ^= OPTIMIZE_TEXTURE_SETTINGS;
-        else if(str.find("OPTIMIZE_TEXTURE_SETTINGS")!=std::string::npos) options |= OPTIMIZE_TEXTURE_SETTINGS;
+        if (str.find("~OPTIMIZE_TEXTURE_SETTINGS") != std::string::npos)
+            options ^= OPTIMIZE_TEXTURE_SETTINGS;
+        else if (str.find("OPTIMIZE_TEXTURE_SETTINGS") != std::string::npos)
+            options |= OPTIMIZE_TEXTURE_SETTINGS;
 
-        if(str.find("~CHECK_GEOMETRY")!=std::string::npos) options ^= CHECK_GEOMETRY;
-        else if(str.find("CHECK_GEOMETRY")!=std::string::npos) options |= CHECK_GEOMETRY;
+        if (str.find("~CHECK_GEOMETRY") != std::string::npos)
+            options ^= CHECK_GEOMETRY;
+        else if (str.find("CHECK_GEOMETRY") != std::string::npos)
+            options |= CHECK_GEOMETRY;
 
-        if(str.find("~MAKE_FAST_GEOMETRY")!=std::string::npos) options ^= MAKE_FAST_GEOMETRY;
-        else if(str.find("MAKE_FAST_GEOMETRY")!=std::string::npos) options |= MAKE_FAST_GEOMETRY;
+        if (str.find("~MAKE_FAST_GEOMETRY") != std::string::npos)
+            options ^= MAKE_FAST_GEOMETRY;
+        else if (str.find("MAKE_FAST_GEOMETRY") != std::string::npos)
+            options |= MAKE_FAST_GEOMETRY;
 
-        if(str.find("~FLATTEN_BILLBOARDS")!=std::string::npos) options ^= FLATTEN_BILLBOARDS;
-        else if(str.find("FLATTEN_BILLBOARDS")!=std::string::npos) options |= FLATTEN_BILLBOARDS;
+        if (str.find("~FLATTEN_BILLBOARDS") != std::string::npos)
+            options ^= FLATTEN_BILLBOARDS;
+        else if (str.find("FLATTEN_BILLBOARDS") != std::string::npos)
+            options |= FLATTEN_BILLBOARDS;
 
-        if(str.find("~TEXTURE_ATLAS_BUILDER")!=std::string::npos) options ^= TEXTURE_ATLAS_BUILDER;
-        else if(str.find("TEXTURE_ATLAS_BUILDER")!=std::string::npos) options |= TEXTURE_ATLAS_BUILDER;
+        if (str.find("~TEXTURE_ATLAS_BUILDER") != std::string::npos)
+            options ^= TEXTURE_ATLAS_BUILDER;
+        else if (str.find("TEXTURE_ATLAS_BUILDER") != std::string::npos)
+            options |= TEXTURE_ATLAS_BUILDER;
 
-        if(str.find("~STATIC_OBJECT_DETECTION")!=std::string::npos) options ^= STATIC_OBJECT_DETECTION;
-        else if(str.find("STATIC_OBJECT_DETECTION")!=std::string::npos) options |= STATIC_OBJECT_DETECTION;
+        if (str.find("~STATIC_OBJECT_DETECTION") != std::string::npos)
+            options ^= STATIC_OBJECT_DETECTION;
+        else if (str.find("STATIC_OBJECT_DETECTION") != std::string::npos)
+            options |= STATIC_OBJECT_DETECTION;
 
-        if(str.find("~INDEX_MESH")!=std::string::npos) options ^= INDEX_MESH;
-        else if(str.find("INDEX_MESH")!=std::string::npos) options |= INDEX_MESH;
+        if (str.find("~INDEX_MESH") != std::string::npos)
+            options ^= INDEX_MESH;
+        else if (str.find("INDEX_MESH") != std::string::npos)
+            options |= INDEX_MESH;
 
-        if(str.find("~VERTEX_POSTTRANSFORM")!=std::string::npos) options ^= VERTEX_POSTTRANSFORM;
-        else if(str.find("VERTEX_POSTTRANSFORM")!=std::string::npos) options |= VERTEX_POSTTRANSFORM;
+        if (str.find("~VERTEX_POSTTRANSFORM") != std::string::npos)
+            options ^= VERTEX_POSTTRANSFORM;
+        else if (str.find("VERTEX_POSTTRANSFORM") != std::string::npos)
+            options |= VERTEX_POSTTRANSFORM;
 
-        if(str.find("~VERTEX_PRETRANSFORM")!=std::string::npos) options ^= VERTEX_PRETRANSFORM;
-        else if(str.find("VERTEX_PRETRANSFORM")!=std::string::npos) options |= VERTEX_PRETRANSFORM;
-
+        if (str.find("~VERTEX_PRETRANSFORM") != std::string::npos)
+            options ^= VERTEX_PRETRANSFORM;
+        else if (str.find("VERTEX_PRETRANSFORM") != std::string::npos)
+            options |= VERTEX_PRETRANSFORM;
     }
     else
     {
         options = DEFAULT_OPTIMIZATIONS;
     }
 
-    optimize(node,options);
-
+    optimize(node, options);
 }
 
-void Optimizer::optimize(osg::Node* node, unsigned int options)
+void Optimizer::optimize(osg::Node *node, unsigned int options)
 {
     StatsVisitor stats;
 
-    if (osg::getNotifyLevel()>=osg::INFO)
+    if (osg::getNotifyLevel() >= osg::INFO)
     {
         node->accept(stats);
         stats.totalUpStats();
-        OSG_NOTICE<<std::endl<<"Stats before:"<<std::endl;
+        OSG_NOTICE << std::endl << "Stats before:" << std::endl;
         stats.print(osg::notify(osg::NOTICE));
     }
 
@@ -166,7 +209,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & TESSELLATE_GEOMETRY)
     {
-        OSG_INFO<<"Optimizer::optimize() doing TESSELLATE_GEOMETRY"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing TESSELLATE_GEOMETRY" << std::endl;
 
         TessellateVisitor tsv;
         node->accept(tsv);
@@ -174,17 +217,16 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & REMOVE_LOADED_PROXY_NODES)
     {
-        OSG_INFO<<"Optimizer::optimize() doing REMOVE_LOADED_PROXY_NODES"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing REMOVE_LOADED_PROXY_NODES" << std::endl;
 
         RemoveLoadedProxyNodesVisitor rlpnv(this);
         node->accept(rlpnv);
         rlpnv.removeRedundantNodes();
-
     }
 
     if (options & COMBINE_ADJACENT_LODS)
     {
-        OSG_INFO<<"Optimizer::optimize() doing COMBINE_ADJACENT_LODS"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing COMBINE_ADJACENT_LODS" << std::endl;
 
         CombineLODsVisitor clv(this);
         node->accept(clv);
@@ -193,21 +235,21 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & OPTIMIZE_TEXTURE_SETTINGS)
     {
-        OSG_INFO<<"Optimizer::optimize() doing OPTIMIZE_TEXTURE_SETTINGS"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing OPTIMIZE_TEXTURE_SETTINGS" << std::endl;
 
-        TextureVisitor tv(true,true, // unref image
-                          false,false, // client storage
-                          false,1.0, // anisotropic filtering
-                          this );
+        TextureVisitor tv(true, true, // unref image
+                          false, false, // client storage
+                          false, 1.0, // anisotropic filtering
+                          this);
         node->accept(tv);
     }
 
     if (options & SHARE_DUPLICATE_STATE)
     {
-        OSG_INFO<<"Optimizer::optimize() doing SHARE_DUPLICATE_STATE"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing SHARE_DUPLICATE_STATE" << std::endl;
 
-        bool combineDynamicState = false;
-        bool combineStaticState = true;
+        bool combineDynamicState     = false;
+        bool combineStaticState      = true;
         bool combineUnspecifiedState = true;
 
         StateVisitor osv(combineDynamicState, combineStaticState, combineUnspecifiedState, this);
@@ -217,7 +259,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & TEXTURE_ATLAS_BUILDER)
     {
-        OSG_INFO<<"Optimizer::optimize() doing TEXTURE_ATLAS_BUILDER"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing TEXTURE_ATLAS_BUILDER" << std::endl;
 
         // traverse the scene collecting textures into texture atlas.
         TextureAtlasVisitor tav(this);
@@ -225,8 +267,8 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
         tav.optimize();
 
         // now merge duplicate state, that may have been introduced by merge textures into texture atlas'
-        bool combineDynamicState = false;
-        bool combineStaticState = true;
+        bool combineDynamicState     = false;
+        bool combineStaticState      = true;
         bool combineUnspecifiedState = true;
 
         StateVisitor osv(combineDynamicState, combineStaticState, combineUnspecifiedState, this);
@@ -236,7 +278,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & COPY_SHARED_NODES)
     {
-        OSG_INFO<<"Optimizer::optimize() doing COPY_SHARED_NODES"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing COPY_SHARED_NODES" << std::endl;
 
         CopySharedSubgraphsVisitor cssv(this);
         node->accept(cssv);
@@ -245,18 +287,20 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & FLATTEN_STATIC_TRANSFORMS)
     {
-        OSG_INFO<<"Optimizer::optimize() doing FLATTEN_STATIC_TRANSFORMS"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing FLATTEN_STATIC_TRANSFORMS" << std::endl;
 
-        int i=0;
+        int  i      = 0;
         bool result = false;
+
         do
         {
-            OSG_DEBUG << "** RemoveStaticTransformsVisitor *** Pass "<<i<<std::endl;
+            OSG_DEBUG << "** RemoveStaticTransformsVisitor *** Pass " << i << std::endl;
             FlattenStaticTransformsVisitor fstv(this);
             node->accept(fstv);
             result = fstv.removeTransforms(node);
             ++i;
-        } while (result);
+        }
+        while (result);
 
         // now combine any adjacent static transforms.
         CombineStaticTransformsVisitor cstv(this);
@@ -266,17 +310,16 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS)
     {
-        OSG_INFO<<"Optimizer::optimize() doing FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing FLATTEN_STATIC_TRANSFORMS_DUPLICATING_SHARED_SUBGRAPHS" << std::endl;
 
         // now combine any adjacent static transforms.
         FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor fstdssv(this);
         node->accept(fstdssv);
-
     }
 
     if (options & MERGE_GEODES)
     {
-        OSG_INFO<<"Optimizer::optimize() doing MERGE_GEODES"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing MERGE_GEODES" << std::endl;
 
         osg::Timer_t startTick = osg::Timer::instance()->tick();
 
@@ -285,12 +328,12 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
         osg::Timer_t endTick = osg::Timer::instance()->tick();
 
-        OSG_INFO<<"MERGE_GEODES took "<<osg::Timer::instance()->delta_s(startTick,endTick)<<std::endl;
+        OSG_INFO << "MERGE_GEODES took " << osg::Timer::instance()->delta_s(startTick, endTick) << std::endl;
     }
 
     if (options & CHECK_GEOMETRY)
     {
-        OSG_INFO<<"Optimizer::optimize() doing CHECK_GEOMETRY"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing CHECK_GEOMETRY" << std::endl;
 
         CheckGeometryVisitor mgv(this);
         node->accept(mgv);
@@ -298,7 +341,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & MAKE_FAST_GEOMETRY)
     {
-        OSG_INFO<<"Optimizer::optimize() doing MAKE_FAST_GEOMETRY"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing MAKE_FAST_GEOMETRY" << std::endl;
 
         MakeFastGeometryVisitor mgv(this);
         node->accept(mgv);
@@ -306,7 +349,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & MERGE_GEOMETRY)
     {
-        OSG_INFO<<"Optimizer::optimize() doing MERGE_GEOMETRY"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing MERGE_GEOMETRY" << std::endl;
 
         osg::Timer_t startTick = osg::Timer::instance()->tick();
 
@@ -316,12 +359,12 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
         osg::Timer_t endTick = osg::Timer::instance()->tick();
 
-        OSG_INFO<<"MERGE_GEOMETRY took "<<osg::Timer::instance()->delta_s(startTick,endTick)<<std::endl;
+        OSG_INFO << "MERGE_GEOMETRY took " << osg::Timer::instance()->delta_s(startTick, endTick) << std::endl;
     }
 
     if (options & TRISTRIP_GEOMETRY)
     {
-        OSG_INFO<<"Optimizer::optimize() doing TRISTRIP_GEOMETRY"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing TRISTRIP_GEOMETRY" << std::endl;
 
         TriStripVisitor tsv(this);
         node->accept(tsv);
@@ -330,7 +373,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & REMOVE_REDUNDANT_NODES)
     {
-        OSG_INFO<<"Optimizer::optimize() doing REMOVE_REDUNDANT_NODES"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing REMOVE_REDUNDANT_NODES" << std::endl;
 
         RemoveEmptyNodesVisitor renv(this);
         node->accept(renv);
@@ -339,7 +382,6 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
         RemoveRedundantNodesVisitor rrnv(this);
         node->accept(rrnv);
         rrnv.removeRedundantNodes();
-
     }
 
     if (options & FLATTEN_BILLBOARDS)
@@ -351,7 +393,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & SPATIALIZE_GROUPS)
     {
-        OSG_INFO<<"Optimizer::optimize() doing SPATIALIZE_GROUPS"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing SPATIALIZE_GROUPS" << std::endl;
 
         SpatializeGroupsVisitor sv(this);
         node->accept(sv);
@@ -360,7 +402,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & INDEX_MESH)
     {
-        OSG_INFO<<"Optimizer::optimize() doing INDEX_MESH"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing INDEX_MESH" << std::endl;
         IndexMeshVisitor imv(this);
         node->accept(imv);
         imv.makeMesh();
@@ -368,7 +410,7 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & VERTEX_POSTTRANSFORM)
     {
-        OSG_INFO<<"Optimizer::optimize() doing VERTEX_POSTTRANSFORM"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing VERTEX_POSTTRANSFORM" << std::endl;
         VertexCacheVisitor vcv;
         node->accept(vcv);
         vcv.optimizeVertices();
@@ -376,18 +418,18 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 
     if (options & VERTEX_PRETRANSFORM)
     {
-        OSG_INFO<<"Optimizer::optimize() doing VERTEX_PRETRANSFORM"<<std::endl;
+        OSG_INFO << "Optimizer::optimize() doing VERTEX_PRETRANSFORM" << std::endl;
         VertexAccessOrderVisitor vaov;
         node->accept(vaov);
         vaov.optimizeOrder();
     }
 
-    if (osg::getNotifyLevel()>=osg::INFO)
+    if (osg::getNotifyLevel() >= osg::INFO)
     {
         stats.reset();
         node->accept(stats);
         stats.totalUpStats();
-        OSG_NOTICE<<std::endl<<"Stats after:"<<std::endl;
+        OSG_NOTICE << std::endl << "Stats after:" << std::endl;
         stats.print(osg::notify(osg::NOTICE));
     }
 }
@@ -396,16 +438,18 @@ void Optimizer::optimize(osg::Node* node, unsigned int options)
 ////////////////////////////////////////////////////////////////////////////
 // Tessellate geometry - eg break complex POLYGONS into triangles, strips, fans..
 ////////////////////////////////////////////////////////////////////////////
-void Optimizer::TessellateVisitor::apply(osg::Geode& geode)
+void Optimizer::TessellateVisitor::apply(osg::Geode&geode)
 {
-    for(unsigned int i=0;i<geode.getNumDrawables();++i)
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
-        osg::Geometry* geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
-        if (geom) {
+        osg::Geometry *geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
+        if (geom)
+        {
             osgUtil::Tessellator Tessellator;
             Tessellator.retessellatePolygons(*geom);
         }
     }
+
     traverse(geode);
 }
 
@@ -417,17 +461,17 @@ void Optimizer::TessellateVisitor::apply(osg::Geode& geode)
 template<typename T>
 struct LessDerefFunctor
 {
-    bool operator () (const T* lhs,const T* rhs) const
+    bool operator ()(const T *lhs, const T *rhs) const
     {
-        return (*lhs<*rhs);
+        return (*lhs < *rhs);
     }
 };
 
 struct LessStateSetFunctor
 {
-    bool operator () (const osg::StateSet* lhs,const osg::StateSet* rhs) const
+    bool operator ()(const osg::StateSet *lhs, const osg::StateSet *rhs) const
     {
-        return (*lhs<*rhs);
+        return (*lhs < *rhs);
     }
 };
 
@@ -438,53 +482,55 @@ void Optimizer::StateVisitor::reset()
     _statesets.clear();
 }
 
-void Optimizer::StateVisitor::addStateSet(osg::StateSet* stateset, osg::Node* node)
+void Optimizer::StateVisitor::addStateSet(osg::StateSet *stateset, osg::Node *node)
 {
     _statesets[stateset].insert(node);
 }
 
-void Optimizer::StateVisitor::apply(osg::Node& node)
+void Optimizer::StateVisitor::apply(osg::Node&node)
 {
+    osg::StateSet *ss = node.getStateSet();
 
-    osg::StateSet* ss = node.getStateSet();
-    if (ss && ss->getDataVariance()==osg::Object::STATIC)
+    if (ss && ss->getDataVariance() == osg::Object::STATIC)
     {
         if (isOperationPermissibleForObject(&node) &&
             isOperationPermissibleForObject(ss))
         {
-            addStateSet(ss,&node);
+            addStateSet(ss, &node);
         }
     }
 
     traverse(node);
 }
 
-void Optimizer::StateVisitor::apply(osg::Geode& geode)
+void Optimizer::StateVisitor::apply(osg::Geode&geode)
 {
-    if (!isOperationPermissibleForObject(&geode)) return;
+    if (!isOperationPermissibleForObject(&geode))
+        return;
 
-    osg::StateSet* ss = geode.getStateSet();
+    osg::StateSet *ss = geode.getStateSet();
 
 
-    if (ss && ss->getDataVariance()==osg::Object::STATIC)
+    if (ss && ss->getDataVariance() == osg::Object::STATIC)
     {
         if (isOperationPermissibleForObject(ss))
         {
-            addStateSet(ss,&geode);
+            addStateSet(ss, &geode);
         }
     }
-    for(unsigned int i=0;i<geode.getNumDrawables();++i)
+
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
-        osg::Drawable* drawable = geode.getDrawable(i);
+        osg::Drawable *drawable = geode.getDrawable(i);
         if (drawable)
         {
             ss = drawable->getStateSet();
-            if (ss && ss->getDataVariance()==osg::Object::STATIC)
+            if (ss && ss->getDataVariance() == osg::Object::STATIC)
             {
                 if (isOperationPermissibleForObject(drawable) &&
                     isOperationPermissibleForObject(ss))
                 {
-                    addStateSet(ss,drawable);
+                    addStateSet(ss, drawable);
                 }
             }
         }
@@ -493,183 +539,196 @@ void Optimizer::StateVisitor::apply(osg::Geode& geode)
 
 void Optimizer::StateVisitor::optimize()
 {
-    OSG_INFO << "Num of StateSet="<<_statesets.size()<< std::endl;
+    OSG_INFO << "Num of StateSet=" << _statesets.size() << std::endl;
 
     {
         // create map from state attributes to stateset which contain them.
-        typedef std::pair<osg::StateSet*,unsigned int>      StateSetUnitPair;
+        typedef std::pair<osg::StateSet*, unsigned int>      StateSetUnitPair;
         typedef std::set<StateSetUnitPair>                  StateSetList;
-        typedef std::map<osg::StateAttribute*,StateSetList> AttributeToStateSetMap;
+        typedef std::map<osg::StateAttribute*, StateSetList> AttributeToStateSetMap;
         AttributeToStateSetMap attributeToStateSetMap;
 
         // create map from uniforms to stateset when contain them.
         typedef std::set<osg::StateSet*>                    StateSetSet;
-        typedef std::map<osg::Uniform*,StateSetSet>         UniformToStateSetMap;
+        typedef std::map<osg::Uniform*, StateSetSet>         UniformToStateSetMap;
 
         const unsigned int NON_TEXTURE_ATTRIBUTE = 0xffffffff;
 
-        UniformToStateSetMap  uniformToStateSetMap;
+        UniformToStateSetMap uniformToStateSetMap;
 
         // NOTE - TODO will need to track state attribute override value too.
 
-        for(StateSetMap::iterator sitr=_statesets.begin();
-            sitr!=_statesets.end();
-            ++sitr)
+        for (StateSetMap::iterator sitr = _statesets.begin();
+             sitr != _statesets.end();
+             ++sitr)
         {
-            const osg::StateSet::AttributeList& attributes = sitr->first->getAttributeList();
-            for(osg::StateSet::AttributeList::const_iterator aitr= attributes.begin();
-                aitr!=attributes.end();
-                ++aitr)
+            const osg::StateSet::AttributeList&attributes = sitr->first->getAttributeList();
+
+            for (osg::StateSet::AttributeList::const_iterator aitr = attributes.begin();
+                 aitr != attributes.end();
+                 ++aitr)
             {
                 if (optimize(aitr->second.first->getDataVariance()))
                 {
-                    attributeToStateSetMap[aitr->second.first.get()].insert(StateSetUnitPair(sitr->first,NON_TEXTURE_ATTRIBUTE));
+                    attributeToStateSetMap[aitr->second.first.get()].insert(StateSetUnitPair(sitr->first, NON_TEXTURE_ATTRIBUTE));
                 }
             }
 
 
-            const osg::StateSet::TextureAttributeList& texAttributes = sitr->first->getTextureAttributeList();
-            for(unsigned int unit=0;unit<texAttributes.size();++unit)
+            const osg::StateSet::TextureAttributeList&texAttributes = sitr->first->getTextureAttributeList();
+
+            for (unsigned int unit = 0; unit < texAttributes.size(); ++unit)
             {
-                const osg::StateSet::AttributeList& attributes = texAttributes[unit];
-                for(osg::StateSet::AttributeList::const_iterator aitr= attributes.begin();
-                    aitr!=attributes.end();
-                    ++aitr)
+                const osg::StateSet::AttributeList&attributes = texAttributes[unit];
+
+                for (osg::StateSet::AttributeList::const_iterator aitr = attributes.begin();
+                     aitr != attributes.end();
+                     ++aitr)
                 {
                     if (optimize(aitr->second.first->getDataVariance()))
                     {
-                        attributeToStateSetMap[aitr->second.first.get()].insert(StateSetUnitPair(sitr->first,unit));
+                        attributeToStateSetMap[aitr->second.first.get()].insert(StateSetUnitPair(sitr->first, unit));
                     }
                 }
             }
 
 
-            const osg::StateSet::UniformList& uniforms = sitr->first->getUniformList();
-            for(osg::StateSet::UniformList::const_iterator uitr= uniforms.begin();
-                uitr!=uniforms.end();
-                ++uitr)
+            const osg::StateSet::UniformList&uniforms = sitr->first->getUniformList();
+
+            for (osg::StateSet::UniformList::const_iterator uitr = uniforms.begin();
+                 uitr != uniforms.end();
+                 ++uitr)
             {
                 if (optimize(uitr->second.first->getDataVariance()))
                 {
                     uniformToStateSetMap[uitr->second.first.get()].insert(sitr->first);
                 }
             }
-
         }
 
-        if (attributeToStateSetMap.size()>=2)
+        if (attributeToStateSetMap.size() >= 2)
         {
             // create unique set of state attribute pointers.
             typedef std::vector<osg::StateAttribute*> AttributeList;
             AttributeList attributeList;
 
-            for(AttributeToStateSetMap::iterator aitr=attributeToStateSetMap.begin();
-                aitr!=attributeToStateSetMap.end();
-                ++aitr)
+            for (AttributeToStateSetMap::iterator aitr = attributeToStateSetMap.begin();
+                 aitr != attributeToStateSetMap.end();
+                 ++aitr)
             {
                 attributeList.push_back(aitr->first);
             }
 
             // sort the attributes so that equal attributes sit along side each
             // other.
-            std::sort(attributeList.begin(),attributeList.end(),LessDerefFunctor<osg::StateAttribute>());
+            std::sort(attributeList.begin(), attributeList.end(), LessDerefFunctor<osg::StateAttribute>());
 
-            OSG_INFO << "state attribute list"<< std::endl;
-            for(AttributeList::iterator aaitr = attributeList.begin();
-                aaitr!=attributeList.end();
-                ++aaitr)
+            OSG_INFO << "state attribute list" << std::endl;
+
+            for (AttributeList::iterator aaitr = attributeList.begin();
+                 aaitr != attributeList.end();
+                 ++aaitr)
             {
-                OSG_INFO << "    "<<*aaitr << "  "<<(*aaitr)->className()<< std::endl;
+                OSG_INFO << "    " << *aaitr << "  " << (*aaitr)->className() << std::endl;
             }
 
-            OSG_INFO << "searching for duplicate attributes"<< std::endl;
+            OSG_INFO << "searching for duplicate attributes" << std::endl;
             // find the duplicates.
             AttributeList::iterator first_unique = attributeList.begin();
-            AttributeList::iterator current = first_unique;
+            AttributeList::iterator current      = first_unique;
             ++current;
-            for(; current!=attributeList.end();++current)
+
+            for (; current != attributeList.end(); ++current)
             {
-                if (**current==**first_unique)
+                if (**current == **first_unique)
                 {
-                    OSG_INFO << "    found duplicate "<<(*current)->className()<<"  first="<<*first_unique<<"  current="<<*current<< std::endl;
-                    StateSetList& statesetlist = attributeToStateSetMap[*current];
-                    for(StateSetList::iterator sitr=statesetlist.begin();
-                        sitr!=statesetlist.end();
-                        ++sitr)
+                    OSG_INFO << "    found duplicate " << (*current)->className() << "  first=" << *first_unique << "  current=" << *current << std::endl;
+                    StateSetList&statesetlist = attributeToStateSetMap[*current];
+
+                    for (StateSetList::iterator sitr = statesetlist.begin();
+                         sitr != statesetlist.end();
+                         ++sitr)
                     {
-                        OSG_INFO << "       replace duplicate "<<*current<<" with "<<*first_unique<< std::endl;
-                        osg::StateSet* stateset = sitr->first;
-                        unsigned int unit = sitr->second;
-                        if (unit==NON_TEXTURE_ATTRIBUTE) stateset->setAttribute(*first_unique);
-                        else stateset->setTextureAttribute(unit,*first_unique);
+                        OSG_INFO << "       replace duplicate " << *current << " with " << *first_unique << std::endl;
+                        osg::StateSet *stateset = sitr->first;
+                        unsigned int  unit      = sitr->second;
+                        if (unit == NON_TEXTURE_ATTRIBUTE)
+                            stateset->setAttribute(*first_unique);
+                        else
+                            stateset->setTextureAttribute(unit, *first_unique);
                     }
                 }
-                else first_unique = current;
+                else
+                    first_unique = current;
             }
         }
 
 
-        if (uniformToStateSetMap.size()>=2)
+        if (uniformToStateSetMap.size() >= 2)
         {
             // create unique set of uniform pointers.
             typedef std::vector<osg::Uniform*> UniformList;
             UniformList uniformList;
 
-            for(UniformToStateSetMap::iterator aitr=uniformToStateSetMap.begin();
-                aitr!=uniformToStateSetMap.end();
-                ++aitr)
+            for (UniformToStateSetMap::iterator aitr = uniformToStateSetMap.begin();
+                 aitr != uniformToStateSetMap.end();
+                 ++aitr)
             {
                 uniformList.push_back(aitr->first);
             }
 
             // sort the uniforms so that equal uniforms sit along side each
             // other.
-            std::sort(uniformList.begin(),uniformList.end(),LessDerefFunctor<osg::Uniform>());
+            std::sort(uniformList.begin(), uniformList.end(), LessDerefFunctor<osg::Uniform>());
 
-            OSG_INFO << "state uniform list"<< std::endl;
-            for(UniformList::iterator uuitr = uniformList.begin();
-                uuitr!=uniformList.end();
-                ++uuitr)
+            OSG_INFO << "state uniform list" << std::endl;
+
+            for (UniformList::iterator uuitr = uniformList.begin();
+                 uuitr != uniformList.end();
+                 ++uuitr)
             {
-                OSG_INFO << "    "<<*uuitr << "  "<<(*uuitr)->getName()<< std::endl;
+                OSG_INFO << "    " << *uuitr << "  " << (*uuitr)->getName() << std::endl;
             }
 
-            OSG_INFO << "searching for duplicate uniforms"<< std::endl;
+            OSG_INFO << "searching for duplicate uniforms" << std::endl;
             // find the duplicates.
             UniformList::iterator first_unique_uniform = uniformList.begin();
-            UniformList::iterator current_uniform = first_unique_uniform;
+            UniformList::iterator current_uniform      = first_unique_uniform;
             ++current_uniform;
-            for(; current_uniform!=uniformList.end();++current_uniform)
+
+            for (; current_uniform != uniformList.end(); ++current_uniform)
             {
-                if ((**current_uniform)==(**first_unique_uniform))
+                if ((**current_uniform) == (**first_unique_uniform))
                 {
-                    OSG_INFO << "    found duplicate uniform "<<(*current_uniform)->getName()<<"  first_unique_uniform="<<*first_unique_uniform<<"  current_uniform="<<*current_uniform<< std::endl;
-                    StateSetSet& statesetset = uniformToStateSetMap[*current_uniform];
-                    for(StateSetSet::iterator sitr=statesetset.begin();
-                        sitr!=statesetset.end();
-                        ++sitr)
+                    OSG_INFO << "    found duplicate uniform " << (*current_uniform)->getName() << "  first_unique_uniform=" << *first_unique_uniform << "  current_uniform=" << *current_uniform << std::endl;
+                    StateSetSet&statesetset = uniformToStateSetMap[*current_uniform];
+
+                    for (StateSetSet::iterator sitr = statesetset.begin();
+                         sitr != statesetset.end();
+                         ++sitr)
                     {
-                        OSG_INFO << "       replace duplicate "<<*current_uniform<<" with "<<*first_unique_uniform<< std::endl;
-                        osg::StateSet* stateset = *sitr;
+                        OSG_INFO << "       replace duplicate " << *current_uniform << " with " << *first_unique_uniform << std::endl;
+                        osg::StateSet *stateset = *sitr;
                         stateset->addUniform(*first_unique_uniform);
                     }
                 }
-                else first_unique_uniform = current_uniform;
+                else
+                    first_unique_uniform = current_uniform;
             }
         }
-
     }
 
     // duplicate state attributes removed.
     // now need to look at duplicate state sets.
-    if (_statesets.size()>=2)
+    if (_statesets.size() >= 2)
     {
         // create the list of stateset's.
         typedef std::vector<osg::StateSet*> StateSetSortList;
         StateSetSortList statesetSortList;
-        for(StateSetMap::iterator ssitr=_statesets.begin();
-            ssitr!=_statesets.end();
-            ++ssitr)
+
+        for (StateSetMap::iterator ssitr = _statesets.begin();
+             ssitr != _statesets.end();
+             ++ssitr)
         {
             statesetSortList.push_back(ssitr->first);
         }
@@ -677,30 +736,32 @@ void Optimizer::StateVisitor::optimize()
 
         // sort the StateSet's so that equal StateSet's sit along side each
         // other.
-        std::sort(statesetSortList.begin(),statesetSortList.end(),LessDerefFunctor<osg::StateSet>());
+        std::sort(statesetSortList.begin(), statesetSortList.end(), LessDerefFunctor<osg::StateSet>());
 
-        OSG_INFO << "searching for duplicate attributes"<< std::endl;
+        OSG_INFO << "searching for duplicate attributes" << std::endl;
         // find the duplicates.
         StateSetSortList::iterator first_unique = statesetSortList.begin();
-        StateSetSortList::iterator current = first_unique; ++current;
-        for(; current!=statesetSortList.end();++current)
+        StateSetSortList::iterator current      = first_unique; ++current;
+
+        for (; current != statesetSortList.end(); ++current)
         {
-            if (**current==**first_unique)
+            if (**current == **first_unique)
             {
-                OSG_INFO << "    found duplicate "<<(*current)->className()<<"  first="<<*first_unique<<"  current="<<*current<< std::endl;
-                NodeSet& nodeSet = _statesets[*current];
-                for(NodeSet::iterator sitr=nodeSet.begin();
-                    sitr!=nodeSet.end();
-                    ++sitr)
+                OSG_INFO << "    found duplicate " << (*current)->className() << "  first=" << *first_unique << "  current=" << *current << std::endl;
+                NodeSet&nodeSet = _statesets[*current];
+
+                for (NodeSet::iterator sitr = nodeSet.begin();
+                     sitr != nodeSet.end();
+                     ++sitr)
                 {
-                    OSG_INFO << "       replace duplicate "<<*current<<" with "<<*first_unique<< std::endl;
+                    OSG_INFO << "       replace duplicate " << *current << " with " << *first_unique << std::endl;
                     (*sitr)->setStateSet(*first_unique);
                 }
             }
-            else first_unique = current;
+            else
+                first_unique = current;
         }
     }
-
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -709,210 +770,227 @@ void Optimizer::StateVisitor::optimize()
 
 class CollectLowestTransformsVisitor : public BaseOptimizerVisitor
 {
-    public:
+public:
 
 
-        CollectLowestTransformsVisitor(Optimizer* optimizer=0):
-                    BaseOptimizerVisitor(optimizer,Optimizer::FLATTEN_STATIC_TRANSFORMS),
-                    _transformFunctor(osg::Matrix())
+CollectLowestTransformsVisitor(Optimizer *optimizer = 0) :
+    BaseOptimizerVisitor(optimizer, Optimizer::FLATTEN_STATIC_TRANSFORMS),
+    _transformFunctor(osg::Matrix())
+{
+    setTraversalMode(osg::NodeVisitor::TRAVERSE_PARENTS);
+}
+
+virtual void apply(osg::Node&node)
+{
+    if (node.getNumParents())
+    {
+        traverse(node);
+    }
+    else
+    {
+        // for all current objects mark a NULL transform for them.
+        registerWithCurrentObjects(0);
+    }
+}
+
+virtual void apply(osg::LOD&lod)
+{
+    _currentObjectList.push_back(&lod);
+
+    traverse(lod);
+
+    _currentObjectList.pop_back();
+}
+
+virtual void apply(osg::Transform&transform)
+{
+    // for all current objects associated this transform with them.
+    registerWithCurrentObjects(&transform);
+}
+
+virtual void apply(osg::Geode&geode)
+{
+    traverse(geode);
+}
+
+virtual void apply(osg::Billboard&geode)
+{
+    traverse(geode);
+}
+
+
+void collectDataFor(osg::Node *node)
+{
+    _currentObjectList.push_back(node);
+
+    node->accept(*this);
+
+    _currentObjectList.pop_back();
+}
+
+void collectDataFor(osg::Billboard *billboard)
+{
+    _currentObjectList.push_back(billboard);
+
+    billboard->accept(*this);
+
+    _currentObjectList.pop_back();
+}
+
+void collectDataFor(osg::Drawable *drawable)
+{
+    _currentObjectList.push_back(drawable);
+
+    const osg::Drawable::ParentList&parents = drawable->getParents();
+
+    for (osg::Drawable::ParentList::const_iterator itr = parents.begin();
+         itr != parents.end();
+         ++itr)
+    {
+        (*itr)->accept(*this);
+    }
+
+    _currentObjectList.pop_back();
+}
+
+void setUpMaps();
+void disableTransform(osg::Transform *transform);
+bool removeTransforms(osg::Node *nodeWeCannotRemove);
+
+inline bool isOperationPermissibleForObject(const osg::Object *object) const
+{
+    const osg::Drawable *drawable = dynamic_cast<const osg::Drawable*>(object);
+
+    if (drawable)
+        return isOperationPermissibleForObject(drawable);
+
+    const osg::Node *node = dynamic_cast<const osg::Node*>(object);
+    if (node)
+        return isOperationPermissibleForObject(node);
+
+    return true;
+}
+
+inline bool isOperationPermissibleForObject(const osg::Drawable *drawable) const
+{
+    // disable if cannot apply transform functor.
+    if (drawable && !drawable->supports(_transformFunctor))
+        return false;
+
+    return BaseOptimizerVisitor::isOperationPermissibleForObject(drawable);
+}
+
+inline bool isOperationPermissibleForObject(const osg::Node *node) const
+{
+    // disable if object is a light point node.
+    if (strcmp(node->className(), "LightPointNode") == 0)
+        return false;
+
+    if (dynamic_cast<const osg::ProxyNode*>(node))
+        return false;
+
+    if (dynamic_cast<const osg::PagedLOD*>(node))
+        return false;
+
+    return BaseOptimizerVisitor::isOperationPermissibleForObject(node);
+}
+
+protected:
+
+struct TransformStruct
+{
+    typedef std::set<osg::Object*> ObjectSet;
+
+    TransformStruct() : _canBeApplied(true) {}
+
+    void add(osg::Object *obj)
+    {
+        _objectSet.insert(obj);
+    }
+
+    bool      _canBeApplied;
+    ObjectSet _objectSet;
+};
+
+struct ObjectStruct
+{
+    typedef std::set<osg::Transform*> TransformSet;
+
+    ObjectStruct() : _canBeApplied(true), _moreThanOneMatrixRequired(false) {}
+
+    void add(osg::Transform *transform)
+    {
+        if (transform)
         {
-            setTraversalMode(osg::NodeVisitor::TRAVERSE_PARENTS);
-        }
-
-        virtual void apply(osg::Node& node)
-        {
-            if (node.getNumParents())
-            {
-                traverse(node);
-            }
+            if (transform->getDataVariance() != osg::Transform::STATIC)
+                _moreThanOneMatrixRequired = true;
+            else if (transform->getReferenceFrame() != osg::Transform::RELATIVE_RF)
+                _moreThanOneMatrixRequired = true;
             else
             {
-                // for all current objects mark a NULL transform for them.
-                registerWithCurrentObjects(0);
-            }
-        }
-
-        virtual void apply(osg::LOD& lod)
-        {
-            _currentObjectList.push_back(&lod);
-
-            traverse(lod);
-
-            _currentObjectList.pop_back();
-        }
-
-        virtual void apply(osg::Transform& transform)
-        {
-            // for all current objects associated this transform with them.
-            registerWithCurrentObjects(&transform);
-        }
-
-        virtual void apply(osg::Geode& geode)
-        {
-            traverse(geode);
-        }
-
-        virtual void apply(osg::Billboard& geode)
-        {
-            traverse(geode);
-        }
-
-
-        void collectDataFor(osg::Node* node)
-        {
-            _currentObjectList.push_back(node);
-
-            node->accept(*this);
-
-            _currentObjectList.pop_back();
-        }
-
-        void collectDataFor(osg::Billboard* billboard)
-        {
-            _currentObjectList.push_back(billboard);
-
-            billboard->accept(*this);
-
-            _currentObjectList.pop_back();
-        }
-
-        void collectDataFor(osg::Drawable* drawable)
-        {
-            _currentObjectList.push_back(drawable);
-
-            const osg::Drawable::ParentList& parents = drawable->getParents();
-            for(osg::Drawable::ParentList::const_iterator itr=parents.begin();
-                itr!=parents.end();
-                ++itr)
-            {
-                (*itr)->accept(*this);
-            }
-
-            _currentObjectList.pop_back();
-        }
-
-        void setUpMaps();
-        void disableTransform(osg::Transform* transform);
-        bool removeTransforms(osg::Node* nodeWeCannotRemove);
-
-        inline bool isOperationPermissibleForObject(const osg::Object* object) const
-        {
-            const osg::Drawable* drawable = dynamic_cast<const osg::Drawable*>(object);
-            if (drawable) return isOperationPermissibleForObject(drawable);
-
-            const osg::Node* node = dynamic_cast<const osg::Node*>(object);
-            if (node) return isOperationPermissibleForObject(node);
-
-            return true;
-        }
-
-        inline bool isOperationPermissibleForObject(const osg::Drawable* drawable) const
-        {
-            // disable if cannot apply transform functor.
-            if (drawable && !drawable->supports(_transformFunctor)) return false;
-            return BaseOptimizerVisitor::isOperationPermissibleForObject(drawable);
-        }
-
-        inline bool isOperationPermissibleForObject(const osg::Node* node) const
-        {
-            // disable if object is a light point node.
-            if (strcmp(node->className(),"LightPointNode")==0) return false;
-            if (dynamic_cast<const osg::ProxyNode*>(node)) return false;
-            if (dynamic_cast<const osg::PagedLOD*>(node)) return false;
-            return BaseOptimizerVisitor::isOperationPermissibleForObject(node);
-        }
-
-    protected:
-
-        struct TransformStruct
-        {
-            typedef std::set<osg::Object*> ObjectSet;
-
-            TransformStruct():_canBeApplied(true) {}
-
-            void add(osg::Object* obj)
-            {
-                _objectSet.insert(obj);
-            }
-
-            bool        _canBeApplied;
-            ObjectSet   _objectSet;
-        };
-
-        struct ObjectStruct
-        {
-            typedef std::set<osg::Transform*> TransformSet;
-
-            ObjectStruct():_canBeApplied(true),_moreThanOneMatrixRequired(false) {}
-
-            void add(osg::Transform* transform)
-            {
-                if (transform)
-                {
-                    if (transform->getDataVariance()!=osg::Transform::STATIC) _moreThanOneMatrixRequired=true;
-                    else if (transform->getReferenceFrame()!=osg::Transform::RELATIVE_RF) _moreThanOneMatrixRequired=true;
-                    else
-                    {
-                        if (_transformSet.empty()) transform->computeLocalToWorldMatrix(_firstMatrix,0);
-                        else
-                        {
-                            osg::Matrix matrix;
-                            transform->computeLocalToWorldMatrix(matrix,0);
-                            if (_firstMatrix!=matrix) _moreThanOneMatrixRequired=true;
-                        }
-                    }
-                }
+                if (_transformSet.empty())
+                    transform->computeLocalToWorldMatrix(_firstMatrix, 0);
                 else
                 {
-                    if (!_transformSet.empty())
-                    {
-                        if (!_firstMatrix.isIdentity()) _moreThanOneMatrixRequired=true;
-                    }
-
+                    osg::Matrix matrix;
+                    transform->computeLocalToWorldMatrix(matrix, 0);
+                    if (_firstMatrix != matrix)
+                        _moreThanOneMatrixRequired = true;
                 }
-                _transformSet.insert(transform);
             }
-
-            bool            _canBeApplied;
-            bool            _moreThanOneMatrixRequired;
-            osg::Matrix     _firstMatrix;
-            TransformSet    _transformSet;
-        };
-
-
-        void registerWithCurrentObjects(osg::Transform* transform)
+        }
+        else
         {
-            for(ObjectList::iterator itr=_currentObjectList.begin();
-                itr!=_currentObjectList.end();
-                ++itr)
+            if (!_transformSet.empty())
             {
-                _objectMap[*itr].add(transform);
+                if (!_firstMatrix.isIdentity())
+                    _moreThanOneMatrixRequired = true;
             }
         }
 
-        typedef std::map<osg::Transform*,TransformStruct>   TransformMap;
-        typedef std::map<osg::Object*,ObjectStruct>         ObjectMap;
-        typedef std::vector<osg::Object*>                   ObjectList;
+        _transformSet.insert(transform);
+    }
 
-        void disableObject(osg::Object* object)
-        {
-            disableObject(_objectMap.find(object));
-        }
-
-        void disableObject(ObjectMap::iterator itr);
-        void doTransform(osg::Object* obj,osg::Matrix& matrix);
-
-        osgUtil::TransformAttributeFunctor _transformFunctor;
-        TransformMap    _transformMap;
-        ObjectMap       _objectMap;
-        ObjectList      _currentObjectList;
-
+    bool         _canBeApplied;
+    bool         _moreThanOneMatrixRequired;
+    osg::Matrix  _firstMatrix;
+    TransformSet _transformSet;
 };
 
 
-void CollectLowestTransformsVisitor::doTransform(osg::Object* obj,osg::Matrix& matrix)
+void registerWithCurrentObjects(osg::Transform *transform)
 {
-    osg::Drawable* drawable = dynamic_cast<osg::Drawable*>(obj);
+    for (ObjectList::iterator itr = _currentObjectList.begin();
+         itr != _currentObjectList.end();
+         ++itr)
+    {
+        _objectMap[*itr].add(transform);
+    }
+}
+
+typedef std::map<osg::Transform*, TransformStruct>   TransformMap;
+typedef std::map<osg::Object*, ObjectStruct>         ObjectMap;
+typedef std::vector<osg::Object*>                   ObjectList;
+
+void disableObject(osg::Object *object)
+{
+    disableObject(_objectMap.find(object));
+}
+
+void disableObject(ObjectMap::iterator itr);
+void doTransform(osg::Object *obj, osg::Matrix&matrix);
+
+osgUtil::TransformAttributeFunctor _transformFunctor;
+TransformMap                       _transformMap;
+ObjectMap                          _objectMap;
+ObjectList                         _currentObjectList;
+};
+
+
+void CollectLowestTransformsVisitor::doTransform(osg::Object *obj, osg::Matrix&matrix)
+{
+    osg::Drawable *drawable = dynamic_cast<osg::Drawable*>(obj);
+
     if (drawable)
     {
         osgUtil::TransformAttributeFunctor tf(matrix);
@@ -923,49 +1001,49 @@ void CollectLowestTransformsVisitor::doTransform(osg::Object* obj,osg::Matrix& m
         return;
     }
 
-    osg::LOD* lod = dynamic_cast<osg::LOD*>(obj);
+    osg::LOD *lod = dynamic_cast<osg::LOD*>(obj);
     if (lod)
     {
         osg::Matrix matrix_no_trans = matrix;
-        matrix_no_trans.setTrans(0.0f,0.0f,0.0f);
+        matrix_no_trans.setTrans(0.0f, 0.0f, 0.0f);
 
-        osg::Vec3 v111(1.0f,1.0f,1.0f);
-        osg::Vec3 new_v111 = v111*matrix_no_trans;
-        float ratio = new_v111.length()/v111.length();
+        osg::Vec3 v111(1.0f, 1.0f, 1.0f);
+        osg::Vec3 new_v111 = v111 * matrix_no_trans;
+        float     ratio    = new_v111.length() / v111.length();
 
         // move center point.
-        lod->setCenter(lod->getCenter()*matrix);
+        lod->setCenter(lod->getCenter() * matrix);
 
         // adjust ranges to new scale.
-        for(unsigned int i=0;i<lod->getNumRanges();++i)
+        for (unsigned int i = 0; i < lod->getNumRanges(); ++i)
         {
-            lod->setRange(i,lod->getMinRange(i)*ratio,lod->getMaxRange(i)*ratio);
+            lod->setRange(i, lod->getMinRange(i) * ratio, lod->getMaxRange(i) * ratio);
         }
 
         lod->dirtyBound();
         return;
     }
 
-    osg::Billboard* billboard = dynamic_cast<osg::Billboard*>(obj);
+    osg::Billboard *billboard = dynamic_cast<osg::Billboard*>(obj);
     if (billboard)
     {
         osg::Matrix matrix_no_trans = matrix;
-        matrix_no_trans.setTrans(0.0f,0.0f,0.0f);
+        matrix_no_trans.setTrans(0.0f, 0.0f, 0.0f);
 
         osgUtil::TransformAttributeFunctor tf(matrix_no_trans);
 
-        osg::Vec3 axis = osg::Matrix::transform3x3(tf._im,billboard->getAxis());
+        osg::Vec3 axis = osg::Matrix::transform3x3(tf._im, billboard->getAxis());
         axis.normalize();
         billboard->setAxis(axis);
 
-        osg::Vec3 normal = osg::Matrix::transform3x3(tf._im,billboard->getNormal());
+        osg::Vec3 normal = osg::Matrix::transform3x3(tf._im, billboard->getNormal());
         normal.normalize();
         billboard->setNormal(normal);
 
 
-        for(unsigned int i=0;i<billboard->getNumDrawables();++i)
+        for (unsigned int i = 0; i < billboard->getNumDrawables(); ++i)
         {
-            billboard->setPosition(i,billboard->getPosition(i)*matrix);
+            billboard->setPosition(i, billboard->getPosition(i) * matrix);
             billboard->getDrawable(i)->accept(tf);
             billboard->getDrawable(i)->dirtyBound();
         }
@@ -978,7 +1056,7 @@ void CollectLowestTransformsVisitor::doTransform(osg::Object* obj,osg::Matrix& m
 
 void CollectLowestTransformsVisitor::disableObject(ObjectMap::iterator itr)
 {
-    if (itr==_objectMap.end())
+    if (itr == _objectMap.end())
     {
         return;
     }
@@ -989,32 +1067,33 @@ void CollectLowestTransformsVisitor::disableObject(ObjectMap::iterator itr)
         itr->second._canBeApplied = false;
 
         // and then inform everybody we have been disabled.
-        for(ObjectStruct::TransformSet::iterator titr = itr->second._transformSet.begin();
-            titr != itr->second._transformSet.end();
-            ++titr)
+        for (ObjectStruct::TransformSet::iterator titr = itr->second._transformSet.begin();
+             titr != itr->second._transformSet.end();
+             ++titr)
         {
             disableTransform(*titr);
         }
     }
 }
 
-void CollectLowestTransformsVisitor::disableTransform(osg::Transform* transform)
+void CollectLowestTransformsVisitor::disableTransform(osg::Transform *transform)
 {
-    TransformMap::iterator itr=_transformMap.find(transform);
-    if (itr==_transformMap.end())
+    TransformMap::iterator itr = _transformMap.find(transform);
+
+    if (itr == _transformMap.end())
     {
         return;
     }
 
     if (itr->second._canBeApplied)
     {
-
         // we havn't been disabled yet so we need to disable,
         itr->second._canBeApplied = false;
+
         // and then inform everybody we have been disabled.
-        for(TransformStruct::ObjectSet::iterator oitr = itr->second._objectSet.begin();
-            oitr != itr->second._objectSet.end();
-            ++oitr)
+        for (TransformStruct::ObjectSet::iterator oitr = itr->second._objectSet.begin();
+             oitr != itr->second._objectSet.end();
+             ++oitr)
         {
             disableObject(*oitr);
         }
@@ -1025,16 +1104,17 @@ void CollectLowestTransformsVisitor::setUpMaps()
 {
     // create the TransformMap from the ObjectMap
     ObjectMap::iterator oitr;
-    for(oitr=_objectMap.begin();
-        oitr!=_objectMap.end();
-        ++oitr)
-    {
-        osg::Object* object = oitr->first;
-        ObjectStruct& os = oitr->second;
 
-        for(ObjectStruct::TransformSet::iterator titr = os._transformSet.begin();
-            titr != os._transformSet.end();
-            ++titr)
+    for (oitr = _objectMap.begin();
+         oitr != _objectMap.end();
+         ++oitr)
+    {
+        osg::Object *object = oitr->first;
+        ObjectStruct&os     = oitr->second;
+
+        for (ObjectStruct::TransformSet::iterator titr = os._transformSet.begin();
+             titr != os._transformSet.end();
+             ++titr)
         {
             _transformMap[*titr].add(object);
         }
@@ -1046,12 +1126,12 @@ void CollectLowestTransformsVisitor::setUpMaps()
     // disabled transforms associated, recursing until all disabled
     // associativity.
     // and disable all objects that the operation is not permisable for)
-    for(oitr=_objectMap.begin();
-        oitr!=_objectMap.end();
-        ++oitr)
+    for (oitr = _objectMap.begin();
+         oitr != _objectMap.end();
+         ++oitr)
     {
-        osg::Object* object = oitr->first;
-        ObjectStruct& os = oitr->second;
+        osg::Object *object = oitr->first;
+        ObjectStruct&os     = oitr->second;
         if (os._canBeApplied)
         {
             if (os._moreThanOneMatrixRequired || !isOperationPermissibleForObject(object))
@@ -1060,21 +1140,20 @@ void CollectLowestTransformsVisitor::setUpMaps()
             }
         }
     }
-
 }
 
-bool CollectLowestTransformsVisitor::removeTransforms(osg::Node* nodeWeCannotRemove)
+bool CollectLowestTransformsVisitor::removeTransforms(osg::Node *nodeWeCannotRemove)
 {
     // transform the objects that can be applied.
-    for(ObjectMap::iterator oitr=_objectMap.begin();
-        oitr!=_objectMap.end();
-        ++oitr)
+    for (ObjectMap::iterator oitr = _objectMap.begin();
+         oitr != _objectMap.end();
+         ++oitr)
     {
-        osg::Object* object = oitr->first;
-        ObjectStruct& os = oitr->second;
+        osg::Object *object = oitr->first;
+        ObjectStruct&os     = oitr->second;
         if (os._canBeApplied)
         {
-            doTransform(object,os._firstMatrix);
+            doTransform(object, os._firstMatrix);
         }
     }
 
@@ -1082,82 +1161,85 @@ bool CollectLowestTransformsVisitor::removeTransforms(osg::Node* nodeWeCannotRem
     bool transformRemoved = false;
 
     // clean up the transforms.
-    for(TransformMap::iterator titr=_transformMap.begin();
-        titr!=_transformMap.end();
-        ++titr)
+    for (TransformMap::iterator titr = _transformMap.begin();
+         titr != _transformMap.end();
+         ++titr)
     {
-        if (titr->first!=0 && titr->second._canBeApplied)
+        if (titr->first != 0 && titr->second._canBeApplied)
         {
-            if (titr->first!=nodeWeCannotRemove)
+            if (titr->first != nodeWeCannotRemove)
             {
                 transformRemoved = true;
 
                 osg::ref_ptr<osg::Transform> transform = titr->first;
-                osg::ref_ptr<osg::Group>     group = new osg::Group;
-                group->setName( transform->getName() );
+                osg::ref_ptr<osg::Group>     group     = new osg::Group;
+                group->setName(transform->getName());
                 group->setDataVariance(osg::Object::STATIC);
                 group->setNodeMask(transform->getNodeMask());
                 group->setStateSet(transform->getStateSet());
                 group->setUserData(transform->getUserData());
                 group->setDescriptions(transform->getDescriptions());
-                for(unsigned int i=0;i<transform->getNumChildren();++i)
+
+                for (unsigned int i = 0; i < transform->getNumChildren(); ++i)
                 {
                     group->addChild(transform->getChild(i));
                 }
 
-                for(int i2=transform->getNumParents()-1;i2>=0;--i2)
+                for (int i2 = transform->getNumParents() - 1; i2 >= 0; --i2)
                 {
-                    transform->getParent(i2)->replaceChild(transform.get(),group.get());
+                    transform->getParent(i2)->replaceChild(transform.get(), group.get());
                 }
             }
             else
             {
-                osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(titr->first);
-                if (mt) mt->setMatrix(osg::Matrix::identity());
+                osg::MatrixTransform *mt = dynamic_cast<osg::MatrixTransform*>(titr->first);
+                if (mt)
+                    mt->setMatrix(osg::Matrix::identity());
                 else
                 {
-                    osg::PositionAttitudeTransform* pat = dynamic_cast<osg::PositionAttitudeTransform*>(titr->first);
+                    osg::PositionAttitudeTransform *pat = dynamic_cast<osg::PositionAttitudeTransform*>(titr->first);
                     if (pat)
                     {
-                        pat->setPosition(osg::Vec3(0.0f,0.0f,0.0f));
+                        pat->setPosition(osg::Vec3(0.0f, 0.0f, 0.0f));
                         pat->setAttitude(osg::Quat());
-                        pat->setPivotPoint(osg::Vec3(0.0f,0.0f,0.0f));
+                        pat->setPivotPoint(osg::Vec3(0.0f, 0.0f, 0.0f));
                     }
                     else
                     {
-                        OSG_WARN<<"Warning:: during Optimize::CollectLowestTransformsVisitor::removeTransforms(Node*)"<<std::endl;
-                        OSG_WARN<<"          unhandled of setting of indentity matrix on "<< titr->first->className()<<std::endl;
-                        OSG_WARN<<"          model will appear in the incorrect position."<<std::endl;
+                        OSG_WARN << "Warning:: during Optimize::CollectLowestTransformsVisitor::removeTransforms(Node*)" << std::endl;
+                        OSG_WARN << "          unhandled of setting of indentity matrix on " << titr->first->className() << std::endl;
+                        OSG_WARN << "          model will appear in the incorrect position." << std::endl;
                     }
                 }
-
             }
         }
     }
+
     _objectMap.clear();
     _transformMap.clear();
 
     return transformRemoved;
 }
 
-void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Node& node)
+void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Node&node)
 {
-    if (strcmp(node.className(),"LightPointNode")==0)
+    if (strcmp(node.className(), "LightPointNode") == 0)
     {
         _excludedNodeSet.insert(&node);
     }
+
     traverse(node);
 }
 
 
-void Optimizer::FlattenStaticTransformsVisitor::apply(osg::ProxyNode& node)
+void Optimizer::FlattenStaticTransformsVisitor::apply(osg::ProxyNode&node)
 {
     _excludedNodeSet.insert(&node);
 
     traverse(node);
 }
 
-void Optimizer::FlattenStaticTransformsVisitor::apply(osg::PagedLOD& node)
+void Optimizer::FlattenStaticTransformsVisitor::apply(osg::PagedLOD&node)
 {
     _excludedNodeSet.insert(&node);
 
@@ -1165,28 +1247,32 @@ void Optimizer::FlattenStaticTransformsVisitor::apply(osg::PagedLOD& node)
 }
 
 
-void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Geode& geode)
+void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Geode&geode)
 {
     if (!_transformStack.empty())
     {
-        for(unsigned int i=0;i<geode.getNumDrawables();++i)
+        for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
         {
             osg::Geometry *geometry = geode.getDrawable(i)->asGeometry();
-            if((geometry) && (isOperationPermissibleForObject(&geode)) && (isOperationPermissibleForObject(geometry)))
+            if ((geometry) && (isOperationPermissibleForObject(&geode)) && (isOperationPermissibleForObject(geometry)))
             {
-                if(geometry->getVertexArray() && geometry->getVertexArray()->referenceCount() > 1) {
+                if (geometry->getVertexArray() && geometry->getVertexArray()->referenceCount() > 1)
+                {
                     geometry->setVertexArray(dynamic_cast<osg::Array*>(geometry->getVertexArray()->clone(osg::CopyOp::DEEP_COPY_ALL)));
                 }
-                if(geometry->getNormalArray() && geometry->getNormalArray()->referenceCount() > 1) {
+
+                if (geometry->getNormalArray() && geometry->getNormalArray()->referenceCount() > 1)
+                {
                     geometry->setNormalArray(dynamic_cast<osg::Array*>(geometry->getNormalArray()->clone(osg::CopyOp::DEEP_COPY_ALL)));
                 }
             }
+
             _drawableSet.insert(geode.getDrawable(i));
         }
     }
 }
 
-void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Billboard& billboard)
+void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Billboard&billboard)
 {
     if (!_transformStack.empty())
     {
@@ -1194,7 +1280,7 @@ void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Billboard& billboard)
     }
 }
 
-void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Transform& transform)
+void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Transform&transform)
 {
     if (!_transformStack.empty())
     {
@@ -1210,36 +1296,36 @@ void Optimizer::FlattenStaticTransformsVisitor::apply(osg::Transform& transform)
     _transformStack.pop_back();
 }
 
-bool Optimizer::FlattenStaticTransformsVisitor::removeTransforms(osg::Node* nodeWeCannotRemove)
+bool Optimizer::FlattenStaticTransformsVisitor::removeTransforms(osg::Node *nodeWeCannotRemove)
 {
     CollectLowestTransformsVisitor cltv(_optimizer);
 
-    for(NodeSet::iterator nitr=_excludedNodeSet.begin();
-        nitr!=_excludedNodeSet.end();
-        ++nitr)
+    for (NodeSet::iterator nitr = _excludedNodeSet.begin();
+         nitr != _excludedNodeSet.end();
+         ++nitr)
     {
         cltv.collectDataFor(*nitr);
     }
 
-    for(DrawableSet::iterator ditr=_drawableSet.begin();
-        ditr!=_drawableSet.end();
-        ++ditr)
+    for (DrawableSet::iterator ditr = _drawableSet.begin();
+         ditr != _drawableSet.end();
+         ++ditr)
     {
         cltv.collectDataFor(*ditr);
     }
 
-    for(BillboardSet::iterator bitr=_billboardSet.begin();
-        bitr!=_billboardSet.end();
-        ++bitr)
+    for (BillboardSet::iterator bitr = _billboardSet.begin();
+         bitr != _billboardSet.end();
+         ++bitr)
     {
         cltv.collectDataFor(*bitr);
     }
 
     cltv.setUpMaps();
 
-    for(TransformSet::iterator titr=_transformSet.begin();
-        titr!=_transformSet.end();
-        ++titr)
+    for (TransformSet::iterator titr = _transformSet.begin();
+         titr != _transformSet.end();
+         ++titr)
     {
         cltv.disableTransform(*titr);
     }
@@ -1252,13 +1338,13 @@ bool Optimizer::FlattenStaticTransformsVisitor::removeTransforms(osg::Node* node
 // CombineStaticTransforms
 ////////////////////////////////////////////////////////////////////////////
 
-void Optimizer::CombineStaticTransformsVisitor::apply(osg::MatrixTransform& transform)
+void Optimizer::CombineStaticTransformsVisitor::apply(osg::MatrixTransform&transform)
 {
-    if (transform.getDataVariance()==osg::Object::STATIC &&
-        transform.getNumChildren()==1 &&
-        transform.getChild(0)->asTransform()!=0 &&
-        transform.getChild(0)->asTransform()->asMatrixTransform()!=0 &&
-        transform.getChild(0)->asTransform()->getDataVariance()==osg::Object::STATIC &&
+    if (transform.getDataVariance() == osg::Object::STATIC &&
+        transform.getNumChildren() == 1 &&
+        transform.getChild(0)->asTransform() != 0 &&
+        transform.getChild(0)->asTransform()->asMatrixTransform() != 0 &&
+        transform.getChild(0)->asTransform()->getDataVariance() == osg::Object::STATIC &&
         isOperationPermissibleForObject(&transform) && isOperationPermissibleForObject(transform.getChild(0)))
     {
         _transformSet.insert(&transform);
@@ -1267,13 +1353,14 @@ void Optimizer::CombineStaticTransformsVisitor::apply(osg::MatrixTransform& tran
     traverse(transform);
 }
 
-bool Optimizer::CombineStaticTransformsVisitor::removeTransforms(osg::Node* nodeWeCannotRemove)
+bool Optimizer::CombineStaticTransformsVisitor::removeTransforms(osg::Node *nodeWeCannotRemove)
 {
-    if (nodeWeCannotRemove && nodeWeCannotRemove->asTransform()!=0 && nodeWeCannotRemove->asTransform()->asMatrixTransform()!=0)
+    if (nodeWeCannotRemove && nodeWeCannotRemove->asTransform() != 0 && nodeWeCannotRemove->asTransform()->asMatrixTransform() != 0)
     {
         // remove topmost node from transform set if it exists there.
         TransformSet::iterator itr = _transformSet.find(nodeWeCannotRemove->asTransform()->asMatrixTransform());
-        if (itr!=_transformSet.end()) _transformSet.erase(itr);
+        if (itr != _transformSet.end())
+            _transformSet.erase(itr);
     }
 
     bool transformRemoved = false;
@@ -1284,35 +1371,37 @@ bool Optimizer::CombineStaticTransformsVisitor::removeTransforms(osg::Node* node
         osg::ref_ptr<osg::MatrixTransform> transform = *_transformSet.begin();
         _transformSet.erase(_transformSet.begin());
 
-        if (transform->getNumChildren()==1 &&
-            transform->getChild(0)->asTransform()!=0 &&
-            transform->getChild(0)->asTransform()->asMatrixTransform()!=0 &&
-            transform->getChild(0)->asTransform()->getDataVariance()==osg::Object::STATIC)
+        if (transform->getNumChildren() == 1 &&
+            transform->getChild(0)->asTransform() != 0 &&
+            transform->getChild(0)->asTransform()->asMatrixTransform() != 0 &&
+            transform->getChild(0)->asTransform()->getDataVariance() == osg::Object::STATIC)
         {
             // now combine with its child.
-            osg::MatrixTransform* child = transform->getChild(0)->asTransform()->asMatrixTransform();
+            osg::MatrixTransform *child = transform->getChild(0)->asTransform()->asMatrixTransform();
 
-            osg::Matrix newMatrix = child->getMatrix()*transform->getMatrix();
+            osg::Matrix newMatrix = child->getMatrix() * transform->getMatrix();
             child->setMatrix(newMatrix);
             if (transform->getStateSet())
             {
-                if(child->getStateSet()) child->getStateSet()->merge(*transform->getStateSet());
-                else child->setStateSet(transform->getStateSet());
+                if (child->getStateSet())
+                    child->getStateSet()->merge(*transform->getStateSet());
+                else
+                    child->setStateSet(transform->getStateSet());
             }
 
             transformRemoved = true;
 
             osg::Node::ParentList parents = transform->getParents();
-            for(osg::Node::ParentList::iterator pitr=parents.begin();
-                pitr!=parents.end();
-                ++pitr)
+
+            for (osg::Node::ParentList::iterator pitr = parents.begin();
+                 pitr != parents.end();
+                 ++pitr)
             {
-                (*pitr)->replaceChild(transform.get(),child);
+                (*pitr)->replaceChild(transform.get(), child);
             }
-
         }
-
     }
+
     return transformRemoved;
 }
 
@@ -1320,67 +1409,68 @@ bool Optimizer::CombineStaticTransformsVisitor::removeTransforms(osg::Node* node
 // RemoveEmptyNodes.
 ////////////////////////////////////////////////////////////////////////////
 
-void Optimizer::RemoveEmptyNodesVisitor::apply(osg::Geode& geode)
+void Optimizer::RemoveEmptyNodesVisitor::apply(osg::Geode&geode)
 {
-    for(int i=geode.getNumDrawables()-1;i>=0;--i)
+    for (int i = geode.getNumDrawables() - 1; i >= 0; --i)
     {
-        osg::Geometry* geom = geode.getDrawable(i)->asGeometry();
+        osg::Geometry *geom = geode.getDrawable(i)->asGeometry();
         if (geom && geom->empty() && isOperationPermissibleForObject(geom))
         {
-           geode.removeDrawables(i,1);
+            geode.removeDrawables(i, 1);
         }
     }
 
-    if (geode.getNumParents()>0)
+    if (geode.getNumParents() > 0)
     {
-        if (geode.getNumDrawables()==0 && isOperationPermissibleForObject(&geode)) _redundantNodeList.insert(&geode);
+        if (geode.getNumDrawables() == 0 && isOperationPermissibleForObject(&geode))
+            _redundantNodeList.insert(&geode);
     }
 }
 
-void Optimizer::RemoveEmptyNodesVisitor::apply(osg::Group& group)
+void Optimizer::RemoveEmptyNodesVisitor::apply(osg::Group&group)
 {
-    if (group.getNumParents()>0)
+    if (group.getNumParents() > 0)
     {
         // only remove empty groups, but not empty occluders.
-        if (group.getNumChildren()==0 && isOperationPermissibleForObject(&group) &&
-            (typeid(group)==typeid(osg::Group) || (dynamic_cast<osg::Transform*>(&group) && !dynamic_cast<osg::CameraView*>(&group))) &&
-            (group.getNumChildrenRequiringUpdateTraversal()==0 && group.getNumChildrenRequiringEventTraversal()==0) )
+        if (group.getNumChildren() == 0 && isOperationPermissibleForObject(&group) &&
+            (typeid(group) == typeid(osg::Group) || (dynamic_cast<osg::Transform*>(&group) && !dynamic_cast<osg::CameraView*>(&group))) &&
+            (group.getNumChildrenRequiringUpdateTraversal() == 0 && group.getNumChildrenRequiringEventTraversal() == 0))
         {
             _redundantNodeList.insert(&group);
         }
     }
+
     traverse(group);
 }
 
 void Optimizer::RemoveEmptyNodesVisitor::removeEmptyNodes()
 {
-
     NodeList newEmptyGroups;
 
     // keep iterator through until scene graph is cleaned of empty nodes.
     while (!_redundantNodeList.empty())
     {
-        for(NodeList::iterator itr=_redundantNodeList.begin();
-            itr!=_redundantNodeList.end();
-            ++itr)
+        for (NodeList::iterator itr = _redundantNodeList.begin();
+             itr != _redundantNodeList.end();
+             ++itr)
         {
-
             osg::ref_ptr<osg::Node> nodeToRemove = (*itr);
 
             // take a copy of parents list since subsequent removes will modify the original one.
             osg::Node::ParentList parents = nodeToRemove->getParents();
 
-            for(osg::Node::ParentList::iterator pitr=parents.begin();
-                pitr!=parents.end();
-                ++pitr)
+            for (osg::Node::ParentList::iterator pitr = parents.begin();
+                 pitr != parents.end();
+                 ++pitr)
             {
-                osg::Group* parent = *pitr;
+                osg::Group *parent = *pitr;
                 if (!dynamic_cast<osg::Sequence*>(parent) &&
                     !dynamic_cast<osg::Switch*>(parent) &&
-                    strcmp(parent->className(),"MultiSwitch")!=0)
+                    strcmp(parent->className(), "MultiSwitch") != 0)
                 {
                     parent->removeChild(nodeToRemove.get());
-                    if (parent->getNumChildren()==0) newEmptyGroups.insert(*pitr);
+                    if (parent->getNumChildren() == 0)
+                        newEmptyGroups.insert(*pitr);
                 }
             }
         }
@@ -1395,9 +1485,9 @@ void Optimizer::RemoveEmptyNodesVisitor::removeEmptyNodes()
 // RemoveRedundantNodes.
 ////////////////////////////////////////////////////////////////////////////
 
-bool Optimizer::RemoveRedundantNodesVisitor::isOperationPermissible(osg::Node& node)
+bool Optimizer::RemoveRedundantNodesVisitor::isOperationPermissible(osg::Node&node)
 {
-    return node.getNumParents()>0 &&
+    return node.getNumParents() > 0 &&
            !node.getStateSet() &&
            node.getName().empty() &&
            !node.getUserDataContainer() &&
@@ -1407,10 +1497,10 @@ bool Optimizer::RemoveRedundantNodesVisitor::isOperationPermissible(osg::Node& n
            isOperationPermissibleForObject(&node);
 }
 
-void Optimizer::RemoveRedundantNodesVisitor::apply(osg::Group& group)
+void Optimizer::RemoveRedundantNodesVisitor::apply(osg::Group&group)
 {
-    if (group.getNumChildren()==1 &&
-        typeid(group)==typeid(osg::Group) &&
+    if (group.getNumChildren() == 1 &&
+        typeid(group) == typeid(osg::Group) &&
         isOperationPermissible(group))
     {
         _redundantNodeList.insert(&group);
@@ -1421,28 +1511,28 @@ void Optimizer::RemoveRedundantNodesVisitor::apply(osg::Group& group)
 
 
 
-void Optimizer::RemoveRedundantNodesVisitor::apply(osg::Transform& transform)
+void Optimizer::RemoveRedundantNodesVisitor::apply(osg::Transform&transform)
 {
-    if (transform.getDataVariance()==osg::Object::STATIC &&
+    if (transform.getDataVariance() == osg::Object::STATIC &&
         isOperationPermissible(transform))
     {
         osg::Matrix matrix;
-        transform.computeWorldToLocalMatrix(matrix,NULL);
+        transform.computeWorldToLocalMatrix(matrix, NULL);
         if (matrix.isIdentity())
         {
             _redundantNodeList.insert(&transform);
         }
     }
+
     traverse(transform);
 }
 
 
 void Optimizer::RemoveRedundantNodesVisitor::removeRedundantNodes()
 {
-
-    for(NodeList::iterator itr=_redundantNodeList.begin();
-        itr!=_redundantNodeList.end();
-        ++itr)
+    for (NodeList::iterator itr = _redundantNodeList.begin();
+         itr != _redundantNodeList.end();
+         ++itr)
     {
         osg::ref_ptr<osg::Group> group = dynamic_cast<osg::Group*>(*itr);
         if (group.valid())
@@ -1450,24 +1540,24 @@ void Optimizer::RemoveRedundantNodesVisitor::removeRedundantNodes()
             // take a copy of parents list since subsequent removes will modify the original one.
             osg::Node::ParentList parents = group->getParents();
 
-            if (group->getNumChildren()==1)
+            if (group->getNumChildren() == 1)
             {
-                osg::Node* child = group->getChild(0);
-                for(osg::Node::ParentList::iterator pitr=parents.begin();
-                    pitr!=parents.end();
-                    ++pitr)
+                osg::Node *child = group->getChild(0);
+
+                for (osg::Node::ParentList::iterator pitr = parents.begin();
+                     pitr != parents.end();
+                     ++pitr)
                 {
-                    (*pitr)->replaceChild(group.get(),child);
+                    (*pitr)->replaceChild(group.get(), child);
                 }
-
             }
-
         }
         else
         {
-            OSG_WARN<<"Optimizer::RemoveRedundantNodesVisitor::removeRedundantNodes() - failed dynamic_cast"<<std::endl;
+            OSG_WARN << "Optimizer::RemoveRedundantNodesVisitor::removeRedundantNodes() - failed dynamic_cast" << std::endl;
         }
     }
+
     _redundantNodeList.clear();
 }
 
@@ -1476,79 +1566,89 @@ void Optimizer::RemoveRedundantNodesVisitor::removeRedundantNodes()
 // RemoveLoadedProxyNodesVisitor.
 ////////////////////////////////////////////////////////////////////////////
 
-void Optimizer::RemoveLoadedProxyNodesVisitor::apply(osg::ProxyNode& proxyNode)
+void Optimizer::RemoveLoadedProxyNodesVisitor::apply(osg::ProxyNode&proxyNode)
 {
-    if (proxyNode.getNumParents()>0 && proxyNode.getNumFileNames()==proxyNode.getNumChildren())
+    if (proxyNode.getNumParents() > 0 && proxyNode.getNumFileNames() == proxyNode.getNumChildren())
     {
         if (isOperationPermissibleForObject(&proxyNode))
         {
             _redundantNodeList.insert(&proxyNode);
         }
     }
+
     traverse(proxyNode);
 }
 
 void Optimizer::RemoveLoadedProxyNodesVisitor::removeRedundantNodes()
 {
-
-    for(NodeList::iterator itr=_redundantNodeList.begin();
-        itr!=_redundantNodeList.end();
-        ++itr)
+    for (NodeList::iterator itr = _redundantNodeList.begin();
+         itr != _redundantNodeList.end();
+         ++itr)
     {
         osg::ref_ptr<osg::Group> group = dynamic_cast<osg::Group*>(*itr);
         if (group.valid())
         {
-
             // first check to see if data was attached to the ProxyNode that we need to keep.
             bool keepData = false;
-            if (!group->getName().empty()) keepData = true;
-            if (!group->getDescriptions().empty()) keepData = true;
-            if (group->getNodeMask()) keepData = true;
-            if (group->getUpdateCallback()) keepData = true;
-            if (group->getEventCallback()) keepData = true;
-            if (group->getCullCallback()) keepData = true;
+            if (!group->getName().empty())
+                keepData = true;
+
+            if (!group->getDescriptions().empty())
+                keepData = true;
+
+            if (group->getNodeMask())
+                keepData = true;
+
+            if (group->getUpdateCallback())
+                keepData = true;
+
+            if (group->getEventCallback())
+                keepData = true;
+
+            if (group->getCullCallback())
+                keepData = true;
 
             if (keepData)
             {
                 // create a group to store all proxy's children and data.
-                osg::ref_ptr<osg::Group> newGroup = new osg::Group(*group,osg::CopyOp::SHALLOW_COPY);
+                osg::ref_ptr<osg::Group> newGroup = new osg::Group(*group, osg::CopyOp::SHALLOW_COPY);
 
 
                 // take a copy of parents list since subsequent removes will modify the original one.
                 osg::Node::ParentList parents = group->getParents();
 
-                for(osg::Node::ParentList::iterator pitr=parents.begin();
-                    pitr!=parents.end();
-                    ++pitr)
+                for (osg::Node::ParentList::iterator pitr = parents.begin();
+                     pitr != parents.end();
+                     ++pitr)
                 {
-                    (*pitr)->replaceChild(group.get(),newGroup.get());
+                    (*pitr)->replaceChild(group.get(), newGroup.get());
                 }
-
             }
             else
             {
                 // take a copy of parents list since subsequent removes will modify the original one.
                 osg::Node::ParentList parents = group->getParents();
 
-                for(osg::Node::ParentList::iterator pitr=parents.begin();
-                    pitr!=parents.end();
-                    ++pitr)
+                for (osg::Node::ParentList::iterator pitr = parents.begin();
+                     pitr != parents.end();
+                     ++pitr)
                 {
                     (*pitr)->removeChild(group.get());
-                    for(unsigned int i=0;i<group->getNumChildren();++i)
+
+                    for (unsigned int i = 0; i < group->getNumChildren(); ++i)
                     {
-                        osg::Node* child = group->getChild(i);
+                        osg::Node *child = group->getChild(i);
                         (*pitr)->addChild(child);
                     }
-
                 }
             }
         }
         else
         {
-            OSG_WARN<<"Optimizer::RemoveLoadedProxyNodesVisitor::removeRedundantNodes() - failed dynamic_cast"<<std::endl;
+            OSG_WARN << "Optimizer::RemoveLoadedProxyNodesVisitor::removeRedundantNodes() - failed dynamic_cast" << std::endl;
         }
     }
+
     _redundantNodeList.clear();
 }
 
@@ -1557,14 +1657,14 @@ void Optimizer::RemoveLoadedProxyNodesVisitor::removeRedundantNodes()
 ////////////////////////////////////////////////////////////////////////////
 // combine LOD's.
 ////////////////////////////////////////////////////////////////////////////
-void Optimizer::CombineLODsVisitor::apply(osg::LOD& lod)
+void Optimizer::CombineLODsVisitor::apply(osg::LOD&lod)
 {
-    if (dynamic_cast<osg::PagedLOD*>(&lod)==0)
+    if (dynamic_cast<osg::PagedLOD*>(&lod) == 0)
     {
-        for(unsigned int i=0;i<lod.getNumParents();++i)
+        for (unsigned int i = 0; i < lod.getNumParents(); ++i)
         {
-            osg::Group* parent = lod.getParent(i);
-            if (typeid(*parent)==typeid(osg::Group))
+            osg::Group *parent = lod.getParent(i);
+            if (typeid(*parent) == typeid(osg::Group))
             {
                 if (isOperationPermissibleForObject(&lod))
                 {
@@ -1573,74 +1673,80 @@ void Optimizer::CombineLODsVisitor::apply(osg::LOD& lod)
             }
         }
     }
+
     traverse(lod);
 }
 
 
 void Optimizer::CombineLODsVisitor::combineLODs()
 {
-    for(GroupList::iterator itr=_groupList.begin();
-        itr!=_groupList.end();
-        ++itr)
+    for (GroupList::iterator itr = _groupList.begin();
+         itr != _groupList.end();
+         ++itr)
     {
-        osg::Group* group = *itr;
+        osg::Group *group = *itr;
 
         typedef std::set<osg::LOD*>  LODSet;
 
-        LODSet    lodChildren;
+        LODSet lodChildren;
 
-        for(unsigned int i=0;i<group->getNumChildren();++i)
+        for (unsigned int i = 0; i < group->getNumChildren(); ++i)
         {
-            osg::Node* child = group->getChild(i);
-            osg::LOD* lod = dynamic_cast<osg::LOD*>(child);
+            osg::Node *child = group->getChild(i);
+            osg::LOD  *lod   = dynamic_cast<osg::LOD*>(child);
             if (lod)
             {
                 lodChildren.insert(lod);
             }
         }
 
-        if (lodChildren.size()>=2)
+        if (lodChildren.size() >= 2)
         {
             osg::BoundingBox bb;
             LODSet::iterator lod_itr;
-            float smallestRadius=FLT_MAX;
-            for(lod_itr=lodChildren.begin();
-                lod_itr!=lodChildren.end();
-                ++lod_itr)
+            float            smallestRadius = FLT_MAX;
+
+            for (lod_itr = lodChildren.begin();
+                 lod_itr != lodChildren.end();
+                 ++lod_itr)
             {
                 float r = (*lod_itr)->getBound().radius();
-                if (r>=0 && r<smallestRadius) smallestRadius = r;
+                if (r >= 0 && r < smallestRadius)
+                    smallestRadius = r;
+
                 bb.expandBy((*lod_itr)->getCenter());
             }
-            if (bb.radius()<smallestRadius*0.1f)
+
+            if (bb.radius() < smallestRadius * 0.1f)
             {
-                typedef std::pair<float,float> RangePair;
-                typedef std::multimap<RangePair,osg::Node*> RangeMap;
+                typedef std::pair<float, float> RangePair;
+                typedef std::multimap<RangePair, osg::Node*> RangeMap;
                 RangeMap rangeMap;
-                for(lod_itr=lodChildren.begin();
-                    lod_itr!=lodChildren.end();
-                    ++lod_itr)
+
+                for (lod_itr = lodChildren.begin();
+                     lod_itr != lodChildren.end();
+                     ++lod_itr)
                 {
+                    osg::LOD *lod = *lod_itr;
 
-                    osg::LOD* lod = *lod_itr;
-                    for(unsigned int i=0;i<lod->getNumRanges();++i)
+                    for (unsigned int i = 0; i < lod->getNumRanges(); ++i)
                     {
-                        rangeMap.insert(RangeMap::value_type(RangePair(lod->getMinRange(i),lod->getMaxRange(i)),lod->getChild(i)));
+                        rangeMap.insert(RangeMap::value_type(RangePair(lod->getMinRange(i), lod->getMaxRange(i)), lod->getChild(i)));
                     }
-
                 }
 
                 // create new LOD containing all other LOD's children.
-                osg::LOD* newLOD = new osg::LOD;
+                osg::LOD *newLOD = new osg::LOD;
                 newLOD->setName("newLOD");
                 newLOD->setCenter(bb.center());
 
-                int i=0;
-                for(RangeMap::iterator c_itr=rangeMap.begin();
-                    c_itr!=rangeMap.end();
-                    ++c_itr,++i)
+                int i = 0;
+
+                for (RangeMap::iterator c_itr = rangeMap.begin();
+                     c_itr != rangeMap.end();
+                     ++c_itr, ++i)
                 {
-                    newLOD->setRange(i,c_itr->first.first,c_itr->first.second);
+                    newLOD->setRange(i, c_itr->first.first, c_itr->first.second);
                     newLOD->addChild(c_itr->second);
                 }
 
@@ -1648,17 +1754,16 @@ void Optimizer::CombineLODsVisitor::combineLODs()
                 group->addChild(newLOD);
 
                 // remove all the old LOD's from group.
-                for(lod_itr=lodChildren.begin();
-                    lod_itr!=lodChildren.end();
-                    ++lod_itr)
+                for (lod_itr = lodChildren.begin();
+                     lod_itr != lodChildren.end();
+                     ++lod_itr)
                 {
                     group->removeChild(*lod_itr);
                 }
-
             }
-
         }
     }
+
     _groupList.clear();
 }
 
@@ -1666,17 +1771,20 @@ void Optimizer::CombineLODsVisitor::combineLODs()
 // code to merge geometry object which share, state, and attribute bindings.
 ////////////////////////////////////////////////////////////////////////////
 
-#define COMPARE_BINDING(lhs, rhs) \
-        if (osg::getBinding(lhs)<osg::getBinding(rhs)) return true; \
-        if (osg::getBinding(rhs)<osg::getBinding(lhs)) return false;
+#define COMPARE_BINDING(lhs, rhs)                                 \
+    if (osg::getBinding(lhs) < osg::getBinding(rhs)) return true; \
+    if (osg::getBinding(rhs) < osg::getBinding(lhs)) return false;
 
 
 struct LessGeometry
 {
-    bool operator() (const osg::Geometry* lhs,const osg::Geometry* rhs) const
+    bool operator()(const osg::Geometry *lhs, const osg::Geometry *rhs) const
     {
-        if (lhs->getStateSet()<rhs->getStateSet()) return true;
-        if (rhs->getStateSet()<lhs->getStateSet()) return false;
+        if (lhs->getStateSet() < rhs->getStateSet())
+            return true;
+
+        if (rhs->getStateSet() < lhs->getStateSet())
+            return false;
 
         COMPARE_BINDING(lhs->getNormalArray(), rhs->getNormalArray())
         COMPARE_BINDING(lhs->getColorArray(), rhs->getColorArray())
@@ -1684,115 +1792,163 @@ struct LessGeometry
         COMPARE_BINDING(lhs->getFogCoordArray(), rhs->getFogCoordArray())
 
 
-        if (lhs->getNumTexCoordArrays()<rhs->getNumTexCoordArrays()) return true;
-        if (rhs->getNumTexCoordArrays()<lhs->getNumTexCoordArrays()) return false;
+        if (lhs->getNumTexCoordArrays() < rhs->getNumTexCoordArrays())
+            return true;
+
+        if (rhs->getNumTexCoordArrays() < lhs->getNumTexCoordArrays())
+            return false;
 
         // therefore lhs->getNumTexCoordArrays()==rhs->getNumTexCoordArrays()
 
         unsigned int i;
-        for(i=0;i<lhs->getNumTexCoordArrays();++i)
+
+        for (i = 0; i < lhs->getNumTexCoordArrays(); ++i)
         {
             if (rhs->getTexCoordArray(i))
             {
-                if (!lhs->getTexCoordArray(i)) return true;
+                if (!lhs->getTexCoordArray(i))
+                    return true;
             }
-            else if (lhs->getTexCoordArray(i)) return false;
+            else if (lhs->getTexCoordArray(i))
+                return false;
         }
 
-        for(i=0;i<lhs->getNumVertexAttribArrays();++i)
+        for (i = 0; i < lhs->getNumVertexAttribArrays(); ++i)
         {
             if (rhs->getVertexAttribArray(i))
             {
-                if (!lhs->getVertexAttribArray(i)) return true;
+                if (!lhs->getVertexAttribArray(i))
+                    return true;
             }
-            else if (lhs->getVertexAttribArray(i)) return false;
+            else if (lhs->getVertexAttribArray(i))
+                return false;
         }
 
 
-        if (osg::getBinding(lhs->getNormalArray())==osg::Array::BIND_OVERALL)
+        if (osg::getBinding(lhs->getNormalArray()) == osg::Array::BIND_OVERALL)
         {
             // assumes that the bindings and arrays are set up correctly, this
             // should be the case after running computeCorrectBindingsAndArraySizes();
-            const osg::Array* lhs_normalArray = lhs->getNormalArray();
-            const osg::Array* rhs_normalArray = rhs->getNormalArray();
-            if (lhs_normalArray->getType()<rhs_normalArray->getType()) return true;
-            if (rhs_normalArray->getType()<lhs_normalArray->getType()) return false;
-            switch(lhs_normalArray->getType())
+            const osg::Array *lhs_normalArray = lhs->getNormalArray();
+            const osg::Array *rhs_normalArray = rhs->getNormalArray();
+            if (lhs_normalArray->getType() < rhs_normalArray->getType())
+                return true;
+
+            if (rhs_normalArray->getType() < lhs_normalArray->getType())
+                return false;
+
+            switch (lhs_normalArray->getType())
             {
-            case(osg::Array::Vec3bArrayType):
-                if ((*static_cast<const osg::Vec3bArray*>(lhs_normalArray))[0]<(*static_cast<const osg::Vec3bArray*>(rhs_normalArray))[0]) return true;
-                if ((*static_cast<const osg::Vec3bArray*>(rhs_normalArray))[0]<(*static_cast<const osg::Vec3bArray*>(lhs_normalArray))[0]) return false;
+            case (osg::Array::Vec3bArrayType):
+                if ((*static_cast<const osg::Vec3bArray*>(lhs_normalArray))[0] < (*static_cast<const osg::Vec3bArray*>(rhs_normalArray))[0])
+                    return true;
+
+                if ((*static_cast<const osg::Vec3bArray*>(rhs_normalArray))[0] < (*static_cast<const osg::Vec3bArray*>(lhs_normalArray))[0])
+                    return false;
+
                 break;
-            case(osg::Array::Vec3sArrayType):
-                if ((*static_cast<const osg::Vec3sArray*>(lhs_normalArray))[0]<(*static_cast<const osg::Vec3sArray*>(rhs_normalArray))[0]) return true;
-                if ((*static_cast<const osg::Vec3sArray*>(rhs_normalArray))[0]<(*static_cast<const osg::Vec3sArray*>(lhs_normalArray))[0]) return false;
+
+            case (osg::Array::Vec3sArrayType):
+                if ((*static_cast<const osg::Vec3sArray*>(lhs_normalArray))[0] < (*static_cast<const osg::Vec3sArray*>(rhs_normalArray))[0])
+                    return true;
+
+                if ((*static_cast<const osg::Vec3sArray*>(rhs_normalArray))[0] < (*static_cast<const osg::Vec3sArray*>(lhs_normalArray))[0])
+                    return false;
+
                 break;
-            case(osg::Array::Vec3ArrayType):
-                if ((*static_cast<const osg::Vec3Array*>(lhs_normalArray))[0]<(*static_cast<const osg::Vec3Array*>(rhs_normalArray))[0]) return true;
-                if ((*static_cast<const osg::Vec3Array*>(rhs_normalArray))[0]<(*static_cast<const osg::Vec3Array*>(lhs_normalArray))[0]) return false;
+
+            case (osg::Array::Vec3ArrayType):
+                if ((*static_cast<const osg::Vec3Array*>(lhs_normalArray))[0] < (*static_cast<const osg::Vec3Array*>(rhs_normalArray))[0])
+                    return true;
+
+                if ((*static_cast<const osg::Vec3Array*>(rhs_normalArray))[0] < (*static_cast<const osg::Vec3Array*>(lhs_normalArray))[0])
+                    return false;
+
                 break;
+
             default:
                 break;
             }
         }
 
-        if (osg::getBinding(lhs->getColorArray())==osg::Array::BIND_OVERALL)
+        if (osg::getBinding(lhs->getColorArray()) == osg::Array::BIND_OVERALL)
         {
-            const osg::Array* lhs_colorArray = lhs->getColorArray();
-            const osg::Array* rhs_colorArray = rhs->getColorArray();
-            if (lhs_colorArray->getType()<rhs_colorArray->getType()) return true;
-            if (rhs_colorArray->getType()<lhs_colorArray->getType()) return false;
-            switch(lhs_colorArray->getType())
-            {
-                case(osg::Array::Vec4ubArrayType):
-                    if ((*static_cast<const osg::Vec4ubArray*>(lhs_colorArray))[0]<(*static_cast<const osg::Vec4ubArray*>(rhs_colorArray))[0]) return true;
-                    if ((*static_cast<const osg::Vec4ubArray*>(rhs_colorArray))[0]<(*static_cast<const osg::Vec4ubArray*>(lhs_colorArray))[0]) return false;
-                    break;
-                case(osg::Array::Vec3ArrayType):
-                    if ((*static_cast<const osg::Vec3Array*>(lhs_colorArray))[0]<(*static_cast<const osg::Vec3Array*>(rhs_colorArray))[0]) return true;
-                    if ((*static_cast<const osg::Vec3Array*>(rhs_colorArray))[0]<(*static_cast<const osg::Vec3Array*>(lhs_colorArray))[0]) return false;
-                    break;
-                case(osg::Array::Vec4ArrayType):
-                    if ((*static_cast<const osg::Vec4Array*>(lhs_colorArray))[0]<(*static_cast<const osg::Vec4Array*>(rhs_colorArray))[0]) return true;
-                    if ((*static_cast<const osg::Vec4Array*>(rhs_colorArray))[0]<(*static_cast<const osg::Vec4Array*>(lhs_colorArray))[0]) return false;
-                    break;
-                default:
-                    break;
-            }
+            const osg::Array *lhs_colorArray = lhs->getColorArray();
+            const osg::Array *rhs_colorArray = rhs->getColorArray();
+            if (lhs_colorArray->getType() < rhs_colorArray->getType())
+                return true;
 
+            if (rhs_colorArray->getType() < lhs_colorArray->getType())
+                return false;
+
+            switch (lhs_colorArray->getType())
+            {
+            case (osg::Array::Vec4ubArrayType):
+                if ((*static_cast<const osg::Vec4ubArray*>(lhs_colorArray))[0] < (*static_cast<const osg::Vec4ubArray*>(rhs_colorArray))[0])
+                    return true;
+
+                if ((*static_cast<const osg::Vec4ubArray*>(rhs_colorArray))[0] < (*static_cast<const osg::Vec4ubArray*>(lhs_colorArray))[0])
+                    return false;
+
+                break;
+
+            case (osg::Array::Vec3ArrayType):
+                if ((*static_cast<const osg::Vec3Array*>(lhs_colorArray))[0] < (*static_cast<const osg::Vec3Array*>(rhs_colorArray))[0])
+                    return true;
+
+                if ((*static_cast<const osg::Vec3Array*>(rhs_colorArray))[0] < (*static_cast<const osg::Vec3Array*>(lhs_colorArray))[0])
+                    return false;
+
+                break;
+
+            case (osg::Array::Vec4ArrayType):
+                if ((*static_cast<const osg::Vec4Array*>(lhs_colorArray))[0] < (*static_cast<const osg::Vec4Array*>(rhs_colorArray))[0])
+                    return true;
+
+                if ((*static_cast<const osg::Vec4Array*>(rhs_colorArray))[0] < (*static_cast<const osg::Vec4Array*>(lhs_colorArray))[0])
+                    return false;
+
+                break;
+
+            default:
+                break;
+            }
         }
 
         return false;
-
     }
 };
 
 struct LessGeometryPrimitiveType
 {
-    bool operator() (const osg::Geometry* lhs,const osg::Geometry* rhs) const
+    bool operator()(const osg::Geometry *lhs, const osg::Geometry *rhs) const
     {
-        for(unsigned int i=0;
-            i<lhs->getNumPrimitiveSets() && i<rhs->getNumPrimitiveSets();
-            ++i)
+        for (unsigned int i = 0;
+             i < lhs->getNumPrimitiveSets() && i < rhs->getNumPrimitiveSets();
+             ++i)
         {
-            if (lhs->getPrimitiveSet(i)->getType()<rhs->getPrimitiveSet(i)->getType()) return true;
-            else if (rhs->getPrimitiveSet(i)->getType()<lhs->getPrimitiveSet(i)->getType()) return false;
+            if (lhs->getPrimitiveSet(i)->getType() < rhs->getPrimitiveSet(i)->getType())
+                return true;
+            else if (rhs->getPrimitiveSet(i)->getType() < lhs->getPrimitiveSet(i)->getType())
+                return false;
 
-            if (lhs->getPrimitiveSet(i)->getMode()<rhs->getPrimitiveSet(i)->getMode()) return true;
-            else if (rhs->getPrimitiveSet(i)->getMode()<lhs->getPrimitiveSet(i)->getMode()) return false;
-
+            if (lhs->getPrimitiveSet(i)->getMode() < rhs->getPrimitiveSet(i)->getMode())
+                return true;
+            else if (rhs->getPrimitiveSet(i)->getMode() < lhs->getPrimitiveSet(i)->getMode())
+                return false;
         }
-        return lhs->getNumPrimitiveSets()<rhs->getNumPrimitiveSets();
+
+        return lhs->getNumPrimitiveSets() < rhs->getNumPrimitiveSets();
     }
 };
 
-void Optimizer::CheckGeometryVisitor::checkGeode(osg::Geode& geode)
+void Optimizer::CheckGeometryVisitor::checkGeode(osg::Geode&geode)
 {
     if (isOperationPermissibleForObject(&geode))
     {
-        for(unsigned int i=0;i<geode.getNumDrawables();++i)
+        for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
         {
-            osg::Geometry* geom = geode.getDrawable(i)->asGeometry();
+            osg::Geometry *geom = geode.getDrawable(i)->asGeometry();
             if (geom && isOperationPermissibleForObject(geom))
             {
 #ifdef GEOMETRYDEPRECATED
@@ -1804,14 +1960,14 @@ void Optimizer::CheckGeometryVisitor::checkGeode(osg::Geode& geode)
     }
 }
 
-void Optimizer::MakeFastGeometryVisitor::checkGeode(osg::Geode& geode)
+void Optimizer::MakeFastGeometryVisitor::checkGeode(osg::Geode&geode)
 {
     // GeometryDeprecated CAN REMOVED
     if (isOperationPermissibleForObject(&geode))
     {
-        for(unsigned int i=0;i<geode.getNumDrawables();++i)
+        for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
         {
-            osg::Geometry* geom = geode.getDrawable(i)->asGeometry();
+            osg::Geometry *geom = geode.getDrawable(i)->asGeometry();
             if (geom && isOperationPermissibleForObject(geom))
             {
                 if (geom->checkForDeprecatedData())
@@ -1824,79 +1980,95 @@ void Optimizer::MakeFastGeometryVisitor::checkGeode(osg::Geode& geode)
 }
 
 /// Shortcut to get size of an array, even if pointer is NULL.
-inline unsigned int getSize(const osg::Array * a) { return a ? a->getNumElements() : 0; }
+inline unsigned int getSize(const osg::Array *a)
+{
+    return a ? a->getNumElements() : 0;
+}
 
 /// When merging geometries, tests if two arrays can be merged, regarding to their number of components, and the number of vertices.
-bool isArrayCompatible(unsigned int numVertice1, unsigned int numVertice2, const osg::Array* compare1, const osg::Array* compare2)
+bool isArrayCompatible(unsigned int numVertice1, unsigned int numVertice2, const osg::Array *compare1, const osg::Array *compare2)
 {
     // Sumed up truth table:
     //  If array (1 or 2) not empty and vertices empty => error, should not happen (allows simplification in formulae below)
     //  If one side has both vertices and array, and the other side has only vertices => then arrays cannot be merged
     //  Else, arrays can be merged
-    //assert(numVertice1 || !getSize(compare1));
-    //assert(numVertice2 || !getSize(compare2));
-    return !(   (numVertice1 && !getSize(compare1) && getSize(compare2))
-             || (numVertice2 && !getSize(compare2) && getSize(compare1)) );
+    // assert(numVertice1 || !getSize(compare1));
+    // assert(numVertice2 || !getSize(compare2));
+    return !((numVertice1 && !getSize(compare1) && getSize(compare2))
+             || (numVertice2 && !getSize(compare2) && getSize(compare1)));
 }
 
 /// Return true only if both geometries have same array type and if arrays (such as TexCoords) are compatible (i.e. both empty or both filled)
-bool isAbleToMerge(const osg::Geometry& g1, const osg::Geometry& g2)
+bool isAbleToMerge(const osg::Geometry&g1, const osg::Geometry&g2)
 {
-    unsigned int numVertice1( getSize(g1.getVertexArray()) );
-    unsigned int numVertice2( getSize(g2.getVertexArray()) );
+    unsigned int numVertice1(getSize(g1.getVertexArray()));
+    unsigned int numVertice2(getSize(g2.getVertexArray()));
 
     // first verify arrays size
-    if (!isArrayCompatible(numVertice1,numVertice2,g1.getNormalArray(),g2.getNormalArray()) ||
-        !isArrayCompatible(numVertice1,numVertice2,g1.getColorArray(),g2.getColorArray()) ||
-        !isArrayCompatible(numVertice1,numVertice2,g1.getSecondaryColorArray(),g2.getSecondaryColorArray()) ||
-        !isArrayCompatible(numVertice1,numVertice2,g1.getFogCoordArray(),g2.getFogCoordArray()) ||
-        g1.getNumTexCoordArrays()!=g2.getNumTexCoordArrays()) return false;
+    if (!isArrayCompatible(numVertice1, numVertice2, g1.getNormalArray(), g2.getNormalArray()) ||
+        !isArrayCompatible(numVertice1, numVertice2, g1.getColorArray(), g2.getColorArray()) ||
+        !isArrayCompatible(numVertice1, numVertice2, g1.getSecondaryColorArray(), g2.getSecondaryColorArray()) ||
+        !isArrayCompatible(numVertice1, numVertice2, g1.getFogCoordArray(), g2.getFogCoordArray()) ||
+        g1.getNumTexCoordArrays() != g2.getNumTexCoordArrays())
+        return false;
 
-    for (unsigned int eachTexCoordArray=0;eachTexCoordArray<g1.getNumTexCoordArrays();++eachTexCoordArray)
+    for (unsigned int eachTexCoordArray = 0; eachTexCoordArray < g1.getNumTexCoordArrays(); ++eachTexCoordArray)
     {
-        if (!isArrayCompatible(numVertice1,numVertice2,g1.getTexCoordArray(eachTexCoordArray),g2.getTexCoordArray(eachTexCoordArray))) return false;
+        if (!isArrayCompatible(numVertice1, numVertice2, g1.getTexCoordArray(eachTexCoordArray), g2.getTexCoordArray(eachTexCoordArray)))
+            return false;
     }
 
     // then verify data type compatibility
-    if (g1.getVertexArray() && g2.getVertexArray() && g1.getVertexArray()->getDataType()!=g2.getVertexArray()->getDataType()) return false;
-    if (g1.getNormalArray() && g2.getNormalArray() && g1.getNormalArray()->getDataType()!=g2.getNormalArray()->getDataType()) return false;
-    if (g1.getColorArray() && g2.getColorArray() && g1.getColorArray()->getDataType()!=g2.getColorArray()->getDataType()) return false;
-    if (g1.getSecondaryColorArray() && g2.getSecondaryColorArray() && g1.getSecondaryColorArray()->getDataType()!=g2.getSecondaryColorArray()->getDataType()) return false;
-    if (g1.getFogCoordArray() && g2.getNormalArray() && g1.getFogCoordArray()->getDataType()!=g2.getFogCoordArray()->getDataType()) return false;
+    if (g1.getVertexArray() && g2.getVertexArray() && g1.getVertexArray()->getDataType() != g2.getVertexArray()->getDataType())
+        return false;
+
+    if (g1.getNormalArray() && g2.getNormalArray() && g1.getNormalArray()->getDataType() != g2.getNormalArray()->getDataType())
+        return false;
+
+    if (g1.getColorArray() && g2.getColorArray() && g1.getColorArray()->getDataType() != g2.getColorArray()->getDataType())
+        return false;
+
+    if (g1.getSecondaryColorArray() && g2.getSecondaryColorArray() && g1.getSecondaryColorArray()->getDataType() != g2.getSecondaryColorArray()->getDataType())
+        return false;
+
+    if (g1.getFogCoordArray() && g2.getNormalArray() && g1.getFogCoordArray()->getDataType() != g2.getFogCoordArray()->getDataType())
+        return false;
+
     return true;
 }
 
-bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
+bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode&geode)
 {
-    if (!isOperationPermissibleForObject(&geode)) return false;
+    if (!isOperationPermissibleForObject(&geode))
+        return false;
 
-    if (geode.getNumDrawables()>=2)
+    if (geode.getNumDrawables() >= 2)
     {
-
         // OSG_NOTICE<<"Before "<<geode.getNumDrawables()<<std::endl;
 
         typedef std::vector<osg::Geometry*>                         DuplicateList;
-        typedef std::vector< osg::ref_ptr<osg::Drawable> >          DrawableList;
-        typedef std::map<osg::Geometry*,DuplicateList,LessGeometry> GeometryDuplicateMap;
+        typedef std::vector<osg::ref_ptr<osg::Drawable> >          DrawableList;
+        typedef std::map<osg::Geometry*, DuplicateList, LessGeometry> GeometryDuplicateMap;
 
         typedef std::vector<DuplicateList> MergeList;
 
         GeometryDuplicateMap geometryDuplicateMap;
-        DrawableList standardDrawables;
+        DrawableList         standardDrawables;
 
         unsigned int i;
-        for(i=0;i<geode.getNumDrawables();++i)
+
+        for (i = 0; i < geode.getNumDrawables(); ++i)
         {
-            osg::Drawable* drawable = geode.getDrawable(i);
+            osg::Drawable *drawable = geode.getDrawable(i);
             if (drawable)
             {
-                osg::Geometry* geom = drawable->asGeometry();
+                osg::Geometry *geom = drawable->asGeometry();
                 if (geom)
                 {
-                    //geom->computeCorrectBindingsAndArraySizes();
+                    // geom->computeCorrectBindingsAndArraySizes();
 
                     if (!geometryContainsSharedArrays(*geom) &&
-                        geom->getDataVariance()!=osg::Object::DYNAMIC &&
+                        geom->getDataVariance() != osg::Object::DYNAMIC &&
                         isOperationPermissibleForObject(geom))
                     {
                         geometryDuplicateMap[geom].push_back(geom);
@@ -1918,39 +2090,43 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
         // (i.e. array types) to avoid loss of data during merging
         MergeList mergeListChecked;        // List of drawables just before merging, grouped by "compatibility" and vertex limit
         MergeList mergeList;            // Intermediate list of drawables, grouped ony by "compatibility"
-        for(GeometryDuplicateMap::iterator itr=geometryDuplicateMap.begin();
-            itr!=geometryDuplicateMap.end();
-            ++itr)
+
+        for (GeometryDuplicateMap::iterator itr = geometryDuplicateMap.begin();
+             itr != geometryDuplicateMap.end();
+             ++itr)
         {
-            if (itr->second.empty()) continue;
-            if (itr->second.size()==1)
+            if (itr->second.empty())
+                continue;
+
+            if (itr->second.size() == 1)
             {
                 mergeList.push_back(DuplicateList());
-                DuplicateList* duplicateList = &mergeList.back();
+                DuplicateList *duplicateList = &mergeList.back();
                 duplicateList->push_back(itr->second[0]);
                 continue;
             }
 
-            std::sort(itr->second.begin(),itr->second.end(),LessGeometryPrimitiveType());
+            std::sort(itr->second.begin(), itr->second.end(), LessGeometryPrimitiveType());
 
             // initialize the temporary list by pushing the first geometry
             MergeList mergeListTmp;
             mergeListTmp.push_back(DuplicateList());
-            DuplicateList* duplicateList = &mergeListTmp.back();
+            DuplicateList *duplicateList = &mergeListTmp.back();
             duplicateList->push_back(itr->second[0]);
 
-            for(DuplicateList::iterator dupItr=itr->second.begin()+1;
-                dupItr!=itr->second.end();
-                ++dupItr)
+            for (DuplicateList::iterator dupItr = itr->second.begin() + 1;
+                 dupItr != itr->second.end();
+                 ++dupItr)
             {
-                osg::Geometry* geomToPush = *dupItr;
+                osg::Geometry *geomToPush = *dupItr;
 
                 // try to group geomToPush with another geometry
-                MergeList::iterator eachMergeList=mergeListTmp.begin();
-                for(;eachMergeList!=mergeListTmp.end();++eachMergeList)
+                MergeList::iterator eachMergeList = mergeListTmp.begin();
+
+                for (; eachMergeList != mergeListTmp.end(); ++eachMergeList)
                 {
-                    if (!eachMergeList->empty() && eachMergeList->front()!=NULL
-                        && isAbleToMerge(*eachMergeList->front(),*geomToPush))
+                    if (!eachMergeList->empty() && eachMergeList->front() != NULL
+                        && isAbleToMerge(*eachMergeList->front(), *geomToPush))
                     {
                         eachMergeList->push_back(geomToPush);
                         break;
@@ -1958,7 +2134,7 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
                 }
 
                 // if no suitable group was found, then a new one is created
-                if (eachMergeList==mergeListTmp.end())
+                if (eachMergeList == mergeListTmp.end())
                 {
                     mergeListTmp.push_back(DuplicateList());
                     duplicateList = &mergeListTmp.back();
@@ -1967,7 +2143,7 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
             }
 
             // copy the group in the mergeListChecked
-            for(MergeList::iterator eachMergeList=mergeListTmp.begin();eachMergeList!=mergeListTmp.end();++eachMergeList)
+            for (MergeList::iterator eachMergeList = mergeListTmp.begin(); eachMergeList != mergeListTmp.end(); ++eachMergeList)
             {
                 mergeListChecked.push_back(*eachMergeList);
             }
@@ -1975,31 +2151,33 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
 
         // then build merge list using _targetMaximumNumberOfVertices
         bool needToDoMerge = false;
+
         // dequeue each DuplicateList when vertices limit is reached or when all elements has been checked
-        for(;!mergeListChecked.empty();)
+        for (; !mergeListChecked.empty();)
         {
-            MergeList::iterator itr=mergeListChecked.begin();
-            DuplicateList& duplicateList(*itr);
-            if (duplicateList.size()==0)
+            MergeList::iterator itr = mergeListChecked.begin();
+            DuplicateList       &duplicateList(*itr);
+            if (duplicateList.size() == 0)
             {
                 mergeListChecked.erase(itr);
                 continue;
             }
 
-            if (duplicateList.size()==1)
+            if (duplicateList.size() == 1)
             {
                 mergeList.push_back(duplicateList);
                 mergeListChecked.erase(itr);
                 continue;
             }
 
-            unsigned int numVertices(duplicateList.front()->getVertexArray() ? duplicateList.front()->getVertexArray()->getNumElements() : 0);
-            DuplicateList::iterator eachGeom(duplicateList.begin()+1);
+            unsigned int            numVertices(duplicateList.front()->getVertexArray() ? duplicateList.front()->getVertexArray()->getNumElements() : 0);
+            DuplicateList::iterator eachGeom(duplicateList.begin() + 1);
+
             // until all geometries have been checked or _targetMaximumNumberOfVertices is reached
-            for(;eachGeom!=duplicateList.end(); ++eachGeom)
+            for (; eachGeom != duplicateList.end(); ++eachGeom)
             {
                 unsigned int numAddVertices((*eachGeom)->getVertexArray() ? (*eachGeom)->getVertexArray()->getNumElements() : 0);
-                if ((numVertices+numAddVertices)>_targetMaximumNumberOfVertices)
+                if ((numVertices + numAddVertices) > _targetMaximumNumberOfVertices)
                 {
                     break;
                 }
@@ -2010,9 +2188,11 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
             }
 
             // push back if bellow the limit
-            if (eachGeom==duplicateList.end())
+            if (eachGeom == duplicateList.end())
             {
-                if (duplicateList.size()>1) needToDoMerge = true;
+                if (duplicateList.size() > 1)
+                    needToDoMerge = true;
+
                 mergeList.push_back(duplicateList);
                 mergeListChecked.erase(itr);
             }
@@ -2020,54 +2200,58 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
             else
             {
                 mergeList.push_back(DuplicateList());
-                DuplicateList* duplicateListResult = &mergeList.back();
-                duplicateListResult->insert(duplicateListResult->end(),duplicateList.begin(),eachGeom);
-                duplicateList.erase(duplicateList.begin(),eachGeom);
-                if (duplicateListResult->size()>1) needToDoMerge = true;
+                DuplicateList *duplicateListResult = &mergeList.back();
+                duplicateListResult->insert(duplicateListResult->end(), duplicateList.begin(), eachGeom);
+                duplicateList.erase(duplicateList.begin(), eachGeom);
+                if (duplicateListResult->size() > 1)
+                    needToDoMerge = true;
             }
         }
 
         if (needToDoMerge)
         {
             // first take a reference to all the drawables to prevent them being deleted prematurely
-            typedef std::vector< osg::ref_ptr<osg::Drawable> >          DrawableList;
+            typedef std::vector<osg::ref_ptr<osg::Drawable> >          DrawableList;
             DrawableList keepDrawables;
             keepDrawables.resize(geode.getNumDrawables());
-            for(i=0; i<geode.getNumDrawables(); ++i)
+
+            for (i = 0; i < geode.getNumDrawables(); ++i)
             {
-                osg::Drawable* drawable = geode.getDrawable(i);
-                if (drawable) keepDrawables[i] = geode.getDrawable(i);
+                osg::Drawable *drawable = geode.getDrawable(i);
+                if (drawable)
+                    keepDrawables[i] = geode.getDrawable(i);
             }
 
             // now clear the drawable list of the Geode so we don't have to remove items one by one (which is slow)
             geode.removeDrawables(0, geode.getNumDrawables());
 
             // add back in the standard drawables which arn't possible to merge.
-            for(DrawableList::iterator sitr = standardDrawables.begin();
-                sitr != standardDrawables.end();
-                ++sitr)
+            for (DrawableList::iterator sitr = standardDrawables.begin();
+                 sitr != standardDrawables.end();
+                 ++sitr)
             {
                 geode.addDrawable(sitr->get());
             }
 
             // now do the merging of geometries
-            for(MergeList::iterator mitr = mergeList.begin();
-                mitr != mergeList.end();
-                ++mitr)
+            for (MergeList::iterator mitr = mergeList.begin();
+                 mitr != mergeList.end();
+                 ++mitr)
             {
-                DuplicateList& duplicateList = *mitr;
-                if (duplicateList.size()>1)
+                DuplicateList&duplicateList = *mitr;
+                if (duplicateList.size() > 1)
                 {
-                    osg::Geometry* lhs = duplicateList.front();
+                    osg::Geometry *lhs = duplicateList.front();
                     geode.addDrawable(lhs);
-                    for(DuplicateList::iterator ditr = duplicateList.begin()+1;
-                        ditr != duplicateList.end();
-                        ++ditr)
+
+                    for (DuplicateList::iterator ditr = duplicateList.begin() + 1;
+                         ditr != duplicateList.end();
+                         ++ditr)
                     {
-                        mergeGeometry(*lhs,**ditr);
+                        mergeGeometry(*lhs, **ditr);
                     }
                 }
-                else if (duplicateList.size()>0)
+                else if (duplicateList.size() > 0)
                 {
                     geode.addDrawable(duplicateList.front());
                 }
@@ -2076,44 +2260,44 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
 
 #else
         // don't merge geometry if its above a maximum number of vertices.
-        for(GeometryDuplicateMap::iterator itr=geometryDuplicateMap.begin();
-            itr!=geometryDuplicateMap.end();
-            ++itr)
+        for (GeometryDuplicateMap::iterator itr = geometryDuplicateMap.begin();
+             itr != geometryDuplicateMap.end();
+             ++itr)
         {
-            if (itr->second.size()>1)
+            if (itr->second.size() > 1)
             {
-                std::sort(itr->second.begin(),itr->second.end(),LessGeometryPrimitiveType());
-                osg::Geometry* lhs = itr->second[0];
-                for(DuplicateList::iterator dupItr=itr->second.begin()+1;
-                    dupItr!=itr->second.end();
-                    ++dupItr)
+                std::sort(itr->second.begin(), itr->second.end(), LessGeometryPrimitiveType());
+                osg::Geometry *lhs = itr->second[0];
+
+                for (DuplicateList::iterator dupItr = itr->second.begin() + 1;
+                     dupItr != itr->second.end();
+                     ++dupItr)
                 {
+                    osg::Geometry *rhs = *dupItr;
 
-                    osg::Geometry* rhs = *dupItr;
-
-                    if (lhs->getVertexArray() && lhs->getVertexArray()->getNumElements()>=_targetMaximumNumberOfVertices)
+                    if (lhs->getVertexArray() && lhs->getVertexArray()->getNumElements() >= _targetMaximumNumberOfVertices)
                     {
                         lhs = rhs;
                         continue;
                     }
 
-                    if (rhs->getVertexArray() && rhs->getVertexArray()->getNumElements()>=_targetMaximumNumberOfVertices)
+                    if (rhs->getVertexArray() && rhs->getVertexArray()->getNumElements() >= _targetMaximumNumberOfVertices)
                     {
                         continue;
                     }
 
                     if (lhs->getVertexArray() && rhs->getVertexArray() &&
-                        (lhs->getVertexArray()->getNumElements()+rhs->getVertexArray()->getNumElements())>=_targetMaximumNumberOfVertices)
+                        (lhs->getVertexArray()->getNumElements() + rhs->getVertexArray()->getNumElements()) >= _targetMaximumNumberOfVertices)
                     {
                         continue;
                     }
 
-                    if (mergeGeometry(*lhs,*rhs))
+                    if (mergeGeometry(*lhs, *rhs))
                     {
                         geode.removeDrawable(rhs);
 
                         static int co = 0;
-                        OSG_INFO<<"merged and removed Geometry "<<++co<<std::endl;
+                        OSG_INFO << "merged and removed Geometry " << ++co << std::endl;
                     }
                 }
             }
@@ -2121,30 +2305,31 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
 #endif
 
         // OSG_NOTICE<<"After "<<geode.getNumDrawables()<<std::endl;
-
     }
 
 
     // convert all polygon primitives which has 3 indices into TRIANGLES, 4 indices into QUADS.
     unsigned int i;
-    for(i=0;i<geode.getNumDrawables();++i)
+
+    for (i = 0; i < geode.getNumDrawables(); ++i)
     {
-        osg::Geometry* geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
+        osg::Geometry *geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
         if (geom)
         {
-            osg::Geometry::PrimitiveSetList& primitives = geom->getPrimitiveSetList();
-            for(osg::Geometry::PrimitiveSetList::iterator itr=primitives.begin();
-                itr!=primitives.end();
-                ++itr)
+            osg::Geometry::PrimitiveSetList&primitives = geom->getPrimitiveSetList();
+
+            for (osg::Geometry::PrimitiveSetList::iterator itr = primitives.begin();
+                 itr != primitives.end();
+                 ++itr)
             {
-                osg::PrimitiveSet* prim = itr->get();
-                if (prim->getMode()==osg::PrimitiveSet::POLYGON)
+                osg::PrimitiveSet *prim = itr->get();
+                if (prim->getMode() == osg::PrimitiveSet::POLYGON)
                 {
-                    if (prim->getNumIndices()==3)
+                    if (prim->getNumIndices() == 3)
                     {
                         prim->setMode(osg::PrimitiveSet::TRIANGLES);
                     }
-                    else if (prim->getNumIndices()==4)
+                    else if (prim->getNumIndices() == 4)
                     {
                         prim->setMode(osg::PrimitiveSet::QUADS);
                     }
@@ -2154,67 +2339,69 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
     }
 
     // now merge any compatible primitives.
-    for(i=0;i<geode.getNumDrawables();++i)
+    for (i = 0; i < geode.getNumDrawables(); ++i)
     {
-        osg::Geometry* geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
+        osg::Geometry *geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
         if (geom)
         {
-            if (geom->getNumPrimitiveSets()>0 &&
-                osg::getBinding(geom->getNormalArray())!=osg::Array::BIND_PER_PRIMITIVE_SET &&
-                osg::getBinding(geom->getColorArray())!=osg::Array::BIND_PER_PRIMITIVE_SET &&
-                osg::getBinding(geom->getSecondaryColorArray())!=osg::Array::BIND_PER_PRIMITIVE_SET &&
-                osg::getBinding(geom->getFogCoordArray())!=osg::Array::BIND_PER_PRIMITIVE_SET)
+            if (geom->getNumPrimitiveSets() > 0 &&
+                osg::getBinding(geom->getNormalArray()) != osg::Array::BIND_PER_PRIMITIVE_SET &&
+                osg::getBinding(geom->getColorArray()) != osg::Array::BIND_PER_PRIMITIVE_SET &&
+                osg::getBinding(geom->getSecondaryColorArray()) != osg::Array::BIND_PER_PRIMITIVE_SET &&
+                osg::getBinding(geom->getFogCoordArray()) != osg::Array::BIND_PER_PRIMITIVE_SET)
             {
-
 #if 1
                 bool doneCombine = false;
 
-                osg::Geometry::PrimitiveSetList& primitives = geom->getPrimitiveSetList();
-                unsigned int lhsNo=0;
-                unsigned int rhsNo=1;
-                while(rhsNo<primitives.size())
+                osg::Geometry::PrimitiveSetList&primitives = geom->getPrimitiveSetList();
+                unsigned int                   lhsNo       = 0;
+                unsigned int                   rhsNo       = 1;
+
+                while (rhsNo < primitives.size())
                 {
-                    osg::PrimitiveSet* lhs = primitives[lhsNo].get();
-                    osg::PrimitiveSet* rhs = primitives[rhsNo].get();
+                    osg::PrimitiveSet *lhs = primitives[lhsNo].get();
+                    osg::PrimitiveSet *rhs = primitives[rhsNo].get();
 
                     bool combine = false;
 
-                    if (lhs->getType()==rhs->getType() &&
-                        lhs->getMode()==rhs->getMode())
+                    if (lhs->getType() == rhs->getType() &&
+                        lhs->getMode() == rhs->getMode())
                     {
-
-                        switch(lhs->getMode())
+                        switch (lhs->getMode())
                         {
-                        case(osg::PrimitiveSet::POINTS):
-                        case(osg::PrimitiveSet::LINES):
-                        case(osg::PrimitiveSet::TRIANGLES):
-                        case(osg::PrimitiveSet::QUADS):
+                        case (osg::PrimitiveSet::POINTS):
+                        case (osg::PrimitiveSet::LINES):
+                        case (osg::PrimitiveSet::TRIANGLES):
+                        case (osg::PrimitiveSet::QUADS):
                             combine = true;
                             break;
                         }
-
                     }
 
                     if (combine)
                     {
-
-                        switch(lhs->getType())
+                        switch (lhs->getType())
                         {
-                        case(osg::PrimitiveSet::DrawArraysPrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawArrays*>(lhs)),*(static_cast<osg::DrawArrays*>(rhs)));
+                        case (osg::PrimitiveSet::DrawArraysPrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawArrays*>(lhs)), *(static_cast<osg::DrawArrays*>(rhs)));
                             break;
-                        case(osg::PrimitiveSet::DrawArrayLengthsPrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawArrayLengths*>(lhs)),*(static_cast<osg::DrawArrayLengths*>(rhs)));
+
+                        case (osg::PrimitiveSet::DrawArrayLengthsPrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawArrayLengths*>(lhs)), *(static_cast<osg::DrawArrayLengths*>(rhs)));
                             break;
-                        case(osg::PrimitiveSet::DrawElementsUBytePrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUByte*>(lhs)),*(static_cast<osg::DrawElementsUByte*>(rhs)));
+
+                        case (osg::PrimitiveSet::DrawElementsUBytePrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUByte*>(lhs)), *(static_cast<osg::DrawElementsUByte*>(rhs)));
                             break;
-                        case(osg::PrimitiveSet::DrawElementsUShortPrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUShort*>(lhs)),*(static_cast<osg::DrawElementsUShort*>(rhs)));
+
+                        case (osg::PrimitiveSet::DrawElementsUShortPrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUShort*>(lhs)), *(static_cast<osg::DrawElementsUShort*>(rhs)));
                             break;
-                        case(osg::PrimitiveSet::DrawElementsUIntPrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUInt*>(lhs)),*(static_cast<osg::DrawElementsUInt*>(rhs)));
+
+                        case (osg::PrimitiveSet::DrawElementsUIntPrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUInt*>(lhs)), *(static_cast<osg::DrawElementsUInt*>(rhs)));
                             break;
+
                         default:
                             combine = false;
                             break;
@@ -2245,69 +2432,73 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
                     primitives.swap(oldPrimitives);
 
                     // now add the active primitive sets
-                    for(osg::Geometry::PrimitiveSetList::iterator pitr = oldPrimitives.begin();
-                        pitr != oldPrimitives.end();
-                        ++pitr)
+                    for (osg::Geometry::PrimitiveSetList::iterator pitr = oldPrimitives.begin();
+                         pitr != oldPrimitives.end();
+                         ++pitr)
                     {
-                        if ((*pitr)->getMode()!=0xffffff) primitives.push_back(*pitr);
+                        if ((*pitr)->getMode() != 0xffffff)
+                            primitives.push_back(*pitr);
                     }
                 }
     #endif
 
 #else
+                osg::Geometry::PrimitiveSetList&primitives = geom->getPrimitiveSetList();
+                unsigned int                   primNo      = 0;
 
-                osg::Geometry::PrimitiveSetList& primitives = geom->getPrimitiveSetList();
-                unsigned int primNo=0;
-                while(primNo+1<primitives.size())
+                while (primNo + 1 < primitives.size())
                 {
-                    osg::PrimitiveSet* lhs = primitives[primNo].get();
-                    osg::PrimitiveSet* rhs = primitives[primNo+1].get();
+                    osg::PrimitiveSet *lhs = primitives[primNo].get();
+                    osg::PrimitiveSet *rhs = primitives[primNo + 1].get();
 
                     bool combine = false;
 
-                    if (lhs->getType()==rhs->getType() &&
-                        lhs->getMode()==rhs->getMode())
+                    if (lhs->getType() == rhs->getType() &&
+                        lhs->getMode() == rhs->getMode())
                     {
-
-                        switch(lhs->getMode())
+                        switch (lhs->getMode())
                         {
-                        case(osg::PrimitiveSet::POINTS):
-                        case(osg::PrimitiveSet::LINES):
-                        case(osg::PrimitiveSet::TRIANGLES):
-                        case(osg::PrimitiveSet::QUADS):
+                        case (osg::PrimitiveSet::POINTS):
+                        case (osg::PrimitiveSet::LINES):
+                        case (osg::PrimitiveSet::TRIANGLES):
+                        case (osg::PrimitiveSet::QUADS):
                             combine = true;
                             break;
                         }
-
                     }
 
                     if (combine)
                     {
-
-                        switch(lhs->getType())
+                        switch (lhs->getType())
                         {
-                        case(osg::PrimitiveSet::DrawArraysPrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawArrays*>(lhs)),*(static_cast<osg::DrawArrays*>(rhs)));
+                        case (osg::PrimitiveSet::DrawArraysPrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawArrays*>(lhs)), *(static_cast<osg::DrawArrays*>(rhs)));
                             break;
-                        case(osg::PrimitiveSet::DrawArrayLengthsPrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawArrayLengths*>(lhs)),*(static_cast<osg::DrawArrayLengths*>(rhs)));
+
+                        case (osg::PrimitiveSet::DrawArrayLengthsPrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawArrayLengths*>(lhs)), *(static_cast<osg::DrawArrayLengths*>(rhs)));
                             break;
-                        case(osg::PrimitiveSet::DrawElementsUBytePrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUByte*>(lhs)),*(static_cast<osg::DrawElementsUByte*>(rhs)));
+
+                        case (osg::PrimitiveSet::DrawElementsUBytePrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUByte*>(lhs)), *(static_cast<osg::DrawElementsUByte*>(rhs)));
                             break;
-                        case(osg::PrimitiveSet::DrawElementsUShortPrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUShort*>(lhs)),*(static_cast<osg::DrawElementsUShort*>(rhs)));
+
+                        case (osg::PrimitiveSet::DrawElementsUShortPrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUShort*>(lhs)), *(static_cast<osg::DrawElementsUShort*>(rhs)));
                             break;
-                        case(osg::PrimitiveSet::DrawElementsUIntPrimitiveType):
-                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUInt*>(lhs)),*(static_cast<osg::DrawElementsUInt*>(rhs)));
+
+                        case (osg::PrimitiveSet::DrawElementsUIntPrimitiveType):
+                            combine = mergePrimitive(*(static_cast<osg::DrawElementsUInt*>(lhs)), *(static_cast<osg::DrawElementsUInt*>(rhs)));
                             break;
+
                         default:
                             break;
                         }
                     }
+
                     if (combine)
                     {
-                        primitives.erase(primitives.begin()+primNo+1);
+                        primitives.erase(primitives.begin() + primNo + 1);
                     }
 
                     if (!combine)
@@ -2318,8 +2509,6 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
 #endif
             }
         }
-
-
     }
 
 //    geode.dirtyBound();
@@ -2328,27 +2517,38 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode& geode)
     return false;
 }
 
-bool Optimizer::MergeGeometryVisitor::geometryContainsSharedArrays(osg::Geometry& geom)
+bool Optimizer::MergeGeometryVisitor::geometryContainsSharedArrays(osg::Geometry&geom)
 {
-    if (geom.getVertexArray() && geom.getVertexArray()->referenceCount()>1) return true;
-    if (geom.getNormalArray() && geom.getNormalArray()->referenceCount()>1) return true;
-    if (geom.getColorArray() && geom.getColorArray()->referenceCount()>1) return true;
-    if (geom.getSecondaryColorArray() && geom.getSecondaryColorArray()->referenceCount()>1) return true;
-    if (geom.getFogCoordArray() && geom.getFogCoordArray()->referenceCount()>1) return true;
+    if (geom.getVertexArray() && geom.getVertexArray()->referenceCount() > 1)
+        return true;
+
+    if (geom.getNormalArray() && geom.getNormalArray()->referenceCount() > 1)
+        return true;
+
+    if (geom.getColorArray() && geom.getColorArray()->referenceCount() > 1)
+        return true;
+
+    if (geom.getSecondaryColorArray() && geom.getSecondaryColorArray()->referenceCount() > 1)
+        return true;
+
+    if (geom.getFogCoordArray() && geom.getFogCoordArray()->referenceCount() > 1)
+        return true;
 
 
-    for(unsigned int unit=0;unit<geom.getNumTexCoordArrays();++unit)
+    for (unsigned int unit = 0; unit < geom.getNumTexCoordArrays(); ++unit)
     {
-        osg::Array* tex = geom.getTexCoordArray(unit);
-        if (tex && tex->referenceCount()>1) return true;
+        osg::Array *tex = geom.getTexCoordArray(unit);
+        if (tex && tex->referenceCount() > 1)
+            return true;
     }
 
     // shift the indices of the incoming primitives to account for the pre existing geometry.
-    for(osg::Geometry::PrimitiveSetList::iterator primItr=geom.getPrimitiveSetList().begin();
-        primItr!=geom.getPrimitiveSetList().end();
-        ++primItr)
+    for (osg::Geometry::PrimitiveSetList::iterator primItr = geom.getPrimitiveSetList().begin();
+         primItr != geom.getPrimitiveSetList().end();
+         ++primItr)
     {
-        if ((*primItr)->referenceCount()>1) return true;
+        if ((*primItr)->referenceCount() > 1)
+            return true;
     }
 
 
@@ -2358,90 +2558,178 @@ bool Optimizer::MergeGeometryVisitor::geometryContainsSharedArrays(osg::Geometry
 
 class MergeArrayVisitor : public osg::ArrayVisitor
 {
-    protected:
-        osg::Array* _lhs;
-        int         _offset;
-    public:
-        MergeArrayVisitor() :
-            _lhs(0),
-            _offset(0) {}
+protected:
+osg::Array *_lhs;
+int        _offset;
+public:
+MergeArrayVisitor() :
+    _lhs(0),
+    _offset(0) {}
 
 
-        /// try to merge the content of two arrays.
-        bool merge(osg::Array* lhs,osg::Array* rhs, int offset=0)
-        {
-            if (lhs==0 || rhs==0) return true;
-            if (lhs->getType()!=rhs->getType()) return false;
+/// try to merge the content of two arrays.
+bool merge(osg::Array *lhs, osg::Array *rhs, int offset = 0)
+{
+    if (lhs == 0 || rhs == 0)
+        return true;
 
-            _lhs = lhs;
-            _offset = offset;
+    if (lhs->getType() != rhs->getType())
+        return false;
 
-            rhs->accept(*this);
-            return true;
-        }
+    _lhs    = lhs;
+    _offset = offset;
 
-        template<typename T>
-        void _merge(T& rhs)
-        {
-            T* lhs = static_cast<T*>(_lhs);
-            lhs->insert(lhs->end(),rhs.begin(),rhs.end());
-        }
+    rhs->accept(*this);
+    return true;
+}
 
-        template<typename T>
-        void _mergeAndOffset(T& rhs)
-        {
-            T* lhs = static_cast<T*>(_lhs);
+template<typename T>
+void _merge(T&rhs)
+{
+    T *lhs = static_cast<T*>(_lhs);
 
-            typename T::iterator itr;
-            for(itr = rhs.begin();
-                itr != rhs.end();
-                ++itr)
-            {
-                lhs->push_back(*itr + _offset);
-            }
-        }
+    lhs->insert(lhs->end(), rhs.begin(), rhs.end());
+}
 
-        virtual void apply(osg::Array&) { OSG_WARN << "Warning: Optimizer's MergeArrayVisitor cannot merge Array type." << std::endl; }
+template<typename T>
+void _mergeAndOffset(T&rhs)
+{
+    T *lhs = static_cast<T*>(_lhs);
 
-        virtual void apply(osg::ByteArray& rhs) { if (_offset) _mergeAndOffset(rhs); else  _merge(rhs); }
-        virtual void apply(osg::ShortArray& rhs) { if (_offset) _mergeAndOffset(rhs); else  _merge(rhs); }
-        virtual void apply(osg::IntArray& rhs) { if (_offset) _mergeAndOffset(rhs); else  _merge(rhs); }
-        virtual void apply(osg::UByteArray& rhs) { if (_offset) _mergeAndOffset(rhs); else  _merge(rhs); }
-        virtual void apply(osg::UShortArray& rhs) { if (_offset) _mergeAndOffset(rhs); else  _merge(rhs); }
-        virtual void apply(osg::UIntArray& rhs) { if (_offset) _mergeAndOffset(rhs); else  _merge(rhs); }
+    typename T::iterator itr;
 
-        virtual void apply(osg::Vec4ubArray& rhs) { _merge(rhs); }
-        virtual void apply(osg::FloatArray& rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec2Array& rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec3Array& rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec4Array& rhs) { _merge(rhs); }
+    for (itr = rhs.begin();
+         itr != rhs.end();
+         ++itr)
+    {
+        lhs->push_back(*itr + _offset);
+    }
+}
 
-        virtual void apply(osg::DoubleArray& rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec2dArray& rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec3dArray& rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec4dArray& rhs) { _merge(rhs); }
+virtual void apply(osg::Array&)
+{
+    OSG_WARN << "Warning: Optimizer's MergeArrayVisitor cannot merge Array type." << std::endl;
+}
 
-        virtual void apply(osg::Vec2bArray&  rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec3bArray&  rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec4bArray&  rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec2sArray& rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec3sArray& rhs) { _merge(rhs); }
-        virtual void apply(osg::Vec4sArray& rhs) { _merge(rhs); }
+virtual void apply(osg::ByteArray&rhs)
+{
+    if (_offset)
+        _mergeAndOffset(rhs);
+    else
+        _merge(rhs);
+}
+virtual void apply(osg::ShortArray&rhs)
+{
+    if (_offset)
+        _mergeAndOffset(rhs);
+    else
+        _merge(rhs);
+}
+virtual void apply(osg::IntArray&rhs)
+{
+    if (_offset)
+        _mergeAndOffset(rhs);
+    else
+        _merge(rhs);
+}
+virtual void apply(osg::UByteArray&rhs)
+{
+    if (_offset)
+        _mergeAndOffset(rhs);
+    else
+        _merge(rhs);
+}
+virtual void apply(osg::UShortArray&rhs)
+{
+    if (_offset)
+        _mergeAndOffset(rhs);
+    else
+        _merge(rhs);
+}
+virtual void apply(osg::UIntArray&rhs)
+{
+    if (_offset)
+        _mergeAndOffset(rhs);
+    else
+        _merge(rhs);
+}
+
+virtual void apply(osg::Vec4ubArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::FloatArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec2Array&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec3Array&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec4Array&rhs)
+{
+    _merge(rhs);
+}
+
+virtual void apply(osg::DoubleArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec2dArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec3dArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec4dArray&rhs)
+{
+    _merge(rhs);
+}
+
+virtual void apply(osg::Vec2bArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec3bArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec4bArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec2sArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec3sArray&rhs)
+{
+    _merge(rhs);
+}
+virtual void apply(osg::Vec4sArray&rhs)
+{
+    _merge(rhs);
+}
 };
 
-bool Optimizer::MergeGeometryVisitor::mergeGeometry(osg::Geometry& lhs,osg::Geometry& rhs)
+bool Optimizer::MergeGeometryVisitor::mergeGeometry(osg::Geometry&lhs, osg::Geometry&rhs)
 {
-
     MergeArrayVisitor merger;
 
     unsigned int base = 0;
+
     if (lhs.getVertexArray() && rhs.getVertexArray())
     {
-
         base = lhs.getVertexArray()->getNumElements();
-        if (!merger.merge(lhs.getVertexArray(),rhs.getVertexArray()))
+        if (!merger.merge(lhs.getVertexArray(), rhs.getVertexArray()))
         {
-            OSG_DEBUG << "MergeGeometry: vertex array not merged. Some data may be lost." <<std::endl;
+            OSG_DEBUG << "MergeGeometry: vertex array not merged. Some data may be lost." << std::endl;
         }
     }
     else if (rhs.getVertexArray())
@@ -2451,11 +2739,11 @@ bool Optimizer::MergeGeometryVisitor::mergeGeometry(osg::Geometry& lhs,osg::Geom
     }
 
 
-    if (lhs.getNormalArray() && rhs.getNormalArray() && lhs.getNormalArray()->getBinding()!=osg::Array::BIND_OVERALL)
+    if (lhs.getNormalArray() && rhs.getNormalArray() && lhs.getNormalArray()->getBinding() != osg::Array::BIND_OVERALL)
     {
-        if (!merger.merge(lhs.getNormalArray(),rhs.getNormalArray()))
+        if (!merger.merge(lhs.getNormalArray(), rhs.getNormalArray()))
         {
-            OSG_DEBUG << "MergeGeometry: normal array not merged. Some data may be lost." <<std::endl;
+            OSG_DEBUG << "MergeGeometry: normal array not merged. Some data may be lost." << std::endl;
         }
     }
     else if (rhs.getNormalArray())
@@ -2464,11 +2752,11 @@ bool Optimizer::MergeGeometryVisitor::mergeGeometry(osg::Geometry& lhs,osg::Geom
     }
 
 
-    if (lhs.getColorArray() && rhs.getColorArray() && lhs.getColorArray()->getBinding()!=osg::Array::BIND_OVERALL)
+    if (lhs.getColorArray() && rhs.getColorArray() && lhs.getColorArray()->getBinding() != osg::Array::BIND_OVERALL)
     {
-        if (!merger.merge(lhs.getColorArray(),rhs.getColorArray()))
+        if (!merger.merge(lhs.getColorArray(), rhs.getColorArray()))
         {
-            OSG_DEBUG << "MergeGeometry: color array not merged. Some data may be lost." <<std::endl;
+            OSG_DEBUG << "MergeGeometry: color array not merged. Some data may be lost." << std::endl;
         }
     }
     else if (rhs.getColorArray())
@@ -2476,11 +2764,11 @@ bool Optimizer::MergeGeometryVisitor::mergeGeometry(osg::Geometry& lhs,osg::Geom
         lhs.setColorArray(rhs.getColorArray());
     }
 
-    if (lhs.getSecondaryColorArray() && rhs.getSecondaryColorArray() && lhs.getSecondaryColorArray()->getBinding()!=osg::Array::BIND_OVERALL)
+    if (lhs.getSecondaryColorArray() && rhs.getSecondaryColorArray() && lhs.getSecondaryColorArray()->getBinding() != osg::Array::BIND_OVERALL)
     {
-        if (!merger.merge(lhs.getSecondaryColorArray(),rhs.getSecondaryColorArray()))
+        if (!merger.merge(lhs.getSecondaryColorArray(), rhs.getSecondaryColorArray()))
         {
-            OSG_DEBUG << "MergeGeometry: secondary color array not merged. Some data may be lost." <<std::endl;
+            OSG_DEBUG << "MergeGeometry: secondary color array not merged. Some data may be lost." << std::endl;
         }
     }
     else if (rhs.getSecondaryColorArray())
@@ -2488,11 +2776,11 @@ bool Optimizer::MergeGeometryVisitor::mergeGeometry(osg::Geometry& lhs,osg::Geom
         lhs.setSecondaryColorArray(rhs.getSecondaryColorArray());
     }
 
-    if (lhs.getFogCoordArray() && rhs.getFogCoordArray() && lhs.getFogCoordArray()->getBinding()!=osg::Array::BIND_OVERALL)
+    if (lhs.getFogCoordArray() && rhs.getFogCoordArray() && lhs.getFogCoordArray()->getBinding() != osg::Array::BIND_OVERALL)
     {
-        if (!merger.merge(lhs.getFogCoordArray(),rhs.getFogCoordArray()))
+        if (!merger.merge(lhs.getFogCoordArray(), rhs.getFogCoordArray()))
         {
-            OSG_DEBUG << "MergeGeometry: fog coord array not merged. Some data may be lost." <<std::endl;
+            OSG_DEBUG << "MergeGeometry: fog coord array not merged. Some data may be lost." << std::endl;
         }
     }
     else if (rhs.getFogCoordArray())
@@ -2502,98 +2790,105 @@ bool Optimizer::MergeGeometryVisitor::mergeGeometry(osg::Geometry& lhs,osg::Geom
 
 
     unsigned int unit;
-    for(unit=0;unit<lhs.getNumTexCoordArrays();++unit)
+
+    for (unit = 0; unit < lhs.getNumTexCoordArrays(); ++unit)
     {
-        if (!merger.merge(lhs.getTexCoordArray(unit),rhs.getTexCoordArray(unit)))
+        if (!merger.merge(lhs.getTexCoordArray(unit), rhs.getTexCoordArray(unit)))
         {
-            OSG_DEBUG << "MergeGeometry: tex coord array not merged. Some data may be lost." <<std::endl;
+            OSG_DEBUG << "MergeGeometry: tex coord array not merged. Some data may be lost." << std::endl;
         }
     }
 
-    for(unit=0;unit<lhs.getNumVertexAttribArrays();++unit)
+    for (unit = 0; unit < lhs.getNumVertexAttribArrays(); ++unit)
     {
-        if (!merger.merge(lhs.getVertexAttribArray(unit),rhs.getVertexAttribArray(unit)))
+        if (!merger.merge(lhs.getVertexAttribArray(unit), rhs.getVertexAttribArray(unit)))
         {
-            OSG_DEBUG << "MergeGeometry: vertex attrib array not merged. Some data may be lost." <<std::endl;
+            OSG_DEBUG << "MergeGeometry: vertex attrib array not merged. Some data may be lost." << std::endl;
         }
     }
 
 
     // shift the indices of the incoming primitives to account for the pre existing geometry.
     osg::Geometry::PrimitiveSetList::iterator primItr;
-    for(primItr=rhs.getPrimitiveSetList().begin(); primItr!=rhs.getPrimitiveSetList().end(); ++primItr)
+
+    for (primItr = rhs.getPrimitiveSetList().begin(); primItr != rhs.getPrimitiveSetList().end(); ++primItr)
     {
-        osg::PrimitiveSet* primitive = primItr->get();
+        osg::PrimitiveSet *primitive = primItr->get();
 
-        switch(primitive->getType())
+        switch (primitive->getType())
         {
-        case(osg::PrimitiveSet::DrawElementsUBytePrimitiveType):
-            {
-                osg::DrawElementsUByte* primitiveUByte = static_cast<osg::DrawElementsUByte*>(primitive);
-                unsigned int currentMaximum = 0;
-                for(osg::DrawElementsUByte::iterator eitr=primitiveUByte->begin();
-                    eitr!=primitiveUByte->end();
-                    ++eitr)
-                {
-                    currentMaximum = osg::maximum(currentMaximum,(unsigned int)*eitr);
-                }
-                if ((base+currentMaximum)>=65536)
-                {
-                    // must promote to a DrawElementsUInt
-                    osg::DrawElementsUInt* new_primitive = new osg::DrawElementsUInt(primitive->getMode());
-                    std::copy(primitiveUByte->begin(),primitiveUByte->end(),std::back_inserter(*new_primitive));
-                    new_primitive->offsetIndices(base);
-                    (*primItr) = new_primitive;
-                } else if ((base+currentMaximum)>=256)
-                {
-                    // must promote to a DrawElementsUShort
-                    osg::DrawElementsUShort* new_primitive = new osg::DrawElementsUShort(primitive->getMode());
-                    std::copy(primitiveUByte->begin(),primitiveUByte->end(),std::back_inserter(*new_primitive));
-                    new_primitive->offsetIndices(base);
-                    (*primItr) = new_primitive;
-                }
-                else
-                {
-                    primitive->offsetIndices(base);
-                }
-            }
-            break;
+        case (osg::PrimitiveSet::DrawElementsUBytePrimitiveType):
+        {
+            osg::DrawElementsUByte *primitiveUByte = static_cast<osg::DrawElementsUByte*>(primitive);
+            unsigned int           currentMaximum  = 0;
 
-        case(osg::PrimitiveSet::DrawElementsUShortPrimitiveType):
+            for (osg::DrawElementsUByte::iterator eitr = primitiveUByte->begin();
+                 eitr != primitiveUByte->end();
+                 ++eitr)
             {
-                osg::DrawElementsUShort* primitiveUShort = static_cast<osg::DrawElementsUShort*>(primitive);
-                unsigned int currentMaximum = 0;
-                for(osg::DrawElementsUShort::iterator eitr=primitiveUShort->begin();
-                    eitr!=primitiveUShort->end();
-                    ++eitr)
-                {
-                    currentMaximum = osg::maximum(currentMaximum,(unsigned int)*eitr);
-                }
-                if ((base+currentMaximum)>=65536)
-                {
-                    // must promote to a DrawElementsUInt
-                    osg::DrawElementsUInt* new_primitive = new osg::DrawElementsUInt(primitive->getMode());
-                    std::copy(primitiveUShort->begin(),primitiveUShort->end(),std::back_inserter(*new_primitive));
-                    new_primitive->offsetIndices(base);
-                    (*primItr) = new_primitive;
-                }
-                else
-                {
-                    primitive->offsetIndices(base);
-                }
+                currentMaximum = osg::maximum(currentMaximum, (unsigned int)*eitr);
             }
-            break;
 
-        case(osg::PrimitiveSet::DrawArraysPrimitiveType):
-        case(osg::PrimitiveSet::DrawArrayLengthsPrimitiveType):
-        case(osg::PrimitiveSet::DrawElementsUIntPrimitiveType):
+            if ((base + currentMaximum) >= 65536)
+            {
+                // must promote to a DrawElementsUInt
+                osg::DrawElementsUInt *new_primitive = new osg::DrawElementsUInt(primitive->getMode());
+                std::copy(primitiveUByte->begin(), primitiveUByte->end(), std::back_inserter(*new_primitive));
+                new_primitive->offsetIndices(base);
+                (*primItr) = new_primitive;
+            }
+            else if ((base + currentMaximum) >= 256)
+            {
+                // must promote to a DrawElementsUShort
+                osg::DrawElementsUShort *new_primitive = new osg::DrawElementsUShort(primitive->getMode());
+                std::copy(primitiveUByte->begin(), primitiveUByte->end(), std::back_inserter(*new_primitive));
+                new_primitive->offsetIndices(base);
+                (*primItr) = new_primitive;
+            }
+            else
+            {
+                primitive->offsetIndices(base);
+            }
+        }
+        break;
+
+        case (osg::PrimitiveSet::DrawElementsUShortPrimitiveType):
+        {
+            osg::DrawElementsUShort *primitiveUShort = static_cast<osg::DrawElementsUShort*>(primitive);
+            unsigned int            currentMaximum   = 0;
+
+            for (osg::DrawElementsUShort::iterator eitr = primitiveUShort->begin();
+                 eitr != primitiveUShort->end();
+                 ++eitr)
+            {
+                currentMaximum = osg::maximum(currentMaximum, (unsigned int)*eitr);
+            }
+
+            if ((base + currentMaximum) >= 65536)
+            {
+                // must promote to a DrawElementsUInt
+                osg::DrawElementsUInt *new_primitive = new osg::DrawElementsUInt(primitive->getMode());
+                std::copy(primitiveUShort->begin(), primitiveUShort->end(), std::back_inserter(*new_primitive));
+                new_primitive->offsetIndices(base);
+                (*primItr) = new_primitive;
+            }
+            else
+            {
+                primitive->offsetIndices(base);
+            }
+        }
+        break;
+
+        case (osg::PrimitiveSet::DrawArraysPrimitiveType):
+        case (osg::PrimitiveSet::DrawArrayLengthsPrimitiveType):
+        case (osg::PrimitiveSet::DrawElementsUIntPrimitiveType):
         default:
             primitive->offsetIndices(base);
             break;
         }
     }
 
-    for(primItr=rhs.getPrimitiveSetList().begin(); primItr!=rhs.getPrimitiveSetList().end(); ++primItr)
+    for (primItr = rhs.getPrimitiveSetList().begin(); primItr != rhs.getPrimitiveSetList().end(); ++primItr)
     {
         lhs.addPrimitiveSet(primItr->get());
     }
@@ -2604,43 +2899,45 @@ bool Optimizer::MergeGeometryVisitor::mergeGeometry(osg::Geometry& lhs,osg::Geom
     return true;
 }
 
-bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawArrays& lhs,osg::DrawArrays& rhs)
+bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawArrays&lhs, osg::DrawArrays&rhs)
 {
-    if (lhs.getFirst()+lhs.getCount()==rhs.getFirst())
+    if (lhs.getFirst() + lhs.getCount() == rhs.getFirst())
     {
-        lhs.setCount(lhs.getCount()+rhs.getCount());
+        lhs.setCount(lhs.getCount() + rhs.getCount());
         return true;
     }
+
     return false;
 }
 
-bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawArrayLengths& lhs,osg::DrawArrayLengths& rhs)
+bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawArrayLengths&lhs, osg::DrawArrayLengths&rhs)
 {
-    int lhs_count = std::accumulate(lhs.begin(),lhs.end(),0);
+    int lhs_count = std::accumulate(lhs.begin(), lhs.end(), 0);
 
-    if (lhs.getFirst()+lhs_count==rhs.getFirst())
+    if (lhs.getFirst() + lhs_count == rhs.getFirst())
     {
-        lhs.insert(lhs.end(),rhs.begin(),rhs.end());
+        lhs.insert(lhs.end(), rhs.begin(), rhs.end());
         return true;
     }
+
     return false;
 }
 
-bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawElementsUByte& lhs,osg::DrawElementsUByte& rhs)
+bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawElementsUByte&lhs, osg::DrawElementsUByte&rhs)
 {
-    lhs.insert(lhs.end(),rhs.begin(),rhs.end());
+    lhs.insert(lhs.end(), rhs.begin(), rhs.end());
     return true;
 }
 
-bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawElementsUShort& lhs,osg::DrawElementsUShort& rhs)
+bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawElementsUShort&lhs, osg::DrawElementsUShort&rhs)
 {
-    lhs.insert(lhs.end(),rhs.begin(),rhs.end());
+    lhs.insert(lhs.end(), rhs.begin(), rhs.end());
     return true;
 }
 
-bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawElementsUInt& lhs,osg::DrawElementsUInt& rhs)
+bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawElementsUInt&lhs, osg::DrawElementsUInt&rhs)
 {
-    lhs.insert(lhs.end(),rhs.begin(),rhs.end());
+    lhs.insert(lhs.end(), rhs.begin(), rhs.end());
     return true;
 }
 
@@ -2650,129 +2947,139 @@ bool Optimizer::MergeGeometryVisitor::mergePrimitive(osg::DrawElementsUInt& lhs,
 //  Spatialize the scene to accelerate culling
 //
 
-void Optimizer::SpatializeGroupsVisitor::apply(osg::Group& group)
+void Optimizer::SpatializeGroupsVisitor::apply(osg::Group&group)
 {
-    if (typeid(group)==typeid(osg::Group) || group.asTransform())
+    if (typeid(group) == typeid(osg::Group) || group.asTransform())
     {
         if (isOperationPermissibleForObject(&group))
         {
             _groupsToDivideList.insert(&group);
         }
     }
+
     traverse(group);
 }
 
-void Optimizer::SpatializeGroupsVisitor::apply(osg::Geode& geode)
+void Optimizer::SpatializeGroupsVisitor::apply(osg::Geode&geode)
 {
-    if (typeid(geode)==typeid(osg::Geode))
+    if (typeid(geode) == typeid(osg::Geode))
     {
         if (isOperationPermissibleForObject(&geode))
         {
             _geodesToDivideList.insert(&geode);
         }
     }
+
     traverse(geode);
 }
 
 bool Optimizer::SpatializeGroupsVisitor::divide(unsigned int maxNumTreesPerCell)
 {
     bool divided = false;
-    for(GroupsToDivideList::iterator itr=_groupsToDivideList.begin();
-        itr!=_groupsToDivideList.end();
-        ++itr)
+
+    for (GroupsToDivideList::iterator itr = _groupsToDivideList.begin();
+         itr != _groupsToDivideList.end();
+         ++itr)
     {
-        if (divide(*itr,maxNumTreesPerCell)) divided = true;
+        if (divide(*itr, maxNumTreesPerCell))
+            divided = true;
     }
 
-    for(GeodesToDivideList::iterator geode_itr=_geodesToDivideList.begin();
-        geode_itr!=_geodesToDivideList.end();
-        ++geode_itr)
+    for (GeodesToDivideList::iterator geode_itr = _geodesToDivideList.begin();
+         geode_itr != _geodesToDivideList.end();
+         ++geode_itr)
     {
-        if (divide(*geode_itr,maxNumTreesPerCell)) divided = true;
+        if (divide(*geode_itr, maxNumTreesPerCell))
+            divided = true;
     }
 
     return divided;
 }
 
-bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group* group, unsigned int maxNumTreesPerCell)
+bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group *group, unsigned int maxNumTreesPerCell)
 {
-    if (group->getNumChildren()<=maxNumTreesPerCell) return false;
+    if (group->getNumChildren() <= maxNumTreesPerCell)
+        return false;
 
     // create the original box.
     osg::BoundingBox bb;
-    unsigned int i;
-    for(i=0;i<group->getNumChildren();++i)
+    unsigned int     i;
+
+    for (i = 0; i < group->getNumChildren(); ++i)
     {
         bb.expandBy(group->getChild(i)->getBound().center());
     }
 
-    float radius = bb.radius();
-    float divide_distance = radius*0.7f;
-    bool xAxis = (bb.xMax()-bb.xMin())>divide_distance;
-    bool yAxis = (bb.yMax()-bb.yMin())>divide_distance;
-    bool zAxis = (bb.zMax()-bb.zMin())>divide_distance;
+    float radius          = bb.radius();
+    float divide_distance = radius * 0.7f;
+    bool  xAxis           = (bb.xMax() - bb.xMin()) > divide_distance;
+    bool  yAxis           = (bb.yMax() - bb.yMin()) > divide_distance;
+    bool  zAxis           = (bb.zMax() - bb.zMin()) > divide_distance;
 
-    OSG_INFO<<"Dividing "<<group->className()<<"  num children = "<<group->getNumChildren()<<"  xAxis="<<xAxis<<"  yAxis="<<yAxis<<"   zAxis="<<zAxis<<std::endl;
+    OSG_INFO << "Dividing " << group->className() << "  num children = " << group->getNumChildren() << "  xAxis=" << xAxis << "  yAxis=" << yAxis << "   zAxis=" << zAxis << std::endl;
 
     if (!xAxis && !yAxis && !zAxis)
     {
-        OSG_INFO<<"  No axis to divide, stopping division."<<std::endl;
+        OSG_INFO << "  No axis to divide, stopping division." << std::endl;
         return false;
     }
 
     unsigned int numChildrenOnEntry = group->getNumChildren();
 
-    typedef std::pair< osg::BoundingBox, osg::ref_ptr<osg::Group> > BoxGroupPair;
-    typedef std::vector< BoxGroupPair > Boxes;
+    typedef std::pair<osg::BoundingBox, osg::ref_ptr<osg::Group> > BoxGroupPair;
+    typedef std::vector<BoxGroupPair> Boxes;
     Boxes boxes;
-    boxes.push_back( BoxGroupPair(bb,new osg::Group) );
+    boxes.push_back(BoxGroupPair(bb, new osg::Group));
 
     // divide up on each axis
     if (xAxis)
     {
-        unsigned int numCellsToDivide=boxes.size();
-        for(unsigned int i=0;i<numCellsToDivide;++i)
+        unsigned int numCellsToDivide = boxes.size();
+
+        for (unsigned int i = 0; i < numCellsToDivide; ++i)
         {
-            osg::BoundingBox& orig_cell = boxes[i].first;
-            osg::BoundingBox new_cell = orig_cell;
+            osg::BoundingBox &orig_cell = boxes[i].first;
+            osg::BoundingBox new_cell   = orig_cell;
 
-            float xCenter = (orig_cell.xMin()+orig_cell.xMax())*0.5f;
+            float xCenter = (orig_cell.xMin() + orig_cell.xMax()) * 0.5f;
             orig_cell.xMax() = xCenter;
-            new_cell.xMin() = xCenter;
+            new_cell.xMin()  = xCenter;
 
-            boxes.push_back(BoxGroupPair(new_cell,new osg::Group));
+            boxes.push_back(BoxGroupPair(new_cell, new osg::Group));
         }
     }
 
     if (yAxis)
     {
-        unsigned int numCellsToDivide=boxes.size();
-        for(unsigned int i=0;i<numCellsToDivide;++i)
+        unsigned int numCellsToDivide = boxes.size();
+
+        for (unsigned int i = 0; i < numCellsToDivide; ++i)
         {
-            osg::BoundingBox& orig_cell = boxes[i].first;
-            osg::BoundingBox new_cell = orig_cell;
+            osg::BoundingBox &orig_cell = boxes[i].first;
+            osg::BoundingBox new_cell   = orig_cell;
 
-            float yCenter = (orig_cell.yMin()+orig_cell.yMax())*0.5f;
+            float yCenter = (orig_cell.yMin() + orig_cell.yMax()) * 0.5f;
             orig_cell.yMax() = yCenter;
-            new_cell.yMin() = yCenter;
+            new_cell.yMin()  = yCenter;
 
-            boxes.push_back(BoxGroupPair(new_cell,new osg::Group));
+            boxes.push_back(BoxGroupPair(new_cell, new osg::Group));
         }
     }
 
     if (zAxis)
     {
-        unsigned int numCellsToDivide=boxes.size();
-        for(unsigned int i=0;i<numCellsToDivide;++i)
+        unsigned int numCellsToDivide = boxes.size();
+
+        for (unsigned int i = 0; i < numCellsToDivide; ++i)
         {
-            osg::BoundingBox& orig_cell = boxes[i].first;
-            osg::BoundingBox new_cell = orig_cell;
+            osg::BoundingBox &orig_cell = boxes[i].first;
+            osg::BoundingBox new_cell   = orig_cell;
 
-            float zCenter = (orig_cell.zMin()+orig_cell.zMax())*0.5f;
+            float zCenter = (orig_cell.zMin() + orig_cell.zMax()) * 0.5f;
             orig_cell.zMax() = zCenter;
-            new_cell.zMin() = zCenter;
+            new_cell.zMin()  = zCenter;
 
-            boxes.push_back(BoxGroupPair(new_cell,new osg::Group));
+            boxes.push_back(BoxGroupPair(new_cell, new osg::Group));
         }
     }
 
@@ -2781,15 +3088,17 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group* group, unsigned int 
 
 
     // bin each child into associated bb group
-    typedef std::vector< osg::ref_ptr<osg::Node> > NodeList;
+    typedef std::vector<osg::ref_ptr<osg::Node> > NodeList;
     NodeList unassignedList;
-    for(i=0;i<group->getNumChildren();++i)
+
+    for (i = 0; i < group->getNumChildren(); ++i)
     {
-        bool assigned = false;
-        osg::Vec3 center = group->getChild(i)->getBound().center();
-        for(Boxes::iterator itr=boxes.begin();
-            itr!=boxes.end() && !assigned;
-            ++itr)
+        bool      assigned = false;
+        osg::Vec3 center   = group->getChild(i)->getBound().center();
+
+        for (Boxes::iterator itr = boxes.begin();
+             itr != boxes.end() && !assigned;
+             ++itr)
         {
             if (itr->first.contains(center))
             {
@@ -2798,6 +3107,7 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group* group, unsigned int 
                 assigned = true;
             }
         }
+
         if (!assigned)
         {
             unassignedList.push_back(group->getChild(i));
@@ -2812,27 +3122,28 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group* group, unsigned int 
 
 
     // first removing from the original group,
-    group->removeChildren(0,group->getNumChildren());
+    group->removeChildren(0, group->getNumChildren());
 
     // add in the bb groups
-    typedef std::vector< osg::ref_ptr<osg::Group> > GroupList;
+    typedef std::vector<osg::ref_ptr<osg::Group> > GroupList;
     GroupList groupsToDivideList;
-    for(Boxes::iterator itr=boxes.begin();
-        itr!=boxes.end();
-        ++itr)
+
+    for (Boxes::iterator itr = boxes.begin();
+         itr != boxes.end();
+         ++itr)
     {
         // move child from main group into bb group.
-        osg::Group* bb_group = (itr->second).get();
-        if (bb_group->getNumChildren()>0)
+        osg::Group *bb_group = (itr->second).get();
+        if (bb_group->getNumChildren() > 0)
         {
-            if (bb_group->getNumChildren()==1)
+            if (bb_group->getNumChildren() == 1)
             {
                 group->addChild(bb_group->getChild(0));
             }
             else
             {
                 group->addChild(bb_group);
-                if (bb_group->getNumChildren()>maxNumTreesPerCell)
+                if (bb_group->getNumChildren() > maxNumTreesPerCell)
                 {
                     groupsToDivideList.push_back(bb_group);
                 }
@@ -2842,65 +3153,66 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group* group, unsigned int 
 
 
     // add then the unassigned children.
-    for(NodeList::iterator nitr=unassignedList.begin();
-        nitr!=unassignedList.end();
-        ++nitr)
+    for (NodeList::iterator nitr = unassignedList.begin();
+         nitr != unassignedList.end();
+         ++nitr)
     {
         group->addChild(nitr->get());
     }
 
     // now call divide on all groups that require it.
-    for(GroupList::iterator gitr=groupsToDivideList.begin();
-        gitr!=groupsToDivideList.end();
-        ++gitr)
+    for (GroupList::iterator gitr = groupsToDivideList.begin();
+         gitr != groupsToDivideList.end();
+         ++gitr)
     {
-        divide(gitr->get(),maxNumTreesPerCell);
+        divide(gitr->get(), maxNumTreesPerCell);
     }
 
-    return (numChildrenOnEntry<group->getNumChildren());
-
+    return (numChildrenOnEntry < group->getNumChildren());
 }
 
-bool Optimizer::SpatializeGroupsVisitor::divide(osg::Geode* geode, unsigned int maxNumTreesPerCell)
+bool Optimizer::SpatializeGroupsVisitor::divide(osg::Geode *geode, unsigned int maxNumTreesPerCell)
 {
-
-    if (geode->getNumDrawables()<=maxNumTreesPerCell) return false;
+    if (geode->getNumDrawables() <= maxNumTreesPerCell)
+        return false;
 
     // create the original box.
     osg::BoundingBox bb;
-    unsigned int i;
-    for(i=0; i<geode->getNumDrawables(); ++i)
+    unsigned int     i;
+
+    for (i = 0; i < geode->getNumDrawables(); ++i)
     {
         bb.expandBy(geode->getDrawable(i)->getBoundingBox().center());
     }
 
-    float radius = bb.radius();
-    float divide_distance = radius*0.7f;
-    bool xAxis = (bb.xMax()-bb.xMin())>divide_distance;
-    bool yAxis = (bb.yMax()-bb.yMin())>divide_distance;
-    bool zAxis = (bb.zMax()-bb.zMin())>divide_distance;
+    float radius          = bb.radius();
+    float divide_distance = radius * 0.7f;
+    bool  xAxis           = (bb.xMax() - bb.xMin()) > divide_distance;
+    bool  yAxis           = (bb.yMax() - bb.yMin()) > divide_distance;
+    bool  zAxis           = (bb.zMax() - bb.zMin()) > divide_distance;
 
-    OSG_INFO<<"INFO "<<geode->className()<<"  num drawables = "<<geode->getNumDrawables()<<"  xAxis="<<xAxis<<"  yAxis="<<yAxis<<"   zAxis="<<zAxis<<std::endl;
+    OSG_INFO << "INFO " << geode->className() << "  num drawables = " << geode->getNumDrawables() << "  xAxis=" << xAxis << "  yAxis=" << yAxis << "   zAxis=" << zAxis << std::endl;
 
     if (!xAxis && !yAxis && !zAxis)
     {
-        OSG_INFO<<"  No axis to divide, stopping division."<<std::endl;
+        OSG_INFO << "  No axis to divide, stopping division." << std::endl;
         return false;
     }
 
     osg::Node::ParentList parents = geode->getParents();
     if (parents.empty())
     {
-        OSG_INFO<<"  Cannot perform spatialize on root Geode, add a Group above it to allow subdivision."<<std::endl;
+        OSG_INFO << "  Cannot perform spatialize on root Geode, add a Group above it to allow subdivision." << std::endl;
         return false;
     }
 
     osg::ref_ptr<osg::Group> group = new osg::Group;
     group->setName(geode->getName());
     group->setStateSet(geode->getStateSet());
-    for(i=0; i<geode->getNumDrawables(); ++i)
+
+    for (i = 0; i < geode->getNumDrawables(); ++i)
     {
-        osg::Geode* newGeode = new osg::Geode;
+        osg::Geode *newGeode = new osg::Geode;
         newGeode->addDrawable(geode->getDrawable(i));
         group->addChild(newGeode);
     }
@@ -2910,9 +3222,9 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Geode* geode, unsigned int 
     // keep reference around to prevent it being deleted.
     osg::ref_ptr<osg::Geode> keepRefGeode = geode;
 
-    for(osg::Node::ParentList::iterator itr = parents.begin();
-        itr != parents.end();
-        ++itr)
+    for (osg::Node::ParentList::iterator itr = parents.begin();
+         itr != parents.end();
+         ++itr)
     {
         (*itr)->replaceChild(geode, group.get());
     }
@@ -2925,34 +3237,38 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Geode* geode, unsigned int 
 //  Duplicated subgraphs which are shared
 //
 
-void Optimizer::CopySharedSubgraphsVisitor::apply(osg::Node& node)
+void Optimizer::CopySharedSubgraphsVisitor::apply(osg::Node&node)
 {
-    if (node.getNumParents()>1 && isOperationPermissibleForObject(&node))
+    if (node.getNumParents() > 1 && isOperationPermissibleForObject(&node))
     {
         _sharedNodeList.insert(&node);
     }
+
     traverse(node);
 }
 
 void Optimizer::CopySharedSubgraphsVisitor::copySharedNodes()
 {
-    OSG_INFO<<"Shared node "<<_sharedNodeList.size()<<std::endl;
-    for(SharedNodeList::iterator itr=_sharedNodeList.begin();
-        itr!=_sharedNodeList.end();
-        ++itr)
+    OSG_INFO << "Shared node " << _sharedNodeList.size() << std::endl;
+
+    for (SharedNodeList::iterator itr = _sharedNodeList.begin();
+         itr != _sharedNodeList.end();
+         ++itr)
     {
-        OSG_INFO<<"   No parents "<<(*itr)->getNumParents()<<std::endl;
-        osg::Node* node = *itr;
-        for(unsigned int i=node->getNumParents()-1;i>0;--i)
+        OSG_INFO << "   No parents " << (*itr)->getNumParents() << std::endl;
+        osg::Node *node = *itr;
+
+        for (unsigned int i = node->getNumParents() - 1; i > 0; --i)
         {
             // create a clone.
             osg::ref_ptr<osg::Object> new_object = node->clone(osg::CopyOp::DEEP_COPY_NODES |
-                                                          osg::CopyOp::DEEP_COPY_DRAWABLES);
+                                                               osg::CopyOp::DEEP_COPY_DRAWABLES);
             // cast it to node.
-            osg::Node* new_node = dynamic_cast<osg::Node*>(new_object.get());
+            osg::Node *new_node = dynamic_cast<osg::Node*>(new_object.get());
 
             // replace the node by new_new
-            if (new_node) node->getParent(i)->replaceChild(node,new_node);
+            if (new_node)
+                node->getParent(i)->replaceChild(node, new_node);
         }
     }
 }
@@ -2964,10 +3280,10 @@ void Optimizer::CopySharedSubgraphsVisitor::copySharedNodes()
 //
 
 
-void Optimizer::TextureVisitor::apply(osg::Node& node)
+void Optimizer::TextureVisitor::apply(osg::Node&node)
 {
+    osg::StateSet *ss = node.getStateSet();
 
-    osg::StateSet* ss = node.getStateSet();
     if (ss &&
         isOperationPermissibleForObject(&node) &&
         isOperationPermissibleForObject(ss))
@@ -2978,26 +3294,27 @@ void Optimizer::TextureVisitor::apply(osg::Node& node)
     traverse(node);
 }
 
-void Optimizer::TextureVisitor::apply(osg::Geode& geode)
+void Optimizer::TextureVisitor::apply(osg::Geode&geode)
 {
-    if (!isOperationPermissibleForObject(&geode)) return;
+    if (!isOperationPermissibleForObject(&geode))
+        return;
 
-    osg::StateSet* ss = geode.getStateSet();
+    osg::StateSet *ss = geode.getStateSet();
 
     if (ss && isOperationPermissibleForObject(ss))
     {
         apply(*ss);
     }
 
-    for(unsigned int i=0;i<geode.getNumDrawables();++i)
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
-        osg::Drawable* drawable = geode.getDrawable(i);
+        osg::Drawable *drawable = geode.getDrawable(i);
         if (drawable)
         {
             ss = drawable->getStateSet();
             if (ss &&
-               isOperationPermissibleForObject(drawable) &&
-               isOperationPermissibleForObject(ss))
+                isOperationPermissibleForObject(drawable) &&
+                isOperationPermissibleForObject(ss))
             {
                 apply(*ss);
             }
@@ -3005,12 +3322,12 @@ void Optimizer::TextureVisitor::apply(osg::Geode& geode)
     }
 }
 
-void Optimizer::TextureVisitor::apply(osg::StateSet& stateset)
+void Optimizer::TextureVisitor::apply(osg::StateSet&stateset)
 {
-    for(unsigned int i=0;i<stateset.getTextureAttributeList().size();++i)
+    for (unsigned int i = 0; i < stateset.getTextureAttributeList().size(); ++i)
     {
-        osg::StateAttribute* sa = stateset.getTextureAttribute(i,osg::StateAttribute::TEXTURE);
-        osg::Texture* texture = dynamic_cast<osg::Texture*>(sa);
+        osg::StateAttribute *sa      = stateset.getTextureAttribute(i, osg::StateAttribute::TEXTURE);
+        osg::Texture        *texture = dynamic_cast<osg::Texture*>(sa);
         if (texture && isOperationPermissibleForObject(texture))
         {
             apply(*texture);
@@ -3018,18 +3335,20 @@ void Optimizer::TextureVisitor::apply(osg::StateSet& stateset)
     }
 }
 
-void Optimizer::TextureVisitor::apply(osg::Texture& texture)
+void Optimizer::TextureVisitor::apply(osg::Texture&texture)
 {
     if (_changeAutoUnRef)
     {
         unsigned numImageStreams = 0;
-        for (unsigned int i=0; i<texture.getNumImages(); ++i)
+
+        for (unsigned int i = 0; i < texture.getNumImages(); ++i)
         {
-            osg::ImageStream* is = dynamic_cast<osg::ImageStream*>(texture.getImage(i));
-            if (is) ++numImageStreams;
+            osg::ImageStream *is = dynamic_cast<osg::ImageStream*>(texture.getImage(i));
+            if (is)
+                ++numImageStreams;
         }
 
-        if (numImageStreams==0)
+        if (numImageStreams == 0)
         {
             texture.setUnRefImageDataAfterApply(_valueAutoUnRef);
         }
@@ -3044,41 +3363,47 @@ void Optimizer::TextureVisitor::apply(osg::Texture& texture)
     {
         texture.setMaxAnisotropy(_valueAnisotropy);
     }
-
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // Merge geodes
 ////////////////////////////////////////////////////////////////////////////
 
-void Optimizer::MergeGeodesVisitor::apply(osg::Group& group)
+void Optimizer::MergeGeodesVisitor::apply(osg::Group&group)
 {
-    if (typeid(group)==typeid(osg::Group)) mergeGeodes(group);
+    if (typeid(group) == typeid(osg::Group))
+        mergeGeodes(group);
+
     traverse(group);
 }
 
 struct LessGeode
 {
-    bool operator() (const osg::Geode* lhs,const osg::Geode* rhs) const
+    bool operator()(const osg::Geode *lhs, const osg::Geode *rhs) const
     {
-        if (lhs->getNodeMask()<rhs->getNodeMask()) return true;
-        if (lhs->getNodeMask()>rhs->getNodeMask()) return false;
+        if (lhs->getNodeMask() < rhs->getNodeMask())
+            return true;
 
-        return (lhs->getStateSet()<rhs->getStateSet());
+        if (lhs->getNodeMask() > rhs->getNodeMask())
+            return false;
+
+        return (lhs->getStateSet() < rhs->getStateSet());
     }
 };
 
-bool Optimizer::MergeGeodesVisitor::mergeGeodes(osg::Group& group)
+bool Optimizer::MergeGeodesVisitor::mergeGeodes(osg::Group&group)
 {
-    if (!isOperationPermissibleForObject(&group)) return false;
+    if (!isOperationPermissibleForObject(&group))
+        return false;
 
-    typedef std::vector< osg::Geode* >                      DuplicateList;
-    typedef std::map<osg::Geode*,DuplicateList,LessGeode>   GeodeDuplicateMap;
+    typedef std::vector<osg::Geode*>                      DuplicateList;
+    typedef std::map<osg::Geode*, DuplicateList, LessGeode>   GeodeDuplicateMap;
 
-    unsigned int i;
+    unsigned int  i;
     osg::NodeList children;
     children.resize(group.getNumChildren());
-    for (i=0; i<group.getNumChildren(); ++i)
+
+    for (i = 0; i < group.getNumChildren(); ++i)
     {
         // keep a reference to this child so we can safely clear the group of all children
         // this is done so we don't have to do a search and remove from the list later on.
@@ -3086,16 +3411,17 @@ bool Optimizer::MergeGeodesVisitor::mergeGeodes(osg::Group& group)
     }
 
     // remove all children
-    group.removeChildren(0,group.getNumChildren());
+    group.removeChildren(0, group.getNumChildren());
 
     GeodeDuplicateMap geodeDuplicateMap;
-    for (i=0; i<children.size(); ++i)
-    {
-        osg::Node* child = children[i].get();
 
-        if (typeid(*child)==typeid(osg::Geode))
+    for (i = 0; i < children.size(); ++i)
+    {
+        osg::Node *child = children[i].get();
+
+        if (typeid(*child) == typeid(osg::Geode))
         {
-            osg::Geode* geode = static_cast<osg::Geode*>(child);
+            osg::Geode *geode = static_cast<osg::Geode*>(child);
             geodeDuplicateMap[geode].push_back(geode);
         }
         else
@@ -3106,33 +3432,34 @@ bool Optimizer::MergeGeodesVisitor::mergeGeodes(osg::Group& group)
     }
 
     // if no geodes then just return.
-    if (geodeDuplicateMap.empty()) return false;
+    if (geodeDuplicateMap.empty())
+        return false;
 
-    OSG_INFO<<"mergeGeodes in group '"<<group.getName()<<"' "<<geodeDuplicateMap.size()<<std::endl;
+    OSG_INFO << "mergeGeodes in group '" << group.getName() << "' " << geodeDuplicateMap.size() << std::endl;
 
     // merge
-    for(GeodeDuplicateMap::iterator itr=geodeDuplicateMap.begin();
-        itr!=geodeDuplicateMap.end();
-        ++itr)
+    for (GeodeDuplicateMap::iterator itr = geodeDuplicateMap.begin();
+         itr != geodeDuplicateMap.end();
+         ++itr)
     {
-        if (itr->second.size()>1)
+        if (itr->second.size() > 1)
         {
-            osg::Geode* lhs = itr->second[0];
+            osg::Geode *lhs = itr->second[0];
 
             // add geode back into group
             group.addChild(lhs);
 
-            for(DuplicateList::iterator dupItr=itr->second.begin()+1;
-                dupItr!=itr->second.end();
-                ++dupItr)
+            for (DuplicateList::iterator dupItr = itr->second.begin() + 1;
+                 dupItr != itr->second.end();
+                 ++dupItr)
             {
-                osg::Geode* rhs = *dupItr;
-                mergeGeode(*lhs,*rhs);
+                osg::Geode *rhs = *dupItr;
+                mergeGeode(*lhs, *rhs);
             }
         }
         else
         {
-            osg::Geode* lhs = itr->second[0];
+            osg::Geode *lhs = itr->second[0];
 
             // add geode back into group
             group.addChild(lhs);
@@ -3142,9 +3469,9 @@ bool Optimizer::MergeGeodesVisitor::mergeGeodes(osg::Group& group)
     return true;
 }
 
-bool Optimizer::MergeGeodesVisitor::mergeGeode(osg::Geode& lhs, osg::Geode& rhs)
+bool Optimizer::MergeGeodesVisitor::mergeGeode(osg::Geode&lhs, osg::Geode&rhs)
 {
-    for (unsigned int i=0; i<rhs.getNumDrawables(); ++i)
+    for (unsigned int i = 0; i < rhs.getNumDrawables(); ++i)
     {
         lhs.addDrawable(rhs.getDrawable(i));
     }
@@ -3162,51 +3489,52 @@ void Optimizer::FlattenBillboardVisitor::reset()
     _billboards.clear();
 }
 
-void Optimizer::FlattenBillboardVisitor::apply(osg::Billboard& billboard)
+void Optimizer::FlattenBillboardVisitor::apply(osg::Billboard&billboard)
 {
     _billboards[&billboard].push_back(getNodePath());
 }
 
 void Optimizer::FlattenBillboardVisitor::process()
 {
-    for(BillboardNodePathMap::iterator itr = _billboards.begin();
-        itr != _billboards.end();
-        ++itr)
+    for (BillboardNodePathMap::iterator itr = _billboards.begin();
+         itr != _billboards.end();
+         ++itr)
     {
         bool mergeAcceptable = true;
 
         osg::ref_ptr<osg::Billboard> billboard = itr->first;
 
-        NodePathList& npl = itr->second;
-        osg::Group* mainGroup = 0;
-        if (npl.size()>1)
+        NodePathList&npl       = itr->second;
+        osg::Group  *mainGroup = 0;
+        if (npl.size() > 1)
         {
-            for(NodePathList::iterator nitr = npl.begin();
-                nitr != npl.end();
-                ++nitr)
+            for (NodePathList::iterator nitr = npl.begin();
+                 nitr != npl.end();
+                 ++nitr)
             {
-                osg::NodePath& np = *nitr;
-                if (np.size()>=3)
+                osg::NodePath&np = *nitr;
+                if (np.size() >= 3)
                 {
-                    osg::Group* group = dynamic_cast<osg::Group*>(np[np.size()-3]);
-                    if (mainGroup==0) mainGroup = group;
+                    osg::Group *group = dynamic_cast<osg::Group*>(np[np.size() - 3]);
+                    if (mainGroup == 0)
+                        mainGroup = group;
 
-                    osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(np[np.size()-2]);
+                    osg::MatrixTransform *mt = dynamic_cast<osg::MatrixTransform*>(np[np.size() - 2]);
 
                     if (group == mainGroup &&
-                        np[np.size()-1]==billboard.get() &&
-                        mt && mt->getDataVariance()==osg::Object::STATIC &&
-                        mt->getNumChildren()==1)
+                        np[np.size() - 1] == billboard.get() &&
+                        mt && mt->getDataVariance() == osg::Object::STATIC &&
+                        mt->getNumChildren() == 1)
                     {
-                        const osg::Matrix& m = mt->getMatrix();
-                        mergeAcceptable = (m(0,0)==1.0 && m(0,1)==0.0 && m(0,2)==0.0 && m(0,3)==0.0 &&
-                                           m(1,0)==0.0 && m(1,1)==1.0 && m(1,2)==0.0 && m(1,3)==0.0 &&
-                                           m(2,0)==0.0 && m(2,1)==0.0 && m(2,2)==1.0 && m(2,3)==0.0 &&
-                                           m(3,3)==1.0);
+                        const osg::Matrix&m = mt->getMatrix();
+                        mergeAcceptable = (m(0, 0) == 1.0 && m(0, 1) == 0.0 && m(0, 2) == 0.0 && m(0, 3) == 0.0 &&
+                                           m(1, 0) == 0.0 && m(1, 1) == 1.0 && m(1, 2) == 0.0 && m(1, 3) == 0.0 &&
+                                           m(2, 0) == 0.0 && m(2, 1) == 0.0 && m(2, 2) == 1.0 && m(2, 3) == 0.0 &&
+                                           m(3, 3) == 1.0);
                     }
                     else
                     {
-                       mergeAcceptable = false;
+                        mergeAcceptable = false;
                     }
                 }
                 else
@@ -3222,7 +3550,7 @@ void Optimizer::FlattenBillboardVisitor::process()
 
         if (mergeAcceptable)
         {
-            osg::Billboard* new_billboard = new osg::Billboard;
+            osg::Billboard *new_billboard = new osg::Billboard;
             new_billboard->setMode(billboard->getMode());
             new_billboard->setAxis(billboard->getAxis());
             new_billboard->setStateSet(billboard->getStateSet());
@@ -3233,30 +3561,31 @@ void Optimizer::FlattenBillboardVisitor::process()
             typedef std::set<osg::MatrixTransform*> MatrixTransformSet;
             MatrixTransformSet mts;
 
-            for(NodePathList::iterator nitr = npl.begin();
-                nitr != npl.end();
-                ++nitr)
+            for (NodePathList::iterator nitr = npl.begin();
+                 nitr != npl.end();
+                 ++nitr)
             {
-                osg::NodePath& np = *nitr;
-                osg::MatrixTransform* mt = dynamic_cast<osg::MatrixTransform*>(np[np.size()-2]);
+                osg::NodePath        &np = *nitr;
+                osg::MatrixTransform *mt = dynamic_cast<osg::MatrixTransform*>(np[np.size() - 2]);
                 mts.insert(mt);
             }
 
-            for(MatrixTransformSet::iterator mitr = mts.begin();
-                mitr != mts.end();
-                ++mitr)
+            for (MatrixTransformSet::iterator mitr = mts.begin();
+                 mitr != mts.end();
+                 ++mitr)
             {
-                osg::MatrixTransform* mt = *mitr;
-                for(unsigned int i=0; i<billboard->getNumDrawables(); ++i)
+                osg::MatrixTransform *mt = *mitr;
+
+                for (unsigned int i = 0; i < billboard->getNumDrawables(); ++i)
                 {
                     new_billboard->addDrawable(billboard->getDrawable(i),
-                                               billboard->getPosition(i)*mt->getMatrix());
+                                               billboard->getPosition(i) * mt->getMatrix());
                 }
+
                 mainGroup->removeChild(mt);
             }
         }
     }
-
 }
 
 
@@ -3265,12 +3594,11 @@ void Optimizer::FlattenBillboardVisitor::process()
 // TextureAtlasBuilder
 ////////////////////////////////////////////////////////////////////////////
 
-Optimizer::TextureAtlasBuilder::TextureAtlasBuilder():
+Optimizer::TextureAtlasBuilder::TextureAtlasBuilder() :
     _maximumAtlasWidth(2048),
     _maximumAtlasHeight(2048),
     _margin(8)
-{
-}
+{}
 
 void Optimizer::TextureAtlasBuilder::reset()
 {
@@ -3280,7 +3608,7 @@ void Optimizer::TextureAtlasBuilder::reset()
 
 void Optimizer::TextureAtlasBuilder::setMaximumAtlasSize(int width, int height)
 {
-    _maximumAtlasWidth = width;
+    _maximumAtlasWidth  = width;
     _maximumAtlasHeight = height;
 }
 
@@ -3289,38 +3617,42 @@ void Optimizer::TextureAtlasBuilder::setMargin(int margin)
     _margin = margin;
 }
 
-void Optimizer::TextureAtlasBuilder::addSource(const osg::Image* image)
+void Optimizer::TextureAtlasBuilder::addSource(const osg::Image *image)
 {
-    if (!getSource(image)) _sourceList.push_back(new Source(image));
+    if (!getSource(image))
+        _sourceList.push_back(new Source(image));
 }
 
-void Optimizer::TextureAtlasBuilder::addSource(const osg::Texture2D* texture)
+void Optimizer::TextureAtlasBuilder::addSource(const osg::Texture2D *texture)
 {
-    if (!getSource(texture)) _sourceList.push_back(new Source(texture));
+    if (!getSource(texture))
+        _sourceList.push_back(new Source(texture));
 }
 
 
 void Optimizer::TextureAtlasBuilder::completeRow(unsigned int indexAtlas)
 {
     AtlasList::iterator aitr = _atlasList.begin() + indexAtlas;
-    //SourceList::iterator sitr = _sourceList.begin() + indexSource;
-    Atlas * atlas = aitr->get();
-    if(atlas->_indexFirstOfRow < atlas->_sourceList.size())
+    // SourceList::iterator sitr = _sourceList.begin() + indexSource;
+    Atlas *atlas = aitr->get();
+
+    if (atlas->_indexFirstOfRow < atlas->_sourceList.size())
     {
-        //Try to fill the row with smaller images.
-        int x_max = atlas->_width  - _margin;
+        // Try to fill the row with smaller images.
+        int x_max = atlas->_width - _margin;
         int y_max = atlas->_height - _margin;
-        //int x_max = atlas->_maximumAtlasWidth  - _margin;
-        //int y_max = atlas->_maximumAtlasHeight - _margin;
+        // int x_max = atlas->_maximumAtlasWidth  - _margin;
+        // int y_max = atlas->_maximumAtlasHeight - _margin;
 
         // Fill last Row
-        for(SourceList::iterator sitr3 = _sourceList.begin(); sitr3 != _sourceList.end(); ++sitr3)
+        for (SourceList::iterator sitr3 = _sourceList.begin(); sitr3 != _sourceList.end(); ++sitr3)
         {
             int x_min = atlas->_x + _margin;
             int y_min = atlas->_y + _margin;
-            if (y_min >= y_max || x_min >= x_max) continue;
+            if (y_min >= y_max || x_min >= x_max)
+                continue;
 
-            Source * source = sitr3->get();
+            Source *source = sitr3->get();
             if (source->_atlas || atlas->_image->getPixelFormat() != source->_image->getPixelFormat() ||
                 atlas->_image->getDataType() != source->_image->getDataType())
             {
@@ -3333,12 +3665,12 @@ void Optimizer::TextureAtlasBuilder::completeRow(unsigned int indexAtlas)
             {
                 source->_x = x_min;
                 source->_y = y_min;
-                //assert(source->_x + source->_image->s()+_margin <= atlas->_maximumAtlasWidth );        // "+_margin" and not "+2*_margin" because _x already takes the margin into account
-                //assert(source->_y + source->_image->t()+_margin <= atlas->_maximumAtlasHeight);
-                //assert(source->_x >= _margin);
-                //assert(source->_y >= _margin);
-                atlas->_x += image_s + 2*_margin;
-                //assert(atlas->_x <= atlas->_maximumAtlasWidth);
+                // assert(source->_x + source->_image->s()+_margin <= atlas->_maximumAtlasWidth );        // "+_margin" and not "+2*_margin" because _x already takes the margin into account
+                // assert(source->_y + source->_image->t()+_margin <= atlas->_maximumAtlasHeight);
+                // assert(source->_x >= _margin);
+                // assert(source->_y >= _margin);
+                atlas->_x += image_s + 2 * _margin;
+                // assert(atlas->_x <= atlas->_maximumAtlasWidth);
                 source->_atlas = atlas;
                 atlas->_sourceList.push_back(source);
             }
@@ -3346,48 +3678,55 @@ void Optimizer::TextureAtlasBuilder::completeRow(unsigned int indexAtlas)
 
         // Fill the last column
         SourceList srcListTmp;
-        for(SourceList::iterator sitr4 = atlas->_sourceList.begin() + atlas->_indexFirstOfRow;
-            sitr4 != atlas->_sourceList.end(); ++sitr4)
-        {
-            Source * srcAdded = sitr4->get();
-            int y_min = srcAdded->_y + srcAdded->_image->t() + 2 * _margin;
-            int x_min = srcAdded->_x;
-            int x_max = x_min + srcAdded->_image->s();        // Hides upper block's x_max
-            if (y_min >= y_max || x_min >= x_max) continue;
 
-            Source * maxWidthSource = NULL;
-            for(SourceList::iterator sitr2 = _sourceList.begin(); sitr2 != _sourceList.end(); ++sitr2)
+        for (SourceList::iterator sitr4 = atlas->_sourceList.begin() + atlas->_indexFirstOfRow;
+             sitr4 != atlas->_sourceList.end(); ++sitr4)
+        {
+            Source *srcAdded = sitr4->get();
+            int    y_min     = srcAdded->_y + srcAdded->_image->t() + 2 * _margin;
+            int    x_min     = srcAdded->_x;
+            int    x_max     = x_min + srcAdded->_image->s(); // Hides upper block's x_max
+            if (y_min >= y_max || x_min >= x_max)
+                continue;
+
+            Source *maxWidthSource = NULL;
+
+            for (SourceList::iterator sitr2 = _sourceList.begin(); sitr2 != _sourceList.end(); ++sitr2)
             {
-                Source * source = sitr2->get();
+                Source *source = sitr2->get();
                 if (source->_atlas || atlas->_image->getPixelFormat() != source->_image->getPixelFormat() ||
                     atlas->_image->getDataType() != source->_image->getDataType())
                 {
                     continue;
                 }
+
                 int image_s = source->_image->s();
                 int image_t = source->_image->t();
-                if(x_min + image_s <= x_max && y_min + image_t <= y_max)        // Test if the image can fit in the empty space.
+                if (x_min + image_s <= x_max && y_min + image_t <= y_max)        // Test if the image can fit in the empty space.
                 {
                     if (maxWidthSource == NULL || maxWidthSource->_image->s() < source->_image->s())
                     {
-                        maxWidthSource = source; //Keep the maximum width for source.
+                        maxWidthSource = source; // Keep the maximum width for source.
                     }
                 }
             }
+
             if (maxWidthSource)
             {
                 // Add the source with the max width to the atlas
-                maxWidthSource->_x = x_min;
-                maxWidthSource->_y = y_min;
+                maxWidthSource->_x     = x_min;
+                maxWidthSource->_y     = y_min;
                 maxWidthSource->_atlas = atlas;
-                srcListTmp.push_back(maxWidthSource); //Store the mawWidth source in the temporary vector.
+                srcListTmp.push_back(maxWidthSource); // Store the mawWidth source in the temporary vector.
             }
         }
-        for(SourceList::iterator itTmp = srcListTmp.begin(); itTmp != srcListTmp.end(); ++itTmp)
+
+        for (SourceList::iterator itTmp = srcListTmp.begin(); itTmp != srcListTmp.end(); ++itTmp)
         {
-            //Add the sources to the general list (wasn't possible in the loop using the iterator on the same list)
+            // Add the sources to the general list (wasn't possible in the loop using the iterator on the same list)
             atlas->_sourceList.push_back(*itTmp);
         }
+
         atlas->_indexFirstOfRow = atlas->_sourceList.size();
     }
 }
@@ -3395,67 +3734,72 @@ void Optimizer::TextureAtlasBuilder::completeRow(unsigned int indexAtlas)
 void Optimizer::TextureAtlasBuilder::buildAtlas()
 {
     std::sort(_sourceList.begin(), _sourceList.end(), CompareSrc());        // Sort using the height of images
+
     _atlasList.clear();
-    for(SourceList::iterator sitr = _sourceList.begin();
-        sitr != _sourceList.end();
-        ++sitr)
+
+    for (SourceList::iterator sitr = _sourceList.begin();
+         sitr != _sourceList.end();
+         ++sitr)
     {
-        Source * source = sitr->get();
-        if (!source->_atlas && source->suitableForAtlas(_maximumAtlasWidth,_maximumAtlasHeight,_margin))
+        Source *source = sitr->get();
+        if (!source->_atlas && source->suitableForAtlas(_maximumAtlasWidth, _maximumAtlasHeight, _margin))
         {
             bool addedSourceToAtlas = false;
-            for(AtlasList::iterator aitr = _atlasList.begin();
-                aitr != _atlasList.end() && !addedSourceToAtlas;
-                ++aitr)
+
+            for (AtlasList::iterator aitr = _atlasList.begin();
+                 aitr != _atlasList.end() && !addedSourceToAtlas;
+                 ++aitr)
             {
-                if(!(*aitr)->_image ||
+                if (!(*aitr)->_image ||
                     ((*aitr)->_image->getPixelFormat() == (*sitr)->_image->getPixelFormat() &&
-                    (*aitr)->_image->getPacking() == (*sitr)->_image->getPacking()))
+                     (*aitr)->_image->getPacking() == (*sitr)->_image->getPacking()))
                 {
-                    OSG_INFO<<"checking source "<<source->_image->getFileName()<<" to see it it'll fit in atlas "<<aitr->get()<<std::endl;
+                    OSG_INFO << "checking source " << source->_image->getFileName() << " to see it it'll fit in atlas " << aitr->get() << std::endl;
                     Optimizer::TextureAtlasBuilder::Atlas::FitsIn fitsIn = (*aitr)->doesSourceFit(source);
                     if (fitsIn == Optimizer::TextureAtlasBuilder::Atlas::FITS_IN_CURRENT_ROW)
                     {
                         addedSourceToAtlas = true;
                         (*aitr)->addSource(source); // Add in the currentRow.
                     }
-                    else if(fitsIn == Optimizer::TextureAtlasBuilder::Atlas::IN_NEXT_ROW)
+                    else if (fitsIn == Optimizer::TextureAtlasBuilder::Atlas::IN_NEXT_ROW)
                     {
-                        completeRow(aitr - _atlasList.begin()); //Fill Empty spaces.
+                        completeRow(aitr - _atlasList.begin()); // Fill Empty spaces.
                         addedSourceToAtlas = true;
                         (*aitr)->addSource(source); // Add the source in the new row.
                     }
                     else
                     {
-                        completeRow(aitr - _atlasList.begin()); //Fill Empty spaces before creating a new atlas.
+                        completeRow(aitr - _atlasList.begin()); // Fill Empty spaces before creating a new atlas.
                     }
                 }
             }
 
             if (!addedSourceToAtlas)
             {
-                OSG_INFO<<"creating new Atlas for "<<source->_image->getFileName()<<std::endl;
+                OSG_INFO << "creating new Atlas for " << source->_image->getFileName() << std::endl;
 
-                osg::ref_ptr<Atlas> atlas = new Atlas(_maximumAtlasWidth,_maximumAtlasHeight,_margin);
+                osg::ref_ptr<Atlas> atlas = new Atlas(_maximumAtlasWidth, _maximumAtlasHeight, _margin);
                 _atlasList.push_back(atlas);
-                if (!source->_atlas) atlas->addSource(source);
+                if (!source->_atlas)
+                    atlas->addSource(source);
             }
         }
     }
 
     // build the atlas which are suitable for use, and discard the rest.
     AtlasList activeAtlasList;
-    for(AtlasList::iterator aitr = _atlasList.begin();
-        aitr != _atlasList.end();
-        ++aitr)
+
+    for (AtlasList::iterator aitr = _atlasList.begin();
+         aitr != _atlasList.end();
+         ++aitr)
     {
         osg::ref_ptr<Atlas> atlas = *aitr;
 
-        if (atlas->_sourceList.size()==1)
+        if (atlas->_sourceList.size() == 1)
         {
             // no point building an atlas with only one entry
             // so disconnect the source.
-            Source * source = atlas->_sourceList[0].get();
+            Source *source = atlas->_sourceList[0].get();
             source->_atlas = 0;
             atlas->_sourceList.clear();
         }
@@ -3463,124 +3807,142 @@ void Optimizer::TextureAtlasBuilder::buildAtlas()
         if (!(atlas->_sourceList.empty()))
         {
             std::stringstream ostr;
-            ostr<<"atlas_"<<activeAtlasList.size()<<".rgb";
+            ostr << "atlas_" << activeAtlasList.size() << ".rgb";
             atlas->_image->setFileName(ostr.str());
             activeAtlasList.push_back(atlas);
             atlas->clampToNearestPowerOfTwoSize();
             atlas->copySources();
         }
     }
+
     // keep only the active atlas'
     _atlasList.swap(activeAtlasList);
-
 }
 
 osg::Image* Optimizer::TextureAtlasBuilder::getImageAtlas(unsigned int i)
 {
-    Source* source = _sourceList[i].get();
-    Atlas* atlas = source ? source->_atlas : 0;
+    Source *source = _sourceList[i].get();
+    Atlas  *atlas  = source ? source->_atlas : 0;
+
     return atlas ? atlas->_image.get() : 0;
 }
 
 osg::Texture2D* Optimizer::TextureAtlasBuilder::getTextureAtlas(unsigned int i)
 {
-    Source* source = _sourceList[i].get();
-    Atlas* atlas = source ? source->_atlas : 0;
+    Source *source = _sourceList[i].get();
+    Atlas  *atlas  = source ? source->_atlas : 0;
+
     return atlas ? atlas->_texture.get() : 0;
 }
 
 osg::Matrix Optimizer::TextureAtlasBuilder::getTextureMatrix(unsigned int i)
 {
-    Source* source = _sourceList[i].get();
+    Source *source = _sourceList[i].get();
+
     return source ? source->computeTextureMatrix() : osg::Matrix();
 }
 
-osg::Image* Optimizer::TextureAtlasBuilder::getImageAtlas(const osg::Image* image)
+osg::Image* Optimizer::TextureAtlasBuilder::getImageAtlas(const osg::Image *image)
 {
-    Source* source = getSource(image);
-    Atlas* atlas = source ? source->_atlas : 0;
+    Source *source = getSource(image);
+    Atlas  *atlas  = source ? source->_atlas : 0;
+
     return atlas ? atlas->_image.get() : 0;
 }
 
-osg::Texture2D* Optimizer::TextureAtlasBuilder::getTextureAtlas(const osg::Image* image)
+osg::Texture2D* Optimizer::TextureAtlasBuilder::getTextureAtlas(const osg::Image *image)
 {
-    Source* source = getSource(image);
-    Atlas* atlas = source ? source->_atlas : 0;
+    Source *source = getSource(image);
+    Atlas  *atlas  = source ? source->_atlas : 0;
+
     return atlas ? atlas->_texture.get() : 0;
 }
 
-osg::Matrix Optimizer::TextureAtlasBuilder::getTextureMatrix(const osg::Image* image)
+osg::Matrix Optimizer::TextureAtlasBuilder::getTextureMatrix(const osg::Image *image)
 {
-    Source* source = getSource(image);
+    Source *source = getSource(image);
+
     return source ? source->computeTextureMatrix() : osg::Matrix();
 }
 
-osg::Image* Optimizer::TextureAtlasBuilder::getImageAtlas(const osg::Texture2D* texture)
+osg::Image* Optimizer::TextureAtlasBuilder::getImageAtlas(const osg::Texture2D *texture)
 {
-    Source* source = getSource(texture);
-    Atlas* atlas = source ? source->_atlas : 0;
+    Source *source = getSource(texture);
+    Atlas  *atlas  = source ? source->_atlas : 0;
+
     return atlas ? atlas->_image.get() : 0;
 }
 
-osg::Texture2D* Optimizer::TextureAtlasBuilder::getTextureAtlas(const osg::Texture2D* texture)
+osg::Texture2D* Optimizer::TextureAtlasBuilder::getTextureAtlas(const osg::Texture2D *texture)
 {
-    Source* source = getSource(texture);
-    Atlas* atlas = source ? source->_atlas : 0;
+    Source *source = getSource(texture);
+    Atlas  *atlas  = source ? source->_atlas : 0;
+
     return atlas ? atlas->_texture.get() : 0;
 }
 
-osg::Matrix Optimizer::TextureAtlasBuilder::getTextureMatrix(const osg::Texture2D* texture)
+osg::Matrix Optimizer::TextureAtlasBuilder::getTextureMatrix(const osg::Texture2D *texture)
 {
-    Source* source = getSource(texture);
+    Source *source = getSource(texture);
+
     return source ? source->computeTextureMatrix() : osg::Matrix();
 }
 
-Optimizer::TextureAtlasBuilder::Source* Optimizer::TextureAtlasBuilder::getSource(const osg::Image* image)
+Optimizer::TextureAtlasBuilder::Source* Optimizer::TextureAtlasBuilder::getSource(const osg::Image *image)
 {
-    for(SourceList::iterator itr = _sourceList.begin();
-        itr != _sourceList.end();
-        ++itr)
+    for (SourceList::iterator itr = _sourceList.begin();
+         itr != _sourceList.end();
+         ++itr)
     {
-        if ((*itr)->_image == image) return itr->get();
+        if ((*itr)->_image == image)
+            return itr->get();
     }
+
     return 0;
 }
 
-Optimizer::TextureAtlasBuilder::Source* Optimizer::TextureAtlasBuilder::getSource(const osg::Texture2D* texture)
+Optimizer::TextureAtlasBuilder::Source* Optimizer::TextureAtlasBuilder::getSource(const osg::Texture2D *texture)
 {
-    for(SourceList::iterator itr = _sourceList.begin();
-        itr != _sourceList.end();
-        ++itr)
+    for (SourceList::iterator itr = _sourceList.begin();
+         itr != _sourceList.end();
+         ++itr)
     {
-        if ((*itr)->_texture == texture) return itr->get();
+        if ((*itr)->_texture == texture)
+            return itr->get();
     }
+
     return 0;
 }
 
 bool Optimizer::TextureAtlasBuilder::Source::suitableForAtlas(int maximumAtlasWidth, int maximumAtlasHeight, int margin)
 {
-    if (!_image) return false;
+    if (!_image)
+        return false;
 
     // size too big?
-    if (_image->s()+margin*2 > maximumAtlasWidth) return false;
-    if (_image->t()+margin*2 > maximumAtlasHeight) return false;
+    if (_image->s() + margin * 2 > maximumAtlasWidth)
+        return false;
 
-    switch(_image->getPixelFormat())
+    if (_image->t() + margin * 2 > maximumAtlasHeight)
+        return false;
+
+    switch (_image->getPixelFormat())
     {
-        case(GL_COMPRESSED_ALPHA_ARB):
-        case(GL_COMPRESSED_INTENSITY_ARB):
-        case(GL_COMPRESSED_LUMINANCE_ALPHA_ARB):
-        case(GL_COMPRESSED_LUMINANCE_ARB):
-        case(GL_COMPRESSED_RGBA_ARB):
-        case(GL_COMPRESSED_RGB_ARB):
-        case(GL_COMPRESSED_RGB_S3TC_DXT1_EXT):
-        case(GL_COMPRESSED_RGBA_S3TC_DXT1_EXT):
-        case(GL_COMPRESSED_RGBA_S3TC_DXT3_EXT):
-        case(GL_COMPRESSED_RGBA_S3TC_DXT5_EXT):
-            // can't handle compressed textures inside an atlas
-            return false;
-        default:
-            break;
+    case (GL_COMPRESSED_ALPHA_ARB):
+    case (GL_COMPRESSED_INTENSITY_ARB):
+    case (GL_COMPRESSED_LUMINANCE_ALPHA_ARB):
+    case (GL_COMPRESSED_LUMINANCE_ARB):
+    case (GL_COMPRESSED_RGBA_ARB):
+    case (GL_COMPRESSED_RGB_ARB):
+    case (GL_COMPRESSED_RGB_S3TC_DXT1_EXT):
+    case (GL_COMPRESSED_RGBA_S3TC_DXT1_EXT):
+    case (GL_COMPRESSED_RGBA_S3TC_DXT3_EXT):
+    case (GL_COMPRESSED_RGBA_S3TC_DXT5_EXT):
+        // can't handle compressed textures inside an atlas
+        return false;
+
+    default:
+        break;
     }
 
     if ((_image->getPixelSizeInBits() % 8) != 0)
@@ -3588,24 +3950,24 @@ bool Optimizer::TextureAtlasBuilder::Source::suitableForAtlas(int maximumAtlasWi
         // pixel size not byte aligned so report as not suitable to prevent other atlas code from having problems with byte boundaries.
         return false;
     }
+
     if (_texture.valid())
     {
-
-        if (_texture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::REPEAT ||
-            _texture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::MIRROR)
+        if (_texture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::REPEAT ||
+            _texture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::MIRROR)
         {
             // can't support repeating textures in texture atlas
             return false;
         }
 
-        if (_texture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::REPEAT ||
-            _texture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::MIRROR)
+        if (_texture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::REPEAT ||
+            _texture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::MIRROR)
         {
             // can't support repeating textures in texture atlas
             return false;
         }
 
-        if (_texture->getReadPBuffer()!=0)
+        if (_texture->getReadPBuffer() != 0)
         {
             // pbuffer textures not suitable
             return false;
@@ -3617,46 +3979,56 @@ bool Optimizer::TextureAtlasBuilder::Source::suitableForAtlas(int maximumAtlasWi
 
 osg::Matrix Optimizer::TextureAtlasBuilder::Source::computeTextureMatrix() const
 {
-    if (!_atlas) return osg::Matrix();
-    if (!_image) return osg::Matrix();
-    if (!(_atlas->_image)) return osg::Matrix();
+    if (!_atlas)
+        return osg::Matrix();
+
+    if (!_image)
+        return osg::Matrix();
+
+    if (!(_atlas->_image))
+        return osg::Matrix();
 
     typedef osg::Matrix::value_type Float;
-    return osg::Matrix::scale(Float(_image->s())/Float(_atlas->_image->s()), Float(_image->t())/Float(_atlas->_image->t()), 1.0)*
-           osg::Matrix::translate(Float(_x)/Float(_atlas->_image->s()), Float(_y)/Float(_atlas->_image->t()), 0.0);
+    return osg::Matrix::scale(Float(_image->s()) / Float(_atlas->_image->s()), Float(_image->t()) / Float(_atlas->_image->t()), 1.0) *
+           osg::Matrix::translate(Float(_x) / Float(_atlas->_image->s()), Float(_y) / Float(_atlas->_image->t()), 0.0);
 }
 
-Optimizer::TextureAtlasBuilder::Atlas::FitsIn Optimizer::TextureAtlasBuilder::Atlas::doesSourceFit(Source* source)
+Optimizer::TextureAtlasBuilder::Atlas::FitsIn Optimizer::TextureAtlasBuilder::Atlas::doesSourceFit(Source *source)
 {
     // does the source have a valid image?
-    const osg::Image* sourceImage = source->_image.get();
-    if (!sourceImage) return DOES_NOT_FIT_IN_ANY_ROW;
+    const osg::Image *sourceImage = source->_image.get();
+
+    if (!sourceImage)
+        return DOES_NOT_FIT_IN_ANY_ROW;
 
     // does pixel format match?
     if (_image.valid())
     {
-        if (_image->getPixelFormat() != sourceImage->getPixelFormat()) return DOES_NOT_FIT_IN_ANY_ROW;
-        if (_image->getDataType() != sourceImage->getDataType()) return DOES_NOT_FIT_IN_ANY_ROW;
+        if (_image->getPixelFormat() != sourceImage->getPixelFormat())
+            return DOES_NOT_FIT_IN_ANY_ROW;
+
+        if (_image->getDataType() != sourceImage->getDataType())
+            return DOES_NOT_FIT_IN_ANY_ROW;
     }
 
-    const osg::Texture2D* sourceTexture = source->_texture.get();
+    const osg::Texture2D *sourceTexture = source->_texture.get();
     if (sourceTexture)
     {
-        if (sourceTexture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::REPEAT ||
-            sourceTexture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::MIRROR)
+        if (sourceTexture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::REPEAT ||
+            sourceTexture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::MIRROR)
         {
             // can't support repeating textures in texture atlas
             return DOES_NOT_FIT_IN_ANY_ROW;
         }
 
-        if (sourceTexture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::REPEAT ||
-            sourceTexture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::MIRROR)
+        if (sourceTexture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::REPEAT ||
+            sourceTexture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::MIRROR)
         {
             // can't support repeating textures in texture atlas
             return DOES_NOT_FIT_IN_ANY_ROW;
         }
 
-        if (sourceTexture->getReadPBuffer()!=0)
+        if (sourceTexture->getReadPBuffer() != 0)
         {
             // pbuffer textures not suitable
             return DOES_NOT_FIT_IN_ANY_ROW;
@@ -3664,14 +4036,13 @@ Optimizer::TextureAtlasBuilder::Atlas::FitsIn Optimizer::TextureAtlasBuilder::At
 
         if (_texture.valid())
         {
+            bool sourceUsesBorder = sourceTexture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::CLAMP_TO_BORDER ||
+                                    sourceTexture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::CLAMP_TO_BORDER;
 
-            bool sourceUsesBorder = sourceTexture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::CLAMP_TO_BORDER ||
-                                    sourceTexture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::CLAMP_TO_BORDER;
+            bool atlasUsesBorder = sourceTexture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::CLAMP_TO_BORDER ||
+                                   sourceTexture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::CLAMP_TO_BORDER;
 
-            bool atlasUsesBorder = sourceTexture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::CLAMP_TO_BORDER ||
-                                   sourceTexture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::CLAMP_TO_BORDER;
-
-            if (sourceUsesBorder!=atlasUsesBorder)
+            if (sourceUsesBorder != atlasUsesBorder)
             {
                 // border wrapping does not match
                 return DOES_NOT_FIT_IN_ANY_ROW;
@@ -3680,7 +4051,8 @@ Optimizer::TextureAtlasBuilder::Atlas::FitsIn Optimizer::TextureAtlasBuilder::At
             if (sourceUsesBorder)
             {
                 // border colours don't match
-                if (_texture->getBorderColor() != sourceTexture->getBorderColor()) return DOES_NOT_FIT_IN_ANY_ROW;
+                if (_texture->getBorderColor() != sourceTexture->getBorderColor())
+                    return DOES_NOT_FIT_IN_ANY_ROW;
             }
 
             if (_texture->getFilter(osg::Texture2D::MIN_FILTER) != sourceTexture->getFilter(osg::Texture2D::MIN_FILTER))
@@ -3727,37 +4099,37 @@ Optimizer::TextureAtlasBuilder::Atlas::FitsIn Optimizer::TextureAtlasBuilder::At
         }
     }
 
-    if (sourceImage->s() + 2*_margin > _maximumAtlasWidth)
+    if (sourceImage->s() + 2 * _margin > _maximumAtlasWidth)
     {
         // image too big for Atlas
         return DOES_NOT_FIT_IN_ANY_ROW;
     }
 
-    if (sourceImage->t() + 2*_margin > _maximumAtlasHeight)
+    if (sourceImage->t() + 2 * _margin > _maximumAtlasHeight)
     {
         // image too big for Atlas
         return DOES_NOT_FIT_IN_ANY_ROW;
     }
 
-    if ((_y + sourceImage->t() + 2*_margin) > _maximumAtlasHeight)
+    if ((_y + sourceImage->t() + 2 * _margin) > _maximumAtlasHeight)
     {
         // image doesn't have up space in height axis.
         return DOES_NOT_FIT_IN_ANY_ROW;
     }
 
     // does the source fit in the current row?
-    if ((_x + sourceImage->s() + 2*_margin) <= _maximumAtlasWidth)
+    if ((_x + sourceImage->s() + 2 * _margin) <= _maximumAtlasWidth)
     {
         // yes it fits :-)
-        OSG_INFO<<"Fits in current row"<<std::endl;
+        OSG_INFO << "Fits in current row" << std::endl;
         return FITS_IN_CURRENT_ROW;
     }
 
     // does the source fit in the new row up?
-    if ((_height + sourceImage->t() + 2*_margin) <= _maximumAtlasHeight)
+    if ((_height + sourceImage->t() + 2 * _margin) <= _maximumAtlasHeight)
     {
         // yes it fits :-)
-        OSG_INFO<<"Fits in next row"<<std::endl;
+        OSG_INFO << "Fits in next row" << std::endl;
         return IN_NEXT_ROW;
     }
 
@@ -3765,16 +4137,17 @@ Optimizer::TextureAtlasBuilder::Atlas::FitsIn Optimizer::TextureAtlasBuilder::At
     return DOES_NOT_FIT_IN_ANY_ROW;
 }
 
-bool Optimizer::TextureAtlasBuilder::Atlas::addSource(Source* source)
+bool Optimizer::TextureAtlasBuilder::Atlas::addSource(Source *source)
 {
     // double check source is compatible
     if (!doesSourceFit(source))
     {
-        OSG_INFO<<"source "<<source->_image->getFileName()<<" does not fit in atlas "<<this<<std::endl;
+        OSG_INFO << "source " << source->_image->getFileName() << " does not fit in atlas " << this << std::endl;
         return false;
     }
-    const osg::Image* sourceImage = source->_image.get();
-    const osg::Texture2D* sourceTexture = source->_texture.get();
+
+    const osg::Image     *sourceImage   = source->_image.get();
+    const osg::Texture2D *sourceTexture = source->_texture.get();
 
     if (!_image)
     {
@@ -3805,35 +4178,36 @@ bool Optimizer::TextureAtlasBuilder::Atlas::addSource(Source* source)
         _texture->setShadowCompareFunc(sourceTexture->getShadowCompareFunc());
         _texture->setShadowTextureMode(sourceTexture->getShadowTextureMode());
         _texture->setShadowAmbient(sourceTexture->getShadowAmbient());
-
     }
 
     // now work out where to fit it, first try current row.
-    if ((_x + sourceImage->s() + 2*_margin) <= _maximumAtlasWidth)
+    if ((_x + sourceImage->s() + 2 * _margin) <= _maximumAtlasWidth)
     {
         // yes it fits, so add the source to the atlas's list of sources it contains
         _sourceList.push_back(source);
 
-        OSG_INFO<<"current row insertion, source "<<source->_image->getFileName()<<" "<<_x<<","<<_y<<" fits in row of atlas "<<this<<std::endl;
+        OSG_INFO << "current row insertion, source " << source->_image->getFileName() << " " << _x << "," << _y << " fits in row of atlas " << this << std::endl;
 
         // set up the source so it knows where it is in the atlas
-        source->_x = _x + _margin;
-        source->_y = _y + _margin;
+        source->_x     = _x + _margin;
+        source->_y     = _y + _margin;
         source->_atlas = this;
 
         // move the atlas' cursor along to the right
-        _x += sourceImage->s() + 2*_margin;
+        _x += sourceImage->s() + 2 * _margin;
 
-        if (_x > _width) _width = _x;
+        if (_x > _width)
+            _width = _x;
 
-        int localTop = _y + sourceImage->t() + 2*_margin;
-        if ( localTop > _height) _height = localTop;
+        int localTop = _y + sourceImage->t() + 2 * _margin;
+        if (localTop > _height)
+            _height = localTop;
 
         return true;
     }
 
     // does the source fit in the new row up?
-    if ((_height + sourceImage->t() + 2*_margin) <= _maximumAtlasHeight)
+    if ((_height + sourceImage->t() + 2 * _margin) <= _maximumAtlasHeight)
     {
         // now row so first need to reset the atlas cursor
         _x = 0;
@@ -3842,26 +4216,27 @@ bool Optimizer::TextureAtlasBuilder::Atlas::addSource(Source* source)
         // yes it fits, so add the source to the atlas' list of sources it contains
         _sourceList.push_back(source);
 
-        OSG_INFO<<"next row insertion, source "<<source->_image->getFileName()<<" "<<_x<<","<<_y<<" fits in row of atlas "<<this<<std::endl;
+        OSG_INFO << "next row insertion, source " << source->_image->getFileName() << " " << _x << "," << _y << " fits in row of atlas " << this << std::endl;
 
         // set up the source so it knows where it is in the atlas
-        source->_x = _x + _margin;
-        source->_y = _y + _margin;
+        source->_x     = _x + _margin;
+        source->_y     = _y + _margin;
         source->_atlas = this;
 
         // move the atlas' cursor along to the right
-        _x += sourceImage->s() + 2*_margin;
+        _x += sourceImage->s() + 2 * _margin;
 
-        if (_x > _width) _width = _x;
+        if (_x > _width)
+            _width = _x;
 
-        _height = _y + sourceImage->t() + 2*_margin;
+        _height = _y + sourceImage->t() + 2 * _margin;
 
-        OSG_INFO<<"source "<<source->_image->getFileName()<<" "<<_x<<","<<_y<<" fits in row of atlas "<<this<<std::endl;
+        OSG_INFO << "source " << source->_image->getFileName() << " " << _x << "," << _y << " fits in row of atlas " << this << std::endl;
 
         return true;
     }
 
-    OSG_INFO<<"source "<<source->_image->getFileName()<<" does not fit in atlas "<<this<<std::endl;
+    OSG_INFO << "source " << source->_image->getFileName() << " does not fit in atlas " << this << std::endl;
 
     // shouldn't get here, unless doesSourceFit isn't working...
     return false;
@@ -3870,14 +4245,18 @@ bool Optimizer::TextureAtlasBuilder::Atlas::addSource(Source* source)
 void Optimizer::TextureAtlasBuilder::Atlas::clampToNearestPowerOfTwoSize()
 {
     int w = 1;
-    while (w<_width) w *= 2;
+
+    while (w < _width)
+        w *= 2;
 
     int h = 1;
-    while (h<_height) h *= 2;
 
-    OSG_INFO<<"Clamping "<<_width<<", "<<_height<<" to "<<w<<","<<h<<std::endl;
+    while (h < _height)
+        h *= 2;
 
-    _width = w;
+    OSG_INFO << "Clamping " << _width << ", " << _height << " to " << w << "," << h << std::endl;
+
+    _width  = w;
     _height = h;
 }
 
@@ -3885,57 +4264,62 @@ void Optimizer::TextureAtlasBuilder::Atlas::clampToNearestPowerOfTwoSize()
 void Optimizer::TextureAtlasBuilder::Atlas::copySources()
 {
     GLenum pixelFormat = _image->getPixelFormat();
-    GLenum dataType = _image->getDataType();
-    GLenum packing = _image->getPacking();
-    OSG_INFO<<"Allocated to "<<_width<<","<<_height<<std::endl;
-    _image->allocateImage(_width,_height,1,
+    GLenum dataType    = _image->getDataType();
+    GLenum packing     = _image->getPacking();
+
+    OSG_INFO << "Allocated to " << _width << "," << _height << std::endl;
+    _image->allocateImage(_width, _height, 1,
                           pixelFormat, dataType,
                           packing);
 
     {
         // clear memory
-        unsigned int size = _image->getTotalSizeInBytes();
-        unsigned char* str = _image->data();
-        for(unsigned int i=0; i<size; ++i) *(str++) = 0;
+        unsigned int  size = _image->getTotalSizeInBytes();
+        unsigned char *str = _image->data();
+
+        for (unsigned int i = 0; i < size; ++i)
+            *(str++) = 0;
     }
 
-    OSG_INFO<<"Atlas::copySources() "<<std::endl;
+    OSG_INFO << "Atlas::copySources() " << std::endl;
 
-    for(SourceList::iterator itr = _sourceList.begin();
-        itr !=_sourceList.end();
-        ++itr)
+    for (SourceList::iterator itr = _sourceList.begin();
+         itr != _sourceList.end();
+         ++itr)
     {
-        Source* source = itr->get();
-        Atlas* atlas = source->_atlas;
+        Source *source = itr->get();
+        Atlas  *atlas  = source->_atlas;
 
         if (atlas == this)
         {
-            OSG_INFO<<"Copying image "<<source->_image->getFileName()<<" to "<<source->_x<<" ,"<<source->_y<<std::endl;
-            OSG_INFO<<"        image size "<<source->_image->s()<<","<<source->_image->t()<<std::endl;
+            OSG_INFO << "Copying image " << source->_image->getFileName() << " to " << source->_x << " ," << source->_y << std::endl;
+            OSG_INFO << "        image size " << source->_image->s() << "," << source->_image->t() << std::endl;
 
-            const osg::Image* sourceImage = source->_image.get();
-            osg::Image* atlasImage = atlas->_image.get();
-            //assert(sourceImage->getPacking() == atlasImage->getPacking()); //Test if packings are equals.
-            unsigned int rowSize = sourceImage->getRowSizeInBytes();
-            unsigned int pixelSizeInBits = sourceImage->getPixelSizeInBits();
-            unsigned int pixelSizeInBytes = pixelSizeInBits/8;
-            unsigned int marginSizeInBytes = pixelSizeInBytes*_margin;
+            const osg::Image *sourceImage = source->_image.get();
+            osg::Image       *atlasImage  = atlas->_image.get();
+            // assert(sourceImage->getPacking() == atlasImage->getPacking()); //Test if packings are equals.
+            unsigned int rowSize           = sourceImage->getRowSizeInBytes();
+            unsigned int pixelSizeInBits   = sourceImage->getPixelSizeInBits();
+            unsigned int pixelSizeInBytes  = pixelSizeInBits / 8;
+            unsigned int marginSizeInBytes = pixelSizeInBytes * _margin;
 
-            //assert(atlas->_width  == static_cast<int>(atlasImage->s()));
-            //assert(atlas->_height == static_cast<int>(atlasImage->t()));
-            //assert(source->_x + static_cast<int>(source->_image->s())+_margin <= static_cast<int>(atlas->_image->s()));        // "+_margin" and not "+2*_margin" because _x already takes the margin into account
-            //assert(source->_y + static_cast<int>(source->_image->t())+_margin <= static_cast<int>(atlas->_image->t()));
-            //assert(source->_x >= _margin);
-            //assert(source->_y >= _margin);
+            // assert(atlas->_width  == static_cast<int>(atlasImage->s()));
+            // assert(atlas->_height == static_cast<int>(atlasImage->t()));
+            // assert(source->_x + static_cast<int>(source->_image->s())+_margin <= static_cast<int>(atlas->_image->s()));        // "+_margin" and not "+2*_margin" because _x already takes the margin into account
+            // assert(source->_y + static_cast<int>(source->_image->t())+_margin <= static_cast<int>(atlas->_image->t()));
+            // assert(source->_x >= _margin);
+            // assert(source->_y >= _margin);
             int x = source->_x;
             int y = source->_y;
 
             int t;
-            for(t=0; t<sourceImage->t(); ++t, ++y)
+
+            for (t = 0; t < sourceImage->t(); ++t, ++y)
             {
-                unsigned char* destPtr = atlasImage->data(x, y);
-                const unsigned char* sourcePtr = sourceImage->data(0, t);
-                for(unsigned int i=0; i<rowSize; i++)
+                unsigned char       *destPtr   = atlasImage->data(x, y);
+                const unsigned char *sourcePtr = sourceImage->data(0, t);
+
+                for (unsigned int i = 0; i < rowSize; i++)
                 {
                     *(destPtr++) = *(sourcePtr++);
                 }
@@ -3944,42 +4328,47 @@ void Optimizer::TextureAtlasBuilder::Atlas::copySources()
             // copy top row margin
             y = source->_y + sourceImage->t();
             int m;
-            for(m=0; m<_margin; ++m, ++y)
+
+            for (m = 0; m < _margin; ++m, ++y)
             {
-                unsigned char* destPtr = atlasImage->data(x, y);
-                const unsigned char* sourcePtr = sourceImage->data(0, sourceImage->t()-1);
-                for(unsigned int i=0; i<rowSize; i++)
+                unsigned char       *destPtr   = atlasImage->data(x, y);
+                const unsigned char *sourcePtr = sourceImage->data(0, sourceImage->t() - 1);
+
+                for (unsigned int i = 0; i < rowSize; i++)
                 {
                     *(destPtr++) = *(sourcePtr++);
                 }
-
             }
 
 
 
             // copy bottom row margin
-            y = source->_y-1;
-            for(m=0; m<_margin; ++m, --y)
+            y = source->_y - 1;
+
+            for (m = 0; m < _margin; ++m, --y)
             {
-                unsigned char* destPtr = atlasImage->data(x, y);
-                const unsigned char* sourcePtr = sourceImage->data(0, 0);
-                for(unsigned int i=0; i<rowSize; i++)
+                unsigned char       *destPtr   = atlasImage->data(x, y);
+                const unsigned char *sourcePtr = sourceImage->data(0, 0);
+
+                for (unsigned int i = 0; i < rowSize; i++)
                 {
                     *(destPtr++) = *(sourcePtr++);
                 }
-
             }
 
             // copy left column margin
             y = source->_y;
-            for(t=0; t<sourceImage->t(); ++t, ++y)
+
+            for (t = 0; t < sourceImage->t(); ++t, ++y)
             {
-                x = source->_x-1;
-                for(m=0; m<_margin; ++m, --x)
+                x = source->_x - 1;
+
+                for (m = 0; m < _margin; ++m, --x)
                 {
-                    unsigned char* destPtr = atlasImage->data(x, y);
-                    const unsigned char* sourcePtr = sourceImage->data(0, t);
-                    for(unsigned int i=0; i<pixelSizeInBytes; i++)
+                    unsigned char       *destPtr   = atlasImage->data(x, y);
+                    const unsigned char *sourcePtr = sourceImage->data(0, t);
+
+                    for (unsigned int i = 0; i < pixelSizeInBytes; i++)
                     {
                         *(destPtr++) = *(sourcePtr++);
                     }
@@ -3988,14 +4377,17 @@ void Optimizer::TextureAtlasBuilder::Atlas::copySources()
 
             // copy right column margin
             y = source->_y;
-            for(t=0; t<sourceImage->t(); ++t, ++y)
+
+            for (t = 0; t < sourceImage->t(); ++t, ++y)
             {
                 x = source->_x + sourceImage->s();
-                for(m=0; m<_margin; ++m, ++x)
+
+                for (m = 0; m < _margin; ++m, ++x)
                 {
-                    unsigned char* destPtr = atlasImage->data(x, y);
-                    const unsigned char* sourcePtr = sourceImage->data(sourceImage->s()-1, t);
-                    for(unsigned int i=0; i<pixelSizeInBytes; i++)
+                    unsigned char       *destPtr   = atlasImage->data(x, y);
+                    const unsigned char *sourcePtr = sourceImage->data(sourceImage->s() - 1, t);
+
+                    for (unsigned int i = 0; i < pixelSizeInBytes; i++)
                     {
                         *(destPtr++) = *(sourcePtr++);
                     }
@@ -4004,11 +4396,13 @@ void Optimizer::TextureAtlasBuilder::Atlas::copySources()
 
             // copy top left corner margin
             y = source->_y + sourceImage->t();
-            for(m=0; m<_margin; ++m, ++y)
+
+            for (m = 0; m < _margin; ++m, ++y)
             {
-                unsigned char* destPtr = atlasImage->data(source->_x - _margin, y);
-                unsigned char* sourcePtr = atlasImage->data(source->_x - _margin, y-1); // copy from row below
-                for(unsigned int i=0; i<marginSizeInBytes; i++)
+                unsigned char *destPtr   = atlasImage->data(source->_x - _margin, y);
+                unsigned char *sourcePtr = atlasImage->data(source->_x - _margin, y - 1); // copy from row below
+
+                for (unsigned int i = 0; i < marginSizeInBytes; i++)
                 {
                     *(destPtr++) = *(sourcePtr++);
                 }
@@ -4016,11 +4410,13 @@ void Optimizer::TextureAtlasBuilder::Atlas::copySources()
 
             // copy top right corner margin
             y = source->_y + sourceImage->t();
-            for(m=0; m<_margin; ++m, ++y)
+
+            for (m = 0; m < _margin; ++m, ++y)
             {
-                unsigned char* destPtr = atlasImage->data(source->_x + sourceImage->s(), y);
-                unsigned char* sourcePtr = atlasImage->data(source->_x + sourceImage->s(), y-1); // copy from row below
-                for(unsigned int i=0; i<marginSizeInBytes; i++)
+                unsigned char *destPtr   = atlasImage->data(source->_x + sourceImage->s(), y);
+                unsigned char *sourcePtr = atlasImage->data(source->_x + sourceImage->s(), y - 1); // copy from row below
+
+                for (unsigned int i = 0; i < marginSizeInBytes; i++)
                 {
                     *(destPtr++) = *(sourcePtr++);
                 }
@@ -4028,11 +4424,13 @@ void Optimizer::TextureAtlasBuilder::Atlas::copySources()
 
             // copy bottom left corner margin
             y = source->_y - 1;
-            for(m=0; m<_margin; ++m, --y)
+
+            for (m = 0; m < _margin; ++m, --y)
             {
-                unsigned char* destPtr = atlasImage->data(source->_x - _margin, y);
-                unsigned char* sourcePtr = atlasImage->data(source->_x - _margin, y+1); // copy from row below
-                for(unsigned int i=0; i<marginSizeInBytes; i++)
+                unsigned char *destPtr   = atlasImage->data(source->_x - _margin, y);
+                unsigned char *sourcePtr = atlasImage->data(source->_x - _margin, y + 1); // copy from row below
+
+                for (unsigned int i = 0; i < marginSizeInBytes; i++)
                 {
                     *(destPtr++) = *(sourcePtr++);
                 }
@@ -4040,16 +4438,17 @@ void Optimizer::TextureAtlasBuilder::Atlas::copySources()
 
             // copy bottom right corner margin
             y = source->_y - 1;
-            for(m=0; m<_margin; ++m, --y)
+
+            for (m = 0; m < _margin; ++m, --y)
             {
-                unsigned char* destPtr = atlasImage->data(source->_x + sourceImage->s(), y);
-                unsigned char* sourcePtr = atlasImage->data(source->_x + sourceImage->s(), y+1); // copy from row below
-                for(unsigned int i=0; i<marginSizeInBytes; i++)
+                unsigned char *destPtr   = atlasImage->data(source->_x + sourceImage->s(), y);
+                unsigned char *sourcePtr = atlasImage->data(source->_x + sourceImage->s(), y + 1); // copy from row below
+
+                for (unsigned int i = 0; i < marginSizeInBytes; i++)
                 {
                     *(destPtr++) = *(sourcePtr++);
                 }
             }
-
         }
     }
 }
@@ -4063,26 +4462,28 @@ void Optimizer::TextureAtlasVisitor::reset()
     _builder.reset();
 }
 
-bool Optimizer::TextureAtlasVisitor::pushStateSet(osg::StateSet* stateset)
+bool Optimizer::TextureAtlasVisitor::pushStateSet(osg::StateSet *stateset)
 {
-    const osg::StateSet::TextureAttributeList& tal = stateset->getTextureAttributeList();
+    const osg::StateSet::TextureAttributeList&tal = stateset->getTextureAttributeList();
 
     // if no textures ignore
-    if (tal.empty()) return false;
+    if (tal.empty())
+        return false;
 
     bool pushStateState = false;
 
     // if already in stateset list ignore
-    if (_statesetMap.count(stateset)>0)
+    if (_statesetMap.count(stateset) > 0)
     {
         pushStateState = true;
     }
     else
     {
         bool containsTexture2D = false;
-        for(unsigned int unit=0; unit<tal.size(); ++unit)
+
+        for (unsigned int unit = 0; unit < tal.size(); ++unit)
         {
-            osg::Texture2D* texture2D = dynamic_cast<osg::Texture2D*>(stateset->getTextureAttribute(unit,osg::StateAttribute::TEXTURE));
+            osg::Texture2D *texture2D = dynamic_cast<osg::Texture2D*>(stateset->getTextureAttribute(unit, osg::StateAttribute::TEXTURE));
             if (texture2D)
             {
                 containsTexture2D = true;
@@ -4111,12 +4512,13 @@ void Optimizer::TextureAtlasVisitor::popStateSet()
     _statesetStack.pop_back();
 }
 
-void Optimizer::TextureAtlasVisitor::apply(osg::Node& node)
+void Optimizer::TextureAtlasVisitor::apply(osg::Node&node)
 {
     bool pushedStateState = false;
 
-    osg::StateSet* ss = node.getStateSet();
-    if (ss && ss->getDataVariance()==osg::Object::STATIC)
+    osg::StateSet *ss = node.getStateSet();
+
+    if (ss && ss->getDataVariance() == osg::Object::STATIC)
     {
         if (isOperationPermissibleForObject(&node) &&
             isOperationPermissibleForObject(ss))
@@ -4127,35 +4529,37 @@ void Optimizer::TextureAtlasVisitor::apply(osg::Node& node)
 
     traverse(node);
 
-    if (pushedStateState) popStateSet();
+    if (pushedStateState)
+        popStateSet();
 }
 
-void Optimizer::TextureAtlasVisitor::apply(osg::Geode& geode)
+void Optimizer::TextureAtlasVisitor::apply(osg::Geode&geode)
 {
-    if (!isOperationPermissibleForObject(&geode)) return;
+    if (!isOperationPermissibleForObject(&geode))
+        return;
 
-    osg::StateSet* ss = geode.getStateSet();
+    osg::StateSet *ss = geode.getStateSet();
 
 
     bool pushedGeodeStateState = false;
 
-    if (ss && ss->getDataVariance()==osg::Object::STATIC)
+    if (ss && ss->getDataVariance() == osg::Object::STATIC)
     {
         if (isOperationPermissibleForObject(ss))
         {
             pushedGeodeStateState = pushStateSet(ss);
         }
     }
-    for(unsigned int i=0;i<geode.getNumDrawables();++i)
-    {
 
-        osg::Drawable* drawable = geode.getDrawable(i);
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
+    {
+        osg::Drawable *drawable = geode.getDrawable(i);
         if (drawable)
         {
             bool pushedDrawableStateState = false;
 
             ss = drawable->getStateSet();
-            if (ss && ss->getDataVariance()==osg::Object::STATIC)
+            if (ss && ss->getDataVariance() == osg::Object::STATIC)
             {
                 if (isOperationPermissibleForObject(drawable) &&
                     isOperationPermissibleForObject(ss))
@@ -4166,27 +4570,28 @@ void Optimizer::TextureAtlasVisitor::apply(osg::Geode& geode)
 
             if (!_statesetStack.empty())
             {
-                for(StateSetStack::iterator ssitr = _statesetStack.begin();
-                    ssitr != _statesetStack.end();
-                    ++ssitr)
+                for (StateSetStack::iterator ssitr = _statesetStack.begin();
+                     ssitr != _statesetStack.end();
+                     ++ssitr)
                 {
                     _statesetMap[*ssitr].insert(drawable);
                 }
             }
 
-            if (pushedDrawableStateState) popStateSet();
+            if (pushedDrawableStateState)
+                popStateSet();
         }
-
     }
 
-    if (pushedGeodeStateState) popStateSet();
+    if (pushedGeodeStateState)
+        popStateSet();
 }
 
 void Optimizer::TextureAtlasVisitor::optimize()
 {
     _builder.reset();
 
-    if (_textures.size()<2)
+    if (_textures.size() < 2)
     {
         // nothing to optimize
         return;
@@ -4196,24 +4601,26 @@ void Optimizer::TextureAtlasVisitor::optimize()
     Textures texturesThatRepeatAndAreOutOfRange;
 
     StateSetMap::iterator sitr;
-    for(sitr = _statesetMap.begin();
-        sitr != _statesetMap.end();
-        ++sitr)
-    {
-        osg::StateSet* stateset = sitr->first;
-        Drawables& drawables = sitr->second;
 
-        const osg::StateSet::TextureAttributeList& tal = stateset->getTextureAttributeList();
-        for(unsigned int unit=0; unit<tal.size(); ++unit)
+    for (sitr = _statesetMap.begin();
+         sitr != _statesetMap.end();
+         ++sitr)
+    {
+        osg::StateSet *stateset  = sitr->first;
+        Drawables     &drawables = sitr->second;
+
+        const osg::StateSet::TextureAttributeList&tal = stateset->getTextureAttributeList();
+
+        for (unsigned int unit = 0; unit < tal.size(); ++unit)
         {
-            osg::Texture2D* texture = dynamic_cast<osg::Texture2D*>(stateset->getTextureAttribute(unit,osg::StateAttribute::TEXTURE));
+            osg::Texture2D *texture = dynamic_cast<osg::Texture2D*>(stateset->getTextureAttribute(unit, osg::StateAttribute::TEXTURE));
             if (texture)
             {
-                bool s_repeat = texture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::REPEAT ||
-                                texture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::MIRROR;
+                bool s_repeat = texture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::REPEAT ||
+                                texture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::MIRROR;
 
-                bool t_repeat = texture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::REPEAT ||
-                                texture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::MIRROR;
+                bool t_repeat = texture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::REPEAT ||
+                                texture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::MIRROR;
 
                 if (s_repeat || t_repeat)
                 {
@@ -4228,24 +4635,38 @@ void Optimizer::TextureAtlasVisitor::optimize()
                     float t_min = -0.001;
                     float t_max = 1.001;
 
-                    for(Drawables::iterator ditr = drawables.begin();
-                        ditr != drawables.end();
-                        ++ditr)
+                    for (Drawables::iterator ditr = drawables.begin();
+                         ditr != drawables.end();
+                         ++ditr)
                     {
-                        osg::Geometry* geom = (*ditr)->asGeometry();
-                        osg::Vec2Array* texcoords = geom ? dynamic_cast<osg::Vec2Array*>(geom->getTexCoordArray(unit)) : 0;
+                        osg::Geometry  *geom      = (*ditr)->asGeometry();
+                        osg::Vec2Array *texcoords = geom ? dynamic_cast<osg::Vec2Array*>(geom->getTexCoordArray(unit)) : 0;
                         if (texcoords && !texcoords->empty())
                         {
-                            for(osg::Vec2Array::iterator titr = texcoords->begin();
-                                titr != texcoords->end() /*&& !s_outOfRange && !t_outOfRange*/;
-                                ++titr)
+                            for (osg::Vec2Array::iterator titr = texcoords->begin();
+                                 titr != texcoords->end() /*&& !s_outOfRange && !t_outOfRange*/;
+                                 ++titr)
                             {
                                 osg::Vec2 tc = *titr;
-                                if (tc[0]<s_min) { s_min = tc[0]; s_outOfRange = true; }
-                                if (tc[0]>s_max) { s_max = tc[0]; s_outOfRange = true; }
+                                if (tc[0] < s_min)
+                                {
+                                    s_min = tc[0]; s_outOfRange = true;
+                                }
 
-                                if (tc[1]<t_min) { t_min = tc[1]; t_outOfRange = true; }
-                                if (tc[1]>t_max) { t_max = tc[1]; t_outOfRange = true; }
+                                if (tc[0] > s_max)
+                                {
+                                    s_max = tc[0]; s_outOfRange = true;
+                                }
+
+                                if (tc[1] < t_min)
+                                {
+                                    t_min = tc[1]; t_outOfRange = true;
+                                }
+
+                                if (tc[1] > t_max)
+                                {
+                                    t_max = tc[1]; t_outOfRange = true;
+                                }
                             }
                         }
                         else
@@ -4260,7 +4681,6 @@ void Optimizer::TextureAtlasVisitor::optimize()
                     {
                         texturesThatRepeatAndAreOutOfRange.insert(texture);
                     }
-
                 }
             }
         }
@@ -4270,33 +4690,35 @@ void Optimizer::TextureAtlasVisitor::optimize()
     // are in 0 to 1 range than converting the to CLAMP mode, to allow them
     // to be used in an atlas.
     Textures::iterator titr;
-    for(titr = texturesThatRepeat.begin();
-        titr != texturesThatRepeat.end();
-        ++titr)
+
+    for (titr = texturesThatRepeat.begin();
+         titr != texturesThatRepeat.end();
+         ++titr)
     {
-        osg::Texture2D* texture = *titr;
-        if (texturesThatRepeatAndAreOutOfRange.count(texture)==0)
+        osg::Texture2D *texture = *titr;
+        if (texturesThatRepeatAndAreOutOfRange.count(texture) == 0)
         {
             // safe to convert into CLAMP wrap mode.
-            OSG_INFO<<"Changing wrap mode to CLAMP"<<std::endl;
+            OSG_INFO << "Changing wrap mode to CLAMP" << std::endl;
             texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
             texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
         }
     }
-    //typedef std::list<osg::Texture2D *> SourceListTmp;
-    //SourceListTmp sourceToAdd;
+
+    // typedef std::list<osg::Texture2D *> SourceListTmp;
+    // SourceListTmp sourceToAdd;
     // add the textures as sources for the TextureAtlasBuilder
-    for(titr = _textures.begin();
-        titr != _textures.end();
-        ++titr)
+    for (titr = _textures.begin();
+         titr != _textures.end();
+         ++titr)
     {
-        osg::Texture2D* texture = *titr;
+        osg::Texture2D *texture = *titr;
 
-        bool s_repeat = texture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::REPEAT ||
-                        texture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::MIRROR;
+        bool s_repeat = texture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::REPEAT ||
+                        texture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::MIRROR;
 
-        bool t_repeat = texture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::REPEAT ||
-                        texture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::MIRROR;
+        bool t_repeat = texture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::REPEAT ||
+                        texture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::MIRROR;
 
         if (texture->getImage() && !s_repeat && !t_repeat)
         {
@@ -4310,107 +4732,117 @@ void Optimizer::TextureAtlasVisitor::optimize()
     typedef std::set<osg::StateSet*> StateSetSet;
     typedef std::map<osg::Drawable*, StateSetSet> DrawableStateSetMap;
     DrawableStateSetMap dssm;
-    for(sitr = _statesetMap.begin();
-        sitr != _statesetMap.end();
-        ++sitr)
+
+    for (sitr = _statesetMap.begin();
+         sitr != _statesetMap.end();
+         ++sitr)
     {
-        Drawables& drawables = sitr->second;
-        for(Drawables::iterator ditr = drawables.begin();
-            ditr != drawables.end();
-            ++ditr)
+        Drawables&drawables = sitr->second;
+
+        for (Drawables::iterator ditr = drawables.begin();
+             ditr != drawables.end();
+             ++ditr)
         {
             dssm[(*ditr)->asGeometry()].insert(sitr->first);
         }
     }
 
     Drawables drawablesThatHaveMultipleTexturesOnOneUnit;
-    for(DrawableStateSetMap::iterator ditr = dssm.begin();
-        ditr != dssm.end();
-        ++ditr)
+
+    for (DrawableStateSetMap::iterator ditr = dssm.begin();
+         ditr != dssm.end();
+         ++ditr)
     {
-        osg::Drawable* drawable = ditr->first;
-        StateSetSet& ssm = ditr->second;
-        if (ssm.size()>1)
+        osg::Drawable *drawable = ditr->first;
+        StateSetSet   &ssm      = ditr->second;
+        if (ssm.size() > 1)
         {
             typedef std::map<unsigned int, Textures> UnitTextureMap;
             UnitTextureMap unitTextureMap;
-            for(StateSetSet::iterator ssm_itr = ssm.begin();
-                ssm_itr != ssm.end();
-                ++ssm_itr)
+
+            for (StateSetSet::iterator ssm_itr = ssm.begin();
+                 ssm_itr != ssm.end();
+                 ++ssm_itr)
             {
-                osg::StateSet* ss = *ssm_itr;
-                unsigned int numTextureUnits = ss->getTextureAttributeList().size();
-                for(unsigned int unit=0; unit<numTextureUnits; ++unit)
+                osg::StateSet *ss             = *ssm_itr;
+                unsigned int  numTextureUnits = ss->getTextureAttributeList().size();
+
+                for (unsigned int unit = 0; unit < numTextureUnits; ++unit)
                 {
-                    osg::Texture2D* texture = dynamic_cast<osg::Texture2D*>(ss->getTextureAttribute(unit, osg::StateAttribute::TEXTURE));
-                    if (texture) unitTextureMap[unit].insert(texture);
+                    osg::Texture2D *texture = dynamic_cast<osg::Texture2D*>(ss->getTextureAttribute(unit, osg::StateAttribute::TEXTURE));
+                    if (texture)
+                        unitTextureMap[unit].insert(texture);
                 }
             }
+
             bool drawablesHasMultiTextureOnOneUnit = false;
-            for(UnitTextureMap::iterator utm_itr = unitTextureMap.begin();
-                utm_itr != unitTextureMap.end() && !drawablesHasMultiTextureOnOneUnit;
-                ++utm_itr)
+
+            for (UnitTextureMap::iterator utm_itr = unitTextureMap.begin();
+                 utm_itr != unitTextureMap.end() && !drawablesHasMultiTextureOnOneUnit;
+                 ++utm_itr)
             {
-                if (utm_itr->second.size()>1)
+                if (utm_itr->second.size() > 1)
                 {
                     drawablesHasMultiTextureOnOneUnit = true;
                 }
             }
+
             if (drawablesHasMultiTextureOnOneUnit)
             {
                 drawablesThatHaveMultipleTexturesOnOneUnit.insert(drawable);
             }
-
         }
     }
 
     // remap the textures in the StateSet's
-    for(sitr = _statesetMap.begin();
-        sitr != _statesetMap.end();
-        ++sitr)
+    for (sitr = _statesetMap.begin();
+         sitr != _statesetMap.end();
+         ++sitr)
     {
-        osg::StateSet* stateset = sitr->first;
-        const osg::StateSet::TextureAttributeList& tal = stateset->getTextureAttributeList();
-        for(unsigned int unit=0; unit<tal.size(); ++unit)
+        osg::StateSet                            *stateset = sitr->first;
+        const osg::StateSet::TextureAttributeList&tal      = stateset->getTextureAttributeList();
+
+        for (unsigned int unit = 0; unit < tal.size(); ++unit)
         {
-            osg::Texture2D* texture = dynamic_cast<osg::Texture2D*>(stateset->getTextureAttribute(unit,osg::StateAttribute::TEXTURE));
+            osg::Texture2D *texture = dynamic_cast<osg::Texture2D*>(stateset->getTextureAttribute(unit, osg::StateAttribute::TEXTURE));
             if (texture)
             {
-                bool s_repeat = texture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::REPEAT ||
-                                texture->getWrap(osg::Texture2D::WRAP_S)==osg::Texture2D::MIRROR;
+                bool s_repeat = texture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::REPEAT ||
+                                texture->getWrap(osg::Texture2D::WRAP_S) == osg::Texture2D::MIRROR;
 
-                bool t_repeat = texture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::REPEAT ||
-                                texture->getWrap(osg::Texture2D::WRAP_T)==osg::Texture2D::MIRROR;
+                bool t_repeat = texture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::REPEAT ||
+                                texture->getWrap(osg::Texture2D::WRAP_T) == osg::Texture2D::MIRROR;
 
-                osg::Texture2D* newTexture = _builder.getTextureAtlas(texture);
-                if (newTexture && newTexture!=texture)
+                osg::Texture2D *newTexture = _builder.getTextureAtlas(texture);
+                if (newTexture && newTexture != texture)
                 {
                     if (s_repeat || t_repeat)
                     {
-                        OSG_NOTICE<<"Warning!!! shouldn't get here"<<std::endl;
+                        OSG_NOTICE << "Warning!!! shouldn't get here" << std::endl;
                     }
 
                     stateset->setTextureAttribute(unit, newTexture);
 
-                    Drawables& drawables = sitr->second;
+                    Drawables&drawables = sitr->second;
 
                     osg::Matrix matrix = _builder.getTextureMatrix(texture);
 
                     // first check to see if all drawables are ok for applying texturematrix to.
                     bool canTexMatBeFlattenedToAllDrawables = true;
-                    for(Drawables::iterator ditr = drawables.begin();
-                        ditr != drawables.end() && canTexMatBeFlattenedToAllDrawables;
-                        ++ditr)
+
+                    for (Drawables::iterator ditr = drawables.begin();
+                         ditr != drawables.end() && canTexMatBeFlattenedToAllDrawables;
+                         ++ditr)
                     {
-                        osg::Geometry* geom = (*ditr)->asGeometry();
-                        osg::Vec2Array* texcoords = geom ? dynamic_cast<osg::Vec2Array*>(geom->getTexCoordArray(unit)) : 0;
+                        osg::Geometry  *geom      = (*ditr)->asGeometry();
+                        osg::Vec2Array *texcoords = geom ? dynamic_cast<osg::Vec2Array*>(geom->getTexCoordArray(unit)) : 0;
 
                         if (!texcoords)
                         {
                             canTexMatBeFlattenedToAllDrawables = false;
                         }
 
-                        if (drawablesThatHaveMultipleTexturesOnOneUnit.count(*ditr)!=0)
+                        if (drawablesThatHaveMultipleTexturesOnOneUnit.count(*ditr) != 0)
                         {
                             canTexMatBeFlattenedToAllDrawables = false;
                         }
@@ -4419,26 +4851,26 @@ void Optimizer::TextureAtlasVisitor::optimize()
                     if (canTexMatBeFlattenedToAllDrawables)
                     {
                         // OSG_NOTICE<<"All drawables can be flattened "<<drawables.size()<<std::endl;
-                        for(Drawables::iterator ditr = drawables.begin();
-                            ditr != drawables.end();
-                            ++ditr)
+                        for (Drawables::iterator ditr = drawables.begin();
+                             ditr != drawables.end();
+                             ++ditr)
                         {
-                            osg::Geometry* geom = (*ditr)->asGeometry();
-                            osg::Vec2Array* texcoords = geom ? dynamic_cast<osg::Vec2Array*>(geom->getTexCoordArray(unit)) : 0;
+                            osg::Geometry  *geom      = (*ditr)->asGeometry();
+                            osg::Vec2Array *texcoords = geom ? dynamic_cast<osg::Vec2Array*>(geom->getTexCoordArray(unit)) : 0;
                             if (texcoords)
                             {
-                                for(osg::Vec2Array::iterator titr = texcoords->begin();
-                                    titr != texcoords->end();
-                                    ++titr)
+                                for (osg::Vec2Array::iterator titr = texcoords->begin();
+                                     titr != texcoords->end();
+                                     ++titr)
                                 {
                                     osg::Vec2 tc = *titr;
-                                    (*titr).set(tc[0]*matrix(0,0) + tc[1]*matrix(1,0) + matrix(3,0),
-                                              tc[0]*matrix(0,1) + tc[1]*matrix(1,1) + matrix(3,1));
+                                    (*titr).set(tc[0] * matrix(0, 0) + tc[1] * matrix(1, 0) + matrix(3, 0),
+                                                tc[0] * matrix(0, 1) + tc[1] * matrix(1, 1) + matrix(3, 1));
                                 }
                             }
                             else
                             {
-                                OSG_NOTICE<<"Error, Optimizer::TextureAtlasVisitor::optimize() shouldn't ever get here..."<<std::endl;
+                                OSG_NOTICE << "Error, Optimizer::TextureAtlasVisitor::optimize() shouldn't ever get here..." << std::endl;
                             }
                         }
                     }
@@ -4450,7 +4882,6 @@ void Optimizer::TextureAtlasVisitor::optimize()
                 }
             }
         }
-
     }
 }
 
@@ -4461,33 +4892,35 @@ void Optimizer::TextureAtlasVisitor::optimize()
 // StaticObjectDectionVisitor
 ////////////////////////////////////////////////////////////////////////////
 
-void Optimizer::StaticObjectDetectionVisitor::apply(osg::Node& node)
+void Optimizer::StaticObjectDetectionVisitor::apply(osg::Node&node)
 {
-    if (node.getStateSet()) applyStateSet(*node.getStateSet());
+    if (node.getStateSet())
+        applyStateSet(*node.getStateSet());
 
     traverse(node);
 }
 
-void Optimizer::StaticObjectDetectionVisitor::apply(osg::Geode& geode)
+void Optimizer::StaticObjectDetectionVisitor::apply(osg::Geode&geode)
 {
-    if (geode.getStateSet()) applyStateSet(*geode.getStateSet());
+    if (geode.getStateSet())
+        applyStateSet(*geode.getStateSet());
 
-    for(unsigned int i=0; i<geode.getNumDrawables(); ++i)
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
         applyDrawable(*geode.getDrawable(i));
     }
 }
 
-void Optimizer::StaticObjectDetectionVisitor::applyStateSet(osg::StateSet& stateset)
+void Optimizer::StaticObjectDetectionVisitor::applyStateSet(osg::StateSet&stateset)
 {
     stateset.computeDataVariance();
 }
 
 
-void Optimizer::StaticObjectDetectionVisitor::applyDrawable(osg::Drawable& drawable)
+void Optimizer::StaticObjectDetectionVisitor::applyDrawable(osg::Drawable&drawable)
 {
-
-    if (drawable.getStateSet()) applyStateSet(*drawable.getStateSet());
+    if (drawable.getStateSet())
+        applyStateSet(*drawable.getStateSet());
 
     drawable.computeDataVariance();
 }
@@ -4503,24 +4936,25 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::reset(
     _matrixStack.clear();
 }
 
-void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::Group& group)
+void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::Group&group)
 {
     // only continue if there is a parent
     const unsigned int nodepathsize = _nodePath.size();
-    if(!_matrixStack.empty() && group.getNumParents() > 1 && nodepathsize > 1)
+
+    if (!_matrixStack.empty() && group.getNumParents() > 1 && nodepathsize > 1)
     {
         // copy this Group
-        osg::ref_ptr<osg::Object> new_obj = group.clone(osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
-        osg::Group* new_group = dynamic_cast<osg::Group*>(new_obj.get());
+        osg::ref_ptr<osg::Object> new_obj    = group.clone(osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
+        osg::Group                *new_group = dynamic_cast<osg::Group*>(new_obj.get());
 
         // New Group should only be added to parent through which this Group
         // was traversed, not to all parents of this Group.
-        osg::Group* parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize-2]);
-        if(parent_group)
+        osg::Group *parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize - 2]);
+        if (parent_group)
         {
             parent_group->replaceChild(&group, new_group);
             // also replace the node in the nodepath
-            _nodePath[nodepathsize-1] = new_group;
+            _nodePath[nodepathsize - 1] = new_group;
             // traverse the new Group
             traverse(*(new_group));
         }
@@ -4537,33 +4971,35 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(
 }
 
 
-void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::Transform& transform)
+void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::Transform&transform)
 {
     bool pushed = false;
 
     // only continue if there is a parent and this is a STATIC transform
     const unsigned int nodepathsize = _nodePath.size();
-    if(transform.getDataVariance() == osg::Object::STATIC && nodepathsize > 1)
+
+    if (transform.getDataVariance() == osg::Object::STATIC && nodepathsize > 1)
     {
         osg::Matrix matrix;
-        if(!_matrixStack.empty())
+        if (!_matrixStack.empty())
             matrix = _matrixStack.back();
+
         transform.computeLocalToWorldMatrix(matrix, this);
         _matrixStack.push_back(matrix);
         pushed = true;
 
         // convert this Transform to a Group
         osg::ref_ptr<osg::Group> group = new osg::Group(dynamic_cast<osg::Group&>(transform),
-            osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
+                                                        osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
 
         // New Group should only be added to parent through which this Transform
         // was traversed, not to all parents of this Transform.
-        osg::Group* parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize-2]);
-        if(parent_group)
+        osg::Group *parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize - 2]);
+        if (parent_group)
         {
             parent_group->replaceChild(&transform, group.get());
             // also replace the node in the nodepath
-            _nodePath[nodepathsize-1] = group.get();
+            _nodePath[nodepathsize - 1] = group.get();
             // traverse the new Group
             traverse(*(group.get()));
         }
@@ -4579,29 +5015,30 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(
     }
 
     // pop matrix off of stack
-    if(pushed)
+    if (pushed)
         _matrixStack.pop_back();
 }
 
 
-void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::LOD& lod)
+void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::LOD&lod)
 {
     const unsigned int nodepathsize = _nodePath.size();
-    if(!_matrixStack.empty() && lod.getNumParents() > 1 && nodepathsize > 1)
+
+    if (!_matrixStack.empty() && lod.getNumParents() > 1 && nodepathsize > 1)
     {
         osg::ref_ptr<osg::LOD> new_lod = new osg::LOD(lod,
-            osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
+                                                      osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
 
         // New LOD should only be added to parent through which this LOD
         // was traversed, not to all parents of this LOD.
-        osg::Group* parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize-2]);
-        if(parent_group)
+        osg::Group *parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize - 2]);
+        if (parent_group)
         {
             parent_group->replaceChild(&lod, new_lod.get());
             // also replace the node in the nodepath
-            _nodePath[nodepathsize-1] = new_lod.get();
+            _nodePath[nodepathsize - 1] = new_lod.get();
             // move center point
-            if(!_matrixStack.empty())
+            if (!_matrixStack.empty())
                 new_lod->setCenter(new_lod->getCenter() * _matrixStack.back());
 
             // traverse the new Group
@@ -4613,7 +5050,7 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(
     else
     {
         // move center point
-        if(!_matrixStack.empty())
+        if (!_matrixStack.empty())
             lod.setCenter(lod.getCenter() * _matrixStack.back());
 
         traverse(lod);
@@ -4621,12 +5058,12 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(
 }
 
 
-void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::Geode& geode)
+void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::Geode&geode)
 {
-    if(!_matrixStack.empty())
+    if (!_matrixStack.empty())
     {
         // If there is only one parent, just transform all vertices and normals
-        if(geode.getNumParents() == 1)
+        if (geode.getNumParents() == 1)
         {
             transformGeode(geode);
         }
@@ -4634,16 +5071,16 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(
         {
             // Else make a copy and then transform
             const unsigned int nodepathsize = _nodePath.size();
-            if(nodepathsize > 1)
+            if (nodepathsize > 1)
             {
                 // convert this Transform to a Group
                 osg::ref_ptr<osg::Geode> new_geode = new osg::Geode(geode,
-                    osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
+                                                                    osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
 
                 // New Group should only be added to parent through which this Transform
                 // was traversed, not to all parents of this Transform.
-                osg::Group* parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize-2]);
-                if(parent_group)
+                osg::Group *parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize - 2]);
+                if (parent_group)
                     parent_group->replaceChild(&geode, new_geode.get());
                 else
                     OSG_NOTICE << "No parent for this Geode" << std::endl;
@@ -4655,12 +5092,12 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(
 }
 
 
-void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::Billboard& billboard)
+void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(osg::Billboard&billboard)
 {
-    if(!_matrixStack.empty())
+    if (!_matrixStack.empty())
     {
         // If there is only one parent, just transform this Billboard
-        if(billboard.getNumParents() == 1)
+        if (billboard.getNumParents() == 1)
         {
             transformBillboard(billboard);
         }
@@ -4668,16 +5105,16 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(
         {
             // Else make a copy and then transform
             const unsigned int nodepathsize = _nodePath.size();
-            if(nodepathsize > 1)
+            if (nodepathsize > 1)
             {
                 // convert this Transform to a Group
                 osg::ref_ptr<osg::Billboard> new_billboard = new osg::Billboard(billboard,
-                    osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
+                                                                                osg::CopyOp::DEEP_COPY_NODES | osg::CopyOp::DEEP_COPY_DRAWABLES | osg::CopyOp::DEEP_COPY_ARRAYS);
 
                 // New Billboard should only be added to parent through which this Billboard
                 // was traversed, not to all parents of this Billboard.
-                osg::Group* parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize-2]);
-                if(parent_group)
+                osg::Group *parent_group = dynamic_cast<osg::Group*>(_nodePath[nodepathsize - 2]);
+                if (parent_group)
                     parent_group->replaceChild(&billboard, new_billboard.get());
                 else
                     OSG_NOTICE << "No parent for this Billboard" << std::endl;
@@ -4689,9 +5126,9 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::apply(
 }
 
 
-void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transformGeode(osg::Geode& geode)
+void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transformGeode(osg::Geode&geode)
 {
-    for(unsigned int i=0; i<geode.getNumDrawables(); i++)
+    for (unsigned int i = 0; i < geode.getNumDrawables(); i++)
     {
         transformDrawable(*geode.getDrawable(i));
     }
@@ -4700,35 +5137,37 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transf
 }
 
 
-void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transformDrawable(osg::Drawable& drawable)
+void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transformDrawable(osg::Drawable&drawable)
 {
-    osg::Geometry* geometry = drawable.asGeometry();
-    if(geometry)
+    osg::Geometry *geometry = drawable.asGeometry();
+
+    if (geometry)
     {
         // transform all geometry
-        osg::Vec3Array* verts = dynamic_cast<osg::Vec3Array*>(geometry->getVertexArray());
-        if(verts)
+        osg::Vec3Array *verts = dynamic_cast<osg::Vec3Array*>(geometry->getVertexArray());
+        if (verts)
         {
-            for(unsigned int j=0; j<verts->size(); j++)
+            for (unsigned int j = 0; j < verts->size(); j++)
             {
                 (*verts)[j] = (*verts)[j] * _matrixStack.back();
             }
         }
         else
         {
-            osg::Vec4Array* verts = dynamic_cast<osg::Vec4Array*>(geometry->getVertexArray());
-            if(verts)
+            osg::Vec4Array *verts = dynamic_cast<osg::Vec4Array*>(geometry->getVertexArray());
+            if (verts)
             {
-                for(unsigned int j=0; j<verts->size(); j++)
+                for (unsigned int j = 0; j < verts->size(); j++)
                 {
                     (*verts)[j] = _matrixStack.back() * (*verts)[j];
                 }
             }
         }
-        osg::Vec3Array* normals = dynamic_cast<osg::Vec3Array*>(geometry->getNormalArray());
-        if(normals)
+
+        osg::Vec3Array *normals = dynamic_cast<osg::Vec3Array*>(geometry->getNormalArray());
+        if (normals)
         {
-            for(unsigned int j=0; j<normals->size(); j++)
+            for (unsigned int j = 0; j < normals->size(); j++)
                 (*normals)[j] = osg::Matrix::transform3x3((*normals)[j], _matrixStack.back());
         }
 
@@ -4738,9 +5177,10 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transf
 }
 
 
-void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transformBillboard(osg::Billboard& billboard)
+void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transformBillboard(osg::Billboard&billboard)
 {
     osg::Vec3 axis = osg::Matrix::transform3x3(billboard.getAxis(), _matrixStack.back());
+
     axis.normalize();
     billboard.setAxis(axis);
 
@@ -4748,7 +5188,7 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transf
     normal.normalize();
     billboard.setNormal(normal);
 
-    for(unsigned int i=0; i<billboard.getNumDrawables(); i++)
+    for (unsigned int i = 0; i < billboard.getNumDrawables(); i++)
     {
         osg::Vec3 originalBillboardPosition = billboard.getPosition(i);
         billboard.setPosition(i, originalBillboardPosition * _matrixStack.back());
@@ -4764,6 +5204,3 @@ void Optimizer::FlattenStaticTransformsDuplicatingSharedSubgraphsVisitor::transf
 
     billboard.dirtyBound();
 }
-
-
-

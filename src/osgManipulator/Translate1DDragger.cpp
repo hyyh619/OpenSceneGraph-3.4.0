@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #include <osgManipulator/Translate1DDragger>
 #include <osgManipulator/Command>
@@ -29,115 +29,119 @@ Translate1DDragger::Translate1DDragger() : Dragger(), _checkForNodeInNodePath(tr
     setPickColor(osg::Vec4(1.0f, 1.0f, 0.0f, 1.0f));
 }
 
-Translate1DDragger::Translate1DDragger(const osg::Vec3d& s, const osg::Vec3d& e) : Dragger(), _checkForNodeInNodePath(true)
+Translate1DDragger::Translate1DDragger(const osg::Vec3d&s, const osg::Vec3d&e) : Dragger(), _checkForNodeInNodePath(true)
 {
-    _projector = new LineProjector(s,e);
+    _projector = new LineProjector(s, e);
     setColor(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
     setPickColor(osg::Vec4(1.0f, 1.0f, 0.0f, 1.0f));
 }
 
 Translate1DDragger::~Translate1DDragger()
-{
-}
+{}
 
-bool Translate1DDragger::handle(const PointerInfo& pointer, const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
+bool Translate1DDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
 {
     // Check if the dragger node is in the nodepath.
     if (_checkForNodeInNodePath)
     {
-        if (!pointer.contains(this)) return false;
+        if (!pointer.contains(this))
+            return false;
     }
 
     switch (ea.getEventType())
     {
-        // Pick start.
-        case (osgGA::GUIEventAdapter::PUSH):
-            {
-                // Get the LocalToWorld matrix for this node and set it for the projector.
-                osg::NodePath nodePathToRoot;
-                computeNodePathToRoot(*this,nodePathToRoot);
-                osg::Matrix localToWorld = osg::computeLocalToWorld(nodePathToRoot);
-                _projector->setLocalToWorld(localToWorld);
+    // Pick start.
+    case (osgGA::GUIEventAdapter::PUSH):
+    {
+        // Get the LocalToWorld matrix for this node and set it for the projector.
+        osg::NodePath nodePathToRoot;
+        computeNodePathToRoot(*this, nodePathToRoot);
+        osg::Matrix localToWorld = osg::computeLocalToWorld(nodePathToRoot);
+        _projector->setLocalToWorld(localToWorld);
 
-                if (_projector->project(pointer, _startProjectedPoint))
-                {
-                    // Generate the motion command.
-                    osg::ref_ptr<TranslateInLineCommand> cmd = new TranslateInLineCommand(_projector->getLineStart(),
-                                                                                          _projector->getLineEnd());
-                    cmd->setStage(MotionCommand::START);
-                    cmd->setLocalToWorldAndWorldToLocal(_projector->getLocalToWorld(),_projector->getWorldToLocal());
+        if (_projector->project(pointer, _startProjectedPoint))
+        {
+            // Generate the motion command.
+            osg::ref_ptr<TranslateInLineCommand> cmd = new TranslateInLineCommand(_projector->getLineStart(),
+                                                                                  _projector->getLineEnd());
+            cmd->setStage(MotionCommand::START);
+            cmd->setLocalToWorldAndWorldToLocal(_projector->getLocalToWorld(), _projector->getWorldToLocal());
 
-                    // Dispatch command.
-                    dispatch(*cmd);
+            // Dispatch command.
+            dispatch(*cmd);
 
-                    // Set color to pick color.
-                    setMaterialColor(_pickColor,*this);
+            // Set color to pick color.
+            setMaterialColor(_pickColor, *this);
 
-                    aa.requestRedraw();
-                }
-                return true;
-            }
+            aa.requestRedraw();
+        }
 
-        // Pick move.
-        case (osgGA::GUIEventAdapter::DRAG):
-            {
-                osg::Vec3d projectedPoint;
-                if (_projector->project(pointer, projectedPoint))
-                {
-                    // Generate the motion command.
-                    osg::ref_ptr<TranslateInLineCommand> cmd = new TranslateInLineCommand(_projector->getLineStart(),
-                                                                                          _projector->getLineEnd());
-                    cmd->setStage(MotionCommand::MOVE);
-                    cmd->setLocalToWorldAndWorldToLocal(_projector->getLocalToWorld(),_projector->getWorldToLocal());
-                    cmd->setTranslation(projectedPoint - _startProjectedPoint);
+        return true;
+    }
 
-                    // Dispatch command.
-                    dispatch(*cmd);
+    // Pick move.
+    case (osgGA::GUIEventAdapter::DRAG):
+    {
+        osg::Vec3d projectedPoint;
+        if (_projector->project(pointer, projectedPoint))
+        {
+            // Generate the motion command.
+            osg::ref_ptr<TranslateInLineCommand> cmd = new TranslateInLineCommand(_projector->getLineStart(),
+                                                                                  _projector->getLineEnd());
+            cmd->setStage(MotionCommand::MOVE);
+            cmd->setLocalToWorldAndWorldToLocal(_projector->getLocalToWorld(), _projector->getWorldToLocal());
+            cmd->setTranslation(projectedPoint - _startProjectedPoint);
 
-                    aa.requestRedraw();
-                }
-                return true;
-            }
+            // Dispatch command.
+            dispatch(*cmd);
 
-        // Pick finish.
-        case (osgGA::GUIEventAdapter::RELEASE):
-            {
-                osg::Vec3d projectedPoint;
-                if (_projector->project(pointer, projectedPoint))
-                {
-                    osg::ref_ptr<TranslateInLineCommand> cmd = new TranslateInLineCommand(_projector->getLineStart(),
-                            _projector->getLineEnd());
+            aa.requestRedraw();
+        }
 
-                    cmd->setStage(MotionCommand::FINISH);
-                    cmd->setLocalToWorldAndWorldToLocal(_projector->getLocalToWorld(),_projector->getWorldToLocal());
+        return true;
+    }
 
-                    // Dispatch command.
-                    dispatch(*cmd);
+    // Pick finish.
+    case (osgGA::GUIEventAdapter::RELEASE):
+    {
+        osg::Vec3d projectedPoint;
+        if (_projector->project(pointer, projectedPoint))
+        {
+            osg::ref_ptr<TranslateInLineCommand> cmd = new TranslateInLineCommand(_projector->getLineStart(),
+                                                                                  _projector->getLineEnd());
 
-                    // Reset color.
-                    setMaterialColor(_color,*this);
+            cmd->setStage(MotionCommand::FINISH);
+            cmd->setLocalToWorldAndWorldToLocal(_projector->getLocalToWorld(), _projector->getWorldToLocal());
 
-                    aa.requestRedraw();
-                }
+            // Dispatch command.
+            dispatch(*cmd);
 
-                return true;
-            }
-        default:
-            return false;
+            // Reset color.
+            setMaterialColor(_color, *this);
+
+            aa.requestRedraw();
+        }
+
+        return true;
+    }
+
+    default:
+        return false;
     }
 }
 
 void Translate1DDragger::setupDefaultGeometry()
 {
     // Get the line length and direction.
-    osg::Vec3 lineDir = _projector->getLineEnd()-_projector->getLineStart();
-    float lineLength = lineDir.length();
+    osg::Vec3 lineDir    = _projector->getLineEnd() - _projector->getLineStart();
+    float     lineLength = lineDir.length();
+
     lineDir.normalize();
 
-    osg::Geode* geode = new osg::Geode;
+    osg::Geode *geode = new osg::Geode;
     // Create a left cone.
     {
-        osg::Cone* cone = new osg::Cone (_projector->getLineStart(), 0.025f * lineLength, 0.10f * lineLength);
+        osg::Cone *cone = new osg::Cone (_projector->getLineStart(), 0.025f * lineLength, 0.10f * lineLength);
         osg::Quat rotation;
         rotation.makeRotate(lineDir, osg::Vec3(0.0f, 0.0f, 1.0f));
         cone->setRotation(rotation);
@@ -147,7 +151,7 @@ void Translate1DDragger::setupDefaultGeometry()
 
     // Create a right cone.
     {
-        osg::Cone* cone = new osg::Cone (_projector->getLineEnd(), 0.025f * lineLength, 0.10f * lineLength);
+        osg::Cone *cone = new osg::Cone (_projector->getLineEnd(), 0.025f * lineLength, 0.10f * lineLength);
         osg::Quat rotation;
         rotation.makeRotate(osg::Vec3(0.0f, 0.0f, 1.0f), lineDir);
         cone->setRotation(rotation);
@@ -157,35 +161,35 @@ void Translate1DDragger::setupDefaultGeometry()
 
     // Create an invisible cylinder for picking the line.
     {
-        osg::Cylinder* cylinder = new osg::Cylinder ((_projector->getLineStart()+_projector->getLineEnd())/2, 0.015f * lineLength, lineLength);
-        osg::Quat rotation;
+        osg::Cylinder *cylinder = new osg::Cylinder ((_projector->getLineStart() + _projector->getLineEnd()) / 2, 0.015f * lineLength, lineLength);
+        osg::Quat     rotation;
         rotation.makeRotate(osg::Vec3(0.0f, 0.0f, 1.0f), lineDir);
         cylinder->setRotation(rotation);
-        osg::Drawable* cylinderGeom = new osg::ShapeDrawable(cylinder);
+        osg::Drawable *cylinderGeom = new osg::ShapeDrawable(cylinder);
 
         setDrawableToAlwaysCull(*cylinderGeom);
 
         geode->addDrawable(cylinderGeom);
     }
 
-    osg::Geode* lineGeode = new osg::Geode;
+    osg::Geode *lineGeode = new osg::Geode;
     // Create a line.
     {
-        osg::Geometry* geometry = new osg::Geometry();
+        osg::Geometry *geometry = new osg::Geometry();
 
-        osg::Vec3Array* vertices = new osg::Vec3Array(2);
+        osg::Vec3Array *vertices = new osg::Vec3Array(2);
         (*vertices)[0] = _projector->getLineStart();
         (*vertices)[1] = _projector->getLineEnd();
 
         geometry->setVertexArray(vertices);
-        geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES,0,2));
+        geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, 2));
 
         lineGeode->addDrawable(geometry);
     }
 
     // Turn of lighting for line and set line width.
-    lineGeode->getOrCreateStateSet()->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
-    osg::LineWidth* linewidth = new osg::LineWidth();
+    lineGeode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+    osg::LineWidth *linewidth = new osg::LineWidth();
     linewidth->setWidth(2.0f);
     lineGeode->getOrCreateStateSet()->setAttributeAndModes(linewidth, osg::StateAttribute::ON);
 

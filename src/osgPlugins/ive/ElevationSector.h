@@ -4,11 +4,13 @@
 #include <osgSim/Sector>
 #include "ReadWrite.h"
 
-namespace ive{
-class ElevationSector : public osgSim::ElevationSector, public ReadWrite {
+namespace ive
+{
+class ElevationSector : public osgSim::ElevationSector, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

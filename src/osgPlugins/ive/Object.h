@@ -5,14 +5,14 @@
 #include <osg/Object>
 #include "ReadWrite.h"
 
-namespace ive{
-
-class Object : public ReadWrite, public osg::Object{
+namespace ive
+{
+class Object : public ReadWrite, public osg::Object
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* out);
+void write(DataOutputStream *out);
+void read(DataInputStream *out);
 };
-
 }
 
 #endif

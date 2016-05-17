@@ -14,8 +14,8 @@
 #endif
 #include <fbxsdk.h>
 
-//The only things we need to create a new StateSet are texture and materials. So we store that in a pair.
-//We Don't store directly in stateSet because getOrCreateStateSet function set some parameters.
+// The only things we need to create a new StateSet are texture and materials. So we store that in a pair.
+// We Don't store directly in stateSet because getOrCreateStateSet function set some parameters.
 
 struct StateSetContent
 {
@@ -24,8 +24,7 @@ struct StateSetContent
         reflectionFactor(1.0),
         emissiveFactor(1.0),
         ambientFactor(1.0)
-    {
-    }
+    {}
 
     osg::ref_ptr<osg::Material> material;
 
@@ -73,35 +72,35 @@ struct StateSetContent
     };
 };
 
-//We use the pointers set by the importer to not duplicate materials and textures.
-typedef std::map<const FbxSurfaceMaterial *, StateSetContent> FbxMaterialMap;
+// We use the pointers set by the importer to not duplicate materials and textures.
+typedef std::map<const FbxSurfaceMaterial*, StateSetContent> FbxMaterialMap;
 
-//This map is used to not load the same image more than 1 time.
-typedef std::map<std::string, osg::Texture2D *> ImageMap;
+// This map is used to not load the same image more than 1 time.
+typedef std::map<std::string, osg::Texture2D*> ImageMap;
 
 class FbxMaterialToOsgStateSet
 {
 public:
-    //Convert a FbxSurfaceMaterial to a osgMaterial and an osgTexture.
-    StateSetContent convert(const FbxSurfaceMaterial* pFbxMat);
+// Convert a FbxSurfaceMaterial to a osgMaterial and an osgTexture.
+StateSetContent convert(const FbxSurfaceMaterial *pFbxMat);
 
-    //dir is the directory where fbx is stored (for relative path).
-    FbxMaterialToOsgStateSet(const std::string& dir, const osgDB::Options* options, bool lightmapTextures) :
-        _options(options),
-        _dir(dir),
-        _lightmapTextures(lightmapTextures){}
+// dir is the directory where fbx is stored (for relative path).
+FbxMaterialToOsgStateSet(const std::string&dir, const osgDB::Options *options, bool lightmapTextures) :
+    _options(options),
+    _dir(dir),
+    _lightmapTextures(lightmapTextures){}
 
-    void checkInvertTransparency();
+void checkInvertTransparency();
 private:
-    //Convert a texture fbx to an osg texture.
-    osg::ref_ptr<osg::Texture2D>
-    fbxTextureToOsgTexture(const FbxFileTexture* pOsgTex);
-    FbxMaterialMap       _fbxMaterialMap;
-    ImageMap              _imageMap;
-    const osgDB::Options* _options;
-    const std::string     _dir;
-    bool                  _lightmapTextures;
+// Convert a texture fbx to an osg texture.
+osg::ref_ptr<osg::Texture2D>
+fbxTextureToOsgTexture(const FbxFileTexture *pOsgTex);
+FbxMaterialMap       _fbxMaterialMap;
+ImageMap             _imageMap;
+const osgDB::Options *_options;
+const std::string    _dir;
+bool                 _lightmapTextures;
 };
 
 
-#endif //FBXMATERIALTOOSGSTATESET_H
+#endif // FBXMATERIALTOOSGSTATESET_H

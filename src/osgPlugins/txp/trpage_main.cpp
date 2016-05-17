@@ -10,13 +10,13 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 /* trpage_main.cpp
     This file is here to provide a DLL Main.
     Note: #ifdef this out on non-windows machines
-    */
+ */
 #if defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

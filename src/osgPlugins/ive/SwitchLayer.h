@@ -6,14 +6,12 @@
 
 namespace ive
 {
-
 class SwitchLayer : public osgTerrain::SwitchLayer, public ReadWrite
 {
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
-
 }
 
 #endif

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/Notify>
 #include <osg/Endian>
@@ -22,101 +22,102 @@
 
 using namespace osgDB;
 
-osgDB::Archive* osgDB::openArchive(const std::string& filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint)
+osgDB::Archive* osgDB::openArchive(const std::string&filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint)
 {
     return openArchive(filename, status, indexBlockSizeHint, Registry::instance()->getOptions());
 }
 
-osgDB::Archive* osgDB::openArchive(const std::string& filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint,Options* options)
+osgDB::Archive* osgDB::openArchive(const std::string&filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, Options *options)
 {
     // ensure archive extension is in the registry list
     std::string::size_type dot = filename.find_last_of('.');
+
     if (dot != std::string::npos)
     {
-        std::string ext = filename.substr(dot+1);
+        std::string ext = filename.substr(dot + 1);
         Registry::instance()->addArchiveExtension(ext);
     }
+
     ReaderWriter::ReadResult result = osgDB::Registry::instance()->openArchive(filename, status, indexBlockSizeHint, options);
     return result.takeArchive();
 }
 
 Archive::Archive()
 {
-    OSG_INFO<<"Archive::Archive() open"<<std::endl;
+    OSG_INFO << "Archive::Archive() open" << std::endl;
 }
 
 Archive::~Archive()
 {
-    OSG_INFO<<"Archive::~Archive() closed"<<std::endl;
+    OSG_INFO << "Archive::~Archive() closed" << std::endl;
 }
 
-void cleanupFileString(std::string& strFileOrDir)
+void cleanupFileString(std::string&strFileOrDir)
 {
-   if (strFileOrDir.empty())
-   {
-      return;
-   }
+    if (strFileOrDir.empty())
+    {
+        return;
+    }
 
-   // convert all separators to unix-style for conformity
-   for (unsigned int i = 0; i < strFileOrDir.length(); ++i)
-   {
-      if (strFileOrDir[i] == '\\')
-      {
-         strFileOrDir[i] = '/';
-      }
-   }
+    // convert all separators to unix-style for conformity
+    for (unsigned int i = 0; i < strFileOrDir.length(); ++i)
+    {
+        if (strFileOrDir[i] == '\\')
+        {
+            strFileOrDir[i] = '/';
+        }
+    }
 
-   // get rid of trailing separators
-   if (strFileOrDir[strFileOrDir.length()-1] == '/')
-   {
-      strFileOrDir = strFileOrDir.substr(0, strFileOrDir.length()-1);
-   }
+    // get rid of trailing separators
+    if (strFileOrDir[strFileOrDir.length() - 1] == '/')
+    {
+        strFileOrDir = strFileOrDir.substr(0, strFileOrDir.length() - 1);
+    }
 
-   //add a beginning separator
-   if(strFileOrDir[0] != '/')
-   {
-      strFileOrDir.insert(0, "/");
-   }
+    // add a beginning separator
+    if (strFileOrDir[0] != '/')
+    {
+        strFileOrDir.insert(0, "/");
+    }
 }
 
-osgDB::DirectoryContents osgDB::Archive::getDirectoryContents(const std::string& dirName) const
+osgDB::DirectoryContents osgDB::Archive::getDirectoryContents(const std::string&dirName) const
 {
-   DirectoryContents filenames;
-   getFileNames(filenames);
+    DirectoryContents filenames;
 
-   std::string searchPath = dirName;
-   cleanupFileString(searchPath);
+    getFileNames(filenames);
 
-   osgDB::DirectoryContents dirContents;
+    std::string searchPath = dirName;
+    cleanupFileString(searchPath);
 
-   DirectoryContents::const_iterator iter = filenames.begin();
-   DirectoryContents::const_iterator iterEnd = filenames.end();
+    osgDB::DirectoryContents dirContents;
 
-   for(; iter != iterEnd; ++iter)
-   {
-      std::string currentFile = *iter;
+    DirectoryContents::const_iterator iter    = filenames.begin();
+    DirectoryContents::const_iterator iterEnd = filenames.end();
 
-      cleanupFileString(currentFile);
+    for (; iter != iterEnd; ++iter)
+    {
+        std::string currentFile = *iter;
 
-      if(currentFile.size() > searchPath.size())
-      {
-         size_t endSubElement = currentFile.find(searchPath);
+        cleanupFileString(currentFile);
 
-         //we match the whole string in the beginning of the path
-         if(endSubElement == 0)
-         {
-            std::string remainingFile = currentFile.substr(searchPath.size() + 1, std::string::npos);
-            size_t endFileToken = remainingFile.find_first_of('/');
+        if (currentFile.size() > searchPath.size())
+        {
+            size_t endSubElement = currentFile.find(searchPath);
 
-            if(endFileToken == std::string::npos)
+            // we match the whole string in the beginning of the path
+            if (endSubElement == 0)
             {
-               dirContents.push_back(remainingFile);
+                std::string remainingFile = currentFile.substr(searchPath.size() + 1, std::string::npos);
+                size_t      endFileToken  = remainingFile.find_first_of('/');
+
+                if (endFileToken == std::string::npos)
+                {
+                    dirContents.push_back(remainingFile);
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   return dirContents;
-
-
+    return dirContents;
 }

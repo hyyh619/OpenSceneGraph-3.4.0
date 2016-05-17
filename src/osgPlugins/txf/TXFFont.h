@@ -22,29 +22,35 @@
 class TXFFont : public osgText::Font::FontImplementation
 {
 public:
-    TXFFont(const std::string& filename);
+TXFFont(const std::string&filename);
 
-    virtual ~TXFFont();
+virtual ~TXFFont();
 
-    virtual std::string getFileName() const;
+virtual std::string getFileName() const;
 
-    virtual bool supportsMultipleFontResolutions() const { return false; }
+virtual bool supportsMultipleFontResolutions() const
+{
+    return false;
+}
 
-    virtual osgText::Glyph* getGlyph(const osgText::FontResolution& fontRes, unsigned int charcode);
+virtual osgText::Glyph* getGlyph(const osgText::FontResolution&fontRes, unsigned int charcode);
 
-    virtual osgText::Glyph3D* getGlyph3D(unsigned int) { return 0; }
+virtual osgText::Glyph3D* getGlyph3D(unsigned int)
+{
+    return 0;
+}
 
-    virtual bool hasVertical() const;
+virtual bool hasVertical() const;
 
-    virtual osg::Vec2 getKerning(unsigned int leftcharcode,unsigned int rightcharcode, osgText::KerningType kerningType);
+virtual osg::Vec2 getKerning(unsigned int leftcharcode, unsigned int rightcharcode, osgText::KerningType kerningType);
 
-    bool loadFont(std::istream& stream);
+bool loadFont(std::istream&stream);
 
 protected:
-    typedef std::map<unsigned int, osg::ref_ptr<osgText::Glyph> > GlyphMap;
+typedef std::map<unsigned int, osg::ref_ptr<osgText::Glyph> > GlyphMap;
 
-    std::string _filename;
-    GlyphMap _chars;
+std::string _filename;
+GlyphMap    _chars;
 };
 
 #endif

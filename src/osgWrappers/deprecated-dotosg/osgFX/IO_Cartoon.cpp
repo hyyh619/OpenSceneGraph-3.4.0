@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool Cartoon_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool Cartoon_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool Cartoon_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool Cartoon_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(Cartoon_Proxy)
 (
@@ -17,35 +17,41 @@ REGISTER_DOTOSGWRAPPER(Cartoon_Proxy)
     Cartoon_writeLocalData
 );
 
-bool Cartoon_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool Cartoon_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgFX::Cartoon &myobj = static_cast<osgFX::Cartoon &>(obj);
-    bool itAdvanced = false;
+    osgFX::Cartoon&myobj     = static_cast<osgFX::Cartoon&>(obj);
+    bool          itAdvanced = false;
 
-    if (fr[0].matchWord("lightNumber")) {
+    if (fr[0].matchWord("lightNumber"))
+    {
         int n;
-        if (fr[1].getInt(n)) {
+        if (fr[1].getInt(n))
+        {
             myobj.setLightNumber(n);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("outlineColor")) {
+    if (fr[0].matchWord("outlineColor"))
+    {
         osg::Vec4 w;
         if (fr[1].getFloat(w.x()) && fr[2].getFloat(w.y()) &&
-            fr[3].getFloat(w.z()) && fr[4].getFloat(w.w())) {
+            fr[3].getFloat(w.z()) && fr[4].getFloat(w.w()))
+        {
             myobj.setOutlineColor(w);
-            fr += 5;
+            fr        += 5;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("outlineLineWidth")) {
+    if (fr[0].matchWord("outlineLineWidth"))
+    {
         float f;
-        if (fr[1].getFloat(f)) {
+        if (fr[1].getFloat(f))
+        {
             myobj.setOutlineLineWidth(f);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
@@ -53,12 +59,12 @@ bool Cartoon_readLocalData(osg::Object &obj, osgDB::Input &fr)
     return itAdvanced;
 }
 
-bool Cartoon_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool Cartoon_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgFX::Cartoon &myobj = static_cast<const osgFX::Cartoon &>(obj);
+    const osgFX::Cartoon&myobj = static_cast<const osgFX::Cartoon&>(obj);
 
-    fw.indent() << "lightNumber " << myobj.getLightNumber() << "\n";
-    fw.indent() << "outlineColor " << myobj.getOutlineColor() << "\n";
+    fw.indent() << "lightNumber " <<      myobj.getLightNumber() << "\n";
+    fw.indent() << "outlineColor " <<     myobj.getOutlineColor() << "\n";
     fw.indent() << "outlineLineWidth " << myobj.getOutlineLineWidth() << "\n";
 
     return true;

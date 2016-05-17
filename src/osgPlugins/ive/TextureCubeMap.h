@@ -6,12 +6,11 @@
 
 namespace ive
 {
-
 class TextureCubeMap : public osg::TextureCubeMap, public ReadWrite
 {
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

@@ -10,14 +10,14 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgAnimation/ActionCallback>
 #include <osgAnimation/Timeline>
 
-void osgAnimation::RunAction::operator()(Action* action, ActionVisitor* visitor)
+void osgAnimation::RunAction::operator()(Action *action, ActionVisitor *visitor)
 {
-    Timeline* tm = visitor->getCurrentTimeline();
+    Timeline *tm = visitor->getCurrentTimeline();
+
     tm->addActionNow(_action.get(), _priority);
 }
-

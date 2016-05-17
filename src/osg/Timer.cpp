@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//#include <stdlib.h>
+ */
+// #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -29,6 +29,7 @@ using namespace osg;
 Timer* Timer::instance()
 {
     static Timer s_timer;
+
     return &s_timer;
 }
 
@@ -38,66 +39,69 @@ Timer* Timer::instance()
     #include <fcntl.h>
     #include <windows.h>
     #include <winbase.h>
-    Timer::Timer()
-    {
-        LARGE_INTEGER frequency;
-        if(QueryPerformanceFrequency(&frequency))
-        {
-            _secsPerTick = 1.0/(double)frequency.QuadPart;
-        }
-        else
-        {
-            _secsPerTick = 1.0;
-            OSG_NOTICE<<"Error: Timer::Timer() unable to use QueryPerformanceFrequency, "<<std::endl;
-            OSG_NOTICE<<"timing code will be wrong, Windows error code: "<<GetLastError()<<std::endl;
-        }
+Timer::Timer()
+{
+    LARGE_INTEGER frequency;
 
-        setStartTick();
+    if (QueryPerformanceFrequency(&frequency))
+    {
+        _secsPerTick = 1.0 / (double)frequency.QuadPart;
+    }
+    else
+    {
+        _secsPerTick = 1.0;
+        OSG_NOTICE << "Error: Timer::Timer() unable to use QueryPerformanceFrequency, " << std::endl;
+        OSG_NOTICE << "timing code will be wrong, Windows error code: " << GetLastError() << std::endl;
     }
 
-    Timer_t Timer::tick() const
+    setStartTick();
+}
+
+Timer_t Timer::tick() const
+{
+    LARGE_INTEGER qpc;
+
+    if (QueryPerformanceCounter(&qpc))
     {
-        LARGE_INTEGER qpc;
-        if (QueryPerformanceCounter(&qpc))
-        {
-            return qpc.QuadPart;
-        }
-        else
-        {
-            OSG_NOTICE<<"Error: Timer::Timer() unable to use QueryPerformanceCounter, "<<std::endl;
-            OSG_NOTICE<<"timing code will be wrong, Windows error code: "<<GetLastError()<<std::endl;
-            return 0;
-        }
+        return qpc.QuadPart;
     }
+    else
+    {
+        OSG_NOTICE << "Error: Timer::Timer() unable to use QueryPerformanceCounter, " << std::endl;
+        OSG_NOTICE << "timing code will be wrong, Windows error code: " << GetLastError() << std::endl;
+        return 0;
+    }
+}
 
 #else
     #include <unistd.h>
 
-    Timer::Timer( void )
-    {
-        _secsPerTick = (1.0 / (double) 1000000);
+Timer::Timer(void)
+{
+    _secsPerTick = (1.0 / (double) 1000000);
 
-        setStartTick();
-    }
+    setStartTick();
+}
 
-    #if defined(_POSIX_TIMERS) && ( _POSIX_TIMERS > 0 ) && defined(_POSIX_MONOTONIC_CLOCK)
+    #if defined(_POSIX_TIMERS) && (_POSIX_TIMERS > 0) && defined(_POSIX_MONOTONIC_CLOCK)
         #include <time.h>
 
-        Timer_t Timer::tick() const
-        {
-            struct timespec ts;
-            clock_gettime(CLOCK_MONOTONIC, &ts);
-            return ((osg::Timer_t)ts.tv_sec)*1000000+(osg::Timer_t)ts.tv_nsec/1000;
-        }
+Timer_t Timer::tick() const
+{
+    struct timespec ts;
+
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return ((osg::Timer_t)ts.tv_sec) * 1000000 + (osg::Timer_t)ts.tv_nsec / 1000;
+}
     #else
         #include <sys/time.h>
 
-        Timer_t Timer::tick() const
-        {
-            struct timeval tv;
-            gettimeofday(&tv, NULL);
-            return ((osg::Timer_t)tv.tv_sec)*1000000+(osg::Timer_t)tv.tv_usec;
-        }
-    #endif
+Timer_t Timer::tick() const
+{
+    struct timeval tv;
 
+    gettimeofday(&tv, NULL);
+    return ((osg::Timer_t)tv.tv_sec) * 1000000 + (osg::Timer_t)tv.tv_usec;
+}
+    #endif
 #endif

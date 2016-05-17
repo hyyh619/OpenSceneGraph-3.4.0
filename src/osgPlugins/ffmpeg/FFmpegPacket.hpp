@@ -8,73 +8,68 @@
 
 namespace osgFFmpeg
 {
-
-    struct FFmpegPacket
+struct FFmpegPacket
+{
+    enum Type
     {
-
-        enum Type
-        {
-            PACKET_DATA,
-            PACKET_END_OF_STREAM,
-            PACKET_FLUSH
-        };
-
-
-        FFmpegPacket() :
-            type(PACKET_DATA)
-        {
-            packet.data = 0;
-        }
-
-        explicit FFmpegPacket(const Type type) : 
-            type(type)
-        { 
-            packet.data = 0;
-        }
-
-        explicit FFmpegPacket(const AVPacket & packet) : 
-            packet(packet),
-            type(PACKET_DATA)
-        { 
-            
-        }
-
-        void clear()
-        {
-            if (packet.data != 0)
-                av_free_packet(&packet);
-
-            release();
-        }
-
-        void release()
-        {
-            packet.data = 0;
-            type = PACKET_DATA;
-        }
-
-        bool valid() const
-        {
-            return (type != PACKET_DATA) ^ (packet.data != 0);
-        }
-
-        bool operator ! () const
-        {
-            return ! valid();
-        }
-
-        AVPacket    packet;
-        Type        type;
+        PACKET_DATA,
+        PACKET_END_OF_STREAM,
+        PACKET_FLUSH
     };
 
-    struct FFmpegPacketClear
-    {
-        void operator () (FFmpegPacket & packet) const
-        {
-            packet.clear();
-        }
-    };
 
+    FFmpegPacket() :
+        type(PACKET_DATA)
+    {
+        packet.data = 0;
+    }
+
+    explicit FFmpegPacket(const Type type) :
+        type(type)
+    {
+        packet.data = 0;
+    }
+
+    explicit FFmpegPacket(const AVPacket&packet) :
+        packet(packet),
+        type(PACKET_DATA)
+    {}
+
+    void clear()
+    {
+        if (packet.data != 0)
+            av_free_packet(&packet);
+
+        release();
+    }
+
+    void release()
+    {
+        packet.data = 0;
+        type        = PACKET_DATA;
+    }
+
+    bool valid() const
+    {
+        return (type != PACKET_DATA) ^ (packet.data != 0);
+    }
+
+    bool operator !() const
+    {
+        return !valid();
+    }
+
+    AVPacket packet;
+    Type     type;
+};
+
+struct FFmpegPacketClear
+{
+    void operator ()(FFmpegPacket&packet) const
+    {
+        packet.clear();
+    }
+};
 }
 
 

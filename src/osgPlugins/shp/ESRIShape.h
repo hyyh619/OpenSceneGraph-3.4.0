@@ -9,24 +9,26 @@
 
 #include "ESRIType.h"
 
-namespace ESRIShape {
-
-
-enum ByteOrder {
+namespace ESRIShape
+{
+enum ByteOrder
+{
     LittleEndian,
     BigEndian
 };
 
-enum PartType{
-    TriangleStrip   = 0,
-    TriangleFan     = 1,
-    OuterRing       = 2,
-    InnerRing       = 3,
-    FirstRing       = 4,
-    Ring            = 5
+enum PartType
+{
+    TriangleStrip = 0,
+    TriangleFan   = 1,
+    OuterRing     = 2,
+    InnerRing     = 3,
+    FirstRing     = 4,
+    Ring          = 5
 };
 
-enum ShapeType {
+enum ShapeType
+{
     ShapeTypeNullShape   = 0,
     ShapeTypePoint       = 1,
     ShapeTypePolyLine    = 3,
@@ -55,7 +57,7 @@ struct BoundingBox
     Double Mmin;
     Double Mmax;
 
-    bool read( int fd );
+    bool read(int fd);
 
     void print();
 };
@@ -64,11 +66,11 @@ struct BoundingBox
 
 struct ShapeHeader
 {
-    Integer fileCode;
-    Byte _unused_0[20];
-    Integer fileLength;
-    Integer version;
-    Integer shapeType;
+    Integer     fileCode;
+    Byte        _unused_0[20];
+    Integer     fileLength;
+    Integer     version;
+    Integer     shapeType;
     BoundingBox bbox;
 
     bool read(int fd);
@@ -83,7 +85,7 @@ struct RecordHeader
 
     RecordHeader();
 
-    bool read( int fd );
+    bool read(int fd);
 
     void print();
 };
@@ -94,7 +96,7 @@ struct NullRecord
     Integer shapeType;
     NullRecord();
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -104,16 +106,17 @@ struct Box
     Double Xmin, Ymin, Xmax, Ymax;
 
     Box();
-    Box(const Box &b );
-    bool read( int fd );
+    Box(const Box&b);
+    bool read(int fd);
 };
 
-struct Range {
+struct Range
+{
     Double min, max;
     Range();
-    Range( const Range &r );
+    Range(const Range&r);
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 struct ShapeObject : public osg::Referenced
@@ -129,71 +132,71 @@ struct Point : public ShapeObject
     Double x, y;
 
     Point();
-    Point(const Point &p);
+    Point(const Point&p);
     virtual ~Point();
 
-    bool read( int fd );
+    bool read(int fd);
     void print();
 };
 
 struct PointRecord
 {
     Point point;
-    bool read( int fd );
+    bool  read(int fd);
 };
 
-struct MultiPoint: public ShapeObject
+struct MultiPoint : public ShapeObject
 {
-    Box     bbox;
-    Integer numPoints;
-    struct Point   *points;
+    Box          bbox;
+    Integer      numPoints;
+    struct Point *points;
 
     MultiPoint();
 
-    MultiPoint( const struct MultiPoint &mpoint );
+    MultiPoint(const struct MultiPoint&mpoint);
 
     virtual ~MultiPoint();
 
-    bool read( int fd );
+    bool read(int fd);
 
     void print();
 };
 
-struct PolyLine: public ShapeObject
+struct PolyLine : public ShapeObject
 {
-    Box             bbox;
-    Integer         numParts;
-    Integer         numPoints;
-    Integer         *parts;
-    struct Point    *points;
+    Box          bbox;
+    Integer      numParts;
+    Integer      numPoints;
+    Integer      *parts;
+    struct Point *points;
 
     PolyLine();
 
-    PolyLine( const PolyLine &p );
+    PolyLine(const PolyLine&p);
 
     virtual ~PolyLine();
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 
 
 struct Polygon : public ShapeObject
 {
-    Box             bbox;
-    Integer         numParts;
-    Integer         numPoints;
-    Integer         *parts;
-    Point           *points;
+    Box     bbox;
+    Integer numParts;
+    Integer numPoints;
+    Integer *parts;
+    Point   *points;
 
     Polygon();
 
-    Polygon( const Polygon &p );
+    Polygon(const Polygon&p);
 
     virtual ~Polygon();
 
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -203,11 +206,11 @@ struct PointM : public ShapeObject
 
     PointM();
 
-    PointM(const PointM &p);
+    PointM(const PointM&p);
 
     virtual ~PointM();
 
-    bool read( int fd );
+    bool read(int fd);
 
     void print();
 };
@@ -216,67 +219,67 @@ struct PointMRecord
 {
     PointM pointM;
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 
-struct MultiPointM: public ShapeObject
+struct MultiPointM : public ShapeObject
 {
-    Box             bbox;
-    Integer         numPoints;
-    struct Point    *points;
-    struct Range    mRange;
-    Double          *mArray;
+    Box          bbox;
+    Integer      numPoints;
+    struct Point *points;
+    struct Range mRange;
+    Double       *mArray;
 
     MultiPointM();
 
-    MultiPointM( const struct MultiPointM &mpointm );
+    MultiPointM(const struct MultiPointM&mpointm);
 
     virtual ~MultiPointM();
 
-    bool read( int fd );
+    bool read(int fd);
 
     void print();
 };
 
 
-struct PolyLineM: public ShapeObject
+struct PolyLineM : public ShapeObject
 {
-    Box             bbox;
-    Integer         numParts;
-    Integer         numPoints;
-    Integer         *parts;
-    struct Point    *points;
-    struct Range    mRange;
-    Double          *mArray;
+    Box          bbox;
+    Integer      numParts;
+    Integer      numPoints;
+    Integer      *parts;
+    struct Point *points;
+    struct Range mRange;
+    Double       *mArray;
 
     PolyLineM();
 
-    PolyLineM(const PolyLineM &p);
+    PolyLineM(const PolyLineM&p);
 
     virtual ~PolyLineM();
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 
 struct PolygonM : public ShapeObject
 {
-    Box             bbox;
-    Integer         numParts;
-    Integer         numPoints;
-    Integer         *parts;
-    Point           *points;
-    struct Range    mRange;
-    Double          *mArray;
+    Box          bbox;
+    Integer      numParts;
+    Integer      numPoints;
+    Integer      *parts;
+    Point        *points;
+    struct Range mRange;
+    Double       *mArray;
 
     PolygonM();
 
-    PolygonM(const PolygonM &p);
+    PolygonM(const PolygonM&p);
 
     virtual ~PolygonM();
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 
@@ -292,79 +295,79 @@ struct PointZ : public ShapeObject
     Double x, y, z, m;
 
     PointZ();
-    PointZ(const PointZ &p);
+    PointZ(const PointZ&p);
     virtual ~PointZ();
 
-    bool read( int fd );
+    bool read(int fd);
 
     void print();
 };
 
-struct MultiPointZ: public ShapeObject
+struct MultiPointZ : public ShapeObject
 {
-    Box             bbox;
-    Integer         numPoints;
-    struct Point    *points;
-    struct Range    zRange;
-    Double          *zArray;
-    struct Range    mRange;
-    Double          *mArray;
+    Box          bbox;
+    Integer      numPoints;
+    struct Point *points;
+    struct Range zRange;
+    Double       *zArray;
+    struct Range mRange;
+    Double       *mArray;
 
     MultiPointZ();
 
-    MultiPointZ( const struct MultiPointZ &);
+    MultiPointZ(const struct MultiPointZ&);
 
     virtual ~MultiPointZ();
 
-    bool read( int fd );
+    bool read(int fd);
 
     void print();
 };
 
 
 
-struct PolyLineZ: public ShapeObject
+struct PolyLineZ : public ShapeObject
 {
-    Box             bbox;
-    Integer         numParts;
-    Integer         numPoints;
-    Integer         *parts;
-    struct Point    *points;
-    struct Range    zRange;
-    Double          *zArray;
-    struct Range    mRange;
-    Double          *mArray;
+    Box          bbox;
+    Integer      numParts;
+    Integer      numPoints;
+    Integer      *parts;
+    struct Point *points;
+    struct Range zRange;
+    Double       *zArray;
+    struct Range mRange;
+    Double       *mArray;
 
     PolyLineZ();
 
-    PolyLineZ( const PolyLineZ &p );
+    PolyLineZ(const PolyLineZ&p);
 
     virtual ~PolyLineZ();
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 
 struct PolygonZ : public ShapeObject
 {
-    Box             bbox;
-    Integer         numParts;
-    Integer         numPoints;
-    Integer         *parts;
-    Point           *points;
-    struct Range    zRange;
-    Double          *zArray;
-    struct Range    mRange;
-    Double          *mArray;
+    Box          bbox;
+    Integer      numParts;
+    Integer      numPoints;
+    Integer      *parts;
+    Point        *points;
+    struct Range zRange;
+    Double       *zArray;
+    struct Range mRange;
+    Double       *mArray;
 
     PolygonZ();
 
-    PolygonZ( const PolygonZ &p );
+    PolygonZ(const PolygonZ&p);
 
     virtual ~PolygonZ();
 
 
-    bool read( int fd );
+    bool read(int fd);
 };
 
 
@@ -373,23 +376,22 @@ struct PolygonZ : public ShapeObject
 
 struct MultiPatch
 {
-    Box             bbox;
-    Integer         numParts;
-    Integer         numPoints;
-    Integer         *parts;
-    Integer         *partTypes;
-    struct Point    *points;
-    Range           zRange;
-    Double          *zArray;
-    Range           mRange;
-    Double          *mArray;
+    Box          bbox;
+    Integer      numParts;
+    Integer      numPoints;
+    Integer      *parts;
+    Integer      *partTypes;
+    struct Point *points;
+    Range        zRange;
+    Double       *zArray;
+    Range        mRange;
+    Double       *mArray;
 
     MultiPatch();
-    MultiPatch( const MultiPatch &);
+    MultiPatch(const MultiPatch&);
     virtual ~MultiPatch();
-    bool read( int );
+    bool read(int);
 };
-
 }
 
 #endif

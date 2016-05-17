@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool LightModel_readLocalData(Object& obj, Input& fr);
-bool LightModel_writeLocalData(const Object& obj, Output& fw);
+bool LightModel_readLocalData(Object&obj, Input&fr);
+bool LightModel_writeLocalData(const Object&obj, Output&fw);
 
 
 // register the read and write functions with the osgDB::Registry.
@@ -24,13 +24,14 @@ REGISTER_DOTOSGWRAPPER(LightModel)
 );
 
 
-bool LightModel_readLocalData(Object& obj, Input& fr)
+bool LightModel_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    LightModel& lightmodel = static_cast<LightModel&>(obj);
+    LightModel&lightmodel = static_cast<LightModel&>(obj);
 
     osg::Vec4 ambient;
+
     if (fr[0].matchWord("ambientIntensity") &&
         fr[1].getFloat(ambient[0]) &&
         fr[2].getFloat(ambient[1]) &&
@@ -38,7 +39,7 @@ bool LightModel_readLocalData(Object& obj, Input& fr)
         fr[4].getFloat(ambient[3]))
     {
         lightmodel.setAmbientIntensity(ambient);
-        fr+=5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
@@ -60,13 +61,13 @@ bool LightModel_readLocalData(Object& obj, Input& fr)
         if (fr[1].matchWord("TRUE"))
         {
             lightmodel.setLocalViewer(true);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
         else if (fr[1].matchWord("FALSE"))
         {
             lightmodel.setLocalViewer(false);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
     }
@@ -76,13 +77,13 @@ bool LightModel_readLocalData(Object& obj, Input& fr)
         if (fr[1].matchWord("TRUE"))
         {
             lightmodel.setTwoSided(true);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
         else if (fr[1].matchWord("FALSE"))
         {
             lightmodel.setTwoSided(false);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
     }
@@ -90,27 +91,26 @@ bool LightModel_readLocalData(Object& obj, Input& fr)
     return iteratorAdvanced;
 }
 
-bool LightModel_writeLocalData(const Object& obj,Output& fw)
+bool LightModel_writeLocalData(const Object&obj, Output&fw)
 {
-    const LightModel& lightmodel = static_cast<const LightModel&>(obj);
+    const LightModel&lightmodel = static_cast<const LightModel&>(obj);
 
     fw.indent() << "ambientIntensity " << lightmodel.getAmbientIntensity() << std::endl;
 
-    if (lightmodel.getColorControl()==osg::LightModel::SEPARATE_SPECULAR_COLOR)
+    if (lightmodel.getColorControl() == osg::LightModel::SEPARATE_SPECULAR_COLOR)
         fw.indent() << "colorControl SEPARATE_SPECULAR_COLOR" << std::endl;
     else
         fw.indent() << "colorControl SINGLE_COLOR" << std::endl;
 
     if (lightmodel.getLocalViewer())
-        fw.indent() << "localViewer TRUE"<< std::endl;
+        fw.indent() << "localViewer TRUE" << std::endl;
     else
-        fw.indent() << "localViewer FALSE"<< std::endl;
+        fw.indent() << "localViewer FALSE" << std::endl;
 
     if (lightmodel.getTwoSided())
-        fw.indent() << "twoSided TRUE"<< std::endl;
+        fw.indent() << "twoSided TRUE" << std::endl;
     else
-        fw.indent() << "twoSided FALSE"<< std::endl;
+        fw.indent() << "twoSided FALSE" << std::endl;
 
     return true;
 }
-

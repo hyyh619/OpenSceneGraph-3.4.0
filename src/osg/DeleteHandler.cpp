@@ -9,18 +9,16 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/DeleteHandler>
 #include <osg/Notify>
 
 namespace osg
 {
-
-DeleteHandler::DeleteHandler(int numberOfFramesToRetainObjects):
+DeleteHandler::DeleteHandler(int numberOfFramesToRetainObjects) :
     _numFramesToRetainObjects(numberOfFramesToRetainObjects),
     _currentFrameNumber(0)
-{
-}
+{}
 
 DeleteHandler::~DeleteHandler()
 {
@@ -37,35 +35,37 @@ void DeleteHandler::flush()
         // list, but delete the objects outside this scoped lock so that if any objects deleted
         // unref their children then no deadlock happens.
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-        unsigned int frameNumberToClearTo = _currentFrameNumber - _numFramesToRetainObjects;
+        unsigned int                                frameNumberToClearTo = _currentFrameNumber - _numFramesToRetainObjects;
 
         ObjectsToDeleteList::iterator itr;
-        for(itr = _objectsToDelete.begin();
-            itr != _objectsToDelete.end();
-            ++itr)
+
+        for (itr = _objectsToDelete.begin();
+             itr != _objectsToDelete.end();
+             ++itr)
         {
-            if (itr->first > frameNumberToClearTo) break;
+            if (itr->first > frameNumberToClearTo)
+                break;
 
             deletionList.push_back(itr->second);
 
             itr->second = 0;
         }
 
-        _objectsToDelete.erase( _objectsToDelete.begin(), itr);
+        _objectsToDelete.erase(_objectsToDelete.begin(), itr);
     }
 
-    for(DeletionList::iterator ditr = deletionList.begin();
-        ditr != deletionList.end();
-        ++ditr)
+    for (DeletionList::iterator ditr = deletionList.begin();
+         ditr != deletionList.end();
+         ++ditr)
     {
         doDelete(*ditr);
     }
-
 }
 
 void DeleteHandler::flushAll()
 {
     unsigned int temp_numFramesToRetainObjects = _numFramesToRetainObjects;
+
     _numFramesToRetainObjects = 0;
 
     typedef std::list<const osg::Referenced*> DeletionList;
@@ -76,21 +76,22 @@ void DeleteHandler::flushAll()
         // list, but delete the objects outside this scoped lock so that if any objects deleted
         // unref their children then no deadlock happens.
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-        ObjectsToDeleteList::iterator itr;
-        for(itr = _objectsToDelete.begin();
-            itr != _objectsToDelete.end();
-            ++itr)
+        ObjectsToDeleteList::iterator               itr;
+
+        for (itr = _objectsToDelete.begin();
+             itr != _objectsToDelete.end();
+             ++itr)
         {
             deletionList.push_back(itr->second);
             itr->second = 0;
         }
 
-        _objectsToDelete.erase( _objectsToDelete.begin(), _objectsToDelete.end());
+        _objectsToDelete.erase(_objectsToDelete.begin(), _objectsToDelete.end());
     }
 
-    for(DeletionList::iterator ditr = deletionList.begin();
-        ditr != deletionList.end();
-        ++ditr)
+    for (DeletionList::iterator ditr = deletionList.begin();
+         ditr != deletionList.end();
+         ++ditr)
     {
         doDelete(*ditr);
     }
@@ -98,14 +99,14 @@ void DeleteHandler::flushAll()
     _numFramesToRetainObjects = temp_numFramesToRetainObjects;
 }
 
-void DeleteHandler::requestDelete(const osg::Referenced* object)
+void DeleteHandler::requestDelete(const osg::Referenced *object)
 {
-    if (_numFramesToRetainObjects==0) doDelete(object);
+    if (_numFramesToRetainObjects == 0)
+        doDelete(object);
     else
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-        _objectsToDelete.push_back(FrameNumberObjectPair(_currentFrameNumber,object));
+        _objectsToDelete.push_back(FrameNumberObjectPair(_currentFrameNumber, object));
     }
 }
-
 } // end of namespace osg

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GLExtensions>
 #include <osg/ref_ptr>
 #include <osg/Image>
@@ -33,20 +33,20 @@ static GLenum faceTarget[6] =
 };
 
 
-TextureCubeMap::TextureCubeMap():
-            _textureWidth(0),
-            _textureHeight(0),
-            _numMipmapLevels(0)
+TextureCubeMap::TextureCubeMap() :
+    _textureWidth(0),
+    _textureHeight(0),
+    _numMipmapLevels(0)
 {
     setUseHardwareMipMapGeneration(false);
 }
 
-TextureCubeMap::TextureCubeMap(const TextureCubeMap& text,const CopyOp& copyop):
-            Texture(text,copyop),
-            _textureWidth(text._textureWidth),
-            _textureHeight(text._textureHeight),
-            _numMipmapLevels(text._numMipmapLevels),
-            _subloadCallback(text._subloadCallback)
+TextureCubeMap::TextureCubeMap(const TextureCubeMap&text, const CopyOp&copyop) :
+    Texture(text, copyop),
+    _textureWidth(text._textureWidth),
+    _textureHeight(text._textureHeight),
+    _numMipmapLevels(text._numMipmapLevels),
+    _subloadCallback(text._subloadCallback)
 {
     setImage(0, copyop(text._images[0].get()));
     setImage(1, copyop(text._images[1].get()));
@@ -66,26 +66,31 @@ TextureCubeMap::~TextureCubeMap()
     setImage(5, NULL);
 }
 
-int TextureCubeMap::compare(const StateAttribute& sa) const
+int TextureCubeMap::compare(const StateAttribute&sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
-    COMPARE_StateAttribute_Types(TextureCubeMap,sa)
+    COMPARE_StateAttribute_Types(TextureCubeMap, sa)
 
     bool noImages = true;
-    for (int n=0; n<6; n++)
-    {
-        if (noImages && _images[n].valid()) noImages = false;
-        if (noImages && rhs._images[n].valid()) noImages = false;
 
-        if (_images[n]!=rhs._images[n]) // smart pointer comparison.
+    for (int n = 0; n < 6; n++)
+    {
+        if (noImages && _images[n].valid())
+            noImages = false;
+
+        if (noImages && rhs._images[n].valid())
+            noImages = false;
+
+        if (_images[n] != rhs._images[n]) // smart pointer comparison.
         {
             if (_images[n].valid())
             {
                 if (rhs._images[n].valid())
                 {
                     int result = _images[n]->compare(*rhs._images[n]);
-                    if (result!=0) return result;
+                    if (result != 0)
+                        return result;
                 }
                 else
                 {
@@ -107,11 +112,13 @@ int TextureCubeMap::compare(const StateAttribute& sa) const
         // downloaded
 
         int result = compareTextureObjects(rhs);
-        if (result!=0) return result;
+        if (result != 0)
+            return result;
     }
 
     int result = compareTexture(rhs);
-    if (result!=0) return result;
+    if (result != 0)
+        return result;
 
     // compare each parameter in turn against the rhs.
     COMPARE_StateAttribute_Parameter(_textureWidth)
@@ -122,14 +129,17 @@ int TextureCubeMap::compare(const StateAttribute& sa) const
 }
 
 
-void TextureCubeMap::setImage(unsigned int face, Image* image)
+void TextureCubeMap::setImage(unsigned int face, Image *image)
 {
-    if (_images[face] == image) return;
+    if (_images[face] == image)
+        return;
 
     unsigned numImageRequireUpdateBefore = 0;
-    for (unsigned int i=0; i<getNumImages(); ++i)
+
+    for (unsigned int i = 0; i < getNumImages(); ++i)
     {
-        if (_images[i].valid() && _images[i]->requiresUpdateCall()) ++numImageRequireUpdateBefore;
+        if (_images[i].valid() && _images[i]->requiresUpdateCall())
+            ++numImageRequireUpdateBefore;
     }
 
     if (_images[face].valid())
@@ -147,20 +157,22 @@ void TextureCubeMap::setImage(unsigned int face, Image* image)
 
     // find out if we need to reset the update callback to handle the animation of image
     unsigned numImageRequireUpdateAfter = 0;
-    for (unsigned int i=0; i<getNumImages(); ++i)
+
+    for (unsigned int i = 0; i < getNumImages(); ++i)
     {
-        if (_images[i].valid() && _images[i]->requiresUpdateCall()) ++numImageRequireUpdateAfter;
+        if (_images[i].valid() && _images[i]->requiresUpdateCall())
+            ++numImageRequireUpdateAfter;
     }
 
-    if (numImageRequireUpdateBefore>0)
+    if (numImageRequireUpdateBefore > 0)
     {
-        if (numImageRequireUpdateAfter==0)
+        if (numImageRequireUpdateAfter == 0)
         {
             setUpdateCallback(0);
             setDataVariance(osg::Object::STATIC);
         }
     }
-    else if (numImageRequireUpdateAfter>0)
+    else if (numImageRequireUpdateAfter > 0)
     {
         setUpdateCallback(new Image::UpdateCallback());
         setDataVariance(osg::Object::DYNAMIC);
@@ -179,41 +191,45 @@ const Image* TextureCubeMap::getImage(unsigned int face) const
 
 bool TextureCubeMap::imagesValid() const
 {
-    for (int n=0; n<6; n++)
+    for (int n = 0; n < 6; n++)
     {
         if (!_images[n].valid() || !_images[n]->data())
             return false;
     }
+
     return true;
 }
 
 void TextureCubeMap::computeInternalFormat() const
 {
-    if (imagesValid()) computeInternalFormatWithImage(*_images[0]);
-    else computeInternalFormatType();
+    if (imagesValid())
+        computeInternalFormatWithImage(*_images[0]);
+    else
+        computeInternalFormatType();
 }
 
-void TextureCubeMap::apply(State& state) const
+void TextureCubeMap::apply(State&state) const
 {
     // get the contextID (user defined ID of 0 upwards) for the
     // current OpenGL context.
     const unsigned int contextID = state.getContextID();
 
-    Texture::TextureObjectManager* tom = Texture::getTextureObjectManager(contextID).get();
-    ElapsedTime elapsedTime(&(tom->getApplyTime()));
+    Texture::TextureObjectManager *tom = Texture::getTextureObjectManager(contextID).get();
+    ElapsedTime                   elapsedTime(&(tom->getApplyTime()));
+
     tom->getNumberApplied()++;
 
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
 
     if (!extensions->isCubeMapSupported)
         return;
 
     // get the texture object for the current contextID.
-    TextureObject* textureObject = getTextureObject(contextID);
+    TextureObject *textureObject = getTextureObject(contextID);
 
     if (textureObject)
     {
-        const osg::Image* image = _images[0].get();
+        const osg::Image *image = _images[0].get();
         if (image && getModifiedCount(0, contextID) != image->getModifiedCount())
         {
             // compute the internal texture format, this set the _internalFormat to an appropriate value.
@@ -228,7 +244,7 @@ void TextureCubeMap::apply(State& state) const
             {
                 Texture::releaseTextureObject(contextID, _textureObjectBuffer[contextID].get());
                 _textureObjectBuffer[contextID] = 0;
-                textureObject = 0;
+                textureObject                   = 0;
             }
         }
     }
@@ -237,121 +253,117 @@ void TextureCubeMap::apply(State& state) const
     {
         textureObject->bind();
 
-        if (getTextureParameterDirty(state.getContextID())) applyTexParameters(GL_TEXTURE_CUBE_MAP,state);
+        if (getTextureParameterDirty(state.getContextID()))
+            applyTexParameters(GL_TEXTURE_CUBE_MAP, state);
 
         if (_subloadCallback.valid())
         {
-            _subloadCallback->subload(*this,state);
+            _subloadCallback->subload(*this, state);
         }
         else
         {
-            for (int n=0; n<6; n++)
+            for (int n = 0; n < 6; n++)
             {
-                const osg::Image* image = _images[n].get();
-                if (image && getModifiedCount((Face)n,contextID) != image->getModifiedCount())
+                const osg::Image *image = _images[n].get();
+                if (image && getModifiedCount((Face)n, contextID) != image->getModifiedCount())
                 {
-                    applyTexImage2D_subload( state, faceTarget[n], _images[n].get(), _textureWidth, _textureHeight, _internalFormat, _numMipmapLevels);
-                    getModifiedCount((Face)n,contextID) = image->getModifiedCount();
+                    applyTexImage2D_subload(state, faceTarget[n], _images[n].get(), _textureWidth, _textureHeight, _internalFormat, _numMipmapLevels);
+                    getModifiedCount((Face)n, contextID) = image->getModifiedCount();
                 }
             }
         }
-
     }
     else if (_subloadCallback.valid())
     {
-        textureObject = generateAndAssignTextureObject(contextID,GL_TEXTURE_CUBE_MAP);
+        textureObject = generateAndAssignTextureObject(contextID, GL_TEXTURE_CUBE_MAP);
 
         textureObject->bind();
 
-        applyTexParameters(GL_TEXTURE_CUBE_MAP,state);
+        applyTexParameters(GL_TEXTURE_CUBE_MAP, state);
 
-        _subloadCallback->load(*this,state);
+        _subloadCallback->load(*this, state);
 
         // in theory the following line is redundent, but in practice
         // have found that the first frame drawn doesn't apply the textures
         // unless a second bind is called?!!
         // perhaps it is the first glBind which is not required...
-        //glBindTexture( GL_TEXTURE_CUBE_MAP, handle );
-
+        // glBindTexture( GL_TEXTURE_CUBE_MAP, handle );
     }
     else if (imagesValid())
     {
-
         // compute the internal texture format, this set the _internalFormat to an appropriate value.
         computeInternalFormat();
 
         // compute the dimensions of the texture.
-        computeRequiredTextureDimensions(state,*_images[0],_textureWidth, _textureHeight, _numMipmapLevels);
+        computeRequiredTextureDimensions(state, *_images[0], _textureWidth, _textureHeight, _numMipmapLevels);
 
         // cubemap textures must have square dimensions
-        if( _textureWidth != _textureHeight )
+        if (_textureWidth != _textureHeight)
         {
-            _textureWidth = _textureHeight = minimum( _textureWidth , _textureHeight );
+            _textureWidth = _textureHeight = minimum(_textureWidth, _textureHeight);
         }
 
         textureObject = generateAndAssignTextureObject(
-                contextID,GL_TEXTURE_CUBE_MAP,_numMipmapLevels,_internalFormat,_textureWidth,_textureHeight,1,0);
+            contextID, GL_TEXTURE_CUBE_MAP, _numMipmapLevels, _internalFormat, _textureWidth, _textureHeight, 1, 0);
 
         textureObject->bind();
 
-        applyTexParameters(GL_TEXTURE_CUBE_MAP,state);
+        applyTexParameters(GL_TEXTURE_CUBE_MAP, state);
 
-        for (int n=0; n<6; n++)
+        for (int n = 0; n < 6; n++)
         {
-            const osg::Image* image = _images[n].get();
+            const osg::Image *image = _images[n].get();
             if (image)
             {
                 if (textureObject->isAllocated())
                 {
-                    applyTexImage2D_subload( state, faceTarget[n], image, _textureWidth, _textureHeight, _internalFormat, _numMipmapLevels);
+                    applyTexImage2D_subload(state, faceTarget[n], image, _textureWidth, _textureHeight, _internalFormat, _numMipmapLevels);
                 }
                 else
                 {
-                    applyTexImage2D_load( state, faceTarget[n], image, _textureWidth, _textureHeight, _numMipmapLevels);
+                    applyTexImage2D_load(state, faceTarget[n], image, _textureWidth, _textureHeight, _numMipmapLevels);
                 }
-                getModifiedCount((Face)n,contextID) = image->getModifiedCount();
+
+                getModifiedCount((Face)n, contextID) = image->getModifiedCount();
             }
-
-
         }
 
         // unref image data?
         if (isSafeToUnrefImageData(state))
         {
-            TextureCubeMap* non_const_this = const_cast<TextureCubeMap*>(this);
-            for (int n=0; n<6; n++)
+            TextureCubeMap *non_const_this = const_cast<TextureCubeMap*>(this);
+
+            for (int n = 0; n < 6; n++)
             {
-                if (_images[n].valid() && _images[n]->getDataVariance()==STATIC)
+                if (_images[n].valid() && _images[n]->getDataVariance() == STATIC)
                 {
                     non_const_this->_images[n] = NULL;
                 }
             }
         }
-
     }
-    else if ( (_textureWidth!=0) && (_textureHeight!=0) && (_internalFormat!=0) )
+    else if ((_textureWidth != 0) && (_textureHeight != 0) && (_internalFormat != 0))
     {
         textureObject = generateAndAssignTextureObject(
-                contextID,GL_TEXTURE_CUBE_MAP,_numMipmapLevels,_internalFormat,_textureWidth,_textureHeight,1,0);
+            contextID, GL_TEXTURE_CUBE_MAP, _numMipmapLevels, _internalFormat, _textureWidth, _textureHeight, 1, 0);
 
         textureObject->bind();
 
-        applyTexParameters(GL_TEXTURE_CUBE_MAP,state);
+        applyTexParameters(GL_TEXTURE_CUBE_MAP, state);
 
-        for (int n=0; n<6; n++)
+        for (int n = 0; n < 6; n++)
         {
             // no image present, but dimensions at set so less create the texture
-            glTexImage2D( faceTarget[n], 0, _internalFormat,
+            glTexImage2D(faceTarget[n], 0, _internalFormat,
                          _textureWidth, _textureHeight, _borderWidth,
                          _sourceFormat ? _sourceFormat : _internalFormat,
                          _sourceType ? _sourceType : GL_UNSIGNED_BYTE,
                          0);
         }
-
     }
     else
     {
-        glBindTexture( GL_TEXTURE_CUBE_MAP, 0 );
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     }
 
     // if texture object is now valid and we have to allocate mipmap levels, then
@@ -361,24 +373,27 @@ void TextureCubeMap::apply(State& state) const
     }
 }
 
-void TextureCubeMap::copyTexSubImageCubeMap(State& state, int face, int xoffset, int yoffset, int x, int y, int width, int height )
+void TextureCubeMap::copyTexSubImageCubeMap(State&state, int face, int xoffset, int yoffset, int x, int y, int width, int height)
 {
-    const unsigned int contextID = state.getContextID();
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const unsigned int contextID   = state.getContextID();
+    const GLExtensions *extensions = state.get<GLExtensions>();
 
     if (!extensions->isCubeMapSupported)
         return;
 
-    if (_internalFormat==0) _internalFormat=GL_RGBA;
+    if (_internalFormat == 0)
+        _internalFormat = GL_RGBA;
 
     // get the texture object for the current contextID.
-    TextureObject* textureObject = getTextureObject(contextID);
+    TextureObject *textureObject = getTextureObject(contextID);
 
     if (!textureObject)
     {
+        if (_textureWidth == 0)
+            _textureWidth = width;
 
-        if (_textureWidth==0) _textureWidth = width;
-        if (_textureHeight==0) _textureHeight = height;
+        if (_textureHeight == 0)
+            _textureHeight = height;
 
         // create texture object.
         apply(state);
@@ -388,10 +403,9 @@ void TextureCubeMap::copyTexSubImageCubeMap(State& state, int face, int xoffset,
         if (!textureObject)
         {
             // failed to create texture object
-            OSG_NOTICE<<"Warning : failed to create TextureCubeMap texture obeject, copyTexSubImageCubeMap abandoned."<<std::endl;
+            OSG_NOTICE << "Warning : failed to create TextureCubeMap texture obeject, copyTexSubImageCubeMap abandoned." << std::endl;
             return;
         }
-
     }
 
     GLenum target = faceTarget[face];
@@ -404,7 +418,7 @@ void TextureCubeMap::copyTexSubImageCubeMap(State& state, int face, int xoffset,
         applyTexParameters(GL_TEXTURE_CUBE_MAP, state);
 
         bool needHardwareMipMap = (_min_filter != LINEAR && _min_filter != NEAREST);
-        bool hardwareMipMapOn = false;
+        bool hardwareMipMapOn   = false;
         if (needHardwareMipMap)
         {
             hardwareMipMapOn = isHardwareMipmapGenerationEnabled(state);
@@ -412,29 +426,28 @@ void TextureCubeMap::copyTexSubImageCubeMap(State& state, int face, int xoffset,
             if (!hardwareMipMapOn)
             {
                 // have to switch off mip mapping
-                OSG_NOTICE<<"Warning: TextureCubeMap::copyTexImage2D(,,,,) switch off mip mapping as hardware support not available."<<std::endl;
+                OSG_NOTICE << "Warning: TextureCubeMap::copyTexImage2D(,,,,) switch off mip mapping as hardware support not available." << std::endl;
                 _min_filter = LINEAR;
             }
         }
 
         GenerateMipmapMode mipmapResult = mipmapBeforeTexImage(state, hardwareMipMapOn);
 
-        glCopyTexSubImage2D( target , 0, xoffset, yoffset, x, y, width, height);
+        glCopyTexSubImage2D(target, 0, xoffset, yoffset, x, y, width, height);
 
         mipmapAfterTexImage(state, mipmapResult);
 
         // inform state that this texture is the current one bound.
         state.haveAppliedTextureAttribute(state.getActiveTextureUnit(), this);
-
     }
 }
 
-void TextureCubeMap::allocateMipmap(State& state) const
+void TextureCubeMap::allocateMipmap(State&state) const
 {
     const unsigned int contextID = state.getContextID();
 
     // get the texture object for the current contextID.
-    TextureObject* textureObject = getTextureObject(contextID);
+    TextureObject *textureObject = getTextureObject(contextID);
 
     if (textureObject && _textureWidth != 0 && _textureHeight != 0)
     {
@@ -442,31 +455,32 @@ void TextureCubeMap::allocateMipmap(State& state) const
         textureObject->bind();
 
         // compute number of mipmap levels
-        int width = _textureWidth;
-        int height = _textureHeight;
+        int width           = _textureWidth;
+        int height          = _textureHeight;
         int numMipmapLevels = Image::computeNumberOfMipmapLevels(width, height);
 
         // we do not reallocate the level 0, since it was already allocated
-        width >>= 1;
+        width  >>= 1;
         height >>= 1;
 
-        for( GLsizei k = 1; k < numMipmapLevels  && (width || height); k++)
+        for (GLsizei k = 1; k < numMipmapLevels && (width || height); k++)
         {
             if (width == 0)
                 width = 1;
+
             if (height == 0)
                 height = 1;
 
-            for (int n=0; n<6; n++)
+            for (int n = 0; n < 6; n++)
             {
-                glTexImage2D( faceTarget[n], k, _internalFormat,
-                            width, height, _borderWidth,
-                            _sourceFormat ? _sourceFormat : _internalFormat,
-                            _sourceType ? _sourceType : GL_UNSIGNED_BYTE,
-                            0);
+                glTexImage2D(faceTarget[n], k, _internalFormat,
+                             width, height, _borderWidth,
+                             _sourceFormat ? _sourceFormat : _internalFormat,
+                             _sourceType ? _sourceType : GL_UNSIGNED_BYTE,
+                             0);
             }
 
-            width >>= 1;
+            width  >>= 1;
             height >>= 1;
         }
 

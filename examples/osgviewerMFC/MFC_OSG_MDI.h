@@ -16,16 +16,16 @@
 class CMFC_OSG_MDIApp : public CWinApp
 {
 public:
-    CMFC_OSG_MDIApp();
+CMFC_OSG_MDIApp();
 
 
 // Overrides
 public:
-    virtual BOOL InitInstance();
+virtual BOOL InitInstance();
 
 // Implementation
-    afx_msg void OnAppAbout();
-    DECLARE_MESSAGE_MAP()
+afx_msg void OnAppAbout();
+DECLARE_MESSAGE_MAP()
 };
 
 extern CMFC_OSG_MDIApp theApp;

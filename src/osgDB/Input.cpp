@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Object>
 
 #include <osgDB/Registry>
@@ -19,37 +19,38 @@
 using namespace osgDB;
 
 Input::Input()
-{
-}
+{}
 
 
 Input::~Input()
-{
-}
+{}
 
 
-osg::Object* Input::getObjectForUniqueID(const std::string& uniqueID)
+osg::Object* Input::getObjectForUniqueID(const std::string&uniqueID)
 {
     UniqueIDToObjectMapping::iterator fitr = _uniqueIDToObjectMap.find(uniqueID);
-    if (fitr != _uniqueIDToObjectMap.end()) return (*fitr).second.get();
-    else return NULL;
+
+    if (fitr != _uniqueIDToObjectMap.end())
+        return (*fitr).second.get();
+    else
+        return NULL;
 }
 
 
-void Input::registerUniqueIDForObject(const std::string& uniqueID,osg::Object* obj)
+void Input::registerUniqueIDForObject(const std::string&uniqueID, osg::Object *obj)
 {
     _uniqueIDToObjectMap[uniqueID] = obj;
 }
 
 
-osg::Object* Input::readObjectOfType(const osg::Object& compObj)
+osg::Object* Input::readObjectOfType(const osg::Object&compObj)
 {
-    return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readObjectOfType(compObj,*this);
+    return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readObjectOfType(compObj, *this);
 }
 
-osg::Object* Input::readObjectOfType(const basic_type_wrapper &btw)
+osg::Object* Input::readObjectOfType(const basic_type_wrapper&btw)
 {
-    return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readObjectOfType(btw,*this);
+    return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readObjectOfType(btw, *this);
 }
 
 osg::Object* Input::readObject()
@@ -65,9 +66,12 @@ osg::Image*  Input::readImage()
 
 osg::Drawable* Input::readDrawable()
 {
-    osg::Drawable* drawable = Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readDrawable(*this);
-    osg::Geometry* geometry = drawable ? drawable->asGeometry() : 0;
-    if (geometry && geometry->containsDeprecatedData()) geometry->fixDeprecatedData();
+    osg::Drawable *drawable = Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readDrawable(*this);
+    osg::Geometry *geometry = drawable ? drawable->asGeometry() : 0;
+
+    if (geometry && geometry->containsDeprecatedData())
+        geometry->fixDeprecatedData();
+
     return drawable;
 }
 
@@ -85,9 +89,9 @@ osg::Node* Input::readNode()
     return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readNode(*this);
 }
 
-osg::Object* Input::readObject(const std::string& fileName)
+osg::Object* Input::readObject(const std::string&fileName)
 {
-    return readObjectFile(fileName,_options.get());
+    return readObjectFile(fileName, _options.get());
 }
 
 osg::Shader*  Input::readShader()
@@ -95,19 +99,19 @@ osg::Shader*  Input::readShader()
     return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readShader(*this);
 }
 
-osg::Image*  Input::readImage(const std::string& fileName)
+osg::Image*  Input::readImage(const std::string&fileName)
 {
-    return readImageFile(fileName,_options.get());
+    return readImageFile(fileName, _options.get());
 }
 
-osg::Node* Input::readNode(const std::string& fileName)
+osg::Node* Input::readNode(const std::string&fileName)
 {
-    return readNodeFile(fileName,_options.get());
+    return readNodeFile(fileName, _options.get());
 }
 
-osg::Shader*  Input::readShader(const std::string& fileName)
+osg::Shader*  Input::readShader(const std::string&fileName)
 {
-    return readShaderFile(fileName,_options.get());
+    return readShaderFile(fileName, _options.get());
 }
 
 bool Input::read(Parameter value1)
@@ -118,7 +122,8 @@ bool Input::read(Parameter value1)
         (*this) += 1;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 bool Input::read(Parameter value1, Parameter value2)
@@ -131,7 +136,8 @@ bool Input::read(Parameter value1, Parameter value2)
         (*this) += 2;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 bool Input::read(Parameter value1, Parameter value2, Parameter value3)
@@ -146,7 +152,8 @@ bool Input::read(Parameter value1, Parameter value2, Parameter value3)
         (*this) += 3;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter value4)
@@ -163,7 +170,8 @@ bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter
         (*this) += 4;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5)
@@ -182,7 +190,8 @@ bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter
         (*this) += 5;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6)
@@ -203,7 +212,8 @@ bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter
         (*this) += 6;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7)
@@ -226,7 +236,8 @@ bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter
         (*this) += 7;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7, Parameter value8)
@@ -251,20 +262,22 @@ bool Input::read(Parameter value1, Parameter value2, Parameter value3, Parameter
         (*this) += 8;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str)
+bool Input::read(const char *str)
 {
     if ((*this)[0].matchWord(str))
     {
         (*this) += 1;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str, Parameter value1)
+bool Input::read(const char *str, Parameter value1)
 {
     if ((*this)[0].matchWord(str) && value1.valid((*this)[1].getStr()))
     {
@@ -272,10 +285,11 @@ bool Input::read(const char* str, Parameter value1)
         (*this) += 2;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str, Parameter value1, Parameter value2)
+bool Input::read(const char *str, Parameter value1, Parameter value2)
 {
     if ((*this)[0].matchWord(str) &&
         value1.valid((*this)[1].getStr()) &&
@@ -286,10 +300,11 @@ bool Input::read(const char* str, Parameter value1, Parameter value2)
         (*this) += 3;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter value3)
+bool Input::read(const char *str, Parameter value1, Parameter value2, Parameter value3)
 {
     if ((*this)[0].matchWord(str) &&
         value1.valid((*this)[1].getStr()) &&
@@ -302,10 +317,11 @@ bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter 
         (*this) += 4;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter value3, Parameter value4)
+bool Input::read(const char *str, Parameter value1, Parameter value2, Parameter value3, Parameter value4)
 {
     if ((*this)[0].matchWord(str) &&
         value1.valid((*this)[1].getStr()) &&
@@ -320,10 +336,11 @@ bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter 
         (*this) += 5;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5)
+bool Input::read(const char *str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5)
 {
     if ((*this)[0].matchWord(str) &&
         value1.valid((*this)[1].getStr()) &&
@@ -340,10 +357,11 @@ bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter 
         (*this) += 6;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6)
+bool Input::read(const char *str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6)
 {
     if ((*this)[0].matchWord(str) &&
         value1.valid((*this)[1].getStr()) &&
@@ -362,10 +380,11 @@ bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter 
         (*this) += 7;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7)
+bool Input::read(const char *str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7)
 {
     if ((*this)[0].matchWord(str) &&
         value1.valid((*this)[1].getStr()) &&
@@ -386,10 +405,11 @@ bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter 
         (*this) += 8;
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
-bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7, Parameter value8)
+bool Input::read(const char *str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7, Parameter value8)
 {
     if ((*this)[0].matchWord(str) &&
         value1.valid((*this)[1].getStr()) &&
@@ -412,5 +432,6 @@ bool Input::read(const char* str, Parameter value1, Parameter value2, Parameter 
         (*this) += 9;
         return true;
     }
-    else return false;
+    else
+        return false;
 }

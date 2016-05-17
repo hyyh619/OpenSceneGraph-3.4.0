@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
-*/
+ */
 
 #ifndef CLUSTER_H
 #define CLUSTER_H
@@ -31,36 +31,36 @@
 //
 class Receiver
 {
-    public :
+public:
 
-    Receiver();
-    ~Receiver();
+Receiver();
+~Receiver();
 
-       // setBuffer defines the buffer into which the broadcasted
-    // message will be received.
-    void setBuffer( void *buffer, const unsigned int size );
+// setBuffer defines the buffer into which the broadcasted
+// message will be received.
+void setBuffer(void *buffer, const unsigned int size);
 
-     // Define what port to listen and bind to
-    void setPort( const short port );
+// Define what port to listen and bind to
+void setPort(const short port);
 
-    // Sync does a blocking wait to recieve next message
-    void sync( void );
+// Sync does a blocking wait to recieve next message
+void sync(void);
 
-    private :
-    bool init( void );
+private:
+bool init(void);
 
-    private :
+private:
 #if defined (WIN32) && !defined(__CYGWIN__)
-        SOCKET _so;
-        SOCKADDR_IN saddr;
+SOCKET _so;
+SOCKADDR_IN saddr;
 #else
-        int _so;
-        struct sockaddr_in saddr;
+int _so;
+struct sockaddr_in saddr;
 #endif
-    bool _initialized;
-    short _port;
-    void *_buffer;
-    unsigned int _buffer_size;
+bool         _initialized;
+short        _port;
+void         *_buffer;
+unsigned int _buffer_size;
 };
 
 ////////////////////////////////////////////////////////////
@@ -70,273 +70,341 @@ class Receiver
 //
 class Broadcaster
 {
-    public :
+public:
 
-    Broadcaster( void );
-    ~Broadcaster( void );
+Broadcaster(void);
+~Broadcaster(void);
 
-    // Set the broadcast port
-    void setPort( const short port );
+// Set the broadcast port
+void setPort(const short port);
 
-    // Set the buffer to be broadcast
-    void setBuffer( void *buffer, const unsigned int buffer_size );
+// Set the buffer to be broadcast
+void setBuffer(void *buffer, const unsigned int buffer_size);
 
-    // Set a recipient host.  If this is used, the Broadcaster
-    // no longer broadcasts, but rather directs UDP packets at
-    // host.
-    void setHost( const char *hostname );
+// Set a recipient host.  If this is used, the Broadcaster
+// no longer broadcasts, but rather directs UDP packets at
+// host.
+void setHost(const char *hostname);
 
-    // Sync broadcasts the buffer
-    void sync( void );
+// Sync broadcasts the buffer
+void sync(void);
 
-    private :
-    bool init( void );
+private:
+bool init(void);
 
-    private :
+private:
 #if defined(WIN32) && !defined(__CYGWIN__)
-        SOCKET _so;
+SOCKET _so;
 #else
-        int _so;
+int _so;
 #endif
-        bool _initialized;
-        short _port;
-        void *_buffer;
-        unsigned int _buffer_size;
+bool         _initialized;
+short        _port;
+void         *_buffer;
+unsigned int _buffer_size;
 #if defined(WIN32) && !defined(__CYGWIN__)
-        SOCKADDR_IN saddr;
+SOCKADDR_IN saddr;
 #else
-        struct sockaddr_in saddr;
+struct sockaddr_in saddr;
 #endif
-        unsigned long _address;
+unsigned long _address;
 };
 
-class CameraPacket {
-    public:
+class CameraPacket
+{
+public:
 
-        static const unsigned int MAX_NUM_EVENTS;
-        static const unsigned int SWAP_BYTES_COMPARE;
+static const unsigned int MAX_NUM_EVENTS;
+static const unsigned int SWAP_BYTES_COMPARE;
 
-        CameraPacket():_masterKilled(false)
-        {
-            _byte_order = SWAP_BYTES_COMPARE;
-        }
+CameraPacket() : _masterKilled(false)
+{
+    _byte_order = SWAP_BYTES_COMPARE;
+}
 
-        void setPacket(const osg::Matrix& matrix,const osg::FrameStamp* frameStamp)
-        {
-            _matrix = matrix;
-            if (frameStamp)
-            {
-                _frameStamp    = *frameStamp;
-            }
-        }
+void setPacket(const osg::Matrix&matrix, const osg::FrameStamp *frameStamp)
+{
+    _matrix = matrix;
+    if (frameStamp)
+    {
+        _frameStamp = *frameStamp;
+    }
+}
 
-        void getModelView(osg::Matrix& matrix,float angle_offset=0.0f)
-        {
+void getModelView(osg::Matrix&matrix, float angle_offset = 0.0f)
+{
+    matrix = _matrix * osg::Matrix::rotate(osg::DegreesToRadians(angle_offset), 0.0f, 1.0f, 0.0f);
+}
 
-            matrix = _matrix * osg::Matrix::rotate(osg::DegreesToRadians(angle_offset),0.0f,1.0f,0.0f);
-        }
+void readEventQueue(osgViewer::Viewer&viewer);
 
-        void readEventQueue(osgViewer::Viewer& viewer);
+void writeEventQueue(osgViewer::Viewer&viewer);
 
-        void writeEventQueue(osgViewer::Viewer& viewer);
+void setMasterKilled(const bool flag)
+{
+    _masterKilled = flag;
+}
+const bool getMasterKilled() const
+{
+    return _masterKilled;
+}
 
-        void setMasterKilled(const bool flag) { _masterKilled = flag; }
-        const bool getMasterKilled() const { return _masterKilled; }
+unsigned int _byte_order;
+bool         _masterKilled;
+osg::Matrix  _matrix;
 
-        unsigned int    _byte_order;
-        bool            _masterKilled;
-        osg::Matrix     _matrix;
+// note don't use a ref_ptr as used elsewhere for FrameStamp
+// since we don't want to copy the pointer - but the memory.
+// FrameStamp doesn't have a private destructor to allow
+// us to do this, even though its a reference counted object.
+osg::FrameStamp _frameStamp;
 
-        // note don't use a ref_ptr as used elsewhere for FrameStamp
-        // since we don't want to copy the pointer - but the memory.
-        // FrameStamp doesn't have a private destructor to allow
-        // us to do this, even though its a reference counted object.
-        osg::FrameStamp  _frameStamp;
-
-        osgGA::EventQueue::Events _events;
-
+osgGA::EventQueue::Events _events;
 };
 
 class DataConverter
 {
-    public:
+public:
 
-        DataConverter(unsigned int numBytes):
-            _startPtr(0),
-            _endPtr(0),
-            _swapBytes(false),
-            _currentPtr(0)
-        {
-            _currentPtr = _startPtr = new char[numBytes];
-            _endPtr = _startPtr+numBytes;
-            _numBytes = numBytes;
-        }
+DataConverter(unsigned int numBytes) :
+    _startPtr(0),
+    _endPtr(0),
+    _swapBytes(false),
+    _currentPtr(0)
+{
+    _currentPtr = _startPtr = new char[numBytes];
+    _endPtr     = _startPtr + numBytes;
+    _numBytes   = numBytes;
+}
 
-        ~DataConverter()
-        {
-            delete [] _startPtr;
-        }
+~DataConverter()
+{
+    delete[] _startPtr;
+}
 
-        void reset()
-        {
-            _currentPtr = _startPtr;
-        }
+void reset()
+{
+    _currentPtr = _startPtr;
+}
 
-        inline void write1(char* ptr)
-        {
-            if (_currentPtr+1>=_endPtr) return;
+inline void write1(char *ptr)
+{
+    if (_currentPtr + 1 >= _endPtr)
+        return;
 
-            *(_currentPtr++) = *(ptr);
-        }
+    *(_currentPtr++) = *(ptr);
+}
 
-        inline void read1(char* ptr)
-        {
-            if (_currentPtr+1>=_endPtr) return;
+inline void read1(char *ptr)
+{
+    if (_currentPtr + 1 >= _endPtr)
+        return;
 
-            *(ptr) = *(_currentPtr++);
-        }
+    *(ptr) = *(_currentPtr++);
+}
 
-        inline void write2(char* ptr)
-        {
-            if (_currentPtr+2>=_endPtr) return;
+inline void write2(char *ptr)
+{
+    if (_currentPtr + 2 >= _endPtr)
+        return;
 
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr);
-        }
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr);
+}
 
-        inline void read2(char* ptr)
-        {
-            if (_currentPtr+2>=_endPtr) return;
+inline void read2(char *ptr)
+{
+    if (_currentPtr + 2 >= _endPtr)
+        return;
 
-            if (_swapBytes)
-            {
-                *(ptr+1) = *(_currentPtr++);
-                *(ptr) = *(_currentPtr++);
-            }
-            else
-            {
-                *(ptr++) = *(_currentPtr++);
-                *(ptr) = *(_currentPtr++);
-            }
-        }
+    if (_swapBytes)
+    {
+        *(ptr + 1) = *(_currentPtr++);
+        *(ptr)     = *(_currentPtr++);
+    }
+    else
+    {
+        *(ptr++) = *(_currentPtr++);
+        *(ptr)   = *(_currentPtr++);
+    }
+}
 
-        inline void write4(char* ptr)
-        {
-            if (_currentPtr+4>=_endPtr) return;
+inline void write4(char *ptr)
+{
+    if (_currentPtr + 4 >= _endPtr)
+        return;
 
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr);
-        }
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr);
+}
 
-        inline void read4(char* ptr)
-        {
-            if (_currentPtr+4>=_endPtr) return;
+inline void read4(char *ptr)
+{
+    if (_currentPtr + 4 >= _endPtr)
+        return;
 
-            if (_swapBytes)
-            {
-                *(ptr+3) = *(_currentPtr++);
-                *(ptr+2) = *(_currentPtr++);
-                *(ptr+1) = *(_currentPtr++);
-                *(ptr) = *(_currentPtr++);
-            }
-            else
-            {
-                *(ptr++) = *(_currentPtr++);
-                *(ptr++) = *(_currentPtr++);
-                *(ptr++) = *(_currentPtr++);
-                *(ptr) = *(_currentPtr++);
-            }
-        }
+    if (_swapBytes)
+    {
+        *(ptr + 3) = *(_currentPtr++);
+        *(ptr + 2) = *(_currentPtr++);
+        *(ptr + 1) = *(_currentPtr++);
+        *(ptr)     = *(_currentPtr++);
+    }
+    else
+    {
+        *(ptr++) = *(_currentPtr++);
+        *(ptr++) = *(_currentPtr++);
+        *(ptr++) = *(_currentPtr++);
+        *(ptr)   = *(_currentPtr++);
+    }
+}
 
-        inline void write8(char* ptr)
-        {
-            if (_currentPtr+8>=_endPtr) return;
+inline void write8(char *ptr)
+{
+    if (_currentPtr + 8 >= _endPtr)
+        return;
 
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr++);
 
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr++);
-            *(_currentPtr++) = *(ptr);
-        }
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr++);
+    *(_currentPtr++) = *(ptr);
+}
 
-        inline void read8(char* ptr)
-        {
-            char* endPtr = _currentPtr+8;
-            if (endPtr>=_endPtr) return;
+inline void read8(char *ptr)
+{
+    char *endPtr = _currentPtr + 8;
 
-            if (_swapBytes)
-            {
-                *(ptr+7) = *(_currentPtr++);
-                *(ptr+6) = *(_currentPtr++);
-                *(ptr+5) = *(_currentPtr++);
-                *(ptr+4) = *(_currentPtr++);
+    if (endPtr >= _endPtr)
+        return;
 
-                *(ptr+3) = *(_currentPtr++);
-                *(ptr+2) = *(_currentPtr++);
-                *(ptr+1) = *(_currentPtr++);
-                *(ptr) = *(_currentPtr++);
-            }
-            else
-            {
-                *(ptr++) = *(_currentPtr++);
-                *(ptr++) = *(_currentPtr++);
-                *(ptr++) = *(_currentPtr++);
-                *(ptr++) = *(_currentPtr++);
+    if (_swapBytes)
+    {
+        *(ptr + 7) = *(_currentPtr++);
+        *(ptr + 6) = *(_currentPtr++);
+        *(ptr + 5) = *(_currentPtr++);
+        *(ptr + 4) = *(_currentPtr++);
 
-                *(ptr++) = *(_currentPtr++);
-                *(ptr++) = *(_currentPtr++);
-                *(ptr++) = *(_currentPtr++);
-                *(ptr) = *(_currentPtr++);
-            }
-        }
+        *(ptr + 3) = *(_currentPtr++);
+        *(ptr + 2) = *(_currentPtr++);
+        *(ptr + 1) = *(_currentPtr++);
+        *(ptr)     = *(_currentPtr++);
+    }
+    else
+    {
+        *(ptr++) = *(_currentPtr++);
+        *(ptr++) = *(_currentPtr++);
+        *(ptr++) = *(_currentPtr++);
+        *(ptr++) = *(_currentPtr++);
 
-        inline void writeChar(char c)               { write1(&c); }
-        inline void writeUChar(unsigned char c)     { write1((char*)&c); }
-        inline void writeShort(short c)             { write2((char*)&c); }
-        inline void writeUShort(unsigned short c)   { write2((char*)&c); }
-        inline void writeInt(int c)                 { write4((char*)&c); }
-        inline void writeUInt(unsigned int c)       { write4((char*)&c); }
-        inline void writeFloat(float c)             { write4((char*)&c); }
-        inline void writeDouble(double c)           { write8((char*)&c); }
+        *(ptr++) = *(_currentPtr++);
+        *(ptr++) = *(_currentPtr++);
+        *(ptr++) = *(_currentPtr++);
+        *(ptr)   = *(_currentPtr++);
+    }
+}
 
-        inline char readChar() { char c=0; read1(&c); return c; }
-        inline unsigned char readUChar() { unsigned char c=0; read1((char*)&c); return c; }
-        inline short readShort() { short c=0; read2((char*)&c); return c; }
-        inline unsigned short readUShort() { unsigned short c=0; read2((char*)&c); return c; }
-        inline int readInt() { int c=0; read4((char*)&c); return c; }
-        inline unsigned int readUInt() { unsigned int c=0; read4((char*)&c); return c; }
-        inline float readFloat() { float c=0.0f; read4((char*)&c); return c; }
-        inline double readDouble() { double c=0.0; read8((char*)&c); return c; }
+inline void writeChar(char c)
+{
+    write1(&c);
+}
+inline void writeUChar(unsigned char c)
+{
+    write1((char*)&c);
+}
+inline void writeShort(short c)
+{
+    write2((char*)&c);
+}
+inline void writeUShort(unsigned short c)
+{
+    write2((char*)&c);
+}
+inline void writeInt(int c)
+{
+    write4((char*)&c);
+}
+inline void writeUInt(unsigned int c)
+{
+    write4((char*)&c);
+}
+inline void writeFloat(float c)
+{
+    write4((char*)&c);
+}
+inline void writeDouble(double c)
+{
+    write8((char*)&c);
+}
 
-        void write(const osg::FrameStamp& fs);
-        void read(osg::FrameStamp& fs);
+inline char readChar()
+{
+    char c = 0; read1(&c); return c;
+}
+inline unsigned char readUChar()
+{
+    unsigned char c = 0; read1((char*)&c); return c;
+}
+inline short readShort()
+{
+    short c = 0; read2((char*)&c); return c;
+}
+inline unsigned short readUShort()
+{
+    unsigned short c = 0; read2((char*)&c); return c;
+}
+inline int readInt()
+{
+    int c = 0; read4((char*)&c); return c;
+}
+inline unsigned int readUInt()
+{
+    unsigned int c = 0; read4((char*)&c); return c;
+}
+inline float readFloat()
+{
+    float c = 0.0f; read4((char*)&c); return c;
+}
+inline double readDouble()
+{
+    double c = 0.0; read8((char*)&c); return c;
+}
 
-        void write(const osg::Matrix& matrix);
-        void read(osg::Matrix& matrix);
+void write(const osg::FrameStamp&fs);
+void read(osg::FrameStamp&fs);
 
-        void write(const osgGA::GUIEventAdapter& event);
-        void read(osgGA::GUIEventAdapter& event);
+void write(const osg::Matrix&matrix);
+void read(osg::Matrix&matrix);
 
-        void write(CameraPacket& cameraPacket);
-        void read(CameraPacket& cameraPacket);
+void write(const osgGA::GUIEventAdapter&event);
+void read(osgGA::GUIEventAdapter&event);
 
-        char* startPtr() { return _startPtr; }
-        unsigned int numBytes() { return _numBytes; }
+void write(CameraPacket&cameraPacket);
+void read(CameraPacket&cameraPacket);
 
-    protected:
+char* startPtr()
+{
+    return _startPtr;
+}
+unsigned int numBytes()
+{
+    return _numBytes;
+}
 
-        char* _startPtr;
-        char* _endPtr;
-        unsigned int _numBytes;
-        bool _swapBytes;
+protected:
 
-        char* _currentPtr;
+char         *_startPtr;
+char         *_endPtr;
+unsigned int _numBytes;
+bool         _swapBytes;
+
+char *_currentPtr;
 };
 
 

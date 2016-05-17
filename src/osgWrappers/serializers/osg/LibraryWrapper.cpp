@@ -165,4 +165,3 @@ USE_SERIALIZER_WRAPPER(DrawElementsUShort)
 USE_SERIALIZER_WRAPPER(DrawElementsUInt)
 
 extern "C" void wrapper_serializer_library_osg(void) {}
-

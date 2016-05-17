@@ -12,8 +12,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool LineWidth_readLocalData(Object& obj, Input& fr);
-bool LineWidth_writeLocalData(const Object& obj, Output& fw);
+bool LineWidth_readLocalData(Object&obj, Input&fr);
+bool LineWidth_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(LineWidth)
@@ -26,18 +26,18 @@ REGISTER_DOTOSGWRAPPER(LineWidth)
 );
 
 
-bool LineWidth_readLocalData(Object& obj, Input& fr)
+bool LineWidth_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    LineWidth& lineWidth = static_cast<LineWidth&>(obj);
+    LineWidth&lineWidth = static_cast<LineWidth&>(obj);
 
     float data;
+
     if (fr[0].matchWord("width") && fr[1].getFloat(data))
     {
-
         lineWidth.setWidth(data);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -45,9 +45,9 @@ bool LineWidth_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool LineWidth_writeLocalData(const Object& obj, Output& fw)
+bool LineWidth_writeLocalData(const Object&obj, Output&fw)
 {
-    const LineWidth& lineWidth = static_cast<const LineWidth&>(obj);
+    const LineWidth&lineWidth = static_cast<const LineWidth&>(obj);
 
     fw.indent() << "width " << lineWidth.getWidth() << std::endl;
     return true;

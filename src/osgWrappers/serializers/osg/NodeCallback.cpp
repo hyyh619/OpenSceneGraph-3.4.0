@@ -3,9 +3,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( NodeCallback,
-                         new osg::NodeCallback,
-                         osg::NodeCallback,
-                         "osg::Object osg::Callback osg::NodeCallback" )
-{
-}
+REGISTER_OBJECT_WRAPPER(NodeCallback,
+                        new osg::NodeCallback,
+                        osg::NodeCallback,
+                        "osg::Object osg::Callback osg::NodeCallback")
+{}

@@ -8,7 +8,7 @@
  */
 
 #ifdef __APPLE__
- 
+
 #ifndef DARWIN_UTILS_HEADER_
 #define DARWIN_UTILS_HEADER_
 
@@ -18,8 +18,8 @@
 #include <Carbon/Carbon.h>
 
 
-//#define USE_DARWIN_COCOA_IMPLEMENTATION 1
-//#define USE_DARWIN_CARBON_IMPLEMENTATION 1
+// #define USE_DARWIN_COCOA_IMPLEMENTATION 1
+// #define USE_DARWIN_CARBON_IMPLEMENTATION 1
 
 #ifdef __OBJC__
 @class MenubarToggler;
@@ -27,116 +27,116 @@
 class MenubarToggler;
 #endif
 
-namespace osgDarwin {
-
-
-/** the MenubarController class checks all open windows if they intersect with the menubar / dock and hide the menubar/dock if necessary */
-class MenubarController : public osg::Referenced 
+namespace osgDarwin
 {
+/** the MenubarController class checks all open windows if they intersect with the menubar / dock and hide the menubar/dock if necessary */
+class MenubarController : public osg::Referenced
+{
+public:
+class WindowAdapter : public osg::Referenced
+{
+public:
+WindowAdapter() : osg::Referenced() {}
 
-    public:
-        class WindowAdapter : public osg::Referenced {
-            
-            public:
-                WindowAdapter() : osg::Referenced() {}
-                
-                virtual bool valid() = 0;
-                virtual void getWindowBounds(CGRect& rect) = 0;
-                virtual osgViewer::GraphicsWindow* getWindow() = 0;
-                
-            protected:
-                virtual ~WindowAdapter() {}
-        };
-        
-        MenubarController();        
-    
-        static MenubarController* instance();
-        
-        void attachWindow(WindowAdapter* win);
-        void update();
-        void detachWindow(osgViewer::GraphicsWindow* win);
-    
-        void setDisplaySettings(osg::DisplaySettings* display_settings);
-    
-    protected:
-        ~MenubarController();
-    
-    private: 
-        typedef std::list< osg::ref_ptr< WindowAdapter > > WindowList;
-        WindowList          _list;
-        bool                _menubarShown;
-        CGRect              _availRect;
-        CGRect              _mainScreenBounds;
-        OpenThreads::Mutex  _mutex;
-        MenubarToggler*     _toggler;
-        
+virtual bool valid()                           = 0;
+virtual void getWindowBounds(CGRect&rect)      = 0;
+virtual osgViewer::GraphicsWindow* getWindow() = 0;
+
+protected:
+virtual ~WindowAdapter() {}
+};
+
+MenubarController();
+
+static MenubarController* instance();
+
+void attachWindow(WindowAdapter *win);
+void update();
+void detachWindow(osgViewer::GraphicsWindow *win);
+
+void setDisplaySettings(osg::DisplaySettings *display_settings);
+
+protected:
+~MenubarController();
+
+private:
+typedef std::list<osg::ref_ptr<WindowAdapter> > WindowList;
+WindowList         _list;
+bool               _menubarShown;
+CGRect             _availRect;
+CGRect             _mainScreenBounds;
+OpenThreads::Mutex _mutex;
+MenubarToggler     *_toggler;
 };
 
 
 
 struct DarwinWindowingSystemInterface : public osg::GraphicsContext::WindowingSystemInterface
 {
-    public:
-        DarwinWindowingSystemInterface();
+public:
+    DarwinWindowingSystemInterface();
 
-        /** dtor */
-        ~DarwinWindowingSystemInterface();
+    /** dtor */
+    ~DarwinWindowingSystemInterface();
 
-        /** @return a CGDirectDisplayID for a ScreenIdentifier */
-        CGDirectDisplayID getDisplayID(const osg::GraphicsContext::ScreenIdentifier& si);
+    /** @return a CGDirectDisplayID for a ScreenIdentifier */
+    CGDirectDisplayID getDisplayID(const osg::GraphicsContext::ScreenIdentifier&si);
 
-        /** @return count of attached screens */
-        virtual unsigned int getNumScreens(const osg::GraphicsContext::ScreenIdentifier& si) ;
+    /** @return count of attached screens */
+    virtual unsigned int getNumScreens(const osg::GraphicsContext::ScreenIdentifier&si);
 
-        virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier& si, osg::GraphicsContext::ScreenSettings & resolution);
+    virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, osg::GraphicsContext::ScreenSettings&resolution);
 
-        virtual void enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier& screenIdentifier, osg::GraphicsContext::ScreenSettingsList & resolutionList);
-        
-        virtual bool setScreenSettings (const osg::GraphicsContext::ScreenIdentifier & si, const osg::GraphicsContext::ScreenSettings & settings);
+    virtual void enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier&screenIdentifier, osg::GraphicsContext::ScreenSettingsList&resolutionList);
 
-        /** return the top left coord of a specific screen in global screen space */
-        void getScreenTopLeft(const osg::GraphicsContext::ScreenIdentifier& si, int& x, int& y);
+    virtual bool setScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, const osg::GraphicsContext::ScreenSettings&settings);
 
-        
+    /** return the top left coord of a specific screen in global screen space */
+    void getScreenTopLeft(const osg::GraphicsContext::ScreenIdentifier&si, int&x, int&y);
 
-        /** returns screen-ndx containing rect x,y,w,h */
-        unsigned int getScreenContaining(int x, int y, int w, int h);
-    
-        virtual void setDisplaySettings(osg::DisplaySettings* display_settings) {
-            MenubarController::instance()->setDisplaySettings(display_settings);
-        }
-    
-    protected:
 
-        virtual void _init();
-    
-        template<class PixelBufferImplementation, class GraphicsWindowImplementation>
-        osg::GraphicsContext* createGraphicsContextImplementation(osg::GraphicsContext::Traits* traits)
+
+    /** returns screen-ndx containing rect x,y,w,h */
+    unsigned int getScreenContaining(int x, int y, int w, int h);
+
+    virtual void setDisplaySettings(osg::DisplaySettings *display_settings)
+    {
+        MenubarController::instance()->setDisplaySettings(display_settings);
+    }
+
+protected:
+
+    virtual void _init();
+
+    template<class PixelBufferImplementation, class GraphicsWindowImplementation>
+    osg::GraphicsContext* createGraphicsContextImplementation(osg::GraphicsContext::Traits *traits)
+    {
+        if (traits->pbuffer)
         {
-            if (traits->pbuffer)
-            {
-                osg::ref_ptr<PixelBufferImplementation> pbuffer = new PixelBufferImplementation(traits);
-                if (pbuffer->valid()) return pbuffer.release();
-                else return 0;
-            }
+            osg::ref_ptr<PixelBufferImplementation> pbuffer = new PixelBufferImplementation(traits);
+            if (pbuffer->valid())
+                return pbuffer.release();
             else
-            {
-                osg::ref_ptr<GraphicsWindowImplementation> window = new GraphicsWindowImplementation(traits);
-                if (window->valid()) return window.release();
-                else return 0;
-            }
+                return 0;
         }
+        else
+        {
+            osg::ref_ptr<GraphicsWindowImplementation> window = new GraphicsWindowImplementation(traits);
+            if (window->valid())
+                return window.release();
+            else
+                return 0;
+        }
+    }
 
-    protected:
+protected:
 
-        bool                  _initialized;
-        CGDisplayCount        _displayCount;
-        CGDirectDisplayID*    _displayIds;
-
-
+    bool              _initialized;
+    CGDisplayCount    _displayCount;
+    CGDirectDisplayID *_displayIds;
 };
 
-template <class WSI>
+template<class WSI>
 struct RegisterWindowingSystemInterfaceProxy
 {
     RegisterWindowingSystemInterfaceProxy()
@@ -155,11 +155,7 @@ struct RegisterWindowingSystemInterfaceProxy
         osg::GraphicsContext::setWindowingSystemInterface(0);
     }
 };
-
-
-
 }
-
 #endif
 
 #endif // __APPLE__

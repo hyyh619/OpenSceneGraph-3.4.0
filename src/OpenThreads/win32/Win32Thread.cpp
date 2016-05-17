@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 //
@@ -35,24 +35,27 @@ using std::size_t;
 
 #include "Win32ThreadPrivateData.h"
 
-struct Win32ThreadCanceled{};
+struct Win32ThreadCanceled {};
 
 using namespace OpenThreads;
 
-DWORD OpenThreads::cooperativeWait(HANDLE waitHandle, unsigned long timeout){
-    Thread* current = Thread::CurrentThread();
-    DWORD dwResult ;
-    if(current)
+DWORD OpenThreads::cooperativeWait(HANDLE waitHandle, unsigned long timeout)
+{
+    Thread *current = Thread::CurrentThread();
+    DWORD  dwResult;
+
+    if (current)
     {
         HANDLE cancelHandle = static_cast<Win32ThreadPrivateData*>(current->getImplementation())->cancelEvent.get();
         HANDLE handleSet[2] = {waitHandle, cancelHandle};
 
-        dwResult = WaitForMultipleObjects(2,handleSet,FALSE,timeout);
-        if(dwResult == WAIT_OBJECT_0 + 1 ) throw Win32ThreadCanceled();
+        dwResult = WaitForMultipleObjects(2, handleSet, FALSE, timeout);
+        if (dwResult == WAIT_OBJECT_0 + 1)
+            throw Win32ThreadCanceled();
     }
     else
     {
-        dwResult = WaitForSingleObject(waitHandle,timeout);
+        dwResult = WaitForSingleObject(waitHandle, timeout);
     }
 
     return dwResult;
@@ -61,207 +64,226 @@ DWORD OpenThreads::cooperativeWait(HANDLE waitHandle, unsigned long timeout){
 Win32ThreadPrivateData::TlsHolder Win32ThreadPrivateData::TLS;
 
 Win32ThreadPrivateData::~Win32ThreadPrivateData()
-{
-}
+{}
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Initialize thread master priority level
 //
-Thread::ThreadPriority Thread::s_masterThreadPriority =  Thread::THREAD_PRIORITY_DEFAULT;
+Thread::ThreadPriority Thread::s_masterThreadPriority = Thread::THREAD_PRIORITY_DEFAULT;
 
 bool Thread::s_isInitialized = false;
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Class to support some static methods necessary for pthread's to work
 // correctly.
 //
-namespace OpenThreads {
+namespace OpenThreads
+{
+class ThreadPrivateActions
+{
+// -------------------------------------------------------------------------
+// We're friendly to Thread, so it can issue the methods.
+//
+friend class Thread;
+private:
 
-    class ThreadPrivateActions {
-        //-------------------------------------------------------------------------
-        // We're friendly to Thread, so it can issue the methods.
-        //
-        friend class Thread;
-    private:
+// -------------------------------------------------------------------------
+// Win32Threads standard start routine.
+//
+static unsigned int __stdcall StartThread(void *data)
+{
+    Thread *thread = static_cast<Thread*>(data);
 
-        //-------------------------------------------------------------------------
-        // Win32Threads standard start routine.
-        //
-        static unsigned int __stdcall StartThread(void *data) {
+    Win32ThreadPrivateData *pd =
+        static_cast<Win32ThreadPrivateData*>(thread->_prvData);
 
-            Thread *thread = static_cast<Thread *>(data);
+    if (thread->_prvData == 0)
+        return 0;
 
-            Win32ThreadPrivateData *pd =
-                static_cast<Win32ThreadPrivateData *>(thread->_prvData);
+    TlsSetValue(Win32ThreadPrivateData::TLS.getId(), data);
+    // ---------------------------------------------------------------------
+    // Set the proper scheduling priorities
+    //
+    SetThreadSchedulingParams(thread);
 
-            if (thread->_prvData==0) return 0;
+    pd->isRunning = true;
 
-            TlsSetValue(Win32ThreadPrivateData::TLS.getId(), data);
-            //---------------------------------------------------------------------
-            // Set the proper scheduling priorities
-            //
-            SetThreadSchedulingParams(thread);
+    // release the thread that created this thread.
+    pd->threadStartedBlock.release();
 
-            pd->isRunning = true;
+    if (0 <= pd->cpunum)
+        thread->setProcessorAffinity(pd->cpunum);
 
-            // release the thread that created this thread.
-            pd->threadStartedBlock.release();
-
-            if (0 <= pd->cpunum)
-                thread->setProcessorAffinity(pd->cpunum);
-
-            try{
-                thread->run();
-            }
-            catch(Win32ThreadCanceled&)
-            {
-                // thread is canceled do cleanup
-                try {
-                    thread->cancelCleanup();
-                } catch(...) { }
-            }
-            catch(...)
-            {
-                // abnormal termination but must be caught in win32 anyway
-            }
-
-            TlsSetValue(Win32ThreadPrivateData::TLS.getId(), 0);
-            pd->isRunning = false;
-
-            return 0;
-        };
-
-        //-------------------------------------------------------------------------
-        // Print information related to thread schduling parameters.
-        //
-        static void PrintThreadSchedulingInfo(Thread *thread) {
-
-            // Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *>(thread->_prvData);
-
-            std::cout<<"Thread "<< thread <<" priority : ";
-
-            switch(thread->getSchedulePriority()) {
-            case Thread::THREAD_PRIORITY_MAX:
-                std::cout<<"MAXIMAL"<<std::endl;
-                break;
-            case Thread::THREAD_PRIORITY_HIGH:
-                std::cout<<"HIGH"<<std::endl;
-                break;
-            case Thread::THREAD_PRIORITY_DEFAULT:
-            case Thread::THREAD_PRIORITY_NOMINAL:
-                std::cout<<"NORMAL"<<std::endl;
-                break;
-            case Thread::THREAD_PRIORITY_LOW:
-                std::cout<<"LOW"<<std::endl;
-                break;
-            case Thread::THREAD_PRIORITY_MIN:
-                std::cout<<"MINIMAL"<<std::endl;
-                break;
-            }
+    try
+    {
+        thread->run();
+    }
+    catch (Win32ThreadCanceled&)
+    {
+        // thread is canceled do cleanup
+        try
+        {
+            thread->cancelCleanup();
         }
+        catch (...)
+        { }
+    }
+    catch (...)
+    {
+        // abnormal termination but must be caught in win32 anyway
+    }
 
-        //--------------------------------------------------------------------------
-        // Set thread scheduling parameters.
-        // Note that time-critical priority is omitted :
-        // 1) It's not sensible thing to do
-        // 2) there's no enum for that in Thread interface
-        // Also, on Windows, effective thread priority is :
-        // process priority (manipulated with Get/SetProrityClass) + thread priority (here).
-        //
-        //
-        static int SetThreadSchedulingParams(Thread *thread) {
+    TlsSetValue(Win32ThreadPrivateData::TLS.getId(), 0);
+    pd->isRunning = false;
 
-            Win32ThreadPrivateData *pd =
-                static_cast<Win32ThreadPrivateData *>(thread->_prvData);
+    return 0;
+};
 
-            int prio = THREAD_PRIORITY_NORMAL;
+// -------------------------------------------------------------------------
+// Print information related to thread schduling parameters.
+//
+static void PrintThreadSchedulingInfo(Thread *thread)
+{
+    // Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *>(thread->_prvData);
 
-            switch(thread->getSchedulePriority()) {
-            case Thread::THREAD_PRIORITY_MAX:
-                prio = THREAD_PRIORITY_HIGHEST;
-                break;
-            case Thread::THREAD_PRIORITY_HIGH:
-                prio = THREAD_PRIORITY_ABOVE_NORMAL;
-                break;
-            case Thread::THREAD_PRIORITY_NOMINAL:
-                prio = THREAD_PRIORITY_NORMAL;
-                break;
-            case Thread::THREAD_PRIORITY_LOW:
-                prio = THREAD_PRIORITY_BELOW_NORMAL;
-                break;
-            case Thread::THREAD_PRIORITY_MIN:
-                prio = THREAD_PRIORITY_IDLE;
-                break;
-            }
+    std::cout << "Thread " << thread << " priority : ";
 
-            int status = SetThreadPriority( pd->tid.get(), prio);
+    switch (thread->getSchedulePriority())
+    {
+    case Thread::THREAD_PRIORITY_MAX:
+        std::cout << "MAXIMAL" << std::endl;
+        break;
 
-            if(getenv("OUTPUT_THREADLIB_SCHEDULING_INFO") != 0)
-                PrintThreadSchedulingInfo(thread);
+    case Thread::THREAD_PRIORITY_HIGH:
+        std::cout << "HIGH" << std::endl;
+        break;
 
-            return status!=0;
-        };
-    };
+    case Thread::THREAD_PRIORITY_DEFAULT:
+    case Thread::THREAD_PRIORITY_NOMINAL:
+        std::cout << "NORMAL" << std::endl;
+        break;
+
+    case Thread::THREAD_PRIORITY_LOW:
+        std::cout << "LOW" << std::endl;
+        break;
+
+    case Thread::THREAD_PRIORITY_MIN:
+        std::cout << "MINIMAL" << std::endl;
+        break;
+    }
+}
+
+// --------------------------------------------------------------------------
+// Set thread scheduling parameters.
+// Note that time-critical priority is omitted :
+// 1) It's not sensible thing to do
+// 2) there's no enum for that in Thread interface
+// Also, on Windows, effective thread priority is :
+// process priority (manipulated with Get/SetProrityClass) + thread priority (here).
+//
+//
+static int SetThreadSchedulingParams(Thread *thread)
+{
+    Win32ThreadPrivateData *pd =
+        static_cast<Win32ThreadPrivateData*>(thread->_prvData);
+
+    int prio = THREAD_PRIORITY_NORMAL;
+
+    switch (thread->getSchedulePriority())
+    {
+    case Thread::THREAD_PRIORITY_MAX:
+        prio = THREAD_PRIORITY_HIGHEST;
+        break;
+
+    case Thread::THREAD_PRIORITY_HIGH:
+        prio = THREAD_PRIORITY_ABOVE_NORMAL;
+        break;
+
+    case Thread::THREAD_PRIORITY_NOMINAL:
+        prio = THREAD_PRIORITY_NORMAL;
+        break;
+
+    case Thread::THREAD_PRIORITY_LOW:
+        prio = THREAD_PRIORITY_BELOW_NORMAL;
+        break;
+
+    case Thread::THREAD_PRIORITY_MIN:
+        prio = THREAD_PRIORITY_IDLE;
+        break;
+    }
+
+    int status = SetThreadPriority(pd->tid.get(), prio);
+
+    if (getenv("OUTPUT_THREADLIB_SCHEDULING_INFO") != 0)
+        PrintThreadSchedulingInfo(thread);
+
+    return status != 0;
+};
+};
 }
 
 Thread* Thread::CurrentThread()
 {
     DWORD ID = Win32ThreadPrivateData::TLS.getId();
+
     if (ID == TLS_OUT_OF_INDEXES)
         return 0;
+
     return (Thread* )TlsGetValue(ID);
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 // Description: Set the concurrency level (no-op)
 //
 // Use static public
 //
-int Thread::SetConcurrency(int) {
+int Thread::SetConcurrency(int)
+{
     return -1;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 // Description: Get the concurrency level
 //
 // Use static public
 //
-int Thread::GetConcurrency() {
+int Thread::GetConcurrency()
+{
     return -1;
 }
 
 Win32ThreadPrivateData::Win32ThreadPrivateData()
 {
-    stackSize = 0;
-    isRunning = false;
-    cancelMode = 0;
-    uniqueId = 0;
+    stackSize      = 0;
+    isRunning      = false;
+    cancelMode     = 0;
+    uniqueId       = 0;
     threadPriority = Thread::THREAD_PRIORITY_DEFAULT;
-    threadPolicy = Thread::THREAD_SCHEDULE_DEFAULT;
-    detached = false;
-    cancelEvent.set(CreateEvent(NULL,TRUE,FALSE,NULL));
+    threadPolicy   = Thread::THREAD_SCHEDULE_DEFAULT;
+    detached       = false;
+    cancelEvent.set(CreateEvent(NULL, TRUE, FALSE, NULL));
     cpunum = -1;
 }
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 // Description: Constructor
 //
 // Use: public.
 //
-Thread::Thread() {
-
+Thread::Thread()
+{
     // there's no need for this
     //    if(!s_isInitialized) Init();
 
     Win32ThreadPrivateData *pd = new Win32ThreadPrivateData();
 
-    _prvData = static_cast<void *>(pd);
+    _prvData = static_cast<void*>(pd);
 }
 
 
-//----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
 //
 // Description: Destructor
 //
@@ -269,11 +291,11 @@ Thread::Thread() {
 //
 Thread::~Thread()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *>(_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
-    if(pd->isRunning)
+    if (pd->isRunning)
     {
-        std::cout<<"Error: Thread "<<this<<" still running in destructor"<<std::endl;
+        std::cout << "Error: Thread " << this << " still running in destructor" << std::endl;
         pd->cancelMode = 0;
         cancel();
 
@@ -284,59 +306,63 @@ Thread::~Thread()
 
     _prvData = 0;
 }
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Initialize Threading
 //
 // Use: public.
 //
-void Thread::Init() {
+void Thread::Init()
+{
 //    if(s_isInitialized) return;
 //        s_masterThreadPriority = Thread::THREAD_PRIORITY_DEFAULT;
     s_isInitialized = true;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Get a unique identifier for this thread.
 //
 // Use: public
 //
-int Thread::getThreadId() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+int Thread::getThreadId()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     return pd->uniqueId;
 }
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Get the thread's process id
 //
 // Use: public
 //
-size_t Thread::getProcessId() {
-
+size_t Thread::getProcessId()
+{
     return (size_t) GetCurrentProcessId();
-
 }
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Determine if the thread is running
 //
 // Use: public
 //
-bool Thread::isRunning() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+bool Thread::isRunning()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     return pd->isRunning;
 }
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Start the thread.
 //
 // Use: public
 //
-int Thread::start() {
-
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
-    //-------------------------------------------------------------------------
+int Thread::start()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    // -------------------------------------------------------------------------
     // Prohibit the stack size from being changed.
     // (bb 5/13/2005) it actually doesn't matter.
     // 1) usually setStackSize()/start() sequence is serialized.
@@ -346,12 +372,13 @@ int Thread::start() {
 
     pd->threadStartedBlock.reset();
 
-    pd->tid.set( (void*)_beginthreadex(NULL,static_cast<unsigned>(pd->stackSize),ThreadPrivateActions::StartThread,static_cast<void *>(this),CREATE_SUSPENDED,&ID));
+    pd->tid.set((void*)_beginthreadex(NULL, static_cast<unsigned>(pd->stackSize), ThreadPrivateActions::StartThread, static_cast<void*>(this), CREATE_SUSPENDED, &ID));
     ResumeThread(pd->tid.get());
 
     pd->uniqueId = (int)ID;
 
-    if(!pd->tid) {
+    if (!pd->tid)
+    {
         return -1;
     }
 
@@ -359,28 +386,31 @@ int Thread::start() {
     pd->threadStartedBlock.block();
 
     return 0;
-
 }
 
 int Thread::startThread()
 {
-    if (_prvData) return start();
-    else return 0;
+    if (_prvData)
+        return start();
+    else
+        return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Join the thread.
 //
 // Use: public
 //
-int Thread::join() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
-    if( pd->detached )
+int Thread::join()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
+    if (pd->detached)
         return -1; // cannot wait for detached ;
 
-    if( WaitForSingleObject(pd->tid.get(),INFINITE) != WAIT_OBJECT_0)
-        return -1 ;
+    if (WaitForSingleObject(pd->tid.get(), INFINITE) != WAIT_OBJECT_0)
+        return -1;
 
     return 0;
 }
@@ -389,13 +419,14 @@ int Thread::join() {
 
 int Thread::detach()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     pd->detached = true;
     return 0;
 }
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Cancel the thread.
 //
@@ -403,11 +434,11 @@ int Thread::detach()
 //
 int Thread::cancel()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
 
     if (pd->isRunning)
     {
-        if( pd->cancelMode == 2 )
+        if (pd->cancelMode == 2)
             return -1;
 
         // signal all interested parties that we are going to exit
@@ -416,12 +447,12 @@ int Thread::cancel()
         // cancelMode == 1 (asynch)-> kill em
         // cancelMode == 0 (deffered) -> wait a little then kill em
 
-    //    if( (pd->cancelMode == 1) || (WaitForSingleObject(pd->tid,INFINITE)!=WAIT_OBJECT_0) )
-        if( pd->cancelMode == 1 )
+        //    if( (pd->cancelMode == 1) || (WaitForSingleObject(pd->tid,INFINITE)!=WAIT_OBJECT_0) )
+        if (pd->cancelMode == 1)
         {
             // did not terminate cleanly force termination
             pd->isRunning = false;
-            return TerminateThread(pd->tid.get(),(DWORD)-1);
+            return TerminateThread(pd->tid.get(), (DWORD)-1);
         }
     }
 
@@ -432,16 +463,17 @@ int Thread::cancel()
 
 int Thread::testCancel()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
 
-    if(WaitForSingleObject(pd->cancelEvent.get(),0) != WAIT_OBJECT_0) return 0;
+    if (WaitForSingleObject(pd->cancelEvent.get(), 0) != WAIT_OBJECT_0)
+        return 0;
 
-    if(pd->cancelMode == 2)
+    if (pd->cancelMode == 2)
         return 0;
 
     DWORD curr = GetCurrentThreadId();
 
-    if( pd->uniqueId != (int)curr )
+    if (pd->uniqueId != (int)curr)
         return -1;
 
 //    pd->isRunning = false;
@@ -453,141 +485,160 @@ int Thread::testCancel()
 
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Disable cancelibility
 //
 // Use: public
 //
-int Thread::setCancelModeDisable() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+int Thread::setCancelModeDisable()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     pd->cancelMode = 2;
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: set the thread to cancel immediately
 //
 // Use: public
 //
-int Thread::setCancelModeAsynchronous() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
-    pd->cancelMode  = 1;
+int Thread::setCancelModeAsynchronous()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
+    pd->cancelMode = 1;
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: set the thread to cancel at the next convenient point.
 //
 // Use: public
 //
-int Thread::setCancelModeDeferred() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+int Thread::setCancelModeDeferred()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     pd->cancelMode = 0;
     return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Set the thread's schedule priority (if able)
 //
 // Use: public
 //
-int Thread::setSchedulePriority(ThreadPriority priority) {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+int Thread::setSchedulePriority(ThreadPriority priority)
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
 
     pd->threadPriority = priority;
 
-    if(pd->isRunning)
+    if (pd->isRunning)
         return ThreadPrivateActions::SetThreadSchedulingParams(this);
     else
         return 0;
 }
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Get the thread's schedule priority (if able)
 //
 // Use: public
 //
-int Thread::getSchedulePriority() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+int Thread::getSchedulePriority()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     return pd->threadPriority;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Set the thread's scheduling policy (if able)
 //
 // Use: public
 //
-int Thread::setSchedulePolicy(ThreadPolicy policy) {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+int Thread::setSchedulePolicy(ThreadPolicy policy)
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
 
     pd->threadPolicy = policy;
 
-    if(pd->isRunning)
+    if (pd->isRunning)
         return ThreadPrivateActions::SetThreadSchedulingParams(this);
     else
         return 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Set the thread's scheduling policy (if able)
 //
 // Use: public
 //
-int Thread::getSchedulePolicy() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+int Thread::getSchedulePolicy()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     return pd->threadPolicy;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Set the thread's desired stack size
 //
 // Use: public
 //
-int Thread::setStackSize(size_t stackSize) {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
-    if(pd->isRunning) return 13;  // cannot set stack size of running thread  return EACESS
+int Thread::setStackSize(size_t stackSize)
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
+    if (pd->isRunning)
+        return 13;                // cannot set stack size of running thread  return EACESS
+
     pd->stackSize = stackSize;
     return 0;
 }
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description: Get the thread's stack size.
 //
 // Use: public
 //
-size_t Thread::getStackSize() {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+size_t Thread::getStackSize()
+{
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     return pd->stackSize;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  set processor affinity for the thread
 //
 // Use: public
 //
-int Thread::setProcessorAffinity( unsigned int cpunum )
+int Thread::setProcessorAffinity(unsigned int cpunum)
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData *> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+
     pd->cpunum = cpunum;
     if (!pd->isRunning)
-       return 0;
+        return 0;
 
     if (pd->tid.get() == INVALID_HANDLE_VALUE)
-       return -1;
+        return -1;
 
 
-    DWORD affinityMask  = 0x1 << cpunum ; // thread affinity mask
-    DWORD_PTR res =
+    DWORD     affinityMask = 0x1 << cpunum; // thread affinity mask
+    DWORD_PTR res          =
         SetThreadAffinityMask
         (
             pd->tid.get(),                  // handle to thread
@@ -602,32 +653,35 @@ int Thread::setProcessorAffinity( unsigned int cpunum )
       HANDLE hThread,         // handle to the thread
        DWORD dwIdealProcessor  // ideal processor number
     );
-*/
+ */
     // return value 1 means call is ignored ( 9x/ME/SE )
-    if( res == 1 ) return -1;
+    if (res == 1)
+        return -1;
+
     // return value 0 is failure
-    return (res == 0) ? GetLastError() : 0 ;
+    return (res == 0) ? GetLastError() : 0;
 }
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  Print the thread's scheduling information to stdout.
 //
 // Use: public
 //
-void Thread::printSchedulingInfo() {
+void Thread::printSchedulingInfo()
+{
     ThreadPrivateActions::PrintThreadSchedulingInfo(this);
 }
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  Yield the processor
 //
 // Use: protected
 //
 #if _WIN32_WINNT < 0x0400 // simulate
-int SwitchToThread (void)
+int SwitchToThread(void)
 {
     ::Sleep(10);
     return 0;
@@ -642,18 +696,18 @@ int Thread::YieldCurrentThread()
 int Thread::microSleep(unsigned int microsec)
 {
 #if _WIN32_WINNT < 0x0400 // simulate
-    ::Sleep(microsec/1000);
+    ::Sleep(microsec / 1000);
     return 0;
 #else
     HandleHolder sleepTimer(CreateWaitableTimer(NULL, TRUE, NULL));
 
-    if( !sleepTimer )
-      return -1;
+    if (!sleepTimer)
+        return -1;
 
     LARGE_INTEGER t;
 
-    t.QuadPart= -(LONGLONG)microsec*10; // in 100ns units
-                 // negative sign means relative,
+    t.QuadPart = -(LONGLONG)microsec * 10; // in 100ns units
+    // negative sign means relative,
 
     if (!SetWaitableTimer(sleepTimer.get(), &t, 0, NULL, NULL, 0))
     {
@@ -670,13 +724,14 @@ int Thread::microSleep(unsigned int microsec)
 }
 
 
-//-----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 //
 // Description:  Get the number of processors
 //
 int OpenThreads::GetNumberOfProcessors()
 {
     SYSTEM_INFO sysInfo;
+
     GetSystemInfo(&sysInfo);
 
     return sysInfo.dwNumberOfProcessors;
@@ -686,7 +741,8 @@ int OpenThreads::SetProcessorAffinityOfCurrentThread(unsigned int cpunum)
 {
     Thread::Init();
 
-    Thread* thread = Thread::CurrentThread();
+    Thread *thread = Thread::CurrentThread();
+
     if (thread)
     {
         return thread->setProcessorAffinity(cpunum);

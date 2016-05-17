@@ -9,45 +9,46 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/MatrixTransform>
 
 #include <osgUtil/TransformCallback>
 
 using namespace osgUtil;
 
-TransformCallback::TransformCallback(const osg::Vec3& pivot,const osg::Vec3& axis,float angularVelocity)
+TransformCallback::TransformCallback(const osg::Vec3&pivot, const osg::Vec3&axis, float angularVelocity)
 {
-    _pivot = pivot;
-    _axis = axis;
+    _pivot            = pivot;
+    _axis             = axis;
     _angular_velocity = angularVelocity;
 
     _previousTraversalNumber = osg::UNINITIALIZED_FRAME_NUMBER;
-    _previousTime = -1.0;
+    _previousTime            = -1.0;
 
     _pause = false;
 }
 
-void TransformCallback::operator() (osg::Node* node, osg::NodeVisitor* nv)
+void TransformCallback::operator()(osg::Node *node, osg::NodeVisitor *nv)
 {
-    osg::MatrixTransform* transform = dynamic_cast<osg::MatrixTransform*>(node);
+    osg::MatrixTransform *transform = dynamic_cast<osg::MatrixTransform*>(node);
+
     if (nv && transform)
     {
-
-        const osg::FrameStamp* fs = nv->getFrameStamp();
-        if (!fs) return; // not frame stamp, no handle on the time so can't move.
+        const osg::FrameStamp *fs = nv->getFrameStamp();
+        if (!fs)
+            return;      // not frame stamp, no handle on the time so can't move.
 
         double newTime = fs->getSimulationTime();
 
         // ensure that we do not operate on this node more than
         // once during this traversal.  This is an issue since node
         // can be shared between multiple parents.
-        if (!_pause && nv->getTraversalNumber()!=_previousTraversalNumber)
+        if (!_pause && nv->getTraversalNumber() != _previousTraversalNumber)
         {
-            float delta_angle = _angular_velocity*(newTime-_previousTime);
+            float delta_angle = _angular_velocity * (newTime - _previousTime);
 
-            osg::Matrix mat = osg::Matrix::translate(-_pivot)*
-                              osg::Matrix::rotate(delta_angle,_axis)*
+            osg::Matrix mat = osg::Matrix::translate(-_pivot) *
+                              osg::Matrix::rotate(delta_angle, _axis) *
                               osg::Matrix::translate(_pivot);
 
 
@@ -58,10 +59,8 @@ void TransformCallback::operator() (osg::Node* node, osg::NodeVisitor* nv)
         }
 
         _previousTime = newTime;
-
     }
 
     // must call any nested node callbacks and continue subgraph traversal.
-    traverse(node,nv);
-
+    traverse(node, nv);
 }

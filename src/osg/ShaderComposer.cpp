@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 /*
  * mod:        Holger Helmich 2010-10-21
@@ -23,29 +23,30 @@ using namespace osg;
 
 ShaderComposer::ShaderComposer()
 {
-    OSG_INFO<<"ShaderComposer::ShaderComposer() "<<this<<std::endl;
+    OSG_INFO << "ShaderComposer::ShaderComposer() " << this << std::endl;
 }
 
-ShaderComposer::ShaderComposer(const ShaderComposer& sa, const CopyOp& copyop):
+ShaderComposer::ShaderComposer(const ShaderComposer&sa, const CopyOp&copyop) :
     Object(sa, copyop)
 {
-    OSG_INFO<<"ShaderComposer::ShaderComposer(const ShaderComposer&, const CopyOp& copyop) "<<this<<std::endl;
+    OSG_INFO << "ShaderComposer::ShaderComposer(const ShaderComposer&, const CopyOp& copyop) " << this << std::endl;
 }
 
 ShaderComposer::~ShaderComposer()
 {
-    OSG_INFO<<"ShaderComposer::~ShaderComposer() "<<this<<std::endl;
+    OSG_INFO << "ShaderComposer::~ShaderComposer() " << this << std::endl;
 }
 
-void ShaderComposer::releaseGLObjects(osg::State* state)
+void ShaderComposer::releaseGLObjects(osg::State *state)
 {
     _programMap.clear();
     _shaderMainMap.clear();
 }
 
-osg::Program* ShaderComposer::getOrCreateProgram(const ShaderComponents& shaderComponents)
+osg::Program* ShaderComposer::getOrCreateProgram(const ShaderComponents&shaderComponents)
 {
     ProgramMap::iterator itr = _programMap.find(shaderComponents);
+
     if (itr != _programMap.end())
     {
         // OSG_NOTICE<<"ShaderComposer::getOrCreateProgram(..) using cached Program"<<std::endl;
@@ -60,40 +61,47 @@ osg::Program* ShaderComposer::getOrCreateProgram(const ShaderComponents& shaderC
     Shaders fragmentShaders;
     Shaders computeShaders;
 
-    OSG_NOTICE<<"ShaderComposer::getOrCreateProgram(shaderComponents.size()=="<<shaderComponents.size()<<std::endl;
+    OSG_NOTICE << "ShaderComposer::getOrCreateProgram(shaderComponents.size()==" << shaderComponents.size() << std::endl;
 
-    for(ShaderComponents::const_iterator itr = shaderComponents.begin();
-        itr != shaderComponents.end();
-        ++itr)
+    for (ShaderComponents::const_iterator itr = shaderComponents.begin();
+         itr != shaderComponents.end();
+         ++itr)
     {
-        const ShaderComponent* sc = *itr;
+        const ShaderComponent *sc = *itr;
 
-        for(unsigned int i=0; i<sc->getNumShaders(); ++i)
+        for (unsigned int i = 0; i < sc->getNumShaders(); ++i)
         {
-            const Shader* shader = sc->getShader(i);
-            switch(shader->getType())
+            const Shader *shader = sc->getShader(i);
+
+            switch (shader->getType())
             {
-                case(Shader::VERTEX):
-                    vertexShaders.push_back(shader);
-                    break;
-                case(Shader::TESSCONTROL):
-                    tessControlShaders.push_back(shader);
-                    break;
-                case(Shader::TESSEVALUATION):
-                    tessEvaluationShaders.push_back(shader);
-                    break;
-                case(Shader::GEOMETRY):
-                    geometryShaders.push_back(shader);
-                    break;
-                case(Shader::FRAGMENT):
-                    fragmentShaders.push_back(shader);
-                    break;
-                case(Shader::COMPUTE):
-                    computeShaders.push_back(shader);
-                    break;
-                case(Shader::UNDEFINED):
-                    OSG_WARN<<"Warning: ShaderCompose::getOrCreateProgam(ShaderComponts) encounterd invalid Shader::Type."<<std::endl;
-                    break;
+            case (Shader::VERTEX):
+                vertexShaders.push_back(shader);
+                break;
+
+            case (Shader::TESSCONTROL):
+                tessControlShaders.push_back(shader);
+                break;
+
+            case (Shader::TESSEVALUATION):
+                tessEvaluationShaders.push_back(shader);
+                break;
+
+            case (Shader::GEOMETRY):
+                geometryShaders.push_back(shader);
+                break;
+
+            case (Shader::FRAGMENT):
+                fragmentShaders.push_back(shader);
+                break;
+
+            case (Shader::COMPUTE):
+                computeShaders.push_back(shader);
+                break;
+
+            case (Shader::UNDEFINED):
+                OSG_WARN << "Warning: ShaderCompose::getOrCreateProgam(ShaderComponts) encounterd invalid Shader::Type." << std::endl;
+                break;
             }
         }
     }
@@ -123,18 +131,19 @@ osg::Program* ShaderComposer::getOrCreateProgram(const ShaderComponents& shaderC
     // assign newly created program to map.
     _programMap[shaderComponents] = program;
 
-    OSG_NOTICE<<"ShaderComposer::getOrCreateProgram(..) created new Program"<<std::endl;
+    OSG_NOTICE << "ShaderComposer::getOrCreateProgram(..) created new Program" << std::endl;
 
     return program.get();
 }
 
-void ShaderComposer::addShaderToProgram(Program* program, const Shaders& shaders)
+void ShaderComposer::addShaderToProgram(Program *program, const Shaders&shaders)
 {
     ShaderMainMap::iterator itr = _shaderMainMap.find(shaders);
+
     if (itr == _shaderMainMap.end())
     {
         // no vertex shader in map yet, need to compose a new main shader
-        osg::Shader* mainShader = composeMain(shaders);
+        osg::Shader *mainShader = composeMain(shaders);
         _shaderMainMap[shaders] = mainShader;
         program->addShader(mainShader);
     }
@@ -143,11 +152,11 @@ void ShaderComposer::addShaderToProgram(Program* program, const Shaders& shaders
         program->addShader(itr->second.get());
     }
 
-    for(Shaders::const_iterator itr = shaders.begin();
-        itr != shaders.end();
-        ++itr)
+    for (Shaders::const_iterator itr = shaders.begin();
+         itr != shaders.end();
+         ++itr)
     {
-        Shader* shader = const_cast<Shader*>(*itr);
+        Shader *shader = const_cast<Shader*>(*itr);
         if (!(shader->getShaderSource().empty()) || shader->getShaderBinary())
         {
             program->addShader(shader);
@@ -155,33 +164,35 @@ void ShaderComposer::addShaderToProgram(Program* program, const Shaders& shaders
     }
 }
 
-osg::Shader* ShaderComposer::composeMain(const Shaders& shaders)
+osg::Shader* ShaderComposer::composeMain(const Shaders&shaders)
 {
-    OSG_NOTICE<<"ShaderComposer::composeMain(Shaders) shaders.size()=="<<shaders.size()<<std::endl;
+    OSG_NOTICE << "ShaderComposer::composeMain(Shaders) shaders.size()==" << shaders.size() << std::endl;
 
 
     // collect the shader type and the code injection from each of the contributing shaders
-    Shader::Type type = Shader::UNDEFINED;
+    Shader::Type             type = Shader::UNDEFINED;
     Shader::CodeInjectionMap codeInjectionMap;
-    for(Shaders::const_iterator itr = shaders.begin();
-        itr != shaders.end();
-        ++itr)
+
+    for (Shaders::const_iterator itr = shaders.begin();
+         itr != shaders.end();
+         ++itr)
     {
-        const Shader* shader = *itr;
+        const Shader *shader = *itr;
         if (type == Shader::UNDEFINED)
         {
             type = shader->getType();
         }
         else if (type != shader->getType())
         {
-            OSG_NOTICE<<"Warning:ShaderComposer::composeMain() mixing different types of Shaders prohibited."<<std::endl;
+            OSG_NOTICE << "Warning:ShaderComposer::composeMain() mixing different types of Shaders prohibited." << std::endl;
             continue;
         }
 
-        const Shader::CodeInjectionMap& cim = shader->getCodeInjectionMap();
-        for(Shader::CodeInjectionMap::const_iterator citr = cim.begin();
-            citr != cim.end();
-            ++citr)
+        const Shader::CodeInjectionMap&cim = shader->getCodeInjectionMap();
+
+        for (Shader::CodeInjectionMap::const_iterator citr = cim.begin();
+             citr != cim.end();
+             ++citr)
         {
             codeInjectionMap.insert(*citr);
         }
@@ -192,14 +203,17 @@ osg::Shader* ShaderComposer::composeMain(const Shaders& shaders)
     std::string in_main;
     std::string after_main;
 
-    for(Shader::CodeInjectionMap::iterator citr = codeInjectionMap.begin();
-        citr != codeInjectionMap.end();
-        ++citr)
+    for (Shader::CodeInjectionMap::iterator citr = codeInjectionMap.begin();
+         citr != codeInjectionMap.end();
+         ++citr)
     {
         float position = citr->first;
-        if (position<0.0) before_main += citr->second;
-        else if (position<=1.0) in_main += citr->second;
-        else after_main += citr->second;
+        if (position < 0.0)
+            before_main += citr->second;
+        else if (position <= 1.0)
+            in_main += citr->second;
+        else
+            after_main += citr->second;
     }
 
     // assembly the final main shader source
@@ -214,10 +228,10 @@ osg::Shader* ShaderComposer::composeMain(const Shaders& shaders)
 
     ref_ptr<Shader> mainShader = new Shader(type, full_source);
 
-    OSG_NOTICE<<"type =="<<type<<std::endl;
-    OSG_NOTICE<<"full_source == "<<std::endl<<full_source<<std::endl;
+    OSG_NOTICE << "type ==" << type << std::endl;
+    OSG_NOTICE << "full_source == " << std::endl << full_source << std::endl;
 
-    OSG_NOTICE<<"end of ShaderComposer::composeMain(Shaders)"<<std::endl<<std::endl;
+    OSG_NOTICE << "end of ShaderComposer::composeMain(Shaders)" << std::endl << std::endl;
 
     _shaderMainMap[shaders] = mainShader;
 

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgTerrain/Terrain>
 #include <osgTerrain/DisplacementMappingTechnique>
@@ -26,62 +26,67 @@ DisplacementMappingTechnique::DisplacementMappingTechnique()
     // OSG_NOTICE<<"DisplacementMappingTechnique::DisplacementMappingTechnique()"<<std::endl;
 }
 
-DisplacementMappingTechnique::DisplacementMappingTechnique(const DisplacementMappingTechnique& st,const osg::CopyOp& copyop):
+DisplacementMappingTechnique::DisplacementMappingTechnique(const DisplacementMappingTechnique&st, const osg::CopyOp&copyop) :
     osgTerrain::TerrainTechnique(st, copyop)
-{
-}
+{}
 
 DisplacementMappingTechnique::~DisplacementMappingTechnique()
-{
-}
+{}
 
 void DisplacementMappingTechnique::init(int dirtyMask, bool assumeMultiThreaded)
 {
-    if (!_terrainTile) return;
-    if (!_terrainTile->getTerrain()) return;
+    if (!_terrainTile)
+        return;
 
-    //OSG_NOTICE<<"DisplacementMappingTechnique::init("<<dirtyMask<<", "<<assumeMultiThreaded<<")"<<std::endl;
+    if (!_terrainTile->getTerrain())
+        return;
 
-    GeometryPool* geometryPool = _terrainTile->getTerrain()->getGeometryPool();
+    // OSG_NOTICE<<"DisplacementMappingTechnique::init("<<dirtyMask<<", "<<assumeMultiThreaded<<")"<<std::endl;
+
+    GeometryPool *geometryPool = _terrainTile->getTerrain()->getGeometryPool();
     _transform = geometryPool->getTileSubgraph(_terrainTile);
 
     // set tile as no longer dirty.
     _terrainTile->setDirtyMask(0);
 }
 
-void DisplacementMappingTechnique::update(osgUtil::UpdateVisitor* uv)
+void DisplacementMappingTechnique::update(osgUtil::UpdateVisitor *uv)
 {
-    if (_terrainTile) _terrainTile->osg::Group::traverse(*uv);
+    if (_terrainTile)
+        _terrainTile->osg::Group::traverse(*uv);
 
-    if (_transform.valid()) _transform->accept(*uv);
+    if (_transform.valid())
+        _transform->accept(*uv);
 }
 
 
-void DisplacementMappingTechnique::cull(osgUtil::CullVisitor* cv)
+void DisplacementMappingTechnique::cull(osgUtil::CullVisitor *cv)
 {
-    if (_transform.valid()) _transform->accept(*cv);
+    if (_transform.valid())
+        _transform->accept(*cv);
 }
 
 
-void DisplacementMappingTechnique::traverse(osg::NodeVisitor& nv)
+void DisplacementMappingTechnique::traverse(osg::NodeVisitor&nv)
 {
-    if (!_terrainTile) return;
+    if (!_terrainTile)
+        return;
 
     // if app traversal update the frame count.
-    if (nv.getVisitorType()==osg::NodeVisitor::UPDATE_VISITOR)
+    if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
         // if (_terrainTile->getDirty()) _terrainTile->init(_terrainTile->getDirtyMask(), false);
 
-        osgUtil::UpdateVisitor* uv = dynamic_cast<osgUtil::UpdateVisitor*>(&nv);
+        osgUtil::UpdateVisitor *uv = dynamic_cast<osgUtil::UpdateVisitor*>(&nv);
         if (uv)
         {
             update(uv);
             return;
         }
     }
-    else if (nv.getVisitorType()==osg::NodeVisitor::CULL_VISITOR)
+    else if (nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR)
     {
-        osgUtil::CullVisitor* cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
+        osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
         if (cv)
         {
             cull(cv);
@@ -99,10 +104,9 @@ void DisplacementMappingTechnique::traverse(osg::NodeVisitor& nv)
 
 
 void DisplacementMappingTechnique::cleanSceneGraph()
-{
-}
+{}
 
-void DisplacementMappingTechnique::releaseGLObjects(osg::State* state) const
+void DisplacementMappingTechnique::releaseGLObjects(osg::State *state) const
 {
     if (_transform.valid())
     {

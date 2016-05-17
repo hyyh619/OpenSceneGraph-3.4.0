@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool LightSource_readLocalData(Object& obj, Input& fr);
-bool LightSource_writeLocalData(const Object& obj, Output& fw);
+bool LightSource_readLocalData(Object&obj, Input&fr);
+bool LightSource_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(LightSource)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(LightSource)
     &LightSource_writeLocalData
 );
 
-bool LightSource_readLocalData(Object& obj, Input& fr)
+bool LightSource_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    LightSource& lightsource = static_cast<LightSource&>(obj);
+    LightSource&lightsource = static_cast<LightSource&>(obj);
 
     if (fr[0].matchWord("referenceFrame"))
     {
@@ -34,13 +34,14 @@ bool LightSource_readLocalData(Object& obj, Input& fr)
         if (fr[1].matchWord("RELATIVE_TO_ABSOLUTE") || fr[1].matchWord("ABSOLUTE"))
         {
             lightsource.setReferenceFrame(LightSource::ABSOLUTE_RF);
-            fr += 2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
+
         if (fr[1].matchWord("RELATIVE_TO_PARENTS") || fr[1].matchWord("RELATIVE"))
         {
             lightsource.setReferenceFrame(LightSource::RELATIVE_RF);
-            fr += 2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
 
@@ -51,8 +52,8 @@ bool LightSource_readLocalData(Object& obj, Input& fr)
         }
     }
 
-    osg::ref_ptr<StateAttribute> sa=fr.readStateAttribute();
-    osg::Light* light = dynamic_cast<Light*>(sa.get());
+    osg::ref_ptr<StateAttribute> sa     = fr.readStateAttribute();
+    osg::Light                   *light = dynamic_cast<Light*>(sa.get());
     if (light)
     {
         lightsource.setLight(light);
@@ -63,22 +64,27 @@ bool LightSource_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool LightSource_writeLocalData(const Object& obj, Output& fw)
+bool LightSource_writeLocalData(const Object&obj, Output&fw)
 {
-    const LightSource& lightsource = static_cast<const LightSource&>(obj);
+    const LightSource&lightsource = static_cast<const LightSource&>(obj);
 
     fw.indent() << "referenceFrame ";
+
     switch (lightsource.getReferenceFrame())
     {
-        case LightSource::ABSOLUTE_RF:
-            fw << "ABSOLUTE\n";
-            break;
-        case LightSource::RELATIVE_RF:
-        default:
-            fw << "RELATIVE\n";
-    };
+    case LightSource::ABSOLUTE_RF:
+        fw << "ABSOLUTE\n";
+        break;
 
-    if (lightsource.getLight()) fw.writeObject(*lightsource.getLight());
+    case LightSource::RELATIVE_RF:
+    default:
+        fw << "RELATIVE\n";
+    }
+
+    ;
+
+    if (lightsource.getLight())
+        fw.writeObject(*lightsource.getLight());
 
     return true;
 }

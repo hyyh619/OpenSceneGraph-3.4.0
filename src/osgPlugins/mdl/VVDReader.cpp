@@ -39,16 +39,16 @@ VVDReader::~VVDReader()
 
     // Clean up the vertex buffer arrays
     for (i = 0; i < MAX_LODS; i++)
-        delete [] vertex_buffer[i];
+        delete[] vertex_buffer[i];
 }
 
 
-bool VVDReader::readFile(const std::string & file)
+bool VVDReader::readFile(const std::string&file)
 {
-    osgDB::ifstream *   vvdFile;
-    VVDHeader           header;
-    int                 vertIndex;
-    int                 i, j;
+    osgDB::ifstream *vvdFile;
+    VVDHeader       header;
+    int             vertIndex;
+    int             i, j;
 
     // Remember the map name
     vvd_name = getStrippedName(file);
@@ -62,7 +62,7 @@ bool VVDReader::readFile(const std::string & file)
 
     // Read the header
     memset(&header, 0xcd, sizeof(VVDHeader));
-    vvdFile->read((char *) &header, sizeof(VVDHeader));
+    vvdFile->read((char*) &header, sizeof(VVDHeader));
 
     // Make sure the file is a valid Valve VVD file
     if (header.magic_number != VVD_MAGIC_NUMBER)
@@ -77,14 +77,15 @@ bool VVDReader::readFile(const std::string & file)
     // Read the fixup table
     fixup_table = new VVDFixupEntry[header.num_fixups];
     vvdFile->seekg(header.fixup_table_offset);
+
     for (i = 0; i < header.num_fixups; i++)
-        vvdFile->read((char *) &fixup_table[i], sizeof(VVDFixupEntry));
+        vvdFile->read((char*) &fixup_table[i], sizeof(VVDFixupEntry));
 
     // Create the vertex buffers
     for (i = 0; i < header.num_lods; i++)
     {
         // Create the vertex buffer for this LOD
-        vertex_buffer[i] = new VVDVertex[header.num_lod_verts[i]];
+        vertex_buffer[i]      = new VVDVertex[header.num_lod_verts[i]];
         vertex_buffer_size[i] = header.num_lod_verts[i];
 
         // See if this model needs fixups
@@ -92,6 +93,7 @@ bool VVDReader::readFile(const std::string & file)
         {
             // Scan the fixup table and apply any fixups at this LOD
             vertIndex = 0;
+
             for (j = 0; j < header.num_fixups; j++)
             {
                 // Skip this entry if the LOD number is lower (more detailed)
@@ -104,7 +106,7 @@ bool VVDReader::readFile(const std::string & file)
                                    sizeof(VVDVertex));
 
                     // Read the number of vertices specified
-                    vvdFile->read((char *) &vertex_buffer[i][vertIndex],
+                    vvdFile->read((char*) &vertex_buffer[i][vertIndex],
                                   fixup_table[j].num_vertices *
                                   sizeof(VVDVertex));
 
@@ -119,7 +121,7 @@ bool VVDReader::readFile(const std::string & file)
             vvdFile->seekg(header.vertex_data_offset);
 
             // Just read the vertices directly
-            vvdFile->read((char *) &vertex_buffer[i][0],
+            vvdFile->read((char*) &vertex_buffer[i][0],
                           header.num_lod_verts[i] * sizeof(VVDVertex));
         }
 
@@ -158,4 +160,3 @@ Vec2 VVDReader::getTexCoords(int lod, int index)
 {
     return vertex_buffer[lod][index].vertex_texcoord;
 }
-

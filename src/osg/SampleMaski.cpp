@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/SampleMaski>
 #include <osg/State>
@@ -25,22 +25,21 @@ SampleMaski::SampleMaski()
     _sampleMask[1u] = ~0u;
 }
 
-SampleMaski::SampleMaski(const SampleMaski& sampleMaski,const CopyOp& copyop):
-    StateAttribute(sampleMaski,copyop)
+SampleMaski::SampleMaski(const SampleMaski&sampleMaski, const CopyOp&copyop) :
+    StateAttribute(sampleMaski, copyop)
 {
     _sampleMask[0u] = sampleMaski._sampleMask[0u];
     _sampleMask[1u] = sampleMaski._sampleMask[1u];
 }
 
 SampleMaski::~SampleMaski()
-{
-}
+{}
 
-int SampleMaski::compare(const StateAttribute& sa) const
+int SampleMaski::compare(const StateAttribute&sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
-    COMPARE_StateAttribute_Types(SampleMaski,sa)
+    COMPARE_StateAttribute_Types(SampleMaski, sa)
 
     COMPARE_StateAttribute_Parameter(_sampleMask[0u])
     COMPARE_StateAttribute_Parameter(_sampleMask[1u])
@@ -48,19 +47,19 @@ int SampleMaski::compare(const StateAttribute& sa) const
     return 0; // passed all the above comparison macros, must be equal.
 }
 
-void SampleMaski::apply(State& state) const
+void SampleMaski::apply(State&state) const
 {
     // get "per-context" extensions
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
 
-    if ( (extensions->isTextureMultisampleSupported) || (extensions->isOpenGL32upported) || (extensions->isSampleMaskiSupported)  )
+    if ((extensions->isTextureMultisampleSupported) || (extensions->isOpenGL32upported) || (extensions->isSampleMaskiSupported))
     {
         extensions->glSampleMaski(0u, _sampleMask[0u]);
-        //For now we use only 32-bit Sample mask
+        // For now we use only 32-bit Sample mask
         //        extensions->glSampleMaski(1u, _sampleMask[1u]);
         return;
     }
 
     OSG_WARN << "SampleMaski failed as the required graphics capabilities were not found. \n"
-                "OpenGL 3.2 or  ARB_texture_multisample extension is required." << std::endl;
+        "OpenGL 3.2 or  ARB_texture_multisample extension is required." << std::endl;
 }

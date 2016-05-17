@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ClipNode_readLocalData(Object& obj, Input& fr);
-bool ClipNode_writeLocalData(const Object& obj, Output& fw);
+bool ClipNode_readLocalData(Object&obj, Input&fr);
+bool ClipNode_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(ClipNode)
@@ -21,33 +21,37 @@ REGISTER_DOTOSGWRAPPER(ClipNode)
     &ClipNode_writeLocalData
 );
 
-bool ClipNode_readLocalData(Object& obj, Input& fr)
+bool ClipNode_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    ClipNode& clipnode = static_cast<ClipNode&>(obj);
+    ClipNode&clipnode = static_cast<ClipNode&>(obj);
 
     if (fr[0].matchWord("referenceFrame"))
     {
         if (fr[1].matchWord("ABSOLUTE"))
         {
             clipnode.setReferenceFrame(ClipNode::ABSOLUTE_RF);
-            fr += 2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
+
         if (fr[1].matchWord("RELATIVE"))
         {
             clipnode.setReferenceFrame(ClipNode::RELATIVE_RF);
-            fr += 2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
     }
 
-    osg::ref_ptr<StateAttribute> sa=0;
-    while((sa=fr.readStateAttribute())!=0)
+    osg::ref_ptr<StateAttribute> sa = 0;
+
+    while ((sa = fr.readStateAttribute()) != 0)
     {
-        ClipPlane* clipplane = dynamic_cast<ClipPlane*>(sa.get());
-        if (clipplane) clipnode.addClipPlane(clipplane);
+        ClipPlane *clipplane = dynamic_cast<ClipPlane*>(sa.get());
+        if (clipplane)
+            clipnode.addClipPlane(clipplane);
+
         iteratorAdvanced = true;
     }
 
@@ -55,22 +59,26 @@ bool ClipNode_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool ClipNode_writeLocalData(const Object& obj, Output& fw)
+bool ClipNode_writeLocalData(const Object&obj, Output&fw)
 {
-    const ClipNode& clipnode = static_cast<const ClipNode&>(obj);
+    const ClipNode&clipnode = static_cast<const ClipNode&>(obj);
 
     fw.indent() << "referenceFrame ";
+
     switch (clipnode.getReferenceFrame())
     {
-        case ClipNode::ABSOLUTE_RF:
-            fw << "ABSOLUTE\n";
-            break;
-        case ClipNode::RELATIVE_RF:
-        default:
-            fw << "RELATIVE\n";
-    };
+    case ClipNode::ABSOLUTE_RF:
+        fw << "ABSOLUTE\n";
+        break;
 
-    for(unsigned  int i=0;i<clipnode.getNumClipPlanes();++i)
+    case ClipNode::RELATIVE_RF:
+    default:
+        fw << "RELATIVE\n";
+    }
+
+    ;
+
+    for (unsigned int i = 0; i < clipnode.getNumClipPlanes(); ++i)
     {
         fw.writeObject(*clipnode.getClipPlane(i));
     }

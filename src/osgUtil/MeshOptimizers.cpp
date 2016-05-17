@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <cassert>
 #include <limits>
@@ -32,18 +32,18 @@ using namespace osg;
 
 namespace osgUtil
 {
-
 void GeometryCollector::reset()
 {
     _geometryList.clear();
 }
 
-void GeometryCollector::apply(Geode& geode)
+void GeometryCollector::apply(Geode&geode)
 {
-    for(unsigned int i = 0; i < geode.getNumDrawables(); ++i )
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
-        osg::Geometry* geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
-        if (geom) _geometryList.insert(geom);
+        osg::Geometry *geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
+        if (geom)
+            _geometryList.insert(geom);
     }
 }
 
@@ -58,7 +58,7 @@ struct GeometryArrayGatherer
 {
     typedef std::vector<osg::Array*> ArrayList;
 
-    GeometryArrayGatherer(osg::Geometry& geometry)
+    GeometryArrayGatherer(osg::Geometry&geometry)
     {
         add(geometry.getVertexArray());
         add(geometry.getNormalArray());
@@ -66,29 +66,31 @@ struct GeometryArrayGatherer
         add(geometry.getSecondaryColorArray());
         add(geometry.getFogCoordArray());
         unsigned int i;
-        for(i=0;i<geometry.getNumTexCoordArrays();++i)
+
+        for (i = 0; i < geometry.getNumTexCoordArrays(); ++i)
         {
             add(geometry.getTexCoordArray(i));
         }
-        for(i=0;i<geometry.getNumVertexAttribArrays();++i)
+
+        for (i = 0; i < geometry.getNumVertexAttribArrays(); ++i)
         {
             add(geometry.getVertexAttribArray(i));
         }
     }
 
-    void add(osg::Array* array)
+    void add(osg::Array *array)
     {
-        if (array && array->getBinding()==osg::Array::BIND_PER_VERTEX)
+        if (array && array->getBinding() == osg::Array::BIND_PER_VERTEX)
         {
             _arrayList.push_back(array);
         }
     }
 
-    void accept(osg::ArrayVisitor& av)
+    void accept(osg::ArrayVisitor&av)
     {
-        for(ArrayList::iterator itr=_arrayList.begin();
-            itr!=_arrayList.end();
-            ++itr)
+        for (ArrayList::iterator itr = _arrayList.begin();
+             itr != _arrayList.end();
+             ++itr)
         {
             (*itr)->accept(av);
         }
@@ -101,95 +103,174 @@ struct GeometryArrayGatherer
 // are identified by their index. Extracted from TriStripVisitor.cpp
 struct VertexAttribComparitor : public GeometryArrayGatherer
 {
-    VertexAttribComparitor(osg::Geometry& geometry)
+    VertexAttribComparitor(osg::Geometry&geometry)
         : GeometryArrayGatherer(geometry)
-    {
-    }
+    {}
 
-    bool operator() (unsigned int lhs, unsigned int rhs) const
+    bool operator()(unsigned int lhs, unsigned int rhs) const
     {
-        for(ArrayList::const_iterator itr=_arrayList.begin();
-            itr!=_arrayList.end();
-            ++itr)
+        for (ArrayList::const_iterator itr = _arrayList.begin();
+             itr != _arrayList.end();
+             ++itr)
         {
-            int compare = (*itr)->compare(lhs,rhs);
-            if (compare==-1) return true;
-            if (compare==1) return false;
+            int compare = (*itr)->compare(lhs, rhs);
+            if (compare == -1)
+                return true;
+
+            if (compare == 1)
+                return false;
         }
+
         return false;
     }
 
     int compare(unsigned int lhs, unsigned int rhs)
     {
-        for(ArrayList::iterator itr=_arrayList.begin();
-            itr!=_arrayList.end();
-            ++itr)
+        for (ArrayList::iterator itr = _arrayList.begin();
+             itr != _arrayList.end();
+             ++itr)
         {
-            int compare = (*itr)->compare(lhs,rhs);
-            if (compare==-1) return -1;
-            if (compare==1) return 1;
+            int compare = (*itr)->compare(lhs, rhs);
+            if (compare == -1)
+                return -1;
+
+            if (compare == 1)
+                return 1;
         }
+
         return 0;
     }
 
 protected:
-    VertexAttribComparitor& operator = (const VertexAttribComparitor&) { return *this; }
-
+    VertexAttribComparitor&operator =(const VertexAttribComparitor&)
+    {
+        return *this;
+    }
 };
 
 // Compact the vertex attribute arrays. Also stolen from TriStripVisitor
 class RemapArray : public osg::ArrayVisitor
 {
-    public:
-        RemapArray(const IndexList& remapping):_remapping(remapping) {}
+public:
+RemapArray(const IndexList&remapping) : _remapping(remapping) {}
 
-        const IndexList& _remapping;
+const IndexList&_remapping;
 
-        template<class T>
-        inline void remap(T& array)
+template<class T>
+inline void remap(T&array)
+{
+    for (unsigned int i = 0; i < _remapping.size(); ++i)
+    {
+        if (i != _remapping[i])
         {
-            for(unsigned int i=0;i<_remapping.size();++i)
-            {
-                if (i!=_remapping[i])
-                {
-                    array[i] = array[_remapping[i]];
-                }
-            }
-            array.erase(array.begin()+_remapping.size(),array.end());
+            array[i] = array[_remapping[i]];
         }
+    }
 
-        virtual void apply(osg::Array&) {}
-        virtual void apply(osg::ByteArray& array) { remap(array); }
-        virtual void apply(osg::ShortArray& array) { remap(array); }
-        virtual void apply(osg::IntArray& array) { remap(array); }
-        virtual void apply(osg::UByteArray& array) { remap(array); }
-        virtual void apply(osg::UShortArray& array) { remap(array); }
-        virtual void apply(osg::UIntArray& array) { remap(array); }
-        virtual void apply(osg::FloatArray& array) { remap(array); }
-        virtual void apply(osg::DoubleArray& array) { remap(array); }
+    array.erase(array.begin() + _remapping.size(), array.end());
+}
 
-        virtual void apply(osg::Vec2Array& array) { remap(array); }
-        virtual void apply(osg::Vec3Array& array) { remap(array); }
-        virtual void apply(osg::Vec4Array& array) { remap(array); }
+virtual void apply(osg::Array&) {}
+virtual void apply(osg::ByteArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::ShortArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::IntArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::UByteArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::UShortArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::UIntArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::FloatArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::DoubleArray&array)
+{
+    remap(array);
+}
 
-        virtual void apply(osg::Vec4ubArray& array) { remap(array); }
+virtual void apply(osg::Vec2Array&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3Array&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4Array&array)
+{
+    remap(array);
+}
 
-        virtual void apply(osg::Vec2bArray& array) { remap(array); }
-        virtual void apply(osg::Vec3bArray& array) { remap(array); }
-        virtual void apply(osg::Vec4bArray& array) { remap(array); }
+virtual void apply(osg::Vec4ubArray&array)
+{
+    remap(array);
+}
 
-        virtual void apply(osg::Vec2sArray& array) { remap(array); }
-        virtual void apply(osg::Vec3sArray& array) { remap(array); }
-        virtual void apply(osg::Vec4sArray& array) { remap(array); }
+virtual void apply(osg::Vec2bArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3bArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4bArray&array)
+{
+    remap(array);
+}
 
-        virtual void apply(osg::Vec2dArray& array) { remap(array); }
-        virtual void apply(osg::Vec3dArray& array) { remap(array); }
-        virtual void apply(osg::Vec4dArray& array) { remap(array); }
+virtual void apply(osg::Vec2sArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3sArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4sArray&array)
+{
+    remap(array);
+}
 
-        virtual void apply(osg::MatrixfArray& array) { remap(array); }
+virtual void apply(osg::Vec2dArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3dArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4dArray&array)
+{
+    remap(array);
+}
+
+virtual void apply(osg::MatrixfArray&array)
+{
+    remap(array);
+}
 protected:
 
-        RemapArray& operator = (const RemapArray&) { return *this; }
+RemapArray&operator =(const RemapArray&)
+{
+    return *this;
+}
 };
 
 
@@ -197,7 +278,6 @@ protected:
 // primitives.
 struct MyTriangleOperator
 {
-
     IndexList _remapIndices;
     IndexList _in_indices;
 
@@ -216,49 +296,57 @@ struct MyTriangleOperator
             _in_indices.push_back(_remapIndices[p3]);
         }
     }
-
 };
 typedef osg::TriangleIndexFunctor<MyTriangleOperator> MyTriangleIndexFunctor;
 }
 
-void IndexMeshVisitor::makeMesh(Geometry& geom)
+void IndexMeshVisitor::makeMesh(Geometry&geom)
 {
-    if (geom.containsDeprecatedData()) geom.fixDeprecatedData();
+    if (geom.containsDeprecatedData())
+        geom.fixDeprecatedData();
 
-    if (osg::getBinding(geom.getNormalArray())==osg::Array::BIND_PER_PRIMITIVE_SET) return;
+    if (osg::getBinding(geom.getNormalArray()) == osg::Array::BIND_PER_PRIMITIVE_SET)
+        return;
 
-    if (osg::getBinding(geom.getColorArray())==osg::Array::BIND_PER_PRIMITIVE_SET) return;
+    if (osg::getBinding(geom.getColorArray()) == osg::Array::BIND_PER_PRIMITIVE_SET)
+        return;
 
-    if (osg::getBinding(geom.getSecondaryColorArray())==osg::Array::BIND_PER_PRIMITIVE_SET) return;
+    if (osg::getBinding(geom.getSecondaryColorArray()) == osg::Array::BIND_PER_PRIMITIVE_SET)
+        return;
 
-    if (osg::getBinding(geom.getFogCoordArray())==osg::Array::BIND_PER_PRIMITIVE_SET) return;
+    if (osg::getBinding(geom.getFogCoordArray()) == osg::Array::BIND_PER_PRIMITIVE_SET)
+        return;
 
     // no point optimizing if we don't have enough vertices.
-    if (!geom.getVertexArray() || geom.getVertexArray()->getNumElements()<3) return;
+    if (!geom.getVertexArray() || geom.getVertexArray()->getNumElements() < 3)
+        return;
 
     // check for the existence of surface primitives
-    unsigned int numSurfacePrimitives = 0;
-    unsigned int numNonIndexedPrimitives = 0;
-    Geometry::PrimitiveSetList& primitives = geom.getPrimitiveSetList();
+    unsigned int                         numSurfacePrimitives    = 0;
+    unsigned int                         numNonIndexedPrimitives = 0;
+    Geometry::PrimitiveSetList           &primitives             = geom.getPrimitiveSetList();
     Geometry::PrimitiveSetList::iterator itr;
-    for(itr=primitives.begin();
-        itr!=primitives.end();
-        ++itr)
+
+    for (itr = primitives.begin();
+         itr != primitives.end();
+         ++itr)
     {
-        switch((*itr)->getMode())
+        switch ((*itr)->getMode())
         {
-            case(PrimitiveSet::TRIANGLES):
-            case(PrimitiveSet::TRIANGLE_STRIP):
-            case(PrimitiveSet::TRIANGLE_FAN):
-            case(PrimitiveSet::QUADS):
-            case(PrimitiveSet::QUAD_STRIP):
-            case(PrimitiveSet::POLYGON):
-                ++numSurfacePrimitives;
-                break;
-            default:
-                // For now, only deal with polygons
-                return;
+        case (PrimitiveSet::TRIANGLES):
+        case (PrimitiveSet::TRIANGLE_STRIP):
+        case (PrimitiveSet::TRIANGLE_FAN):
+        case (PrimitiveSet::QUADS):
+        case (PrimitiveSet::QUAD_STRIP):
+        case (PrimitiveSet::POLYGON):
+            ++numSurfacePrimitives;
+            break;
+
+        default:
+            // For now, only deal with polygons
+            return;
         }
+
         PrimitiveSet::Type type = (*itr)->getType();
         if (!(type == PrimitiveSet::DrawElementsUBytePrimitiveType
               || type == PrimitiveSet::DrawElementsUShortPrimitiveType
@@ -267,64 +355,74 @@ void IndexMeshVisitor::makeMesh(Geometry& geom)
     }
 
     // nothing to index
-    if (!numSurfacePrimitives || !numNonIndexedPrimitives) return;
+    if (!numSurfacePrimitives || !numNonIndexedPrimitives)
+        return;
 
     // duplicate shared arrays as it isn't safe to rearrange vertices when arrays are shared.
-    if (geom.containsSharedArrays()) geom.duplicateSharedArrays();
+    if (geom.containsSharedArrays())
+        geom.duplicateSharedArrays();
 
     // compute duplicate vertices
     typedef std::vector<unsigned int> IndexList;
     unsigned int numVertices = geom.getVertexArray()->getNumElements();
-    IndexList indices(numVertices);
-    unsigned int i,j;
-    for(i=0;i<numVertices;++i)
+    IndexList    indices(numVertices);
+    unsigned int i, j;
+
+    for (i = 0; i < numVertices; ++i)
     {
         indices[i] = i;
     }
 
     VertexAttribComparitor arrayComparitor(geom);
-    std::sort(indices.begin(),indices.end(),arrayComparitor);
+    std::sort(indices.begin(), indices.end(), arrayComparitor);
 
     unsigned int lastUnique = 0;
-    unsigned int numUnique = 1;
-    for(i=1;i<numVertices;++i)
+    unsigned int numUnique  = 1;
+
+    for (i = 1; i < numVertices; ++i)
     {
-        if (arrayComparitor.compare(indices[lastUnique],indices[i]) != 0)
+        if (arrayComparitor.compare(indices[lastUnique], indices[i]) != 0)
         {
             lastUnique = i;
             ++numUnique;
         }
-
     }
+
     IndexList remapDuplicatesToOrignals(numVertices);
     lastUnique = 0;
-    for(i=1;i<numVertices;++i)
+
+    for (i = 1; i < numVertices; ++i)
     {
-        if (arrayComparitor.compare(indices[lastUnique],indices[i])!=0)
+        if (arrayComparitor.compare(indices[lastUnique], indices[i]) != 0)
         {
             // found a new vertex entry, so previous run of duplicates needs
             // to be put together.
             unsigned int min_index = indices[lastUnique];
-            for(j=lastUnique+1;j<i;++j)
+
+            for (j = lastUnique + 1; j < i; ++j)
             {
-                min_index = osg::minimum(min_index,indices[j]);
+                min_index = osg::minimum(min_index, indices[j]);
             }
-            for(j=lastUnique;j<i;++j)
+
+            for (j = lastUnique; j < i; ++j)
             {
-                remapDuplicatesToOrignals[indices[j]]=min_index;
+                remapDuplicatesToOrignals[indices[j]] = min_index;
             }
+
             lastUnique = i;
         }
+    }
 
-    }
     unsigned int min_index = indices[lastUnique];
-    for(j=lastUnique+1;j<i;++j)
+
+    for (j = lastUnique + 1; j < i; ++j)
     {
-        min_index = osg::minimum(min_index,indices[j]);
+        min_index = osg::minimum(min_index, indices[j]);
     }
-    for(j=lastUnique;j<i;++j)
+
+    for (j = lastUnique; j < i; ++j)
     {
-        remapDuplicatesToOrignals[indices[j]]=min_index;
+        remapDuplicatesToOrignals[indices[j]] = min_index;
     }
 
 
@@ -332,10 +430,11 @@ void IndexMeshVisitor::makeMesh(Geometry& geom)
     IndexList finalMapping(numVertices);
     IndexList copyMapping;
     copyMapping.reserve(numUnique);
-    unsigned int currentIndex=0;
-    for(i=0;i<numVertices;++i)
+    unsigned int currentIndex = 0;
+
+    for (i = 0; i < numVertices; ++i)
     {
-        if (remapDuplicatesToOrignals[i]==i)
+        if (remapDuplicatesToOrignals[i] == i)
         {
             finalMapping[i] = currentIndex;
             copyMapping.push_back(i);
@@ -343,9 +442,9 @@ void IndexMeshVisitor::makeMesh(Geometry& geom)
         }
     }
 
-    for(i=0;i<numVertices;++i)
+    for (i = 0; i < numVertices; ++i)
     {
-        if (remapDuplicatesToOrignals[i]!=i)
+        if (remapDuplicatesToOrignals[i] != i)
         {
             finalMapping[i] = finalMapping[remapDuplicatesToOrignals[i]];
         }
@@ -358,9 +457,9 @@ void IndexMeshVisitor::makeMesh(Geometry& geom)
     Geometry::PrimitiveSetList new_primitives;
     new_primitives.reserve(primitives.size());
 
-    for(itr=primitives.begin();
-        itr!=primitives.end();
-        ++itr)
+    for (itr = primitives.begin();
+         itr != primitives.end();
+         ++itr)
     {
         // For now we only have primitive sets that play nicely with
         // the TriangleIndexFunctor.
@@ -372,31 +471,34 @@ void IndexMeshVisitor::makeMesh(Geometry& geom)
     arrayComparitor.accept(ra);
     if (taf._in_indices.size() < 65536)
     {
-        osg::DrawElementsUShort* elements = new DrawElementsUShort(GL_TRIANGLES);
+        osg::DrawElementsUShort *elements = new DrawElementsUShort(GL_TRIANGLES);
+
         for (IndexList::iterator itr = taf._in_indices.begin(),
-                 end = taf._in_indices.end();
+             end = taf._in_indices.end();
              itr != end;
-            ++itr)
+             ++itr)
         {
             elements->push_back((GLushort)(*itr));
         }
+
         new_primitives.push_back(elements);
     }
     else
     {
-        osg::DrawElementsUInt* elements
+        osg::DrawElementsUInt *elements
             = new DrawElementsUInt(GL_TRIANGLES, taf._in_indices.begin(),
                                    taf._in_indices.end());
         new_primitives.push_back(elements);
     }
+
     geom.setPrimitiveSetList(new_primitives);
 }
 
 void IndexMeshVisitor::makeMesh()
 {
-    for(GeometryList::iterator itr=_geometryList.begin();
-        itr!=_geometryList.end();
-        ++itr)
+    for (GeometryList::iterator itr = _geometryList.begin();
+         itr != _geometryList.end();
+         ++itr)
     {
         makeMesh(*(*itr));
     }
@@ -414,30 +516,34 @@ struct LRUCache
         entries.reserve(maxSize_ + 3);
     }
     std::vector<unsigned> entries;
-    size_t maxSize;
+    size_t                maxSize;
 
     // Add a list of values to the cache
-    void addEntries(unsigned* begin, unsigned* end)
+    void addEntries(unsigned *begin, unsigned *end)
     {
         // If any of the new vertices are already in the cache, remove
         // them, leaving some room at the front of the cache.
         std::vector<unsigned>::reverse_iterator validEnd = entries.rend();
-        for (unsigned* pent = begin; pent != end; ++pent)
+
+        for (unsigned *pent = begin; pent != end; ++pent)
         {
             validEnd = std::remove(entries.rbegin(), validEnd, *pent);
         }
+
         // Now make room still needed for new cache entries
-        size_t newEnts = end - begin;
-        int spaceNeeded = newEnts - (entries.rend() - validEnd);
+        size_t newEnts     = end - begin;
+        int    spaceNeeded = newEnts - (entries.rend() - validEnd);
         if (spaceNeeded > 0)
         {
             if (maxSize - entries.size() >= static_cast<unsigned>(spaceNeeded))
                 entries.resize(entries.size() + spaceNeeded);
             else if (entries.size() < maxSize)
                 entries.resize(maxSize);
+
             std::copy_backward(entries.begin() + newEnts - spaceNeeded,
                                entries.end() - spaceNeeded, entries.end());
         }
+
         std::copy(begin, end, entries.begin());
     }
 
@@ -451,15 +557,14 @@ struct LRUCache
 // structure in another array.
 struct Vertex
 {
-    int cachePosition;
-    float score;
-    int trisUsing;
-    int numActiveTris;          // triangles left to process
+    int    cachePosition;
+    float  score;
+    int    trisUsing;
+    int    numActiveTris;       // triangles left to process
     size_t triList;             // index to start of triangle storage
     Vertex()
         : cachePosition(-1), score(0.0f), trisUsing(0), numActiveTris(0), triList(0)
-    {
-    }
+    {}
 };
 
 // Code from Tom Forsyth's article. The algorithm is described in
@@ -480,23 +585,23 @@ struct Vertex
 // size of the mesh.
 
 // The "magic" scoring functions are described in the paper.
-const float cacheDecayPower = 1.5f;
-const float lastTriScore = 0.75f;
+const float cacheDecayPower   = 1.5f;
+const float lastTriScore      = 0.75f;
 const float valenceBoostScale = 2.0f;
 const float valenceBoostPower = 0.5f;
 
 const int maxCacheSize = 32;
 
-float findVertexScore (Vertex& vert)
+float findVertexScore(Vertex&vert)
 {
-
     if (vert.numActiveTris == 0)
     {
         // No tri needs this vertex!
         return -1.0f;
     }
-    float score = 0.0f;
-    int cachePosition = vert.cachePosition;
+
+    float score         = 0.0f;
+    int   cachePosition = vert.cachePosition;
 
     if (cachePosition < 0)
     {
@@ -518,10 +623,11 @@ float findVertexScore (Vertex& vert)
             assert (cachePosition < maxCacheSize);
             // Points for being high in the cache.
             const float scaler = 1.0f / (maxCacheSize - 3);
-            score = 1.0f - (cachePosition - 3 ) * scaler;
+            score = 1.0f - (cachePosition - 3) * scaler;
             score = powf(score, cacheDecayPower);
         }
     }
+
     // Bonus points for having a low number of tris still to
     // use the vert, so we get rid of lone verts quickly.
     float valenceBoost = powf(vert.numActiveTris, -valenceBoostPower);
@@ -534,40 +640,44 @@ typedef std::vector<Vertex> VertexList;
 
 struct Triangle
 {
-    float score;
+    float    score;
     unsigned verts[3];
 };
 
 typedef std::vector<Triangle> TriangleList;
 
-inline float findTriangleScore(Triangle& tri, const VertexList& vertices)
+inline float findTriangleScore(Triangle&tri, const VertexList&vertices)
 {
     float result = 0.0f;
+
     for (int i = 0; i < 3; ++i)
         result += vertices[tri.verts[i]].score;
+
     return result;
 }
 
 typedef std::pair<unsigned, float> TriangleScore;
 
-TriangleScore computeTriScores(Vertex& vert, const VertexList& vertices,
-                               TriangleList& triangles, std::vector<unsigned>& triStore)
+TriangleScore computeTriScores(Vertex&vert, const VertexList&vertices,
+                               TriangleList&triangles, std::vector<unsigned>&triStore)
 {
-    float bestScore = 0.0;
-    unsigned bestTri = 0;
+    float    bestScore = 0.0;
+    unsigned bestTri   = 0;
+
     for (size_t i = vert.triList;
          i < vert.triList + vert.numActiveTris;
          ++i)
     {
-        unsigned tri = triStore[i];
-        float score = triangles[tri].score = findTriangleScore(triangles[tri],
-                                                               vertices);
+        unsigned tri   = triStore[i];
+        float    score = triangles[tri].score = findTriangleScore(triangles[tri],
+                                                                  vertices);
         if (score > bestScore)
         {
             bestScore = score;
-            bestTri = tri;
+            bestTri   = tri;
         }
     }
+
     return std::make_pair(bestTri, bestScore);
 }
 
@@ -575,21 +685,23 @@ typedef std::vector<Triangle> TriangleList;
 
 struct TriangleCounterOperator
 {
-    VertexList* vertices;
-    int triangleCount;
+    VertexList *vertices;
+    int        triangleCount;
     TriangleCounterOperator() : vertices(0), triangleCount(0) {}
 
     void doVertex(unsigned p)
     {
         if (vertices->size() <= p)
             vertices->resize(p + 1);
+
         (*vertices)[p].trisUsing++;
     }
 
-    void operator() (unsigned int p1, unsigned int p2, unsigned int p3)
+    void operator()(unsigned int p1, unsigned int p2, unsigned int p3)
     {
         if (p1 == p2 || p2 == p3 || p1 == p3)
             return;
+
         doVertex(p1);
         doVertex(p2);
         doVertex(p3);
@@ -599,7 +711,7 @@ struct TriangleCounterOperator
 
 struct TriangleCounter : public TriangleIndexFunctor<TriangleCounterOperator>
 {
-    TriangleCounter(std::vector<Vertex>* vertices_)
+    TriangleCounter(std::vector<Vertex> *vertices_)
     {
         vertices = vertices_;
     }
@@ -608,10 +720,10 @@ struct TriangleCounter : public TriangleIndexFunctor<TriangleCounterOperator>
 // Initialize the vertex triangle lists and the triangle data structures
 struct TriangleAddOperator
 {
-    VertexList* vertices;
-    std::vector<unsigned>* vertexTris;
-    TriangleList* triangles;
-    int triIdx;
+    VertexList            *vertices;
+    std::vector<unsigned> *vertexTris;
+    TriangleList          *triangles;
+    int                   triIdx;
     TriangleAddOperator() : vertices(0), triIdx(0) {}
 
     void doVertex(unsigned p)
@@ -620,75 +732,83 @@ struct TriangleAddOperator
             = triIdx;
     }
 
-    void operator() (unsigned int p1, unsigned int p2, unsigned int p3)
+    void operator()(unsigned int p1, unsigned int p2, unsigned int p3)
     {
         if (p1 == p2 || p2 == p3 || p1 == p3)
             return;
+
         doVertex(p1);
         doVertex(p2);
         doVertex(p3);
-    (*triangles)[triIdx].verts[0] = p1;
-    (*triangles)[triIdx].verts[1] = p2;
-    (*triangles)[triIdx].verts[2] = p3;
-    triIdx++;
+        (*triangles)[triIdx].verts[0] = p1;
+        (*triangles)[triIdx].verts[1] = p2;
+        (*triangles)[triIdx].verts[2] = p3;
+        triIdx++;
     }
 };
 
 struct TriangleAdder : public TriangleIndexFunctor<TriangleAddOperator>
 {
-    TriangleAdder(VertexList* vertices_, std::vector<unsigned>* vertexTris_,
-                  TriangleList* triangles_)
+    TriangleAdder(VertexList *vertices_, std::vector<unsigned> *vertexTris_,
+                  TriangleList *triangles_)
     {
-        vertices = vertices_;
+        vertices   = vertices_;
         vertexTris = vertexTris_;
-        triangles = triangles_;
+        triangles  = triangles_;
     }
 };
 
 struct CompareTriangle
 {
-    bool operator()(const Triangle& lhs, const Triangle& rhs)
+    bool operator()(const Triangle&lhs, const Triangle&rhs)
     {
         return lhs.score < rhs.score;
     }
 };
 }
 
-void VertexCacheVisitor::optimizeVertices(Geometry& geom)
+void VertexCacheVisitor::optimizeVertices(Geometry&geom)
 {
-    Array* vertArray = geom.getVertexArray();
+    Array *vertArray = geom.getVertexArray();
+
     if (!vertArray)
         return;
+
     unsigned vertArraySize = vertArray->getNumElements();
     // If all the vertices fit in the cache, there's no point in
     // doing this optimization.
     if (vertArraySize <= 16)
         return;
-    Geometry::PrimitiveSetList& primSets = geom.getPrimitiveSetList();
+
+    Geometry::PrimitiveSetList&primSets = geom.getPrimitiveSetList();
+
     for (Geometry::PrimitiveSetList::iterator itr = primSets.begin(),
-             end = primSets.end();
+         end = primSets.end();
          itr != end;
          ++itr)
     {
         // Can only deal with polygons.
         switch ((*itr)->getMode())
         {
-        case(PrimitiveSet::TRIANGLES):
-        case(PrimitiveSet::TRIANGLE_STRIP):
-        case(PrimitiveSet::TRIANGLE_FAN):
-        case(PrimitiveSet::QUADS):
-        case(PrimitiveSet::QUAD_STRIP):
-        case(PrimitiveSet::POLYGON):
+        case (PrimitiveSet::TRIANGLES):
+        case (PrimitiveSet::TRIANGLE_STRIP):
+        case (PrimitiveSet::TRIANGLE_FAN):
+        case (PrimitiveSet::QUADS):
+        case (PrimitiveSet::QUAD_STRIP):
+        case (PrimitiveSet::POLYGON):
             break;
+
         default:
             return;
         }
+
         PrimitiveSet::Type type = (*itr)->getType();
         if (type != PrimitiveSet::DrawElementsUBytePrimitiveType
             && type != PrimitiveSet::DrawElementsUShortPrimitiveType
             && type != PrimitiveSet::DrawElementsUIntPrimitiveType)
             return;
     }
+
 #if 0
     VertexCacheMissVisitor missv;
     missv.doGeometry(geom);
@@ -705,28 +825,32 @@ void VertexCacheVisitor::optimizeVertices(Geometry& geom)
     Geometry::PrimitiveSetList newPrims;
     if (vertArraySize < 65536)
     {
-        osg::DrawElementsUShort* elements = new DrawElementsUShort(GL_TRIANGLES);
+        osg::DrawElementsUShort *elements = new DrawElementsUShort(GL_TRIANGLES);
         elements->reserve(newVertList.size());
+
         for (std::vector<unsigned>::iterator itr = newVertList.begin(),
-                 end = newVertList.end();
+             end = newVertList.end();
              itr != end;
              ++itr)
-            elements->push_back((GLushort)*itr);
+            elements->push_back((GLushort) * itr);
+
         if (geom.getUseVertexBufferObjects())
         {
             elements->setElementBufferObject(new ElementBufferObject);
         }
+
         newPrims.push_back(elements);
     }
     else
     {
-        osg::DrawElementsUInt* elements
+        osg::DrawElementsUInt *elements
             = new DrawElementsUInt(GL_TRIANGLES, newVertList.begin(),
                                    newVertList.end());
         if (geom.getUseVertexBufferObjects())
         {
             elements->setElementBufferObject(new ElementBufferObject);
         }
+
         newPrims.push_back(elements);
     }
 
@@ -744,71 +868,83 @@ void VertexCacheVisitor::optimizeVertices(Geometry& geom)
 }
 
 // The main optimization loop
-void VertexCacheVisitor::doVertexOptimization(Geometry& geom,
-                                              std::vector<unsigned>& vertDrawList)
+void VertexCacheVisitor::doVertexOptimization(Geometry&geom,
+                                              std::vector<unsigned>&vertDrawList)
 {
-    Geometry::PrimitiveSetList& primSets = geom.getPrimitiveSetList();
+    Geometry::PrimitiveSetList&primSets = geom.getPrimitiveSetList();
     // lists for all the vertices and triangles
-    VertexList vertices;
-    TriangleList triangles;
+    VertexList      vertices;
+    TriangleList    triangles;
     TriangleCounter triCounter(&vertices);
+
     for (Geometry::PrimitiveSetList::iterator itr = primSets.begin(),
-             end = primSets.end();
+         end = primSets.end();
          itr != end;
          ++itr)
         (*itr)->accept(triCounter);
+
     triangles.resize(triCounter.triangleCount);
     // Get total of triangles used by all the vertices
     size_t vertTrisSize = 0;
+
     for (VertexList::iterator itr = vertices.begin(), end = vertices.end();
          itr != end;
          ++itr)
     {
-        itr->triList = vertTrisSize;
+        itr->triList  = vertTrisSize;
         vertTrisSize += itr->trisUsing;
     }
+
     // Store for lists of triangles (indices) used by the vertices
     std::vector<unsigned> vertTriListStore(vertTrisSize);
-    TriangleAdder triAdder(&vertices, &vertTriListStore, &triangles);
+    TriangleAdder         triAdder(&vertices, &vertTriListStore, &triangles);
+
     for (Geometry::PrimitiveSetList::iterator itr = primSets.begin(),
-             end = primSets.end();
+         end = primSets.end();
          itr != end;
          ++itr)
         (*itr)->accept(triAdder);
+
     // Set up initial scores for vertices and triangles
     for (VertexList::iterator itr = vertices.begin(), end = vertices.end();
          itr != end;
          ++itr)
         itr->score = findVertexScore(*itr);
+
     for (TriangleList::iterator itr = triangles.begin(), end = triangles.end();
          itr != end;
          ++itr)
     {
         itr->score = 0.0f;
+
         for (int i = 0; i < 3; ++i)
             itr->score += vertices[itr->verts[i]].score;
     }
+
     // Add Triangles to the draw list until there are no more.
     unsigned trisLeft = triangles.size();
     vertDrawList.reserve(trisLeft * 3);
     LRUCache cache(maxCacheSize);
+
     while (trisLeft-- > 0)
     {
-        Triangle* triToAdd = 0;
-        float bestScore = 0.0;
+        Triangle *triToAdd = 0;
+        float    bestScore = 0.0;
+
         for (std::vector<unsigned>::const_iterator itr = cache.entries.begin(),
-                 end = cache.entries.end();
+             end = cache.entries.end();
              itr != end;
              ++itr)
         {
-            TriangleScore tscore =  computeTriScores(vertices[*itr], vertices,
-                                                     triangles, vertTriListStore);
+            TriangleScore tscore = computeTriScores(vertices[*itr], vertices,
+                                                    triangles, vertTriListStore);
             if (tscore.second > bestScore)
             {
                 bestScore = tscore.second;
-                triToAdd = &triangles[tscore.first];
+                triToAdd  = &triangles[tscore.first];
             }
         }
+
         if (!triToAdd)
         {
             // The cache was empty, or all the triangles that use
@@ -816,25 +952,28 @@ void VertexCacheVisitor::doVertexOptimization(Geometry& geom,
             OSG_DEBUG << "VertexCacheVisitor searching all triangles" << std::endl;
             TriangleList::iterator maxItr
                 = std::max_element(triangles.begin(), triangles.end(),
-                              CompareTriangle());
+                                   CompareTriangle());
             triToAdd = &(*maxItr);
         }
+
         assert(triToAdd != 0 && triToAdd->score > 0.0);
         // Add triangle vertices, and remove triangle from the
         // vertices that use it.
         triToAdd->score = -1.0f;
         unsigned triToAddIdx = triToAdd - &triangles[0];
+
         for (unsigned i = 0; i < 3; ++i)
         {
             unsigned vertIdx = triToAdd->verts[i];
-            Vertex* vert = &vertices[vertIdx];
+            Vertex   *vert   = &vertices[vertIdx];
             vertDrawList.push_back(vertIdx);
             std::remove(vertTriListStore.begin() + vert->triList,
-                   vertTriListStore.begin() + vert->triList
-                   + vert->numActiveTris,
-                   triToAddIdx);
+                        vertTriListStore.begin() + vert->triList
+                        + vert->numActiveTris,
+                        triToAddIdx);
             vert->numActiveTris--;
         }
+
         // Assume that the three oldest cache entries will get kicked
         // out, so reset their scores and those of their
         // triangles. Otherwise we'll "lose" them and not be able to
@@ -842,38 +981,41 @@ void VertexCacheVisitor::doVertexOptimization(Geometry& geom,
         if (cache.maxSize - cache.entries.size() < 3)
         {
             for (std::vector<unsigned>::iterator itr = cache.entries.end() - 3,
-                     end = cache.entries.end();
+                 end = cache.entries.end();
                  itr != end;
-                ++itr)
+                 ++itr)
             {
                 vertices[*itr].cachePosition = -1;
-                vertices[*itr].score = findVertexScore(vertices[*itr]);
+                vertices[*itr].score         = findVertexScore(vertices[*itr]);
             }
+
             for (std::vector<unsigned>::iterator itr = cache.entries.end() - 3,
-                     end = cache.entries.end();
+                 end = cache.entries.end();
                  itr != end;
-                ++itr)
+                 ++itr)
                 computeTriScores(vertices[*itr], vertices, triangles,
                                  vertTriListStore);
         }
+
         cache.addEntries(&triToAdd->verts[0], &triToAdd->verts[3]);
+
         for (std::vector<unsigned>::const_iterator itr = cache.entries.begin(),
-                 end = cache.entries.end();
+             end = cache.entries.end();
              itr != end;
              ++itr)
         {
             unsigned vertIdx = *itr;
             vertices[vertIdx].cachePosition = itr - cache.entries.begin();
-            vertices[vertIdx].score = findVertexScore(vertices[vertIdx]);
+            vertices[vertIdx].score         = findVertexScore(vertices[vertIdx]);
         }
-     }
+    }
 }
 
 void VertexCacheVisitor::optimizeVertices()
 {
-    for(GeometryList::iterator itr=_geometryList.begin();
-        itr!=_geometryList.end();
-        ++itr)
+    for (GeometryList::iterator itr = _geometryList.begin();
+         itr != _geometryList.end();
+         ++itr)
     {
         optimizeVertices(*(*itr));
     }
@@ -881,21 +1023,20 @@ void VertexCacheVisitor::optimizeVertices()
 
 VertexCacheMissVisitor::VertexCacheMissVisitor(unsigned cacheSize)
     : osg::NodeVisitor(NodeVisitor::TRAVERSE_ALL_CHILDREN), misses(0),
-      triangles(0), _cacheSize(cacheSize)
-{
-}
+    triangles(0), _cacheSize(cacheSize)
+{}
 
 void VertexCacheMissVisitor::reset()
 {
-    misses = 0;
+    misses    = 0;
     triangles = 0;
 }
 
-void VertexCacheMissVisitor::apply(Geode& geode)
+void VertexCacheMissVisitor::apply(Geode&geode)
 {
-    for(unsigned int i = 0; i < geode.getNumDrawables(); ++i )
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
-        osg::Geometry* geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
+        osg::Geometry *geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
         if (geom)
             doGeometry(*geom);
     }
@@ -913,15 +1054,17 @@ struct FIFOCache
         entries.reserve(maxSize_);
     }
     std::vector<unsigned> entries;
-    size_t maxSize;
+    size_t                maxSize;
 
     // Add a list of values to the cache
-    void addEntries(unsigned* begin, unsigned* end)
+    void addEntries(unsigned *begin, unsigned *end)
     {
         // Make room for new cache entries
         size_t newEnts = end - begin;
+
         if (entries.size() < maxSize)
             entries.resize(osg::minimum(entries.size() + newEnts, maxSize));
+
         std::vector<unsigned>::iterator copyEnd = entries.end() - newEnts;
         std::copy_backward(entries.begin(), copyEnd, entries.end());
         std::copy(begin, end, entries.begin());
@@ -937,22 +1080,25 @@ struct FIFOCache
 struct CacheRecordOperator
 {
     CacheRecordOperator() : cache(0), misses(0), triangles(0) {}
-    FIFOCache* cache;
-    unsigned misses;
-    unsigned triangles;
+    FIFOCache *cache;
+    unsigned  misses;
+    unsigned  triangles;
     void operator()(unsigned p1, unsigned p2, unsigned p3)
     {
         unsigned verts[3];
+
         verts[0] = p1;
         verts[1] = p2;
         verts[2] = p3;
         triangles++;
+
         for (int i = 0; i < 3; ++i)
         {
             if (std::find(cache->entries.begin(), cache->entries.end(), verts[i])
                 == cache->entries.end())
                 misses++;
         }
+
         cache->addEntries(&verts[0], &verts[3]);
     }
 };
@@ -971,21 +1117,25 @@ struct CacheRecorder : public TriangleIndexFunctor<CacheRecordOperator>
 };
 }
 
-void VertexCacheMissVisitor::doGeometry(Geometry& geom)
+void VertexCacheMissVisitor::doGeometry(Geometry&geom)
 {
-    Array* vertArray = geom.getVertexArray();
-    if (!vertArray || vertArray->getNumElements()==0)
+    Array *vertArray = geom.getVertexArray();
+
+    if (!vertArray || vertArray->getNumElements() == 0)
         return;
-    Geometry::PrimitiveSetList& primSets = geom.getPrimitiveSetList();
-    CacheRecorder recorder(_cacheSize);
+
+    Geometry::PrimitiveSetList&primSets = geom.getPrimitiveSetList();
+    CacheRecorder             recorder(_cacheSize);
+
     for (Geometry::PrimitiveSetList::iterator itr = primSets.begin(),
-             end = primSets.end();
+         end = primSets.end();
          itr != end;
          ++itr)
     {
         (*itr)->accept(recorder);
     }
-    misses += recorder.misses;
+
+    misses    += recorder.misses;
     triangles += recorder.triangles;
 }
 
@@ -998,62 +1148,129 @@ namespace
 class Remapper : public osg::ArrayVisitor
 {
 public:
-    static const unsigned invalidIndex;
-    Remapper(const std::vector<unsigned>& remapping)
-        : _remapping(remapping), _newsize(0)
-    {
-        for (std::vector<unsigned>::const_iterator itr = _remapping.begin(),
-                 end = _remapping.end();
-             itr != end;
-             ++itr)
-            if (*itr != invalidIndex)
-                ++_newsize;
-    }
+static const unsigned invalidIndex;
+Remapper(const std::vector<unsigned>&remapping)
+    : _remapping(remapping), _newsize(0)
+{
+    for (std::vector<unsigned>::const_iterator itr = _remapping.begin(),
+         end = _remapping.end();
+         itr != end;
+         ++itr)
+        if (*itr != invalidIndex)
+            ++_newsize;
+}
 
-    const std::vector<unsigned>& _remapping;
-    size_t _newsize;
+const std::vector<unsigned>&_remapping;
+size_t                     _newsize;
 
-    template<class T>
-    inline void remap(T& array)
-    {
-        ref_ptr<T> newarray = new T(_newsize);
-        T* newptr = newarray.get();
-        for (size_t i = 0; i < array.size(); ++i)
-            if (_remapping[i] != invalidIndex)
-                (*newptr)[_remapping[i]] = array[i];
-        array.swap(*newptr);
+template<class T>
+inline void remap(T&array)
+{
+    ref_ptr<T> newarray = new T(_newsize);
+    T          *newptr  = newarray.get();
 
-    }
+    for (size_t i = 0; i < array.size(); ++i)
+        if (_remapping[i] != invalidIndex)
+            (*newptr)[_remapping[i]] = array[i];
 
-    virtual void apply(osg::Array&) {}
-    virtual void apply(osg::ByteArray& array) { remap(array); }
-    virtual void apply(osg::ShortArray& array) { remap(array); }
-    virtual void apply(osg::IntArray& array) { remap(array); }
-    virtual void apply(osg::UByteArray& array) { remap(array); }
-    virtual void apply(osg::UShortArray& array) { remap(array); }
-    virtual void apply(osg::UIntArray& array) { remap(array); }
-    virtual void apply(osg::FloatArray& array) { remap(array); }
-    virtual void apply(osg::DoubleArray& array) { remap(array); }
+    array.swap(*newptr);
+}
 
-    virtual void apply(osg::Vec2Array& array) { remap(array); }
-    virtual void apply(osg::Vec3Array& array) { remap(array); }
-    virtual void apply(osg::Vec4Array& array) { remap(array); }
+virtual void apply(osg::Array&) {}
+virtual void apply(osg::ByteArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::ShortArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::IntArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::UByteArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::UShortArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::UIntArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::FloatArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::DoubleArray&array)
+{
+    remap(array);
+}
 
-    virtual void apply(osg::Vec4ubArray& array) { remap(array); }
+virtual void apply(osg::Vec2Array&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3Array&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4Array&array)
+{
+    remap(array);
+}
 
-    virtual void apply(osg::Vec2bArray& array) { remap(array); }
-    virtual void apply(osg::Vec3bArray& array) { remap(array); }
-    virtual void apply(osg::Vec4bArray& array) { remap(array); }
+virtual void apply(osg::Vec4ubArray&array)
+{
+    remap(array);
+}
 
-    virtual void apply(osg::Vec2sArray& array) { remap(array); }
-    virtual void apply(osg::Vec3sArray& array) { remap(array); }
-    virtual void apply(osg::Vec4sArray& array) { remap(array); }
+virtual void apply(osg::Vec2bArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3bArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4bArray&array)
+{
+    remap(array);
+}
 
-    virtual void apply(osg::Vec2dArray& array) { remap(array); }
-    virtual void apply(osg::Vec3dArray& array) { remap(array); }
-    virtual void apply(osg::Vec4dArray& array) { remap(array); }
+virtual void apply(osg::Vec2sArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3sArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4sArray&array)
+{
+    remap(array);
+}
 
-    virtual void apply(osg::MatrixfArray& array) { remap(array); }
+virtual void apply(osg::Vec2dArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3dArray&array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4dArray&array)
+{
+    remap(array);
+}
+
+virtual void apply(osg::MatrixfArray&array)
+{
+    remap(array);
+}
 };
 
 const unsigned Remapper::invalidIndex = std::numeric_limits<unsigned>::max();
@@ -1061,17 +1278,17 @@ const unsigned Remapper::invalidIndex = std::numeric_limits<unsigned>::max();
 // Record the order in which vertices in a Geometry are used in triangle, line or point primitives.
 struct VertexReorderOperator
 {
-    unsigned seq;
+    unsigned                  seq;
     std::vector<unsigned int> remap;
 
     VertexReorderOperator() : seq(0)
-    {
-    }
+    {}
 
     void inline doVertex(unsigned v)
     {
-        if (remap[v] == Remapper::invalidIndex) {
-            remap[v] = seq ++;
+        if (remap[v] == Remapper::invalidIndex)
+        {
+            remap[v] = seq++;
         }
     }
 
@@ -1114,8 +1331,8 @@ void VertexAccessOrderVisitor::optimizeOrder()
 }
 
 template<typename DE>
-inline void reorderDrawElements(DE& drawElements,
-                                const std::vector<unsigned>& reorder)
+inline void reorderDrawElements(DE&drawElements,
+                                const std::vector<unsigned>&reorder)
 {
     for (typename DE::iterator itr = drawElements.begin(), end = drawElements.end();
          itr != end;
@@ -1125,29 +1342,32 @@ inline void reorderDrawElements(DE& drawElements,
     }
 }
 
-void VertexAccessOrderVisitor::optimizeOrder(Geometry& geom)
+void VertexAccessOrderVisitor::optimizeOrder(Geometry&geom)
 {
-    Array* vertArray = geom.getVertexArray();
-    if (!vertArray || vertArray->getNumElements()==0)
+    Array *vertArray = geom.getVertexArray();
+
+    if (!vertArray || vertArray->getNumElements() == 0)
         return;
 
-    Geometry::PrimitiveSetList& primSets = geom.getPrimitiveSetList();
+    Geometry::PrimitiveSetList&primSets = geom.getPrimitiveSetList();
 
     // sort primitives: first triangles, then lines and finally points
     std::sort(primSets.begin(), primSets.end(), order_by_primitive_mode);
 
     VertexReorder vr(vertArray->getNumElements());
+
     for (Geometry::PrimitiveSetList::iterator itr = primSets.begin(),
-             end = primSets.end();
+         end = primSets.end();
          itr != end;
          ++itr)
     {
-        PrimitiveSet* ps = itr->get();
+        PrimitiveSet       *ps  = itr->get();
         PrimitiveSet::Type type = ps->getType();
         if (type != PrimitiveSet::DrawElementsUBytePrimitiveType
             && type != PrimitiveSet::DrawElementsUShortPrimitiveType
             && type != PrimitiveSet::DrawElementsUIntPrimitiveType)
             return;
+
         ps->accept(vr);
     }
 
@@ -1156,28 +1376,35 @@ void VertexAccessOrderVisitor::optimizeOrder(Geometry& geom)
     deduplicator.findDuplicatedUVs(geom);
 
     // duplicate shared arrays as it isn't safe to rearrange vertices when arrays are shared.
-    if (geom.containsSharedArrays()) geom.duplicateSharedArrays();
+    if (geom.containsSharedArrays())
+        geom.duplicateSharedArrays();
+
     GeometryArrayGatherer gatherer(geom);
 
     Remapper remapper(vr.remap);
     gatherer.accept(remapper);
+
     for (Geometry::PrimitiveSetList::iterator itr = primSets.begin(),
-             end = primSets.end();
+         end = primSets.end();
          itr != end;
          ++itr)
     {
-        PrimitiveSet* ps = itr->get();
+        PrimitiveSet *ps = itr->get();
+
         switch (ps->getType())
         {
         case PrimitiveSet::DrawElementsUBytePrimitiveType:
             reorderDrawElements(*static_cast<DrawElementsUByte*>(ps), vr.remap);
             break;
+
         case PrimitiveSet::DrawElementsUShortPrimitiveType:
             reorderDrawElements(*static_cast<DrawElementsUShort*>(ps), vr.remap);
             break;
+
         case PrimitiveSet::DrawElementsUIntPrimitiveType:
             reorderDrawElements(*static_cast<DrawElementsUInt*>(ps), vr.remap);
             break;
+
         default:
             break;
         }
@@ -1189,19 +1416,19 @@ void VertexAccessOrderVisitor::optimizeOrder(Geometry& geom)
     geom.dirtyDisplayList();
 }
 
-void SharedArrayOptimizer::findDuplicatedUVs(const osg::Geometry& geometry)
+void SharedArrayOptimizer::findDuplicatedUVs(const osg::Geometry&geometry)
 {
     _deduplicateUvs.clear();
 
     // look for all channels that are shared only *within* the geometry
     std::map<const osg::Array*, unsigned int> arrayPointerCounter;
 
-    for(unsigned int id = 0 ; id < geometry.getNumTexCoordArrays() ; ++ id)
+    for (unsigned int id = 0; id < geometry.getNumTexCoordArrays(); ++id)
     {
-        const osg::Array* channel = geometry.getTexCoordArray(id);
-        if(channel && channel->getNumElements())
+        const osg::Array *channel = geometry.getTexCoordArray(id);
+        if (channel && channel->getNumElements())
         {
-            if(arrayPointerCounter.find(channel) == arrayPointerCounter.end())
+            if (arrayPointerCounter.find(channel) == arrayPointerCounter.end())
             {
                 arrayPointerCounter[channel] = 1;
             }
@@ -1214,14 +1441,14 @@ void SharedArrayOptimizer::findDuplicatedUVs(const osg::Geometry& geometry)
 
     std::map<const osg::Array*, unsigned int> references;
 
-    for(unsigned int id = 0 ; id != geometry.getNumTexCoordArrays() ; ++ id)
+    for (unsigned int id = 0; id != geometry.getNumTexCoordArrays(); ++id)
     {
-        const osg::Array* channel = geometry.getTexCoordArray(id);
+        const osg::Array *channel = geometry.getTexCoordArray(id);
         // test if array is shared outside the geometry
-        if(channel && static_cast<unsigned int>(channel->referenceCount()) == arrayPointerCounter[channel])
+        if (channel && static_cast<unsigned int>(channel->referenceCount()) == arrayPointerCounter[channel])
         {
             std::map<const osg::Array*, unsigned int>::const_iterator reference = references.find(channel);
-            if(reference == references.end())
+            if (reference == references.end())
             {
                 references[channel] = id;
             }
@@ -1233,16 +1460,15 @@ void SharedArrayOptimizer::findDuplicatedUVs(const osg::Geometry& geometry)
     }
 }
 
-void SharedArrayOptimizer::deduplicateUVs(osg::Geometry& geometry)
+void SharedArrayOptimizer::deduplicateUVs(osg::Geometry&geometry)
 {
-    for(std::map<unsigned int, unsigned int>::const_iterator it_duplicate = _deduplicateUvs.begin() ;
-        it_duplicate != _deduplicateUvs.end() ; ++ it_duplicate)
+    for (std::map<unsigned int, unsigned int>::const_iterator it_duplicate = _deduplicateUvs.begin();
+         it_duplicate != _deduplicateUvs.end(); ++it_duplicate)
     {
-        osg::Array* original = geometry.getTexCoordArray(it_duplicate->second);
+        osg::Array *original = geometry.getTexCoordArray(it_duplicate->second);
         geometry.setTexCoordArray(it_duplicate->first,
                                   original,
                                   (original ? original->getBinding() : osg::Array::BIND_UNDEFINED));
     }
 }
-
 }

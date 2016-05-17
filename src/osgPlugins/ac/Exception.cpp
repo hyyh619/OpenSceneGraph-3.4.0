@@ -2,7 +2,8 @@
 
 using namespace ac3d;
 
-Exception::Exception(std::string error){
+Exception::Exception(std::string error)
+{
     _error = error;
 }
 

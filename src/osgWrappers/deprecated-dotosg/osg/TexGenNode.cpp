@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TexGenNode_readLocalData(Object& obj, Input& fr);
-bool TexGenNode_writeLocalData(const Object& obj, Output& fw);
+bool TexGenNode_readLocalData(Object&obj, Input&fr);
+bool TexGenNode_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(TexGenNode)
@@ -21,28 +21,31 @@ REGISTER_DOTOSGWRAPPER(TexGenNode)
     &TexGenNode_writeLocalData
 );
 
-bool TexGenNode_readLocalData(Object& obj, Input& fr)
+bool TexGenNode_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    TexGenNode& texGenNode = static_cast<TexGenNode&>(obj);
+    TexGenNode&texGenNode = static_cast<TexGenNode&>(obj);
 
     unsigned int textureUnit = 0;
+
     if (fr[0].matchWord("TextureUnit") && fr[1].getUInt(textureUnit))
     {
-
         texGenNode.setTextureUnit(textureUnit);
 
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
 
-    osg::ref_ptr<StateAttribute> sa=0;
-    while((sa=fr.readStateAttribute())!=0)
+    osg::ref_ptr<StateAttribute> sa = 0;
+
+    while ((sa = fr.readStateAttribute()) != 0)
     {
-        TexGen* texgen = dynamic_cast<TexGen*>(sa.get());
-        if (texgen) texGenNode.setTexGen(texgen);
+        TexGen *texgen = dynamic_cast<TexGen*>(sa.get());
+        if (texgen)
+            texGenNode.setTexGen(texgen);
+
         iteratorAdvanced = true;
     }
 
@@ -50,11 +53,11 @@ bool TexGenNode_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool TexGenNode_writeLocalData(const Object& obj, Output& fw)
+bool TexGenNode_writeLocalData(const Object&obj, Output&fw)
 {
-    const TexGenNode& texGenNode = static_cast<const TexGenNode&>(obj);
+    const TexGenNode&texGenNode = static_cast<const TexGenNode&>(obj);
 
-    fw.indent()<<"TextureUnit "<<texGenNode.getTextureUnit()<<std::endl;
+    fw.indent() << "TextureUnit " << texGenNode.getTextureUnit() << std::endl;
 
     if (texGenNode.getTexGen())
     {

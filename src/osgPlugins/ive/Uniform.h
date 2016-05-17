@@ -4,11 +4,13 @@
 #include <osg/Uniform>
 #include "ReadWrite.h"
 
-namespace ive{
-class Uniform : public osg::Uniform, public ReadWrite {
+namespace ive
+{
+class Uniform : public osg::Uniform, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

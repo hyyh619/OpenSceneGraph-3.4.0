@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgAnimation/Action>
 
@@ -19,23 +19,25 @@ using namespace osgAnimation;
 Action::Action()
 {
     _numberFrame = 25;
-    _fps = 25;
-    _speed = 1.0;
-    _loop = 1;
+    _fps         = 25;
+    _speed       = 1.0;
+    _loop        = 1;
 }
-Action::Action(const Action&,const osg::CopyOp&) {}
+Action::Action(const Action&, const osg::CopyOp&) {}
 Action::Callback* Action::getFrameCallback(unsigned int frame)
 {
     if (_framesCallback.find(frame) != _framesCallback.end())
     {
         return _framesCallback[frame].get();
     }
+
     return 0;
 }
 
-void Action::removeCallback(Callback* cb)
+void Action::removeCallback(Callback *cb)
 {
     std::vector<unsigned int> keyToRemove;
+
     for (FrameCallback::iterator it = _framesCallback.begin(); it != _framesCallback.end(); ++it)
     {
         if (it->second.get())
@@ -52,6 +54,7 @@ void Action::removeCallback(Callback* cb)
             }
         }
     }
+
     for (std::vector<unsigned int>::iterator it = keyToRemove.begin(); it != keyToRemove.end(); ++it)
         _framesCallback.erase(*it);
 }
@@ -59,21 +62,24 @@ void Action::removeCallback(Callback* cb)
 Action::Callback* Action::getFrameCallback(double time)
 {
     unsigned int frame = static_cast<unsigned int>(floor(time * _fps));
+
     return getFrameCallback(frame);
 }
 
-bool osgAnimation::Action::evaluateFrame(unsigned int frame, unsigned int& resultframe, unsigned int& nbloop )
+bool osgAnimation::Action::evaluateFrame(unsigned int frame, unsigned int&resultframe, unsigned int&nbloop)
 {
     unsigned int nbFrames = getNumFrames();
-    if (!nbFrames) {
+
+    if (!nbFrames)
+    {
         nbFrames = 1;
         osg::notify(osg::WARN) << "osgAnimation::Action::evaluateFrame your action " << getName() << " has 0 frames, it seems like an error in the data" << std::endl;
     }
 
-    nbloop = frame / nbFrames;
+    nbloop      = frame / nbFrames;
     resultframe = frame;
 
-    if (frame > nbFrames-1)
+    if (frame > nbFrames - 1)
     {
         if (!getLoop())
             resultframe = frame % nbFrames;
@@ -85,5 +91,6 @@ bool osgAnimation::Action::evaluateFrame(unsigned int frame, unsigned int& resul
                 resultframe = frame % nbFrames;
         }
     }
+
     return true;
 }

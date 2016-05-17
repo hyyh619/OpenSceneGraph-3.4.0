@@ -10,13 +10,13 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 /* trpage_label.cpp
    Methods for the trpgLable object and its associated support structure
    including trpgTextStyle and trpgTextStyleTable.
-*/
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,15 +34,14 @@ trpgTextStyle::trpgTextStyle(void)
 }
 
 trpgTextStyle::~trpgTextStyle(void)
-{
-}
+{}
 
 void trpgTextStyle::Reset(void)
 {
-    font = "";
-    bold = italic = underline = false;
+    font          = "";
+    bold          = italic = underline = false;
     characterSize = float32(0.0042333333333); // 12 point in meter
-    matId = -1;
+    matId         = -1;
 }
 
 void trpgTextStyle::SetMaterial(int inMatId)
@@ -55,12 +54,12 @@ int trpgTextStyle::GetMaterial(void) const
     return matId;
 }
 
-void trpgTextStyle::SetFont(std::string &inFont)
+void trpgTextStyle::SetFont(std::string&inFont)
 {
     font = inFont;
 }
 
-const std::string *trpgTextStyle::GetFont(void) const
+const std::string* trpgTextStyle::GetFont(void) const
 {
     return &font;
 }
@@ -108,7 +107,7 @@ float32 trpgTextStyle::GetCharacterSize(void) const
 
 // Write method
 
-bool trpgTextStyle::Write(trpgWriteBuffer &buf)
+bool trpgTextStyle::Write(trpgWriteBuffer&buf)
 {
     buf.Begin(TRPG_TEXT_STYLE);
 
@@ -132,15 +131,15 @@ bool trpgTextStyle::Write(trpgWriteBuffer &buf)
 class textStyleCB : public trpgr_Callback
 {
 public:
-    void * Parse(trpgToken,trpgReadBuffer &);
-    trpgTextStyle *style;
+void          *Parse(trpgToken, trpgReadBuffer &);
+trpgTextStyle *style;
 };
 
-void * textStyleCB::Parse(trpgToken tok,trpgReadBuffer &buf)
+void* textStyleCB::Parse(trpgToken tok, trpgReadBuffer&buf)
 {
     std::string sVal;
-    int iVal;
-    float32 fVal;
+    int         iVal;
+    float32     fVal;
 
     try
     {
@@ -160,6 +159,7 @@ void * textStyleCB::Parse(trpgToken tok,trpgReadBuffer &buf)
             buf.Get(iVal);
             style->SetMaterial(iVal);
             break;
+
         default:
             break;
         }
@@ -174,15 +174,15 @@ void * textStyleCB::Parse(trpgToken tok,trpgReadBuffer &buf)
 
 // Read from a buffer
 
-bool trpgTextStyle::Read(trpgReadBuffer &buf)
+bool trpgTextStyle::Read(trpgReadBuffer&buf)
 {
     Reset();
 
     trpgr_Parser parse;
-    textStyleCB textStyleCb;
+    textStyleCB  textStyleCb;
 
     textStyleCb.style = this;
-    parse.AddCallback(TRPG_TEXT_STYLE_BASIC,&textStyleCb,false);
+    parse.AddCallback(TRPG_TEXT_STYLE_BASIC, &textStyleCb, false);
     parse.Parse(buf);
 
     return isValid();
@@ -198,17 +198,17 @@ bool trpgTextStyle::isValid(void) const
 }
 
 
-bool trpgTextStyle::operator == (const trpgTextStyle& in) const
+bool trpgTextStyle::operator ==(const trpgTextStyle&in) const
 {
     if (font != in.font)
         return false;
 
-    if (bold      != in.bold ||
-        italic    != in.italic ||
+    if (bold != in.bold ||
+        italic != in.italic ||
         underline != in.underline)
         return false;
 
-    if(fabs(double(characterSize - in.characterSize)) > 0.0001)
+    if (fabs(double(characterSize - in.characterSize)) > 0.0001)
         return false;
 
 
@@ -226,8 +226,7 @@ trpgTextStyleTable::trpgTextStyleTable()
 }
 
 trpgTextStyleTable::~trpgTextStyleTable()
-{
-}
+{}
 
 void trpgTextStyleTable::Reset()
 {
@@ -236,29 +235,34 @@ void trpgTextStyleTable::Reset()
 
 bool trpgTextStyleTable::isValid() const
 {
-    //for (int i=0;i<styles.size();i++)
+    // for (int i=0;i<styles.size();i++)
     StyleMapType::const_iterator itr = styleMap.begin();
-    for (  ; itr != styleMap.end( ); itr++)
+
+    for (; itr != styleMap.end(); itr++)
         if (!itr->second.isValid())
             return false;
 
     return true;
 }
 
-int trpgTextStyleTable::AddStyle(const trpgTextStyle &style)
+int trpgTextStyleTable::AddStyle(const trpgTextStyle&style)
 {
     int handle = style.GetHandle();
-    if(handle==-1) {
+
+    if (handle == -1)
+    {
         handle = styleMap.size();
     }
+
     styleMap[handle] = style;
     return handle;
 }
 
-int trpgTextStyleTable::FindAddStyle(const trpgTextStyle &style)
+int trpgTextStyleTable::FindAddStyle(const trpgTextStyle&style)
 {
     StyleMapType::const_iterator itr = styleMap.begin();
-    for (  ; itr != styleMap.end( ); itr++)
+
+    for (; itr != styleMap.end(); itr++)
         if (itr->second == style)
             return itr->first;
 
@@ -270,18 +274,19 @@ int trpgTextStyleTable::GetNumStyle() const
     return styleMap.size();
 }
 
-const trpgTextStyle *trpgTextStyleTable::GetStyleRef(int id) const
+const trpgTextStyle* trpgTextStyleTable::GetStyleRef(int id) const
 {
     if (id < 0)
         return NULL;
 
     StyleMapType::const_iterator itr = styleMap.find(id);
-    if(itr == styleMap.end())
+    if (itr == styleMap.end())
         return NULL;
+
     return &itr->second;
 }
 
-bool trpgTextStyleTable::Write(trpgWriteBuffer &buf)
+bool trpgTextStyleTable::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -294,7 +299,8 @@ bool trpgTextStyleTable::Write(trpgWriteBuffer &buf)
 
     // Write the styles
     StyleMapType::iterator itr = styleMap.begin();
-    for (  ; itr != styleMap.end( ); itr++)
+
+    for (; itr != styleMap.end(); itr++)
         itr->second.Write(buf);
 
     buf.End();
@@ -302,14 +308,14 @@ bool trpgTextStyleTable::Write(trpgWriteBuffer &buf)
     return true;
 }
 
-bool trpgTextStyleTable::Read(trpgReadBuffer &buf)
+bool trpgTextStyleTable::Read(trpgReadBuffer&buf)
 {
     trpgTextStyle style;
-    trpgToken styleTok;
-    int32 len;
-    bool status;
-    int numStyle;
-    int i;
+    trpgToken     styleTok;
+    int32         len;
+    bool          status;
+    int           numStyle;
+    int           i;
 
     Reset();
 
@@ -319,14 +325,19 @@ bool trpgTextStyleTable::Read(trpgReadBuffer &buf)
         if (numStyle < 0)
             throw 1;
 
-        for (i=0;i<numStyle;i++) {
-            buf.GetToken(styleTok,len);
-            if (styleTok != TRPG_TEXT_STYLE) throw 1;
+        for (i = 0; i < numStyle; i++)
+        {
+            buf.GetToken(styleTok, len);
+            if (styleTok != TRPG_TEXT_STYLE)
+                throw 1;
+
             buf.PushLimit(len);
             style.Reset();
             status = style.Read(buf);
             buf.PopLimit();
-            if (!status) throw 1;
+            if (!status)
+                throw 1;
+
             AddStyle(style);
         }
     }
@@ -349,14 +360,13 @@ trpgSupportStyle::trpgSupportStyle(void)
 }
 
 trpgSupportStyle::~trpgSupportStyle(void)
-{
-}
+{}
 
 void trpgSupportStyle::Reset(void)
 {
-    type = Line;
-    matId = -1;
-    handle = -1;
+    type        = Line;
+    matId       = -1;
+    handle      = -1;
     writeHandle = false;
 }
 
@@ -381,7 +391,7 @@ int trpgSupportStyle::GetMaterial(void) const
 }
 
 // Write method
-bool trpgSupportStyle::Write(trpgWriteBuffer &buf)
+bool trpgSupportStyle::Write(trpgWriteBuffer&buf)
 {
     buf.Begin(TRPG_SUPPORT_STYLE);
 
@@ -401,11 +411,11 @@ bool trpgSupportStyle::Write(trpgWriteBuffer &buf)
 class supportStyleCB : public trpgr_Callback
 {
 public:
-    void * Parse(trpgToken,trpgReadBuffer &);
-    trpgSupportStyle *style;
+void             *Parse(trpgToken, trpgReadBuffer &);
+trpgSupportStyle *style;
 };
 
-void * supportStyleCB::Parse(trpgToken tok,trpgReadBuffer &buf)
+void* supportStyleCB::Parse(trpgToken tok, trpgReadBuffer&buf)
 {
     int iVal;
 
@@ -419,6 +429,7 @@ void * supportStyleCB::Parse(trpgToken tok,trpgReadBuffer &buf)
             buf.Get(iVal);
             style->SetMaterial(iVal);
             break;
+
         default:
             break;
         }
@@ -433,15 +444,15 @@ void * supportStyleCB::Parse(trpgToken tok,trpgReadBuffer &buf)
 
 // Read from a buffer
 
-bool trpgSupportStyle::Read(trpgReadBuffer &buf)
+bool trpgSupportStyle::Read(trpgReadBuffer&buf)
 {
     Reset();
 
-    trpgr_Parser parse;
+    trpgr_Parser   parse;
     supportStyleCB supportStyleCb;
 
     supportStyleCb.style = this;
-    parse.AddCallback(TRPG_SUPPORT_STYLE_BASIC,&supportStyleCb,false);
+    parse.AddCallback(TRPG_SUPPORT_STYLE_BASIC, &supportStyleCb, false);
     parse.Parse(buf);
 
     return isValid();
@@ -453,7 +464,7 @@ bool trpgSupportStyle::isValid(void) const
 }
 
 
-bool trpgSupportStyle::operator == (const trpgSupportStyle& in) const
+bool trpgSupportStyle::operator ==(const trpgSupportStyle&in) const
 {
     if (type != in.type || matId != in.matId)
         return false;
@@ -469,42 +480,46 @@ trpgSupportStyleTable::trpgSupportStyleTable()
     Reset();
 }
 trpgSupportStyleTable::~trpgSupportStyleTable()
-{
-}
+{}
 
 void trpgSupportStyleTable::Reset()
 {
-    //styles.resize(0);
+    // styles.resize(0);
     supportStyleMap.clear();
 }
 
 bool trpgSupportStyleTable::isValid() const
 {
-    //for (int i=0;i<styles.size();i++)
+    // for (int i=0;i<styles.size();i++)
     SupportStyleMapType::const_iterator itr = supportStyleMap.begin();
-    for (  ; itr != supportStyleMap.end( ); itr++)
+
+    for (; itr != supportStyleMap.end(); itr++)
     {
         if (!itr->second.isValid())
             return false;
     }
+
     return true;
 }
 
-int trpgSupportStyleTable::AddStyle(const trpgSupportStyle &style)
+int trpgSupportStyleTable::AddStyle(const trpgSupportStyle&style)
 {
     int handle = style.GetHandle();
-    if(handle==-1)
+
+    if (handle == -1)
     {
         handle = supportStyleMap.size();
     }
+
     supportStyleMap[handle] = style;
     return handle;
 }
 
-int trpgSupportStyleTable::FindAddStyle(const trpgSupportStyle &style)
+int trpgSupportStyleTable::FindAddStyle(const trpgSupportStyle&style)
 {
     SupportStyleMapType::const_iterator itr = supportStyleMap.begin();
-    for (  ; itr != supportStyleMap.end( ); itr++)
+
+    for (; itr != supportStyleMap.end(); itr++)
         if (itr->second == style)
             return itr->first;
 
@@ -516,17 +531,19 @@ int trpgSupportStyleTable::GetNumStyle() const
     return supportStyleMap.size();
 }
 
-const trpgSupportStyle *trpgSupportStyleTable::GetStyleRef(int id) const
+const trpgSupportStyle* trpgSupportStyleTable::GetStyleRef(int id) const
 {
     if (id < 0)
         return NULL;
+
     SupportStyleMapType::const_iterator itr = supportStyleMap.find(id);
-    if(itr == supportStyleMap.end())
+    if (itr == supportStyleMap.end())
         return NULL;
+
     return &itr->second;
 }
 
-bool trpgSupportStyleTable::Write(trpgWriteBuffer &buf)
+bool trpgSupportStyleTable::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -539,7 +556,8 @@ bool trpgSupportStyleTable::Write(trpgWriteBuffer &buf)
 
     // Write the styles
     SupportStyleMapType::iterator itr = supportStyleMap.begin();
-    for (  ; itr != supportStyleMap.end( ); itr++)
+
+    for (; itr != supportStyleMap.end(); itr++)
         itr->second.Write(buf);
 
     buf.End();
@@ -547,14 +565,14 @@ bool trpgSupportStyleTable::Write(trpgWriteBuffer &buf)
     return true;
 }
 
-bool trpgSupportStyleTable::Read(trpgReadBuffer &buf)
+bool trpgSupportStyleTable::Read(trpgReadBuffer&buf)
 {
     trpgSupportStyle style;
-    trpgToken styleTok;
-    int32 len;
-    bool status;
-    int numStyle;
-    int i;
+    trpgToken        styleTok;
+    int32            len;
+    bool             status;
+    int              numStyle;
+    int              i;
 
     Reset();
 
@@ -563,15 +581,21 @@ bool trpgSupportStyleTable::Read(trpgReadBuffer &buf)
         buf.Get(numStyle);
         if (numStyle < 0)
             throw 1;
-        //styles.resize(numStyle);
-        for (i=0;i<numStyle;i++) {
-            buf.GetToken(styleTok,len);
-            if (styleTok != TRPG_SUPPORT_STYLE) throw 1;
+
+        // styles.resize(numStyle);
+        for (i = 0; i < numStyle; i++)
+        {
+            buf.GetToken(styleTok, len);
+            if (styleTok != TRPG_SUPPORT_STYLE)
+                throw 1;
+
             buf.PushLimit(len);
             style.Reset();
             status = style.Read(buf);
             buf.PopLimit();
-            if (!status) throw 1;
+            if (!status)
+                throw 1;
+
             AddStyle(style);
         }
     }
@@ -593,15 +617,14 @@ trpgLabelProperty::trpgLabelProperty(void)
 }
 
 trpgLabelProperty::~trpgLabelProperty(void)
-{
-}
+{}
 
 void trpgLabelProperty::Reset(void)
 {
-    fontId = -1;
-    supportId = -1;
-    type = VertBillboard;
-    handle = -1;
+    fontId      = -1;
+    supportId   = -1;
+    type        = VertBillboard;
+    handle      = -1;
     writeHandle = false;
 }
 
@@ -636,7 +659,7 @@ int trpgLabelProperty::GetSupport(void) const
 }
 
 // Write method
-bool trpgLabelProperty::Write(trpgWriteBuffer &buf)
+bool trpgLabelProperty::Write(trpgWriteBuffer&buf)
 {
     buf.Begin(TRPG_LABEL_PROPERTY);
 
@@ -657,17 +680,18 @@ bool trpgLabelProperty::Write(trpgWriteBuffer &buf)
 class labelPropertyCB : public trpgr_Callback
 {
 public:
-    void * Parse(trpgToken,trpgReadBuffer &);
-    trpgLabelProperty *property;
+void              *Parse(trpgToken, trpgReadBuffer &);
+trpgLabelProperty *property;
 };
 
-void * labelPropertyCB::Parse(trpgToken tok,trpgReadBuffer &buf)
+void* labelPropertyCB::Parse(trpgToken tok, trpgReadBuffer&buf)
 {
     int iVal;
 
     try
     {
         int ival;
+
         switch (tok)
         {
         case TRPG_LABEL_PROPERTY_BASIC:
@@ -678,6 +702,7 @@ void * labelPropertyCB::Parse(trpgToken tok,trpgReadBuffer &buf)
             buf.Get(ival);
             property->SetType(trpgLabelProperty::LabelType(ival));
             break;
+
         default:
             break;
         }
@@ -692,15 +717,15 @@ void * labelPropertyCB::Parse(trpgToken tok,trpgReadBuffer &buf)
 
 // Read from a buffer
 
-bool trpgLabelProperty::Read(trpgReadBuffer &buf)
+bool trpgLabelProperty::Read(trpgReadBuffer&buf)
 {
     Reset();
 
-    trpgr_Parser parse;
+    trpgr_Parser    parse;
     labelPropertyCB labelPropertyCb;
 
     labelPropertyCb.property = this;
-    parse.AddCallback(TRPG_LABEL_PROPERTY_BASIC,&labelPropertyCb,false);
+    parse.AddCallback(TRPG_LABEL_PROPERTY_BASIC, &labelPropertyCb, false);
     parse.Parse(buf);
 
     return isValid();
@@ -708,11 +733,11 @@ bool trpgLabelProperty::Read(trpgReadBuffer &buf)
 
 bool trpgLabelProperty::isValid(void) const
 {
-    return supportId != -1 && fontId != -1 && type >=0  && type < MaxLabelType;
+    return supportId != -1 && fontId != -1 && type >= 0 && type < MaxLabelType;
 }
 
 
-bool trpgLabelProperty::operator == (const trpgLabelProperty& in)const
+bool trpgLabelProperty::operator ==(const trpgLabelProperty&in) const
 {
     if (fontId != in.fontId || supportId != in.supportId || type != in.type)
         return false;
@@ -727,8 +752,7 @@ trpgLabelPropertyTable::trpgLabelPropertyTable()
     Reset();
 }
 trpgLabelPropertyTable::~trpgLabelPropertyTable()
-{
-}
+{}
 
 void trpgLabelPropertyTable::Reset()
 {
@@ -738,33 +762,39 @@ void trpgLabelPropertyTable::Reset()
 bool trpgLabelPropertyTable::isValid() const
 {
     LabelPropertyMapType::const_iterator itr = labelPropertyMap.begin();
-    for (  ; itr != labelPropertyMap.end( ); itr++)
+
+    for (; itr != labelPropertyMap.end(); itr++)
     {
         if (!itr->second.isValid())
             return false;
     }
+
     return true;
 }
 
-int trpgLabelPropertyTable::AddProperty(const trpgLabelProperty &property)
+int trpgLabelPropertyTable::AddProperty(const trpgLabelProperty&property)
 {
     int handle = property.GetHandle();
-    if(handle==-1)
+
+    if (handle == -1)
     {
         handle = labelPropertyMap.size();
     }
+
     labelPropertyMap[handle] = property;
     return handle;
 }
 
-int trpgLabelPropertyTable::FindAddProperty(const trpgLabelProperty& property)
+int trpgLabelPropertyTable::FindAddProperty(const trpgLabelProperty&property)
 {
     LabelPropertyMapType::const_iterator itr = labelPropertyMap.begin();
-    for (  ; itr != labelPropertyMap.end( ); itr++)
+
+    for (; itr != labelPropertyMap.end(); itr++)
     {
         if (itr->second == property)
             return itr->first;
     }
+
     return AddProperty(property);
 }
 
@@ -773,18 +803,19 @@ int trpgLabelPropertyTable::GetNumProperty() const
     return labelPropertyMap.size();
 }
 
-const trpgLabelProperty *trpgLabelPropertyTable::GetPropertyRef(int id) const
+const trpgLabelProperty* trpgLabelPropertyTable::GetPropertyRef(int id) const
 {
     if (id < 0)
         return NULL;
 
     LabelPropertyMapType::const_iterator itr = labelPropertyMap.find(id);
-    if(itr == labelPropertyMap.end())
+    if (itr == labelPropertyMap.end())
         return NULL;
+
     return &itr->second;
 }
 
-bool trpgLabelPropertyTable::Write(trpgWriteBuffer &buf)
+bool trpgLabelPropertyTable::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -797,7 +828,8 @@ bool trpgLabelPropertyTable::Write(trpgWriteBuffer &buf)
 
     // Write the properties
     LabelPropertyMapType::iterator itr = labelPropertyMap.begin();
-    for (  ; itr != labelPropertyMap.end( ); itr++)
+
+    for (; itr != labelPropertyMap.end(); itr++)
     {
         itr->second.Write(buf);
     }
@@ -807,14 +839,14 @@ bool trpgLabelPropertyTable::Write(trpgWriteBuffer &buf)
     return true;
 }
 
-bool trpgLabelPropertyTable::Read(trpgReadBuffer &buf)
+bool trpgLabelPropertyTable::Read(trpgReadBuffer&buf)
 {
     trpgLabelProperty property;
-    trpgToken propertyTok;
-    int32 len;
-    bool status;
-    int numProperty;
-    int i;
+    trpgToken         propertyTok;
+    int32             len;
+    bool              status;
+    int               numProperty;
+    int               i;
 
     Reset();
 
@@ -823,16 +855,22 @@ bool trpgLabelPropertyTable::Read(trpgReadBuffer &buf)
         buf.Get(numProperty);
         if (numProperty < 0)
             throw 1;
-        //properties.resize(numProperty);
-        for (i=0;i<numProperty;i++) {
-            buf.GetToken(propertyTok,len);
-            if (propertyTok != TRPG_LABEL_PROPERTY) throw 1;
+
+        // properties.resize(numProperty);
+        for (i = 0; i < numProperty; i++)
+        {
+            buf.GetToken(propertyTok, len);
+            if (propertyTok != TRPG_LABEL_PROPERTY)
+                throw 1;
+
             buf.PushLimit(len);
             property.Reset();
             status = property.Read(buf);
             buf.PopLimit();
-            if (!status) throw 1;
-            //properties[i] = property;
+            if (!status)
+                throw 1;
+
+            // properties[i] = property;
             AddProperty(property);
         }
     }
@@ -853,19 +891,18 @@ trpgLabel::trpgLabel()
     Reset();
 }
 trpgLabel::~trpgLabel()
-{
-}
+{}
 
 void trpgLabel::Reset()
 {
     propertyId = -1;
-    text = "";
-    alignment = Left;
-    tabSize = 8;
-    scale = 1.0;
-    thickness = 0.0;
-    desc = "";
-    url = "";
+    text       = "";
+    alignment  = Left;
+    tabSize    = 8;
+    scale      = 1.0;
+    thickness  = 0.0;
+    desc       = "";
+    url        = "";
     location.x = 0;
     location.y = 0;
     location.z = 0;
@@ -892,12 +929,12 @@ int trpgLabel::GetProperty() const
 
 
 
-void trpgLabel::SetText(const std::string &inText)
+void trpgLabel::SetText(const std::string&inText)
 {
     text = inText;
 }
 
-const std::string *trpgLabel::GetText() const
+const std::string* trpgLabel::GetText() const
 {
     return &text;
 }
@@ -942,48 +979,48 @@ float32 trpgLabel::GetThickness(void) const
     return thickness;
 }
 
-void trpgLabel::SetDesc(const std::string &inText)
+void trpgLabel::SetDesc(const std::string&inText)
 {
     desc = inText;
 }
 
-const std::string *trpgLabel::GetDesc() const
+const std::string* trpgLabel::GetDesc() const
 {
     return &desc;
 }
 
 
-void trpgLabel::SetURL(const std::string &inText)
+void trpgLabel::SetURL(const std::string&inText)
 {
     url = inText;
 }
 
-const std::string *trpgLabel::GetURL() const
+const std::string* trpgLabel::GetURL() const
 {
     return &url;
 }
 
-void trpgLabel::SetLocation(const trpg3dPoint &pt)
+void trpgLabel::SetLocation(const trpg3dPoint&pt)
 {
     location = pt;
 }
 
-const trpg3dPoint& trpgLabel::GetLocation() const
+const trpg3dPoint&trpgLabel::GetLocation() const
 {
     return location;
 }
 
-void trpgLabel::AddSupport(const trpg3dPoint &pt)
+void trpgLabel::AddSupport(const trpg3dPoint&pt)
 {
     supports.push_back(pt);
 }
 
-const std::vector<trpg3dPoint> *trpgLabel::GetSupports() const
+const std::vector<trpg3dPoint>*trpgLabel::GetSupports() const
 {
     return &supports;
 }
 
-bool trpgLabel::Write(trpgWriteBuffer &buf)
+bool trpgLabel::Write(trpgWriteBuffer&buf)
 {
     unsigned int i;
 
@@ -998,18 +1035,20 @@ bool trpgLabel::Write(trpgWriteBuffer &buf)
     buf.Add(url);
     buf.Add(location);
     buf.Add((int)supports.size());
-    for (i=0;i<supports.size();i++)
+
+    for (i = 0; i < supports.size(); i++)
         buf.Add(supports[i]);
+
     buf.End();
 
     return true;
 }
 
-bool trpgLabel::Read(trpgReadBuffer &buf)
+bool trpgLabel::Read(trpgReadBuffer&buf)
 {
-    int numSupport,i;
+    int         numSupport, i;
     trpg3dPoint support;
-    int iVal;
+    int         iVal;
 
     try
     {
@@ -1025,8 +1064,11 @@ bool trpgLabel::Read(trpgReadBuffer &buf)
         buf.Get(url);
         buf.Get(location);
         buf.Get(numSupport);
-        if (numSupport < 0) throw 1;
-        for (i=0;i<numSupport;i++) {
+        if (numSupport < 0)
+            throw 1;
+
+        for (i = 0; i < numSupport; i++)
+        {
             buf.Get(support);
             supports.push_back(support);
         }

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 /*
@@ -59,119 +59,122 @@
 
 class ReaderWriterOsc : public osgDB::ReaderWriter
 {
-    public:
+public:
 
-        ReaderWriterOsc()
+ReaderWriterOsc()
+{
+    supportsExtension("osc", "Virtual Device Integration via a OSC_receiver");
+    supportsOption("documentRegisteredHandlers", "dump a documentation of all registered REST-handler to the console");
+    supportsOption("numMessagesPerEvent", "set the number of osc-messages to send for one event (sender-only)");
+    supportsOption("delayBetweenSendsInMillisecs", "when sending multiple msgs per event you can specify an optional delay between the sends (sender-only)");
+}
+
+virtual const char* className() const
+{
+    return "OSC Virtual Device Integration plugin";
+}
+
+virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+{
+    if (osgDB::getFileExtension(file) == "osc")
+    {
+        std::string file_name = osgDB::getNameLessExtension(file);
+
+        if (osgDB::getFileExtension(file_name) == "sender")
         {
-            supportsExtension("osc", "Virtual Device Integration via a OSC_receiver");
-            supportsOption("documentRegisteredHandlers", "dump a documentation of all registered REST-handler to the console");
-            supportsOption("numMessagesPerEvent", "set the number of osc-messages to send for one event (sender-only)");
-            supportsOption("delayBetweenSendsInMillisecs", "when sending multiple msgs per event you can specify an optional delay between the sends (sender-only)");
+            file_name = osgDB::getNameLessExtension(file_name);
 
+            std::string server_address = file_name.substr(0, file_name.find(':'));
+            std::string server_port    = file_name.substr(file_name.find(':') + 1);
 
-        }
-
-        virtual const char* className() const { return "OSC Virtual Device Integration plugin"; }
-
-        virtual ReadResult readObject(const std::string& file, const osgDB::ReaderWriter::Options* options =NULL) const
-        {
-            if (osgDB::getFileExtension(file) == "osc")
+            unsigned int num_messages_per_event = 1;
+            if (options && !options->getPluginStringData("numMessagesPerEvent").empty())
             {
-                std::string file_name = osgDB::getNameLessExtension(file);
-
-                if (osgDB::getFileExtension(file_name) == "sender")
-                {
-                    file_name = osgDB::getNameLessExtension(file_name);
-
-                    std::string server_address = file_name.substr(0,file_name.find(':'));
-                    std::string server_port = file_name.substr(file_name.find(':') + 1);
-
-                    unsigned int num_messages_per_event = 1;
-                    if (options && !options->getPluginStringData("numMessagesPerEvent").empty()) {
-                        std::string num_messages_per_event_str = options->getPluginStringData("numMessagesPerEvent");
-                        num_messages_per_event = osg::maximum(1, atoi(num_messages_per_event_str.c_str()));
-                    }
-
-                    unsigned int delay_between_sends_in_millisecs = 0;
-                    if (options && !options->getPluginStringData("delayBetweenSendsInMillisecs").empty()) {
-                        std::string delay_between_sends_in_millisecs_str = options->getPluginStringData("delayBetweenSendsInMillisecs");
-                        delay_between_sends_in_millisecs = atoi(delay_between_sends_in_millisecs_str.c_str());
-                    }
-
-                    return new OscSendingDevice(server_address, atoi(server_port.c_str()), num_messages_per_event, delay_between_sends_in_millisecs);
-                }
-                else
-                {
-                    // defaults to receiver
-                    file_name = osgDB::getNameLessExtension(file_name);
-                    if (file_name.find(':') == std::string::npos) {
-                        file_name = "0.0.0.0:" + file_name;
-                    }
-                    std::string server_address = file_name.substr(0,file_name.find(':'));
-                    std::string server_port = file_name.substr(file_name.find(':') + 1);
-                    int port = atoi(server_port.c_str());
-                    if (port <= 0)
-                    {
-                        OSG_WARN << "ReaderWriterOsc :: can't get valid port from " << osgDB::getNameLessAllExtensions(file) << std::endl;
-                        port = 8000;
-                    }
-                    try {
-
-                        osg::ref_ptr<OscReceivingDevice> device = new OscReceivingDevice(server_address, port);
-
-
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slide/first", osgGA::GUIEventAdapter::KEY_Home));
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slide/last", osgGA::GUIEventAdapter::KEY_End));
-
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slide/next", osgGA::GUIEventAdapter::KEY_Right));
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slide/previous", osgGA::GUIEventAdapter::KEY_Left));
-
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/layer/next", osgGA::GUIEventAdapter::KEY_Down));
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/layer/previous", osgGA::GUIEventAdapter::KEY_Up));
-
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slideorlayer/next", osgGA::GUIEventAdapter::KEY_Page_Down));
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slideorlayer/previous", osgGA::GUIEventAdapter::KEY_Page_Up));
-
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/unpause", 'o'));
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/pause", 'p'));
-
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/osgviewer/home", ' '));
-                        device->addRequestHandler(new SendKeystrokeRequestHandler("/osgviewer/stats", 's'));
-
-
-
-
-                        if ((options && (options->getPluginStringData("documentRegisteredHandlers") == "true")))
-                        {
-                            std::cout << *device << std::endl;
-                        }
-
-
-                        return device.release();
-                    }
-                    catch(const osc::Exception& e)
-                    {
-                        OSG_WARN << "OscDevice :: could not register UDP listener : " << e.what() << std::endl;
-                        return ReadResult::ERROR_IN_READING_FILE;
-                    }
-                    catch(const std::exception& e)
-                    {
-                        OSG_WARN << "OscDevice :: could not register UDP listener : " << e.what() << std::endl;
-                        return ReadResult::ERROR_IN_READING_FILE;
-                    }
-                    catch(...)
-                    {
-                        OSG_WARN << "OscDevice :: could not register UDP listener" << std::endl;
-                        return ReadResult::ERROR_IN_READING_FILE;
-                    }
-
-                }
-
+                std::string num_messages_per_event_str = options->getPluginStringData("numMessagesPerEvent");
+                num_messages_per_event = osg::maximum(1, atoi(num_messages_per_event_str.c_str()));
             }
 
-            return ReadResult::FILE_NOT_HANDLED;
-        }
+            unsigned int delay_between_sends_in_millisecs = 0;
+            if (options && !options->getPluginStringData("delayBetweenSendsInMillisecs").empty())
+            {
+                std::string delay_between_sends_in_millisecs_str = options->getPluginStringData("delayBetweenSendsInMillisecs");
+                delay_between_sends_in_millisecs = atoi(delay_between_sends_in_millisecs_str.c_str());
+            }
 
+            return new OscSendingDevice(server_address, atoi(server_port.c_str()), num_messages_per_event, delay_between_sends_in_millisecs);
+        }
+        else
+        {
+            // defaults to receiver
+            file_name = osgDB::getNameLessExtension(file_name);
+            if (file_name.find(':') == std::string::npos)
+            {
+                file_name = "0.0.0.0:" + file_name;
+            }
+
+            std::string server_address = file_name.substr(0, file_name.find(':'));
+            std::string server_port    = file_name.substr(file_name.find(':') + 1);
+            int         port           = atoi(server_port.c_str());
+            if (port <= 0)
+            {
+                OSG_WARN << "ReaderWriterOsc :: can't get valid port from " << osgDB::getNameLessAllExtensions(file) << std::endl;
+                port = 8000;
+            }
+
+            try
+            {
+                osg::ref_ptr<OscReceivingDevice> device = new OscReceivingDevice(server_address, port);
+
+
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slide/first", osgGA::GUIEventAdapter::KEY_Home));
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slide/last", osgGA::GUIEventAdapter::KEY_End));
+
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slide/next", osgGA::GUIEventAdapter::KEY_Right));
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slide/previous", osgGA::GUIEventAdapter::KEY_Left));
+
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/layer/next", osgGA::GUIEventAdapter::KEY_Down));
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/layer/previous", osgGA::GUIEventAdapter::KEY_Up));
+
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slideorlayer/next", osgGA::GUIEventAdapter::KEY_Page_Down));
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/slideorlayer/previous", osgGA::GUIEventAdapter::KEY_Page_Up));
+
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/unpause", 'o'));
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/p3d/pause", 'p'));
+
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/osgviewer/home", ' '));
+                device->addRequestHandler(new SendKeystrokeRequestHandler("/osgviewer/stats", 's'));
+
+
+
+
+                if ((options && (options->getPluginStringData("documentRegisteredHandlers") == "true")))
+                {
+                    std::cout << *device << std::endl;
+                }
+
+
+                return device.release();
+            }
+            catch (const osc::Exception&e)
+            {
+                OSG_WARN << "OscDevice :: could not register UDP listener : " << e.what() << std::endl;
+                return ReadResult::ERROR_IN_READING_FILE;
+            }
+            catch (const std::exception&e)
+            {
+                OSG_WARN << "OscDevice :: could not register UDP listener : " << e.what() << std::endl;
+                return ReadResult::ERROR_IN_READING_FILE;
+            }
+            catch (...)
+            {
+                OSG_WARN << "OscDevice :: could not register UDP listener" << std::endl;
+                return ReadResult::ERROR_IN_READING_FILE;
+            }
+        }
+    }
+
+    return ReadResult::FILE_NOT_HANDLED;
+}
 };
 
 // now register with Registry to instantiate the above

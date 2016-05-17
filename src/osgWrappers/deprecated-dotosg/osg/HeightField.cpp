@@ -12,10 +12,10 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool HeightField_readLocalData(Object& obj, Input& fr);
-bool HeightField_writeLocalData(const Object& obj, Output& fw);
+bool HeightField_readLocalData(Object&obj, Input&fr);
+bool HeightField_writeLocalData(const Object&obj, Output&fw);
 
-//register the read and write functions with the osgDB::Registry.
+// register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(HeightField)
 (
     new osg::HeightField,
@@ -26,7 +26,7 @@ REGISTER_DOTOSGWRAPPER(HeightField)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-//register the read and write functions with the osgDB::Registry.
+// register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Grid)
 (
     new osg::HeightField,
@@ -37,11 +37,11 @@ REGISTER_DOTOSGWRAPPER(Grid)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool HeightField_readLocalData(Object& obj, Input& fr)
+bool HeightField_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    HeightField& heightfield = static_cast<HeightField&>(obj);
+    HeightField&heightfield = static_cast<HeightField&>(obj);
 
     if (fr.matchSequence("Origin %f %f %f"))
     {
@@ -50,7 +50,7 @@ bool HeightField_readLocalData(Object& obj, Input& fr)
         fr[2].getFloat(origin.y());
         fr[3].getFloat(origin.z());
         heightfield.setOrigin(origin);
-        fr+=4;
+        fr += 4;
     }
 
     if (fr.matchSequence("XInterval %f"))
@@ -58,7 +58,7 @@ bool HeightField_readLocalData(Object& obj, Input& fr)
         float interval;
         fr[1].getFloat(interval);
         heightfield.setXInterval(interval);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -67,7 +67,7 @@ bool HeightField_readLocalData(Object& obj, Input& fr)
         float interval;
         fr[1].getFloat(interval);
         heightfield.setYInterval(interval);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -76,7 +76,7 @@ bool HeightField_readLocalData(Object& obj, Input& fr)
         float height;
         fr[1].getFloat(height);
         heightfield.setSkirtHeight(height);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -85,7 +85,7 @@ bool HeightField_readLocalData(Object& obj, Input& fr)
         unsigned int width;
         fr[1].getUInt(width);
         heightfield.setBorderWidth(width);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -97,38 +97,37 @@ bool HeightField_readLocalData(Object& obj, Input& fr)
         fr[3].getFloat(rotation.z());
         fr[4].getFloat(rotation.w());
         heightfield.setRotation(rotation);
-        fr+=5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
     if (fr.matchSequence("NumColumnsAndRows %i %i"))
     {
-        int numcolumns,numrows;
+        int numcolumns, numrows;
         fr[1].getInt(numcolumns);
         fr[2].getInt(numrows);
-        heightfield.allocate(numcolumns,numrows);
-        fr+=3;
+        heightfield.allocate(numcolumns, numrows);
+        fr              += 3;
         iteratorAdvanced = true;
     }
 
     if (fr.matchSequence("Heights {"))
     {
-
         int entry = fr[0].getNoNestedBrackets();
 
         fr += 2;
 
-        float height;
-        unsigned int row = 0;
+        float        height;
+        unsigned int row    = 0;
         unsigned int column = 0;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
             if (fr.readSequence(height))
             {
-                heightfield.setHeight(column,row,height);
+                heightfield.setHeight(column, row, height);
                 ++column;
-                if (column>=heightfield.getNumColumns())
+                if (column >= heightfield.getNumColumns())
                 {
                     column = 0;
                     ++row;
@@ -142,42 +141,44 @@ bool HeightField_readLocalData(Object& obj, Input& fr)
 
         iteratorAdvanced = true;
         ++fr;
-
     }
 
     return iteratorAdvanced;
 }
 
-bool HeightField_writeLocalData(const Object& obj, Output& fw)
+bool HeightField_writeLocalData(const Object&obj, Output&fw)
 {
-    const HeightField& heightfield = static_cast<const HeightField&>(obj);
+    const HeightField&heightfield = static_cast<const HeightField&>(obj);
 
     int prec = fw.precision();
+
     fw.precision(15);
-    fw.indent()<<"Origin "<<heightfield.getOrigin().x()<<" "<<heightfield.getOrigin().y()<<" "<<heightfield.getOrigin().z()<<std::endl;
-    fw.indent()<<"XInterval "<<heightfield.getXInterval()<<std::endl;
-    fw.indent()<<"YInterval "<<heightfield.getYInterval()<<std::endl;
-    fw.indent()<<"SkirtHeight "<<heightfield.getSkirtHeight()<<std::endl;
-    fw.indent()<<"BorderWidth "<<heightfield.getBorderWidth()<<std::endl;
-    fw.indent()<<"Rotation "<<heightfield.getRotation()<<std::endl;
+    fw.indent() << "Origin " <<      heightfield.getOrigin().x() << " " << heightfield.getOrigin().y() << " " << heightfield.getOrigin().z() << std::endl;
+    fw.indent() << "XInterval " <<   heightfield.getXInterval() << std::endl;
+    fw.indent() << "YInterval " <<   heightfield.getYInterval() << std::endl;
+    fw.indent() << "SkirtHeight " << heightfield.getSkirtHeight() << std::endl;
+    fw.indent() << "BorderWidth " << heightfield.getBorderWidth() << std::endl;
+    fw.indent() << "Rotation " <<    heightfield.getRotation() << std::endl;
     fw.precision(prec);
 
-    fw.indent()<<"NumColumnsAndRows "<<heightfield.getNumColumns()<<" "<<heightfield.getNumRows()<<std::endl;
+    fw.indent() << "NumColumnsAndRows " << heightfield.getNumColumns() << " " << heightfield.getNumRows() << std::endl;
 
-    fw.indent()<<"Heights"<<std::endl;
+    fw.indent() << "Heights" << std::endl;
 
     ParameterOutput po(fw);
     po.begin();
-    for(unsigned int row=0;row<heightfield.getNumRows();++row)
+
+    for (unsigned int row = 0; row < heightfield.getNumRows(); ++row)
     {
-        for(unsigned int column=0;column<heightfield.getNumColumns();++column)
+        for (unsigned int column = 0; column < heightfield.getNumColumns(); ++column)
         {
-            po.write(heightfield.getHeight(column,row));
+            po.write(heightfield.getHeight(column, row));
         }
+
         po.newLine();
     }
+
     po.end();
 
     return true;
 }
-

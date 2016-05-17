@@ -8,7 +8,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // Copyright(c) 2008 Skew Matrix Software LLC.
@@ -24,15 +24,14 @@
 #include <osgDB/fstream>
 #include <map>
 
-namespace osg {
-    class Geometry;
+namespace osg
+{
+class Geometry;
 }
 
 
 namespace flt
 {
-
-
 /*!
    Manages writing the Vertex Palette record during export.
    Maintains a map to ensure that instanced VertexArray data is only
@@ -43,67 +42,67 @@ namespace flt
 class VertexPaletteManager
 {
 public:
-    VertexPaletteManager( const ExportOptions& fltOpt );
-    ~VertexPaletteManager();
+VertexPaletteManager(const ExportOptions&fltOpt);
+~VertexPaletteManager();
 
-    void add( const osg::Geometry& geom );
-    void add( const osg::Array* key,
-        const osg::Vec3dArray* v, const osg::Vec4Array* c,
-        const osg::Vec3Array* n, const osg::Vec2Array* t,
-        bool colorPerVertex, bool normalPerVertex, bool allowSharing=true );
+void add(const osg::Geometry&geom);
+void add(const osg::Array *key,
+         const osg::Vec3dArray *v, const osg::Vec4Array *c,
+         const osg::Vec3Array *n, const osg::Vec2Array *t,
+         bool colorPerVertex, bool normalPerVertex, bool allowSharing = true);
 
-    unsigned int byteOffset( unsigned int idx ) const;
+unsigned int byteOffset(unsigned int idx) const;
 
-    void write( DataOutputStream& dos ) const;
+void write(DataOutputStream&dos) const;
 
-    /*!
-       Static utility routines for handling the morass of array
-       types that could be found in a Geometry object's vertex/
-       normal/texcoord/color data. */
-    static osg::ref_ptr< const osg::Vec2Array > asVec2Array( const osg::Array* in, const unsigned int n );
-    static osg::ref_ptr< const osg::Vec3Array > asVec3Array( const osg::Array* in, const unsigned int n );
-    static osg::ref_ptr< const osg::Vec3dArray > asVec3dArray( const osg::Array* in, const unsigned int n );
-    static osg::ref_ptr< const osg::Vec4Array > asVec4Array( const osg::Array* in, const unsigned int n );
+/*!
+   Static utility routines for handling the morass of array
+   types that could be found in a Geometry object's vertex/
+   normal/texcoord/color data. */
+static osg::ref_ptr<const osg::Vec2Array> asVec2Array(const osg::Array *in, const unsigned int n);
+static osg::ref_ptr<const osg::Vec3Array> asVec3Array(const osg::Array *in, const unsigned int n);
+static osg::ref_ptr<const osg::Vec3dArray> asVec3dArray(const osg::Array *in, const unsigned int n);
+static osg::ref_ptr<const osg::Vec4Array> asVec4Array(const osg::Array *in, const unsigned int n);
 
 protected:
-    typedef enum {
-        VERTEX_C,
-        VERTEX_CN,
-        VERTEX_CNT,
-        VERTEX_CT
-    } PaletteRecordType;
+typedef enum
+{
+    VERTEX_C,
+    VERTEX_CN,
+    VERTEX_CNT,
+    VERTEX_CT
+} PaletteRecordType;
 
-    static PaletteRecordType recordType( const osg::Array* v, const osg::Array* c,
-        const osg::Array* n, const osg::Array* t );
-    unsigned int recordSize( PaletteRecordType recType );
+static PaletteRecordType recordType(const osg::Array *v, const osg::Array *c,
+                                    const osg::Array *n, const osg::Array *t);
+unsigned int recordSize(PaletteRecordType recType);
 
-    void writeRecords( const osg::Vec3dArray* v, const osg::Vec4Array* c,
-        const osg::Vec3Array* n, const osg::Vec2Array* t,
-        bool colorPerVertex, bool normalPerVertex );
+void writeRecords(const osg::Vec3dArray *v, const osg::Vec4Array *c,
+                  const osg::Vec3Array *n, const osg::Vec2Array *t,
+                  bool colorPerVertex, bool normalPerVertex);
 
-    unsigned int _currentSizeBytes;
+unsigned int _currentSizeBytes;
 
-    struct ArrayInfo {
-        ArrayInfo();
+struct ArrayInfo
+{
+    ArrayInfo();
 
-        unsigned int _byteStart;
-        unsigned int _idxSizeBytes;
-        unsigned int _idxCount;
-    };
-    ArrayInfo* _current;
-    ArrayInfo _nonShared;
-
-    typedef std::map< const osg::Array*, ArrayInfo > ArrayMap;
-    ArrayMap _arrayMap;
-
-    mutable osgDB::ofstream _verticesStr;
-    DataOutputStream* _vertices;
-    std::string _verticesTempName;
-
-    const ExportOptions& _fltOpt;
+    unsigned int _byteStart;
+    unsigned int _idxSizeBytes;
+    unsigned int _idxCount;
 };
+ArrayInfo *_current;
+ArrayInfo _nonShared;
 
+typedef std::map<const osg::Array*, ArrayInfo> ArrayMap;
+ArrayMap _arrayMap;
 
+mutable osgDB::ofstream _verticesStr;
+DataOutputStream        *_vertices;
+std::string             _verticesTempName;
+
+const ExportOptions&_fltOpt;
+};
 }
 
 #endif

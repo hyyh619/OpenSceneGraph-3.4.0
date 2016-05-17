@@ -9,44 +9,48 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgGA/GUIEventHandler>
 #include <osgGA/EventVisitor>
 
 using namespace osgGA;
 
-void EventHandler::operator()(osg::Node* node, osg::NodeVisitor* nv)
+void EventHandler::operator()(osg::Node *node, osg::NodeVisitor *nv)
 {
-    osgGA::EventVisitor* ev = dynamic_cast<osgGA::EventVisitor*>(nv);
+    osgGA::EventVisitor *ev = dynamic_cast<osgGA::EventVisitor*>(nv);
+
     if (ev && ev->getActionAdapter() && !ev->getEvents().empty())
     {
-        for(osgGA::EventQueue::Events::iterator itr = ev->getEvents().begin();
-            itr != ev->getEvents().end();
-            ++itr)
+        for (osgGA::EventQueue::Events::iterator itr = ev->getEvents().begin();
+             itr != ev->getEvents().end();
+             ++itr)
         {
             handle(itr->get(), node, nv);
         }
     }
-    if (node->getNumChildrenRequiringEventTraversal()>0 || _nestedCallback.valid()) traverse(node,nv);
+
+    if (node->getNumChildrenRequiringEventTraversal() > 0 || _nestedCallback.valid())
+        traverse(node, nv);
 }
 
-void EventHandler::event(osg::NodeVisitor* nv, osg::Drawable* drawable)
+void EventHandler::event(osg::NodeVisitor *nv, osg::Drawable *drawable)
 {
-    osgGA::EventVisitor* ev = dynamic_cast<osgGA::EventVisitor*>(nv);
+    osgGA::EventVisitor *ev = dynamic_cast<osgGA::EventVisitor*>(nv);
+
     if (ev && ev->getActionAdapter() && !ev->getEvents().empty())
     {
-        for(osgGA::EventQueue::Events::iterator itr = ev->getEvents().begin();
-            itr != ev->getEvents().end();
-            ++itr)
+        for (osgGA::EventQueue::Events::iterator itr = ev->getEvents().begin();
+             itr != ev->getEvents().end();
+             ++itr)
         {
             handle(itr->get(), drawable, nv);
         }
     }
 }
 
-bool EventHandler::handle(osgGA::Event* event, osg::Object* object, osg::NodeVisitor* nv)
+bool EventHandler::handle(osgGA::Event *event, osg::Object *object, osg::NodeVisitor *nv)
 {
-    OSG_NOTICE<<"Handle event "<<event<<std::endl;
+    OSG_NOTICE << "Handle event " << event << std::endl;
     return false;
 }

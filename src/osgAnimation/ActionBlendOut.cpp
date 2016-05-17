@@ -10,20 +10,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgAnimation/ActionBlendOut>
 
 using namespace osgAnimation;
 
 ActionBlendOut::ActionBlendOut() : _weight(0) {}
-ActionBlendOut::ActionBlendOut(const ActionBlendOut& a, const osg::CopyOp& c) : Action(a,c)
+ActionBlendOut::ActionBlendOut(const ActionBlendOut&a, const osg::CopyOp&c) : Action(a, c)
 {
-    _weight = a._weight;
+    _weight    = a._weight;
     _animation = a._animation;
 }
 
-ActionBlendOut::ActionBlendOut(Animation* animation, double duration)
+ActionBlendOut::ActionBlendOut(Animation *animation, double duration)
 {
     _animation = animation;
     float d = duration * _fps;
@@ -34,8 +34,9 @@ ActionBlendOut::ActionBlendOut(Animation* animation, double duration)
 
 void ActionBlendOut::computeWeight(unsigned int frame)
 {
-    double ratio = ( (frame+1) * 1.0 / (getNumFrames()) );
-    double w = _weight * (1.0-ratio);
-    OSG_DEBUG << getName() << " BlendOut frame " << frame  << " weight " << w << std::endl;
+    double ratio = ((frame + 1) * 1.0 / (getNumFrames()));
+    double w     = _weight * (1.0 - ratio);
+
+    OSG_DEBUG << getName() << " BlendOut frame " << frame << " weight " << w << std::endl;
     _animation->setWeight(w);
 }

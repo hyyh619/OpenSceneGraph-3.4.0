@@ -25,17 +25,16 @@ CChildFrame::CChildFrame()
 }
 
 CChildFrame::~CChildFrame()
-{
-}
+{}
 
-BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
+BOOL CChildFrame::PreCreateWindow(CREATESTRUCT&cs)
 {
     // TODO: Modify the Window class or styles here by modifying the CREATESTRUCT cs
-    if( !CMDIChildWnd::PreCreateWindow(cs) )
+    if (!CMDIChildWnd::PreCreateWindow(cs))
         return FALSE;
 
     cs.style = WS_CHILD | WS_VISIBLE | WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU
-        | FWS_ADDTOTITLE | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_MAXIMIZE;
+               | FWS_ADDTOTITLE | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_MAXIMIZE;
 
     return TRUE;
 }
@@ -49,12 +48,11 @@ void CChildFrame::AssertValid() const
     CMDIChildWnd::AssertValid();
 }
 
-void CChildFrame::Dump(CDumpContext& dc) const
+void CChildFrame::Dump(CDumpContext&dc) const
 {
     CMDIChildWnd::Dump(dc);
 }
-
-#endif //_DEBUG
+#endif // _DEBUG
 
 
 // CChildFrame message handlers

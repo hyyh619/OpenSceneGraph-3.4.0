@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef IVE_LOCATOR
 #define IVE_LOCATOR 1
@@ -17,11 +17,13 @@
 #include <osgTerrain/Locator>
 #include "ReadWrite.h"
 
-namespace ive{
-class Locator : public osgTerrain::Locator, public ReadWrite {
+namespace ive
+{
+class Locator : public osgTerrain::Locator, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

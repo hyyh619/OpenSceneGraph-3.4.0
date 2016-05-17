@@ -12,7 +12,7 @@
  *
  * ViewDependentShadow codes Copyright (C) 2008 Wojciech Lewandowski
  * Thanks to to my company http://www.ai.com.pl for allowing me free this work.
-*/
+ */
 #include <osgShadow/ShadowedScene>
 #include <osgShadow/DebugShadowMap>
 #include <osgShadow/ConvexPolyhedron>
@@ -28,24 +28,23 @@
 using namespace osgShadow;
 
 
-#define VECTOR_LENGTH( v ) ( sizeof(v)/sizeof(v[0]) )
+#define VECTOR_LENGTH(v) (sizeof(v) / sizeof(v[0]))
 
-#define DEFAULT_DEBUG_HUD_SIZE_X 256
-#define DEFAULT_DEBUG_HUD_SIZE_Y 256
+#define DEFAULT_DEBUG_HUD_SIZE_X   256
+#define DEFAULT_DEBUG_HUD_SIZE_Y   256
 #define DEFAULT_DEBUG_HUD_ORIGIN_X 8
 #define DEFAULT_DEBUG_HUD_ORIGIN_Y 8
 
-DebugShadowMap::DebugShadowMap():
+DebugShadowMap::DebugShadowMap() :
     BaseClass(),
-    _hudSize( 2, 2 ),
-    _hudOrigin( -1, -1 ),
-    _viewportSize( DEFAULT_DEBUG_HUD_SIZE_X, DEFAULT_DEBUG_HUD_SIZE_Y ),
-    _viewportOrigin( DEFAULT_DEBUG_HUD_ORIGIN_X, DEFAULT_DEBUG_HUD_ORIGIN_Y ),
-    _orthoSize( 2, 2 ),
-    _orthoOrigin( -1, -1 ),
-    _doDebugDraw( false )
+    _hudSize(2, 2),
+    _hudOrigin(-1, -1),
+    _viewportSize(DEFAULT_DEBUG_HUD_SIZE_X, DEFAULT_DEBUG_HUD_SIZE_Y),
+    _viewportOrigin(DEFAULT_DEBUG_HUD_ORIGIN_X, DEFAULT_DEBUG_HUD_ORIGIN_Y),
+    _orthoSize(2, 2),
+    _orthoOrigin(-1, -1),
+    _doDebugDraw(false)
 {
-
     // Why this fancy 24 bit depth to 24 bit rainbow colors shader ?
     //
     // Depth values cannot be easily cast on color component because they are:
@@ -57,100 +56,101 @@ DebugShadowMap::DebugShadowMap():
     // Shader looks complex but it is used only for debug head-up rectangle
     // so performance impact is not significant.
 
-    _depthColorFragmentShader = new osg::Shader( osg::Shader::FRAGMENT,
+    _depthColorFragmentShader = new osg::Shader(osg::Shader::FRAGMENT,
 #if 0
-        "uniform sampler2D texture;                                              \n"
-        "                                                                        \n"
-        "void main(void)                                                         \n"
-        "{                                                                       \n"
-        "    float f = texture2D( texture, vec3( gl_TexCoord[0].xy, 1.0).xy ).r; \n"
-        "    gl_FragColor =  vec4( 0.0, 1.0 - f,  0.5 - f, 0.5 );                \n"
-        "}                                                                       \n"
+                                                "uniform sampler2D texture;                                              \n"
+                                                "                                                                        \n"
+                                                "void main(void)                                                         \n"
+                                                "{                                                                       \n"
+                                                "    float f = texture2D( texture, vec3( gl_TexCoord[0].xy, 1.0).xy ).r; \n"
+                                                "    gl_FragColor =  vec4( 0.0, 1.0 - f,  0.5 - f, 0.5 );                \n"
+                                                "}                                                                       \n"
 #else
-        "uniform sampler2D texture;                                              \n"
-        "                                                                        \n"
-        "void main(void)                                                         \n"
-        "{                                                                       \n"
-        "    float f = texture2D( texture, vec3( gl_TexCoord[0].xy, 1.0).xy ).r; \n"
-        "                                                                        \n"
-        "    f = 256.0 * f;                                                      \n"
-        "    float fC = floor( f ) / 256.0;                                      \n"
-        "                                                                        \n"
-        "    f = 256.0 * fract( f );                                             \n"
-        "    float fS = floor( f ) / 256.0;                                      \n"
-        "                                                                        \n"
-        "    f = 256.0 * fract( f );                                             \n"
-        "    float fH = floor( f ) / 256.0;                                      \n"
-        "                                                                        \n"
-        "    fS *= 0.5;                                                          \n"
-        "    fH = ( fH  * 0.34 + 0.66 ) * ( 1.0 - fS );                          \n"
-        "                                                                        \n"
-        "    vec3 rgb = vec3( ( fC > 0.5 ? ( 1.0 - fC ) : fC ),                  \n"
-        "                     abs( fC - 0.333333 ),                              \n"
-        "                     abs( fC - 0.666667 ) );                            \n"
-        "                                                                        \n"
-        "    rgb = min( vec3( 1.0, 1.0, 1.0 ), 3.0 * rgb );                      \n"
-        "                                                                        \n"
-        "    float fMax = max( max( rgb.r, rgb.g ), rgb.b );                     \n"
-        "    fMax = 1.0 / fMax;                                                  \n"
-        "                                                                        \n"
-        "    vec3 color = fMax * rgb;                                            \n"
-        "                                                                        \n"
-        "    gl_FragColor =  vec4( fS + fH * color, 1 ) * gl_Color;              \n"
-        "}                                                                       \n"
+                                                "uniform sampler2D texture;                                              \n"
+                                                "                                                                        \n"
+                                                "void main(void)                                                         \n"
+                                                "{                                                                       \n"
+                                                "    float f = texture2D( texture, vec3( gl_TexCoord[0].xy, 1.0).xy ).r; \n"
+                                                "                                                                        \n"
+                                                "    f = 256.0 * f;                                                      \n"
+                                                "    float fC = floor( f ) / 256.0;                                      \n"
+                                                "                                                                        \n"
+                                                "    f = 256.0 * fract( f );                                             \n"
+                                                "    float fS = floor( f ) / 256.0;                                      \n"
+                                                "                                                                        \n"
+                                                "    f = 256.0 * fract( f );                                             \n"
+                                                "    float fH = floor( f ) / 256.0;                                      \n"
+                                                "                                                                        \n"
+                                                "    fS *= 0.5;                                                          \n"
+                                                "    fH = ( fH  * 0.34 + 0.66 ) * ( 1.0 - fS );                          \n"
+                                                "                                                                        \n"
+                                                "    vec3 rgb = vec3( ( fC > 0.5 ? ( 1.0 - fC ) : fC ),                  \n"
+                                                "                     abs( fC - 0.333333 ),                              \n"
+                                                "                     abs( fC - 0.666667 ) );                            \n"
+                                                "                                                                        \n"
+                                                "    rgb = min( vec3( 1.0, 1.0, 1.0 ), 3.0 * rgb );                      \n"
+                                                "                                                                        \n"
+                                                "    float fMax = max( max( rgb.r, rgb.g ), rgb.b );                     \n"
+                                                "    fMax = 1.0 / fMax;                                                  \n"
+                                                "                                                                        \n"
+                                                "    vec3 color = fMax * rgb;                                            \n"
+                                                "                                                                        \n"
+                                                "    gl_FragColor =  vec4( fS + fH * color, 1 ) * gl_Color;              \n"
+                                                "}                                                                       \n"
 #endif
-    ); // end _depthColorFragmentShader
+                                                ); // end _depthColorFragmentShader
 }
 
 DebugShadowMap::DebugShadowMap
-(const DebugShadowMap& copy, const osg::CopyOp& copyop) :
-    BaseClass(copy,copyop),
-    _hudSize( copy._hudSize ),
-    _hudOrigin( copy._hudOrigin ),
-    _viewportSize( copy._viewportSize ),
-    _viewportOrigin( copy._viewportOrigin ),
-    _orthoSize( copy._viewportOrigin ),
-    _orthoOrigin( copy._viewportOrigin ),
-    _doDebugDraw( copy._doDebugDraw )
+    (const DebugShadowMap&copy, const osg::CopyOp&copyop) :
+    BaseClass(copy, copyop),
+    _hudSize(copy._hudSize),
+    _hudOrigin(copy._hudOrigin),
+    _viewportSize(copy._viewportSize),
+    _viewportOrigin(copy._viewportOrigin),
+    _orthoSize(copy._viewportOrigin),
+    _orthoOrigin(copy._viewportOrigin),
+    _doDebugDraw(copy._doDebugDraw)
 {
-    if( copy._depthColorFragmentShader.valid() )
+    if (copy._depthColorFragmentShader.valid())
         _depthColorFragmentShader =
             dynamic_cast<osg::Shader*>
-                ( copy._depthColorFragmentShader->clone(copyop) );
+            (copy._depthColorFragmentShader->clone(copyop));
 }
 
 DebugShadowMap::~DebugShadowMap()
-{
-}
+{}
 
-void DebugShadowMap::ViewData::cull( void )
+void DebugShadowMap::ViewData::cull(void)
 {
-    if( getDebugDraw() && !_cameraDebugHUD.valid() )
+    if (getDebugDraw() && !_cameraDebugHUD.valid())
         createDebugHUD();
 
-    BaseClass::ViewData::cull( );
+    BaseClass::ViewData::cull();
 
-    cullDebugGeometry( );
+    cullDebugGeometry();
 }
 
 bool DebugShadowMap::ViewData::DebugBoundingBox
-    ( const osg::BoundingBox & bb, const char * name )
+    (const osg::BoundingBox&bb, const char *name)
 {
     bool result = false;
-#if defined( _DEBUG    ) || defined( DEBUG )
-    if( !name ) name = "";
 
-    osg::BoundingBox & bb_prev = _boundingBoxMap[ std::string( name ) ];
+#if defined(_DEBUG) || defined(DEBUG)
+    if (!name)
+        name = "";
+
+    osg::BoundingBox&bb_prev = _boundingBoxMap[std::string(name)];
 
     result = bb.center() != bb_prev.center() || bb.radius() != bb_prev.radius();
-    if( result )
+    if (result)
         std::cout << "Box<" << name << "> ("
-                  << ( bb._max._v[0] + bb._min._v[0] ) * 0.5 << " "
-                  << ( bb._max._v[1] + bb._min._v[1] ) * 0.5 << " "
-                  << ( bb._max._v[2] + bb._min._v[2] ) * 0.5 << ") ["
-                  << ( bb._max._v[0] - bb._min._v[0] ) << " "
-                  << ( bb._max._v[1] - bb._min._v[1] ) << " "
-                  << ( bb._max._v[2] - bb._min._v[2] ) << "] "
+                  << (bb._max._v[0] + bb._min._v[0]) * 0.5 << " "
+                  << (bb._max._v[1] + bb._min._v[1]) * 0.5 << " "
+                  << (bb._max._v[2] + bb._min._v[2]) * 0.5 << ") ["
+                  << (bb._max._v[0] - bb._min._v[0]) << " "
+                  << (bb._max._v[1] - bb._min._v[1]) << " "
+                  << (bb._max._v[2] - bb._min._v[2]) << "] "
                   << std::endl;
 
     bb_prev = bb;
@@ -159,33 +159,37 @@ bool DebugShadowMap::ViewData::DebugBoundingBox
 }
 
 bool DebugShadowMap::ViewData::DebugPolytope
-( const osg::Polytope & p, const char * name )
+    (const osg::Polytope&p, const char *name)
 {
     bool result = false;
-#if defined( _DEBUG    ) || defined( DEBUG )
-    if( !name ) name = "";
 
-    osg::Polytope & p_prev = _polytopeMap[ std::string( name ) ];
+#if defined(_DEBUG) || defined(DEBUG)
+    if (!name)
+        name = "";
 
-    result = ( p.getPlaneList() != p_prev.getPlaneList() );
+    osg::Polytope&p_prev = _polytopeMap[std::string(name)];
 
-    if( result ) {
+    result = (p.getPlaneList() != p_prev.getPlaneList());
+
+    if (result)
+    {
         std::cout << "Polytope<" << name
                   << "> size(" << p.getPlaneList().size() << ")"
                   << std::endl;
 
-        if( p.getPlaneList().size() == p_prev.getPlaneList().size() ) {
-            for( unsigned i = 0; i < p.getPlaneList().size(); ++i )
+        if (p.getPlaneList().size() == p_prev.getPlaneList().size())
+        {
+            for (unsigned i = 0; i < p.getPlaneList().size(); ++i)
             {
-                if( p.getPlaneList()[i] != p_prev.getPlaneList()[i] )
+                if (p.getPlaneList()[i] != p_prev.getPlaneList()[i])
                 {
                     std::cout << "Plane<" << i
-                        << "> ("
-                        << p.getPlaneList()[i].asVec4()[0] << ", "
-                        << p.getPlaneList()[i].asVec4()[1] << ", "
-                        << p.getPlaneList()[i].asVec4()[2] << ", "
-                        << p.getPlaneList()[i].asVec4()[3] << ")"
-                        << std::endl;
+                              << "> ("
+                              << p.getPlaneList()[i].asVec4()[0] << ", "
+                              << p.getPlaneList()[i].asVec4()[1] << ", "
+                              << p.getPlaneList()[i].asVec4()[2] << ", "
+                              << p.getPlaneList()[i].asVec4()[3] << ")"
+                              << std::endl;
                 }
             }
         }
@@ -197,22 +201,24 @@ bool DebugShadowMap::ViewData::DebugPolytope
 }
 
 bool DebugShadowMap::ViewData::DebugMatrix
-    ( const osg::Matrix & m, const char * name )
+    (const osg::Matrix&m, const char *name)
 {
     bool result = false;
-#if defined( _DEBUG    ) || defined( DEBUG )
-    if( !name ) name = "";
 
-    osg::Matrix & m_prev = _matrixMap[ std::string( name ) ];
+#if defined(_DEBUG) || defined(DEBUG)
+    if (!name)
+        name = "";
 
-    result = ( m != m_prev );
+    osg::Matrix&m_prev = _matrixMap[std::string(name)];
 
-    if( result )
+    result = (m != m_prev);
+
+    if (result)
         std::cout << "Matrix<" << name << "> " << std::endl
-            <<"[ " << m(0,0) << " " << m(0,1) << " " << m(0,2) << " " << m(0,3) << " ]  " << std::endl
-            <<"[ " << m(1,0) << " " << m(1,1) << " " << m(1,2) << " " << m(1,3) << " ]  " << std::endl
-            <<"[ " << m(2,0) << " " << m(2,1) << " " << m(2,2) << " " << m(2,3) << " ]  " << std::endl
-            <<"[ " << m(3,0) << " " << m(3,1) << " " << m(3,2) << " " << m(3,3) << " ]  " << std::endl;
+                  << "[ " << m(0, 0) << " " << m(0, 1) << " " << m(0, 2) << " " << m(0, 3) << " ]  " << std::endl
+                  << "[ " << m(1, 0) << " " << m(1, 1) << " " << m(1, 2) << " " << m(1, 3) << " ]  " << std::endl
+                  << "[ " << m(2, 0) << " " << m(2, 1) << " " << m(2, 2) << " " << m(2, 3) << " ]  " << std::endl
+                  << "[ " << m(3, 0) << " " << m(3, 1) << " " << m(3, 2) << " " << m(3, 3) << " ]  " << std::endl;
 
     m_prev = m;
 #endif
@@ -220,118 +226,138 @@ bool DebugShadowMap::ViewData::DebugMatrix
 }
 
 void DebugShadowMap::ViewData::setDebugPolytope
-    ( const char * name, const ConvexPolyhedron & polytope,
-      osg::Vec4 colorOutline, osg::Vec4 colorInside )
+    (const char *name, const ConvexPolyhedron&polytope,
+    osg::Vec4 colorOutline, osg::Vec4 colorInside)
 {
-    if( !getDebugDraw() ) return;
+    if (!getDebugDraw())
+        return;
 
-    const ConvexPolyhedron* polytope_ptr = &polytope;
-    if( polytope_ptr == NULL ) { // delete
-        PolytopeGeometry & pg = _polytopeGeometryMap[ std::string( name ) ];
-        for( unsigned int i = 0; i < VECTOR_LENGTH( pg._geometry ) ; i++ )
+    const ConvexPolyhedron *polytope_ptr = &polytope;
+    if (polytope_ptr == NULL)    // delete
+    {
+        PolytopeGeometry&pg = _polytopeGeometryMap[std::string(name)];
+
+        for (unsigned int i = 0; i < VECTOR_LENGTH(pg._geometry); i++)
         {
-            if( pg._geometry[i].valid() ) {
-                if( _geode[i].valid() &&
-                    _geode[i]->containsDrawable( pg._geometry[i].get() ) )
-                        _geode[i]->removeDrawable( pg._geometry[i].get() );
+            if (pg._geometry[i].valid())
+            {
+                if (_geode[i].valid() &&
+                    _geode[i]->containsDrawable(pg._geometry[i].get()))
+                    _geode[i]->removeDrawable(pg._geometry[i].get());
 
                 pg._geometry[i] = NULL;
             }
         }
-        _polytopeGeometryMap.erase( std::string( name ) );
-    } else { // update
-        PolytopeGeometry & pg = _polytopeGeometryMap[ std::string( name ) ];
+
+        _polytopeGeometryMap.erase(std::string(name));
+    }
+    else     // update
+    {
+        PolytopeGeometry&pg = _polytopeGeometryMap[std::string(name)];
 
         pg._polytope = polytope;
-        if( colorOutline.a() > 0 )
+        if (colorOutline.a() > 0)
             pg._colorOutline = colorOutline;
-        if( colorInside.a() > 0 )
+
+        if (colorInside.a() > 0)
             pg._colorInside = colorInside;
 
-        for( unsigned int i = 0; i < VECTOR_LENGTH( pg._geometry ) ; i++ )
+        for (unsigned int i = 0; i < VECTOR_LENGTH(pg._geometry); i++)
         {
-            if( !pg._geometry[i].valid() ) {
+            if (!pg._geometry[i].valid())
+            {
                 pg._geometry[i] = new osg::Geometry;
-                pg._geometry[i]->setDataVariance( osg::Object::DYNAMIC );
-                pg._geometry[i]->setUseDisplayList( false );
-                pg._geometry[i]->setSupportsDisplayList( false );
+                pg._geometry[i]->setDataVariance(osg::Object::DYNAMIC);
+                pg._geometry[i]->setUseDisplayList(false);
+                pg._geometry[i]->setSupportsDisplayList(false);
             }
 
-            if( _geode[i].valid() && !_geode[i]->containsDrawable( pg._geometry[i].get() ) )
+            if (_geode[i].valid() && !_geode[i]->containsDrawable(pg._geometry[i].get()))
             {
-                _geode[i]->insertChild(0, pg._geometry[i].get() );
+                _geode[i]->insertChild(0, pg._geometry[i].get());
             }
         }
     }
 }
 
 void DebugShadowMap::ViewData::updateDebugGeometry
-    ( const osg::Camera * viewCam, const osg::Camera * shadowCam )
+    (const osg::Camera *viewCam, const osg::Camera *shadowCam)
 {
-    if( !getDebugDraw() ) return;
-    if( _polytopeGeometryMap.empty() ) return;
+    if (!getDebugDraw())
+        return;
+
+    if (_polytopeGeometryMap.empty())
+        return;
 
     const int num = 2; // = VECTOR_LENGTH( PolytopeGeometry::_geometry );
 
     osg::Matrix
-        transform[ num ] =
-            { viewCam->getViewMatrix() *
-                // use near far clamped projection ( precomputed in cullDebugGeometry )
-                ( _viewCamera==viewCam ? _viewProjection : viewCam->getProjectionMatrix() ),
-              shadowCam->getViewMatrix() * shadowCam->getProjectionMatrix() },
-        inverse[ num ] =
-            { osg::Matrix::inverse( transform[0] ),
-              osg::Matrix::inverse( transform[1] ) };
+        transform[num] =
+    { viewCam->getViewMatrix() *
+      // use near far clamped projection ( precomputed in cullDebugGeometry )
+      (_viewCamera == viewCam ? _viewProjection : viewCam->getProjectionMatrix()),
+      shadowCam->getViewMatrix() * shadowCam->getProjectionMatrix() },
+        inverse[num] =
+    { osg::Matrix::inverse(transform[0]),
+      osg::Matrix::inverse(transform[1]) };
 
 #if 0
-    ConvexPolyhedron frustum[ num ];
-    for( int i = 0; i < num; i++ ) {
-        frustum[i].setToUnitFrustum( );
+    ConvexPolyhedron frustum[num];
+
+    for (int i = 0; i < num; i++)
+    {
+        frustum[i].setToUnitFrustum();
 #if 1
-        frustum[i].transform( inverse[i], transform[i] );
+        frustum[i].transform(inverse[i], transform[i]);
 #else
         frustum[i].transform
-            ( osg::Matrix::inverse( camera[i]->getProjectionMatrix() ),
-              camera[i]->getProjectionMatrix() );
+            (osg::Matrix::inverse(camera[i]->getProjectionMatrix()),
+            camera[i]->getProjectionMatrix());
         frustum[i].transform
-            ( osg::Matrix::inverse( camera[i]->getViewMatrix() ),
-              camera[i]->getViewMatrix() );
+            (osg::Matrix::inverse(camera[i]->getViewMatrix()),
+            camera[i]->getViewMatrix());
 #endif
-    };
+    }
+
+    ;
 #else
-    osg::Polytope frustum[ num ];
-    for( int i = 0; i < num; i++ ) {
-        frustum[i].setToUnitFrustum( );
-        frustum[i].transformProvidingInverse( transform[i] );
+    osg::Polytope frustum[num];
+
+    for (int i = 0; i < num; i++)
+    {
+        frustum[i].setToUnitFrustum();
+        frustum[i].transformProvidingInverse(transform[i]);
     }
 #endif
 
     transform[0] = viewCam->getViewMatrix();
-    inverse[0] = viewCam->getInverseViewMatrix();
+    inverse[0]   = viewCam->getInverseViewMatrix();
 
-    for( PolytopeGeometryMap::iterator itr = _polytopeGeometryMap.begin();
+    for (PolytopeGeometryMap::iterator itr = _polytopeGeometryMap.begin();
          itr != _polytopeGeometryMap.end();
-         ++itr )
+         ++itr)
     {
-        PolytopeGeometry & pg = itr->second;
+        PolytopeGeometry&pg = itr->second;
 
-        for( int i = 0; i < num ; i++ )
+        for (int i = 0; i < num; i++)
         {
-
-            ConvexPolyhedron cp( pg._polytope );
-            cp.cut( frustum[i] );
-            cp.transform( transform[i], inverse[i] );
+            ConvexPolyhedron cp(pg._polytope);
+            cp.cut(frustum[i]);
+            cp.transform(transform[i], inverse[i]);
 
             pg._geometry[i] = cp.buildGeometry
-                ( pg._colorOutline, pg._colorInside, pg._geometry[i].get() );
+                                  (pg._colorOutline, pg._colorInside, pg._geometry[i].get());
         }
     }
 }
 
-void DebugShadowMap::ViewData::cullDebugGeometry( )
+void DebugShadowMap::ViewData::cullDebugGeometry()
 {
-    if( !getDebugDraw() ) return;
-    if( !_camera.valid() ) return;
+    if (!getDebugDraw())
+        return;
+
+    if (!_camera.valid())
+        return;
 
     // View camera may use clamping projection matrix after traversal.
     // Since we need to know exact matrix for drawing the frusta,
@@ -339,10 +365,10 @@ void DebugShadowMap::ViewData::cullDebugGeometry( )
     // will after cull traversal completes view camera subgraph.
     {
         _viewProjection = *_cv->getProjectionMatrix();
-        _viewCamera = _cv->getRenderStage()->getCamera();
+        _viewCamera     = _cv->getRenderStage()->getCamera();
 
-        if( _cv->getComputeNearFarMode() ) {
-
+        if (_cv->getComputeNearFarMode())
+        {
             // Redo steps from CullVisitor::popProjectionMatrix()
             // which clamps projection matrix when Camera & Projection
             // completes traversal of their children
@@ -356,61 +382,61 @@ void DebugShadowMap::ViewData::cullDebugGeometry( )
             osgUtil::CullVisitor::value_type n = _cv->getCalculatedNearPlane();
             osgUtil::CullVisitor::value_type f = _cv->getCalculatedFarPlane();
 
-            if( n < f )
-                _cv->clampProjectionMatrix( _viewProjection, n, f );
+            if (n < f)
+                _cv->clampProjectionMatrix(_viewProjection, n, f);
         }
     }
 
-    updateDebugGeometry( _viewCamera.get(), _camera.get() );
+    updateDebugGeometry(_viewCamera.get(), _camera.get());
 
 #if 1 // Add geometries of polytopes to main cam Render Stage
-    _transform[0]->accept( *_cv );
+    _transform[0]->accept(*_cv);
 #else
-    for( PolytopeGeometryMap::iterator itr = _polytopeGeometryMap.begin();
+    for (PolytopeGeometryMap::iterator itr = _polytopeGeometryMap.begin();
          itr != _polytopeGeometryMap.end();
-         ++itr )
+         ++itr)
     {
-        PolytopeGeometry & pg = itr->second;
-        _cv->pushStateSet( _geode[0]->getStateSet() );
-        _cv->addDrawableAndDepth( pg._geometry[0].get(), NULL, FLT_MAX );
-        _cv->popStateSet( );
+        PolytopeGeometry&pg = itr->second;
+        _cv->pushStateSet(_geode[0]->getStateSet());
+        _cv->addDrawableAndDepth(pg._geometry[0].get(), NULL, FLT_MAX);
+        _cv->popStateSet();
     }
 #endif
 
     // Add geometries of polytopes to hud cam Render Stage
-    _cameraDebugHUD->accept( *_cv );
+    _cameraDebugHUD->accept(*_cv);
 }
 
-void DebugShadowMap::ViewData::init( ThisClass *st, osgUtil::CullVisitor *cv )
+void DebugShadowMap::ViewData::init(ThisClass *st, osgUtil::CullVisitor *cv)
 {
-    BaseClass::ViewData::init( st, cv );
+    BaseClass::ViewData::init(st, cv);
 
-    _doDebugDrawPtr           = &st->_doDebugDraw;
-    _debugDumpPtr             = &st->_debugDump;
+    _doDebugDrawPtr = &st->_doDebugDraw;
+    _debugDumpPtr   = &st->_debugDump;
 
-    _hudSize                  = st->_hudSize;
-    _hudOrigin                = st->_hudOrigin;
+    _hudSize   = st->_hudSize;
+    _hudOrigin = st->_hudOrigin;
 
-    _viewportOrigin           = st->_viewportOrigin;
-    _viewportSize             = st->_viewportSize;
+    _viewportOrigin = st->_viewportOrigin;
+    _viewportSize   = st->_viewportSize;
 
-    osg::Viewport * vp = cv->getViewport();
-    if( vp )
+    osg::Viewport *vp = cv->getViewport();
+    if (vp)
     {
         // view can be a slave that covers only a fraction of the screen
         // so adjust debug hud location to proper viewport location
         _viewportOrigin[0] += static_cast<unsigned short>(vp->x());
         _viewportOrigin[1] += static_cast<unsigned short>(vp->y());
 
-        if( _viewportSize[0] > (static_cast<unsigned short>(vp->width()) - _viewportOrigin[0]) )
+        if (_viewportSize[0] > (static_cast<unsigned short>(vp->width()) - _viewportOrigin[0]))
             _viewportSize[0] = static_cast<unsigned short>(vp->width()) - _viewportOrigin[0];
 
-        if( _viewportSize[1] > (static_cast<unsigned short>(vp->height()) - _viewportOrigin[1]) )
+        if (_viewportSize[1] > (static_cast<unsigned short>(vp->height()) - _viewportOrigin[1]))
             _viewportSize[1] = static_cast<unsigned short>(vp->height()) - _viewportOrigin[1];
     }
 
-    _orthoSize                = st->_orthoSize;
-    _orthoOrigin              = st->_orthoOrigin;
+    _orthoSize   = st->_orthoSize;
+    _orthoOrigin = st->_orthoOrigin;
 
     _depthColorFragmentShader = st->_depthColorFragmentShader;
 
@@ -419,7 +445,7 @@ void DebugShadowMap::ViewData::init( ThisClass *st, osgUtil::CullVisitor *cv )
     _geode[0] = new osg::Geode;
     _geode[1] = new osg::Geode;
 
-    _cameraDebugHUD           = NULL;//Force debug HUD rebuild ( if needed )
+    _cameraDebugHUD = NULL;          // Force debug HUD rebuild ( if needed )
 }
 
 
@@ -428,223 +454,230 @@ void DebugShadowMap::ViewData::init( ThisClass *st, osgUtil::CullVisitor *cv )
 // the same GL Texture Id with different glTexParams.
 // Callback simply turns compare mode off via GL while rendering hud and
 // restores it before rendering the scene with shadows.
-class DebugShadowMap::DrawableDrawWithDepthShadowComparisonOffCallback:
+class DebugShadowMap::DrawableDrawWithDepthShadowComparisonOffCallback :
     public osg::Drawable::DrawCallback
 {
 public:
-    DrawableDrawWithDepthShadowComparisonOffCallback( osg::Texture *pTex )
-        : _pTexture( pTex )
-    {
-    }
+DrawableDrawWithDepthShadowComparisonOffCallback(osg::Texture *pTex)
+    : _pTexture(pTex)
+{}
 
-    virtual void drawImplementation
-        ( osg::RenderInfo & ri,const osg::Drawable* drawable ) const
-    {
-        ri.getState()->applyTextureAttribute( 0, _pTexture.get() );
+virtual void drawImplementation
+    (osg::RenderInfo&ri, const osg::Drawable *drawable) const
+{
+    ri.getState()->applyTextureAttribute(0, _pTexture.get());
 
-        // Turn off depth comparison mode
-        glTexParameteri( _pTexture->getTextureTarget(), GL_TEXTURE_COMPARE_MODE_ARB, GL_NONE );
+    // Turn off depth comparison mode
+    glTexParameteri(_pTexture->getTextureTarget(), GL_TEXTURE_COMPARE_MODE_ARB, GL_NONE);
 
-        drawable->drawImplementation(ri);
+    drawable->drawImplementation(ri);
 
-        // Turn it back on
-        glTexParameteri( _pTexture->getTextureTarget(), GL_TEXTURE_COMPARE_MODE_ARB,
-            GL_COMPARE_R_TO_TEXTURE_ARB );
-    }
+    // Turn it back on
+    glTexParameteri(_pTexture->getTextureTarget(), GL_TEXTURE_COMPARE_MODE_ARB,
+                    GL_COMPARE_R_TO_TEXTURE_ARB);
+}
 
-    osg::ref_ptr< osg::Texture > _pTexture;
+osg::ref_ptr<osg::Texture> _pTexture;
 };
 
-void DebugShadowMap::ViewData::dump( const std::string & filename )
+void DebugShadowMap::ViewData::dump(const std::string&filename)
 {
-    osg::ref_ptr< osg::Group > root = new osg::Group;
-    osgUtil::CullVisitor * cv = _cv.get();
+    osg::ref_ptr<osg::Group> root = new osg::Group;
+    osgUtil::CullVisitor     *cv  = _cv.get();
 
 #if 1
-    osg::Group * cam = cv->getRenderStage()->getCamera();
+    osg::Group *cam = cv->getRenderStage()->getCamera();
 
-    for( unsigned int i = 0; i < cam->getNumChildren(); i++ )
+    for (unsigned int i = 0; i < cam->getNumChildren(); i++)
     {
-        root->addChild( cam->getChild( i ) );
+        root->addChild(cam->getChild(i));
     }
 #endif
 
-    root->addChild( _st->getShadowedScene() );
+    root->addChild(_st->getShadowedScene());
 
-    osg::ref_ptr< osg::MatrixTransform > transform = new osg::MatrixTransform;
-    root->addChild( transform.get() );
+    osg::ref_ptr<osg::MatrixTransform> transform = new osg::MatrixTransform;
+    root->addChild(transform.get());
 
 //    updateDebugGeometry( _viewCamera.get(), _camera.get() );
 
-    for( PolytopeGeometryMap::iterator itr = _polytopeGeometryMap.begin();
+    for (PolytopeGeometryMap::iterator itr = _polytopeGeometryMap.begin();
          itr != _polytopeGeometryMap.end();
-         ++itr )
+         ++itr)
     {
-        PolytopeGeometry & pg = itr->second;
-        int i = 0;
+        PolytopeGeometry&pg = itr->second;
+        int             i   = 0;
         {
-
-            ConvexPolyhedron cp( pg._polytope );
+            ConvexPolyhedron cp(pg._polytope);
 
             pg._geometry[i] = cp.buildGeometry
-                ( pg._colorOutline, pg._colorInside, pg._geometry[i].get() );
+                                  (pg._colorOutline, pg._colorInside, pg._geometry[i].get());
         }
     }
 
-    for( unsigned int i = 0; i < _transform[0]->getNumChildren(); i++ )
+    for (unsigned int i = 0; i < _transform[0]->getNumChildren(); i++)
     {
-        root->addChild( _transform[0]->getChild( i ) );
+        root->addChild(_transform[0]->getChild(i));
     }
 
-    osgDB::writeNodeFile( *root, std::string( filename ) );
+    osgDB::writeNodeFile(*root, std::string(filename));
 
-    root->removeChildren( 0, root->getNumChildren() );
+    root->removeChildren(0, root->getNumChildren());
 }
 
-void DebugShadowMap::ViewData::createDebugHUD( )
+void DebugShadowMap::ViewData::createDebugHUD()
 {
     _cameraDebugHUD = new osg::Camera;
 
-    { // Make sure default HUD layout makes sense
-        if( _hudSize[0] <= 0 ) _hudSize[0] = DEFAULT_DEBUG_HUD_SIZE_X;
-        if( _hudSize[1] <= 0 ) _hudSize[1] = DEFAULT_DEBUG_HUD_SIZE_Y;
+    {   // Make sure default HUD layout makes sense
+        if (_hudSize[0] <= 0)
+            _hudSize[0] = DEFAULT_DEBUG_HUD_SIZE_X;
 
-        if( _viewportSize[0] <= 0 ) _viewportSize[0] = _hudSize[0];
-        if( _viewportSize[1] <= 0 ) _viewportSize[1] = _hudSize[1];
+        if (_hudSize[1] <= 0)
+            _hudSize[1] = DEFAULT_DEBUG_HUD_SIZE_Y;
 
-        if( _orthoSize[0] <= 0 ) _orthoSize[0] = _viewportSize[0];
-        if( _orthoSize[1] <= 0 ) _orthoSize[1] = _viewportSize[1];
+        if (_viewportSize[0] <= 0)
+            _viewportSize[0] = _hudSize[0];
+
+        if (_viewportSize[1] <= 0)
+            _viewportSize[1] = _hudSize[1];
+
+        if (_orthoSize[0] <= 0)
+            _orthoSize[0] = _viewportSize[0];
+
+        if (_orthoSize[1] <= 0)
+            _orthoSize[1] = _viewportSize[1];
     }
 
-    { // Initialize hud camera
-        osg::Camera * camera = _cameraDebugHUD.get();
+    {   // Initialize hud camera
+        osg::Camera *camera = _cameraDebugHUD.get();
         camera->setComputeNearFarMode(osg::Camera::DO_NOT_COMPUTE_NEAR_FAR);
         camera->setReferenceFrame(osg::Camera::ABSOLUTE_RF);
         camera->setViewMatrix(osg::Matrix::identity());
-        camera->setViewport( _viewportOrigin[0], _viewportOrigin[1],
-                             _viewportSize[0], _viewportSize[1] );
+        camera->setViewport(_viewportOrigin[0], _viewportOrigin[1],
+                            _viewportSize[0], _viewportSize[1]);
 
         camera->setProjectionMatrixAsOrtho(
-                _orthoOrigin[0], _orthoOrigin[0] + _orthoSize[0],
-                _orthoOrigin[1], _orthoOrigin[1] + _orthoSize[1],
-                -10, 10 );
+            _orthoOrigin[0], _orthoOrigin[0] + _orthoSize[0],
+            _orthoOrigin[1], _orthoOrigin[1] + _orthoSize[1],
+            -10, 10);
 
         camera->setClearMask(GL_DEPTH_BUFFER_BIT);
         camera->setRenderOrder(osg::Camera::POST_RENDER);
     }
 
-    { // Add geode and drawable with BaseClass display
+    {   // Add geode and drawable with BaseClass display
         // create geode to contain hud drawables
-        osg::Geode* geode = new osg::Geode;
+        osg::Geode *geode = new osg::Geode;
         _cameraDebugHUD->addChild(geode);
 
         // finally create and attach hud geometry
-        osg::Geometry* geometry = osg::createTexturedQuadGeometry
-            ( osg::Vec3(_hudOrigin[0],_hudOrigin[1],0),
-              osg::Vec3(_hudSize[0],0,0),
-              osg::Vec3(0,_hudSize[1],0) );
+        osg::Geometry *geometry = osg::createTexturedQuadGeometry
+                                      (osg::Vec3(_hudOrigin[0], _hudOrigin[1], 0),
+                                      osg::Vec3(_hudSize[0], 0, 0),
+                                      osg::Vec3(0, _hudSize[1], 0));
 
-        osg::StateSet* stateset = _cameraDebugHUD->getOrCreateStateSet();
-        stateset->setTextureAttribute(0,_texture.get(),osg::StateAttribute::ON );
-        stateset->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
+        osg::StateSet *stateset = _cameraDebugHUD->getOrCreateStateSet();
+        stateset->setTextureAttribute(0, _texture.get(), osg::StateAttribute::ON);
+        stateset->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 //        stateset->setMode(GL_DEPTH_TEST,osg::StateAttribute::OFF);
         stateset->setAttributeAndModes
-            ( new osg::Depth( osg::Depth::ALWAYS, 0, 1, false ) );
-        stateset->setMode(GL_BLEND,osg::StateAttribute::ON);
+            (new osg::Depth(osg::Depth::ALWAYS, 0, 1, false));
+        stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
 
-        osg::Program* program = new osg::Program;
-        program->addShader( _depthColorFragmentShader.get() );
-        stateset->setAttribute( program );
-        stateset->addUniform( new osg::Uniform( "texture" , 0 ) );
+        osg::Program *program = new osg::Program;
+        program->addShader(_depthColorFragmentShader.get());
+        stateset->setAttribute(program);
+        stateset->addUniform(new osg::Uniform("texture", 0));
 
         geometry->setDrawCallback
-            ( new DrawableDrawWithDepthShadowComparisonOffCallback( _texture.get() ) );
+            (new DrawableDrawWithDepthShadowComparisonOffCallback(_texture.get()));
 
-        geode->addDrawable( geometry );
+        geode->addDrawable(geometry);
     }
 
-    { // Create transforms and geodes to manage polytope drawing
-        osg::StateSet * stateset = new osg::StateSet;
+    {   // Create transforms and geodes to manage polytope drawing
+        osg::StateSet *stateset = new osg::StateSet;
         stateset->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
         stateset->setTextureMode(0, GL_TEXTURE_2D, osg::StateAttribute::OFF);
         stateset->setTextureMode(1, GL_TEXTURE_2D, osg::StateAttribute::OFF);
         stateset->setMode(GL_BLEND, osg::StateAttribute::ON);
         stateset->setMode(GL_CULL_FACE, osg::StateAttribute::OFF);
-        stateset->setAttribute( new osg::Program() );
+        stateset->setAttribute(new osg::Program());
         stateset->setAttributeAndModes
-            ( new osg::Depth( osg::Depth::LEQUAL, 0, 1, false ) );
+            (new osg::Depth(osg::Depth::LEQUAL, 0, 1, false));
 
-        for( int i = 0; i < 2; i++ ) {
-            _geode[i]->setStateSet( stateset );
+        for (int i = 0; i < 2; i++)
+        {
+            _geode[i]->setStateSet(stateset);
             _transform[i] = new osg::MatrixTransform;
-            _transform[i]->addChild( _geode[i].get() );
-            _transform[i]->setMatrix( osg::Matrix::identity() );
-            _transform[i]->setReferenceFrame( osg::MatrixTransform::ABSOLUTE_RF );
+            _transform[i]->addChild(_geode[i].get());
+            _transform[i]->setMatrix(osg::Matrix::identity());
+            _transform[i]->setReferenceFrame(osg::MatrixTransform::ABSOLUTE_RF);
         }
 
         _transform[1]->setMatrix
-            ( osg::Matrix::translate( 1, 1, 0 ) *
-              osg::Matrix::scale( 0.5, 0.5, 1 ) *
-              osg::Matrix::scale( _hudSize[0], _hudSize[1], 1 ) *
-              osg::Matrix::translate( _hudOrigin[0], _hudOrigin[1], 0 ) );
+            (osg::Matrix::translate(1, 1, 0) *
+            osg::Matrix::scale(0.5, 0.5, 1) *
+            osg::Matrix::scale(_hudSize[0], _hudSize[1], 1) *
+            osg::Matrix::translate(_hudOrigin[0], _hudOrigin[1], 0));
 
-        _cameraDebugHUD->addChild( _transform[1].get() );
+        _cameraDebugHUD->addChild(_transform[1].get());
     }
 }
 
 osg::Vec3d DebugShadowMap::ViewData::computeShadowTexelToPixelError
-     ( const osg::Matrix & mvpwView,
-       const osg::Matrix & mvpwShadow,
-       const osg::Vec3d & vWorld,
-       const osg::Vec3d & vDelta )
+    (const osg::Matrix&mvpwView,
+    const osg::Matrix&mvpwShadow,
+    const osg::Vec3d&vWorld,
+    const osg::Vec3d&vDelta)
 {
     osg::Vec3d vS0 = mvpwShadow * vWorld;
-    osg::Vec3d vS1 = mvpwShadow * ( vWorld + vDelta );
+    osg::Vec3d vS1 = mvpwShadow * (vWorld + vDelta);
 
     osg::Vec3d vV0 = mvpwView * vWorld;
-    osg::Vec3d vV1 = mvpwView * ( vWorld + vDelta );
+    osg::Vec3d vV1 = mvpwView * (vWorld + vDelta);
 
     osg::Vec3d dV = vV1 - vV0;
     osg::Vec3d dS = vS1 - vS0;
 
-    return osg::Vec3( dS[0] / dV[0], dS[1] / dV[1], dS[2] / dV[2] );
+    return osg::Vec3(dS[0] / dV[0], dS[1] / dV[1], dS[2] / dV[2]);
 }
 
 void DebugShadowMap::ViewData::displayShadowTexelToPixelErrors
-  ( const osg::Camera* viewCamera,
-    const osg::Camera* shadowCamera,
-    const ConvexPolyhedron* hull )
+    (const osg::Camera *viewCamera,
+    const osg::Camera *shadowCamera,
+    const ConvexPolyhedron *hull)
 {
-    osg::Matrix mvpwMain  =
+    osg::Matrix mvpwMain =
         viewCamera->getViewMatrix() *
         viewCamera->getProjectionMatrix() *
         viewCamera->getViewport()->computeWindowMatrix();
 
-    osg::Matrix mvpwShadow  =
+    osg::Matrix mvpwShadow =
         shadowCamera->getViewMatrix() *
         shadowCamera->getProjectionMatrix() *
         shadowCamera->getViewport()->computeWindowMatrix();
 
     osg::BoundingBox bb =
-        hull->computeBoundingBox( viewCamera->getViewMatrix() );
+        hull->computeBoundingBox(viewCamera->getViewMatrix());
 
     osg::Matrix m = viewCamera->getInverseViewMatrix();
 
-    osg::Vec3d vn = osg::Vec3d( 0, 0, bb._max[2] ) * m;
-    osg::Vec3d vf = osg::Vec3d( 0, 0, bb._min[2] ) * m;
-    osg::Vec3d vm = osg::Vec3d( 0, 0, ( bb._max[2] + bb._min[2] ) * 0.5 ) * m;
+    osg::Vec3d vn = osg::Vec3d(0, 0, bb._max[2]) * m;
+    osg::Vec3d vf = osg::Vec3d(0, 0, bb._min[2]) * m;
+    osg::Vec3d vm = osg::Vec3d(0, 0, (bb._max[2] + bb._min[2]) * 0.5) * m;
 
-    osg::Vec3d vne = computeShadowTexelToPixelError( mvpwMain, mvpwShadow, vn );
-    osg::Vec3d vfe = computeShadowTexelToPixelError( mvpwMain, mvpwShadow, vf );
-    osg::Vec3d vme = computeShadowTexelToPixelError( mvpwMain, mvpwShadow, vm );
+    osg::Vec3d vne = computeShadowTexelToPixelError(mvpwMain, mvpwShadow, vn);
+    osg::Vec3d vfe = computeShadowTexelToPixelError(mvpwMain, mvpwShadow, vf);
+    osg::Vec3d vme = computeShadowTexelToPixelError(mvpwMain, mvpwShadow, vm);
 
-    std::cout << std::setprecision( 3 ) << " "
-        << "ne=(" << vne[0] << "," << vne[1] << "," << vne[2] << ")  "
-        << "fe=(" << vfe[0] << "," << vfe[1] << "," << vfe[2] << ")  "
-        << "me=(" << vme[0] << "," << vme[1] << "," << vme[2] << ")  "
-        << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-        << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-        << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
-        << std::flush;
+    std::cout << std::setprecision(3) << " "
+              << "ne=(" << vne[0] << "," << vne[1] << "," << vne[2] << ")  "
+              << "fe=(" << vfe[0] << "," << vfe[1] << "," << vfe[2] << ")  "
+              << "me=(" << vme[0] << "," << vme[1] << "," << vme[2] << ")  "
+              << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+              << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+              << "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+              << std::flush;
 }
-

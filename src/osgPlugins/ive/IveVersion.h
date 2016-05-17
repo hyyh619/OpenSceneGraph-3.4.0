@@ -63,7 +63,7 @@
    machine to provide optimum reading of the file.
    BYTE_SEX is stored in the first 4 bytes of the
    file */
-#define ENDIAN_TYPE 0x01020304
+#define ENDIAN_TYPE          0x01020304
 #define OPPOSITE_ENDIAN_TYPE 0x04030201
 
 

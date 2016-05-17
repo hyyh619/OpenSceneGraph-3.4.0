@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGTEXT_GLYPHGEOMETRY
 #define OSGTEXT_GLYPHGEOMETRY 1
@@ -18,15 +18,13 @@
 
 namespace osgText
 {
+extern OSGTEXT_EXPORT osg::Geometry* computeGlyphGeometry(const osgText::Glyph3D *glyph, const Bevel&profile, float shellThickness);
 
-extern OSGTEXT_EXPORT osg::Geometry* computeGlyphGeometry(const osgText::Glyph3D* glyph, const Bevel& profile, float shellThickness);
+extern OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(const osgText::Glyph3D *glyph, float width);
 
-extern OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(const osgText::Glyph3D* glyph, float width);
+extern OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(osg::Geometry *glyphGeometry, const Bevel&profile, float width);
 
-extern OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(osg::Geometry* glyphGeometry, const Bevel& profile, float width);
-
-extern OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry* glyphGeometry, const Bevel& profile, float width);
-
+extern OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry *glyphGeometry, const Bevel&profile, float width);
 }
 
 #endif

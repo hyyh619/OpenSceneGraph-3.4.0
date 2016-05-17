@@ -6,9 +6,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgGA_DriveManipulator,
-                         new osgGA::DriveManipulator,
-                         osgGA::DriveManipulator,
-                         "osg::Object osgGA::DriveManipulator" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgGA_DriveManipulator,
+                        new osgGA::DriveManipulator,
+                        osgGA::DriveManipulator,
+                        "osg::Object osgGA::DriveManipulator")
+{}

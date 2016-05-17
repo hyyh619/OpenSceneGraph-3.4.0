@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/CullStack>
 #include <osg/Timer>
 
@@ -20,31 +20,31 @@ using namespace osg;
 
 CullStack::CullStack()
 {
-    _frustumVolume=-1.0f;
-    _bbCornerNear = 0;
-    _bbCornerFar = 7;
-    _currentReuseMatrixIndex=0;
-    _identity = new RefMatrix();
+    _frustumVolume           = -1.0f;
+    _bbCornerNear            = 0;
+    _bbCornerFar             = 7;
+    _currentReuseMatrixIndex = 0;
+    _identity                = new RefMatrix();
 
     _index_modelviewCullingStack = 0;
-    _back_modelviewCullingStack = 0;
+    _back_modelviewCullingStack  = 0;
 
-    _referenceViewPoints.push_back(osg::Vec3(0.0f,0.0f,0.0f));
+    _referenceViewPoints.push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
 }
 
-CullStack::CullStack(const CullStack& cs):
+CullStack::CullStack(const CullStack&cs) :
     CullSettings(cs)
 {
-    _frustumVolume=-1.0f;
-    _bbCornerNear = 0;
-    _bbCornerFar = 7;
-    _currentReuseMatrixIndex=0;
-    _identity = new RefMatrix();
+    _frustumVolume           = -1.0f;
+    _bbCornerNear            = 0;
+    _bbCornerFar             = 7;
+    _currentReuseMatrixIndex = 0;
+    _identity                = new RefMatrix();
 
     _index_modelviewCullingStack = 0;
-    _back_modelviewCullingStack = 0;
+    _back_modelviewCullingStack  = 0;
 
-    _referenceViewPoints.push_back(osg::Vec3(0.0f,0.0f,0.0f));
+    _referenceViewPoints.push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
 }
 
 
@@ -55,7 +55,6 @@ CullStack::~CullStack()
 
 void CullStack::reset()
 {
-
     //
     // first unref all referenced objects and then empty the containers.
     //
@@ -64,7 +63,7 @@ void CullStack::reset()
     _viewportStack.clear();
 
     _referenceViewPoints.clear();
-    _referenceViewPoints.push_back(osg::Vec3(0.0f,0.0f,0.0f));
+    _referenceViewPoints.push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
 
     _eyePointStack.clear();
     _viewPointStack.clear();
@@ -73,19 +72,19 @@ void CullStack::reset()
     _clipspaceCullingStack.clear();
     _projectionCullingStack.clear();
 
-    //_modelviewCullingStack.clear();
-    _index_modelviewCullingStack=0;
-    _back_modelviewCullingStack = 0;
+    // _modelviewCullingStack.clear();
+    _index_modelviewCullingStack = 0;
+    _back_modelviewCullingStack  = 0;
 
-    osg::Vec3 lookVector(0.0,0.0,-1.0);
+    osg::Vec3 lookVector(0.0, 0.0, -1.0);
 
-    _bbCornerFar = (lookVector.x()>=0?1:0) |
-                   (lookVector.y()>=0?2:0) |
-                   (lookVector.z()>=0?4:0);
+    _bbCornerFar = (lookVector.x() >= 0 ? 1 : 0) |
+                   (lookVector.y() >= 0 ? 2 : 0) |
+                   (lookVector.z() >= 0 ? 4 : 0);
 
-    _bbCornerNear = (~_bbCornerFar)&7;
+    _bbCornerNear = (~_bbCornerFar) & 7;
 
-    _currentReuseMatrixIndex=0;
+    _currentReuseMatrixIndex = 0;
 }
 
 
@@ -93,7 +92,7 @@ void CullStack::pushCullingSet()
 {
     _MVPW_Stack.push_back(0L);
 
-    if (_index_modelviewCullingStack==0)
+    if (_index_modelviewCullingStack == 0)
     {
         if (_modelviewCullingStack.empty())
             _modelviewCullingStack.push_back(CullingSet());
@@ -102,23 +101,21 @@ void CullStack::pushCullingSet()
     }
     else
     {
+        const osg::Viewport&W = *_viewportStack.back();
+        const osg::Matrix  &P = *_projectionStack.back();
+        const osg::Matrix  &M = *_modelviewStack.back();
 
-        const osg::Viewport& W = *_viewportStack.back();
-        const osg::Matrix& P = *_projectionStack.back();
-        const osg::Matrix& M = *_modelviewStack.back();
+        osg::Vec4 pixelSizeVector = CullingSet::computePixelSizeVector(W, P, M);
 
-        osg::Vec4 pixelSizeVector = CullingSet::computePixelSizeVector(W,P,M);
-
-        if (_index_modelviewCullingStack>=_modelviewCullingStack.size())
+        if (_index_modelviewCullingStack >= _modelviewCullingStack.size())
         {
             _modelviewCullingStack.push_back(CullingSet());
         }
 
-        _modelviewCullingStack[_index_modelviewCullingStack++].set(_projectionCullingStack.back(),*_modelviewStack.back(),pixelSizeVector);
-
+        _modelviewCullingStack[_index_modelviewCullingStack++].set(_projectionCullingStack.back(), *_modelviewStack.back(), pixelSizeVector);
     }
 
-    _back_modelviewCullingStack = &_modelviewCullingStack[_index_modelviewCullingStack-1];
+    _back_modelviewCullingStack = &_modelviewCullingStack[_index_modelviewCullingStack - 1];
 
 //     const osg::Polytope& polytope = _modelviewCullingStack.back()->getFrustum();
 //     const osg::Polytope::PlaneList& pl = polytope.getPlaneList();
@@ -129,8 +126,6 @@ void CullStack::pushCullingSet()
 //     {
 //         std::cout << "    plane "<<*pl_itr<<std::endl;
 //     }
-
-
 }
 
 void CullStack::popCullingSet()
@@ -138,11 +133,11 @@ void CullStack::popCullingSet()
     _MVPW_Stack.pop_back();
 
     --_index_modelviewCullingStack;
-    if (_index_modelviewCullingStack>0) _back_modelviewCullingStack = &_modelviewCullingStack[_index_modelviewCullingStack-1];
-
+    if (_index_modelviewCullingStack > 0)
+        _back_modelviewCullingStack = &_modelviewCullingStack[_index_modelviewCullingStack - 1];
 }
 
-void CullStack::pushViewport(osg::Viewport* viewport)
+void CullStack::pushViewport(osg::Viewport *viewport)
 {
     _viewportStack.push_back(viewport);
     _MVPW_Stack.push_back(0L);
@@ -154,15 +149,15 @@ void CullStack::popViewport()
     _MVPW_Stack.pop_back();
 }
 
-void CullStack::pushProjectionMatrix(RefMatrix* matrix)
+void CullStack::pushProjectionMatrix(RefMatrix *matrix)
 {
     _projectionStack.push_back(matrix);
 
     _projectionCullingStack.push_back(osg::CullingSet());
-    osg::CullingSet& cullingSet = _projectionCullingStack.back();
+    osg::CullingSet&cullingSet = _projectionCullingStack.back();
 
     // set up view frustum.
-    cullingSet.getFrustum().setToUnitFrustum(((_cullingMode&NEAR_PLANE_CULLING)!=0),((_cullingMode&FAR_PLANE_CULLING)!=0));
+    cullingSet.getFrustum().setToUnitFrustum(((_cullingMode & NEAR_PLANE_CULLING) != 0), ((_cullingMode & FAR_PLANE_CULLING) != 0));
     cullingSet.getFrustum().transformProvidingInverse(*matrix);
 
     // set the culling mask ( There should be a more elegant way!)  Nikolaus H.
@@ -172,14 +167,14 @@ void CullStack::pushProjectionMatrix(RefMatrix* matrix)
     cullingSet.setSmallFeatureCullingPixelSize(_smallFeatureCullingPixelSize);
 
     // set up the relevant occluders which a related to this projection.
-    for(ShadowVolumeOccluderList::iterator itr=_occluderList.begin();
-        itr!=_occluderList.end();
-        ++itr)
+    for (ShadowVolumeOccluderList::iterator itr = _occluderList.begin();
+         itr != _occluderList.end();
+         ++itr)
     {
-        //std::cout << " ** testing occluder"<<std::endl;
+        // std::cout << " ** testing occluder"<<std::endl;
         if (itr->matchProjectionMatrix(*matrix))
         {
-            //std::cout << " ** activating occluder"<<std::endl;
+            // std::cout << " ** activating occluder"<<std::endl;
             cullingSet.addOccluder(*itr);
         }
     }
@@ -194,7 +189,6 @@ void CullStack::pushProjectionMatrix(RefMatrix* matrix)
 
 void CullStack::popProjectionMatrix()
 {
-
     _projectionStack.pop_back();
 
     _projectionCullingStack.pop_back();
@@ -205,9 +199,9 @@ void CullStack::popProjectionMatrix()
     popCullingSet();
 }
 
-void CullStack::pushModelViewMatrix(RefMatrix* matrix, Transform::ReferenceFrame referenceFrame)
+void CullStack::pushModelViewMatrix(RefMatrix *matrix, Transform::ReferenceFrame referenceFrame)
 {
-    osg::RefMatrix* originalModelView = _modelviewStack.empty() ? 0 : _modelviewStack.back().get();
+    osg::RefMatrix *originalModelView = _modelviewStack.empty() ? 0 : _modelviewStack.back().get();
 
     _modelviewStack.push_back(matrix);
 
@@ -217,46 +211,47 @@ void CullStack::pushModelViewMatrix(RefMatrix* matrix, Transform::ReferenceFrame
     inv.invert(*matrix);
 
 
-    switch(referenceFrame)
+    switch (referenceFrame)
     {
-        case(Transform::RELATIVE_RF):
-            _eyePointStack.push_back(inv.getTrans());
-            _referenceViewPoints.push_back(getReferenceViewPoint());
-            _viewPointStack.push_back(getReferenceViewPoint() * inv);
-            break;
-        case(Transform::ABSOLUTE_RF):
-            _eyePointStack.push_back(inv.getTrans());
-            _referenceViewPoints.push_back(osg::Vec3(0.0,0.0,0.0));
-            _viewPointStack.push_back(_eyePointStack.back());
-            break;
-        case(Transform::ABSOLUTE_RF_INHERIT_VIEWPOINT):
+    case (Transform::RELATIVE_RF):
+        _eyePointStack.push_back(inv.getTrans());
+        _referenceViewPoints.push_back(getReferenceViewPoint());
+        _viewPointStack.push_back(getReferenceViewPoint() * inv);
+        break;
+
+    case (Transform::ABSOLUTE_RF):
+        _eyePointStack.push_back(inv.getTrans());
+        _referenceViewPoints.push_back(osg::Vec3(0.0, 0.0, 0.0));
+        _viewPointStack.push_back(_eyePointStack.back());
+        break;
+
+    case (Transform::ABSOLUTE_RF_INHERIT_VIEWPOINT):
+    {
+        _eyePointStack.push_back(inv.getTrans());
+
+        osg::Vec3 referenceViewPoint = getReferenceViewPoint();
+        if (originalModelView)
         {
-            _eyePointStack.push_back(inv.getTrans());
-
-            osg::Vec3 referenceViewPoint = getReferenceViewPoint();
-            if (originalModelView)
-            {
-                osg::Matrix viewPointTransformMatrix;
-                viewPointTransformMatrix.invert(*originalModelView);
-                viewPointTransformMatrix.postMult(*matrix);
-                referenceViewPoint = referenceViewPoint * viewPointTransformMatrix;
-            }
-
-            _referenceViewPoints.push_back(referenceViewPoint);
-            _viewPointStack.push_back(getReferenceViewPoint() * inv);
-            break;
+            osg::Matrix viewPointTransformMatrix;
+            viewPointTransformMatrix.invert(*originalModelView);
+            viewPointTransformMatrix.postMult(*matrix);
+            referenceViewPoint = referenceViewPoint * viewPointTransformMatrix;
         }
+
+        _referenceViewPoints.push_back(referenceViewPoint);
+        _viewPointStack.push_back(getReferenceViewPoint() * inv);
+        break;
+    }
     }
 
 
     osg::Vec3 lookVector = getLookVectorLocal();
 
-    _bbCornerFar = (lookVector.x()>=0?1:0) |
-                   (lookVector.y()>=0?2:0) |
-                   (lookVector.z()>=0?4:0);
+    _bbCornerFar = (lookVector.x() >= 0 ? 1 : 0) |
+                   (lookVector.y() >= 0 ? 2 : 0) |
+                   (lookVector.z() >= 0 ? 4 : 0);
 
-    _bbCornerNear = (~_bbCornerFar)&7;
-
+    _bbCornerNear = (~_bbCornerFar) & 7;
 }
 
 void CullStack::popModelViewMatrix()
@@ -270,34 +265,35 @@ void CullStack::popModelViewMatrix()
     popCullingSet();
 
 
-    osg::Vec3 lookVector(0.0f,0.0f,-1.0f);
+    osg::Vec3 lookVector(0.0f, 0.0f, -1.0f);
     if (!_modelviewStack.empty())
     {
         lookVector = getLookVectorLocal();
     }
-    _bbCornerFar = (lookVector.x()>=0?1:0) |
-                   (lookVector.y()>=0?2:0) |
-                   (lookVector.z()>=0?4:0);
 
-    _bbCornerNear = (~_bbCornerFar)&7;
+    _bbCornerFar = (lookVector.x() >= 0 ? 1 : 0) |
+                   (lookVector.y() >= 0 ? 2 : 0) |
+                   (lookVector.z() >= 0 ? 4 : 0);
+
+    _bbCornerNear = (~_bbCornerFar) & 7;
 }
 
 void CullStack::computeFrustumVolume()
 {
     osg::Matrix invP;
+
     invP.invert(*getProjectionMatrix());
 
-    osg::Vec3 f1(-1,-1,-1); f1 = f1*invP;
-    osg::Vec3 f2(-1, 1,-1); f2 = f2*invP;
-    osg::Vec3 f3( 1, 1,-1); f3 = f3*invP;
-    osg::Vec3 f4( 1,-1,-1); f4 = f4*invP;
+    osg::Vec3 f1(-1, -1, -1); f1 = f1 * invP;
+    osg::Vec3 f2(-1, 1, -1); f2  = f2 * invP;
+    osg::Vec3 f3(1, 1, -1); f3   = f3 * invP;
+    osg::Vec3 f4(1, -1, -1); f4  = f4 * invP;
 
-    osg::Vec3 b1(-1,-1,1); b1 = b1*invP;
-    osg::Vec3 b2(-1, 1,1); b2 = b2*invP;
-    osg::Vec3 b3( 1, 1,1); b3 = b3*invP;
-    osg::Vec3 b4( 1,-1,1); b4 = b4*invP;
+    osg::Vec3 b1(-1, -1, 1); b1 = b1 * invP;
+    osg::Vec3 b2(-1, 1, 1); b2  = b2 * invP;
+    osg::Vec3 b3(1, 1, 1); b3   = b3 * invP;
+    osg::Vec3 b4(1, -1, 1); b4  = b4 * invP;
 
-    _frustumVolume = computeVolume(f1,f2,f3,b1,b2,b3)+
-                     computeVolume(f2,f3,f4,b1,b3,b4);
-
+    _frustumVolume = computeVolume(f1, f2, f3, b1, b2, b3) +
+                     computeVolume(f2, f3, f4, b1, b3, b4);
 }

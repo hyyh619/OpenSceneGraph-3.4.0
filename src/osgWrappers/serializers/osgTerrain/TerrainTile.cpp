@@ -4,67 +4,77 @@
 #include <osgDB/OutputStream>
 
 // _tileID
-static bool checkTileID( const osgTerrain::TerrainTile& tile )
+static bool checkTileID(const osgTerrain::TerrainTile&tile)
 {
     return tile.getTileID().valid();
 }
 
-static bool readTileID( osgDB::InputStream& is, osgTerrain::TerrainTile& tile )
+static bool readTileID(osgDB::InputStream&is, osgTerrain::TerrainTile&tile)
 {
     osgTerrain::TileID id;
+
     is >> id.level >> id.x >> id.y;
-    tile.setTileID( id );
+    tile.setTileID(id);
     return true;
 }
 
-static bool writeTileID( osgDB::OutputStream& os, const osgTerrain::TerrainTile& tile )
+static bool writeTileID(osgDB::OutputStream&os, const osgTerrain::TerrainTile&tile)
 {
-    const osgTerrain::TileID& id = tile.getTileID();
+    const osgTerrain::TileID&id = tile.getTileID();
+
     os << id.level << id.x << id.y << std::endl;
     return true;
 }
 
 // _colorLayers
-static bool checkColorLayers( const osgTerrain::TerrainTile& tile )
+static bool checkColorLayers(const osgTerrain::TerrainTile&tile)
 {
-    return tile.getNumColorLayers()>0;
+    return tile.getNumColorLayers() > 0;
 }
 
-static bool readColorLayers( osgDB::InputStream& is, osgTerrain::TerrainTile& tile )
+static bool readColorLayers(osgDB::InputStream&is, osgTerrain::TerrainTile&tile)
 {
     unsigned int numValidLayers = 0; is >> numValidLayers >> is.BEGIN_BRACKET;
-    for ( unsigned int i=0; i<numValidLayers; ++i )
+
+    for (unsigned int i = 0; i < numValidLayers; ++i)
     {
-        unsigned int layerNum=0; is >> is.PROPERTY("Layer") >> layerNum;
-        osgTerrain::Layer* layer = dynamic_cast<osgTerrain::Layer*>( is.readObject() );
-        if ( layer ) tile.setColorLayer( layerNum, layer );
+        unsigned int      layerNum = 0; is >> is.PROPERTY("Layer") >> layerNum;
+        osgTerrain::Layer *layer   = dynamic_cast<osgTerrain::Layer*>(is.readObject());
+        if (layer)
+            tile.setColorLayer(layerNum, layer);
     }
+
     is >> is.END_BRACKET;
     return true;
 }
 
-static bool writeColorLayers( osgDB::OutputStream& os, const osgTerrain::TerrainTile& tile )
+static bool writeColorLayers(osgDB::OutputStream&os, const osgTerrain::TerrainTile&tile)
 {
     unsigned int numValidLayers = 0;
-    for ( unsigned int i=0; i<tile.getNumColorLayers(); ++i )
+
+    for (unsigned int i = 0; i < tile.getNumColorLayers(); ++i)
     {
-        if (tile.getColorLayer(i)) ++numValidLayers;
+        if (tile.getColorLayer(i))
+            ++numValidLayers;
     }
 
     os << numValidLayers << os.BEGIN_BRACKET << std::endl;
-    for ( unsigned int i=0; i<tile.getNumColorLayers(); ++i )
+
+    for (unsigned int i = 0; i < tile.getNumColorLayers(); ++i)
     {
-        if (tile.getColorLayer(i)) os << os.PROPERTY("Layer") << i << tile.getColorLayer(i);
+        if (tile.getColorLayer(i))
+            os << os.PROPERTY("Layer") << i << tile.getColorLayer(i);
     }
+
     os << os.END_BRACKET << std::endl;
     return true;
 }
 
 struct TerrainTileFinishedObjectReadCallback : public osgDB::FinishedObjectReadCallback
 {
-    virtual void objectRead(osgDB::InputStream& is, osg::Object& obj)
+    virtual void objectRead(osgDB::InputStream&is, osg::Object&obj)
     {
-        osgTerrain::TerrainTile& tile = static_cast<osgTerrain::TerrainTile&>(obj);
+        osgTerrain::TerrainTile&tile = static_cast<osgTerrain::TerrainTile&>(obj);
 
         if (is.getOptions())
         {
@@ -75,30 +85,30 @@ struct TerrainTileFinishedObjectReadCallback : public osgDB::FinishedObjectReadC
             }
         }
 
-        if ( osgTerrain::TerrainTile::getTileLoadedCallback().valid() )
-            osgTerrain::TerrainTile::getTileLoadedCallback()->loaded( &tile, is.getOptions() );
-        }
+        if (osgTerrain::TerrainTile::getTileLoadedCallback().valid())
+            osgTerrain::TerrainTile::getTileLoadedCallback()->loaded(&tile, is.getOptions());
+    }
 };
 
 
-REGISTER_OBJECT_WRAPPER( osgTerrain_TerrainTile,
-                         new osgTerrain::TerrainTile,
-                         osgTerrain::TerrainTile,
-                         "osg::Object osg::Node osg::Group osgTerrain::TerrainTile" )
+REGISTER_OBJECT_WRAPPER(osgTerrain_TerrainTile,
+                        new osgTerrain::TerrainTile,
+                        osgTerrain::TerrainTile,
+                        "osg::Object osg::Node osg::Group osgTerrain::TerrainTile")
 {
-    ADD_USER_SERIALIZER( TileID );  // _tileID
-    ADD_OBJECT_SERIALIZER( TerrainTechnique, osgTerrain::TerrainTechnique, NULL );  // _terrainTechnique
-    ADD_OBJECT_SERIALIZER( Locator, osgTerrain::Locator, NULL );  // _locator
-    ADD_OBJECT_SERIALIZER( ElevationLayer, osgTerrain::Layer, NULL );  // _elevationLayer
-    ADD_USER_SERIALIZER( ColorLayers );  // _colorLayers
-    ADD_BOOL_SERIALIZER( RequiresNormals, true );  // _requiresNormals
-    ADD_BOOL_SERIALIZER( TreatBoundariesToValidDataAsDefaultValue, false );  // _treatBoundariesToValidDataAsDefaultValue
-    BEGIN_ENUM_SERIALIZER( BlendingPolicy, INHERIT );
-        ADD_ENUM_VALUE( INHERIT );
-        ADD_ENUM_VALUE( DO_NOT_SET_BLENDING );
-        ADD_ENUM_VALUE( ENABLE_BLENDING );
-        ADD_ENUM_VALUE( ENABLE_BLENDING_WHEN_ALPHA_PRESENT );
+    ADD_USER_SERIALIZER(TileID);    // _tileID
+    ADD_OBJECT_SERIALIZER(TerrainTechnique, osgTerrain::TerrainTechnique, NULL);    // _terrainTechnique
+    ADD_OBJECT_SERIALIZER(Locator, osgTerrain::Locator, NULL);    // _locator
+    ADD_OBJECT_SERIALIZER(ElevationLayer, osgTerrain::Layer, NULL);    // _elevationLayer
+    ADD_USER_SERIALIZER(ColorLayers);    // _colorLayers
+    ADD_BOOL_SERIALIZER(RequiresNormals, true);    // _requiresNormals
+    ADD_BOOL_SERIALIZER(TreatBoundariesToValidDataAsDefaultValue, false);    // _treatBoundariesToValidDataAsDefaultValue
+    BEGIN_ENUM_SERIALIZER(BlendingPolicy, INHERIT);
+    ADD_ENUM_VALUE(INHERIT);
+    ADD_ENUM_VALUE(DO_NOT_SET_BLENDING);
+    ADD_ENUM_VALUE(ENABLE_BLENDING);
+    ADD_ENUM_VALUE(ENABLE_BLENDING_WHEN_ALPHA_PRESENT);
     END_ENUM_SERIALIZER();  // BlendingPolicy
 
-    wrapper->addFinishedObjectReadCallback( new TerrainTileFinishedObjectReadCallback() );
+    wrapper->addFinishedObjectReadCallback(new TerrainTileFinishedObjectReadCallback());
 }

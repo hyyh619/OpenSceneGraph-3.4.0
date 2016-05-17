@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #include <osgManipulator/TranslatePlaneDragger>
 
@@ -31,7 +31,7 @@ TranslatePlaneDragger::TranslatePlaneDragger() : _usingTranslate1DDragger(false)
     addChild(_translate2DDragger.get());
     addDragger(_translate2DDragger.get());
 
-    _translate1DDragger = new Translate1DDragger(osg::Vec3(0.0f,0.0f,0.0f),osg::Vec3(0.0f,1.0f,0.0f));
+    _translate1DDragger = new Translate1DDragger(osg::Vec3(0.0f, 0.0f, 0.0f), osg::Vec3(0.0f, 1.0f, 0.0f));
     _translate1DDragger->setCheckForNodeInNodePath(false);
     addChild(_translate1DDragger.get());
     addDragger(_translate1DDragger.get());
@@ -40,13 +40,13 @@ TranslatePlaneDragger::TranslatePlaneDragger() : _usingTranslate1DDragger(false)
 }
 
 TranslatePlaneDragger::~TranslatePlaneDragger()
-{
-}
+{}
 
-bool TranslatePlaneDragger::handle(const PointerInfo& pointer, const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)
+bool TranslatePlaneDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
 {
     // Check if the dragger node is in the nodepath.
-    if (!pointer.contains(this)) return false;
+    if (!pointer.contains(this))
+        return false;
 
     if ((ea.getButtonMask() & osgGA::GUIEventAdapter::MIDDLE_MOUSE_BUTTON) &&
         ea.getEventType() == osgGA::GUIEventAdapter::PUSH)
@@ -74,29 +74,29 @@ void TranslatePlaneDragger::setupDefaultGeometry()
 {
     // Create a polygon.
     {
-        osg::Geode* geode = new osg::Geode;
-        osg::Geometry* geometry = new osg::Geometry();
+        osg::Geode    *geode    = new osg::Geode;
+        osg::Geometry *geometry = new osg::Geometry();
 
-        osg::Vec3Array* vertices = new osg::Vec3Array(4);
-        (*vertices)[0] = osg::Vec3(-0.5,0.0,0.5);
-        (*vertices)[1] = osg::Vec3(-0.5,0.0,-0.5);
-        (*vertices)[2] = osg::Vec3(0.5,0.0,-0.5);
-        (*vertices)[3] = osg::Vec3(0.5,0.0,0.5);
+        osg::Vec3Array *vertices = new osg::Vec3Array(4);
+        (*vertices)[0] = osg::Vec3(-0.5, 0.0, 0.5);
+        (*vertices)[1] = osg::Vec3(-0.5, 0.0, -0.5);
+        (*vertices)[2] = osg::Vec3(0.5, 0.0, -0.5);
+        (*vertices)[3] = osg::Vec3(0.5, 0.0, 0.5);
 
         geometry->setVertexArray(vertices);
-        geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS,0,vertices->size()));
+        geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, vertices->size()));
 
-        osg::Vec3Array* normals = new osg::Vec3Array;
-        normals->push_back(osg::Vec3(0.0,1.0,0.0));
+        osg::Vec3Array *normals = new osg::Vec3Array;
+        normals->push_back(osg::Vec3(0.0, 1.0, 0.0));
         geometry->setNormalArray(normals, osg::Array::BIND_OVERALL);
 
         geode->addDrawable(geometry);
 
-        osg::PolygonMode* polymode = new osg::PolygonMode;
-        polymode->setMode(osg::PolygonMode::FRONT_AND_BACK,osg::PolygonMode::LINE);
-        geode->getOrCreateStateSet()->setAttributeAndModes(polymode,osg::StateAttribute::OVERRIDE|osg::StateAttribute::ON);
+        osg::PolygonMode *polymode = new osg::PolygonMode;
+        polymode->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
+        geode->getOrCreateStateSet()->setAttributeAndModes(polymode, osg::StateAttribute::OVERRIDE | osg::StateAttribute::ON);
 
-        geode->getOrCreateStateSet()->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
+        geode->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
         _translate2DDragger->addChild(geode);
     }

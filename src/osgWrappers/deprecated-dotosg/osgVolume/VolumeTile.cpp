@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool VolumeTile_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool VolumeTile_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool VolumeTile_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool VolumeTile_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(VolumeTile_Proxy)
 (
@@ -25,24 +25,29 @@ REGISTER_DOTOSGWRAPPER(VolumeTile_Proxy)
     VolumeTile_writeLocalData
 );
 
-bool VolumeTile_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool VolumeTile_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgVolume::VolumeTile& volumeTile = static_cast<osgVolume::VolumeTile&>(obj);
+    osgVolume::VolumeTile&volumeTile = static_cast<osgVolume::VolumeTile&>(obj);
 
     bool itrAdvanced = false;
 
     osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgVolume::Locator>());
-    if (readObject.valid()) itrAdvanced = true;
 
-    osgVolume::Locator* locator = dynamic_cast<osgVolume::Locator*>(readObject.get());
-    if (locator) volumeTile.setLocator(locator);
+    if (readObject.valid())
+        itrAdvanced = true;
+
+    osgVolume::Locator *locator = dynamic_cast<osgVolume::Locator*>(readObject.get());
+    if (locator)
+        volumeTile.setLocator(locator);
 
 
     readObject = fr.readObjectOfType(osgDB::type_wrapper<osgVolume::Layer>());
-    if (readObject.valid()) itrAdvanced = true;
+    if (readObject.valid())
+        itrAdvanced = true;
 
-    osgVolume::Layer* readLayer = dynamic_cast<osgVolume::Layer*>(readObject.get());
-    if (readLayer) volumeTile.setLayer(readLayer);
+    osgVolume::Layer *readLayer = dynamic_cast<osgVolume::Layer*>(readObject.get());
+    if (readLayer)
+        volumeTile.setLayer(readLayer);
 
 
     readObject = fr.readObjectOfType(osgDB::type_wrapper<osgVolume::VolumeTechnique>());
@@ -55,11 +60,12 @@ bool VolumeTile_readLocalData(osg::Object& obj, osgDB::Input &fr)
     return itrAdvanced;
 }
 
-bool VolumeTile_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool VolumeTile_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgVolume::VolumeTile& volumeTile = static_cast<const osgVolume::VolumeTile&>(obj);
+    const osgVolume::VolumeTile&volumeTile = static_cast<const osgVolume::VolumeTile&>(obj);
 
     int prec = fw.precision();
+
     fw.precision(15);
 
     if (volumeTile.getLocator())

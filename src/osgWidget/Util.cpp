@@ -13,19 +13,21 @@
 #include <osgWidget/ViewerEventHandlers>
 #include <osgWidget/WindowManager>
 
-namespace osgWidget {
-
-std::string getFilePath(const std::string& filename) {
+namespace osgWidget
+{
+std::string getFilePath(const std::string&filename)
+{
     osgDB::FilePathList path;
 
-    char* fp = getenv("OSGWIDGET_FILE_PATH");
+    char *fp = getenv("OSGWIDGET_FILE_PATH");
 
     osgDB::convertStringPathIntoFilePathList(fp ? fp : ".", path);
 
     return osgDB::findFileInPath(filename, path);
 }
 
-std::string generateRandomName(const std::string& base) {
+std::string generateRandomName(const std::string&base)
+{
     static unsigned int count = 0;
 
     std::stringstream ss;
@@ -37,13 +39,14 @@ std::string generateRandomName(const std::string& base) {
     return ss.str();
 }
 
-osg::Camera* createOrthoCamera(matrix_type width, matrix_type height) {
-    osg::Camera* camera = new osg::Camera();
+osg::Camera* createOrthoCamera(matrix_type width, matrix_type height)
+{
+    osg::Camera *camera = new osg::Camera();
 
     camera->getOrCreateStateSet()->setMode(
         GL_LIGHTING,
         osg::StateAttribute::PROTECTED | osg::StateAttribute::OFF
-    );
+        );
 
     camera->setProjectionMatrix(osg::Matrix::ortho2D(0.0, width, 0.0f, height));
     camera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
@@ -54,22 +57,25 @@ osg::Camera* createOrthoCamera(matrix_type width, matrix_type height) {
     return camera;
 }
 
-int createExample(osgViewer::Viewer& viewer, WindowManager* wm, osg::Node* node) {
-    if(!wm) return 1;
+int createExample(osgViewer::Viewer&viewer, WindowManager *wm, osg::Node *node)
+{
+    if (!wm)
+        return 1;
 
     viewer.setUpViewInWindow(
         50,
         50,
         static_cast<int>(wm->getWidth()),
         static_cast<int>(wm->getHeight())
-    );
+        );
 
-    osg::Group*  group  = new osg::Group();
-    osg::Camera* camera = wm->createParentOrthoCamera();
+    osg::Group  *group  = new osg::Group();
+    osg::Camera *camera = wm->createParentOrthoCamera();
 
     group->addChild(camera);
 
-    if(node) group->addChild(node);
+    if (node)
+        group->addChild(node);
 
     viewer.addEventHandler(new osgWidget::MouseHandler(wm));
     viewer.addEventHandler(new osgWidget::KeyboardHandler(wm));
@@ -78,8 +84,8 @@ int createExample(osgViewer::Viewer& viewer, WindowManager* wm, osg::Node* node)
     viewer.addEventHandler(new osgViewer::StatsHandler());
     viewer.addEventHandler(new osgViewer::WindowSizeHandler());
     viewer.addEventHandler(new osgGA::StateSetManipulator(
-        viewer.getCamera()->getOrCreateStateSet()
-    ));
+                               viewer.getCamera()->getOrCreateStateSet()
+                               ));
 
     wm->resizeAllWindows();
 
@@ -88,10 +94,10 @@ int createExample(osgViewer::Viewer& viewer, WindowManager* wm, osg::Node* node)
     return viewer.run();
 }
 
-bool writeWindowManagerNode(WindowManager* wm) {
+bool writeWindowManagerNode(WindowManager *wm)
+{
     osgDB::writeNodeFile(*wm->getParent(0), "osgWidget.osg");
 
     return true;
 }
-
 }

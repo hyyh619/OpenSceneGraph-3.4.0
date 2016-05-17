@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 #include <osgUI/PushButton>
@@ -21,38 +21,42 @@
 using namespace osgUI;
 
 PushButton::PushButton()
-{
-}
+{}
 
-PushButton::PushButton(const osgUI::PushButton& pb, const osg::CopyOp& copyop):
+PushButton::PushButton(const osgUI::PushButton&pb, const osg::CopyOp&copyop) :
     Widget(pb, copyop),
     _text(pb._text)
+{}
+
+bool PushButton::handleImplementation(osgGA::EventVisitor *ev, osgGA::Event *event)
 {
-}
+    if (!getHasEventFocus())
+        return false;
 
-bool PushButton::handleImplementation(osgGA::EventVisitor* ev, osgGA::Event* event)
-{
-    if (!getHasEventFocus()) return false;
+    osgGA::GUIEventAdapter *ea = event->asGUIEventAdapter();
+    if (!ea)
+        return false;
 
-    osgGA::GUIEventAdapter* ea = event->asGUIEventAdapter();
-    if (!ea) return false;
-
-    switch(ea->getEventType())
+    switch (ea->getEventType())
     {
-        case(osgGA::GUIEventAdapter::PUSH):
-            if (_buttonSwitch.valid())
-            {
-                pressed();
-            }
-            break;
-        case(osgGA::GUIEventAdapter::RELEASE):
-            if (_buttonSwitch.valid())
-            {
-                released();
-            }
-            break;
-        default:
-            break;
+    case (osgGA::GUIEventAdapter::PUSH):
+        if (_buttonSwitch.valid())
+        {
+            pressed();
+        }
+
+        break;
+
+    case (osgGA::GUIEventAdapter::RELEASE):
+        if (_buttonSwitch.valid())
+        {
+            released();
+        }
+
+        break;
+
+    default:
+        break;
     }
 
     return false;
@@ -60,33 +64,36 @@ bool PushButton::handleImplementation(osgGA::EventVisitor* ev, osgGA::Event* eve
 
 void PushButton::enterImplementation()
 {
-    OSG_NOTICE<<"PushButton enter"<<std::endl;
-    if (_buttonSwitch.valid()) _buttonSwitch->setSingleChildOn(1);
+    OSG_NOTICE << "PushButton enter" << std::endl;
+    if (_buttonSwitch.valid())
+        _buttonSwitch->setSingleChildOn(1);
 }
 
 
 void PushButton::leaveImplementation()
 {
-    OSG_NOTICE<<"PushButton leave"<<std::endl;
-    if (_buttonSwitch.valid()) _buttonSwitch->setSingleChildOn(0);
+    OSG_NOTICE << "PushButton leave" << std::endl;
+    if (_buttonSwitch.valid())
+        _buttonSwitch->setSingleChildOn(0);
 }
 
 void PushButton::createGraphicsImplementation()
 {
     osg::ref_ptr<osg::Group> group = new osg::Group;
 
-    Style* style = (getStyle()!=0) ? getStyle() : Style::instance().get();
+    Style *style = (getStyle() != 0) ? getStyle() : Style::instance().get();
 
 
-    float pressed = 0.88;
+    float pressed   = 0.88;
     float unFocused = 0.92;
     float withFocus = 0.97;
 
-    osg::Vec4 frameColor(unFocused,unFocused,unFocused,1.0f);
+    osg::Vec4 frameColor(unFocused, unFocused, unFocused, 1.0f);
 
     osg::BoundingBox extents(_extents);
 
-    bool requiresFrame = (getFrameSettings() && getFrameSettings()->getShape()!=osgUI::FrameSettings::NO_FRAME);
+    bool requiresFrame = (getFrameSettings() && getFrameSettings()->getShape() != osgUI::FrameSettings::NO_FRAME);
+
     if (requiresFrame)
     {
         group->addChild(style->createFrame(_extents, getFrameSettings(), frameColor));
@@ -97,9 +104,9 @@ void PushButton::createGraphicsImplementation()
     }
 
     _buttonSwitch = new osg::Switch;
-    _buttonSwitch->addChild(style->createPanel(extents, osg::Vec4(unFocused, unFocused,unFocused, 1.0)));
-    _buttonSwitch->addChild(style->createPanel(extents, osg::Vec4(withFocus,withFocus,withFocus,1.0)));
-    _buttonSwitch->addChild(style->createPanel(extents, osg::Vec4(pressed,pressed,pressed,1.0)));
+    _buttonSwitch->addChild(style->createPanel(extents, osg::Vec4(unFocused, unFocused, unFocused, 1.0)));
+    _buttonSwitch->addChild(style->createPanel(extents, osg::Vec4(withFocus, withFocus, withFocus, 1.0)));
+    _buttonSwitch->addChild(style->createPanel(extents, osg::Vec4(pressed, pressed, pressed, 1.0)));
     _buttonSwitch->setSingleChildOn(0);
 
     group->addChild(_buttonSwitch.get());

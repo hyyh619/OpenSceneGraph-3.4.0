@@ -6,9 +6,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgGA_TerrainManipulator,
-                         new osgGA::TerrainManipulator,
-                         osgGA::TerrainManipulator,
-                         "osg::Object osgGA::TerrainManipulator" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgGA_TerrainManipulator,
+                        new osgGA::TerrainManipulator,
+                        osgGA::TerrainManipulator,
+                        "osg::Object osgGA::TerrainManipulator")
+{}

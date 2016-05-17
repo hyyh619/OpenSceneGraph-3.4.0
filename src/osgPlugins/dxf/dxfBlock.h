@@ -30,18 +30,24 @@ typedef std::vector<osg::ref_ptr<dxfEntity> > EntityList;
 class dxfBlock : public osg::Referenced
 {
 public:
-    dxfBlock() : _currentEntity(NULL) {}
-    virtual ~dxfBlock() {}
-    inline const std::string& getName() const { return _name; }
-    virtual void assign(dxfFile* dxf, codeValue& cv);
-    EntityList& getEntityList() { return _entityList; }
-    const osg::Vec3d& getPosition() const;
+dxfBlock() : _currentEntity(NULL) {}
+virtual ~dxfBlock() {}
+inline const std::string&getName() const
+{
+    return _name;
+}
+virtual void assign(dxfFile *dxf, codeValue&cv);
+EntityList&getEntityList()
+{
+    return _entityList;
+}
+const osg::Vec3d&getPosition() const;
 
 protected:
-    EntityList _entityList;
-    dxfEntity* _currentEntity;
-    std::string _name;
-    osg::Vec3d _position;
+EntityList  _entityList;
+dxfEntity   *_currentEntity;
+std::string _name;
+osg::Vec3d  _position;
 };
 
 #endif

@@ -10,16 +10,16 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TextureRectangle_readLocalData(Object& obj, Input& fr);
-bool TextureRectangle_writeLocalData(const Object& obj, Output& fw);
+bool TextureRectangle_readLocalData(Object&obj, Input&fr);
+bool TextureRectangle_writeLocalData(const Object&obj, Output&fw);
 
-bool TextureRectangle_matchWrapStr(const char* str,TextureRectangle::WrapMode& wrap);
+bool TextureRectangle_matchWrapStr(const char *str, TextureRectangle::WrapMode&wrap);
 const char* TextureRectangle_getWrapStr(TextureRectangle::WrapMode wrap);
-bool TextureRectangle_matchFilterStr(const char* str,TextureRectangle::FilterMode& filter);
+bool TextureRectangle_matchFilterStr(const char *str, TextureRectangle::FilterMode&filter);
 const char* TextureRectangle_getFilterStr(TextureRectangle::FilterMode filter);
-bool TextureRectangle_matchInternalFormatModeStr(const char* str,TextureRectangle::InternalFormatMode& mode);
+bool TextureRectangle_matchInternalFormatModeStr(const char *str, TextureRectangle::InternalFormatMode&mode);
 const char* TextureRectangle_getInternalFormatModeStr(TextureRectangle::InternalFormatMode mode);
-bool TextureRectangle_matchInternalFormatStr(const char* str,int& value);
+bool TextureRectangle_matchInternalFormatStr(const char *str, int&value);
 const char* TextureRectangle_getInternalFormatStr(int value);
 
 // register the read and write functions with the osgDB::Registry.
@@ -32,46 +32,47 @@ REGISTER_DOTOSGWRAPPER(TextureRectangle)
     &TextureRectangle_writeLocalData
 );
 
-bool TextureRectangle_readLocalData(Object& obj, Input& fr)
+bool TextureRectangle_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    TextureRectangle& texture = static_cast<TextureRectangle&>(obj);
+    TextureRectangle&texture = static_cast<TextureRectangle&>(obj);
 
     if (fr[0].matchWord("file") && fr[1].isString())
     {
         std::string filename = fr[1].getStr();
-        Image* image = fr.readImage(filename.c_str());
+        Image       *image   = fr.readImage(filename.c_str());
         if (image)
         {
             // name will have already been set by the image plugin,
             // but it will have absolute path, so will override it
             // here to keep the original name intact.
-            //image->setFileName(filename);
+            // image->setFileName(filename);
             texture.setImage(image);
         }
 
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
     if (fr[0].matchWord("ImageSequence") || fr[0].matchWord("Image"))
     {
-        osg::Image* image = fr.readImage();
-        if (image) texture.setImage(image);
+        osg::Image *image = fr.readImage();
+        if (image)
+            texture.setImage(image);
     }
 
     return iteratorAdvanced;
 }
 
 
-bool TextureRectangle_writeLocalData(const Object& obj, Output& fw)
+bool TextureRectangle_writeLocalData(const Object&obj, Output&fw)
 {
-    const TextureRectangle& texture = static_cast<const TextureRectangle&>(obj);
+    const TextureRectangle&texture = static_cast<const TextureRectangle&>(obj);
 
     if (texture.getImage())
     {
-        const osg::ImageSequence* is = dynamic_cast<const osg::ImageSequence*>(texture.getImage());
+        const osg::ImageSequence *is = dynamic_cast<const osg::ImageSequence*>(texture.getImage());
         if (is)
         {
             fw.writeObject(*is);
@@ -85,12 +86,13 @@ bool TextureRectangle_writeLocalData(const Object& obj, Output& fw)
                 {
                     fileName = fw.getTextureFileNameForOutput();
                 }
+
                 osgDB::writeImageFile(*texture.getImage(), fileName);
             }
 
             if (!fileName.empty())
             {
-                fw.indent() << "file "<<fw.wrapString(fw.getFileNameForOutput(fileName))<< std::endl;
+                fw.indent() << "file " << fw.wrapString(fw.getFileNameForOutput(fileName)) << std::endl;
             }
         }
     }

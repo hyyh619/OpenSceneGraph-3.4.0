@@ -12,32 +12,35 @@ const unsigned int MASK_2D = 0xF0000000;
 
 // NOTE: THIS IS JUST A TEMPORARY HACK! :) This functionality will all eventually be
 // encapsulate into another class in osgWidget proper.
-bool scrollWindow(osgWidget::Event& ev) {
+bool scrollWindow(osgWidget::Event&ev)
+{
     // The first thing we need to do is make sure we have a Frame object...
-    osgWidget::Frame* frame = dynamic_cast<osgWidget::Frame*>(ev.getWindow());
+    osgWidget::Frame *frame = dynamic_cast<osgWidget::Frame*>(ev.getWindow());
 
-    if(!frame) return false;
+    if (!frame)
+        return false;
 
     // And now we need to make sure our Frame has a valid internal EmbeddedWindow widget.
-    osgWidget::Window::EmbeddedWindow* ew =
+    osgWidget::Window::EmbeddedWindow *ew =
         dynamic_cast<osgWidget::Window::EmbeddedWindow*>(frame->getEmbeddedWindow())
     ;
-        
-    if(!ew) return false;
-    
+
+    if (!ew)
+        return false;
+
     // Lets get the visible area so that we can use it to make sure our scrolling action
     // is necessary in the first place.
-    const osgWidget::Quad& va = ew->getWindow()->getVisibleArea();
+    const osgWidget::Quad&va = ew->getWindow()->getVisibleArea();
 
     // The user wants to scroll up; make sure that the visible area's Y origin isn't already
     // at 0.0f, 0.0f.
-    if(ev.getWindowManager()->isMouseScrollingUp() && va[1] != 0.0f)
+    if (ev.getWindowManager()->isMouseScrollingUp() && va[1] != 0.0f)
         ew->getWindow()->addVisibleArea(0, -20)
-    ;
-    
-    else if(va[1] <= (ew->getWindow()->getHeight() - ew->getHeight()))
+        ;
+
+    else if (va[1] <= (ew->getWindow()->getHeight() - ew->getHeight()))
         ew->getWindow()->addVisibleArea(0, 20)
-    ;
+        ;
 
     // We need to manually call update to make sure the visible area scissoring is done
     // properly.
@@ -46,30 +49,35 @@ bool scrollWindow(osgWidget::Event& ev) {
     return true;
 }
 
-bool changeTheme(osgWidget::Event& ev) {
+bool changeTheme(osgWidget::Event&ev)
+{
     std::string theme;
 
-    if(ev.key == osgGA::GUIEventAdapter::KEY_Right)
+    if (ev.key == osgGA::GUIEventAdapter::KEY_Right)
         theme = "osgWidget/theme-1.png"
-    ;
+        ;
 
-    else if(ev.key == osgGA::GUIEventAdapter::KEY_Left)
+    else if (ev.key == osgGA::GUIEventAdapter::KEY_Left)
         theme = "osgWidget/theme-2.png"
-    ;
+        ;
 
-    else return false;
+    else
+        return false;
 
-    osgWidget::Frame* frame = dynamic_cast<osgWidget::Frame*>(ev.getWindow());
+    osgWidget::Frame *frame = dynamic_cast<osgWidget::Frame*>(ev.getWindow());
 
-    if(!frame) return false;
+    if (!frame)
+        return false;
 
     // This is just one way to access all our Widgets; we could just as well have used:
     //
     // for(osgWidget::Frame::Iterator i = frame.begin(); i != frame.end() i++) {}
     //
     // ...and it have worked, too.
-    for(unsigned int row = 0; row < 3; row++) {
-        for(unsigned int col = 0; col < 3; col++) {
+    for (unsigned int row = 0; row < 3; row++)
+    {
+        for (unsigned int col = 0; col < 3; col++)
+        {
             frame->getByRowCol(row, col)->setImage(theme);
         }
     }
@@ -77,34 +85,35 @@ bool changeTheme(osgWidget::Event& ev) {
     return true;
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
     osgViewer::Viewer viewer;
 
-    osgWidget::WindowManager* wm = new osgWidget::WindowManager(
+    osgWidget::WindowManager *wm = new osgWidget::WindowManager(
         &viewer,
         1280.0f,
         1024.0f,
         MASK_2D,
         osgWidget::WindowManager::WM_PICK_DEBUG
-        //osgWidget::WindowManager::WM_NO_INVERT_Y
-    );
-    
-    osgWidget::Frame* frame = osgWidget::Frame::createSimpleFrameFromTheme(
+        // osgWidget::WindowManager::WM_NO_INVERT_Y
+        );
+
+    osgWidget::Frame *frame = osgWidget::Frame::createSimpleFrameFromTheme(
         "frame",
         osgDB::readImageFile("osgWidget/theme.png"),
         40.0f,
         40.0f,
-	osgWidget::Frame::FRAME_ALL
-    );
+        osgWidget::Frame::FRAME_ALL
+        );
 
     frame->getBackground()->setColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     // This is our Transformers box. :)
-    osgWidget::Box*    box  = new osgWidget::Box("images", osgWidget::Box::VERTICAL);
-    osgWidget::Widget* img1 = new osgWidget::Widget("im1", 512.0f, 512.0f);
-    osgWidget::Widget* img2 = new osgWidget::Widget("im2", 512.0f, 512.0f);
-    osgWidget::Widget* img3 = new osgWidget::Widget("im3", 512.0f, 512.0f);
-    osgWidget::Widget* img4 = new osgWidget::Widget("im4", 512.0f, 512.0f);
+    osgWidget::Box    *box  = new osgWidget::Box("images", osgWidget::Box::VERTICAL);
+    osgWidget::Widget *img1 = new osgWidget::Widget("im1", 512.0f, 512.0f);
+    osgWidget::Widget *img2 = new osgWidget::Widget("im2", 512.0f, 512.0f);
+    osgWidget::Widget *img3 = new osgWidget::Widget("im3", 512.0f, 512.0f);
+    osgWidget::Widget *img4 = new osgWidget::Widget("im4", 512.0f, 512.0f);
 
     img1->setImage("osgWidget/scrolled1.jpg", true);
     img2->setImage("osgWidget/scrolled2.jpg", true);
@@ -122,7 +131,7 @@ int main(int argc, char** argv) {
     box->addWidget(img4);
     box->setEventMask(osgWidget::EVENT_NONE);
 
-    //frame->getEmbeddedWindow()->setWindow(box);
+    // frame->getEmbeddedWindow()->setWindow(box);
     frame->setWindow(box);
     frame->getEmbeddedWindow()->setColor(1.0f, 1.0f, 1.0f, 1.0f);
     frame->resize(300.0f, 300.0f);

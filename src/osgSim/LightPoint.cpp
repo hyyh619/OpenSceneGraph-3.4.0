@@ -9,25 +9,24 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgSim/LightPoint>
 
 using namespace osgSim;
 
-LightPoint::LightPoint():
+LightPoint::LightPoint() :
     _on(true),
-    _position(0.0f,0.0f,0.0f),
-    _color(1.0f,1.0f,1.0f,1.0f),
+    _position(0.0f, 0.0f, 0.0f),
+    _color(1.0f, 1.0f, 1.0f, 1.0f),
     _intensity(1.0f),
     _radius(1.0f),
     _sector(0),
     _blinkSequence(0),
     _blendingMode(BLENDED)
-{
-}
+{}
 
-LightPoint::LightPoint(const osg::Vec3& position,const osg::Vec4& color):
+LightPoint::LightPoint(const osg::Vec3&position, const osg::Vec4&color) :
     _on(true),
     _position(position),
     _color(color),
@@ -36,17 +35,16 @@ LightPoint::LightPoint(const osg::Vec3& position,const osg::Vec4& color):
     _sector(0),
     _blinkSequence(0),
     _blendingMode(BLENDED)
-{
-}
+{}
 
-LightPoint::LightPoint(bool                 on,
-                       const osg::Vec3&     position,
-                       const osg::Vec4&     color,
-                       float                intensity,
-                       float                radius,
-                       Sector*              sector,
-                       BlinkSequence*       blinkSequence,
-                       BlendingMode         blendingMode):
+LightPoint::LightPoint(bool on,
+                       const osg::Vec3&position,
+                       const osg::Vec4&color,
+                       float intensity,
+                       float radius,
+                       Sector *sector,
+                       BlinkSequence *blinkSequence,
+                       BlendingMode blendingMode) :
     _on(on),
     _position(position),
     _color(color),
@@ -55,10 +53,9 @@ LightPoint::LightPoint(bool                 on,
     _sector(sector),
     _blinkSequence(blinkSequence),
     _blendingMode(blendingMode)
-{
-}
+{}
 
-LightPoint::LightPoint(const LightPoint& lp):
+LightPoint::LightPoint(const LightPoint&lp) :
     _on(lp._on),
     _position(lp._position),
     _color(lp._color),
@@ -67,19 +64,18 @@ LightPoint::LightPoint(const LightPoint& lp):
     _sector(lp._sector),
     _blinkSequence(lp._blinkSequence),
     _blendingMode(lp._blendingMode)
-{
-}
+{}
 
-LightPoint& LightPoint::operator = (const LightPoint& lp)
+LightPoint&LightPoint::operator =(const LightPoint&lp)
 {
-    _on = lp._on;
-    _position = lp._position;
-    _color = lp._color;
-    _intensity = lp._intensity;
-    _radius = lp._radius;
-    _sector = lp._sector;
+    _on            = lp._on;
+    _position      = lp._position;
+    _color         = lp._color;
+    _intensity     = lp._intensity;
+    _radius        = lp._radius;
+    _sector        = lp._sector;
     _blinkSequence = lp._blinkSequence;
-    _blendingMode = lp._blendingMode;
+    _blendingMode  = lp._blendingMode;
 
     return *this;
 }

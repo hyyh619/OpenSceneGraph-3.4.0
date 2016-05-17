@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  MultiSegmentPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool  MultiSegmentPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool  MultiSegmentPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool  MultiSegmentPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(MultiSegmentPlacer_Proxy)
 (
@@ -21,17 +21,19 @@ REGISTER_DOTOSGWRAPPER(MultiSegmentPlacer_Proxy)
     MultiSegmentPlacer_writeLocalData
 );
 
-bool MultiSegmentPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool MultiSegmentPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgParticle::MultiSegmentPlacer &myobj = static_cast<osgParticle::MultiSegmentPlacer &>(obj);
-    bool itAdvanced = false;
+    osgParticle::MultiSegmentPlacer&myobj     = static_cast<osgParticle::MultiSegmentPlacer&>(obj);
+    bool                           itAdvanced = false;
 
     osg::Vec3 v;
 
-    if (fr[0].matchWord("vertex")) {
-        if (fr[1].getFloat(v.x()) && fr[2].getFloat(v.y()) && fr[3].getFloat(v.z())) {
+    if (fr[0].matchWord("vertex"))
+    {
+        if (fr[1].getFloat(v.x()) && fr[2].getFloat(v.y()) && fr[3].getFloat(v.z()))
+        {
             myobj.addVertex(v);
-            fr += 4;
+            fr        += 4;
             itAdvanced = true;
         }
     }
@@ -39,14 +41,15 @@ bool MultiSegmentPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr)
     return itAdvanced;
 }
 
-bool MultiSegmentPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool MultiSegmentPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgParticle::MultiSegmentPlacer &myobj = static_cast<const osgParticle::MultiSegmentPlacer &>(obj);
+    const osgParticle::MultiSegmentPlacer&myobj = static_cast<const osgParticle::MultiSegmentPlacer&>(obj);
 
     int n = myobj.numVertices();
 
-    for (int i=0; i<n; ++i) {
-        const osg::Vec3 &v = myobj.getVertex(i);
+    for (int i = 0; i < n; ++i)
+    {
+        const osg::Vec3             &v = myobj.getVertex(i);
         fw.indent() << "vertex " << v.x() << " " << v.y() << " " << v.z() << std::endl;
     }
 

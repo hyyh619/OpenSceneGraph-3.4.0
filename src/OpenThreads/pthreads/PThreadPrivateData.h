@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 //
@@ -24,59 +24,63 @@
 #include <OpenThreads/Block>
 #include <OpenThreads/Atomic>
 
-namespace OpenThreads {
+namespace OpenThreads
+{
+class PThreadPrivateData
+{
+// -------------------------------------------------------------------------
+// We're friendly to Thread, so it can use our data.
+//
+friend class Thread;
 
-class PThreadPrivateData {
-
-    //-------------------------------------------------------------------------
-    // We're friendly to Thread, so it can use our data.
-    //
-    friend class Thread;
-
-    //-------------------------------------------------------------------------
-    // We're friendly to PThreadPrivateActions, so it can get at some
-    // variables.
-    //
-    friend class ThreadPrivateActions;
+// -------------------------------------------------------------------------
+// We're friendly to PThreadPrivateActions, so it can get at some
+// variables.
+//
+friend class ThreadPrivateActions;
 
 private:
 
-    PThreadPrivateData() {};
+PThreadPrivateData() {};
 
-    virtual ~PThreadPrivateData() {};
+virtual ~PThreadPrivateData() {};
 
-    volatile unsigned int stackSize;
+volatile unsigned int stackSize;
 
-    volatile bool stackSizeLocked;
+volatile bool stackSizeLocked;
 
-    void setRunning(bool flag) { _isRunning.exchange(flag); }
-    bool isRunning() const { return _isRunning!=0; }
+void setRunning(bool flag)
+{
+    _isRunning.exchange(flag);
+}
+bool isRunning() const
+{
+    return _isRunning != 0;
+}
 
-    Atomic _isRunning;
+Atomic _isRunning;
 
-    Block threadStartedBlock;
+Block threadStartedBlock;
 
-    volatile bool isCanceled;
+volatile bool isCanceled;
 
-    volatile bool idSet;
+volatile bool idSet;
 
-    volatile Thread::ThreadPriority threadPriority;
+volatile Thread::ThreadPriority threadPriority;
 
-    volatile Thread::ThreadPolicy threadPolicy;
+volatile Thread::ThreadPolicy threadPolicy;
 
-    pthread_t tid;
+pthread_t tid;
 
-    volatile int uniqueId;
+volatile int uniqueId;
 
-    volatile int cpunum;
+volatile int cpunum;
 
 
-    static int nextId;
+static int nextId;
 
-    static pthread_key_t s_tls_key;
-
+static pthread_key_t s_tls_key;
 };
-
 }
 
 #endif // !_PTHREADPRIVATEDATA_H_

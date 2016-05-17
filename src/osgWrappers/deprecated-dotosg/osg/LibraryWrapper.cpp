@@ -95,4 +95,3 @@ USE_DOTOSGWRAPPER(VertexProgram)
 USE_DOTOSGWRAPPER(Viewport)
 
 extern "C" void dotosgwrapper_library_osg(void) {}
-

@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool PositionAttitudeTransform_readLocalData(Object& obj, Input& fr);
-bool PositionAttitudeTransform_writeLocalData(const Object& obj, Output& fw);
+bool PositionAttitudeTransform_readLocalData(Object&obj, Input&fr);
+bool PositionAttitudeTransform_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(PositionAttitudeTransform)
@@ -23,11 +23,11 @@ REGISTER_DOTOSGWRAPPER(PositionAttitudeTransform)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool PositionAttitudeTransform_readLocalData(Object& obj, Input& fr)
+bool PositionAttitudeTransform_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    PositionAttitudeTransform& transform = static_cast<PositionAttitudeTransform&>(obj);
+    PositionAttitudeTransform&transform = static_cast<PositionAttitudeTransform&>(obj);
 
     if (fr.matchSequence("position %f %f %f"))
     {
@@ -38,7 +38,7 @@ bool PositionAttitudeTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setPosition(pos);
 
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -52,7 +52,7 @@ bool PositionAttitudeTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setAttitude(att);
 
-        fr += 5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
@@ -65,7 +65,7 @@ bool PositionAttitudeTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setScale(scale);
 
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -78,7 +78,7 @@ bool PositionAttitudeTransform_readLocalData(Object& obj, Input& fr)
 
         transform.setPivotPoint(pivot);
 
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -86,14 +86,14 @@ bool PositionAttitudeTransform_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool PositionAttitudeTransform_writeLocalData(const Object& obj, Output& fw)
+bool PositionAttitudeTransform_writeLocalData(const Object&obj, Output&fw)
 {
-    const PositionAttitudeTransform& transform = static_cast<const PositionAttitudeTransform&>(obj);
+    const PositionAttitudeTransform&transform = static_cast<const PositionAttitudeTransform&>(obj);
 
-    fw.indent()<<"position "<<transform.getPosition()<<std::endl;
-    fw.indent()<<"attitude "<<transform.getAttitude()<<std::endl;
-    fw.indent()<<"scale "<<transform.getScale()<<std::endl;
-    fw.indent()<<"pivotPoint "<<transform.getPivotPoint()<<std::endl;
+    fw.indent() << "position " <<   transform.getPosition() << std::endl;
+    fw.indent() << "attitude " <<   transform.getAttitude() << std::endl;
+    fw.indent() << "scale " <<      transform.getScale() << std::endl;
+    fw.indent() << "pivotPoint " << transform.getPivotPoint() << std::endl;
 
 
     return true;

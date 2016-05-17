@@ -4,11 +4,9 @@
 #include <osg/CopyOp>
 
 osgParticle::Program::Program()
-:    ParticleProcessor()
-{
-}
+    :    ParticleProcessor()
+{}
 
-osgParticle::Program::Program(const Program& copy, const osg::CopyOp& copyop)
-:    ParticleProcessor(copy, copyop)
-{
-}
+osgParticle::Program::Program(const Program&copy, const osg::CopyOp&copyop)
+    :    ParticleProcessor(copy, copyop)
+{}

@@ -4,11 +4,13 @@
 #include <osg/TextureRectangle>
 #include "ReadWrite.h"
 
-namespace ive{
-class TextureRectangle : public osg::TextureRectangle, public ReadWrite {
+namespace ive
+{
+class TextureRectangle : public osg::TextureRectangle, public ReadWrite
+{
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

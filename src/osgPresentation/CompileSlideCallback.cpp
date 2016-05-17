@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
-*/
+ */
 
 #include <osgPresentation/CompileSlideCallback>
 
@@ -16,16 +16,20 @@
 
 using namespace osgPresentation;
 
-void CompileSlideCallback::operator()(const osg::Camera & camera) const
+void CompileSlideCallback::operator()(const osg::Camera&camera) const
 {
-    osg::GraphicsContext* context = const_cast<osg::GraphicsContext*>(camera.getGraphicsContext());
-    if (!context) return;
+    osg::GraphicsContext *context = const_cast<osg::GraphicsContext*>(camera.getGraphicsContext());
 
-    osg::State* state = context->getState();
-    if (!state) return;
+    if (!context)
+        return;
 
-    const osg::FrameStamp* fs = state->getFrameStamp();
-    if (!fs) return;
+    osg::State *state = context->getState();
+    if (!state)
+        return;
+
+    const osg::FrameStamp *fs = state->getFrameStamp();
+    if (!fs)
+        return;
 
     if (_needCompile)
     {
@@ -33,10 +37,11 @@ void CompileSlideCallback::operator()(const osg::Camera & camera) const
         _needCompile = false;
     }
 
-    if (_frameNumber!=fs->getFrameNumber()) return;
+    if (_frameNumber != fs->getFrameNumber())
+        return;
 
-    osgUtil::GLObjectsVisitor globjVisitor(osgUtil::GLObjectsVisitor::COMPILE_DISPLAY_LISTS|
-                                  osgUtil::GLObjectsVisitor::COMPILE_STATE_ATTRIBUTES);
+    osgUtil::GLObjectsVisitor globjVisitor(osgUtil::GLObjectsVisitor::COMPILE_DISPLAY_LISTS |
+                                           osgUtil::GLObjectsVisitor::COMPILE_STATE_ATTRIBUTES);
 
     globjVisitor.setTraversalMode(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN);
 

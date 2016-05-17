@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgViewer/Scene>
 #include <osgGA/EventVisitor>
@@ -19,26 +19,26 @@ using namespace osgViewer;
 
 namespace osgViewer
 {
-    
-
 struct SceneSingleton
 {
     SceneSingleton() {}
 
-    inline void add(Scene* scene)
+    inline void add(Scene *scene)
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
         _cache.push_back(scene);
     }
 
-    inline void remove(Scene* scene)
+    inline void remove(Scene *scene)
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-        for(SceneCache::iterator itr = _cache.begin();
-            itr != _cache.end();
-            ++itr)
+
+        for (SceneCache::iterator itr = _cache.begin();
+             itr != _cache.end();
+             ++itr)
         {
-            if (scene==itr->get())
+            if (scene == itr->get())
             {
                 _cache.erase(itr);
                 break;
@@ -46,36 +46,39 @@ struct SceneSingleton
         }
     }
 
-    inline Scene* getScene(osg::Node* node)
+    inline Scene* getScene(osg::Node *node)
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-        for(SceneCache::iterator itr = _cache.begin();
-            itr != _cache.end();
-            ++itr)
+
+        for (SceneCache::iterator itr = _cache.begin();
+             itr != _cache.end();
+             ++itr)
         {
-            Scene* scene = itr->get();
-            if (scene && scene->getSceneData()==node) return scene;
+            Scene *scene = itr->get();
+            if (scene && scene->getSceneData() == node)
+                return scene;
         }
+
         return 0;
     }
 
-    typedef std::vector< osg::observer_ptr<Scene> >  SceneCache;
-    SceneCache          _cache;
-    OpenThreads::Mutex  _mutex;
+    typedef std::vector<osg::observer_ptr<Scene> >  SceneCache;
+    SceneCache         _cache;
+    OpenThreads::Mutex _mutex;
 };
 
-static SceneSingleton& getSceneSingleton()
+static SceneSingleton&getSceneSingleton()
 {
     static SceneSingleton s_sceneSingleton;
+
     return s_sceneSingleton;
 }
 
 // Use a proxy to force the initialization of the SceneSingleton during static initialization
 OSG_INIT_SINGLETON_PROXY(SceneSingletonProxy, getSceneSingleton())
-
 }
 
-Scene::Scene():
+Scene::Scene() :
     osg::Referenced(true)
 {
     setDatabasePager(osgDB::DatabasePager::create());
@@ -88,7 +91,7 @@ Scene::~Scene()
     getSceneSingleton().remove(this);
 }
 
-void Scene::setSceneData(osg::Node* node)
+void Scene::setSceneData(osg::Node *node)
 {
     _sceneData = node;
 }
@@ -103,19 +106,20 @@ const osg::Node* Scene::getSceneData() const
     return _sceneData.get();
 }
 
-void Scene::setDatabasePager(osgDB::DatabasePager* dp)
+void Scene::setDatabasePager(osgDB::DatabasePager *dp)
 {
     _databasePager = dp;
 }
 
-void Scene::setImagePager(osgDB::ImagePager* ip)
+void Scene::setImagePager(osgDB::ImagePager *ip)
 {
     _imagePager = ip;
 }
 
-void Scene::updateSceneGraph(osg::NodeVisitor& updateVisitor)
+void Scene::updateSceneGraph(osg::NodeVisitor&updateVisitor)
 {
-    if (!_sceneData) return;
+    if (!_sceneData)
+        return;
 
     if (getDatabasePager())
     {
@@ -137,17 +141,18 @@ void Scene::updateSceneGraph(osg::NodeVisitor& updateVisitor)
 }
 
 
-Scene* Scene::getScene(osg::Node* node)
+Scene* Scene::getScene(osg::Node *node)
 {
     return getSceneSingleton().getScene(node);
     return 0;
 }
 
-Scene* Scene::getOrCreateScene(osg::Node* node)
+Scene* Scene::getOrCreateScene(osg::Node *node)
 {
-    if (!node) return 0;
+    if (!node)
+        return 0;
 
-    osgViewer::Scene* scene = getScene(node);
+    osgViewer::Scene *scene = getScene(node);
     if (!scene)
     {
         scene = new Scene;

@@ -4,11 +4,13 @@
 #include <osg/LineStipple>
 #include "ReadWrite.h"
 
-namespace ive{
-class LineStipple : public osg::LineStipple, public ReadWrite {
+namespace ive
+{
+class LineStipple : public osg::LineStipple, public ReadWrite
+{
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

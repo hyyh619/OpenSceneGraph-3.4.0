@@ -9,26 +9,25 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/BlendFunci>
 #include <osg/GLExtensions>
 #include <osg/State>
 
 using namespace osg;
 
-BlendFunci::BlendFunci():
+BlendFunci::BlendFunci() :
     _index(0)
-{
-}
+{}
 
 
 BlendFunci::~BlendFunci()
-{
-}
+{}
 
-void BlendFunci::apply(State& state) const
+void BlendFunci::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (_source_factor != _source_factor_alpha ||
         _destination_factor != _destination_factor_alpha)
     {
@@ -38,7 +37,7 @@ void BlendFunci::apply(State& state) const
         }
         else
         {
-            OSG_WARN<<"Warning: BlendFunc::apply(..) failed, BlendFuncSeparatei is not support by OpenGL driver."<<std::endl;
+            OSG_WARN << "Warning: BlendFunc::apply(..) failed, BlendFuncSeparatei is not support by OpenGL driver." << std::endl;
         }
     }
     else
@@ -49,8 +48,7 @@ void BlendFunci::apply(State& state) const
         }
         else
         {
-            OSG_WARN<<"Warning: BlendFunc::apply(..) failed, BlendFunci is not support by OpenGL driver."<<std::endl;
+            OSG_WARN << "Warning: BlendFunc::apply(..) failed, BlendFunci is not support by OpenGL driver." << std::endl;
         }
     }
 }
-

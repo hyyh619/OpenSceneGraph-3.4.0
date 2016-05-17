@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool Text3D_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool Text3D_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool Text3D_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool Text3D_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(Text3D_Proxy)
 (
@@ -26,8 +26,11 @@ REGISTER_DOTOSGWRAPPER(Text3D_Proxy)
 
 osgText::Text3D::RenderMode convertRenderModeStringToEnum(const std::string str)
 {
-    if (str == "PER_GLYPH") return osgText::Text3D::PER_GLYPH;
-    else if (str == "PER_FACE") return osgText::Text3D::PER_FACE;
+    if (str == "PER_GLYPH")
+        return osgText::Text3D::PER_GLYPH;
+    else if (str == "PER_FACE")
+        return osgText::Text3D::PER_FACE;
+
     return static_cast<osgText::Text3D::RenderMode>(-1);
 }
 std::string convertRenderModeEnumToString(osgText::Text3D::RenderMode renderMode)
@@ -35,15 +38,17 @@ std::string convertRenderModeEnumToString(osgText::Text3D::RenderMode renderMode
     switch (renderMode)
     {
     case osgText::Text3D::PER_GLYPH: return "PER_GLYPH";
+
     case osgText::Text3D::PER_FACE: return "PER_FACE";
+
     default: return "";
     }
 }
 
-bool Text3D_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool Text3D_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgText::Text3D &text = static_cast<osgText::Text3D &>(obj);
-    bool itAdvanced = false;
+    osgText::Text3D&text      = static_cast<osgText::Text3D&>(obj);
+    bool           itAdvanced = false;
 
 
     // characterDepth
@@ -53,7 +58,7 @@ bool Text3D_readLocalData(osg::Object &obj, osgDB::Input &fr)
         if (fr[1].getFloat(depth))
         {
             text.setCharacterDepth(depth);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
@@ -66,16 +71,17 @@ bool Text3D_readLocalData(osg::Object &obj, osgDB::Input &fr)
         {
             text.setRenderMode(renderMode);
         }
-        fr += 2;
+
+        fr        += 2;
         itAdvanced = true;
     }
 
     return itAdvanced;
 }
 
-bool Text3D_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool Text3D_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgText::Text3D &text = static_cast<const osgText::Text3D &>(obj);
+    const osgText::Text3D&text = static_cast<const osgText::Text3D&>(obj);
 
     fw.indent() << "characterDepth " << text.getCharacterDepth() << std::endl;
 

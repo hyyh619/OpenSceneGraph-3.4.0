@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
-*/
+ */
 
 #include <osg/Geometry>
 #include <osg/Texture2D>
@@ -60,168 +60,178 @@
 
 #ifdef OSG_LIBRARY_STATIC
 
-    // include the plugins we need
-    USE_OSGPLUGIN(ive)
-    USE_OSGPLUGIN(osg)
-    USE_OSGPLUGIN(osg2)
-    USE_OSGPLUGIN(p3d)
-    USE_OSGPLUGIN(paths)
-    USE_OSGPLUGIN(rgb)
-    USE_OSGPLUGIN(OpenFlight)
-    USE_OSGPLUGIN(obj)
+// include the plugins we need
+USE_OSGPLUGIN(ive)
+USE_OSGPLUGIN(osg)
+USE_OSGPLUGIN(osg2)
+USE_OSGPLUGIN(p3d)
+USE_OSGPLUGIN(paths)
+USE_OSGPLUGIN(rgb)
+USE_OSGPLUGIN(OpenFlight)
+USE_OSGPLUGIN(obj)
 
 #ifdef USE_FREETYPE
-    USE_OSGPLUGIN(freetype)
+USE_OSGPLUGIN(freetype)
 #endif
 
 #ifdef USE_PNG
-    USE_OSGPLUGIN(png)
+USE_OSGPLUGIN(png)
 #endif
 
 #ifdef USE_JPEG
-    USE_OSGPLUGIN(jpeg)
+USE_OSGPLUGIN(jpeg)
 #endif
 
 #ifdef USE_FFMPEG
-    USE_OSGPLUGIN(ffmpeg)
+USE_OSGPLUGIN(ffmpeg)
 #endif
 
 #ifdef USE_POPPLER_CAIRO
-    USE_OSGPLUGIN(pdf)
+USE_OSGPLUGIN(pdf)
 #endif
 
 #ifdef USE_CURL
-    USE_OSGPLUGIN(curl)
+USE_OSGPLUGIN(curl)
 #endif
 
-    USE_DOTOSGWRAPPER_LIBRARY(osg)
-    USE_DOTOSGWRAPPER_LIBRARY(osgFX)
-    USE_DOTOSGWRAPPER_LIBRARY(osgParticle)
-    USE_DOTOSGWRAPPER_LIBRARY(osgShadow)
-    USE_DOTOSGWRAPPER_LIBRARY(osgSim)
-    USE_DOTOSGWRAPPER_LIBRARY(osgTerrain)
-    USE_DOTOSGWRAPPER_LIBRARY(osgText)
-    USE_DOTOSGWRAPPER_LIBRARY(osgViewer)
-    USE_DOTOSGWRAPPER_LIBRARY(osgVolume)
-    USE_DOTOSGWRAPPER_LIBRARY(osgWidget)
+USE_DOTOSGWRAPPER_LIBRARY(osg)
+USE_DOTOSGWRAPPER_LIBRARY(osgFX)
+USE_DOTOSGWRAPPER_LIBRARY(osgParticle)
+USE_DOTOSGWRAPPER_LIBRARY(osgShadow)
+USE_DOTOSGWRAPPER_LIBRARY(osgSim)
+USE_DOTOSGWRAPPER_LIBRARY(osgTerrain)
+USE_DOTOSGWRAPPER_LIBRARY(osgText)
+USE_DOTOSGWRAPPER_LIBRARY(osgViewer)
+USE_DOTOSGWRAPPER_LIBRARY(osgVolume)
+USE_DOTOSGWRAPPER_LIBRARY(osgWidget)
 
-    USE_SERIALIZER_WRAPPER_LIBRARY(osg)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgAnimation)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgFX)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgManipulator)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgParticle)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgShadow)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgSim)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgTerrain)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgText)
-    USE_SERIALIZER_WRAPPER_LIBRARY(osgVolume)
+USE_SERIALIZER_WRAPPER_LIBRARY(osg)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgAnimation)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgFX)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgManipulator)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgParticle)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgShadow)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgSim)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgTerrain)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgText)
+USE_SERIALIZER_WRAPPER_LIBRARY(osgVolume)
 
-    // include the platform specific GraphicsWindow implementation.
-    USE_GRAPHICSWINDOW()
-
+// include the platform specific GraphicsWindow implementation.
+USE_GRAPHICSWINDOW()
 #endif
 
-static const char* s_version = "1.4 beta";
+static const char *s_version = "1.4 beta";
 
-void setViewer(osgViewer::Viewer& viewer, float width, float height, float distance)
+void setViewer(osgViewer::Viewer&viewer, float width, float height, float distance)
 {
-    double vfov = osg::RadiansToDegrees(atan2(height/2.0f,distance)*2.0);
+    double vfov = osg::RadiansToDegrees(atan2(height / 2.0f, distance) * 2.0);
+
     // double hfov = osg::RadiansToDegrees(atan2(width/2.0f,distance)*2.0);
 
-    viewer.getCamera()->setProjectionMatrixAsPerspective( vfov, width/height, 0.1, 1000.0);
+    viewer.getCamera()->setProjectionMatrixAsPerspective(vfov, width / height, 0.1, 1000.0);
 
-    OSG_INFO<<"setProjectionMatrixAsPerspective( "<<vfov<<", "<<width/height<<", "<<0.1<<", "<<1000.0<<");"<<std::endl;
+    OSG_INFO << "setProjectionMatrixAsPerspective( " << vfov << ", " << width / height << ", " << 0.1 << ", " << 1000.0 << ");" << std::endl;
 }
 
-class ForwardToDeviceEventHandler : public osgGA::GUIEventHandler {
+class ForwardToDeviceEventHandler : public osgGA::GUIEventHandler
+{
 public:
-    ForwardToDeviceEventHandler(osgGA::Device* device, bool format_mouse_events) : osgGA::GUIEventHandler(), _device(device), _forwardMouseEvents(format_mouse_events) {}
+ForwardToDeviceEventHandler(osgGA::Device *device, bool format_mouse_events) : osgGA::GUIEventHandler(), _device(device), _forwardMouseEvents(format_mouse_events) {}
 
-    virtual bool handle (const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object *, osg::NodeVisitor *)
+virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor*)
+{
+    switch (ea.getEventType())
     {
-        switch (ea.getEventType())
-        {
-            case osgGA::GUIEventAdapter::PUSH:
-            case osgGA::GUIEventAdapter::RELEASE:
-            case osgGA::GUIEventAdapter::MOVE:
-            case osgGA::GUIEventAdapter::DRAG:
-            case osgGA::GUIEventAdapter::SCROLL:
-                if (_forwardMouseEvents)
-                    _device->sendEvent(ea);
-                break;
+    case osgGA::GUIEventAdapter::PUSH:
+    case osgGA::GUIEventAdapter::RELEASE:
+    case osgGA::GUIEventAdapter::MOVE:
+    case osgGA::GUIEventAdapter::DRAG:
+    case osgGA::GUIEventAdapter::SCROLL:
+        if (_forwardMouseEvents)
+            _device->sendEvent(ea);
 
-            default:
-                _device->sendEvent(ea);
-                break;
-        }
+        break;
+
+    default:
+        _device->sendEvent(ea);
+        break;
+    }
+
+    return false;
+}
+
+
+bool handle(osgGA::Event *event, osg::Object *object, osg::NodeVisitor *nv)
+{
+    if (event->asGUIEventAdapter())
+        return osgGA::GUIEventHandler::handle(event, object, nv);
+    else
+    {
+        _device->sendEvent(*event);
         return false;
     }
-
-
-    bool handle(osgGA::Event* event, osg::Object* object, osg::NodeVisitor* nv)
-    {
-        if (event->asGUIEventAdapter())
-            return osgGA::GUIEventHandler::handle(event, object, nv);
-        else
-        {
-            _device->sendEvent(*event);
-            return false;
-        }
-    }
+}
 
 
 private:
-    osg::ref_ptr<osgGA::Device> _device;
-    bool _forwardMouseEvents;
+osg::ref_ptr<osgGA::Device> _device;
+bool                        _forwardMouseEvents;
 };
 
 
-class DumpEventHandler : public osgGA::GUIEventHandler {
+class DumpEventHandler : public osgGA::GUIEventHandler
+{
 public:
-    DumpEventHandler() : osgGA::GUIEventHandler() {}
+DumpEventHandler() : osgGA::GUIEventHandler() {}
 
-    virtual bool handle (const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object *, osg::NodeVisitor *)
+virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor*)
+{
+    switch (ea.getEventType())
     {
-        switch (ea.getEventType())
-        {
-            case osgGA::GUIEventAdapter::FRAME:
-                return false;
-                break;
-            case osgGA::GUIEventAdapter::PUSH:
-                std::cout << "PUSH: ";
-                break;
-            case osgGA::GUIEventAdapter::RELEASE:
-                std::cout << "RELEASE: ";
-                break;
-            case osgGA::GUIEventAdapter::MOVE:
-                std::cout << "MOVE: ";
-                break;
-            case osgGA::GUIEventAdapter::DRAG:
-                std::cout << "DRAG: ";
-                break;
-            case osgGA::GUIEventAdapter::SCROLL:
-                std::cout << "SCROLL: ";
-                break;
-                break;
+    case osgGA::GUIEventAdapter::FRAME:
+        return false;
+        break;
 
-            default:
-                std::cout << ea.getEventType() << " ";
-                break;
-        }
-        std::cout << ea.getX() << "/" << ea.getY() << " " << ea.isMultiTouchEvent() << std::endl;
+    case osgGA::GUIEventAdapter::PUSH:
+        std::cout << "PUSH: ";
+        break;
+
+    case osgGA::GUIEventAdapter::RELEASE:
+        std::cout << "RELEASE: ";
+        break;
+
+    case osgGA::GUIEventAdapter::MOVE:
+        std::cout << "MOVE: ";
+        break;
+
+    case osgGA::GUIEventAdapter::DRAG:
+        std::cout << "DRAG: ";
+        break;
+
+    case osgGA::GUIEventAdapter::SCROLL:
+        std::cout << "SCROLL: ";
+        break;
+        break;
+
+    default:
+        std::cout << ea.getEventType() << " ";
+        break;
+    }
+
+    std::cout << ea.getX() << "/" << ea.getY() << " " << ea.isMultiTouchEvent() << std::endl;
+    return false;
+}
+
+
+bool handle(osgGA::Event *event, osg::Object *object, osg::NodeVisitor *nv)
+{
+    if (event->asGUIEventAdapter())
+        return osgGA::GUIEventHandler::handle(event, object, nv);
+    else
+    {
         return false;
     }
-
-
-    bool handle(osgGA::Event* event, osg::Object* object, osg::NodeVisitor* nv)
-    {
-        if (event->asGUIEventAdapter())
-            return osgGA::GUIEventHandler::handle(event, object, nv);
-        else
-        {
-            return false;
-        }
-    }
+}
 
 
 private:
@@ -237,12 +247,12 @@ enum P3DApplicationType
 };
 
 
-void processLoadedModel(osg::ref_ptr<osg::Node>& loadedModel, int optimizer_options, const std::string& cursorFileName)
+void processLoadedModel(osg::ref_ptr<osg::Node>&loadedModel, int optimizer_options, const std::string&cursorFileName)
 {
-    if (!loadedModel) return;
+    if (!loadedModel)
+        return;
 
 #if !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
-
     // add back in enabling of the GL_ALPHA_TEST to get around the core OSG no longer setting it by default for opaque bins.
     // the alpha test is required for the volume rendering alpha clipping to work.
     loadedModel->getOrCreateStateSet()->setMode(GL_ALPHA_TEST, osg::StateAttribute::ON);
@@ -257,16 +267,17 @@ void processLoadedModel(osg::ref_ptr<osg::Node>& loadedModel, int optimizer_opti
         osg::ref_ptr<osg::Group> group = new osg::Group;
         group->addChild(loadedModel.get());
 
-        OSG_NOTICE<<"Creating Cursor"<<std::endl;
+        OSG_NOTICE << "Creating Cursor" << std::endl;
         group->addChild(new osgPresentation::Cursor(cursorFileName, 20.0f));
 
         loadedModel = group;
     }
 }
 
-void addDeviceTo(osgViewer::Viewer& viewer, const std::string& device_name, bool forward_mouse_events)
+void addDeviceTo(osgViewer::Viewer&viewer, const std::string&device_name, bool forward_mouse_events)
 {
     osg::ref_ptr<osgGA::Device> dev = osgDB::readFile<osgGA::Device>(device_name);
+
     if (dev.valid())
     {
         OSG_INFO << "Adding Device : " << device_name << std::endl;
@@ -282,36 +293,36 @@ void addDeviceTo(osgViewer::Viewer& viewer, const std::string& device_name, bool
 }
 
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     // set up the usage document, in case we need to print out how to use this program.
     arguments.getApplicationUsage()->setApplicationName(arguments.getApplicationName());
-    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName()+" is the application for presenting 3D interactive slide shows.");
-    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName()+" [options] filename ...");
-    arguments.getApplicationUsage()->addCommandLineOption("-h or --help","Display this information");
-    arguments.getApplicationUsage()->addCommandLineOption("-a","Turn auto stepping on by default");
-    arguments.getApplicationUsage()->addCommandLineOption("-d <float>","Time duration in seconds between layers/slides");
-    arguments.getApplicationUsage()->addCommandLineOption("-s <float> <float> <float>","width, height, distance and of the screen away from the viewer");
-    arguments.getApplicationUsage()->addCommandLineOption("--viewer","Start Present3D as the viewer version.");
-    arguments.getApplicationUsage()->addCommandLineOption("--authoring","Start Present3D as the authoring version, license required.");
-    arguments.getApplicationUsage()->addCommandLineOption("--master","Start Present3D as the master version, license required.");
-    arguments.getApplicationUsage()->addCommandLineOption("--slave","Start Present3D as the slave version, license required.");
-    arguments.getApplicationUsage()->addCommandLineOption("--publishing","Start Present3D as the publishing version, license required.");
-    arguments.getApplicationUsage()->addCommandLineOption("--timeDelayOnNewSlideWithMovies","Set the time delay on new slide with movies, done to allow movie threads to get in sync with rendering thread.");
-    arguments.getApplicationUsage()->addCommandLineOption("--targetFrameRate","Set the target frame rate, defaults to 80Hz.");
-    arguments.getApplicationUsage()->addCommandLineOption("--version","Report the Present3D version.");
-    arguments.getApplicationUsage()->addCommandLineOption("--print <filename>","Print out slides to a series of image files.");
-    arguments.getApplicationUsage()->addCommandLineOption("--html <filename>","Print out slides to a series of html & image files.");
-    arguments.getApplicationUsage()->addCommandLineOption("--loop","Switch on looping of presentation.");
-    arguments.getApplicationUsage()->addCommandLineOption("--devices","Print the Video input capability via QuickTime and exit.");
-    arguments.getApplicationUsage()->addCommandLineOption("--forwardMouseEvents","forward also mouse/touch-events to the devices");
+    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName() + " is the application for presenting 3D interactive slide shows.");
+    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName() + " [options] filename ...");
+    arguments.getApplicationUsage()->addCommandLineOption("-h or --help", "Display this information");
+    arguments.getApplicationUsage()->addCommandLineOption("-a", "Turn auto stepping on by default");
+    arguments.getApplicationUsage()->addCommandLineOption("-d <float>", "Time duration in seconds between layers/slides");
+    arguments.getApplicationUsage()->addCommandLineOption("-s <float> <float> <float>", "width, height, distance and of the screen away from the viewer");
+    arguments.getApplicationUsage()->addCommandLineOption("--viewer", "Start Present3D as the viewer version.");
+    arguments.getApplicationUsage()->addCommandLineOption("--authoring", "Start Present3D as the authoring version, license required.");
+    arguments.getApplicationUsage()->addCommandLineOption("--master", "Start Present3D as the master version, license required.");
+    arguments.getApplicationUsage()->addCommandLineOption("--slave", "Start Present3D as the slave version, license required.");
+    arguments.getApplicationUsage()->addCommandLineOption("--publishing", "Start Present3D as the publishing version, license required.");
+    arguments.getApplicationUsage()->addCommandLineOption("--timeDelayOnNewSlideWithMovies", "Set the time delay on new slide with movies, done to allow movie threads to get in sync with rendering thread.");
+    arguments.getApplicationUsage()->addCommandLineOption("--targetFrameRate", "Set the target frame rate, defaults to 80Hz.");
+    arguments.getApplicationUsage()->addCommandLineOption("--version", "Report the Present3D version.");
+    arguments.getApplicationUsage()->addCommandLineOption("--print <filename>", "Print out slides to a series of image files.");
+    arguments.getApplicationUsage()->addCommandLineOption("--html <filename>", "Print out slides to a series of html & image files.");
+    arguments.getApplicationUsage()->addCommandLineOption("--loop", "Switch on looping of presentation.");
+    arguments.getApplicationUsage()->addCommandLineOption("--devices", "Print the Video input capability via QuickTime and exit.");
+    arguments.getApplicationUsage()->addCommandLineOption("--forwardMouseEvents", "forward also mouse/touch-events to the devices");
     arguments.getApplicationUsage()->addCommandLineOption("--suppressEnvTags", "suppresses all found ENV-tags in the presentation");
 
     // add alias from xml to p3d to provide backwards compatibility for old p3d files.
-    osgDB::Registry::instance()->addFileExtensionAlias("xml","p3d");
+    osgDB::Registry::instance()->addFileExtensionAlias("xml", "p3d");
 
     // if user requests devices video capability.
     if (arguments.read("-devices") || arguments.read("--devices"))
@@ -334,7 +345,8 @@ int main( int argc, char **argv )
 
     // set up any logins required for http access
     std::string url, username, password;
-    while(arguments.read("--login",url, username, password))
+
+    while (arguments.read("--login", url, username, password))
     {
         if (!osgDB::Registry::instance()->getAuthenticationMap())
         {
@@ -342,7 +354,7 @@ int main( int argc, char **argv )
             osgDB::Registry::instance()->getAuthenticationMap()->addAuthenticationDetails(
                 url,
                 new osgDB::AuthenticationDetails(username, password)
-            );
+                );
         }
     }
 
@@ -351,33 +363,38 @@ int main( int argc, char **argv )
 #ifdef USE_SDL
     SDLIntegration sdlIntegration;
 
-    osg::notify(osg::INFO)<<"USE_SDL"<<std::endl;
+    osg::notify(osg::INFO) << "USE_SDL" << std::endl;
 #endif
 
-    bool doSetViewer = true;
+    bool        doSetViewer = true;
     std::string configurationFile;
 
     // check env vars for configuration file
-    const char* str = getenv("PRESENT3D_CONFIG_FILE");
-    if (!str) str = getenv("OSG_CONFIG_FILE");
-    if (str) configurationFile = str;
+    const char *str = getenv("PRESENT3D_CONFIG_FILE");
+    if (!str)
+        str = getenv("OSG_CONFIG_FILE");
+
+    if (str)
+        configurationFile = str;
 
     // check command line parameters for configuration file.
-    while (arguments.read("-c",configurationFile)) {}
+    while (arguments.read("-c", configurationFile))
+    {}
 
-    osg::Vec4 clearColor(0.0f,0.0f,0.0f,0.0f);
+    osg::Vec4 clearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-    while (arguments.read("--clear-color",clearColor[0],clearColor[1],clearColor[2],clearColor[3])) {}
+    while (arguments.read("--clear-color", clearColor[0], clearColor[1], clearColor[2], clearColor[3]))
+    {}
 
     std::string filename;
-    if (arguments.read("--spell-check",filename))
+    if (arguments.read("--spell-check", filename))
     {
         p3d::SpellChecker spellChecker;
         spellChecker.checkP3dXml(filename);
         return 1;
     }
 
-    if (arguments.read("--strip-text",filename))
+    if (arguments.read("--strip-text", filename))
     {
         p3d::XmlPatcher patcher;
         // patcher.stripP3dXml(filename, osg::notify(osg::NOTICE));
@@ -387,18 +404,20 @@ int main( int argc, char **argv )
         {
             newNode->write(std::cout);
         }
+
         return 1;
     }
 
     std::string lhs_filename, rhs_filename;
-    if (arguments.read("--merge",lhs_filename, rhs_filename))
+    if (arguments.read("--merge", lhs_filename, rhs_filename))
     {
-        p3d::XmlPatcher patcher;
+        p3d::XmlPatcher              patcher;
         osg::ref_ptr<osgDB::XmlNode> newNode = patcher.mergeP3dXml(lhs_filename, rhs_filename);
         if (newNode.valid())
         {
             newNode->write(std::cout);
         }
+
         return 1;
     }
 
@@ -419,12 +438,13 @@ int main( int argc, char **argv )
     if (arguments.read("--forwardMouseEvents"))
         forwardMouseEvents = true;
 
-    const char* p3dDevice = getenv("P3D_DEVICE");
+    const char *p3dDevice = getenv("P3D_DEVICE");
     if (p3dDevice)
     {
         osgDB::StringList devices;
         osgDB::split(p3dDevice, devices);
-        for(osgDB::StringList::iterator i = devices.begin(); i != devices.end(); ++i)
+
+        for (osgDB::StringList::iterator i = devices.begin(); i != devices.end(); ++i)
         {
             addDeviceTo(viewer, *i, forwardMouseEvents);
         }
@@ -432,26 +452,30 @@ int main( int argc, char **argv )
 
 
     std::string device;
+
     while (arguments.read("--device", device))
     {
         addDeviceTo(viewer, device, forwardMouseEvents);
-
     }
 
     if (arguments.read("--http-control"))
     {
-
         std::string server_address = "localhost";
-        std::string server_port = "8080";
-        std::string document_root = "htdocs";
+        std::string server_port    = "8080";
+        std::string document_root  = "htdocs";
 
-        while (arguments.read("--http-server-address", server_address)) {}
-        while (arguments.read("--http-server-port", server_port)) {}
-        while (arguments.read("--http-document-root", document_root)) {}
+        while (arguments.read("--http-server-address", server_address))
+        {}
+
+        while (arguments.read("--http-server-port", server_port))
+        {}
+
+        while (arguments.read("--http-document-root", document_root))
+        {}
 
         osg::ref_ptr<osgDB::Options> device_options = new osgDB::Options("documentRegisteredHandlers");
 
-        osg::ref_ptr<osgGA::Device> rest_http_device = osgDB::readFile<osgGA::Device>(server_address+":"+server_port+"/"+document_root+".resthttp", device_options.get());
+        osg::ref_ptr<osgGA::Device> rest_http_device = osgDB::readFile<osgGA::Device>(server_address + ":" + server_port + "/" + document_root + ".resthttp", device_options.get());
         if (rest_http_device.valid())
         {
             viewer.addDevice(rest_http_device.get());
@@ -477,104 +501,142 @@ int main( int argc, char **argv )
     {
         osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
 
-        keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::MultiTouchTrackballManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '3', "Drive", new osgGA::DriveManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '4', "Terrain", new osgGA::TerrainManipulator() );
+        keyswitchManipulator->addMatrixManipulator('1', "Trackball", new osgGA::MultiTouchTrackballManipulator());
+        keyswitchManipulator->addMatrixManipulator('2', "Flight", new osgGA::FlightManipulator());
+        keyswitchManipulator->addMatrixManipulator('3', "Drive", new osgGA::DriveManipulator());
+        keyswitchManipulator->addMatrixManipulator('4', "Terrain", new osgGA::TerrainManipulator());
 
         std::string pathfile;
-        char keyForAnimationPath = '5';
-        while (arguments.read("-p",pathfile))
+        char        keyForAnimationPath = '5';
+
+        while (arguments.read("-p", pathfile))
         {
-            osgGA::AnimationPathManipulator* apm = new osgGA::AnimationPathManipulator(pathfile);
+            osgGA::AnimationPathManipulator *apm = new osgGA::AnimationPathManipulator(pathfile);
             if (apm || !apm->valid())
             {
                 unsigned int num = keyswitchManipulator->getNumMatrixManipulators();
-                keyswitchManipulator->addMatrixManipulator( keyForAnimationPath, "Path", apm );
+                keyswitchManipulator->addMatrixManipulator(keyForAnimationPath, "Path", apm);
                 keyswitchManipulator->selectMatrixManipulator(num);
                 ++keyForAnimationPath;
             }
         }
 
-        viewer.setCameraManipulator( keyswitchManipulator.get() );
+        viewer.setCameraManipulator(keyswitchManipulator.get());
     }
 
-    //viewer.getEventHandlers().push_front(new DumpEventHandler());
+    // viewer.getEventHandlers().push_front(new DumpEventHandler());
 
     // add the state manipulator
     osg::ref_ptr<osgGA::StateSetManipulator> ssManipulator = new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet());
     ssManipulator->setKeyEventToggleTexturing('e');
-    viewer.addEventHandler( ssManipulator.get() );
+    viewer.addEventHandler(ssManipulator.get());
 
     // add the state manipulator
-    viewer.addEventHandler( new osgViewer::StatsHandler() );
+    viewer.addEventHandler(new osgViewer::StatsHandler());
 
-    viewer.addEventHandler( new osgViewer::WindowSizeHandler() );
+    viewer.addEventHandler(new osgViewer::WindowSizeHandler());
 
     // neeed to address.
     // viewer.getScene()->getUpdateVisitor()->setTraversalMode(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN);
 
 
-    const char* p3dCursor = getenv("P3D_CURSOR");
-    std::string cursorFileName( p3dCursor ? p3dCursor : "");
-    while (arguments.read("--cursor",cursorFileName)) {}
+    const char  *p3dCursor = getenv("P3D_CURSOR");
+    std::string cursorFileName(p3dCursor ? p3dCursor : "");
 
-    const char* p3dShowCursor = getenv("P3D_SHOW_CURSOR");
-    std::string showCursor( p3dShowCursor ? p3dShowCursor : "YES");
-    while (arguments.read("--show-cursor")) { showCursor="YES"; }
-    while (arguments.read("--hide-cursor")) { showCursor="NO"; }
+    while (arguments.read("--cursor", cursorFileName))
+    {}
 
-    bool hideCursor = (showCursor=="No" || showCursor=="NO" || showCursor=="no");
+    const char  *p3dShowCursor = getenv("P3D_SHOW_CURSOR");
+    std::string showCursor(p3dShowCursor ? p3dShowCursor : "YES");
 
-    while (arguments.read("--set-viewer")) { doSetViewer = true; }
+    while (arguments.read("--show-cursor"))
+    {
+        showCursor = "YES";
+    }
 
-    while (arguments.read("--no-set-viewer")) { doSetViewer = false; }
+    while (arguments.read("--hide-cursor"))
+    {
+        showCursor = "NO";
+    }
+
+    bool hideCursor = (showCursor == "No" || showCursor == "NO" || showCursor == "no");
+
+    while (arguments.read("--set-viewer"))
+    {
+        doSetViewer = true;
+    }
+
+    while (arguments.read("--no-set-viewer"))
+    {
+        doSetViewer = false;
+    }
 
     // if we want to hide the cursor override the custom cursor.
-    if (hideCursor) cursorFileName.clear();
+    if (hideCursor)
+        cursorFileName.clear();
 
 
     // cluster related entries.
-    int socketNumber=8100;
-    while (arguments.read("-n",socketNumber)) {}
+    int socketNumber = 8100;
 
-    float camera_fov=-1.0f;
-    while (arguments.read("-f",camera_fov)) {}
+    while (arguments.read("-n", socketNumber))
+    {}
 
-    float camera_offset=45.0f;
-    while (arguments.read("-o",camera_offset)) {}
+    float camera_fov = -1.0f;
+
+    while (arguments.read("-f", camera_fov))
+    {}
+
+    float camera_offset = 45.0f;
+
+    while (arguments.read("-o", camera_offset))
+    {}
 
 
     std::string exportName;
-    while (arguments.read("--print",exportName)) {}
 
-    while (arguments.read("--html",exportName)) {}
+    while (arguments.read("--print", exportName))
+    {}
+
+    while (arguments.read("--html", exportName))
+    {}
 
     // read any time delay argument.
     float timeDelayBetweenSlides = 1.0f;
-    while (arguments.read("-d",timeDelayBetweenSlides)) {}
+
+    while (arguments.read("-d", timeDelayBetweenSlides))
+    {}
 
     bool autoSteppingActive = false;
-    while (arguments.read("-a")) autoSteppingActive = true;
+
+    while (arguments.read("-a"))
+        autoSteppingActive = true;
 
     bool loopPresentation = false;
-    while (arguments.read("--loop")) loopPresentation = true;
+
+    while (arguments.read("--loop"))
+        loopPresentation = true;
 
     {
         // set update hte default traversal mode settings for update visitor
         // default to osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN.
         osg::NodeVisitor::TraversalMode updateTraversalMode = osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN; // viewer.getUpdateVisitor()->getTraversalMode();
 
-        const char* p3dUpdateStr = getenv("P3D_UPDATE");
+        const char *p3dUpdateStr = getenv("P3D_UPDATE");
         if (p3dUpdateStr)
         {
             std::string updateStr(p3dUpdateStr);
-            if (updateStr=="active" || updateStr=="Active" || updateStr=="ACTIVE") updateTraversalMode = osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN;
-            else if (updateStr=="all" || updateStr=="All" || updateStr=="ALL") updateTraversalMode = osg::NodeVisitor::TRAVERSE_ALL_CHILDREN;
+            if (updateStr == "active" || updateStr == "Active" || updateStr == "ACTIVE")
+                updateTraversalMode = osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN;
+            else if (updateStr == "all" || updateStr == "All" || updateStr == "ALL")
+                updateTraversalMode = osg::NodeVisitor::TRAVERSE_ALL_CHILDREN;
         }
 
-        while(arguments.read("--update-active")) updateTraversalMode = osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN;
-        while(arguments.read("--update-all")) updateTraversalMode = osg::NodeVisitor::TRAVERSE_ALL_CHILDREN;
+        while (arguments.read("--update-active"))
+            updateTraversalMode = osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN;
+
+        while (arguments.read("--update-all"))
+            updateTraversalMode = osg::NodeVisitor::TRAVERSE_ALL_CHILDREN;
 
         viewer.getUpdateVisitor()->setTraversalMode(updateTraversalMode);
     }
@@ -589,28 +651,36 @@ int main( int argc, char **argv )
     seh->setLoopPresentation(loopPresentation);
 
     double targetFrameRate = 80.0;
-    while (arguments.read("--targetFrameRate",targetFrameRate)) {}
+
+    while (arguments.read("--targetFrameRate", targetFrameRate))
+    {}
 
 
     // set the time delay
     float timeDelayOnNewSlideWithMovies = 0.4f;
-    while (arguments.read("--timeDelayOnNewSlideWithMovies",timeDelayOnNewSlideWithMovies)) {}
+
+    while (arguments.read("--timeDelayOnNewSlideWithMovies", timeDelayOnNewSlideWithMovies))
+    {}
+
     seh->setTimeDelayOnNewSlideWithMovies(timeDelayOnNewSlideWithMovies);
 
     // set up optimizer options
-    unsigned int optimizer_options = osgUtil::Optimizer::DEFAULT_OPTIMIZATIONS;
-    bool release_and_compile = false;
+    unsigned int optimizer_options   = osgUtil::Optimizer::DEFAULT_OPTIMIZATIONS;
+    bool         release_and_compile = false;
+
     while (arguments.read("--release-and-compile"))
     {
         release_and_compile = true;
     }
+
     seh->setReleaseAndCompileOnEachNewSlide(release_and_compile);
     if (release_and_compile)
     {
         // make sure that imagery stays around after being applied to textures.
-        viewer.getDatabasePager()->setUnrefImageDataAfterApplyPolicy(true,false);
+        viewer.getDatabasePager()->setUnrefImageDataAfterApplyPolicy(true, false);
         optimizer_options &= ~osgUtil::Optimizer::OPTIMIZE_TEXTURE_SETTINGS;
     }
+
 //
 //     osgDB::Registry::instance()->getOrCreateDatabasePager()->setUnrefImageDataAfterApplyPolicy(true,false);
 //     optimizer_options &= ~osgUtil::Optimizer::OPTIMIZE_TEXTURE_SETTINGS;
@@ -623,20 +693,24 @@ int main( int argc, char **argv )
 
     // add the screen capture handler
     std::string screenCaptureFilename = "screen_shot.jpg";
-    while(arguments.read("--screenshot", screenCaptureFilename)) {}
+
+    while (arguments.read("--screenshot", screenCaptureFilename))
+    {}
+
     osg::ref_ptr<osgViewer::ScreenCaptureHandler::WriteToFile> writeFile = new osgViewer::ScreenCaptureHandler::WriteToFile(
         osgDB::getNameLessExtension(screenCaptureFilename),
-        osgDB::getFileExtension(screenCaptureFilename) );
+        osgDB::getFileExtension(screenCaptureFilename));
     osg::ref_ptr<osgViewer::ScreenCaptureHandler> screenCaptureHandler = new osgViewer::ScreenCaptureHandler(writeFile.get());
-    screenCaptureHandler->setKeyEventTakeScreenShot('m');//osgGA::GUIEventAdapter::KEY_Print);
+    screenCaptureHandler->setKeyEventTakeScreenShot('m');// osgGA::GUIEventAdapter::KEY_Print);
     screenCaptureHandler->setKeyEventToggleContinuousCapture('M');
     viewer.addEventHandler(screenCaptureHandler.get());
 
     // osg::DisplaySettings::instance()->setSplitStereoAutoAjustAspectRatio(false);
 
-    float width = osg::DisplaySettings::instance()->getScreenWidth();
-    float height = osg::DisplaySettings::instance()->getScreenHeight();
+    float width    = osg::DisplaySettings::instance()->getScreenWidth();
+    float height   = osg::DisplaySettings::instance()->getScreenHeight();
     float distance = osg::DisplaySettings::instance()->getScreenDistance();
+
     while (arguments.read("-s", width, height, distance))
     {
         osg::DisplaySettings::instance()->setScreenDistance(distance);
@@ -645,7 +719,9 @@ int main( int argc, char **argv )
     }
 
     std::string outputFileName;
-    while(arguments.read("--output",outputFileName)) {}
+
+    while (arguments.read("--output", outputFileName))
+    {}
 
 
     // get details on keyboard and mouse bindings used by the viewer.
@@ -664,34 +740,51 @@ int main( int argc, char **argv )
     str = getenv("PRESENT3D_TYPE");
     if (str)
     {
-        if (strcmp(str,"viewer")==0) P3DApplicationType = VIEWER;
-        else if (strcmp(str,"master")==0) P3DApplicationType = MASTER;
-        else if (strcmp(str,"slave")==0) P3DApplicationType = SLAVE;
+        if (strcmp(str, "viewer") == 0)
+            P3DApplicationType = VIEWER;
+        else if (strcmp(str, "master") == 0)
+            P3DApplicationType = MASTER;
+        else if (strcmp(str, "slave") == 0)
+            P3DApplicationType = SLAVE;
     }
 
-    while (arguments.read("--viewer")) { P3DApplicationType = VIEWER; }
-    while (arguments.read("--master")) { P3DApplicationType = MASTER; }
-    while (arguments.read("--slave")) { P3DApplicationType = SLAVE; }
+    while (arguments.read("--viewer"))
+    {
+        P3DApplicationType = VIEWER;
+    }
+
+    while (arguments.read("--master"))
+    {
+        P3DApplicationType = MASTER;
+    }
+
+    while (arguments.read("--slave"))
+    {
+        P3DApplicationType = SLAVE;
+    }
 
     while (arguments.read("--version"))
     {
         std::string appTypeName = "invalid";
-        switch(P3DApplicationType)
+
+        switch (P3DApplicationType)
         {
-            case(VIEWER): appTypeName = "viewer"; break;
-            case(MASTER): appTypeName = "master"; break;
-            case(SLAVE): appTypeName = "slave"; break;
+        case (VIEWER): appTypeName = "viewer"; break;
+
+        case (MASTER): appTypeName = "master"; break;
+
+        case (SLAVE): appTypeName = "slave"; break;
         }
 
-        osg::notify(osg::NOTICE)<<std::endl;
-        osg::notify(osg::NOTICE)<<"Present3D "<<appTypeName<<" version : "<<s_version<<std::endl;
-        osg::notify(osg::NOTICE)<<std::endl;
+        osg::notify(osg::NOTICE) << std::endl;
+        osg::notify(osg::NOTICE) << "Present3D " << appTypeName << " version : " << s_version << std::endl;
+        osg::notify(osg::NOTICE) << std::endl;
 
         return 0;
     }
 
     // any option left unread are converted into errors to write out later.
-    //arguments.reportRemainingOptionsAsUnrecognized();
+    // arguments.reportRemainingOptionsAsUnrecognized();
 
     // report any errors if they have ocured when parsing the program aguments.
     if (arguments.errors())
@@ -705,9 +798,9 @@ int main( int argc, char **argv )
     p3d::FileNameList xmlFiles, normalFiles;
     if (!p3d::getFileNames(arguments, xmlFiles, normalFiles))
     {
-        osg::notify(osg::NOTICE)<<std::endl;
-        osg::notify(osg::NOTICE)<<"No file specified, please specify and file to load."<<std::endl;
-        osg::notify(osg::NOTICE)<<std::endl;
+        osg::notify(osg::NOTICE) << std::endl;
+        osg::notify(osg::NOTICE) << "No file specified, please specify and file to load." << std::endl;
+        osg::notify(osg::NOTICE) << std::endl;
         return 1;
     }
 
@@ -733,7 +826,8 @@ int main( int argc, char **argv )
                 // create the windows and run the threads.
                 viewer.realize();
 
-                if (doSetViewer) setViewer(viewer, width, height, distance);
+                if (doSetViewer)
+                    setViewer(viewer, width, height, distance);
 
                 viewerInitialized = true;
             }
@@ -745,49 +839,49 @@ int main( int argc, char **argv )
         }
     }
 
-    osg::Timer timer;
+    osg::Timer   timer;
     osg::Timer_t start_tick = timer.tick();
 
 
     osg::ref_ptr<osgDB::ReaderWriter::Options> cacheAllOption = new osgDB::ReaderWriter::Options;
-    if(suppress_env_tags)
+    if (suppress_env_tags)
         cacheAllOption->setPluginStringData("suppressEnvTags", "true");
 
     cacheAllOption->setObjectCacheHint(osgDB::ReaderWriter::Options::CACHE_ALL);
     osgDB::Registry::instance()->setOptions(cacheAllOption.get());
 
     // read the scene from the list of file specified commandline args.
-    osg::ref_ptr<osg::Node> loadedModel = p3d::readShowFiles(arguments,cacheAllOption.get()); // osgDB::readNodeFiles(arguments, cacheAllOption.get());
+    osg::ref_ptr<osg::Node> loadedModel = p3d::readShowFiles(arguments, cacheAllOption.get()); // osgDB::readNodeFiles(arguments, cacheAllOption.get());
 
 
-    osgDB::Registry::instance()->setOptions( 0 );
+    osgDB::Registry::instance()->setOptions(0);
 
 
     // if no model has been successfully loaded report failure.
     if (!loadedModel)
     {
-        osg::notify(osg::INFO) << arguments.getApplicationName() <<": No data loaded" << std::endl;
+        osg::notify(osg::INFO) << arguments.getApplicationName() << ": No data loaded" << std::endl;
         return 1;
     }
 
     osg::Timer_t end_tick = timer.tick();
 
-    osg::notify(osg::INFO) << "Time to load = "<<timer.delta_s(start_tick,end_tick)<<std::endl;
+    osg::notify(osg::INFO) << "Time to load = " << timer.delta_s(start_tick, end_tick) << std::endl;
 
 
-    if (loadedModel->getNumDescriptions()>0)
+    if (loadedModel->getNumDescriptions() > 0)
     {
-        for(unsigned int i=0; i<loadedModel->getNumDescriptions(); ++i)
+        for (unsigned int i = 0; i < loadedModel->getNumDescriptions(); ++i)
         {
-            const std::string& desc = loadedModel->getDescription(i);
-            if (desc=="loop")
+            const std::string&desc = loadedModel->getDescription(i);
+            if (desc == "loop")
             {
-                osg::notify(osg::NOTICE)<<"Enabling looping"<<std::endl;
+                osg::notify(osg::NOTICE) << "Enabling looping" << std::endl;
                 seh->setLoopPresentation(true);
             }
-            else if (desc=="auto")
+            else if (desc == "auto")
             {
-                osg::notify(osg::NOTICE)<<"Enabling auto run"<<std::endl;
+                osg::notify(osg::NOTICE) << "Enabling auto run" << std::endl;
                 seh->setAutoSteppingActive(true);
             }
         }
@@ -808,7 +902,8 @@ int main( int argc, char **argv )
         // create the windows and run the threads.
         viewer.realize();
 
-        if (doSetViewer) setViewer(viewer, width, height, distance);
+        if (doSetViewer)
+            setViewer(viewer, width, height, distance);
 
         viewerInitialized = true;
     }
@@ -824,7 +919,7 @@ int main( int argc, char **argv )
 
     if (!outputFileName.empty())
     {
-        osgDB::writeNodeFile(*loadedModel,outputFileName);
+        osgDB::writeNodeFile(*loadedModel, outputFileName);
         return 0;
     }
 
@@ -839,16 +934,17 @@ int main( int argc, char **argv )
         // switch off the cursor
         osgViewer::Viewer::Windows windows;
         viewer.getWindows(windows);
-        for(osgViewer::Viewer::Windows::iterator itr = windows.begin();
-            itr != windows.end();
-            ++itr)
+
+        for (osgViewer::Viewer::Windows::iterator itr = windows.begin();
+             itr != windows.end();
+             ++itr)
         {
             (*itr)->useCursor(false);
         }
     }
 
     osg::Timer_t startOfFrameTick = osg::Timer::instance()->tick();
-    double targetFrameTime = 1.0/targetFrameRate;
+    double       targetFrameTime  = 1.0 / targetFrameRate;
 
     if (exportName.empty())
     {
@@ -859,24 +955,24 @@ int main( int argc, char **argv )
         bc.setPort(static_cast<short int>(socketNumber));
         rc.setPort(static_cast<short int>(socketNumber));
 
-        bool masterKilled = false;
+        bool          masterKilled = false;
         DataConverter scratchPad(1024);
 
-        while( !viewer.done() && !masterKilled)
+        while (!viewer.done() && !masterKilled)
         {
             // wait for all cull and draw threads to complete.
             viewer.advance();
 
             osg::Timer_t currentTick = osg::Timer::instance()->tick();
-            double deltaTime = osg::Timer::instance()->delta_s(startOfFrameTick, currentTick);
+            double       deltaTime   = osg::Timer::instance()->delta_s(startOfFrameTick, currentTick);
 
 
-            if (deltaTime<targetFrameTime)
+            if (deltaTime < targetFrameTime)
             {
-                OpenThreads::Thread::microSleep(static_cast<unsigned int>((targetFrameTime-deltaTime)*1000000.0));
+                OpenThreads::Thread::microSleep(static_cast<unsigned int>((targetFrameTime - deltaTime) * 1000000.0));
             }
 
-            startOfFrameTick =  osg::Timer::instance()->tick();
+            startOfFrameTick = osg::Timer::instance()->tick();
 
 #if 0
             if (kmcb)
@@ -890,12 +986,12 @@ int main( int argc, char **argv )
             sdlIntegration.update(viewer);
 #endif
 
-            if (P3DApplicationType==MASTER)
+            if (P3DApplicationType == MASTER)
             {
                 // take camera zero as the guide.
                 osg::Matrix modelview(viewer.getCamera()->getViewMatrix());
 
-                cp.setPacket(modelview,viewer.getFrameStamp());
+                cp.setPacket(modelview, viewer.getFrameStamp());
 
                 // cp.readEventQueue(viewer);
 
@@ -907,11 +1003,11 @@ int main( int argc, char **argv )
 
                 bc.setBuffer(scratchPad.startPtr(), scratchPad.numBytes());
 
-                std::cout << "bc.sync()"<<scratchPad.numBytes()<<std::endl;
+                std::cout << "bc.sync()" << scratchPad.numBytes() << std::endl;
 
                 bc.sync();
             }
-            else if (P3DApplicationType==SLAVE)
+            else if (P3DApplicationType == SLAVE)
             {
                 rc.setBuffer(scratchPad.startPtr(), scratchPad.numBytes());
 
@@ -924,7 +1020,7 @@ int main( int argc, char **argv )
 
                 if (cp.getMasterKilled())
                 {
-                    std::cout << "Received master killed."<<std::endl;
+                    std::cout << "Received master killed." << std::endl;
                     // break out of while (!done) loop since we've now want to shut down.
                     masterKilled = true;
                 }
@@ -936,14 +1032,14 @@ int main( int argc, char **argv )
 
             if (seh->getRequestReload())
             {
-                OSG_INFO<<"Reload requested"<<std::endl;
+                OSG_INFO << "Reload requested" << std::endl;
                 seh->setRequestReload(false);
                 int previous_ActiveSlide = seh->getActiveSlide();
                 int previous_ActiveLayer = seh->getActiveLayer();
 
                 // reset time so any event key generate
 
-                loadedModel = p3d::readShowFiles(arguments,cacheAllOption.get());
+                loadedModel = p3d::readShowFiles(arguments, cacheAllOption.get());
                 processLoadedModel(loadedModel, optimizer_options, cursorFileName);
 
                 if (!loadedModel)
@@ -956,23 +1052,22 @@ int main( int argc, char **argv )
                 seh->selectSlide(previous_ActiveSlide, previous_ActiveLayer);
 
                 continue;
-
             }
 
             // update the scene by traversing it with the update visitor which will
             // call all node update callbacks and animations.
             viewer.updateTraversal();
 
-            if (P3DApplicationType==SLAVE)
+            if (P3DApplicationType == SLAVE)
             {
                 osg::Matrix modelview;
-                cp.getModelView(modelview,camera_offset);
+                cp.getModelView(modelview, camera_offset);
 
                 viewer.getCamera()->setViewMatrix(modelview);
             }
 
             // fire off the cull and draw traversals of the scene.
-            if(!masterKilled)
+            if (!masterKilled)
                 viewer.renderingTraversals();
         }
     }
@@ -983,4 +1078,3 @@ int main( int argc, char **argv )
 
     return 0;
 }
-

@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #include <osgManipulator/TrackballDragger>
 #include <osgManipulator/AntiSquish>
@@ -27,43 +27,43 @@ using namespace osgManipulator;
 
 namespace
 {
+osg::Geometry* createCircleGeometry(float radius, unsigned int numSegments)
+{
+    const float    angleDelta   = 2.0f * osg::PI / (float)numSegments;
+    const float    r            = radius;
+    float          angle        = 0.0f;
+    osg::Vec3Array *vertexArray = new osg::Vec3Array(numSegments);
+    osg::Vec3Array *normalArray = new osg::Vec3Array(numSegments);
 
-    osg::Geometry* createCircleGeometry(float radius, unsigned int numSegments)
+    for (unsigned int i = 0; i < numSegments; ++i, angle += angleDelta)
     {
-        const float angleDelta = 2.0f*osg::PI/(float)numSegments;
-        const float r = radius;
-        float angle = 0.0f;
-        osg::Vec3Array* vertexArray = new osg::Vec3Array(numSegments);
-        osg::Vec3Array* normalArray = new osg::Vec3Array(numSegments);
-        for(unsigned int i = 0; i < numSegments; ++i,angle+=angleDelta)
-        {
-            float c = cosf(angle);
-            float s = sinf(angle);
-            (*vertexArray)[i].set(c*r,s*r,0.0f);
-            (*normalArray)[i].set(c,s,0.0f);
-        }
-        osg::Geometry* geometry = new osg::Geometry();
-        geometry->setVertexArray(vertexArray);
-        geometry->setNormalArray(normalArray, osg::Array::BIND_PER_VERTEX);
-        geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINE_LOOP,0,vertexArray->size()));
-        return geometry;
+        float c = cosf(angle);
+        float s = sinf(angle);
+        (*vertexArray)[i].set(c * r, s * r, 0.0f);
+        (*normalArray)[i].set(c, s, 0.0f);
     }
 
+    osg::Geometry *geometry = new osg::Geometry();
+    geometry->setVertexArray(vertexArray);
+    geometry->setNormalArray(normalArray, osg::Array::BIND_PER_VERTEX);
+    geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINE_LOOP, 0, vertexArray->size()));
+    return geometry;
+}
 }
 
 TrackballDragger::TrackballDragger(bool useAutoTransform)
 {
     if (useAutoTransform)
     {
-        float pixelSize = 50.0f;
-        osg::MatrixTransform* scaler = new osg::MatrixTransform;
+        float                pixelSize = 50.0f;
+        osg::MatrixTransform *scaler   = new osg::MatrixTransform;
         scaler->setMatrix(osg::Matrix::scale(pixelSize, pixelSize, pixelSize));
 
         osg::AutoTransform *at = new osg::AutoTransform;
         at->setAutoScaleToScreen(true);
         at->addChild(scaler);
 
-        AntiSquish* as = new AntiSquish;
+        AntiSquish *as = new AntiSquish;
         as->addChild(at);
         addChild(as);
 
@@ -102,28 +102,27 @@ TrackballDragger::TrackballDragger(bool useAutoTransform)
         addDragger(_xyzDragger.get());
     }
 
-    _axisLineWidth = 2.0f;
+    _axisLineWidth      = 2.0f;
     _pickCylinderHeight = 0.15f;
 
     setParentDragger(getParentDragger());
 }
 
 TrackballDragger::~TrackballDragger()
-{
-}
+{}
 
 void TrackballDragger::setupDefaultGeometry()
 {
     _geode = new osg::Geode;
     {
-        osg::TessellationHints* hints = new osg::TessellationHints;
+        osg::TessellationHints *hints = new osg::TessellationHints;
         hints->setCreateTop(false);
         hints->setCreateBottom(false);
         hints->setCreateBackFace(false);
 
         _cylinder = new osg::Cylinder;
         _cylinder->setHeight(_pickCylinderHeight);
-        osg::ShapeDrawable* cylinderDrawable = new osg::ShapeDrawable(_cylinder.get(), hints);
+        osg::ShapeDrawable *cylinderDrawable = new osg::ShapeDrawable(_cylinder.get(), hints);
         _geode->addDrawable(cylinderDrawable);
         setDrawableToAlwaysCull(*cylinderDrawable);
         _geode->addDrawable(createCircleGeometry(1.0f, 100));
@@ -131,16 +130,15 @@ void TrackballDragger::setupDefaultGeometry()
 
     // Draw in line mode.
     {
-        osg::PolygonMode* polymode = new osg::PolygonMode;
-        polymode->setMode(osg::PolygonMode::FRONT_AND_BACK,osg::PolygonMode::LINE);
-        _geode->getOrCreateStateSet()->setAttributeAndModes(polymode,osg::StateAttribute::OVERRIDE|osg::StateAttribute::ON);
+        osg::PolygonMode *polymode = new osg::PolygonMode;
+        polymode->setMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
+        _geode->getOrCreateStateSet()->setAttributeAndModes(polymode, osg::StateAttribute::OVERRIDE | osg::StateAttribute::ON);
         _lineWidth = new osg::LineWidth(_axisLineWidth);
         _geode->getOrCreateStateSet()->setAttributeAndModes(_lineWidth.get(), osg::StateAttribute::ON);
 
 #if !defined(OSG_GLES2_AVAILABLE)
         _geode->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
 #endif
-
     }
 
     // Add line to all the individual 1D draggers.
@@ -162,15 +160,15 @@ void TrackballDragger::setupDefaultGeometry()
     }
 
     // Send different colors for each dragger.
-    _xDragger->setColor(osg::Vec4(1.0f,0.0f,0.0f,1.0f));
-    _yDragger->setColor(osg::Vec4(0.0f,1.0f,0.0f,1.0f));
-    _zDragger->setColor(osg::Vec4(0.0f,0.0f,1.0f,1.0f));
+    _xDragger->setColor(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f));
+    _yDragger->setColor(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
+    _zDragger->setColor(osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f));
 
     // Add invisible sphere for pick the spherical dragger.
     {
-        osg::Drawable* sphereDrawable = new osg::ShapeDrawable(new osg::Sphere());
+        osg::Drawable *sphereDrawable = new osg::ShapeDrawable(new osg::Sphere());
         setDrawableToAlwaysCull(*sphereDrawable);
-        osg::Geode* sphereGeode = new osg::Geode;
+        osg::Geode *sphereGeode = new osg::Geode;
         sphereGeode->addDrawable(sphereDrawable);
 
         _xyzDragger->addChild(sphereGeode);

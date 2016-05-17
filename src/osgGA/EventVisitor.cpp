@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgGA/EventVisitor>
 
 #include <algorithm>
@@ -18,25 +18,25 @@ using namespace osg;
 using namespace osgGA;
 
 EventVisitor::EventVisitor()
-:    NodeVisitor(EVENT_VISITOR,TRAVERSE_ACTIVE_CHILDREN),
+    :    NodeVisitor(EVENT_VISITOR, TRAVERSE_ACTIVE_CHILDREN),
     _handled(false)
-{
-}
+{}
 
 
 EventVisitor::~EventVisitor()
-{
-}
+{}
 
-void EventVisitor::addEvent(Event* event)
+void EventVisitor::addEvent(Event *event)
 {
     _events.push_back(event);
 }
 
-void EventVisitor::removeEvent(Event* event)
+void EventVisitor::removeEvent(Event *event)
 {
     EventQueue::Events::iterator itr = std::find(_events.begin(), _events.end(), event);
-    if (itr!=_events.end()) _events.erase(itr);
+
+    if (itr != _events.end())
+        _events.erase(itr);
 }
 
 

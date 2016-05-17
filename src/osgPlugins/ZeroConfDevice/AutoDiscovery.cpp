@@ -11,7 +11,7 @@
 
 #ifdef __APPLE__
 #include "AutoDiscoveryBonjourImpl.h"
-#else 
+#else
 #include "AutoDiscoveryWinImpl.h"
 #endif
 
@@ -21,46 +21,49 @@
 
 
 DiscoveredServicesCallback::DiscoveredServicesCallback()
-:    osg::Referenced() 
-{
-}
+    :    osg::Referenced()
+{}
 
 
-AutoDiscovery::~AutoDiscovery() 
+AutoDiscovery::~AutoDiscovery()
 {
-    if (_clientImpl) {
+    if (_clientImpl)
+    {
         delete _clientImpl;
         _clientImpl = NULL;
     }
+
     deregisterServices();
 }
 
 
-void AutoDiscovery::registerService(const std::string& type, unsigned int port)
+void AutoDiscovery::registerService(const std::string&type, unsigned int port)
 {
     deregisterServices();
     _serverImpl = new AutoDiscoveryServerImpl(type, port);
 }
 
-void AutoDiscovery::deregisterServices() 
+void AutoDiscovery::deregisterServices()
 {
-    if (_serverImpl) {
+    if (_serverImpl)
+    {
         delete _serverImpl;
-        _serverImpl = NULL; 
+        _serverImpl = NULL;
     }
 }
 
 
 
-void AutoDiscovery::update() 
+void AutoDiscovery::update()
 {
     if (_serverImpl)
         _serverImpl->update();
+
     if (_clientImpl)
         _clientImpl->update();
 }
 
-void AutoDiscovery::discoverServices(const std::string& type, DiscoveredServicesCallback* cb)
+void AutoDiscovery::discoverServices(const std::string&type, DiscoveredServicesCallback *cb)
 {
     _clientImpl = new AutoDiscoveryClientImpl(type, cb);
 }

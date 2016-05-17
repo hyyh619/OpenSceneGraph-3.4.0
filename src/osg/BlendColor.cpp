@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/BlendColor>
 #include <osg/GLExtensions>
 #include <osg/State>
@@ -20,25 +20,23 @@ using namespace osg;
 
 
 BlendColor::BlendColor() :
-    _constantColor(1.0f,1.0f,1.0f,1.0f)
-{
-}
+    _constantColor(1.0f, 1.0f, 1.0f, 1.0f)
+{}
 
-BlendColor::BlendColor(const osg::Vec4& constantColor):
+BlendColor::BlendColor(const osg::Vec4&constantColor) :
     _constantColor(constantColor)
-{
-}
+{}
 
 BlendColor::~BlendColor()
-{
-}
+{}
 
-void BlendColor::apply(State& state) const
+void BlendColor::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (!extensions->isBlendColorSupported)
     {
-        OSG_WARN<<"Warning: BlendColor::apply(..) failed, BlendColor is not support by OpenGL driver."<<std::endl;
+        OSG_WARN << "Warning: BlendColor::apply(..) failed, BlendColor is not support by OpenGL driver." << std::endl;
         return;
     }
 

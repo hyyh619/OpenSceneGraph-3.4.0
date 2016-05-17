@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgTerrain/Layer>
 
@@ -26,8 +26,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool CompositeLayer_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool CompositeLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool CompositeLayer_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool CompositeLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(CompositeLayer_Proxy)
 (
@@ -38,9 +38,9 @@ REGISTER_DOTOSGWRAPPER(CompositeLayer_Proxy)
     CompositeLayer_writeLocalData
 );
 
-bool CompositeLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool CompositeLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgTerrain::CompositeLayer& layer = static_cast<osgTerrain::CompositeLayer&>(obj);
+    osgTerrain::CompositeLayer&layer = static_cast<osgTerrain::CompositeLayer&>(obj);
 
     bool itrAdvanced = false;
 
@@ -52,21 +52,22 @@ bool CompositeLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
 
         osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgTerrain::Locator>());
         locator = dynamic_cast<osgTerrain::Locator*>(readObject.get());
-        if (readObject.valid()) itrAdvanced = true;
+        if (readObject.valid())
+            itrAdvanced = true;
 
-        unsigned int minLevel=0;
-        if (fr.read("MinLevel",minLevel))
+        unsigned int minLevel = 0;
+        if (fr.read("MinLevel", minLevel))
         {
             itrAdvanced = true;
         }
 
         unsigned int maxLevel = MAXIMUM_NUMBER_OF_LEVELS;
-        if (fr.read("MaxLevel",maxLevel))
+        if (fr.read("MaxLevel", maxLevel))
         {
             itrAdvanced = true;
         }
 
-        if (fr.matchSequence("file %s") || fr.matchSequence("file %w") )
+        if (fr.matchSequence("file %s") || fr.matchSequence("file %w"))
         {
             layer.addLayer(fr[1].getStr());
             fr += 2;
@@ -77,16 +78,21 @@ bool CompositeLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
         {
             std::string setname;
             std::string filename;
-            osgTerrain::extractSetNameAndFileName(fr[1].getStr(),setname, filename);
+            osgTerrain::extractSetNameAndFileName(fr[1].getStr(), setname, filename);
             if (!filename.empty())
             {
-                osgTerrain::ProxyLayer* proxyLayer = new osgTerrain::ProxyLayer;
+                osgTerrain::ProxyLayer *proxyLayer = new osgTerrain::ProxyLayer;
                 proxyLayer->setFileName(filename);
                 proxyLayer->setName(setname);
 
-                if (locator.valid()) proxyLayer->setLocator(locator.get());
-                if (minLevel!=0) proxyLayer->setMinLevel(minLevel);
-                if (maxLevel!=MAXIMUM_NUMBER_OF_LEVELS) proxyLayer->setMaxLevel(maxLevel);
+                if (locator.valid())
+                    proxyLayer->setLocator(locator.get());
+
+                if (minLevel != 0)
+                    proxyLayer->setMinLevel(minLevel);
+
+                if (maxLevel != MAXIMUM_NUMBER_OF_LEVELS)
+                    proxyLayer->setMaxLevel(maxLevel);
 
 
                 layer.addLayer(proxyLayer);
@@ -99,7 +105,7 @@ bool CompositeLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
         else
         {
             osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgTerrain::Layer>());
-            osgTerrain::Layer* readLayer = dynamic_cast<osgTerrain::Layer*>(readObject.get());
+            osgTerrain::Layer         *readLayer = dynamic_cast<osgTerrain::Layer*>(readObject.get());
             if (readLayer)
             {
                 if (locator.valid())
@@ -108,52 +114,57 @@ bool CompositeLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
                     locator = 0;
                 }
 
-                if (minLevel!=0) readLayer->setMinLevel(minLevel);
-                if (maxLevel!=MAXIMUM_NUMBER_OF_LEVELS) readLayer->setMaxLevel(maxLevel);
+                if (minLevel != 0)
+                    readLayer->setMinLevel(minLevel);
+
+                if (maxLevel != MAXIMUM_NUMBER_OF_LEVELS)
+                    readLayer->setMaxLevel(maxLevel);
 
                 layer.addLayer(readLayer);
             }
 
-            if (readObject.valid()) itrAdvanced = true;
+            if (readObject.valid())
+                itrAdvanced = true;
         }
+    }
+    while (itrAdvanced);
 
-    } while (itrAdvanced);
-
-    if (locator.valid()) layer.setLocator(locator.get());
+    if (locator.valid())
+        layer.setLocator(locator.get());
 
     return itrAdvanced;
 }
 
-bool CompositeLayer_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool CompositeLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgTerrain::CompositeLayer& layer = static_cast<const osgTerrain::CompositeLayer&>(obj);
+    const osgTerrain::CompositeLayer&layer = static_cast<const osgTerrain::CompositeLayer&>(obj);
 
-    for(unsigned int i=0; i<layer.getNumLayers();++i)
+    for (unsigned int i = 0; i < layer.getNumLayers(); ++i)
     {
         if (layer.getLayer(i))
         {
-            const osgTerrain::ProxyLayer* proxyLayer = dynamic_cast<const osgTerrain::ProxyLayer*>(layer.getLayer(i));
+            const osgTerrain::ProxyLayer *proxyLayer = dynamic_cast<const osgTerrain::ProxyLayer*>(layer.getLayer(i));
             if (proxyLayer)
             {
                 if (!proxyLayer->getFileName().empty())
                 {
-                    const osgTerrain::Locator* locator = proxyLayer->getLocator();
+                    const osgTerrain::Locator *locator = proxyLayer->getLocator();
                     if (locator && !locator->getDefinedInFile())
                     {
                         fw.writeObject(*locator);
                     }
 
-                    if (proxyLayer->getMinLevel()!=0)
+                    if (proxyLayer->getMinLevel() != 0)
                     {
-                        fw.indent()<<"MinLevel "<<proxyLayer->getMinLevel()<<std::endl;
+                        fw.indent() << "MinLevel " << proxyLayer->getMinLevel() << std::endl;
                     }
 
-                    if (proxyLayer->getMaxLevel()!=MAXIMUM_NUMBER_OF_LEVELS)
+                    if (proxyLayer->getMaxLevel() != MAXIMUM_NUMBER_OF_LEVELS)
                     {
-                        fw.indent()<<"MaxLevel "<<proxyLayer->getMaxLevel()<<std::endl;
+                        fw.indent() << "MaxLevel " << proxyLayer->getMaxLevel() << std::endl;
                     }
 
-                    fw.indent()<<"ProxyLayer "<<proxyLayer->getCompoundName()<<std::endl;
+                    fw.indent() << "ProxyLayer " << proxyLayer->getCompoundName() << std::endl;
                 }
             }
             else
@@ -163,7 +174,7 @@ bool CompositeLayer_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
         }
         else if (!layer.getFileName(i).empty())
         {
-            fw.indent()<<"file "<<layer.getCompoundName(i)<<std::endl;
+            fw.indent() << "file " << layer.getCompoundName(i) << std::endl;
         }
     }
 

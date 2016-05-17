@@ -39,32 +39,35 @@ using namespace std;
 
 
 /**********************************************************************
- *
- * DirectX mesh.
- *
- **********************************************************************/
+*
+* DirectX mesh.
+*
+**********************************************************************/
 
-Mesh::Mesh(Object * obj)
+Mesh::Mesh(Object *obj)
 {
-    _obj = obj;
-    _normals = 0;
+    _obj           = obj;
+    _normals       = 0;
     _textureCoords = 0;
-    _materialList = 0;
+    _materialList  = 0;
 }
 
 void Mesh::clear()
 {
-    if (_normals) {
+    if (_normals)
+    {
         delete _normals;
         _normals = 0;
     }
 
-    if (_textureCoords) {
+    if (_textureCoords)
+    {
         delete _textureCoords;
         _textureCoords = 0;
     }
 
-    if (_materialList) {
+    if (_materialList)
+    {
         delete _materialList;
         _materialList = 0;
     }
@@ -72,10 +75,11 @@ void Mesh::clear()
 
 bool Mesh::generateNormals(float /*creaseAngle*/)
 {
-    //cerr << "*** generateNormals\n";
+    // cerr << "*** generateNormals\n";
 
     // Forget old normals
-    if (_normals) {
+    if (_normals)
+    {
         delete _normals;
         _normals = 0;
     }
@@ -87,14 +91,17 @@ bool Mesh::generateNormals(float /*creaseAngle*/)
     faceNormals.resize(_faces.size());
 
     unsigned int fi;
-    for (fi = 0; fi < _faces.size(); fi++) {
 
+    for (fi = 0; fi < _faces.size(); fi++)
+    {
         vector<Vector> poly;
-        unsigned int n = _faces[fi].size();
+        unsigned int   n = _faces[fi].size();
 
         if (n < 3)
             continue;
-        for (unsigned int i = 0; i < n; i++) {
+
+        for (unsigned int i = 0; i < n; i++)
+        {
             unsigned int idx = _faces[fi][i];
             poly.push_back(_vertices[idx]);
         }
@@ -129,16 +136,18 @@ bool Mesh::generateNormals(float /*creaseAngle*/)
     _normals = new MeshNormals;
     _normals->normals.resize(_vertices.size());
 
-    for (unsigned int vi = 0; vi < _vertices.size(); vi++) {
-
-        Vector normal = { 0.0f, 0.0f, 0.0f };
+    for (unsigned int vi = 0; vi < _vertices.size(); vi++)
+    {
+        Vector       normal    = { 0.0f, 0.0f, 0.0f };
         unsigned int polyCount = 0;
 
         // Collect normals of polygons that share this vertex
         for (unsigned int fi = 0; fi < _faces.size(); fi++)
-            for (unsigned int i = 0; i < _faces[fi].size(); i++) {
+            for (unsigned int i = 0; i < _faces[fi].size(); i++)
+            {
                 unsigned int idx = _faces[fi][i];
-                if (idx == vi) {
+                if (idx == vi)
+                {
                     normal.x += faceNormals[fi].x;
                     normal.y += faceNormals[fi].y;
                     normal.z += faceNormals[fi].z;
@@ -146,8 +155,9 @@ bool Mesh::generateNormals(float /*creaseAngle*/)
                 }
             }
 
-        //OSG_INFO << "vertex " << vi << " used by " << polyCount << " faces\n";
-        if (polyCount > 1) {
+        // OSG_INFO << "vertex " << vi << " used by " << polyCount << " faces\n";
+        if (polyCount > 1)
+        {
             float polyCountRecip = 1.0f / (float) polyCount;
             normal.x *= polyCountRecip;
             normal.y *= polyCountRecip;
@@ -161,6 +171,7 @@ bool Mesh::generateNormals(float /*creaseAngle*/)
 
     // Copy face mesh to normals mesh
     _normals->faceNormals.resize(_faces.size());
+
     for (fi = 0; fi < _faces.size(); fi++)
         _normals->faceNormals[fi] = _faces[fi];
 
@@ -168,39 +179,44 @@ bool Mesh::generateNormals(float /*creaseAngle*/)
 }
 
 // Parse 'Mesh'
-void Mesh::parseMesh(std::istream& fin)
+void Mesh::parseMesh(std::istream&fin)
 {
     char buf[256];
+
     vector<string> token;
 
     unsigned int nVertices = 0, nFaces = 0;
 
-    //cerr << "*** Mesh\n";
-    while (fin.getline(buf, sizeof(buf))) {
-
+    // cerr << "*** Mesh\n";
+    while (fin.getline(buf, sizeof(buf)))
+    {
         // Tokenize
         token.clear();
         tokenize(buf, token);
         if (token.size() == 0)
             continue;
 
-        //cerr << "*** Mesh token=" << token[0] << endl;
-        if (strrchr(buf, '}') != 0) {
+        // cerr << "*** Mesh token=" << token[0] << endl;
+        if (strrchr(buf, '}') != 0)
+        {
             break;
         }
-        else if (strrchr(buf, '{') != 0) {
+        else if (strrchr(buf, '{') != 0)
+        {
             if (token[0] == "MeshMaterialList")
                 parseMeshMaterialList(fin);
             else if (token[0] == "MeshNormals")
                 parseMeshNormals(fin);
             else if (token[0] == "MeshTextureCoords")
                 readMeshTexCoords(fin);
-            else {
-                //cerr << "!!! Mesh: Begin section " << token[0] << endl;
+            else
+            {
+                // cerr << "!!! Mesh: Begin section " << token[0] << endl;
                 _obj->parseSection(fin);
             }
         }
-        else if (nVertices == 0) {
+        else if (nVertices == 0)
+        {
             // Vertices
             nVertices = atoi(token[0].c_str());
             readVector(fin, _vertices, nVertices);
@@ -210,7 +226,8 @@ void Mesh::parseMesh(std::istream& fin)
                 OSG_WARN << "DirectX loader: Error reading vertices; " << _vertices.size() << " instead of " << nVertices << endl;
             }
         }
-        else if (nFaces == 0) {
+        else if (nFaces == 0)
+        {
             // Faces
             nFaces = atoi(token[0].c_str());
             readMeshFace(fin, _faces, nFaces);
@@ -226,16 +243,17 @@ void Mesh::parseMesh(std::istream& fin)
 }
 
 // Parse 'MeshMaterialList'
-void Mesh::parseMeshMaterialList(std::istream& fin)
+void Mesh::parseMeshMaterialList(std::istream&fin)
 {
     char buf[256];
+
     vector<string> token;
 
     unsigned int nMaterials = 0, nFaceIndices = 0;
 
-    //cerr << "*** MeshMaterialList\n";
-    while (fin.getline(buf, sizeof(buf))) {
-
+    // cerr << "*** MeshMaterialList\n";
+    while (fin.getline(buf, sizeof(buf)))
+    {
         // Tokenize
         token.clear();
         tokenize(buf, token);
@@ -246,17 +264,18 @@ void Mesh::parseMeshMaterialList(std::istream& fin)
         // material which was declared globally
         string materialName = token[0];
         // could be given as "{ someName }" which more than 1 tokens
-        if (materialName == "{" && token.size()>1)
+        if (materialName == "{" && token.size() > 1)
         {
             materialName = token[1];
         }
         // or could be given as "{someName}" which would be in token[0]
-        else if (materialName.size() > 2 && materialName[0] == '{' && materialName[materialName.size()-1] == '}')
+        else if (materialName.size() > 2 && materialName[0] == '{' && materialName[materialName.size() - 1] == '}')
         {
             // remove curly brackets
-            materialName = materialName.substr(1, materialName.size()-2);
+            materialName = materialName.substr(1, materialName.size() - 2);
         }
-        Material * material = _obj->findMaterial(materialName);
+
+        Material *material = _obj->findMaterial(materialName);
 
         if (material)
         {
@@ -266,28 +285,33 @@ void Mesh::parseMeshMaterialList(std::istream& fin)
 
         if (strrchr(buf, '}') != 0)
             break;
-        else if (strrchr(buf, '{') != 0) {
-            if (token[0] == "Material") {
+        else if (strrchr(buf, '{') != 0)
+        {
+            if (token[0] == "Material")
+            {
                 Material mm;
                 parseMaterial(fin, mm);
                 _materialList->material.push_back(mm);
-                //cerr << "num mat=" << _materialList->material.size() << endl;
+                // cerr << "num mat=" << _materialList->material.size() << endl;
             }
-            else {
-                //cerr << "!!! MeshMaterialList: Begin section " << token[0] << endl;
+            else
+            {
+                // cerr << "!!! MeshMaterialList: Begin section " << token[0] << endl;
                 _obj->parseSection(fin);
             }
         }
-        else if (nMaterials == 0) {
+        else if (nMaterials == 0)
+        {
             // Create MeshMaterialList
             if (!_materialList)
                 _materialList = new MeshMaterialList;
 
             // Materials
             nMaterials = atoi(token[0].c_str());
-            //cerr << "expecting num Materials=" << nMaterials << endl;
+            // cerr << "expecting num Materials=" << nMaterials << endl;
         }
-        else if (nFaceIndices == 0) {
+        else if (nFaceIndices == 0)
+        {
             // Face indices
             nFaceIndices = atoi(token[0].c_str());
             readIndexList(fin, _materialList->faceIndices, nFaceIndices);
@@ -306,16 +330,17 @@ void Mesh::parseMeshMaterialList(std::istream& fin)
 }
 
 // Parse 'MeshNormals'
-void Mesh::parseMeshNormals(std::istream& fin)
+void Mesh::parseMeshNormals(std::istream&fin)
 {
     char buf[256];
+
     vector<string> token;
 
     unsigned int nNormals = 0, nFaceNormals = 0;
 
-    //cerr << "*** MeshNormals\n";
-    while (fin.getline(buf, sizeof(buf))) {
-
+    // cerr << "*** MeshNormals\n";
+    while (fin.getline(buf, sizeof(buf)))
+    {
         // Tokenize
         token.clear();
         tokenize(buf, token);
@@ -324,7 +349,8 @@ void Mesh::parseMeshNormals(std::istream& fin)
 
         if (strrchr(buf, '}') != 0)
             break;
-        else if (nNormals == 0) {
+        else if (nNormals == 0)
+        {
             // Create MeshNormals
             if (!_normals)
                 _normals = new MeshNormals;
@@ -344,7 +370,8 @@ void Mesh::parseMeshNormals(std::istream& fin)
                 _normals->normals[i].normalize();
 #endif
         }
-        else if (nFaceNormals == 0) {
+        else if (nFaceNormals == 0)
+        {
             // Face normals
             nFaceNormals = atoi(token[0].c_str());
             readMeshFace(fin, _normals->faceNormals, nFaceNormals);
@@ -358,16 +385,17 @@ void Mesh::parseMeshNormals(std::istream& fin)
 }
 
 // Read 'MeshTextureCoords'
-void Mesh::readMeshTexCoords(std::istream& fin)
+void Mesh::readMeshTexCoords(std::istream&fin)
 {
     char buf[256];
+
     vector<string> token;
 
     unsigned int nTextureCoords = 0;
 
-    //cerr << "*** MeshTextureCoords\n";
-    while (fin.getline(buf, sizeof(buf))) {
-
+    // cerr << "*** MeshTextureCoords\n";
+    while (fin.getline(buf, sizeof(buf)))
+    {
         // Tokenize
         token.clear();
         tokenize(buf, token);

@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ClearNode_readLocalData(Object& obj, Input& fr);
-bool ClearNode_writeLocalData(const Object& obj, Output& fw);
+bool ClearNode_readLocalData(Object&obj, Input&fr);
+bool ClearNode_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 
@@ -32,11 +32,11 @@ REGISTER_DOTOSGWRAPPER(ClearNode)
     &ClearNode_writeLocalData
 );
 
-bool ClearNode_readLocalData(Object& obj, Input& fr)
+bool ClearNode_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    ClearNode& es = static_cast<ClearNode&>(obj);
+    ClearNode&es = static_cast<ClearNode&>(obj);
 
     if (fr.matchSequence("requiresClear"))
     {
@@ -44,17 +44,17 @@ bool ClearNode_readLocalData(Object& obj, Input& fr)
         {
             es.setRequiresClear(true);
             iteratorAdvanced = true;
-            fr+=2;
+            fr              += 2;
         }
         else if (fr[1].matchWord("FALSE"))
         {
             es.setRequiresClear(false);
             iteratorAdvanced = true;
-            fr+=2;
+            fr              += 2;
         }
     }
 
-    osg::Vec4 vec4(0.0f,0.0f,0.0f,1.0f);
+    osg::Vec4 vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
     if (fr[0].matchWord("clearColor") &&
         fr[1].getFloat(vec4[0]) &&
@@ -63,7 +63,7 @@ bool ClearNode_readLocalData(Object& obj, Input& fr)
         fr[4].getFloat(vec4[3]))
     {
         es.setClearColor(vec4);
-        fr+=5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
@@ -71,11 +71,11 @@ bool ClearNode_readLocalData(Object& obj, Input& fr)
     {
         if (fr[1].isUInt())
         {
-            unsigned int value=0;
+            unsigned int value = 0;
             fr[1].getUInt(value);
             es.setClearMask(static_cast<GLbitfield>(value));
             iteratorAdvanced = true;
-            fr+=2;
+            fr              += 2;
         }
     }
 
@@ -83,22 +83,22 @@ bool ClearNode_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool ClearNode_writeLocalData(const Object& obj, Output& fw)
+bool ClearNode_writeLocalData(const Object&obj, Output&fw)
 {
-    const ClearNode& es = static_cast<const ClearNode&>(obj);
+    const ClearNode&es = static_cast<const ClearNode&>(obj);
 
     fw.indent() << "requiresClear ";
     if (es.getRequiresClear())
     {
-        fw<<"TRUE"<< std::endl;
+        fw << "TRUE" << std::endl;
     }
     else
     {
-        fw<<"FALSE"<< std::endl;
+        fw << "FALSE" << std::endl;
     }
 
-    fw.indent() << "clearColor "<<es.getClearColor()<< std::endl;
-    fw.indent() << "clearMask "<<static_cast<unsigned int>(es.getClearMask())<< std::endl;
+    fw.indent() << "clearColor " << es.getClearColor() << std::endl;
+    fw.indent() << "clearMask " << static_cast<unsigned int>(es.getClearMask()) << std::endl;
 
     return true;
 }

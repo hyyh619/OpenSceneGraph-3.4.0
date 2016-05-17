@@ -9,53 +9,54 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Drawable_readLocalData(Object& obj, Input& fr);
-bool Drawable_writeLocalData(const Object& obj, Output& fw);
+bool Drawable_readLocalData(Object&obj, Input&fr);
+bool Drawable_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Drawable)
-(   NULL,
+    (NULL,
     "Drawable",
     "Object Drawable",
     &Drawable_readLocalData,
     &Drawable_writeLocalData
-);
+    );
 
-bool Drawable_readLocalData(Object& obj, Input& fr)
+bool Drawable_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    Drawable& drawable = static_cast<Drawable&>(obj);
+    Drawable&drawable = static_cast<Drawable&>(obj);
 
-    osg::StateSet* readState = fr.readObjectOfType<osg::StateSet>();
+    osg::StateSet *readState = fr.readObjectOfType<osg::StateSet>();
+
     if (readState)
     {
         drawable.setStateSet(readState);
         iteratorAdvanced = true;
     }
 
-    Shape* shape = fr.readObjectOfType<Shape>();
+    Shape *shape = fr.readObjectOfType<Shape>();
     if (shape)
     {
         drawable.setShape(shape);
         iteratorAdvanced = true;
     }
 
-    Drawable::UpdateCallback* uc = fr.readObjectOfType<Drawable::UpdateCallback>();
+    Drawable::UpdateCallback *uc = fr.readObjectOfType<Drawable::UpdateCallback>();
     if (uc)
     {
         drawable.setUpdateCallback(uc);
         iteratorAdvanced = true;
     }
 
-    Drawable::CullCallback* cc = fr.readObjectOfType<Drawable::CullCallback>();
+    Drawable::CullCallback *cc = fr.readObjectOfType<Drawable::CullCallback>();
     if (cc)
     {
         drawable.setCullCallback(cc);
         iteratorAdvanced = true;
     }
 
-    Drawable::DrawCallback* dc = fr.readObjectOfType<Drawable::DrawCallback>();
+    Drawable::DrawCallback *dc = fr.readObjectOfType<Drawable::DrawCallback>();
     if (dc)
     {
         drawable.setDrawCallback(dc);
@@ -72,11 +73,11 @@ bool Drawable_readLocalData(Object& obj, Input& fr)
         fr[5].getFloat(bb.yMax());
         fr[6].getFloat(bb.zMax());
         drawable.setInitialBound(bb);
-        fr += 7;
+        fr              += 7;
         iteratorAdvanced = true;
     }
 
-    Drawable::ComputeBoundingBoxCallback* cbc = fr.readObjectOfType<Drawable::ComputeBoundingBoxCallback>();
+    Drawable::ComputeBoundingBoxCallback *cbc = fr.readObjectOfType<Drawable::ComputeBoundingBoxCallback>();
     if (cbc)
     {
         drawable.setComputeBoundingBoxCallback(cbc);
@@ -88,13 +89,13 @@ bool Drawable_readLocalData(Object& obj, Input& fr)
         if (fr[1].matchWord("TRUE"))
         {
             drawable.setSupportsDisplayList(true);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
         else if (fr[1].matchWord("FALSE"))
         {
             drawable.setSupportsDisplayList(false);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
     }
@@ -104,13 +105,13 @@ bool Drawable_readLocalData(Object& obj, Input& fr)
         if (fr[1].matchWord("TRUE"))
         {
             drawable.setUseDisplayList(true);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
         else if (fr[1].matchWord("FALSE"))
         {
             drawable.setUseDisplayList(false);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
     }
@@ -120,13 +121,13 @@ bool Drawable_readLocalData(Object& obj, Input& fr)
         if (fr[1].matchWord("TRUE"))
         {
             drawable.setUseVertexBufferObjects(true);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
         else if (fr[1].matchWord("FALSE"))
         {
             drawable.setUseVertexBufferObjects(false);
-            fr+=2;
+            fr              += 2;
             iteratorAdvanced = true;
         }
     }
@@ -135,9 +136,9 @@ bool Drawable_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool Drawable_writeLocalData(const Object& obj, Output& fw)
+bool Drawable_writeLocalData(const Object&obj, Output&fw)
 {
-    const Drawable& drawable = static_cast<const Drawable&>(obj);
+    const Drawable&drawable = static_cast<const Drawable&>(obj);
 
     if (drawable.getStateSet())
     {
@@ -172,9 +173,9 @@ bool Drawable_writeLocalData(const Object& obj, Output& fw)
 
     if (drawable.getInitialBound().valid())
     {
-        const osg::BoundingBox& bb = drawable.getInitialBound();
-        fw.indent()<<"initialBound "<<bb.xMin()<<" "<<bb.yMin()<<" "<<bb.zMin()<<" "
-                                    <<bb.xMax()<<" "<<bb.yMax()<<" "<<bb.zMax()<<std::endl;
+        const osg::BoundingBox            &bb = drawable.getInitialBound();
+        fw.indent() << "initialBound " << bb.xMin() << " " << bb.yMin() << " " << bb.zMin() << " "
+                    << bb.xMax() << " " << bb.yMax() << " " << bb.zMax() << std::endl;
     }
 
     if (drawable.getComputeBoundingBoxCallback())
@@ -185,18 +186,24 @@ bool Drawable_writeLocalData(const Object& obj, Output& fw)
 
     if (!drawable.getSupportsDisplayList())
     {
-        fw.indent()<<"supportsDisplayList ";
-        if (drawable.getSupportsDisplayList()) fw << "TRUE" << std::endl;
-        else fw << "FALSE" << std::endl;
+        fw.indent() << "supportsDisplayList ";
+        if (drawable.getSupportsDisplayList())
+            fw << "TRUE" << std::endl;
+        else
+            fw << "FALSE" << std::endl;
     }
 
-    fw.indent()<<"useDisplayList ";
-    if (drawable.getUseDisplayList()) fw << "TRUE" << std::endl;
-    else fw << "FALSE" << std::endl;
+    fw.indent() << "useDisplayList ";
+    if (drawable.getUseDisplayList())
+        fw << "TRUE" << std::endl;
+    else
+        fw << "FALSE" << std::endl;
 
-    fw.indent()<<"useVertexBufferObjects ";
-    if (drawable.getUseVertexBufferObjects()) fw << "TRUE" << std::endl;
-    else fw << "FALSE" << std::endl;
+    fw.indent() << "useVertexBufferObjects ";
+    if (drawable.getUseVertexBufferObjects())
+        fw << "TRUE" << std::endl;
+    else
+        fw << "FALSE" << std::endl;
 
     return true;
 }

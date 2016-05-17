@@ -13,19 +13,24 @@
 #include <osgFX/Outline>
 
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    osg::ArgumentParser arguments(&argc,argv);
-    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName()+" [options] <file>");
-    arguments.getApplicationUsage()->addCommandLineOption("--testOcclusion","Test occlusion by other objects");
-    arguments.getApplicationUsage()->addCommandLineOption("-h or --help","Display this information");
+    osg::ArgumentParser arguments(&argc, argv);
+
+    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName() + " [options] <file>");
+    arguments.getApplicationUsage()->addCommandLineOption("--testOcclusion", "Test occlusion by other objects");
+    arguments.getApplicationUsage()->addCommandLineOption("-h or --help", "Display this information");
 
     bool testOcclusion = false;
-    while (arguments.read("--testOcclusion")) { testOcclusion = true; }
+
+    while (arguments.read("--testOcclusion"))
+    {
+        testOcclusion = true;
+    }
 
     // load outlined object
-    std::string modelFilename = arguments.argc() > 1 ? arguments[1] : "dumptruck.osgt";
-    osg::ref_ptr<osg::Node> outlineModel = osgDB::readNodeFile(modelFilename);
+    std::string             modelFilename = arguments.argc() > 1 ? arguments[1] : "dumptruck.osgt";
+    osg::ref_ptr<osg::Node> outlineModel  = osgDB::readNodeFile(modelFilename);
     if (!outlineModel)
     {
         osg::notify(osg::FATAL) << "Unable to load model '" << modelFilename << "'\n";
@@ -41,15 +46,15 @@ int main(int argc, char** argv)
         root->addChild(outline.get());
 
         outline->setWidth(8);
-        outline->setColor(osg::Vec4(1,1,0,1));
+        outline->setColor(osg::Vec4(1, 1, 0, 1));
         outline->addChild(outlineModel.get());
     }
 
     if (testOcclusion)
     {
         // load occluder
-        std::string occludedModelFilename = "cow.osgt";
-        osg::ref_ptr<osg::Node> occludedModel = osgDB::readNodeFile(occludedModelFilename);
+        std::string             occludedModelFilename = "cow.osgt";
+        osg::ref_ptr<osg::Node> occludedModel         = osgDB::readNodeFile(occludedModelFilename);
         if (!occludedModel)
         {
             osg::notify(osg::FATAL) << "Unable to load model '" << occludedModelFilename << "'\n";
@@ -57,8 +62,8 @@ int main(int argc, char** argv)
         }
 
         // occluder offset
-        const osg::BoundingSphere& bsphere = outlineModel->getBound();
-        const osg::Vec3 occluderOffset = osg::Vec3(0,1,0) * bsphere.radius() * 1.2f;
+        const osg::BoundingSphere&bsphere       = outlineModel->getBound();
+        const osg::Vec3          occluderOffset = osg::Vec3(0, 1, 0) * bsphere.radius() * 1.2f;
 
         // occluder behind outlined model
         osg::ref_ptr<osg::PositionAttitudeTransform> modelTransform0 = new osg::PositionAttitudeTransform;

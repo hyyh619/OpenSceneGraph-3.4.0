@@ -46,4 +46,3 @@ USE_SERIALIZER_WRAPPER(osgParticleSmokeTrailEffect)
 USE_SERIALIZER_WRAPPER(osgParticleVariableRateCounter)
 
 extern "C" void wrapper_serializer_library_osgParticle(void) {}
-

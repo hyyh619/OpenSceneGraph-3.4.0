@@ -9,28 +9,30 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgDB/StreamOperator>
 #include <osgDB/InputStream>
 
 using namespace osgDB;
 
-void InputIterator::readComponentArray( char* s, unsigned int numElements, unsigned int numComponentsPerElements, unsigned int componentSizeInBytes)
+void InputIterator::readComponentArray(char *s, unsigned int numElements, unsigned int numComponentsPerElements, unsigned int componentSizeInBytes)
 {
     unsigned int size = numElements * numComponentsPerElements * componentSizeInBytes;
-    if ( size>0 )
-    {
-        readCharArray( s, size);
 
-        if (_byteSwap && componentSizeInBytes>1)
+    if (size > 0)
+    {
+        readCharArray(s, size);
+
+        if (_byteSwap && componentSizeInBytes > 1)
         {
-            char* ptr = s;
-            for(unsigned int i=0; i<numElements; ++i)
+            char *ptr = s;
+
+            for (unsigned int i = 0; i < numElements; ++i)
             {
-                for(unsigned int j=0; j<numComponentsPerElements; ++j)
+                for (unsigned int j = 0; j < numComponentsPerElements; ++j)
                 {
-                    osg::swapBytes( ptr, componentSizeInBytes );
+                    osg::swapBytes(ptr, componentSizeInBytes);
                     ptr += componentSizeInBytes;
                 }
             }
@@ -38,9 +40,10 @@ void InputIterator::readComponentArray( char* s, unsigned int numElements, unsig
     }
 }
 
-void InputIterator::throwException( const std::string& msg )
+void InputIterator::throwException(const std::string&msg)
 {
-    if (_inputStream) _inputStream->throwException(msg);
-    else OSG_WARN << msg << std::endl;
+    if (_inputStream)
+        _inputStream->throwException(msg);
+    else
+        OSG_WARN << msg << std::endl;
 }
-

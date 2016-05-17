@@ -1,8 +1,8 @@
 /*
- The following code was based on code from the following location:
+   The following code was based on code from the following location:
     http://www.graphics.cornell.edu/online/formats/rgbe/
 
- It includes the following information :
+   It includes the following information :
 
     "This file contains code to read and write four byte rgbe file format
     developed by Greg Ward.  It handles the conversions between rgbe and
@@ -18,8 +18,8 @@
     written by Bruce Walter  (bjw@graphics.cornell.edu)  5/26/95
     based on code written by Greg Ward"
 
- modified for OSG September 2007 david.spilling@gmail.com
-*/
+   modified for OSG September 2007 david.spilling@gmail.com
+ */
 
 #ifndef HDRWRITER_H
 #define HDRWRITER_H
@@ -29,26 +29,27 @@
 #include <iosfwd>
 #include <math.h>
 
-class HDRWriter {
+class HDRWriter
+{
 public:
-    // all return "true" for success, "false" for failure.
-    static bool writeRLE(const osg::Image *img, std::ostream& fout);
-    static bool writeRAW(const osg::Image *img, std::ostream& fout);
-    static bool writeHeader(const osg::Image *img, std::ostream& fout);
+// all return "true" for success, "false" for failure.
+static bool writeRLE(const osg::Image *img, std::ostream&fout);
+static bool writeRAW(const osg::Image *img, std::ostream&fout);
+static bool writeHeader(const osg::Image *img, std::ostream&fout);
 
 protected:
 
 // can read or write pixels in chunks of any size including single pixels
-    static bool writeNoRLE( std::ostream& fout, const osg::Image* image);
-    static bool writePixelsRAW(  std::ostream& fout, unsigned char* data, int numpixels);
+static bool writeNoRLE(std::ostream&fout, const osg::Image *image);
+static bool writePixelsRAW(std::ostream&fout, unsigned char *data, int numpixels);
 
 // read or write run length encoded files
 // must be called to read or write whole scanlines
-    static bool writeBytesRLE(std::ostream& fout, unsigned char *data, int numbytes);
+static bool writeBytesRLE(std::ostream&fout, unsigned char *data, int numbytes);
 
 // inline conversions
-    inline static void float2rgbe(unsigned char rgbe[4], float red, float green, float blue);
-    inline static void rgbe2float(float *red, float *green, float *blue, unsigned char rgbe[4]);
+inline static void float2rgbe(unsigned char rgbe[4], float red, float green, float blue);
+inline static void rgbe2float(float *red, float *green, float *blue, unsigned char rgbe[4]);
 };
 
 
@@ -56,22 +57,28 @@ protected:
 /* note: you can remove the "inline"s if your compiler complains about it */
 inline void HDRWriter::float2rgbe(unsigned char rgbe[4], float red, float green, float blue)
 {
-  float v;
-  int e;
+    float v;
+    int   e;
 
-  v = red;
-  if (green > v) v = green;
-  if (blue > v) v = blue;
-  if (v < 1e-32) {
-    rgbe[0] = rgbe[1] = rgbe[2] = rgbe[3] = 0;
-  }
-  else {
-    v = frexp(v,&e) * 256.0/v;
-    rgbe[0] = (unsigned char) (red * v);
-    rgbe[1] = (unsigned char) (green * v);
-    rgbe[2] = (unsigned char) (blue * v);
-    rgbe[3] = (unsigned char) (e + 128);
-  }
+    v = red;
+    if (green > v)
+        v = green;
+
+    if (blue > v)
+        v = blue;
+
+    if (v < 1e-32)
+    {
+        rgbe[0] = rgbe[1] = rgbe[2] = rgbe[3] = 0;
+    }
+    else
+    {
+        v       = frexp(v, &e) * 256.0 / v;
+        rgbe[0] = (unsigned char) (red * v);
+        rgbe[1] = (unsigned char) (green * v);
+        rgbe[2] = (unsigned char) (blue * v);
+        rgbe[3] = (unsigned char) (e + 128);
+    }
 }
 
 /* standard conversion from rgbe to float pixels */
@@ -79,16 +86,17 @@ inline void HDRWriter::float2rgbe(unsigned char rgbe[4], float red, float green,
 /*       in the range [0,1] to map back into the range [0,1].            */
 inline void HDRWriter::rgbe2float(float *red, float *green, float *blue, unsigned char rgbe[4])
 {
-  float f;
+    float f;
 
-  if (rgbe[3]) {   /*nonzero pixel*/
-    f = ldexp(1.0,rgbe[3]-(int)(128+8));
-    *red = rgbe[0] * f;
-    *green = rgbe[1] * f;
-    *blue = rgbe[2] * f;
-  }
-  else
-    *red = *green = *blue = 0.0;
+    if (rgbe[3])   /*nonzero pixel*/
+    {
+        f      = ldexp(1.0, rgbe[3] - (int)(128 + 8));
+        *red   = rgbe[0] * f;
+        *green = rgbe[1] * f;
+        *blue  = rgbe[2] * f;
+    }
+    else
+        *red = *green = *blue = 0.0;
 }
 
 #endif

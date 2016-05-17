@@ -17,36 +17,33 @@
 
 
 
-namespace triangle_stripper {
-
-    namespace detail {
-
-
-
-
+namespace triangle_stripper
+{
+namespace detail
+{
 class cache_simulator
 {
 public:
-    cache_simulator();
+cache_simulator();
 
-    void clear();
-    void resize(size_t Size);
-    void reset();
-    void push_cache_hits(bool Enabled = true);
-    size_t size() const;
+void clear();
+void resize(size_t Size);
+void reset();
+void push_cache_hits(bool Enabled = true);
+size_t size() const;
 
-    void push(index i, bool CountCacheHit = false);
-    void merge(const cache_simulator & Backward, size_t PossibleOverlap);
+void push(index i, bool CountCacheHit = false);
+void merge(const cache_simulator&Backward, size_t PossibleOverlap);
 
-    void reset_hitcount();
-    size_t hitcount() const;
+void reset_hitcount();
+size_t hitcount() const;
 
 protected:
-    typedef std::deque<index> indices_deque;
+typedef std::deque<index> indices_deque;
 
-    indices_deque    m_Cache;
-    size_t            m_NbHits;
-    bool            m_PushHits;
+indices_deque m_Cache;
+size_t        m_NbHits;
+bool          m_PushHits;
 };
 
 
@@ -59,10 +56,8 @@ protected:
 
 inline cache_simulator::cache_simulator()
     : m_NbHits(0),
-      m_PushHits(true)
-{
-
-}
+    m_PushHits(true)
+{}
 
 
 inline void cache_simulator::clear()
@@ -81,6 +76,7 @@ inline void cache_simulator::resize(const size_t Size)
 inline void cache_simulator::reset()
 {
     std::fill(m_Cache.begin(), m_Cache.end(), (std::numeric_limits<index>::max)());
+
     reset_hitcount();
 }
 
@@ -99,27 +95,27 @@ inline size_t cache_simulator::size() const
 
 inline void cache_simulator::push(const index i, const bool CountCacheHit)
 {
-    if (CountCacheHit || m_PushHits) {
-
-        if (std::find(m_Cache.begin(), m_Cache.end(), i) != m_Cache.end()) {
-
+    if (CountCacheHit || m_PushHits)
+    {
+        if (std::find(m_Cache.begin(), m_Cache.end(), i) != m_Cache.end())
+        {
             // Should we count the cache hits?
             if (CountCacheHit)
                 ++m_NbHits;
-            
+
             // Should we not push the index into the cache if it's a cache hit?
-            if (! m_PushHits)
+            if (!m_PushHits)
                 return;
         }
     }
-        
+
     // Manage the indices cache as a FIFO structure
     m_Cache.push_front(i);
     m_Cache.pop_back();
 }
 
 
-inline void cache_simulator::merge(const cache_simulator & Backward, const size_t PossibleOverlap)
+inline void cache_simulator::merge(const cache_simulator&Backward, const size_t PossibleOverlap)
 {
     const size_t Overlap = (std::min)(PossibleOverlap, size());
 
@@ -140,12 +136,7 @@ inline size_t cache_simulator::hitcount() const
 {
     return m_NbHits;
 }
-
-
-
-
-    } // namespace detail
-
+}     // namespace detail
 } // namespace triangle_stripper
 
 

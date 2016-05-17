@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/NodeTrackerCallback>
 #include <osg/NodeVisitor>
@@ -23,42 +23,42 @@ using namespace osg;
 
 class ApplyMatrixVisitor : public NodeVisitor
 {
-    public:
+public:
 
-        ApplyMatrixVisitor(const osg::Matrix& matrix):
-            _matrix(matrix) {}
+ApplyMatrixVisitor(const osg::Matrix&matrix) :
+    _matrix(matrix) {}
 
-        virtual void apply(Camera& camera)
-        {
-            camera.setViewMatrix(_matrix);
-        }
+virtual void apply(Camera&camera)
+{
+    camera.setViewMatrix(_matrix);
+}
 
-        virtual void apply(CameraView& cv)
-        {
-            cv.setPosition(_matrix.getTrans());
-            cv.setAttitude(_matrix.getRotate());
-        }
+virtual void apply(CameraView&cv)
+{
+    cv.setPosition(_matrix.getTrans());
+    cv.setAttitude(_matrix.getRotate());
+}
 
-        virtual void apply(MatrixTransform& mt)
-        {
-            mt.setMatrix(_matrix);
-        }
+virtual void apply(MatrixTransform&mt)
+{
+    mt.setMatrix(_matrix);
+}
 
-        virtual void apply(PositionAttitudeTransform& pat)
-        {
-            pat.setPosition(_matrix.getTrans());
-            pat.setAttitude(_matrix.getRotate());
-        }
+virtual void apply(PositionAttitudeTransform&pat)
+{
+    pat.setPosition(_matrix.getTrans());
+    pat.setAttitude(_matrix.getRotate());
+}
 
-        osg::Matrix _matrix;
+osg::Matrix _matrix;
 };
 
 
-void NodeTrackerCallback::setTrackNode(osg::Node* node)
+void NodeTrackerCallback::setTrackNode(osg::Node *node)
 {
     if (!node)
     {
-        OSG_NOTICE<<"NodeTrackerCallback::setTrackNode(Node*):  Unable to set tracked node due to null Node*"<<std::endl;
+        OSG_NOTICE << "NodeTrackerCallback::setTrackNode(Node*):  Unable to set tracked node due to null Node*" << std::endl;
         return;
     }
 
@@ -66,43 +66,50 @@ void NodeTrackerCallback::setTrackNode(osg::Node* node)
 
     if (!parentNodePaths.empty())
     {
-        OSG_INFO<<"NodeTrackerCallback::setTrackNode(Node*): Path set"<<std::endl;
+        OSG_INFO << "NodeTrackerCallback::setTrackNode(Node*): Path set" << std::endl;
         setTrackNodePath(parentNodePaths[0]);
     }
     else
     {
-        OSG_NOTICE<<"NodeTrackerCallback::setTrackNode(Node*): Unable to set tracked node due to empty parental path."<<std::endl;
+        OSG_NOTICE << "NodeTrackerCallback::setTrackNode(Node*): Unable to set tracked node due to empty parental path." << std::endl;
     }
 }
 
 osg::Node* NodeTrackerCallback::getTrackNode()
 {
     osg::NodePath nodePath;
-    if (_trackNodePath.getNodePath(nodePath)) return nodePath.back();
-    else return 0;
+
+    if (_trackNodePath.getNodePath(nodePath))
+        return nodePath.back();
+    else
+        return 0;
 }
 
 const osg::Node* NodeTrackerCallback::getTrackNode() const
 {
     osg::NodePath nodePath;
-    if (_trackNodePath.getNodePath(nodePath)) return nodePath.back();
-    else return 0;
+
+    if (_trackNodePath.getNodePath(nodePath))
+        return nodePath.back();
+    else
+        return 0;
 }
 
-void NodeTrackerCallback::operator()(Node* node, NodeVisitor* nv)
+void NodeTrackerCallback::operator()(Node *node, NodeVisitor *nv)
 {
-    if (nv->getVisitorType()==NodeVisitor::UPDATE_VISITOR)
+    if (nv->getVisitorType() == NodeVisitor::UPDATE_VISITOR)
     {
         update(*node);
     }
 
-    traverse(node,nv);
+    traverse(node, nv);
 }
 
 
-void NodeTrackerCallback::update(osg::Node& node)
+void NodeTrackerCallback::update(osg::Node&node)
 {
     osg::NodePath nodePath;
+
     if (_trackNodePath.getNodePath(nodePath))
     {
         ApplyMatrixVisitor applyMatrix(computeWorldToLocal(nodePath));

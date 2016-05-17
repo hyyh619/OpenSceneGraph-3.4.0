@@ -4,12 +4,14 @@
 #include <osg/Fog>
 #include "ReadWrite.h"
 
-namespace ive{
-  class Fog : public osg::Fog, public ReadWrite {
-  public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
-  };
+namespace ive
+{
+class Fog : public osg::Fog, public ReadWrite
+{
+public:
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
+};
 }
 
 #endif

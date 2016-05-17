@@ -21,4 +21,3 @@ USE_DOTOSGWRAPPER(Volume_Proxy)
 USE_DOTOSGWRAPPER(VolumeTile_Proxy)
 
 extern "C" void dotosgwrapper_library_osgVolume(void) {}
-

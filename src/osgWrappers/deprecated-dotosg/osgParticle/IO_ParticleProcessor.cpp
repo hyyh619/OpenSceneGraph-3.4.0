@@ -10,11 +10,11 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-extern bool  read_particle(osgDB::Input &fr, osgParticle::Particle &P);
-extern void  write_particle(const osgParticle::Particle &P, osgDB::Output &fw);
+extern bool  read_particle(osgDB::Input&fr, osgParticle::Particle&P);
+extern void  write_particle(const osgParticle::Particle&P, osgDB::Output&fw);
 
-bool  ParticleProcessor_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool  ParticleProcessor_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool  ParticleProcessor_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool  ParticleProcessor_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ParticleProcessor_Proxy)
 (
@@ -25,88 +25,110 @@ REGISTER_DOTOSGWRAPPER(ParticleProcessor_Proxy)
     ParticleProcessor_writeLocalData
 );
 
-bool ParticleProcessor_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool ParticleProcessor_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgParticle::ParticleProcessor &myobj = static_cast<osgParticle::ParticleProcessor &>(obj);
-    bool itAdvanced = false;
+    osgParticle::ParticleProcessor&myobj     = static_cast<osgParticle::ParticleProcessor&>(obj);
+    bool                          itAdvanced = false;
 
     osg::ref_ptr<osgParticle::ParticleSystem> ps_proto = new osgParticle::ParticleSystem;
 
-    osgParticle::ParticleSystem *ps = static_cast<osgParticle::ParticleSystem *>(fr.readObjectOfType(*ps_proto));
-    if (ps) {
+    osgParticle::ParticleSystem *ps = static_cast<osgParticle::ParticleSystem*>(fr.readObjectOfType(*ps_proto));
+
+    if (ps)
+    {
         myobj.setParticleSystem(ps);
         itAdvanced = true;
     }
 
-    if (fr[0].matchWord("enabled")) {
-        if (fr[1].matchWord("TRUE")) {
+    if (fr[0].matchWord("enabled"))
+    {
+        if (fr[1].matchWord("TRUE"))
+        {
             myobj.setEnabled(true);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
-        } else if (fr[1].matchWord("FALSE")) {
+        }
+        else if (fr[1].matchWord("FALSE"))
+        {
             myobj.setEnabled(false);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("referenceFrame")) {
-        if (fr[1].matchWord("RELATIVE_TO_ABSOLUTE") || fr[1].matchWord("ABSOLUTE")) {
+    if (fr[0].matchWord("referenceFrame"))
+    {
+        if (fr[1].matchWord("RELATIVE_TO_ABSOLUTE") || fr[1].matchWord("ABSOLUTE"))
+        {
             myobj.setReferenceFrame(osgParticle::ParticleProcessor::ABSOLUTE_RF);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
-        if (fr[1].matchWord("RELATIVE_TO_PARENTS") || fr[1].matchWord("RELATIVE")) {
+
+        if (fr[1].matchWord("RELATIVE_TO_PARENTS") || fr[1].matchWord("RELATIVE"))
+        {
             myobj.setReferenceFrame(osgParticle::ParticleProcessor::RELATIVE_RF);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("endless")) {
-        if (fr[1].matchWord("TRUE")) {
+    if (fr[0].matchWord("endless"))
+    {
+        if (fr[1].matchWord("TRUE"))
+        {
             myobj.setEndless(true);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
-        } else if (fr[1].matchWord("FALSE")) {
+        }
+        else if (fr[1].matchWord("FALSE"))
+        {
             myobj.setEndless(false);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("lifeTime")) {
+    if (fr[0].matchWord("lifeTime"))
+    {
         float lt;
-        if (fr[1].getFloat(lt)) {
+        if (fr[1].getFloat(lt))
+        {
             myobj.setLifeTime(lt);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("startTime")) {
+    if (fr[0].matchWord("startTime"))
+    {
         float st;
-        if (fr[1].getFloat(st)) {
+        if (fr[1].getFloat(st))
+        {
             myobj.setStartTime(st);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("currentTime")) {
+    if (fr[0].matchWord("currentTime"))
+    {
         float ct;
-        if (fr[1].getFloat(ct)) {
+        if (fr[1].getFloat(ct))
+        {
             myobj.setCurrentTime(ct);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("resetTime")) {
+    if (fr[0].matchWord("resetTime"))
+    {
         float ct;
-        if (fr[1].getFloat(ct)) {
+        if (fr[1].getFloat(ct))
+        {
             myobj.setResetTime(ct);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
@@ -114,11 +136,12 @@ bool ParticleProcessor_readLocalData(osg::Object &obj, osgDB::Input &fr)
     return itAdvanced;
 }
 
-bool ParticleProcessor_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool ParticleProcessor_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgParticle::ParticleProcessor &myobj = static_cast<const osgParticle::ParticleProcessor &>(obj);
+    const osgParticle::ParticleProcessor&myobj = static_cast<const osgParticle::ParticleProcessor&>(obj);
 
-    if (myobj.getParticleSystem()) fw.writeObject(*myobj.getParticleSystem());
+    if (myobj.getParticleSystem())
+        fw.writeObject(*myobj.getParticleSystem());
 
     fw.indent() << "enabled ";
     if (myobj.isEnabled())
@@ -127,11 +150,13 @@ bool ParticleProcessor_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
         fw << "FALSE" << std::endl;
 
     fw.indent() << "referenceFrame ";
+
     switch (myobj.getReferenceFrame())
     {
     case osgParticle::ParticleProcessor::ABSOLUTE_RF:
         fw << "ABSOLUTE" << std::endl;
         break;
+
     case osgParticle::ParticleProcessor::RELATIVE_RF:
     default:
         fw << "RELATIVE" << std::endl;
@@ -143,10 +168,10 @@ bool ParticleProcessor_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
     else
         fw << "FALSE" << std::endl;
 
-    fw.indent() << "lifeTime " << myobj.getLifeTime() << std::endl;
-    fw.indent() << "startTime " << myobj.getStartTime() << std::endl;
+    fw.indent() << "lifeTime " <<    myobj.getLifeTime() << std::endl;
+    fw.indent() << "startTime " <<   myobj.getStartTime() << std::endl;
     fw.indent() << "currentTime " << myobj.getCurrentTime() << std::endl;
-    fw.indent() << "resetTime " << myobj.getResetTime() << std::endl;
+    fw.indent() << "resetTime " <<   myobj.getResetTime() << std::endl;
 
     return true;
 }

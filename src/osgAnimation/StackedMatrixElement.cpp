@@ -17,10 +17,16 @@
 using namespace osgAnimation;
 
 StackedMatrixElement::StackedMatrixElement() {}
-StackedMatrixElement::StackedMatrixElement(const std::string& name, const osg::Matrix& matrix) : StackedTransformElement(), _matrix(matrix) { setName(name); }
-StackedMatrixElement::StackedMatrixElement(const osg::Matrix& matrix) : _matrix(matrix) { setName("matrix"); }
+StackedMatrixElement::StackedMatrixElement(const std::string&name, const osg::Matrix&matrix) : StackedTransformElement(), _matrix(matrix)
+{
+    setName(name);
+}
+StackedMatrixElement::StackedMatrixElement(const osg::Matrix&matrix) : _matrix(matrix)
+{
+    setName("matrix");
+}
 
-StackedMatrixElement::StackedMatrixElement(const StackedMatrixElement& rhs, const osg::CopyOp& c) : StackedTransformElement(rhs, c), _matrix(rhs._matrix)
+StackedMatrixElement::StackedMatrixElement(const StackedMatrixElement&rhs, const osg::CopyOp&c) : StackedTransformElement(rhs, c), _matrix(rhs._matrix)
 {
     if (rhs._target.valid())
         _target = new MatrixTarget(*rhs._target);
@@ -30,6 +36,7 @@ Target* StackedMatrixElement::getOrCreateTarget()
 {
     if (!_target.valid())
         _target = new MatrixTarget(_matrix);
+
     return _target.get();
 }
 

@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgcompositeviewer.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <iostream>
 
@@ -51,36 +51,37 @@
 // Thread that runs the viewer's frame loop as we can't run Qt in the background...
 class ViewerFrameThread : public OpenThreads::Thread
 {
-    public:
+public:
 
-        ViewerFrameThread(osgViewer::ViewerBase* viewerBase, bool doQApplicationExit):
-            _viewerBase(viewerBase),
-            _doQApplicationExit(doQApplicationExit) {}
+ViewerFrameThread(osgViewer::ViewerBase *viewerBase, bool doQApplicationExit) :
+    _viewerBase(viewerBase),
+    _doQApplicationExit(doQApplicationExit) {}
 
-        ~ViewerFrameThread()
-        {
-            if (isRunning())
-            {
-                cancel();
-                join();
-            }
-        }
+~ViewerFrameThread()
+{
+    if (isRunning())
+    {
+        cancel();
+        join();
+    }
+}
 
-        int cancel()
-        {
-            _viewerBase->setDone(true);
-            return 0;
-        }
+int cancel()
+{
+    _viewerBase->setDone(true);
+    return 0;
+}
 
-        void run()
-        {
-            int result = _viewerBase->run();
+void run()
+{
+    int result = _viewerBase->run();
 
-            if (_doQApplicationExit) QApplication::exit(result);
-        }
+    if (_doQApplicationExit)
+        QApplication::exit(result);
+}
 
-        osg::ref_ptr<osgViewer::ViewerBase> _viewerBase;
-        bool _doQApplicationExit;
+osg::ref_ptr<osgViewer::ViewerBase> _viewerBase;
+bool                                _doQApplicationExit;
 };
 
 
@@ -90,21 +91,27 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     bool useFrameLoopThread = false;
-    if (arguments.read("--no-frame-thread")) useFrameLoopThread = false;
-    if (arguments.read("--frame-thread")) useFrameLoopThread = true;
+
+    if (arguments.read("--no-frame-thread"))
+        useFrameLoopThread = false;
+
+    if (arguments.read("--frame-thread"))
+        useFrameLoopThread = true;
 
     osg::ref_ptr<osgQt::QWebViewImage> image = new osgQt::QWebViewImage;
 
-    if (arguments.argc()>1) image->navigateTo((arguments[1]));
-    else image->navigateTo("http://www.youtube.com/");
+    if (arguments.argc() > 1)
+        image->navigateTo((arguments[1]));
+    else
+        image->navigateTo("http://www.youtube.com/");
 
-    osgWidget::GeometryHints hints(osg::Vec3(0.0f,0.0f,0.0f),
-                                   osg::Vec3(1.0f,0.0f,0.0f),
-                                   osg::Vec3(0.0f,0.0f,1.0f),
-                                   osg::Vec4(1.0f,1.0f,1.0f,1.0f),
+    osgWidget::GeometryHints hints(osg::Vec3(0.0f, 0.0f, 0.0f),
+                                   osg::Vec3(1.0f, 0.0f, 0.0f),
+                                   osg::Vec3(0.0f, 0.0f, 1.0f),
+                                   osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f),
                                    osgWidget::GeometryHints::RESIZE_HEIGHT_TO_MAINTAINCE_ASPECT_RATIO);
 
 
@@ -127,12 +134,11 @@ int main(int argc, char **argv)
 
         // now start the standard Qt event loop, then exists when the viewerThead sends the QApplication::exit() signal.
         return QApplication::exec();
-
     }
     else
     {
         // run the frame loop, interleaving Qt and the main OSG frame loop
-        while(!viewer->done())
+        while (!viewer->done())
         {
             // process Qt events - this handles both events and paints the browser image
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);

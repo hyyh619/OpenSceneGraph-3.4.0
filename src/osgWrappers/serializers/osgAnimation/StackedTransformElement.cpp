@@ -3,9 +3,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgAnimation_StackedTransformElement,
-                         /*new osgAnimation::StackedTransformElement*/NULL,
-                         osgAnimation::StackedTransformElement,
-                         "osg::Object osgAnimation::StackedTransformElement" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgAnimation_StackedTransformElement,
+                        /*new osgAnimation::StackedTransformElement*/ NULL,
+                        osgAnimation::StackedTransformElement,
+                        "osg::Object osgAnimation::StackedTransformElement")
+{}

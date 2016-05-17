@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osghangglide.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <stdlib.h>
 
@@ -38,15 +38,15 @@
 
 using namespace osg;
 
-#define sqr(x)  ((x)*(x))
+#define sqr(x) ((x) * (x))
 
-extern void getDatabaseCenterRadius( float dbcenter[3], float *dbradius );
+extern void getDatabaseCenterRadius(float dbcenter[3], float *dbradius);
 
 static float dbcenter[3], dbradius;
 
 static struct _tree
 {
-    int n;
+    int   n;
     float x, y, z;
     float w, h;
 }
@@ -162,25 +162,25 @@ trees[] =
     { -1, 0, 0, 0, 0, 0 },
 };
 
-static Geometry *makeTree( _tree *tree, StateSet *dstate )
+static Geometry* makeTree(_tree *tree, StateSet *dstate)
 {
     float vv[][3] =
     {
-        { -tree->w/2.0f, 0.0f, 0.0f },
-        {  tree->w/2.0f, 0.0f, 0.0f },
-        {  tree->w/2.0f, 0.0f, 2.0f * tree->h },
-        { -tree->w/2.0f, 0.0f, 2.0f * tree->h },
+        { -tree->w / 2.0f, 0.0f, 0.0f },
+        {  tree->w / 2.0f, 0.0f, 0.0f },
+        {  tree->w / 2.0f, 0.0f, 2.0f * tree->h },
+        { -tree->w / 2.0f, 0.0f, 2.0f * tree->h },
     };
 
-    Vec3Array& v = *(new Vec3Array(4));
-    Vec2Array& t = *(new Vec2Array(4));
-    Vec4Array& l = *(new Vec4Array(1));
+    Vec3Array&v = *(new Vec3Array(4));
+    Vec2Array&t = *(new Vec2Array(4));
+    Vec4Array&l = *(new Vec4Array(1));
 
-    int   i;
+    int i;
 
     l[0][0] = l[0][1] = l[0][2] = l[0][3] = 1;
 
-    for( i = 0; i < 4; i++ )
+    for (i = 0; i < 4; i++)
     {
         v[i][0] = vv[i][0];
         v[i][1] = vv[i][1];
@@ -194,15 +194,15 @@ static Geometry *makeTree( _tree *tree, StateSet *dstate )
 
     Geometry *geom = new Geometry;
 
-    geom->setVertexArray( &v );
+    geom->setVertexArray(&v);
 
-    geom->setTexCoordArray( 0, &t );
+    geom->setTexCoordArray(0, &t);
 
-    geom->setColorArray( &l, Array::BIND_OVERALL );
+    geom->setColorArray(&l, Array::BIND_OVERALL);
 
-    geom->addPrimitiveSet( new DrawArrays(PrimitiveSet::QUADS,0,4) );
+    geom->addPrimitiveSet(new DrawArrays(PrimitiveSet::QUADS, 0, 4));
 
-    geom->setStateSet( dstate );
+    geom->setStateSet(dstate);
 
     return geom;
 }
@@ -210,79 +210,82 @@ static Geometry *makeTree( _tree *tree, StateSet *dstate )
 
 static float ttx, tty;
 
-static int ct( const void *a, const void *b )
+static int ct(const void *a, const void *b)
 {
-    _tree *ta = (_tree *)a;
-    _tree *tb = (_tree *)b;
+    _tree *ta = (_tree*)a;
+    _tree *tb = (_tree*)b;
 
-    float da = sqrtf( sqr(ta->x - ttx) + sqr(ta->y - tty) );
-    float db = sqrtf( sqr(tb->x - ttx) + sqr(tb->y - tty) );
+    float da = sqrtf(sqr(ta->x - ttx) + sqr(ta->y - tty));
+    float db = sqrtf(sqr(tb->x - ttx) + sqr(tb->y - tty));
 
-    if( da < db )
+    if (da < db)
         return -1;
     else
         return 1;
 }
 
 
-Node *makeTrees( void )
+Node* makeTrees(void)
 {
     Group *group = new Group;
-    int i;
+    int   i;
 
-    getDatabaseCenterRadius( dbcenter, &dbradius );
-    struct _tree  *t;
+    getDatabaseCenterRadius(dbcenter, &dbradius);
+    struct _tree *t;
 
     Texture2D *tex = new Texture2D;
     tex->setImage(osgDB::readImageFile("Images/tree0.rgba"));
 
     StateSet *dstate = new StateSet;
 
-    dstate->setTextureAttributeAndModes(0, tex, StateAttribute::ON );
-    dstate->setTextureAttribute(0, new TexEnv );
+    dstate->setTextureAttributeAndModes(0, tex, StateAttribute::ON);
+    dstate->setTextureAttribute(0, new TexEnv);
 
-    dstate->setAttributeAndModes( new BlendFunc, StateAttribute::ON );
+    dstate->setAttributeAndModes(new BlendFunc, StateAttribute::ON);
 
-    AlphaFunc* alphaFunc = new AlphaFunc;
-    alphaFunc->setFunction(AlphaFunc::GEQUAL,0.05f);
-    dstate->setAttributeAndModes( alphaFunc, StateAttribute::ON );
+    AlphaFunc *alphaFunc = new AlphaFunc;
+    alphaFunc->setFunction(AlphaFunc::GEQUAL, 0.05f);
+    dstate->setAttributeAndModes(alphaFunc, StateAttribute::ON);
 
-    dstate->setMode( GL_LIGHTING, StateAttribute::OFF );
+    dstate->setMode(GL_LIGHTING, StateAttribute::OFF);
 
-    dstate->setRenderingHint( StateSet::TRANSPARENT_BIN );
+    dstate->setRenderingHint(StateSet::TRANSPARENT_BIN);
 
     int tt[] = { 15, 30, 45, 58, 72, 75, 93, 96, 105, -1 };
     int *ttp = tt;
 
     i = 0;
-    while( i < 105 )
+
+    while (i < 105)
     {
         ttx = trees[i].x;
         tty = trees[i].y;
-        qsort( &trees[i], 105 - i, sizeof( _tree ), ct );
+        qsort(&trees[i], 105 - i, sizeof(_tree), ct);
 
         i += *ttp;
         ttp++;
     }
 
-    t = trees;
-    i = 0;
+    t   = trees;
+    i   = 0;
     ttp = tt;
-    while( *ttp != -1 )
+
+    while (*ttp != -1)
     {
         Billboard *bb = new Billboard;
-        //int starti = i;
+        // int starti = i;
 
-        for( ; i < (*ttp); i++ )
+        for (; i < (*ttp); i++)
         {
             t->x -= 0.3f;
-            float  h = Hat(t->x, t->y, t->z );
-            Vec3 pos( t->x, t->y, t->z-h );
-            Geometry *geom = makeTree( t, dstate );
-            bb->addDrawable( geom, pos );
+            float    h = Hat(t->x, t->y, t->z);
+            Vec3     pos(t->x, t->y, t->z - h);
+            Geometry *geom = makeTree(t, dstate);
+            bb->addDrawable(geom, pos);
             t++;
         }
-        group->addChild( bb );
+
+        group->addChild(bb);
         ttp++;
     }
 

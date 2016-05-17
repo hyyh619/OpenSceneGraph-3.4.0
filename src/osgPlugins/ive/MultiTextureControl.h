@@ -4,11 +4,13 @@
 #include <osgFX/MultiTextureControl>
 #include "ReadWrite.h"
 
-namespace ive{
-class MultiTextureControl : public osgFX::MultiTextureControl, public ReadWrite {
+namespace ive
+{
+class MultiTextureControl : public osgFX::MultiTextureControl, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

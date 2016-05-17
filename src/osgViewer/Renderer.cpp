@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <stdio.h>
 
@@ -32,57 +32,55 @@
 
 using namespace osgViewer;
 
-//#define DEBUG_MESSAGE OSG_NOTICE
+// #define DEBUG_MESSAGE OSG_NOTICE
 #define DEBUG_MESSAGE OSG_DEBUG
 
-OpenGLQuerySupport::OpenGLQuerySupport():
+OpenGLQuerySupport::OpenGLQuerySupport() :
     _extensions(0)
-{
-}
+{}
 
 class OSGVIEWER_EXPORT EXTQuerySupport : public OpenGLQuerySupport
 {
- public:
-    EXTQuerySupport();
-    void checkQuery(osg::Stats* stats, osg::State* state, osg::Timer_t startTick);
-    virtual void beginQuery(unsigned int frameNumber, osg::State* state);
-    virtual void endQuery(osg::State* state);
-    virtual void initialize(osg::State* state, osg::Timer_t startTick);
- protected:
-    GLuint createQueryObject();
-    typedef std::pair<GLuint, unsigned int> QueryFrameNumberPair;
-    typedef std::list<QueryFrameNumberPair> QueryFrameNumberList;
-    typedef std::vector<GLuint> QueryList;
+public:
+EXTQuerySupport();
+void checkQuery(osg::Stats *stats, osg::State *state, osg::Timer_t startTick);
+virtual void beginQuery(unsigned int frameNumber, osg::State *state);
+virtual void endQuery(osg::State *state);
+virtual void initialize(osg::State *state, osg::Timer_t startTick);
+protected:
+GLuint createQueryObject();
+typedef std::pair<GLuint, unsigned int> QueryFrameNumberPair;
+typedef std::list<QueryFrameNumberPair> QueryFrameNumberList;
+typedef std::vector<GLuint> QueryList;
 
-    QueryFrameNumberList                        _queryFrameNumberList;
-    QueryList                                   _availableQueryObjects;
-    double                                      _previousQueryTime;
+QueryFrameNumberList _queryFrameNumberList;
+QueryList            _availableQueryObjects;
+double               _previousQueryTime;
 };
 
 
-EXTQuerySupport::EXTQuerySupport():
+EXTQuerySupport::EXTQuerySupport() :
     _previousQueryTime(0.0)
-{
-}
+{}
 
-void EXTQuerySupport::checkQuery(osg::Stats* stats, osg::State* /*state*/,
+void EXTQuerySupport::checkQuery(osg::Stats *stats, osg::State* /*state*/,
                                  osg::Timer_t startTick)
 {
-    for(QueryFrameNumberList::iterator itr = _queryFrameNumberList.begin();
-        itr != _queryFrameNumberList.end();
-        )
+    for (QueryFrameNumberList::iterator itr = _queryFrameNumberList.begin();
+         itr != _queryFrameNumberList.end();
+         )
     {
-        GLuint query = itr->first;
-        GLint available = 0;
+        GLuint query     = itr->first;
+        GLint  available = 0;
         _extensions->glGetQueryObjectiv(query, GL_QUERY_RESULT_AVAILABLE, &available);
         if (available)
         {
             GLuint64 timeElapsed = 0;
             _extensions->glGetQueryObjectui64v(query, GL_QUERY_RESULT, &timeElapsed);
 
-            double timeElapsedSeconds = double(timeElapsed)*1e-9;
-            double currentTime = osg::Timer::instance()->delta_s(startTick, osg::Timer::instance()->tick());
-            double estimatedEndTime = (_previousQueryTime + currentTime) * 0.5;
+            double timeElapsedSeconds = double(timeElapsed) * 1e-9;
+            double currentTime        = osg::Timer::instance()->delta_s(startTick, osg::Timer::instance()->tick());
+            double estimatedEndTime   = (_previousQueryTime + currentTime) * 0.5;
             double estimatedBeginTime = estimatedEndTime - timeElapsedSeconds;
 
             stats->setAttribute(itr->second, "GPU draw begin time", estimatedBeginTime);
@@ -97,8 +95,8 @@ void EXTQuerySupport::checkQuery(osg::Stats* stats, osg::State* /*state*/,
         {
             ++itr;
         }
-
     }
+
     _previousQueryTime = osg::Timer::instance()->delta_s(startTick, osg::Timer::instance()->tick());
 }
 
@@ -121,6 +119,7 @@ GLuint EXTQuerySupport::createQueryObject()
 void EXTQuerySupport::beginQuery(unsigned int frameNumber, osg::State* /*state*/)
 {
     GLuint query = createQueryObject();
+
     _extensions->glBeginQuery(GL_TIME_ELAPSED, query);
     _queryFrameNumberList.push_back(QueryFrameNumberPair(query, frameNumber));
 }
@@ -130,49 +129,48 @@ void EXTQuerySupport::endQuery(osg::State* /*state*/)
     _extensions->glEndQuery(GL_TIME_ELAPSED);
 }
 
-void OpenGLQuerySupport::initialize(osg::State* state, osg::Timer_t /*startTick*/)
+void OpenGLQuerySupport::initialize(osg::State *state, osg::Timer_t /*startTick*/)
 {
     _extensions = state->get<osg::GLExtensions>();
 }
 
-void EXTQuerySupport::initialize(osg::State* state, osg::Timer_t startTick)
+void EXTQuerySupport::initialize(osg::State *state, osg::Timer_t startTick)
 {
     OpenGLQuerySupport::initialize(state, startTick);
-    _previousQueryTime = osg::Timer::instance()->delta_s(startTick, osg::Timer::instance()->tick());
 
+    _previousQueryTime = osg::Timer::instance()->delta_s(startTick, osg::Timer::instance()->tick());
 }
 
 class ARBQuerySupport : public OpenGLQuerySupport
 {
 public:
-    virtual void checkQuery(osg::Stats* stats, osg::State* state,
-                            osg::Timer_t startTick);
+virtual void checkQuery(osg::Stats *stats, osg::State *state,
+                        osg::Timer_t startTick);
 
-    virtual void beginQuery(unsigned int frameNumber, osg::State* state);
-    virtual void endQuery(osg::State* state);
-    virtual void initialize(osg::State* state, osg::Timer_t startTick);
+virtual void beginQuery(unsigned int frameNumber, osg::State *state);
+virtual void endQuery(osg::State *state);
+virtual void initialize(osg::State *state, osg::Timer_t startTick);
 protected:
-    typedef std::pair<GLuint, GLuint> QueryPair;
-    struct ActiveQuery {
-        ActiveQuery() : queries(0, 0), frameNumber(0) {}
-        ActiveQuery(GLuint start_, GLuint end_, int frameNumber_)
-            : queries(start_, end_), frameNumber(frameNumber_)
-        {
-        }
-        ActiveQuery(const QueryPair& queries_, unsigned int frameNumber_)
-            : queries(queries_), frameNumber(frameNumber_)
-        {
-        }
-        QueryPair queries;
-        unsigned int frameNumber;
-    };
-    typedef std::list<ActiveQuery> QueryFrameList;
-    typedef std::vector<QueryPair> QueryList;
-    QueryFrameList _queryFrameList;
-    QueryList _availableQueryObjects;
+typedef std::pair<GLuint, GLuint> QueryPair;
+struct ActiveQuery
+{
+    ActiveQuery() : queries(0, 0), frameNumber(0) {}
+    ActiveQuery(GLuint start_, GLuint end_, int frameNumber_)
+        : queries(start_, end_), frameNumber(frameNumber_)
+    {}
+    ActiveQuery(const QueryPair&queries_, unsigned int frameNumber_)
+        : queries(queries_), frameNumber(frameNumber_)
+    {}
+    QueryPair    queries;
+    unsigned int frameNumber;
+};
+typedef std::list<ActiveQuery> QueryFrameList;
+typedef std::vector<QueryPair> QueryList;
+QueryFrameList _queryFrameList;
+QueryList      _availableQueryObjects;
 };
 
-void ARBQuerySupport::initialize(osg::State* state, osg::Timer_t startTick)
+void ARBQuerySupport::initialize(osg::State *state, osg::Timer_t startTick)
 {
     OpenGLQuerySupport::initialize(state, startTick);
 }
@@ -180,6 +178,7 @@ void ARBQuerySupport::initialize(osg::State* state, osg::Timer_t startTick)
 void ARBQuerySupport::beginQuery(unsigned int frameNumber, osg::State* /*state*/)
 {
     QueryPair query;
+
     if (_availableQueryObjects.empty())
     {
         _extensions->glGenQueries(1, &query.first);
@@ -190,6 +189,7 @@ void ARBQuerySupport::beginQuery(unsigned int frameNumber, osg::State* /*state*/
         query = _availableQueryObjects.back();
         _availableQueryObjects.pop_back();
     }
+
     _extensions->glQueryCounter(query.first, GL_TIMESTAMP);
     _queryFrameList.push_back(ActiveQuery(query, frameNumber));
 }
@@ -200,12 +200,12 @@ void ARBQuerySupport::endQuery(osg::State* /*state*/)
                                 GL_TIMESTAMP);
 }
 
-void ARBQuerySupport::checkQuery(osg::Stats* stats, osg::State* state,
+void ARBQuerySupport::checkQuery(osg::Stats *stats, osg::State *state,
                                  osg::Timer_t /*startTick*/)
 {
-    for(QueryFrameList::iterator itr = _queryFrameList.begin();
-        itr != _queryFrameList.end();
-        )
+    for (QueryFrameList::iterator itr = _queryFrameList.begin();
+         itr != _queryFrameList.end();
+         )
     {
         GLint available = 0;
         // If the end query is available, the begin query must be too.
@@ -213,9 +213,9 @@ void ARBQuerySupport::checkQuery(osg::Stats* stats, osg::State* state,
                                         GL_QUERY_RESULT_AVAILABLE, &available);
         if (available)
         {
-            QueryPair queries = itr->queries;
-            GLuint64 beginTimestamp = 0;
-            GLuint64 endTimestamp = 0;
+            QueryPair queries        = itr->queries;
+            GLuint64  beginTimestamp = 0;
+            GLuint64  endTimestamp   = 0;
             _extensions->glGetQueryObjectui64v(queries.first, GL_QUERY_RESULT,
                                                &beginTimestamp);
             _extensions->glGetQueryObjectui64v(queries.second, GL_QUERY_RESULT,
@@ -227,11 +227,12 @@ void ARBQuerySupport::checkQuery(osg::Stats* stats, osg::State* state,
             {
                 // If the high bits on any of the timestamp bits are
                 // different then the counters may have wrapped.
-                const int hiShift = (tbits - 1);
-                const GLuint64 hiMask = 1 << hiShift;
-                const GLuint64 sum = (beginTimestamp >> hiShift)
-                    + (endTimestamp >> hiShift) + (gpuTimestamp >> hiShift);
-                if (sum == 1 || sum == 2) {
+                const int      hiShift = (tbits - 1);
+                const GLuint64 hiMask  = 1 << hiShift;
+                const GLuint64 sum     = (beginTimestamp >> hiShift)
+                                         + (endTimestamp >> hiShift) + (gpuTimestamp >> hiShift);
+                if (sum == 1 || sum == 2)
+                {
                     const GLuint64 wrapAdd = 1 << tbits;
                     // Counter wrapped between begin and end?
                     if (beginTimestamp > endTimestamp)
@@ -247,27 +248,30 @@ void ARBQuerySupport::checkQuery(osg::Stats* stats, osg::State* state,
                              && gpuTimestamp - endTimestamp > (hiMask >> 1))
                     {
                         beginTimestamp += wrapAdd;
-                        endTimestamp += wrapAdd;
+                        endTimestamp   += wrapAdd;
                     }
                 }
             }
-            GLuint64 timeElapsed = endTimestamp - beginTimestamp;
-            double timeElapsedSeconds = double(timeElapsed)*1e-9;
-            double gpuTick = state->getGpuTime();
-                     double beginTime = 0.0;
-            double endTime = 0.0;
+
+            GLuint64 timeElapsed        = endTimestamp - beginTimestamp;
+            double   timeElapsedSeconds = double(timeElapsed) * 1e-9;
+            double   gpuTick            = state->getGpuTime();
+            double   beginTime          = 0.0;
+            double   endTime            = 0.0;
             if (beginTimestamp > gpuTimestamp)
                 beginTime = gpuTick
-                    + double(beginTimestamp - gpuTimestamp) * 1e-9;
+                            + double(beginTimestamp - gpuTimestamp) * 1e-9;
             else
                 beginTime = gpuTick
-                    - double(gpuTimestamp - beginTimestamp) * 1e-9;
+                            - double(gpuTimestamp - beginTimestamp) * 1e-9;
+
             if (endTimestamp > gpuTimestamp)
                 endTime = gpuTick
-                    + double(endTimestamp - gpuTimestamp) * 1e-9;
+                          + double(endTimestamp - gpuTimestamp) * 1e-9;
             else
                 endTime = gpuTick
-                    - double(gpuTimestamp - endTimestamp) * 1e-9;
+                          - double(gpuTimestamp - endTimestamp) * 1e-9;
+
             stats->setAttribute(itr->frameNumber, "GPU draw begin time",
                                 beginTime);
             stats->setAttribute(itr->frameNumber, "GPU draw end time", endTime);
@@ -290,16 +294,15 @@ void ARBQuerySupport::checkQuery(osg::Stats* stats, osg::State* state,
 
 Renderer::ThreadSafeQueue::ThreadSafeQueue()
     : _isReleased(false)
-{
-}
+{}
 
 Renderer::ThreadSafeQueue::~ThreadSafeQueue()
-{
-}
+{}
 
 void Renderer::ThreadSafeQueue::release()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     _isReleased = true;
     _cond.broadcast();
 }
@@ -307,6 +310,7 @@ void Renderer::ThreadSafeQueue::release()
 void Renderer::ThreadSafeQueue::reset()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     _queue.clear();
     _isReleased = false;
 }
@@ -314,6 +318,7 @@ void Renderer::ThreadSafeQueue::reset()
 osgUtil::SceneView* Renderer::ThreadSafeQueue::takeFront()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     // Loop in case there are spurious wakeups from the condition wait.
     while (true)
     {
@@ -324,22 +329,27 @@ osgUtil::SceneView* Renderer::ThreadSafeQueue::takeFront()
         {
             if (!_queue.empty())
             {
-                osgUtil::SceneView* front = _queue.front();
+                osgUtil::SceneView *front = _queue.front();
                 _queue.pop_front();
                 if (_queue.empty())
                     _isReleased = false;
+
                 return front;
             }
+
             return 0;
         }
+
         _cond.wait(&_mutex);
     }
+
     return 0;                   // Can't happen
 }
 
-void Renderer::ThreadSafeQueue::add(osgUtil::SceneView* sv)
+void Renderer::ThreadSafeQueue::add(osgUtil::SceneView *sv)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     _queue.push_back(sv);
     _isReleased = true;
     _cond.broadcast();
@@ -351,9 +361,9 @@ static OpenThreads::ReentrantMutex s_drawSerializerMutex;
 //
 //
 //  Renderer
-Renderer::Renderer(osg::Camera* camera):
+Renderer::Renderer(osg::Camera *camera) :
     osg::Referenced(true),
-    osg::GraphicsOperation("Renderer",true),
+    osg::GraphicsOperation("Renderer", true),
     _camera(camera),
     _done(false),
     _graphicsThreadDoesCull(true),
@@ -362,19 +372,18 @@ Renderer::Renderer(osg::Camera* camera):
     _initialized(false),
     _startTick(0)
 {
-
-    DEBUG_MESSAGE<<"Render::Render() "<<this<<std::endl;
+    DEBUG_MESSAGE << "Render::Render() " << this << std::endl;
 
     _sceneView[0] = new osgUtil::SceneView;
     _sceneView[1] = new osgUtil::SceneView;
 
-    osg::Camera* masterCamera = _camera->getView() ? _camera->getView()->getCamera() : camera;
+    osg::Camera *masterCamera = _camera->getView() ? _camera->getView()->getCamera() : camera;
 
-    osg::StateSet* global_stateset = 0;
-    osg::StateSet* secondary_stateset = 0;
+    osg::StateSet *global_stateset    = 0;
+    osg::StateSet *secondary_stateset = 0;
     if (_camera != masterCamera)
     {
-        global_stateset = masterCamera->getOrCreateStateSet();
+        global_stateset    = masterCamera->getOrCreateStateSet();
         secondary_stateset = _camera->getStateSet();
     }
     else
@@ -382,12 +391,12 @@ Renderer::Renderer(osg::Camera* camera):
         global_stateset = _camera->getOrCreateStateSet();
     }
 
-    osgViewer::View* view = dynamic_cast<osgViewer::View*>(_camera->getView());
-    osgViewer::ViewerBase* viewer = view ? view->getViewerBase() : 0;
-    osgUtil::IncrementalCompileOperation* ico = viewer ? viewer->getIncrementalCompileOperation() : 0;
-    bool automaticFlush = (ico==NULL);
+    osgViewer::View                      *view          = dynamic_cast<osgViewer::View*>(_camera->getView());
+    osgViewer::ViewerBase                *viewer        = view ? view->getViewerBase() : 0;
+    osgUtil::IncrementalCompileOperation *ico           = viewer ? viewer->getIncrementalCompileOperation() : 0;
+    bool                                 automaticFlush = (ico == NULL);
 
-    osg::DisplaySettings* ds = _camera->getDisplaySettings() ?  _camera->getDisplaySettings() :
+    osg::DisplaySettings *ds = _camera->getDisplaySettings() ?  _camera->getDisplaySettings() :
                                ((view && view->getDisplaySettings()) ?  view->getDisplaySettings() :  osg::DisplaySettings::instance().get());
 
     _serializeDraw = ds ? ds->getSerializeDrawDispatch() : false;
@@ -395,11 +404,13 @@ Renderer::Renderer(osg::Camera* camera):
     unsigned int sceneViewOptions = osgUtil::SceneView::HEADLIGHT;
     if (view)
     {
-        switch(view->getLightingMode())
+        switch (view->getLightingMode())
         {
-            case(osg::View::NO_LIGHT): sceneViewOptions = 0; break;
-            case(osg::View::SKY_LIGHT): sceneViewOptions = osgUtil::SceneView::SKY_LIGHT; break;
-            case(osg::View::HEADLIGHT): sceneViewOptions = osgUtil::SceneView::HEADLIGHT; break;
+        case (osg::View::NO_LIGHT): sceneViewOptions = 0; break;
+
+        case (osg::View::SKY_LIGHT): sceneViewOptions = osgUtil::SceneView::SKY_LIGHT; break;
+
+        case (osg::View::HEADLIGHT): sceneViewOptions = osgUtil::SceneView::HEADLIGHT; break;
         }
     }
 
@@ -431,7 +442,7 @@ Renderer::Renderer(osg::Camera* camera):
     {
         // assign CullVisitor::Identifier so that the double buffering of SceneView doesn't interfer
         // with code that requires a consistent knowledge and which effective cull traversal to taking place
-        osg::ref_ptr<osgUtil::CullVisitor::Identifier> leftEyeIdentifier = new osgUtil::CullVisitor::Identifier();
+        osg::ref_ptr<osgUtil::CullVisitor::Identifier> leftEyeIdentifier  = new osgUtil::CullVisitor::Identifier();
         osg::ref_ptr<osgUtil::CullVisitor::Identifier> rightEyeIdentifier = new osgUtil::CullVisitor::Identifier();
 
         _sceneView[0]->getCullVisitor()->setIdentifier(leftEyeIdentifier.get());
@@ -452,24 +463,25 @@ Renderer::Renderer(osg::Camera* camera):
     _availableQueue.add(_sceneView[0].get());
     _availableQueue.add(_sceneView[1].get());
 
-    DEBUG_MESSAGE<<"_availableQueue.size()="<<_availableQueue._queue.size()<<std::endl;
+    DEBUG_MESSAGE << "_availableQueue.size()=" << _availableQueue._queue.size() << std::endl;
 }
 
 Renderer::~Renderer()
 {
-    DEBUG_MESSAGE<<"Render::~Render() "<<this<<std::endl;
+    DEBUG_MESSAGE << "Render::~Render() " << this << std::endl;
 }
 
-void Renderer::initialize(osg::State* state)
+void Renderer::initialize(osg::State *state)
 {
     if (!_initialized)
     {
         _initialized = true;
-        osg::GLExtensions* ext = state->get<osg::GLExtensions>();
+        osg::GLExtensions *ext = state->get<osg::GLExtensions>();
         if (ext->isARBTimerQuerySupported && state->getTimestampBits() > 0)
             _querySupport = new ARBQuerySupport();
         else if (ext->isTimerQuerySupported)
             _querySupport = new EXTQuerySupport();
+
         if (_querySupport.valid())
             _querySupport->initialize(state, _startTick);
     }
@@ -477,20 +489,22 @@ void Renderer::initialize(osg::State* state)
 
 void Renderer::setGraphicsThreadDoesCull(bool flag)
 {
-    if (_graphicsThreadDoesCull==flag) return;
+    if (_graphicsThreadDoesCull == flag)
+        return;
 
     _graphicsThreadDoesCull = flag;
 }
 
-void Renderer::updateSceneView(osgUtil::SceneView* sceneView)
+void Renderer::updateSceneView(osgUtil::SceneView *sceneView)
 {
-    osg::Camera* masterCamera = _camera->getView() ? _camera->getView()->getCamera() : _camera.get();
+    osg::Camera *masterCamera = _camera->getView() ? _camera->getView()->getCamera() : _camera.get();
 
-    osg::StateSet* global_stateset = 0;
-    osg::StateSet* secondary_stateset = 0;
+    osg::StateSet *global_stateset    = 0;
+    osg::StateSet *secondary_stateset = 0;
+
     if (_camera != masterCamera)
     {
-        global_stateset = masterCamera->getOrCreateStateSet();
+        global_stateset    = masterCamera->getOrCreateStateSet();
         secondary_stateset = _camera->getStateSet();
     }
     else
@@ -498,40 +512,40 @@ void Renderer::updateSceneView(osgUtil::SceneView* sceneView)
         global_stateset = _camera->getOrCreateStateSet();
     }
 
-    if (sceneView->getGlobalStateSet()!=global_stateset)
+    if (sceneView->getGlobalStateSet() != global_stateset)
     {
         sceneView->setGlobalStateSet(global_stateset);
     }
 
-    if (sceneView->getSecondaryStateSet()!=secondary_stateset)
+    if (sceneView->getSecondaryStateSet() != secondary_stateset)
     {
         sceneView->setSecondaryStateSet(secondary_stateset);
     }
 
-    osg::GraphicsContext* context = _camera->getGraphicsContext();
-    osg::State* state = context ? context->getState() : 0;
-    if (sceneView->getState()!=state)
+    osg::GraphicsContext *context = _camera->getGraphicsContext();
+    osg::State           *state   = context ? context->getState() : 0;
+    if (sceneView->getState() != state)
     {
         sceneView->setState(state);
     }
 
-    osgViewer::View* view = dynamic_cast<osgViewer::View*>(_camera->getView());
-    osgViewer::ViewerBase* viewer = view ? view->getViewerBase() : 0;
-    osgUtil::IncrementalCompileOperation* ico = viewer ? viewer->getIncrementalCompileOperation() : 0;
-    bool automaticFlush = (ico==NULL);
+    osgViewer::View                      *view          = dynamic_cast<osgViewer::View*>(_camera->getView());
+    osgViewer::ViewerBase                *viewer        = view ? view->getViewerBase() : 0;
+    osgUtil::IncrementalCompileOperation *ico           = viewer ? viewer->getIncrementalCompileOperation() : 0;
+    bool                                 automaticFlush = (ico == NULL);
 
     sceneView->setAutomaticFlush(automaticFlush);
 
-    osgDB::DatabasePager* databasePager = view ? view->getDatabasePager() : 0;
+    osgDB::DatabasePager *databasePager = view ? view->getDatabasePager() : 0;
     sceneView->getCullVisitor()->setDatabaseRequestHandler(databasePager);
 
-    osgDB::ImagePager* imagePager = view ? view->getImagePager() : 0;
+    osgDB::ImagePager *imagePager = view ? view->getImagePager() : 0;
     sceneView->getCullVisitor()->setImageRequestHandler(imagePager);
 
     sceneView->setFrameStamp(view ? view->getFrameStamp() : state->getFrameStamp());
 
-    osg::DisplaySettings* ds = _camera->getDisplaySettings() ?  _camera->getDisplaySettings() :
-                               ((view &&view->getDisplaySettings()) ?  view->getDisplaySettings() :  osg::DisplaySettings::instance().get());
+    osg::DisplaySettings *ds = _camera->getDisplaySettings() ?  _camera->getDisplaySettings() :
+                               ((view && view->getDisplaySettings()) ?  view->getDisplaySettings() :  osg::DisplaySettings::instance().get());
 
     if (ds->getUseSceneViewForStereoHint())
     {
@@ -541,19 +555,21 @@ void Renderer::updateSceneView(osgUtil::SceneView* sceneView)
     if (view)
     {
         _startTick = view->getStartTick();
-        if (state) state->setStartTick(_startTick);
+        if (state)
+            state->setStartTick(_startTick);
     }
 }
 
 void Renderer::compile()
 {
-    DEBUG_MESSAGE<<"Renderer::compile()"<<std::endl;
+    DEBUG_MESSAGE << "Renderer::compile()" << std::endl;
 
 
     _compileOnNextDraw = false;
 
-    osgUtil::SceneView* sceneView = _sceneView[0].get();
-    if (!sceneView || _done) return;
+    osgUtil::SceneView *sceneView = _sceneView[0].get();
+    if (!sceneView || _done)
+        return;
 
     sceneView->getState()->checkGLErrors("Before Renderer::compile");
 
@@ -567,9 +583,10 @@ void Renderer::compile()
     sceneView->getState()->checkGLErrors("After Renderer::compile");
 }
 
-static void collectSceneViewStats(unsigned int frameNumber, osgUtil::SceneView* sceneView, osg::Stats* stats)
+static void collectSceneViewStats(unsigned int frameNumber, osgUtil::SceneView *sceneView, osg::Stats *stats)
 {
     osgUtil::Statistics sceneStats;
+
     sceneView->getStats(sceneStats);
 
     stats->setAttribute(frameNumber, "Visible vertex count", static_cast<double>(sceneStats._vertexCount));
@@ -582,17 +599,19 @@ static void collectSceneViewStats(unsigned int frameNumber, osgUtil::SceneView* 
     stats->setAttribute(frameNumber, "Visible number of impostors", static_cast<double>(sceneStats.nimpostor));
     stats->setAttribute(frameNumber, "Number of ordered leaves", static_cast<double>(sceneStats.numOrderedLeaves));
 
-    unsigned int totalNumPrimitiveSets = 0;
-    const osgUtil::Statistics::PrimitiveValueMap& pvm = sceneStats.getPrimitiveValueMap();
-    for(osgUtil::Statistics::PrimitiveValueMap::const_iterator pvm_itr = pvm.begin();
-        pvm_itr != pvm.end();
-        ++pvm_itr)
+    unsigned int                                totalNumPrimitiveSets = 0;
+    const osgUtil::Statistics::PrimitiveValueMap&pvm                  = sceneStats.getPrimitiveValueMap();
+
+    for (osgUtil::Statistics::PrimitiveValueMap::const_iterator pvm_itr = pvm.begin();
+         pvm_itr != pvm.end();
+         ++pvm_itr)
     {
         totalNumPrimitiveSets += pvm_itr->second.first;
     }
+
     stats->setAttribute(frameNumber, "Visible number of PrimitiveSets", static_cast<double>(totalNumPrimitiveSets));
 
-    osgUtil::Statistics::PrimitiveCountMap& pcm = sceneStats.getPrimitiveCountMap();
+    osgUtil::Statistics::PrimitiveCountMap&pcm = sceneStats.getPrimitiveCountMap();
     stats->setAttribute(frameNumber, "Visible number of GL_POINTS", static_cast<double>(pcm[GL_POINTS]));
     stats->setAttribute(frameNumber, "Visible number of GL_LINES", static_cast<double>(pcm[GL_LINES]));
     stats->setAttribute(frameNumber, "Visible number of GL_LINE_STRIP", static_cast<double>(pcm[GL_LINE_STRIP]));
@@ -607,14 +626,15 @@ static void collectSceneViewStats(unsigned int frameNumber, osgUtil::SceneView* 
 
 void Renderer::cull()
 {
-    DEBUG_MESSAGE<<"cull()"<<std::endl;
+    DEBUG_MESSAGE << "cull()" << std::endl;
 
-    if (_done || _graphicsThreadDoesCull) return;
+    if (_done || _graphicsThreadDoesCull)
+        return;
 
     // note we assume lock has already been acquired.
-    osgUtil::SceneView* sceneView = _availableQueue.takeFront();
+    osgUtil::SceneView *sceneView = _availableQueue.takeFront();
 
-    DEBUG_MESSAGE<<"cull() got SceneView "<<sceneView<<std::endl;
+    DEBUG_MESSAGE << "cull() got SceneView " << sceneView << std::endl;
 
     if (sceneView)
     {
@@ -623,13 +643,14 @@ void Renderer::cull()
         // OSG_NOTICE<<"Culling buffer "<<_currentCull<<std::endl;
 
         // pass on the fusion distance settings from the View to the SceneView
-        osgViewer::View* view = dynamic_cast<osgViewer::View*>(sceneView->getCamera()->getView());
-        if (view) sceneView->setFusionDistance(view->getFusionDistanceMode(), view->getFusionDistanceValue());
+        osgViewer::View *view = dynamic_cast<osgViewer::View*>(sceneView->getCamera()->getView());
+        if (view)
+            sceneView->setFusionDistance(view->getFusionDistanceMode(), view->getFusionDistanceValue());
 
-        osg::Stats* stats = sceneView->getCamera()->getStats();
-        osg::State* state = sceneView->getState();
-        const osg::FrameStamp* fs = state->getFrameStamp();
-        unsigned int frameNumber = fs ? fs->getFrameNumber() : 0;
+        osg::Stats            *stats      = sceneView->getCamera()->getStats();
+        osg::State            *state      = sceneView->getState();
+        const osg::FrameStamp *fs         = state->getFrameStamp();
+        unsigned int          frameNumber = fs ? fs->getFrameNumber() : 0;
 
         // do cull traversal
         osg::Timer_t beforeCullTick = osg::Timer::instance()->tick();
@@ -640,7 +661,7 @@ void Renderer::cull()
         osg::Timer_t afterCullTick = osg::Timer::instance()->tick();
 
 #if 0
-        if (sceneView->getDynamicObjectCount()==0 && state->getDynamicObjectRenderingCompletedCallback())
+        if (sceneView->getDynamicObjectCount() == 0 && state->getDynamicObjectRenderingCompletedCallback())
         {
             // OSG_NOTICE<<"Completed in cull"<<std::endl;
             state->getDynamicObjectRenderingCompletedCallback()->completed(state);
@@ -648,7 +669,7 @@ void Renderer::cull()
 #endif
         if (stats && stats->collectStats("rendering"))
         {
-            DEBUG_MESSAGE<<"Collecting rendering stats"<<std::endl;
+            DEBUG_MESSAGE << "Collecting rendering stats" << std::endl;
 
             stats->setAttribute(frameNumber, "Cull traversal begin time", osg::Timer::instance()->delta_s(_startTick, beforeCullTick));
             stats->setAttribute(frameNumber, "Cull traversal end time", osg::Timer::instance()->delta_s(_startTick, afterCullTick));
@@ -661,21 +682,20 @@ void Renderer::cull()
         }
 
         _drawQueue.add(sceneView);
-
     }
 
-    DEBUG_MESSAGE<<"end cull() "<<this<<std::endl;
+    DEBUG_MESSAGE << "end cull() " << this << std::endl;
 }
 
 void Renderer::draw()
 {
-    DEBUG_MESSAGE<<"draw() "<<this<<std::endl;
+    DEBUG_MESSAGE << "draw() " << this << std::endl;
 
     // osg::Timer_t startDrawTick = osg::Timer::instance()->tick();
 
-    osgUtil::SceneView* sceneView = _drawQueue.takeFront();
+    osgUtil::SceneView *sceneView = _drawQueue.takeFront();
 
-    DEBUG_MESSAGE<<"draw() got SceneView "<<sceneView<<std::endl;
+    DEBUG_MESSAGE << "draw() got SceneView " << sceneView << std::endl;
 
     if (sceneView && !_done)
     {
@@ -693,20 +713,20 @@ void Renderer::draw()
 
         if (_done)
         {
-            OSG_INFO<<"Renderer::release() causing draw to exit"<<std::endl;
+            OSG_INFO << "Renderer::release() causing draw to exit" << std::endl;
             return;
         }
 
         if (_graphicsThreadDoesCull)
         {
-            OSG_INFO<<"Renderer::draw() completing early due to change in _graphicsThreadDoesCull flag."<<std::endl;
+            OSG_INFO << "Renderer::draw() completing early due to change in _graphicsThreadDoesCull flag." << std::endl;
             return;
         }
 
         // OSG_NOTICE<<"RenderingOperation"<<std::endl;
 
-        osg::Stats* stats = sceneView->getCamera()->getStats();
-        osg::State* state = sceneView->getState();
+        osg::Stats   *stats      = sceneView->getCamera()->getStats();
+        osg::State   *state      = sceneView->getState();
         unsigned int frameNumber = sceneView->getFrameStamp()->getFrameNumber();
 
         if (!_initialized)
@@ -716,7 +736,7 @@ void Renderer::draw()
 
         state->setDynamicObjectCount(sceneView->getDynamicObjectCount());
 
-        if (sceneView->getDynamicObjectCount()==0 && state->getDynamicObjectRenderingCompletedCallback())
+        if (sceneView->getDynamicObjectCount() == 0 && state->getDynamicObjectRenderingCompletedCallback())
         {
             // OSG_NOTICE<<"Completed in cull"<<std::endl;
             state->getDynamicObjectRenderingCompletedCallback()->completed(state);
@@ -759,7 +779,7 @@ void Renderer::draw()
             _querySupport->checkQuery(stats, state, _startTick);
         }
 
-        //glFlush();
+        // glFlush();
 
         osg::Timer_t afterDrawTick = osg::Timer::instance()->tick();
 
@@ -776,19 +796,20 @@ void Renderer::draw()
         sceneView->clearReferencesToDependentCameras();
     }
 
-    DEBUG_MESSAGE<<"end draw() "<<this<<std::endl;
+    DEBUG_MESSAGE << "end draw() " << this << std::endl;
 }
 
 void Renderer::cull_draw()
 {
-    DEBUG_MESSAGE<<"cull_draw() "<<this<<std::endl;
+    DEBUG_MESSAGE << "cull_draw() " << this << std::endl;
 
-    osgUtil::SceneView* sceneView = _sceneView[0].get();
-    if (!sceneView || _done) return;
+    osgUtil::SceneView *sceneView = _sceneView[0].get();
+    if (!sceneView || _done)
+        return;
 
     if (_done)
     {
-        OSG_INFO<<"Render::release() causing cull_draw to exit"<<std::endl;
+        OSG_INFO << "Render::release() causing cull_draw to exit" << std::endl;
         return;
     }
 
@@ -799,17 +820,18 @@ void Renderer::cull_draw()
         compile();
     }
 
-    osgViewer::View* view = dynamic_cast<osgViewer::View*>(_camera->getView());
+    osgViewer::View *view = dynamic_cast<osgViewer::View*>(_camera->getView());
 
     // OSG_NOTICE<<"RenderingOperation"<<std::endl;
 
     // pass on the fusion distance settings from the View to the SceneView
-    if (view) sceneView->setFusionDistance(view->getFusionDistanceMode(), view->getFusionDistanceValue());
+    if (view)
+        sceneView->setFusionDistance(view->getFusionDistanceMode(), view->getFusionDistanceValue());
 
-    osg::Stats* stats = sceneView->getCamera()->getStats();
-    osg::State* state = sceneView->getState();
-    const osg::FrameStamp* fs = sceneView->getFrameStamp();
-    unsigned int frameNumber = fs ? fs->getFrameNumber() : 0;
+    osg::Stats            *stats      = sceneView->getCamera()->getStats();
+    osg::State            *state      = sceneView->getState();
+    const osg::FrameStamp *fs         = sceneView->getFrameStamp();
+    unsigned int          frameNumber = fs ? fs->getFrameNumber() : 0;
 
     if (!_initialized)
     {
@@ -837,7 +859,7 @@ void Renderer::cull_draw()
     }
 
 #if 0
-    if (state->getDynamicObjectCount()==0 && state->getDynamicObjectRenderingCompletedCallback())
+    if (state->getDynamicObjectCount() == 0 && state->getDynamicObjectRenderingCompletedCallback())
     {
         state->getDynamicObjectRenderingCompletedCallback()->completed(state);
     }
@@ -876,7 +898,7 @@ void Renderer::cull_draw()
 
     if (stats && stats->collectStats("rendering"))
     {
-        DEBUG_MESSAGE<<"Collecting rendering stats"<<std::endl;
+        DEBUG_MESSAGE << "Collecting rendering stats" << std::endl;
 
         stats->setAttribute(frameNumber, "Cull traversal begin time", osg::Timer::instance()->delta_s(_startTick, beforeCullTick));
         stats->setAttribute(frameNumber, "Cull traversal end time", osg::Timer::instance()->delta_s(_startTick, afterCullTick));
@@ -887,20 +909,22 @@ void Renderer::cull_draw()
         stats->setAttribute(frameNumber, "Draw traversal time taken", osg::Timer::instance()->delta_s(beforeDrawTick, afterDrawTick));
     }
 
-    DEBUG_MESSAGE<<"end cull_draw() "<<this<<std::endl;
-
+    DEBUG_MESSAGE << "end cull_draw() " << this << std::endl;
 }
 
-void Renderer::operator () (osg::Object* object)
+void Renderer::operator ()(osg::Object *object)
 {
-    osg::GraphicsContext* context = dynamic_cast<osg::GraphicsContext*>(object);
-    if (context) operator()(context);
+    osg::GraphicsContext *context = dynamic_cast<osg::GraphicsContext*>(object);
 
-    osg::Camera* camera = dynamic_cast<osg::Camera*>(object);
-    if (camera) cull();
+    if (context)
+        operator()(context);
+
+    osg::Camera *camera = dynamic_cast<osg::Camera*>(object);
+    if (camera)
+        cull();
 }
 
-void Renderer::operator () (osg::GraphicsContext* /*context*/)
+void Renderer::operator ()(osg::GraphicsContext* /*context*/)
 {
     if (_graphicsThreadDoesCull)
     {
@@ -914,14 +938,15 @@ void Renderer::operator () (osg::GraphicsContext* /*context*/)
 
 void Renderer::release()
 {
-    OSG_INFO<<"Renderer::release()"<<std::endl;
+    OSG_INFO << "Renderer::release()" << std::endl;
     _done = true;
 
     _availableQueue.release();
     _drawQueue.release();
 }
 
-void Renderer::reset(){
+void Renderer::reset()
+{
     _availableQueue.reset();
     _availableQueue.add(_sceneView[0].get());
     _availableQueue.add(_sceneView[1].get());
@@ -932,28 +957,40 @@ void Renderer::setCameraRequiresSetUp(bool flag)
 {
     for (int i = 0; i < 2; ++i)
     {
-        osgUtil::SceneView* sv = getSceneView(i);
-        osgUtil::RenderStage* rs = sv ? sv->getRenderStage() : 0;
-        if (rs) rs->setCameraRequiresSetUp(flag);
+        osgUtil::SceneView   *sv = getSceneView(i);
+        osgUtil::RenderStage *rs = sv ? sv->getRenderStage() : 0;
+        if (rs)
+            rs->setCameraRequiresSetUp(flag);
+
         rs = sv ? sv->getRenderStageLeft() : 0;
-        if (rs) rs->setCameraRequiresSetUp(flag);
+        if (rs)
+            rs->setCameraRequiresSetUp(flag);
+
         rs = sv ? sv->getRenderStageRight() : 0;
-        if (rs) rs->setCameraRequiresSetUp(flag);
+        if (rs)
+            rs->setCameraRequiresSetUp(flag);
     }
 }
 
 bool Renderer::getCameraRequiresSetUp() const
 {
     bool result = false;
+
     for (int i = 0; i < 2; ++i)
     {
-        const osgUtil::SceneView* sv = getSceneView(i);
-        const osgUtil::RenderStage* rs = sv ? sv->getRenderStage() : 0;
-        if (rs) result = result || rs->getCameraRequiresSetUp();
+        const osgUtil::SceneView   *sv = getSceneView(i);
+        const osgUtil::RenderStage *rs = sv ? sv->getRenderStage() : 0;
+        if (rs)
+            result = result || rs->getCameraRequiresSetUp();
+
         rs = sv ? sv->getRenderStageLeft() : 0;
-        if (rs) result = result || rs->getCameraRequiresSetUp();
+        if (rs)
+            result = result || rs->getCameraRequiresSetUp();
+
         rs = sv ? sv->getRenderStageRight() : 0;
-        if (rs) result = result || rs->getCameraRequiresSetUp();
+        if (rs)
+            result = result || rs->getCameraRequiresSetUp();
     }
+
     return result;
 }
