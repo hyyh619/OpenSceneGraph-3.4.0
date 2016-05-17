@@ -9,81 +9,84 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GL>
 #include <osg/PolygonMode>
 #include <osg/Notify>
 
 using namespace osg;
 
-PolygonMode::PolygonMode():
+PolygonMode::PolygonMode() :
     _modeFront(FILL),
     _modeBack(FILL)
-{
-}
+{}
 
-PolygonMode::PolygonMode(Face face,Mode mode):
+PolygonMode::PolygonMode(Face face, Mode mode) :
     _modeFront(FILL),
     _modeBack(FILL)
 {
-    setMode(face,mode);
+    setMode(face, mode);
 }
 
 
 PolygonMode::~PolygonMode()
-{
-}
+{}
 
-void PolygonMode::setMode(Face face,Mode mode)
+void PolygonMode::setMode(Face face, Mode mode)
 {
-    switch(face)
+    switch (face)
     {
-        case(FRONT):
-            _modeFront = mode;
-            break;
-        case(BACK):
-            _modeBack = mode;
-            break;
-        case(FRONT_AND_BACK):
-            _modeFront = mode;
-            _modeBack = mode;
-            break;
+    case (FRONT):
+        _modeFront = mode;
+        break;
+
+    case (BACK):
+        _modeBack = mode;
+        break;
+
+    case (FRONT_AND_BACK):
+        _modeFront = mode;
+        _modeBack  = mode;
+        break;
     }
 }
 
 PolygonMode::Mode PolygonMode::getMode(Face face) const
 {
-    switch(face)
+    switch (face)
     {
-        case(FRONT):
-            return _modeFront;
-        case(BACK):
-            return _modeBack;
-        case(FRONT_AND_BACK):
-            return _modeFront;
+    case (FRONT):
+        return _modeFront;
+
+    case (BACK):
+        return _modeBack;
+
+    case (FRONT_AND_BACK):
+        return _modeFront;
     }
-    OSG_WARN<<"Warning : invalid Face passed to PolygonMode::getMode(Face face)"<<std::endl;
+
+    OSG_WARN << "Warning : invalid Face passed to PolygonMode::getMode(Face face)" << std::endl;
     return _modeFront;
 }
 
 void PolygonMode::apply(State&) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
-    if (_modeFront==_modeBack)
+    if (_modeFront == _modeBack)
     {
-        glPolygonMode(GL_FRONT_AND_BACK,(GLenum)_modeFront);
+        glPolygonMode(GL_FRONT_AND_BACK, (GLenum)_modeFront);
     }
     else
     {
         #ifdef OSG_GL1_AVAILABLE
-            glPolygonMode(GL_FRONT,(GLenum)_modeFront);
-            glPolygonMode(GL_BACK,(GLenum)_modeBack);
+        glPolygonMode(GL_FRONT, (GLenum)_modeFront);
+        glPolygonMode(GL_BACK, (GLenum)_modeBack);
         #else
-            OSG_NOTICE << "Warning: PolygonMode::apply(State&) - only GL_FRONT_AND_BACK is supported." << std::endl;
+        OSG_NOTICE << "Warning: PolygonMode::apply(State&) - only GL_FRONT_AND_BACK is supported." << std::endl;
         #endif
     }
+
 #else
     OSG_NOTICE << "Warning: PolygonMode::apply(State&) - is not supported." << std::endl;
 #endif
 }
-

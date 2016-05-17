@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 #include <osg/GraphicsThread>
@@ -21,13 +21,13 @@ using namespace osg;
 using namespace OpenThreads;
 
 GraphicsThread::GraphicsThread()
-{
-}
+{}
 
 void GraphicsThread::run()
 {
     // make the graphics context current.
-    GraphicsContext* graphicsContext = dynamic_cast<GraphicsContext*>(_parent.get());
+    GraphicsContext *graphicsContext = dynamic_cast<GraphicsContext*>(_parent.get());
+
     if (graphicsContext)
     {
         graphicsContext->makeCurrent();
@@ -44,16 +44,17 @@ void GraphicsThread::run()
     {
         graphicsContext->releaseContext();
     }
-
 }
 
-void GraphicsOperation::operator () (Object* object)
+void GraphicsOperation::operator ()(Object *object)
 {
-    osg::GraphicsContext* context = dynamic_cast<osg::GraphicsContext*>(object);
-    if (context) operator() (context);
+    osg::GraphicsContext *context = dynamic_cast<osg::GraphicsContext*>(object);
+
+    if (context)
+        operator() (context);
 }
 
-void SwapBuffersOperation::operator () (GraphicsContext* context)
+void SwapBuffersOperation::operator ()(GraphicsContext *context)
 {
     context->swapBuffersCallbackOrImplemenation();
     context->clear();
@@ -64,12 +65,14 @@ void BarrierOperation::release()
     Barrier::release();
 }
 
-void BarrierOperation::operator () (Object* /*object*/)
+void BarrierOperation::operator ()(Object* /*object*/)
 {
-    if (_preBlockOp!=NO_OPERATION)
+    if (_preBlockOp != NO_OPERATION)
     {
-        if (_preBlockOp==GL_FLUSH) glFlush();
-        else if (_preBlockOp==GL_FINISH) glFinish();
+        if (_preBlockOp == GL_FLUSH)
+            glFlush();
+        else if (_preBlockOp == GL_FINISH)
+            glFinish();
     }
 
     block();
@@ -81,7 +84,7 @@ void ReleaseContext_Block_MakeCurrentOperation::release()
 }
 
 
-void ReleaseContext_Block_MakeCurrentOperation::operator () (GraphicsContext* context)
+void ReleaseContext_Block_MakeCurrentOperation::operator ()(GraphicsContext *context)
 {
     // release the graphics context.
     context->releaseContext();
@@ -97,9 +100,9 @@ void ReleaseContext_Block_MakeCurrentOperation::operator () (GraphicsContext* co
 }
 
 
-BlockAndFlushOperation::BlockAndFlushOperation():
+BlockAndFlushOperation::BlockAndFlushOperation() :
     osg::Referenced(true),
-    GraphicsOperation("Block",false)
+    GraphicsOperation("Block", false)
 {
     reset();
 }
@@ -109,32 +112,31 @@ void BlockAndFlushOperation::release()
     Block::release();
 }
 
-void BlockAndFlushOperation::operator () (GraphicsContext*)
+void BlockAndFlushOperation::operator ()(GraphicsContext*)
 {
     glFlush();
     Block::release();
 }
 
-FlushDeletedGLObjectsOperation::FlushDeletedGLObjectsOperation(double availableTime, bool keep):
+FlushDeletedGLObjectsOperation::FlushDeletedGLObjectsOperation(double availableTime, bool keep) :
     osg::Referenced(true),
-    GraphicsOperation("FlushDeletedGLObjectsOperation",keep),
+    GraphicsOperation("FlushDeletedGLObjectsOperation", keep),
     _availableTime(availableTime)
-{
-}
+{}
 
-void FlushDeletedGLObjectsOperation::operator () (GraphicsContext* context)
+void FlushDeletedGLObjectsOperation::operator ()(GraphicsContext *context)
 {
-    State* state = context->getState();
-    unsigned int contextID = state ? state->getContextID() : 0;
-    const FrameStamp* frameStamp = state ? state->getFrameStamp() : 0;
-    double currentTime = frameStamp ? frameStamp->getReferenceTime() : 0.0;
-    double availableTime = _availableTime;
+    State            *state        = context->getState();
+    unsigned int     contextID     = state ? state->getContextID() : 0;
+    const FrameStamp *frameStamp   = state ? state->getFrameStamp() : 0;
+    double           currentTime   = frameStamp ? frameStamp->getReferenceTime() : 0.0;
+    double           availableTime = _availableTime;
 
     flushDeletedGLObjects(contextID, currentTime, availableTime);
 }
 
 
-void RunOperations::operator () (osg::GraphicsContext* context)
+void RunOperations::operator ()(osg::GraphicsContext *context)
 {
     context->runOperations();
 }
@@ -144,10 +146,9 @@ void RunOperations::operator () (osg::GraphicsContext* context)
 //
 // EndOfDynamicDrawBlock
 //
-EndOfDynamicDrawBlock::EndOfDynamicDrawBlock(unsigned int numberOfBlocks):
+EndOfDynamicDrawBlock::EndOfDynamicDrawBlock(unsigned int numberOfBlocks) :
     BlockCount(numberOfBlocks)
-{
-}
+{}
 
 void EndOfDynamicDrawBlock::completed(osg::State* /*state*/)
 {

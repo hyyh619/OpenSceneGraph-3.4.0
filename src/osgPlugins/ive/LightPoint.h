@@ -4,12 +4,14 @@
 #include <osgSim/LightPoint>
 #include "ReadWrite.h"
 
-namespace ive{
-class LightPoint : public osgSim::LightPoint, public ReadWrite {
+namespace ive
+{
+class LightPoint : public osgSim::LightPoint, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
-        virtual ~LightPoint() {}
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
+virtual ~LightPoint() {}
 };
 }
 

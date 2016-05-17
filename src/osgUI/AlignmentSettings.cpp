@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgUI/Style>
 #include <osg/Geode>
@@ -17,13 +17,11 @@
 
 using namespace osgUI;
 
-AlignmentSettings::AlignmentSettings(AlignmentSettings::Alignment alignment):
+AlignmentSettings::AlignmentSettings(AlignmentSettings::Alignment alignment) :
     _alignment(alignment)
-{
-}
+{}
 
-AlignmentSettings::AlignmentSettings(const AlignmentSettings& alingmentSettings, const osg::CopyOp& copyop):
+AlignmentSettings::AlignmentSettings(const AlignmentSettings&alingmentSettings, const osg::CopyOp&copyop) :
     osg::Object(alingmentSettings, copyop),
     _alignment(alingmentSettings._alignment)
-{
-}
+{}

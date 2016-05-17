@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef IVE_VOLUMELAYER
 #define IVE_VOLUMELAYER 1
@@ -19,15 +19,12 @@
 
 namespace ive
 {
-
 class VolumeLayer : public osgVolume::Layer, public ReadWrite
 {
-    public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+public:
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
-
-
 }
 
 #endif

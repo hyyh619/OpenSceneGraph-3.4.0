@@ -4,26 +4,30 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-namespace ArrayWrappers {
-
+namespace ArrayWrappers
+{
 #if 0
 struct ResizeArray : public osgDB::MethodObject
 {
-    virtual bool run(void* objectPtr, osg::Parameters& inputParameters, osg::Parameters& outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
     {
-        if (inputParameters.empty()) return false;
+        if (inputParameters.empty())
+            return false;
 
-        osg::Object* indexObject = inputParameters[0].get();
+        osg::Object *indexObject = inputParameters[0].get();
 
-        unsigned int index = 0;
-        osg::DoubleValueObject* dvo = dynamic_cast<osg::DoubleValueObject*>(indexObject);
-        if (dvo) index = static_cast<unsigned int>(dvo->getValue());
+        unsigned int           index = 0;
+        osg::DoubleValueObject *dvo  = dynamic_cast<osg::DoubleValueObject*>(indexObject);
+        if (dvo)
+            index = static_cast<unsigned int>(dvo->getValue());
         else
         {
-            osg::UIntValueObject* uivo = dynamic_cast<osg::UIntValueObject*>(indexObject);
-            if (uivo) index = uivo->getValue();
+            osg::UIntValueObject *uivo = dynamic_cast<osg::UIntValueObject*>(indexObject);
+            if (uivo)
+                index = uivo->getValue();
         }
-        osg::Array* array = reinterpret_cast<osg::Array*>(objectPtr);
+
+        osg::Array *array = reinterpret_cast<osg::Array*>(objectPtr);
         array->resizeArray(index);
 
         return true;
@@ -31,93 +35,91 @@ struct ResizeArray : public osgDB::MethodObject
 };
 #endif
 
-REGISTER_OBJECT_WRAPPER( Array,
-                         0,
-                         osg::Array,
-                         "osg::Object osg::Array" )
+REGISTER_OBJECT_WRAPPER(Array,
+                        0,
+                        osg::Array,
+                        "osg::Object osg::Array")
 {
 #if 0
-    BEGIN_ENUM_SERIALIZER_NO_SET( Type, ArrayType );
-        ADD_ENUM_VALUE( ArrayType );
+    BEGIN_ENUM_SERIALIZER_NO_SET(Type, ArrayType);
+    ADD_ENUM_VALUE(ArrayType);
 
-        ADD_ENUM_VALUE( ByteArrayType );
-        ADD_ENUM_VALUE( ShortArrayType );
-        ADD_ENUM_VALUE( IntArrayType );
+    ADD_ENUM_VALUE(ByteArrayType);
+    ADD_ENUM_VALUE(ShortArrayType);
+    ADD_ENUM_VALUE(IntArrayType);
 
-        ADD_ENUM_VALUE( UByteArrayType );
-        ADD_ENUM_VALUE( UShortArrayType );
-        ADD_ENUM_VALUE( UIntArrayType );
+    ADD_ENUM_VALUE(UByteArrayType);
+    ADD_ENUM_VALUE(UShortArrayType);
+    ADD_ENUM_VALUE(UIntArrayType);
 
-        ADD_ENUM_VALUE( FloatArrayType );
-        ADD_ENUM_VALUE( DoubleArrayType );
+    ADD_ENUM_VALUE(FloatArrayType);
+    ADD_ENUM_VALUE(DoubleArrayType);
 
-        ADD_ENUM_VALUE( Vec2bArrayType );
-        ADD_ENUM_VALUE( Vec3bArrayType );
-        ADD_ENUM_VALUE( Vec4bArrayType );
+    ADD_ENUM_VALUE(Vec2bArrayType);
+    ADD_ENUM_VALUE(Vec3bArrayType);
+    ADD_ENUM_VALUE(Vec4bArrayType);
 
-        ADD_ENUM_VALUE( Vec2sArrayType );
-        ADD_ENUM_VALUE( Vec3sArrayType );
-        ADD_ENUM_VALUE( Vec4sArrayType );
+    ADD_ENUM_VALUE(Vec2sArrayType);
+    ADD_ENUM_VALUE(Vec3sArrayType);
+    ADD_ENUM_VALUE(Vec4sArrayType);
 
-        ADD_ENUM_VALUE( Vec2iArrayType );
-        ADD_ENUM_VALUE( Vec3iArrayType );
-        ADD_ENUM_VALUE( Vec4iArrayType );
+    ADD_ENUM_VALUE(Vec2iArrayType);
+    ADD_ENUM_VALUE(Vec3iArrayType);
+    ADD_ENUM_VALUE(Vec4iArrayType);
 
-        ADD_ENUM_VALUE( Vec2ubArrayType );
-        ADD_ENUM_VALUE( Vec3ubArrayType );
-        ADD_ENUM_VALUE( Vec4ubArrayType );
+    ADD_ENUM_VALUE(Vec2ubArrayType);
+    ADD_ENUM_VALUE(Vec3ubArrayType);
+    ADD_ENUM_VALUE(Vec4ubArrayType);
 
-        ADD_ENUM_VALUE( Vec2usArrayType );
-        ADD_ENUM_VALUE( Vec3usArrayType );
-        ADD_ENUM_VALUE( Vec4usArrayType );
+    ADD_ENUM_VALUE(Vec2usArrayType);
+    ADD_ENUM_VALUE(Vec3usArrayType);
+    ADD_ENUM_VALUE(Vec4usArrayType);
 
-        ADD_ENUM_VALUE( Vec2uiArrayType );
-        ADD_ENUM_VALUE( Vec3uiArrayType );
-        ADD_ENUM_VALUE( Vec4uiArrayType );
+    ADD_ENUM_VALUE(Vec2uiArrayType);
+    ADD_ENUM_VALUE(Vec3uiArrayType);
+    ADD_ENUM_VALUE(Vec4uiArrayType);
 
-        ADD_ENUM_VALUE( Vec2ArrayType );
-        ADD_ENUM_VALUE( Vec3ArrayType );
-        ADD_ENUM_VALUE( Vec4ArrayType );
+    ADD_ENUM_VALUE(Vec2ArrayType);
+    ADD_ENUM_VALUE(Vec3ArrayType);
+    ADD_ENUM_VALUE(Vec4ArrayType);
 
-        ADD_ENUM_VALUE( Vec2dArrayType );
-        ADD_ENUM_VALUE( Vec3dArrayType );
-        ADD_ENUM_VALUE( Vec4dArrayType );
+    ADD_ENUM_VALUE(Vec2dArrayType);
+    ADD_ENUM_VALUE(Vec3dArrayType);
+    ADD_ENUM_VALUE(Vec4dArrayType);
 
-        ADD_ENUM_VALUE( MatrixArrayType );
-        ADD_ENUM_VALUE( MatrixdArrayType );
+    ADD_ENUM_VALUE(MatrixArrayType);
+    ADD_ENUM_VALUE(MatrixdArrayType);
     END_ENUM_SERIALIZER();
 
-    ADD_INT_SERIALIZER_NO_SET( DataSize, 0);
+    ADD_INT_SERIALIZER_NO_SET(DataSize, 0);
 
-    ADD_GLENUM_SERIALIZER_NO_SET( DataType, GLenum, GL_NONE );
+    ADD_GLENUM_SERIALIZER_NO_SET(DataType, GLenum, GL_NONE);
 
-    ADD_UINT_SERIALIZER_NO_SET( ElementSize, 0);
-    ADD_UINT_SERIALIZER_NO_SET( TotalDataSize, 0);
-    ADD_UINT_SERIALIZER_NO_SET( NumElements, 0);
+    ADD_UINT_SERIALIZER_NO_SET(ElementSize, 0);
+    ADD_UINT_SERIALIZER_NO_SET(TotalDataSize, 0);
+    ADD_UINT_SERIALIZER_NO_SET(NumElements, 0);
 
-    ADD_METHOD_OBJECT( "resizeArray", ResizeArray );
+    ADD_METHOD_OBJECT("resizeArray", ResizeArray);
 #endif
-    BEGIN_ENUM_SERIALIZER( Binding, BIND_UNDEFINED );
-        ADD_ENUM_VALUE( BIND_UNDEFINED );
-        ADD_ENUM_VALUE( BIND_OFF );
-        ADD_ENUM_VALUE( BIND_OVERALL );
-        ADD_ENUM_VALUE( BIND_PER_PRIMITIVE_SET );
-        ADD_ENUM_VALUE( BIND_PER_VERTEX );
+    BEGIN_ENUM_SERIALIZER(Binding, BIND_UNDEFINED);
+    ADD_ENUM_VALUE(BIND_UNDEFINED);
+    ADD_ENUM_VALUE(BIND_OFF);
+    ADD_ENUM_VALUE(BIND_OVERALL);
+    ADD_ENUM_VALUE(BIND_PER_PRIMITIVE_SET);
+    ADD_ENUM_VALUE(BIND_PER_VERTEX);
     END_ENUM_SERIALIZER();
 
     ADD_BOOL_SERIALIZER(Normalize, false);
     ADD_BOOL_SERIALIZER(PreserveDataType, false);
-
+}
 }
 
-}
-
-#define ARRAY_WRAPPERS( ARRAY, ELEMENTTYPE, NUMELEMENTSONROW ) \
-    namespace Wrappers##ARRAY { \
-        REGISTER_OBJECT_WRAPPER( ARRAY, new osg::ARRAY, osg::ARRAY, "osg::Object osg::Array osg::"#ARRAY) \
-        { \
-                ADD_ISAVECTOR_SERIALIZER( vector, osgDB::BaseSerializer::ELEMENTTYPE, NUMELEMENTSONROW ); \
-        } \
+#define ARRAY_WRAPPERS(ARRAY, ELEMENTTYPE, NUMELEMENTSONROW)                                         \
+    namespace Wrappers ## ARRAY {                                                                    \
+    REGISTER_OBJECT_WRAPPER(ARRAY, new osg::ARRAY, osg::ARRAY, "osg::Object osg::Array osg::"#ARRAY) \
+    {                                                                                                \
+        ADD_ISAVECTOR_SERIALIZER(vector, osgDB::BaseSerializer::ELEMENTTYPE, NUMELEMENTSONROW);      \
+    }                                                                                                \
     }
 
 ARRAY_WRAPPERS(FloatArray, RW_FLOAT, 4)

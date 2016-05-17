@@ -9,24 +9,21 @@
 
 namespace gsc
 {
-
 class UpdateProperty : public osg::Object
 {
 public:
 
-    UpdateProperty() {}
-    UpdateProperty(const UpdateProperty& up, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY) {}
+UpdateProperty() {}
+UpdateProperty(const UpdateProperty&up, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) {}
 
-    META_Object(gsc, UpdateProperty);
+META_Object(gsc, UpdateProperty);
 
-    virtual void update(osgViewer::View* view) {}
+virtual void update(osgViewer::View *view) {}
 
 protected:
 
-    virtual ~UpdateProperty() {}
+virtual ~UpdateProperty() {}
 };
-
-
 }
 
 #endif

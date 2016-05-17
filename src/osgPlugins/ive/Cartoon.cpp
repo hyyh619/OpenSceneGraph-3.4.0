@@ -1,14 +1,14 @@
 /**********************************************************************
- *
- *    FILE:           Cartoon.cpp
- *
- *    DESCRIPTION:    Read/Write osgFX::Cartoon in binary format to disk.
- *
- *    CREATED BY:     Liang Aibin
- *
- *    HISTORY:        Created 23.8.2008
- *
- **********************************************************************/
+*
+*    FILE:           Cartoon.cpp
+*
+*    DESCRIPTION:    Read/Write osgFX::Cartoon in binary format to disk.
+*
+*    CREATED BY:     Liang Aibin
+*
+*    HISTORY:        Created 23.8.2008
+*
+**********************************************************************/
 
 #include "Exception.h"
 #include "Cartoon.h"
@@ -16,12 +16,14 @@
 
 using namespace ive;
 
-void Cartoon::write(DataOutputStream* out){
+void Cartoon::write(DataOutputStream *out)
+{
     // Write Cartoon's identification.
     out->writeInt(IVECARTOON);
     // If the osg class is inherited by any other class we should also write this to file.
-    osgFX::Effect*  effect = dynamic_cast<osgFX::Effect*>(this);
-    if(effect){
+    osgFX::Effect *effect = dynamic_cast<osgFX::Effect*>(this);
+    if (effect)
+    {
         ((ive::Effect*)(effect))->write(out);
     }
     else
@@ -33,16 +35,20 @@ void Cartoon::write(DataOutputStream* out){
     out->writeInt(getLightNumber());
 }
 
-void Cartoon::read(DataInputStream* in){
+void Cartoon::read(DataInputStream *in)
+{
     // Peek on Cartoon's identification.
     int id = in->peekInt();
-    if(id == IVECARTOON){
+
+    if (id == IVECARTOON)
+    {
         // Read Cartoon's identification.
         id = in->readInt();
 
         // If the osg class is inherited by any other class we should also read this from file.
-        osgFX::Effect*  effect = dynamic_cast<osgFX::Effect*>(this);
-        if(effect){
+        osgFX::Effect *effect = dynamic_cast<osgFX::Effect*>(this);
+        if (effect)
+        {
             ((ive::Effect*)(effect))->read(in);
         }
         else
@@ -53,7 +59,8 @@ void Cartoon::read(DataInputStream* in){
         setOutlineLineWidth(in->readFloat());
         setLightNumber(in->readInt());
     }
-    else{
+    else
+    {
         in_THROW_EXCEPTION("Cartoon::read(): Expected Cartoon identification.");
     }
 }

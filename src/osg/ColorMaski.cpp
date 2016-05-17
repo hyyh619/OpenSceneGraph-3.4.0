@@ -9,32 +9,30 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/ColorMaski>
 #include <osg/GLExtensions>
 #include <osg/State>
 
 using namespace osg;
 
-ColorMaski::ColorMaski():
+ColorMaski::ColorMaski() :
     _index(0)
-{
-}
+{}
 
 ColorMaski::~ColorMaski()
-{
-}
+{}
 
-void ColorMaski::apply(State& state) const
+void ColorMaski::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (extensions->glColorMaski)
     {
-        extensions->glColorMaski((GLboolean)_index, (GLboolean)_red,(GLboolean)_green,(GLboolean)_blue,(GLboolean)_alpha);
+        extensions->glColorMaski((GLboolean)_index, (GLboolean)_red, (GLboolean)_green, (GLboolean)_blue, (GLboolean)_alpha);
     }
     else
     {
-        OSG_WARN<<"Warning: ColorMaski::apply(..) failed, glColorMaski is not support by OpenGL driver."<<std::endl;
+        OSG_WARN << "Warning: ColorMaski::apply(..) failed, glColorMaski is not support by OpenGL driver." << std::endl;
     }
 }
-

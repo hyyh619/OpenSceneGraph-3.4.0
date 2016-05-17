@@ -4,13 +4,14 @@
 #include <osg/PointSprite>
 #include "ReadWrite.h"
 
-namespace ive{
-class PointSprite : public osg::PointSprite, public ReadWrite {
+namespace ive
+{
+class PointSprite : public osg::PointSprite, public ReadWrite
+{
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 
 #endif
-

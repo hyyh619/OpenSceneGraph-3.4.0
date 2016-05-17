@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 #include <osgUI/Popup>
@@ -21,39 +21,40 @@
 using namespace osgUI;
 
 Popup::Popup()
-{
-}
+{}
 
-Popup::Popup(const osgUI::Popup& dialog, const osg::CopyOp& copyop):
+Popup::Popup(const osgUI::Popup&dialog, const osg::CopyOp&copyop) :
     Widget(dialog, copyop),
     _title(dialog._title)
-{
-}
+{}
 
-bool Popup::handleImplementation(osgGA::EventVisitor* ev, osgGA::Event* event)
+bool Popup::handleImplementation(osgGA::EventVisitor *ev, osgGA::Event *event)
 {
 //    OSG_NOTICE<<"Popup::handleImplementation"<<std::endl;
 
-    osgGA::GUIEventAdapter* ea = event->asGUIEventAdapter();
-    if (!ea) return false;
+    osgGA::GUIEventAdapter *ea = event->asGUIEventAdapter();
 
-    switch(ea->getEventType())
+    if (!ea)
+        return false;
+
+    switch (ea->getEventType())
     {
-        //case(osgGA::GUIEventAdapter::KEYDOWN):
-        case(osgGA::GUIEventAdapter::KEYUP):
-            OSG_NOTICE<<"Key pressed : "<<(char)ea->getKey()<<std::endl;
+    // case(osgGA::GUIEventAdapter::KEYDOWN):
+    case (osgGA::GUIEventAdapter::KEYUP):
+        OSG_NOTICE << "Key pressed : " << (char)ea->getKey() << std::endl;
 
-            if (ea->getKey()=='c')
-            {
-                setVisible(false);
-                ea->setHandled(true);
+        if (ea->getKey() == 'c')
+        {
+            setVisible(false);
+            ea->setHandled(true);
 
-                return true;
-            }
+            return true;
+        }
 
-            break;
-        default:
-            break;
+        break;
+
+    default:
+        break;
     }
 
     return false;
@@ -66,20 +67,24 @@ void Popup::leaveImplementation()
 
 void Popup::createGraphicsImplementation()
 {
-   _transform = new osg::PositionAttitudeTransform;
+    _transform = new osg::PositionAttitudeTransform;
 
-    Style* style = (getStyle()!=0) ? getStyle() : Style::instance().get();
+    Style *style = (getStyle() != 0) ? getStyle() : Style::instance().get();
 
-    osg::Vec4 dialogBackgroundColor(0.9,0.9,0.9,1.0);
+    osg::Vec4 dialogBackgroundColor(0.9, 0.9, 0.9, 1.0);
 
-    _transform->addChild( style->createPanel(_extents, dialogBackgroundColor) );
+    _transform->addChild(style->createPanel(_extents, dialogBackgroundColor));
 
-    bool requiresFrame = (getFrameSettings() && getFrameSettings()->getShape()!=osgUI::FrameSettings::NO_FRAME);
-    if (requiresFrame) { _transform->addChild(style->createFrame(_extents, getFrameSettings(), dialogBackgroundColor)); }
+    bool requiresFrame = (getFrameSettings() && getFrameSettings()->getShape() != osgUI::FrameSettings::NO_FRAME);
+    if (requiresFrame)
+    {
+        _transform->addChild(style->createFrame(_extents, getFrameSettings(), dialogBackgroundColor));
+    }
+
 #if 1
-    style->setupDialogStateSet(getOrCreateWidgetStateSet(),6);
+    style->setupDialogStateSet(getOrCreateWidgetStateSet(), 6);
 #else
-    style->setupPopupStateSet(getOrCreateWidgetStateSet(),6);
+    style->setupPopupStateSet(getOrCreateWidgetStateSet(), 6);
 #endif
     style->setupClipStateSet(_extents, getOrCreateWidgetStateSet());
 

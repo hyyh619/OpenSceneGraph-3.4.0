@@ -19,40 +19,60 @@
 using namespace std;
 
 void
-dxfBlock::assign(dxfFile* dxf, codeValue& cv)
+dxfBlock::assign(dxfFile *dxf, codeValue&cv)
 {
     string s = cv._string;
-    if (cv._groupCode == 0) {
-        if (_currentEntity && _currentEntity->done()) {
-            _currentEntity = new dxfEntity(s);
-            _entityList.push_back(_currentEntity);
-        } else if (_currentEntity) {
-            _currentEntity->assign(dxf, cv);
-        } else {
+
+    if (cv._groupCode == 0)
+    {
+        if (_currentEntity && _currentEntity->done())
+        {
             _currentEntity = new dxfEntity(s);
             _entityList.push_back(_currentEntity);
         }
-    } else if (_currentEntity) {
+        else if (_currentEntity)
+        {
+            _currentEntity->assign(dxf, cv);
+        }
+        else
+        {
+            _currentEntity = new dxfEntity(s);
+            _entityList.push_back(_currentEntity);
+        }
+    }
+    else if (_currentEntity)
+    {
         _currentEntity->assign(dxf, cv);
-    } else if (cv._groupCode != 0) {
+    }
+    else if (cv._groupCode != 0)
+    {
         double d = cv._double;
-        switch (cv._groupCode) {
-            case 2:
-                _name = s;
-            case 10:
-                _position.x() = d;
-                break;
-            case 20:
-                _position.y() = d;
-                break;
-            case 30:
-                _position.z() = d;
-                break;
-            default:
-                // dxf garble
-                break;
+
+        switch (cv._groupCode)
+        {
+        case 2:
+            _name = s;
+
+        case 10:
+            _position.x() = d;
+            break;
+
+        case 20:
+            _position.y() = d;
+            break;
+
+        case 30:
+            _position.z() = d;
+            break;
+
+        default:
+            // dxf garble
+            break;
         }
     }
 }
 
-const osg::Vec3d& dxfBlock::getPosition() const { return _position; }
+const osg::Vec3d&dxfBlock::getPosition() const
+{
+    return _position;
+}

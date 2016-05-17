@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool OccluderNode_readLocalData(Object& obj, Input& fr);
-bool OccluderNode_writeLocalData(const Object& obj, Output& fw);
+bool OccluderNode_readLocalData(Object&obj, Input&fr);
+bool OccluderNode_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(OccluderNode)
@@ -21,13 +21,14 @@ REGISTER_DOTOSGWRAPPER(OccluderNode)
     &OccluderNode_writeLocalData
 );
 
-bool OccluderNode_readLocalData(Object& obj, Input& fr)
+bool OccluderNode_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    OccluderNode& occludernode = static_cast<OccluderNode&>(obj);
+    OccluderNode&occludernode = static_cast<OccluderNode&>(obj);
 
-    ConvexPlanarOccluder* tmpOccluder = fr.readObjectOfType<ConvexPlanarOccluder>();
+    ConvexPlanarOccluder *tmpOccluder = fr.readObjectOfType<ConvexPlanarOccluder>();
+
     if (tmpOccluder)
     {
         occludernode.setOccluder(tmpOccluder);
@@ -38,9 +39,9 @@ bool OccluderNode_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool OccluderNode_writeLocalData(const Object& obj, Output& fw)
+bool OccluderNode_writeLocalData(const Object&obj, Output&fw)
 {
-    const OccluderNode& occludernode = static_cast<const OccluderNode&>(obj);
+    const OccluderNode&occludernode = static_cast<const OccluderNode&>(obj);
 
     if (occludernode.getOccluder())
     {

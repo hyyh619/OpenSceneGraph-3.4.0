@@ -15,9 +15,9 @@
 
 #include <string.h>
 
-bool Layer_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool Layer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
-bool Layer_matchFilterStr(const char* str, osg::Texture::FilterMode& filter);
+bool Layer_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool Layer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Layer_matchFilterStr(const char *str, osg::Texture::FilterMode&filter);
 const char* Layer_getFilterStr(osg::Texture::FilterMode filter);
 
 REGISTER_DOTOSGWRAPPER(Layer_Proxy)
@@ -29,28 +29,32 @@ REGISTER_DOTOSGWRAPPER(Layer_Proxy)
     Layer_writeLocalData
 );
 
-bool Layer_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool Layer_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgVolume::Layer& layer = static_cast<osgVolume::Layer&>(obj);
+    osgVolume::Layer&layer = static_cast<osgVolume::Layer&>(obj);
 
     bool itrAdvanced = false;
 
     osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgVolume::Locator>());
-    osgVolume::Locator* locator = dynamic_cast<osgVolume::Locator*>(readObject.get());
-    if (locator) layer.setLocator(locator);
+    osgVolume::Locator        *locator   = dynamic_cast<osgVolume::Locator*>(readObject.get());
+
+    if (locator)
+        layer.setLocator(locator);
 
     readObject = fr.readObjectOfType(osgDB::type_wrapper<osgVolume::Property>());
-    if (readObject.valid()) itrAdvanced = true;
+    if (readObject.valid())
+        itrAdvanced = true;
 
-    osgVolume::Property* property = dynamic_cast<osgVolume::Property*>(readObject.get());
-    if (property) layer.addProperty(property);
+    osgVolume::Property *property = dynamic_cast<osgVolume::Property*>(readObject.get());
+    if (property)
+        layer.addProperty(property);
 
     return itrAdvanced;
 }
 
-bool Layer_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool Layer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgVolume::Layer& layer = static_cast<const osgVolume::Layer&>(obj);
+    const osgVolume::Layer&layer = static_cast<const osgVolume::Layer&>(obj);
 
     if (layer.getLocator())
     {
@@ -64,4 +68,3 @@ bool Layer_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
 
     return true;
 }
-

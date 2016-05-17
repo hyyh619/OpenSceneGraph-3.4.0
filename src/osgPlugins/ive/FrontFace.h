@@ -4,13 +4,14 @@
 #include <osg/FrontFace>
 #include "ReadWrite.h"
 
-namespace ive{
-class FrontFace : public osg::FrontFace, public ReadWrite {
+namespace ive
+{
+class FrontFace : public osg::FrontFace, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 
 #endif
-

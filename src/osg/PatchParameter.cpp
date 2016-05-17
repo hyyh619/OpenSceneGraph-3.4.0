@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/PatchParameter>
 #include <osg/State>
 #include <osg/Notify>
@@ -17,26 +17,24 @@
 
 using namespace osg;
 
-PatchParameter::PatchParameter(GLint vertices):
+PatchParameter::PatchParameter(GLint vertices) :
     _vertices(vertices),
-    _patchDefaultInnerLevel(1.0f,1.0f),
-    _patchDefaultOuterLevel(1.0f,1.0f,1.0f,1.0f)
-{
-}
+    _patchDefaultInnerLevel(1.0f, 1.0f),
+    _patchDefaultOuterLevel(1.0f, 1.0f, 1.0f, 1.0f)
+{}
 
 
 PatchParameter::~PatchParameter()
-{
-}
+{}
 
-void PatchParameter::apply(State& state) const
+void PatchParameter::apply(State&state) const
 {
-    GLExtensions* extensions = state.get<GLExtensions>();
-    if (extensions->areTessellationShadersSupported )
+    GLExtensions *extensions = state.get<GLExtensions>();
+
+    if (extensions->areTessellationShadersSupported)
     {
-
-        extensions->glPatchParameteri( GL_PATCH_VERTICES, _vertices );
-        extensions->glPatchParameterfv( GL_PATCH_DEFAULT_INNER_LEVEL, _patchDefaultInnerLevel.ptr() );
-        extensions->glPatchParameterfv( GL_PATCH_DEFAULT_OUTER_LEVEL, _patchDefaultOuterLevel.ptr() );
+        extensions->glPatchParameteri(GL_PATCH_VERTICES, _vertices);
+        extensions->glPatchParameterfv(GL_PATCH_DEFAULT_INNER_LEVEL, _patchDefaultInnerLevel.ptr());
+        extensions->glPatchParameterfv(GL_PATCH_DEFAULT_OUTER_LEVEL, _patchDefaultOuterLevel.ptr());
     }
 }

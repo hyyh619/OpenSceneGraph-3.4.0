@@ -17,27 +17,51 @@
 
 using namespace osgAnimation;
 
-ActionAnimation* ActionStripAnimation::getAnimation() { return _animation.get(); }
-ActionBlendIn* ActionStripAnimation::getBlendIn() { return _blendIn.get(); }
-ActionBlendOut* ActionStripAnimation::getBlendOut() { return _blendOut.second.get(); }
-const ActionAnimation* ActionStripAnimation::getAnimation() const { return _animation.get(); }
-const ActionBlendIn* ActionStripAnimation::getBlendIn() const { return _blendIn.get(); }
-const ActionBlendOut* ActionStripAnimation::getBlendOut() const { return _blendOut.second.get(); }
-unsigned int ActionStripAnimation::getBlendOutStartFrame() const { return _blendOut.first; }
-
-unsigned int ActionStripAnimation::getLoop() const { return _animation->getLoop(); }
-
-
-ActionStripAnimation::ActionStripAnimation(const ActionStripAnimation& a, const osg::CopyOp& c) : Action(a,c)
+ActionAnimation* ActionStripAnimation::getAnimation()
 {
-    _animation = a._animation;
-    _blendIn = a._blendIn;
-    _blendOut = a._blendOut;
+    return _animation.get();
+}
+ActionBlendIn* ActionStripAnimation::getBlendIn()
+{
+    return _blendIn.get();
+}
+ActionBlendOut* ActionStripAnimation::getBlendOut()
+{
+    return _blendOut.second.get();
+}
+const ActionAnimation* ActionStripAnimation::getAnimation() const
+{
+    return _animation.get();
+}
+const ActionBlendIn* ActionStripAnimation::getBlendIn() const
+{
+    return _blendIn.get();
+}
+const ActionBlendOut* ActionStripAnimation::getBlendOut() const
+{
+    return _blendOut.second.get();
+}
+unsigned int ActionStripAnimation::getBlendOutStartFrame() const
+{
+    return _blendOut.first;
 }
 
-ActionStripAnimation::ActionStripAnimation(Animation* animation, double blendInDuration, double blendOutDuration, double blendInWeightTarget)
+unsigned int ActionStripAnimation::getLoop() const
 {
-    _blendIn = new ActionBlendIn(animation, blendInDuration, blendInWeightTarget);
+    return _animation->getLoop();
+}
+
+
+ActionStripAnimation::ActionStripAnimation(const ActionStripAnimation&a, const osg::CopyOp&c) : Action(a, c)
+{
+    _animation = a._animation;
+    _blendIn   = a._blendIn;
+    _blendOut  = a._blendOut;
+}
+
+ActionStripAnimation::ActionStripAnimation(Animation *animation, double blendInDuration, double blendOutDuration, double blendInWeightTarget)
+{
+    _blendIn   = new ActionBlendIn(animation, blendInDuration, blendInWeightTarget);
     _animation = new ActionAnimation(animation);
     unsigned int start = static_cast<unsigned int>(floor((_animation->getDuration() - blendOutDuration) * _fps));
     _blendOut = FrameBlendOut(start, new ActionBlendOut(animation, blendOutDuration));
@@ -61,19 +85,20 @@ void ActionStripAnimation::setLoop(unsigned int loop)
     _blendOut = FrameBlendOut(start, _blendOut.second);
 }
 
-void ActionStripAnimation::traverse(ActionVisitor& visitor)
+void ActionStripAnimation::traverse(ActionVisitor&visitor)
 {
     if (_blendIn.valid())
     {
         unsigned int f = visitor.getStackedFrameAction().back().first;
-        visitor.pushFrameActionOnStack(FrameAction(f,_blendIn.get()));
+        visitor.pushFrameActionOnStack(FrameAction(f, _blendIn.get()));
         _blendIn->accept(visitor);
         visitor.popFrameAction();
     }
+
     if (_blendOut.second.valid())
     {
         unsigned int f = visitor.getStackedFrameAction().back().first;
-        visitor.pushFrameActionOnStack(FrameAction(f + _blendOut.first,_blendOut.second.get()));
+        visitor.pushFrameActionOnStack(FrameAction(f + _blendOut.first, _blendOut.second.get()));
         _blendOut.second.get()->accept(visitor);
         visitor.popFrameAction();
     }
@@ -81,7 +106,7 @@ void ActionStripAnimation::traverse(ActionVisitor& visitor)
     if (_animation.valid())
     {
         unsigned int f = visitor.getStackedFrameAction().back().first;
-        visitor.pushFrameActionOnStack(FrameAction(f,_animation.get()));
+        visitor.pushFrameActionOnStack(FrameAction(f, _animation.get()));
         _animation->accept(visitor);
         visitor.popFrameAction();
     }

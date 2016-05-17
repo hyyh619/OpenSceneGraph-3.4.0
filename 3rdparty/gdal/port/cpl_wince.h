@@ -36,9 +36,6 @@
 
 #include "cpl_conv.h"
 #include "windows.h"
-
-
-
 #endif /* #if defined(WIN32CE) */
 
 #endif /* #ifndef _CPL_WINCE_H_INCLUDED */

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // OpenFlight® loader for OpenSceneGraph
@@ -23,22 +23,21 @@
 using namespace flt;
 
 Registry::Registry()
-{
-}
+{}
 
 Registry::~Registry()
-{
-}
+{}
 
 Registry* Registry::instance()
 {
     static Registry s_registry;
+
     return &s_registry;
 }
 
-void Registry::addPrototype(int opcode, Record* prototype)
+void Registry::addPrototype(int opcode, Record *prototype)
 {
-    if (prototype==0L)
+    if (prototype == 0L)
     {
         OSG_WARN << "Not a record." << std::endl;
         return;
@@ -53,6 +52,7 @@ void Registry::addPrototype(int opcode, Record* prototype)
 Record* Registry::getPrototype(int opcode)
 {
     RecordProtoMap::iterator itr = _recordProtoMap.find(opcode);
+
     if (itr != _recordProtoMap.end())
         return (*itr).second.get();
 

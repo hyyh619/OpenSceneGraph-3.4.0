@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgAnimation/LinkVisitor>
 #include <osgAnimation/AnimationUpdateCallback>
@@ -29,59 +29,68 @@ void LinkVisitor::reset()
     _nbLinkedTarget = 0;
 }
 
-AnimationList& LinkVisitor::getAnimationList()
+AnimationList&LinkVisitor::getAnimationList()
 {
     return _animations;
 }
-void LinkVisitor::link(AnimationUpdateCallbackBase* cb)
+void LinkVisitor::link(AnimationUpdateCallbackBase *cb)
 {
     int result = 0;
+
     for (int i = 0; i < (int)_animations.size(); i++)
     {
-        result += cb->link(_animations[i].get());
+        result          += cb->link(_animations[i].get());
         _nbLinkedTarget += result;
     }
+
     OSG_DEBUG << "LinkVisitor links " << result << " for \"" << cb->getName() << '"' << std::endl;
 }
 
-void LinkVisitor::handle_stateset(osg::StateSet* stateset)
+void LinkVisitor::handle_stateset(osg::StateSet *stateset)
 {
     if (!stateset)
         return;
-    const osg::StateSet::AttributeList& attr = stateset->getAttributeList();
+
+    const osg::StateSet::AttributeList&attr = stateset->getAttributeList();
+
     for (osg::StateSet::AttributeList::const_iterator it = attr.begin(); it != attr.end(); ++it)
     {
-        osg::StateAttribute* sattr = it->second.first.get();
-        osgAnimation::AnimationUpdateCallbackBase* cb = dynamic_cast<osgAnimation::AnimationUpdateCallbackBase*>(sattr->getUpdateCallback());
+        osg::StateAttribute                       *sattr = it->second.first.get();
+        osgAnimation::AnimationUpdateCallbackBase *cb    = dynamic_cast<osgAnimation::AnimationUpdateCallbackBase*>(sattr->getUpdateCallback());
         if (cb)
             link(cb);
     }
 }
 
-void LinkVisitor::apply(osg::Node& node)
+void LinkVisitor::apply(osg::Node&node)
 {
-    osg::StateSet* st = node.getStateSet();
+    osg::StateSet *st = node.getStateSet();
+
     if (st)
         handle_stateset(st);
 
-    osg::Callback* cb = node.getUpdateCallback();
+    osg::Callback *cb = node.getUpdateCallback();
+
     while (cb)
     {
-        osgAnimation::AnimationUpdateCallbackBase* cba = dynamic_cast<osgAnimation::AnimationUpdateCallbackBase*>(cb);
+        osgAnimation::AnimationUpdateCallbackBase *cba = dynamic_cast<osgAnimation::AnimationUpdateCallbackBase*>(cb);
         if (cba)
             link(cba);
+
         cb = cb->getNestedCallback();
     }
+
     traverse(node);
 }
 
-void LinkVisitor::apply(osg::Geode& node)
+void LinkVisitor::apply(osg::Geode&node)
 {
     for (unsigned int i = 0; i < node.getNumDrawables(); i++)
     {
-        osg::Drawable* drawable = node.getDrawable(i);
+        osg::Drawable *drawable = node.getDrawable(i);
         if (drawable && drawable->getStateSet())
             handle_stateset(drawable->getStateSet());
     }
+
     apply(static_cast<osg::Node&>(node));
 }

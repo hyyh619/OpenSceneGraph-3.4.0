@@ -16,29 +16,28 @@ TXPSeamLOD::TXPSeamLOD() :
 TXPSeamLOD::TXPSeamLOD(int x, int y, int lod, int dx, int dy) :
     Group()
 {
-    _tid.x = x;
-    _tid.y = y;
+    _tid.x   = x;
+    _tid.y   = y;
     _tid.lod = lod;
-    _dx = dx;
-    _dy = dy;
+    _dx      = dx;
+    _dy      = dy;
 }
 
-TXPSeamLOD::TXPSeamLOD(const TXPSeamLOD& ttg,const osg::CopyOp& copyop) :
-    Group(ttg,copyop)
+TXPSeamLOD::TXPSeamLOD(const TXPSeamLOD&ttg, const osg::CopyOp&copyop) :
+    Group(ttg, copyop)
 {
     _tid = ttg._tid;
-    _dx = ttg._dx;
-    _dy = ttg._dy;
+    _dx  = ttg._dx;
+    _dy  = ttg._dy;
 }
 
-void TXPSeamLOD::traverse(osg::NodeVisitor& nv)
+void TXPSeamLOD::traverse(osg::NodeVisitor&nv)
 {
-    if (nv.getVisitorType()==osg::NodeVisitor::CULL_VISITOR && getNumChildren()==2)
+    if (nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR && getNumChildren() == 2)
     {
+        TileMapper *tileMapper = dynamic_cast<TileMapper*>(nv.getUserData());
 
-        TileMapper* tileMapper = dynamic_cast<TileMapper*>(nv.getUserData());
-
-        if (tileMapper && !tileMapper->isTileNeighbourALowerLODLevel(_tid,_dx,_dy))
+        if (tileMapper && !tileMapper->isTileNeighbourALowerLODLevel(_tid, _dx, _dy))
         {
             getChild(1)->accept(nv);
         }
@@ -46,7 +45,6 @@ void TXPSeamLOD::traverse(osg::NodeVisitor& nv)
         {
             getChild(0)->accept(nv);
         }
-
     }
     else
     {

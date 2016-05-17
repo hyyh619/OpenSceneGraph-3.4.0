@@ -9,8 +9,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool AzimSector_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool AzimSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool AzimSector_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool AzimSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(AzimSector_Proxy)
 (
@@ -22,10 +22,10 @@ REGISTER_DOTOSGWRAPPER(AzimSector_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool AzimSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool AzimSector_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    bool iteratorAdvanced = false;
-    osgSim::AzimSector &sector = static_cast<osgSim::AzimSector &>(obj);
+    bool              iteratorAdvanced = false;
+    osgSim::AzimSector&sector          = static_cast<osgSim::AzimSector&>(obj);
 
     if (fr.matchSequence("azimuthRange %f %f %f"))
     {
@@ -39,23 +39,25 @@ bool AzimSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
         sector.setAzimuthRange(minAzimuth, maxAzimuth, fadeRange);
         iteratorAdvanced = true;
     }
+
     return iteratorAdvanced;
 }
 
-bool AzimSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool AzimSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
     float minAzimuth, maxAzimuth, fadeAngle;
 
-    const osgSim::AzimSector &sector = static_cast<const osgSim::AzimSector &>(obj);
+    const osgSim::AzimSector&sector = static_cast<const osgSim::AzimSector&>(obj);
+
     sector.getAzimuthRange(minAzimuth, maxAzimuth, fadeAngle);
-    fw.indent()<<"azimuthRange "<<minAzimuth<< " "<<maxAzimuth<< " "<<fadeAngle<<std::endl;
+    fw.indent() << "azimuthRange " << minAzimuth << " " << maxAzimuth << " " << fadeAngle << std::endl;
     return true;
 }
 
 /******************************************************************/
 
-bool ElevationSector_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool ElevationSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool ElevationSector_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool ElevationSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ElevationSector_Proxy)
 (
@@ -67,10 +69,10 @@ REGISTER_DOTOSGWRAPPER(ElevationSector_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool ElevationSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool ElevationSector_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    bool iteratorAdvanced = false;
-    osgSim::ElevationSector &sector = static_cast<osgSim::ElevationSector &>(obj);
+    bool                   iteratorAdvanced = false;
+    osgSim::ElevationSector&sector          = static_cast<osgSim::ElevationSector&>(obj);
 
     if (fr.matchSequence("elevationRange %f %f %f"))
     {
@@ -85,26 +87,27 @@ bool ElevationSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
         sector.setElevationRange(minElevation, maxElevation, fadeAngle);
         iteratorAdvanced = true;
     }
+
     return iteratorAdvanced;
 }
 
-bool ElevationSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool ElevationSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-
-    const osgSim::ElevationSector &sector = static_cast<const osgSim::ElevationSector &>(obj);
+    const osgSim::ElevationSector&sector = static_cast<const osgSim::ElevationSector&>(obj);
 
     float minElevation = sector.getMinElevation();
     float maxElevation = sector.getMaxElevation();
-    float fadeAngle = sector.getFadeAngle();
-    fw.indent()<<"elevationRange "<<minElevation<< " "<<maxElevation<< " "<<fadeAngle<<std::endl;
+    float fadeAngle    = sector.getFadeAngle();
+
+    fw.indent() << "elevationRange " << minElevation << " " << maxElevation << " " << fadeAngle << std::endl;
 
     return true;
 }
 
 /******************************************************************/
 
-bool AzimElevationSector_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool AzimElevationSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool AzimElevationSector_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool AzimElevationSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(AzimElevationSector_Proxy)
 (
@@ -116,10 +119,10 @@ REGISTER_DOTOSGWRAPPER(AzimElevationSector_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool AzimElevationSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool AzimElevationSector_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    bool iteratorAdvanced = false;
-    osgSim::AzimElevationSector &sector = static_cast<osgSim::AzimElevationSector &>(obj);
+    bool                       iteratorAdvanced = false;
+    osgSim::AzimElevationSector&sector          = static_cast<osgSim::AzimElevationSector&>(obj);
 
     if (fr.matchSequence("azimuthRange %f %f %f"))
     {
@@ -133,6 +136,7 @@ bool AzimElevationSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
         sector.setAzimuthRange(minAzimuth, maxAzimuth, fadeAngle);
         iteratorAdvanced = true;
     }
+
     if (fr.matchSequence("elevationRange %f %f %f"))
     {
         float minElevation;
@@ -146,29 +150,30 @@ bool AzimElevationSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
         sector.setElevationRange(minElevation, maxElevation, fadeAngle);
         iteratorAdvanced = true;
     }
+
     return iteratorAdvanced;
 }
 
-bool AzimElevationSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool AzimElevationSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-
-    const osgSim::AzimElevationSector &sector = static_cast<const osgSim::AzimElevationSector &>(obj);
+    const osgSim::AzimElevationSector&sector = static_cast<const osgSim::AzimElevationSector&>(obj);
 
     float minElevation = sector.getMinElevation();
     float maxElevation = sector.getMaxElevation();
-    float fadeAngle = sector.getFadeAngle();
-    fw.indent()<<"elevationRange "<<minElevation<< " "<<maxElevation<< " "<<fadeAngle<<std::endl;
+    float fadeAngle    = sector.getFadeAngle();
+
+    fw.indent() << "elevationRange " << minElevation << " " << maxElevation << " " << fadeAngle << std::endl;
 
     float minAzimuth, maxAzimuth;
     sector.getAzimuthRange(minAzimuth, maxAzimuth, fadeAngle);
-    fw.indent()<<"azimuthRange "<<minAzimuth<< " "<<maxAzimuth<< " "<<fadeAngle<<std::endl;
+    fw.indent() << "azimuthRange " << minAzimuth << " " << maxAzimuth << " " << fadeAngle << std::endl;
     return true;
 }
 
 /******************************************************************/
 
-bool ConeSector_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool ConeSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool ConeSector_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool ConeSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ConeSector_Proxy)
 (
@@ -180,10 +185,10 @@ REGISTER_DOTOSGWRAPPER(ConeSector_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool ConeSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool ConeSector_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    bool iteratorAdvanced = false;
-    osgSim::ConeSector &sector = static_cast<osgSim::ConeSector &>(obj);
+    bool              iteratorAdvanced = false;
+    osgSim::ConeSector&sector          = static_cast<osgSim::ConeSector&>(obj);
 
     if (fr.matchSequence("axis %f %f %f"))
     {
@@ -196,6 +201,7 @@ bool ConeSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
         sector.setAxis(osg::Vec3(x, y, z));
         iteratorAdvanced = true;
     }
+
     if (fr.matchSequence("angle %f %f"))
     {
         float angle;
@@ -206,26 +212,28 @@ bool ConeSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
         sector.setAngle(angle, fadeangle);
         iteratorAdvanced = true;
     }
+
     return iteratorAdvanced;
 }
 
-bool ConeSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool ConeSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgSim::ConeSector &sector = static_cast<const osgSim::ConeSector &>(obj);
+    const osgSim::ConeSector&sector = static_cast<const osgSim::ConeSector&>(obj);
 
-    const osg::Vec3& axis = sector.getAxis();
-    fw.indent()<<"axis "<<axis<<std::endl;
+    const osg::Vec3&axis = sector.getAxis();
 
-    float angle = sector.getAngle();
-    float fadeangle = sector.getFadeAngle();
-    fw.indent()<<"angle "<<angle<<" "<<fadeangle<<std::endl;
+    fw.indent() << "axis " << axis << std::endl;
+
+    float                      angle     = sector.getAngle();
+    float                      fadeangle = sector.getFadeAngle();
+    fw.indent() << "angle " << angle << " " << fadeangle << std::endl;
     return true;
 }
 
 /******************************************************************/
 
-bool DirectionalSector_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool DirectionalSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool DirectionalSector_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool DirectionalSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(DirectionalSector_Proxy)
 (
@@ -237,10 +245,10 @@ REGISTER_DOTOSGWRAPPER(DirectionalSector_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool DirectionalSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool DirectionalSector_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    bool iteratorAdvanced = false;
-    osgSim::DirectionalSector &sector = static_cast<osgSim::DirectionalSector &>(obj);
+    bool                     iteratorAdvanced = false;
+    osgSim::DirectionalSector&sector          = static_cast<osgSim::DirectionalSector&>(obj);
 
     if (fr.matchSequence("direction %f %f %f"))
     {
@@ -253,6 +261,7 @@ bool DirectionalSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
         sector.setDirection(osg::Vec3(x, y, z));
         iteratorAdvanced = true;
     }
+
     if (fr.matchSequence("angles %f %f %f %f"))
     {
         float horizangle;
@@ -270,21 +279,22 @@ bool DirectionalSector_readLocalData(osg::Object &obj, osgDB::Input &fr)
         sector.setFadeAngle(fadeangle);
         iteratorAdvanced = true;
     }
+
     return iteratorAdvanced;
 }
 
-bool DirectionalSector_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool DirectionalSector_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgSim::DirectionalSector &sector = static_cast<const osgSim::DirectionalSector &>(obj);
+    const osgSim::DirectionalSector&sector = static_cast<const osgSim::DirectionalSector&>(obj);
 
-    const osg::Vec3& axis = sector.getDirection();
-    fw.indent()<<"direction "<<axis<<std::endl;
+    const osg::Vec3&axis = sector.getDirection();
 
-    float horizangle = sector.getHorizLobeAngle();
-    float vertangle = sector.getVertLobeAngle();
-    float rollangle = sector.getLobeRollAngle();
-    float fadeangle = sector.getFadeAngle();
-    fw.indent()<<"angles "<<horizangle<<" "<<vertangle<<" "<<rollangle<<" "<<fadeangle<<std::endl;
+    fw.indent() << "direction " << axis << std::endl;
+
+    float                       horizangle = sector.getHorizLobeAngle();
+    float                       vertangle  = sector.getVertLobeAngle();
+    float                       rollangle  = sector.getLobeRollAngle();
+    float                       fadeangle  = sector.getFadeAngle();
+    fw.indent() << "angles " << horizangle << " " << vertangle << " " << rollangle << " " << fadeangle << std::endl;
     return true;
 }
-

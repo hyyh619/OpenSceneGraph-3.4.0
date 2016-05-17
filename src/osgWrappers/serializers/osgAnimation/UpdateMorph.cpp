@@ -6,12 +6,11 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgAnimation_UpdateMorph,
-                         new osgAnimation::UpdateMorph,
-                         osgAnimation::UpdateMorph,
-                         "osg::Object osg::Callback osg::NodeCallback osgAnimation::UpdateMorph" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgAnimation_UpdateMorph,
+                        new osgAnimation::UpdateMorph,
+                        osgAnimation::UpdateMorph,
+                        "osg::Object osg::Callback osg::NodeCallback osgAnimation::UpdateMorph")
+{}
 
 #undef OBJECT_CAST
 #define OBJECT_CAST static_cast

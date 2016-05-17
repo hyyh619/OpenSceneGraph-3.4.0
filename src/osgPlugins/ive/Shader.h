@@ -4,11 +4,13 @@
 #include <osg/Shader>
 #include "ReadWrite.h"
 
-namespace ive{
-class Shader : public osg::Shader, public ReadWrite {
+namespace ive
+{
+class Shader : public osg::Shader, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

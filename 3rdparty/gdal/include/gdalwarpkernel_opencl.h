@@ -29,7 +29,7 @@
 
 #if defined(HAVE_OPENCL)
 
-/* The following relates to the profiling calls to 
+/* The following relates to the profiling calls to
    clSetCommandQueueProperty() which are not available by default
    with some OpenCL implementation (ie. ATI) */
 
@@ -45,99 +45,105 @@
 extern "C" {
 #endif
 
-typedef enum {
-    OCL_Bilinear=10,
-    OCL_Cubic=11,
-    OCL_CubicSpline=12,
-    OCL_Lanczos=13
+typedef enum
+{
+    OCL_Bilinear    = 10,
+    OCL_Cubic       = 11,
+    OCL_CubicSpline = 12,
+    OCL_Lanczos     = 13
 } OCLResampAlg;
-    
-struct oclWarper {
+
+struct oclWarper
+{
     cl_command_queue queue;
-    cl_context context;
-    cl_device_id dev;
-    cl_kernel kern1;
-    cl_kernel kern4;
-    
+    cl_context       context;
+    cl_device_id     dev;
+    cl_kernel        kern1;
+    cl_kernel        kern4;
+
     int srcWidth;
     int srcHeight;
     int dstWidth;
     int dstHeight;
-    
+
     int useUnifiedSrcDensity;
     int useUnifiedSrcValid;
     int useDstDensity;
     int useDstValid;
-    
-    int numBands;
-    int numImages;
+
+    int          numBands;
+    int          numImages;
     OCLResampAlg resampAlg;
-    
+
     cl_channel_type imageFormat;
-    cl_mem *realWorkCL;
-    union {
-        void **v;
-        char **c;
-        unsigned char **uc;
-        short **s;
+    cl_mem          *realWorkCL;
+    union
+    {
+        void           **v;
+        char           **c;
+        unsigned char  **uc;
+        short          **s;
         unsigned short **us;
-        float **f;
+        float          **f;
     } realWork;
-    
+
     cl_mem *imagWorkCL;
-    union {
-        void **v;
-        char **c;
-        unsigned char **uc;
-        short **s;
+    union
+    {
+        void           **v;
+        char           **c;
+        unsigned char  **uc;
+        short          **s;
         unsigned short **us;
-        float **f;
+        float          **f;
     } imagWork;
-    
+
     cl_mem *dstRealWorkCL;
-    union {
-        void **v;
-        char **c;
-        unsigned char **uc;
-        short **s;
+    union
+    {
+        void           **v;
+        char           **c;
+        unsigned char  **uc;
+        short          **s;
         unsigned short **us;
-        float **f;
+        float          **f;
     } dstRealWork;
-    
+
     cl_mem *dstImagWorkCL;
-    union {
-        void **v;
-        char **c;
-        unsigned char **uc;
-        short **s;
+    union
+    {
+        void           **v;
+        char           **c;
+        unsigned char  **uc;
+        short          **s;
         unsigned short **us;
-        float **f;
+        float          **f;
     } dstImagWork;
-    
-    unsigned int imgChSize1;
+
+    unsigned int     imgChSize1;
     cl_channel_order imgChOrder1;
-    unsigned int imgChSize4;
+    unsigned int     imgChSize4;
     cl_channel_order imgChOrder4;
-	char    useVec;
-    
+    char             useVec;
+
     cl_mem useBandSrcValidCL;
-    char *useBandSrcValid;
-    
+    char   *useBandSrcValid;
+
     cl_mem nBandSrcValidCL;
-    float *nBandSrcValid;
-    
+    float  *nBandSrcValid;
+
     cl_mem xyWorkCL;
-    float *xyWork;
-    
+    float  *xyWork;
+
     int xyWidth;
     int xyHeight;
     int coordMult;
-    
-    unsigned int xyChSize;
+
+    unsigned int     xyChSize;
     cl_channel_order xyChOrder;
-    
+
     cl_mem fDstNoDataRealCL;
-    float *fDstNoDataReal;
+    float  *fDstNoDataReal;
 
     int bIsATI;
 };
@@ -186,4 +192,3 @@ cl_int GDALWarpKernelOpenCL_deleteEnv(struct oclWarper *warper);
 #endif
 
 #endif /* defined(HAVE_OPENCL) */
-

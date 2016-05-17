@@ -26,7 +26,7 @@
     ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
     CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 #include "ip/NetworkingUtils.h"
 
 #include <netdb.h>
@@ -42,14 +42,16 @@ NetworkInitializer::NetworkInitializer() {}
 NetworkInitializer::~NetworkInitializer() {}
 
 
-unsigned long GetHostByName( const char *name )
+unsigned long GetHostByName(const char *name)
 {
     unsigned long result = 0;
 
-    struct hostent *h = gethostbyname( name );
-    if( h ){
+    struct hostent *h = gethostbyname(name);
+
+    if (h)
+    {
         struct in_addr a;
-        memcpy( &a, h->h_addr_list[0], h->h_length );
+        memcpy(&a, h->h_addr_list[0], h->h_length);
         result = ntohl(a.s_addr);
     }
 

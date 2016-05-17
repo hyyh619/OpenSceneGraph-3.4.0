@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgParticle/FireEffect>
 
@@ -26,39 +26,42 @@
 
 using namespace osgParticle;
 
-FireEffect::FireEffect(bool automaticSetup):
+FireEffect::FireEffect(bool automaticSetup) :
     ParticleEffect(automaticSetup)
 {
     setDefaults();
 
-    _position.set(0.0f,0.0f,0.0f);
-    _scale = 1.0f;
+    _position.set(0.0f, 0.0f, 0.0f);
+    _scale     = 1.0f;
     _intensity = 1.0f;
 
     _emitterDuration = 60.0;
-    _defaultParticleTemplate.setLifeTime(0.5+0.1*_scale);
+    _defaultParticleTemplate.setLifeTime(0.5 + 0.1 * _scale);
 
-    if (_automaticSetup) buildEffect();
+    if (_automaticSetup)
+        buildEffect();
 }
 
-FireEffect::FireEffect(const osg::Vec3& position, float scale, float intensity)
+FireEffect::FireEffect(const osg::Vec3&position, float scale, float intensity)
 {
     setDefaults();
 
-    _position = position;
-    _scale = scale;
+    _position  = position;
+    _scale     = scale;
     _intensity = intensity;
 
     _emitterDuration = 60.0;
-    _defaultParticleTemplate.setLifeTime(0.5+0.1*_scale);
+    _defaultParticleTemplate.setLifeTime(0.5 + 0.1 * _scale);
 
-    if (_automaticSetup) buildEffect();
+    if (_automaticSetup)
+        buildEffect();
 }
 
-FireEffect::FireEffect(const FireEffect& copy, const osg::CopyOp& copyop):
-    ParticleEffect(copy,copyop)
+FireEffect::FireEffect(const FireEffect&copy, const osg::CopyOp&copyop) :
+    ParticleEffect(copy, copyop)
 {
-    if (_automaticSetup) buildEffect();
+    if (_automaticSetup)
+        buildEffect();
 }
 
 void FireEffect::setDefaults()
@@ -69,17 +72,16 @@ void FireEffect::setDefaults()
     _emitterDuration = 60.0;
 
     // set up unit particle.
-    _defaultParticleTemplate.setLifeTime(0.5+0.1*_scale);
+    _defaultParticleTemplate.setLifeTime(0.5 + 0.1 * _scale);
     _defaultParticleTemplate.setSizeRange(osgParticle::rangef(0.75f, 3.0f));
     _defaultParticleTemplate.setAlphaRange(osgParticle::rangef(0.1f, 1.0f));
     _defaultParticleTemplate.setColorRange(osgParticle::rangev4(
-                                            osg::Vec4(1, 0.8f, 0.2f, 1.0f),
-                                            osg::Vec4(1, 0.3f, 0.2f, 0.0f)));
+                                               osg::Vec4(1, 0.8f, 0.2f, 1.0f),
+                                               osg::Vec4(1, 0.3f, 0.2f, 0.0f)));
 }
 
 void FireEffect::setUpEmitterAndProgram()
 {
-
     // set up particle system
     if (!_particleSystem)
     {
@@ -90,25 +92,24 @@ void FireEffect::setUpEmitterAndProgram()
     {
         _particleSystem->setDefaultAttributes(_textureFileName, false, false);
 
-        osgParticle::Particle& ptemplate = _particleSystem->getDefaultParticleTemplate();
+        osgParticle::Particle&ptemplate = _particleSystem->getDefaultParticleTemplate();
 
-        float radius = 0.25f*_scale;
+        float radius  = 0.25f * _scale;
         float density = 0.5f; // 0.5kg/m^3
 
         ptemplate.setLifeTime(_defaultParticleTemplate.getLifeTime());
 
         // the following ranges set the envelope of the respective
         // graphical properties in time.
-        ptemplate.setSizeRange(osgParticle::rangef(radius*_defaultParticleTemplate.getSizeRange().minimum,
-                                                   radius*_defaultParticleTemplate.getSizeRange().maximum));
+        ptemplate.setSizeRange(osgParticle::rangef(radius * _defaultParticleTemplate.getSizeRange().minimum,
+                                                   radius * _defaultParticleTemplate.getSizeRange().maximum));
         ptemplate.setAlphaRange(_defaultParticleTemplate.getAlphaRange());
         ptemplate.setColorRange(_defaultParticleTemplate.getColorRange());
 
         // these are physical properties of the particle
         // these are physical properties of the particle
         ptemplate.setRadius(radius);
-        ptemplate.setMass(density*radius*radius*radius*osg::PI*4.0f/3.0f);
-
+        ptemplate.setMass(density * radius * radius * radius * osg::PI * 4.0f / 3.0f);
     }
 
 
@@ -125,32 +126,32 @@ void FireEffect::setUpEmitterAndProgram()
     if (_emitter.valid())
     {
         _emitter->setParticleSystem(_particleSystem.get());
-        _emitter->setReferenceFrame(_useLocalParticleSystem?
-                                    osgParticle::ParticleProcessor::ABSOLUTE_RF:
+        _emitter->setReferenceFrame(_useLocalParticleSystem ?
+                                    osgParticle::ParticleProcessor::ABSOLUTE_RF :
                                     osgParticle::ParticleProcessor::RELATIVE_RF);
 
         _emitter->setStartTime(_startTime);
         _emitter->setLifeTime(_emitterDuration);
         _emitter->setEndless(false);
 
-        osgParticle::RandomRateCounter* counter = dynamic_cast<osgParticle::RandomRateCounter*>(_emitter->getCounter());
+        osgParticle::RandomRateCounter *counter = dynamic_cast<osgParticle::RandomRateCounter*>(_emitter->getCounter());
         if (counter)
         {
-            counter->setRateRange(10*_intensity,15*_intensity);
+            counter->setRateRange(10 * _intensity, 15 * _intensity);
         }
 
-        osgParticle::SectorPlacer* placer = dynamic_cast<osgParticle::SectorPlacer*>(_emitter->getPlacer());
+        osgParticle::SectorPlacer *placer = dynamic_cast<osgParticle::SectorPlacer*>(_emitter->getPlacer());
         if (placer)
         {
             placer->setCenter(_position);
-            placer->setRadiusRange(0.0f*_scale,0.25f*_scale);
+            placer->setRadiusRange(0.0f * _scale, 0.25f * _scale);
         }
 
-        osgParticle::RadialShooter* shooter = dynamic_cast<osgParticle::RadialShooter*>(_emitter->getShooter());
+        osgParticle::RadialShooter *shooter = dynamic_cast<osgParticle::RadialShooter*>(_emitter->getShooter());
         if (shooter)
         {
             shooter->setThetaRange(0.0f, osg::PI_4);
-            shooter->setInitialSpeedRange(0.0f*_scale,0.0f*_scale);
+            shooter->setInitialSpeedRange(0.0f * _scale, 0.0f * _scale);
         }
     }
 

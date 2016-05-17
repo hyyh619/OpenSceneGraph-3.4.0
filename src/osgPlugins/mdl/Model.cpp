@@ -6,7 +6,7 @@
 using namespace mdl;
 
 
-Model::Model(MDLModel * myModel)
+Model::Model(MDLModel *myModel)
 {
     // Save the model information
     my_model = myModel;
@@ -20,7 +20,7 @@ Model::~Model()
 }
 
 
-MDLModel * Model::getModel()
+MDLModel* Model::getModel()
 {
     return my_model;
 }
@@ -33,7 +33,7 @@ int Model::getVertexBase()
 }
 
 
-void Model::addMesh(Mesh * newMesh)
+void Model::addMesh(Mesh *newMesh)
 {
     // Add the new node to our list
     model_meshes.push_back(newMesh);
@@ -46,11 +46,10 @@ int Model::getNumMeshes()
 }
 
 
-Mesh * Model::getMesh(int meshIndex)
+Mesh* Model::getMesh(int meshIndex)
 {
     if ((meshIndex < 0) || (meshIndex >= static_cast<int>(model_meshes.size())))
         return NULL;
     else
         return model_meshes[meshIndex];
 }
-

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgDB/ObjectCache>
 
@@ -19,7 +19,7 @@ using namespace osgDB;
 //
 // ObjectCache
 //
-ObjectCache::ObjectCache():
+ObjectCache::ObjectCache() :
     osg::Referenced(true)
 {
 //    OSG_NOTICE<<"Constructed ObjectCache"<<std::endl;
@@ -30,10 +30,11 @@ ObjectCache::~ObjectCache()
 //    OSG_NOTICE<<"Destructed ObjectCache"<<std::endl;
 }
 
-void ObjectCache::addObjectCache(ObjectCache* objectCache)
+void ObjectCache::addObjectCache(ObjectCache *objectCache)
 {
     // don't allow a cache to be added to itself.
-    if (objectCache==this) return;
+    if (objectCache == this)
+        return;
 
     // lock both ObjectCache to prevent their contents from being modified by other threads while we merge.
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock1(_objectCacheMutex);
@@ -45,30 +46,36 @@ void ObjectCache::addObjectCache(ObjectCache* objectCache)
 }
 
 
-void ObjectCache::addEntryToObjectCache(const std::string& filename, osg::Object* object, double timestamp)
+void ObjectCache::addEntryToObjectCache(const std::string&filename, osg::Object *object, double timestamp)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
-    _objectCache[filename]=ObjectTimeStampPair(object,timestamp);
+
+    _objectCache[filename] = ObjectTimeStampPair(object, timestamp);
 }
 
-osg::Object* ObjectCache::getFromObjectCache(const std::string& fileName)
+osg::Object* ObjectCache::getFromObjectCache(const std::string&fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
-    ObjectCacheMap::iterator itr = _objectCache.find(fileName);
-    if (itr!=_objectCache.end()) return itr->second.first.get();
-    else return 0;
+    ObjectCacheMap::iterator                    itr = _objectCache.find(fileName);
+
+    if (itr != _objectCache.end())
+        return itr->second.first.get();
+    else
+        return 0;
 }
 
-osg::ref_ptr<osg::Object> ObjectCache::getRefFromObjectCache(const std::string& fileName)
+osg::ref_ptr<osg::Object> ObjectCache::getRefFromObjectCache(const std::string&fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
-    ObjectCacheMap::iterator itr = _objectCache.find(fileName);
-    if (itr!=_objectCache.end())
+    ObjectCacheMap::iterator                    itr = _objectCache.find(fileName);
+
+    if (itr != _objectCache.end())
     {
         // OSG_NOTICE<<"Found "<<fileName<<" in ObjectCache "<<this<<std::endl;
         return itr->second.first;
     }
-    else return 0;
+    else
+        return 0;
 }
 
 void ObjectCache::updateTimeStampOfObjectsInCacheWithExternalReferences(double referenceTime)
@@ -76,12 +83,12 @@ void ObjectCache::updateTimeStampOfObjectsInCacheWithExternalReferences(double r
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
 
     // look for objects with external references and update their time stamp.
-    for(ObjectCacheMap::iterator itr=_objectCache.begin();
-        itr!=_objectCache.end();
-        ++itr)
+    for (ObjectCacheMap::iterator itr = _objectCache.begin();
+         itr != _objectCache.end();
+         ++itr)
     {
         // if ref count is greater the 1 the object has an external reference.
-        if (itr->second.first->referenceCount()>1)
+        if (itr->second.first->referenceCount() > 1)
         {
             // so update it time stamp.
             itr->second.second = referenceTime;
@@ -95,9 +102,10 @@ void ObjectCache::removeExpiredObjectsInCache(double expiryTime)
 
     // Remove expired entries from object cache
     ObjectCacheMap::iterator oitr = _objectCache.begin();
-    while(oitr != _objectCache.end())
+
+    while (oitr != _objectCache.end())
     {
-        if (oitr->second.second<=expiryTime)
+        if (oitr->second.second <= expiryTime)
         {
             _objectCache.erase(oitr++);
         }
@@ -108,28 +116,31 @@ void ObjectCache::removeExpiredObjectsInCache(double expiryTime)
     }
 }
 
-void ObjectCache::removeFromObjectCache(const std::string& fileName)
+void ObjectCache::removeFromObjectCache(const std::string&fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
-    ObjectCacheMap::iterator itr = _objectCache.find(fileName);
-    if (itr!=_objectCache.end()) _objectCache.erase(itr);
+    ObjectCacheMap::iterator                    itr = _objectCache.find(fileName);
+
+    if (itr != _objectCache.end())
+        _objectCache.erase(itr);
 }
 
 void ObjectCache::clear()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
+
     _objectCache.clear();
 }
 
-void ObjectCache::releaseGLObjects(osg::State* state)
+void ObjectCache::releaseGLObjects(osg::State *state)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
 
-    for(ObjectCacheMap::iterator itr = _objectCache.begin();
-        itr != _objectCache.end();
-        ++itr)
+    for (ObjectCacheMap::iterator itr = _objectCache.begin();
+         itr != _objectCache.end();
+         ++itr)
     {
-        osg::Object* object = itr->second.first.get();
+        osg::Object *object = itr->second.first.get();
         object->releaseGLObjects(state);
     }
 }

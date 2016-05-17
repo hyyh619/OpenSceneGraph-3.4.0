@@ -16,25 +16,24 @@
 class BITSET
 {
 public:
-  BITSET() : m_numBytes(0)
-  {}
-  ~BITSET()
-  {
-  }
+BITSET() : m_numBytes(0)
+{}
+~BITSET()
+{}
 
-  bool Init(int numberOfBits);
-  void ClearAll();
-  void SetAll();
+bool Init(int numberOfBits);
+void ClearAll();
+void SetAll();
 
-  void Clear(int bitNumber);
-  void Set(int bitNumber);
+void Clear(int bitNumber);
+void Set(int bitNumber);
 
-  unsigned char IsSet(int bitNumber) const;
+unsigned char IsSet(int bitNumber) const;
 
 protected:
-  int m_numBytes; //size of bits array
-  unsigned char * m_bits_aux;
-  std::vector<unsigned char> m_bits;
+int                        m_numBytes; // size of bits array
+unsigned char              *m_bits_aux;
+std::vector<unsigned char> m_bits;
 };
 
 #endif

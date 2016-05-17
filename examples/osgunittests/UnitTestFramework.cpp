@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgunittests.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include "UnitTestFramework.h"
 
@@ -22,12 +22,10 @@
 
 namespace osgUtx
 {
-
 //////////////////////////////////////////////////////////////////////////////
 
 TestContext::TestContext()
-{
-}
+{}
 
 void TestContext::setTraceLevel(TraceLevel tl)
 {
@@ -39,7 +37,7 @@ TestContext::TraceLevel TestContext::getTraceLevel() const
     return _tout.getTraceLevel();
 }
 
-std::ostream& TestContext::tout(TraceLevel tl) const
+std::ostream&TestContext::tout(TraceLevel tl) const
 {
     return _tout.stream(tl);
 }
@@ -47,7 +45,7 @@ std::ostream& TestContext::tout(TraceLevel tl) const
 //////////////////////////////////////////////////////////////////////////////
 
 
-TestContext::TraceStream::TraceStream(std::ostream& o, TraceLevel tl):
+TestContext::TraceStream::TraceStream(std::ostream&o, TraceLevel tl) :
     _traceLevel(tl),
     _outputStreamPtr(&o),
 #if defined(WIN32) && !(defined(__CYGWIN__) || defined(__MINGW32__))
@@ -55,8 +53,7 @@ TestContext::TraceStream::TraceStream(std::ostream& o, TraceLevel tl):
 #else
     _nullStream("/dev/null")
 #endif
-{
-}
+{}
 
 TestContext::TraceStream::~TraceStream()
 {
@@ -73,19 +70,22 @@ TestContext::TraceLevel TestContext::TraceStream::getTraceLevel() const
     return _traceLevel;
 }
 
-std::ostream& TestContext::TraceStream::stream(TestContext::TraceLevel tl)
+std::ostream&TestContext::TraceStream::stream(TestContext::TraceLevel tl)
 {
-    if(_traceLevel >= tl){
+    if (_traceLevel >= tl)
+    {
         return *_outputStreamPtr;
     }
+
     return _nullStream;
 }
 
 //////////////////////////////////////////////////////////////////////////////
 
-TestGraph& TestGraph::instance()
+TestGraph&TestGraph::instance()
 {
     static TestGraph instance_;
+
     return instance_;
 }
 
@@ -94,7 +94,7 @@ TestSuite* TestGraph::root()
     return root_.get();
 }
 
-TestSuite* TestGraph::suite(const std::string& path, TestSuite* tsuite, bool createIfNecessary)
+TestSuite* TestGraph::suite(const std::string&path, TestSuite *tsuite, bool createIfNecessary)
 {
     using namespace std;
 
@@ -104,47 +104,52 @@ TestSuite* TestGraph::suite(const std::string& path, TestSuite* tsuite, bool cre
     std::string::const_iterator it2 = it1;
 
     // Dissect the path into it's constituent components
-    do{
-
-        while( it2 != path.end() && *it2 != '.' ) ++it2;
+    do
+    {
+        while (it2 != path.end() && *it2 != '.')
+            ++it2;
 
         // Consider a check for "" empty strings?
-        pathComponents.push_back( std::string(it1,it2) );
+        pathComponents.push_back(std::string(it1, it2));
 
-        if( it2 != path.end()) ++it2;
+        if (it2 != path.end())
+            ++it2;
 
         it1 = it2;
-
-    }while( it2 != path.end());
+    }
+    while (it2 != path.end());
 
     return suite(pathComponents.begin(), pathComponents.end(),
-            tsuite, createIfNecessary);
-
+                 tsuite, createIfNecessary);
 }
 
 TestSuite* TestGraph::suite(
-        std::list<std::string>::iterator it,
-        std::list<std::string>::iterator end,
-        TestSuite* tsuite, bool createIfNecessary)
+    std::list<std::string>::iterator it,
+    std::list<std::string>::iterator end,
+    TestSuite *tsuite, bool createIfNecessary)
 {
     using namespace std;
 
-    if( ! tsuite) tsuite = root();
+    if (!tsuite)
+        tsuite = root();
 
     // Make sure these tie up
-    if(*it != tsuite->name()) return 0;
+    if (*it != tsuite->name())
+        return 0;
 
     ++it;
-    if(it == end) return tsuite;
+    if (it == end)
+        return tsuite;
 
-    Test* child = tsuite->findChild(*it);
+    Test *child = tsuite->findChild(*it);
 
-    if(child){
-
-        // We've found a child with the right name. But is it a 
+    if (child)
+    {
+        // We've found a child with the right name. But is it a
         // test suite?
 
-        if(TestSuite* childSuite = dynamic_cast<TestSuite*>(child)){
+        if (TestSuite *childSuite = dynamic_cast<TestSuite*>(child))
+        {
             return suite(it, end, childSuite, createIfNecessary);
         }
 
@@ -154,12 +159,11 @@ TestSuite* TestGraph::suite(
         // the other way round, so we don't do it this way round
         // either. Carry on as normal, and create a TestSuite of
         // the same name if createIfNecessary is true.
-
     }
 
-    if(createIfNecessary){
-
-        TestSuite* childSuite = new TestSuite(*it);
+    if (createIfNecessary)
+    {
+        TestSuite *childSuite = new TestSuite(*it);
         tsuite->add(childSuite);
         return suite(it, end, childSuite, createIfNecessary);
     }
@@ -167,32 +171,31 @@ TestSuite* TestGraph::suite(
     return 0;
 }
 
-TestGraph::TestGraph(): root_(new TestSuite("root"))
-{
-}
+TestGraph::TestGraph() : root_(new TestSuite("root"))
+{}
 
 
 //////////////////////////////////////////////////////////////////////////////
 
-bool TestQualifier::visitEnter( TestSuite* pSuite )
+bool TestQualifier::visitEnter(TestSuite *pSuite)
 {
-    _path.append( pSuite->name() );
-    _path += SEPCHAR; 
+    _path.append(pSuite->name());
+    _path += SEPCHAR;
     return true;
 }
 
 // Leaving a composite: Pop its name from the Path
-bool TestQualifier::visitLeave( TestSuite* pSuite )
+bool TestQualifier::visitLeave(TestSuite *pSuite)
 {
 //    assert( _path.rfind( pSuite->name() + static_cast<const char>(SEPCHAR))
 //                == _path.size() - pSuite->name().size()  - 1);
 
-    _path.erase( _path.size() - pSuite->name().size() -1 );
+    _path.erase(_path.size() - pSuite->name().size() - 1);
     return true;
 }
 
 // Provide read-only access to the current qualifier
-const std::string& TestQualifier::currentPath() const
+const std::string&TestQualifier::currentPath() const
 {
     return _path;
 }
@@ -211,59 +214,62 @@ void TestRecord::stop()
     stop_ = timer_.tick();
 }
 
-void TestRecord::log(const TestFailureX& e)
+void TestRecord::log(const TestFailureX&e)
 {
     stop();
-    result_ = Failure;
+    result_  = Failure;
     problem_ = e.what();
 }
 
-void TestRecord::log(const TestErrorX& e)
+void TestRecord::log(const TestErrorX&e)
 {
     stop();
-    result_ = Error;
+    result_  = Error;
     problem_ = e.what();
 }
 
-void TestRecord::log(const std::exception& e)
+void TestRecord::log(const std::exception&e)
 {
     stop();
-    result_ = Error;
+    result_  = Error;
     problem_ = e.what();
 }
 
-void TestRecord::log(const std::string& s)
+void TestRecord::log(const std::string&s)
 {
     stop();
-    result_ = Error;
+    result_  = Error;
     problem_ = s;
 }
 
-TestRecord::TestRecord(const std::string& name):
+TestRecord::TestRecord(const std::string&name) :
     name_(name),
     start_(0),
     stop_(0),
     result_(Success),
     problem_("No problem")
+{}
+
+std::ostream&operator<<(std::ostream&o, const TestRecord&tr)
 {
-}
+    if (tr.result_ == TestRecord::Success)
+        o << "pass";
+    else if (tr.result_ == TestRecord::Failure)
+        o << "fail";
+    else
+        o << "error";
 
-std::ostream& operator<<(std::ostream& o,const TestRecord& tr)
-{
-    if(tr.result_ == TestRecord::Success)         o<<"pass";
-    else if(tr.result_ == TestRecord::Failure)    o<<"fail";
-    else                                          o<<"error";
-
-    o<<"\t"<<tr.name_;
+    o << "\t" << tr.name_;
 
 
-    //o<<tr.start_<<'\t'<<tr.stop_<<'\t'<<TestRecord::timer_.delta_s(tr.start_,tr.stop_);
+    // o<<tr.start_<<'\t'<<tr.stop_<<'\t'<<TestRecord::timer_.delta_s(tr.start_,tr.stop_);
 
     // Just print out the duration
-    o<<'\t'<<TestRecord::timer_.delta_s(tr.start_,tr.stop_)<<'s';
+    o << '\t' << TestRecord::timer_.delta_s(tr.start_, tr.stop_) << 's';
 
-    if(tr.result_ != TestRecord::Success){
-        o<<'\t'<<tr.problem_;
+    if (tr.result_ != TestRecord::Success)
+    {
+        o << '\t' << tr.problem_;
     }
 
     return o;
@@ -271,85 +277,87 @@ std::ostream& operator<<(std::ostream& o,const TestRecord& tr)
 
 //////////////////////////////////////////////////////////////////////////////
 
-TestRunner::TestRunner( TestContext& ctx ) : _ctx( ctx )
+TestRunner::TestRunner(TestContext&ctx) : _ctx(ctx)
+{}
+
+void TestRunner::specify(const std::string&sQualifiedName)
 {
+    _tests.push_back(sQualifiedName);
 }
 
-void TestRunner::specify( const std::string& sQualifiedName )
+bool TestRunner::visitEnter(TestSuite *pSuite)
 {
-    _tests.push_back( sQualifiedName );
-}
+    TestQualifier::visitEnter(pSuite);
 
-bool TestRunner::visitEnter( TestSuite* pSuite )
-{
-    TestQualifier::visitEnter( pSuite );
     return !_ctx.shouldStop();
 }
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-namespace osgUtx{
-
+namespace osgUtx
+{
 struct isSpecified
 {
+    const std::string&pTestName_;
 
-    const std::string& pTestName_;
+    isSpecified(const std::string&s) : pTestName_(s) {}
 
-    isSpecified(const std::string& s): pTestName_(s) {}
-
-    bool operator()(const std::string& specifiedTest){
+    bool operator()(const std::string&specifiedTest)
+    {
         return pTestName_.find(specifiedTest) == 0;
     }
 
 protected:
 
-    isSpecified& operator = (const isSpecified&) { return *this; }
+    isSpecified&operator =(const isSpecified&)
+    {
+        return *this;
+    }
 };
-
 }
-
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
-bool TestRunner::visit( TestCase* pTest )
+bool TestRunner::visit(TestCase *pTest)
 {
-    if ( std::find_if(_tests.begin(),_tests.end(),
-                      osgUtx::isSpecified(currentPath() + pTest->name() ) ) != _tests.end()) perform( pTest );
+    if (std::find_if(_tests.begin(), _tests.end(),
+                     osgUtx::isSpecified(currentPath() + pTest->name())) != _tests.end())
+        perform(pTest);
 
     return !_ctx.shouldStop();
 }
 
-bool TestRunner::visitLeave( TestSuite* pSuite )
+bool TestRunner::visitLeave(TestSuite *pSuite)
 {
-    TestQualifier::visitLeave( pSuite );
+    TestQualifier::visitLeave(pSuite);
+
     return !_ctx.shouldStop();
 }
 
-void TestRunner::perform( TestCase* pTest )
+void TestRunner::perform(TestCase *pTest)
 {
-    TestRecord& record = _db.createRecord( currentPath() + pTest->name() );
+    TestRecord&record = _db.createRecord(currentPath() + pTest->name());
 
     try
     {
         record.start();
-        pTest->run( _ctx );
+        pTest->run(_ctx);
         record.stop();
     }
 
-    catch ( const TestFailureX& e )
+    catch (const TestFailureX&e)
     {
-        record.log( e );
+        record.log(e);
     }
-    catch ( const TestErrorX& e )
+    catch (const TestErrorX&e)
     {
-        record.log( e );
+        record.log(e);
     }
-    catch ( const std::exception& e )
+    catch (const std::exception&e)
     {
-        record.log( e );
+        record.log(e);
     }
-    catch ( ... )
+    catch (...)
     {
-        record.log( std::string("Unknown") );
+        record.log(std::string("Unknown"));
     }
 
 
@@ -358,49 +366,49 @@ void TestRunner::perform( TestCase* pTest )
 
 //////////////////////////////////////////////////////////////////////////////
 
-TestSuite::TestSuite( const std::string& name ) : Test( name )
+TestSuite::TestSuite(const std::string&name) : Test(name)
+{}
+
+void TestSuite::add(Test *pTest)
 {
+    _tests.push_back(pTest);
 }
 
-void TestSuite::add( Test* pTest )
+Test* TestSuite::findChild(const std::string&name)
 {
-    _tests.push_back( pTest );
-}
-
-Test* TestSuite::findChild(const std::string& name)
-{
-    for(Tests::iterator it = _tests.begin();
-        it != _tests.end();
-        ++it){
-
-        if ((*it)->name() == name) return (*it).get();
+    for (Tests::iterator it = _tests.begin();
+         it != _tests.end();
+         ++it)
+    {
+        if ((*it)->name() == name)
+            return (*it).get();
     }
 
     return 0;
 }
 
-bool TestSuite::accept( Test::Visitor& v )
+bool TestSuite::accept(Test::Visitor&v)
 {
-    if ( v.visitEnter( this ) )
+    if (v.visitEnter(this))
     {
         Tests::iterator end = _tests.end();
-        for ( Tests::iterator at = _tests.begin(); at != end; ++at )
-            if ( !(*at)->accept( v ) )
+
+        for (Tests::iterator at = _tests.begin(); at != end; ++at)
+            if (!(*at)->accept(v))
                 break;
     }
 
-    return v.visitLeave( this );   // continue with siblings?
+    return v.visitLeave(this);     // continue with siblings?
 }
 
 //////////////////////////////////////////////////////////////////////////////
 
-bool QualifiedTestPrinter::visit( TestCase* pTest )
+bool QualifiedTestPrinter::visit(TestCase *pTest)
 {
     osg::notify(osg::NOTICE) << currentPath() + pTest->name() << std::endl;
+
     return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////
-
-
 }

@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Image_readLocalData(Object& obj, Input& fr);
-bool Image_writeLocalData(const Object& obj, Output& fw);
+bool Image_readLocalData(Object&obj, Input&fr);
+bool Image_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Image)

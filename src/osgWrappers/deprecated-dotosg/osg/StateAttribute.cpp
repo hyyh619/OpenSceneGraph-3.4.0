@@ -9,11 +9,11 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool StateAttribute_readLocalData(Object& obj, Input& fr);
-bool StateAttribute_writeLocalData(const Object& obj, Output& fw);
+bool StateAttribute_readLocalData(Object&obj, Input&fr);
+bool StateAttribute_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
-osg::StateAttribute* g_stateAttribute = 0;
+osg::StateAttribute *g_stateAttribute = 0;
 REGISTER_DOTOSGWRAPPER(StateAttribute)
 (
     g_stateAttribute, // no instance, osg::StateAttribute is an abstract class.
@@ -24,39 +24,43 @@ REGISTER_DOTOSGWRAPPER(StateAttribute)
 );
 
 
-bool StateAttribute_readLocalData(Object& obj, Input& fr)
+bool StateAttribute_readLocalData(Object&obj, Input&fr)
 {
-    bool iteratorAdvanced = false;
-    StateAttribute& stateAttribute = static_cast<StateAttribute&>(obj);
+    bool          iteratorAdvanced = false;
+    StateAttribute&stateAttribute  = static_cast<StateAttribute&>(obj);
 
     while (fr.matchSequence("UpdateCallback {"))
     {
-        //int entry = fr[0].getNoNestedBrackets();
+        // int entry = fr[0].getNoNestedBrackets();
         fr += 2;
-        StateAttributeCallback* callback = fr.readObjectOfType<StateAttributeCallback>();
-        if (callback) {
+        StateAttributeCallback *callback = fr.readObjectOfType<StateAttributeCallback>();
+        if (callback)
+        {
             stateAttribute.setUpdateCallback(callback);
         }
+
         iteratorAdvanced = true;
     }
 
     while (fr.matchSequence("EventCallback {"))
     {
-        //int entry = fr[0].getNoNestedBrackets();
+        // int entry = fr[0].getNoNestedBrackets();
         fr += 2;
-        StateAttributeCallback* callback = fr.readObjectOfType<StateAttributeCallback>();
-        if (callback) {
+        StateAttributeCallback *callback = fr.readObjectOfType<StateAttributeCallback>();
+        if (callback)
+        {
             stateAttribute.setEventCallback(callback);
         }
+
         iteratorAdvanced = true;
     }
 
     return iteratorAdvanced;
 }
 
-bool StateAttribute_writeLocalData(const Object& obj,Output& fw)
+bool StateAttribute_writeLocalData(const Object&obj, Output&fw)
 {
-    const StateAttribute& stateAttribute = static_cast<const StateAttribute&>(obj);
+    const StateAttribute&stateAttribute = static_cast<const StateAttribute&>(obj);
 
     if (stateAttribute.getUpdateCallback())
     {

@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
  *
-*/
+ */
 #ifndef SHAPE_TO_GEOMETRY
 #define SHAPE_TO_GEOMETRY 1
 #include <osg/Geometry>
@@ -20,69 +20,74 @@
 #include <osg/NodeVisitor>
 
 // arbitrary minima for rows & segments ( from shapedrawable.cpp )
-const unsigned int MIN_NUM_ROWS = 3;
+const unsigned int MIN_NUM_ROWS     = 3;
 const unsigned int MIN_NUM_SEGMENTS = 5;
 
 // osg::GLBeginEndAdapter descendant that stores data for osg::Geometry creation
 class FakeGLBeginEndAdapter : public osg::GLBeginEndAdapter
 {
 public:
-    FakeGLBeginEndAdapter();
+FakeGLBeginEndAdapter();
 
-    void PushMatrix();
-    void MultMatrixd(const GLdouble* m);
-    void Translated(GLdouble x, GLdouble y, GLdouble z);
-    void Scaled(GLdouble x, GLdouble y, GLdouble z);
-    void Rotated(GLdouble angle, GLdouble x, GLdouble y, GLdouble z);
-    void End();
+void PushMatrix();
+void MultMatrixd(const GLdouble *m);
+void Translated(GLdouble x, GLdouble y, GLdouble z);
+void Scaled(GLdouble x, GLdouble y, GLdouble z);
+void Rotated(GLdouble angle, GLdouble x, GLdouble y, GLdouble z);
+void End();
 
-   osg::ref_ptr<osg::Geometry> geometry;
+osg::ref_ptr<osg::Geometry> geometry;
 };
 
 class ShapeToGeometryVisitor : public osg::ConstShapeVisitor
 {
 public:
 
-    ShapeToGeometryVisitor(const osg::TessellationHints* hints)
-        : osg::ConstShapeVisitor(), _hints(hints)
-    {
-    }
+ShapeToGeometryVisitor(const osg::TessellationHints *hints)
+    : osg::ConstShapeVisitor(), _hints(hints)
+{}
 
-    virtual void apply(const osg::Sphere&);
-    virtual void apply(const osg::Box&);
-    virtual void apply(const osg::Cone&);
-    virtual void apply(const osg::Cylinder&);
-    virtual void apply(const osg::Capsule&);
-    virtual void apply(const osg::InfinitePlane&);
+virtual void apply(const osg::Sphere&);
+virtual void apply(const osg::Box&);
+virtual void apply(const osg::Cone&);
+virtual void apply(const osg::Cylinder&);
+virtual void apply(const osg::Capsule&);
+virtual void apply(const osg::InfinitePlane&);
 
-    virtual void apply(const osg::TriangleMesh&);
-    virtual void apply(const osg::ConvexHull&);
-    virtual void apply(const osg::HeightField&);
+virtual void apply(const osg::TriangleMesh&);
+virtual void apply(const osg::ConvexHull&);
+virtual void apply(const osg::HeightField&);
 
-    virtual void apply(const osg::CompositeShape&);
+virtual void apply(const osg::CompositeShape&);
 
-    osg::Geometry* getGeometry() { return gl.geometry.get(); }
+osg::Geometry* getGeometry()
+{
+    return gl.geometry.get();
+}
 
 
-    const osg::TessellationHints* _hints;
-    FakeGLBeginEndAdapter gl;
+const osg::TessellationHints *_hints;
+FakeGLBeginEndAdapter        gl;
 protected:
 
-    ShapeToGeometryVisitor& operator = (const ShapeToGeometryVisitor&) { return *this; }
-    enum SphereHalf { SphereTopHalf, SphereBottomHalf };
+ShapeToGeometryVisitor&operator =(const ShapeToGeometryVisitor&)
+{
+    return *this;
+}
+enum SphereHalf { SphereTopHalf, SphereBottomHalf };
 
-    // helpers for apply( Cylinder | Sphere | Capsule )
-    void drawCylinderBody(unsigned int numSegments, float radius, float height);
-    void drawHalfSphere(unsigned int numSegments, unsigned int numRows, float radius, SphereHalf which, float zOffset = 0.0f);
+// helpers for apply( Cylinder | Sphere | Capsule )
+void drawCylinderBody(unsigned int numSegments, float radius, float height);
+void drawHalfSphere(unsigned int numSegments, unsigned int numRows, float radius, SphereHalf which, float zOffset = 0.0f);
 };
 
-osg::Geometry* convertShapeToGeometry(const osg::Shape& shape, const osg::TessellationHints* hints);
+osg::Geometry* convertShapeToGeometry(const osg::Shape&shape, const osg::TessellationHints *hints);
 
-osg::Geometry* convertShapeToGeometry(const osg::Shape& shape, const osg::TessellationHints* hints, const osg::Vec4& color);
+osg::Geometry* convertShapeToGeometry(const osg::Shape&shape, const osg::TessellationHints *hints, const osg::Vec4&color);
 
-osg::Geode* convertShapeToGeode(const osg::Shape& shape, const osg::TessellationHints* hints);
+osg::Geode* convertShapeToGeode(const osg::Shape&shape, const osg::TessellationHints *hints);
 
-osg::Geode* convertShapeToGeode(const osg::Shape& shape, const osg::TessellationHints* hints, const osg::Vec4& color);
+osg::Geode* convertShapeToGeode(const osg::Shape&shape, const osg::TessellationHints *hints, const osg::Vec4&color);
 
 
 // example : how to use convertShapeToGeometry()

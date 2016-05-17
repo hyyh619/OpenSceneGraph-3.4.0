@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/ClampColor>
 #include <osg/GLExtensions>
 #include <osg/State>
@@ -19,33 +19,30 @@
 
 using namespace osg;
 
-ClampColor::ClampColor():
-   _clampVertexColor(GL_FIXED_ONLY),
-   _clampFragmentColor(GL_FIXED_ONLY),
-   _clampReadColor(GL_FIXED_ONLY)
-{
-}
+ClampColor::ClampColor() :
+    _clampVertexColor(GL_FIXED_ONLY),
+    _clampFragmentColor(GL_FIXED_ONLY),
+    _clampReadColor(GL_FIXED_ONLY)
+{}
 
-ClampColor::ClampColor(GLenum vertexMode, GLenum fragmentMode, GLenum readMode):
-   _clampVertexColor(vertexMode),
-   _clampFragmentColor(fragmentMode),
-   _clampReadColor(readMode)
-{
-}
+ClampColor::ClampColor(GLenum vertexMode, GLenum fragmentMode, GLenum readMode) :
+    _clampVertexColor(vertexMode),
+    _clampFragmentColor(fragmentMode),
+    _clampReadColor(readMode)
+{}
 
 ClampColor::~ClampColor()
-{
-}
+{}
 
-void ClampColor::apply(State& state) const
+void ClampColor::apply(State&state) const
 {
-
-   // get the contextID (user defined ID of 0 upwards) for the
+    // get the contextID (user defined ID of 0 upwards) for the
     // current OpenGL context.
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (!extensions->isClampColorSupported)
     {
-        OSG_WARN<<"Warning: ClampColor::apply(..) failed, ClampColor is not support by OpenGL driver."<<std::endl;
+        OSG_WARN << "Warning: ClampColor::apply(..) failed, ClampColor is not support by OpenGL driver." << std::endl;
         return;
     }
 

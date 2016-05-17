@@ -9,38 +9,50 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgDB/ReaderWriter>
 #include <osgDB/FileUtils>
 #include <osgDB/FileNameUtils>
 #include "SimpleDotVisitor.h"
 
-class ReaderWriterDOT : public osgDB::ReaderWriter {
-  public:
-    virtual const char* className() const { return "DOT Writer"; }
-    virtual bool acceptsExtension(const std::string& extension) const { return osgDB::equalCaseInsensitive(extension,"dot"); }
+class ReaderWriterDOT : public osgDB::ReaderWriter
+{
+public:
+virtual const char* className() const
+{
+    return "DOT Writer";
+}
+virtual bool acceptsExtension(const std::string&extension) const
+{
+    return osgDB::equalCaseInsensitive(extension, "dot");
+}
 
-    virtual WriteResult writeNode(const osg::Node& node,const std::string& fileName,const Options* options = NULL) const {
-      std::string ext = osgDB::getFileExtension(fileName);
-      if (!acceptsExtension(ext)) {
-        return WriteResult::FILE_NOT_HANDLED;
-      }
+virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options *options = NULL) const
+{
+    std::string ext = osgDB::getFileExtension(fileName);
 
-      osgDB::ofstream o( fileName.c_str(), std::ios_base::out );
-      if ( o ) {
-        return writeNode( node, o, options );
-      }
-
-      return WriteResult(WriteResult::ERROR_IN_WRITING_FILE);
-    }
-
-    virtual WriteResult writeNode(const osg::Node& node,std::ostream& fout,const Options* options = NULL) const
+    if (!acceptsExtension(ext))
     {
-      osgDot::SimpleDotVisitor sdv;
-      sdv.setOptions(options);
-      sdv.run( *const_cast<osg::Node*>( &node ), &fout );
-      return WriteResult(WriteResult::FILE_SAVED);
+        return WriteResult::FILE_NOT_HANDLED;
     }
+
+    osgDB::ofstream o(fileName.c_str(), std::ios_base::out);
+    if (o)
+    {
+        return writeNode(node, o, options);
+    }
+
+    return WriteResult(WriteResult::ERROR_IN_WRITING_FILE);
+}
+
+virtual WriteResult writeNode(const osg::Node&node, std::ostream&fout, const Options *options = NULL) const
+{
+    osgDot::SimpleDotVisitor sdv;
+
+    sdv.setOptions(options);
+    sdv.run(*const_cast<osg::Node*>(&node), &fout);
+    return WriteResult(WriteResult::FILE_SAVED);
+}
 };
 
 // now register with Registry to instantiate the above

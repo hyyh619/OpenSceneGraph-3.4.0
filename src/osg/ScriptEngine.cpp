@@ -9,35 +9,39 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/ScriptEngine>
 #include <osg/UserDataContainer>
 
 using namespace osg;
 
-ScriptEngine* ScriptNodeCallback::getScriptEngine(osg::NodePath& nodePath)
+ScriptEngine* ScriptNodeCallback::getScriptEngine(osg::NodePath&nodePath)
 {
-    if (!_script) return 0;
+    if (!_script)
+        return 0;
 
-    for(osg::NodePath::reverse_iterator itr = nodePath.rbegin();
-        itr != nodePath.rend();
-        ++itr)
+    for (osg::NodePath::reverse_iterator itr = nodePath.rbegin();
+         itr != nodePath.rend();
+         ++itr)
     {
-        osg::Node* node = *itr;
-        osg::UserDataContainer* udc = node->getUserDataContainer();
+        osg::Node              *node = *itr;
+        osg::UserDataContainer *udc  = node->getUserDataContainer();
         if (udc)
         {
-            ScriptEngine* engine = dynamic_cast<ScriptEngine*>(udc->getUserObject(_script->getLanguage()));
-            if (engine) return engine;
+            ScriptEngine *engine = dynamic_cast<ScriptEngine*>(udc->getUserObject(_script->getLanguage()));
+            if (engine)
+                return engine;
         }
     }
+
     return 0;
 }
 
-void ScriptNodeCallback::operator()(Node* node, NodeVisitor* nv)
+void ScriptNodeCallback::operator()(Node *node, NodeVisitor *nv)
 {
-    ScriptEngine* engine = getScriptEngine(nv->getNodePath());
+    ScriptEngine *engine = getScriptEngine(nv->getNodePath());
+
     if (engine && _script.valid())
     {
         // To handle the case where a NodeVisitor is created on the stack and can't be automatically ref counted
@@ -62,5 +66,5 @@ void ScriptNodeCallback::operator()(Node* node, NodeVisitor* nv)
     // note, callback is responsible for scenegraph traversal so
     // they must call traverse(node,nv) to ensure that the
     // scene graph subtree (and associated callbacks) are traversed.
-    traverse(node,nv);
+    traverse(node, nv);
 }

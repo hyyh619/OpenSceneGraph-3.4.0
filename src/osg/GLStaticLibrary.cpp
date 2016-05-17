@@ -11,11 +11,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
-*/
+ */
 
 /* file:        src/osg/GLStaticLibrary.cpp
  * author:      Alok Priyadarshi 2010-04-27
-*/
+ */
 
 #include "GLStaticLibrary.h"
 #include <osg/GL>
@@ -29,10 +29,11 @@
 
 using namespace osg;
 
-namespace {
+namespace
+{
 typedef void (*GLProc)(void);
 typedef std::map<std::string, GLProc> GLProcAddressMap;
-static bool sProcAddressInitialized = false;
+static bool             sProcAddressInitialized = false;
 static GLProcAddressMap sProcAddressMap;
 
 #define ADD_FUNCTION(FunctionName) sProcAddressMap[#FunctionName] = reinterpret_cast<GLProc>(&FunctionName);
@@ -191,10 +192,9 @@ void initProcAddress()
     OSG_NOTICE << "initProcAddress() not implemented for static GL lib yet." << std::endl;
 #endif
 }
-
 }  // namespace
 
-void* GLStaticLibrary::getProcAddress(const char* procName)
+void* GLStaticLibrary::getProcAddress(const char *procName)
 {
     // TODO(alokp): Add a mutex around sProcAddressInitialized.
     if (!sProcAddressInitialized)
@@ -206,5 +206,4 @@ void* GLStaticLibrary::getProcAddress(const char* procName)
     GLProcAddressMap::const_iterator iter = sProcAddressMap.find(procName);
     return iter != sProcAddressMap.end() ? reinterpret_cast<void*>(iter->second) : 0;
 }
-
 #endif  // OSG_GLES2_LIBRARY_STATIC

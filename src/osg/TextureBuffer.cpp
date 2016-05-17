@@ -9,27 +9,26 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/TextureBuffer>
 #include <osg/State>
 
 using namespace osg;
 
-TextureBuffer::TextureBuffer():
-            _textureWidth(0), _usageHint(GL_STREAM_DRAW)
-{
-}
+TextureBuffer::TextureBuffer() :
+    _textureWidth(0), _usageHint(GL_STREAM_DRAW)
+{}
 
-TextureBuffer::TextureBuffer(osg::Image* image):
-            _textureWidth(0), _usageHint(GL_STREAM_DRAW)
+TextureBuffer::TextureBuffer(osg::Image *image) :
+    _textureWidth(0), _usageHint(GL_STREAM_DRAW)
 {
     setImage(image);
 }
 
-TextureBuffer::TextureBuffer(const TextureBuffer& text,const CopyOp& copyop):
-            Texture(text,copyop),
-            _textureWidth(text._textureWidth),
-            _usageHint(text._usageHint)
+TextureBuffer::TextureBuffer(const TextureBuffer&text, const CopyOp&copyop) :
+    Texture(text, copyop),
+    _textureWidth(text._textureWidth),
+    _usageHint(text._usageHint)
 {
     setImage(copyop(text._image.get()));
 }
@@ -39,20 +38,21 @@ TextureBuffer::~TextureBuffer()
     setImage(NULL);
 }
 
-int TextureBuffer::compare(const StateAttribute& sa) const
+int TextureBuffer::compare(const StateAttribute&sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
-    COMPARE_StateAttribute_Types(TextureBuffer,sa)
+    COMPARE_StateAttribute_Types(TextureBuffer, sa)
 
-    if (_image!=rhs._image) // smart pointer comparison.
+    if (_image != rhs._image) // smart pointer comparison.
     {
         if (_image.valid())
         {
             if (rhs._image.valid())
             {
                 int result = _image->compare(*rhs._image);
-                if (result!=0) return result;
+                if (result != 0)
+                    return result;
             }
             else
             {
@@ -68,11 +68,13 @@ int TextureBuffer::compare(const StateAttribute& sa) const
     if (!_image && !rhs._image)
     {
         int result = compareTextureObjects(rhs);
-        if (result!=0) return result;
+        if (result != 0)
+            return result;
     }
 
     int result = compareTexture(rhs);
-    if (result!=0) return result;
+    if (result != 0)
+        return result;
 
     // compare each parameter in turn against the rhs.
     COMPARE_StateAttribute_Parameter(_textureWidth)
@@ -81,9 +83,10 @@ int TextureBuffer::compare(const StateAttribute& sa) const
     return 0;
 }
 
-void TextureBuffer::setImage(Image* image)
+void TextureBuffer::setImage(Image *image)
 {
-    if (_image == image) return;
+    if (_image == image)
+        return;
 
     if (_image.valid())
     {
@@ -99,13 +102,13 @@ void TextureBuffer::setImage(Image* image)
     }
 }
 
-void TextureBuffer::apply(State& state) const
+void TextureBuffer::apply(State&state) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
     const unsigned int contextID = state.getContextID();
 
-    TextureObject* textureObject = getTextureObject(contextID);
-    TextureBufferObject* textureBufferObject = _textureBufferObjects[contextID].get();
+    TextureObject       *textureObject       = getTextureObject(contextID);
+    TextureBufferObject *textureBufferObject = _textureBufferObjects[contextID].get();
 
 
     if (textureObject)
@@ -114,22 +117,24 @@ void TextureBuffer::apply(State& state) const
         {
             computeInternalFormat();
             textureBufferObject->bindBuffer(GL_TEXTURE_BUFFER);
-            textureBufferObject->bufferSubData(_image.get() );
+            textureBufferObject->bufferSubData(_image.get());
             textureBufferObject->unbindBuffer(GL_TEXTURE_BUFFER);
             _modifiedCount[contextID] = _image->getModifiedCount();
         }
+
         textureObject->bind();
 
-        if( getTextureParameterDirty(contextID) )
+        if (getTextureParameterDirty(contextID))
         {
-            const GLExtensions* extensions = state.get<GLExtensions>();
-            if (extensions->isBindImageTextureSupported() && _imageAttachment.access!=0)
+            const GLExtensions *extensions = state.get<GLExtensions>();
+            if (extensions->isBindImageTextureSupported() && _imageAttachment.access != 0)
             {
-                 extensions->glBindImageTexture(
-                     _imageAttachment.unit, textureObject->id(), _imageAttachment.level,
-                     _imageAttachment.layered, _imageAttachment.layer, _imageAttachment.access,
-                     _imageAttachment.format!=0 ? _imageAttachment.format : _internalFormat);
+                extensions->glBindImageTexture(
+                    _imageAttachment.unit, textureObject->id(), _imageAttachment.level,
+                    _imageAttachment.layered, _imageAttachment.layer, _imageAttachment.access,
+                    _imageAttachment.format != 0 ? _imageAttachment.format : _internalFormat);
             }
+
             getTextureParameterDirty(state.getContextID()) = false;
         }
     }
@@ -138,23 +143,24 @@ void TextureBuffer::apply(State& state) const
         textureObject = generateAndAssignTextureObject(contextID, GL_TEXTURE_BUFFER);
         textureObject->bind();
 
-        textureBufferObject = new TextureBufferObject(contextID,_usageHint);
+        textureBufferObject              = new TextureBufferObject(contextID, _usageHint);
         _textureBufferObjects[contextID] = textureBufferObject;
 
-        const GLExtensions* extensions = state.get<GLExtensions>();
-        if (extensions->isBindImageTextureSupported() && _imageAttachment.access!=0)
+        const GLExtensions *extensions = state.get<GLExtensions>();
+        if (extensions->isBindImageTextureSupported() && _imageAttachment.access != 0)
         {
-                extensions->glBindImageTexture(
-                    _imageAttachment.unit, textureObject->id(), _imageAttachment.level,
-                    _imageAttachment.layered, _imageAttachment.layer, _imageAttachment.access,
-                    _imageAttachment.format!=0 ? _imageAttachment.format : _internalFormat);
+            extensions->glBindImageTexture(
+                _imageAttachment.unit, textureObject->id(), _imageAttachment.level,
+                _imageAttachment.layered, _imageAttachment.layer, _imageAttachment.access,
+                _imageAttachment.format != 0 ? _imageAttachment.format : _internalFormat);
         }
+
         getTextureParameterDirty(state.getContextID()) = false;
 
         computeInternalFormat();
         _textureWidth = _image->s();
         textureBufferObject->bindBuffer(GL_TEXTURE_BUFFER);
-        textureBufferObject->bufferData( _image.get() );
+        textureBufferObject->bufferData(_image.get());
         textureObject->setAllocated(true);
         textureBufferObject->unbindBuffer(GL_TEXTURE_BUFFER);
 
@@ -169,34 +175,38 @@ void TextureBuffer::apply(State& state) const
     }
 
 #else
-    OSG_NOTICE<<"Warning: TextureBuffer::apply(State& state) not supported."<<std::endl;
+    OSG_NOTICE << "Warning: TextureBuffer::apply(State& state) not supported." << std::endl;
 #endif
 }
 
-void TextureBuffer::bindBufferAs( unsigned int contextID, GLuint target )
+void TextureBuffer::bindBufferAs(unsigned int contextID, GLuint target)
 {
-    TextureBufferObject* textureBufferObject = _textureBufferObjects[contextID].get();
-    textureBufferObject->bindBuffer(target);
+    TextureBufferObject *textureBufferObject = _textureBufferObjects[contextID].get();
 
+    textureBufferObject->bindBuffer(target);
 }
 
-void TextureBuffer::unbindBufferAs( unsigned int contextID, GLuint target )
+void TextureBuffer::unbindBufferAs(unsigned int contextID, GLuint target)
 {
-    TextureBufferObject* textureBufferObject = _textureBufferObjects[contextID].get();
+    TextureBufferObject *textureBufferObject = _textureBufferObjects[contextID].get();
+
     textureBufferObject->unbindBuffer(target);
 }
 
 
 void TextureBuffer::computeInternalFormat() const
 {
-    if (_image.valid()) computeInternalFormatWithImage(*_image);
-    else computeInternalFormatType();
+    if (_image.valid())
+        computeInternalFormatWithImage(*_image);
+    else
+        computeInternalFormatType();
 }
 
 void TextureBuffer::TextureBufferObject::bindBuffer(GLenum target)
 {
     if (_id == 0)
         _extensions->glGenBuffers(1, &_id);
+
     _extensions->glBindBuffer(target, _id);
 }
 
@@ -210,12 +220,12 @@ void TextureBuffer::TextureBufferObject::texBuffer(GLenum internalFormat)
     _extensions->glTexBuffer(GL_TEXTURE_BUFFER, internalFormat, _id);
 }
 
-void TextureBuffer::TextureBufferObject::bufferData( osg::Image* image )
+void TextureBuffer::TextureBufferObject::bufferData(osg::Image *image)
 {
     _extensions->glBufferData(GL_TEXTURE_BUFFER, image->getTotalDataSize(), image->data(), _usageHint);
 }
 
-void TextureBuffer::TextureBufferObject::bufferSubData( osg::Image* image )
+void TextureBuffer::TextureBufferObject::bufferSubData(osg::Image *image)
 {
     _extensions->glBufferSubData(GL_TEXTURE_BUFFER, 0, image->getTotalDataSize(), image->data());
 }

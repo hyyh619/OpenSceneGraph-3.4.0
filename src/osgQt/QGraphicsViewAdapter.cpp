@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgQt/QGraphicsViewAdapter>
 #include <osgQt/QWidgetImage>
@@ -24,48 +24,48 @@
 #include <QGraphicsItem>
 #include <QGraphicsProxyWidget>
 
-#define MYQKEYEVENT 2000
+#define MYQKEYEVENT     2000
 #define MYQPOINTEREVENT 2001
 
 namespace osgQt
 {
-
 QCoreApplication* getOrCreateQApplication()
 {
-    if (QApplication::instance()==0)
+    if (QApplication::instance() == 0)
     {
-        static char** argv = 0;
-        static int argc = 0;
-        static QApplication app(argc,argv);
+        static char         **argv = 0;
+        static int          argc   = 0;
+        static QApplication app(argc, argv);
     }
+
     return QApplication::instance();
 }
 
 class MyQKeyEvent : public QEvent
 {
 public:
-    MyQKeyEvent( int key, bool down ):
-        QEvent( QEvent::Type(MYQKEYEVENT) ),
-        _key(key), _down(down) {}
+MyQKeyEvent(int key, bool down) :
+    QEvent(QEvent::Type(MYQKEYEVENT)),
+    _key(key), _down(down) {}
 
-    int         _key;
-    bool        _down;
+int  _key;
+bool _down;
 };
 
 struct MyQPointerEvent : public QEvent
 {
-    MyQPointerEvent(int x, int y, unsigned int buttonMask):
-        QEvent( QEvent::Type(MYQPOINTEREVENT) ),
-        _x(x), _y(y),_buttonMask(buttonMask) {}
+    MyQPointerEvent(int x, int y, unsigned int buttonMask) :
+        QEvent(QEvent::Type(MYQPOINTEREVENT)),
+        _x(x), _y(y), _buttonMask(buttonMask) {}
 
-    int _x, _y;
+    int          _x, _y;
     unsigned int _buttonMask;
 };
 
 
 const QImage::Format s_imageFormat = QImage::Format_ARGB32_Premultiplied;
 
-QGraphicsViewAdapter::QGraphicsViewAdapter(osg::Image* image, QWidget* widget):
+QGraphicsViewAdapter::QGraphicsViewAdapter(osg::Image *image, QWidget *widget) :
     _image(image),
     _backgroundWidget(0),
     _previousMouseX(-1),
@@ -95,18 +95,18 @@ QGraphicsViewAdapter::QGraphicsViewAdapter(osg::Image* image, QWidget* widget):
     _graphicsScene->setStickyFocus(true);
 #endif
 
-    _width = static_cast<int>(_graphicsScene->width());
+    _width  = static_cast<int>(_graphicsScene->width());
     _height = static_cast<int>(_graphicsScene->height());
 
     _qimages[0] = QImage(QSize(_width, _height), s_imageFormat);
     _qimages[1] = QImage(QSize(_width, _height), s_imageFormat);
     _qimages[2] = QImage(QSize(_width, _height), s_imageFormat);
 
-    _currentRead = 0;
-    _currentWrite = 1;
-    _previousWrite = 2;
+    _currentRead         = 0;
+    _currentWrite        = 1;
+    _previousWrite       = 2;
     _previousFrameNumber = osg::UNINITIALIZED_FRAME_NUMBER;
-    _newImageAvailable = false;
+    _newImageAvailable   = false;
 
     connect(_graphicsScene, SIGNAL(changed(const QList<QRectF> &)),
             this, SLOT(repaintRequestedSlot(const QList<QRectF> &)));
@@ -128,16 +128,16 @@ void QGraphicsViewAdapter::repaintRequestedSlot(const QRectF&)
     _requiresRendering = true;
 }
 
-void QGraphicsViewAdapter::customEvent ( QEvent * event )
+void QGraphicsViewAdapter::customEvent(QEvent *event)
 {
-    if (event->type()==MYQKEYEVENT)
+    if (event->type() == MYQKEYEVENT)
     {
-        MyQKeyEvent* keyEvent = (MyQKeyEvent*)event;
+        MyQKeyEvent *keyEvent = (MyQKeyEvent*)event;
         handleKeyEvent(keyEvent->_key, keyEvent->_down);
     }
-    else if (event->type()==MYQPOINTEREVENT)
+    else if (event->type() == MYQPOINTEREVENT)
     {
-        MyQPointerEvent* pointerEvent = (MyQPointerEvent*)event;
+        MyQPointerEvent *pointerEvent = (MyQPointerEvent*)event;
         handlePointerEvent(pointerEvent->_x, pointerEvent->_y, pointerEvent->_buttonMask);
     }
 }
@@ -145,108 +145,108 @@ void QGraphicsViewAdapter::customEvent ( QEvent * event )
 
 void QGraphicsViewAdapter::setUpKeyMap()
 {
-    _keyMap[osgGA::GUIEventAdapter::KEY_BackSpace] = Qt::Key_Backspace;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Tab] = Qt::Key_Tab;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Linefeed] = Qt::Key_Return; // No LineFeed in Qt!
-    _keyMap[osgGA::GUIEventAdapter::KEY_Clear] = Qt::Key_Clear;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Return] = Qt::Key_Return;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Pause] = Qt::Key_Pause;
+    _keyMap[osgGA::GUIEventAdapter::KEY_BackSpace]   = Qt::Key_Backspace;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Tab]         = Qt::Key_Tab;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Linefeed]    = Qt::Key_Return; // No LineFeed in Qt!
+    _keyMap[osgGA::GUIEventAdapter::KEY_Clear]       = Qt::Key_Clear;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Return]      = Qt::Key_Return;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Pause]       = Qt::Key_Pause;
     _keyMap[osgGA::GUIEventAdapter::KEY_Scroll_Lock] = Qt::Key_ScrollLock;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Sys_Req] = Qt::Key_SysReq;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Escape] = Qt::Key_Escape;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Delete] = Qt::Key_Delete;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Sys_Req]     = Qt::Key_SysReq;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Escape]      = Qt::Key_Escape;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Delete]      = Qt::Key_Delete;
 
-    _keyMap[osgGA::GUIEventAdapter::KEY_Home] = Qt::Key_Home;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Left] = Qt::Key_Left;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Up] = Qt::Key_Up;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Right] = Qt::Key_Right;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Down] = Qt::Key_Down;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Prior] = Qt::Key_Left; // no Prior in Qt
-    _keyMap[osgGA::GUIEventAdapter::KEY_Page_Up] = Qt::Key_PageUp;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Next] = Qt::Key_Right; // No Next in Qt
+    _keyMap[osgGA::GUIEventAdapter::KEY_Home]      = Qt::Key_Home;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Left]      = Qt::Key_Left;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Up]        = Qt::Key_Up;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Right]     = Qt::Key_Right;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Down]      = Qt::Key_Down;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Prior]     = Qt::Key_Left; // no Prior in Qt
+    _keyMap[osgGA::GUIEventAdapter::KEY_Page_Up]   = Qt::Key_PageUp;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Next]      = Qt::Key_Right; // No Next in Qt
     _keyMap[osgGA::GUIEventAdapter::KEY_Page_Down] = Qt::Key_PageDown;
-    _keyMap[osgGA::GUIEventAdapter::KEY_End] = Qt::Key_End;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Begin] = Qt::Key_Home; // No Begin in Qt
+    _keyMap[osgGA::GUIEventAdapter::KEY_End]       = Qt::Key_End;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Begin]     = Qt::Key_Home; // No Begin in Qt
 
-    _keyMap[osgGA::GUIEventAdapter::KEY_Select] = Qt::Key_Select;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Print] = Qt::Key_Print;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Select]  = Qt::Key_Select;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Print]   = Qt::Key_Print;
     _keyMap[osgGA::GUIEventAdapter::KEY_Execute] = Qt::Key_Execute;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Insert] = Qt::Key_Insert;
-    //_keyMap[osgGA::GUIEventAdapter::KEY_Undo] = Qt::Key_; // no Undo
-    //_keyMap[osgGA::GUIEventAdapter::KEY_Redo] = Qt::Key_; // no Redo
-    _keyMap[osgGA::GUIEventAdapter::KEY_Menu] = Qt::Key_Menu;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Find] = Qt::Key_Search; // no Qt Find
-    _keyMap[osgGA::GUIEventAdapter::KEY_Cancel] = Qt::Key_Cancel;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Help] = Qt::Key_Help;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Break] = Qt::Key_Escape; // no break
-    _keyMap[osgGA::GUIEventAdapter::KEY_Mode_switch] = Qt::Key_Mode_switch;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Insert]  = Qt::Key_Insert;
+    // _keyMap[osgGA::GUIEventAdapter::KEY_Undo] = Qt::Key_; // no Undo
+    // _keyMap[osgGA::GUIEventAdapter::KEY_Redo] = Qt::Key_; // no Redo
+    _keyMap[osgGA::GUIEventAdapter::KEY_Menu]          = Qt::Key_Menu;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Find]          = Qt::Key_Search; // no Qt Find
+    _keyMap[osgGA::GUIEventAdapter::KEY_Cancel]        = Qt::Key_Cancel;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Help]          = Qt::Key_Help;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Break]         = Qt::Key_Escape; // no break
+    _keyMap[osgGA::GUIEventAdapter::KEY_Mode_switch]   = Qt::Key_Mode_switch;
     _keyMap[osgGA::GUIEventAdapter::KEY_Script_switch] = Qt::Key_Mode_switch; // no Script switch
-    _keyMap[osgGA::GUIEventAdapter::KEY_Num_Lock] = Qt::Key_NumLock;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Num_Lock]      = Qt::Key_NumLock;
 
-    _keyMap[osgGA::GUIEventAdapter::KEY_Shift_L] = Qt::Key_Shift;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Shift_R] = Qt::Key_Shift;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Control_L] = Qt::Key_Control;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Control_R] = Qt::Key_Control;
-    _keyMap[osgGA::GUIEventAdapter::KEY_Caps_Lock] = Qt::Key_CapsLock;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Shift_L]    = Qt::Key_Shift;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Shift_R]    = Qt::Key_Shift;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Control_L]  = Qt::Key_Control;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Control_R]  = Qt::Key_Control;
+    _keyMap[osgGA::GUIEventAdapter::KEY_Caps_Lock]  = Qt::Key_CapsLock;
     _keyMap[osgGA::GUIEventAdapter::KEY_Shift_Lock] = Qt::Key_CapsLock;
 
-    _keyMap[osgGA::GUIEventAdapter::KEY_Meta_L] = Qt::Key_Meta; // Qt doesn't have a Meta L
-    _keyMap[osgGA::GUIEventAdapter::KEY_Meta_R] = Qt::Key_Meta; // Qt doesn't have a Meta R
-    _keyMap[osgGA::GUIEventAdapter::KEY_Alt_L] = Qt::Key_Alt; // Qt doesn't have a Alt L
-    _keyMap[osgGA::GUIEventAdapter::KEY_Alt_R] = Qt::Key_Alt; // Qt doesn't have a Alt R
+    _keyMap[osgGA::GUIEventAdapter::KEY_Meta_L]  = Qt::Key_Meta; // Qt doesn't have a Meta L
+    _keyMap[osgGA::GUIEventAdapter::KEY_Meta_R]  = Qt::Key_Meta; // Qt doesn't have a Meta R
+    _keyMap[osgGA::GUIEventAdapter::KEY_Alt_L]   = Qt::Key_Alt; // Qt doesn't have a Alt L
+    _keyMap[osgGA::GUIEventAdapter::KEY_Alt_R]   = Qt::Key_Alt; // Qt doesn't have a Alt R
     _keyMap[osgGA::GUIEventAdapter::KEY_Super_L] = Qt::Key_Super_L;
     _keyMap[osgGA::GUIEventAdapter::KEY_Super_R] = Qt::Key_Super_R;
     _keyMap[osgGA::GUIEventAdapter::KEY_Hyper_L] = Qt::Key_Hyper_L;
     _keyMap[osgGA::GUIEventAdapter::KEY_Hyper_R] = Qt::Key_Hyper_R;
 
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Space] = Qt::Key_Space;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Tab] = Qt::Key_Tab;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Enter] = Qt::Key_Enter;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_F1] = Qt::Key_F1;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_F2] = Qt::Key_F2;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_F3] = Qt::Key_F3;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_F4] = Qt::Key_F4;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Home] = Qt::Key_Home;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Left] = Qt::Key_Left;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Up] = Qt::Key_Up;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Right] = Qt::Key_Right;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Down] = Qt::Key_Down;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Prior] = Qt::Key_Left;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Page_Up] = Qt::Key_PageUp;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Next] = Qt::Key_Right;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Space]     = Qt::Key_Space;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Tab]       = Qt::Key_Tab;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Enter]     = Qt::Key_Enter;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_F1]        = Qt::Key_F1;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_F2]        = Qt::Key_F2;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_F3]        = Qt::Key_F3;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_F4]        = Qt::Key_F4;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Home]      = Qt::Key_Home;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Left]      = Qt::Key_Left;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Up]        = Qt::Key_Up;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Right]     = Qt::Key_Right;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Down]      = Qt::Key_Down;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Prior]     = Qt::Key_Left;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Page_Up]   = Qt::Key_PageUp;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Next]      = Qt::Key_Right;
     _keyMap[osgGA::GUIEventAdapter::KEY_KP_Page_Down] = Qt::Key_PageDown;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_End] = Qt::Key_End;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_End]       = Qt::Key_End;
 
     // _keyMap[osgGA::GUIEventAdapter::KEY_KP_Begin] = Qt::Key_Begin;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Insert] = Qt::Key_Insert;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Delete] = Qt::Key_Delete;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Equal] = Qt::Key_Equal;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Insert]   = Qt::Key_Insert;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Delete]   = Qt::Key_Delete;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Equal]    = Qt::Key_Equal;
     _keyMap[osgGA::GUIEventAdapter::KEY_KP_Multiply] = Qt::Key_Asterisk;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Add] = Qt::Key_Plus;
-    //_keyMap[osgGA::GUIEventAdapter::KEY_KP_Separator] = Qt::Key_;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Add]      = Qt::Key_Plus;
+    // _keyMap[osgGA::GUIEventAdapter::KEY_KP_Separator] = Qt::Key_;
     _keyMap[osgGA::GUIEventAdapter::KEY_KP_Subtract] = Qt::Key_Minus;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Decimal] = Qt::Key_Period;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Divide] = Qt::Key_division;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_0] = Qt::Key_0;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_1] = Qt::Key_1;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_2] = Qt::Key_2;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_3] = Qt::Key_3;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_4] = Qt::Key_4;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_5] = Qt::Key_5;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_6] = Qt::Key_6;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_7] = Qt::Key_7;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_8] = Qt::Key_8;
-    _keyMap[osgGA::GUIEventAdapter::KEY_KP_9] = Qt::Key_9;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Decimal]  = Qt::Key_Period;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_Divide]   = Qt::Key_division;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_0]        = Qt::Key_0;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_1]        = Qt::Key_1;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_2]        = Qt::Key_2;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_3]        = Qt::Key_3;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_4]        = Qt::Key_4;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_5]        = Qt::Key_5;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_6]        = Qt::Key_6;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_7]        = Qt::Key_7;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_8]        = Qt::Key_8;
+    _keyMap[osgGA::GUIEventAdapter::KEY_KP_9]        = Qt::Key_9;
 
-    _keyMap[osgGA::GUIEventAdapter::KEY_F1] = Qt::Key_F1;
-    _keyMap[osgGA::GUIEventAdapter::KEY_F2] = Qt::Key_F2;
-    _keyMap[osgGA::GUIEventAdapter::KEY_F3] = Qt::Key_F3;
-    _keyMap[osgGA::GUIEventAdapter::KEY_F4] = Qt::Key_F4;
-    _keyMap[osgGA::GUIEventAdapter::KEY_F5] = Qt::Key_F5;
-    _keyMap[osgGA::GUIEventAdapter::KEY_F6] = Qt::Key_F6;
-    _keyMap[osgGA::GUIEventAdapter::KEY_F7] = Qt::Key_F7;
-    _keyMap[osgGA::GUIEventAdapter::KEY_F8] = Qt::Key_F8;
-    _keyMap[osgGA::GUIEventAdapter::KEY_F9] = Qt::Key_F9;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F1]  = Qt::Key_F1;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F2]  = Qt::Key_F2;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F3]  = Qt::Key_F3;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F4]  = Qt::Key_F4;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F5]  = Qt::Key_F5;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F6]  = Qt::Key_F6;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F7]  = Qt::Key_F7;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F8]  = Qt::Key_F8;
+    _keyMap[osgGA::GUIEventAdapter::KEY_F9]  = Qt::Key_F9;
     _keyMap[osgGA::GUIEventAdapter::KEY_F10] = Qt::Key_F10;
     _keyMap[osgGA::GUIEventAdapter::KEY_F11] = Qt::Key_F11;
     _keyMap[osgGA::GUIEventAdapter::KEY_F12] = Qt::Key_F12;
@@ -273,41 +273,44 @@ void QGraphicsViewAdapter::setUpKeyMap()
     _keyMap[osgGA::GUIEventAdapter::KEY_F33] = Qt::Key_F33;
     _keyMap[osgGA::GUIEventAdapter::KEY_F34] = Qt::Key_F34;
     _keyMap[osgGA::GUIEventAdapter::KEY_F35] = Qt::Key_F35;
-
 }
 
-QWidget* QGraphicsViewAdapter::getWidgetAt(const QPoint& pos)
+QWidget* QGraphicsViewAdapter::getWidgetAt(const QPoint&pos)
 {
-   QWidget* childAt = _graphicsView->childAt(pos);
-   if(childAt)
-   {
-       return childAt;
-   }
+    QWidget *childAt = _graphicsView->childAt(pos);
 
-   QGraphicsItem* item = _graphicsView->itemAt(pos);
-   if(item /*&& item->contains(item->mapFromScene(pos))*/)
-   {
-      QGraphicsProxyWidget* p = qgraphicsitem_cast<QGraphicsProxyWidget*>(item);
-      if(p)
-      {
-         childAt = p->widget();
-         QWidget* c;
-         while( (c = childAt->childAt(childAt->mapFromGlobal(pos)))!=0 )
-         {
-            childAt = c;
-         }
+    if (childAt)
+    {
+        return childAt;
+    }
 
-         // Widgets like QTextEdit will automatically add child scroll area widgets
-         // that will be selected by childAt(), we have to change to parents at that moment
-         // Hardcoded by the internal widget's name 'qt_scrollarea_viewport' at present
-         if (childAt->objectName() == "qt_scrollarea_viewport")
-         {
-            childAt = childAt->parentWidget();
-         }
-         return childAt;
-      }
-   }
-   return NULL;
+    QGraphicsItem *item = _graphicsView->itemAt(pos);
+    if (item /*&& item->contains(item->mapFromScene(pos))*/)
+    {
+        QGraphicsProxyWidget *p = qgraphicsitem_cast<QGraphicsProxyWidget*>(item);
+        if (p)
+        {
+            childAt = p->widget();
+            QWidget *c;
+
+            while ((c = childAt->childAt(childAt->mapFromGlobal(pos))) != 0)
+            {
+                childAt = c;
+            }
+
+            // Widgets like QTextEdit will automatically add child scroll area widgets
+            // that will be selected by childAt(), we have to change to parents at that moment
+            // Hardcoded by the internal widget's name 'qt_scrollarea_viewport' at present
+            if (childAt->objectName() == "qt_scrollarea_viewport")
+            {
+                childAt = childAt->parentWidget();
+            }
+
+            return childAt;
+        }
+    }
+
+    return NULL;
 }
 
 bool QGraphicsViewAdapter::sendPointerEvent(int x, int y, int buttonMask)
@@ -317,9 +320,9 @@ bool QGraphicsViewAdapter::sendPointerEvent(int x, int y, int buttonMask)
 
     QPoint pos(_previousQtMouseX, _previousQtMouseY);
 
-    QWidget* targetWidget = getWidgetAt(pos);
+    QWidget *targetWidget = getWidgetAt(pos);
     OSG_INFO << "Get " << (targetWidget ? targetWidget->metaObject()->className() : std::string("NULL"))
-               << " at global pos " << x << ", " << y << std::endl;
+             << " at global pos " << x << ", " << y << std::endl;
 
     if (_backgroundWidget && _backgroundWidget == targetWidget)
     {
@@ -329,34 +332,34 @@ bool QGraphicsViewAdapter::sendPointerEvent(int x, int y, int buttonMask)
 
     if (targetWidget != NULL || (_previousSentEvent && buttonMask != 0))
     {
-        QCoreApplication::postEvent(this, new MyQPointerEvent(x,y,buttonMask));
-        OSG_INFO<<"sendPointerEvent("<<x<<", "<<y<<") sent"<<std::endl;
+        QCoreApplication::postEvent(this, new MyQPointerEvent(x, y, buttonMask));
+        OSG_INFO << "sendPointerEvent(" << x << ", " << y << ") sent" << std::endl;
         _previousSentEvent = true;
         return true;
     }
 
-    OSG_INFO<<"sendPointerEvent("<<x<<", "<<y<<") not sent"<<std::endl;
+    OSG_INFO << "sendPointerEvent(" << x << ", " << y << ") not sent" << std::endl;
     _previousSentEvent = false;
     return false;
 }
 
 bool QGraphicsViewAdapter::handlePointerEvent(int x, int y, int buttonMask)
 {
-    OSG_INFO<<"dispatchPointerEvent("<<x<<", "<<y<<", "<<buttonMask<<")"<<std::endl;
+    OSG_INFO << "dispatchPointerEvent(" << x << ", " << y << ", " << buttonMask << ")" << std::endl;
 
-    y = _graphicsView->size().height()-y;
+    y = _graphicsView->size().height() - y;
 
-    bool leftButtonPressed = (buttonMask & osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON)!=0;
-    bool middleButtonPressed = (buttonMask & osgGA::GUIEventAdapter::MIDDLE_MOUSE_BUTTON)!=0;
-    bool rightButtonPressed = (buttonMask & osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON)!=0;
+    bool leftButtonPressed   = (buttonMask&osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON) != 0;
+    bool middleButtonPressed = (buttonMask&osgGA::GUIEventAdapter::MIDDLE_MOUSE_BUTTON) != 0;
+    bool rightButtonPressed  = (buttonMask&osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON) != 0;
 
-    bool prev_leftButtonPressed = (_previousButtonMask & osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON)!=0;
-    bool prev_middleButtonPressed = (_previousButtonMask & osgGA::GUIEventAdapter::MIDDLE_MOUSE_BUTTON)!=0;
-    bool prev_rightButtonPressed = (_previousButtonMask & osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON)!=0;
+    bool prev_leftButtonPressed   = (_previousButtonMask&osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON) != 0;
+    bool prev_middleButtonPressed = (_previousButtonMask&osgGA::GUIEventAdapter::MIDDLE_MOUSE_BUTTON) != 0;
+    bool prev_rightButtonPressed  = (_previousButtonMask&osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON) != 0;
 
-    OSG_INFO<<"leftButtonPressed "<<leftButtonPressed<<std::endl;
-    OSG_INFO<<"middleButtonPressed "<<middleButtonPressed<<std::endl;
-    OSG_INFO<<"rightButtonPressed "<<rightButtonPressed<<std::endl;
+    OSG_INFO << "leftButtonPressed " << leftButtonPressed << std::endl;
+    OSG_INFO << "middleButtonPressed " << middleButtonPressed << std::endl;
+    OSG_INFO << "rightButtonPressed " << rightButtonPressed << std::endl;
 
     Qt::MouseButtons qtMouseButtons =
         (leftButtonPressed ? Qt::LeftButton : Qt::NoButton) |
@@ -364,41 +367,42 @@ bool QGraphicsViewAdapter::handlePointerEvent(int x, int y, int buttonMask)
         (rightButtonPressed ? Qt::RightButton : Qt::NoButton);
 
     const QPoint globalPos(x, y);
-    QWidget* targetWidget = getWidgetAt(globalPos);
+    QWidget      *targetWidget = getWidgetAt(globalPos);
 
     if (buttonMask != _previousButtonMask)
     {
-        Qt::MouseButton qtButton = Qt::NoButton;
-        QEvent::Type eventType = QEvent::None;
+        Qt::MouseButton qtButton  = Qt::NoButton;
+        QEvent::Type    eventType = QEvent::None;
         if (leftButtonPressed != prev_leftButtonPressed)
         {
-            qtButton = Qt::LeftButton;
-            eventType = leftButtonPressed ? QEvent::MouseButtonPress : QEvent::MouseButtonRelease ;
+            qtButton  = Qt::LeftButton;
+            eventType = leftButtonPressed ? QEvent::MouseButtonPress : QEvent::MouseButtonRelease;
         }
         else if (middleButtonPressed != prev_middleButtonPressed)
         {
-            qtButton = Qt::MidButton;
-            eventType = middleButtonPressed ? QEvent::MouseButtonPress : QEvent::MouseButtonRelease ;
+            qtButton  = Qt::MidButton;
+            eventType = middleButtonPressed ? QEvent::MouseButtonPress : QEvent::MouseButtonRelease;
         }
         else if (rightButtonPressed != prev_rightButtonPressed)
         {
-            qtButton = Qt::RightButton;
-            eventType = rightButtonPressed ? QEvent::MouseButtonPress : QEvent::MouseButtonRelease ;
-            if(!rightButtonPressed)
+            qtButton  = Qt::RightButton;
+            eventType = rightButtonPressed ? QEvent::MouseButtonPress : QEvent::MouseButtonRelease;
+            if (!rightButtonPressed)
             {
-               if(targetWidget)
-               {
-                  QPoint localPos = targetWidget->mapFromGlobal(globalPos);
-                  QContextMenuEvent* cme = new QContextMenuEvent(QContextMenuEvent::Mouse, localPos, globalPos);
-                  QCoreApplication::postEvent(targetWidget, cme);
-               }
+                if (targetWidget)
+                {
+                    QPoint            localPos = targetWidget->mapFromGlobal(globalPos);
+                    QContextMenuEvent *cme     = new QContextMenuEvent(QContextMenuEvent::Mouse, localPos, globalPos);
+                    QCoreApplication::postEvent(targetWidget, cme);
+                }
             }
         }
 
-        if (eventType==QEvent::MouseButtonPress)
+        if (eventType == QEvent::MouseButtonPress)
         {
             _image->sendFocusHint(true);
-            if (targetWidget) targetWidget->setFocus(Qt::MouseFocusReason);
+            if (targetWidget)
+                targetWidget->setFocus(Qt::MouseFocusReason);
         }
 
         QMouseEvent event(eventType, globalPos, qtButton, qtMouseButtons, 0);
@@ -420,8 +424,9 @@ bool QGraphicsViewAdapter::handlePointerEvent(int x, int y, int buttonMask)
 
 bool QGraphicsViewAdapter::sendKeyEvent(int key, bool keyDown)
 {
-    QPoint pos(_previousQtMouseX, _previousQtMouseY);
-    QWidget* targetWidget = getWidgetAt(pos);
+    QPoint  pos(_previousQtMouseX, _previousQtMouseY);
+    QWidget *targetWidget = getWidgetAt(pos);
+
     if (_backgroundWidget && _backgroundWidget == targetWidget)
     {
         // Mouse is at background widget, so ignore such events
@@ -430,7 +435,7 @@ bool QGraphicsViewAdapter::sendKeyEvent(int key, bool keyDown)
 
     if (targetWidget != NULL)
     {
-        QCoreApplication::postEvent(this, new MyQKeyEvent(key,keyDown));
+        QCoreApplication::postEvent(this, new MyQKeyEvent(key, keyDown));
         return true;
     }
 
@@ -441,30 +446,30 @@ bool QGraphicsViewAdapter::handleKeyEvent(int key, bool keyDown)
 {
     QEvent::Type eventType = keyDown ? QEvent::KeyPress : QEvent::KeyRelease;
 
-    OSG_INFO<<"sendKeyEvent("<<key<<", "<<keyDown<<")"<<std::endl;
+    OSG_INFO << "sendKeyEvent(" << key << ", " << keyDown << ")" << std::endl;
 
-    if (key==osgGA::GUIEventAdapter::KEY_Shift_L || key==osgGA::GUIEventAdapter::KEY_Shift_R)
+    if (key == osgGA::GUIEventAdapter::KEY_Shift_L || key == osgGA::GUIEventAdapter::KEY_Shift_R)
     {
         _qtKeyModifiers = (_qtKeyModifiers & ~Qt::ShiftModifier) | (keyDown ? Qt::ShiftModifier : Qt::NoModifier);
     }
 
-    if (key==osgGA::GUIEventAdapter::KEY_Control_L || key==osgGA::GUIEventAdapter::KEY_Control_R)
+    if (key == osgGA::GUIEventAdapter::KEY_Control_L || key == osgGA::GUIEventAdapter::KEY_Control_R)
     {
         _qtKeyModifiers = (_qtKeyModifiers & ~Qt::ControlModifier) | (keyDown ? Qt::ControlModifier : Qt::NoModifier);
     }
 
-    if (key==osgGA::GUIEventAdapter::KEY_Alt_L || key==osgGA::GUIEventAdapter::KEY_Alt_R)
+    if (key == osgGA::GUIEventAdapter::KEY_Alt_L || key == osgGA::GUIEventAdapter::KEY_Alt_R)
     {
         _qtKeyModifiers = (_qtKeyModifiers & ~Qt::ControlModifier) | (keyDown ? Qt::ControlModifier : Qt::NoModifier);
     }
 
-    if (key==osgGA::GUIEventAdapter::KEY_Meta_L || key==osgGA::GUIEventAdapter::KEY_Meta_R)
+    if (key == osgGA::GUIEventAdapter::KEY_Meta_L || key == osgGA::GUIEventAdapter::KEY_Meta_R)
     {
         _qtKeyModifiers = (_qtKeyModifiers & ~Qt::MetaModifier) | (keyDown ? Qt::MetaModifier : Qt::NoModifier);
     }
 
     Qt::Key qtkey;
-    QChar input;
+    QChar   input;
 
     KeyMap::iterator itr = _keyMap.find(key);
     if (itr != _keyMap.end())
@@ -482,17 +487,19 @@ bool QGraphicsViewAdapter::handleKeyEvent(int key, bool keyDown)
     return true;
 }
 
-void QGraphicsViewAdapter::setFrameLastRendered(const osg::FrameStamp* frameStamp)
+void QGraphicsViewAdapter::setFrameLastRendered(const osg::FrameStamp *frameStamp)
 {
-    OSG_INFO<<"setFrameLastRendered("<<frameStamp->getFrameNumber()<<")"<<std::endl;
+    OSG_INFO << "setFrameLastRendered(" << frameStamp->getFrameNumber() << ")" << std::endl;
 
-    if (_newImageAvailable && _previousFrameNumber!=frameStamp->getFrameNumber())
+    if (_newImageAvailable && _previousFrameNumber != frameStamp->getFrameNumber())
     {
         {
             OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_qimagesMutex);
 
             // make sure that _previousFrameNumber hasn't been updated by another thread since we entered this branch.
-            if (_previousFrameNumber==frameStamp->getFrameNumber()) return;
+            if (_previousFrameNumber == frameStamp->getFrameNumber())
+                return;
+
             _previousFrameNumber = frameStamp->getFrameNumber();
 
             std::swap(_currentRead, _previousWrite);
@@ -505,7 +512,8 @@ void QGraphicsViewAdapter::setFrameLastRendered(const osg::FrameStamp* frameStam
 
 void QGraphicsViewAdapter::clearWriteBuffer()
 {
-    QImage& image = _qimages[_currentWrite];
+    QImage&image = _qimages[_currentWrite];
+
     image.fill(_backgroundColor.rgba ());
     image = QGLWidget::convertToGLFormat(image);
 
@@ -517,8 +525,8 @@ void QGraphicsViewAdapter::clearWriteBuffer()
 
 void QGraphicsViewAdapter::render()
 {
-    OSG_INFO<<"Current write = "<<_currentWrite<<std::endl;
-    QImage& image = _qimages[_currentWrite];
+    OSG_INFO << "Current write = " << _currentWrite << std::endl;
+    QImage&image = _qimages[_currentWrite];
     _requiresRendering = false;
 
     // If we got a resize, act on it, first by resizing the view, then the current image
@@ -536,9 +544,10 @@ void QGraphicsViewAdapter::render()
         if (image.width() != _width || image.height() != _height)
         {
             _qimages[_currentWrite] = QImage(_width, _height, s_imageFormat);
-            image = _qimages[_currentWrite];
+            image                   = _qimages[_currentWrite];
         }
-        OSG_INFO << "render image " << _currentWrite << " with size (" << _width << "," << _height << ")" <<std::endl;
+
+        OSG_INFO << "render image " << _currentWrite << " with size (" << _width << "," << _height << ")" << std::endl;
     }
 
 #if 1
@@ -551,7 +560,7 @@ void QGraphicsViewAdapter::render()
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
     QRectF destinationRect(0, 0, image.width(), image.height());
-    QRect sourceRect(0, 0, image.width(), image.height());
+    QRect  sourceRect(0, 0, image.width(), image.height());
     _graphicsView->render(&painter, destinationRect, sourceRect, Qt::IgnoreAspectRatio);
     painter.end();
 #elif 0
@@ -565,7 +574,7 @@ void QGraphicsViewAdapter::render()
     QPainter painter(&pixmap);
 
     QRectF destinationRect(0, 0, image.width(), image.height());
-    QRect sourceRect(0, 0, image.width(), image.height());
+    QRect  sourceRect(0, 0, image.width(), image.height());
     _graphicsView->render(&painter, destinationRect, _graphicsView->viewport()->rect());
     painter.end();
 
@@ -583,10 +592,10 @@ void QGraphicsViewAdapter::render()
 
 void QGraphicsViewAdapter::assignImage(unsigned int i)
 {
-    QImage& image = _qimages[i];
-    unsigned char* data = image.bits();
+    QImage        &image = _qimages[i];
+    unsigned char *data  = image.bits();
 
-    OSG_INFO<<"assignImage("<<i<<") image = "<<&image<<" size = ("<<image.width()<<","<<image.height()<<") data = "<<(void*)data<<std::endl;
+    OSG_INFO << "assignImage(" << i << ") image = " << &image << " size = (" << image.width() << "," << image.height() << ") data = " << (void*)data << std::endl;
 
     _image->setImage(image.width(), image.height(), 1,
                      4, GL_RGBA, GL_UNSIGNED_BYTE,
@@ -595,18 +604,17 @@ void QGraphicsViewAdapter::assignImage(unsigned int i)
 
 void QGraphicsViewAdapter::resize(int width, int height)
 {
-    OSG_INFO << "resize to (" << width << "," << height << ")" <<std::endl;
+    OSG_INFO << "resize to (" << width << "," << height << ")" << std::endl;
 
     // Save the new width and height which will take effect on the next render() (in the Qt thread).
 
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_qresizeMutex);
-        _width = width;
+        _width  = width;
         _height = height;
     }
 
     // Force an update so render() will be called.
     _graphicsScene->update(_graphicsScene->sceneRect());
 }
-
 }

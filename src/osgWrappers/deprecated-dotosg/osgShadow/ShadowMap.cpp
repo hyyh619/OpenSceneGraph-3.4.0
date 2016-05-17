@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool ShadowMap_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool ShadowMap_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool ShadowMap_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool ShadowMap_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ShadowMap_Proxy)
 (
@@ -24,7 +24,7 @@ REGISTER_DOTOSGWRAPPER(ShadowMap_Proxy)
     ShadowMap_writeLocalData
 );
 
-bool ShadowMap_readLocalData(osg::Object& /*obj*/, osgDB::Input &/*fr*/)
+bool ShadowMap_readLocalData(osg::Object& /*obj*/, osgDB::Input& /*fr*/)
 {
     // osgShadow::ShadowMap& ss = static_cast<osgShadow::ShadowMap&>(obj);
     bool itAdvanced = false;

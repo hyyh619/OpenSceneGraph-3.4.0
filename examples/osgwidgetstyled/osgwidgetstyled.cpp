@@ -8,54 +8,59 @@
 
 const unsigned int MASK_2D = 0xF0000000;
 
-const std::string& STYLE1 =
+const std::string&STYLE1 =
     "color 0 0 0 128\n"
     "padding 5\n"
 ;
 
-const std::string& STYLE2 =
+const std::string&STYLE2 =
     "color 1.0 0.5 0.0\n"
 ;
 
-const std::string& STYLE3 =
+const std::string&STYLE3 =
     "fill true\n"
 ;
 
-const std::string& STYLE4 =
+const std::string&STYLE4 =
     "pos 100.0 100.0\n"
     "size 600 600\n"
 ;
 
-class CustomStyled: public osgWidget::Widget {
+class CustomStyled : public osgWidget::Widget
+{};
+
+class CustomStyle : public osgWidget::Style
+{
+virtual bool applyStyle(osgWidget::Widget *w, osgWidget::Reader r)
+{
+    CustomStyled *cs = dynamic_cast<CustomStyled*>(w);
+
+    if (!cs)
+        return false;
+
+    osgWidget::warn() << "Here, okay." << std::endl;
+
+    return true;
+}
 };
 
-class CustomStyle: public osgWidget::Style {
-    virtual bool applyStyle(osgWidget::Widget* w, osgWidget::Reader r) {
-        CustomStyled* cs = dynamic_cast<CustomStyled*>(w);
-
-        if(!cs) return false;
-
-        osgWidget::warn() << "Here, okay." << std::endl;
-
-        return true;
-    }
-};
-
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
     osgViewer::Viewer viewer;
 
-    osgWidget::WindowManager* wm = new osgWidget::WindowManager(
+    osgWidget::WindowManager *wm = new osgWidget::WindowManager(
         &viewer,
         1280.0f,
         1024.0f,
         MASK_2D
-    );
+        );
 
-    osgWidget::Box* box = new osgWidget::Box("box", osgWidget::Box::VERTICAL);
+    osgWidget::Box *box = new osgWidget::Box("box", osgWidget::Box::VERTICAL);
 
-    osgWidget::Widget* widget1 = new osgWidget::Widget("w1", 200.0f, 200.0f);
-    osgWidget::Widget* widget2 = new osgWidget::Widget("w2", 100.0f, 100.0f);
-    osgWidget::Widget* widget3 = new osgWidget::Widget("w3", 0.0f, 0.0f);
+    osgWidget::Widget *widget1 = new osgWidget::Widget("w1", 200.0f, 200.0f);
+    osgWidget::Widget *widget2 = new osgWidget::Widget("w2", 100.0f, 100.0f);
+    osgWidget::Widget *widget3 = new osgWidget::Widget("w3", 0.0f, 0.0f);
+
     // CustomStyled*      cs      = new CustomStyled();
 
     // Yep.

@@ -8,60 +8,66 @@
 #include <osg/Notify>
 
 
-namespace osgFFmpeg {
-
+namespace osgFFmpeg
+{
 class FFmpegParameters;
 
 class FormatContextPtr
 {
-    public:
-    
-        typedef AVFormatContext T;
-    
-        explicit FormatContextPtr() : _ptr(0) {}
-        explicit FormatContextPtr(T* ptr) : _ptr(ptr) {}
-        
-        ~FormatContextPtr()
-        {
-            cleanup();
-        }
-        
-        T* get() { return _ptr; }
+public:
 
-        operator bool() const { return _ptr != 0; }
+typedef AVFormatContext T;
 
-        T * operator-> () const // never throws
-        {
-            return _ptr;
-        }
+explicit FormatContextPtr() : _ptr(0) {}
+explicit FormatContextPtr(T *ptr) : _ptr(ptr) {}
 
-        void reset(T* ptr) 
-        {
-            if (ptr==_ptr) return;
-            cleanup();
-            _ptr = ptr;
-        }
+~FormatContextPtr()
+{
+    cleanup();
+}
 
-        void cleanup()
-        {
-            if (_ptr) 
-            {
+T* get()
+{
+    return _ptr;
+}
+
+operator bool() const { return _ptr != 0; }
+
+T* operator->() const           // never throws
+{
+    return _ptr;
+}
+
+void reset(T *ptr)
+{
+    if (ptr == _ptr)
+        return;
+
+    cleanup();
+    _ptr = ptr;
+}
+
+void cleanup()
+{
+    if (_ptr)
+    {
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(53, 17, 0)
-                OSG_NOTICE<<"Calling avformat_close_input("<<&_ptr<<")"<<std::endl;
-                avformat_close_input(&_ptr);
+        OSG_NOTICE << "Calling avformat_close_input(" << &_ptr << ")" << std::endl;
+        avformat_close_input(&_ptr);
 #else
-                OSG_NOTICE<<"Calling av_close_input_file("<<_ptr<<")"<<std::endl;
-                av_close_input_file(_ptr);
+        OSG_NOTICE << "Calling av_close_input_file(" << _ptr << ")" << std::endl;
+        av_close_input_file(_ptr);
 #endif
-            }
-            _ptr = 0;
-        }
-        
-        
+    }
 
-    protected:
-    
-        T* _ptr;
+    _ptr = 0;
+}
+
+
+
+protected:
+
+T *_ptr;
 };
 
 
@@ -69,72 +75,72 @@ class FFmpegDecoder : public osg::Referenced
 {
 public:
 
-    FFmpegDecoder();
-    ~FFmpegDecoder();
+FFmpegDecoder();
+~FFmpegDecoder();
 
-    bool open(const std::string & filename, FFmpegParameters* parameters);
-    void close(bool waitForThreadToExit);
+bool open(const std::string&filename, FFmpegParameters *parameters);
+void close(bool waitForThreadToExit);
 
-    bool readNextPacket();
-    void rewind();
-    void seek(double time);
-    void pause();
+bool readNextPacket();
+void rewind();
+void seek(double time);
+void pause();
 
-    void loop(bool loop);
-    bool loop() const;
+void loop(bool loop);
+bool loop() const;
 
-    double creation_time() const;
-    double duration() const;
-    double reference();
+double creation_time() const;
+double duration() const;
+double reference();
 
-    FFmpegDecoderAudio & audio_decoder();
-    FFmpegDecoderVideo & video_decoder();
-    FFmpegDecoderAudio const & audio_decoder() const;
-    FFmpegDecoderVideo const & video_decoder() const;
+FFmpegDecoderAudio&audio_decoder();
+FFmpegDecoderVideo&video_decoder();
+FFmpegDecoderAudio const&audio_decoder() const;
+FFmpegDecoderVideo const&video_decoder() const;
 
 protected:
 
-    enum State
-    {
-        NORMAL,
-        PAUSE,
-        END_OF_STREAM,
-        REWINDING,
-        SEEKING
-    };
+enum State
+{
+    NORMAL,
+    PAUSE,
+    END_OF_STREAM,
+    REWINDING,
+    SEEKING
+};
 
-    typedef BoundedMessageQueue<FFmpegPacket> PacketQueue;
+typedef BoundedMessageQueue<FFmpegPacket> PacketQueue;
 
-    void flushAudioQueue();
-    void flushVideoQueue();
-    bool readNextPacketNormal();
-    bool readNextPacketEndOfStream();
-    bool readNextPacketRewinding();
-    bool readNextPacketSeeking();
-    bool readNextPacketPause();
-    void rewindButDontFlushQueues();
-    void seekButDontFlushQueues(double time);
+void flushAudioQueue();
+void flushVideoQueue();
+bool readNextPacketNormal();
+bool readNextPacketEndOfStream();
+bool readNextPacketRewinding();
+bool readNextPacketSeeking();
+bool readNextPacketPause();
+void rewindButDontFlushQueues();
+void seekButDontFlushQueues(double time);
 
-    FormatContextPtr    m_format_context;
-    AVStream *          m_audio_stream;
-    AVStream *          m_video_stream;
+FormatContextPtr m_format_context;
+AVStream         *m_audio_stream;
+AVStream         *m_video_stream;
 
-    int                 m_audio_index;
-    int                 m_video_index;
+int m_audio_index;
+int m_video_index;
 
-    FFmpegClocks        m_clocks;
-    FFmpegPacket        m_pending_packet;
-    PacketQueue         m_audio_queue;
-    PacketQueue         m_video_queue;
-    
-    FFmpegDecoderAudio  m_audio_decoder;
-    FFmpegDecoderVideo  m_video_decoder;
+FFmpegClocks m_clocks;
+FFmpegPacket m_pending_packet;
+PacketQueue  m_audio_queue;
+PacketQueue  m_video_queue;
 
-    double              m_duration;
-    double              m_start;
+FFmpegDecoderAudio m_audio_decoder;
+FFmpegDecoderVideo m_video_decoder;
 
-    State               m_state;
-    bool                m_loop;
+double m_duration;
+double m_start;
+
+State m_state;
+bool  m_loop;
 };
 
 
@@ -154,8 +160,10 @@ inline bool FFmpegDecoder::loop() const
 
 inline double FFmpegDecoder::creation_time() const
 {
-   if(m_format_context) return m_format_context->start_time;
-   else return HUGE_VAL;
+    if (m_format_context)
+        return m_format_context->start_time;
+    else
+        return HUGE_VAL;
 }
 
 inline double FFmpegDecoder::duration() const
@@ -165,35 +173,32 @@ inline double FFmpegDecoder::duration() const
 
 inline double FFmpegDecoder::reference()
 {
-    return m_clocks.getCurrentTime();    
+    return m_clocks.getCurrentTime();
 }
 
 
-inline FFmpegDecoderAudio & FFmpegDecoder::audio_decoder()
+inline FFmpegDecoderAudio&FFmpegDecoder::audio_decoder()
 {
     return m_audio_decoder;
 }
 
 
-inline FFmpegDecoderVideo & FFmpegDecoder::video_decoder()
+inline FFmpegDecoderVideo&FFmpegDecoder::video_decoder()
 {
     return m_video_decoder;
 }
 
 
-inline FFmpegDecoderAudio const & FFmpegDecoder::audio_decoder() const
+inline FFmpegDecoderAudio const&FFmpegDecoder::audio_decoder() const
 {
     return m_audio_decoder;
 }
 
 
-inline FFmpegDecoderVideo const & FFmpegDecoder::video_decoder() const
+inline FFmpegDecoderVideo const&FFmpegDecoder::video_decoder() const
 {
     return m_video_decoder;
 }
-
-
-
 } // namespace osgFFmpeg
 
 

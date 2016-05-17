@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgcubemap.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <osg/Group>
 #include <osg/StateSet>
@@ -46,6 +46,7 @@ void create_specular_highlights(osg::Node *node)
 
     // create and setup the texture object
     osg::TextureCubeMap *tcm = new osg::TextureCubeMap;
+
     tcm->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP);
     tcm->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP);
     tcm->setWrap(osg::Texture::WRAP_R, osg::Texture::CLAMP);
@@ -89,20 +90,21 @@ void create_specular_highlights(osg::Node *node)
 int main(int argc, char *argv[])
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     // construct the viewer.
     osgViewer::Viewer viewer;
 
     // load the nodes from the commandline arguments.
-    osg::Node* rootnode = osgDB::readNodeFiles(arguments);
+    osg::Node *rootnode = osgDB::readNodeFiles(arguments);
 
     // if not loaded assume no arguments passed in, try use default mode instead.
-    if (!rootnode) rootnode = osgDB::readNodeFile("cessna.osgt");
+    if (!rootnode)
+        rootnode = osgDB::readNodeFile("cessna.osgt");
 
     if (!rootnode)
     {
-        osg::notify(osg::NOTICE)<<"Please specify a model filename on the command line."<<std::endl;
+        osg::notify(osg::NOTICE) << "Please specify a model filename on the command line." << std::endl;
         return 1;
     }
 

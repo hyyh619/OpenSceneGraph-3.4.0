@@ -28,7 +28,7 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 #ifndef _CPL_WINCEAPI_H_INCLUDED
-#define _CPL_WINCEAPI_H_INCLUDED    1
+#define _CPL_WINCEAPI_H_INCLUDED 1
 
 #define WIN32CE
 #if defined(WIN32CE)
@@ -75,31 +75,30 @@ HANDLE CE_CreateFileA(
 
 /* XXX - mloskot - those defines are quite confusing ! */
 /*
-#ifdef LoadLibrary
-#  undef  LoadLibrary
-#  define LoadLibrary CE_LoadLibraryA
-#endif
+   #ifdef LoadLibrary
+ #  undef  LoadLibrary
+ #  define LoadLibrary CE_LoadLibraryA
+ ###endif
 
-#ifdef GetProcAddress
-#  undef  GetProcAddress
-#  define GetProcAddress CE_GetProcAddressA
-#endif
+ ###ifdef GetProcAddress
+ #  undef  GetProcAddress
+ #  define GetProcAddress CE_GetProcAddressA
+ ###endif
 
-#ifdef GetModuleFileName
-#  undef  GetModuleFileName
-#  define GetModuleFileName CE_GetModuleFileNameA
-#endif
+ ###ifdef GetModuleFileName
+ #  undef  GetModuleFileName
+ #  define GetModuleFileName CE_GetModuleFileNameA
+ ###endif
 
-#ifdef CreateFile
-#  undef  CreateFile
-#  define CreateFile CE_CreateFileA
-#endif
-*/
+ ###ifdef CreateFile
+ #  undef  CreateFile
+ #  define CreateFile CE_CreateFileA
+ ###endif
+ */
 
 #ifdef __cplusplus
 }
 #endif  /* __cplusplus */
-
 #endif /* #ifdef WIN32CE */
 
 #endif /* #ifndef _CPL_WINCEAPI_H_INCLUDED */

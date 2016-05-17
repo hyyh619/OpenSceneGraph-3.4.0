@@ -1,15 +1,15 @@
 /* -*-c++-*- OpenThreads library, Copyright (C) 2002 - 2007  The Open Thread Group
  *
- * This library is open source and may be redistributed and/or modified under  
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
  * (at your option) any later version.  The full license is in LICENSE file
  * included with this distribution, and on the openscenegraph.org website.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 //
@@ -27,58 +27,56 @@
 #include <OpenThreads/Block>
 #include "SprocThreadPrivateActions.h"
 
-namespace OpenThreads {
+namespace OpenThreads
+{
+class SprocThreadPrivateData
+{
+friend class Thread;
 
-class SprocThreadPrivateData {
-    
-    friend class Thread;
-
-    friend class ThreadPrivateActions;
+friend class ThreadPrivateActions;
 
 private:
-    
-    struct CancelFuncStruct {
-	
-	void (*routine)(void *);
-	void *arg;
-    };
 
-    SprocThreadPrivateData() {};
-
-    virtual ~SprocThreadPrivateData() {};
-
-    volatile unsigned int stackSize;
-
-    volatile bool stackSizeLocked;
-
-    volatile bool isRunning;
-
-    Block threadStartedBlock;
-
-    volatile bool isCanceled;
-
-    volatile bool idSet;
-
-    volatile bool cancelActive;
-
-    volatile bool detached;
-
-    volatile bool dieFlag;
-
-    volatile Thread::ThreadPriority threadPriority;
-    
-    volatile Thread::ThreadPolicy threadPolicy;
-
-    volatile pid_t pid;
-
-    volatile int uniqueId;
-
-    std::stack<CancelFuncStruct> cancelFuncStack; 
-
-    static int nextId;
-
+struct CancelFuncStruct
+{
+    void (*routine)(void*);
+    void *arg;
 };
 
+SprocThreadPrivateData() {};
+
+virtual ~SprocThreadPrivateData() {};
+
+volatile unsigned int stackSize;
+
+volatile bool stackSizeLocked;
+
+volatile bool isRunning;
+
+Block threadStartedBlock;
+
+volatile bool isCanceled;
+
+volatile bool idSet;
+
+volatile bool cancelActive;
+
+volatile bool detached;
+
+volatile bool dieFlag;
+
+volatile Thread::ThreadPriority threadPriority;
+
+volatile Thread::ThreadPolicy threadPolicy;
+
+volatile pid_t pid;
+
+volatile int uniqueId;
+
+std::stack<CancelFuncStruct> cancelFuncStack;
+
+static int nextId;
+};
 }
 
 #endif // !_SPROCTHREADPRIVATEDATA_H_

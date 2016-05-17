@@ -9,18 +9,16 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgUI/ColorPalette>
 
 using namespace osgUI;
 
 ColorPalette::ColorPalette()
-{
-}
+{}
 
-ColorPalette::ColorPalette(const ColorPalette& cp, const osg::CopyOp& copyop):
+ColorPalette::ColorPalette(const ColorPalette&cp, const osg::CopyOp&copyop) :
     osg::Object(cp, copyop),
     _colors(cp._colors)
-{
-}
+{}

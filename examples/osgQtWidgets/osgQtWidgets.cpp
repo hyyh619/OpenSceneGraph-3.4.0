@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgcompositeviewer.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <iostream>
 
@@ -36,7 +36,7 @@
 #include <osgWidget/Browser>
 
 
-//#include <QWebSettings>
+// #include <QWebSettings>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QApplication>
@@ -55,79 +55,82 @@
 // Thread that runs the viewer's frame loop as we can't run Qt in the background...
 class ViewerFrameThread : public OpenThreads::Thread
 {
-    public:
+public:
 
-        ViewerFrameThread(osgViewer::ViewerBase* viewerBase, bool doQApplicationExit):
-            _viewerBase(viewerBase),
-            _doQApplicationExit(doQApplicationExit) {}
+ViewerFrameThread(osgViewer::ViewerBase *viewerBase, bool doQApplicationExit) :
+    _viewerBase(viewerBase),
+    _doQApplicationExit(doQApplicationExit) {}
 
-        ~ViewerFrameThread()
-        {
-            cancel();
-            while(isRunning())
-            {
-                OpenThreads::Thread::YieldCurrentThread();
-            }
-        }
+~ViewerFrameThread()
+{
+    cancel();
 
-        int cancel()
-        {
-            _viewerBase->setDone(true);
-            return 0;
-        }
+    while (isRunning())
+    {
+        OpenThreads::Thread::YieldCurrentThread();
+    }
+}
 
-        void run()
-        {
-            int result = _viewerBase->run();
+int cancel()
+{
+    _viewerBase->setDone(true);
+    return 0;
+}
 
-            if (_doQApplicationExit) QApplication::exit(result);
-        }
+void run()
+{
+    int result = _viewerBase->run();
 
-        osg::ref_ptr<osgViewer::ViewerBase> _viewerBase;
-        bool _doQApplicationExit;
+    if (_doQApplicationExit)
+        QApplication::exit(result);
+}
+
+osg::ref_ptr<osgViewer::ViewerBase> _viewerBase;
+bool                                _doQApplicationExit;
 };
 
 
 class MyPushButton : public QPushButton
 {
 public:
-    MyPushButton(const QString& text) : QPushButton(text) {}
+MyPushButton(const QString&text) : QPushButton(text) {}
 
 protected:
-    virtual void mousePressEvent(QMouseEvent* e)
-    {
-        bool ok = false;
+virtual void mousePressEvent(QMouseEvent *e)
+{
+    bool ok = false;
+
 #if QT_VERSION >= 0x040500
-        int val = QInputDialog::getInt(this, "Get integer", "Please enter an integer between 0 and pi", 0, 0, 3, 1, &ok);
+    int val = QInputDialog::getInt(this, "Get integer", "Please enter an integer between 0 and pi", 0, 0, 3, 1, &ok);
 #else
-        int val = QInputDialog::getInteger(this, "Get integer", "Please enter an integer between 0 and pi", 0, 0, 3, 1, &ok);
+    int val = QInputDialog::getInteger(this, "Get integer", "Please enter an integer between 0 and pi", 0, 0, 3, 1, &ok);
 #endif
-        std::cout << "Ok was " << (ok ? "" : "not") << " pressed, val is " << val << std::endl;
-    }
+    std::cout << "Ok was " << (ok ? "" : "not") << " pressed, val is " << val << std::endl;
+}
 };
 
 
-//We would need to document the following somewhere in order to guide people on
-//what they need to use...
+// We would need to document the following somewhere in order to guide people on
+// what they need to use...
 //
-//----------------------------------------------
-//There are two angles to consider.
+// ----------------------------------------------
+// There are two angles to consider.
 //
-//1. If someone wants a widget in their Qt app to be an OSG-rendered scene, they
-//need GraphicsWindowQt (in the osgViewerQtContext example) or QOSGWidget (in the
-//osgViewerQt example). These two allow both OSG and Qt to manage their threads
-//in a way which is optimal to them. We've used QOSGWidget in the past and had
-//trouble when Qt tried to overlay other widgets over the QOSGWidget (since OSG
-//did its rendering independently of Qt, it would overwrite what Qt had drawn). I
-//haven't tried GraphicsWindowQt yet, but I expect since it uses QGLWidget, it
-//will result in Qt knowing when OSG has drawn and be able to do overlays at the
-//right time. Eventually GraphicsWindowQt can be brought into osgViewer I imagine...
+// 1. If someone wants a widget in their Qt app to be an OSG-rendered scene, they
+// need GraphicsWindowQt (in the osgViewerQtContext example) or QOSGWidget (in the
+// osgViewerQt example). These two allow both OSG and Qt to manage their threads
+// in a way which is optimal to them. We've used QOSGWidget in the past and had
+// trouble when Qt tried to overlay other widgets over the QOSGWidget (since OSG
+// did its rendering independently of Qt, it would overwrite what Qt had drawn). I
+// haven't tried GraphicsWindowQt yet, but I expect since it uses QGLWidget, it
+// will result in Qt knowing when OSG has drawn and be able to do overlays at the
+// right time. Eventually GraphicsWindowQt can be brought into osgViewer I imagine...
 //
-//2. If someone wants to bring Qt widgets inside their OSG scene (to do HUDs or
-//an interface on a computer screen which is inside the 3D scene, or even
-//floating Qt widgets, for example). That's where QGraphicsViewAdapter +
-//QWidgetImage will be useful.
-//----------------------------------------------
+// 2. If someone wants to bring Qt widgets inside their OSG scene (to do HUDs or
+// an interface on a computer screen which is inside the 3D scene, or even
+// floating Qt widgets, for example). That's where QGraphicsViewAdapter +
+// QWidgetImage will be useful.
+// ----------------------------------------------
 
 
 int main(int argc, char **argv)
@@ -136,53 +139,66 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
 
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     // true = run osgViewer in a separate thread than Qt
     // false = interleave osgViewer and Qt in the main thread
     bool useFrameLoopThread = false;
-    if (arguments.read("--no-frame-thread")) useFrameLoopThread = false;
-    if (arguments.read("--frame-thread")) useFrameLoopThread = true;
+
+    if (arguments.read("--no-frame-thread"))
+        useFrameLoopThread = false;
+
+    if (arguments.read("--frame-thread"))
+        useFrameLoopThread = true;
 
     // true = use QWidgetImage
     // false = use QWebViewImage
     bool useWidgetImage = false;
-    if (arguments.read("--useWidgetImage")) useWidgetImage = true;
+    if (arguments.read("--useWidgetImage"))
+        useWidgetImage = true;
 
     // true = use QWebView in a QWidgetImage to compare to QWebViewImage
     // false = make an interesting widget
     bool useBrowser = false;
-    if (arguments.read("--useBrowser")) useBrowser = true;
+    if (arguments.read("--useBrowser"))
+        useBrowser = true;
 
     // true = use a QLabel for text
     // false = use a QTextEdit for text
     // (only applies if useWidgetImage == true and useBrowser == false)
     bool useLabel = false;
-    if (arguments.read("--useLabel")) useLabel = true;
+    if (arguments.read("--useLabel"))
+        useLabel = true;
 
     // true = make a Qt window with the same content to compare to
     // QWebViewImage/QWidgetImage
     // false = use QWebViewImage/QWidgetImage (depending on useWidgetImage)
     bool sanityCheck = false;
-    if (arguments.read("--sanityCheck")) sanityCheck = true;
+    if (arguments.read("--sanityCheck"))
+        sanityCheck = true;
 
     // Add n floating windows inside the QGraphicsScene.
     int numFloatingWindows = 0;
-    while (arguments.read("--numFloatingWindows", numFloatingWindows));
+
+    while (arguments.read("--numFloatingWindows", numFloatingWindows))
+        ;
 
     // true = Qt widgets will be displayed on a quad inside the 3D scene
     // false = Qt widgets will be an overlay over the scene (like a HUD)
     bool inScene = true;
-    if (arguments.read("--fullscreen")) { inScene = false; }
+    if (arguments.read("--fullscreen"))
+    {
+        inScene = false;
+    }
 
 
     osg::ref_ptr<osg::Group> root = new osg::Group;
 
     if (!useWidgetImage)
     {
-        //-------------------------------------------------------------------
+        // -------------------------------------------------------------------
         // QWebViewImage test
-        //-------------------------------------------------------------------
+        // -------------------------------------------------------------------
         // Note: When the last few issues with QWidgetImage are fixed,
         // QWebViewImage and this if() {} section can be removed since
         // QWidgetImage can display a QWebView just like QWebViewImage. Use
@@ -192,13 +208,15 @@ int main(int argc, char **argv)
         {
             osg::ref_ptr<osgQt::QWebViewImage> image = new osgQt::QWebViewImage;
 
-            if (arguments.argc()>1) image->navigateTo((arguments[1]));
-            else image->navigateTo("http://www.openscenegraph.org/");
+            if (arguments.argc() > 1)
+                image->navigateTo((arguments[1]));
+            else
+                image->navigateTo("http://www.openscenegraph.org/");
 
-            osgWidget::GeometryHints hints(osg::Vec3(0.0f,0.0f,0.0f),
-                                           osg::Vec3(1.0f,0.0f,0.0f),
-                                           osg::Vec3(0.0f,0.0f,1.0f),
-                                           osg::Vec4(1.0f,1.0f,1.0f,1.0f),
+            osgWidget::GeometryHints hints(osg::Vec3(0.0f, 0.0f, 0.0f),
+                                           osg::Vec3(1.0f, 0.0f, 0.0f),
+                                           osg::Vec3(0.0f, 0.0f, 1.0f),
+                                           osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f),
                                            osgWidget::GeometryHints::RESIZE_HEIGHT_TO_MAINTAINCE_ASPECT_RATIO);
 
             osg::ref_ptr<osgWidget::Browser> browser = new osgWidget::Browser;
@@ -210,24 +228,26 @@ int main(int argc, char **argv)
         {
             // Sanity check, do the same thing as QGraphicsViewAdapter but in
             // a separate Qt window.
-            QWebPage* webPage = new QWebPage;
+            QWebPage *webPage = new QWebPage;
             webPage->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
             webPage->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
-            QWebView* webView = new QWebView;
+            QWebView *webView = new QWebView;
             webView->setPage(webPage);
 
-            if (arguments.argc()>1) webView->load(QUrl(arguments[1]));
-            else webView->load(QUrl("http://www.openscenegraph.org/"));
+            if (arguments.argc() > 1)
+                webView->load(QUrl(arguments[1]));
+            else
+                webView->load(QUrl("http://www.openscenegraph.org/"));
 
-            QGraphicsScene* graphicsScene = new QGraphicsScene;
+            QGraphicsScene *graphicsScene = new QGraphicsScene;
             graphicsScene->addWidget(webView);
 
-            QGraphicsView* graphicsView = new QGraphicsView;
+            QGraphicsView *graphicsView = new QGraphicsView;
             graphicsView->setScene(graphicsScene);
 
-            QMainWindow* mainWindow = new QMainWindow;
-            //mainWindow->setLayout(new QVBoxLayout);
+            QMainWindow *mainWindow = new QMainWindow;
+            // mainWindow->setLayout(new QVBoxLayout);
             mainWindow->setCentralWidget(graphicsView);
             mainWindow->setGeometry(50, 50, 1024, 768);
             mainWindow->show();
@@ -236,9 +256,9 @@ int main(int argc, char **argv)
     }
     else
     {
-        //-------------------------------------------------------------------
+        // -------------------------------------------------------------------
         // QWidgetImage test
-        //-------------------------------------------------------------------
+        // -------------------------------------------------------------------
         // QWidgetImage still has some issues, some examples are:
         //
         // 1. Editing in the QTextEdit doesn't work. Also when started with
@@ -308,18 +328,20 @@ int main(int argc, char **argv)
         //       QGraphicsView.
 
 
-        QWidget* widget = 0;
+        QWidget *widget = 0;
         if (useBrowser)
         {
-            QWebPage* webPage = new QWebPage;
+            QWebPage *webPage = new QWebPage;
             webPage->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
             webPage->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
-            QWebView* webView = new QWebView;
+            QWebView *webView = new QWebView;
             webView->setPage(webPage);
 
-            if (arguments.argc()>1) webView->load(QUrl(arguments[1]));
-            else webView->load(QUrl("http://www.youtube.com/"));
+            if (arguments.argc() > 1)
+                webView->load(QUrl(arguments[1]));
+            else
+                webView->load(QUrl("http://www.youtube.com/"));
 
             widget = webView;
         }
@@ -332,7 +354,7 @@ int main(int argc, char **argv)
 
             if (useLabel)
             {
-                QLabel* label = new QLabel(text);
+                QLabel *label = new QLabel(text);
                 label->setWordWrap(true);
                 label->setTextInteractionFlags(Qt::TextEditorInteraction);
 
@@ -341,14 +363,14 @@ int main(int argc, char **argv)
                 palette.setColor(QPalette::HighlightedText, Qt::white);
                 label->setPalette(palette);
 
-                QScrollArea* scrollArea = new QScrollArea;
+                QScrollArea *scrollArea = new QScrollArea;
                 scrollArea->setWidget(label);
 
                 widget->layout()->addWidget(scrollArea);
             }
             else
             {
-                QTextEdit* textEdit = new QTextEdit(text);
+                QTextEdit *textEdit = new QTextEdit(text);
                 textEdit->setReadOnly(false);
                 textEdit->setTextInteractionFlags(Qt::TextEditorInteraction);
 
@@ -360,13 +382,13 @@ int main(int argc, char **argv)
                 widget->layout()->addWidget(textEdit);
             }
 
-            QPushButton* button = new MyPushButton("Button");
+            QPushButton *button = new MyPushButton("Button");
             widget->layout()->addWidget(button);
 
             widget->setGeometry(0, 0, 800, 600);
         }
 
-        QGraphicsScene* graphicsScene = 0;
+        QGraphicsScene *graphicsScene = 0;
 
         if (!sanityCheck)
         {
@@ -375,27 +397,27 @@ int main(int argc, char **argv)
             widgetImage->getQWidget()->setAttribute(Qt::WA_TranslucentBackground);
 #endif
             widgetImage->getQGraphicsViewAdapter()->setBackgroundColor(QColor(0, 0, 0, 0));
-            //widgetImage->getQGraphicsViewAdapter()->resize(800, 600);
+            // widgetImage->getQGraphicsViewAdapter()->resize(800, 600);
             graphicsScene = widgetImage->getQGraphicsViewAdapter()->getQGraphicsScene();
 
-            osg::Camera* camera = 0;        // Will stay NULL in the inScene case.
-            osg::Geometry* quad = osg::createTexturedQuadGeometry(osg::Vec3(0,0,0), osg::Vec3(1,0,0), osg::Vec3(0,1,0), 1, 1);
-            osg::Geode* geode = new osg::Geode;
+            osg::Camera   *camera = 0;      // Will stay NULL in the inScene case.
+            osg::Geometry *quad   = osg::createTexturedQuadGeometry(osg::Vec3(0, 0, 0), osg::Vec3(1, 0, 0), osg::Vec3(0, 1, 0), 1, 1);
+            osg::Geode    *geode  = new osg::Geode;
             geode->addDrawable(quad);
 
-            osg::MatrixTransform* mt = new osg::MatrixTransform;
+            osg::MatrixTransform *mt = new osg::MatrixTransform;
 
-            osg::Texture2D* texture = new osg::Texture2D(widgetImage.get());
+            osg::Texture2D *texture = new osg::Texture2D(widgetImage.get());
             texture->setResizeNonPowerOfTwoHint(false);
-            texture->setFilter(osg::Texture::MIN_FILTER,osg::Texture::LINEAR);
+            texture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR);
             texture->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_EDGE);
             texture->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_EDGE);
             mt->getOrCreateStateSet()->setTextureAttributeAndModes(0, texture, osg::StateAttribute::ON);
 
-            osgViewer::InteractiveImageHandler* handler;
+            osgViewer::InteractiveImageHandler *handler;
             if (inScene)
             {
-                mt->setMatrix(osg::Matrix::rotate(osg::Vec3(0,1,0), osg::Vec3(0,0,1)));
+                mt->setMatrix(osg::Matrix::rotate(osg::Vec3(0, 1, 0), osg::Vec3(0, 0, 1)));
                 mt->addChild(geode);
 
                 handler = new osgViewer::InteractiveImageHandler(widgetImage.get());
@@ -411,7 +433,7 @@ int main(int argc, char **argv)
                 // Set the HUD camera's projection and viewport to match the screen.
                 camera = new osg::Camera;
                 camera->setProjectionResizePolicy(osg::Camera::FIXED);
-                camera->setProjectionMatrix(osg::Matrix::ortho2D(0,1,0,1));
+                camera->setProjectionMatrix(osg::Matrix::ortho2D(0, 1, 0, 1));
                 camera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
                 camera->setViewMatrix(osg::Matrix::identity());
                 camera->setClearMask(GL_DEPTH_BUFFER_BIT);
@@ -429,7 +451,7 @@ int main(int argc, char **argv)
             mt->getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
             mt->getOrCreateStateSet()->setAttribute(new osg::Program);
 
-            osg::Group* overlay = new osg::Group;
+            osg::Group *overlay = new osg::Group;
             overlay->addChild(mt);
 
             root->addChild(overlay);
@@ -445,10 +467,10 @@ int main(int argc, char **argv)
             graphicsScene = new QGraphicsScene;
             graphicsScene->addWidget(widget);
 
-            QGraphicsView* graphicsView = new QGraphicsView;
+            QGraphicsView *graphicsView = new QGraphicsView;
             graphicsView->setScene(graphicsScene);
 
-            QMainWindow* mainWindow = new QMainWindow;
+            QMainWindow *mainWindow = new QMainWindow;
             mainWindow->setCentralWidget(graphicsView);
             mainWindow->setGeometry(50, 50, 1024, 768);
             mainWindow->show();
@@ -458,7 +480,7 @@ int main(int argc, char **argv)
         // Add numFloatingWindows windows to the graphicsScene.
         for (unsigned int i = 0; i < (unsigned int)numFloatingWindows; ++i)
         {
-            QWidget* window = new QWidget(0, Qt::Window);
+            QWidget *window = new QWidget(0, Qt::Window);
             window->setWindowTitle(QString("Window %1").arg(i));
             window->setLayout(new QVBoxLayout);
             window->layout()->addWidget(new QLabel(QString("This window %1").arg(i)));
@@ -471,7 +493,6 @@ int main(int argc, char **argv)
 
             graphicsScene->addItem(proxy);
         }
-
     }
 
     root->addChild(osgDB::readNodeFile("cow.osg.(15,0,5).trans.(0.1,0.1,0.1).scale"));
@@ -494,12 +515,11 @@ int main(int argc, char **argv)
 
         // now start the standard Qt event loop, then exists when the viewerThead sends the QApplication::exit() signal.
         return QApplication::exec();
-
     }
     else
     {
         // run the frame loop, interleaving Qt and the main OSG frame loop
-        while(!viewer->done())
+        while (!viewer->done())
         {
             // process Qt events - this handles both events and paints the browser image
             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);

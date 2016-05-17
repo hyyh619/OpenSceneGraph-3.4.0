@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 /* Note, elements of PixelBufferX11 have used Prodcer/RenderSurface_X11.cpp as both
  * a guide to use of X11/GLX and copiying directly in the case of setBorder().
@@ -26,8 +26,8 @@
 
 using namespace osgViewer;
 
-PixelBufferX11::PixelBufferX11(osg::GraphicsContext::Traits* traits)
-  : _valid(false),
+PixelBufferX11::PixelBufferX11(osg::GraphicsContext::Traits *traits)
+    : _valid(false),
     _pbuffer(0),
     _visualInfo(0),
     _initialized(false),
@@ -35,31 +35,30 @@ PixelBufferX11::PixelBufferX11(osg::GraphicsContext::Traits* traits)
     _useGLX1_3(false),
     _useSGIX(false)
 #ifdef GLX_SGIX_pbuffer
-    ,_glXCreateGLXPbufferSGIX(NULL),
+    , _glXCreateGLXPbufferSGIX(NULL),
     _glXDestroyGLXPbufferSGIX(NULL),
     _glXQueryGLXPbufferSGIX(NULL),
     _glXGetFBConfigFromVisualSGIX(NULL)
 #endif
-    {
+{
     _traits = traits;
 
     init();
 
     if (valid())
     {
-        setState( new osg::State );
+        setState(new osg::State);
         getState()->setGraphicsContext(this);
 
         if (_traits.valid() && _traits->sharedContext.valid())
         {
-            getState()->setContextID( _traits->sharedContext->getState()->getContextID() );
-            incrementContextIDUsageCount( getState()->getContextID() );
+            getState()->setContextID(_traits->sharedContext->getState()->getContextID());
+            incrementContextIDUsageCount(getState()->getContextID());
         }
         else
         {
-            getState()->setContextID( osg::GraphicsContext::createNewContextID() );
+            getState()->setContextID(osg::GraphicsContext::createNewContextID());
         }
-
     }
 }
 
@@ -78,22 +77,34 @@ bool PixelBufferX11::createVisualInfo()
 
     attributes.push_back(GLX_RGBA);
 
-    if (_traits->doubleBuffer) attributes.push_back(GLX_DOUBLEBUFFER);
+    if (_traits->doubleBuffer)
+        attributes.push_back(GLX_DOUBLEBUFFER);
 
     attributes.push_back(GLX_RED_SIZE); attributes.push_back(_traits->red);
     attributes.push_back(GLX_GREEN_SIZE); attributes.push_back(_traits->green);
     attributes.push_back(GLX_BLUE_SIZE); attributes.push_back(_traits->blue);
     attributes.push_back(GLX_DEPTH_SIZE); attributes.push_back(_traits->depth);
 
-    if (_traits->alpha) { attributes.push_back(GLX_ALPHA_SIZE); attributes.push_back(_traits->alpha); }
+    if (_traits->alpha)
+    {
+        attributes.push_back(GLX_ALPHA_SIZE); attributes.push_back(_traits->alpha);
+    }
 
-    if (_traits->stencil) { attributes.push_back(GLX_STENCIL_SIZE); attributes.push_back(_traits->stencil); }
+    if (_traits->stencil)
+    {
+        attributes.push_back(GLX_STENCIL_SIZE); attributes.push_back(_traits->stencil);
+    }
 
 #if defined(GLX_SAMPLE_BUFFERS) && defined (GLX_SAMPLES)
+    if (_traits->sampleBuffers)
+    {
+        attributes.push_back(GLX_SAMPLE_BUFFERS); attributes.push_back(_traits->sampleBuffers);
+    }
 
-    if (_traits->sampleBuffers) { attributes.push_back(GLX_SAMPLE_BUFFERS); attributes.push_back(_traits->sampleBuffers); }
-    if (_traits->sampleBuffers) { attributes.push_back(GLX_SAMPLES); attributes.push_back(_traits->samples); }
-
+    if (_traits->sampleBuffers)
+    {
+        attributes.push_back(GLX_SAMPLES); attributes.push_back(_traits->samples);
+    }
 #endif
     // TODO
     //  GLX_AUX_BUFFERS
@@ -102,14 +113,15 @@ bool PixelBufferX11::createVisualInfo()
 
     attributes.push_back(None);
 
-    _visualInfo = glXChooseVisual( _display, _traits->screenNum, &(attributes.front()) );
+    _visualInfo = glXChooseVisual(_display, _traits->screenNum, &(attributes.front()));
 
     return _visualInfo != 0;
 }
 
 void PixelBufferX11::init()
 {
-    if (_initialized) return;
+    if (_initialized)
+        return;
 
     if (!_traits)
     {
@@ -131,20 +143,20 @@ void PixelBufferX11::init()
 
     if (!_display)
     {
-        OSG_NOTICE<<"Error: Unable to open display \"" << XDisplayName(_traits->displayName().c_str()) << "\"."<<std::endl;
+        OSG_NOTICE << "Error: Unable to open display \"" << XDisplayName(_traits->displayName().c_str()) << "\"." << std::endl;
         _valid = false;
         return;
     }
 
     // Query for GLX extension
     int errorBase, eventBase;
-    if( glXQueryExtension( _display, &errorBase, &eventBase)  == False )
+    if (glXQueryExtension(_display, &errorBase, &eventBase) == False)
     {
-        OSG_NOTICE<<"Error: " << XDisplayName(_traits->displayName().c_str()) <<" has no GLX extension." << std::endl;
+        OSG_NOTICE << "Error: " << XDisplayName(_traits->displayName().c_str()) << " has no GLX extension." << std::endl;
 
-        XCloseDisplay( _display );
+        XCloseDisplay(_display);
         _display = 0;
-        _valid = false;
+        _valid   = false;
         return;
     }
 
@@ -154,10 +166,10 @@ void PixelBufferX11::init()
     if (glXQueryVersion(_display, &major, &minor) == False)
     {
         OSG_NOTICE << "Error: " << XDisplayName(_traits->displayName().c_str())
-                                 << " can not query GLX version." << std::endl;
-        XCloseDisplay( _display );
+                   << " can not query GLX version." << std::endl;
+        XCloseDisplay(_display);
         _display = 0;
-        _valid = false;
+        _valid   = false;
         return;
     }
 
@@ -165,14 +177,14 @@ void PixelBufferX11::init()
     if (major < 1 || (1 == major && minor < 1))
     {
         OSG_NOTICE << "Error: " << XDisplayName(_traits->displayName().c_str())
-                                 << " GLX version " << major << "." << minor << " is too old." << std::endl;
-        XCloseDisplay( _display );
+                   << " GLX version " << major << "." << minor << " is too old." << std::endl;
+        XCloseDisplay(_display);
         _display = 0;
-        _valid = false;
+        _valid   = false;
         return;
     }
 
-    bool haveGLX1_3 = false;
+    bool haveGLX1_3       = false;
     bool haveSGIX_pbuffer = false;
 
     // We need to have at least GLX 1.3 to use getFBConfigFromVisual and glXCreatePbuffer
@@ -187,7 +199,7 @@ void PixelBufferX11::init()
     {
         const char *extensions = glXQueryExtensionsString(_display, screen);
         haveSGIX_pbuffer = osg::isExtensionInExtensionString("GLX_SGIX_pbuffer", extensions)
-           && osg::isExtensionInExtensionString("GLX_SGIX_fbconfig", extensions);
+                           && osg::isExtensionInExtensionString("GLX_SGIX_fbconfig", extensions);
 
         if (haveSGIX_pbuffer)
         {
@@ -198,7 +210,8 @@ void PixelBufferX11::init()
             if (_glXCreateGLXPbufferSGIX == NULL ||
                 _glXDestroyGLXPbufferSGIX == NULL ||
                 _glXQueryGLXPbufferSGIX == NULL ||
-                _glXGetFBConfigFromVisualSGIX == NULL) {
+                _glXGetFBConfigFromVisualSGIX == NULL)
+            {
                 haveSGIX_pbuffer = false;
             }
         }
@@ -208,46 +221,46 @@ void PixelBufferX11::init()
     if (!haveGLX1_3 && !haveSGIX_pbuffer)
     {
         OSG_NOTICE << "Error: " << XDisplayName(_traits->displayName().c_str())
-                                 << " no Pbuffer support in GLX available." << std::endl;
-        XCloseDisplay( _display );
+                   << " no Pbuffer support in GLX available." << std::endl;
+        XCloseDisplay(_display);
         _display = 0;
-        _valid = false;
+        _valid   = false;
         return;
     }
 
 
     if (!createVisualInfo())
     {
-        _traits->red /= 2;
+        _traits->red   /= 2;
         _traits->green /= 2;
-        _traits->blue /= 2;
+        _traits->blue  /= 2;
         _traits->alpha /= 2;
         _traits->depth /= 2;
 
-        OSG_INFO<<"Relaxing traits"<<std::endl;
+        OSG_INFO << "Relaxing traits" << std::endl;
 
         if (!createVisualInfo())
         {
-            OSG_NOTICE<<"Error: Not able to create requested visual." << std::endl;
-            XCloseDisplay( _display );
+            OSG_NOTICE << "Error: Not able to create requested visual." << std::endl;
+            XCloseDisplay(_display);
             _display = 0;
-            _valid = false;
+            _valid   = false;
             return;
         }
     }
 
     // get any shared GLX contexts
-    GraphicsHandleX11* graphicsHandleX11 = dynamic_cast<GraphicsHandleX11*>(_traits->sharedContext.get());
-    Context sharedContext = graphicsHandleX11 ? graphicsHandleX11->getContext() : 0;
+    GraphicsHandleX11 *graphicsHandleX11 = dynamic_cast<GraphicsHandleX11*>(_traits->sharedContext.get());
+    Context           sharedContext      = graphicsHandleX11 ? graphicsHandleX11->getContext() : 0;
 
-    _context = glXCreateContext( _display, _visualInfo, sharedContext, True );
+    _context = glXCreateContext(_display, _visualInfo, sharedContext, True);
 
     if (!_context)
     {
-        OSG_NOTICE<<"Error: Unable to create OpenGL graphics context."<<std::endl;
-        XCloseDisplay( _display );
+        OSG_NOTICE << "Error: Unable to create OpenGL graphics context." << std::endl;
+        XCloseDisplay(_display);
         _display = 0;
-        _valid = false;
+        _valid   = false;
         return;
     }
 
@@ -255,37 +268,39 @@ void PixelBufferX11::init()
     // First try the regular glx extension if we have a new enough version available.
     if (haveGLX1_3)
     {
-        int nelements;
-        GLXFBConfig *fbconfigs = glXGetFBConfigs( _display, screen, &nelements );
-        for ( int i = 0; i < nelements; ++i )
+        int         nelements;
+        GLXFBConfig *fbconfigs = glXGetFBConfigs(_display, screen, &nelements);
+
+        for (int i = 0; i < nelements; ++i)
         {
             int visual_id;
-            if ( glXGetFBConfigAttrib( _display, fbconfigs[i], GLX_VISUAL_ID, &visual_id ) == 0 )
+            if (glXGetFBConfigAttrib(_display, fbconfigs[i], GLX_VISUAL_ID, &visual_id) == 0)
             {
-                if ( !_pbuffer && (unsigned int)visual_id == _visualInfo->visualid )
+                if (!_pbuffer && (unsigned int)visual_id == _visualInfo->visualid)
                 {
-                    typedef std::vector <int> AttributeList;
+                    typedef std::vector<int> AttributeList;
 
                     AttributeList attributes;
-                    attributes.push_back( GLX_PBUFFER_WIDTH );
-                    attributes.push_back( _traits->width );
-                    attributes.push_back( GLX_PBUFFER_HEIGHT );
-                    attributes.push_back( _traits->height );
-                    attributes.push_back( GLX_LARGEST_PBUFFER );
-                    attributes.push_back( GL_TRUE );
-                    attributes.push_back( 0L );
+                    attributes.push_back(GLX_PBUFFER_WIDTH);
+                    attributes.push_back(_traits->width);
+                    attributes.push_back(GLX_PBUFFER_HEIGHT);
+                    attributes.push_back(_traits->height);
+                    attributes.push_back(GLX_LARGEST_PBUFFER);
+                    attributes.push_back(GL_TRUE);
+                    attributes.push_back(0L);
 
-                    _pbuffer = glXCreatePbuffer(_display, fbconfigs[i], &attributes.front() );
+                    _pbuffer   = glXCreatePbuffer(_display, fbconfigs[i], &attributes.front());
                     _useGLX1_3 = true;
                 }
             }
         }
+
         if (_pbuffer)
         {
-            int iWidth = 0;
+            int iWidth  = 0;
             int iHeight = 0;
-            glXQueryDrawable(_display, _pbuffer, GLX_WIDTH  , (unsigned int *)&iWidth);
-            glXQueryDrawable(_display, _pbuffer, GLX_HEIGHT , (unsigned int *)&iHeight);
+            glXQueryDrawable(_display, _pbuffer, GLX_WIDTH, (unsigned int*)&iWidth);
+            glXQueryDrawable(_display, _pbuffer, GLX_HEIGHT, (unsigned int*)&iHeight);
 
             if (_traits->width != iWidth || _traits->height != iHeight)
             {
@@ -296,7 +311,8 @@ void PixelBufferX11::init()
                 _traits->height = iHeight;
             }
         }
-        XFree( fbconfigs );
+
+        XFree(fbconfigs);
     }
 #endif
 
@@ -304,51 +320,52 @@ void PixelBufferX11::init()
     // If we still have no pbuffer but a capable display with the SGIX extension, try to use that
     if (!_pbuffer && haveSGIX_pbuffer)
     {
-        GLXFBConfigSGIX fbconfig = _glXGetFBConfigFromVisualSGIX( _display, _visualInfo );
-        typedef std::vector <int> AttributeList;
+        GLXFBConfigSGIX fbconfig = _glXGetFBConfigFromVisualSGIX(_display, _visualInfo);
+        typedef std::vector<int> AttributeList;
 
         AttributeList attributes;
-        attributes.push_back( GLX_LARGEST_PBUFFER_SGIX );
-        attributes.push_back( GL_TRUE );
-        attributes.push_back( 0L );
+        attributes.push_back(GLX_LARGEST_PBUFFER_SGIX);
+        attributes.push_back(GL_TRUE);
+        attributes.push_back(0L);
 
-        _pbuffer = _glXCreateGLXPbufferSGIX(_display, fbconfig, _traits->width, _traits->height,  &attributes.front() );
+        _pbuffer = _glXCreateGLXPbufferSGIX(_display, fbconfig, _traits->width, _traits->height,  &attributes.front());
         if (_pbuffer)
         {
             _useSGIX = true;
-            int iWidth = 0;
+            int iWidth  = 0;
             int iHeight = 0;
-            _glXQueryGLXPbufferSGIX(_display, _pbuffer, GLX_WIDTH_SGIX , (unsigned int *)&iWidth);
-            _glXQueryGLXPbufferSGIX(_display, _pbuffer, GLX_HEIGHT_SGIX, (unsigned int *)&iHeight);
-                                                                                        
+            _glXQueryGLXPbufferSGIX(_display, _pbuffer, GLX_WIDTH_SGIX, (unsigned int*)&iWidth);
+            _glXQueryGLXPbufferSGIX(_display, _pbuffer, GLX_HEIGHT_SGIX, (unsigned int*)&iHeight);
+
             if (_traits->width != iWidth || _traits->height != iHeight)
             {
                 OSG_NOTICE << "PixelBufferX11::init(), SGIX_pbuffer created with different size then requsted" << std::endl;
                 OSG_NOTICE << "\tRequested size (" << _traits->width << "," << _traits->height << ")" << std::endl;
                 OSG_NOTICE << "\tPbuffer size (" << iWidth << "," << iHeight << ")" << std::endl;
-                _traits->width =  iWidth;
+                _traits->width  = iWidth;
                 _traits->height = iHeight;
             }
         }
-        XFree( fbconfig );
+
+        XFree(fbconfig);
     }
 #endif
 
     if (!_pbuffer)
     {
-        OSG_NOTICE<<"Error: Unable to create pbuffer."<<std::endl;
-        XCloseDisplay( _display );
+        OSG_NOTICE << "Error: Unable to create pbuffer." << std::endl;
+        XCloseDisplay(_display);
         _display = 0;
         _context = 0;
-        _valid = false;
+        _valid   = false;
         return;
     }
 
 
-    XFlush( _display );
-    XSync( _display, 0 );
+    XFlush(_display);
+    XSync(_display, 0);
 
-    _valid = true;
+    _valid       = true;
     _initialized = true;
 }
 
@@ -359,7 +376,7 @@ void PixelBufferX11::closeImplementation()
     {
         if (_context)
         {
-            glXDestroyContext(_display, _context );
+            glXDestroyContext(_display, _context);
         }
 
         if (_pbuffer)
@@ -381,8 +398,8 @@ void PixelBufferX11::closeImplementation()
             }
         }
 
-        XFlush( _display );
-        XSync( _display,0 );
+        XFlush(_display);
+        XSync(_display, 0);
     }
 
     _pbuffer = 0;
@@ -396,13 +413,13 @@ void PixelBufferX11::closeImplementation()
 
     if (_display)
     {
-        XCloseDisplay( _display );
+        XCloseDisplay(_display);
         _display = 0;
     }
 
     _initialized = false;
-    _realized = false;
-    _valid = false;
+    _realized    = false;
+    _valid       = false;
 }
 
 #else
@@ -415,32 +432,32 @@ bool PixelBufferX11::createVisualInfo()
 }
 
 void PixelBufferX11::init()
-{
-}
+{}
 
 void PixelBufferX11::closeImplementation()
 {
     // OSG_NOTICE<<"Closing PixelBufferX11"<<std::endl;
-    _pbuffer = 0;
-    _context = 0;
+    _pbuffer     = 0;
+    _context     = 0;
     _initialized = false;
-    _realized = false;
-    _valid = false;
+    _realized    = false;
+    _valid       = false;
 }
-
 #endif
 
 bool PixelBufferX11::realizeImplementation()
 {
     if (_realized)
     {
-        OSG_NOTICE<<"PixelBufferX11::realizeImplementation() Already realized"<<std::endl;
+        OSG_NOTICE << "PixelBufferX11::realizeImplementation() Already realized" << std::endl;
         return true;
     }
 
-    if (!_initialized) init();
+    if (!_initialized)
+        init();
 
-    if (!_initialized) return false;
+    if (!_initialized)
+        return false;
 
     _realized = true;
 
@@ -451,16 +468,16 @@ bool PixelBufferX11::makeCurrentImplementation()
 {
     if (!_realized)
     {
-        OSG_NOTICE<<"Warning: GraphicsWindow not realized, cannot do makeCurrent."<<std::endl;
+        OSG_NOTICE << "Warning: GraphicsWindow not realized, cannot do makeCurrent." << std::endl;
         return false;
     }
 
     // OSG_NOTICE<<"PixelBufferX11::makeCurrentImplementation "<<this<<" "<<OpenThreads::Thread::CurrentThread()<<std::endl;
 
     #ifdef OSG_USE_EGL
-        return eglMakeCurrent(_display, _pbuffer, _pbuffer, _context)==EGL_TRUE;
+    return eglMakeCurrent(_display, _pbuffer, _pbuffer, _context) == EGL_TRUE;
     #else
-        return glXMakeCurrent( _display, _pbuffer, _context )==True;
+    return glXMakeCurrent(_display, _pbuffer, _context) == True;
     #endif
 }
 
@@ -475,34 +492,35 @@ bool PixelBufferX11::releaseContextImplementation()
 {
     if (!_realized)
     {
-        OSG_NOTICE<<"Warning: GraphicsWindow not realized, cannot do makeCurrent."<<std::endl;
+        OSG_NOTICE << "Warning: GraphicsWindow not realized, cannot do makeCurrent." << std::endl;
         return false;
     }
 
     // OSG_NOTICE<<"PixelBufferX11::releaseContextImplementation() "<<this<<" "<<OpenThreads::Thread::CurrentThread()<<std::endl;
 
     #ifdef OSG_USE_EGL
-        return eglMakeCurrent( _display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT )==EGL_TRUE;
+    return eglMakeCurrent(_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT) == EGL_TRUE;
     #else
-        return glXMakeCurrent( _display, None, NULL )==True;
+    return glXMakeCurrent(_display, None, NULL) == True;
     #endif
 }
 
 
 void PixelBufferX11::bindPBufferToTextureImplementation(GLenum /*buffer*/)
 {
-    OSG_NOTICE<<"PixelBufferX11::bindPBufferToTextureImplementation() not implementation yet."<<std::endl;
+    OSG_NOTICE << "PixelBufferX11::bindPBufferToTextureImplementation() not implementation yet." << std::endl;
 }
 
 void PixelBufferX11::swapBuffersImplementation()
 {
-    if (!_realized) return;
+    if (!_realized)
+        return;
 
     // OSG_NOTICE<<"PixelBufferX11::swapBuffersImplementation "<<this<<" "<<OpenThreads::Thread::CurrentThread()<<std::endl;
 
     #ifdef OSG_USE_EGL
-        eglSwapBuffers( _display, _pbuffer );
+    eglSwapBuffers(_display, _pbuffer);
     #else
-        glXSwapBuffers( _display, _pbuffer );
+    glXSwapBuffers(_display, _pbuffer);
     #endif
 }

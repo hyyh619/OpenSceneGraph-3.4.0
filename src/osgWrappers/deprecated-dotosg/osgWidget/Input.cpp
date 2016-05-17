@@ -7,27 +7,27 @@
 #include <osgDB/FileUtils>
 #include <osgWidget/Input>
 
-bool osgWidget_Input_readData(osg::Object& /*obj*/, osgDB::Input& fr)
+bool osgWidget_Input_readData(osg::Object& /*obj*/, osgDB::Input&fr)
 {
-	osgWidget::warn() << "Input read" << std::endl;
+    osgWidget::warn() << "Input read" << std::endl;
 
-	return false;
+    return false;
 }
 
-bool osgWidget_Input_writeData(const osg::Object& /*obj*/, osgDB::Output& fw)
+bool osgWidget_Input_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
 {
-	// const osgWidget::Input& model = static_cast<const osgWidget::Input&>(obj);
+    // const osgWidget::Input& model = static_cast<const osgWidget::Input&>(obj);
 
-	fw.indent() << fw.wrapString("Input stuff...") << std::endl;
+    fw.indent() << fw.wrapString("Input stuff...") << std::endl;
 
-	return true;
+    return true;
 }
 
 REGISTER_DOTOSGWRAPPER(g_osgWidget_InputProxy)
 (
-	new osgWidget::Input("unset"),
-	"osgWidget::Input",
-	"Object Drawable Geometry osgWidget::Widget osgWidget::Input",
-	&osgWidget_Input_readData,
-	&osgWidget_Input_writeData
+    new osgWidget::Input("unset"),
+    "osgWidget::Input",
+    "Object Drawable Geometry osgWidget::Widget osgWidget::Input",
+    &osgWidget_Input_readData,
+    &osgWidget_Input_writeData
 );

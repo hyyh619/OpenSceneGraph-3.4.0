@@ -9,31 +9,28 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Depth>
 
 using namespace osg;
 
-Depth::Depth(Function func,double zNear, double zFar,bool writeMask):
+Depth::Depth(Function func, double zNear, double zFar, bool writeMask) :
     _func(func),
     _zNear(zNear),
     _zFar(zFar),
     _depthWriteMask(writeMask)
-{
-}
+{}
 
 Depth::~Depth()
-{
-}
+{}
 
 void Depth::apply(State&) const
 {
     glDepthFunc((GLenum)_func);
     glDepthMask((GLboolean)_depthWriteMask);
 #if defined(OSG_GLES1_AVAILABLE) || defined(OSG_GLES2_AVAILABLE)
-    glDepthRangef(_zNear,_zFar);
+    glDepthRangef(_zNear, _zFar);
 #else
-    glDepthRange(_zNear,_zFar);
+    glDepthRange(_zNear, _zFar);
 #endif
 }
-

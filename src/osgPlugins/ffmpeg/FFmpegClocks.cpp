@@ -5,24 +5,20 @@
 #include <algorithm>
 
 // DEBUG
-//#include <iostream>
+// #include <iostream>
 
 
-namespace osgFFmpeg {
-
-
-
+namespace osgFFmpeg
+{
 namespace
 {
+const double AV_SYNC_THRESHOLD   = 0.01;
+const double AV_NOSYNC_THRESHOLD = 10.0;
 
-    const double AV_SYNC_THRESHOLD = 0.01;
-    const double AV_NOSYNC_THRESHOLD = 10.0;
-
-    inline double clamp(const double value, const double min, const double max)
-    {
-        return (std::min)((std::max)(value, min), max);
-    }
-
+inline double clamp(const double value, const double min, const double max)
+{
+    return (std::min)((std::max)(value, min), max);
+}
 }
 
 
@@ -41,9 +37,7 @@ FFmpegClocks::FFmpegClocks() :
     m_audio_disabled(false),
     m_paused(false),
     m_last_current_time(0.0)
-{
-
-}
+{}
 
 
 
@@ -53,13 +47,13 @@ void FFmpegClocks::reset(const double start_time)
 
     m_video_clock = start_time;
 
-    m_start_time = start_time;
+    m_start_time       = start_time;
     m_last_frame_delay = 0.040;
-    m_last_frame_pts = start_time - m_last_frame_delay;
-    m_frame_time = start_time;
+    m_last_frame_pts   = start_time - m_last_frame_delay;
+    m_frame_time       = start_time;
 
     m_pause_time = 0;
-    m_seek_time = 0;
+    m_seek_time  = 0;
 
     m_audio_buffer_end_pts = start_time;
     m_audio_timer.setStartTick();
@@ -67,12 +61,13 @@ void FFmpegClocks::reset(const double start_time)
 
 void FFmpegClocks::pause(bool pause)
 {
-    if(pause)
+    if (pause)
         m_paused = true;
     else
     {
         m_paused = false;
-        if(!m_audio_disabled) m_audio_timer.setStartTick();
+        if (!m_audio_disabled)
+            m_audio_timer.setStartTick();
     }
 }
 
@@ -83,13 +78,13 @@ void FFmpegClocks::rewind()
     ScopedLock lock(m_mutex);
 
     m_pause_time = 0;
-    m_seek_time = 0;
+    m_seek_time  = 0;
 
     m_audio_buffer_end_pts = m_start_time;
     m_audio_timer.setStartTick();
 
     m_last_frame_delay = 0.040;
-    m_frame_time = m_start_time;
+    m_frame_time       = m_start_time;
 
     if (m_audio_disabled)
         return;
@@ -101,9 +96,9 @@ void FFmpegClocks::seek(double seek_time)
 {
     ScopedLock lock(m_mutex);
 
-    m_video_clock = seek_time;
+    m_video_clock      = seek_time;
     m_last_frame_delay = 0.040;
-    m_frame_time = seek_time;
+    m_frame_time       = seek_time;
 }
 
 
@@ -143,7 +138,7 @@ void FFmpegClocks::audioDisable()
 
 
 
-double FFmpegClocks::videoSynchClock(const AVFrame * const frame, const double time_base, double pts)
+double FFmpegClocks::videoSynchClock(const AVFrame* const frame, const double time_base, double pts)
 {
     if (pts != 0)
     {
@@ -173,13 +168,13 @@ double FFmpegClocks::videoRefreshSchedule(const double pts)
     ScopedLock lock(m_mutex);
 
     // DEBUG
-    //std::cerr << "ftime / dpts / delay / audio_time / adelay:  ";
+    // std::cerr << "ftime / dpts / delay / audio_time / adelay:  ";
 
     double delay = pts - m_last_frame_pts;
 
 
-    //std::cerr << m_frame_time << "  /  ";
-    //std::cerr << delay << "  /  ";
+    // std::cerr << m_frame_time << "  /  ";
+    // std::cerr << delay << "  /  ";
 
 
     // If incorrect delay, use previous one
@@ -187,13 +182,14 @@ double FFmpegClocks::videoRefreshSchedule(const double pts)
     if (delay <= 0.0 || delay >= 1.0)
     {
         delay = m_last_frame_delay;
-        if(!m_audio_disabled) m_frame_time = pts - delay;
+        if (!m_audio_disabled)
+            m_frame_time = pts - delay;
     }
 
 
     // Save for next time
     m_last_frame_delay = delay;
-    m_last_frame_pts = pts;
+    m_last_frame_pts   = pts;
 
     // Update the delay to synch to the audio stream
 
@@ -201,16 +197,16 @@ double FFmpegClocks::videoRefreshSchedule(const double pts)
     // But because of the sound latency, it seems better to keep some latency in the video too.
     m_frame_time += delay;
 
-    const double audio_time = getAudioTime();
-    const double actual_delay = clamp(m_frame_time - audio_time, -0.5*delay, 2.5*delay);
+    const double audio_time   = getAudioTime();
+    const double actual_delay = clamp(m_frame_time - audio_time, -0.5 * delay, 2.5 * delay);
 
-    //m_frame_time += delay;
+    // m_frame_time += delay;
 
 
     // DEBUG
-    //std::cerr << delay << "  /  ";
-    //std::cerr << audio_time << "  /  ";
-    //std::cerr << actual_delay << std::endl;
+    // std::cerr << delay << "  /  ";
+    // std::cerr << audio_time << "  /  ";
+    // std::cerr << actual_delay << std::endl;
 
     m_last_actual_delay = actual_delay;
 
@@ -238,7 +234,7 @@ void FFmpegClocks::setSeekTime(double seek_time)
 
 double FFmpegClocks::getAudioTime() const
 {
-    if(m_audio_disabled)
+    if (m_audio_disabled)
         return m_audio_buffer_end_pts + m_audio_timer.time_s() - m_pause_time - m_audio_delay - m_seek_time;
     else
         return m_audio_buffer_end_pts + m_audio_timer.time_s() - m_audio_delay;
@@ -247,10 +243,9 @@ double FFmpegClocks::getAudioTime() const
 
 double FFmpegClocks::getCurrentTime()
 {
-    if(!m_paused)
+    if (!m_paused)
         m_last_current_time = getAudioTime();
 
     return m_last_current_time;
 }
-
 } // namespace osgFFmpeg

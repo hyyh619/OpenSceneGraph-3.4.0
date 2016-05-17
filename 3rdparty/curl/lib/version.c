@@ -1,24 +1,24 @@
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 
 #include "setup.h"
 
@@ -56,63 +56,67 @@
 #define CURL_LIBSSH2_VERSION LIBSSH2_VERSION
 #endif
 
-char *curl_version(void)
+char* curl_version(void)
 {
-  static char version[200];
-  char *ptr=version;
-  size_t len;
-  size_t left = sizeof(version);
-  strcpy(ptr, LIBCURL_NAME "/" LIBCURL_VERSION );
-  len = strlen(ptr);
-  left -= len;
-  ptr += len;
+    static char version[200];
+    char        *ptr = version;
+    size_t      len;
+    size_t      left = sizeof(version);
 
-  if(left > 1) {
-    len = Curl_ssl_version(ptr + 1, left - 1);
+    strcpy(ptr, LIBCURL_NAME "/" LIBCURL_VERSION);
+    len   = strlen(ptr);
+    left -= len;
+    ptr  += len;
 
-    if(len > 0) {
-      *ptr = ' ';
-      left -= ++len;
-      ptr += len;
+    if (left > 1)
+    {
+        len = Curl_ssl_version(ptr + 1, left - 1);
+
+        if (len > 0)
+        {
+            *ptr  = ' ';
+            left -= ++len;
+            ptr  += len;
+        }
     }
-  }
 
 #ifdef HAVE_LIBZ
-  len = snprintf(ptr, left, " zlib/%s", zlibVersion());
-  left -= len;
-  ptr += len;
+    len   = snprintf(ptr, left, " zlib/%s", zlibVersion());
+    left -= len;
+    ptr  += len;
 #endif
 #ifdef USE_ARES
-  /* this function is only present in c-ares, not in the original ares */
-  len = snprintf(ptr, left, " c-ares/%s", ares_version(NULL));
-  left -= len;
-  ptr += len;
+    /* this function is only present in c-ares, not in the original ares */
+    len   = snprintf(ptr, left, " c-ares/%s", ares_version(NULL));
+    left -= len;
+    ptr  += len;
 #endif
 #ifdef USE_LIBIDN
-  if(stringprep_check_version(LIBIDN_REQUIRED_VERSION)) {
-    len = snprintf(ptr, left, " libidn/%s", stringprep_check_version(NULL));
-    left -= len;
-    ptr += len;
-  }
+    if (stringprep_check_version(LIBIDN_REQUIRED_VERSION))
+    {
+        len   = snprintf(ptr, left, " libidn/%s", stringprep_check_version(NULL));
+        left -= len;
+        ptr  += len;
+    }
 #endif
 #if defined(HAVE_ICONV) && defined(CURL_DOES_CONVERSIONS)
 #ifdef _LIBICONV_VERSION
-  len = snprintf(ptr, left, " iconv/%d.%d",
-                 _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 255);
+    len = snprintf(ptr, left, " iconv/%d.%d",
+                   _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 255);
 #else
-  /* version unknown */
-  len = snprintf(ptr, left, " iconv");
+    /* version unknown */
+    len = snprintf(ptr, left, " iconv");
 #endif /* _LIBICONV_VERSION */
-  left -= len;
-  ptr += len;
+    left -= len;
+    ptr  += len;
 #endif
 #ifdef USE_LIBSSH2
-  len = snprintf(ptr, left, " libssh2/%s", CURL_LIBSSH2_VERSION);
-  left -= len;
-  ptr += len;
+    len   = snprintf(ptr, left, " libssh2/%s", CURL_LIBSSH2_VERSION);
+    left -= len;
+    ptr  += len;
 #endif
 
-  return version;
+    return version;
 }
 
 /* data for curl_version_info
@@ -121,172 +125,174 @@ char *curl_version(void)
    protocol line has its own #if line to make things easier on the eye.
  */
 
-static const char * const protocols[] = {
+static const char* const protocols[] =
+{
 #ifndef CURL_DISABLE_DICT
-  "dict",
+    "dict",
 #endif
 #ifndef CURL_DISABLE_FILE
-  "file",
+    "file",
 #endif
 #ifndef CURL_DISABLE_FTP
-  "ftp",
+    "ftp",
 #endif
 #if defined(USE_SSL) && !defined(CURL_DISABLE_FTP)
-  "ftps",
+    "ftps",
 #endif
 #ifndef CURL_DISABLE_HTTP
-  "http",
+    "http",
 #endif
 #if defined(USE_SSL) && !defined(CURL_DISABLE_HTTP)
-  "https",
+    "https",
 #endif
 #ifndef CURL_DISABLE_IMAP
-  "imap",
+    "imap",
 #endif
 #if defined(USE_SSL) && !defined(CURL_DISABLE_IMAP)
-  "imaps",
+    "imaps",
 #endif
 #ifndef CURL_DISABLE_LDAP
-  "ldap",
+    "ldap",
 #endif
 #if defined(HAVE_LDAP_SSL) && !defined(CURL_DISABLE_LDAP)
-  "ldaps",
+    "ldaps",
 #endif
 #ifndef CURL_DISABLE_POP3
-  "pop3",
+    "pop3",
 #endif
 #if defined(USE_SSL) && !defined(CURL_DISABLE_POP3)
-  "pop3s",
+    "pop3s",
 #endif
 #ifndef CURL_DISABLE_RTSP
-  "rtsp",
+    "rtsp",
 #endif
 #ifdef USE_LIBSSH2
-  "scp",
+    "scp",
 #endif
 #ifdef USE_LIBSSH2
-  "sftp",
+    "sftp",
 #endif
 #ifndef CURL_DISABLE_SMTP
-  "smtp",
+    "smtp",
 #endif
 #if defined(USE_SSL) && !defined(CURL_DISABLE_SMTP)
-  "smtps",
+    "smtps",
 #endif
 #ifndef CURL_DISABLE_TELNET
-  "telnet",
+    "telnet",
 #endif
 #ifndef CURL_DISABLE_TFTP
-  "tftp",
+    "tftp",
 #endif
 
-  NULL
+    NULL
 };
 
-static curl_version_info_data version_info = {
-  CURLVERSION_NOW,
-  LIBCURL_VERSION,
-  LIBCURL_VERSION_NUM,
-  OS, /* as found by configure or set by hand at build-time */
-  0 /* features is 0 by default */
+static curl_version_info_data version_info =
+{
+    CURLVERSION_NOW,
+    LIBCURL_VERSION,
+    LIBCURL_VERSION_NUM,
+    OS, /* as found by configure or set by hand at build-time */
+    0 /* features is 0 by default */
 #ifdef ENABLE_IPV6
-  | CURL_VERSION_IPV6
+    | CURL_VERSION_IPV6
 #endif
 #ifdef HAVE_KRB4
-  | CURL_VERSION_KERBEROS4
+    | CURL_VERSION_KERBEROS4
 #endif
 #ifdef USE_SSL
-  | CURL_VERSION_SSL
+    | CURL_VERSION_SSL
 #endif
 #ifdef USE_NTLM
-  | CURL_VERSION_NTLM
+    | CURL_VERSION_NTLM
 #endif
 #ifdef USE_WINDOWS_SSPI
-  | CURL_VERSION_SSPI
+    | CURL_VERSION_SSPI
 #endif
 #ifdef HAVE_LIBZ
-  | CURL_VERSION_LIBZ
+    | CURL_VERSION_LIBZ
 #endif
 #ifdef HAVE_GSSAPI
-  | CURL_VERSION_GSSNEGOTIATE
+    | CURL_VERSION_GSSNEGOTIATE
 #endif
 #ifdef DEBUGBUILD
-  | CURL_VERSION_DEBUG
+    | CURL_VERSION_DEBUG
 #endif
 #ifdef CURLDEBUG
-  | CURL_VERSION_CURLDEBUG
+    | CURL_VERSION_CURLDEBUG
 #endif
 #ifdef CURLRES_ASYNCH
-  | CURL_VERSION_ASYNCHDNS
+    | CURL_VERSION_ASYNCHDNS
 #endif
 #ifdef HAVE_SPNEGO
-  | CURL_VERSION_SPNEGO
+    | CURL_VERSION_SPNEGO
 #endif
 #if (CURL_SIZEOF_CURL_OFF_T > 4) && \
-    ( (SIZEOF_OFF_T > 4) || defined(USE_WIN32_LARGE_FILES) )
-  | CURL_VERSION_LARGEFILE
+    ((SIZEOF_OFF_T > 4) || defined(USE_WIN32_LARGE_FILES))
+    | CURL_VERSION_LARGEFILE
 #endif
 #if defined(CURL_DOES_CONVERSIONS)
-  | CURL_VERSION_CONV
+    | CURL_VERSION_CONV
 #endif
-  ,
-  NULL, /* ssl_version */
-  0,    /* ssl_version_num, this is kept at zero */
-  NULL, /* zlib_version */
-  protocols,
-  NULL, /* c-ares version */
-  0,    /* c-ares version numerical */
-  NULL, /* libidn version */
-  0,    /* iconv version */
-  NULL, /* ssh lib version */
+    ,
+    NULL, /* ssl_version */
+    0,  /* ssl_version_num, this is kept at zero */
+    NULL, /* zlib_version */
+    protocols,
+    NULL, /* c-ares version */
+    0,  /* c-ares version numerical */
+    NULL, /* libidn version */
+    0,  /* iconv version */
+    NULL, /* ssh lib version */
 };
 
-curl_version_info_data *curl_version_info(CURLversion stamp)
+curl_version_info_data* curl_version_info(CURLversion stamp)
 {
 #ifdef USE_LIBSSH2
-  static char ssh_buffer[80];
+    static char ssh_buffer[80];
 #endif
 
 #ifdef USE_SSL
-  static char ssl_buffer[80];
-  Curl_ssl_version(ssl_buffer, sizeof(ssl_buffer));
-  version_info.ssl_version = ssl_buffer;
+    static char ssl_buffer[80];
+    Curl_ssl_version(ssl_buffer, sizeof(ssl_buffer));
+    version_info.ssl_version = ssl_buffer;
 #endif
 
 #ifdef HAVE_LIBZ
-  version_info.libz_version = zlibVersion();
-  /* libz left NULL if non-existing */
+    version_info.libz_version = zlibVersion();
+    /* libz left NULL if non-existing */
 #endif
 #ifdef USE_ARES
-  {
-    int aresnum;
-    version_info.ares = ares_version(&aresnum);
-    version_info.ares_num = aresnum;
-  }
+    {
+        int aresnum;
+        version_info.ares     = ares_version(&aresnum);
+        version_info.ares_num = aresnum;
+    }
 #endif
 #ifdef USE_LIBIDN
-  /* This returns a version string if we use the given version or later,
-     otherwise it returns NULL */
-  version_info.libidn = stringprep_check_version(LIBIDN_REQUIRED_VERSION);
-  if(version_info.libidn)
-    version_info.features |= CURL_VERSION_IDN;
+    /* This returns a version string if we use the given version or later,
+       otherwise it returns NULL */
+    version_info.libidn = stringprep_check_version(LIBIDN_REQUIRED_VERSION);
+    if (version_info.libidn)
+        version_info.features |= CURL_VERSION_IDN;
 #endif
 
 #if defined(HAVE_ICONV) && defined(CURL_DOES_CONVERSIONS)
 #ifdef _LIBICONV_VERSION
-  version_info.iconv_ver_num = _LIBICONV_VERSION;
+    version_info.iconv_ver_num = _LIBICONV_VERSION;
 #else
-  /* version unknown */
-  version_info.iconv_ver_num = -1;
+    /* version unknown */
+    version_info.iconv_ver_num = -1;
 #endif /* _LIBICONV_VERSION */
 #endif
 
 #ifdef USE_LIBSSH2
-  snprintf(ssh_buffer, sizeof(ssh_buffer), "libssh2/%s", LIBSSH2_VERSION);
-  version_info.libssh_version = ssh_buffer;
+    snprintf(ssh_buffer, sizeof(ssh_buffer), "libssh2/%s", LIBSSH2_VERSION);
+    version_info.libssh_version = ssh_buffer;
 #endif
 
-  (void)stamp; /* avoid compiler warnings, we don't use this */
+    (void)stamp; /* avoid compiler warnings, we don't use this */
 
-  return &version_info;
+    return &version_info;
 }

@@ -4,11 +4,13 @@
 #include <osg/Sequence>
 #include "ReadWrite.h"
 
-namespace ive{
-class Sequence : public osg::Sequence, public ReadWrite {
+namespace ive
+{
+class Sequence : public osg::Sequence, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

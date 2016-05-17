@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgAnimation/Bone>
 #include <osgAnimation/Skeleton>
@@ -18,22 +18,23 @@
 
 using namespace osgAnimation;
 
-Bone::Bone(const Bone& b, const osg::CopyOp& copyop) : osg::MatrixTransform(b,copyop), _invBindInSkeletonSpace(b._invBindInSkeletonSpace), _boneInSkeletonSpace(b._boneInSkeletonSpace)
-{
-}
+Bone::Bone(const Bone&b, const osg::CopyOp&copyop) : osg::MatrixTransform(b, copyop), _invBindInSkeletonSpace(b._invBindInSkeletonSpace), _boneInSkeletonSpace(b._boneInSkeletonSpace)
+{}
 
-Bone::Bone(const std::string& name)
+Bone::Bone(const std::string&name)
 {
     if (!name.empty())
         setName(name);
 }
 
 
-void Bone::setDefaultUpdateCallback(const std::string& name)
+void Bone::setDefaultUpdateCallback(const std::string&name)
 {
     std::string cbName = name;
+
     if (cbName.empty())
         cbName = getName();
+
     setUpdateCallback(new UpdateBone(cbName));
 }
 
@@ -41,25 +42,31 @@ Bone* Bone::getBoneParent()
 {
     if (getParents().empty())
         return 0;
+
     osg::Node::ParentList parents = getParents();
+
     for (osg::Node::ParentList::iterator it = parents.begin(); it != parents.end(); ++it)
     {
-        Bone* pb = dynamic_cast<Bone*>(*it);
+        Bone *pb = dynamic_cast<Bone*>(*it);
         if (pb)
             return pb;
     }
+
     return 0;
 }
 const Bone* Bone::getBoneParent() const
 {
     if (getParents().empty())
         return 0;
-    const osg::Node::ParentList& parents = getParents();
+
+    const osg::Node::ParentList&parents = getParents();
+
     for (osg::Node::ParentList::const_iterator it = parents.begin(); it != parents.end(); ++it)
     {
-        const Bone* pb = dynamic_cast<const Bone*>(*it);
+        const Bone *pb = dynamic_cast<const Bone*>(*it);
         if (pb)
             return pb;
     }
+
     return 0;
 }

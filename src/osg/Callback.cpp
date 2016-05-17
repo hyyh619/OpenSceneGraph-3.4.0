@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Node>
 #include <osg/NodeVisitor>
 #include <osg/ScriptEngine>
@@ -20,19 +20,21 @@ using namespace osg;
 //
 // Callback
 //
-bool Callback::traverse(Object* object, Object* data)
+bool Callback::traverse(Object *object, Object *data)
 {
-    if (_nestedCallback.valid()) return _nestedCallback->run(object, data);
+    if (_nestedCallback.valid())
+        return _nestedCallback->run(object, data);
     else
     {
-        osg::Node* node = object ? object->asNode() : 0;
-        osg::NodeVisitor* nv = data ? data->asNodeVisitor() : 0;
+        osg::Node        *node = object ? object->asNode() : 0;
+        osg::NodeVisitor *nv   = data ? data->asNodeVisitor() : 0;
         if (node && nv)
         {
             nv->traverse(*node);
             return true;
         }
-        else return false;
+        else
+            return false;
     }
 }
 
@@ -40,21 +42,21 @@ bool Callback::traverse(Object* object, Object* data)
 //
 // CallbackObject
 //
-bool CallbackObject::run(osg::Object* object, osg::Object* data)
+bool CallbackObject::run(osg::Object *object, osg::Object *data)
 {
     osg::Parameters inputParameters, outputParameters;
 
-    if (data && data->referenceCount()>=1)
+    if (data && data->referenceCount() >= 1)
     {
         inputParameters.push_back(data);
     }
 
-    return run(object,inputParameters, outputParameters);
+    return run(object, inputParameters, outputParameters);
 }
 
-bool CallbackObject::run(osg::Object* object, osg::Parameters& inputParameters, osg::Parameters& outputParameters) const
+bool CallbackObject::run(osg::Object *object, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
 {
-    OSG_NOTICE<<"CallbackObject::run(object="<<object<<")"<<std::endl;
+    OSG_NOTICE << "CallbackObject::run(object=" << object << ")" << std::endl;
     return false;
 }
 
@@ -62,10 +64,10 @@ bool CallbackObject::run(osg::Object* object, osg::Parameters& inputParameters, 
 //
 // NodeCallback
 //
-bool NodeCallback::run(osg::Object* object, osg::Object* data)
+bool NodeCallback::run(osg::Object *object, osg::Object *data)
 {
-    osg::Node* node = object ? object->asNode() : 0;
-    osg::NodeVisitor* nv = data ? data->asNodeVisitor() : 0;
+    osg::Node        *node = object ? object->asNode() : 0;
+    osg::NodeVisitor *nv   = data ? data->asNodeVisitor() : 0;
 
     if (node && nv)
     {
@@ -77,22 +79,23 @@ bool NodeCallback::run(osg::Object* object, osg::Object* data)
         return traverse(object, data);
     }
 }
-void NodeCallback::operator()(Node* node, NodeVisitor* nv)
+void NodeCallback::operator()(Node *node, NodeVisitor *nv)
 {
     // note, callback is responsible for scenegraph traversal so
     // they must call traverse(node,nv) to ensure that the
     // scene graph subtree (and associated callbacks) are traversed.
-    traverse(node,nv);
+    traverse(node, nv);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // StateAttributeCallback
 //
-bool StateAttributeCallback::run(osg::Object* object, osg::Object* data)
+bool StateAttributeCallback::run(osg::Object *object, osg::Object *data)
 {
-    osg::StateAttribute* sa = object ? object->asStateAttribute() : 0;
-    osg::NodeVisitor* nv = data ? data->asNodeVisitor() : 0;
+    osg::StateAttribute *sa = object ? object->asStateAttribute() : 0;
+    osg::NodeVisitor    *nv = data ? data->asNodeVisitor() : 0;
+
     if (sa && nv)
     {
         operator()(sa, nv);
@@ -108,10 +111,11 @@ bool StateAttributeCallback::run(osg::Object* object, osg::Object* data)
 //
 // UniformCallback
 //
-bool UniformCallback::run(osg::Object* object, osg::Object* data)
+bool UniformCallback::run(osg::Object *object, osg::Object *data)
 {
-    osg::Uniform* uniform = object ? object->asUniform() : 0;
-    osg::NodeVisitor* nv = data ? data->asNodeVisitor() : 0;
+    osg::Uniform     *uniform = object ? object->asUniform() : 0;
+    osg::NodeVisitor *nv      = data ? data->asNodeVisitor() : 0;
+
     if (uniform && nv)
     {
         operator()(uniform, nv);

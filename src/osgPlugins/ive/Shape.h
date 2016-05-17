@@ -4,44 +4,49 @@
 #include <osg/Shape>
 #include "ReadWrite.h"
 
-namespace ive{
-
-class Sphere : public osg::Sphere, public ReadWrite {
+namespace ive
+{
+class Sphere : public osg::Sphere, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 
-class Box : public osg::Box, public ReadWrite {
+class Box : public osg::Box, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 
-class Cone : public osg::Cone, public ReadWrite {
+class Cone : public osg::Cone, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 
-class Cylinder : public osg::Cylinder, public ReadWrite {
+class Cylinder : public osg::Cylinder, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 
-class Capsule : public osg::Capsule, public ReadWrite {
+class Capsule : public osg::Capsule, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 
-class HeightField : public osg::HeightField, public ReadWrite {
+class HeightField : public osg::HeightField, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
-
 }
 
 #endif

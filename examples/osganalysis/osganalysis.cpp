@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osganalysis.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 
 #include <osgViewer/Viewer>
@@ -40,603 +40,704 @@
 class StripStateVisitor : public osg::NodeVisitor
 {
 public:
-    StripStateVisitor(bool useStateSets, bool useDisplayLists, bool useVBO):
-        osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
-        _useStateSets(useStateSets),
-        _useDisplayLists(useDisplayLists),
-        _useVBO(useVBO) {}
+StripStateVisitor(bool useStateSets, bool useDisplayLists, bool useVBO) :
+    osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
+    _useStateSets(useStateSets),
+    _useDisplayLists(useDisplayLists),
+    _useVBO(useVBO) {}
 
-    bool _useStateSets;
-    bool _useDisplayLists;
-    bool _useVBO;
+bool _useStateSets;
+bool _useDisplayLists;
+bool _useVBO;
 
-    void apply(osg::Node& node)
+void apply(osg::Node&node)
+{
+    if (!_useStateSets && node.getStateSet())
+        node.setStateSet(0);
+
+    traverse(node);
+}
+
+void apply(osg::Drawable&drawable)
+{
+    if (!_useStateSets && drawable.getStateSet())
     {
-        if (!_useStateSets && node.getStateSet()) node.setStateSet(0);
-        traverse(node);
+        drawable.setStateSet(0);
     }
 
-    void apply(osg::Drawable& drawable)
-    {
-        if (!_useStateSets && drawable.getStateSet())
-        {
-            drawable.setStateSet(0);
-        }
-
-        drawable.setUseDisplayList(_useDisplayLists);
-        drawable.setUseVertexBufferObjects(_useVBO);
-    }
+    drawable.setUseDisplayList(_useDisplayLists);
+    drawable.setUseVertexBufferObjects(_useVBO);
+}
 };
 
 class OptimizeImageVisitor : public osg::NodeVisitor
 {
 public:
-    OptimizeImageVisitor(osgDB::ImageProcessor* imageProcessor, bool compressImages, bool generateMipmaps):
-        osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
-        _imageProcessor(imageProcessor),
-        _compressImages(compressImages),
-        _generateMipmaps(generateMipmaps) {}
+OptimizeImageVisitor(osgDB::ImageProcessor *imageProcessor, bool compressImages, bool generateMipmaps) :
+    osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
+    _imageProcessor(imageProcessor),
+    _compressImages(compressImages),
+    _generateMipmaps(generateMipmaps) {}
 
-    osg::ref_ptr<osgDB::ImageProcessor> _imageProcessor;
-    bool _compressImages;
-    bool _generateMipmaps;
+osg::ref_ptr<osgDB::ImageProcessor> _imageProcessor;
+bool                                _compressImages;
+bool                                _generateMipmaps;
 
-    void apply(osg::Node& node)
+void apply(osg::Node&node)
+{
+    processStateSet(node.getStateSet());
+    traverse(node);
+}
+
+void apply(osg::Geode&node)
+{
+    processStateSet(node.getStateSet());
+
+    for (unsigned int i = 0; i < node.getNumDrawables(); ++i)
     {
-        processStateSet(node.getStateSet());
-        traverse(node);
+        processStateSet(node.getDrawable(i)->getStateSet());
     }
 
-    void apply(osg::Geode& node)
+    traverse(node);
+}
+
+void processStateSet(osg::StateSet *stateset)
+{
+    if (!stateset)
+        return;
+
+    for (unsigned int i = 0; i < stateset->getNumTextureAttributeLists(); ++i)
     {
-        processStateSet(node.getStateSet());
-        for(unsigned int i = 0; i<node.getNumDrawables(); ++i)
+        osg::StateAttribute *sa      = stateset->getTextureAttribute(i, osg::StateAttribute::TEXTURE);
+        osg::Texture        *texture = dynamic_cast<osg::Texture*>(sa);
+        if (texture)
         {
-            processStateSet(node.getDrawable(i)->getStateSet());
-        }
-
-        traverse(node);
-    }
-
-    void processStateSet(osg::StateSet* stateset)
-    {
-        if (!stateset) return;
-
-        for(unsigned int i=0; i<stateset->getNumTextureAttributeLists(); ++i)
-        {
-            osg::StateAttribute* sa = stateset->getTextureAttribute(i, osg::StateAttribute::TEXTURE);
-            osg::Texture* texture = dynamic_cast<osg::Texture*>(sa);
-            if (texture)
+            for (unsigned int i = 0; i < texture->getNumImages(); ++i)
             {
-                for(unsigned int i=0; i<texture->getNumImages(); ++i)
-                {
-                    proccessImage(texture->getImage(i));
-                }
+                proccessImage(texture->getImage(i));
             }
-        };
+        }
     }
 
+    ;
+}
 
-    void proccessImage(osg::Image* image)
+
+void proccessImage(osg::Image *image)
+{
+    if (!image)
+        return;
+
+    if (_imageProcessor.valid())
     {
-        if (!image) return;
-
-        if (_imageProcessor.valid())
-        {
-            OSG_NOTICE<<"Will be using ImageProcessor to process image "<<image->getFileName()<<std::endl;
-        }
-        else
-        {
-            OSG_NOTICE<<"No ImageProcessor to process image "<<image->getFileName()<<std::endl;
-        }
-            OSG_NOTICE<<"   compressImage "<<_compressImages<<std::endl;
-            OSG_NOTICE<<"   generateMipmaps "<<_generateMipmaps<<std::endl;
+        OSG_NOTICE << "Will be using ImageProcessor to process image " << image->getFileName() << std::endl;
+    }
+    else
+    {
+        OSG_NOTICE << "No ImageProcessor to process image " << image->getFileName() << std::endl;
     }
 
+    OSG_NOTICE << "   compressImage " << _compressImages << std::endl;
+    OSG_NOTICE << "   generateMipmaps " << _generateMipmaps << std::endl;
+}
 };
 
 
 class SwapArrayVisitor : public osg::ArrayVisitor
 {
 public:
-    SwapArrayVisitor(osg::Array* array):
-        _array(array) {}
+SwapArrayVisitor(osg::Array *array) :
+    _array(array) {}
 
-    template <class ARRAY>
-    void apply_imp(ARRAY& array)
+template<class ARRAY>
+void apply_imp(ARRAY&array)
+{
+    if (array.getType() != _array->getType())
     {
-        if (array.getType()!=_array->getType())
-        {
-            OSG_NOTICE<<"Arrays incompatible"<<std::endl;
-            return;
-        }
-        OSG_NOTICE<<"Swapping Array"<<std::endl;
-        array.swap(*static_cast<ARRAY*>(_array));
+        OSG_NOTICE << "Arrays incompatible" << std::endl;
+        return;
     }
 
-    virtual void apply(osg::ByteArray& ba) { apply_imp(ba); }
-    virtual void apply(osg::ShortArray& ba) { apply_imp(ba); }
-    virtual void apply(osg::IntArray& ba) { apply_imp(ba); }
-    virtual void apply(osg::UByteArray& ba) { apply_imp(ba); }
-    virtual void apply(osg::UShortArray& ba) { apply_imp(ba); }
-    virtual void apply(osg::UIntArray& ba) { apply_imp(ba); }
-    virtual void apply(osg::Vec4ubArray& ba) { apply_imp(ba); }
-    virtual void apply(osg::FloatArray& ba) { apply_imp(ba); }
-    virtual void apply(osg::Vec2Array& ba) { apply_imp(ba); }
-    virtual void apply(osg::Vec3Array& ba) { apply_imp(ba); }
-    virtual void apply(osg::Vec4Array& ba) { apply_imp(ba); }
+    OSG_NOTICE << "Swapping Array" << std::endl;
+    array.swap(*static_cast<ARRAY*>(_array));
+}
 
-    osg::Array* _array;
+virtual void apply(osg::ByteArray&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::ShortArray&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::IntArray&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::UByteArray&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::UShortArray&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::UIntArray&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::Vec4ubArray&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::FloatArray&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::Vec2Array&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::Vec3Array&ba)
+{
+    apply_imp(ba);
+}
+virtual void apply(osg::Vec4Array&ba)
+{
+    apply_imp(ba);
+}
+
+osg::Array *_array;
 };
 
 class MemoryVisitor : public osg::NodeVisitor
 {
 public:
-     MemoryVisitor():
-         osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
+MemoryVisitor() :
+    osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
 
-    void reset()
+void reset()
+{
+    _nodes.clear();
+    _geometryMap.clear();
+    _arrayMap.clear();
+    _primitiveSetMap.clear();
+}
+
+void apply(osg::Node&node)
+{
+    _nodes.insert(&node);
+    traverse(node);
+}
+
+void apply(osg::Geode&geode)
+{
+    _nodes.insert(&geode);
+
+    for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
-         _nodes.clear();
-         _geometryMap.clear();
-         _arrayMap.clear();
-         _primitiveSetMap.clear();
+        apply(&geode, geode.getDrawable(i));
     }
+}
 
-    void apply(osg::Node& node)
-    {
-        _nodes.insert(&node);
-        traverse(node);
-    }
+void apply(osg::Geode *geode, osg::Drawable *drawable)
+{
+    if (!drawable)
+        return;
 
-    void apply(osg::Geode& geode)
+    osg::Geometry *geometry = drawable->asGeometry();
+    if (geometry)
     {
-        _nodes.insert(&geode);
-        for(unsigned int i=0; i<geode.getNumDrawables(); ++i)
+        _geometryMap[geometry].insert(geode);
+
+        apply(geometry, geometry->getVertexArray());
+        apply(geometry, geometry->getNormalArray());
+        apply(geometry, geometry->getColorArray());
+        apply(geometry, geometry->getSecondaryColorArray());
+        apply(geometry, geometry->getFogCoordArray());
+
+        for (unsigned int i = 0; i < geometry->getNumTexCoordArrays(); ++i)
         {
-            apply(&geode, geode.getDrawable(i));
+            apply(geometry, geometry->getTexCoordArray(i));
+        }
+
+        for (unsigned int i = 0; i < geometry->getNumVertexAttribArrays(); ++i)
+        {
+            apply(geometry, geometry->getVertexAttribArray(i));
+        }
+
+        for (unsigned int i = 0; i < geometry->getNumPrimitiveSets(); ++i)
+        {
+            apply(geometry, geometry->getPrimitiveSet(i));
+        }
+    }
+}
+
+void apply(osg::Geometry *geometry, osg::Array *array)
+{
+    if (!array)
+        return;
+
+    _arrayMap[array].insert(geometry);
+}
+
+void apply(osg::Geometry *geometry, osg::PrimitiveSet *primitiveSet)
+{
+    if (!primitiveSet)
+        return;
+
+    _primitiveSetMap[primitiveSet].insert(geometry);
+}
+
+void report(std::ostream&out)
+{
+    out << "Nodes " << _nodes.size() << std::endl;
+    out << "Geometries " << _geometryMap.size() << std::endl;
+    out << "Arrays " << _arrayMap.size() << std::endl;
+    out << "PrimitiveSets " << _primitiveSetMap.size() << std::endl;
+}
+
+void reallocate()
+{
+    OSG_NOTICE << "Reallocating Arrays" << std::endl;
+
+    typedef std::vector<osg::ref_ptr<osg::Array> > ArrayVector;
+    typedef std::vector<osg::ref_ptr<osg::Geometry> > GeometryVector;
+    ArrayVector    newArrays;
+    GeometryVector newGeometries;
+
+    for (GeometryMap::iterator itr = _geometryMap.begin();
+         itr != _geometryMap.end();
+         ++itr)
+    {
+        osg::Geometry *geometry    = itr->first;
+        bool          useVBO       = geometry->getUseVertexBufferObjects();
+        osg::Geometry *newGeometry = osg::clone(geometry, osg::CopyOp(osg::CopyOp::DEEP_COPY_ALL));
+        newGeometry->setUseVertexBufferObjects(false);
+        newGeometry->setUseVertexBufferObjects(useVBO);
+        newGeometries.push_back(newGeometry);
+    }
+
+    GeometryVector::iterator geom_itr = newGeometries.begin();
+
+    for (GeometryMap::iterator itr = _geometryMap.begin();
+         itr != _geometryMap.end();
+         ++itr, ++geom_itr)
+    {
+        osg::Geometry *geometry = itr->first;
+        Geodes        &geodes   = itr->second;
+
+        for (Geodes::iterator gitr = geodes.begin();
+             gitr != geodes.end();
+             ++gitr)
+        {
+            osg::Geode *geode = const_cast<osg::Geode*>(*gitr);
+            geode->replaceDrawable(geometry, geom_itr->get());
+        }
+    }
+}
+
+typedef std::vector<osg::ref_ptr<osg::Geometry> > GeometryVector;
+typedef std::pair<osg::Array*, osg::Array*> ArrayPair;
+typedef std::vector<ArrayPair> ArrayVector;
+typedef std::pair<osg::PrimitiveSet*, osg::PrimitiveSet*> PrimitiveSetPair;
+typedef std::vector<PrimitiveSetPair> PrimitiveSetVector;
+
+osg::Array* cloneArray(ArrayVector&arrayVector, osg::Array *array)
+{
+    if (!array)
+        return 0;
+
+    osg::Array *newArray = static_cast<osg::Array*>(array->cloneType());
+    arrayVector.push_back(ArrayPair(array, newArray));
+    return newArray;
+}
+
+osg::PrimitiveSet* clonePrimitiveSet(PrimitiveSetVector&psVector, osg::PrimitiveSet *ps)
+{
+    if (!ps)
+        return 0;
+
+    osg::PrimitiveSet *newPS = static_cast<osg::PrimitiveSet*>(ps->cloneType());
+    psVector.push_back(PrimitiveSetPair(ps, newPS));
+    return newPS;
+}
+
+void reallocate2()
+{
+    OSG_NOTICE << "Reallocating Arrays" << std::endl;
+
+    ArrayVector        arrayVector;
+    PrimitiveSetVector primitiveSetVector;
+    GeometryVector     newGeometries;
+
+    for (GeometryMap::iterator itr = _geometryMap.begin();
+         itr != _geometryMap.end();
+         ++itr)
+    {
+        osg::Geometry               *geometry   = itr->first;
+        osg::ref_ptr<osg::Geometry> newGeometry = osg::clone(geometry, osg::CopyOp::SHALLOW_COPY);
+        newGeometries.push_back(newGeometry.get());
+
+        newGeometry->setVertexArray(cloneArray(arrayVector, geometry->getVertexArray()));
+        newGeometry->setNormalArray(cloneArray(arrayVector, geometry->getNormalArray()));
+        newGeometry->setColorArray(cloneArray(arrayVector, geometry->getColorArray()));
+        newGeometry->setSecondaryColorArray(cloneArray(arrayVector, geometry->getSecondaryColorArray()));
+        newGeometry->setFogCoordArray(cloneArray(arrayVector, geometry->getFogCoordArray()));
+
+        for (unsigned int i = 0; i < geometry->getNumTexCoordArrays(); ++i)
+        {
+            newGeometry->setTexCoordArray(i, cloneArray(arrayVector, geometry->getTexCoordArray(i)));
+        }
+
+        for (unsigned int i = 0; i < geometry->getNumVertexAttribArrays(); ++i)
+        {
+            newGeometry->setVertexAttribArray(i, cloneArray(arrayVector, geometry->getVertexAttribArray(i)));
+        }
+
+        for (unsigned int i = 0; i < geometry->getNumPrimitiveSets(); ++i)
+        {
+            newGeometry->setPrimitiveSet(i, clonePrimitiveSet(primitiveSetVector, geometry->getPrimitiveSet(i)));
         }
     }
 
-    void apply(osg::Geode* geode, osg::Drawable* drawable)
+    GeometryVector::iterator geom_itr = newGeometries.begin();
+
+    for (GeometryMap::iterator itr = _geometryMap.begin();
+         itr != _geometryMap.end();
+         ++itr, ++geom_itr)
     {
-        if (!drawable) return;
+        osg::Geometry *geometry = itr->first;
+        Geodes        &geodes   = itr->second;
 
-        osg::Geometry* geometry = drawable->asGeometry();
-        if (geometry)
+        for (Geodes::iterator gitr = geodes.begin();
+             gitr != geodes.end();
+             ++gitr)
         {
-            _geometryMap[geometry].insert(geode);
-
-            apply(geometry, geometry->getVertexArray());
-            apply(geometry, geometry->getNormalArray());
-            apply(geometry, geometry->getColorArray());
-            apply(geometry, geometry->getSecondaryColorArray());
-            apply(geometry, geometry->getFogCoordArray());
-
-            for(unsigned int i=0; i<geometry->getNumTexCoordArrays(); ++i)
-            {
-                apply(geometry, geometry->getTexCoordArray(i));
-            }
-            for(unsigned int i=0; i<geometry->getNumVertexAttribArrays(); ++i)
-            {
-                apply(geometry, geometry->getVertexAttribArray(i));
-            }
-
-            for(unsigned int i=0; i<geometry->getNumPrimitiveSets(); ++i)
-            {
-                apply(geometry, geometry->getPrimitiveSet(i));
-            }
+            osg::Geode *geode = const_cast<osg::Geode*>(*gitr);
+            geode->replaceDrawable(geometry, geom_itr->get());
         }
     }
-
-    void apply(osg::Geometry* geometry, osg::Array* array)
-    {
-        if (!array) return;
-        _arrayMap[array].insert(geometry);
-    }
-
-    void apply(osg::Geometry* geometry, osg::PrimitiveSet* primitiveSet)
-    {
-        if (!primitiveSet) return;
-        _primitiveSetMap[primitiveSet].insert(geometry);
-    }
-
-    void report(std::ostream& out)
-    {
-        out<<"Nodes "<<_nodes.size()<<std::endl;
-        out<<"Geometries "<<_geometryMap.size()<<std::endl;
-        out<<"Arrays "<<_arrayMap.size()<<std::endl;
-        out<<"PrimitiveSets "<<_primitiveSetMap.size()<<std::endl;
-    }
-
-    void reallocate()
-    {
-        OSG_NOTICE<<"Reallocating Arrays"<<std::endl;
-
-        typedef std::vector< osg::ref_ptr<osg::Array> > ArrayVector;
-        typedef std::vector< osg::ref_ptr<osg::Geometry> > GeometryVector;
-        ArrayVector newArrays;
-        GeometryVector newGeometries;
-        for(GeometryMap::iterator itr = _geometryMap.begin();
-            itr != _geometryMap.end();
-            ++itr)
-        {
-            osg::Geometry* geometry = itr->first;
-            bool useVBO = geometry->getUseVertexBufferObjects();
-            osg::Geometry* newGeometry = osg::clone(geometry, osg::CopyOp(osg::CopyOp::DEEP_COPY_ALL));
-            newGeometry->setUseVertexBufferObjects(false);
-            newGeometry->setUseVertexBufferObjects(useVBO);
-            newGeometries.push_back(newGeometry);
-        }
-
-        GeometryVector::iterator geom_itr = newGeometries.begin();
-        for(GeometryMap::iterator itr = _geometryMap.begin();
-            itr != _geometryMap.end();
-            ++itr, ++geom_itr)
-        {
-            osg::Geometry* geometry = itr->first;
-            Geodes& geodes = itr->second;
-            for(Geodes::iterator gitr = geodes.begin();
-                gitr != geodes.end();
-                ++gitr)
-            {
-                osg::Geode* geode = const_cast<osg::Geode*>(*gitr);
-                geode->replaceDrawable(geometry, geom_itr->get());
-            }
-        }
-    }
-
-    typedef std::vector< osg::ref_ptr<osg::Geometry> > GeometryVector;
-    typedef std::pair<osg::Array*, osg::Array*> ArrayPair;
-    typedef std::vector< ArrayPair > ArrayVector;
-    typedef std::pair<osg::PrimitiveSet*, osg::PrimitiveSet*> PrimitiveSetPair;
-    typedef std::vector< PrimitiveSetPair > PrimitiveSetVector;
-
-    osg::Array* cloneArray(ArrayVector& arrayVector, osg::Array* array)
-    {
-        if (!array) return 0;
-        osg::Array* newArray = static_cast<osg::Array*>(array->cloneType());
-        arrayVector.push_back(ArrayPair(array,newArray));
-        return newArray;
-    }
-
-    osg::PrimitiveSet* clonePrimitiveSet(PrimitiveSetVector& psVector, osg::PrimitiveSet* ps)
-    {
-        if (!ps) return 0;
-        osg::PrimitiveSet* newPS = static_cast<osg::PrimitiveSet*>(ps->cloneType());
-        psVector.push_back(PrimitiveSetPair(ps,newPS));
-        return newPS;
-    }
-
-    void reallocate2()
-    {
-        OSG_NOTICE<<"Reallocating Arrays"<<std::endl;
-
-        ArrayVector arrayVector;
-        PrimitiveSetVector primitiveSetVector;
-        GeometryVector newGeometries;
-
-        for(GeometryMap::iterator itr = _geometryMap.begin();
-            itr != _geometryMap.end();
-            ++itr)
-        {
-            osg::Geometry* geometry = itr->first;
-            osg::ref_ptr<osg::Geometry> newGeometry = osg::clone(geometry, osg::CopyOp::SHALLOW_COPY);
-            newGeometries.push_back(newGeometry.get());
-
-            newGeometry->setVertexArray(cloneArray(arrayVector, geometry->getVertexArray()));
-            newGeometry->setNormalArray(cloneArray(arrayVector, geometry->getNormalArray()));
-            newGeometry->setColorArray(cloneArray(arrayVector, geometry->getColorArray()));
-            newGeometry->setSecondaryColorArray(cloneArray(arrayVector, geometry->getSecondaryColorArray()));
-            newGeometry->setFogCoordArray(cloneArray(arrayVector, geometry->getFogCoordArray()));
-            for(unsigned int i=0; i<geometry->getNumTexCoordArrays(); ++i)
-            {
-                newGeometry->setTexCoordArray(i, cloneArray(arrayVector, geometry->getTexCoordArray(i)));
-            }
-            for(unsigned int i=0; i<geometry->getNumVertexAttribArrays(); ++i)
-            {
-                newGeometry->setVertexAttribArray(i, cloneArray(arrayVector, geometry->getVertexAttribArray(i)));
-            }
-
-            for(unsigned int i=0; i<geometry->getNumPrimitiveSets(); ++i)
-            {
-                newGeometry->setPrimitiveSet(i,clonePrimitiveSet(primitiveSetVector, geometry->getPrimitiveSet(i)));
-            }
-        }
-
-        GeometryVector::iterator geom_itr = newGeometries.begin();
-        for(GeometryMap::iterator itr = _geometryMap.begin();
-            itr != _geometryMap.end();
-            ++itr, ++geom_itr)
-        {
-            osg::Geometry* geometry = itr->first;
-            Geodes& geodes = itr->second;
-            for(Geodes::iterator gitr = geodes.begin();
-                gitr != geodes.end();
-                ++gitr)
-            {
-                osg::Geode* geode = const_cast<osg::Geode*>(*gitr);
-                geode->replaceDrawable(geometry, geom_itr->get());
-            }
-        }
-    }
+}
 
 protected:
 
-     typedef std::set<osg::Node*>  Nodes;
-     typedef std::set<osg::Geode*>  Geodes;
-     typedef std::set<osg::Geometry*>  Geometries;
-     typedef std::map<osg::Geometry*, Geodes> GeometryMap;
-     typedef std::map<osg::Array*, Geometries> ArrayMap;
-     typedef std::map<osg::PrimitiveSet*, Geometries> PrimitiveSetMap;
+typedef std::set<osg::Node*>  Nodes;
+typedef std::set<osg::Geode*>  Geodes;
+typedef std::set<osg::Geometry*>  Geometries;
+typedef std::map<osg::Geometry*, Geodes> GeometryMap;
+typedef std::map<osg::Array*, Geometries> ArrayMap;
+typedef std::map<osg::PrimitiveSet*, Geometries> PrimitiveSetMap;
 
-     Nodes              _nodes;
-     GeometryMap        _geometryMap;
-     ArrayMap           _arrayMap;
-     PrimitiveSetMap    _primitiveSetMap;
+Nodes           _nodes;
+GeometryMap     _geometryMap;
+ArrayMap        _arrayMap;
+PrimitiveSetMap _primitiveSetMap;
 };
 
 class SceneGraphProcessor : public osg::Referenced
 {
 public:
-    SceneGraphProcessor()
+SceneGraphProcessor()
+{
+    _init();
+}
+
+SceneGraphProcessor(osg::ArgumentParser&arguments)
+{
+    _init();
+
+    while (arguments.read("--vbo"))
     {
-        _init();
+        modifyDrawableSettings = true; useVBO = true;
     }
 
-    SceneGraphProcessor(osg::ArgumentParser& arguments)
+    while (arguments.read("--dl"))
     {
-        _init();
-
-        while (arguments.read("--vbo")) { modifyDrawableSettings = true; useVBO = true;  }
-        while (arguments.read("--dl")) { modifyDrawableSettings = true; useDisplayLists = true;  }
-
-        while (arguments.read("-s", simplificatioRatio)) {}
-        while (arguments.read("--tristripper")) { useTriStripVisitor=true; }
-        while (arguments.read("--no-tristripper")) { useTriStripVisitor=false; }
-        while (arguments.read("--smoother")) {  useSmoothingVisitor=true; }
-        while (arguments.read("--no-smoother")) {  useSmoothingVisitor=false; }
-
-        while (arguments.read("--remove-duplicate-vertices") || arguments.read("--rdv")) removeDuplicateVertices = true;
-        while (arguments.read("--optimize-vertex-cache") || arguments.read("--ovc")) optimizeVertexCache = true;
-        while (arguments.read("--optimize-vertex-order") || arguments.read("--ovo")) optimizeVertexOrder = true;
-
-        while (arguments.read("--build-mipmaps")) { modifyTextureSettings = true; buildImageMipmaps = true; }
-        while (arguments.read("--compress")) { modifyTextureSettings = true; compressImages = true; }
-        while (arguments.read("--disable-mipmaps")) { modifyTextureSettings = true; disableMipmaps = true; }
-
-        while (arguments.read("--reallocate") || arguments.read("--ra") ) { reallocateMemory = true; }
-
-        OSG_NOTICE<<"simplificatioRatio="<<simplificatioRatio<<std::endl;
+        modifyDrawableSettings = true; useDisplayLists = true;
     }
 
-    virtual osg::Node* process(osg::Node* node)
+    while (arguments.read("-s", simplificatioRatio))
+    {}
+
+    while (arguments.read("--tristripper"))
     {
-        if (!node)
-        {
-            OSG_NOTICE<<"SceneGraphProcessor::process(Node*) : error cannot process NULL Node."<<std::endl;
-            return 0;
-        }
-
-        OSG_NOTICE<<"SceneGraphProcessor::process("<<node<<") : "<<node->getName()<<std::endl;
-
-        if (simplificatioRatio < 1.0)
-        {
-            OSG_NOTICE<<"Running simplifier with simplification ratio="<<simplificatioRatio<<std::endl;
-            float maxError = 4.0f;
-            osgUtil::Simplifier simplifier(simplificatioRatio, maxError);
-            simplifier.setDoTriStrip(useTriStripVisitor);
-            simplifier.setSmoothing(useSmoothingVisitor);
-            node->accept(simplifier);
-        }
-
-
-        if (modifyTextureSettings)
-        {
-            OptimizeImageVisitor oiv(osgDB::Registry::instance()->getImageProcessor(), compressImages, buildImageMipmaps);
-            node->accept(oiv);
-        }
-
-
-        if (removeDuplicateVertices)
-        {
-            OSG_NOTICE<<"Running osgUtil::IndexMeshVisitor"<<std::endl;
-            osgUtil::IndexMeshVisitor imv;
-            node->accept(imv);
-            imv.makeMesh();
-        }
-
-        if (optimizeVertexCache)
-        {
-            OSG_NOTICE<<"Running osgUtil::VertexCacheVisitor"<<std::endl;
-            osgUtil::VertexCacheVisitor vcv;
-            node->accept(vcv);
-            vcv.optimizeVertices();
-        }
-
-        if (optimizeVertexOrder)
-        {
-            OSG_NOTICE<<"Running osgUtil::VertexAccessOrderVisitor"<<std::endl;
-            osgUtil::VertexAccessOrderVisitor vaov;
-            node->accept(vaov);
-            vaov.optimizeOrder();
-        }
-
-        if (modifyDrawableSettings)
-        {
-            OSG_NOTICE<<"Running StripStateVisitor"<<std::endl;
-            StripStateVisitor ssv(true, useDisplayLists, useVBO);
-            node->accept(ssv);
-        }
-
-        MemoryVisitor mv;
-        node->accept(mv);
-        mv.report(osg::notify(osg::NOTICE));
-
-        if (reallocateMemory)
-        {
-            OSG_NOTICE<<"Running Reallocation of scene graph memory"<<std::endl;
-            mv.reallocate();
-        }
-
-        mv.reset();
-        node->accept(mv);
-        mv.report(osg::notify(osg::NOTICE));
-
-        return node;
+        useTriStripVisitor = true;
     }
+
+    while (arguments.read("--no-tristripper"))
+    {
+        useTriStripVisitor = false;
+    }
+
+    while (arguments.read("--smoother"))
+    {
+        useSmoothingVisitor = true;
+    }
+
+    while (arguments.read("--no-smoother"))
+    {
+        useSmoothingVisitor = false;
+    }
+
+    while (arguments.read("--remove-duplicate-vertices") || arguments.read("--rdv"))
+        removeDuplicateVertices = true;
+
+    while (arguments.read("--optimize-vertex-cache") || arguments.read("--ovc"))
+        optimizeVertexCache = true;
+
+    while (arguments.read("--optimize-vertex-order") || arguments.read("--ovo"))
+        optimizeVertexOrder = true;
+
+    while (arguments.read("--build-mipmaps"))
+    {
+        modifyTextureSettings = true; buildImageMipmaps = true;
+    }
+
+    while (arguments.read("--compress"))
+    {
+        modifyTextureSettings = true; compressImages = true;
+    }
+
+    while (arguments.read("--disable-mipmaps"))
+    {
+        modifyTextureSettings = true; disableMipmaps = true;
+    }
+
+    while (arguments.read("--reallocate") || arguments.read("--ra"))
+    {
+        reallocateMemory = true;
+    }
+
+    OSG_NOTICE << "simplificatioRatio=" << simplificatioRatio << std::endl;
+}
+
+virtual osg::Node* process(osg::Node *node)
+{
+    if (!node)
+    {
+        OSG_NOTICE << "SceneGraphProcessor::process(Node*) : error cannot process NULL Node." << std::endl;
+        return 0;
+    }
+
+    OSG_NOTICE << "SceneGraphProcessor::process(" << node << ") : " << node->getName() << std::endl;
+
+    if (simplificatioRatio < 1.0)
+    {
+        OSG_NOTICE << "Running simplifier with simplification ratio=" << simplificatioRatio << std::endl;
+        float               maxError = 4.0f;
+        osgUtil::Simplifier simplifier(simplificatioRatio, maxError);
+        simplifier.setDoTriStrip(useTriStripVisitor);
+        simplifier.setSmoothing(useSmoothingVisitor);
+        node->accept(simplifier);
+    }
+
+
+    if (modifyTextureSettings)
+    {
+        OptimizeImageVisitor oiv(osgDB::Registry::instance()->getImageProcessor(), compressImages, buildImageMipmaps);
+        node->accept(oiv);
+    }
+
+
+    if (removeDuplicateVertices)
+    {
+        OSG_NOTICE << "Running osgUtil::IndexMeshVisitor" << std::endl;
+        osgUtil::IndexMeshVisitor imv;
+        node->accept(imv);
+        imv.makeMesh();
+    }
+
+    if (optimizeVertexCache)
+    {
+        OSG_NOTICE << "Running osgUtil::VertexCacheVisitor" << std::endl;
+        osgUtil::VertexCacheVisitor vcv;
+        node->accept(vcv);
+        vcv.optimizeVertices();
+    }
+
+    if (optimizeVertexOrder)
+    {
+        OSG_NOTICE << "Running osgUtil::VertexAccessOrderVisitor" << std::endl;
+        osgUtil::VertexAccessOrderVisitor vaov;
+        node->accept(vaov);
+        vaov.optimizeOrder();
+    }
+
+    if (modifyDrawableSettings)
+    {
+        OSG_NOTICE << "Running StripStateVisitor" << std::endl;
+        StripStateVisitor ssv(true, useDisplayLists, useVBO);
+        node->accept(ssv);
+    }
+
+    MemoryVisitor mv;
+    node->accept(mv);
+    mv.report(osg::notify(osg::NOTICE));
+
+    if (reallocateMemory)
+    {
+        OSG_NOTICE << "Running Reallocation of scene graph memory" << std::endl;
+        mv.reallocate();
+    }
+
+    mv.reset();
+    node->accept(mv);
+    mv.report(osg::notify(osg::NOTICE));
+
+    return node;
+}
 
 protected:
 
-    void _init()
-    {
-        modifyDrawableSettings = false;
-        useVBO = false;
-        useDisplayLists = false;
+void _init()
+{
+    modifyDrawableSettings = false;
+    useVBO                 = false;
+    useDisplayLists        = false;
 
-        simplificatioRatio = 1.0;
-        useTriStripVisitor = false;
-        useSmoothingVisitor = false;
+    simplificatioRatio  = 1.0;
+    useTriStripVisitor  = false;
+    useSmoothingVisitor = false;
 
-        removeDuplicateVertices = false;
-        optimizeVertexCache = false;
-        optimizeVertexOrder = false;
+    removeDuplicateVertices = false;
+    optimizeVertexCache     = false;
+    optimizeVertexOrder     = false;
 
-        reallocateMemory = false;
-        
-        modifyTextureSettings = false;
-        buildImageMipmaps = false;
-        compressImages = false;
-        disableMipmaps = false;
-    }
+    reallocateMemory = false;
 
-    bool modifyDrawableSettings;
-    bool useVBO;
-    bool useDisplayLists;
+    modifyTextureSettings = false;
+    buildImageMipmaps     = false;
+    compressImages        = false;
+    disableMipmaps        = false;
+}
 
-    float simplificatioRatio;
-    bool useTriStripVisitor;
-    bool useSmoothingVisitor;
+bool modifyDrawableSettings;
+bool useVBO;
+bool useDisplayLists;
 
-    bool removeDuplicateVertices;
-    bool optimizeVertexCache;
-    bool optimizeVertexOrder;
+float simplificatioRatio;
+bool  useTriStripVisitor;
+bool  useSmoothingVisitor;
 
-    bool reallocateMemory;
-    
-    bool modifyTextureSettings;
-    bool buildImageMipmaps;
-    bool compressImages;
-    bool disableMipmaps;
+bool removeDuplicateVertices;
+bool optimizeVertexCache;
+bool optimizeVertexOrder;
 
+bool reallocateMemory;
+
+bool modifyTextureSettings;
+bool buildImageMipmaps;
+bool compressImages;
+bool disableMipmaps;
 };
-// 
+//
 class DatabasePagingOperation : public osg::Operation, public osgUtil::IncrementalCompileOperation::CompileCompletedCallback
 {
 public:
 
-    DatabasePagingOperation(const std::string& filename,
-                            const std::string& outputFilename,
-                             SceneGraphProcessor* sceneGraphProcessor, 
-                             osgUtil::IncrementalCompileOperation* ico):
-        osg::Referenced(true),
-        Operation("DatabasePaging Operation", false),
-        _filename(filename),
-        _outputFilename(outputFilename),
-        _modelReadyToMerge(false),
-        _sceneGraphProcessor(sceneGraphProcessor),
-        _incrementalCompileOperation(ico)
-        {
-        }
+DatabasePagingOperation(const std::string&filename,
+                        const std::string&outputFilename,
+                        SceneGraphProcessor *sceneGraphProcessor,
+                        osgUtil::IncrementalCompileOperation *ico) :
+    osg::Referenced(true),
+    Operation("DatabasePaging Operation", false),
+    _filename(filename),
+    _outputFilename(outputFilename),
+    _modelReadyToMerge(false),
+    _sceneGraphProcessor(sceneGraphProcessor),
+    _incrementalCompileOperation(ico)
+{}
 
-    virtual void operator () (osg::Object* object)
+virtual void operator ()(osg::Object *object)
+{
+    osg::notify(osg::NOTICE) << "LoadAndCompileOperation " << _filename << std::endl;
+
+    _modelReadyToMerge = false;
+    _loadedModel       = osgDB::readNodeFile(_filename);
+
+    if (_loadedModel.valid())
     {
-        osg::notify(osg::NOTICE)<<"LoadAndCompileOperation "<<_filename<<std::endl;
-
-        _modelReadyToMerge = false;
-        _loadedModel = osgDB::readNodeFile(_filename);
-
-        if (_loadedModel.valid())
+        if (_sceneGraphProcessor.valid())
         {
-            if (_sceneGraphProcessor.valid())
-            {
-                _loadedModel = _sceneGraphProcessor->process(_loadedModel.get());
-            }
+            _loadedModel = _sceneGraphProcessor->process(_loadedModel.get());
         }
-
-        if (_loadedModel.valid())
-        {
-            if (!_outputFilename.empty())
-            {
-                OSG_NOTICE<<"Writing out file "<<_outputFilename<<std::endl;
-                
-                osgDB::writeNodeFile(*_loadedModel, _outputFilename);
-            }
-
-            if (_incrementalCompileOperation.valid())
-            {
-                OSG_NOTICE<<"Registering with ICO "<<_outputFilename<<std::endl;
-
-                osg::ref_ptr<osgUtil::IncrementalCompileOperation::CompileSet> compileSet =
-                    new osgUtil::IncrementalCompileOperation::CompileSet(_loadedModel.get());
-
-                compileSet->_compileCompletedCallback = this;
-
-                _incrementalCompileOperation->add(compileSet.get());
-            }
-            else
-            {
-                _modelReadyToMerge = true;
-            }
-        }
-
-        osg::notify(osg::NOTICE)<<"done LoadAndCompileOperation "<<_filename<<std::endl;
     }
 
-    virtual bool compileCompleted(osgUtil::IncrementalCompileOperation::CompileSet* compileSet)
+    if (_loadedModel.valid())
     {
-        OSG_NOTICE<<"compileCompleted"<<std::endl;
-        _modelReadyToMerge = true;
-        return true;
+        if (!_outputFilename.empty())
+        {
+            OSG_NOTICE << "Writing out file " << _outputFilename << std::endl;
+
+            osgDB::writeNodeFile(*_loadedModel, _outputFilename);
+        }
+
+        if (_incrementalCompileOperation.valid())
+        {
+            OSG_NOTICE << "Registering with ICO " << _outputFilename << std::endl;
+
+            osg::ref_ptr<osgUtil::IncrementalCompileOperation::CompileSet> compileSet =
+                new osgUtil::IncrementalCompileOperation::CompileSet(_loadedModel.get());
+
+            compileSet->_compileCompletedCallback = this;
+
+            _incrementalCompileOperation->add(compileSet.get());
+        }
+        else
+        {
+            _modelReadyToMerge = true;
+        }
     }
 
-    std::string                                         _filename;
-    std::string                                         _outputFilename;
-    osg::ref_ptr<osg::Node>                             _loadedModel;
-    bool                                                _modelReadyToMerge;
-    osg::ref_ptr<SceneGraphProcessor>                   _sceneGraphProcessor;
-    osg::ref_ptr<osgUtil::IncrementalCompileOperation>  _incrementalCompileOperation;
+    osg::notify(osg::NOTICE) << "done LoadAndCompileOperation " << _filename << std::endl;
+}
+
+virtual bool compileCompleted(osgUtil::IncrementalCompileOperation::CompileSet *compileSet)
+{
+    OSG_NOTICE << "compileCompleted" << std::endl;
+    _modelReadyToMerge = true;
+    return true;
+}
+
+std::string                                        _filename;
+std::string                                        _outputFilename;
+osg::ref_ptr<osg::Node>                            _loadedModel;
+bool                                               _modelReadyToMerge;
+osg::ref_ptr<SceneGraphProcessor>                  _sceneGraphProcessor;
+osg::ref_ptr<osgUtil::IncrementalCompileOperation> _incrementalCompileOperation;
 };
 
 class TexturePoolHandler : public osgGA::GUIEventHandler
 {
 public:
-    virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa)
+virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+{
+    if (ea.getEventType() == osgGA::GUIEventAdapter::KEYUP)
     {
-        if (ea.getEventType() == osgGA::GUIEventAdapter::KEYUP)
+        if (ea.getKey() == 'r')
         {
-            if (ea.getKey()=='r')
-            {
-                osg::Texture::getTextureObjectManager(0)->reportStats(osg::notify(osg::NOTICE));
-                osg::GLBufferObjectManager::getGLBufferObjectManager(0)->reportStats(osg::notify(osg::NOTICE));
-            }
+            osg::Texture::getTextureObjectManager(0)->reportStats(osg::notify(osg::NOTICE));
+            osg::GLBufferObjectManager::getGLBufferObjectManager(0)->reportStats(osg::notify(osg::NOTICE));
         }
-        return false;
     }
+
+    return false;
+}
 };
 
 struct ReportStatsAnimationCompletedCallback : public osgGA::AnimationPathManipulator::AnimationCompletedCallback
 {
     virtual void completed(const osgGA::AnimationPathManipulator*)
     {
-        OSG_NOTICE<<"Animation completed"<<std::endl;
+        OSG_NOTICE << "Animation completed" << std::endl;
         osg::Texture::getTextureObjectManager(0)->reportStats(osg::notify(osg::NOTICE));
         osg::GLBufferObjectManager::getGLBufferObjectManager(0)->reportStats(osg::notify(osg::NOTICE));
     }
 };
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     osg::ArgumentParser arguments(&argc, argv);
 
@@ -647,40 +748,43 @@ int main(int argc, char** argv)
     {
         osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
 
-        keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TrackballManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '3', "Drive", new osgGA::DriveManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '4', "Terrain", new osgGA::TerrainManipulator() );
+        keyswitchManipulator->addMatrixManipulator('1', "Trackball", new osgGA::TrackballManipulator());
+        keyswitchManipulator->addMatrixManipulator('2', "Flight", new osgGA::FlightManipulator());
+        keyswitchManipulator->addMatrixManipulator('3', "Drive", new osgGA::DriveManipulator());
+        keyswitchManipulator->addMatrixManipulator('4', "Terrain", new osgGA::TerrainManipulator());
 
-        char keyForAnimationPath = '8';
-        double animationSpeed = 1.0;
-        while(arguments.read("--speed",animationSpeed) ) {}
+        char   keyForAnimationPath = '8';
+        double animationSpeed      = 1.0;
+
+        while (arguments.read("--speed", animationSpeed))
+        {}
 
         std::string pathfile;
-        while (arguments.read("-p",pathfile))
+
+        while (arguments.read("-p", pathfile))
         {
-            osgGA::AnimationPathManipulator* apm = new osgGA::AnimationPathManipulator(pathfile);
+            osgGA::AnimationPathManipulator *apm = new osgGA::AnimationPathManipulator(pathfile);
             if (apm || !apm->valid())
             {
                 apm->setTimeScale(animationSpeed);
                 apm->setAnimationCompletedCallback(new ReportStatsAnimationCompletedCallback());
-                
+
                 unsigned int num = keyswitchManipulator->getNumMatrixManipulators();
-                keyswitchManipulator->addMatrixManipulator( keyForAnimationPath, "Path", apm );
+                keyswitchManipulator->addMatrixManipulator(keyForAnimationPath, "Path", apm);
                 keyswitchManipulator->selectMatrixManipulator(num);
                 ++keyForAnimationPath;
             }
         }
 
-        viewer.setCameraManipulator( keyswitchManipulator.get() );
+        viewer.setCameraManipulator(keyswitchManipulator.get());
     }
 
-    // set up event handlers 
+    // set up event handlers
     {
-        viewer.addEventHandler( new osgViewer::StatsHandler());
-        viewer.addEventHandler( new osgViewer::WindowSizeHandler() );
-        viewer.addEventHandler( new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()) );
-        viewer.addEventHandler( new TexturePoolHandler() );
+        viewer.addEventHandler(new osgViewer::StatsHandler());
+        viewer.addEventHandler(new osgViewer::WindowSizeHandler());
+        viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
+        viewer.addEventHandler(new TexturePoolHandler());
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -688,6 +792,7 @@ int main(int argc, char** argv)
     // IncrementalCompileOperation settings
     //
     osg::ref_ptr<osgUtil::IncrementalCompileOperation> incrementalCompile = new osgUtil::IncrementalCompileOperation;
+
     viewer.setIncrementalCompileOperation(incrementalCompile.get());
 
     if (arguments.read("--force") || arguments.read("-f"))
@@ -719,15 +824,22 @@ int main(int argc, char** argv)
     // Database settings
     //
     double timeBetweenMerges = 2.0;
-    while(arguments.read("--interval",timeBetweenMerges)) {}
+
+    while (arguments.read("--interval", timeBetweenMerges))
+    {}
 
     std::string outputPostfix;
-    while (arguments.read("-o",outputPostfix)) { OSG_NOTICE<<"Set ouputPostfix to "<<outputPostfix<<std::endl; }
+
+    while (arguments.read("-o", outputPostfix))
+    {
+        OSG_NOTICE << "Set ouputPostfix to " << outputPostfix << std::endl;
+    }
 
 
-    typedef std::vector< std::string > FileNames;
+    typedef std::vector<std::string> FileNames;
     FileNames fileNames;
-    for(int pos=1;pos<arguments.argc();++pos)
+
+    for (int pos = 1; pos < arguments.argc(); ++pos)
     {
         if (!arguments.isOption(pos))
         {
@@ -737,7 +849,7 @@ int main(int argc, char** argv)
 
     if (fileNames.empty())
     {
-        OSG_NOTICE<<"No files loaded, please specify files on commandline."<<std::endl;
+        OSG_NOTICE << "No files loaded, please specify files on commandline." << std::endl;
         return 1;
     }
 
@@ -746,7 +858,7 @@ int main(int argc, char** argv)
 
     unsigned int modelIndex = 0;
 
-    osg::ref_ptr<osg::OperationThread> databasePagingThread;
+    osg::ref_ptr<osg::OperationThread>    databasePagingThread;
     osg::ref_ptr<DatabasePagingOperation> databasePagingOperation;
 
     databasePagingThread = new osg::OperationThread;
@@ -758,8 +870,8 @@ int main(int argc, char** argv)
 
     viewer.realize();
 
-    std::string filename = fileNames[modelIndex++];
-    std::string outputFilename = outputPostfix.empty() ? std::string() : osgDB::getStrippedName(filename)+outputPostfix;
+    std::string filename       = fileNames[modelIndex++];
+    std::string outputFilename = outputPostfix.empty() ? std::string() : osgDB::getStrippedName(filename) + outputPostfix;
 
     databasePagingOperation = new DatabasePagingOperation(
         filename,
@@ -772,18 +884,18 @@ int main(int argc, char** argv)
 
     double timeOfLastMerge = viewer.getFrameStamp()->getReferenceTime();
 
-    while(!viewer.done())
+    while (!viewer.done())
     {
         viewer.frame();
 
         double currentTime = viewer.getFrameStamp()->getReferenceTime();
 
         if (!databasePagingOperation &&
-            modelIndex<fileNames.size() &&
-            (currentTime-timeOfLastMerge)>timeBetweenMerges)
+            modelIndex < fileNames.size() &&
+            (currentTime - timeOfLastMerge) > timeBetweenMerges)
         {
-            std::string filename = fileNames[modelIndex++];
-            std::string outputFilename = outputPostfix.empty() ? std::string() : osgDB::getStrippedName(filename)+outputPostfix;
+            std::string filename       = fileNames[modelIndex++];
+            std::string outputFilename = outputPostfix.empty() ? std::string() : osgDB::getStrippedName(filename) + outputPostfix;
 
             databasePagingOperation = new DatabasePagingOperation(
                 filename,
@@ -796,11 +908,11 @@ int main(int argc, char** argv)
 
         if (databasePagingOperation.get() && databasePagingOperation->_modelReadyToMerge)
         {
-            OSG_NOTICE<<"Merging subgraph"<<std::endl;
-            
+            OSG_NOTICE << "Merging subgraph" << std::endl;
+
             timeOfLastMerge = currentTime;
 
-            group->removeChildren(0,group->getNumChildren());
+            group->removeChildren(0, group->getNumChildren());
 
             group->addChild(databasePagingOperation->_loadedModel.get());
 

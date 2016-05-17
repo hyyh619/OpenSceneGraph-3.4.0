@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgvertexprogram.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <osg/Vec3>
 #include <osg/Vec4>
@@ -150,17 +150,18 @@ const char vpstr[] =
 
 osg::TextureCubeMap* readCubeMap()
 {
-    osg::TextureCubeMap* cubemap = new osg::TextureCubeMap;
-    //#define CUBEMAP_FILENAME(face) "nvlobby_" #face ".png"
-    //#define CUBEMAP_FILENAME(face) "Cubemap_axis/" #face ".png"
+    osg::TextureCubeMap *cubemap = new osg::TextureCubeMap;
+
+    // #define CUBEMAP_FILENAME(face) "nvlobby_" #face ".png"
+    // #define CUBEMAP_FILENAME(face) "Cubemap_axis/" #face ".png"
     #define CUBEMAP_FILENAME(face) "Cubemap_snow/" #face ".jpg"
 
-    osg::Image* imagePosX = osgDB::readImageFile(CUBEMAP_FILENAME(posx));
-    osg::Image* imageNegX = osgDB::readImageFile(CUBEMAP_FILENAME(negx));
-    osg::Image* imagePosY = osgDB::readImageFile(CUBEMAP_FILENAME(posy));
-    osg::Image* imageNegY = osgDB::readImageFile(CUBEMAP_FILENAME(negy));
-    osg::Image* imagePosZ = osgDB::readImageFile(CUBEMAP_FILENAME(posz));
-    osg::Image* imageNegZ = osgDB::readImageFile(CUBEMAP_FILENAME(negz));
+    osg::Image *imagePosX = osgDB::readImageFile(CUBEMAP_FILENAME(posx));
+    osg::Image *imageNegX = osgDB::readImageFile(CUBEMAP_FILENAME(negx));
+    osg::Image *imagePosY = osgDB::readImageFile(CUBEMAP_FILENAME(posy));
+    osg::Image *imageNegY = osgDB::readImageFile(CUBEMAP_FILENAME(negy));
+    osg::Image *imagePosZ = osgDB::readImageFile(CUBEMAP_FILENAME(posz));
+    osg::Image *imageNegZ = osgDB::readImageFile(CUBEMAP_FILENAME(negz));
 
     if (imagePosX && imageNegX && imagePosY && imageNegY && imagePosZ && imageNegZ)
     {
@@ -188,68 +189,72 @@ struct TexMatCallback : public osg::NodeCallback
 {
 public:
 
-    TexMatCallback(osg::TexMat& tm) :
+    TexMatCallback(osg::TexMat&tm) :
         _texMat(tm)
-    {
-    }
+    {}
 
-    virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
+    virtual void operator()(osg::Node *node, osg::NodeVisitor *nv)
     {
-        osgUtil::CullVisitor* cv = dynamic_cast<osgUtil::CullVisitor*>(nv);
+        osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(nv);
+
         if (cv)
         {
-            const osg::Matrix& MV = *(cv->getModelViewMatrix());
-            const osg::Matrix R = osg::Matrix::rotate( osg::DegreesToRadians(112.0f), 0.0f,0.0f,1.0f)*
-                                  osg::Matrix::rotate( osg::DegreesToRadians(90.0f), 1.0f,0.0f,0.0f);
+            const osg::Matrix &MV = *(cv->getModelViewMatrix());
+            const osg::Matrix R   = osg::Matrix::rotate(osg::DegreesToRadians(112.0f), 0.0f, 0.0f, 1.0f) *
+                                    osg::Matrix::rotate(osg::DegreesToRadians(90.0f), 1.0f, 0.0f, 0.0f);
 
-            osg::Quat q = MV.getRotate();
-            const osg::Matrix C = osg::Matrix::rotate( q.inverse() );
+            osg::Quat         q = MV.getRotate();
+            const osg::Matrix C = osg::Matrix::rotate(q.inverse());
 
-            _texMat.setMatrix( C*R );
+            _texMat.setMatrix(C * R);
         }
 
-        traverse(node,nv);
+        traverse(node, nv);
     }
 
-    osg::TexMat& _texMat;
+    osg::TexMat&_texMat;
 };
 
 
 class MoveEarthySkyWithEyePointTransform : public osg::Transform
 {
 public:
-    /** Get the transformation matrix which moves from local coords to world coords.*/
-    virtual bool computeLocalToWorldMatrix(osg::Matrix& matrix,osg::NodeVisitor* nv) const
+/** Get the transformation matrix which moves from local coords to world coords.*/
+virtual bool computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+{
+    osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(nv);
+
+    if (cv)
     {
-        osgUtil::CullVisitor* cv = dynamic_cast<osgUtil::CullVisitor*>(nv);
-        if (cv)
-        {
-            osg::Vec3 eyePointLocal = cv->getEyeLocal();
-            matrix.preMultTranslate(eyePointLocal);
-        }
-        return true;
+        osg::Vec3 eyePointLocal = cv->getEyeLocal();
+        matrix.preMultTranslate(eyePointLocal);
     }
 
-    /** Get the transformation matrix which moves from world coords to local coords.*/
-    virtual bool computeWorldToLocalMatrix(osg::Matrix& matrix,osg::NodeVisitor* nv) const
+    return true;
+}
+
+/** Get the transformation matrix which moves from world coords to local coords.*/
+virtual bool computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+{
+    osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(nv);
+
+    if (cv)
     {
-        osgUtil::CullVisitor* cv = dynamic_cast<osgUtil::CullVisitor*>(nv);
-        if (cv)
-        {
-            osg::Vec3 eyePointLocal = cv->getEyeLocal();
-            matrix.postMultTranslate(-eyePointLocal);
-        }
-        return true;
+        osg::Vec3 eyePointLocal = cv->getEyeLocal();
+        matrix.postMultTranslate(-eyePointLocal);
     }
+
+    return true;
+}
 };
 
 
 osg::Node* createSkyBox()
 {
+    osg::StateSet *stateset = new osg::StateSet();
 
-    osg::StateSet* stateset = new osg::StateSet();
+    osg::TexEnv *te = new osg::TexEnv;
 
-    osg::TexEnv* te = new osg::TexEnv;
     te->setMode(osg::TexEnv::REPLACE);
     stateset->setTextureAttributeAndModes(0, te, osg::StateAttribute::ON);
 
@@ -260,33 +265,33 @@ osg::Node* createSkyBox()
     osg::TexMat *tm = new osg::TexMat;
     stateset->setTextureAttribute(0, tm);
 
-    osg::TextureCubeMap* skymap = readCubeMap();
+    osg::TextureCubeMap *skymap = readCubeMap();
     stateset->setTextureAttributeAndModes(0, skymap, osg::StateAttribute::ON);
 
-    stateset->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
-    stateset->setMode( GL_CULL_FACE, osg::StateAttribute::OFF );
+    stateset->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+    stateset->setMode(GL_CULL_FACE, osg::StateAttribute::OFF);
 
     // clear the depth to the far plane.
-    osg::Depth* depth = new osg::Depth;
+    osg::Depth *depth = new osg::Depth;
     depth->setFunction(osg::Depth::ALWAYS);
-    depth->setRange(1.0,1.0);
-    stateset->setAttributeAndModes(depth, osg::StateAttribute::ON );
+    depth->setRange(1.0, 1.0);
+    stateset->setAttributeAndModes(depth, osg::StateAttribute::ON);
 
-    stateset->setRenderBinDetails(-1,"RenderBin");
+    stateset->setRenderBinDetails(-1, "RenderBin");
 
-    osg::Drawable* drawable = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f,0.0f,0.0f),1));
+    osg::Drawable *drawable = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f, 0.0f, 0.0f), 1));
 
-    osg::Geode* geode = new osg::Geode;
+    osg::Geode *geode = new osg::Geode;
     geode->setCullingActive(false);
-    geode->setStateSet( stateset );
+    geode->setStateSet(stateset);
     geode->addDrawable(drawable);
 
 
-    osg::Transform* transform = new MoveEarthySkyWithEyePointTransform;
+    osg::Transform *transform = new MoveEarthySkyWithEyePointTransform;
     transform->setCullingActive(false);
     transform->addChild(geode);
 
-    osg::ClearNode* clearNode = new osg::ClearNode;
+    osg::ClearNode *clearNode = new osg::ClearNode;
 //  clearNode->setRequiresClear(false);
     clearNode->setCullCallback(new TexMatCallback(*tm));
     clearNode->addChild(transform);
@@ -297,25 +302,26 @@ osg::Node* createSkyBox()
 
 
 
-osg::Node* addRefractStateSet(osg::Node* node)
+osg::Node* addRefractStateSet(osg::Node *node)
 {
-    osg::StateSet* stateset = new osg::StateSet();
+    osg::StateSet *stateset = new osg::StateSet();
 
-    osg::TextureCubeMap* reflectmap = readCubeMap();
-    stateset->setTextureAttributeAndModes( 0, reflectmap, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
-    stateset->setTextureAttributeAndModes( 1, reflectmap, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
+    osg::TextureCubeMap *reflectmap = readCubeMap();
 
-    osg::TexMat* texMat = new osg::TexMat;
+    stateset->setTextureAttributeAndModes(0, reflectmap, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+    stateset->setTextureAttributeAndModes(1, reflectmap, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+
+    osg::TexMat *texMat = new osg::TexMat;
     stateset->setTextureAttribute(0, texMat);
 
     // ---------------------------------------------------
     // Vertex Program
     // ---------------------------------------------------
-    osg::VertexProgram* vp = new osg::VertexProgram();
-    vp->setVertexProgram( vpstr );
-    vp->setProgramLocalParameter( 0, osg::Vec4( fresnel, fresnel, fresnel, 1.0f ) );
-    vp->setProgramLocalParameter( 1, osg::Vec4( refract, refract*refract, 0.0f, 0.0f ) );
-    stateset->setAttributeAndModes( vp, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
+    osg::VertexProgram *vp = new osg::VertexProgram();
+    vp->setVertexProgram(vpstr);
+    vp->setProgramLocalParameter(0, osg::Vec4(fresnel, fresnel, fresnel, 1.0f));
+    vp->setProgramLocalParameter(1, osg::Vec4(refract, refract * refract, 0.0f, 0.0f));
+    stateset->setAttributeAndModes(vp, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 
     // ---------------------------------------------------
     // fragment = refraction*(1-fresnel) + reflection*fresnel
@@ -349,10 +355,10 @@ osg::Node* addRefractStateSet(osg::Node* node)
     stateset->setTextureAttributeAndModes(0, te0, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
     stateset->setTextureAttributeAndModes(1, te1, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 
-    osg::Group* group = new osg::Group;
+    osg::Group *group = new osg::Group;
     group->addChild(node);
     group->setCullCallback(new TexMatCallback(*texMat));
-    group->setStateSet( stateset );
+    group->setStateSet(stateset);
 
     return group;
 }
@@ -361,22 +367,22 @@ osg::Node* addRefractStateSet(osg::Node* node)
 int main(int argc, char *argv[])
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     // construct the viewer.
     osgViewer::Viewer viewer;
 
-    osg::Group* rootnode = new osg::Group;
+    osg::Group *rootnode = new osg::Group;
 
     rootnode->addChild(createSkyBox());
 
     // load the nodes from the commandline arguments.
-    osg::Node* model = osgDB::readNodeFiles(arguments);
+    osg::Node *model = osgDB::readNodeFiles(arguments);
     if (!model)
     {
         const float radius = 1.0f;
-        osg::Geode* geode = new osg::Geode;
-        geode->addDrawable(new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f,0.0f,0.0f),radius)));
+        osg::Geode  *geode = new osg::Geode;
+        geode->addDrawable(new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f, 0.0f, 0.0f), radius)));
         model = geode;
     }
 
@@ -388,7 +394,7 @@ int main(int argc, char *argv[])
     osgUtil::SmoothingVisitor smoother;
     model->accept(smoother);
 
-    rootnode->addChild( addRefractStateSet(model) );
+    rootnode->addChild(addRefractStateSet(model));
 
     // add a viewport to the viewer and attach the scene graph.
     viewer.setSceneData(rootnode);
@@ -399,17 +405,18 @@ int main(int argc, char *argv[])
     // now check to see if vertex program is supported.
     osgViewer::Viewer::Windows windows;
     viewer.getWindows(windows);
-    for(osgViewer::Viewer::Windows::iterator itr = windows.begin();
-        itr != windows.end();
-        ++itr)
+
+    for (osgViewer::Viewer::Windows::iterator itr = windows.begin();
+         itr != windows.end();
+         ++itr)
     {
-        unsigned int contextID = (*itr)->getState()->getContextID();
-        osg::GLExtensions* vpExt = osg::GLExtensions::Get(contextID,false);
+        unsigned int      contextID = (*itr)->getState()->getContextID();
+        osg::GLExtensions *vpExt    = osg::GLExtensions::Get(contextID, false);
         if (vpExt)
         {
             if (!vpExt->isVertexProgramSupported)
             {
-                std::cout<<"Warning: ARB_vertex_program not supported by OpenGL drivers, unable to run application."<<std::endl;
+                std::cout << "Warning: ARB_vertex_program not supported by OpenGL drivers, unable to run application." << std::endl;
                 return 1;
             }
         }

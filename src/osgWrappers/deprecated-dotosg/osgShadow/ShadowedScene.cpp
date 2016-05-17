@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool ShadowedScene_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool ShadowedScene_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool ShadowedScene_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool ShadowedScene_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ShadowedScene_Proxy)
 (
@@ -24,25 +24,28 @@ REGISTER_DOTOSGWRAPPER(ShadowedScene_Proxy)
     ShadowedScene_writeLocalData
 );
 
-bool ShadowedScene_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool ShadowedScene_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgShadow::ShadowedScene& ss = static_cast<osgShadow::ShadowedScene&>(obj);
-    bool iteratorAdvanced = false;
+    osgShadow::ShadowedScene&ss              = static_cast<osgShadow::ShadowedScene&>(obj);
+    bool                    iteratorAdvanced = false;
 
-    osg::ref_ptr<osg::Object> object=0;
-    while((object=fr.readObject())!=0)
+    osg::ref_ptr<osg::Object> object = 0;
+
+    while ((object = fr.readObject()) != 0)
     {
-        osgShadow::ShadowTechnique* st = dynamic_cast<osgShadow::ShadowTechnique*>(object.get());
-        if (st) ss.setShadowTechnique(st);
+        osgShadow::ShadowTechnique *st = dynamic_cast<osgShadow::ShadowTechnique*>(object.get());
+        if (st)
+            ss.setShadowTechnique(st);
+
         iteratorAdvanced = true;
     }
 
     return iteratorAdvanced;
 }
 
-bool ShadowedScene_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool ShadowedScene_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgShadow::ShadowedScene& ss = static_cast<const osgShadow::ShadowedScene &>(obj);
+    const osgShadow::ShadowedScene&ss = static_cast<const osgShadow::ShadowedScene&>(obj);
 
     if (ss.getShadowTechnique())
     {

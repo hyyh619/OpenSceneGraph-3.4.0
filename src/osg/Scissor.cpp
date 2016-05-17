@@ -9,26 +9,24 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Scissor>
 
 using namespace osg;
 
 Scissor::Scissor()
 {
-    _x = 0;
-    _y = 0;
-    _width = 800;
+    _x      = 0;
+    _y      = 0;
+    _width  = 800;
     _height = 600;
 }
 
 
 Scissor::~Scissor()
-{
-}
+{}
 
 void Scissor::apply(State&) const
 {
-    glScissor(_x,_y,_width,_height);
+    glScissor(_x, _y, _width, _height);
 }
-

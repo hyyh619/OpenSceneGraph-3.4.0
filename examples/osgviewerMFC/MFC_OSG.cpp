@@ -5,9 +5,8 @@
 
 
 cOSG::cOSG(HWND hWnd) :
-   m_hWnd(hWnd)
-{
-}
+    m_hWnd(hWnd)
+{}
 
 cOSG::~cOSG()
 {
@@ -38,7 +37,7 @@ void cOSG::InitManipulators(void)
     keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
 
     // Add our trackball manipulator to the switcher
-    keyswitchManipulator->addMatrixManipulator( '1', "Trackball", trackball.get());
+    keyswitchManipulator->addMatrixManipulator('1', "Trackball", trackball.get());
 
     // Init the switcher to the first manipulator (in this case the only manipulator)
     keyswitchManipulator->selectMatrixManipulator(0);  // Zero based index Value
@@ -48,11 +47,12 @@ void cOSG::InitManipulators(void)
 void cOSG::InitSceneGraph(void)
 {
     // Init the main Root Node/Group
-    mRoot  = new osg::Group;
+    mRoot = new osg::Group;
 
     // Load the Model from the model name
     mModel = osgDB::readNodeFile(m_ModelName);
-    if (!mModel) return;
+    if (!mModel)
+        return;
 
     // Optimize the model
     osgUtil::Optimizer optimizer;
@@ -84,18 +84,18 @@ void cOSG::InitCameraConfig(void)
     osg::ref_ptr<osg::Referenced> windata = new osgViewer::GraphicsWindowWin32::WindowData(m_hWnd);
 
     // Setup the traits parameters
-    traits->x = 0;
-    traits->y = 0;
-    traits->width = rect.right - rect.left;
-    traits->height = rect.bottom - rect.top;
-    traits->windowDecoration = false;
-    traits->doubleBuffer = true;
-    traits->sharedContext = 0;
+    traits->x                             = 0;
+    traits->y                             = 0;
+    traits->width                         = rect.right - rect.left;
+    traits->height                        = rect.bottom - rect.top;
+    traits->windowDecoration              = false;
+    traits->doubleBuffer                  = true;
+    traits->sharedContext                 = 0;
     traits->setInheritedWindowPixelFormat = true;
-    traits->inheritedWindowData = windata;
+    traits->inheritedWindowData           = windata;
 
     // Create the Graphics Context
-    osg::GraphicsContext* gc = osg::GraphicsContext::createGraphicsContext(traits.get());
+    osg::GraphicsContext *gc = osg::GraphicsContext::createGraphicsContext(traits.get());
 
     // Init Master Camera for this View
     osg::ref_ptr<osg::Camera> camera = mViewer->getCamera();
@@ -110,10 +110,10 @@ void cOSG::InitCameraConfig(void)
     camera->setClearMask(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     camera->setClearColor(osg::Vec4f(0.2f, 0.2f, 0.4f, 1.0f));
     camera->setProjectionMatrixAsPerspective(
-        30.0f, static_cast<double>(traits->width)/static_cast<double>(traits->height), 1.0, 1000.0);
+        30.0f, static_cast<double>(traits->width) / static_cast<double>(traits->height), 1.0, 1000.0);
 
     // Add the Camera to the Viewer
-    //mViewer->addSlave(camera.get());
+    // mViewer->addSlave(camera.get());
     mViewer->setCamera(camera.get());
 
     // Add the Camera Manipulator to the Viewer
@@ -127,9 +127,9 @@ void cOSG::InitCameraConfig(void)
 
     // Correct aspect ratio
     /*double fovy,aspectRatio,z1,z2;
-    mViewer->getCamera()->getProjectionMatrixAsPerspective(fovy,aspectRatio,z1,z2);
-    aspectRatio=double(traits->width)/double(traits->height);
-    mViewer->getCamera()->setProjectionMatrixAsPerspective(fovy,aspectRatio,z1,z2);*/
+       mViewer->getCamera()->getProjectionMatrixAsPerspective(fovy,aspectRatio,z1,z2);
+       aspectRatio=double(traits->width)/double(traits->height);
+       mViewer->getCamera()->setProjectionMatrixAsPerspective(fovy,aspectRatio,z1,z2);*/
 }
 
 void cOSG::PreFrameUpdate()
@@ -143,7 +143,7 @@ void cOSG::PostFrameUpdate()
 }
 
 /*void cOSG::Render(void* ptr)
-{
+   {
     cOSG* osg = (cOSG*)ptr;
 
     osgViewer::Viewer* viewer = osg->getViewer();
@@ -167,12 +167,11 @@ void cOSG::PostFrameUpdate()
     AfxMessageBox("Exit Rendering Thread");
 
     _endthread();
-}*/
+   }*/
 
-CRenderingThread::CRenderingThread( cOSG* ptr )
-:   OpenThreads::Thread(), _ptr(ptr), _done(false)
-{
-}
+CRenderingThread::CRenderingThread(cOSG *ptr)
+    :   OpenThreads::Thread(), _ptr(ptr), _done(false)
+{}
 
 CRenderingThread::~CRenderingThread()
 {
@@ -186,17 +185,19 @@ CRenderingThread::~CRenderingThread()
 
 void CRenderingThread::run()
 {
-    if ( !_ptr )
+    if (!_ptr)
     {
         _done = true;
         return;
     }
 
-    osgViewer::Viewer* viewer = _ptr->getViewer();
+    osgViewer::Viewer *viewer = _ptr->getViewer();
+
     do
     {
         _ptr->PreFrameUpdate();
         viewer->frame();
         _ptr->PostFrameUpdate();
-    } while ( !testCancel() && !viewer->done() && !_done );
+    }
+    while (!testCancel() && !viewer->done() && !_done);
 }

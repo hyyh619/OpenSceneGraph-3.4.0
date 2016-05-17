@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TexEnvFilter_readLocalData(Object& obj, Input& fr);
-bool TexEnvFilter_writeLocalData(const Object& obj, Output& fw);
+bool TexEnvFilter_readLocalData(Object&obj, Input&fr);
+bool TexEnvFilter_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(TexEnvFilter)
@@ -22,13 +22,14 @@ REGISTER_DOTOSGWRAPPER(TexEnvFilter)
 );
 
 
-bool TexEnvFilter_readLocalData(Object& obj, Input& fr)
+bool TexEnvFilter_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    TexEnvFilter& texenvfilter = static_cast<TexEnvFilter&>(obj);
+    TexEnvFilter&texenvfilter = static_cast<TexEnvFilter&>(obj);
 
     float lodBias = 0.0f;
+
     if (fr[0].matchWord("lodBias") && fr[1].getFloat(lodBias))
     {
         fr += 2;
@@ -39,9 +40,9 @@ bool TexEnvFilter_readLocalData(Object& obj, Input& fr)
     return iteratorAdvanced;
 }
 
-bool TexEnvFilter_writeLocalData(const Object& obj, Output& fw)
+bool TexEnvFilter_writeLocalData(const Object&obj, Output&fw)
 {
-    const TexEnvFilter& texenvfilter = static_cast<const TexEnvFilter&>(obj);
+    const TexEnvFilter&texenvfilter = static_cast<const TexEnvFilter&>(obj);
 
     fw.indent() << "lodBias " << texenvfilter.getLodBias() << std::endl;
 

@@ -4,11 +4,13 @@
 #include <osg/Texture2D>
 #include "ReadWrite.h"
 
-namespace ive{
-class Texture2D : public osg::Texture2D, public ReadWrite {
+namespace ive
+{
+class Texture2D : public osg::Texture2D, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

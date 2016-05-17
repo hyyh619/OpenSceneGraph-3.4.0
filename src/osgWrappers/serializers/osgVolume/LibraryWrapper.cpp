@@ -24,4 +24,3 @@ USE_SERIALIZER_WRAPPER(osgVolume_VolumeTechnique)
 USE_SERIALIZER_WRAPPER(osgVolume_VolumeTile)
 
 extern "C" void wrapper_serializer_library_osgVolume(void) {}
-

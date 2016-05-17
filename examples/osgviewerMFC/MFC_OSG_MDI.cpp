@@ -17,16 +17,15 @@
 // CMFC_OSG_MDIApp
 
 BEGIN_MESSAGE_MAP(CMFC_OSG_MDIApp, CWinApp)
-    ON_COMMAND(ID_APP_ABOUT, &CMFC_OSG_MDIApp::OnAppAbout)
-    ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
+ON_COMMAND(ID_APP_ABOUT, &CMFC_OSG_MDIApp::OnAppAbout)
+ON_COMMAND(ID_FILE_OPEN, &CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 
 
 // CMFC_OSG_MDIApp construction
 
 CMFC_OSG_MDIApp::CMFC_OSG_MDIApp()
-{
-}
+{}
 
 
 // The one and only CMFC_OSG_MDIApp object
@@ -42,6 +41,7 @@ BOOL CMFC_OSG_MDIApp::InitInstance()
     // manifest specifies use of ComCtl32.dll version 6 or later to enable
     // visual styles.  Otherwise, any window creation will fail.
     INITCOMMONCONTROLSEX InitCtrls;
+
     InitCtrls.dwSize = sizeof(InitCtrls);
     // Set this to include all the common control classes you want to use
     // in your application.
@@ -61,22 +61,24 @@ BOOL CMFC_OSG_MDIApp::InitInstance()
     LoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
     // Register the application's document templates.  Document templates
     //  serve as the connection between documents, frame windows and views
-    CMultiDocTemplate* pDocTemplate;
+    CMultiDocTemplate *pDocTemplate;
     pDocTemplate = new CMultiDocTemplate(IDR_MFC_OSG_MDITYPE,
-        RUNTIME_CLASS(CMFC_OSG_MDIDoc),
-        RUNTIME_CLASS(CChildFrame), // custom MDI child frame
-        RUNTIME_CLASS(CMFC_OSG_MDIView));
+                                         RUNTIME_CLASS(CMFC_OSG_MDIDoc),
+                                         RUNTIME_CLASS(CChildFrame), // custom MDI child frame
+                                         RUNTIME_CLASS(CMFC_OSG_MDIView));
     if (!pDocTemplate)
         return FALSE;
+
     AddDocTemplate(pDocTemplate);
 
     // create main MDI Frame window
-    CMainFrame* pMainFrame = new CMainFrame;
+    CMainFrame *pMainFrame = new CMainFrame;
     if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
     {
         delete pMainFrame;
         return FALSE;
     }
+
     m_pMainWnd = pMainFrame;
     // call DragAcceptFiles only if there's a suffix
     //  In an MDI app, this should occur immediately after setting m_pMainWnd
@@ -94,6 +96,7 @@ BOOL CMFC_OSG_MDIApp::InitInstance()
     // app was launched with /RegServer, /Register, /Unregserver or /Unregister.
     if (!ProcessShellCommand(cmdInfo))
         return FALSE;
+
     // The main window has been initialized, so show and update it
     pMainFrame->ShowWindow(m_nCmdShow);
     pMainFrame->UpdateWindow();
@@ -108,24 +111,23 @@ BOOL CMFC_OSG_MDIApp::InitInstance()
 class CAboutDlg : public CDialog
 {
 public:
-    CAboutDlg();
+CAboutDlg();
 
 // Dialog Data
-    enum { IDD = IDD_ABOUTBOX };
+enum { IDD = IDD_ABOUTBOX };
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+virtual void DoDataExchange(CDataExchange *pDX);        // DDX/DDV support
 
 // Implementation
 protected:
-    DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 };
 
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-{
-}
+{}
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+void CAboutDlg::DoDataExchange(CDataExchange *pDX)
 {
     CDialog::DoDataExchange(pDX);
 }
@@ -137,9 +139,9 @@ END_MESSAGE_MAP()
 void CMFC_OSG_MDIApp::OnAppAbout()
 {
     CAboutDlg aboutDlg;
+
     aboutDlg.DoModal();
 }
 
 
 // CMFC_OSG_MDIApp message handlers
-

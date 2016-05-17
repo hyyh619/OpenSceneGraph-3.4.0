@@ -9,8 +9,8 @@ using namespace osgSim;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool VisibilityGroup_readLocalData(Object& obj, Input& fr);
-bool VisibilityGroup_writeLocalData(const Object& obj, Output& fw);
+bool VisibilityGroup_readLocalData(Object&obj, Input&fr);
+bool VisibilityGroup_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(g_VisibilityGroupProxy)
@@ -22,17 +22,18 @@ REGISTER_DOTOSGWRAPPER(g_VisibilityGroupProxy)
     &VisibilityGroup_writeLocalData
 );
 
-bool VisibilityGroup_readLocalData(Object& obj, Input& fr)
+bool VisibilityGroup_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    VisibilityGroup& vg = static_cast<VisibilityGroup&>(obj);
+    VisibilityGroup&vg = static_cast<VisibilityGroup&>(obj);
 
     unsigned int mask = vg.getVolumeIntersectionMask();
+
     if (fr[0].matchWord("volumeIntersectionMask") && fr[1].getUInt(mask))
     {
         vg.setNodeMask(mask);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -44,7 +45,7 @@ bool VisibilityGroup_readLocalData(Object& obj, Input& fr)
             fr[1].getFloat(value);
             vg.setSegmentLength(value);
             iteratorAdvanced = true;
-            fr += 2;
+            fr              += 2;
         }
     }
 
@@ -52,8 +53,8 @@ bool VisibilityGroup_readLocalData(Object& obj, Input& fr)
     {
 //        int entry = fr[0].getNoNestedBrackets();
         ++fr;
-        Node* node = NULL;
-        if((node=fr.readNode())!=NULL)
+        Node *node = NULL;
+        if ((node = fr.readNode()) != NULL)
         {
             vg.setVisibilityVolume(node);
             iteratorAdvanced = true;
@@ -64,13 +65,13 @@ bool VisibilityGroup_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool VisibilityGroup_writeLocalData(const Object& obj, Output& fw)
+bool VisibilityGroup_writeLocalData(const Object&obj, Output&fw)
 {
-    const VisibilityGroup& vg = static_cast<const VisibilityGroup&>(obj);
+    const VisibilityGroup&vg = static_cast<const VisibilityGroup&>(obj);
 
-    fw.indent()<<"volumeIntersectionMask 0x"<<std::hex<<vg.getVolumeIntersectionMask()<<std::dec<<std::endl;
-    fw.indent()<<"segmentLength "<<vg.getSegmentLength()<<std::endl;
-    fw.indent()<<"visibilityVolume" <<std::endl;
+    fw.indent() << "volumeIntersectionMask 0x" << std::hex << vg.getVolumeIntersectionMask() << std::dec << std::endl;
+    fw.indent() << "segmentLength " <<            vg.getSegmentLength() << std::endl;
+    fw.indent() << "visibilityVolume" <<          std::endl;
     fw.moveIn();
     fw.writeObject(*vg.getVisibilityVolume());
     fw.moveOut();

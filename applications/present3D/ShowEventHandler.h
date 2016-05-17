@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
-*/
+ */
 
 #ifndef SHOWEVENTHANDLER
 #define SHOWEVENTHANDLER 1
@@ -20,19 +20,16 @@
 
 namespace p3d
 {
-
 class ShowEventHandler : public osgGA::GUIEventHandler
 {
-    public:
+public:
 
-        ShowEventHandler();
+ShowEventHandler();
 
-        virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& aa, osg::Object* object, osg::NodeVisitor* nv);
+virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object *object, osg::NodeVisitor *nv);
 
-        virtual void getUsage(osg::ApplicationUsage& usage) const;
-
+virtual void getUsage(osg::ApplicationUsage&usage) const;
 };
-
 }
 
 #endif

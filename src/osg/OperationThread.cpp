@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 #include <osg/OperationThread>
@@ -21,9 +21,9 @@ using namespace OpenThreads;
 
 struct BlockOperation : public Operation, public Block
 {
-    BlockOperation():
+    BlockOperation() :
         osg::Referenced(true),
-        Operation("Block",false)
+        Operation("Block", false)
     {
         reset();
     }
@@ -33,7 +33,7 @@ struct BlockOperation : public Operation, public Block
         Block::release();
     }
 
-    virtual void operator () (Object*)
+    virtual void operator ()(Object*)
     {
         glFlush();
         Block::release();
@@ -45,28 +45,28 @@ struct BlockOperation : public Operation, public Block
 //  OperationsQueue
 //
 
-OperationQueue::OperationQueue():
+OperationQueue::OperationQueue() :
     osg::Referenced(true)
 {
     _currentOperationIterator = _operations.begin();
-    _operationsBlock = new RefBlock;
+    _operationsBlock          = new RefBlock;
 }
 
 OperationQueue::~OperationQueue()
-{
-}
+{}
 
 bool OperationQueue::empty()
 {
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
 
-  OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
-  return _operations.empty();
+    return _operations.empty();
 }
 
 unsigned int OperationQueue::getNumOperationsInQueue()
 {
-  OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
-  return static_cast<unsigned int>(_operations.size());
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
+
+    return static_cast<unsigned int>(_operations.size());
 }
 
 ref_ptr<Operation> OperationQueue::getNextOperation(bool blockIfEmpty)
@@ -78,7 +78,8 @@ ref_ptr<Operation> OperationQueue::getNextOperation(bool blockIfEmpty)
 
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
 
-    if (_operations.empty()) return osg::ref_ptr<Operation>();
+    if (_operations.empty())
+        return osg::ref_ptr<Operation>();
 
     if (_currentOperationIterator == _operations.end())
     {
@@ -99,8 +100,8 @@ ref_ptr<Operation> OperationQueue::getNextOperation(bool blockIfEmpty)
 
         if (_operations.empty())
         {
-           // OSG_INFO<<"setting block "<<_operations.size()<<std::endl;
-           _operationsBlock->set(false);
+            // OSG_INFO<<"setting block "<<_operations.size()<<std::endl;
+            _operationsBlock->set(false);
         }
     }
     else
@@ -114,9 +115,9 @@ ref_ptr<Operation> OperationQueue::getNextOperation(bool blockIfEmpty)
     return currentOperation;
 }
 
-void OperationQueue::add(Operation* operation)
+void OperationQueue::add(Operation *operation)
 {
-    OSG_INFO<<"Doing add"<<std::endl;
+    OSG_INFO << "Doing add" << std::endl;
 
     // acquire the lock on the operations queue to prevent anyone else for modifying it at the same time
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
@@ -127,49 +128,52 @@ void OperationQueue::add(Operation* operation)
     _operationsBlock->set(true);
 }
 
-void OperationQueue::remove(Operation* operation)
+void OperationQueue::remove(Operation *operation)
 {
-    OSG_INFO<<"Doing remove operation"<<std::endl;
+    OSG_INFO << "Doing remove operation" << std::endl;
 
     // acquire the lock on the operations queue to prevent anyone else for modifying it at the same time
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
 
-    for(Operations::iterator itr = _operations.begin();
-        itr!=_operations.end();)
+    for (Operations::iterator itr = _operations.begin();
+         itr != _operations.end();)
     {
-        if ((*itr)==operation)
+        if ((*itr) == operation)
         {
             bool needToResetCurrentIterator = (_currentOperationIterator == itr);
 
             itr = _operations.erase(itr);
 
-            if (needToResetCurrentIterator) _currentOperationIterator = itr;
-
+            if (needToResetCurrentIterator)
+                _currentOperationIterator = itr;
         }
-        else ++itr;
+        else
+            ++itr;
     }
 }
 
-void OperationQueue::remove(const std::string& name)
+void OperationQueue::remove(const std::string&name)
 {
-    OSG_INFO<<"Doing remove named operation"<<std::endl;
+    OSG_INFO << "Doing remove named operation" << std::endl;
 
     // acquire the lock on the operations queue to prevent anyone else for modifying it at the same time
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
 
     // find the remove all operations with specified name
-    for(Operations::iterator itr = _operations.begin();
-        itr!=_operations.end();)
+    for (Operations::iterator itr = _operations.begin();
+         itr != _operations.end();)
     {
-        if ((*itr)->getName()==name)
+        if ((*itr)->getName() == name)
         {
             bool needToResetCurrentIterator = (_currentOperationIterator == itr);
 
             itr = _operations.erase(itr);
 
-            if (needToResetCurrentIterator) _currentOperationIterator = itr;
+            if (needToResetCurrentIterator)
+                _currentOperationIterator = itr;
         }
-        else ++itr;
+        else
+            ++itr;
     }
 
     if (_operations.empty())
@@ -180,7 +184,7 @@ void OperationQueue::remove(const std::string& name)
 
 void OperationQueue::removeAllOperations()
 {
-    OSG_INFO<<"Doing remove all operations"<<std::endl;
+    OSG_INFO << "Doing remove all operations" << std::endl;
 
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
 
@@ -195,16 +199,17 @@ void OperationQueue::removeAllOperations()
     }
 }
 
-void OperationQueue::runOperations(Object* callingObject)
+void OperationQueue::runOperations(Object *callingObject)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
 
     // reset current operation iterator to beginning if at end.
-    if (_currentOperationIterator==_operations.end()) _currentOperationIterator = _operations.begin();
+    if (_currentOperationIterator == _operations.end())
+        _currentOperationIterator = _operations.begin();
 
-    for(;
-        _currentOperationIterator != _operations.end();
-        )
+    for (;
+         _currentOperationIterator != _operations.end();
+         )
     {
         ref_ptr<Operation> operation = *_currentOperationIterator;
 
@@ -234,25 +239,25 @@ void OperationQueue::releaseOperationsBlock()
     _operationsBlock->release();
 }
 
- void OperationQueue::releaseAllOperations()
+void OperationQueue::releaseAllOperations()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_operationsMutex);
 
-    for(Operations::iterator itr = _operations.begin();
-        itr!=_operations.end();
-        ++itr)
+    for (Operations::iterator itr = _operations.begin();
+         itr != _operations.end();
+         ++itr)
     {
         (*itr)->release();
     }
 }
 
 
-void OperationQueue::addOperationThread(OperationThread* thread)
+void OperationQueue::addOperationThread(OperationThread *thread)
 {
     _operationThreads.insert(thread);
 }
 
-void OperationQueue::removeOperationThread(OperationThread* thread)
+void OperationQueue::removeOperationThread(OperationThread *thread)
 {
     _operationThreads.erase(thread);
 }
@@ -262,7 +267,7 @@ void OperationQueue::removeOperationThread(OperationThread* thread)
 //  OperationThread
 //
 
-OperationThread::OperationThread():
+OperationThread::OperationThread() :
     osg::Referenced(true),
     _parent(0),
     _done(0)
@@ -272,78 +277,83 @@ OperationThread::OperationThread():
 
 OperationThread::~OperationThread()
 {
-    //OSG_NOTICE<<"Destructing graphics thread "<<this<<std::endl;
+    // OSG_NOTICE<<"Destructing graphics thread "<<this<<std::endl;
 
     cancel();
 
-    //OSG_NOTICE<<"Done Destructing graphics thread "<<this<<std::endl;
+    // OSG_NOTICE<<"Done Destructing graphics thread "<<this<<std::endl;
 }
 
-void OperationThread::setOperationQueue(OperationQueue* opq)
+void OperationThread::setOperationQueue(OperationQueue *opq)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
 
-    if (_operationQueue == opq) return;
+    if (_operationQueue == opq)
+        return;
 
-    if (_operationQueue.valid()) _operationQueue->removeOperationThread(this);
+    if (_operationQueue.valid())
+        _operationQueue->removeOperationThread(this);
 
     _operationQueue = opq;
 
-    if (_operationQueue.valid()) _operationQueue->addOperationThread(this);
+    if (_operationQueue.valid())
+        _operationQueue->addOperationThread(this);
 }
 
 void OperationThread::setDone(bool done)
 {
-    unsigned d = done?1:0;
-    if (_done==d) return;
+    unsigned d = done ? 1 : 0;
+
+    if (_done == d)
+        return;
 
     _done.exchange(d);
 
     if (done)
     {
-        OSG_INFO<<"set done "<<this<<std::endl;
+        OSG_INFO << "set done " << this << std::endl;
 
         {
             OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
             if (_currentOperation.valid())
             {
-                OSG_INFO<<"releasing "<<_currentOperation.get()<<std::endl;
+                OSG_INFO << "releasing " << _currentOperation.get() << std::endl;
                 _currentOperation->release();
             }
         }
 
-        if (_operationQueue.valid()) _operationQueue->releaseOperationsBlock();
+        if (_operationQueue.valid())
+            _operationQueue->releaseOperationsBlock();
     }
 }
 
 int OperationThread::cancel()
 {
-    OSG_INFO<<"Cancelling OperationThread "<<this<<" isRunning()="<<isRunning()<<std::endl;
+    OSG_INFO << "Cancelling OperationThread " << this << " isRunning()=" << isRunning() << std::endl;
 
     int result = 0;
-    if( isRunning() )
+    if (isRunning())
     {
-
         _done.exchange(1);
 
-        OSG_INFO<<"   Doing cancel "<<this<<std::endl;
+        OSG_INFO << "   Doing cancel " << this << std::endl;
 
         {
             OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
 
             if (_operationQueue.valid())
             {
-                 _operationQueue->releaseOperationsBlock();
-                //_operationQueue->releaseAllOperations();
+                _operationQueue->releaseOperationsBlock();
+                // _operationQueue->releaseAllOperations();
             }
 
-            if (_currentOperation.valid()) _currentOperation->release();
+            if (_currentOperation.valid())
+                _currentOperation->release();
         }
 
         // then wait for the thread to stop running.
-        while(isRunning())
+        while (isRunning())
         {
-
 #if 1
             {
                 OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
@@ -354,12 +364,13 @@ int OperationThread::cancel()
                     // _operationQueue->releaseAllOperations();
                 }
 
-                if (_currentOperation.valid()) _currentOperation->release();
+                if (_currentOperation.valid())
+                    _currentOperation->release();
             }
 #endif
             // commenting out debug info as it was cashing crash on exit, presumable
             // due to OSG_NOTIFY or std::cout destructing earlier than this destructor.
-            OSG_DEBUG<<"   Waiting for OperationThread to cancel "<<this<<std::endl;
+            OSG_DEBUG << "   Waiting for OperationThread to cancel " << this << std::endl;
             OpenThreads::Thread::YieldCurrentThread();
         }
 
@@ -368,46 +379,55 @@ int OperationThread::cancel()
         join();
     }
 
-    OSG_INFO<<"  OperationThread::cancel() thread cancelled "<<this<<" isRunning()="<<isRunning()<<std::endl;
+    OSG_INFO << "  OperationThread::cancel() thread cancelled " << this << " isRunning()=" << isRunning() << std::endl;
 
     return result;
 }
 
-void OperationThread::add(Operation* operation)
+void OperationThread::add(Operation *operation)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
-    if (!_operationQueue) _operationQueue = new OperationQueue;
+
+    if (!_operationQueue)
+        _operationQueue = new OperationQueue;
+
     _operationQueue->add(operation);
 }
 
-void OperationThread::remove(Operation* operation)
+void OperationThread::remove(Operation *operation)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
-    if (_operationQueue.valid()) _operationQueue->remove(operation);
+
+    if (_operationQueue.valid())
+        _operationQueue->remove(operation);
 }
 
-void OperationThread::remove(const std::string& name)
+void OperationThread::remove(const std::string&name)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
-    if (_operationQueue.valid()) _operationQueue->remove(name);
+
+    if (_operationQueue.valid())
+        _operationQueue->remove(name);
 }
 
 void OperationThread::removeAllOperations()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
-    if (_operationQueue.valid()) _operationQueue->removeAllOperations();
+
+    if (_operationQueue.valid())
+        _operationQueue->removeAllOperations();
 }
 
 void OperationThread::run()
 {
-    OSG_INFO<<"Doing run "<<this<<" isRunning()="<<isRunning()<<std::endl;
+    OSG_INFO << "Doing run " << this << " isRunning()=" << isRunning() << std::endl;
 
     bool firstTime = true;
 
     do
     {
         // OSG_NOTICE<<"In thread loop "<<this<<std::endl;
-        ref_ptr<Operation> operation;
+        ref_ptr<Operation>      operation;
         ref_ptr<OperationQueue> operationQueue;
 
         {
@@ -417,7 +437,8 @@ void OperationThread::run()
 
         operation = operationQueue->getNextOperation(true);
 
-        if (_done) break;
+        if (_done)
+            break;
 
         if (operation.valid())
         {
@@ -446,9 +467,8 @@ void OperationThread::run()
         }
 
         // OSG_NOTICE<<"operations.size()="<<_operations.size()<<" done="<<_done<<" testCancel()"<<testCancel()<<std::endl;
+    }
+    while (!testCancel() && !_done);
 
-    } while (!testCancel() && !_done);
-
-    OSG_INFO<<"exit loop "<<this<<" isRunning()="<<isRunning()<<std::endl;
-
+    OSG_INFO << "exit loop " << this << " isRunning()=" << isRunning() << std::endl;
 }

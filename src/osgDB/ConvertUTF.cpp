@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgDB/ConvertUTF>
 #include <osg/Notify>
@@ -24,20 +24,43 @@
 
 namespace osgDB
 {
+std::string convertUTF16toUTF8(const std::wstring&s)
+{
+    return convertUTF16toUTF8(s.c_str(), s.length());
+}
+std::string convertUTF16toUTF8(const wchar_t *s)
+{
+    return convertUTF16toUTF8(s, wcslen(s));
+}
 
-std::string convertUTF16toUTF8(const std::wstring& s){return convertUTF16toUTF8(s.c_str(), s.length());}
-std::string convertUTF16toUTF8(const wchar_t* s){return convertUTF16toUTF8(s, wcslen(s));}
+std::wstring convertUTF8toUTF16(const std::string&s)
+{
+    return convertUTF8toUTF16(s.c_str(), s.length());
+}
+std::wstring convertUTF8toUTF16(const char *s)
+{
+    return convertUTF8toUTF16(s, strlen(s));
+}
 
-std::wstring convertUTF8toUTF16(const std::string& s){return convertUTF8toUTF16(s.c_str(), s.length());}
-std::wstring convertUTF8toUTF16(const char* s){return convertUTF8toUTF16(s, strlen(s));}
+std::string convertStringFromCurrentCodePageToUTF8(const std::string&s)
+{
+    return convertStringFromCurrentCodePageToUTF8(s.c_str(), s.length());
+}
+std::string convertStringFromCurrentCodePageToUTF8(const char *s)
+{
+    return convertStringFromCurrentCodePageToUTF8(s, strlen(s));
+}
 
-std::string convertStringFromCurrentCodePageToUTF8(const std::string& s){return convertStringFromCurrentCodePageToUTF8(s.c_str(), s.length());}
-std::string convertStringFromCurrentCodePageToUTF8(const char* s){return convertStringFromCurrentCodePageToUTF8(s, strlen(s));}
+std::string convertStringFromUTF8toCurrentCodePage(const std::string&s)
+{
+    return convertStringFromUTF8toCurrentCodePage(s.c_str(), s.length());
+}
+std::string convertStringFromUTF8toCurrentCodePage(const char *s)
+{
+    return convertStringFromUTF8toCurrentCodePage(s, strlen(s));
+}
 
-std::string convertStringFromUTF8toCurrentCodePage(const std::string& s){return convertStringFromUTF8toCurrentCodePage(s.c_str(), s.length());}
-std::string convertStringFromUTF8toCurrentCodePage(const char* s){return convertStringFromUTF8toCurrentCodePage(s, strlen(s));}
-
-std::string convertUTF16toUTF8(const wchar_t* source, unsigned sourceLength)
+std::string convertUTF16toUTF8(const wchar_t *source, unsigned sourceLength)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
     if (sourceLength == 0)
@@ -63,13 +86,13 @@ std::string convertUTF16toUTF8(const wchar_t* source, unsigned sourceLength)
 
     return sDest;
 #else
-    //TODO: Implement for other platforms
+    // TODO: Implement for other platforms
     OSG_WARN << "ConvertUTF16toUTF8 not implemented." << std::endl;
     return std::string();
 #endif
 }
 
-std::wstring convertUTF8toUTF16(const char* source, unsigned sourceLength)
+std::wstring convertUTF8toUTF16(const char *source, unsigned sourceLength)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
     if (sourceLength == 0)
@@ -95,13 +118,13 @@ std::wstring convertUTF8toUTF16(const char* source, unsigned sourceLength)
 
     return sDest;
 #else
-    //TODO: Implement for other platforms
+    // TODO: Implement for other platforms
     OSG_WARN << "ConvertUTF8toUTF16 not implemented." << std::endl;
     return std::wstring();
 #endif
 }
 
-std::string convertStringFromCurrentCodePageToUTF8(const char* source, unsigned sourceLength)
+std::string convertStringFromCurrentCodePageToUTF8(const char *source, unsigned sourceLength)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
     if (sourceLength == 0)
@@ -130,7 +153,7 @@ std::string convertStringFromCurrentCodePageToUTF8(const char* source, unsigned 
 #endif
 }
 
-std::string convertStringFromUTF8toCurrentCodePage(const char* source, unsigned sourceLength)
+std::string convertStringFromUTF8toCurrentCodePage(const char *source, unsigned sourceLength)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
     if (sourceLength == 0)
@@ -161,6 +184,4 @@ std::string convertStringFromUTF8toCurrentCodePage(const char* source, unsigned 
     return source;
 #endif
 }
-
 }
-

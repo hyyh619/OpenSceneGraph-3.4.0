@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/ClipPlane>
 #include <osg/StateSet>
 #include <osg/Notify>
@@ -18,18 +18,18 @@ using namespace osg;
 
 ClipPlane::ClipPlane()
 {
-    _clipPlane.set(0.0,0.0,0.0,0.0);
+    _clipPlane.set(0.0, 0.0, 0.0, 0.0);
     _clipPlaneNum = 0;
 }
 
 
 ClipPlane::~ClipPlane()
-{
-}
+{}
 
 void ClipPlane::setClipPlaneNum(unsigned int num)
 {
-    if (_clipPlaneNum==num) return;
+    if (_clipPlaneNum == num)
+        return;
 
     if (_parents.empty())
     {
@@ -47,11 +47,12 @@ void ClipPlane::setClipPlaneNum(unsigned int num)
     // remove this attribute from its parents as its position is being changed
     // and would no longer be valid.
     ParentList::iterator itr;
-    for(itr = parents.begin();
-        itr != parents.end();
-        ++itr)
+
+    for (itr = parents.begin();
+         itr != parents.end();
+         ++itr)
     {
-        osg::StateSet* stateset = *itr;
+        osg::StateSet *stateset = *itr;
         stateset->removeAttribute(this);
     }
 
@@ -59,11 +60,11 @@ void ClipPlane::setClipPlaneNum(unsigned int num)
     _clipPlaneNum = num;
 
     // add this attribute back into its original parents with its new position
-    for(itr = parents.begin();
-        itr != parents.end();
-        ++itr)
+    for (itr = parents.begin();
+         itr != parents.end();
+         ++itr)
     {
-        osg::StateSet* stateset = *itr;
+        osg::StateSet *stateset = *itr;
         stateset->setAttribute(this);
     }
 }
@@ -76,9 +77,8 @@ unsigned int ClipPlane::getClipPlaneNum() const
 void ClipPlane::apply(State&) const
 {
 #if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE) && !defined(OSG_GLES1_AVAILABLE)
-    glClipPlane((GLenum)(GL_CLIP_PLANE0+_clipPlaneNum),_clipPlane.ptr());
+    glClipPlane((GLenum)(GL_CLIP_PLANE0 + _clipPlaneNum), _clipPlane.ptr());
 #else
-    OSG_NOTICE<<"Warning: ClipPlane::apply(State&) - not supported."<<std::endl;
+    OSG_NOTICE << "Warning: ClipPlane::apply(State&) - not supported." << std::endl;
 #endif
 }
-

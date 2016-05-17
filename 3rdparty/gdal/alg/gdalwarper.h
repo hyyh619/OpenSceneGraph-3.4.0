@@ -44,198 +44,198 @@
 CPL_C_START
 
 /*! Warp Resampling Algorithm */
-typedef enum {
-  /*! Nearest neighbour (select on one input pixel) */ GRA_NearestNeighbour=0,
-  /*! Bilinear (2x2 kernel) */                         GRA_Bilinear=1,
-  /*! Cubic Convolution Approximation (4x4 kernel) */  GRA_Cubic=2,
-  /*! Cubic B-Spline Approximation (4x4 kernel) */     GRA_CubicSpline=3,
-  /*! Lanczos windowed sinc interpolation (6x6 kernel) */ GRA_Lanczos=4
+typedef enum
+{
+    /*! Nearest neighbour (select on one input pixel) */ GRA_NearestNeighbour = 0,
+    /*! Bilinear (2x2 kernel) */ GRA_Bilinear                                 = 1,
+    /*! Cubic Convolution Approximation (4x4 kernel) */ GRA_Cubic             = 2,
+    /*! Cubic B-Spline Approximation (4x4 kernel) */ GRA_CubicSpline          = 3,
+    /*! Lanczos windowed sinc interpolation (6x6 kernel) */ GRA_Lanczos       = 4
 } GDALResampleAlg;
 
-typedef int 
-(*GDALMaskFunc)( void *pMaskFuncArg,
-                 int nBandCount, GDALDataType eType, 
-                 int nXOff, int nYOff, 
-                 int nXSize, int nYSize,
-                 GByte **papabyImageData, 
-                 int bMaskIsFloat, void *pMask );
+typedef int
+(*GDALMaskFunc)(void *pMaskFuncArg,
+                int nBandCount, GDALDataType eType,
+                int nXOff, int nYOff,
+                int nXSize, int nYSize,
+                GByte **papabyImageData,
+                int bMaskIsFloat, void *pMask);
 
-CPLErr CPL_DLL 
-GDALWarpNoDataMasker( void *pMaskFuncArg, int nBandCount, GDALDataType eType,
+CPLErr CPL_DLL
+GDALWarpNoDataMasker(void *pMaskFuncArg, int nBandCount, GDALDataType eType,
+                     int nXOff, int nYOff, int nXSize, int nYSize,
+                     GByte **papabyImageData, int bMaskIsFloat,
+                     void *pValidityMask);
+
+CPLErr CPL_DLL
+GDALWarpDstAlphaMasker(void *pMaskFuncArg, int nBandCount, GDALDataType eType,
+                       int nXOff, int nYOff, int nXSize, int nYSize,
+                       GByte** /*ppImageData */,
+                       int bMaskIsFloat, void *pValidityMask);
+CPLErr CPL_DLL
+GDALWarpSrcAlphaMasker(void *pMaskFuncArg, int nBandCount, GDALDataType eType,
+                       int nXOff, int nYOff, int nXSize, int nYSize,
+                       GByte** /*ppImageData */,
+                       int bMaskIsFloat, void *pValidityMask);
+
+CPLErr CPL_DLL
+GDALWarpSrcMaskMasker(void *pMaskFuncArg, int nBandCount, GDALDataType eType,
                       int nXOff, int nYOff, int nXSize, int nYSize,
-                      GByte **papabyImageData, int bMaskIsFloat,
-                      void *pValidityMask );
+                      GByte** /*ppImageData */,
+                      int bMaskIsFloat, void *pValidityMask);
 
-CPLErr CPL_DLL 
-GDALWarpDstAlphaMasker( void *pMaskFuncArg, int nBandCount, GDALDataType eType,
-                        int nXOff, int nYOff, int nXSize, int nYSize,
-                        GByte ** /*ppImageData */,
-                        int bMaskIsFloat, void *pValidityMask );
-CPLErr CPL_DLL 
-GDALWarpSrcAlphaMasker( void *pMaskFuncArg, int nBandCount, GDALDataType eType,
-                        int nXOff, int nYOff, int nXSize, int nYSize,
-                        GByte ** /*ppImageData */,
-                        int bMaskIsFloat, void *pValidityMask );
-
-CPLErr CPL_DLL 
-GDALWarpSrcMaskMasker( void *pMaskFuncArg, int nBandCount, GDALDataType eType,
-                       int nXOff, int nYOff, int nXSize, int nYSize,
-                       GByte ** /*ppImageData */,
-                       int bMaskIsFloat, void *pValidityMask );
-
-CPLErr CPL_DLL 
-GDALWarpCutlineMasker( void *pMaskFuncArg, int nBandCount, GDALDataType eType,
-                       int nXOff, int nYOff, int nXSize, int nYSize,
-                       GByte ** /* ppImageData */,
-                       int bMaskIsFloat, void *pValidityMask );
+CPLErr CPL_DLL
+GDALWarpCutlineMasker(void *pMaskFuncArg, int nBandCount, GDALDataType eType,
+                      int nXOff, int nYOff, int nXSize, int nYSize,
+                      GByte** /* ppImageData */,
+                      int bMaskIsFloat, void *pValidityMask);
 
 /************************************************************************/
 /*                           GDALWarpOptions                            */
 /************************************************************************/
 
 /** Warp control options for use with GDALWarpOperation::Initialize()  */
-typedef struct {
-    
-    char              **papszWarpOptions;  
+typedef struct
+{
+    char **papszWarpOptions;
 
     /*! In bytes, 0.0 for internal default */
-    double              dfWarpMemoryLimit; 
+    double dfWarpMemoryLimit;
 
     /*! Resampling algorithm to use */
-    GDALResampleAlg     eResampleAlg;
+    GDALResampleAlg eResampleAlg;
 
     /*! data type to use during warp operation, GDT_Unknown lets the algorithm
         select the type */
-    GDALDataType        eWorkingDataType;
+    GDALDataType eWorkingDataType;
 
     /*! Source image dataset. */
-    GDALDatasetH	hSrcDS;
+    GDALDatasetH hSrcDS;
 
     /*! Destination image dataset - may be NULL if only using GDALWarpOperation::WarpRegionToBuffer(). */
-    GDALDatasetH        hDstDS;
+    GDALDatasetH hDstDS;
 
     /*! Number of bands to process, may be 0 to select all bands. */
-    int                 nBandCount;
-    
+    int nBandCount;
+
     /*! The band numbers for the source bands to process (1 based) */
-    int                *panSrcBands;
+    int *panSrcBands;
 
     /*! The band numbers for the destination bands to process (1 based) */
-    int                *panDstBands;
+    int *panDstBands;
 
     /*! The source band so use as an alpha (transparency) value, 0=disabled */
-    int                nSrcAlphaBand;
+    int nSrcAlphaBand;
 
     /*! The dest. band so use as an alpha (transparency) value, 0=disabled */
-    int                nDstAlphaBand;
+    int nDstAlphaBand;
 
     /*! The "nodata" value real component for each input band, if NULL there isn't one */
-    double             *padfSrcNoDataReal;
-    /*! The "nodata" value imaginary component - may be NULL even if real 
-      component is provided. */
-    double             *padfSrcNoDataImag;
+    double *padfSrcNoDataReal;
+    /*! The "nodata" value imaginary component - may be NULL even if real
+       component is provided. */
+    double *padfSrcNoDataImag;
 
     /*! The "nodata" value real component for each output band, if NULL there isn't one */
-    double             *padfDstNoDataReal;
-    /*! The "nodata" value imaginary component - may be NULL even if real 
-      component is provided. */
-    double             *padfDstNoDataImag;
+    double *padfDstNoDataReal;
+    /*! The "nodata" value imaginary component - may be NULL even if real
+       component is provided. */
+    double *padfDstNoDataImag;
 
     /*! GDALProgressFunc() compatible progress reporting function, or NULL
-      if there isn't one. */
-    GDALProgressFunc    pfnProgress;
+       if there isn't one. */
+    GDALProgressFunc pfnProgress;
 
     /*! Callback argument to be passed to pfnProgress. */
-    void               *pProgressArg;
+    void *pProgressArg;
 
     /*! Type of spatial point transformer function */
     GDALTransformerFunc pfnTransformer;
 
     /*! Handle to image transformer setup structure */
-    void                *pTransformerArg;
+    void *pTransformerArg;
 
-    GDALMaskFunc       *papfnSrcPerBandValidityMaskFunc;
-    void              **papSrcPerBandValidityMaskFuncArg;
-    
-    GDALMaskFunc        pfnSrcValidityMaskFunc;
-    void               *pSrcValidityMaskFuncArg;
-    
-    GDALMaskFunc        pfnSrcDensityMaskFunc;
-    void               *pSrcDensityMaskFuncArg;
+    GDALMaskFunc *papfnSrcPerBandValidityMaskFunc;
+    void         **papSrcPerBandValidityMaskFuncArg;
 
-    GDALMaskFunc        pfnDstDensityMaskFunc;
-    void               *pDstDensityMaskFuncArg;
+    GDALMaskFunc pfnSrcValidityMaskFunc;
+    void         *pSrcValidityMaskFuncArg;
 
-    GDALMaskFunc        pfnDstValidityMaskFunc;
-    void               *pDstValidityMaskFuncArg;
+    GDALMaskFunc pfnSrcDensityMaskFunc;
+    void         *pSrcDensityMaskFuncArg;
 
-    CPLErr              (*pfnPreWarpChunkProcessor)( void *pKern, void *pArg );
-    void               *pPreWarpProcessorArg;
-    
-    CPLErr              (*pfnPostWarpChunkProcessor)( void *pKern, void *pArg);
-    void               *pPostWarpProcessorArg;
+    GDALMaskFunc pfnDstDensityMaskFunc;
+    void         *pDstDensityMaskFuncArg;
+
+    GDALMaskFunc pfnDstValidityMaskFunc;
+    void         *pDstValidityMaskFuncArg;
+
+    CPLErr (*pfnPreWarpChunkProcessor)(void *pKern, void *pArg);
+    void *pPreWarpProcessorArg;
+
+    CPLErr (*pfnPostWarpChunkProcessor)(void *pKern, void *pArg);
+    void *pPostWarpProcessorArg;
 
     /*! Optional OGRPolygonH for a masking cutline. */
-    void               *hCutline;
+    void *hCutline;
 
     /*! Optional blending distance to apply across cutline in pixels, default is zero. */
-    double              dfCutlineBlendDist;
-
+    double dfCutlineBlendDist;
 } GDALWarpOptions;
 
-GDALWarpOptions CPL_DLL * CPL_STDCALL GDALCreateWarpOptions(void);
-void CPL_DLL CPL_STDCALL GDALDestroyWarpOptions( GDALWarpOptions * );
-GDALWarpOptions CPL_DLL * CPL_STDCALL
-GDALCloneWarpOptions( const GDALWarpOptions * );
+GDALWarpOptions CPL_DLL* CPL_STDCALL GDALCreateWarpOptions(void);
+void CPL_DLL CPL_STDCALL GDALDestroyWarpOptions(GDALWarpOptions*);
+GDALWarpOptions CPL_DLL* CPL_STDCALL
+GDALCloneWarpOptions(const GDALWarpOptions*);
 
-CPLXMLNode CPL_DLL * CPL_STDCALL
-      GDALSerializeWarpOptions( const GDALWarpOptions * );
-GDALWarpOptions CPL_DLL * CPL_STDCALL
-      GDALDeserializeWarpOptions( CPLXMLNode * );
+CPLXMLNode CPL_DLL* CPL_STDCALL
+GDALSerializeWarpOptions(const GDALWarpOptions*);
+GDALWarpOptions CPL_DLL* CPL_STDCALL
+GDALDeserializeWarpOptions(CPLXMLNode*);
 
 /************************************************************************/
 /*                         GDALReprojectImage()                         */
 /************************************************************************/
 
 CPLErr CPL_DLL CPL_STDCALL
-GDALReprojectImage( GDALDatasetH hSrcDS, const char *pszSrcWKT, 
-                    GDALDatasetH hDstDS, const char *pszDstWKT,
-                    GDALResampleAlg eResampleAlg, double dfWarpMemoryLimit,
-                    double dfMaxError,
-                    GDALProgressFunc pfnProgress, void *pProgressArg, 
-                    GDALWarpOptions *psOptions );
+GDALReprojectImage(GDALDatasetH hSrcDS, const char *pszSrcWKT,
+                   GDALDatasetH hDstDS, const char *pszDstWKT,
+                   GDALResampleAlg eResampleAlg, double dfWarpMemoryLimit,
+                   double dfMaxError,
+                   GDALProgressFunc pfnProgress, void *pProgressArg,
+                   GDALWarpOptions *psOptions);
 
 CPLErr CPL_DLL CPL_STDCALL
-GDALCreateAndReprojectImage( GDALDatasetH hSrcDS, const char *pszSrcWKT, 
-                    const char *pszDstFilename, const char *pszDstWKT,
-                    GDALDriverH hDstDriver, char **papszCreateOptions,
-                    GDALResampleAlg eResampleAlg, double dfWarpMemoryLimit,
-                    double dfMaxError,
-                    GDALProgressFunc pfnProgress, void *pProgressArg, 
-                    GDALWarpOptions *psOptions );
+GDALCreateAndReprojectImage(GDALDatasetH hSrcDS, const char *pszSrcWKT,
+                            const char *pszDstFilename, const char *pszDstWKT,
+                            GDALDriverH hDstDriver, char **papszCreateOptions,
+                            GDALResampleAlg eResampleAlg, double dfWarpMemoryLimit,
+                            double dfMaxError,
+                            GDALProgressFunc pfnProgress, void *pProgressArg,
+                            GDALWarpOptions *psOptions);
 
 /************************************************************************/
 /*                           VRTWarpedDataset                           */
 /************************************************************************/
 
 GDALDatasetH CPL_DLL CPL_STDCALL
-GDALAutoCreateWarpedVRT( GDALDatasetH hSrcDS, 
-                         const char *pszSrcWKT, const char *pszDstWKT, 
-                         GDALResampleAlg eResampleAlg, 
-                         double dfMaxError, const GDALWarpOptions *psOptions );
+GDALAutoCreateWarpedVRT(GDALDatasetH hSrcDS,
+                        const char *pszSrcWKT, const char *pszDstWKT,
+                        GDALResampleAlg eResampleAlg,
+                        double dfMaxError, const GDALWarpOptions *psOptions);
 
-GDALDatasetH CPL_DLL CPL_STDCALL 
-GDALCreateWarpedVRT( GDALDatasetH hSrcDS, 
-                     int nPixels, int nLines, double *padfGeoTransform,
-                     GDALWarpOptions *psOptions );
+GDALDatasetH CPL_DLL CPL_STDCALL
+GDALCreateWarpedVRT(GDALDatasetH hSrcDS,
+                    int nPixels, int nLines, double *padfGeoTransform,
+                    GDALWarpOptions *psOptions);
 
 CPLErr CPL_DLL CPL_STDCALL
-GDALInitializeWarpedVRT( GDALDatasetH hDS, 
-                         GDALWarpOptions *psWO );
+GDALInitializeWarpedVRT(GDALDatasetH hDS,
+                        GDALWarpOptions *psWO);
 
 CPL_C_END
 
-#ifdef __cplusplus 
+#ifdef __cplusplus
 
 /************************************************************************/
 /*                            GDALWarpKernel                            */
@@ -250,57 +250,57 @@ CPL_C_END
 class CPL_DLL GDALWarpKernel
 {
 public:
-    char              **papszWarpOptions;
+char **papszWarpOptions;
 
-    GDALResampleAlg	eResample;
-    GDALDataType        eWorkingDataType;
-    int                 nBands;
+GDALResampleAlg eResample;
+GDALDataType    eWorkingDataType;
+int             nBands;
 
-    int                 nSrcXSize;
-    int                 nSrcYSize;
-    GByte               **papabySrcImage;
+int   nSrcXSize;
+int   nSrcYSize;
+GByte **papabySrcImage;
 
-    GUInt32           **papanBandSrcValid;
-    GUInt32            *panUnifiedSrcValid;
-    float              *pafUnifiedSrcDensity;
+GUInt32 **papanBandSrcValid;
+GUInt32 *panUnifiedSrcValid;
+float   *pafUnifiedSrcDensity;
 
-    int                 nDstXSize;
-    int                 nDstYSize;
-    GByte             **papabyDstImage;
-    GUInt32            *panDstValid;
-    float              *pafDstDensity;
+int     nDstXSize;
+int     nDstYSize;
+GByte   **papabyDstImage;
+GUInt32 *panDstValid;
+float   *pafDstDensity;
 
-    double              dfXScale;   // Resampling scale, i.e.
-    double              dfYScale;   // nDstSize/nSrcSize.
-    double              dfXFilter;  // Size of filter kernel.
-    double              dfYFilter;
-    int                 nXRadius;   // Size of window to filter.
-    int                 nYRadius;
-    int                 nFiltInitX; // Filtering offset
-    int                 nFiltInitY;
-    
-    int                 nSrcXOff;
-    int                 nSrcYOff;
+double dfXScale;                    // Resampling scale, i.e.
+double dfYScale;                    // nDstSize/nSrcSize.
+double dfXFilter;                   // Size of filter kernel.
+double dfYFilter;
+int    nXRadius;                    // Size of window to filter.
+int    nYRadius;
+int    nFiltInitX;                  // Filtering offset
+int    nFiltInitY;
 
-    int                 nDstXOff;
-    int                 nDstYOff;
-        
-    GDALTransformerFunc pfnTransformer;
-    void                *pTransformerArg;
+int nSrcXOff;
+int nSrcYOff;
 
-    GDALProgressFunc    pfnProgress;
-    void                *pProgress;
+int nDstXOff;
+int nDstYOff;
 
-    double              dfProgressBase;
-    double              dfProgressScale;
-    
-    double              *padfDstNoDataReal;
+GDALTransformerFunc pfnTransformer;
+void                *pTransformerArg;
 
-                       GDALWarpKernel();
-    virtual           ~GDALWarpKernel();
+GDALProgressFunc pfnProgress;
+void             *pProgress;
 
-    CPLErr              Validate();
-    CPLErr              PerformWarp();
+double dfProgressBase;
+double dfProgressScale;
+
+double *padfDstNoDataReal;
+
+GDALWarpKernel();
+virtual ~GDALWarpKernel();
+
+CPLErr              Validate();
+CPLErr              PerformWarp();
 };
 
 /************************************************************************/
@@ -313,80 +313,80 @@ public:
 /*      masks.  Actual resampling is done by the GDALWarpKernel.        */
 /************************************************************************/
 
-class CPL_DLL GDALWarpOperation {
+class CPL_DLL GDALWarpOperation
+{
 private:
-    GDALWarpOptions *psOptions;
+GDALWarpOptions *psOptions;
 
-    void            WipeOptions();
-    int             ValidateOptions();
+void            WipeOptions();
+int             ValidateOptions();
 
-    CPLErr          ComputeSourceWindow( int nDstXOff, int nDstYOff, 
-                                         int nDstXSize, int nDstYSize,
-                                         int *pnSrcXOff, int *pnSrcYOff, 
-                                         int *pnSrcXSize, int *pnSrcYSize );
+CPLErr          ComputeSourceWindow(int nDstXOff, int nDstYOff,
+                                    int nDstXSize, int nDstYSize,
+                                    int *pnSrcXOff, int *pnSrcYOff,
+                                    int *pnSrcXSize, int *pnSrcYSize);
 
-    CPLErr          CreateKernelMask( GDALWarpKernel *, int iBand, 
-                                      const char *pszType );
+CPLErr          CreateKernelMask(GDALWarpKernel*, int iBand,
+                                 const char *pszType);
 
-    void            *hThread1Mutex;
-    void            *hThread2Mutex;
-    void            *hIOMutex;
-    void            *hWarpMutex;
+void *hThread1Mutex;
+void *hThread2Mutex;
+void *hIOMutex;
+void *hWarpMutex;
 
-    int             nChunkListCount;
-    int             nChunkListMax;
-    int            *panChunkList;
+int nChunkListCount;
+int nChunkListMax;
+int *panChunkList;
 
-    int             bReportTimings;
-    unsigned long   nLastTimeReported;
+int           bReportTimings;
+unsigned long nLastTimeReported;
 
-    void            WipeChunkList();
-    CPLErr          CollectChunkList( int nDstXOff, int nDstYOff, 
-                                      int nDstXSize, int nDstYSize );
-    void            ReportTiming( const char * );
-    
+void            WipeChunkList();
+CPLErr          CollectChunkList(int nDstXOff, int nDstYOff,
+                                 int nDstXSize, int nDstYSize);
+void            ReportTiming(const char*);
+
 public:
-                    GDALWarpOperation();
-    virtual        ~GDALWarpOperation();
+GDALWarpOperation();
+virtual ~GDALWarpOperation();
 
-    CPLErr          Initialize( const GDALWarpOptions *psNewOptions );
+CPLErr          Initialize(const GDALWarpOptions *psNewOptions);
 
-    const GDALWarpOptions         *GetOptions();
+const GDALWarpOptions* GetOptions();
 
-    CPLErr          ChunkAndWarpImage( int nDstXOff, int nDstYOff, 
-                                       int nDstXSize, int nDstYSize );
-    CPLErr          ChunkAndWarpMulti( int nDstXOff, int nDstYOff, 
-                                       int nDstXSize, int nDstYSize );
-    CPLErr          WarpRegion( int nDstXOff, int nDstYOff, 
-                                int nDstXSize, int nDstYSize,
-                                int nSrcXOff=0, int nSrcYOff=0,
-                                int nSrcXSize=0, int nSrcYSize=0,
-                                double dfProgressBase=0.0, double dfProgressScale=1.0);
-    
-    CPLErr          WarpRegionToBuffer( int nDstXOff, int nDstYOff, 
-                                        int nDstXSize, int nDstYSize, 
-                                        void *pDataBuf, 
-                                        GDALDataType eBufDataType,
-                                        int nSrcXOff=0, int nSrcYOff=0,
-                                        int nSrcXSize=0, int nSrcYSize=0,
-                                        double dfProgressBase=0.0, double dfProgressScale=1.0);
+CPLErr          ChunkAndWarpImage(int nDstXOff, int nDstYOff,
+                                  int nDstXSize, int nDstYSize);
+CPLErr          ChunkAndWarpMulti(int nDstXOff, int nDstYOff,
+                                  int nDstXSize, int nDstYSize);
+CPLErr          WarpRegion(int nDstXOff, int nDstYOff,
+                           int nDstXSize, int nDstYSize,
+                           int nSrcXOff = 0, int nSrcYOff = 0,
+                           int nSrcXSize = 0, int nSrcYSize = 0,
+                           double dfProgressBase = 0.0, double dfProgressScale = 1.0);
+
+CPLErr          WarpRegionToBuffer(int nDstXOff, int nDstYOff,
+                                   int nDstXSize, int nDstYSize,
+                                   void *pDataBuf,
+                                   GDALDataType eBufDataType,
+                                   int nSrcXOff = 0, int nSrcYOff = 0,
+                                   int nSrcXSize = 0, int nSrcYSize = 0,
+                                   double dfProgressBase = 0.0, double dfProgressScale = 1.0);
 };
-
 #endif /* def __cplusplus */
 
 CPL_C_START
 
-typedef void * GDALWarpOperationH;
+typedef void*GDALWarpOperationH;
 
-GDALWarpOperationH CPL_DLL GDALCreateWarpOperation(const GDALWarpOptions* );
-void CPL_DLL GDALDestroyWarpOperation( GDALWarpOperationH );
-CPLErr CPL_DLL GDALChunkAndWarpImage( GDALWarpOperationH, int, int, int, int );
-CPLErr CPL_DLL GDALChunkAndWarpMulti( GDALWarpOperationH, int, int, int, int );
-CPLErr CPL_DLL GDALWarpRegion( GDALWarpOperationH,
-                               int, int, int, int, int, int, int, int );
-CPLErr CPL_DLL GDALWarpRegionToBuffer( GDALWarpOperationH, int, int, int, int,
-                                       void *, GDALDataType,
-                                       int, int, int, int );
+GDALWarpOperationH CPL_DLL GDALCreateWarpOperation(const GDALWarpOptions*);
+void CPL_DLL   GDALDestroyWarpOperation(GDALWarpOperationH);
+CPLErr CPL_DLL GDALChunkAndWarpImage(GDALWarpOperationH, int, int, int, int);
+CPLErr CPL_DLL GDALChunkAndWarpMulti(GDALWarpOperationH, int, int, int, int);
+CPLErr CPL_DLL GDALWarpRegion(GDALWarpOperationH,
+                              int, int, int, int, int, int, int, int);
+CPLErr CPL_DLL GDALWarpRegionToBuffer(GDALWarpOperationH, int, int, int, int,
+                                      void*, GDALDataType,
+                                      int, int, int, int);
 
 CPL_C_END
 

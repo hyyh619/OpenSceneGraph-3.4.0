@@ -1,26 +1,26 @@
 #ifndef HEADER_CURL_LIB_SETUP_H
 #define HEADER_CURL_LIB_SETUP_H
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 
 /*
  * Define WIN32 when build target is Win32 API
@@ -72,7 +72,6 @@
 #ifdef __VXWORKS__
 #  include "config-vxworks.h"
 #endif
-
 #endif /* HAVE_CONFIG_H */
 
 /* ================================================================ */
@@ -131,7 +130,7 @@
 
 #ifdef SIZEOF_CURL_OFF_T
 #  error "SIZEOF_CURL_OFF_T shall not be defined!"
-   Error Compilation_aborted_SIZEOF_CURL_OFF_T_shall_not_be_defined
+Error Compilation_aborted_SIZEOF_CURL_OFF_T_shall_not_be_defined
 #endif
 
 /*
@@ -141,12 +140,12 @@
 
 #ifdef FORMAT_OFF_T
 #  error "FORMAT_OFF_T shall not be defined before this point!"
-   Error Compilation_aborted_FORMAT_OFF_T_already_defined
+Error Compilation_aborted_FORMAT_OFF_T_already_defined
 #endif
 
 #ifdef FORMAT_OFF_TU
 #  error "FORMAT_OFF_TU shall not be defined before this point!"
-   Error Compilation_aborted_FORMAT_OFF_TU_already_defined
+Error Compilation_aborted_FORMAT_OFF_TU_already_defined
 #endif
 
 #if (CURL_SIZEOF_CURL_OFF_T > CURL_SIZEOF_LONG)
@@ -251,8 +250,8 @@
 #  include <sys/socket.h> /* for select and ioctl*/
 #  include <netdb.h>      /* for in_addr_t definition */
 #  include <tpf/sysapi.h> /* for tpf_process_signals */
-   /* change which select is used for libcurl */
-#  define select(a,b,c,d,e) tpf_select_libcurl(a,b,c,d,e)
+/* change which select is used for libcurl */
+#  define select(a, b, c, d, e) tpf_select_libcurl(a, b, c, d, e)
 #endif
 
 #ifdef __VXWORKS__
@@ -299,11 +298,11 @@
 #  include <io.h>
 #  include <sys/types.h>
 #  include <sys/stat.h>
-#  define lseek(fdes,offset,whence)  _lseeki64(fdes, offset, whence)
-#  define fstat(fdes,stp)            _fstati64(fdes, stp)
-#  define stat(fname,stp)            _stati64(fname, stp)
-#  define struct_stat                struct _stati64
-#  define LSEEK_ERROR                (__int64)-1
+#  define lseek(fdes, offset, whence) _lseeki64(fdes, offset, whence)
+#  define fstat(fdes, stp)            _fstati64(fdes, stp)
+#  define stat(fname, stp)            _stati64(fname, stp)
+#  define struct_stat struct _stati64
+#  define LSEEK_ERROR (__int64) - 1
 #endif
 
 /*
@@ -314,11 +313,11 @@
 #  include <io.h>
 #  include <sys/types.h>
 #  include <sys/stat.h>
-#  define lseek(fdes,offset,whence)  _lseek(fdes, (long)offset, whence)
-#  define fstat(fdes,stp)            _fstat(fdes, stp)
-#  define stat(fname,stp)            _stat(fname, stp)
-#  define struct_stat                struct _stat
-#  define LSEEK_ERROR                (long)-1
+#  define lseek(fdes, offset, whence) _lseek(fdes, (long)offset, whence)
+#  define fstat(fdes, stp)            _fstat(fdes, stp)
+#  define stat(fname, stp)            _stat(fname, stp)
+#  define struct_stat struct _stat
+#  define LSEEK_ERROR (long)-1
 #endif
 
 #ifndef struct_stat
@@ -360,20 +359,20 @@
 
    4. set the SIGALRM signal timeout
    5. set dir/file naming defines
-   */
+ */
 
 #ifdef WIN32
 
-#  define DIR_CHAR      "\\"
-#  define DOT_CHAR      "_"
+#  define DIR_CHAR "\\"
+#  define DOT_CHAR "_"
 
 #else /* WIN32 */
 
 #  ifdef MSDOS  /* Watt-32 */
 
 #    include <sys/ioctl.h>
-#    define select(n,r,w,x,t) select_s(n,r,w,x,t)
-#    define ioctl(x,y,z) ioctlsocket(x,y,(char *)(z))
+#    define select(n, r, w, x, t) select_s(n, r, w, x, t)
+#    define ioctl(x, y, z)        ioctlsocket(x, y, (char*)(z))
 #    include <tcp.h>
 #    ifdef word
 #      undef word
@@ -381,29 +380,27 @@
 #    ifdef byte
 #      undef byte
 #    endif
-
 #  endif /* MSDOS */
 
 #  ifdef __minix
-     /* Minix 3 versions up to at least 3.1.3 are missing these prototypes */
-     extern char * strtok_r(char *s, const char *delim, char **last);
-     extern struct tm * gmtime_r(const time_t * const timep, struct tm *tmp);
+/* Minix 3 versions up to at least 3.1.3 are missing these prototypes */
+extern char* strtok_r(char *s, const char *delim, char **last);
+extern struct tm* gmtime_r(const time_t* const timep, struct tm *tmp);
 #  endif
 
-#  define DIR_CHAR      "/"
+#  define DIR_CHAR "/"
 #  ifndef DOT_CHAR
-#    define DOT_CHAR      "."
+#    define DOT_CHAR "."
 #  endif
 
 #  ifdef MSDOS
 #    undef DOT_CHAR
-#    define DOT_CHAR      "_"
+#    define DOT_CHAR "_"
 #  endif
 
 #  ifndef fileno /* sunos 4 have this as a macro! */
-     int fileno( FILE *stream);
+int fileno(FILE *stream);
 #  endif
-
 #endif /* WIN32 */
 
 /*
@@ -413,7 +410,7 @@
 
 #if defined(_MSC_VER) && !defined(__POCC__)
 #  if !defined(HAVE_WS2TCPIP_H) || \
-     ((_MSC_VER < 1300) && !defined(INET6_ADDRSTRLEN))
+    ((_MSC_VER < 1300) && !defined(INET6_ADDRSTRLEN))
 #    undef HAVE_GETADDRINFO_THREADSAFE
 #    undef HAVE_FREEADDRINFO
 #    undef HAVE_GETADDRINFO
@@ -526,7 +523,7 @@ int netware_init(void);
 #define LIBIDN_REQUIRED_VERSION "0.4.1"
 
 #if defined(USE_GNUTLS) || defined(USE_SSLEAY) || defined(USE_NSS) || defined(USE_QSOSSL)
-#define USE_SSL    /* SSL support has been enabled */
+#define USE_SSL /* SSL support has been enabled */
 #endif
 
 #if !defined(CURL_DISABLE_HTTP) && !defined(CURL_DISABLE_NTLM)

@@ -16,44 +16,48 @@
 
 #include <osg/observer_ptr>
 
-namespace http {
-namespace server {
-
+namespace http
+{
+namespace server
+{
 struct reply;
 struct request;
 
 /// The common handler for all incoming requests.
 class request_handler
-  : private boost::noncopyable
+    : private boost::noncopyable
 {
 public:
-    class Callback : public osg::Referenced {
-        public:
-            Callback() : osg::Referenced() {}
-            
-            virtual bool operator()(const std::string& request_path, reply& rep) = 0;
-            virtual std::string applyTemplateVars(const std::string& txt) = 0;
-    };
-    
-  /// Construct with a directory containing files to be served.
-  explicit request_handler(const std::string& doc_root);
+class Callback : public osg::Referenced
+{
+public:
+Callback() : osg::Referenced() {}
 
-  /// Handle a request and produce a reply.
-  void handle_request(const request& req, reply& rep);
-  
-  void setCallback(Callback* cb) { _cb = cb; }
-
-private:
-  /// The directory containing the files to be served.
-  std::string doc_root_;
-
-  /// Perform URL-decoding on a string. Returns false if the encoding was
-  /// invalid.
-  static bool url_decode(const std::string& in, std::string& out);
-  osg::observer_ptr<Callback> _cb;
+virtual bool operator()(const std::string&request_path, reply&rep) = 0;
+virtual std::string applyTemplateVars(const std::string&txt)       = 0;
 };
 
-} // namespace server
+/// Construct with a directory containing files to be served.
+explicit request_handler(const std::string&doc_root);
+
+/// Handle a request and produce a reply.
+void handle_request(const request&req, reply&rep);
+
+void setCallback(Callback *cb)
+{
+    _cb = cb;
+}
+
+private:
+/// The directory containing the files to be served.
+std::string doc_root_;
+
+/// Perform URL-decoding on a string. Returns false if the encoding was
+/// invalid.
+static bool url_decode(const std::string&in, std::string&out);
+osg::observer_ptr<Callback> _cb;
+};
+}   // namespace server
 } // namespace http
 
 #endif // HTTP_SERVER_REQUEST_HANDLER_HPP

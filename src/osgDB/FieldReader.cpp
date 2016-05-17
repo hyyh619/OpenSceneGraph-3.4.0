@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgDB/Input>
 #include <istream>
 
@@ -23,7 +23,7 @@ FieldReader::FieldReader()
 }
 
 
-FieldReader::FieldReader(const FieldReader& ic)
+FieldReader::FieldReader(const FieldReader&ic)
 {
     _copy(ic);
 }
@@ -35,9 +35,11 @@ FieldReader::~FieldReader()
 }
 
 
-FieldReader& FieldReader::operator = (const FieldReader& ic)
+FieldReader&FieldReader::operator =(const FieldReader&ic)
 {
-    if (this==&ic) return *this;
+    if (this == &ic)
+        return *this;
+
     _free();
     _copy(ic);
     return *this;
@@ -49,7 +51,6 @@ void FieldReader::_free()
     // free all data
 
     _init();
-
 }
 
 
@@ -61,42 +62,49 @@ void FieldReader::_init()
     _noNestedBrackets = 0;
 
     int i;
-    for(i=0;i<256;++i) _delimiterEatLookUp[i]=false;
-    _delimiterEatLookUp[int(' ')] = true;
+
+    for (i = 0; i < 256; ++i)
+        _delimiterEatLookUp[i] = false;
+
+    _delimiterEatLookUp[int(' ')]  = true;
     _delimiterEatLookUp[int('\t')] = true;
     _delimiterEatLookUp[int('\n')] = true;
     _delimiterEatLookUp[int('\r')] = true;
 
-    for(i=0;i<256;++i) _delimiterKeepLookUp[i]=false;
-    _delimiterKeepLookUp[int('{')] = true;
-    _delimiterKeepLookUp[int('}')] = true;
-    _delimiterKeepLookUp[int('"')] = true;
-    _delimiterKeepLookUp[int('\'')] = true;
+    for (i = 0; i < 256; ++i)
+        _delimiterKeepLookUp[i] = false;
 
+    _delimiterKeepLookUp[int('{')]  = true;
+    _delimiterKeepLookUp[int('}')]  = true;
+    _delimiterKeepLookUp[int('"')]  = true;
+    _delimiterKeepLookUp[int('\'')] = true;
 }
 
 
-void FieldReader::_copy(const FieldReader& ic)
+void FieldReader::_copy(const FieldReader&ic)
 {
-
     _fin = ic._fin;
     _eof = ic._eof;
 
     _noNestedBrackets = ic._noNestedBrackets;
 
     int i;
-    for(i=0;i<256;++i) _delimiterEatLookUp[i]=ic._delimiterEatLookUp[i];
-    for(i=0;i<256;++i) _delimiterKeepLookUp[i]=ic._delimiterKeepLookUp[i];
+
+    for (i = 0; i < 256; ++i)
+        _delimiterEatLookUp[i] = ic._delimiterEatLookUp[i];
+
+    for (i = 0; i < 256; ++i)
+        _delimiterKeepLookUp[i] = ic._delimiterKeepLookUp[i];
 }
 
 
-void FieldReader::attach(std::istream* input)
+void FieldReader::attach(std::istream *input)
 {
     _fin = input;
 
     if (_fin)
     {
-        _eof = _fin->eof()!=0;
+        _eof = _fin->eof() != 0;
     }
     else
     {
@@ -121,10 +129,11 @@ bool FieldReader::eof() const
 bool FieldReader::findStartOfNextField()
 {
     int ch = 0;
+
     while (true)
     {
         ch = _fin->peek();
-        if (ch==EOF)
+        if (ch == EOF)
         {
             _eof = true;
             return false;
@@ -141,7 +150,7 @@ bool FieldReader::findStartOfNextField()
 }
 
 
-bool FieldReader::readField(Field& fieldPtr)
+bool FieldReader::readField(Field&fieldPtr)
 {
     return _readField(&fieldPtr);
 }
@@ -153,46 +162,52 @@ void FieldReader::ignoreField()
 }
 
 
-bool FieldReader::_readField(Field* fieldPtr)
+bool FieldReader::_readField(Field *fieldPtr)
 {
-    if (fieldPtr) fieldPtr->reset();
+    if (fieldPtr)
+        fieldPtr->reset();
 
     if (!eof() && findStartOfNextField())
     {
-
         int ch = _fin->peek();
-        if (ch==EOF)
+        if (ch == EOF)
         {
             _eof = true;
-            if (fieldPtr) fieldPtr->setNoNestedBrackets(getNoNestedBrackets());
-            return fieldPtr && fieldPtr->getNoCharacters()!=0;
+            if (fieldPtr)
+                fieldPtr->setNoNestedBrackets(getNoNestedBrackets());
+
+            return fieldPtr && fieldPtr->getNoCharacters() != 0;
         }
-        else if (ch=='"')
+        else if (ch == '"')
         {
             if (fieldPtr)
             {
                 fieldPtr->setWithinQuotes(true);
                 fieldPtr->setNoNestedBrackets(getNoNestedBrackets());
             }
+
             _fin->ignore(1);
             char c;
             bool escape = false; // use the escape character sequence \" to allow " to included in strings.
+
             while (true)
             {
                 ch = _fin->peek();
-                if (ch==EOF)
+                if (ch == EOF)
                 {
                     _eof = true;
-                    return fieldPtr && fieldPtr->getNoCharacters()!=0;
+                    return fieldPtr && fieldPtr->getNoCharacters() != 0;
                 }
+
                 c = ch;
-                if (ch=='\\')
+                if (ch == '\\')
                 {
                     if (escape)
                     {
                         escape = false;
                         _fin->get(c);
-                        if (fieldPtr) fieldPtr->addChar(c);
+                        if (fieldPtr)
+                            fieldPtr->addChar(c);
                     }
                     else
                     {
@@ -200,19 +215,20 @@ bool FieldReader::_readField(Field* fieldPtr)
                         _fin->ignore(1);
                     }
                 }
-                else if (ch=='"')
+                else if (ch == '"')
                 {
                     if (escape)
                     {
                         escape = false;
                         _fin->get(c);
-                        if (fieldPtr) fieldPtr->addChar(c);
+                        if (fieldPtr)
+                            fieldPtr->addChar(c);
                     }
                     else
                     {
                         _fin->ignore(1);
-                        //return fieldPtr && fieldPtr->getNoCharacters()!=0;
-                        return fieldPtr!=NULL;
+                        // return fieldPtr && fieldPtr->getNoCharacters()!=0;
+                        return fieldPtr != NULL;
                     }
                 }
                 else
@@ -220,39 +236,46 @@ bool FieldReader::_readField(Field* fieldPtr)
                     if (escape)
                     {
                         escape = false;
-                        if (fieldPtr) fieldPtr->addChar('\\');
+                        if (fieldPtr)
+                            fieldPtr->addChar('\\');
                     }
+
                     _fin->get(c);
-                    if (fieldPtr) fieldPtr->addChar(c);
+                    if (fieldPtr)
+                        fieldPtr->addChar(c);
                 }
             }
         }
-        else if (ch=='\'')
+        else if (ch == '\'')
         {
             if (fieldPtr)
             {
                 fieldPtr->setWithinQuotes(true);
                 fieldPtr->setNoNestedBrackets(getNoNestedBrackets());
             }
+
             _fin->ignore(1);
             char c;
             bool escape = false; // use the escape character sequence \' to allow ' to included in strings.
+
             while (true)
             {
                 ch = _fin->peek();
-                if (ch==EOF)
+                if (ch == EOF)
                 {
                     _eof = true;
-                    return fieldPtr && fieldPtr->getNoCharacters()!=0;
+                    return fieldPtr && fieldPtr->getNoCharacters() != 0;
                 }
+
                 c = ch;
-                if (ch=='\\' && !escape)
+                if (ch == '\\' && !escape)
                 {
                     if (escape)
                     {
                         escape = false;
                         _fin->get(c);
-                        if (fieldPtr) fieldPtr->addChar(c);
+                        if (fieldPtr)
+                            fieldPtr->addChar(c);
                     }
                     else
                     {
@@ -260,19 +283,20 @@ bool FieldReader::_readField(Field* fieldPtr)
                         _fin->ignore(1);
                     }
                 }
-                else if (ch=='\'')
+                else if (ch == '\'')
                 {
                     if (escape)
                     {
                         escape = false;
                         _fin->get(c);
-                        if (fieldPtr) fieldPtr->addChar(c);
+                        if (fieldPtr)
+                            fieldPtr->addChar(c);
                     }
                     else
                     {
                         _fin->ignore(1);
-                        //return fieldPtr && fieldPtr->getNoCharacters()!=0;
-                        return fieldPtr!=NULL;
+                        // return fieldPtr && fieldPtr->getNoCharacters()!=0;
+                        return fieldPtr != NULL;
                     }
                 }
                 else
@@ -280,10 +304,13 @@ bool FieldReader::_readField(Field* fieldPtr)
                     if (escape)
                     {
                         escape = false;
-                        if (fieldPtr) fieldPtr->addChar('\\');
+                        if (fieldPtr)
+                            fieldPtr->addChar('\\');
                     }
+
                     _fin->get(c);
-                    if (fieldPtr) fieldPtr->addChar(c);
+                    if (fieldPtr)
+                        fieldPtr->addChar(c);
                 }
             }
         }
@@ -291,42 +318,54 @@ bool FieldReader::_readField(Field* fieldPtr)
         {
             char c;
             _fin->get(c);
-            if (fieldPtr) fieldPtr->addChar(c);
-            if (c=='{') ++_noNestedBrackets;
-            else if (c=='}') --_noNestedBrackets;
-            if (fieldPtr) fieldPtr->setNoNestedBrackets(getNoNestedBrackets());
-            return fieldPtr && fieldPtr->getNoCharacters()!=0;
+            if (fieldPtr)
+                fieldPtr->addChar(c);
+
+            if (c == '{')
+                ++_noNestedBrackets;
+            else if (c == '}')
+                --_noNestedBrackets;
+
+            if (fieldPtr)
+                fieldPtr->setNoNestedBrackets(getNoNestedBrackets());
+
+            return fieldPtr && fieldPtr->getNoCharacters() != 0;
         }
         else
         {
-            if (fieldPtr) fieldPtr->setNoNestedBrackets(getNoNestedBrackets());
+            if (fieldPtr)
+                fieldPtr->setNoNestedBrackets(getNoNestedBrackets());
+
             char c;
+
             while (true)
             {
                 ch = _fin->peek();
-                if (ch==EOF)
+                if (ch == EOF)
                 {
                     _eof = true;
-                    return fieldPtr && fieldPtr->getNoCharacters()!=0;
+                    return fieldPtr && fieldPtr->getNoCharacters() != 0;
                 }
+
                 c = ch;
                 if (_delimiterEatLookUp[int(c)])
                 {
                     _fin->ignore(1);
-                    return fieldPtr && fieldPtr->getNoCharacters()!=0;
+                    return fieldPtr && fieldPtr->getNoCharacters() != 0;
                 }
+
                 if (_delimiterKeepLookUp[int(c)])
                 {
-                    return fieldPtr && fieldPtr->getNoCharacters()!=0;
+                    return fieldPtr && fieldPtr->getNoCharacters() != 0;
                 }
                 else
                 {
                     _fin->get(c);
-                    if (fieldPtr) fieldPtr->addChar(c);
+                    if (fieldPtr)
+                        fieldPtr->addChar(c);
                 }
             }
         }
-
     }
     else
     {

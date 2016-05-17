@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "VolumeLayer.h"
@@ -23,13 +23,13 @@
 
 using namespace ive;
 
-void VolumeLayer::write(DataOutputStream* out)
+void VolumeLayer::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVEVOLUMELAYER);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Object*  object = dynamic_cast<osg::Object*>(this);
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
     if (object)
         ((ive::Object*)(object))->write(out);
     else
@@ -39,10 +39,11 @@ void VolumeLayer::write(DataOutputStream* out)
     out->writeVolumeProperty(getProperty());
 }
 
-void VolumeLayer::read(DataInputStream* in)
+void VolumeLayer::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVEVOLUMELAYER)
         in_THROW_EXCEPTION("VolumeLayer::read(): Expected Layer identification.");
 
@@ -50,14 +51,12 @@ void VolumeLayer::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osg::Object*  object = dynamic_cast<osg::Object*>(this);
-    if(object)
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
+    if (object)
         ((ive::Object*)(object))->read(in);
     else
         in_THROW_EXCEPTION("VolumeLayer::read(): Could not cast this osgVolume::Layer to an osg::Object.");
 
     setLocator(in->readVolumeLocator());
     setProperty(in->readVolumeProperty());
-
 }
-

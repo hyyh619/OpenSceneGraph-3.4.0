@@ -11,4 +11,3 @@ USE_DOTOSGWRAPPER(Terrain)
 USE_DOTOSGWRAPPER(TerrainTile_Proxy)
 
 extern "C" void dotosgwrapper_library_osgTerrain(void) {}
-

@@ -1,13 +1,13 @@
-/* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield 
+/* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield
  *
- * This application is open source and may be redistributed and/or modified   
+ * This application is open source and may be redistributed and/or modified
  * freely and without restriction, both in commercial and non commercial applications,
  * as long as this copyright notice is maintained.
- * 
+ *
  * This application is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
+ */
 
 #include <osgDB/ReadFile>
 #include <osgUtil/ShaderGen>
@@ -29,38 +29,45 @@
 class ShaderGenReadFileCallback : public osgDB::Registry::ReadFileCallback
 {
 public:
-    ShaderGenReadFileCallback()
+ShaderGenReadFileCallback()
+{}
+
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&filename, const osgDB::ReaderWriter::Options *options)
+{
+    osgDB::ReaderWriter::ReadResult result = osgDB::Registry::ReadFileCallback::readNode(filename, options);
+
+    if (osg::Node *node = result.getNode())
     {
+        _visitor.reset();
+        node->accept(_visitor);
     }
 
-    virtual osgDB::ReaderWriter::ReadResult readNode(const std::string& filename, const osgDB::ReaderWriter::Options* options)
-    {
-        osgDB::ReaderWriter::ReadResult result = osgDB::Registry::ReadFileCallback::readNode(filename, options);
-        if (osg::Node *node = result.getNode())
-        {
-            _visitor.reset();
-            node->accept(_visitor);
-        }
-        return result;
-    }
+    return result;
+}
 
-    void setRootStateSet(osg::StateSet *stateSet) { _visitor.setRootStateSet(stateSet); }
-    osg::StateSet *getRootStateSet() const { return _visitor.getRootStateSet(); }
+void setRootStateSet(osg::StateSet *stateSet)
+{
+    _visitor.setRootStateSet(stateSet);
+}
+osg::StateSet* getRootStateSet() const
+{
+    return _visitor.getRootStateSet();
+}
 
 protected:
-    osgUtil::ShaderGenVisitor _visitor;
+osgUtil::ShaderGenVisitor _visitor;
 };
 
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     arguments.getApplicationUsage()->setApplicationName(arguments.getApplicationName());
-    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName()+
-            " is an example of conversion of fixed function pipeline to GLSL");
-    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName()+" [options] filename ...");
+    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName() +
+                                                    " is an example of conversion of fixed function pipeline to GLSL");
+    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName() + " [options] filename ...");
 
     osgViewer::Viewer viewer(arguments);
 
@@ -70,17 +77,17 @@ int main(int argc, char** argv)
         arguments.getApplicationUsage()->write(std::cout, helpType);
         return 1;
     }
-    
+
     // report any errors if they have occurred when parsing the program arguments.
     if (arguments.errors())
     {
         arguments.writeErrorMessages(std::cout);
         return 1;
     }
-    
-    if (arguments.argc()<=1)
+
+    if (arguments.argc() <= 1)
     {
-        arguments.getApplicationUsage()->write(std::cout,osg::ApplicationUsage::COMMAND_LINE_OPTION);
+        arguments.getApplicationUsage()->write(std::cout, osg::ApplicationUsage::COMMAND_LINE_OPTION);
         return 1;
     }
 
@@ -88,37 +95,38 @@ int main(int argc, char** argv)
     {
         osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
 
-        keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TrackballManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '3', "Drive", new osgGA::DriveManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '4', "Terrain", new osgGA::TerrainManipulator() );
+        keyswitchManipulator->addMatrixManipulator('1', "Trackball", new osgGA::TrackballManipulator());
+        keyswitchManipulator->addMatrixManipulator('2', "Flight", new osgGA::FlightManipulator());
+        keyswitchManipulator->addMatrixManipulator('3', "Drive", new osgGA::DriveManipulator());
+        keyswitchManipulator->addMatrixManipulator('4', "Terrain", new osgGA::TerrainManipulator());
 
         std::string pathfile;
-        char keyForAnimationPath = '5';
-        while (arguments.read("-p",pathfile))
+        char        keyForAnimationPath = '5';
+
+        while (arguments.read("-p", pathfile))
         {
-            osgGA::AnimationPathManipulator* apm = new osgGA::AnimationPathManipulator(pathfile);
-            if (apm || !apm->valid()) 
+            osgGA::AnimationPathManipulator *apm = new osgGA::AnimationPathManipulator(pathfile);
+            if (apm || !apm->valid())
             {
                 unsigned int num = keyswitchManipulator->getNumMatrixManipulators();
-                keyswitchManipulator->addMatrixManipulator( keyForAnimationPath, "Path", apm );
+                keyswitchManipulator->addMatrixManipulator(keyForAnimationPath, "Path", apm);
                 keyswitchManipulator->selectMatrixManipulator(num);
                 ++keyForAnimationPath;
             }
         }
 
-        viewer.setCameraManipulator( keyswitchManipulator.get() );
+        viewer.setCameraManipulator(keyswitchManipulator.get());
     }
 
     // add the state manipulator
-    viewer.addEventHandler( new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()) );
-    
+    viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
+
     // add the thread model handler
     viewer.addEventHandler(new osgViewer::ThreadingHandler);
 
     // add the window size toggle handler
     viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-        
+
     // add the stats handler
     viewer.addEventHandler(new osgViewer::StatsHandler);
 
@@ -133,7 +141,7 @@ int main(int argc, char** argv)
 
     // add the screen capture handler
     viewer.addEventHandler(new osgViewer::ScreenCaptureHandler);
-    
+
     // Register shader generator callback
     ShaderGenReadFileCallback *readFileCallback = new ShaderGenReadFileCallback;
     // All read nodes will inherit root state set.
@@ -142,9 +150,9 @@ int main(int argc, char** argv)
 
     // load the data
     osg::ref_ptr<osg::Node> loadedModel = osgDB::readNodeFiles(arguments);
-    if (!loadedModel) 
+    if (!loadedModel)
     {
-        std::cout << arguments.getApplicationName() <<": No data loaded" << std::endl;
+        std::cout << arguments.getApplicationName() << ": No data loaded" << std::endl;
         return 1;
     }
 
@@ -158,10 +166,9 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    viewer.setSceneData( loadedModel.get() );
+    viewer.setSceneData(loadedModel.get());
 
     viewer.realize();
 
     return viewer.run();
-
 }

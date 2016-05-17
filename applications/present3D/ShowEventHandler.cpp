@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
-*/
+ */
 
 #include "ShowEventHandler.h"
 
@@ -18,41 +18,41 @@
 using namespace p3d;
 
 ShowEventHandler::ShowEventHandler()
-{
-}
+{}
 
-bool ShowEventHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter& /*aa*/, osg::Object* object, osg::NodeVisitor* /*nv*/)
+bool ShowEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object *object, osg::NodeVisitor* /*nv*/)
 {
-    switch(ea.getEventType())
+    switch (ea.getEventType())
     {
-        case(osgGA::GUIEventAdapter::KEYUP):
+    case (osgGA::GUIEventAdapter::KEYUP):
+    {
+        osg::notify(osg::INFO) << "ShowEventHandler KEYUP " << (int)ea.getKey() << std::endl;
+        if (ea.getKey() >= osgGA::GUIEventAdapter::KEY_F1 &&
+            ea.getKey() <= osgGA::GUIEventAdapter::KEY_F8)
         {
-            osg::notify(osg::INFO)<<"ShowEventHandler KEYUP "<<(int)ea.getKey()<<std::endl;
-            if (ea.getKey()>=osgGA::GUIEventAdapter::KEY_F1 &&
-                ea.getKey()<=osgGA::GUIEventAdapter::KEY_F8)
+            unsigned int child = ea.getKey() - osgGA::GUIEventAdapter::KEY_F1;
+            osg::notify(osg::INFO) << "   Select " << child << std::endl;
+            osg::Switch *showSwitch = dynamic_cast<osg::Switch*>(object);
+            if (showSwitch)
             {
-                unsigned int child = ea.getKey()-osgGA::GUIEventAdapter::KEY_F1;
-                osg::notify(osg::INFO)<<"   Select "<<child<<std::endl;
-                osg::Switch* showSwitch = dynamic_cast<osg::Switch*>(object);
-                if (showSwitch)
+                if (child < showSwitch->getNumChildren())
                 {
-                    if (child<showSwitch->getNumChildren())
-                    {
-                        osg::notify(osg::INFO)<<"   Switched "<<child<<std::endl;
-                        showSwitch->setSingleChildOn(child);
-                        return true;
-                    }
+                    osg::notify(osg::INFO) << "   Switched " << child << std::endl;
+                    showSwitch->setSingleChildOn(child);
+                    return true;
                 }
             }
-            break;
         }
-        default:
-            break;
+
+        break;
     }
+
+    default:
+        break;
+    }
+
     return false;
 }
 
 void ShowEventHandler::getUsage(osg::ApplicationUsage& /*usage*/) const
-{
-}
-
+{}

@@ -6,9 +6,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgGA_TrackballManipulator,
-                         new osgGA::TrackballManipulator,
-                         osgGA::TrackballManipulator,
-                         "osg::Object osgGA::TrackballManipulator" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgGA_TrackballManipulator,
+                        new osgGA::TrackballManipulator,
+                        osgGA::TrackballManipulator,
+                        "osg::Object osgGA::TrackballManipulator")
+{}

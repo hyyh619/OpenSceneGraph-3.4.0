@@ -10,4 +10,3 @@ USE_SERIALIZER_WRAPPER(osgFX_Scribe)
 USE_SERIALIZER_WRAPPER(osgFX_SpecularHighlights)
 
 extern "C" void wrapper_serializer_library_osgFX(void) {}
-

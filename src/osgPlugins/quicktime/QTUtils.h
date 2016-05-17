@@ -33,21 +33,21 @@
     #include <CGColorSpace.h>
     #include <ImageCompression.h>
 
-    extern "C" {
-        /** legacy function for Windows */
-        inline void GetPortBounds(GWorldPtr gw, Rect* rect) {
-            (*rect) = (gw->portRect);
-        }
-        /** legacy function for Windows */
-        inline PixMapHandle GetPortPixMap (CGrafPtr port) {
-            return port->portPixMap;
-        }
+extern "C" {
+/** legacy function for Windows */
+inline void GetPortBounds(GWorldPtr gw, Rect *rect)
+{
+    (*rect) = (gw->portRect);
+}
+/** legacy function for Windows */
+inline PixMapHandle GetPortPixMap(CGrafPtr port)
+{
+    return port->portPixMap;
+}
+}
 
-    }
-
-#define SetRect MacSetRect
+#define SetRect    MacSetRect
 #define OffsetRect MacOffsetRect
-
 #endif
 
 

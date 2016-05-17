@@ -9,20 +9,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "V8ScriptEngine.h"
 
 using namespace v8;
 
-V8ScriptEngine::V8ScriptEngine():
+V8ScriptEngine::V8ScriptEngine() :
     osg::ScriptEngine("js"),
     _isolate(0)
 {
     initialize();
 }
 
-V8ScriptEngine::V8ScriptEngine(const V8ScriptEngine& rhs, const osg::CopyOp&):
+V8ScriptEngine::V8ScriptEngine(const V8ScriptEngine&rhs, const osg::CopyOp&) :
     osg::ScriptEngine("js"),
     _isolate(0)
 {
@@ -38,21 +38,21 @@ V8ScriptEngine::~V8ScriptEngine()
 void V8ScriptEngine::initialize()
 {
     _isolate = v8::Isolate::New();
-
 }
 
-bool V8ScriptEngine::run(osg::Script* script, const std::string& entryPoint, osg::Parameters& inputParameters, osg::Parameters& outputParameters)
+bool V8ScriptEngine::run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters)
 {
-    if (!script || !_isolate) return false;
+    if (!script || !_isolate)
+        return false;
 
-    v8::Locker locker(_isolate);
+    v8::Locker         locker(_isolate);
     v8::Isolate::Scope isolate_scope(_isolate);
 
     // Create a stack-allocated handle scope.
     v8::HandleScope handle_scope;
 
     v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
-    _globalContext = v8::Context::New(NULL, global);
+    _globalContext  = v8::Context::New(NULL, global);
     _globalTemplate = v8::Persistent<v8::ObjectTemplate>::New(global);
 
     {

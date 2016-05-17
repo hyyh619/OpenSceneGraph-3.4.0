@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef IVE_TERRAINTILE
 #define IVE_TERRAINTILE 1
@@ -20,18 +20,15 @@
 
 namespace ive
 {
-
 class TerrainTile : public osgTerrain::TerrainTile, public ReadWrite
 {
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 
-        static void writeTerrainTechnique(DataOutputStream* out, osgTerrain::TerrainTechnique* technique);
-        static osgTerrain::TerrainTechnique* readTerrainTechnique(DataInputStream* out);
-
+static void writeTerrainTechnique(DataOutputStream *out, osgTerrain::TerrainTechnique *technique);
+static osgTerrain::TerrainTechnique* readTerrainTechnique(DataInputStream *out);
 };
-
 }
 
 #endif

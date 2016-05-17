@@ -9,28 +9,26 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GL>
 #include <osg/ShadeModel>
 #include <osg/Notify>
 
 using namespace osg;
 
-ShadeModel::ShadeModel(Mode mode):
+ShadeModel::ShadeModel(Mode mode) :
     _mode(mode)
-{
-}
+{}
 
 
 ShadeModel::~ShadeModel()
-{
-}
+{}
 
 void ShadeModel::apply(State&) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     glShadeModel((GLenum)_mode);
 #else
-    OSG_NOTICE<<"Warning: ShadeModel::apply(State&) - not supported."<<std::endl;
+    OSG_NOTICE << "Warning: ShadeModel::apply(State&) - not supported." << std::endl;
 #endif
 }

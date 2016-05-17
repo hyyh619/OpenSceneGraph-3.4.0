@@ -38,39 +38,37 @@ CPL_CVSID("$Id: ogrlinearring.cpp 18674 2010-01-27 23:16:09Z rouault $");
 
 OGRLinearRing::OGRLinearRing()
 
-{
-}
+{}
 
 /************************************************************************/
 /*                          ~OGRLinearRing()                            */
 /************************************************************************/
 OGRLinearRing::~OGRLinearRing()
 
-{
-}
+{}
 
 /************************************************************************/
 /*                           OGRLinearRing()                            */
 /************************************************************************/
 
-OGRLinearRing::OGRLinearRing( OGRLinearRing * poSrcRing )
+OGRLinearRing::OGRLinearRing(OGRLinearRing *poSrcRing)
 
 {
-    if( poSrcRing == NULL )
+    if (poSrcRing == NULL)
     {
-        CPLDebug( "OGR", "OGRLinearRing::OGRLinearRing(OGRLinearRing*poSrcRing) - passed in ring is NULL!" );
+        CPLDebug("OGR", "OGRLinearRing::OGRLinearRing(OGRLinearRing*poSrcRing) - passed in ring is NULL!");
         return;
     }
 
-    setNumPoints( poSrcRing->getNumPoints() );
+    setNumPoints(poSrcRing->getNumPoints());
 
-    memcpy( paoPoints, poSrcRing->paoPoints,
-            sizeof(OGRRawPoint) * getNumPoints() );
+    memcpy(paoPoints, poSrcRing->paoPoints,
+           sizeof(OGRRawPoint) * getNumPoints());
 
-    if( poSrcRing->padfZ )
+    if (poSrcRing->padfZ)
     {
         Make3D();
-        memcpy( padfZ, poSrcRing->padfZ, sizeof(double) * getNumPoints() );
+        memcpy(padfZ, poSrcRing->padfZ, sizeof(double) * getNumPoints());
     }
 }
 
@@ -78,7 +76,7 @@ OGRLinearRing::OGRLinearRing( OGRLinearRing * poSrcRing )
 /*                          getGeometryName()                           */
 /************************************************************************/
 
-const char * OGRLinearRing::getGeometryName() const 
+const char* OGRLinearRing::getGeometryName() const
 
 {
     return "LINEARRING";
@@ -102,7 +100,7 @@ int OGRLinearRing::WkbSize() const
 /*      Disable method for this class.                                  */
 /************************************************************************/
 
-OGRErr OGRLinearRing::importFromWkb( unsigned char *pabyData, int nSize ) 
+OGRErr OGRLinearRing::importFromWkb(unsigned char *pabyData, int nSize)
 
 {
     (void) pabyData;
@@ -117,8 +115,8 @@ OGRErr OGRLinearRing::importFromWkb( unsigned char *pabyData, int nSize )
 /*      Disable method for this class.                                  */
 /************************************************************************/
 
-OGRErr OGRLinearRing::exportToWkb( OGRwkbByteOrder eByteOrder, 
-                                   unsigned char * pabyData ) const
+OGRErr OGRLinearRing::exportToWkb(OGRwkbByteOrder eByteOrder,
+                                  unsigned char *pabyData) const
 
 {
     (void) eByteOrder;
@@ -134,22 +132,22 @@ OGRErr OGRLinearRing::exportToWkb( OGRwkbByteOrder eByteOrder,
 /*      method!                                                         */
 /************************************************************************/
 
-OGRErr OGRLinearRing::_importFromWkb( OGRwkbByteOrder eByteOrder, int b3D, 
-                                      unsigned char * pabyData,
-                                      int nBytesAvailable ) 
+OGRErr OGRLinearRing::_importFromWkb(OGRwkbByteOrder eByteOrder, int b3D,
+                                     unsigned char *pabyData,
+                                     int nBytesAvailable)
 
 {
-    if( nBytesAvailable < 4 && nBytesAvailable != -1 )
+    if (nBytesAvailable < 4 && nBytesAvailable != -1)
         return OGRERR_NOT_ENOUGH_DATA;
 
 /* -------------------------------------------------------------------- */
 /*      Get the vertex count.                                           */
 /* -------------------------------------------------------------------- */
-    int         nNewNumPoints;
-    
-    memcpy( &nNewNumPoints, pabyData, 4 );
-    
-    if( OGR_SWAP( eByteOrder ) )
+    int nNewNumPoints;
+
+    memcpy(&nNewNumPoints, pabyData, 4);
+
+    if (OGR_SWAP(eByteOrder))
         nNewNumPoints = CPL_SWAP32(nNewNumPoints);
 
     /* Check if the wkb stream buffer is big enough to store
@@ -159,55 +157,56 @@ OGRErr OGRLinearRing::_importFromWkb( OGRwkbByteOrder eByteOrder, int b3D,
     int nPointSize = (b3D ? 24 : 16);
     if (nNewNumPoints < 0 || nNewNumPoints > INT_MAX / nPointSize)
         return OGRERR_CORRUPT_DATA;
+
     int nBufferMinSize = nPointSize * nNewNumPoints;
-   
-    if( nBytesAvailable != -1 && nBufferMinSize > nBytesAvailable - 4 )
+
+    if (nBytesAvailable != -1 && nBufferMinSize > nBytesAvailable - 4)
     {
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "Length of input WKB is too small" );
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "Length of input WKB is too small");
         return OGRERR_NOT_ENOUGH_DATA;
     }
 
     /* (Re)Allocation of paoPoints buffer. */
-    setNumPoints( nNewNumPoints );
+    setNumPoints(nNewNumPoints);
 
-    if( b3D )
+    if (b3D)
         Make3D();
     else
         Make2D();
-    
+
 /* -------------------------------------------------------------------- */
 /*      Get the vertices                                                */
 /* -------------------------------------------------------------------- */
     int i = 0;
 
-    if( !b3D )
+    if (!b3D)
     {
-        memcpy( paoPoints, pabyData + 4, 16 * nPointCount );
+        memcpy(paoPoints, pabyData + 4, 16 * nPointCount);
     }
     else
     {
-        for( int i = 0; i < nPointCount; i++ )
+        for (int i = 0; i < nPointCount; i++)
         {
-            memcpy( &(paoPoints[i].x), pabyData + 4 + 24 * i, 8 );
-            memcpy( &(paoPoints[i].y), pabyData + 4 + 24 * i + 8, 8 );
-            memcpy( padfZ + i, pabyData + 4 + 24 * i + 16, 8 );
+            memcpy(&(paoPoints[i].x), pabyData + 4 + 24 * i, 8);
+            memcpy(&(paoPoints[i].y), pabyData + 4 + 24 * i + 8, 8);
+            memcpy(padfZ + i, pabyData + 4 + 24 * i + 16, 8);
         }
     }
-    
+
 /* -------------------------------------------------------------------- */
 /*      Byte swap if needed.                                            */
 /* -------------------------------------------------------------------- */
-    if( OGR_SWAP( eByteOrder ) )
+    if (OGR_SWAP(eByteOrder))
     {
-        for( i = 0; i < nPointCount; i++ )
+        for (i = 0; i < nPointCount; i++)
         {
-            CPL_SWAPDOUBLE( &(paoPoints[i].x) );
-            CPL_SWAPDOUBLE( &(paoPoints[i].y) );
+            CPL_SWAPDOUBLE(&(paoPoints[i].x));
+            CPL_SWAPDOUBLE(&(paoPoints[i].y));
 
-            if( b3D )
+            if (b3D)
             {
-                CPL_SWAPDOUBLE( padfZ + i );
+                CPL_SWAPDOUBLE(padfZ + i);
             }
         }
     }
@@ -222,55 +221,56 @@ OGRErr OGRLinearRing::_importFromWkb( OGRwkbByteOrder eByteOrder, int b3D,
 /*      exportToWkb() METHOD!                                           */
 /************************************************************************/
 
-OGRErr  OGRLinearRing::_exportToWkb( OGRwkbByteOrder eByteOrder, int b3D,
-                                     unsigned char * pabyData ) const
+OGRErr OGRLinearRing::_exportToWkb(OGRwkbByteOrder eByteOrder, int b3D,
+                                   unsigned char *pabyData) const
 
 {
-    int   i, nWords;
+    int i, nWords;
 
 /* -------------------------------------------------------------------- */
 /*      Copy in the raw data.                                           */
 /* -------------------------------------------------------------------- */
-    memcpy( pabyData, &nPointCount, 4 );
+    memcpy(pabyData, &nPointCount, 4);
 
 /* -------------------------------------------------------------------- */
 /*      Copy in the raw data.                                           */
 /* -------------------------------------------------------------------- */
-    if( b3D )
+    if (b3D)
     {
         nWords = 3 * nPointCount;
-        for( i = 0; i < nPointCount; i++ )
+
+        for (i = 0; i < nPointCount; i++)
         {
-            memcpy( pabyData+4+i*24, &(paoPoints[i].x), 8 );
-            memcpy( pabyData+4+i*24+8, &(paoPoints[i].y), 8 );
-            if( padfZ == NULL )
-                memset( pabyData+4+i*24+16, 0, 8 );
+            memcpy(pabyData + 4 + i * 24, &(paoPoints[i].x), 8);
+            memcpy(pabyData + 4 + i * 24 + 8, &(paoPoints[i].y), 8);
+            if (padfZ == NULL)
+                memset(pabyData + 4 + i * 24 + 16, 0, 8);
             else
-                memcpy( pabyData+4+i*24+16, padfZ + i, 8 );
+                memcpy(pabyData + 4 + i * 24 + 16, padfZ + i, 8);
         }
     }
     else
     {
-        nWords = 2 * nPointCount; 
-        memcpy( pabyData+4, paoPoints, 16 * nPointCount );
+        nWords = 2 * nPointCount;
+        memcpy(pabyData + 4, paoPoints, 16 * nPointCount);
     }
 
 /* -------------------------------------------------------------------- */
 /*      Swap if needed.                                                 */
 /* -------------------------------------------------------------------- */
-    if( OGR_SWAP( eByteOrder ) )
+    if (OGR_SWAP(eByteOrder))
     {
-        int     nCount;
+        int nCount;
 
-        nCount = CPL_SWAP32( nPointCount );
-        memcpy( pabyData, &nCount, 4 );
+        nCount = CPL_SWAP32(nPointCount);
+        memcpy(pabyData, &nCount, 4);
 
-        for( i = 0; i < nWords; i++ )
+        for (i = 0; i < nWords; i++)
         {
-            CPL_SWAPDOUBLE( pabyData + 4 + 8 * i );
+            CPL_SWAPDOUBLE(pabyData + 4 + 8 * i);
         }
     }
-    
+
     return OGRERR_NONE;
 }
 
@@ -280,10 +280,10 @@ OGRErr  OGRLinearRing::_exportToWkb( OGRwkbByteOrder eByteOrder, int b3D,
 /*      Helper method for OGRPolygon.  NOT THE NORMAL WkbSize() METHOD! */
 /************************************************************************/
 
-int OGRLinearRing::_WkbSize( int b3D ) const
+int OGRLinearRing::_WkbSize(int b3D) const
 
 {
-    if( b3D )
+    if (b3D)
         return 4 + 24 * nPointCount;
     else
         return 4 + 16 * nPointCount;
@@ -296,15 +296,15 @@ int OGRLinearRing::_WkbSize( int b3D ) const
 /*      correct virtual table.                                          */
 /************************************************************************/
 
-OGRGeometry *OGRLinearRing::clone() const
+OGRGeometry* OGRLinearRing::clone() const
 
 {
-    OGRLinearRing       *poNewLinearRing;
+    OGRLinearRing *poNewLinearRing;
 
     poNewLinearRing = new OGRLinearRing();
-    poNewLinearRing->assignSpatialReference( getSpatialReference() );
+    poNewLinearRing->assignSpatialReference(getSpatialReference());
 
-    poNewLinearRing->setPoints( nPointCount, paoPoints, padfZ );
+    poNewLinearRing->setPoints(nPointCount, paoPoints, padfZ);
 
     return poNewLinearRing;
 }
@@ -316,7 +316,7 @@ OGRGeometry *OGRLinearRing::clone() const
 
 static const double EPSILON = 1E-5;
 
-static inline bool epsilonEqual(double a, double b, double eps) 
+static inline bool epsilonEqual(double a, double b, double eps)
 {
     return (::fabs(a - b) < eps);
 }
@@ -335,68 +335,71 @@ int OGRLinearRing::isClockwise() const
 
 {
     int    i, v, next;
-    double  dx0, dy0, dx1, dy1, crossproduct; 
+    double dx0, dy0, dx1, dy1, crossproduct;
 
-    if( nPointCount < 2 )
+    if (nPointCount < 2)
         return TRUE;
 
     /* Find the lowest rightmost vertex */
     v = 0;
-    for ( i = 1; i < nPointCount - 1; i++ )
+
+    for (i = 1; i < nPointCount - 1; i++)
     {
         /* => v < end */
-        if ( paoPoints[i].y< paoPoints[v].y ||
-             ( paoPoints[i].y== paoPoints[v].y &&
-               paoPoints[i].x > paoPoints[v].x ) )
+        if (paoPoints[i].y < paoPoints[v].y ||
+            (paoPoints[i].y == paoPoints[v].y &&
+             paoPoints[i].x > paoPoints[v].x))
         {
             v = i;
         }
     }
-    
+
     /* Vertices may be duplicate, we have to go to nearest different in each direction */
     /* preceding */
     next = v - 1;
-    while ( 1 )
+
+    while (1)
     {
-        if ( next < 0 ) 
+        if (next < 0)
         {
-            next = nPointCount - 1 - 1; 
+            next = nPointCount - 1 - 1;
         }
 
-        if( !epsilonEqual(paoPoints[next].x, paoPoints[v].x, EPSILON) 
-            || !epsilonEqual(paoPoints[next].y, paoPoints[v].y, EPSILON) )
+        if (!epsilonEqual(paoPoints[next].x, paoPoints[v].x, EPSILON)
+            || !epsilonEqual(paoPoints[next].y, paoPoints[v].y, EPSILON))
         {
             break;
         }
 
-        if ( next == v ) /* So we cannot get into endless loop */
+        if (next == v)   /* So we cannot get into endless loop */
         {
             break;
         }
 
         next--;
     }
-	    
+
     dx0 = paoPoints[next].x - paoPoints[v].x;
     dy0 = paoPoints[next].y - paoPoints[v].y;
-    
-    
+
+
     /* following */
     next = v + 1;
-    while ( 1 )
+
+    while (1)
     {
-        if ( next >= nPointCount - 1 ) 
+        if (next >= nPointCount - 1)
         {
-            next = 0; 
+            next = 0;
         }
 
-        if ( !epsilonEqual(paoPoints[next].x, paoPoints[v].x, EPSILON) 
-             || !epsilonEqual(paoPoints[next].y, paoPoints[v].y, EPSILON) )
+        if (!epsilonEqual(paoPoints[next].x, paoPoints[v].x, EPSILON)
+            || !epsilonEqual(paoPoints[next].y, paoPoints[v].y, EPSILON))
         {
             break;
         }
 
-        if ( next == v ) /* So we cannot get into endless loop */
+        if (next == v)   /* So we cannot get into endless loop */
         {
             break;
         }
@@ -408,45 +411,46 @@ int OGRLinearRing::isClockwise() const
     dy1 = paoPoints[next].y - paoPoints[v].y;
 
     crossproduct = dx1 * dy0 - dx0 * dy1;
-    
-    if ( crossproduct > 0 )      /* CCW */
-	return FALSE;
-    else if ( crossproduct < 0 )  /* CW */
-	return TRUE;
-    
+
+    if (crossproduct > 0)        /* CCW */
+        return FALSE;
+    else if (crossproduct < 0)    /* CW */
+        return TRUE;
+
     /* ok, this is a degenerate case : the extent of the polygon is less than EPSILON */
     /* Try with Green Formula as a fallback, but this is not a guarantee */
     /* as we'll probably be affected by numerical instabilities */
-    
-    double dfSum = paoPoints[0].x * (paoPoints[1].y - paoPoints[nPointCount-1].y);
 
-    for (i=1; i<nPointCount-1; i++) {
-        dfSum += paoPoints[i].x * (paoPoints[i+1].y - paoPoints[i-1].y);
+    double dfSum = paoPoints[0].x * (paoPoints[1].y - paoPoints[nPointCount - 1].y);
+
+    for (i = 1; i < nPointCount - 1; i++)
+    {
+        dfSum += paoPoints[i].x * (paoPoints[i + 1].y - paoPoints[i - 1].y);
     }
 
-    dfSum += paoPoints[nPointCount-1].x * (paoPoints[0].y - paoPoints[nPointCount-2].y);
+    dfSum += paoPoints[nPointCount - 1].x * (paoPoints[0].y - paoPoints[nPointCount - 2].y);
 
     return dfSum < 0;
 }
 
-/************************************************************************/ 
-/*                             reverseWindingOrder()                    */ 
-/************************************************************************/ 
+/************************************************************************/
+/*                             reverseWindingOrder()                    */
+/************************************************************************/
 
-void OGRLinearRing::reverseWindingOrder() 
+void OGRLinearRing::reverseWindingOrder()
 
-{ 
-    int pos = 0; 
-    OGRPoint tempPoint; 
+{
+    int      pos = 0;
+    OGRPoint tempPoint;
 
-    for( int i = 0; i < nPointCount / 2; i++ ) 
-    { 
-        getPoint( i, &tempPoint ); 
-        pos = nPointCount - i - 1; 
-        setPoint( i, getX(pos), getY(pos), getZ(pos) ); 
-        setPoint( pos, tempPoint.getX(), tempPoint.getY(), tempPoint.getZ() ); 
-    } 
-} 
+    for (int i = 0; i < nPointCount / 2; i++)
+    {
+        getPoint(i, &tempPoint);
+        pos = nPointCount - i - 1;
+        setPoint(i, getX(pos), getY(pos), getZ(pos));
+        setPoint(pos, tempPoint.getX(), tempPoint.getY(), tempPoint.getZ());
+    }
+}
 
 /************************************************************************/
 /*                             closeRing()                              */
@@ -455,21 +459,20 @@ void OGRLinearRing::reverseWindingOrder()
 void OGRLinearRing::closeRings()
 
 {
-    if( nPointCount < 2 )
+    if (nPointCount < 2)
         return;
 
-    if( getX(0) != getX(nPointCount-1) 
-        || getY(0) != getY(nPointCount-1)
-        || getZ(0) != getZ(nPointCount-1) )
+    if (getX(0) != getX(nPointCount - 1)
+        || getY(0) != getY(nPointCount - 1)
+        || getZ(0) != getZ(nPointCount - 1))
     {
         /* Avoid implicit change of coordinate dimensionality
          * if z=0.0 and dim=2
          */
-        if( getCoordinateDimension() == 2 )
-            addPoint( getX(0), getY(0) );
+        if (getCoordinateDimension() == 2)
+            addPoint(getX(0), getY(0));
         else
-            addPoint( getX(0), getY(0), getZ(0) );
-            
+            addPoint(getX(0), getY(0), getZ(0));
     }
 }
 
@@ -480,10 +483,10 @@ void OGRLinearRing::closeRings()
 /**
  * \brief Compute area of ring.
  *
- * The area is computed according to Green's Theorem:  
+ * The area is computed according to Green's Theorem:
  *
- * Area is "Sum(x(i)*(y(i+1) - y(i-1)))/2" for i = 0 to pointCount-1, 
- * assuming the last point is a duplicate of the first. 
+ * Area is "Sum(x(i)*(y(i+1) - y(i-1)))/2" for i = 0 to pointCount-1,
+ * assuming the last point is a duplicate of the first.
  *
  * @return computed area.
  */
@@ -492,19 +495,19 @@ double OGRLinearRing::get_Area() const
 
 {
     double dfAreaSum = 0.0;
-    int i;
+    int    i;
 
-    if( nPointCount < 2 )
+    if (nPointCount < 2)
         return 0;
 
-    dfAreaSum = paoPoints[0].x * (paoPoints[1].y - paoPoints[nPointCount-1].y);
+    dfAreaSum = paoPoints[0].x * (paoPoints[1].y - paoPoints[nPointCount - 1].y);
 
-    for( i = 1; i < nPointCount-1; i++ )
+    for (i = 1; i < nPointCount - 1; i++)
     {
-        dfAreaSum += paoPoints[i].x * (paoPoints[i+1].y - paoPoints[i-1].y);
+        dfAreaSum += paoPoints[i].x * (paoPoints[i + 1].y - paoPoints[i - 1].y);
     }
 
-    dfAreaSum += paoPoints[nPointCount-1].x * (paoPoints[0].y - paoPoints[nPointCount-2].y);
+    dfAreaSum += paoPoints[nPointCount - 1].x * (paoPoints[0].y - paoPoints[nPointCount - 2].y);
 
     return 0.5 * fabs(dfAreaSum);
 }
@@ -513,18 +516,18 @@ double OGRLinearRing::get_Area() const
 /*                              isPointInRing()                         */
 /************************************************************************/
 
-OGRBoolean OGRLinearRing::isPointInRing(const OGRPoint* poPoint, int bTestEnvelope) const
+OGRBoolean OGRLinearRing::isPointInRing(const OGRPoint *poPoint, int bTestEnvelope) const
 {
-    if ( NULL == poPoint )
+    if (NULL == poPoint)
     {
-        CPLDebug( "OGR", "OGRLinearRing::isPointInRing(const  OGRPoint* poPoint) - passed point is NULL!" );
+        CPLDebug("OGR", "OGRLinearRing::isPointInRing(const  OGRPoint* poPoint) - passed point is NULL!");
         return 0;
     }
 
     const int iNumPoints = getNumPoints();
 
     // Simple validation
-    if ( iNumPoints < 4 )
+    if (iNumPoints < 4)
         return 0;
 
     const double dfTestX = poPoint->getX();
@@ -535,18 +538,18 @@ OGRBoolean OGRLinearRing::isPointInRing(const OGRPoint* poPoint, int bTestEnvelo
     {
         OGREnvelope extent;
         getEnvelope(&extent);
-        if ( !( dfTestX >= extent.MinX && dfTestX <= extent.MaxX
-            && dfTestY >= extent.MinY && dfTestY <= extent.MaxY ) )
+        if (!(dfTestX >= extent.MinX && dfTestX <= extent.MaxX
+              && dfTestY >= extent.MinY && dfTestY <= extent.MaxY))
         {
             return 0;
         }
     }
 
-	// For every point p in ring,
+    // For every point p in ring,
     // test if ray starting from given point crosses segment (p - 1, p)
     int iNumCrossings = 0;
 
-    for ( int iPoint = 1; iPoint < iNumPoints; iPoint++ ) 
+    for (int iPoint = 1; iPoint < iNumPoints; iPoint++)
     {
         const int iPointPrev = iPoint - 1;
 
@@ -556,11 +559,11 @@ OGRBoolean OGRLinearRing::isPointInRing(const OGRPoint* poPoint, int bTestEnvelo
         const double x2 = getX(iPointPrev) - dfTestX;
         const double y2 = getY(iPointPrev) - dfTestY;
 
-        if( ( ( y1 > 0 ) && ( y2 <= 0 ) ) || ( ( y2 > 0 ) && ( y1 <= 0 ) ) ) 
+        if (((y1 > 0) && (y2 <= 0)) || ((y2 > 0) && (y1 <= 0)))
         {
             // Check if ray intersects with segment of the ring
-            const double dfIntersection = ( x1 * y2 - x2 * y1 ) / (y2 - y1);
-            if ( 0.0 < dfIntersection )
+            const double dfIntersection = (x1 * y2 - x2 * y1) / (y2 - y1);
+            if (0.0 < dfIntersection)
             {
                 // Count intersections
                 iNumCrossings++;
@@ -570,25 +573,25 @@ OGRBoolean OGRLinearRing::isPointInRing(const OGRPoint* poPoint, int bTestEnvelo
 
     // If iNumCrossings number is even, given point is outside the ring,
     // when the crossings number is odd, the point is inside the ring.
-    return ( ( iNumCrossings % 2 ) == 1 ? 1 : 0 );
+    return ((iNumCrossings % 2) == 1 ? 1 : 0);
 }
 
 /************************************************************************/
 /*                       isPointOnRingBoundary()                        */
 /************************************************************************/
 
-OGRBoolean OGRLinearRing::isPointOnRingBoundary(const OGRPoint* poPoint, int bTestEnvelope) const
+OGRBoolean OGRLinearRing::isPointOnRingBoundary(const OGRPoint *poPoint, int bTestEnvelope) const
 {
-    if ( NULL == poPoint )
+    if (NULL == poPoint)
     {
-        CPLDebug( "OGR", "OGRLinearRing::isPointOnRingBoundary(const  OGRPoint* poPoint) - passed point is NULL!" );
+        CPLDebug("OGR", "OGRLinearRing::isPointOnRingBoundary(const  OGRPoint* poPoint) - passed point is NULL!");
         return 0;
     }
 
     const int iNumPoints = getNumPoints();
 
     // Simple validation
-    if ( iNumPoints < 4 )
+    if (iNumPoints < 4)
         return 0;
 
     const double dfTestX = poPoint->getX();
@@ -597,13 +600,13 @@ OGRBoolean OGRLinearRing::isPointOnRingBoundary(const OGRPoint* poPoint, int bTe
     // Fast test if point is inside extent of the ring
     OGREnvelope extent;
     getEnvelope(&extent);
-    if ( !( dfTestX >= extent.MinX && dfTestX <= extent.MaxX
-         && dfTestY >= extent.MinY && dfTestY <= extent.MaxY ) )
+    if (!(dfTestX >= extent.MinX && dfTestX <= extent.MaxX
+          && dfTestY >= extent.MinY && dfTestY <= extent.MaxY))
     {
         return 0;
     }
 
-    for ( int iPoint = 1; iPoint < iNumPoints; iPoint++ ) 
+    for (int iPoint = 1; iPoint < iNumPoints; iPoint++)
     {
         const int iPointPrev = iPoint - 1;
 
@@ -623,7 +626,7 @@ OGRBoolean OGRLinearRing::isPointOnRingBoundary(const OGRPoint* poPoint, int bTe
         /* FIXME? If the test point is not exactly identical to one of */
         /* the vertices of the ring, but somewhere on a segment, there's */
         /* little chance that we get 0. So that should be tested against some epsilon */
-        if ( x1 * y2 - x2 * y1 == 0 )
+        if (x1 * y2 - x2 * y1 == 0)
         {
             return 1;
         }

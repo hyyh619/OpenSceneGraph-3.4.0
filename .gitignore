@@ -267,3 +267,6 @@ project/
 Android/
 
 *.Po
+
+Windows/
+source.files

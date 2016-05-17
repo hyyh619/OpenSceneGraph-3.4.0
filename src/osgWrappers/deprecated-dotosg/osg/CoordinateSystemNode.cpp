@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool CoordinateSystemNode_readLocalData(Object& obj, Input& fr);
-bool CoordinateSystemNode_writeLocalData(const Object& obj, Output& fw);
+bool CoordinateSystemNode_readLocalData(Object&obj, Input&fr);
+bool CoordinateSystemNode_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(CoordinateSystemNode)
@@ -21,43 +21,46 @@ REGISTER_DOTOSGWRAPPER(CoordinateSystemNode)
     &CoordinateSystemNode_writeLocalData
 );
 
-bool CoordinateSystemNode_readLocalData(Object& obj, Input& fr)
+bool CoordinateSystemNode_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    CoordinateSystemNode& csn = static_cast<CoordinateSystemNode&>(obj);
+    CoordinateSystemNode&csn = static_cast<CoordinateSystemNode&>(obj);
 
     if (fr.matchSequence("Format %s"))
     {
-        const char* str = fr[1].getStr();
-        if (str) csn.setFormat(str);
+        const char *str = fr[1].getStr();
+        if (str)
+            csn.setFormat(str);
 
         iteratorAdvanced = true;
-        fr+=2;
+        fr              += 2;
     }
 
     if (fr.matchSequence("CoordinateSystem %s"))
     {
-        const char* str = fr[1].getStr();
-        if (str) csn.setCoordinateSystem(str);
+        const char *str = fr[1].getStr();
+        if (str)
+            csn.setCoordinateSystem(str);
 
         iteratorAdvanced = true;
-        fr+=2;
+        fr              += 2;
     }
 
-    EllipsoidModel* em = fr.readObjectOfType<osg::EllipsoidModel>();
-    if (em) csn.setEllipsoidModel(em);
+    EllipsoidModel *em = fr.readObjectOfType<osg::EllipsoidModel>();
+    if (em)
+        csn.setEllipsoidModel(em);
 
     return iteratorAdvanced;
 }
 
 
-bool CoordinateSystemNode_writeLocalData(const Object& obj, Output& fw)
+bool CoordinateSystemNode_writeLocalData(const Object&obj, Output&fw)
 {
-    const CoordinateSystemNode& csn = static_cast<const CoordinateSystemNode&>(obj);
+    const CoordinateSystemNode&csn = static_cast<const CoordinateSystemNode&>(obj);
 
-    fw.indent()<<"Format "<<fw.wrapString(csn.getFormat())<<std::endl;
-    fw.indent()<<"CoordinateSystem "<<fw.wrapString(csn.getCoordinateSystem())<<std::endl;
+    fw.indent() << "Format " <<           fw.wrapString(csn.getFormat()) << std::endl;
+    fw.indent() << "CoordinateSystem " << fw.wrapString(csn.getCoordinateSystem()) << std::endl;
 
     if (csn.getEllipsoidModel())
     {

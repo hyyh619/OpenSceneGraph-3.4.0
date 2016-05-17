@@ -19,14 +19,15 @@
 #include <osg/BoundingSphere>
 
 #ifdef BUILD_CONTRIBUTORS
-extern void printContributors(const std::string& changeLog, bool printNumEntries);
+extern void printContributors(const std::string&changeLog, bool printNumEntries);
 #endif
 
 using namespace std;
 
-int main( int argc, char** argv)
+int main(int argc, char **argv)
 {
     osg::ArgumentParser arguments(&argc, argv);
+
     arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName() + " [options]");
     arguments.getApplicationUsage()->addCommandLineOption("-h or --help",                   "Display this information");
     arguments.getApplicationUsage()->addCommandLineOption("--version-number",               "Print out version number only");
@@ -78,7 +79,7 @@ int main( int argc, char** argv)
         return 0;
     }
 
-    if (arguments.read("--soversion-number") || arguments.read("--so-number") )
+    if (arguments.read("--soversion-number") || arguments.read("--so-number"))
     {
         cout << osgGetSOVersion() << endl;
         return 0;
@@ -143,6 +144,7 @@ int main( int argc, char** argv)
 
 #ifdef BUILD_CONTRIBUTORS
     string changeLog;
+
     while (arguments.read("-r",     changeLog) ||
            arguments.read("--read", changeLog))
     {

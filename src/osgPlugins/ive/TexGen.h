@@ -4,11 +4,13 @@
 #include <osg/TexGen>
 #include "ReadWrite.h"
 
-namespace ive{
-class TexGen : public osg::TexGen, public ReadWrite {
+namespace ive
+{
+class TexGen : public osg::TexGen, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

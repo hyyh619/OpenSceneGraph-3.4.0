@@ -1,7 +1,7 @@
 /******************************************************************************
  * $Id: gbgetsymbol.cpp 10645 2007-01-18 02:22:39Z warmerdam $
  *
- * Project:  GDAL Bridge 
+ * Project:  GDAL Bridge
  * Purpose:  Fetch a function pointer from a shared library / DLL.
  * Author:   Frank Warmerdam, warmerda@home.com
  *
@@ -52,29 +52,28 @@
 /*         pre-prending or post-pending an underscore.                  */
 /************************************************************************/
 
-void *GBGetSymbol( const char * pszLibrary, const char * pszSymbolName )
+void* GBGetSymbol(const char *pszLibrary, const char *pszSymbolName)
 
 {
-    void	*pLibrary;
-    void	*pSymbol;
+    void *pLibrary;
+    void *pSymbol;
 
     pLibrary = dlopen(pszLibrary, RTLD_LAZY);
-    if( pLibrary == NULL )
+    if (pLibrary == NULL)
     {
         return NULL;
     }
 
-    pSymbol = dlsym( pLibrary, pszSymbolName );
+    pSymbol = dlsym(pLibrary, pszSymbolName);
 
-    if( pSymbol == NULL )
+    if (pSymbol == NULL)
     {
-        fprintf( stderr, "GBGetSymbol(): %s\n", dlerror() );
+        fprintf(stderr, "GBGetSymbol(): %s\n", dlerror());
         return NULL;
     }
-    
-    return( pSymbol );
+
+    return(pSymbol);
 }
-
 #endif /* def __unix__ && defined(HAVE_DLFCN_H) */
 
 /* ==================================================================== */
@@ -97,30 +96,28 @@ void *GBGetSymbol( const char * pszLibrary, const char * pszSymbolName )
 /*         pre-prending or post-pending an underscore.                  */
 /************************************************************************/
 
-void *GBGetSymbol( const char * pszLibrary, const char * pszSymbolName )
+void* GBGetSymbol(const char *pszLibrary, const char *pszSymbolName)
 
 {
-    void	*pLibrary;
-    void	*pSymbol;
+    void *pLibrary;
+    void *pSymbol;
 
     pLibrary = LoadLibrary(pszLibrary);
-    if( pLibrary == NULL )
+    if (pLibrary == NULL)
     {
         return NULL;
     }
 
-    pSymbol = GetProcAddress( (HINSTANCE) pLibrary, pszSymbolName );
+    pSymbol = GetProcAddress((HINSTANCE) pLibrary, pszSymbolName);
 
-    if( pSymbol == NULL )
+    if (pSymbol == NULL)
     {
-        fprintf( stderr,
-                 "GBGetSymbol(): Can't find requested entry point: %s\n",
-                 pszSymbolName );
+        fprintf(stderr,
+                "GBGetSymbol(): Can't find requested entry point: %s\n",
+                pszSymbolName);
         return NULL;
     }
-    
-    return( pSymbol );
+
+    return(pSymbol);
 }
-
 #endif /* def _WIN32 */
-

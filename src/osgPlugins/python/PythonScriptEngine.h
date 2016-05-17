@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef PYTHONSCRIPTENGINE_H
 #define PYTHONSCRIPTENGINE_H
@@ -20,33 +20,33 @@
 
 namespace python
 {
-
 class PythonScriptEngine : public osg::ScriptEngine
 {
-    public:
-        PythonScriptEngine();
-        PythonScriptEngine(const PythonScriptEngine& rhs, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+public:
+PythonScriptEngine();
+PythonScriptEngine(const PythonScriptEngine&rhs, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-        META_Object(lua, PythonScriptEngine)
+META_Object(lua, PythonScriptEngine)
 
-        virtual const std::string& getLanguage() const { return _language; }
+virtual const std::string & getLanguage() const { return _language; }
 
-        /** run a Script.*/
-        virtual bool run(osg::Script* script, const std::string& entryPoint, osg::Parameters& inputParameters, osg::Parameters& outputParameters);
+/** run a Script.*/
+virtual bool run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters);
 
-        /** get the Python main object.*/
-        PyObject* getPythonMain() { return _py_main; }
+/** get the Python main object.*/
+PyObject* getPythonMain()
+{
+    return _py_main;
+}
 
-    protected:
+protected:
 
-        void initialize();
+void initialize();
 
-        virtual ~PythonScriptEngine();
+virtual ~PythonScriptEngine();
 
-        PyObject* _py_main;
-
+PyObject *_py_main;
 };
-
 }
 
 #endif

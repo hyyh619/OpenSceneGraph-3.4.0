@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // OpenFlight® loader for OpenSceneGraph
@@ -95,10 +95,9 @@ AttrData::AttrData() :
     controlPoints(0)
     // TODO:
 {
-    of_mips[0]=of_mips[1]=of_mips[2]=of_mips[3]=of_mips[4]=of_mips[5]=of_mips[6]=of_mips[7]=0.0f;
+    of_mips[0] = of_mips[1] = of_mips[2] = of_mips[3] = of_mips[4] = of_mips[5] = of_mips[6] = of_mips[7] = 0.0f;
 }
 
-AttrData::AttrData(const AttrData& attr, const osg::CopyOp& copyop) :
-    osg::Object(attr,copyop)
+AttrData::AttrData(const AttrData&attr, const osg::CopyOp&copyop) :
+    osg::Object(attr, copyop)
 {}
-

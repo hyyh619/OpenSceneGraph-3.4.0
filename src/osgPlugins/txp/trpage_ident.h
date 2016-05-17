@@ -10,8 +10,8 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 #ifdef __CURR_DLL
 #undef __CURR_DLL

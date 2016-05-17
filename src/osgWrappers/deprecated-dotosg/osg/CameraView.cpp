@@ -10,8 +10,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool CameraView_readLocalData(Object& obj, Input& fr);
-bool CameraView_writeLocalData(const Object& obj, Output& fw);
+bool CameraView_readLocalData(Object&obj, Input&fr);
+bool CameraView_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(CameraView)
@@ -24,11 +24,11 @@ REGISTER_DOTOSGWRAPPER(CameraView)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool CameraView_readLocalData(Object& obj, Input& fr)
+bool CameraView_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    CameraView& cameraview = static_cast<CameraView&>(obj);
+    CameraView&cameraview = static_cast<CameraView&>(obj);
 
     if (fr.matchSequence("position %f %f %f"))
     {
@@ -39,7 +39,7 @@ bool CameraView_readLocalData(Object& obj, Input& fr)
 
         cameraview.setPosition(pos);
 
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -53,7 +53,7 @@ bool CameraView_readLocalData(Object& obj, Input& fr)
 
         cameraview.setAttitude(att);
 
-        fr += 5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
@@ -63,18 +63,21 @@ bool CameraView_readLocalData(Object& obj, Input& fr)
         fr[1].getFloat(fov);
         cameraview.setFieldOfView(fov);
 
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
 
     if (fr.matchSequence("fieldOfViewMode %w"))
     {
-        if      (fr[1].matchWord("UNCONSTRAINED")) cameraview.setFieldOfViewMode(osg::CameraView::UNCONSTRAINED);
-        else if (fr[1].matchWord("HORIZONTAL")) cameraview.setFieldOfViewMode(osg::CameraView::HORIZONTAL);
-        else if (fr[1].matchWord("VERTICAL")) cameraview.setFieldOfViewMode(osg::CameraView::VERTICAL);
+        if (fr[1].matchWord("UNCONSTRAINED"))
+            cameraview.setFieldOfViewMode(osg::CameraView::UNCONSTRAINED);
+        else if (fr[1].matchWord("HORIZONTAL"))
+            cameraview.setFieldOfViewMode(osg::CameraView::HORIZONTAL);
+        else if (fr[1].matchWord("VERTICAL"))
+            cameraview.setFieldOfViewMode(osg::CameraView::VERTICAL);
 
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -85,7 +88,7 @@ bool CameraView_readLocalData(Object& obj, Input& fr)
         fr[1].getFloat(fl);
         cameraview.setFocalLength(fl);
 
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -93,23 +96,26 @@ bool CameraView_readLocalData(Object& obj, Input& fr)
 }
 
 
-bool CameraView_writeLocalData(const Object& obj, Output& fw)
+bool CameraView_writeLocalData(const Object&obj, Output&fw)
 {
-    const CameraView& cameraview = static_cast<const CameraView&>(obj);
+    const CameraView&cameraview = static_cast<const CameraView&>(obj);
 
-    fw.indent()<<"position "<<cameraview.getPosition()<<std::endl;
-    fw.indent()<<"attitude "<<cameraview.getAttitude()<<std::endl;
+    fw.indent() << "position " << cameraview.getPosition() << std::endl;
+    fw.indent() << "attitude " << cameraview.getAttitude() << std::endl;
 
-    fw.indent()<<"fieldOfView "<<cameraview.getFieldOfView()<<std::endl;
-    fw.indent()<<"fieldOfViewMode ";
-    switch(cameraview.getFieldOfViewMode())
+    fw.indent() << "fieldOfView " << cameraview.getFieldOfView() << std::endl;
+    fw.indent() << "fieldOfViewMode ";
+
+    switch (cameraview.getFieldOfViewMode())
     {
-        case(osg::CameraView::UNCONSTRAINED): fw <<"UNCONSTRAINED"<<std::endl; break;
-        case(osg::CameraView::HORIZONTAL): fw <<"HORIZONTAL"<<std::endl; break;
-        case(osg::CameraView::VERTICAL): fw <<"VERTICAL"<<std::endl; break;
+    case (osg::CameraView::UNCONSTRAINED): fw << "UNCONSTRAINED" << std::endl; break;
+
+    case (osg::CameraView::HORIZONTAL): fw << "HORIZONTAL" << std::endl; break;
+
+    case (osg::CameraView::VERTICAL): fw << "VERTICAL" << std::endl; break;
     }
 
-    fw.indent()<<"focalLength "<<cameraview.getFocalLength()<<std::endl;
+    fw.indent() << "focalLength " << cameraview.getFocalLength() << std::endl;
 
     return true;
 }

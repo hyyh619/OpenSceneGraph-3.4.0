@@ -1,7 +1,7 @@
 /******************************************************************************
  * $Id: gdaljp2metadata.h 20996 2010-10-28 18:38:15Z rouault $
  *
- * Project:  GDAL 
+ * Project:  GDAL
  * Purpose:  JP2 Box Reader (and GMLJP2 Interpreter)
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  *
@@ -40,58 +40,69 @@
 
 class CPL_DLL GDALJP2Box
 {
+VSILFILE *fpVSIL;
 
-    VSILFILE   *fpVSIL;
+char szBoxType[5];
 
-    char        szBoxType[5];
+GIntBig nBoxOffset;
+GIntBig nBoxLength;
 
-    GIntBig     nBoxOffset;
-    GIntBig     nBoxLength;
+GIntBig nDataOffset;
 
-    GIntBig     nDataOffset;
+GByte abyUUID[16];
 
-    GByte       abyUUID[16];
-
-    GByte      *pabyData;
+GByte *pabyData;
 
 public:
-                GDALJP2Box( VSILFILE * = NULL );
-                ~GDALJP2Box();
+GDALJP2Box(VSILFILE* = NULL);
+~GDALJP2Box();
 
-    int         SetOffset( GIntBig nNewOffset );
-    int         ReadBox();
+int         SetOffset(GIntBig nNewOffset);
+int         ReadBox();
 
-    int         ReadFirst();
-    int         ReadNext();
+int         ReadFirst();
+int         ReadNext();
 
-    int         ReadFirstChild( GDALJP2Box *poSuperBox );
-    int         ReadNextChild( GDALJP2Box *poSuperBox );
+int         ReadFirstChild(GDALJP2Box *poSuperBox);
+int         ReadNextChild(GDALJP2Box *poSuperBox);
 
-    GIntBig     GetDataLength();
-    const char *GetType() { return szBoxType; }
-    
-    GByte      *ReadBoxData();
+GIntBig     GetDataLength();
+const char* GetType()
+{
+    return szBoxType;
+}
 
-    int         IsSuperBox();
+GByte* ReadBoxData();
 
-    int         DumpReadable( FILE * );
+int         IsSuperBox();
 
-    VSILFILE   *GetFILE() { return fpVSIL; }
+int         DumpReadable(FILE*);
 
-    const GByte *GetUUID() { return abyUUID; }
+VSILFILE* GetFILE()
+{
+    return fpVSIL;
+}
 
-    // write support
-    void        SetType( const char * );
-    void        SetWritableData( int nLength, const GByte *pabyData );
-    const GByte*GetWritableData() { return pabyData; }
+const GByte* GetUUID()
+{
+    return abyUUID;
+}
 
-    // factory methods.
-    static GDALJP2Box *CreateAsocBox( int nCount, GDALJP2Box **papoBoxes );
-    static GDALJP2Box *CreateLblBox( const char *pszLabel );
-    static GDALJP2Box *CreateLabelledXMLAssoc( const char *pszLabel,
-                                               const char *pszXML );
-    static GDALJP2Box *CreateUUIDBox( const GByte *pabyUUID, 
-                                      int nDataSize, GByte *pabyData );
+// write support
+void        SetType(const char*);
+void        SetWritableData(int nLength, const GByte *pabyData);
+const GByte* GetWritableData()
+{
+    return pabyData;
+}
+
+// factory methods.
+static GDALJP2Box* CreateAsocBox(int nCount, GDALJP2Box **papoBoxes);
+static GDALJP2Box* CreateLblBox(const char *pszLabel);
+static GDALJP2Box* CreateLabelledXMLAssoc(const char *pszLabel,
+                                          const char *pszXML);
+static GDALJP2Box* CreateUUIDBox(const GByte *pabyUUID,
+                                 int nDataSize, GByte *pabyData);
 };
 
 /************************************************************************/
@@ -102,45 +113,45 @@ class CPL_DLL GDALJP2Metadata
 
 {
 private:
-    void    CollectGMLData( GDALJP2Box * );
-    int     GMLSRSLookup( const char *pszURN );
+void    CollectGMLData(GDALJP2Box*);
+int     GMLSRSLookup(const char *pszURN);
 
-    int    nGeoTIFFSize;
-    GByte  *pabyGeoTIFFData;
+int   nGeoTIFFSize;
+GByte *pabyGeoTIFFData;
 
-    int    nMSIGSize;
-    GByte  *pabyMSIGData;
-
-public:
-    char   **papszGMLMetadata;
-    
-    int     bHaveGeoTransform;
-    double  adfGeoTransform[6];
-
-    char    *pszProjection;
-
-    int         nGCPCount;
-    GDAL_GCP    *pasGCPList;
+int   nMSIGSize;
+GByte *pabyMSIGData;
 
 public:
-            GDALJP2Metadata();
-            ~GDALJP2Metadata();
+char **papszGMLMetadata;
 
-    int     ReadBoxes( VSILFILE * fpVSIL );
+int    bHaveGeoTransform;
+double adfGeoTransform[6];
 
-    int     ParseJP2GeoTIFF();
-    int     ParseMSIG();
-    int     ParseGMLCoverageDesc();
+char *pszProjection;
 
-    int     ReadAndParse( const char *pszFilename );
+int      nGCPCount;
+GDAL_GCP *pasGCPList;
 
-    // Write oriented. 
-    void    SetProjection( const char *pszWKT );
-    void    SetGeoTransform( double * );
-    void    SetGCPs( int, const GDAL_GCP * );
-    
-    GDALJP2Box *CreateJP2GeoTIFF();
-    GDALJP2Box *CreateGMLJP2( int nXSize, int nYSize );
+public:
+GDALJP2Metadata();
+~GDALJP2Metadata();
+
+int     ReadBoxes(VSILFILE *fpVSIL);
+
+int     ParseJP2GeoTIFF();
+int     ParseMSIG();
+int     ParseGMLCoverageDesc();
+
+int     ReadAndParse(const char *pszFilename);
+
+// Write oriented.
+void    SetProjection(const char *pszWKT);
+void    SetGeoTransform(double*);
+void    SetGCPs(int, const GDAL_GCP*);
+
+GDALJP2Box* CreateJP2GeoTIFF();
+GDALJP2Box* CreateGMLJP2(int nXSize, int nYSize);
 };
 
 #endif /* ndef GDAL_JP2READER_H_INCLUDED */

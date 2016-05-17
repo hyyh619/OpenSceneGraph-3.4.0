@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GL>
 #include <osg/LineWidth>
 #include <osg/Notify>
@@ -24,10 +24,9 @@ LineWidth::LineWidth(float width)
 
 
 LineWidth::~LineWidth()
-{
-}
+{}
 
-void LineWidth::setWidth( float width )
+void LineWidth::setWidth(float width)
 {
     _width = width;
 }
@@ -36,4 +35,3 @@ void LineWidth::apply(State&) const
 {
     glLineWidth(_width);
 }
-

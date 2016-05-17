@@ -9,26 +9,26 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Version>
 #include <string>
 #include <stdio.h>
 
 extern "C" {
-
 const char* osgGetVersion()
 {
     static char osg_version[256];
-    static int osg_version_init = 1;
+    static int  osg_version_init = 1;
+
     if (osg_version_init)
     {
-        if (OSG_VERSION_REVISION==0)
+        if (OSG_VERSION_REVISION == 0)
         {
-            sprintf(osg_version,"%d.%d.%d",OSG_VERSION_MAJOR,OSG_VERSION_MINOR,OSG_VERSION_RELEASE);
+            sprintf(osg_version, "%d.%d.%d", OSG_VERSION_MAJOR, OSG_VERSION_MINOR, OSG_VERSION_RELEASE);
         }
         else
         {
-            sprintf(osg_version,"%d.%d.%d-%d",OSG_VERSION_MAJOR,OSG_VERSION_MINOR,OSG_VERSION_RELEASE,OSG_VERSION_REVISION);
+            sprintf(osg_version, "%d.%d.%d-%d", OSG_VERSION_MAJOR, OSG_VERSION_MINOR, OSG_VERSION_RELEASE, OSG_VERSION_REVISION);
         }
 
         osg_version_init = 0;
@@ -40,10 +40,11 @@ const char* osgGetVersion()
 const char* osgGetSOVersion()
 {
     static char osg_soversion[32];
-    static int osg_soversion_init = 1;
+    static int  osg_soversion_init = 1;
+
     if (osg_soversion_init)
     {
-        sprintf(osg_soversion,"%d",OPENSCENEGRAPH_SOVERSION);
+        sprintf(osg_soversion, "%d", OPENSCENEGRAPH_SOVERSION);
         osg_soversion_init = 0;
     }
 
@@ -54,5 +55,4 @@ const char* osgGetLibraryName()
 {
     return "OpenSceneGraph Library";
 }
-
 }

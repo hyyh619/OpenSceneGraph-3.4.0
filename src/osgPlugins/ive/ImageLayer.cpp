@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "ImageLayer.h"
@@ -21,14 +21,14 @@
 
 using namespace ive;
 
-void ImageLayer::write(DataOutputStream* out)
+void ImageLayer::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVEIMAGELAYER);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osgTerrain::Layer*  layer = dynamic_cast<osgTerrain::Layer*>(this);
-    if  (layer)
+    osgTerrain::Layer *layer = dynamic_cast<osgTerrain::Layer*>(this);
+    if (layer)
         ((ive::Layer*)(layer))->write(out);
     else
         out_THROW_EXCEPTION("ImageLayer::write(): Could not cast this osgLayer::ImageLayer to an osgTerrain::Layer.");
@@ -36,17 +36,18 @@ void ImageLayer::write(DataOutputStream* out)
 
     IncludeImageMode imMode = out->getIncludeImageMode(getImage());
 
-    if (getFileName().empty() && imMode==IMAGE_REFERENCE_FILE) imMode = IMAGE_INCLUDE_DATA;
+    if (getFileName().empty() && imMode == IMAGE_REFERENCE_FILE)
+        imMode = IMAGE_INCLUDE_DATA;
 
     out->writeChar(imMode);
-    out->writeImage(imMode,getImage());
-
+    out->writeImage(imMode, getImage());
 }
 
-void ImageLayer::read(DataInputStream* in)
+void ImageLayer::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVEIMAGELAYER)
         in_THROW_EXCEPTION("ImageLayer::read(): Expected ImageLayer identification.");
 
@@ -54,7 +55,7 @@ void ImageLayer::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osgTerrain::Layer*  layer = dynamic_cast<osgTerrain::Layer*>(this);
+    osgTerrain::Layer *layer = dynamic_cast<osgTerrain::Layer*>(this);
     if (layer)
         ((ive::Layer*)(layer))->read(in);
     else
@@ -62,12 +63,12 @@ void ImageLayer::read(DataInputStream* in)
 
 
     bool deferExternalLayerLoading = osgTerrain::TerrainTile::getTileLoadedCallback().valid() ?
-        osgTerrain::TerrainTile::getTileLoadedCallback()->deferExternalLayerLoading() : false;
+                                     osgTerrain::TerrainTile::getTileLoadedCallback()->deferExternalLayerLoading() : false;
 
     // Should we read image data from stream
     IncludeImageMode includeImg = (IncludeImageMode)in->readChar();
 
-    if (includeImg==IMAGE_REFERENCE_FILE && deferExternalLayerLoading)
+    if (includeImg == IMAGE_REFERENCE_FILE && deferExternalLayerLoading)
     {
         setFileName(in->readString());
     }

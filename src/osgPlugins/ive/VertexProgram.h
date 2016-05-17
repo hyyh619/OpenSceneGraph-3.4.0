@@ -4,11 +4,13 @@
 #include <osg/VertexProgram>
 #include "ReadWrite.h"
 
-namespace ive{
-class VertexProgram : public osg::VertexProgram, public ReadWrite {
+namespace ive
+{
+class VertexProgram : public osg::VertexProgram, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

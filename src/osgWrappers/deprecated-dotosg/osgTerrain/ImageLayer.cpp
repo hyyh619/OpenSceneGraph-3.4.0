@@ -16,8 +16,8 @@
 
 #include <osgTerrain/TerrainTile>
 
-bool ImageLayer_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool ImageLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool ImageLayer_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool ImageLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ImageLayer_Proxy)
 (
@@ -28,9 +28,9 @@ REGISTER_DOTOSGWRAPPER(ImageLayer_Proxy)
     ImageLayer_writeLocalData
 );
 
-bool ImageLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool ImageLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgTerrain::ImageLayer& layer = static_cast<osgTerrain::ImageLayer&>(obj);
+    osgTerrain::ImageLayer&layer = static_cast<osgTerrain::ImageLayer&>(obj);
 
     bool itrAdvanced = false;
 
@@ -40,7 +40,7 @@ bool ImageLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
         if (!filename.empty())
         {
             bool deferExternalLayerLoading = osgTerrain::TerrainTile::getTileLoadedCallback().valid() ?
-                osgTerrain::TerrainTile::getTileLoadedCallback()->deferExternalLayerLoading() : false;
+                                             osgTerrain::TerrainTile::getTileLoadedCallback()->deferExternalLayerLoading() : false;
 
             layer.setFileName(filename);
 
@@ -54,7 +54,7 @@ bool ImageLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
             }
         }
 
-        fr += 2;
+        fr         += 2;
         itrAdvanced = true;
     }
 
@@ -62,9 +62,9 @@ bool ImageLayer_readLocalData(osg::Object& obj, osgDB::Input &fr)
     return itrAdvanced;
 }
 
-bool ImageLayer_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool ImageLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgTerrain::ImageLayer& layer = static_cast<const osgTerrain::ImageLayer&>(obj);
+    const osgTerrain::ImageLayer&layer = static_cast<const osgTerrain::ImageLayer&>(obj);
 
     std::string fileName = layer.getFileName();
 
@@ -74,11 +74,13 @@ bool ImageLayer_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
         {
             fileName = fw.getTextureFileNameForOutput();
         }
+
         osgDB::writeImageFile(*layer.getImage(), fileName);
     }
+
     if (!fileName.empty())
     {
-        fw.indent()<<"file "<< fw.wrapString(fileName) << std::endl;
+        fw.indent() << "file " << fw.wrapString(fileName) << std::endl;
     }
 
     return true;

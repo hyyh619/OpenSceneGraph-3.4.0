@@ -10,4 +10,3 @@ USE_DOTOSGWRAPPER(Scribe_Proxy)
 USE_DOTOSGWRAPPER(SpecularHighlights_Proxy)
 
 extern "C" void dotosgwrapper_library_osgFX(void) {}
-

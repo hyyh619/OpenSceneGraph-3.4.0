@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/ObserverNodePath>
 #include <osg/Notify>
@@ -17,16 +17,16 @@
 using namespace osg;
 
 ObserverNodePath::ObserverNodePath()
-{
-}
+{}
 
-ObserverNodePath::ObserverNodePath(const ObserverNodePath& rhs)
+ObserverNodePath::ObserverNodePath(const ObserverNodePath&rhs)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock_rhs(_mutex);
+
     _nodePath = rhs._nodePath;
 }
 
-ObserverNodePath::ObserverNodePath(const osg::NodePath& nodePath)
+ObserverNodePath::ObserverNodePath(const osg::NodePath&nodePath)
 {
     setNodePath(nodePath);
 }
@@ -36,9 +36,10 @@ ObserverNodePath::~ObserverNodePath()
     clearNodePath();
 }
 
-ObserverNodePath& ObserverNodePath::operator = (const ObserverNodePath& rhs)
+ObserverNodePath&ObserverNodePath::operator =(const ObserverNodePath&rhs)
 {
-    if (&rhs==this) return *this;
+    if (&rhs == this)
+        return *this;
 
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock_rhs(rhs._mutex);
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock_lhs(_mutex);
@@ -46,7 +47,7 @@ ObserverNodePath& ObserverNodePath::operator = (const ObserverNodePath& rhs)
     return *this;
 }
 
-void ObserverNodePath::setNodePathTo(osg::Node* node)
+void ObserverNodePath::setNodePathTo(osg::Node *node)
 {
     if (node)
     {
@@ -63,6 +64,7 @@ void ObserverNodePath::setNodePathTo(osg::Node* node)
             {
                 nodePathList[0].push_back(node);
             }
+
             setNodePath(nodePathList[0]);
         }
     }
@@ -72,49 +74,58 @@ void ObserverNodePath::setNodePathTo(osg::Node* node)
     }
 }
 
-void ObserverNodePath::setNodePath(const osg::NodePath& nodePath)
+void ObserverNodePath::setNodePath(const osg::NodePath&nodePath)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     _setNodePath(nodePath);
 }
 
-void ObserverNodePath::setNodePath(const osg::RefNodePath& refNodePath)
+void ObserverNodePath::setNodePath(const osg::RefNodePath&refNodePath)
 {
     osg::NodePath nodePath;
-    for(RefNodePath::const_iterator itr = refNodePath.begin(); itr != refNodePath.end(); ++itr)
+
+    for (RefNodePath::const_iterator itr = refNodePath.begin(); itr != refNodePath.end(); ++itr)
     {
         nodePath.push_back(itr->get());
     }
+
     setNodePath(nodePath);
 }
 
 void ObserverNodePath::clearNodePath()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     _clearNodePath();
 }
 
-bool ObserverNodePath::getRefNodePath(RefNodePath& refNodePath) const
+bool ObserverNodePath::getRefNodePath(RefNodePath&refNodePath) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     refNodePath.resize(_nodePath.size());
-    for(unsigned int i=0; i<_nodePath.size(); ++i)
+
+    for (unsigned int i = 0; i < _nodePath.size(); ++i)
     {
         if (!_nodePath[i].lock(refNodePath[i]))
         {
-            OSG_INFO<<"ObserverNodePath::getRefNodePath() node has been invalidated"<<std::endl;
+            OSG_INFO << "ObserverNodePath::getRefNodePath() node has been invalidated" << std::endl;
             refNodePath.clear();
             return false;
         }
     }
+
     return true;
 }
 
-bool ObserverNodePath::getNodePath(NodePath& nodePath) const
+bool ObserverNodePath::getNodePath(NodePath&nodePath) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     nodePath.resize(_nodePath.size());
-    for(unsigned int i=0; i<_nodePath.size(); ++i)
+
+    for (unsigned int i = 0; i < _nodePath.size(); ++i)
     {
         if (_nodePath[i].valid())
         {
@@ -122,22 +133,24 @@ bool ObserverNodePath::getNodePath(NodePath& nodePath) const
         }
         else
         {
-            OSG_NOTICE<<"ObserverNodePath::getNodePath() node has been invalidated"<<std::endl;
+            OSG_NOTICE << "ObserverNodePath::getNodePath() node has been invalidated" << std::endl;
             nodePath.clear();
             return false;
         }
     }
+
     return true;
 }
 
-void ObserverNodePath::_setNodePath(const osg::NodePath& nodePath)
+void ObserverNodePath::_setNodePath(const osg::NodePath&nodePath)
 {
     _clearNodePath();
 
     // OSG_NOTICE<<"ObserverNodePath["<<this<<"]::_setNodePath() nodePath.size()="<<nodePath.size()<<std::endl;
 
     _nodePath.resize(nodePath.size());
-    for(unsigned int i=0; i<nodePath.size(); ++i)
+
+    for (unsigned int i = 0; i < nodePath.size(); ++i)
     {
         _nodePath[i] = nodePath[i];
     }

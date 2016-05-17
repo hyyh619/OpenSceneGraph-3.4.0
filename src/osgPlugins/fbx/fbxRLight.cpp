@@ -10,42 +10,42 @@
 
 #include "fbxReader.h"
 
-osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxLight(FbxNode* pNode, int& nLightCount)
+osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxLight(FbxNode *pNode, int&nLightCount)
 {
-    const FbxLight* fbxLight = FbxCast<FbxLight>(pNode->GetNodeAttribute());
+    const FbxLight *fbxLight = FbxCast<FbxLight>(pNode->GetNodeAttribute());
 
     if (!fbxLight)
     {
         return osgDB::ReaderWriter::ReadResult::ERROR_IN_READING_FILE;
     }
 
-    osg::Light* osgLight = new osg::Light;
+    osg::Light *osgLight = new osg::Light;
     osgLight->setLightNum(nLightCount++);
 
-    osg::LightSource* osgLightSource = new osg::LightSource;
+    osg::LightSource *osgLightSource = new osg::LightSource;
     osgLightSource->setLight(osgLight);
 
     FbxLight::EType fbxLightType = fbxLight->LightType.IsValid() ?
-        fbxLight->LightType.Get() : FbxLight::ePoint;
+                                   fbxLight->LightType.Get() : FbxLight::ePoint;
 
-    osgLight->setPosition(osg::Vec4(0,0,0,fbxLightType != FbxLight::eDirectional));
+    osgLight->setPosition(osg::Vec4(0, 0, 0, fbxLightType != FbxLight::eDirectional));
 
     if (fbxLightType == FbxLight::eSpot)
     {
-        double coneAngle = fbxLight->OuterAngle.Get();
-        double hotSpot = fbxLight->InnerAngle.Get();
+        double      coneAngle   = fbxLight->OuterAngle.Get();
+        double      hotSpot     = fbxLight->InnerAngle.Get();
         const float MIN_HOTSPOT = 0.467532f;
 
         osgLight->setSpotCutoff(static_cast<float>(coneAngle));
 
-        //Approximate the hotspot using the GL light exponent.
+        // Approximate the hotspot using the GL light exponent.
         // This formula maps a hotspot of 180 to exponent 0 (uniform light
         // distribution) and a hotspot of 45 to exponent 1 (effective light
         // intensity is attenuated by the cosine of the angle between the
         // direction of the light and the direction from the light to the vertex
         // being lighted). A hotspot close to 0 maps to exponent 128 (maximum).
         float exponent = (180.0f / (std::max)(static_cast<float>(hotSpot),
-            MIN_HOTSPOT) - 1.0f) / 3.0f;
+                                              MIN_HOTSPOT) - 1.0f) / 3.0f;
         osgLight->setSpotExponent(exponent);
     }
 
@@ -58,9 +58,11 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxLight(FbxNode* pNode, int& 
         {
         case FbxLight::eNone:
             break;
+
         case FbxLight::eLinear:
             osgLight->setLinearAttenuation(fbxDecayStart);
             break;
+
         case FbxLight::eQuadratic:
         case FbxLight::eCubic:
             osgLight->setQuadraticAttenuation(fbxDecayStart);
@@ -78,10 +80,12 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxLight(FbxNode* pNode, int& 
             static_cast<float>(fbxColor[1]),
             static_cast<float>(fbxColor[2]));
     }
+
     if (fbxLight->Intensity.IsValid())
     {
         osgDiffuseSpecular *= static_cast<float>(fbxLight->Intensity.Get()) * 0.01f;
     }
+
     if (fbxLight->ShadowColor.IsValid())
     {
         FbxDouble3 fbxShadowColor = fbxLight->ShadowColor.Get();

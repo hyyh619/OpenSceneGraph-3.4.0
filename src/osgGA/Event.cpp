@@ -9,18 +9,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgGA/Event>
 
 using namespace osgGA;
 
-Event::Event():
+Event::Event() :
     _handled(false),
     _time(0.0)
 {}
 
-Event::Event(const Event& rhs, const osg::CopyOp& copyop):
+Event::Event(const Event&rhs, const osg::CopyOp&copyop) :
     osg::Object(rhs, copyop),
     _handled(rhs._handled),
     _time(rhs._time)

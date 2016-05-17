@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 // initial FBO support written by Marco Jez, June 2005.
 
@@ -30,8 +30,8 @@ using namespace osg;
 
 
 /**************************************************************************
- * RenderBuffer
- **************************************************************************/
+* RenderBuffer
+**************************************************************************/
 
 ///////////////////////////////////////////////////////////////////////////
 // static cache of glRenderbuffers flagged for deletion, which will actually
@@ -40,12 +40,12 @@ using namespace osg;
 typedef std::list<GLuint> RenderBufferHandleList;
 typedef osg::buffered_object<RenderBufferHandleList> DeletedRenderBufferCache;
 
-static OpenThreads::Mutex    s_mutex_deletedRenderBufferCache;
+static OpenThreads::Mutex       s_mutex_deletedRenderBufferCache;
 static DeletedRenderBufferCache s_deletedRenderBufferCache;
 
 void RenderBuffer::deleteRenderBuffer(unsigned int contextID, GLuint rb)
 {
-    if( rb )
+    if (rb)
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedRenderBufferCache);
 
@@ -54,29 +54,32 @@ void RenderBuffer::deleteRenderBuffer(unsigned int contextID, GLuint rb)
     }
 }
 
-void RenderBuffer::flushDeletedRenderBuffers(unsigned int contextID,double /*currentTime*/, double& availableTime)
+void RenderBuffer::flushDeletedRenderBuffers(unsigned int contextID, double /*currentTime*/, double&availableTime)
 {
     // if no time available don't try to flush objects.
-    if (availableTime<=0.0) return;
+    if (availableTime <= 0.0)
+        return;
 
-    const GLExtensions* extensions = GLExtensions::Get(contextID,true);
-    if(!extensions || !extensions->isFrameBufferObjectSupported ) return;
+    const GLExtensions *extensions = GLExtensions::Get(contextID, true);
+    if (!extensions || !extensions->isFrameBufferObjectSupported)
+        return;
 
-    const osg::Timer& timer = *osg::Timer::instance();
-    osg::Timer_t start_tick = timer.tick();
-    double elapsedTime = 0.0;
+    const osg::Timer&timer      = *osg::Timer::instance();
+    osg::Timer_t    start_tick  = timer.tick();
+    double          elapsedTime = 0.0;
 
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedRenderBufferCache);
 
-        RenderBufferHandleList& pList = s_deletedRenderBufferCache[contextID];
-        for(RenderBufferHandleList::iterator titr=pList.begin();
-            titr!=pList.end() && elapsedTime<availableTime;
-            )
+        RenderBufferHandleList&pList = s_deletedRenderBufferCache[contextID];
+
+        for (RenderBufferHandleList::iterator titr = pList.begin();
+             titr != pList.end() && elapsedTime < availableTime;
+             )
         {
-            extensions->glDeleteRenderbuffers(1, &(*titr) );
-            titr = pList.erase( titr );
-            elapsedTime = timer.delta_s(start_tick,timer.tick());
+            extensions->glDeleteRenderbuffers(1, &(*titr));
+            titr        = pList.erase(titr);
+            elapsedTime = timer.delta_s(start_tick, timer.tick());
         }
     }
 
@@ -86,54 +89,53 @@ void RenderBuffer::flushDeletedRenderBuffers(unsigned int contextID,double /*cur
 void RenderBuffer::discardDeletedRenderBuffers(unsigned int contextID)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedRenderBufferCache);
-    RenderBufferHandleList& pList = s_deletedRenderBufferCache[contextID];
+    RenderBufferHandleList                      &pList = s_deletedRenderBufferCache[contextID];
+
     pList.clear();
 }
 
 
 RenderBuffer::RenderBuffer()
-:    Object(),
+    :    Object(),
     _internalFormat(GL_DEPTH_COMPONENT24),
     _width(512),
     _height(512),
     _samples(0),
     _colorSamples(0)
-{
-}
+{}
 
 RenderBuffer::RenderBuffer(int width, int height, GLenum internalFormat, int samples, int colorSamples)
-:    Object(),
+    :    Object(),
     _internalFormat(internalFormat),
     _width(width),
     _height(height),
     _samples(samples),
     _colorSamples(colorSamples)
-{
-}
+{}
 
-RenderBuffer::RenderBuffer(const RenderBuffer &copy, const CopyOp &copyop)
-:    Object(copy, copyop),
+RenderBuffer::RenderBuffer(const RenderBuffer&copy, const CopyOp&copyop)
+    :    Object(copy, copyop),
     _internalFormat(copy._internalFormat),
     _width(copy._width),
     _height(copy._height),
     _samples(copy._samples),
     _colorSamples(copy._colorSamples)
-{
-}
+{}
 
 RenderBuffer::~RenderBuffer()
 {
-    for(unsigned i=0; i<_objectID.size(); ++i)
+    for (unsigned i = 0; i < _objectID.size(); ++i)
     {
-        if (_objectID[i]) deleteRenderBuffer(i, _objectID[i]);
+        if (_objectID[i])
+            deleteRenderBuffer(i, _objectID[i]);
     }
 }
 
-int RenderBuffer::getMaxSamples(unsigned int contextID, const GLExtensions* ext)
+int RenderBuffer::getMaxSamples(unsigned int contextID, const GLExtensions *ext)
 {
     static osg::buffered_value<GLint> maxSamplesList;
 
-    GLint& maxSamples = maxSamplesList[contextID];
+    GLint&maxSamples = maxSamplesList[contextID];
 
     if (!maxSamples && ext->isMultisampleSupported)
     {
@@ -143,17 +145,18 @@ int RenderBuffer::getMaxSamples(unsigned int contextID, const GLExtensions* ext)
     return maxSamples;
 }
 
-GLuint RenderBuffer::getObjectID(unsigned int contextID, const GLExtensions* ext) const
+GLuint RenderBuffer::getObjectID(unsigned int contextID, const GLExtensions *ext) const
 {
-    GLuint &objectID = _objectID[contextID];
+    GLuint&objectID = _objectID[contextID];
 
-    int &dirty = _dirty[contextID];
+    int&dirty = _dirty[contextID];
 
     if (objectID == 0)
     {
         ext->glGenRenderbuffers(1, &objectID);
         if (objectID == 0)
             return 0;
+
         dirty = 1;
     }
 
@@ -173,23 +176,24 @@ GLuint RenderBuffer::getObjectID(unsigned int contextID, const GLExtensions* ext
 
         if (_samples > 0 && ext->isRenderbufferMultisampleCoverageSupported())
         {
-            int samples = minimum(_samples, getMaxSamples(contextID, ext));
+            int samples      = minimum(_samples, getMaxSamples(contextID, ext));
             int colorSamples = minimum(_colorSamples, samples);
 
             ext->glRenderbufferStorageMultisampleCoverageNV(GL_RENDERBUFFER_EXT,
-                samples, colorSamples, _internalFormat, _width, _height);
+                                                            samples, colorSamples, _internalFormat, _width, _height);
         }
         else if (_samples > 0 && ext->isRenderbufferMultisampleSupported())
         {
             int samples = minimum(_samples, getMaxSamples(contextID, ext));
 
             ext->glRenderbufferStorageMultisample(GL_RENDERBUFFER_EXT,
-                samples, _internalFormat, _width, _height);
+                                                  samples, _internalFormat, _width, _height);
         }
         else
         {
             ext->glRenderbufferStorage(GL_RENDERBUFFER_EXT, _internalFormat, _width, _height);
         }
+
         dirty = 0;
     }
 
@@ -202,7 +206,7 @@ void RenderBuffer::resizeGLObjectBuffers(unsigned int maxSize)
     _dirty.resize(maxSize);
 }
 
-void RenderBuffer::releaseGLObjects(osg::State* state) const
+void RenderBuffer::releaseGLObjects(osg::State *state) const
 {
     if (state)
     {
@@ -215,7 +219,7 @@ void RenderBuffer::releaseGLObjects(osg::State* state) const
     }
     else
     {
-        for(unsigned i=0; i<_objectID.size(); ++i)
+        for (unsigned i = 0; i < _objectID.size(); ++i)
         {
             if (_objectID[i])
             {
@@ -227,11 +231,11 @@ void RenderBuffer::releaseGLObjects(osg::State* state) const
 }
 
 /**************************************************************************
- * FrameBufferAttachment
- **************************************************************************/
+* FrameBufferAttachment
+**************************************************************************/
 
 #ifndef GL_TEXTURE_CUBE_MAP_POSITIVE_X
-#define GL_TEXTURE_CUBE_MAP_POSITIVE_X  0x8515
+#define GL_TEXTURE_CUBE_MAP_POSITIVE_X 0x8515
 #endif
 
 struct FrameBufferAttachment::Pimpl
@@ -248,30 +252,28 @@ struct FrameBufferAttachment::Pimpl
         TEXTURE2DMULTISAMPLE
     };
 
-    TargetType targetType;
+    TargetType            targetType;
     ref_ptr<RenderBuffer> renderbufferTarget;
-    ref_ptr<Texture> textureTarget;
-    unsigned int cubeMapFace;
-    unsigned int level;
-    unsigned int zoffset;
+    ref_ptr<Texture>      textureTarget;
+    unsigned int          cubeMapFace;
+    unsigned int          level;
+    unsigned int          zoffset;
 
     explicit Pimpl(TargetType ttype = RENDERBUFFER, unsigned int lev = 0)
-    :    targetType(ttype),
+        :    targetType(ttype),
         cubeMapFace(0),
         level(lev),
         zoffset(0)
-    {
-    }
+    {}
 
-    Pimpl(const Pimpl &copy)
-    :    targetType(copy.targetType),
+    Pimpl(const Pimpl&copy)
+        :    targetType(copy.targetType),
         renderbufferTarget(copy.renderbufferTarget),
         textureTarget(copy.textureTarget),
         cubeMapFace(copy.cubeMapFace),
         level(copy.level),
         zoffset(copy.zoffset)
-    {
-    }
+    {}
 };
 
 FrameBufferAttachment::FrameBufferAttachment()
@@ -279,148 +281,149 @@ FrameBufferAttachment::FrameBufferAttachment()
     _ximpl = new Pimpl;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(const FrameBufferAttachment &copy)
+FrameBufferAttachment::FrameBufferAttachment(const FrameBufferAttachment&copy)
 {
     _ximpl = new Pimpl(*copy._ximpl);
 }
 
-FrameBufferAttachment::FrameBufferAttachment(RenderBuffer* target)
+FrameBufferAttachment::FrameBufferAttachment(RenderBuffer *target)
 {
-    _ximpl = new Pimpl(Pimpl::RENDERBUFFER);
+    _ximpl                     = new Pimpl(Pimpl::RENDERBUFFER);
     _ximpl->renderbufferTarget = target;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(Texture1D* target, unsigned int level)
+FrameBufferAttachment::FrameBufferAttachment(Texture1D *target, unsigned int level)
 {
-    _ximpl = new Pimpl(Pimpl::TEXTURE1D, level);
+    _ximpl                = new Pimpl(Pimpl::TEXTURE1D, level);
     _ximpl->textureTarget = target;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(Texture2D* target, unsigned int level)
+FrameBufferAttachment::FrameBufferAttachment(Texture2D *target, unsigned int level)
 {
-    _ximpl = new Pimpl(Pimpl::TEXTURE2D, level);
+    _ximpl                = new Pimpl(Pimpl::TEXTURE2D, level);
     _ximpl->textureTarget = target;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(Texture2DMultisample* target, unsigned int level)
+FrameBufferAttachment::FrameBufferAttachment(Texture2DMultisample *target, unsigned int level)
 {
-    _ximpl = new Pimpl(Pimpl::TEXTURE2DMULTISAMPLE, level);
+    _ximpl                = new Pimpl(Pimpl::TEXTURE2DMULTISAMPLE, level);
     _ximpl->textureTarget = target;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(Texture3D* target, unsigned int zoffset, unsigned int level)
+FrameBufferAttachment::FrameBufferAttachment(Texture3D *target, unsigned int zoffset, unsigned int level)
 {
-    _ximpl = new Pimpl(Pimpl::TEXTURE3D, level);
+    _ximpl                = new Pimpl(Pimpl::TEXTURE3D, level);
     _ximpl->textureTarget = target;
-    _ximpl->zoffset = zoffset;
+    _ximpl->zoffset       = zoffset;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(Texture2DArray* target, unsigned int layer, unsigned int level)
+FrameBufferAttachment::FrameBufferAttachment(Texture2DArray *target, unsigned int layer, unsigned int level)
 {
-    _ximpl = new Pimpl(Pimpl::TEXTURE2DARRAY, level);
+    _ximpl                = new Pimpl(Pimpl::TEXTURE2DARRAY, level);
     _ximpl->textureTarget = target;
-    _ximpl->zoffset = layer;
+    _ximpl->zoffset       = layer;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(TextureCubeMap* target, unsigned int face, unsigned int level)
+FrameBufferAttachment::FrameBufferAttachment(TextureCubeMap *target, unsigned int face, unsigned int level)
 {
-    _ximpl = new Pimpl(Pimpl::TEXTURECUBE, level);
+    _ximpl                = new Pimpl(Pimpl::TEXTURECUBE, level);
     _ximpl->textureTarget = target;
-    _ximpl->cubeMapFace = face;
+    _ximpl->cubeMapFace   = face;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(TextureRectangle* target)
+FrameBufferAttachment::FrameBufferAttachment(TextureRectangle *target)
 {
-    _ximpl = new Pimpl(Pimpl::TEXTURERECT);
+    _ximpl                = new Pimpl(Pimpl::TEXTURERECT);
     _ximpl->textureTarget = target;
 }
 
-FrameBufferAttachment::FrameBufferAttachment(Camera::Attachment& attachment)
+FrameBufferAttachment::FrameBufferAttachment(Camera::Attachment&attachment)
 {
-    osg::Texture* texture = attachment._texture.get();
+    osg::Texture *texture = attachment._texture.get();
 
     if (texture)
     {
-        osg::Texture1D* texture1D = dynamic_cast<osg::Texture1D*>(texture);
+        osg::Texture1D *texture1D = dynamic_cast<osg::Texture1D*>(texture);
         if (texture1D)
         {
-            _ximpl = new Pimpl(Pimpl::TEXTURE1D, attachment._level);
+            _ximpl                = new Pimpl(Pimpl::TEXTURE1D, attachment._level);
             _ximpl->textureTarget = texture1D;
             return;
         }
 
-        osg::Texture2D* texture2D = dynamic_cast<osg::Texture2D*>(texture);
+        osg::Texture2D *texture2D = dynamic_cast<osg::Texture2D*>(texture);
         if (texture2D)
         {
-            _ximpl = new Pimpl(Pimpl::TEXTURE2D, attachment._level);
+            _ximpl                = new Pimpl(Pimpl::TEXTURE2D, attachment._level);
             _ximpl->textureTarget = texture2D;
             return;
         }
 
-        osg::Texture2DMultisample* texture2DMS = dynamic_cast<osg::Texture2DMultisample*>(texture);
+        osg::Texture2DMultisample *texture2DMS = dynamic_cast<osg::Texture2DMultisample*>(texture);
         if (texture2DMS)
         {
-            _ximpl = new Pimpl(Pimpl::TEXTURE2DMULTISAMPLE, attachment._level);
+            _ximpl                = new Pimpl(Pimpl::TEXTURE2DMULTISAMPLE, attachment._level);
             _ximpl->textureTarget = texture2DMS;
             return;
         }
 
-        osg::Texture3D* texture3D = dynamic_cast<osg::Texture3D*>(texture);
+        osg::Texture3D *texture3D = dynamic_cast<osg::Texture3D*>(texture);
         if (texture3D)
         {
-            _ximpl = new Pimpl(Pimpl::TEXTURE3D, attachment._level);
+            _ximpl                = new Pimpl(Pimpl::TEXTURE3D, attachment._level);
             _ximpl->textureTarget = texture3D;
-            _ximpl->zoffset = attachment._face;
+            _ximpl->zoffset       = attachment._face;
             return;
         }
 
-        osg::Texture2DArray* texture2DArray = dynamic_cast<osg::Texture2DArray*>(texture);
+        osg::Texture2DArray *texture2DArray = dynamic_cast<osg::Texture2DArray*>(texture);
         if (texture2DArray)
         {
-            _ximpl = new Pimpl(Pimpl::TEXTURE2DARRAY, attachment._level);
+            _ximpl                = new Pimpl(Pimpl::TEXTURE2DARRAY, attachment._level);
             _ximpl->textureTarget = texture2DArray;
-            _ximpl->zoffset = attachment._face;
+            _ximpl->zoffset       = attachment._face;
             return;
         }
 
-        osg::TextureCubeMap* textureCubeMap = dynamic_cast<osg::TextureCubeMap*>(texture);
+        osg::TextureCubeMap *textureCubeMap = dynamic_cast<osg::TextureCubeMap*>(texture);
         if (textureCubeMap)
         {
-            _ximpl = new Pimpl(Pimpl::TEXTURECUBE, attachment._level);
+            _ximpl                = new Pimpl(Pimpl::TEXTURECUBE, attachment._level);
             _ximpl->textureTarget = textureCubeMap;
-            _ximpl->cubeMapFace = attachment._face;
+            _ximpl->cubeMapFace   = attachment._face;
             return;
         }
 
-        osg::TextureRectangle* textureRectangle = dynamic_cast<osg::TextureRectangle*>(texture);
+        osg::TextureRectangle *textureRectangle = dynamic_cast<osg::TextureRectangle*>(texture);
         if (textureRectangle)
         {
-            _ximpl = new Pimpl(Pimpl::TEXTURERECT);
+            _ximpl                = new Pimpl(Pimpl::TEXTURERECT);
             _ximpl->textureTarget = textureRectangle;
             return;
         }
     }
 
-    osg::Image* image = attachment._image.get();
+    osg::Image *image = attachment._image.get();
     if (image)
     {
-        if (image->s()>0 && image->t()>0)
+        if (image->s() > 0 && image->t() > 0)
         {
             GLenum format = attachment._image->getInternalTextureFormat();
             if (format == 0)
                 format = attachment._internalFormat;
-            _ximpl = new Pimpl(Pimpl::RENDERBUFFER);
+
+            _ximpl                     = new Pimpl(Pimpl::RENDERBUFFER);
             _ximpl->renderbufferTarget = new osg::RenderBuffer(image->s(), image->t(), format);
             return;
         }
         else
         {
-            OSG_WARN<<"Error: FrameBufferAttachment::FrameBufferAttachment(Camera::Attachment&) passed an empty osg::Image, image must be allocated first."<<std::endl;
+            OSG_WARN << "Error: FrameBufferAttachment::FrameBufferAttachment(Camera::Attachment&) passed an empty osg::Image, image must be allocated first." << std::endl;
         }
     }
     else
     {
-        OSG_WARN<<"Error: FrameBufferAttachment::FrameBufferAttachment(Camera::Attachment&) passed an unrecognised Texture type."<<std::endl;
+        OSG_WARN << "Error: FrameBufferAttachment::FrameBufferAttachment(Camera::Attachment&) passed an unrecognised Texture type." << std::endl;
     }
 
     // provide all fallback
@@ -433,7 +436,7 @@ FrameBufferAttachment::~FrameBufferAttachment()
     delete _ximpl;
 }
 
-FrameBufferAttachment &FrameBufferAttachment::operator = (const FrameBufferAttachment &copy)
+FrameBufferAttachment&FrameBufferAttachment::operator =(const FrameBufferAttachment&copy)
 {
     delete _ximpl;
     _ximpl = new Pimpl(*copy._ximpl);
@@ -450,12 +453,13 @@ bool FrameBufferAttachment::isMultisample() const
     return false;
 }
 
-void FrameBufferAttachment::createRequiredTexturesAndApplyGenerateMipMap(State &state, const GLExtensions* ext) const
+void FrameBufferAttachment::createRequiredTexturesAndApplyGenerateMipMap(State&state, const GLExtensions *ext) const
 {
     unsigned int contextID = state.getContextID();
 
     // force compile texture if necessary
     Texture::TextureObject *tobj = 0;
+
     if (_ximpl->textureTarget.valid())
     {
         tobj = _ximpl->textureTarget->getTextureObject(contextID);
@@ -464,28 +468,29 @@ void FrameBufferAttachment::createRequiredTexturesAndApplyGenerateMipMap(State &
             _ximpl->textureTarget->compileGLObjects(state);
             tobj = _ximpl->textureTarget->getTextureObject(contextID);
         }
+
         if (!tobj || tobj->id() == 0)
             return;
 
         Texture::FilterMode minFilter = _ximpl->textureTarget->getFilter(Texture::MIN_FILTER);
-        if (minFilter==Texture::LINEAR_MIPMAP_LINEAR ||
-            minFilter==Texture::LINEAR_MIPMAP_NEAREST ||
-            minFilter==Texture::NEAREST_MIPMAP_LINEAR ||
-            minFilter==Texture::NEAREST_MIPMAP_NEAREST)
+        if (minFilter == Texture::LINEAR_MIPMAP_LINEAR ||
+            minFilter == Texture::LINEAR_MIPMAP_NEAREST ||
+            minFilter == Texture::NEAREST_MIPMAP_LINEAR ||
+            minFilter == Texture::NEAREST_MIPMAP_NEAREST)
         {
             state.setActiveTextureUnit(0);
             state.applyTextureAttribute(0, _ximpl->textureTarget.get());
             ext->glGenerateMipmap(_ximpl->textureTarget->getTextureTarget());
         }
-
     }
 }
 
-void FrameBufferAttachment::attach(State &state, GLenum target, GLenum attachment_point, const GLExtensions* ext) const
+void FrameBufferAttachment::attach(State&state, GLenum target, GLenum attachment_point, const GLExtensions *ext) const
 {
     unsigned int contextID = state.getContextID();
 
     Texture::TextureObject *tobj = 0;
+
     if (_ximpl->textureTarget.valid())
     {
         tobj = _ximpl->textureTarget->getTextureObject(contextID);
@@ -493,8 +498,8 @@ void FrameBufferAttachment::attach(State &state, GLenum target, GLenum attachmen
         {
             _ximpl->textureTarget->compileGLObjects(state);
             tobj = _ximpl->textureTarget->getTextureObject(contextID);
-
         }
+
         if (!tobj || tobj->id() == 0)
             return;
     }
@@ -505,15 +510,19 @@ void FrameBufferAttachment::attach(State &state, GLenum target, GLenum attachmen
     case Pimpl::RENDERBUFFER:
         ext->glFramebufferRenderbuffer(target, attachment_point, GL_RENDERBUFFER_EXT, _ximpl->renderbufferTarget->getObjectID(contextID, ext));
         break;
+
     case Pimpl::TEXTURE1D:
         ext->glFramebufferTexture1D(target, attachment_point, GL_TEXTURE_1D, tobj->id(), _ximpl->level);
         break;
+
     case Pimpl::TEXTURE2D:
         ext->glFramebufferTexture2D(target, attachment_point, GL_TEXTURE_2D, tobj->id(), _ximpl->level);
         break;
+
     case Pimpl::TEXTURE2DMULTISAMPLE:
         ext->glFramebufferTexture2D(target, attachment_point, GL_TEXTURE_2D_MULTISAMPLE, tobj->id(), _ximpl->level);
         break;
+
     case Pimpl::TEXTURE3D:
         if (_ximpl->zoffset == Camera::FACE_CONTROLLED_BY_GEOMETRY_SHADER)
         {
@@ -524,7 +533,9 @@ void FrameBufferAttachment::attach(State &state, GLenum target, GLenum attachmen
         }
         else
             ext->glFramebufferTexture3D(target, attachment_point, GL_TEXTURE_3D, tobj->id(), _ximpl->level, _ximpl->zoffset);
+
         break;
+
     case Pimpl::TEXTURE2DARRAY:
         if (_ximpl->zoffset == Camera::FACE_CONTROLLED_BY_GEOMETRY_SHADER)
         {
@@ -535,10 +546,13 @@ void FrameBufferAttachment::attach(State &state, GLenum target, GLenum attachmen
         }
         else
             ext->glFramebufferTextureLayer(target, attachment_point, tobj->id(), _ximpl->level, _ximpl->zoffset);
+
         break;
+
     case Pimpl::TEXTURERECT:
         ext->glFramebufferTexture2D(target, attachment_point, GL_TEXTURE_RECTANGLE, tobj->id(), 0);
         break;
+
     case Pimpl::TEXTURECUBE:
         if (_ximpl->cubeMapFace == Camera::FACE_CONTROLLED_BY_GEOMETRY_SHADER)
         {
@@ -549,25 +563,52 @@ void FrameBufferAttachment::attach(State &state, GLenum target, GLenum attachmen
         }
         else
             ext->glFramebufferTexture2D(target, attachment_point, GL_TEXTURE_CUBE_MAP_POSITIVE_X + _ximpl->cubeMapFace, tobj->id(), _ximpl->level);
+
         break;
     }
 }
 
-int FrameBufferAttachment::compare(const FrameBufferAttachment &fa) const
+int FrameBufferAttachment::compare(const FrameBufferAttachment&fa) const
 {
-    if (&fa == this) return 0;
-    if (_ximpl->targetType < fa._ximpl->targetType) return -1;
-    if (_ximpl->targetType > fa._ximpl->targetType) return 1;
-    if (_ximpl->renderbufferTarget.get() < fa._ximpl->renderbufferTarget.get()) return -1;
-    if (_ximpl->renderbufferTarget.get() > fa._ximpl->renderbufferTarget.get()) return 1;
-    if (_ximpl->textureTarget.get() < fa._ximpl->textureTarget.get()) return -1;
-    if (_ximpl->textureTarget.get() > fa._ximpl->textureTarget.get()) return 1;
-    if (_ximpl->cubeMapFace < fa._ximpl->cubeMapFace) return -1;
-    if (_ximpl->cubeMapFace > fa._ximpl->cubeMapFace) return 1;
-    if (_ximpl->level < fa._ximpl->level) return -1;
-    if (_ximpl->level > fa._ximpl->level) return 1;
-    if (_ximpl->zoffset < fa._ximpl->zoffset) return -1;
-    if (_ximpl->zoffset > fa._ximpl->zoffset) return 1;
+    if (&fa == this)
+        return 0;
+
+    if (_ximpl->targetType < fa._ximpl->targetType)
+        return -1;
+
+    if (_ximpl->targetType > fa._ximpl->targetType)
+        return 1;
+
+    if (_ximpl->renderbufferTarget.get() < fa._ximpl->renderbufferTarget.get())
+        return -1;
+
+    if (_ximpl->renderbufferTarget.get() > fa._ximpl->renderbufferTarget.get())
+        return 1;
+
+    if (_ximpl->textureTarget.get() < fa._ximpl->textureTarget.get())
+        return -1;
+
+    if (_ximpl->textureTarget.get() > fa._ximpl->textureTarget.get())
+        return 1;
+
+    if (_ximpl->cubeMapFace < fa._ximpl->cubeMapFace)
+        return -1;
+
+    if (_ximpl->cubeMapFace > fa._ximpl->cubeMapFace)
+        return 1;
+
+    if (_ximpl->level < fa._ximpl->level)
+        return -1;
+
+    if (_ximpl->level > fa._ximpl->level)
+        return 1;
+
+    if (_ximpl->zoffset < fa._ximpl->zoffset)
+        return -1;
+
+    if (_ximpl->zoffset > fa._ximpl->zoffset)
+        return 1;
+
     return 0;
 }
 
@@ -612,8 +653,8 @@ unsigned int FrameBufferAttachment::getTextureArrayLayer() const
 }
 
 /**************************************************************************
- * FrameBufferObject
- **************************************************************************/
+* FrameBufferObject
+**************************************************************************/
 
 ///////////////////////////////////////////////////////////////////////////
 // static cache of glRenderbuffers flagged for deletion, which will actually
@@ -622,12 +663,12 @@ unsigned int FrameBufferAttachment::getTextureArrayLayer() const
 typedef std::list<GLuint> FrameBufferObjectHandleList;
 typedef osg::buffered_object<FrameBufferObjectHandleList> DeletedFrameBufferObjectCache;
 
-static OpenThreads::Mutex    s_mutex_deletedFrameBufferObjectCache;
+static OpenThreads::Mutex            s_mutex_deletedFrameBufferObjectCache;
 static DeletedFrameBufferObjectCache s_deletedFrameBufferObjectCache;
 
 void FrameBufferObject::deleteFrameBufferObject(unsigned int contextID, GLuint rb)
 {
-    if( rb )
+    if (rb)
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedFrameBufferObjectCache);
 
@@ -636,29 +677,32 @@ void FrameBufferObject::deleteFrameBufferObject(unsigned int contextID, GLuint r
     }
 }
 
-void FrameBufferObject::flushDeletedFrameBufferObjects(unsigned int contextID,double /*currentTime*/, double& availableTime)
+void FrameBufferObject::flushDeletedFrameBufferObjects(unsigned int contextID, double /*currentTime*/, double&availableTime)
 {
     // if no time available don't try to flush objects.
-    if (availableTime<=0.0) return;
+    if (availableTime <= 0.0)
+        return;
 
-    const GLExtensions* extensions = GLExtensions::Get(contextID,true);
-    if(!extensions || !extensions->isFrameBufferObjectSupported ) return;
+    const GLExtensions *extensions = GLExtensions::Get(contextID, true);
+    if (!extensions || !extensions->isFrameBufferObjectSupported)
+        return;
 
-    const osg::Timer& timer = *osg::Timer::instance();
-    osg::Timer_t start_tick = timer.tick();
-    double elapsedTime = 0.0;
+    const osg::Timer&timer      = *osg::Timer::instance();
+    osg::Timer_t    start_tick  = timer.tick();
+    double          elapsedTime = 0.0;
 
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedFrameBufferObjectCache);
 
-        FrameBufferObjectHandleList& pList = s_deletedFrameBufferObjectCache[contextID];
-        for(FrameBufferObjectHandleList::iterator titr=pList.begin();
-            titr!=pList.end() && elapsedTime<availableTime;
-            )
+        FrameBufferObjectHandleList&pList = s_deletedFrameBufferObjectCache[contextID];
+
+        for (FrameBufferObjectHandleList::iterator titr = pList.begin();
+             titr != pList.end() && elapsedTime < availableTime;
+             )
         {
-            extensions->glDeleteFramebuffers(1, &(*titr) );
-            titr = pList.erase( titr );
-            elapsedTime = timer.delta_s(start_tick,timer.tick());
+            extensions->glDeleteFramebuffers(1, &(*titr));
+            titr        = pList.erase(titr);
+            elapsedTime = timer.delta_s(start_tick, timer.tick());
         }
     }
 
@@ -668,7 +712,7 @@ void FrameBufferObject::flushDeletedFrameBufferObjects(unsigned int contextID,do
 void FrameBufferObject::discardDeletedFrameBufferObjects(unsigned int contextID)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedFrameBufferObjectCache);
-    FrameBufferObjectHandleList& pList = s_deletedFrameBufferObjectCache[contextID];
+    FrameBufferObjectHandleList                 &pList = s_deletedFrameBufferObjectCache[contextID];
 
     pList.clear();
 }
@@ -676,22 +720,21 @@ void FrameBufferObject::discardDeletedFrameBufferObjects(unsigned int contextID)
 
 
 FrameBufferObject::FrameBufferObject()
-:    StateAttribute()
-{
-}
+    :    StateAttribute()
+{}
 
-FrameBufferObject::FrameBufferObject(const FrameBufferObject &copy, const CopyOp &copyop)
-:    StateAttribute(copy, copyop),
+FrameBufferObject::FrameBufferObject(const FrameBufferObject&copy, const CopyOp&copyop)
+    :    StateAttribute(copy, copyop),
     _attachments(copy._attachments),
     _drawBuffers(copy._drawBuffers)
-{
-}
+{}
 
 FrameBufferObject::~FrameBufferObject()
 {
-    for(unsigned i=0; i<_fboID.size(); ++i)
+    for (unsigned i = 0; i < _fboID.size(); ++i)
     {
-        if (_fboID[i]) deleteFrameBufferObject(i, _fboID[i]);
+        if (_fboID[i])
+            deleteFrameBufferObject(i, _fboID[i]);
     }
 }
 
@@ -702,7 +745,7 @@ void FrameBufferObject::resizeGLObjectBuffers(unsigned int maxSize)
     _fboID.resize(maxSize);
 }
 
-void FrameBufferObject::releaseGLObjects(osg::State* state) const
+void FrameBufferObject::releaseGLObjects(osg::State *state) const
 {
     if (state)
     {
@@ -715,7 +758,7 @@ void FrameBufferObject::releaseGLObjects(osg::State* state) const
     }
     else
     {
-        for(unsigned int i=0; i<_fboID.size(); ++i)
+        for (unsigned int i = 0; i < _fboID.size(); ++i)
         {
             if (_fboID[i])
             {
@@ -726,7 +769,7 @@ void FrameBufferObject::releaseGLObjects(osg::State* state) const
     }
 }
 
-void FrameBufferObject::setAttachment(BufferComponent attachment_point, const FrameBufferAttachment &attachment)
+void FrameBufferObject::setAttachment(BufferComponent attachment_point, const FrameBufferAttachment&attachment)
 {
     _attachments[attachment_point] = attachment;
 
@@ -737,12 +780,15 @@ void FrameBufferObject::setAttachment(BufferComponent attachment_point, const Fr
 
 GLenum FrameBufferObject::convertBufferComponentToGLenum(BufferComponent attachment_point) const
 {
-    switch(attachment_point)
+    switch (attachment_point)
     {
-        case(Camera::DEPTH_BUFFER): return GL_DEPTH_ATTACHMENT_EXT;
-        case(Camera::STENCIL_BUFFER): return GL_STENCIL_ATTACHMENT_EXT;
-        case(Camera::COLOR_BUFFER): return GL_COLOR_ATTACHMENT0_EXT;
-        default: return GLenum(GL_COLOR_ATTACHMENT0_EXT + (attachment_point-Camera::COLOR_BUFFER0));
+    case (Camera::DEPTH_BUFFER): return GL_DEPTH_ATTACHMENT_EXT;
+
+    case (Camera::STENCIL_BUFFER): return GL_STENCIL_ATTACHMENT_EXT;
+
+    case (Camera::COLOR_BUFFER): return GL_COLOR_ATTACHMENT0_EXT;
+
+    default: return GLenum(GL_COLOR_ATTACHMENT0_EXT + (attachment_point - Camera::COLOR_BUFFER0));
     }
 }
 
@@ -751,7 +797,7 @@ void FrameBufferObject::updateDrawBuffers()
     _drawBuffers.clear();
 
     // create textures and mipmaps before we bind the frame buffer object
-    for (AttachmentMap::const_iterator i=_attachments.begin(); i!=_attachments.end(); ++i)
+    for (AttachmentMap::const_iterator i = _attachments.begin(); i != _attachments.end(); ++i)
     {
         // setup draw buffers based on the attachment definition
         if (i->first >= Camera::COLOR_BUFFER0 && i->first <= Camera::COLOR_BUFFER15)
@@ -759,12 +805,12 @@ void FrameBufferObject::updateDrawBuffers()
     }
 }
 
-void FrameBufferObject::apply(State &state) const
+void FrameBufferObject::apply(State&state) const
 {
     apply(state, READ_DRAW_FRAMEBUFFER);
 }
 
-void FrameBufferObject::apply(State &state, BindTarget target) const
+void FrameBufferObject::apply(State&state, BindTarget target) const
 {
     unsigned int contextID = state.getContextID();
 
@@ -772,7 +818,7 @@ void FrameBufferObject::apply(State &state, BindTarget target) const
         return;
 
 
-    GLExtensions* ext = state.get<GLExtensions>();
+    GLExtensions *ext = state.get<GLExtensions>();
     if (!ext->isFrameBufferObjectSupported)
     {
         _unsupported[contextID] = 1;
@@ -786,9 +832,9 @@ void FrameBufferObject::apply(State &state, BindTarget target) const
         return;
     }
 
-    int &dirtyAttachmentList = _dirtyAttachmentList[contextID];
+    int&dirtyAttachmentList = _dirtyAttachmentList[contextID];
 
-    GLuint &fboID = _fboID[contextID];
+    GLuint&fboID = _fboID[contextID];
     if (fboID == 0)
     {
         ext->glGenFramebuffers(1, &fboID);
@@ -799,7 +845,6 @@ void FrameBufferObject::apply(State &state, BindTarget target) const
         }
 
         dirtyAttachmentList = 1;
-
     }
 
     if (dirtyAttachmentList)
@@ -808,23 +853,22 @@ void FrameBufferObject::apply(State &state, BindTarget target) const
         // OpenGL FBO handles osg::FrameBufferObject has are multi-buffered...
         // so as a temporary fix will stick in a mutex to ensure that only one thread passes through here
         // at one time.
-        static OpenThreads::Mutex s_mutex;
+        static OpenThreads::Mutex                   s_mutex;
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex);
 
         // create textures and mipmaps before we bind the frame buffer object
-        for (AttachmentMap::const_iterator i=_attachments.begin(); i!=_attachments.end(); ++i)
+        for (AttachmentMap::const_iterator i = _attachments.begin(); i != _attachments.end(); ++i)
         {
-            const FrameBufferAttachment &fa = i->second;
+            const FrameBufferAttachment&fa = i->second;
             fa.createRequiredTexturesAndApplyGenerateMipMap(state, ext);
         }
-
     }
 
 
     ext->glBindFramebuffer(target, fboID);
 
     // enable drawing buffers to render the result to fbo
-    if ( (target == READ_DRAW_FRAMEBUFFER) || (target == DRAW_FRAMEBUFFER) )
+    if ((target == READ_DRAW_FRAMEBUFFER) || (target == DRAW_FRAMEBUFFER))
     {
         if (_drawBuffers.size() > 0)
         {
@@ -835,40 +879,42 @@ void FrameBufferObject::apply(State &state, BindTarget target) const
             }
             else
             {
-                OSG_WARN <<"Warning: FrameBufferObject: could not set draw buffers, glDrawBuffers is not supported!" << std::endl;
+                OSG_WARN << "Warning: FrameBufferObject: could not set draw buffers, glDrawBuffers is not supported!" << std::endl;
             }
         }
     }
 
     if (dirtyAttachmentList)
     {
-        for (AttachmentMap::const_iterator i=_attachments.begin(); i!=_attachments.end(); ++i)
+        for (AttachmentMap::const_iterator i = _attachments.begin(); i != _attachments.end(); ++i)
         {
-            const FrameBufferAttachment &fa = i->second;
-            switch(i->first)
-            {
-                case(Camera::PACKED_DEPTH_STENCIL_BUFFER):
-                    if (ext->isPackedDepthStencilSupported)
-                    {
-                        fa.attach(state, target, GL_DEPTH_ATTACHMENT_EXT, ext);
-                        fa.attach(state, target, GL_STENCIL_ATTACHMENT_EXT, ext);
-                    }
-                    else
-                    {
-                        OSG_WARN <<
-                            "Warning: FrameBufferObject: could not attach PACKED_DEPTH_STENCIL_BUFFER, "
-                            "EXT_packed_depth_stencil is not supported!" << std::endl;
-                    }
-                    break;
+            const FrameBufferAttachment&fa = i->second;
 
-                default:
-                    fa.attach(state, target, convertBufferComponentToGLenum(i->first), ext);
-                    break;
+            switch (i->first)
+            {
+            case (Camera::PACKED_DEPTH_STENCIL_BUFFER):
+                if (ext->isPackedDepthStencilSupported)
+                {
+                    fa.attach(state, target, GL_DEPTH_ATTACHMENT_EXT, ext);
+                    fa.attach(state, target, GL_STENCIL_ATTACHMENT_EXT, ext);
+                }
+                else
+                {
+                    OSG_WARN <<
+                        "Warning: FrameBufferObject: could not attach PACKED_DEPTH_STENCIL_BUFFER, "
+                        "EXT_packed_depth_stencil is not supported!" << std::endl;
+                }
+
+                break;
+
+            default:
+                fa.attach(state, target, convertBufferComponentToGLenum(i->first), ext);
+                break;
             }
         }
+
         dirtyAttachmentList = 0;
     }
-
 }
 
 bool FrameBufferObject::isMultisample() const
@@ -884,16 +930,19 @@ bool FrameBufferObject::isMultisample() const
     return false;
 }
 
-int FrameBufferObject::compare(const StateAttribute &sa) const
+int FrameBufferObject::compare(const StateAttribute&sa) const
 {
     COMPARE_StateAttribute_Types(FrameBufferObject, sa);
     COMPARE_StateAttribute_Parameter(_attachments.size());
     AttachmentMap::const_iterator i = _attachments.begin();
     AttachmentMap::const_iterator j = rhs._attachments.begin();
-    for (; i!=_attachments.end(); ++i, ++j)
+
+    for (; i != _attachments.end(); ++i, ++j)
     {
         int cmp = i->second.compare(j->second);
-        if (cmp != 0) return cmp;
+        if (cmp != 0)
+            return cmp;
     }
+
     return 0;
 }

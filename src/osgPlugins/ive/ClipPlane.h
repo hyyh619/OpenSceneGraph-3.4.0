@@ -4,12 +4,14 @@
 #include <osg/ClipPlane>
 #include "ReadWrite.h"
 
-namespace ive{
-  class ClipPlane : public osg::ClipPlane, public ReadWrite {
-  public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
-  };
+namespace ive
+{
+class ClipPlane : public osg::ClipPlane, public ReadWrite
+{
+public:
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
+};
 }
 
 #endif

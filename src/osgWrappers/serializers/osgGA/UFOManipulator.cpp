@@ -6,9 +6,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgGA_UFOManipulator,
-                         new osgGA::UFOManipulator,
-                         osgGA::UFOManipulator,
-                         "osg::Object osgGA::UFOManipulator" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgGA_UFOManipulator,
+                        new osgGA::UFOManipulator,
+                        osgGA::UFOManipulator,
+                        "osg::Object osgGA::UFOManipulator")
+{}

@@ -10,8 +10,8 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -22,21 +22,20 @@
    is here.
    You should only need to modify this if you want to add something to one
    of these classes.
-*/
+ */
 
 #include <trpage_geom.h>
 #include <trpage_read.h>
 
 /* Write Group
    Basic group.
-*/
+ */
 
 // Constructor
 trpgGroup::trpgGroup()
 {
     name = 0;
     Reset();
-
 }
 trpgGroup::~trpgGroup()
 {
@@ -47,9 +46,10 @@ trpgGroup::~trpgGroup()
 void trpgGroup::Reset()
 {
     numChild = 0;
-    id = -1;
-    if ( name ) {
-        delete [] name;
+    id       = -1;
+    if (name)
+    {
+        delete[] name;
         name = 0;
     }
 }
@@ -62,26 +62,27 @@ void trpgGroup::SetNumChild(int no)
 int trpgGroup::AddChild()
 {
     numChild++;
-    return numChild-1;
+    return numChild - 1;
 }
 void trpgGroup::SetID(int inID)
 {
     id = inID;
 }
 
-void trpgGroup::SetName(const char* newname )
+void trpgGroup::SetName(const char *newname)
 {
-    if ( name )
+    if (name)
     {
-        delete [] name;
+        delete[] name;
         name = 0;
     }
+
     if (newname)
     {
-        if ( strlen(newname) )
+        if (strlen(newname))
         {
-            name = new char[strlen(newname)+1];
-            strcpy(name,newname);
+            name = new char[strlen(newname) + 1];
+            strcpy(name, newname);
         }
     }
 }
@@ -92,15 +93,19 @@ const char* trpgGroup::GetName(void) const
     return name;
 }
 
-bool trpgGroup::GetNumChild(int &n) const
+bool trpgGroup::GetNumChild(int&n) const
 {
-    if (!isValid())  return false;
+    if (!isValid())
+        return false;
+
     n = numChild;
     return true;
 }
-bool trpgGroup::GetID(int &inID) const
+bool trpgGroup::GetID(int&inID) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     inID = id;
     return true;
 }
@@ -108,14 +113,17 @@ bool trpgGroup::GetID(int &inID) const
 // Validity check
 bool trpgGroup::isValid() const
 {
-    if (numChild <= 0)  return false;
-    if (id < 0)  return false;
+    if (numChild <= 0)
+        return false;
+
+    if (id < 0)
+        return false;
 
     return true;
 }
 
 // Write group
-bool trpgGroup::Write(trpgWriteBuffer &buf)
+bool trpgGroup::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -124,7 +132,8 @@ bool trpgGroup::Write(trpgWriteBuffer &buf)
     buf.Add(numChild);
     buf.Add(id);
 
-    if ( name && strlen(name) ) {
+    if (name && strlen(name))
+    {
         buf.Add(name);
     }
 
@@ -134,20 +143,27 @@ bool trpgGroup::Write(trpgWriteBuffer &buf)
 }
 
 // Read group
-bool trpgGroup::Read(trpgReadBuffer &buf)
+bool trpgGroup::Read(trpgReadBuffer&buf)
 {
-    try {
+    try
+    {
         buf.Get(numChild);
-        if (numChild < 0) throw 1;
+        if (numChild < 0)
+            throw 1;
+
         buf.Get(id);
-        if (id < 0) throw 1;
-        if ( !buf.isEmpty() ) {
+        if (id < 0)
+            throw 1;
+
+        if (!buf.isEmpty())
+        {
             char nm[1024] = {0};
-            buf.Get(nm,1024);
+            buf.Get(nm, 1024);
             SetName(nm);
         }
     }
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -156,7 +172,7 @@ bool trpgGroup::Read(trpgReadBuffer &buf)
 
 /* Write Billboard
    Represents rotational billboarded geometry.
-*/
+ */
 
 // Constructor
 trpgBillboard::trpgBillboard()
@@ -172,30 +188,30 @@ trpgBillboard::~trpgBillboard()
 // Reset function
 void trpgBillboard::Reset()
 {
-    id = -1;
-    mode = Axial;
-    type = Group;
-    axis = trpg3dPoint(0,0,1);
-    center = trpg3dPoint(0,0,0);
+    id       = -1;
+    mode     = Axial;
+    type     = Group;
+    axis     = trpg3dPoint(0, 0, 1);
+    center   = trpg3dPoint(0, 0, 0);
     numChild = 0;
-    if ( name )
+    if (name)
     {
-        delete [] name;
+        delete[] name;
         name = 0;
     }
 }
 
 // Set functions
-void trpgBillboard::SetCenter(const trpg3dPoint &pt)
+void trpgBillboard::SetCenter(const trpg3dPoint&pt)
 {
     center = pt;
-    valid = true;
+    valid  = true;
 }
 void trpgBillboard::SetMode(int m)
 {
     mode = m;
 }
-void trpgBillboard::SetAxis(const trpg3dPoint &pt)
+void trpgBillboard::SetAxis(const trpg3dPoint&pt)
 {
     axis = pt;
 }
@@ -205,33 +221,41 @@ void trpgBillboard::SetType(int t)
 }
 
 // Get methods
-bool trpgBillboard::GetCenter(trpg3dPoint &pt) const
+bool trpgBillboard::GetCenter(trpg3dPoint&pt) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     pt = center;
     return true;
 }
-bool trpgBillboard::GetMode(int &m) const
+bool trpgBillboard::GetMode(int&m) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     m = mode;
     return true;
 }
-bool trpgBillboard::GetAxis(trpg3dPoint &pt) const
+bool trpgBillboard::GetAxis(trpg3dPoint&pt) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     pt = axis;
     return true;
 }
-bool trpgBillboard::GetType(int &t) const
+bool trpgBillboard::GetType(int&t) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     t = type;
     return true;
 }
 
 // Write billboard
-bool trpgBillboard::Write(trpgWriteBuffer &buf)
+bool trpgBillboard::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -244,33 +268,38 @@ bool trpgBillboard::Write(trpgWriteBuffer &buf)
     buf.Add(center);
     buf.Add(axis);
 
-    if ( name && strlen(name) ) {
+    if (name && strlen(name))
+    {
         buf.Add(name);
     }
+
     buf.End();
 
     return true;
 }
 
 // Read billboard
-bool trpgBillboard::Read(trpgReadBuffer &buf)
+bool trpgBillboard::Read(trpgReadBuffer&buf)
 {
     uint8 uChar;
 
-    try {
+    try
+    {
         buf.Get(numChild);
         buf.Get(id);
         buf.Get(uChar);  type = uChar;
         buf.Get(uChar);  mode = uChar;
         buf.Get(center);
         buf.Get(axis);
-        if ( !buf.isEmpty() ) {
+        if (!buf.isEmpty())
+        {
             char nm[1024] = {0};
-            buf.Get(nm,1024);
+            buf.Get(nm, 1024);
             SetName(nm);
         }
     }
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -279,7 +308,7 @@ bool trpgBillboard::Read(trpgReadBuffer &buf)
 
 /* Write Level of Detail
    Represents LOD information.
-*/
+ */
 
 // Constructor
 trpgLod::trpgLod()
@@ -295,23 +324,24 @@ trpgLod::~trpgLod()
 // Reset function
 void trpgLod::Reset()
 {
-    id = -1;
-    numRange = 0;
-    center = trpg3dPoint(0,0,0);
-    switchIn = switchOut = width = 0;
+    id         = -1;
+    numRange   = 0;
+    center     = trpg3dPoint(0, 0, 0);
+    switchIn   = switchOut = width = 0;
     rangeIndex = -1;
-    valid = true;
-    if ( name ) {
-        delete [] name;
+    valid      = true;
+    if (name)
+    {
+        delete[] name;
         name = 0;
     }
 }
 
 // Set functions
-void trpgLod::SetCenter(const trpg3dPoint &pt)
+void trpgLod::SetCenter(const trpg3dPoint&pt)
 {
     center = pt;
-    valid = true;
+    valid  = true;
 }
 void trpgLod::SetNumChild(int no)
 {
@@ -320,27 +350,31 @@ void trpgLod::SetNumChild(int no)
 
     numRange = no;
 }
-void trpgLod::SetLOD(double in,double out,double wid)
+void trpgLod::SetLOD(double in, double out, double wid)
 {
-    switchIn = in;
+    switchIn  = in;
     switchOut = out;
-    width = wid;
+    width     = wid;
 }
 void trpgLod::SetID(int inID)
 {
     id = inID;
 }
 
-void trpgLod::SetName(const char* newname )
+void trpgLod::SetName(const char *newname)
 {
-    if ( name ) {
-        delete [] name;
+    if (name)
+    {
+        delete[] name;
         name = 0;
     }
-    if (newname) {
-        if ( strlen(newname) ) {
-            name = new char[strlen(newname)+1];
-            strcpy(name,newname);
+
+    if (newname)
+    {
+        if (strlen(newname))
+        {
+            name = new char[strlen(newname) + 1];
+            strcpy(name, newname);
         }
     }
 }
@@ -357,35 +391,44 @@ const char* trpgLod::GetName(void) const
 }
 
 // Get functions
-bool trpgLod::GetCenter(trpg3dPoint &pt) const
+bool trpgLod::GetCenter(trpg3dPoint&pt) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     pt = center;
     return true;
 }
-bool trpgLod::GetNumChild(int &n) const
+bool trpgLod::GetNumChild(int&n) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     n = numRange;
     return true;
 }
-bool trpgLod::GetLOD(double &in,double &out,double &wid) const
+bool trpgLod::GetLOD(double&in, double&out, double&wid) const
 {
-    if (!isValid()) return false;
-    in = switchIn;
+    if (!isValid())
+        return false;
+
+    in  = switchIn;
     out = switchOut;
     wid = width;
     return true;
 }
-bool trpgLod::GetID(int &outID) const
+bool trpgLod::GetID(int&outID) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     outID = id;
     return true;
 }
-bool trpgLod::GetRangeIndex(int &ri) const
+bool trpgLod::GetRangeIndex(int&ri) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
 
     ri = rangeIndex;
 
@@ -393,7 +436,7 @@ bool trpgLod::GetRangeIndex(int &ri) const
 }
 
 // Write out LOD
-bool trpgLod::Write(trpgWriteBuffer &buf)
+bool trpgLod::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -406,9 +449,11 @@ bool trpgLod::Write(trpgWriteBuffer &buf)
     buf.Add(switchOut);
     buf.Add(width);
 
-    if ( name && strlen(name) ) {
+    if (name && strlen(name))
+    {
         buf.Add(name);
-    } else
+    }
+    else
         buf.Add("");
 
 
@@ -418,27 +463,33 @@ bool trpgLod::Write(trpgWriteBuffer &buf)
 }
 
 // Read in LOD
-bool trpgLod::Read(trpgReadBuffer &buf)
+bool trpgLod::Read(trpgReadBuffer&buf)
 {
-    try {
+    try
+    {
         buf.Get(id);
         buf.Get(numRange);
-        if (numRange < 0) throw 1;
+        if (numRange < 0)
+            throw 1;
+
         buf.Get(center);
         buf.Get(switchIn);
         buf.Get(switchOut);
         buf.Get(width);
-        if ( !buf.isEmpty() ) {
+        if (!buf.isEmpty())
+        {
             char nm[1024] = {0};
-            buf.Get(nm,1024);
+            buf.Get(nm, 1024);
             if (*nm)
                 SetName(nm);
+
             // Look for a range index
             if (!buf.isEmpty())
                 buf.Get(rangeIndex);
         }
     }
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -447,7 +498,7 @@ bool trpgLod::Read(trpgReadBuffer &buf)
 
 /* Write Layer
    A layer is just a group with a different opcode.
-*/
+ */
 
 // Constructor
 trpgLayer::trpgLayer()
@@ -461,7 +512,7 @@ trpgLayer::~trpgLayer()
 }
 
 // Write it
-bool trpgLayer::Write(trpgWriteBuffer &buf)
+bool trpgLayer::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -470,7 +521,8 @@ bool trpgLayer::Write(trpgWriteBuffer &buf)
     buf.Add(numChild);
     buf.Add(id);
 
-    if ( name && strlen(name) ) {
+    if (name && strlen(name))
+    {
         buf.Add(name);
     }
 
@@ -480,20 +532,27 @@ bool trpgLayer::Write(trpgWriteBuffer &buf)
 }
 
 // Read layer
-bool trpgLayer::Read(trpgReadBuffer &buf)
+bool trpgLayer::Read(trpgReadBuffer&buf)
 {
-    try {
+    try
+    {
         buf.Get(numChild);
-        if (numChild < 0) throw 1;
+        if (numChild < 0)
+            throw 1;
+
         buf.Get(id);
-        if (id < 0) throw 1;
-        if ( !buf.isEmpty() ) {
+        if (id < 0)
+            throw 1;
+
+        if (!buf.isEmpty())
+        {
             char nm[1024] = {0};
-            buf.Get(nm,1024);
+            buf.Get(nm, 1024);
             SetName(nm);
         }
     }
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -504,15 +563,16 @@ bool trpgLayer::Read(trpgReadBuffer &buf)
 void trpgLayer::Reset()
 {
     numChild = 0;
-    if ( name ) {
-        delete [] name;
+    if (name)
+    {
+        delete[] name;
         name = 0;
     }
 }
 
 /* Write Transform
    Matrix defining the transform with children.
-*/
+ */
 
 // Constructor
 trpgTransform::trpgTransform()
@@ -535,8 +595,9 @@ void trpgTransform::Reset()
     m[2][0] = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = 0;
     m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
 
-    if ( name ) {
-        delete [] name;
+    if (name)
+    {
+        delete[] name;
         name = 0;
     }
 }
@@ -544,25 +605,28 @@ void trpgTransform::Reset()
 // Set functions
 void trpgTransform::SetMatrix(const float64 *im)
 {
-    m[0][0] = im[4*0+0]; m[0][1] = im[4*0+1]; m[0][2] = im[4*0+2]; m[0][3] = im[4*0+3];
-    m[1][0] = im[4*1+0]; m[1][1] = im[4*1+1]; m[1][2] = im[4*1+2]; m[1][3] = im[4*1+3];
-    m[2][0] = im[4*2+0]; m[2][1] = im[4*2+1]; m[2][2] = im[4*2+2]; m[2][3] = im[4*2+3];
-    m[3][0] = im[4*3+0]; m[3][1] = im[4*3+1]; m[3][2] = im[4*3+2]; m[3][3] = im[4*3+3];
+    m[0][0] = im[4 * 0 + 0]; m[0][1] = im[4 * 0 + 1]; m[0][2] = im[4 * 0 + 2]; m[0][3] = im[4 * 0 + 3];
+    m[1][0] = im[4 * 1 + 0]; m[1][1] = im[4 * 1 + 1]; m[1][2] = im[4 * 1 + 2]; m[1][3] = im[4 * 1 + 3];
+    m[2][0] = im[4 * 2 + 0]; m[2][1] = im[4 * 2 + 1]; m[2][2] = im[4 * 2 + 2]; m[2][3] = im[4 * 2 + 3];
+    m[3][0] = im[4 * 3 + 0]; m[3][1] = im[4 * 3 + 1]; m[3][2] = im[4 * 3 + 2]; m[3][3] = im[4 * 3 + 3];
 }
 
 // Get methods
 bool trpgTransform::GetMatrix(float64 *rm) const
 {
-    if (!isValid()) return false;
-    for (int i=0;i<4;i++)
-        for (int j=0;j<4;j++)
+    if (!isValid())
+        return false;
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
             // Note: is this right?
-            rm[i*4+j] = m[i][j];
+            rm[i * 4 + j] = m[i][j];
+
     return true;
 }
 
 // Write transform
-bool trpgTransform::Write(trpgWriteBuffer &buf)
+bool trpgTransform::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
@@ -570,35 +634,44 @@ bool trpgTransform::Write(trpgWriteBuffer &buf)
     buf.Begin(TRPG_TRANSFORM);
     buf.Add(numChild);
     buf.Add(id);
-    for (int i=0;i<4;i++)
-        for (int j=0;j<4;j++)
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
             buf.Add(m[i][j]);
 
-    if ( name && strlen(name) ) {
+    if (name && strlen(name))
+    {
         buf.Add(name);
     }
+
     buf.End();
 
     return true;
 }
 
 // Read transform
-bool trpgTransform::Read(trpgReadBuffer &buf)
+bool trpgTransform::Read(trpgReadBuffer&buf)
 {
-    try {
+    try
+    {
         buf.Get(numChild);
         buf.Get(id);
-        if (numChild < 0) throw 1;
-        for (int i=0;i<4;i++)
-            for (int j=0;j<4;j++)
-            buf.Get(m[i][j]);
-        if ( !buf.isEmpty() ) {
+        if (numChild < 0)
+            throw 1;
+
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++)
+                buf.Get(m[i][j]);
+
+        if (!buf.isEmpty())
+        {
             char nm[1024] = {0};
-            buf.Get(nm,1024);
+            buf.Get(nm, 1024);
             SetName(nm);
         }
     }
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -607,7 +680,7 @@ bool trpgTransform::Read(trpgReadBuffer &buf)
 
 /* Model Reference
    This is just a matrix transform and a model ID.
-*/
+ */
 
 // Constructor
 trpgModelRef::trpgModelRef()
@@ -616,16 +689,15 @@ trpgModelRef::trpgModelRef()
 }
 
 trpgModelRef::~trpgModelRef()
-{
-}
+{}
 
 // Reset function
 void trpgModelRef::Reset()
 {
-    m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
-    m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = 0;
-    m[2][0] = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = 0;
-    m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
+    m[0][0]  = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
+    m[1][0]  = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = 0;
+    m[2][0]  = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = 0;
+    m[3][0]  = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
     modelRef = -1;
 }
 
@@ -633,61 +705,71 @@ void trpgModelRef::Reset()
 void trpgModelRef::SetModel(int id)
 {
     modelRef = id;
-    valid = true;
+    valid    = true;
 }
 void trpgModelRef::SetMatrix(const float64 *im)
 {
-    m[0][0] = im[4*0+0]; m[0][1] = im[4*0+1]; m[0][2] = im[4*0+2]; m[0][3] = im[4*0+3];
-    m[1][0] = im[4*1+0]; m[1][1] = im[4*1+1]; m[1][2] = im[4*1+2]; m[1][3] = im[4*1+3];
-    m[2][0] = im[4*2+0]; m[2][1] = im[4*2+1]; m[2][2] = im[4*2+2]; m[2][3] = im[4*2+3];
-    m[3][0] = im[4*3+0]; m[3][1] = im[4*3+1]; m[3][2] = im[4*3+2]; m[3][3] = im[4*3+3];
+    m[0][0] = im[4 * 0 + 0]; m[0][1] = im[4 * 0 + 1]; m[0][2] = im[4 * 0 + 2]; m[0][3] = im[4 * 0 + 3];
+    m[1][0] = im[4 * 1 + 0]; m[1][1] = im[4 * 1 + 1]; m[1][2] = im[4 * 1 + 2]; m[1][3] = im[4 * 1 + 3];
+    m[2][0] = im[4 * 2 + 0]; m[2][1] = im[4 * 2 + 1]; m[2][2] = im[4 * 2 + 2]; m[2][3] = im[4 * 2 + 3];
+    m[3][0] = im[4 * 3 + 0]; m[3][1] = im[4 * 3 + 1]; m[3][2] = im[4 * 3 + 2]; m[3][3] = im[4 * 3 + 3];
 }
 
 // Get methods
-bool trpgModelRef::GetModel(int32 &mod) const
+bool trpgModelRef::GetModel(int32&mod) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     mod = modelRef;
     return true;
 }
 bool trpgModelRef::GetMatrix(float64 *rm) const
 {
-    if (!isValid()) return false;
-    for (int i=0;i<4;i++)
-        for (int j=0;j<4;j++)
+    if (!isValid())
+        return false;
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
             // Note: is this right?
-            rm[i*4+j] = m[i][j];
+            rm[i * 4 + j] = m[i][j];
+
     return true;
 }
 
 // Write model reference
-bool trpgModelRef::Write(trpgWriteBuffer &buf)
+bool trpgModelRef::Write(trpgWriteBuffer&buf)
 {
     if (!isValid())
         return false;
 
     buf.Begin(TRPG_MODELREF);
     buf.Add(modelRef);
-    for (int i=0;i<4;i++)
-        for (int j=0;j<4;j++)
+
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
             buf.Add(m[i][j]);
+
     buf.End();
 
     return true;
 }
 
 // Read model reference
-bool trpgModelRef::Read(trpgReadBuffer &buf)
+bool trpgModelRef::Read(trpgReadBuffer&buf)
 {
-    try {
+    try
+    {
         buf.Get(modelRef);
         if (modelRef < 0)
             throw 1;
-        for (int i=0;i<4;i++)
-            for (int j=0;j<4;j++)
+
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++)
                 buf.Get(m[i][j]);
     }
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -699,7 +781,7 @@ bool trpgModelRef::Read(trpgReadBuffer &buf)
    You'll find one of these in each tile, except for the lowest LOD.
    It's basically a group with some extra info that tells you where to attach it.
    The ID corresponds to the one in Group and LOD.
-*/
+ */
 
 // Constructor
 trpgAttach::trpgAttach()
@@ -717,8 +799,9 @@ void trpgAttach::Reset()
 {
     parentID = -1;
     childPos = -1;
-    if ( name ) {
-        delete [] name;
+    if (name)
+    {
+        delete[] name;
         name = 0;
     }
 }
@@ -728,9 +811,11 @@ void trpgAttach::SetParentID(int id)
 {
     parentID = id;
 }
-bool trpgAttach::GetParentID(int &id) const
+bool trpgAttach::GetParentID(int&id) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     id = parentID;
     return true;
 }
@@ -741,9 +826,11 @@ void trpgAttach::SetChildPos(int id)
 {
     childPos = id;
 }
-bool trpgAttach::GetChildPos(int &id) const
+bool trpgAttach::GetChildPos(int&id) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     id = childPos;
     return true;
 }
@@ -751,14 +838,17 @@ bool trpgAttach::GetChildPos(int &id) const
 // Validity check
 bool trpgAttach::isValid() const
 {
-    if (parentID < 0 || childPos < 0) return false;
+    if (parentID < 0 || childPos < 0)
+        return false;
+
     return true;
 }
 
 // Write Attach node
-bool trpgAttach::Write(trpgWriteBuffer &buf)
+bool trpgAttach::Write(trpgWriteBuffer&buf)
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
 
     buf.Begin(TRPG_ATTACH);
     buf.Add(numChild);
@@ -766,7 +856,8 @@ bool trpgAttach::Write(trpgWriteBuffer &buf)
     buf.Add(parentID);
     buf.Add(childPos);
 
-    if ( name && strlen(name) ) {
+    if (name && strlen(name))
+    {
         buf.Add(name);
     }
 
@@ -776,23 +867,32 @@ bool trpgAttach::Write(trpgWriteBuffer &buf)
 }
 
 // Read Attach node
-bool trpgAttach::Read(trpgReadBuffer &buf)
+bool trpgAttach::Read(trpgReadBuffer&buf)
 {
-    try {
+    try
+    {
         buf.Get(numChild);
         buf.Get(id);
-        if (id < 0)  throw 1;
+        if (id < 0)
+            throw 1;
+
         buf.Get(parentID);
-        if (parentID < 0) throw 1;
+        if (parentID < 0)
+            throw 1;
+
         buf.Get(childPos);
-        if (childPos < 0) throw 1;
-        if ( !buf.isEmpty() ) {
+        if (childPos < 0)
+            throw 1;
+
+        if (!buf.isEmpty())
+        {
             char nm[1024] = {0};
-            buf.Get(nm,1024);
+            buf.Get(nm, 1024);
             SetName(nm);
         }
     }
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -802,7 +902,7 @@ bool trpgAttach::Read(trpgReadBuffer &buf)
 /* ChildRef Node
    You'll find in the parent tile one of these for each tile children.
    It gives the children grid location and file address.
-*/
+ */
 
 // Constructor
 trpgChildRef::trpgChildRef()
@@ -817,69 +917,72 @@ trpgChildRef::~trpgChildRef()
 // Reset
 void trpgChildRef::Reset()
 {
-    x = -1;
-    y = -1;
-    lod = -1;
-    addr.file = -1;
+    x           = -1;
+    y           = -1;
+    lod         = -1;
+    addr.file   = -1;
     addr.offset = -1;
 }
 
-void trpgChildRef::SetTileLoc(int gx,int gy,int glod)
+void trpgChildRef::SetTileLoc(int gx, int gy, int glod)
 {
-    x = gx;
-    y = gy;
+    x   = gx;
+    y   = gy;
     lod = glod;
 }
 
-bool trpgChildRef::GetTileLoc(int &gx,int &gy,int &glod) const
+bool trpgChildRef::GetTileLoc(int&gx, int&gy, int&glod) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
 
-    gx = x;
-    gy = y;
+    gx   = x;
+    gy   = y;
     glod = lod;
 
     return true;
 }
 
-void trpgChildRef::SetTileAddress(const trpgwAppAddress& gAddr)
+void trpgChildRef::SetTileAddress(const trpgwAppAddress&gAddr)
 {
     addr = gAddr;
 }
 void trpgChildRef::SetTileAddress(int32 file, int32 offset)
 {
-    addr.file = file;
+    addr.file   = file;
     addr.offset = offset;
 }
-bool trpgChildRef::GetTileAddress(int32& file, int32& offset) const
+bool trpgChildRef::GetTileAddress(int32&file, int32&offset) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
 
-    file = addr.file;
+    file   = addr.file;
     offset = addr.offset;
 
     return true;
-
 }
 
-bool trpgChildRef::GetTileAddress(trpgwAppAddress& gAddr) const
+bool trpgChildRef::GetTileAddress(trpgwAppAddress&gAddr) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
 
     gAddr = addr;
 
     return true;
 }
 
-void trpgChildRef::SetTileZValue( float gZmin, float gZmax)
+void trpgChildRef::SetTileZValue(float gZmin, float gZmax)
 {
     zmin = gZmin;
     zmax = gZmax;
 }
 
-bool trpgChildRef::GetTileZValue( float& gZmin, float& gZmax) const
+bool trpgChildRef::GetTileZValue(float&gZmin, float&gZmax) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
 
     gZmin = zmin;
     gZmax = zmax;
@@ -892,15 +995,17 @@ bool trpgChildRef::GetTileZValue( float& gZmin, float& gZmax) const
 bool trpgChildRef::isValid() const
 {
     if (lod < 0)
-    return false;
+        return false;
+
     return true;
 }
 
 
 // Write Attach node
-bool trpgChildRef::Write(trpgWriteBuffer &buf)
+bool trpgChildRef::Write(trpgWriteBuffer&buf)
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
 
     buf.Begin(TRPG_CHILDREF);
 
@@ -918,20 +1023,20 @@ bool trpgChildRef::Write(trpgWriteBuffer &buf)
 }
 
 // Read Attach node
-bool trpgChildRef::Read(trpgReadBuffer &buf)
+bool trpgChildRef::Read(trpgReadBuffer&buf)
 {
     try
     {
-
         buf.Get(lod);
-        if (lod <  0) throw 1;
+        if (lod < 0)
+            throw 1;
+
         buf.Get(x);
         buf.Get(y);
         buf.Get(addr.file);
         buf.Get(addr.offset);
         buf.Get(zmin);
         buf.Get(zmax);
-
     }
     catch (...)
     {
@@ -940,4 +1045,3 @@ bool trpgChildRef::Read(trpgReadBuffer &buf)
 
     return true;
 }
-

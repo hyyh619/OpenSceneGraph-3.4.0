@@ -2,7 +2,7 @@
  * $Id: ogr_api.cpp 20555 2010-09-10 18:54:34Z rouault $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
- * Purpose:  C API Functions that don't correspond one-to-one with C++ 
+ * Purpose:  C API Functions that don't correspond one-to-one with C++
  *           methods, such as the "simplified" geometry access functions.
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  *
@@ -45,25 +45,25 @@
  * @return the number of points.
  */
 
-int OGR_G_GetPointCount( OGRGeometryH hGeom )
+int OGR_G_GetPointCount(OGRGeometryH hGeom)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_GetPointCount", 0 );
+    VALIDATE_POINTER1(hGeom, "OGR_G_GetPointCount", 0);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
+    case wkbPoint:
         return 1;
 
-      case wkbLineString:
-      {
-          OGRLineString *poLine = (OGRLineString *) hGeom;
-          return poLine->getNumPoints();
-      }
+    case wkbLineString:
+    {
+        OGRLineString *poLine = (OGRLineString*) hGeom;
+        return poLine->getNumPoints();
+    }
 
-      default:
+    default:
         // autotest/pymod/ogrtest.py calls this method on any geometry. So keep silent
-        //CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
+        // CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         return 0;
     }
 }
@@ -76,39 +76,40 @@ int OGR_G_GetPointCount( OGRGeometryH hGeom )
  *
  * @param hGeom handle to the geometry from which to get the x coordinate.
  * @param i point to get the x coordinate.
- * @return the X coordinate of this point. 
+ * @return the X coordinate of this point.
  */
 
-double OGR_G_GetX( OGRGeometryH hGeom, int i )
+double OGR_G_GetX(OGRGeometryH hGeom, int i)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_GetX", 0 );
+    VALIDATE_POINTER1(hGeom, "OGR_G_GetX", 0);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
-      {
-          if( i == 0 )
-              return ((OGRPoint *) hGeom)->getX();
-          else
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
-              return 0.0;
-          }
-      }
+    case wkbPoint:
+    {
+        if (i == 0)
+            return ((OGRPoint*) hGeom)->getX();
+        else
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
+            return 0.0;
+        }
+    }
 
-      case wkbLineString:
-      {
-          OGRLineString* poLS = (OGRLineString *) hGeom;
-          if (i < 0 || i >= poLS->getNumPoints())
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
-              return 0.0;
-          }
-          return poLS->getX( i );
-      }
+    case wkbLineString:
+    {
+        OGRLineString *poLS = (OGRLineString*) hGeom;
+        if (i < 0 || i >= poLS->getNumPoints())
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
+            return 0.0;
+        }
 
-      default:
+        return poLS->getX(i);
+    }
+
+    default:
         CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         return 0.0;
     }
@@ -122,39 +123,40 @@ double OGR_G_GetX( OGRGeometryH hGeom, int i )
  *
  * @param hGeom handle to the geometry from which to get the y coordinate.
  * @param i point to get the Y coordinate.
- * @return the Y coordinate of this point. 
+ * @return the Y coordinate of this point.
  */
 
-double OGR_G_GetY( OGRGeometryH hGeom, int i )
+double OGR_G_GetY(OGRGeometryH hGeom, int i)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_GetY", 0 );
+    VALIDATE_POINTER1(hGeom, "OGR_G_GetY", 0);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
-      {
-          if( i == 0 )
-              return ((OGRPoint *) hGeom)->getY();
-          else
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
-              return 0.0;
-          }
-      }
+    case wkbPoint:
+    {
+        if (i == 0)
+            return ((OGRPoint*) hGeom)->getY();
+        else
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
+            return 0.0;
+        }
+    }
 
-      case wkbLineString:
-      {
-          OGRLineString* poLS = (OGRLineString *) hGeom;
-          if (i < 0 || i >= poLS->getNumPoints())
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
-              return 0.0;
-          }
-          return poLS->getY( i );
-      }
+    case wkbLineString:
+    {
+        OGRLineString *poLS = (OGRLineString*) hGeom;
+        if (i < 0 || i >= poLS->getNumPoints())
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
+            return 0.0;
+        }
 
-      default:
+        return poLS->getY(i);
+    }
+
+    default:
         CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         return 0.0;
     }
@@ -168,41 +170,42 @@ double OGR_G_GetY( OGRGeometryH hGeom, int i )
  *
  * @param hGeom handle to the geometry from which to get the Z coordinate.
  * @param i point to get the Z coordinate.
- * @return the Z coordinate of this point. 
+ * @return the Z coordinate of this point.
  */
 
-double OGR_G_GetZ( OGRGeometryH hGeom, int i )
+double OGR_G_GetZ(OGRGeometryH hGeom, int i)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_GetZ", 0 );
+    VALIDATE_POINTER1(hGeom, "OGR_G_GetZ", 0);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
-      {
-          if( i == 0 )
-              return ((OGRPoint *) hGeom)->getZ();
-          else
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
-              return 0.0;
-          }
-      }
+    case wkbPoint:
+    {
+        if (i == 0)
+            return ((OGRPoint*) hGeom)->getZ();
+        else
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
+            return 0.0;
+        }
+    }
 
-      case wkbLineString:
-      {
-          OGRLineString* poLS = (OGRLineString *) hGeom;
-          if (i < 0 || i >= poLS->getNumPoints())
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
-              return 0.0;
-          }
-          return poLS->getZ( i );
-      }
+    case wkbLineString:
+    {
+        OGRLineString *poLS = (OGRLineString*) hGeom;
+        if (i < 0 || i >= poLS->getNumPoints())
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
+            return 0.0;
+        }
 
-      default:
-          CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
-          return 0.0;
+        return poLS->getZ(i);
+    }
+
+    default:
+        CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
+        return 0.0;
     }
 }
 
@@ -220,51 +223,51 @@ double OGR_G_GetZ( OGRGeometryH hGeom, int i )
  * @param pdfZ value of z coordinate.
  */
 
-void OGR_G_GetPoint( OGRGeometryH hGeom, int i, 
-                     double *pdfX, double *pdfY, double *pdfZ )
+void OGR_G_GetPoint(OGRGeometryH hGeom, int i,
+                    double *pdfX, double *pdfY, double *pdfZ)
 
 {
-    VALIDATE_POINTER0( hGeom, "OGR_G_GetPoint" );
+    VALIDATE_POINTER0(hGeom, "OGR_G_GetPoint");
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
-      {
-          if( i == 0 )
-          {
-              *pdfX = ((OGRPoint *)hGeom)->getX();
-              *pdfY = ((OGRPoint *)hGeom)->getY();
-              if( pdfZ != NULL )
-                  *pdfZ = ((OGRPoint *)hGeom)->getZ();
-          }
-          else
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
-          }
-      }
-      break;
+    case wkbPoint:
+    {
+        if (i == 0)
+        {
+            *pdfX = ((OGRPoint*)hGeom)->getX();
+            *pdfY = ((OGRPoint*)hGeom)->getY();
+            if (pdfZ != NULL)
+                *pdfZ = ((OGRPoint*)hGeom)->getZ();
+        }
+        else
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
+        }
+    }
+    break;
 
-      case wkbLineString:
-      {
-          OGRLineString* poLS = (OGRLineString *) hGeom;
-          if (i < 0 || i >= poLS->getNumPoints())
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
-              *pdfX = *pdfY = 0;
-              if( pdfZ != NULL )
-                  *pdfZ = 0;
-          }
-          else
-          {
-            *pdfX = poLS->getX( i );
-            *pdfY = poLS->getY( i );
-            if( pdfZ != NULL )
-                *pdfZ =  poLS->getZ( i );
-          }
-      }
-      break;
+    case wkbLineString:
+    {
+        OGRLineString *poLS = (OGRLineString*) hGeom;
+        if (i < 0 || i >= poLS->getNumPoints())
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
+            *pdfX = *pdfY = 0;
+            if (pdfZ != NULL)
+                *pdfZ = 0;
+        }
+        else
+        {
+            *pdfX = poLS->getX(i);
+            *pdfY = poLS->getY(i);
+            if (pdfZ != NULL)
+                *pdfZ = poLS->getZ(i);
+        }
+    }
+    break;
 
-      default:
+    default:
         CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         break;
     }
@@ -288,41 +291,42 @@ void OGR_G_GetPoint( OGRGeometryH hGeom, int i,
  * @param dfZ input Z coordinate to assign (defaults to zero).
  */
 
-void OGR_G_SetPoint( OGRGeometryH hGeom, int i, 
-                     double dfX, double dfY, double dfZ )
+void OGR_G_SetPoint(OGRGeometryH hGeom, int i,
+                    double dfX, double dfY, double dfZ)
 
 {
-    VALIDATE_POINTER0( hGeom, "OGR_G_SetPoint" );
+    VALIDATE_POINTER0(hGeom, "OGR_G_SetPoint");
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
-      {
-          if( i == 0 )
-          {
-              ((OGRPoint *) hGeom)->setX( dfX );
-              ((OGRPoint *) hGeom)->setY( dfY );
-              ((OGRPoint *) hGeom)->setZ( dfZ );
-          }
-          else
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
-          }
-      }
-      break;
+    case wkbPoint:
+    {
+        if (i == 0)
+        {
+            ((OGRPoint*) hGeom)->setX(dfX);
+            ((OGRPoint*) hGeom)->setY(dfY);
+            ((OGRPoint*) hGeom)->setZ(dfZ);
+        }
+        else
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
+        }
+    }
+    break;
 
-      case wkbLineString:
-      {
-          if (i < 0)
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
-              return;
-          }
-          ((OGRLineString *) hGeom)->setPoint( i, dfX, dfY, dfZ );
-          break;
-      }
+    case wkbLineString:
+    {
+        if (i < 0)
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
+            return;
+        }
 
-      default:
+        ((OGRLineString*) hGeom)->setPoint(i, dfX, dfY, dfZ);
+        break;
+    }
+
+    default:
         CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         break;
     }
@@ -345,40 +349,41 @@ void OGR_G_SetPoint( OGRGeometryH hGeom, int i,
  * @param dfY input Y coordinate to assign.
  */
 
-void OGR_G_SetPoint_2D( OGRGeometryH hGeom, int i, 
-                        double dfX, double dfY )
-    
+void OGR_G_SetPoint_2D(OGRGeometryH hGeom, int i,
+                       double dfX, double dfY)
+
 {
-    VALIDATE_POINTER0( hGeom, "OGR_G_SetPoint_2D" );
+    VALIDATE_POINTER0(hGeom, "OGR_G_SetPoint_2D");
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
-      {
-          if( i == 0 )
-          {
-              ((OGRPoint *) hGeom)->setX( dfX );
-              ((OGRPoint *) hGeom)->setY( dfY );
-          }
-          else
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
-          }
-      }
-      break;
+    case wkbPoint:
+    {
+        if (i == 0)
+        {
+            ((OGRPoint*) hGeom)->setX(dfX);
+            ((OGRPoint*) hGeom)->setY(dfY);
+        }
+        else
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Only i == 0 is supported");
+        }
+    }
+    break;
 
-      case wkbLineString:
-      {
-          if (i < 0)
-          {
-              CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
-              return;
-          }
-          ((OGRLineString *) hGeom)->setPoint( i, dfX, dfY );
-          break;
-      }
+    case wkbLineString:
+    {
+        if (i < 0)
+        {
+            CPLError(CE_Failure, CPLE_NotSupported, "Index out of bounds");
+            return;
+        }
 
-      default:
+        ((OGRLineString*) hGeom)->setPoint(i, dfX, dfY);
+        break;
+    }
+
+    default:
         CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         break;
     }
@@ -399,27 +404,27 @@ void OGR_G_SetPoint_2D( OGRGeometryH hGeom, int i,
  * @param dfZ z coordinate of point to add.
  */
 
-void OGR_G_AddPoint( OGRGeometryH hGeom, 
-                     double dfX, double dfY, double dfZ )
+void OGR_G_AddPoint(OGRGeometryH hGeom,
+                    double dfX, double dfY, double dfZ)
 
 {
-    VALIDATE_POINTER0( hGeom, "OGR_G_AddPoint" );
+    VALIDATE_POINTER0(hGeom, "OGR_G_AddPoint");
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
-      {
-          ((OGRPoint *) hGeom)->setX( dfX );
-          ((OGRPoint *) hGeom)->setY( dfY );
-          ((OGRPoint *) hGeom)->setZ( dfZ );
-      }
-      break;
+    case wkbPoint:
+    {
+        ((OGRPoint*) hGeom)->setX(dfX);
+        ((OGRPoint*) hGeom)->setY(dfY);
+        ((OGRPoint*) hGeom)->setZ(dfZ);
+    }
+    break;
 
-      case wkbLineString:
-        ((OGRLineString *) hGeom)->addPoint( dfX, dfY, dfZ );
+    case wkbLineString:
+        ((OGRLineString*) hGeom)->addPoint(dfX, dfY, dfZ);
         break;
 
-      default:
+    default:
         CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         break;
     }
@@ -439,26 +444,26 @@ void OGR_G_AddPoint( OGRGeometryH hGeom,
  * @param dfY y coordinate of point to add.
  */
 
-void OGR_G_AddPoint_2D( OGRGeometryH hGeom, 
-                        double dfX, double dfY )
+void OGR_G_AddPoint_2D(OGRGeometryH hGeom,
+                       double dfX, double dfY)
 
 {
-    VALIDATE_POINTER0( hGeom, "OGR_G_AddPoint_2D" );
+    VALIDATE_POINTER0(hGeom, "OGR_G_AddPoint_2D");
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPoint:
-      {
-          ((OGRPoint *) hGeom)->setX( dfX );
-          ((OGRPoint *) hGeom)->setY( dfY );
-      }
-      break;
+    case wkbPoint:
+    {
+        ((OGRPoint*) hGeom)->setX(dfX);
+        ((OGRPoint*) hGeom)->setY(dfY);
+    }
+    break;
 
-      case wkbLineString:
-        ((OGRLineString *) hGeom)->addPoint( dfX, dfY );
+    case wkbLineString:
+        ((OGRLineString*) hGeom)->addPoint(dfX, dfY);
         break;
 
-      default:
+    default:
         CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         break;
     }
@@ -481,28 +486,28 @@ void OGR_G_AddPoint_2D( OGRGeometryH hGeom,
  * @return the number of elements.
  */
 
-int OGR_G_GetGeometryCount( OGRGeometryH hGeom )
+int OGR_G_GetGeometryCount(OGRGeometryH hGeom)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_GetGeometryCount", 0 );
+    VALIDATE_POINTER1(hGeom, "OGR_G_GetGeometryCount", 0);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPolygon:
-        if( ((OGRPolygon *)hGeom)->getExteriorRing() == NULL )
+    case wkbPolygon:
+        if (((OGRPolygon*)hGeom)->getExteriorRing() == NULL)
             return 0;
         else
-            return ((OGRPolygon *)hGeom)->getNumInteriorRings() + 1;
+            return ((OGRPolygon*)hGeom)->getNumInteriorRings() + 1;
 
-      case wkbMultiPoint:
-      case wkbMultiLineString:
-      case wkbMultiPolygon:
-      case wkbGeometryCollection:
-        return ((OGRGeometryCollection *)hGeom)->getNumGeometries();
+    case wkbMultiPoint:
+    case wkbMultiLineString:
+    case wkbMultiPolygon:
+    case wkbGeometryCollection:
+        return ((OGRGeometryCollection*)hGeom)->getNumGeometries();
 
-      default:
+    default:
         // autotest/pymod/ogrtest.py calls this method on any geometry. So keep silent
-        //CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
+        // CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         return 0;
     }
 }
@@ -519,45 +524,45 @@ int OGR_G_GetGeometryCount( OGRGeometryH hGeom )
  * modified.  The handle is only valid untill the next change to the
  * geometry container.  Use OGR_G_Clone() to make a copy.
  *
- * This function relates to the SFCOM 
+ * This function relates to the SFCOM
  * IGeometryCollection::get_Geometry() method.
  *
- * This function is the same as the CPP method 
+ * This function is the same as the CPP method
  * OGRGeometryCollection::getGeometryRef().
  *
  * For a polygon, OGR_G_GetGeometryRef(iSubGeom) returns the exterior ring
  * if iSubGeom == 0, and the interior rings for iSubGeom > 0.
  *
- * @param hGeom handle to the geometry container from which to get a 
+ * @param hGeom handle to the geometry container from which to get a
  * geometry from.
  * @param iSubGeom the index of the geometry to fetch, between 0 and
  *          getNumGeometries() - 1.
  * @return handle to the requested geometry.
  */
 
-OGRGeometryH OGR_G_GetGeometryRef( OGRGeometryH hGeom, int iSubGeom )
+OGRGeometryH OGR_G_GetGeometryRef(OGRGeometryH hGeom, int iSubGeom)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_GetGeometryRef", NULL );
+    VALIDATE_POINTER1(hGeom, "OGR_G_GetGeometryRef", NULL);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPolygon:
-        if( iSubGeom == 0 )
-            return (OGRGeometryH) 
-                ((OGRPolygon *)hGeom)->getExteriorRing();
+    case wkbPolygon:
+        if (iSubGeom == 0)
+            return (OGRGeometryH)
+                   ((OGRPolygon*)hGeom)->getExteriorRing();
         else
-            return (OGRGeometryH) 
-                ((OGRPolygon *)hGeom)->getInteriorRing(iSubGeom-1);
+            return (OGRGeometryH)
+                   ((OGRPolygon*)hGeom)->getInteriorRing(iSubGeom - 1);
 
-      case wkbMultiPoint:
-      case wkbMultiLineString:
-      case wkbMultiPolygon:
-      case wkbGeometryCollection:
-        return (OGRGeometryH) 
-            ((OGRGeometryCollection *)hGeom)->getGeometryRef( iSubGeom );
+    case wkbMultiPoint:
+    case wkbMultiLineString:
+    case wkbMultiPolygon:
+    case wkbGeometryCollection:
+        return (OGRGeometryH)
+               ((OGRGeometryCollection*)hGeom)->getGeometryRef(iSubGeom);
 
-      default:
+    default:
         CPLError(CE_Failure, CPLE_NotSupported, "Incompatible geometry for operation");
         return 0;
     }
@@ -576,7 +581,7 @@ OGRGeometryH OGR_G_GetGeometryRef( OGRGeometryH hGeom, int iSubGeom )
  *
  * There is no SFCOM analog to this method.
  *
- * This function is the same as the CPP method 
+ * This function is the same as the CPP method
  * OGRGeometryCollection::addGeometry.
  *
  * For a polygon, hNewSubGeom must be a linearring. If the polygon is empty,
@@ -590,35 +595,35 @@ OGRGeometryH OGR_G_GetGeometryRef( OGRGeometryH hGeom, int iSubGeom )
  * the geometry type is illegal for the type of existing geometry.
  */
 
-OGRErr OGR_G_AddGeometry( OGRGeometryH hGeom, OGRGeometryH hNewSubGeom )
+OGRErr OGR_G_AddGeometry(OGRGeometryH hGeom, OGRGeometryH hNewSubGeom)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_AddGeometry", OGRERR_UNSUPPORTED_OPERATION );
-    VALIDATE_POINTER1( hNewSubGeom, "OGR_G_AddGeometry", OGRERR_UNSUPPORTED_OPERATION );
+    VALIDATE_POINTER1(hGeom, "OGR_G_AddGeometry", OGRERR_UNSUPPORTED_OPERATION);
+    VALIDATE_POINTER1(hNewSubGeom, "OGR_G_AddGeometry", OGRERR_UNSUPPORTED_OPERATION);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPolygon:
-      {
-          if( !EQUAL( ((OGRGeometry*) hNewSubGeom)->getGeometryName(), "LINEARRING" ) )
-          {
-              return OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
-          }
-          else
-          {
-              ((OGRPolygon *)hGeom)->addRing( (OGRLinearRing *) hNewSubGeom );
-              return OGRERR_NONE;
-          }
-      }
+    case wkbPolygon:
+    {
+        if (!EQUAL(((OGRGeometry*) hNewSubGeom)->getGeometryName(), "LINEARRING"))
+        {
+            return OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
+        }
+        else
+        {
+            ((OGRPolygon*)hGeom)->addRing((OGRLinearRing*) hNewSubGeom);
+            return OGRERR_NONE;
+        }
+    }
 
-      case wkbMultiPoint:
-      case wkbMultiLineString:
-      case wkbMultiPolygon:
-      case wkbGeometryCollection:
-        return ((OGRGeometryCollection *)hGeom)->addGeometry( 
-            (OGRGeometry *) hNewSubGeom );
+    case wkbMultiPoint:
+    case wkbMultiLineString:
+    case wkbMultiPolygon:
+    case wkbGeometryCollection:
+        return ((OGRGeometryCollection*)hGeom)->addGeometry(
+            (OGRGeometry*) hNewSubGeom);
 
-      default:
+    default:
         return OGRERR_UNSUPPORTED_OPERATION;
     }
 }
@@ -634,7 +639,7 @@ OGRErr OGR_G_AddGeometry( OGRGeometryH hGeom, OGRGeometryH hNewSubGeom )
  * geometry is taken by the container rather than cloning as addGeometry()
  * does.
  *
- * This function is the same as the CPP method 
+ * This function is the same as the CPP method
  * OGRGeometryCollection::addGeometryDirectly.
  *
  * There is no SFCOM analog to this method.
@@ -650,36 +655,36 @@ OGRErr OGR_G_AddGeometry( OGRGeometryH hGeom, OGRGeometryH hNewSubGeom )
  * the geometry type is illegal for the type of geometry container.
  */
 
-OGRErr OGR_G_AddGeometryDirectly( OGRGeometryH hGeom, 
-                                  OGRGeometryH hNewSubGeom )
+OGRErr OGR_G_AddGeometryDirectly(OGRGeometryH hGeom,
+                                 OGRGeometryH hNewSubGeom)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_AddGeometryDirectly", OGRERR_UNSUPPORTED_OPERATION );
-    VALIDATE_POINTER1( hNewSubGeom, "OGR_G_AddGeometryDirectly", OGRERR_UNSUPPORTED_OPERATION );
+    VALIDATE_POINTER1(hGeom, "OGR_G_AddGeometryDirectly", OGRERR_UNSUPPORTED_OPERATION);
+    VALIDATE_POINTER1(hNewSubGeom, "OGR_G_AddGeometryDirectly", OGRERR_UNSUPPORTED_OPERATION);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPolygon:
-      {
-          if( !EQUAL( ((OGRGeometry*) hNewSubGeom)->getGeometryName(), "LINEARRING" ) )
-          {
-              return OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
-          }
-          else
-          {
-              ((OGRPolygon *)hGeom)->addRingDirectly( (OGRLinearRing *) hNewSubGeom );
-              return OGRERR_NONE;
-          }
-      }
+    case wkbPolygon:
+    {
+        if (!EQUAL(((OGRGeometry*) hNewSubGeom)->getGeometryName(), "LINEARRING"))
+        {
+            return OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
+        }
+        else
+        {
+            ((OGRPolygon*)hGeom)->addRingDirectly((OGRLinearRing*) hNewSubGeom);
+            return OGRERR_NONE;
+        }
+    }
 
-      case wkbMultiPoint:
-      case wkbMultiLineString:
-      case wkbMultiPolygon:
-      case wkbGeometryCollection:
-        return ((OGRGeometryCollection *)hGeom)->addGeometryDirectly( 
-            (OGRGeometry *) hNewSubGeom );
+    case wkbMultiPoint:
+    case wkbMultiLineString:
+    case wkbMultiPolygon:
+    case wkbGeometryCollection:
+        return ((OGRGeometryCollection*)hGeom)->addGeometryDirectly(
+            (OGRGeometry*) hNewSubGeom);
 
-      default:
+    default:
         return OGRERR_UNSUPPORTED_OPERATION;
     }
 }
@@ -696,7 +701,7 @@ OGRErr OGR_G_AddGeometryDirectly( OGRGeometryH hGeom,
  *
  * There is no SFCOM analog to this method.
  *
- * This function is the same as the CPP method 
+ * This function is the same as the CPP method
  * OGRGeometryCollection::removeGeometry().
  *
  * @param hGeom the existing geometry to delete from.
@@ -705,7 +710,7 @@ OGRErr OGR_G_AddGeometryDirectly( OGRGeometryH hGeom,
  *
  * @param bDelete if TRUE the geometry will be destroyed, otherwise it will
  * not.  The default is TRUE as the existing geometry is considered to own the
- * geometries in it. 
+ * geometries in it.
  *
  * @return OGRERR_NONE if successful, or OGRERR_FAILURE if the index is
  * out of range.
@@ -713,27 +718,27 @@ OGRErr OGR_G_AddGeometryDirectly( OGRGeometryH hGeom,
 
 
 
-OGRErr OGR_G_RemoveGeometry( OGRGeometryH hGeom, int iGeom, int bDelete )
+OGRErr OGR_G_RemoveGeometry(OGRGeometryH hGeom, int iGeom, int bDelete)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_RemoveGeometry", 0 );
+    VALIDATE_POINTER1(hGeom, "OGR_G_RemoveGeometry", 0);
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPolygon:
-      {
-          CPLError( CE_Failure, CPLE_AppDefined, 
-                    "OGR_G_RemoveGeometry() not supported on polygons yet." );
-          return OGRERR_UNSUPPORTED_OPERATION;
-      }
+    case wkbPolygon:
+    {
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "OGR_G_RemoveGeometry() not supported on polygons yet.");
+        return OGRERR_UNSUPPORTED_OPERATION;
+    }
 
-      case wkbMultiPoint:
-      case wkbMultiLineString:
-      case wkbMultiPolygon:
-      case wkbGeometryCollection:
-        return ((OGRGeometryCollection *)hGeom)->removeGeometry( iGeom,bDelete);
+    case wkbMultiPoint:
+    case wkbMultiLineString:
+    case wkbMultiPolygon:
+    case wkbGeometryCollection:
+        return ((OGRGeometryCollection*)hGeom)->removeGeometry(iGeom, bDelete);
 
-      default:
+    default:
         return OGRERR_UNSUPPORTED_OPERATION;
     }
 }
@@ -746,7 +751,7 @@ OGRErr OGR_G_RemoveGeometry( OGRGeometryH hGeom, int iGeom, int bDelete )
  * \brief Compute length of a geometry.
  *
  * Computes the area for OGRCurve or MultiCurve objects.
- * Undefined for all other geometry types (returns zero). 
+ * Undefined for all other geometry types (returns zero).
  *
  * This function utilizes the C++ get_Length() method.
  *
@@ -756,28 +761,28 @@ OGRErr OGR_G_RemoveGeometry( OGRGeometryH hGeom, int iGeom, int bDelete )
  * @since OGR 1.8.0
  */
 
-double OGR_G_Length( OGRGeometryH hGeom )
+double OGR_G_Length(OGRGeometryH hGeom)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_GetLength", 0 );
+    VALIDATE_POINTER1(hGeom, "OGR_G_GetLength", 0);
 
     double fLength = 0.0;
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbLinearRing:
-      case wkbLineString:
-        fLength = ((OGRCurve *) hGeom)->get_Length();
+    case wkbLinearRing:
+    case wkbLineString:
+        fLength = ((OGRCurve*) hGeom)->get_Length();
         break;
 
-      case wkbMultiLineString:
-      case wkbGeometryCollection:
-        fLength = ((OGRGeometryCollection *) hGeom)->get_Length();
+    case wkbMultiLineString:
+    case wkbGeometryCollection:
+        fLength = ((OGRGeometryCollection*) hGeom)->get_Length();
         break;
 
-      default:
-        CPLError( CE_Warning, CPLE_AppDefined,
-                  "OGR_G_Length() called against a non-curve geometry type." );
+    default:
+        CPLError(CE_Warning, CPLE_AppDefined,
+                 "OGR_G_Length() called against a non-curve geometry type.");
 
         fLength = 0.0;
     }
@@ -793,52 +798,53 @@ double OGR_G_Length( OGRGeometryH hGeom )
  * \brief Compute geometry area.
  *
  * Computes the area for an OGRLinearRing, OGRPolygon or OGRMultiPolygon.
- * Undefined for all other geometry types (returns zero). 
+ * Undefined for all other geometry types (returns zero).
  *
  * This function utilizes the C++ get_Area() methods such as
- * OGRPolygon::get_Area(). 
+ * OGRPolygon::get_Area().
  *
- * @param hGeom the geometry to operate on. 
+ * @param hGeom the geometry to operate on.
  * @return the area or 0.0 for unsupported geometry types.
  *
  * @since OGR 1.8.0
  */
 
-double OGR_G_Area( OGRGeometryH hGeom )
+double OGR_G_Area(OGRGeometryH hGeom)
 
 {
-    VALIDATE_POINTER1( hGeom, "OGR_G_Area", 0 );
+    VALIDATE_POINTER1(hGeom, "OGR_G_Area", 0);
 
     double fArea = 0.0;
 
-    switch( wkbFlatten(((OGRGeometry *) hGeom)->getGeometryType()) )
+    switch (wkbFlatten(((OGRGeometry*) hGeom)->getGeometryType()))
     {
-      case wkbPolygon:
-        fArea = ((OGRPolygon *) hGeom)->get_Area();
+    case wkbPolygon:
+        fArea = ((OGRPolygon*) hGeom)->get_Area();
         break;
 
-      case wkbMultiPolygon:
-        fArea = ((OGRMultiPolygon *) hGeom)->get_Area();
+    case wkbMultiPolygon:
+        fArea = ((OGRMultiPolygon*) hGeom)->get_Area();
         break;
 
-      case wkbLinearRing:
-      case wkbLineString:
+    case wkbLinearRing:
+    case wkbLineString:
         /* This test below is required to filter out wkbLineString geometries
          * not being of type of wkbLinearRing.
          */
-        if( EQUAL( ((OGRGeometry*) hGeom)->getGeometryName(), "LINEARRING" ) )
+        if (EQUAL(((OGRGeometry*) hGeom)->getGeometryName(), "LINEARRING"))
         {
-            fArea = ((OGRLinearRing *) hGeom)->get_Area();
+            fArea = ((OGRLinearRing*) hGeom)->get_Area();
         }
+
         break;
 
-      case wkbGeometryCollection:
-        fArea = ((OGRGeometryCollection *) hGeom)->get_Area();
+    case wkbGeometryCollection:
+        fArea = ((OGRGeometryCollection*) hGeom)->get_Area();
         break;
 
-      default:
-        CPLError( CE_Warning, CPLE_AppDefined,
-                  "OGR_G_Area() called against non-surface geometry type." );
+    default:
+        CPLError(CE_Warning, CPLE_AppDefined,
+                 "OGR_G_Area() called against non-surface geometry type.");
 
         fArea = 0.0;
     }
@@ -852,8 +858,8 @@ double OGR_G_Area( OGRGeometryH hGeom )
  * @deprecated
  * @see OGR_G_Area()
  */
-double OGR_G_GetArea( OGRGeometryH hGeom )
+double OGR_G_GetArea(OGRGeometryH hGeom)
 
 {
-    return OGR_G_Area( hGeom );
+    return OGR_G_Area(hGeom);
 }

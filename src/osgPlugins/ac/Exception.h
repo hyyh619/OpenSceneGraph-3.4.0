@@ -3,17 +3,20 @@
 
 #include <string>
 
-namespace ac3d{
-
-class Exception{
+namespace ac3d
+{
+class Exception
+{
 public:
-    Exception(std::string error);
-    ~Exception();
-    std::string getError(){return _error;};
-private:
-    std::string _error;
+Exception(std::string error);
+~Exception();
+std::string getError()
+{
+    return _error;
 };
-
+private:
+std::string _error;
+};
 }
 
 #endif

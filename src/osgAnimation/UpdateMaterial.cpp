@@ -17,39 +17,43 @@
 
 using namespace osgAnimation;
 
-UpdateMaterial::UpdateMaterial(const UpdateMaterial& apc,const osg::CopyOp& copyop)
+UpdateMaterial::UpdateMaterial(const UpdateMaterial&apc, const osg::CopyOp&copyop)
     : osg::Object(apc, copyop),
-      AnimationUpdateCallback<osg::StateAttributeCallback>(apc, copyop)
+    AnimationUpdateCallback<osg::StateAttributeCallback>(apc, copyop)
 {
     _diffuse = new osgAnimation::Vec4Target(apc._diffuse->getValue());
 }
 
-UpdateMaterial::UpdateMaterial(const std::string& name):
+UpdateMaterial::UpdateMaterial(const std::string&name) :
     AnimationUpdateCallback<osg::StateAttributeCallback>(name)
 {
-    _diffuse = new osgAnimation::Vec4Target(osg::Vec4(1,0,1,1));
+    _diffuse = new osgAnimation::Vec4Target(osg::Vec4(1, 0, 1, 1));
 }
 
 /** Callback method called by the NodeVisitor when visiting a node.*/
-void UpdateMaterial::operator()(osg::StateAttribute* sa, osg::NodeVisitor* nv)
+void UpdateMaterial::operator()(osg::StateAttribute *sa, osg::NodeVisitor *nv)
 {
     if (nv && nv->getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
-        osg::Material* material = dynamic_cast<osg::Material*>(sa);
+        osg::Material *material = dynamic_cast<osg::Material*>(sa);
         if (material)
             update(*material);
     }
 }
 
 
-osgAnimation::Vec4Target* UpdateMaterial::getDiffuse() { return _diffuse.get(); }
-void UpdateMaterial::update(osg::Material& material)
+osgAnimation::Vec4Target* UpdateMaterial::getDiffuse()
+{
+    return _diffuse.get();
+}
+void UpdateMaterial::update(osg::Material&material)
 {
     osg::Vec4 diffuse = _diffuse->getValue();
+
     material.setDiffuse(osg::Material::FRONT_AND_BACK, diffuse);
 }
 
-bool UpdateMaterial::link(osgAnimation::Channel* channel)
+bool UpdateMaterial::link(osgAnimation::Channel *channel)
 {
     if (channel->getName().find("diffuse") != std::string::npos)
     {
@@ -59,5 +63,6 @@ bool UpdateMaterial::link(osgAnimation::Channel* channel)
     {
         OSG_WARN << "Channel " << channel->getName() << " does not contain a valid symbolic name for this class " << className() << std::endl;
     }
+
     return false;
 }

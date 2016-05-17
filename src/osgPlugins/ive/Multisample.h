@@ -4,11 +4,13 @@
 #include <osg/Multisample>
 #include "ReadWrite.h"
 
-namespace ive{
-class Multisample : public osg::Multisample, public ReadWrite {
+namespace ive
+{
+class Multisample : public osg::Multisample, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GLExtensions>
 #include <osg/TexEnv>
 #include <osg/State>
@@ -20,34 +20,34 @@ using namespace osg;
 TexEnv::TexEnv(Mode mode)
 {
     _mode = mode;
-    _color.set(0.0f,0.0f,0.0f,0.0f);
+    _color.set(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 
 TexEnv::~TexEnv()
-{
-}
+{}
 
-void TexEnv::apply(State& state) const
+void TexEnv::apply(State&state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
-    if (_mode==ADD)
+    if (_mode == ADD)
     {
-        static bool isTexEnvAddSupported = isGLExtensionSupported(state.getContextID(),"GL_ARB_texture_env_add");
+        static bool isTexEnvAddSupported = isGLExtensionSupported(state.getContextID(), "GL_ARB_texture_env_add");
         if (isTexEnvAddSupported)
-            glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, ADD);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, ADD);
         else // fallback on OpenGL default.
-            glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MODULATE);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, MODULATE);
     }
     else
     {
-        glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, _mode);
-        if (_mode==TexEnv::BLEND)
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, _mode);
+        if (_mode == TexEnv::BLEND)
         {
-            glTexEnvfv( GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, _color.ptr());
+            glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, _color.ptr());
         }
     }
+
 #else
-    OSG_NOTICE<<"Warning: TexEnv::apply(State&) - not supported."<<std::endl;
+    OSG_NOTICE << "Warning: TexEnv::apply(State&) - not supported." << std::endl;
 #endif
 }

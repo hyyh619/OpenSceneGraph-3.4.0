@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GL>
 #include <osg/PolygonStipple>
 #include <osg/Notify>
@@ -43,40 +43,41 @@ PolygonStipple::PolygonStipple()
     setMask(defaultPolygonStippleMask);
 }
 
-PolygonStipple::PolygonStipple(const GLubyte* mask)
+PolygonStipple::PolygonStipple(const GLubyte *mask)
 {
     setMask(mask);
 }
 
-PolygonStipple::PolygonStipple(const PolygonStipple& ps,const CopyOp& copyop):
-    StateAttribute(ps,copyop)
+PolygonStipple::PolygonStipple(const PolygonStipple&ps, const CopyOp&copyop) :
+    StateAttribute(ps, copyop)
 {
     setMask(ps.getMask());
 }
 
 PolygonStipple::~PolygonStipple()
-{
-}
+{}
 
-int PolygonStipple::compare(const StateAttribute& sa) const
+int PolygonStipple::compare(const StateAttribute&sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
-    COMPARE_StateAttribute_Types(PolygonStipple,sa)
+    COMPARE_StateAttribute_Types(PolygonStipple, sa)
 
     // compare each parameter in turn against the rhs.
-    for(unsigned int i=0;i<128;++i)
+    for (unsigned int i = 0; i < 128; ++i)
     {
-        if (_mask[i]<rhs._mask[i]) return -1;
-        else if (_mask[i]>rhs._mask[i]) return 1;
+        if (_mask[i] < rhs._mask[i])
+            return -1;
+        else if (_mask[i] > rhs._mask[i])
+            return 1;
     }
 
     return 0; // passed all the above comparison macros, must be equal.
 }
 
-void PolygonStipple::setMask(const GLubyte* givenMask)
+void PolygonStipple::setMask(const GLubyte *givenMask)
 {
-    std::copy(givenMask,givenMask+128,_mask);
+    std::copy(givenMask, givenMask + 128, _mask);
 }
 
 void PolygonStipple::apply(State&) const
@@ -84,7 +85,6 @@ void PolygonStipple::apply(State&) const
 #ifdef OSG_GL1_AVAILABLE
     glPolygonStipple(_mask);
 #else
-    OSG_NOTICE<<"Warning: PolygonStipple::apply(State&) - not supported."<<std::endl;
+    OSG_NOTICE << "Warning: PolygonStipple::apply(State&) - not supported." << std::endl;
 #endif
 }
-

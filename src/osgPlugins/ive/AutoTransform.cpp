@@ -1,15 +1,15 @@
 /**********************************************************************
- *
- *    FILE:           AutoTransform.cpp
- *
- *    DESCRIPTION:    Read/Write osg::AutoTransform in binary format to disk.
- *
- *    CREATED BY:     Nathan Monteleone, based on PositionAttitudeTransform.cpp
- *
- *    HISTORY:        Created 02.3.2006
- *
- *    Copyright 2003 VR-C
- **********************************************************************/
+*
+*    FILE:           AutoTransform.cpp
+*
+*    DESCRIPTION:    Read/Write osg::AutoTransform in binary format to disk.
+*
+*    CREATED BY:     Nathan Monteleone, based on PositionAttitudeTransform.cpp
+*
+*    HISTORY:        Created 02.3.2006
+*
+*    Copyright 2003 VR-C
+**********************************************************************/
 
 #include "Exception.h"
 #include "AutoTransform.h"
@@ -17,16 +17,19 @@
 
 using namespace ive;
 
-void AutoTransform::write(DataOutputStream* out){
+void AutoTransform::write(DataOutputStream *out)
+{
     // Write AutoTransform's identification.
     out->writeInt(IVEAUTOTRANSFORM);
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Transform*  trans = dynamic_cast<osg::Transform*>(this);
-    if(trans){
+    osg::Transform *trans = dynamic_cast<osg::Transform*>(this);
+    if (trans)
+    {
         ((ive::Transform*)(trans))->write(out);
     }
     else
         out_THROW_EXCEPTION("AutoTransform::write(): Could not cast this osg::AutoTransform to an osg::Transform.");
+
     // Write AutoTransform's properties.
 
     out->writeVec3(getPosition());
@@ -37,7 +40,7 @@ void AutoTransform::write(DataOutputStream* out){
 
     out->writeBool(getAutoScaleToScreen());
 
-    if ( out->getVersion() >= VERSION_0025 )
+    if (out->getVersion() >= VERSION_0025)
     {
         out->writeFloat(getMinimumScale());
         out->writeFloat(getMaximumScale());
@@ -46,22 +49,26 @@ void AutoTransform::write(DataOutputStream* out){
 
     out->writeQuat(getRotation());
     out->writeVec3(getScale());
-
 }
 
-void AutoTransform::read(DataInputStream* in){
+void AutoTransform::read(DataInputStream *in)
+{
     // Peek on AutoTransform's identification.
     int id = in->peekInt();
-    if(id == IVEAUTOTRANSFORM){
+
+    if (id == IVEAUTOTRANSFORM)
+    {
         // Read AutoTransform's identification.
         id = in->readInt();
         // If the osg class is inherited by any other class we should also read this from file.
-        osg::Transform*  trans = dynamic_cast<osg::Transform*>(this);
-        if(trans){
+        osg::Transform *trans = dynamic_cast<osg::Transform*>(this);
+        if (trans)
+        {
             ((ive::Transform*)(trans))->read(in);
         }
         else
             in_THROW_EXCEPTION("AutoTransform::read(): Could not cast this osg::AutoTransform to an osg::Transform.");
+
         // Read AutoTransform's properties
 
         setPosition(in->readVec3());
@@ -72,7 +79,7 @@ void AutoTransform::read(DataInputStream* in){
 
         setAutoScaleToScreen(in->readBool());
 
-        if ( in->getVersion() >= VERSION_0025 )
+        if (in->getVersion() >= VERSION_0025)
         {
             setMinimumScale(in->readFloat());
             setMaximumScale(in->readFloat());
@@ -81,10 +88,9 @@ void AutoTransform::read(DataInputStream* in){
 
         setRotation(in->readQuat());
         setScale(in->readVec3());
-
-
     }
-    else{
+    else
+    {
         in_THROW_EXCEPTION("AutoTransform::read(): Expected AutoTransform identification.");
     }
 }

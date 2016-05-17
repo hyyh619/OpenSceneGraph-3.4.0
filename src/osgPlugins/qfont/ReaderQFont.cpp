@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgDB/FileNameUtils>
 #include <osgDB/Registry>
 #include <osgText/Font>
@@ -21,46 +21,48 @@
 
 #include <osgQt/QFontImplementation>
 
-namespace osgQFont {
-
+namespace osgQFont
+{
 class ReaderQFont : public osgDB::ReaderWriter
 {
-    public:
-        ReaderQFont()
-        {
-            supportsExtension("qfont", "Qt font meta loader");
-        }
+public:
+ReaderQFont()
+{
+    supportsExtension("qfont", "Qt font meta loader");
+}
 
-        virtual const char* className() const { return "QFont Font Reader"; }
+virtual const char* className() const
+{
+    return "QFont Font Reader";
+}
 
-        virtual ReadResult readObject(const std::string& file, const osgDB::ReaderWriter::Options* options) const
-        {
-            if (!acceptsExtension(osgDB::getLowerCaseFileExtension(file)))
-                return ReadResult::FILE_NOT_HANDLED;
+virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    if (!acceptsExtension(osgDB::getLowerCaseFileExtension(file)))
+        return ReadResult::FILE_NOT_HANDLED;
 
-            if (!QApplication::instance())
-            {
-                OSG_WARN << "Trying to load qfont \"" << file << "\" from within a non qt application!" << std::endl;
-                return ReadResult::FILE_NOT_FOUND;
-            }
+    if (!QApplication::instance())
+    {
+        OSG_WARN << "Trying to load qfont \"" << file << "\" from within a non qt application!" << std::endl;
+        return ReadResult::FILE_NOT_FOUND;
+    }
 
-            if (!QFontDatabase::supportsThreadedFontRendering() && QApplication::instance()->thread() != QThread::currentThread())
-            {
-                OSG_WARN << "Trying to load qfont \"" << file << "\" from a non gui thread "
-                    "within qt application without threaded font rendering!" << std::endl;
-                return ReadResult::FILE_NOT_FOUND;
-            }
+    if (!QFontDatabase::supportsThreadedFontRendering() && QApplication::instance()->thread() != QThread::currentThread())
+    {
+        OSG_WARN << "Trying to load qfont \"" << file << "\" from a non gui thread "
+            "within qt application without threaded font rendering!" << std::endl;
+        return ReadResult::FILE_NOT_FOUND;
+    }
 
-            QFont font;
-            if (!font.fromString(QString::fromStdString(osgDB::getNameLessExtension(file))))
-                return ReadResult::FILE_NOT_FOUND;
+    QFont font;
+    if (!font.fromString(QString::fromStdString(osgDB::getNameLessExtension(file))))
+        return ReadResult::FILE_NOT_FOUND;
 
-            return new osgText::Font(new osgQt::QFontImplementation(font));
-        }
+    return new osgText::Font(new osgQt::QFontImplementation(font));
+}
 };
 
 // now register with Registry to instantiate the above
 // reader/writer.
 REGISTER_OSGPLUGIN(qfont, ReaderQFont)
-
 }

@@ -4,11 +4,13 @@
 #include <osg/AnimationPath>
 #include "ReadWrite.h"
 
-namespace ive{
-class AnimationPathCallback : public osg::AnimationPathCallback, public ReadWrite {
+namespace ive
+{
+class AnimationPathCallback : public osg::AnimationPathCallback, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

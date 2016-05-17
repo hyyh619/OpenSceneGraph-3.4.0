@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef FREETYPE_LIBRARY
 #define FREETYPE_LIBRARY
@@ -28,39 +28,44 @@ class FreeTypeLibrary : public osg::Referenced
 {
 public:
 
-    /** protected destrcutor to prevent inappropriate deletion.*/
-    virtual ~FreeTypeLibrary();
+/** protected destrcutor to prevent inappropriate deletion.*/
+virtual ~FreeTypeLibrary();
 
-    /** get the singleton instance.*/
-    static FreeTypeLibrary* instance();
+/** get the singleton instance.*/
+static FreeTypeLibrary* instance();
 
-    OpenThreads::Mutex& getMutex() { return _mutex; }
+OpenThreads::Mutex&getMutex()
+{
+    return _mutex;
+}
 
-    osgText::Font* getFont(const std::string& fontfile,unsigned int index=0, unsigned int flags=0);
-    osgText::Font* getFont(std::istream& fontstream, unsigned int index=0, unsigned int flags=0);
+osgText::Font* getFont(const std::string&fontfile, unsigned int index = 0, unsigned int flags = 0);
+osgText::Font* getFont(std::istream&fontstream, unsigned int index = 0, unsigned int flags = 0);
 
-    void removeFontImplmentation(FreeTypeFont* fontImpl) { _fontImplementationSet.erase(fontImpl); }
+void removeFontImplmentation(FreeTypeFont *fontImpl)
+{
+    _fontImplementationSet.erase(fontImpl);
+}
 
 protected:
 
-    /** common method to load a FT_Face from a file*/
-    bool getFace(const std::string& fontfile,unsigned int index, FT_Face & face);
-    /** common method to load a FT_Face from a stream */
-    FT_Byte* getFace(std::istream& fontstream, unsigned int index, FT_Face & face);
+/** common method to load a FT_Face from a file*/
+bool getFace(const std::string&fontfile, unsigned int index, FT_Face&face);
+/** common method to load a FT_Face from a stream */
+FT_Byte* getFace(std::istream&fontstream, unsigned int index, FT_Face&face);
 
-    /** Verify the correct character mapping for MS windows */
-    void  verifyCharacterMap(FT_Face face);
+/** Verify the correct character mapping for MS windows */
+void  verifyCharacterMap(FT_Face face);
 
-    /** protected constructor to ensure the only way to create the
-      * library is via the singleton instance method.*/
-    FreeTypeLibrary();
+/** protected constructor to ensure the only way to create the
+ * library is via the singleton instance method.*/
+FreeTypeLibrary();
 
-    typedef std::set< FreeTypeFont* > FontImplementationSet;
+typedef std::set<FreeTypeFont*> FontImplementationSet;
 
-    mutable OpenThreads::Mutex  _mutex;
-    FT_Library                  _ftlibrary;
-    FontImplementationSet       _fontImplementationSet;
-
+mutable OpenThreads::Mutex _mutex;
+FT_Library                 _ftlibrary;
+FontImplementationSet      _fontImplementationSet;
 };
 
 

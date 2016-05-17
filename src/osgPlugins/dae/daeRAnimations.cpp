@@ -20,12 +20,12 @@ using namespace osgDAE;
 // domSampler   ->  osgAnimation::Channel
 // domSource    ->  osgAnimation::Channel.Sampler
 // domChannel   ->  osgAnimation::Channel.TargetName
-osgAnimation::BasicAnimationManager* daeReader::processAnimationLibraries(domCOLLADA* document)
+osgAnimation::BasicAnimationManager* daeReader::processAnimationLibraries(domCOLLADA *document)
 {
     domLibrary_animation_clips_Array domAnimationClipsLibraries = document->getLibrary_animation_clips_array();
 
-    domLibrary_animations_Array domAnimationsLibraries = document->getLibrary_animations_array();
-    osgAnimation::BasicAnimationManager* pOsgAnimationManager = NULL;
+    domLibrary_animations_Array         domAnimationsLibraries = document->getLibrary_animations_array();
+    osgAnimation::BasicAnimationManager *pOsgAnimationManager  = NULL;
 
     // Only create an animationmanager if we have  animation clip libraries or animation libraries
     if ((domAnimationClipsLibraries.getCount() > 0) || (domAnimationsLibraries.getCount() > 0))
@@ -33,11 +33,12 @@ osgAnimation::BasicAnimationManager* daeReader::processAnimationLibraries(domCOL
         pOsgAnimationManager = new osgAnimation::BasicAnimationManager();
 
         // Process all animation clip libraries
-        for (size_t i=0; i < domAnimationClipsLibraries.getCount(); i++)
+        for (size_t i = 0; i < domAnimationClipsLibraries.getCount(); i++)
         {
             domAnimation_clip_Array domAnimationClips = domAnimationClipsLibraries[i]->getAnimation_clip_array();
+
             // Process all animation clips in this library
-            for (size_t j=0; j < domAnimationClips.getCount(); j++)
+            for (size_t j = 0; j < domAnimationClips.getCount(); j++)
             {
                 processAnimationClip(pOsgAnimationManager, domAnimationClips[j]);
             }
@@ -46,19 +47,19 @@ osgAnimation::BasicAnimationManager* daeReader::processAnimationLibraries(domCOL
         // If there are no clips then all animations are part of the same clip
         if (domAnimationClipsLibraries.getCount() == 0 && domAnimationsLibraries.getCount())
         {
-            osgAnimation::Animation* pOsgAnimation = new osgAnimation::Animation;
+            osgAnimation::Animation *pOsgAnimation = new osgAnimation::Animation;
             pOsgAnimation->setName("Default");
             pOsgAnimationManager->registerAnimation(pOsgAnimation);
 
             // Process all animation libraries
-            for (size_t i=0; i < domAnimationsLibraries.getCount(); i++)
+            for (size_t i = 0; i < domAnimationsLibraries.getCount(); i++)
             {
                 domAnimation_Array domAnimations = domAnimationsLibraries[i]->getAnimation_array();
 
                 TargetChannelPartMap tcm;
 
                 // Process all animations in this library
-                for (size_t j=0; j < domAnimations.getCount(); j++)
+                for (size_t j = 0; j < domAnimations.getCount(); j++)
                 {
                     processAnimationChannels(domAnimations[j], tcm);
                 }
@@ -67,6 +68,7 @@ osgAnimation::BasicAnimationManager* daeReader::processAnimationLibraries(domCOL
             }
         }
     }
+
     return pOsgAnimationManager;
 }
 
@@ -74,18 +76,19 @@ osgAnimation::BasicAnimationManager* daeReader::processAnimationLibraries(domCOL
 // 0..1 <asset>
 // 1..* <instance_animation>
 // 0..* <extra>
-void daeReader::processAnimationClip(osgAnimation::BasicAnimationManager* pOsgAnimationManager, domAnimation_clip* pDomAnimationClip)
+void daeReader::processAnimationClip(osgAnimation::BasicAnimationManager *pOsgAnimationManager, domAnimation_clip *pDomAnimationClip)
 {
     // an <animation_clip> groups animations
-    osgAnimation::Animation* pOsgAnimation = new osgAnimation::Animation;
-    std::string name = pDomAnimationClip->getId() ? pDomAnimationClip->getId() : "AnimationClip";
+    osgAnimation::Animation *pOsgAnimation = new osgAnimation::Animation;
+    std::string             name           = pDomAnimationClip->getId() ? pDomAnimationClip->getId() : "AnimationClip";
+
     pOsgAnimation->setName(name);
 
     // We register the animation inside the scheduler
     pOsgAnimationManager->registerAnimation(pOsgAnimation);
 
     double start = pDomAnimationClip->getStart();
-    double end = pDomAnimationClip->getEnd();
+    double end   = pDomAnimationClip->getEnd();
 
     pOsgAnimation->setStartTime(start);
     double duration = end - start;
@@ -98,7 +101,8 @@ void daeReader::processAnimationClip(osgAnimation::BasicAnimationManager* pOsgAn
 
     // 1..* <instance_animation>
     domInstanceWithExtra_Array domInstanceArray = pDomAnimationClip->getInstance_animation_array();
-    for (size_t i=0; i < domInstanceArray.getCount(); i++)
+
+    for (size_t i = 0; i < domInstanceArray.getCount(); i++)
     {
         domAnimation *pDomAnimation = daeSafeCast<domAnimation>(getElementFromURI(domInstanceArray[i]->getUrl()));
         if (pDomAnimation)
@@ -116,22 +120,22 @@ void daeReader::processAnimationClip(osgAnimation::BasicAnimationManager* pOsgAn
 
 struct KeyFrameComparator
 {
-    bool operator () (const osgAnimation::Keyframe& a, const osgAnimation::Keyframe& b) const
+    bool operator ()(const osgAnimation::Keyframe&a, const osgAnimation::Keyframe&b) const
     {
         return a.getTime() < b.getTime();
     }
-    bool operator () (const osgAnimation::Keyframe& a, float t) const
+    bool operator ()(const osgAnimation::Keyframe&a, float t) const
     {
         return a.getTime() < t;
     }
-    bool operator () (float t, const osgAnimation::Keyframe& b) const
+    bool operator ()(float t, const osgAnimation::Keyframe&b) const
     {
         return t < b.getTime();
     }
 };
 
-template <typename T>
-void deCasteljau(osgAnimation::TemplateCubicBezier<T>& l, osgAnimation::TemplateCubicBezier<T>& n, osgAnimation::TemplateCubicBezier<T>& r, float t)
+template<typename T>
+void deCasteljau(osgAnimation::TemplateCubicBezier<T>&l, osgAnimation::TemplateCubicBezier<T>&n, osgAnimation::TemplateCubicBezier<T>&r, float t)
 {
     T q1 = l.getPosition() + t * (l.getControlPointOut() - l.getPosition());
     T q2 = l.getControlPointOut() + t * (r.getControlPointIn() - l.getControlPointOut());
@@ -153,10 +157,10 @@ void deCasteljau(osgAnimation::TemplateCubicBezier<T>& l, osgAnimation::Template
     r.setControlPointIn(q3);
 }
 
-void mergeKeyframeContainers(osgAnimation::Vec3CubicBezierKeyframeContainer* to,
-                    osgAnimation::FloatCubicBezierKeyframeContainer** from,
-                    daeReader::InterpolationType interpolationType,
-                    const osg::Vec3& defaultValue)
+void mergeKeyframeContainers(osgAnimation::Vec3CubicBezierKeyframeContainer *to,
+                             osgAnimation::FloatCubicBezierKeyframeContainer **from,
+                             daeReader::InterpolationType interpolationType,
+                             const osg::Vec3&defaultValue)
 {
     assert(to->empty());
 
@@ -171,7 +175,7 @@ void mergeKeyframeContainers(osgAnimation::Vec3CubicBezierKeyframeContainer* to,
         }
 
         for (osgAnimation::FloatCubicBezierKeyframeContainer::const_iterator
-            it = from[i]->begin(), end = from[i]->end(); it != end; ++it)
+             it = from[i]->begin(), end = from[i]->end(); it != end; ++it)
         {
             times.insert(it->getTime());
         }
@@ -195,14 +199,14 @@ void mergeKeyframeContainers(osgAnimation::Vec3CubicBezierKeyframeContainer* to,
             if (next == from[i]->end())
             {
                 --next;
-                value.getPosition().ptr()[i] = next->getValue().getPosition();
-                value.getControlPointIn().ptr()[i] = next->getValue().getControlPointIn();
+                value.getPosition().ptr()[i]        = next->getValue().getPosition();
+                value.getControlPointIn().ptr()[i]  = next->getValue().getControlPointIn();
                 value.getControlPointOut().ptr()[i] = next->getValue().getControlPointOut();
             }
             else if (next == from[i]->begin() || next->getTime() == time)
             {
-                value.getPosition().ptr()[i] = next->getValue().getPosition();
-                value.getControlPointIn().ptr()[i] = next->getValue().getControlPointIn();
+                value.getPosition().ptr()[i]        = next->getValue().getPosition();
+                value.getControlPointIn().ptr()[i]  = next->getValue().getControlPointIn();
                 value.getControlPointOut().ptr()[i] = next->getValue().getControlPointOut();
             }
             else
@@ -215,39 +219,42 @@ void mergeKeyframeContainers(osgAnimation::Vec3CubicBezierKeyframeContainer* to,
                 case daeReader::INTERPOLATION_STEP:
                     value.getPosition().ptr()[i] = prev->getValue().getPosition();
                     break;
+
                 case daeReader::INTERPOLATION_LINEAR:
-                    {
-                        float xp = prev->getTime(), xn = next->getTime();
-                        float yp = prev->getValue().getPosition(), yn = next->getValue().getPosition();
-                        value.getPosition().ptr()[i] = yp + (yn - yp) * (time - xp) / (xn - xp);
-                    }
-                    break;
+                {
+                    float xp = prev->getTime(), xn = next->getTime();
+                    float yp = prev->getValue().getPosition(), yn = next->getValue().getPosition();
+                    value.getPosition().ptr()[i] = yp + (yn - yp) * (time - xp) / (xn - xp);
+                }
+                break;
+
                 case daeReader::INTERPOLATION_BEZIER:
-                    {
-                        float xp = prev->getTime(), xn = next->getTime();
+                {
+                    float xp = prev->getTime(), xn = next->getTime();
 
-                        osgAnimation::FloatCubicBezier l(prev->getValue()), n, r(next->getValue());
-                        deCasteljau(l, n, r, (time - xp) / (xn - xp));
+                    osgAnimation::FloatCubicBezier l(prev->getValue()), n, r(next->getValue());
+                    deCasteljau(l, n, r, (time - xp) / (xn - xp));
 
-                        value.getPosition().ptr()[i] = n.getPosition();
-                        value.getControlPointIn().ptr()[i] = n.getControlPointIn();
-                        value.getControlPointOut().ptr()[i] = n.getControlPointOut();
+                    value.getPosition().ptr()[i]        = n.getPosition();
+                    value.getControlPointIn().ptr()[i]  = n.getControlPointIn();
+                    value.getControlPointOut().ptr()[i] = n.getControlPointOut();
 
-                        osgAnimation::Vec3CubicBezier prevValue = to->back().getValue();
-                        prevValue.getControlPointOut().ptr()[i] = l.getControlPointOut();
-                        to->back().setValue(prevValue);
+                    osgAnimation::Vec3CubicBezier prevValue = to->back().getValue();
+                    prevValue.getControlPointOut().ptr()[i] = l.getControlPointOut();
+                    to->back().setValue(prevValue);
 
-                        prev->setValue(l);
-                        next->setValue(r);
-                        from[i]->insert(next, osgAnimation::FloatCubicBezierKeyframe(time, n));
-                    }
-                    break;
+                    prev->setValue(l);
+                    next->setValue(r);
+                    from[i]->insert(next, osgAnimation::FloatCubicBezierKeyframe(time, n));
+                }
+                break;
+
                 default:
                     OSG_WARN << "Unsupported interpolation type." << std::endl;
                     break;
                 }
 
-                //todo - different types of interpolation
+                // todo - different types of interpolation
             }
         }
 
@@ -256,43 +263,48 @@ void mergeKeyframeContainers(osgAnimation::Vec3CubicBezierKeyframeContainer* to,
 }
 
 void daeReader::processAnimationChannels(
-    domAnimation* pDomAnimation, TargetChannelPartMap& tcm)
+    domAnimation *pDomAnimation, TargetChannelPartMap&tcm)
 {
     // 1..* <source>
-    SourceMap sources;
+    SourceMap       sources;
     domSource_Array domSources = pDomAnimation->getSource_array();
-    for (size_t i=0; i < domSources.getCount(); i++)
+
+    for (size_t i = 0; i < domSources.getCount(); i++)
     {
         sources.insert(std::make_pair((daeElement*)domSources[i], domSourceReader(domSources[i])));
     }
 
     domChannel_Array domChannels = pDomAnimation->getChannel_array();
-    for (size_t i=0; i < domChannels.getCount(); i++)
+
+    for (size_t i = 0; i < domChannels.getCount(); i++)
     {
         processChannel(domChannels[i], sources, tcm);
     }
 
     domAnimation_Array domAnimations = pDomAnimation->getAnimation_array();
-    for (size_t i=0; i < domAnimations.getCount(); i++)
+
+    for (size_t i = 0; i < domAnimations.getCount(); i++)
     {
         // recursively call
         processAnimationChannels(domAnimations[i], tcm);
     }
 }
 
-osgAnimation::Vec3KeyframeContainer* convertKeyframeContainerToLinear(osgAnimation::Vec3CubicBezierKeyframeContainer& from)
+osgAnimation::Vec3KeyframeContainer* convertKeyframeContainerToLinear(osgAnimation::Vec3CubicBezierKeyframeContainer&from)
 {
-    osgAnimation::Vec3KeyframeContainer* linearKeyframes = new osgAnimation::Vec3KeyframeContainer;
+    osgAnimation::Vec3KeyframeContainer *linearKeyframes = new osgAnimation::Vec3KeyframeContainer;
+
     for (size_t i = 0; i < from.size(); ++i)
     {
         linearKeyframes->push_back(osgAnimation::Vec3Keyframe(
-            from[i].getTime(), from[i].getValue().getPosition()));
+                                       from[i].getTime(), from[i].getValue().getPosition()));
     }
+
     return linearKeyframes;
 }
 
-template <typename T>
-void convertHermiteToBezier(osgAnimation::TemplateKeyframeContainer<T>& keyframes)
+template<typename T>
+void convertHermiteToBezier(osgAnimation::TemplateKeyframeContainer<T>&keyframes)
 {
     for (size_t i = 0; i < keyframes.size(); ++i)
     {
@@ -305,19 +317,20 @@ void convertHermiteToBezier(osgAnimation::TemplateKeyframeContainer<T>& keyframe
 
 // osgAnimation requires control points to be in a weird order. This function
 // reorders them from the conventional order to osgAnimation order.
-template <typename T>
-void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> >& vkfCont)
+template<typename T>
+void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> >&vkfCont)
 {
     if (vkfCont.size() <= 1)
     {
         if (vkfCont.size() == 1)
         {
-            osgAnimation::TemplateCubicBezier<T> tcb = vkfCont.front().getValue();
-            T inCP = tcb.getControlPointIn();
+            osgAnimation::TemplateCubicBezier<T> tcb  = vkfCont.front().getValue();
+            T                                    inCP = tcb.getControlPointIn();
             tcb.setControlPointIn(tcb.getControlPointOut());
             tcb.setControlPointOut(inCP);
             vkfCont.front().setValue(tcb);
         }
+
         return;
     }
 
@@ -349,33 +362,33 @@ void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::
 // option 3
 //        1..* <animation>
 // 0..* <extra>
-void daeReader::processAnimationMap(const TargetChannelPartMap& tcm, osgAnimation::Animation* pOsgAnimation)
+void daeReader::processAnimationMap(const TargetChannelPartMap&tcm, osgAnimation::Animation *pOsgAnimation)
 {
     for (TargetChannelPartMap::const_iterator lb = tcm.begin(), end = tcm.end(); lb != end;)
     {
         TargetChannelPartMap::const_iterator ub = tcm.upper_bound(lb->first);
 
-        osgAnimation::Channel* pOsgAnimationChannel = NULL;
-        std::string channelName, targetName, componentName;
+        osgAnimation::Channel *pOsgAnimationChannel = NULL;
+        std::string           channelName, targetName, componentName;
 
-        if (osgAnimation::Vec3Target* pTarget = dynamic_cast<osgAnimation::Vec3Target*>(lb->first))
+        if (osgAnimation::Vec3Target *pTarget = dynamic_cast<osgAnimation::Vec3Target*>(lb->first))
         {
-            osgAnimation::FloatCubicBezierKeyframeContainer* fkfConts[3] = {NULL, NULL, NULL};
-            osgAnimation::Vec3CubicBezierKeyframeContainer* vkfCont = NULL;
-            InterpolationType interpolationType = INTERPOLATION_DEFAULT;
+            osgAnimation::FloatCubicBezierKeyframeContainer *fkfConts[3]      = {NULL, NULL, NULL};
+            osgAnimation::Vec3CubicBezierKeyframeContainer  *vkfCont          = NULL;
+            InterpolationType                               interpolationType = INTERPOLATION_DEFAULT;
 
             for (TargetChannelPartMap::const_iterator it = lb; it != ub; ++it)
             {
-                ChannelPart* channelPart = it->second.get();
+                ChannelPart *channelPart = it->second.get();
                 extractTargetName(channelPart->name, channelName, targetName, componentName);
                 interpolationType = channelPart->interpolation;
 
-                if (osgAnimation::Vec3CubicBezierKeyframeContainer* v3cnt = dynamic_cast<osgAnimation::Vec3CubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
+                if (osgAnimation::Vec3CubicBezierKeyframeContainer *v3cnt = dynamic_cast<osgAnimation::Vec3CubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
                 {
                     vkfCont = v3cnt;
                     break;
                 }
-                else if (osgAnimation::FloatCubicBezierKeyframeContainer* fcnt = dynamic_cast<osgAnimation::FloatCubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
+                else if (osgAnimation::FloatCubicBezierKeyframeContainer *fcnt = dynamic_cast<osgAnimation::FloatCubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
                 {
                     if (strchr("xusr0", tolower(componentName[0])))
                     {
@@ -410,26 +423,26 @@ void daeReader::processAnimationMap(const TargetChannelPartMap& tcm, osgAnimatio
             {
                 if (interpolationType == INTERPOLATION_STEP)
                 {
-                    osgAnimation::Vec3StepChannel* channel = new osgAnimation::Vec3StepChannel;
+                    osgAnimation::Vec3StepChannel *channel = new osgAnimation::Vec3StepChannel;
                     pOsgAnimationChannel = channel;
                     channel->getOrCreateSampler()->setKeyframeContainer(convertKeyframeContainerToLinear(*vkfCont));
                 }
                 else if (interpolationType == INTERPOLATION_LINEAR)
                 {
-                    osgAnimation::Vec3LinearChannel* channel = new osgAnimation::Vec3LinearChannel;
+                    osgAnimation::Vec3LinearChannel *channel = new osgAnimation::Vec3LinearChannel;
                     pOsgAnimationChannel = channel;
                     channel->getOrCreateSampler()->setKeyframeContainer(convertKeyframeContainerToLinear(*vkfCont));
                 }
                 else if (interpolationType == INTERPOLATION_BEZIER)
                 {
-                    osgAnimation::Vec3CubicBezierChannel* channel = new osgAnimation::Vec3CubicBezierChannel;
+                    osgAnimation::Vec3CubicBezierChannel *channel = new osgAnimation::Vec3CubicBezierChannel;
                     pOsgAnimationChannel = channel;
                     reorderControlPoints(*vkfCont);
                     channel->getOrCreateSampler()->setKeyframeContainer(vkfCont);
                 }
                 else if (interpolationType == INTERPOLATION_HERMITE)
                 {
-                    osgAnimation::Vec3CubicBezierChannel* channel = new osgAnimation::Vec3CubicBezierChannel;
+                    osgAnimation::Vec3CubicBezierChannel *channel = new osgAnimation::Vec3CubicBezierChannel;
                     pOsgAnimationChannel = channel;
                     convertHermiteToBezier(*vkfCont);
                     reorderControlPoints(*vkfCont);
@@ -443,14 +456,14 @@ void daeReader::processAnimationMap(const TargetChannelPartMap& tcm, osgAnimatio
         }
         else
         {
-            ChannelPart* channelPart = lb->second.get();
+            ChannelPart *channelPart = lb->second.get();
             extractTargetName(channelPart->name, channelName, targetName, componentName);
 
             typedef osgAnimation::TemplateKeyframe<osgAnimation::TemplateCubicBezier<osg::Matrixf> > MatrixCubicBezierKeyframe;
             typedef osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<osg::Matrixf> > MatrixCubicBezierKeyframeContainer;
 
-            if (osgAnimation::FloatCubicBezierKeyframeContainer* kfCntr =
-                dynamic_cast<osgAnimation::FloatCubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
+            if (osgAnimation::FloatCubicBezierKeyframeContainer *kfCntr =
+                    dynamic_cast<osgAnimation::FloatCubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
             {
                 if (dynamic_cast<osgAnimation::MatrixTarget*>(lb->first))
                 {
@@ -458,22 +471,24 @@ void daeReader::processAnimationMap(const TargetChannelPartMap& tcm, osgAnimatio
                 }
                 else
                 {
-                    osgAnimation::FloatCubicBezierChannel* channel = new osgAnimation::FloatCubicBezierChannel;
+                    osgAnimation::FloatCubicBezierChannel *channel = new osgAnimation::FloatCubicBezierChannel;
                     reorderControlPoints(*kfCntr);
                     channel->getOrCreateSampler()->setKeyframeContainer(kfCntr);
                     pOsgAnimationChannel = channel;
                 }
             }
-            else if (MatrixCubicBezierKeyframeContainer* cbkfCntr =
-                dynamic_cast<MatrixCubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
+            else if (MatrixCubicBezierKeyframeContainer *cbkfCntr =
+                         dynamic_cast<MatrixCubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
             {
-                osgAnimation::MatrixKeyframeContainer* kfCntr = new osgAnimation::MatrixKeyframeContainer;
+                osgAnimation::MatrixKeyframeContainer *kfCntr = new osgAnimation::MatrixKeyframeContainer;
+
                 for (size_t i = 0; i < cbkfCntr->size(); ++i)
                 {
-                    const MatrixCubicBezierKeyframe& cbkf = cbkfCntr->at(i);
+                    const MatrixCubicBezierKeyframe&cbkf = cbkfCntr->at(i);
                     kfCntr->push_back(osgAnimation::MatrixKeyframe(cbkf.getTime(), cbkf.getValue().getPosition()));
                 }
-                osgAnimation::MatrixLinearChannel* channel = new osgAnimation::MatrixLinearChannel;
+
+                osgAnimation::MatrixLinearChannel *channel = new osgAnimation::MatrixLinearChannel;
                 channel->getOrCreateSampler()->setKeyframeContainer(kfCntr);
                 pOsgAnimationChannel = channel;
             }
@@ -485,39 +500,41 @@ void daeReader::processAnimationMap(const TargetChannelPartMap& tcm, osgAnimatio
             pOsgAnimationChannel->setName(channelName);
             pOsgAnimation->addChannel(pOsgAnimationChannel);
         }
+
         lb = ub;
     }
 
     pOsgAnimation->computeDuration();
 }
 
-template <typename T, typename TArray>
+template<typename T, typename TArray>
 osgAnimation::KeyframeContainer* makeKeyframes(
-    const osg::FloatArray* pOsgTimesArray,
-    TArray* pOsgPointArray,
-    TArray* pOsgInTanArray,
-    TArray* pOsgOutTanArray,
-    daeReader::InterpolationType& interpolationType)
+    const osg::FloatArray *pOsgTimesArray,
+    TArray *pOsgPointArray,
+    TArray *pOsgInTanArray,
+    TArray *pOsgOutTanArray,
+    daeReader::InterpolationType&interpolationType)
 {
-    osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> >* keyframes =
+    osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> > *keyframes =
         new osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> >;
 
     for (size_t i = 0; i < pOsgTimesArray->size(); i++)
     {
-        T pt = (*pOsgPointArray)[i];
+        T pt   = (*pOsgPointArray)[i];
         T cpIn = pt, cpOut = pt;
         if (pOsgInTanArray)
         {
             if (interpolationType == daeReader::INTERPOLATION_HERMITE)
-                //convert from hermite to bezier
+                // convert from hermite to bezier
                 cpIn += (*pOsgInTanArray)[i] / 3;
             else if (interpolationType == daeReader::INTERPOLATION_BEZIER)
                 cpIn = (*pOsgInTanArray)[i];
         }
+
         if (pOsgOutTanArray)
         {
             if (interpolationType == daeReader::INTERPOLATION_HERMITE)
-                //convert from hermite to bezier
+                // convert from hermite to bezier
                 cpOut += (*pOsgOutTanArray)[i] / 3;
             else if (interpolationType == daeReader::INTERPOLATION_BEZIER)
                 cpOut = (*pOsgOutTanArray)[i];
@@ -525,8 +542,8 @@ osgAnimation::KeyframeContainer* makeKeyframes(
 
         keyframes->push_back(
             osgAnimation::TemplateKeyframe<osgAnimation::TemplateCubicBezier<T> >(
-            (*pOsgTimesArray)[i],
-            osgAnimation::TemplateCubicBezier<T>(pt, cpIn, cpOut)));
+                (*pOsgTimesArray)[i],
+                osgAnimation::TemplateCubicBezier<T>(pt, cpIn, cpOut)));
     }
 
     if (interpolationType == daeReader::INTERPOLATION_HERMITE)
@@ -542,13 +559,14 @@ osgAnimation::KeyframeContainer* makeKeyframes(
 // 1..* <input>
 //        1    semantic
 //        1    source
-daeReader::ChannelPart* daeReader::processSampler(domChannel* pDomChannel, SourceMap &sources)
+daeReader::ChannelPart* daeReader::processSampler(domChannel *pDomChannel, SourceMap&sources)
 {
     // And we finally define our channel
     // Note osg can only create time based animations
 
-    //from the channel you know the target, from the target you know the type
+    // from the channel you know the target, from the target you know the type
     domSampler *pDomSampler = daeSafeCast<domSampler>(getElementFromURI(pDomChannel->getSource()));
+
     if (!pDomSampler)
     {
         return NULL;
@@ -556,23 +574,23 @@ daeReader::ChannelPart* daeReader::processSampler(domChannel* pDomChannel, Sourc
 
     domInputLocal_Array domInputArray = pDomSampler->getInput_array();
 
-    daeElement* input_source = NULL;
-    daeElement* output_source = NULL;
-    daeElement* output_intangent_source = NULL;
-    daeElement* output_outtangent_source = NULL;
+    daeElement    *input_source             = NULL;
+    daeElement    *output_source            = NULL;
+    daeElement    *output_intangent_source  = NULL;
+    daeElement    *output_outtangent_source = NULL;
     domInputLocal *tmp;
 
-    osg::FloatArray* pOsgTimesArray = NULL;
+    osg::FloatArray *pOsgTimesArray = NULL;
     if (findInputSourceBySemantic(domInputArray, COMMON_PROFILE_INPUT_INPUT, input_source, &tmp))
     {
-        domSource* pDomSource = daeSafeCast<domSource>(input_source);
+        domSource *pDomSource = daeSafeCast<domSource>(input_source);
         if (pDomSource)
         {
-            domSource::domTechnique_common* pDomTechnique = pDomSource->getTechnique_common();
+            domSource::domTechnique_common *pDomTechnique = pDomSource->getTechnique_common();
             if (pDomTechnique)
             {
-                domAccessor* pDomAccessor = pDomTechnique->getAccessor();
-                domParam_Array domParams = pDomAccessor->getParam_array();
+                domAccessor    *pDomAccessor = pDomTechnique->getAccessor();
+                domParam_Array domParams     = pDomAccessor->getParam_array();
                 if (domParams.getCount() > 0)
                 {
                     if (!strcmp("TIME", domParams[0]->getName()))
@@ -581,30 +599,30 @@ daeReader::ChannelPart* daeReader::processSampler(domChannel* pDomChannel, Sourc
                     }
                     else
                     {
-                        OSG_WARN << "Only TIME based animations are supported" <<std::endl;
+                        OSG_WARN << "Only TIME based animations are supported" << std::endl;
                         return NULL;
                     }
                 }
                 else
                 {
-                    OSG_WARN << "No params in accessor" <<std::endl;
+                    OSG_WARN << "No params in accessor" << std::endl;
                     return NULL;
                 }
             }
             else
             {
-                OSG_WARN << "Unable to find <technique_common> in <source> " << pDomSource->getName() <<std::endl;
+                OSG_WARN << "Unable to find <technique_common> in <source> " << pDomSource->getName() << std::endl;
                 return NULL;
             }
         }
         else
         {
-            OSG_WARN << "Could not get animation 'INPUT' source"<<std::endl;
+            OSG_WARN << "Could not get animation 'INPUT' source" << std::endl;
             return NULL;
         }
     }
 
-    //const bool readDoubleKeyframes = (_precisionHint & osgDB::Options::DOUBLE_PRECISION_KEYFRAMES) != 0;
+    // const bool readDoubleKeyframes = (_precisionHint & osgDB::Options::DOUBLE_PRECISION_KEYFRAMES) != 0;
     static const bool readDoubleKeyframes = false;
 
     findInputSourceBySemantic(domInputArray, COMMON_PROFILE_INPUT_OUTPUT, output_source, &tmp);
@@ -615,10 +633,11 @@ daeReader::ChannelPart* daeReader::processSampler(domChannel* pDomChannel, Sourc
     struct InterpTypeName
     {
         InterpolationType interp;
-        const char* str;
+        const char        *str;
     };
 
-    InterpTypeName interpTypeNames[] = {
+    InterpTypeName interpTypeNames[] =
+    {
         {INTERPOLATION_STEP, "STEP"},
         {INTERPOLATION_LINEAR, "LINEAR"},
         {INTERPOLATION_BEZIER, "BEZIER"},
@@ -634,13 +653,13 @@ daeReader::ChannelPart* daeReader::processSampler(domChannel* pDomChannel, Sourc
 
     if (findInputSourceBySemantic(domInputArray, COMMON_PROFILE_INPUT_INTERPOLATION, input_source, &tmp))
     {
-        domSource* pDomSource = daeSafeCast<domSource>(input_source);
+        domSource *pDomSource = daeSafeCast<domSource>(input_source);
         if (pDomSource)
         {
-            domName_array* pDomNames = pDomSource->getName_array();
+            domName_array *pDomNames = pDomSource->getName_array();
             if (pDomNames)
             {
-                daeStringArray* stringArray = &(pDomNames->getValue());
+                daeStringArray *stringArray = &(pDomNames->getValue());
 
                 // Take a look at the first element in the array to see what kind of interpolation is needed
                 // multiple interpolation types inside an animation is not supported
@@ -658,114 +677,122 @@ daeReader::ChannelPart* daeReader::processSampler(domChannel* pDomChannel, Sourc
                 }
                 else
                 {
-                    OSG_WARN << "No names in <Name_array>" <<std::endl;
+                    OSG_WARN << "No names in <Name_array>" << std::endl;
                     return NULL;
                 }
             }
             else
             {
-                OSG_WARN << "Unable to find <Name_array> in <source> " << pDomSource->getName() <<std::endl;
+                OSG_WARN << "Unable to find <Name_array> in <source> " << pDomSource->getName() << std::endl;
                 return NULL;
             }
         }
         else
         {
-            OSG_WARN << "Could not get animation 'INPUT' source"<<std::endl;
+            OSG_WARN << "Could not get animation 'INPUT' source" << std::endl;
             return NULL;
         }
     }
 
-    //work around for files output by the Autodesk FBX converter.
+    // work around for files output by the Autodesk FBX converter.
     if ((interpolationType == INTERPOLATION_BEZIER) &&
         (_authoringTool == FBX_CONVERTER || _authoringTool == MAYA))
     {
         interpolationType = INTERPOLATION_HERMITE;
     }
 
-    osgAnimation::KeyframeContainer* keyframes = NULL;
+    osgAnimation::KeyframeContainer *keyframes = NULL;
 
     switch (arrayType)
     {
     case domSourceReader::Float:
         keyframes = makeKeyframes<float>(pOsgTimesArray,
-            sources[output_source].getArray<osg::FloatArray>(),
-            sources[output_intangent_source].getArray<osg::FloatArray>(),
-            sources[output_outtangent_source].getArray<osg::FloatArray>(),
-            interpolationType);
+                                         sources[output_source].getArray<osg::FloatArray>(),
+                                         sources[output_intangent_source].getArray<osg::FloatArray>(),
+                                         sources[output_outtangent_source].getArray<osg::FloatArray>(),
+                                         interpolationType);
         break;
+
     case domSourceReader::Vec2:
         keyframes = makeKeyframes<osg::Vec2>(pOsgTimesArray,
-            sources[output_source].getArray<osg::Vec2Array>(),
-            sources[output_intangent_source].getArray<osg::Vec2Array>(),
-            sources[output_outtangent_source].getArray<osg::Vec2Array>(),
-            interpolationType);
+                                             sources[output_source].getArray<osg::Vec2Array>(),
+                                             sources[output_intangent_source].getArray<osg::Vec2Array>(),
+                                             sources[output_outtangent_source].getArray<osg::Vec2Array>(),
+                                             interpolationType);
         break;
+
     case domSourceReader::Vec3:
         keyframes = makeKeyframes<osg::Vec3>(pOsgTimesArray,
-            sources[output_source].getArray<osg::Vec3Array>(),
-            sources[output_intangent_source].getArray<osg::Vec3Array>(),
-            sources[output_outtangent_source].getArray<osg::Vec3Array>(),
-            interpolationType);
+                                             sources[output_source].getArray<osg::Vec3Array>(),
+                                             sources[output_intangent_source].getArray<osg::Vec3Array>(),
+                                             sources[output_outtangent_source].getArray<osg::Vec3Array>(),
+                                             interpolationType);
         break;
+
     case domSourceReader::Vec4:
         keyframes = makeKeyframes<osg::Vec4>(pOsgTimesArray,
-            sources[output_source].getArray<osg::Vec4Array>(),
-            sources[output_intangent_source].getArray<osg::Vec4Array>(),
-            sources[output_outtangent_source].getArray<osg::Vec4Array>(),
-            interpolationType);
+                                             sources[output_source].getArray<osg::Vec4Array>(),
+                                             sources[output_intangent_source].getArray<osg::Vec4Array>(),
+                                             sources[output_outtangent_source].getArray<osg::Vec4Array>(),
+                                             interpolationType);
         break;
+
     case domSourceReader::Vec2d:
         keyframes = makeKeyframes<osg::Vec2d>(pOsgTimesArray,
-            sources[output_source].getArray<osg::Vec2dArray>(),
-            sources[output_intangent_source].getArray<osg::Vec2dArray>(),
-            sources[output_outtangent_source].getArray<osg::Vec2dArray>(),
-            interpolationType);
+                                              sources[output_source].getArray<osg::Vec2dArray>(),
+                                              sources[output_intangent_source].getArray<osg::Vec2dArray>(),
+                                              sources[output_outtangent_source].getArray<osg::Vec2dArray>(),
+                                              interpolationType);
         break;
+
     case domSourceReader::Vec3d:
         keyframes = makeKeyframes<osg::Vec3d>(pOsgTimesArray,
-            sources[output_source].getArray<osg::Vec3dArray>(),
-            sources[output_intangent_source].getArray<osg::Vec3dArray>(),
-            sources[output_outtangent_source].getArray<osg::Vec3dArray>(),
-            interpolationType);
+                                              sources[output_source].getArray<osg::Vec3dArray>(),
+                                              sources[output_intangent_source].getArray<osg::Vec3dArray>(),
+                                              sources[output_outtangent_source].getArray<osg::Vec3dArray>(),
+                                              interpolationType);
         break;
+
     case domSourceReader::Vec4d:
         keyframes = makeKeyframes<osg::Vec4d>(pOsgTimesArray,
-            sources[output_source].getArray<osg::Vec4dArray>(),
-            sources[output_intangent_source].getArray<osg::Vec4dArray>(),
-            sources[output_outtangent_source].getArray<osg::Vec4dArray>(),
-            interpolationType);
+                                              sources[output_source].getArray<osg::Vec4dArray>(),
+                                              sources[output_intangent_source].getArray<osg::Vec4dArray>(),
+                                              sources[output_outtangent_source].getArray<osg::Vec4dArray>(),
+                                              interpolationType);
         break;
+
     case domSourceReader::Matrix:
         keyframes = makeKeyframes<osg::Matrixf>(pOsgTimesArray,
-            sources[output_source].getArray<osg::MatrixfArray>(),
-            sources[output_intangent_source].getArray<osg::MatrixfArray>(),
-            sources[output_outtangent_source].getArray<osg::MatrixfArray>(),
-            interpolationType);
+                                                sources[output_source].getArray<osg::MatrixfArray>(),
+                                                sources[output_intangent_source].getArray<osg::MatrixfArray>(),
+                                                sources[output_outtangent_source].getArray<osg::MatrixfArray>(),
+                                                interpolationType);
         break;
+
     default:
         ;// Fall through
     }
 
     if (keyframes)
     {
-        ChannelPart* chanPart = new ChannelPart;
-        chanPart->keyframes = keyframes;
+        ChannelPart *chanPart = new ChannelPart;
+        chanPart->keyframes     = keyframes;
         chanPart->interpolation = interpolationType;
-        chanPart->name = pDomChannel->getTarget();
+        chanPart->name          = pDomChannel->getTarget();
         return chanPart;
     }
 
     return NULL;
 }
 
-osgAnimation::Target* findChannelTarget(osg::Callback* nc, const std::string& targetName, bool& rotation)
+osgAnimation::Target* findChannelTarget(osg::Callback *nc, const std::string&targetName, bool&rotation)
 {
-    if (osgAnimation::UpdateMatrixTransform* umt = dynamic_cast<osgAnimation::UpdateMatrixTransform*>(nc))
+    if (osgAnimation::UpdateMatrixTransform *umt = dynamic_cast<osgAnimation::UpdateMatrixTransform*>(nc))
     {
         for (osgAnimation::StackedTransform::const_iterator
-            it = umt->getStackedTransforms().begin(), end = umt->getStackedTransforms().end(); it != end; ++it)
+             it = umt->getStackedTransforms().begin(), end = umt->getStackedTransforms().end(); it != end; ++it)
         {
-            osgAnimation::StackedTransformElement* te = it->get();
+            osgAnimation::StackedTransformElement *te = it->get();
             if (te->getName() == targetName)
             {
                 rotation = dynamic_cast<osgAnimation::StackedRotateAxisElement*>(te) != NULL;
@@ -781,24 +808,24 @@ osgAnimation::Target* findChannelTarget(osg::Callback* nc, const std::string& ta
     return NULL;
 }
 
-void convertDegreesToRadians(osgAnimation::KeyframeContainer* pKeyframeContainer)
+void convertDegreesToRadians(osgAnimation::KeyframeContainer *pKeyframeContainer)
 {
-    if (osgAnimation::FloatKeyframeContainer* fkc =
-        dynamic_cast<osgAnimation::FloatKeyframeContainer*>(pKeyframeContainer))
+    if (osgAnimation::FloatKeyframeContainer *fkc =
+            dynamic_cast<osgAnimation::FloatKeyframeContainer*>(pKeyframeContainer))
     {
         for (size_t i = 0; i < fkc->size(); ++i)
         {
-            osgAnimation::FloatKeyframe& fk = (*fkc)[i];
+            osgAnimation::FloatKeyframe&fk = (*fkc)[i];
             fk.setValue(osg::DegreesToRadians(fk.getValue()));
         }
     }
-    else if (osgAnimation::FloatCubicBezierKeyframeContainer* fcbkc =
-        dynamic_cast<osgAnimation::FloatCubicBezierKeyframeContainer*>(pKeyframeContainer))
+    else if (osgAnimation::FloatCubicBezierKeyframeContainer *fcbkc =
+                 dynamic_cast<osgAnimation::FloatCubicBezierKeyframeContainer*>(pKeyframeContainer))
     {
         for (size_t i = 0; i < fcbkc->size(); ++i)
         {
-            osgAnimation::FloatCubicBezierKeyframe& fcbk = (*fcbkc)[i];
-            osgAnimation::FloatCubicBezier fcb = fcbk.getValue();
+            osgAnimation::FloatCubicBezierKeyframe&fcbk = (*fcbkc)[i];
+            osgAnimation::FloatCubicBezier        fcb   = fcbk.getValue();
             fcb.setPosition(osg::DegreesToRadians(fcb.getPosition()));
             fcb.setControlPointIn(osg::DegreesToRadians(fcb.getControlPointIn()));
             fcb.setControlPointOut(osg::DegreesToRadians(fcb.getControlPointOut()));
@@ -815,30 +842,32 @@ void convertDegreesToRadians(osgAnimation::KeyframeContainer* pKeyframeContainer
 // <channel>
 // 1 source
 // 1 target
-void daeReader::processChannel(domChannel* pDomChannel, SourceMap& sources, TargetChannelPartMap& tcm)
+void daeReader::processChannel(domChannel *pDomChannel, SourceMap&sources, TargetChannelPartMap&tcm)
 {
     domSampler *pDomSampler = daeSafeCast<domSampler>(getElementFromURI(pDomChannel->getSource()));
+
     if (pDomSampler)
     {
-        ChannelPart* pChannelPart = processSampler(pDomChannel, sources);
+        ChannelPart *pChannelPart = processSampler(pDomChannel, sources);
 
         if (pChannelPart)
         {
             domChannelOsgAnimationUpdateCallbackMap::iterator iter = _domChannelOsgAnimationUpdateCallbackMap.find(pDomChannel);
             if (iter != _domChannelOsgAnimationUpdateCallbackMap.end())
             {
-                osg::Callback* nc = iter->second.get();
+                osg::Callback *nc = iter->second.get();
 
                 std::string channelName, targetName, componentName;
                 extractTargetName(pDomChannel->getTarget(), channelName, targetName, componentName);
-                //assert(targetName == nc->getName());
+                // assert(targetName == nc->getName());
                 bool bRotationChannel = false;
-                if (osgAnimation::Target* pTarget = findChannelTarget(nc, channelName, bRotationChannel))
+                if (osgAnimation::Target *pTarget = findChannelTarget(nc, channelName, bRotationChannel))
                 {
                     if (bRotationChannel)
                     {
                         convertDegreesToRadians(pChannelPart->keyframes.get());
                     }
+
                     tcm.insert(TargetChannelPartMap::value_type(pTarget, pChannelPart));
                 }
                 else
@@ -848,38 +877,39 @@ void daeReader::processChannel(domChannel* pDomChannel, SourceMap& sources, Targ
             }
             else
             {
-                OSG_WARN << "Could not locate UpdateCallback for <channel> target "  << pDomChannel->getTarget()<< std::endl;
+                OSG_WARN << "Could not locate UpdateCallback for <channel> target " << pDomChannel->getTarget() << std::endl;
             }
         }
         else
         {
-            OSG_WARN << "<channel> source "  << pDomChannel->getSource().getURI() << " has no corresponding osgAnimation::Channel" << std::endl;
+            OSG_WARN << "<channel> source " << pDomChannel->getSource().getURI() << " has no corresponding osgAnimation::Channel" << std::endl;
         }
     }
     else
     {
-        OSG_WARN << "Could not locate <channel> source "  << pDomChannel->getSource().getURI() << std::endl;
+        OSG_WARN << "Could not locate <channel> source " << pDomChannel->getSource().getURI() << std::endl;
     }
 }
 
-void daeReader::extractTargetName(const std::string& daeTarget, std::string& channelName, std::string& targetName, std::string& component)
+void daeReader::extractTargetName(const std::string&daeTarget, std::string&channelName, std::string&targetName, std::string&component)
 {
     size_t slash = daeTarget.find_last_of("/");
+
     if (slash != std::string::npos)
     {
         // Handle /translation
-        targetName = daeTarget.substr(0, slash);
-        channelName = daeTarget.substr(slash+1, std::string::npos);
+        targetName  = daeTarget.substr(0, slash);
+        channelName = daeTarget.substr(slash + 1, std::string::npos);
     }
     else
     {
         size_t parenthesis = daeTarget.find_last_of("(");
-        size_t endpos = daeTarget.find_last_of(")");
+        size_t endpos      = daeTarget.find_last_of(")");
         if (parenthesis != std::string::npos && endpos != std::string::npos)
         {
             // Handle (1)
-            targetName = daeTarget.substr(0, parenthesis);
-            channelName = daeTarget.substr(parenthesis+1, endpos - parenthesis - 1);
+            targetName  = daeTarget.substr(0, parenthesis);
+            channelName = daeTarget.substr(parenthesis + 1, endpos - parenthesis - 1);
         }
         else
         {
@@ -890,7 +920,7 @@ void daeReader::extractTargetName(const std::string& daeTarget, std::string& cha
     size_t period = channelName.find_last_of(".");
     if (period != std::string::npos)
     {
-        component = channelName.substr(period+1, std::string::npos);
+        component   = channelName.substr(period + 1, std::string::npos);
         channelName = channelName.substr(0, period);
     }
     else
@@ -904,10 +934,11 @@ void daeReader::extractTargetName(const std::string& daeTarget, std::string& cha
 
             do
             {
-                if (open_parenthesis != first_parenthesis) component += ",";
+                if (open_parenthesis != first_parenthesis)
+                    component += ",";
 
                 size_t close_parenthesis = channelName.find_first_of(")", open_parenthesis);
-                component += channelName.substr(open_parenthesis+1, close_parenthesis-open_parenthesis-1);
+                component       += channelName.substr(open_parenthesis + 1, close_parenthesis - open_parenthesis - 1);
                 open_parenthesis = channelName.find_first_of("(", close_parenthesis);
             }
             while (open_parenthesis != std::string::npos);

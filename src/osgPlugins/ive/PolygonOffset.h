@@ -4,11 +4,13 @@
 #include <osg/PolygonOffset>
 #include "ReadWrite.h"
 
-namespace ive{
-class PolygonOffset : public osg::PolygonOffset, public ReadWrite {
+namespace ive
+{
+class PolygonOffset : public osg::PolygonOffset, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

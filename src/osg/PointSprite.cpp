@@ -23,16 +23,14 @@ using namespace osg;
 
 PointSprite::PointSprite()
     : _coordOriginMode(UPPER_LEFT)
-{
-}
+{}
 
 PointSprite::~PointSprite()
-{
-}
+{}
 
-int PointSprite::compare(const StateAttribute& sa) const
+int PointSprite::compare(const StateAttribute&sa) const
 {
-    COMPARE_StateAttribute_Types(PointSprite,sa)
+    COMPARE_StateAttribute_Types(PointSprite, sa)
 
     COMPARE_StateAttribute_Parameter(_coordOriginMode)
 
@@ -40,12 +38,12 @@ int PointSprite::compare(const StateAttribute& sa) const
 }
 
 
-bool PointSprite::checkValidityOfAssociatedModes(osg::State& state) const
+bool PointSprite::checkValidityOfAssociatedModes(osg::State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
-    bool modeValid = extensions->isPointSpriteSupported;
+    const GLExtensions *extensions = state.get<GLExtensions>();
+    bool               modeValid   = extensions->isPointSpriteSupported;
 
-#if defined( OSG_GLES1_AVAILABLE ) //point sprites don't exist on es 2.0
+#if defined(OSG_GLES1_AVAILABLE)   // point sprites don't exist on es 2.0
     state.setModeValidity(GL_POINT_SPRITE_OES, modeValid);
 #else
     state.setModeValidity(GL_POINT_SPRITE_ARB, modeValid);
@@ -54,22 +52,22 @@ bool PointSprite::checkValidityOfAssociatedModes(osg::State& state) const
     return modeValid;
 }
 
-void PointSprite::apply(osg::State& state) const
+void PointSprite::apply(osg::State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
-#if defined( OSG_GL3_AVAILABLE )
+    const GLExtensions *extensions = state.get<GLExtensions>();
 
+#if defined(OSG_GL3_AVAILABLE)
     extensions->glPointParameteri(GL_POINT_SPRITE_COORD_ORIGIN, _coordOriginMode);
 
-#elif defined( OSG_GLES1_AVAILABLE ) //point sprites don't exist on es 2.0
-
-    if (!extensions->isPointSpriteSupported) return;
+#elif defined(OSG_GLES1_AVAILABLE)   // point sprites don't exist on es 2.0
+    if (!extensions->isPointSpriteSupported)
+        return;
 
     glTexEnvi(GL_POINT_SPRITE_OES, GL_COORD_REPLACE_OES, 1);
 
-#elif defined( OSG_GL_FIXED_FUNCTION_AVAILABLE )
-
-    if (!extensions->isPointSpriteSupported) return;
+#elif defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
+    if (!extensions->isPointSpriteSupported)
+        return;
 
     glTexEnvi(GL_POINT_SPRITE_ARB, GL_COORD_REPLACE_ARB, 1);
 
@@ -77,7 +75,6 @@ void PointSprite::apply(osg::State& state) const
         extensions->glPointParameteri(GL_POINT_SPRITE_COORD_ORIGIN, _coordOriginMode);
 
 #else
-    OSG_NOTICE<<"Warning: PointSprite::apply(State&) - not supported."<<std::endl;
-
+    OSG_NOTICE << "Warning: PointSprite::apply(State&) - not supported." << std::endl;
 #endif
 }

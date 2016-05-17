@@ -4,11 +4,13 @@
 #include <osg/PositionAttitudeTransform>
 #include "ReadWrite.h"
 
-namespace ive{
-class PositionAttitudeTransform : public osg::PositionAttitudeTransform, public ReadWrite {
+namespace ive
+{
+class PositionAttitudeTransform : public osg::PositionAttitudeTransform, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

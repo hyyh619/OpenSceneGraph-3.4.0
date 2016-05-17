@@ -1,9 +1,9 @@
-//info : osgSSBO example,testing ShaderStorageBufferObjects ,Markus Hein,  2014, osg-3.2.1
-//required hardware and driver must support GL >=  GL 4.3 or GL ES 3.1 (GL ES not tested, would be nice if someone will test it on a small device)
+// info : osgSSBO example,testing ShaderStorageBufferObjects ,Markus Hein,  2014, osg-3.2.1
+// required hardware and driver must support GL >=  GL 4.3 or GL ES 3.1 (GL ES not tested, would be nice if someone will test it on a small device)
 
-//testing osg support for Shader Storage Buffer Objects
+// testing osg support for Shader Storage Buffer Objects
 
-//version: "first take" from last night session..
+// version: "first take" from last night session..
 
 
 
@@ -86,19 +86,19 @@
 using namespace osg;
 
 
-//todo .. #define COMPUTATION_IN_SEPARATE_THREAD
+// todo .. #define COMPUTATION_IN_SEPARATE_THREAD
 
 #define WORK_GROUP_SIZE 16
 
 
 #define PRERENDER_ANTIALIASINGMULTISAMPLES 16
 #define PRERENDER_HIGH_QUALITY_ANTIALIASING
-#define PRERENDER_WIDTH 1920
+#define PRERENDER_WIDTH  1920
 #define PRERENDER_HEIGHT 1080
 
 
-#define SUB_PLACEMENT_OFFSET_HORIZONTAL  0.5
-#define SUB_PLACEMENT_OFFSET_VERTICAL  0.5
+#define SUB_PLACEMENT_OFFSET_HORIZONTAL 0.5
+#define SUB_PLACEMENT_OFFSET_VERTICAL   0.5
 
 enum BufferOffset
 {
@@ -118,13 +118,16 @@ enum BufferOffset
 
 
 const int __numDataValuesPerChannel = OFFSET_END;
-const int __numChannels = 4;
+const int __numChannels             = 4;
 
-//512x512x4x7 = 7.340.032 floats in SSBO on GPU
+// 512x512x4x7 = 7.340.032 floats in SSBO on GPU
 const int NUM_ELEMENTS_X = 512;
 const int NUM_ELEMENTS_Y = 512;
 
-float random(float min, float max) { return min + (max - min)*(float)rand() / (float)RAND_MAX; }
+float random(float min, float max)
+{
+    return min + (max - min) * (float)rand() / (float)RAND_MAX;
+}
 
 
 enum Channel
@@ -142,75 +145,74 @@ enum Channel
 class ShaderStorageBufferCallback : public osg::StateAttributeCallback
 {
 public:
-    void operator() (osg::StateAttribute* attr, osg::NodeVisitor* nv)
-    {
-        //if you need to process the data in your app-code , better leaving it on GPU and processing there, uploading per frame will make it slow
+void operator()(osg::StateAttribute *attr, osg::NodeVisitor *nv)
+{
+    // if you need to process the data in your app-code , better leaving it on GPU and processing there, uploading per frame will make it slow
 #if 0
-        osg::ShaderStorageBufferBinding* ssbb = static_cast<osg::ShaderStorageBufferBinding*>(attr);
-        osg::ShaderStorageBufferObject* ssbo
-            = static_cast<osg::ShaderStorageBufferObject*>(ssbb->getBufferObject());
+    osg::ShaderStorageBufferBinding *ssbb = static_cast<osg::ShaderStorageBufferBinding*>(attr);
+    osg::ShaderStorageBufferObject  *ssbo
+        = static_cast<osg::ShaderStorageBufferObject*>(ssbb->getBufferObject());
 
-        osg::FloatArray* array = static_cast<osg::FloatArray*>(ssbo->getBufferData(0));
+    osg::FloatArray *array = static_cast<osg::FloatArray*>(ssbo->getBufferData(0));
 
-        float someValue = array->at(0);
-        //std::cout << "someValue now: " << someValue << std::endl;
-        //data transfer performance test
-        //    array->dirty();
+    float someValue = array->at(0);
+    // std::cout << "someValue now: " << someValue << std::endl;
+    // data transfer performance test
+    //    array->dirty();
 #endif
-    }
+}
 };
 
 
-//do not forget to set OSG_FILE_PATH to default OSG-Data and make sure the new shaders are copied there under"shaders"
+// do not forget to set OSG_FILE_PATH to default OSG-Data and make sure the new shaders are copied there under"shaders"
 class ComputeNode : public osg::PositionAttitudeTransform
 {
-
 public:
 
-    osg::ref_ptr<osg::Program>                        _computeProgram;
-    osg::ref_ptr<osg::Shader>                        _computeShader;        //compute and write position data in SSBO
+osg::ref_ptr<osg::Program> _computeProgram;
+osg::ref_ptr<osg::Shader>  _computeShader;                                  // compute and write position data in SSBO
 
-    osg::ref_ptr<osg::Shader>                        _vertexShader;        //reading position data from SSBO (OBS!: make sure glMemoryBuffer() is syncing this)
-    osg::ref_ptr<osg::Shader>                        _geometryShader;    //building a quad looking to the camera
-    osg::ref_ptr<osg::Shader>                        _fragmentShader;    //use false-colors etc. for making your data visible
+osg::ref_ptr<osg::Shader> _vertexShader;                                   // reading position data from SSBO (OBS!: make sure glMemoryBuffer() is syncing this)
+osg::ref_ptr<osg::Shader> _geometryShader;                               // building a quad looking to the camera
+osg::ref_ptr<osg::Shader> _fragmentShader;                               // use false-colors etc. for making your data visible
 
-    osg::ref_ptr<osg::Node>                            _helperNode;        // coordinate system node
+osg::ref_ptr<osg::Node> _helperNode;                                       // coordinate system node
 
-    ref_ptr<osg::ShaderStorageBufferObject>            _ssbo;
-    ref_ptr<osg::ShaderStorageBufferBinding>        _ssbb;
+ref_ptr<osg::ShaderStorageBufferObject>  _ssbo;
+ref_ptr<osg::ShaderStorageBufferBinding> _ssbb;
 
-    GLfloat*                                        _data;        // some data we upload to GPU, initialised with random values
-    osg::ref_ptr<FloatArray>                        _dataArray; //
+GLfloat                  *_data;                                  // some data we upload to GPU, initialised with random values
+osg::ref_ptr<FloatArray> _dataArray;                            //
 
-    osg::ref_ptr<osg::Group>                        _computationResultsRenderGroup;
-    osg::ref_ptr<osg::Program>                        _computationResultsRenderProgram;
-    osg::ref_ptr<osg::StateSet>                        _computationResultsRenderStateSet;
-
-
-    std::string                                        _computeShaderSourcePath;
-    std::string                                        _vertexShaderSourcePath;
-    std::string                                        _geometryShaderSourcePath;
-    std::string                                        _fragmentShaderSourcePath;
+osg::ref_ptr<osg::Group>    _computationResultsRenderGroup;
+osg::ref_ptr<osg::Program>  _computationResultsRenderProgram;
+osg::ref_ptr<osg::StateSet> _computationResultsRenderStateSet;
 
 
-    void                addHelperGeometry();
-    void                addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacement, float scale, Channel channel, BufferOffset shaderBufferOffset, std::string labelcaption, float minDataRange, float maxDataRange);
-    void                addComputationResultsRenderTree();
-    void                initComputingSetup();
+std::string _computeShaderSourcePath;
+std::string _vertexShaderSourcePath;
+std::string _geometryShaderSourcePath;
+std::string _fragmentShaderSourcePath;
 
-    ComputeNode()
-    {
-        const char* envOsgFilePath = getenv("OSG_FILE_PATH");
-        std::stringstream computeshaderpath; computeshaderpath << envOsgFilePath << "/shaders/osgssboComputeShader.cs";
-        _computeShaderSourcePath = computeshaderpath.str();
-        std::stringstream vertexshaderpath; vertexshaderpath << envOsgFilePath << "/shaders/osgssboVertexShader.vs";
-        _vertexShaderSourcePath = vertexshaderpath.str();
-        std::stringstream geometryshaderpath; geometryshaderpath << envOsgFilePath << "/shaders/osgssboGeometryShader.gs";
-        _geometryShaderSourcePath = geometryshaderpath.str();
-        std::stringstream fragmentshaderpath; fragmentshaderpath << envOsgFilePath << "/shaders/osgssboFragmentShader.fs";
-        _fragmentShaderSourcePath = fragmentshaderpath.str();
-    }
 
+void                addHelperGeometry();
+void                addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacement, float scale, Channel channel, BufferOffset shaderBufferOffset, std::string labelcaption, float minDataRange, float maxDataRange);
+void                addComputationResultsRenderTree();
+void                initComputingSetup();
+
+ComputeNode()
+{
+    const char        *envOsgFilePath = getenv("OSG_FILE_PATH");
+    std::stringstream computeshaderpath; computeshaderpath << envOsgFilePath << "/shaders/osgssboComputeShader.cs";
+
+    _computeShaderSourcePath = computeshaderpath.str();
+    std::stringstream vertexshaderpath; vertexshaderpath << envOsgFilePath << "/shaders/osgssboVertexShader.vs";
+    _vertexShaderSourcePath = vertexshaderpath.str();
+    std::stringstream geometryshaderpath; geometryshaderpath << envOsgFilePath << "/shaders/osgssboGeometryShader.gs";
+    _geometryShaderSourcePath = geometryshaderpath.str();
+    std::stringstream fragmentshaderpath; fragmentshaderpath << envOsgFilePath << "/shaders/osgssboFragmentShader.fs";
+    _fragmentShaderSourcePath = fragmentshaderpath.str();
+}
 };
 
 
@@ -218,97 +220,95 @@ class ComputeNodeUpdateCallback : public osg::NodeCallback
 {
 public:
 
-    ComputeNode* _computeNode;
-    osg::Timer_t _prevShaderUpdateTime;
-    osg::Timer _timer;
+ComputeNode  *_computeNode;
+osg::Timer_t _prevShaderUpdateTime;
+osg::Timer   _timer;
 
-    ComputeNodeUpdateCallback(){}
+ComputeNodeUpdateCallback(){}
 
-    ComputeNodeUpdateCallback(ComputeNode* computeNode)
+ComputeNodeUpdateCallback(ComputeNode *computeNode)
+{
+    _computeNode          = computeNode;
+    _prevShaderUpdateTime = 0;
+}
+
+virtual void operator()(osg::Node *node, osg::NodeVisitor *nv)
+{
+    osg::Timer_t currTime = _timer.tick();
+
+    if (_timer.delta_s(_prevShaderUpdateTime, currTime) > 1.0)     // one  second interval for shader-changed-do-reload check
     {
-        _computeNode = computeNode;
-        _prevShaderUpdateTime = 0;
-    }
+        osg::ref_ptr<osg::Shader> reloadedshader;
+        std::string               runningSource;
+        std::string               reloadedstring;
 
-    virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
-    {
-        osg::Timer_t currTime = _timer.tick();
-
-        if (_timer.delta_s(_prevShaderUpdateTime, currTime) > 1.0) //one  second interval for shader-changed-do-reload check
+        if (_computeNode->_computeShader.valid())
         {
-            osg::ref_ptr<osg::Shader> reloadedshader;
-            std::string runningSource;
-            std::string reloadedstring;
+            runningSource  = _computeNode->_computeShader->getShaderSource();
+            reloadedshader = osg::Shader::readShaderFile(osg::Shader::COMPUTE, _computeNode->_computeShaderSourcePath);
 
-            if (_computeNode->_computeShader.valid())
+            reloadedstring = reloadedshader->getShaderSource();
+            if (!osgDB::equalCaseInsensitive(runningSource.c_str(), reloadedstring.c_str()))
             {
-                runningSource = _computeNode->_computeShader->getShaderSource();
-                reloadedshader = osg::Shader::readShaderFile(osg::Shader::COMPUTE, _computeNode->_computeShaderSourcePath);
-
-                reloadedstring = reloadedshader->getShaderSource();
-                if (!osgDB::equalCaseInsensitive(runningSource.c_str(), reloadedstring.c_str()))
-                {
-                    _computeNode->_computeProgram->removeShader(_computeNode->_computeShader.get());
-                    _computeNode->_computeShader = reloadedshader.get();
-                    _computeNode->_computeProgram->addShader(_computeNode->_computeShader.get());
-                }
+                _computeNode->_computeProgram->removeShader(_computeNode->_computeShader.get());
+                _computeNode->_computeShader = reloadedshader.get();
+                _computeNode->_computeProgram->addShader(_computeNode->_computeShader.get());
             }
-
-            if (_computeNode->_vertexShader.valid())
-            {
-
-                runningSource = _computeNode->_vertexShader->getShaderSource();
-                reloadedshader = osg::Shader::readShaderFile(osg::Shader::VERTEX, _computeNode->_vertexShaderSourcePath);
-
-                reloadedstring = reloadedshader->getShaderSource();
-                if (!osgDB::equalCaseInsensitive(runningSource.c_str(), reloadedstring.c_str()))
-                {
-                    _computeNode->_computationResultsRenderProgram->removeShader(_computeNode->_vertexShader.get());
-                    _computeNode->_vertexShader = reloadedshader.get();
-                    _computeNode->_computationResultsRenderProgram->addShader(_computeNode->_vertexShader.get());
-                }
-            }
-
-
-
-            if (_computeNode->_geometryShader.valid())
-            {
-                runningSource = _computeNode->_geometryShader->getShaderSource();
-                reloadedshader = osg::Shader::readShaderFile(osg::Shader::GEOMETRY, _computeNode->_geometryShaderSourcePath);
-
-                reloadedstring = reloadedshader->getShaderSource();
-                if (!osgDB::equalCaseInsensitive(runningSource.c_str(), reloadedstring.c_str()))
-                {
-                    _computeNode->_computationResultsRenderProgram->removeShader(_computeNode->_geometryShader.get());
-                    _computeNode->_geometryShader = reloadedshader.get();
-                    _computeNode->_computationResultsRenderProgram->addShader(_computeNode->_geometryShader.get());
-                }
-            }
-
-            if (_computeNode->_fragmentShader.valid())
-            {
-                runningSource = _computeNode->_fragmentShader->getShaderSource();
-                reloadedshader = osg::Shader::readShaderFile(osg::Shader::FRAGMENT, _computeNode->_fragmentShaderSourcePath);
-
-                reloadedstring = reloadedshader->getShaderSource();
-                if (!osgDB::equalCaseInsensitive(runningSource.c_str(), reloadedstring.c_str()))
-                {
-                    _computeNode->_computationResultsRenderProgram->removeShader(_computeNode->_fragmentShader.get());
-                    _computeNode->_fragmentShader = reloadedshader.get();
-                    _computeNode->_computationResultsRenderProgram->addShader(_computeNode->_fragmentShader.get());
-                }
-            }
-
-
-            _prevShaderUpdateTime = _timer.tick();
         }
 
-        traverse(node, nv);
+        if (_computeNode->_vertexShader.valid())
+        {
+            runningSource  = _computeNode->_vertexShader->getShaderSource();
+            reloadedshader = osg::Shader::readShaderFile(osg::Shader::VERTEX, _computeNode->_vertexShaderSourcePath);
 
+            reloadedstring = reloadedshader->getShaderSource();
+            if (!osgDB::equalCaseInsensitive(runningSource.c_str(), reloadedstring.c_str()))
+            {
+                _computeNode->_computationResultsRenderProgram->removeShader(_computeNode->_vertexShader.get());
+                _computeNode->_vertexShader = reloadedshader.get();
+                _computeNode->_computationResultsRenderProgram->addShader(_computeNode->_vertexShader.get());
+            }
+        }
+
+
+
+        if (_computeNode->_geometryShader.valid())
+        {
+            runningSource  = _computeNode->_geometryShader->getShaderSource();
+            reloadedshader = osg::Shader::readShaderFile(osg::Shader::GEOMETRY, _computeNode->_geometryShaderSourcePath);
+
+            reloadedstring = reloadedshader->getShaderSource();
+            if (!osgDB::equalCaseInsensitive(runningSource.c_str(), reloadedstring.c_str()))
+            {
+                _computeNode->_computationResultsRenderProgram->removeShader(_computeNode->_geometryShader.get());
+                _computeNode->_geometryShader = reloadedshader.get();
+                _computeNode->_computationResultsRenderProgram->addShader(_computeNode->_geometryShader.get());
+            }
+        }
+
+        if (_computeNode->_fragmentShader.valid())
+        {
+            runningSource  = _computeNode->_fragmentShader->getShaderSource();
+            reloadedshader = osg::Shader::readShaderFile(osg::Shader::FRAGMENT, _computeNode->_fragmentShaderSourcePath);
+
+            reloadedstring = reloadedshader->getShaderSource();
+            if (!osgDB::equalCaseInsensitive(runningSource.c_str(), reloadedstring.c_str()))
+            {
+                _computeNode->_computationResultsRenderProgram->removeShader(_computeNode->_fragmentShader.get());
+                _computeNode->_fragmentShader = reloadedshader.get();
+                _computeNode->_computationResultsRenderProgram->addShader(_computeNode->_fragmentShader.get());
+            }
+        }
+
+
+        _prevShaderUpdateTime = _timer.tick();
     }
+
+    traverse(node, nv);
+}
 };
 
-//set  OSG_FILE_PATH for loading axes.osgt
+// set  OSG_FILE_PATH for loading axes.osgt
 void ComputeNode::addHelperGeometry()
 {
     _helperNode = osgDB::readNodeFile("axes.osgt");
@@ -318,21 +318,21 @@ void ComputeNode::addHelperGeometry()
         addChild(_helperNode.get());
     }
 
-    //osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform;
-    //pat->setPosition(osg::Vec3(0.5, 0, 0.5));
-    //osg::Geode *sphereGeode = new osg::Geode;
-    //float radius = 0.5f;
-    //osg::TessellationHints* hints = new osg::TessellationHints;
-    //hints->setDetailRatio(0.9f);
-    //osg::ShapeDrawable* sphere = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f, 0.0f, 0.0f), radius), hints);
-    //sphereGeode->addDrawable(sphere);
-    //sphere->setColor(osg::Vec4(0, 1, 0, 0.1));
-    //osg::StateSet* stateset = sphereGeode->getOrCreateStateSet();
-    //osg::BlendFunc *blend = new osg::BlendFunc;
-    //blend->setFunction(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA);
-    //stateset->setAttributeAndModes(blend, osg::StateAttribute::ON);
-    //pat->addChild(sphereGeode);
-    //addChild(pat);
+    // osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform;
+    // pat->setPosition(osg::Vec3(0.5, 0, 0.5));
+    // osg::Geode *sphereGeode = new osg::Geode;
+    // float radius = 0.5f;
+    // osg::TessellationHints* hints = new osg::TessellationHints;
+    // hints->setDetailRatio(0.9f);
+    // osg::ShapeDrawable* sphere = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0f, 0.0f, 0.0f), radius), hints);
+    // sphereGeode->addDrawable(sphere);
+    // sphere->setColor(osg::Vec4(0, 1, 0, 0.1));
+    // osg::StateSet* stateset = sphereGeode->getOrCreateStateSet();
+    // osg::BlendFunc *blend = new osg::BlendFunc;
+    // blend->setFunction(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE_MINUS_SRC_ALPHA);
+    // stateset->setAttributeAndModes(blend, osg::StateAttribute::ON);
+    // pat->addChild(sphereGeode);
+    // addChild(pat);
 }
 
 
@@ -342,21 +342,21 @@ void ComputeNode::addHelperGeometry()
 
 void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacement, float scale, Channel colorchannel, BufferOffset shaderStorageBufferOffset, std::string labelCaption, float minDataRange, float maxDataRange)
 {
-    osg::PositionAttitudeTransform* pat = new osg::PositionAttitudeTransform;
+    osg::PositionAttitudeTransform *pat = new osg::PositionAttitudeTransform;
+
     pat->setPosition(relativePlacement);
     addChild(pat);
-    osg::Geometry* geom;
+    osg::Geometry *geom;
 
     if (NUM_ELEMENTS_X >= NUM_ELEMENTS_Y)
     {
         float ratio = (float)((float)NUM_ELEMENTS_Y / (float)NUM_ELEMENTS_X);
-        geom = osg::createTexturedQuadGeometry(placement, osg::Vec3(1.0f*scale, 0.0f, 0.0f), osg::Vec3(0.0f, 0.0f, ratio*1.0f*scale));
+        geom = osg::createTexturedQuadGeometry(placement, osg::Vec3(1.0f * scale, 0.0f, 0.0f), osg::Vec3(0.0f, 0.0f, ratio * 1.0f * scale));
     }
     else
     {
         float ratio = (float)((float)NUM_ELEMENTS_X / (float)NUM_ELEMENTS_Y);
-        geom = osg::createTexturedQuadGeometry(placement, osg::Vec3(ratio*1.0f*scale, 0.0f, 0.0f), osg::Vec3(0.0f, 0.0f, 1.0f*scale));
-
+        geom = osg::createTexturedQuadGeometry(placement, osg::Vec3(ratio * 1.0f * scale, 0.0f, 0.0f), osg::Vec3(0.0f, 0.0f, 1.0f * scale));
     }
 
     geom->setVertexAttribArray(1, geom->getTexCoordArray(0), osg::Array::BIND_PER_VERTEX);
@@ -366,8 +366,8 @@ void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacemen
     quad->setStateSet(getOrCreateStateSet());
     pat->addChild(quad.get());
 
-    static const char* vertexShaderSrcChannelMonitor = {
-
+    static const char *vertexShaderSrcChannelMonitor =
+    {
         "#version 430  \n"
 
         "uniform int numRows;\n"
@@ -399,9 +399,9 @@ void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacemen
     fragmentshaderstringstreamChannelMonitor << "\n";
     fragmentshaderstringstreamChannelMonitor << "void main(void)\n";
     fragmentshaderstringstreamChannelMonitor << "{\n";
-    fragmentshaderstringstreamChannelMonitor << "ivec2 storePos = ivec2(numRows*texCoordFromVertexShader.x, numCols*texCoordFromVertexShader.y);  particle particleData = p[" << shaderStorageBufferOffset * NUM_ELEMENTS_X*NUM_ELEMENTS_Y << " + (storePos.x*numRows + storePos.y)]; ";
+    fragmentshaderstringstreamChannelMonitor << "ivec2 storePos = ivec2(numRows*texCoordFromVertexShader.x, numCols*texCoordFromVertexShader.y);  particle particleData = p[" << shaderStorageBufferOffset * NUM_ELEMENTS_X * NUM_ELEMENTS_Y << " + (storePos.x*numRows + storePos.y)]; ";
 
-    //fragmentshaderstringstreamChannelMonitor << " memoryBarrierBuffer(); \n";
+    // fragmentshaderstringstreamChannelMonitor << " memoryBarrierBuffer(); \n";
     fragmentshaderstringstreamChannelMonitor << " float dataRangeMultiplier = 1.0 / abs(dataRangeMax - dataRangeMin); \n";
 
     switch (colorchannel)
@@ -412,16 +412,19 @@ void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacemen
 
         break;
     }
+
     case GREEN_CHANNEL:
     {
         fragmentshaderstringstreamChannelMonitor << "   vec4 color; color.x = 0.0; color.y = 0.5+dataRangeMultiplier*particleData.y; color.z = 0.0; color.w = 1.0; gl_FragColor = color;\n";
         break;
     }
+
     case BLUE_CHANNEL:
     {
         fragmentshaderstringstreamChannelMonitor << "   vec4 color; color.x = 0.0; color.y = 0.0; color.z = 0.5+dataRangeMultiplier*particleData.z;  color.w = 0.0 ; gl_FragColor = color;\n";
         break;
     }
+
     case ALPHA_CHANNEL:
     {
         fragmentshaderstringstreamChannelMonitor << "   vec4 color; color.x = 0.5+dataRangeMultiplier*particleData.w; color.y = 0.5+dataRangeMultiplier*particleData.w; color.z = 0.5+dataRangeMultiplier*particleData.w; color.w = 0.5+0.5*particleData.w; gl_FragColor = color;\n";
@@ -439,7 +442,6 @@ void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacemen
         fragmentshaderstringstreamChannelMonitor << "   vec4 color; color.x = 0.5+dataRangeMultiplier*particleData.x; color.y = 0.5+dataRangeMultiplier*particleData.y; color.z = 0.5+dataRangeMultiplier*particleData.z; color.w = 0.5+0.5*particleData.w; gl_FragColor = color;\n";
         break;
     }
-
     }
 
     fragmentshaderstringstreamChannelMonitor << "}\n";
@@ -447,12 +449,12 @@ void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacemen
 
 
 
-    osg::Program * program = new osg::Program;
+    osg::Program *program = new osg::Program;
     program->addShader(new osg::Shader(osg::Shader::VERTEX, vertexShaderSrcChannelMonitor));
     program->addShader(new osg::Shader(osg::Shader::FRAGMENT, fragmentshaderstringstreamChannelMonitor.str().c_str()));
     program->addBindAttribLocation("tex_coords", 1);
 
-    osg::StateSet* ss = geom->getOrCreateStateSet();
+    osg::StateSet *ss = geom->getOrCreateStateSet();
     ss->setAttributeAndModes(program, osg::StateAttribute::ON);
     ss->addUniform(new osg::Uniform("numRows", (int)NUM_ELEMENTS_X));
     ss->addUniform(new osg::Uniform("numCols", (int)NUM_ELEMENTS_Y));
@@ -463,12 +465,12 @@ void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacemen
 
     ss->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
-    //add a label
-    osgText::Text* text = new osgText::Text;
-    osgText::Font* font = osgText::readFontFile("fonts/arial.ttf");
+    // add a label
+    osgText::Text *text = new osgText::Text;
+    osgText::Font *font = osgText::readFontFile("fonts/arial.ttf");
     text->setFont(font);
     text->setColor(osg::Vec4(1, 1, 1, 1));
-    text->setCharacterSize(0.1*scale);
+    text->setCharacterSize(0.1 * scale);
     text->setPosition(placement + osg::Vec3(0.05, 0.05, 0));
     pat->setName(labelCaption);
     text->setText(pat->getName());
@@ -480,42 +482,46 @@ void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacemen
     quad->addDrawable(text);
 
     pat->addChild(quad.get());
-
 }
 
-//compute texture image , taken from osgspotlight
-osg::Image* createSpotLightImage(const osg::Vec4& centerColour, const osg::Vec4& backgroudColour, unsigned int size, float power)
+// compute texture image , taken from osgspotlight
+osg::Image* createSpotLightImage(const osg::Vec4&centerColour, const osg::Vec4&backgroudColour, unsigned int size, float power)
 {
-    osg::Image* image = new osg::Image;
+    osg::Image *image = new osg::Image;
+
     image->allocateImage(size, size, 1,
-        GL_RGBA, GL_UNSIGNED_BYTE);
+                         GL_RGBA, GL_UNSIGNED_BYTE);
 
 
-    float mid = (float(size) - 1)*0.5f;
+    float mid = (float(size) - 1) * 0.5f;
     float div = 2.0f / float(size);
+
     for (unsigned int r = 0; r < size; ++r)
     {
-        unsigned char* ptr = image->data(0, r, 0);
+        unsigned char *ptr = image->data(0, r, 0);
+
         for (unsigned int c = 0; c < size; ++c)
         {
-            float dx = (float(c) - mid)*div;
-            float dy = (float(r) - mid)*div;
-            float r = powf(1.0f - sqrtf(dx*dx + dy*dy), power);
-            if (r < 0.0f) r = 0.0f;
-            osg::Vec4 color = centerColour*r + backgroudColour*(1.0f - r);
-            *ptr++ = (unsigned char)((color[0])*255.0f);
-            *ptr++ = (unsigned char)((color[1])*255.0f);
-            *ptr++ = (unsigned char)((color[2])*255.0f);
-            *ptr++ = (unsigned char)((color[3])*255.0f);
+            float dx = (float(c) - mid) * div;
+            float dy = (float(r) - mid) * div;
+            float r  = powf(1.0f - sqrtf(dx * dx + dy * dy), power);
+            if (r < 0.0f)
+                r = 0.0f;
+
+            osg::Vec4 color = centerColour * r + backgroudColour * (1.0f - r);
+            *ptr++ = (unsigned char)((color[0]) * 255.0f);
+            *ptr++ = (unsigned char)((color[1]) * 255.0f);
+            *ptr++ = (unsigned char)((color[2]) * 255.0f);
+            *ptr++ = (unsigned char)((color[3]) * 255.0f);
         }
     }
+
     return image;
 }
 
 
 void ComputeNode::addComputationResultsRenderTree()
 {
-
     _computationResultsRenderProgram = new osg::Program;
 
     _vertexShader = osg::Shader::readShaderFile(osg::Shader::VERTEX, _vertexShaderSourcePath);
@@ -535,8 +541,8 @@ void ComputeNode::addComputationResultsRenderTree()
     _computationResultsRenderStateSet = _computationResultsRenderGroup->getOrCreateStateSet();
     _computationResultsRenderStateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
 
-    osg::PointSprite *sprite = new osg::PointSprite;
-    int texture_unit = 0;
+    osg::PointSprite *sprite      = new osg::PointSprite;
+    int              texture_unit = 0;
     _computationResultsRenderStateSet->setTextureAttributeAndModes(texture_unit, sprite, osg::StateAttribute::ON);
     _computationResultsRenderStateSet->setAttributeAndModes(_computationResultsRenderProgram.get(), osg::StateAttribute::ON);
     _computationResultsRenderStateSet->addUniform(new osg::Uniform("particleTexture", texture_unit));
@@ -551,16 +557,17 @@ void ComputeNode::addComputationResultsRenderTree()
 
     osg::Texture2D *tex = new osg::Texture2D();
 
-    osg::Image* particleImage = createSpotLightImage(osg::Vec4(1, 0, 0, 1), osg::Vec4(0.5, 0, 0, 0.0), 32, 0.7);
+    osg::Image *particleImage = createSpotLightImage(osg::Vec4(1, 0, 0, 1), osg::Vec4(0.5, 0, 0, 0.0), 32, 0.7);
     if (particleImage)
     {
         tex->setImage(particleImage);
     }
+
     _computationResultsRenderStateSet->setTextureAttributeAndModes(texture_unit, tex, osg::StateAttribute::ON);
 
 
     osg::BlendFunc *blend = new osg::BlendFunc;
-    if (false) //emissive particles
+    if (false) // emissive particles
     {
         blend->setFunction(osg::BlendFunc::SRC_ALPHA, osg::BlendFunc::ONE);
     }
@@ -572,7 +579,7 @@ void ComputeNode::addComputationResultsRenderTree()
     _computationResultsRenderStateSet->setAttributeAndModes(blend, osg::StateAttribute::ON);
 
 
-    osg::Depth* depth = new osg::Depth;
+    osg::Depth *depth = new osg::Depth;
     depth->setRange(0.0f, 0.0f);
     depth->setFunction(osg::Depth::ALWAYS);
     depth->setWriteMask(false);
@@ -581,15 +588,15 @@ void ComputeNode::addComputationResultsRenderTree()
     _computationResultsRenderStateSet->setAttributeAndModes(depth, osg::StateAttribute::OFF);
 
 
-    osg::Geode* particleGeode = new osg::Geode;
-    unsigned int numVertices = NUM_ELEMENTS_X*NUM_ELEMENTS_Y;
+    osg::Geode   *particleGeode = new osg::Geode;
+    unsigned int numVertices    = NUM_ELEMENTS_X * NUM_ELEMENTS_Y;
 
-    osg::Geometry* particleGeometry = new osg::Geometry;
+    osg::Geometry *particleGeometry = new osg::Geometry;
     particleGeometry->setUseDisplayList(false);
     particleGeometry->setUseVertexBufferObjects(true);
 
-    osg::Vec3Array* vertexarray = new osg::Vec3Array;
-    osg::Vec2Array* tcoords = new osg::Vec2Array;
+    osg::Vec3Array *vertexarray = new osg::Vec3Array;
+    osg::Vec2Array *tcoords     = new osg::Vec2Array;
 
     osg::Vec2 bottom_texcoord(0.0f, 0.0f);
 
@@ -600,7 +607,7 @@ void ComputeNode::addComputationResultsRenderTree()
 
     for (int i = 0; i < NUM_ELEMENTS_X; i++)
     {
-        osg::Vec2 texcoord = bottom_texcoord + dy_texcoord*(float)i;
+        osg::Vec2 texcoord = bottom_texcoord + dy_texcoord * (float)i;
 
         for (int j = 0; j < NUM_ELEMENTS_Y; j++)
         {
@@ -613,71 +620,68 @@ void ComputeNode::addComputationResultsRenderTree()
     particleGeometry->setVertexArray(vertexarray);
     particleGeometry->addPrimitiveSet(new osg::DrawArrays(GL_POINTS, 0, numVertices));
     particleGeometry->setTexCoordArray(0, tcoords);
-    //this glMemoryBarrier thing... not sure if we could better do instanced drawing?  all the data is in Shader Storage Buffer..
+    // this glMemoryBarrier thing... not sure if we could better do instanced drawing?  all the data is in Shader Storage Buffer..
     particleGeometry->setVertexAttribArray(1, particleGeometry->getTexCoordArray(0), osg::Array::BIND_PER_VERTEX);
 
     _computationResultsRenderGroup->addChild(particleGeode);
     particleGeode->addDrawable(particleGeometry);
 
     addChild(_computationResultsRenderGroup.get());
-
 }
 
 
 void ComputeNode::initComputingSetup()
 {
-
     _computeProgram = new osg::Program;
     _computeProgram->setComputeGroups((NUM_ELEMENTS_X / WORK_GROUP_SIZE) <= 1 ? 1 : (NUM_ELEMENTS_X / WORK_GROUP_SIZE), (NUM_ELEMENTS_Y / WORK_GROUP_SIZE) <= 1 ? 1 : (NUM_ELEMENTS_Y / WORK_GROUP_SIZE), 1);
     _computeShader = osg::Shader::readShaderFile(osg::Shader::COMPUTE, _computeShaderSourcePath);
     _computeProgram->addShader(_computeShader.get());
 
     setDataVariance(osg::Object::DYNAMIC);
-    osg::StateSet* statesetComputation = getOrCreateStateSet();
+    osg::StateSet *statesetComputation = getOrCreateStateSet();
     statesetComputation->setAttributeAndModes(_computeProgram.get());
     statesetComputation->addUniform(new osg::Uniform("numCols", (int)NUM_ELEMENTS_X));
     statesetComputation->addUniform(new osg::Uniform("numRows", (int)NUM_ELEMENTS_Y));
     statesetComputation->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
-    //blocksize
-    int  numParticles = NUM_ELEMENTS_X * NUM_ELEMENTS_Y;
-    const unsigned blockSize = numParticles * __numChannels * __numDataValuesPerChannel* sizeof(GLfloat);
+    // blocksize
+    int            numParticles = NUM_ELEMENTS_X * NUM_ELEMENTS_Y;
+    const unsigned blockSize    = numParticles * __numChannels * __numDataValuesPerChannel * sizeof(GLfloat);
 
-    //init all the particle data array
+    // init all the particle data array
     int idx = 0;
-    _data = new GLfloat[NUM_ELEMENTS_X  * NUM_ELEMENTS_Y  * __numChannels * __numDataValuesPerChannel];
+    _data      = new GLfloat[NUM_ELEMENTS_X * NUM_ELEMENTS_Y * __numChannels * __numDataValuesPerChannel];
     _dataArray = new FloatArray;
 
-    //init the data array  somehow, this way all is stored in one BufferObject. maybe better using multiple buffers instead? not sure what is faster and better for threading
+    // init the data array  somehow, this way all is stored in one BufferObject. maybe better using multiple buffers instead? not sure what is faster and better for threading
     for (int d = 0; d < __numDataValuesPerChannel; ++d)
     {
         for (int i = 0; i < NUM_ELEMENTS_X; ++i)
         {
-
             for (int j = 0; j < NUM_ELEMENTS_Y; ++j)
             {
-
                 for (int k = 0; k < __numChannels; ++k)
                 {
                     switch (k)
                     {
-
-                    case (RED_CHANNEL) :
+                    case (RED_CHANNEL):
                     {
-                        if ((d == POSITION_NOW_OFFSET) || (d == POSITION_OLD_OFFSET) || (d == POSITION_INIT_OFFSET))//position
+                        if ((d == POSITION_NOW_OFFSET) || (d == POSITION_OLD_OFFSET) || (d == POSITION_INIT_OFFSET))// position
                         {
                             *_data = random(0.25, 0.75);
                         }
-                        if ((d == VELOCITY_NOW_OFFSET) || (d == VELOCITY_OLD_OFFSET) || (d == VELOCITY_INIT_OFFSET))//velocity
+
+                        if ((d == VELOCITY_NOW_OFFSET) || (d == VELOCITY_OLD_OFFSET) || (d == VELOCITY_INIT_OFFSET))// velocity
                         {
                             *_data = random(-2.4, 2.4);
                         }
-                        if (d == ACCELERATION_OFFSET) //acceleration
+
+                        if (d == ACCELERATION_OFFSET) // acceleration
                         {
                             *_data = random(-3.0, 3.0);
                         }
 
-                        if (d == PROPERTIES_OFFSET) //property particle mass (compute shader is computing sphere mass from radius instead)
+                        if (d == PROPERTIES_OFFSET) // property particle mass (compute shader is computing sphere mass from radius instead)
                         {
                             *_data = random(0.2, 15.0);
                         }
@@ -685,22 +689,24 @@ void ComputeNode::initComputingSetup()
                         break;
                     }
 
-                    case (GREEN_CHANNEL) :
+                    case (GREEN_CHANNEL):
                     {
-                        if ((d == POSITION_NOW_OFFSET) || (d == POSITION_OLD_OFFSET) || (d == POSITION_INIT_OFFSET))//position
+                        if ((d == POSITION_NOW_OFFSET) || (d == POSITION_OLD_OFFSET) || (d == POSITION_INIT_OFFSET))// position
                         {
                             *_data = random(0.25, 0.75);
                         }
-                        if ((d == VELOCITY_NOW_OFFSET) || (d == VELOCITY_OLD_OFFSET) || (d == VELOCITY_INIT_OFFSET))//velocity
+
+                        if ((d == VELOCITY_NOW_OFFSET) || (d == VELOCITY_OLD_OFFSET) || (d == VELOCITY_INIT_OFFSET))// velocity
                         {
                             *_data = random(-2.4, 2.4);
                         }
 
-                        if (d == ACCELERATION_OFFSET)//acceleration
+                        if (d == ACCELERATION_OFFSET)// acceleration
                         {
                             *_data = random(-3.0, 3.0);
                         }
-                        if (d == PROPERTIES_OFFSET) //property particle radius
+
+                        if (d == PROPERTIES_OFFSET) // property particle radius
                         {
                             *_data = random(0.07, 0.219);
                         }
@@ -708,24 +714,25 @@ void ComputeNode::initComputingSetup()
                         break;
                     }
 
-                    case (BLUE_CHANNEL) :
+                    case (BLUE_CHANNEL):
                     {
-                        if ((d == POSITION_NOW_OFFSET) || (d == POSITION_OLD_OFFSET) || (d == POSITION_INIT_OFFSET))//position
+                        if ((d == POSITION_NOW_OFFSET) || (d == POSITION_OLD_OFFSET) || (d == POSITION_INIT_OFFSET))// position
                         {
                             *_data = random(0.25, 0.75);
                         }
-                        if ((d == VELOCITY_NOW_OFFSET) || (d == VELOCITY_OLD_OFFSET) || (d == VELOCITY_INIT_OFFSET))//velocity
+
+                        if ((d == VELOCITY_NOW_OFFSET) || (d == VELOCITY_OLD_OFFSET) || (d == VELOCITY_INIT_OFFSET))// velocity
                         {
                             *_data = random(-2.4, 2.4);
                         }
 
-                        if (d == ACCELERATION_OFFSET)//acceleration
+                        if (d == ACCELERATION_OFFSET)// acceleration
                         {
                             *_data = random(-3.0, 3.0);
                         }
 
 
-                        if (d == PROPERTIES_OFFSET)  //place for some other property
+                        if (d == PROPERTIES_OFFSET)  // place for some other property
                         {
                             *_data = random(0.0, 0.0);
                         }
@@ -733,34 +740,33 @@ void ComputeNode::initComputingSetup()
                         break;
                     }
 
-                    case (ALPHA_CHANNEL) :
+                    case (ALPHA_CHANNEL):
                     {
-                        if ((d == POSITION_NOW_OFFSET) || (d == POSITION_OLD_OFFSET) || (d == POSITION_INIT_OFFSET))//position
+                        if ((d == POSITION_NOW_OFFSET) || (d == POSITION_OLD_OFFSET) || (d == POSITION_INIT_OFFSET))// position
                         {
                             *_data = random(1.0, 1.0);
                         }
-                        if ((d == VELOCITY_NOW_OFFSET) || (d == VELOCITY_OLD_OFFSET) || (d == VELOCITY_INIT_OFFSET))//velocity
+
+                        if ((d == VELOCITY_NOW_OFFSET) || (d == VELOCITY_OLD_OFFSET) || (d == VELOCITY_INIT_OFFSET))// velocity
                         {
                             *_data = random(-2.4, 2.4);
                         }
 
-                        if (d == ACCELERATION_OFFSET) //acceleration
+                        if (d == ACCELERATION_OFFSET) // acceleration
                         {
-                            //*_data = random(1.0, 1.0);
+                            // *_data = random(1.0, 1.0);
                             *_data = random(0.0, 0.0);
                         }
 
-                        if (d == PROPERTIES_OFFSET) //place for some other property
+                        if (d == PROPERTIES_OFFSET) // place for some other property
                         {
                             *_data = random(0.3, 0.3);
                         }
 
                         break;
                     }
-
-
-
                     }
+
                     _dataArray->push_back(*_data);
                     _data++;
                     idx++;
@@ -777,37 +783,37 @@ void ComputeNode::initComputingSetup()
     statesetComputation->setAttributeAndModes(_ssbb.get(), osg::StateAttribute::ON);
 
 
-    //option, do something useful with data or test the transfer speed
-    //_ssbb->setUpdateCallback(new ShaderStorageBufferCallback);
+    // option, do something useful with data or test the transfer speed
+    // _ssbb->setUpdateCallback(new ShaderStorageBufferCallback);
 
-    //adding a quad , visualizing data in buffer
+    // adding a quad , visualizing data in buffer
     addDataMonitor(osg::Vec3(0, -1, 0), osg::Vec3(SUB_PLACEMENT_OFFSET_HORIZONTAL * 0, -SUB_PLACEMENT_OFFSET_VERTICAL * -2.0, SUB_PLACEMENT_OFFSET_HORIZONTAL * 0), 1.0, RGB_CHANNEL, POSITION_NOW_OFFSET, "X,Y,Z - PositionNow", -1.0, 1.0);
 
-    //the coord from default dataset
+    // the coord from default dataset
     addHelperGeometry();
 
 
     addComputationResultsRenderTree();
-
 }
 
 
-//taken from osgdistorsion example for getting it nice on screen with antialiasing
-osg::Node* createPrerenderSubgraph(osg::Node* subgraph, const osg::Vec4& clearColour)
+// taken from osgdistorsion example for getting it nice on screen with antialiasing
+osg::Node* createPrerenderSubgraph(osg::Node *subgraph, const osg::Vec4&clearColour)
 {
-    osg::Group* prerenderNode = new osg::Group;
+    osg::Group *prerenderNode = new osg::Group;
 
-    unsigned int tex_width = PRERENDER_WIDTH;
+    unsigned int tex_width  = PRERENDER_WIDTH;
     unsigned int tex_height = PRERENDER_HEIGHT;
 
-    osg::Texture2D* texture = new osg::Texture2D;
+    osg::Texture2D *texture = new osg::Texture2D;
+
     texture->setTextureSize(tex_width, tex_height);
     texture->setInternalFormat(GL_RGBA);
     texture->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::LINEAR);
     texture->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::LINEAR);
 
     {
-        osg::Camera* prerenderCamera = new osg::Camera;
+        osg::Camera *prerenderCamera = new osg::Camera;
         prerenderCamera->setClearColor(clearColour);
         prerenderCamera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         prerenderCamera->setReferenceFrame(osg::Transform::RELATIVE_RF);
@@ -819,11 +825,10 @@ osg::Node* createPrerenderSubgraph(osg::Node* subgraph, const osg::Vec4& clearCo
         prerenderCamera->attach(osg::Camera::COLOR_BUFFER0, texture, 0, 0, false, PRERENDER_ANTIALIASINGMULTISAMPLES, PRERENDER_ANTIALIASINGMULTISAMPLES);
         prerenderCamera->addChild(subgraph);
         prerenderNode->addChild(prerenderCamera);
-
     }
 
     {
-        osg::Geometry* polyGeom = new osg::Geometry();
+        osg::Geometry *polyGeom = new osg::Geometry();
 
         polyGeom->setSupportsDisplayList(false);
 
@@ -831,33 +836,35 @@ osg::Node* createPrerenderSubgraph(osg::Node* subgraph, const osg::Vec4& clearCo
         osg::Vec3 xAxis(1.0f, 0.0f, 0.0f);
         osg::Vec3 yAxis(0.0f, 1.0f, 0.0f);
 
-        float height = 1024.0f;
-        float width = 1280.0f;
-        int noSteps = 3;
+        float height  = 1024.0f;
+        float width   = 1280.0f;
+        int   noSteps = 3;
 
-        osg::Vec3Array* vertices = new osg::Vec3Array;
-        osg::Vec2Array* texcoords = new osg::Vec2Array;
-        osg::Vec4Array* colors = new osg::Vec4Array;
+        osg::Vec3Array *vertices  = new osg::Vec3Array;
+        osg::Vec2Array *texcoords = new osg::Vec2Array;
+        osg::Vec4Array *colors    = new osg::Vec4Array;
 
         osg::Vec3 bottom = origin;
-        osg::Vec3 dx = xAxis*(width / ((float)(noSteps - 1)));
-        osg::Vec3 dy = yAxis*(height / ((float)(noSteps - 1)));
+        osg::Vec3 dx     = xAxis * (width / ((float)(noSteps - 1)));
+        osg::Vec3 dy     = yAxis * (height / ((float)(noSteps - 1)));
 
         osg::Vec2 bottom_texcoord(0.0f, 0.0f);
         osg::Vec2 dx_texcoord(1.0f / (float)(noSteps - 1), 0.0f);
         osg::Vec2 dy_texcoord(0.0f, 1.0f / (float)(noSteps - 1));
 
         int i, j;
+
         for (i = 0; i < noSteps; ++i)
         {
-            osg::Vec3 cursor = bottom + dy*(float)i;
-            osg::Vec2 texcoord = bottom_texcoord + dy_texcoord*(float)i;
+            osg::Vec3 cursor   = bottom + dy * (float)i;
+            osg::Vec2 texcoord = bottom_texcoord + dy_texcoord * (float)i;
+
             for (j = 0; j < noSteps; ++j)
             {
                 vertices->push_back(cursor);
-                texcoords->push_back(osg::Vec2((sin(texcoord.x()*osg::PI - osg::PI*0.5) + 1.0f)*0.5f, (sin(texcoord.y()*osg::PI - osg::PI*0.5) + 1.0f)*0.5f));
+                texcoords->push_back(osg::Vec2((sin(texcoord.x() * osg::PI - osg::PI * 0.5) + 1.0f) * 0.5f, (sin(texcoord.y() * osg::PI - osg::PI * 0.5) + 1.0f) * 0.5f));
                 colors->push_back(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-                cursor += dx;
+                cursor   += dx;
                 texcoord += dx_texcoord;
             }
         }
@@ -868,23 +875,25 @@ osg::Node* createPrerenderSubgraph(osg::Node* subgraph, const osg::Vec4& clearCo
 
         for (i = 0; i < noSteps - 1; ++i)
         {
-            osg::DrawElementsUShort* elements = new osg::DrawElementsUShort(osg::PrimitiveSet::QUAD_STRIP);
+            osg::DrawElementsUShort *elements = new osg::DrawElementsUShort(osg::PrimitiveSet::QUAD_STRIP);
+
             for (j = 0; j < noSteps; ++j)
             {
-                elements->push_back(j + (i + 1)*noSteps);
-                elements->push_back(j + (i)*noSteps);
+                elements->push_back(j + (i + 1) * noSteps);
+                elements->push_back(j + (i) * noSteps);
             }
+
             polyGeom->addPrimitiveSet(elements);
         }
 
-        osg::StateSet* stateset = polyGeom->getOrCreateStateSet();
+        osg::StateSet *stateset = polyGeom->getOrCreateStateSet();
         stateset->setTextureAttributeAndModes(0, texture, osg::StateAttribute::ON);
         stateset->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 
-        osg::Geode* geode = new osg::Geode();
+        osg::Geode *geode = new osg::Geode();
         geode->addDrawable(polyGeom);
 
-        osg::Camera* nestedRenderCamera = new osg::Camera;
+        osg::Camera *nestedRenderCamera = new osg::Camera;
         nestedRenderCamera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
         nestedRenderCamera->setViewMatrix(osg::Matrix::identity());
         nestedRenderCamera->setProjectionMatrixAsOrtho2D(0, 1280, 0, 1024);
@@ -900,7 +909,7 @@ osg::Node* createPrerenderSubgraph(osg::Node* subgraph, const osg::Vec4& clearCo
 
 
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     osg::ArgumentParser arguments(&argc, argv);
 
@@ -917,7 +926,7 @@ int main(int argc, char** argv)
     viewer.setCameraManipulator(new osgGA::TrackballManipulator());
 
     viewer.setUpViewInWindow(11, 11, 800 + 11, 600 + 11);
-    //viewer.setUpViewOnSingleScreen(0); // !!
+    // viewer.setUpViewOnSingleScreen(0); // !!
 
     viewer.getCamera()->setClearColor(osg::Vec4(0.3, 0.3, 0.3, 1.0));
     viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);// we can play with threading models later

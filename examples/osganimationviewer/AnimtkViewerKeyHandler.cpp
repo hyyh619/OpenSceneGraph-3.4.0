@@ -1,4 +1,4 @@
-/*  -*-c++-*- 
+/*  -*-c++-*-
  *  Copyright (C) 2008 Cedric Pinson <mornifle@plopbyte.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Authors:
- * 
+ *
  * Cedric Pinson <mornifle@plopbyte.net>
  *
  */
@@ -32,7 +32,7 @@ AnimtkKeyEventHandler::AnimtkKeyEventHandler()
     _actionKeys[Prev] = '[';
 }
 
-void AnimtkKeyEventHandler::printUsage() const 
+void AnimtkKeyEventHandler::printUsage() const
 {
     std::cout << (char) _actionKeys.find(Help)->second << " for Help" << std::endl;
     std::cout << (char) _actionKeys.find(List)->second << " for List" << std::endl;
@@ -42,17 +42,22 @@ void AnimtkKeyEventHandler::printUsage() const
 }
 
 
-bool AnimtkKeyEventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter&,
+bool AnimtkKeyEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&,
                                    osg::Object*, osg::NodeVisitor*)
 {
-    AnimtkViewerModelController& mc = AnimtkViewerModelController::instance();
-    if(ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN) 
+    AnimtkViewerModelController&mc = AnimtkViewerModelController::instance();
+
+    if (ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
     {
-        if (ea.getKey() == _actionKeys[List]) return mc.list();
-        else if (ea.getKey() == _actionKeys[Play]) return mc.play();
-        else if (ea.getKey() == _actionKeys[Next]) return mc.next();
-        else if (ea.getKey() == _actionKeys[Prev]) return mc.previous();
-        else if (ea.getKey() == _actionKeys[Help]) 
+        if (ea.getKey() == _actionKeys[List])
+            return mc.list();
+        else if (ea.getKey() == _actionKeys[Play])
+            return mc.play();
+        else if (ea.getKey() == _actionKeys[Next])
+            return mc.next();
+        else if (ea.getKey() == _actionKeys[Prev])
+            return mc.previous();
+        else if (ea.getKey() == _actionKeys[Help])
         {
             printUsage();
             return true;

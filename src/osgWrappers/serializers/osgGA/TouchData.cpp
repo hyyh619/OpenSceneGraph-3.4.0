@@ -3,9 +3,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgGA_TouchData,
-                         new osgGA::GUIEventAdapter::TouchData,
-                         osgGA::GUIEventAdapter::TouchData,
-                         "osg::Object osgGA::TouchData" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgGA_TouchData,
+                        new osgGA::GUIEventAdapter::TouchData,
+                        osgGA::GUIEventAdapter::TouchData,
+                        "osg::Object osgGA::TouchData")
+{}

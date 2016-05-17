@@ -62,14 +62,14 @@ CPL_CVSID("$Id: cplgetsymbol.cpp 16702 2009-04-01 20:42:49Z rouault $");
  * Currently CPLGetSymbol() doesn't try to:
  * <ul>
  *  <li> prevent the reference count on the library from going up
- *    for every request, or given any opportunity to unload      
- *    the library.                                            
- *  <li> Attempt to look for the library in non-standard         
- *    locations.                                              
- *  <li> Attempt to try variations on the symbol name, like      
+ *    for every request, or given any opportunity to unload
+ *    the library.
+ *  <li> Attempt to look for the library in non-standard
+ *    locations.
+ *  <li> Attempt to try variations on the symbol name, like
  *    pre-prending or post-pending an underscore.
  * </ul>
- * 
+ *
  * Some of these issues may be worked on in the future.
  *
  * @param pszLibrary the name of the shared library or DLL containing
@@ -80,46 +80,45 @@ CPL_CVSID("$Id: cplgetsymbol.cpp 16702 2009-04-01 20:42:49Z rouault $");
  * found, or the shared library can't be loaded.
  */
 
-void *CPLGetSymbol( const char * pszLibrary, const char * pszSymbolName )
+void* CPLGetSymbol(const char *pszLibrary, const char *pszSymbolName)
 
 {
-    void        *pLibrary;
-    void        *pSymbol;
+    void *pLibrary;
+    void *pSymbol;
 
     pLibrary = dlopen(pszLibrary, RTLD_LAZY);
-    if( pLibrary == NULL )
+    if (pLibrary == NULL)
     {
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "%s", dlerror() );
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "%s", dlerror());
         return NULL;
     }
 
-    pSymbol = dlsym( pLibrary, pszSymbolName );
+    pSymbol = dlsym(pLibrary, pszSymbolName);
 
 #if (defined(__APPLE__) && defined(__MACH__))
     /* On mach-o systems, C symbols have a leading underscore and depending
      * on how dlcompat is configured it may or may not add the leading
      * underscore.  So if dlsym() fails add an underscore and try again.
      */
-    if( pSymbol == NULL )
+    if (pSymbol == NULL)
     {
         char withUnder[strlen(pszSymbolName) + 2];
         withUnder[0] = '_'; withUnder[1] = 0;
         strcat(withUnder, pszSymbolName);
-        pSymbol = dlsym( pLibrary, withUnder );
+        pSymbol = dlsym(pLibrary, withUnder);
     }
 #endif
 
-    if( pSymbol == NULL )
+    if (pSymbol == NULL)
     {
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "%s", dlerror() );
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "%s", dlerror());
         return NULL;
     }
-    
-    return( pSymbol );
-}
 
+    return(pSymbol);
+}
 #endif /* def __unix__ && defined(HAVE_DLFCN_H) */
 
 /* ==================================================================== */
@@ -135,43 +134,42 @@ void *CPLGetSymbol( const char * pszLibrary, const char * pszSymbolName )
 /*                            CPLGetSymbol()                            */
 /************************************************************************/
 
-void *CPLGetSymbol( const char * pszLibrary, const char * pszSymbolName )
+void* CPLGetSymbol(const char *pszLibrary, const char *pszSymbolName)
 
 {
-    void        *pLibrary;
-    void        *pSymbol;
+    void *pLibrary;
+    void *pSymbol;
 
     pLibrary = LoadLibrary(pszLibrary);
-    if( pLibrary == NULL )
+    if (pLibrary == NULL)
     {
-        LPVOID      lpMsgBuf = NULL;
-        int         nLastError = GetLastError();
-        
-        FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER 
-                       | FORMAT_MESSAGE_FROM_SYSTEM
-                       | FORMAT_MESSAGE_IGNORE_INSERTS,
-                       NULL, nLastError,
-                       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), 
-                       (LPTSTR) &lpMsgBuf, 0, NULL );
- 
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "Can't load requested DLL: %s\n%d: %s", 
-                  pszLibrary, nLastError, (const char *) lpMsgBuf );
+        LPVOID lpMsgBuf   = NULL;
+        int    nLastError = GetLastError();
+
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER
+                      | FORMAT_MESSAGE_FROM_SYSTEM
+                      | FORMAT_MESSAGE_IGNORE_INSERTS,
+                      NULL, nLastError,
+                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                      (LPTSTR) &lpMsgBuf, 0, NULL);
+
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "Can't load requested DLL: %s\n%d: %s",
+                 pszLibrary, nLastError, (const char*) lpMsgBuf);
         return NULL;
     }
 
-    pSymbol = (void *) GetProcAddress( (HINSTANCE) pLibrary, pszSymbolName );
+    pSymbol = (void*) GetProcAddress((HINSTANCE) pLibrary, pszSymbolName);
 
-    if( pSymbol == NULL )
+    if (pSymbol == NULL)
     {
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "Can't find requested entry point: %s\n", pszSymbolName );
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "Can't find requested entry point: %s\n", pszSymbolName);
         return NULL;
     }
-    
-    return( pSymbol );
+
+    return(pSymbol);
 }
-
 #endif /* def _WIN32 */
 
 /* ==================================================================== */
@@ -187,32 +185,31 @@ void *CPLGetSymbol( const char * pszLibrary, const char * pszSymbolName )
 /*                            CPLGetSymbol()                            */
 /************************************************************************/
 
-void *CPLGetSymbol( const char * pszLibrary, const char * pszSymbolName )
+void* CPLGetSymbol(const char *pszLibrary, const char *pszSymbolName)
 
 {
-    void        *pLibrary;
-    void        *pSymbol;
+    void *pLibrary;
+    void *pSymbol;
 
     pLibrary = CE_LoadLibraryA(pszLibrary);
-    if( pLibrary == NULL )
+    if (pLibrary == NULL)
     {
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "Can't load requested DLL: %s", pszLibrary );
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "Can't load requested DLL: %s", pszLibrary);
         return NULL;
     }
 
-    pSymbol = (void *) CE_GetProcAddressA( (HINSTANCE) pLibrary, pszSymbolName );
+    pSymbol = (void*) CE_GetProcAddressA((HINSTANCE) pLibrary, pszSymbolName);
 
-    if( pSymbol == NULL )
+    if (pSymbol == NULL)
     {
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "Can't find requested entry point: %s\n", pszSymbolName );
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "Can't find requested entry point: %s\n", pszSymbolName);
         return NULL;
     }
-    
-    return( pSymbol );
+
+    return(pSymbol);
 }
-
 #endif /* def WIN32CE */
 
 /* ==================================================================== */
@@ -227,12 +224,12 @@ void *CPLGetSymbol( const char * pszLibrary, const char * pszSymbolName )
 /*      Dummy implementation.                                           */
 /************************************************************************/
 
-void *CPLGetSymbol(const char *pszLibrary, const char *pszEntryPoint)
+void* CPLGetSymbol(const char *pszLibrary, const char *pszEntryPoint)
 
 {
-    CPLDebug( "CPL", 
-              "CPLGetSymbol(%s,%s) called.  Failed as this is stub"
-              " implementation.", pszLibrary, pszEntryPoint );
+    CPLDebug("CPL",
+             "CPLGetSymbol(%s,%s) called.  Failed as this is stub"
+             " implementation.", pszLibrary, pszEntryPoint);
     return NULL;
 }
 #endif

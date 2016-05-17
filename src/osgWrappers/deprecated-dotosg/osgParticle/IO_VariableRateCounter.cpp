@@ -7,8 +7,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  VariableRateCounter_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool  VariableRateCounter_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool  VariableRateCounter_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool  VariableRateCounter_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(VariableRateCounter_Proxy)
 (
@@ -19,16 +19,19 @@ REGISTER_DOTOSGWRAPPER(VariableRateCounter_Proxy)
     VariableRateCounter_writeLocalData
 );
 
-bool VariableRateCounter_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool VariableRateCounter_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgParticle::VariableRateCounter &myobj = static_cast<osgParticle::VariableRateCounter &>(obj);
-    bool itAdvanced = false;
+    osgParticle::VariableRateCounter&myobj     = static_cast<osgParticle::VariableRateCounter&>(obj);
+    bool                            itAdvanced = false;
 
     osgParticle::rangef r;
-    if (fr[0].matchWord("rateRange")) {
-        if (fr[1].getFloat(r.minimum) && fr[2].getFloat(r.maximum)) {
+
+    if (fr[0].matchWord("rateRange"))
+    {
+        if (fr[1].getFloat(r.minimum) && fr[2].getFloat(r.maximum))
+        {
             myobj.setRateRange(r);
-            fr += 3;
+            fr        += 3;
             itAdvanced = true;
         }
     }
@@ -36,11 +39,12 @@ bool VariableRateCounter_readLocalData(osg::Object &obj, osgDB::Input &fr)
     return itAdvanced;
 }
 
-bool VariableRateCounter_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool VariableRateCounter_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgParticle::VariableRateCounter &myobj = static_cast<const osgParticle::VariableRateCounter &>(obj);
+    const osgParticle::VariableRateCounter&myobj = static_cast<const osgParticle::VariableRateCounter&>(obj);
 
     osgParticle::rangef r = myobj.getRateRange();
+
     fw.indent() << "rateRange " << r.minimum << " " << r.maximum << std::endl;
 
     return true;

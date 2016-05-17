@@ -7,7 +7,7 @@
  * This application is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
+ */
 
 #include <osgDB/ReadFile>
 #include <osgUtil/Optimizer>
@@ -34,20 +34,20 @@
 #include <iostream>
 
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     arguments.getApplicationUsage()->setApplicationName(arguments.getApplicationName());
-    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName()+" is the standard OpenSceneGraph example which loads and visualises 3d models.");
-    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName()+" [options] filename ...");
-    arguments.getApplicationUsage()->addCommandLineOption("--image <filename>","Load an image and render it on a quad");
-    arguments.getApplicationUsage()->addCommandLineOption("--dem <filename>","Load an image/DEM and render it on a HeightField");
-    arguments.getApplicationUsage()->addCommandLineOption("--login <url> <username> <password>","Provide authentication information for http file access.");
-    arguments.getApplicationUsage()->addCommandLineOption("-p <filename>","Play specified camera path animation file, previously saved with 'z' key.");
-    arguments.getApplicationUsage()->addCommandLineOption("--speed <factor>","Speed factor for animation playing (1 == normal speed).");
-    arguments.getApplicationUsage()->addCommandLineOption("--device <device-name>","add named device to the viewer");
+    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName() + " is the standard OpenSceneGraph example which loads and visualises 3d models.");
+    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName() + " [options] filename ...");
+    arguments.getApplicationUsage()->addCommandLineOption("--image <filename>", "Load an image and render it on a quad");
+    arguments.getApplicationUsage()->addCommandLineOption("--dem <filename>", "Load an image/DEM and render it on a HeightField");
+    arguments.getApplicationUsage()->addCommandLineOption("--login <url> <username> <password>", "Provide authentication information for http file access.");
+    arguments.getApplicationUsage()->addCommandLineOption("-p <filename>", "Play specified camera path animation file, previously saved with 'z' key.");
+    arguments.getApplicationUsage()->addCommandLineOption("--speed <factor>", "Speed factor for animation playing (1 == normal speed).");
+    arguments.getApplicationUsage()->addCommandLineOption("--device <device-name>", "add named device to the viewer");
 
     osgViewer::Viewer viewer(arguments);
 
@@ -65,14 +65,15 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    if (arguments.argc()<=1)
+    if (arguments.argc() <= 1)
     {
-        arguments.getApplicationUsage()->write(std::cout,osg::ApplicationUsage::COMMAND_LINE_OPTION);
+        arguments.getApplicationUsage()->write(std::cout, osg::ApplicationUsage::COMMAND_LINE_OPTION);
         return 1;
     }
 
     std::string url, username, password;
-    while(arguments.read("--login",url, username, password))
+
+    while (arguments.read("--login", url, username, password))
     {
         if (!osgDB::Registry::instance()->getAuthenticationMap())
         {
@@ -80,12 +81,13 @@ int main(int argc, char** argv)
             osgDB::Registry::instance()->getAuthenticationMap()->addAuthenticationDetails(
                 url,
                 new osgDB::AuthenticationDetails(username, password)
-            );
+                );
         }
     }
 
     std::string device;
-    while(arguments.read("--device", device))
+
+    while (arguments.read("--device", device))
     {
         osg::ref_ptr<osgGA::Device> dev = osgDB::readFile<osgGA::Device>(device);
         if (dev.valid())
@@ -98,37 +100,41 @@ int main(int argc, char** argv)
     {
         osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
 
-        keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TrackballManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '3', "Drive", new osgGA::DriveManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '4', "Terrain", new osgGA::TerrainManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '5', "Orbit", new osgGA::OrbitManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '6', "FirstPerson", new osgGA::FirstPersonManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '7', "Spherical", new osgGA::SphericalManipulator() );
+        keyswitchManipulator->addMatrixManipulator('1', "Trackball", new osgGA::TrackballManipulator());
+        keyswitchManipulator->addMatrixManipulator('2', "Flight", new osgGA::FlightManipulator());
+        keyswitchManipulator->addMatrixManipulator('3', "Drive", new osgGA::DriveManipulator());
+        keyswitchManipulator->addMatrixManipulator('4', "Terrain", new osgGA::TerrainManipulator());
+        keyswitchManipulator->addMatrixManipulator('5', "Orbit", new osgGA::OrbitManipulator());
+        keyswitchManipulator->addMatrixManipulator('6', "FirstPerson", new osgGA::FirstPersonManipulator());
+        keyswitchManipulator->addMatrixManipulator('7', "Spherical", new osgGA::SphericalManipulator());
 
         std::string pathfile;
-        double animationSpeed = 1.0;
-        while(arguments.read("--speed",animationSpeed) ) {}
+        double      animationSpeed = 1.0;
+
+        while (arguments.read("--speed", animationSpeed))
+        {}
+
         char keyForAnimationPath = '8';
-        while (arguments.read("-p",pathfile))
+
+        while (arguments.read("-p", pathfile))
         {
-            osgGA::AnimationPathManipulator* apm = new osgGA::AnimationPathManipulator(pathfile);
+            osgGA::AnimationPathManipulator *apm = new osgGA::AnimationPathManipulator(pathfile);
             if (apm || !apm->valid())
             {
                 apm->setTimeScale(animationSpeed);
 
                 unsigned int num = keyswitchManipulator->getNumMatrixManipulators();
-                keyswitchManipulator->addMatrixManipulator( keyForAnimationPath, "Path", apm );
+                keyswitchManipulator->addMatrixManipulator(keyForAnimationPath, "Path", apm);
                 keyswitchManipulator->selectMatrixManipulator(num);
                 ++keyForAnimationPath;
             }
         }
 
-        viewer.setCameraManipulator( keyswitchManipulator.get() );
+        viewer.setCameraManipulator(keyswitchManipulator.get());
     }
 
     // add the state manipulator
-    viewer.addEventHandler( new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()) );
+    viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 
     // add the thread model handler
     viewer.addEventHandler(new osgViewer::ThreadingHandler);
@@ -155,7 +161,7 @@ int main(int argc, char** argv)
     osg::ref_ptr<osg::Node> loadedModel = osgDB::readNodeFiles(arguments);
     if (!loadedModel)
     {
-        std::cout << arguments.getApplicationName() <<": No data loaded" << std::endl;
+        std::cout << arguments.getApplicationName() << ": No data loaded" << std::endl;
         return 1;
     }
 
@@ -174,10 +180,9 @@ int main(int argc, char** argv)
     osgUtil::Optimizer optimizer;
     optimizer.optimize(loadedModel.get());
 
-    viewer.setSceneData( loadedModel.get() );
+    viewer.setSceneData(loadedModel.get());
 
     viewer.realize();
 
     return viewer.run();
-
 }

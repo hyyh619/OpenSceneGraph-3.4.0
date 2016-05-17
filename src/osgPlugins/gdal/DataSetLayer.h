@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef DATASETLAYER
 #define DATASETLAYER 1
@@ -19,48 +19,48 @@
 
 #include <gdal_priv.h>
 
-namespace GDALPlugin {
-
+namespace GDALPlugin
+{
 class DataSetLayer : public osgTerrain::Layer
 {
-    public:
+public:
 
-        DataSetLayer();
+DataSetLayer();
 
-        DataSetLayer(const std::string& fileName);
+DataSetLayer(const std::string&fileName);
 
-        /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        DataSetLayer(const DataSetLayer& dataSetLayer,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+/** Copy constructor using CopyOp to manage deep vs shallow copy.*/
+DataSetLayer(const DataSetLayer&dataSetLayer, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-        META_Object(GDALPlugin, DataSetLayer);
+META_Object(GDALPlugin, DataSetLayer);
 
-        virtual bool isOpen() const { return _dataset!=0; }
+virtual bool isOpen() const
+{
+    return _dataset != 0;
+}
 
-        virtual void open();
+virtual void open();
 
-        virtual void close();
+virtual void close();
 
-        virtual unsigned int getNumColumns() const;
+virtual unsigned int getNumColumns() const;
 
-        virtual unsigned int getNumRows() const;
+virtual unsigned int getNumRows() const;
 
-        virtual osgTerrain::ImageLayer* extractImageLayer(unsigned int sourceMinX, unsigned int sourceMinY, unsigned int sourceMaxX, unsigned int sourceMaxY, unsigned int targetWidth=0, unsigned int targetHeight=0);
+virtual osgTerrain::ImageLayer* extractImageLayer(unsigned int sourceMinX, unsigned int sourceMinY, unsigned int sourceMaxX, unsigned int sourceMaxY, unsigned int targetWidth = 0, unsigned int targetHeight = 0);
 
-        void setGdalReader(const osgDB::ReaderWriter* rw);
+void setGdalReader(const osgDB::ReaderWriter *rw);
 
-    protected:
+protected:
 
-        virtual ~DataSetLayer();
+virtual ~DataSetLayer();
 
-        void setUpLocator();
+void setUpLocator();
 
-        GDALDataset* _dataset;
+GDALDataset *_dataset;
 
-        osgDB::ReaderWriter* _gdalReader;
-
-
+osgDB::ReaderWriter *_gdalReader;
 };
-
 }
 
 #endif

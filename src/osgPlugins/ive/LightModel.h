@@ -4,12 +4,14 @@
 #include <osg/LightModel>
 #include "ReadWrite.h"
 
-namespace ive{
-  class LightModel : public osg::LightModel, public ReadWrite {
-  public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
-  };
+namespace ive
+{
+class LightModel : public osg::LightModel, public ReadWrite
+{
+public:
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
+};
 }
 
 #endif

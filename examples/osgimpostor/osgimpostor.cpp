@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgimpostor.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <osg/Geometry>
 #include <osg/Material>
@@ -38,16 +38,16 @@
 // container storing all house nodes
 typedef osg::ref_ptr<osg::Node>    NodePtr;
 typedef std::list<NodePtr>        NodeContainer;
-typedef NodeContainer::iterator    NodeIterator;
+typedef NodeContainer::iterator NodeIterator;
 
-NodeContainer                    nodes;
+NodeContainer nodes;
 
 //
 osg::ref_ptr<osg::Group> Root = 0;
 
 const int HOUSES_SIZE = 25000;        // total number of houses
-double XDim = 5000.0f;                // area dimension +/- XDim
-double ZDim = 5000.0f;                // area dimension +/- YDim
+double    XDim        = 5000.0f;      // area dimension +/- XDim
+double    ZDim        = 5000.0f;      // area dimension +/- YDim
 
 int GridX = 20;                        // number of grids in x direction
 int GridY = 20;                        // number of grids in y direction
@@ -61,7 +61,8 @@ void CreateHouses()
 {
     int i;
 
-    GLubyte indices[48] = {
+    GLubyte indices[48] =
+    {
         0, 2, 1,
         3, 2, 0,
         0, 4, 7,
@@ -82,59 +83,60 @@ void CreateHouses()
 
     // use the same color, normal and indices for all houses.
     osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array(1);
+
     (*colors)[0] = osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
     // normals
     osg::ref_ptr<osg::Vec3Array> normals = new osg::Vec3Array(16);
-    (*normals)[0] = osg::Vec3( 0.0f,  -0.0f, -1.0f);
-    (*normals)[1] = osg::Vec3( 0.0f,  -0.0f, -1.0f);
-    (*normals)[2] = osg::Vec3( 0.0f,  -1.0f,  0.0f);
-    (*normals)[3] = osg::Vec3( 0.0f,  -1.0f,  0.0f);
-    (*normals)[4] = osg::Vec3( 1.0f,  -0.0f,  0.0f);
-    (*normals)[5] = osg::Vec3( 1.0f,  -0.0f,  0.0f);
-    (*normals)[6] = osg::Vec3( 0.0f, 1.0f,  0.0f);
-    (*normals)[7] = osg::Vec3( 0.0f, 1.0f,  0.0f);
-    (*normals)[8] = osg::Vec3(-1.0f,  -0.0f,  0.0f);
-    (*normals)[9] = osg::Vec3(-1.0f,  -0.0f,  0.0f);
-    (*normals)[10] = osg::Vec3( 0.0f,  -0.928477f, 0.371391f);
-    (*normals)[11] = osg::Vec3( 0.0f, 0.928477f, 0.371391f);
-    (*normals)[12] = osg::Vec3( 0.707107f,  0.0f, 0.707107f);
-    (*normals)[13] = osg::Vec3( 0.707107f,  0.0f, 0.707107f);
+    (*normals)[0]  = osg::Vec3(0.0f,  -0.0f, -1.0f);
+    (*normals)[1]  = osg::Vec3(0.0f,  -0.0f, -1.0f);
+    (*normals)[2]  = osg::Vec3(0.0f,  -1.0f,  0.0f);
+    (*normals)[3]  = osg::Vec3(0.0f,  -1.0f,  0.0f);
+    (*normals)[4]  = osg::Vec3(1.0f,  -0.0f,  0.0f);
+    (*normals)[5]  = osg::Vec3(1.0f,  -0.0f,  0.0f);
+    (*normals)[6]  = osg::Vec3(0.0f, 1.0f,  0.0f);
+    (*normals)[7]  = osg::Vec3(0.0f, 1.0f,  0.0f);
+    (*normals)[8]  = osg::Vec3(-1.0f,  -0.0f,  0.0f);
+    (*normals)[9]  = osg::Vec3(-1.0f,  -0.0f,  0.0f);
+    (*normals)[10] = osg::Vec3(0.0f,  -0.928477f, 0.371391f);
+    (*normals)[11] = osg::Vec3(0.0f, 0.928477f, 0.371391f);
+    (*normals)[12] = osg::Vec3(0.707107f,  0.0f, 0.707107f);
+    (*normals)[13] = osg::Vec3(0.707107f,  0.0f, 0.707107f);
     (*normals)[14] = osg::Vec3(-0.707107f,  0.0f, 0.707107f);
     (*normals)[15] = osg::Vec3(-0.707107f,  0.0f, 0.707107f);
 
     // coordIndices
-    osg::ref_ptr<osg::UByteArray> coordIndices = new osg::UByteArray(48,indices);
+    osg::ref_ptr<osg::UByteArray> coordIndices = new osg::UByteArray(48, indices);
 
     // share the primitive set.
-    osg::PrimitiveSet* primitives = new osg::DrawArrays(osg::PrimitiveSet::TRIANGLES,0,48);
+    osg::PrimitiveSet *primitives = new osg::DrawArrays(osg::PrimitiveSet::TRIANGLES, 0, 48);
 
     for (int q = 0; q < HOUSES_SIZE; q++)
     {
         float xPos = ((static_cast<double> (rand()) /
-                      static_cast<double> (RAND_MAX))
-                     * 2.0 * XDim) - XDim;
+                       static_cast<double> (RAND_MAX))
+                      * 2.0 * XDim) - XDim;
 
         float yPos = ((static_cast<double> (rand()) /
-                      static_cast<double> (RAND_MAX))
-                     * 2 * ZDim) - ZDim;
+                       static_cast<double> (RAND_MAX))
+                      * 2 * ZDim) - ZDim;
 
         float scale = 10.0f;
 
-        osg::Vec3 offset(xPos,yPos,0.0f);
+        osg::Vec3 offset(xPos, yPos, 0.0f);
 
         // coords
         osg::ref_ptr<osg::Vec3Array> coords = new osg::Vec3Array(10);
-        (*coords)[0] = osg::Vec3( 0.5f, -0.7f, 0.0f);
-        (*coords)[1] = osg::Vec3( 0.5f,  0.7f, 0.0f);
+        (*coords)[0] = osg::Vec3(0.5f, -0.7f, 0.0f);
+        (*coords)[1] = osg::Vec3(0.5f,  0.7f, 0.0f);
         (*coords)[2] = osg::Vec3(-0.5f, 0.7f, 0.0f);
         (*coords)[3] = osg::Vec3(-0.5f, -0.7f, 0.0f);
-        (*coords)[4] = osg::Vec3( 0.5f, -0.7f, 1.0f);
-        (*coords)[5] = osg::Vec3( 0.5f,  0.7f, 1.0f);
+        (*coords)[4] = osg::Vec3(0.5f, -0.7f, 1.0f);
+        (*coords)[5] = osg::Vec3(0.5f,  0.7f, 1.0f);
         (*coords)[6] = osg::Vec3(-0.5f,  0.7f, 1.0f);
         (*coords)[7] = osg::Vec3(-0.5f, -0.7f, 1.0f);
-        (*coords)[8] = osg::Vec3( 0.0f, -0.5f, 1.5f);
-        (*coords)[9] = osg::Vec3( 0.0f,  0.5f, 1.5f);
+        (*coords)[8] = osg::Vec3(0.0f, -0.5f, 1.5f);
+        (*coords)[9] = osg::Vec3(0.0f,  0.5f, 1.5f);
 
         for (i = 0; i < 10; i++)
         {
@@ -167,25 +169,27 @@ void LayoutAsGrid()
 {
     // calculate bounding box
     osg::BoundingBox bbox;
+
     for (NodeIterator node = nodes.begin(); node != nodes.end(); ++node)
         bbox.expandBy((*node)->getBound());
 
     // setup grid information
-    osg::Group ** groups = new osg::Group*[GridX * GridY];
-        int i;
+    osg::Group **groups = new osg::Group*[GridX * GridY];
+    int        i;
+
     for (i = 0; i < GridX * GridY; i++)
         groups[i] = new osg::Group();
 
     float xGridStart = bbox.xMin();
-    float xGridSize = (bbox.xMax() - bbox.xMin()) / GridX;
+    float xGridSize  = (bbox.xMax() - bbox.xMin()) / GridX;
 
     float yGridStart = bbox.yMin();
-    float yGridSize = (bbox.yMax() - bbox.yMin()) / GridY;
+    float yGridSize  = (bbox.yMax() - bbox.yMin()) / GridY;
 
     // arrange buildings into right grid
     for (NodeIterator nodeIter = nodes.begin(); nodeIter != nodes.end(); ++nodeIter)
     {
-        osg::Node * node = nodeIter->get();
+        osg::Node *node  = nodeIter->get();
         osg::Vec3 center = node->getBound().center();
 
         int x = (int)floor((center.x() - xGridStart) / xGridSize);
@@ -197,13 +201,13 @@ void LayoutAsGrid()
     // add nodes to building root
     for (i = 0; i < GridX * GridY; i++)
     {
-        osg::StateSet * stateset = new osg::StateSet();
+        osg::StateSet *stateset = new osg::StateSet();
 
-        osg::Material * material = new osg::Material();
-        osg::Vec4 color = osg::Vec4(
-            0.5f + (static_cast<double> (rand()) / (2.0*static_cast<double> (RAND_MAX))),
-            0.5f + (static_cast<double> (rand()) / (2.0*static_cast<double> (RAND_MAX))),
-            0.5f + (static_cast<double> (rand()) / ( 2.0*static_cast<double>(RAND_MAX))),
+        osg::Material *material = new osg::Material();
+        osg::Vec4     color     = osg::Vec4(
+            0.5f + (static_cast<double> (rand()) / (2.0 * static_cast<double> (RAND_MAX))),
+            0.5f + (static_cast<double> (rand()) / (2.0 * static_cast<double> (RAND_MAX))),
+            0.5f + (static_cast<double> (rand()) / (2.0 * static_cast<double>(RAND_MAX))),
             1.0f);
 
         material->setAmbient(osg::Material::FRONT_AND_BACK, color);
@@ -214,7 +218,7 @@ void LayoutAsGrid()
 
         if (UseImpostor)
         {
-            osgSim::Impostor * impostor = new osgSim::Impostor();
+            osgSim::Impostor *impostor = new osgSim::Impostor();
             impostor->setImpostorThreshold(static_cast<float> (Threshold));
             impostor->addChild(groups[i]);
             impostor->setRange(0, 0.0f, 1e7f);
@@ -231,10 +235,10 @@ void LayoutAsGrid()
 }
 
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     // construct the viewer.
     osgViewer::Viewer viewer;
@@ -251,24 +255,22 @@ int main( int argc, char **argv )
         // only operators on subclass of Group's, if the model top node is not
         // a group then it won't be able to insert an impostor.  We therefore
         // manually insert an impostor above the model.
-        if (dynamic_cast<osg::Group*>(model.get())==0)
+        if (dynamic_cast<osg::Group*>(model.get()) == 0)
         {
-            const osg::BoundingSphere& bs = model->getBound();
+            const osg::BoundingSphere&bs = model->getBound();
             if (bs.valid())
             {
-
-                osgSim::Impostor* impostor = new osgSim::Impostor;
+                osgSim::Impostor *impostor = new osgSim::Impostor;
 
                 // standard LOD settings
                 impostor->addChild(model.get());
-                impostor->setRange(0,0.0f,1e7f);
+                impostor->setRange(0, 0.0f, 1e7f);
                 impostor->setCenter(bs.center());
 
                 // impostor specfic settings.
                 impostor->setImpostorThresholdToBound(5.0f);
 
                 model = impostor;
-
             }
         }
 

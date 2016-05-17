@@ -11,16 +11,16 @@
 
 #include "fbxReader.h"
 
-osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxCamera(FbxNode* pNode)
+osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxCamera(FbxNode *pNode)
 {
-    const FbxCamera* fbxCamera = FbxCast<FbxCamera>(pNode->GetNodeAttribute());
+    const FbxCamera *fbxCamera = FbxCast<FbxCamera>(pNode->GetNodeAttribute());
 
     if (!fbxCamera)
     {
         return osgDB::ReaderWriter::ReadResult::ERROR_IN_READING_FILE;
     }
 
-    osg::CameraView* osgCameraView = new osg::CameraView;
+    osg::CameraView *osgCameraView = new osg::CameraView;
 
     if (fbxCamera->FieldOfView.IsValid())
     {
@@ -39,9 +39,11 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxCamera(FbxNode* pNode)
         case FbxCamera::eHorizontal:
             osgCameraView->setFieldOfViewMode(osg::CameraView::HORIZONTAL);
             break;
+
         case FbxCamera::eVertical:
             osgCameraView->setFieldOfViewMode(osg::CameraView::VERTICAL);
             break;
+
         case FbxCamera::eHorizAndVert:
         case FbxCamera::eFocalLength:
         default:

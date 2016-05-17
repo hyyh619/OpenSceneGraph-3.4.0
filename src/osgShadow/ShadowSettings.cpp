@@ -9,21 +9,21 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgShadow/ShadowSettings>
 #include <float.h>
 
 using namespace osgShadow;
 
-ShadowSettings::ShadowSettings():
+ShadowSettings::ShadowSettings() :
     _receivesShadowTraversalMask(0xffffffff),
     _castsShadowTraversalMask(0xffffffff),
     _computeNearFearModeOverride(osg::CullSettings::DO_NOT_COMPUTE_NEAR_FAR),
     _lightNum(-1),
     _baseShadowTextureUnit(1),
     _useShadowMapTextureOverride(true),
-    _textureSize(2048,2048),
+    _textureSize(2048, 2048),
     _minimumShadowMapNearFarRatio(0.05),
     _maximumShadowMapDistance(DBL_MAX),
     _shadowMapProjectionHint(PERSPECTIVE_SHADOW_MAP),
@@ -34,12 +34,12 @@ ShadowSettings::ShadowSettings():
 //    _shaderHint(PROVIDE_FRAGMENT_SHADER),
     _debugDraw(false)
 {
-    //_computeNearFearModeOverride = osg::CullSettings::COMPUTE_NEAR_FAR_USING_PRIMITIVES;
-    //_computeNearFearModeOverride = osg::CullSettings::COMPUTE_NEAR_USING_PRIMITIVES);
+    // _computeNearFearModeOverride = osg::CullSettings::COMPUTE_NEAR_FAR_USING_PRIMITIVES;
+    // _computeNearFearModeOverride = osg::CullSettings::COMPUTE_NEAR_USING_PRIMITIVES);
 }
 
-ShadowSettings::ShadowSettings(const ShadowSettings& ss, const osg::CopyOp& copyop):
-    Object(ss,copyop),
+ShadowSettings::ShadowSettings(const ShadowSettings&ss, const osg::CopyOp&copyop) :
+    Object(ss, copyop),
     _receivesShadowTraversalMask(ss._receivesShadowTraversalMask),
     _castsShadowTraversalMask(ss._castsShadowTraversalMask),
     _computeNearFearModeOverride(ss._computeNearFearModeOverride),
@@ -55,9 +55,7 @@ ShadowSettings::ShadowSettings(const ShadowSettings& ss, const osg::CopyOp& copy
     _multipleShadowMapHint(ss._multipleShadowMapHint),
     _shaderHint(ss._shaderHint),
     _debugDraw(ss._debugDraw)
-{
-}
+{}
 
 ShadowSettings::~ShadowSettings()
-{
-}
+{}

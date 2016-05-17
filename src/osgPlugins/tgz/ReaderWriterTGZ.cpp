@@ -24,122 +24,133 @@ using namespace osg;
 
 class ReaderWriterTGZ : public osgDB::ReaderWriter
 {
-    public:
-        virtual const char* className() const { return "TGZ Database Reader/Writer"; }
+public:
+virtual const char* className() const
+{
+    return "TGZ Database Reader/Writer";
+}
 
-        ReaderWriterTGZ()
-        {
-            supportsExtension("tgz","Tar gzip'd archive format");
-        }
+ReaderWriterTGZ()
+{
+    supportsExtension("tgz", "Tar gzip'd archive format");
+}
 
-        virtual ReadResult readNode(const std::string& file, const osgDB::ReaderWriter::Options* options) const
-        {
-             std::string ext = osgDB::getLowerCaseFileExtension(file);
-            if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
+virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(file);
 
-            OSG_NOTICE<<"file="<<file<<std::endl;
+    if (!acceptsExtension(ext))
+        return ReadResult::FILE_NOT_HANDLED;
 
-            std::string fileName = osgDB::findDataFile( file, options );
+    OSG_NOTICE << "file=" << file << std::endl;
 
-            OSG_NOTICE<<"fileName="<<fileName<<std::endl;
+    std::string fileName = osgDB::findDataFile(file, options);
 
-            if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
+    OSG_NOTICE << "fileName=" << fileName << std::endl;
 
-            OSG_INFO<<   "ReaderWriterTGZ::readNode( "<<fileName.c_str()<<" )\n";
+    if (fileName.empty())
+        return ReadResult::FILE_NOT_FOUND;
 
-            char dirname[128];
-            char command[1024];
+    OSG_INFO << "ReaderWriterTGZ::readNode( " << fileName.c_str() << " )\n";
+
+    char dirname[128];
+    char command[1024];
 
         #if defined(_WIN32) && !defined(__CYGWIN__)
-            if ( getenv("TEMP") != NULL ){
-               strcpy(dirname, getenv("TEMP"));
-            }else{
-               //TEMP environment variable not set so pick current directory.
-               strcpy(dirname, "./");
-            }
-            strcat(dirname, ".osgdb_tgz");
-            mkdir( dirname);
-            // Using tar.exe from http://www.cygwin.com/
-            // tar.exe must be in your path.  (PATH environment variable).
-            sprintf( command,
-                "tar xfCz \"%s\" \"%s\"",
-                fileName.c_str(), dirname );
+    if (getenv("TEMP") != NULL)
+    {
+        strcpy(dirname, getenv("TEMP"));
+    }
+    else
+    {
+        // TEMP environment variable not set so pick current directory.
+        strcpy(dirname, "./");
+    }
+
+    strcat(dirname, ".osgdb_tgz");
+    mkdir(dirname);
+    // Using tar.exe from http://www.cygwin.com/
+    // tar.exe must be in your path.  (PATH environment variable).
+    sprintf(command,
+            "tar xfCz \"%s\" \"%s\"",
+            fileName.c_str(), dirname);
         #endif
 
         #if defined(__linux) || defined(__CYGWIN__)
-            sprintf( dirname, "/tmp/.tgz%06d", getpid());
-            mkdir( dirname, 0700 );
-            sprintf( command,
-                "tar xfCz %s %s",
-                fileName.c_str(), dirname );
+    sprintf(dirname, "/tmp/.tgz%06d", getpid());
+    mkdir(dirname, 0700);
+    sprintf(command,
+            "tar xfCz %s %s",
+            fileName.c_str(), dirname);
         #endif
         #ifdef __sgi
-            sprintf( dirname, "/tmp/.tgz%06d", getpid());
-            mkdir( dirname, 0700 );
-            sprintf( command,
-                "cp %s %s; cd %s;"
-                "gzcat %s | tar xf -",
-                fileName.c_str(), dirname, dirname,
-                fileName.c_str());
+    sprintf(dirname, "/tmp/.tgz%06d", getpid());
+    mkdir(dirname, 0700);
+    sprintf(command,
+            "cp %s %s; cd %s;"
+            "gzcat %s | tar xf -",
+            fileName.c_str(), dirname, dirname,
+            fileName.c_str());
         #endif
 
-            OSG_NOTICE<<"Running command '"<<command<<"'"<<std::endl;
+    OSG_NOTICE << "Running command '" << command << "'" << std::endl;
 
-            int result = system( command );
-            if (result!=0) return ReadResult::ERROR_IN_READING_FILE;
+    int result = system(command);
+    if (result != 0)
+        return ReadResult::ERROR_IN_READING_FILE;
 
 
-            osg::ref_ptr<osg::Group> grp = new osg::Group;
+    osg::ref_ptr<osg::Group> grp = new osg::Group;
 
-            OSG_NOTICE<<"Done"<<std::endl;
+    OSG_NOTICE << "Done" << std::endl;
 
-            osg::ref_ptr<osgDB::ReaderWriter::Options> local_options = options ? static_cast<osgDB::ReaderWriter::Options*>(options->clone(osg::CopyOp::SHALLOW_COPY)) : new osgDB::ReaderWriter::Options;
-            local_options->getDatabasePathList().push_front(dirname);
+    osg::ref_ptr<osgDB::ReaderWriter::Options> local_options = options ? static_cast<osgDB::ReaderWriter::Options*>(options->clone(osg::CopyOp::SHALLOW_COPY)) : new osgDB::ReaderWriter::Options;
+    local_options->getDatabasePathList().push_front(dirname);
 
-            OSG_NOTICE<<"local_options->getDatabasePathList().="<<local_options->getDatabasePathList().front()<<std::endl;
-            OSG_NOTICE<<"dirname="<<dirname<<std::endl;
+    OSG_NOTICE << "local_options->getDatabasePathList().=" << local_options->getDatabasePathList().front() << std::endl;
+    OSG_NOTICE << "dirname=" << dirname << std::endl;
 
-            // deactivate the automatic generation of images to geode's.
-            bool prevCreateNodeFromImage = osgDB::Registry::instance()->getCreateNodeFromImage();
-            osgDB::Registry::instance()->setCreateNodeFromImage(false);
+    // deactivate the automatic generation of images to geode's.
+    bool prevCreateNodeFromImage = osgDB::Registry::instance()->getCreateNodeFromImage();
+    osgDB::Registry::instance()->setCreateNodeFromImage(false);
 
-            osgDB::DirectoryContents contents = osgDB::getDirectoryContents(dirname);
-            for(osgDB::DirectoryContents::iterator itr = contents.begin();
-                itr != contents.end();
-                ++itr)
-            {
-                std::string file_ext = osgDB::getFileExtension(*itr);
-                if (!acceptsExtension(file_ext) &&
-                    *itr!=std::string(".") &&
-                    *itr!=std::string(".."))
-                {
-                    osg::Node *node = osgDB::readNodeFile(*itr, local_options.get());
-                    grp->addChild( node );
-                }
-            }
+    osgDB::DirectoryContents contents = osgDB::getDirectoryContents(dirname);
 
-            // restorre original state of the automatic generation of images to geode's.
-            osgDB::Registry::instance()->setCreateNodeFromImage(prevCreateNodeFromImage);
+    for (osgDB::DirectoryContents::iterator itr = contents.begin();
+         itr != contents.end();
+         ++itr)
+    {
+        std::string file_ext = osgDB::getFileExtension(*itr);
+        if (!acceptsExtension(file_ext) &&
+            *itr != std::string(".") &&
+            *itr != std::string(".."))
+        {
+            osg::Node *node = osgDB::readNodeFile(*itr, local_options.get());
+            grp->addChild(node);
+        }
+    }
+
+    // restorre original state of the automatic generation of images to geode's.
+    osgDB::Registry::instance()->setCreateNodeFromImage(prevCreateNodeFromImage);
 
         #if defined(_WIN32) && !defined(__CYGWIN__)
-            sprintf( command, "erase /F /Q /S \"%s\"", dirname );
+    sprintf(command, "erase /F /Q /S \"%s\"", dirname);
         #else
-            sprintf( command, "rm -rf %s", dirname );
+    sprintf(command, "rm -rf %s", dirname);
         #endif
-            OSG_NOTICE<<"Running command '"<<command<<"'"<<std::endl;
+    OSG_NOTICE << "Running command '" << command << "'" << std::endl;
 
-            result = system( command );
-            if (result!=0) return ReadResult::ERROR_IN_READING_FILE;
+    result = system(command);
+    if (result != 0)
+        return ReadResult::ERROR_IN_READING_FILE;
 
-            if( grp->getNumChildren() == 0 )
-            {
-                return ReadResult::FILE_NOT_HANDLED;
-            }
+    if (grp->getNumChildren() == 0)
+    {
+        return ReadResult::FILE_NOT_HANDLED;
+    }
 
-            return grp.get();
-
-        }
-
+    return grp.get();
+}
 };
 
 // now register with sgRegistry to instantiate the above

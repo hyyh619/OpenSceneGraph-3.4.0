@@ -7,17 +7,17 @@
 #include <osgViewer/ViewerEventHandlers>
 #include <osgGA/StateSetManipulator>
 
-void textInfo(osgText::Text* text)
+void textInfo(osgText::Text *text)
 {
-    const osgText::Text::TextureGlyphQuadMap& tgqm = text->getTextureGlyphQuadMap();
+    const osgText::Text::TextureGlyphQuadMap&tgqm = text->getTextureGlyphQuadMap();
 
     const osgText::Text::TextureGlyphQuadMap::const_iterator tgqmi = tgqm.begin();
 
-    const osgText::Text::GlyphQuads& gq = tgqmi->second;
+    const osgText::Text::GlyphQuads&gq = tgqmi->second;
 
-    osgText::String& s = text->getText();
+    osgText::String&s = text->getText();
 
-    for(unsigned int i = 0; i < s.size(); i++)
+    for (unsigned int i = 0; i < s.size(); i++)
     {
         osg::Vec2 ul = (*gq.getCoords())[0 + (i * 4)]; // upperLeft
         osg::Vec2 ll = (*gq.getCoords())[1 + (i * 4)]; // lowerLeft
@@ -39,12 +39,12 @@ void textInfo(osgText::Text* text)
 
 osg::Camera* createOrthoCamera(double width, double height)
 {
-    osg::Camera* camera = new osg::Camera();
+    osg::Camera *camera = new osg::Camera();
 
     camera->getOrCreateStateSet()->setMode(
         GL_LIGHTING,
         osg::StateAttribute::PROTECTED | osg::StateAttribute::OFF
-    );
+        );
 
     osg::Matrix m = osg::Matrix::ortho2D(0.0f, width, 0.0f, height);
 
@@ -57,12 +57,12 @@ osg::Camera* createOrthoCamera(double width, double height)
     return camera;
 }
 
-osgText::Text* createLabel(const std::string& l, const char* f, unsigned int size)
+osgText::Text* createLabel(const std::string&l, const char *f, unsigned int size)
 {
     static osg::Vec3 pos(10.0f, 10.0f, 0.0f);
 
-    osgText::Text* label = new osgText::Text();
-    osgText::Font* font  = osgText::readFontFile(f);
+    osgText::Text *label = new osgText::Text();
+    osgText::Font *font  = osgText::readFontFile(f);
 
     label->setFont(font);
     label->setCharacterSize(size);
@@ -83,13 +83,13 @@ osgText::Text* createLabel(const std::string& l, const char* f, unsigned int siz
 
 typedef std::list<unsigned int> Sizes;
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     osgViewer::Viewer   viewer;
     osg::ArgumentParser args(&argc, argv);
 
     // Make sure we have the minimum args...
-    if(argc <= 2)
+    if (argc <= 2)
     {
         osg::notify(osg::FATAL) << "usage: " << args[0] << " fontfile size1 [size2 ...]" << std::endl;
 
@@ -97,27 +97,28 @@ int main(int argc, char** argv)
     }
 
 
-    viewer.addEventHandler( new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()) );
+    viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
     viewer.addEventHandler(new osgViewer::StatsHandler());
     viewer.addEventHandler(new osgViewer::WindowSizeHandler());
 
-    osg::Group*  group  = new osg::Group();
-    osg::Camera* camera = createOrthoCamera(1280.0f, 1024.0f);
+    osg::Group  *group  = new osg::Group();
+    osg::Camera *camera = createOrthoCamera(1280.0f, 1024.0f);
 
     // Create the list of desired sizes.
     Sizes sizes;
 
-    for(int i = 2; i < argc; i++)
+    for (int i = 2; i < argc; i++)
     {
-        if(!args.isNumber(i)) continue;
+        if (!args.isNumber(i))
+            continue;
 
         sizes.push_back(std::atoi(args[i]));
     }
 
-    osg::Geode* geode = new osg::Geode();
+    osg::Geode *geode = new osg::Geode();
 
     // Add all of our osgText drawables.
-    for(Sizes::const_iterator i = sizes.begin(); i != sizes.end(); i++)
+    for (Sizes::const_iterator i = sizes.begin(); i != sizes.end(); i++)
     {
         std::stringstream ss;
 
@@ -134,4 +135,3 @@ int main(int argc, char** argv)
 
     return viewer.run();
 }
-

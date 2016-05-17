@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool CompositeProperty_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool CompositeProperty_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool CompositeProperty_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool CompositeProperty_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(CompositeProperty_Proxy)
 (
@@ -26,32 +26,35 @@ REGISTER_DOTOSGWRAPPER(CompositeProperty_Proxy)
 );
 
 
-bool CompositeProperty_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool CompositeProperty_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgVolume::CompositeProperty& cp = static_cast<osgVolume::CompositeProperty&>(obj);
+    osgVolume::CompositeProperty&cp = static_cast<osgVolume::CompositeProperty&>(obj);
 
     bool itrAdvanced = false;
 
     osg::ref_ptr<osg::Object> readObject;
+
     do
     {
         readObject = fr.readObjectOfType(osgDB::type_wrapper<osgVolume::Property>());
-        if (readObject.valid()) itrAdvanced = true;
+        if (readObject.valid())
+            itrAdvanced = true;
 
-        osgVolume::Property* property = dynamic_cast<osgVolume::Property*>(readObject.get());
-        if (property) cp.addProperty(property);
-
-    } while (readObject.valid());
+        osgVolume::Property *property = dynamic_cast<osgVolume::Property*>(readObject.get());
+        if (property)
+            cp.addProperty(property);
+    }
+    while (readObject.valid());
 
     return itrAdvanced;
 }
 
-bool CompositeProperty_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool CompositeProperty_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgVolume::CompositeProperty& cp = static_cast<const osgVolume::CompositeProperty&>(obj);
+    const osgVolume::CompositeProperty&cp = static_cast<const osgVolume::CompositeProperty&>(obj);
 
 
-    for(unsigned int i=0; i<cp.getNumProperties(); ++i)
+    for (unsigned int i = 0; i < cp.getNumProperties(); ++i)
     {
         fw.writeObject(*cp.getProperty(i));
     }

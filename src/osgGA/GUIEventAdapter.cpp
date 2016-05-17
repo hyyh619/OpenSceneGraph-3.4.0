@@ -9,20 +9,21 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgGA/GUIEventAdapter>
 
 using namespace osgGA;
 
 
-osg::ref_ptr<GUIEventAdapter>& GUIEventAdapter::getAccumulatedEventState()
+osg::ref_ptr<GUIEventAdapter>&GUIEventAdapter::getAccumulatedEventState()
 {
     static osg::ref_ptr<GUIEventAdapter> s_eventState = new GUIEventAdapter;
+
     return s_eventState;
 }
 
-GUIEventAdapter::GUIEventAdapter():
+GUIEventAdapter::GUIEventAdapter() :
     _eventType(NONE),
     _windowX(0),
     _windowY(0),
@@ -45,8 +46,8 @@ GUIEventAdapter::GUIEventAdapter():
     _touchData(NULL)
 {}
 
-GUIEventAdapter::GUIEventAdapter(const GUIEventAdapter& rhs,const osg::CopyOp& copyop):
-    osgGA::Event(rhs,copyop),
+GUIEventAdapter::GUIEventAdapter(const GUIEventAdapter&rhs, const osg::CopyOp&copyop) :
+    osgGA::Event(rhs, copyop),
     _eventType(rhs._eventType),
     _context(rhs._context),
     _windowX(rhs._windowX),
@@ -69,26 +70,24 @@ GUIEventAdapter::GUIEventAdapter(const GUIEventAdapter& rhs,const osg::CopyOp& c
     _tabletPen(rhs._tabletPen),
     _touchData(NULL)
 {
-    if(TouchData* td = rhs.getTouchData())
+    if (TouchData *td = rhs.getTouchData())
         setTouchData(osg::clone(td, copyop));
 }
 
 GUIEventAdapter::~GUIEventAdapter()
-{
-}
+{}
 
 void GUIEventAdapter::setWindowRectangle(int x, int y, int width, int height, bool updateMouseRange)
 {
-    _windowX = x;
-    _windowY = y;
-    _windowWidth = width;
+    _windowX      = x;
+    _windowY      = y;
+    _windowWidth  = width;
     _windowHeight = height;
 
     if (updateMouseRange)
     {
         setInputRange(0, 0, width, height);
     }
-
 }
 
 void GUIEventAdapter::setInputRange(float Xmin, float Ymin, float Xmax, float Ymax)
@@ -101,19 +100,20 @@ void GUIEventAdapter::setInputRange(float Xmin, float Ymin, float Xmax, float Ym
 
 const osg::Matrix GUIEventAdapter::getPenOrientation() const
 {
-    float xRad = osg::DegreesToRadians ( getPenTiltY() );
-    float yRad = osg::DegreesToRadians ( getPenTiltX() );
-    float zRad = osg::DegreesToRadians ( getPenRotation() );
-    osg::Matrix xrot = osg::Matrix::rotate ( xRad, osg::Vec3f(1.0f, 0.0f, 0.0f) );
-    osg::Matrix yrot = osg::Matrix::rotate ( yRad, osg::Vec3f(0.0f, 0.0f, 1.0f) );
-    osg::Matrix zrot = osg::Matrix::rotate ( zRad, osg::Vec3f(0.0f, 1.0f, 0.0f) );
+    float       xRad = osg::DegreesToRadians (getPenTiltY());
+    float       yRad = osg::DegreesToRadians (getPenTiltX());
+    float       zRad = osg::DegreesToRadians (getPenRotation());
+    osg::Matrix xrot = osg::Matrix::rotate (xRad, osg::Vec3f(1.0f, 0.0f, 0.0f));
+    osg::Matrix yrot = osg::Matrix::rotate (yRad, osg::Vec3f(0.0f, 0.0f, 1.0f));
+    osg::Matrix zrot = osg::Matrix::rotate (zRad, osg::Vec3f(0.0f, 1.0f, 0.0f));
 
-    return ( zrot * yrot * xrot );
+    return (zrot * yrot * xrot);
 }
 
 void GUIEventAdapter::addTouchPoint(unsigned int id, TouchPhase phase, float x, float y, unsigned int tapCount)
 {
-    if (!_touchData.valid()) {
+    if (!_touchData.valid())
+    {
         _touchData = new TouchData();
         setX(x);
         setY(y);
@@ -122,7 +122,7 @@ void GUIEventAdapter::addTouchPoint(unsigned int id, TouchPhase phase, float x, 
     _touchData->addTouchPoint(id, phase, x, y, tapCount);
 }
 
-void GUIEventAdapter::copyPointerDataFrom(const osgGA::GUIEventAdapter& sourceEvent)
+void GUIEventAdapter::copyPointerDataFrom(const osgGA::GUIEventAdapter&sourceEvent)
 {
     setGraphicsContext(const_cast<osg::GraphicsContext*>(sourceEvent.getGraphicsContext()));
     setX(sourceEvent.getX());
@@ -137,15 +137,15 @@ void GUIEventAdapter::copyPointerDataFrom(const osgGA::GUIEventAdapter& sourceEv
 
 void GUIEventAdapter::setMouseYOrientationAndUpdateCoords(osgGA::GUIEventAdapter::MouseYOrientation myo)
 {
-    if ( myo==_mouseYOrientation )
-    return;
+    if (myo == _mouseYOrientation)
+        return;
 
-    setMouseYOrientation( myo );
+    setMouseYOrientation(myo);
 
     _my = _Ymax - _my + _Ymin;
-    if( isMultiTouchEvent() )
+    if (isMultiTouchEvent())
     {
-        for( TouchData::iterator itr =  getTouchData()->begin(); itr != getTouchData()->end(); itr++ ) 
+        for (TouchData::iterator itr = getTouchData()->begin(); itr != getTouchData()->end(); itr++)
             itr->y = _Ymax - itr->y + _Ymin;
     }
 }

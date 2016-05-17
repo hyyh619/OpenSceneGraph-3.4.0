@@ -2,40 +2,41 @@
 
 #include "ShuttleCallback.h"
 
-ShuttleCallback::ShuttleCallback(const osg::Vec3& startPos,
-                                 const osg::Vec3& endPos,
+ShuttleCallback::ShuttleCallback(const osg::Vec3&startPos,
+                                 const osg::Vec3&endPos,
                                  float frequency)
 {
-    _startPos = startPos;
-    _endPos = endPos;
+    _startPos  = startPos;
+    _endPos    = endPos;
     _frequency = frequency;
 
     _previousTraversalNumber = osg::UNINITIALIZED_FRAME_NUMBER;
-    _previousTime = -1.0;
-    _angle = 0.0;
+    _previousTime            = -1.0;
+    _angle                   = 0.0;
 }
 
-void ShuttleCallback::operator() (osg::Node* node, osg::NodeVisitor* nv)
+void ShuttleCallback::operator()(osg::Node *node, osg::NodeVisitor *nv)
 {
     if (!nv)
         return;
 
-    osg::MatrixTransform* transform = dynamic_cast<osg::MatrixTransform*>(node);
+    osg::MatrixTransform *transform = dynamic_cast<osg::MatrixTransform*>(node);
     if (!transform)
         return;
 
-    const osg::FrameStamp* fs = nv->getFrameStamp();
+    const osg::FrameStamp *fs = nv->getFrameStamp();
     if (!fs)
         return;
 
     // ensure that we do not operate on this node more than
     // once during this traversal.  This is an issue since node
     // can be shared between multiple parents.
-    if (nv->getTraversalNumber()!=_previousTraversalNumber)
+    if (nv->getTraversalNumber() != _previousTraversalNumber)
     {
         double currentTime = fs->getSimulationTime();
         if (_previousTime == -1.)
             _previousTime = currentTime;
+
         _angle += (currentTime - _previousTime) * 2 * osg::PI * _frequency;
 
         double frac = 0.5 - 0.5 * cos(_angle);
@@ -46,11 +47,9 @@ void ShuttleCallback::operator() (osg::Node* node, osg::NodeVisitor* nv)
         transform->setMatrix(osg::Matrix::translate(position));
 
         _previousTraversalNumber = nv->getTraversalNumber();
-        _previousTime = currentTime;
+        _previousTime            = currentTime;
     }
 
     // must call any nested node callbacks and continue subgraph traversal.
-    traverse(node,nv);
-
+    traverse(node, nv);
 }
-

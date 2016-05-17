@@ -9,12 +9,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgDB/Version>
 #include <osg/Version>
 
 extern "C" {
-
 const char* osgDBGetVersion()
 {
     return osgGetVersion();
@@ -25,5 +24,4 @@ const char* osgDBGetLibraryName()
 {
     return "OpenSceneGraph DB (Data Base) Library";
 }
-
 }

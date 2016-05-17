@@ -214,7 +214,7 @@
 #define GETNAMEINFO_QUAL_ARG1 const
 
 /* Define to the type of arg 1 for getnameinfo. */
-#define GETNAMEINFO_TYPE_ARG1 struct sockaddr *
+#define GETNAMEINFO_TYPE_ARG1 struct sockaddr*
 
 /* Define to the type of arg 2 for getnameinfo. */
 #define GETNAMEINFO_TYPE_ARG2 socklen_t
@@ -232,7 +232,7 @@
 #define RECV_TYPE_ARG1 SOCKET
 
 /* Define to the type of arg 2 for recv. */
-#define RECV_TYPE_ARG2 char *
+#define RECV_TYPE_ARG2 char*
 
 /* Define to the type of arg 3 for recv. */
 #define RECV_TYPE_ARG3 int
@@ -277,7 +277,7 @@
 #define SEND_QUAL_ARG2 const
 
 /* Define to the type of arg 2 for send. */
-#define SEND_TYPE_ARG2 char *
+#define SEND_TYPE_ARG2 char*
 
 /* Define to the type of arg 3 for send. */
 #define SEND_TYPE_ARG3 int
@@ -344,7 +344,7 @@
 
 /* Define to avoid VS2005 complaining about portable C functions */
 #if defined(_MSC_VER) && (_MSC_VER >= 1400)
-#define _CRT_SECURE_NO_DEPRECATE 1
+#define _CRT_SECURE_NO_DEPRECATE  1
 #define _CRT_NONSTDC_NO_DEPRECATE 1
 #endif
 
@@ -397,14 +397,14 @@
 /*                       WinCE                                      */
 /* ---------------------------------------------------------------- */
 
-#define CURL_DISABLE_FILE 1
+#define CURL_DISABLE_FILE   1
 #define CURL_DISABLE_TELNET 1
-#define CURL_DISABLE_LDAP 1
+#define CURL_DISABLE_LDAP   1
 
 #define ENOSPC 1
 #define ENOMEM 2
 #define EAGAIN 3
 
-extern int stat(const char *path,struct stat *buffer );
+extern int stat(const char *path, struct stat *buffer);
 
 #endif /* __LIB_CONFIG_WIN32CE_H */

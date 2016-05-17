@@ -40,32 +40,30 @@
 
 namespace txp
 {
-    class TXPPagedLOD : public osg::PagedLOD
-    {
-    public:
-        TXPPagedLOD();
+class TXPPagedLOD : public osg::PagedLOD
+{
+public:
+TXPPagedLOD();
 
-        /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        TXPPagedLOD(const TXPPagedLOD&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+/** Copy constructor using CopyOp to manage deep vs shallow copy.*/
+TXPPagedLOD(const TXPPagedLOD&, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-        META_Node(txp, TXPPagedLOD);
+META_Node(txp, TXPPagedLOD);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+virtual void traverse(osg::NodeVisitor&nv);
 
-        inline void setTileId(int x, int y, int lod)
-        {
-            _tileIdentifier.set(x,y,lod);
-        }
+inline void setTileId(int x, int y, int lod)
+{
+    _tileIdentifier.set(x, y, lod);
+}
 
-        TileIdentifier _tileIdentifier;
+TileIdentifier _tileIdentifier;
 
-        virtual osg::BoundingSphere computeBound() const;
+virtual osg::BoundingSphere computeBound() const;
 
-    protected:
-        virtual ~TXPPagedLOD();
-
-    };
-
+protected:
+virtual ~TXPPagedLOD();
+};
 } // namespace
 
 #endif // __TXPPAGEDLOD_H_

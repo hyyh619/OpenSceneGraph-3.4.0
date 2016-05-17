@@ -40,8 +40,8 @@ CPL_CVSID("$Id: gdaltorture.cpp $");
 static void Usage()
 
 {
-    printf( "Usage: gdaltorture [-r] [-u] [-rw] files*\n" );
-    exit( 1 );
+    printf("Usage: gdaltorture [-r] [-u] [-rw] files*\n");
+    exit(1);
 }
 
 /************************************************************************/
@@ -50,22 +50,22 @@ static void Usage()
 
 static void TortureBand(GDALRasterBandH hBand, int bReadWriteOperations)
 {
-    int             nBlockXSize, nBlockYSize;
-    int             nRasterXSize, nRasterYSize;
-    int             iOverview, nOverviewCount;
-    int             bHasNoData;
-    int             bSuccess;
-    double          dfMin, dfMax, dfMean, dfStdDev;
-    //double          adfMinMax[2];
+    int    nBlockXSize, nBlockYSize;
+    int    nRasterXSize, nRasterYSize;
+    int    iOverview, nOverviewCount;
+    int    bHasNoData;
+    int    bSuccess;
+    double dfMin, dfMax, dfMean, dfStdDev;
+    // double          adfMinMax[2];
     float           afSampleBuf;
     GDALRasterBandH hMaskBand;
 
     GDALGetRasterDataType(hBand);
     GDALGetBlockSize(hBand, &nBlockXSize, &nBlockYSize);
-    //GDALRasterAdviseRead
-    //GDALRasterIO
-    //GDALReadBlock 
-    //GDALWriteBlock
+    // GDALRasterAdviseRead
+    // GDALRasterIO
+    // GDALReadBlock
+    // GDALWriteBlock
     nRasterXSize = GDALGetRasterBandXSize(hBand);
     nRasterYSize = GDALGetRasterBandYSize(hBand);
     GDALGetRasterAccess(hBand);
@@ -74,11 +74,12 @@ static void TortureBand(GDALRasterBandH hBand, int bReadWriteOperations)
     GDALGetRasterColorInterpretation(hBand);
     // GDALSetRasterColorInterpretation
     GDALGetRasterColorTable(hBand);
-    //GDALSetRasterColorTable
+    // GDALSetRasterColorTable
     GDALHasArbitraryOverviews (hBand);
 
     nOverviewCount = GDALGetOverviewCount(hBand);
-    for(iOverview=0;iOverview<nOverviewCount;iOverview++)
+
+    for (iOverview = 0; iOverview < nOverviewCount; iOverview++)
     {
         GDALRasterBandH hOverviewBand = GDALGetOverview(hBand, iOverview);
         if (hOverviewBand)
@@ -86,37 +87,37 @@ static void TortureBand(GDALRasterBandH hBand, int bReadWriteOperations)
     }
 
     GDALGetRasterNoDataValue(hBand, &bHasNoData);
-    //GDALSetRasterNoDataValue 
+    // GDALSetRasterNoDataValue
     GDALGetRasterCategoryNames(hBand);
-    //GDALSetRasterCategoryNames
+    // GDALSetRasterCategoryNames
     GDALGetRasterMinimum(hBand, &bSuccess);
     GDALGetRasterMaximum(hBand, &bSuccess);
     GDALGetRasterStatistics(hBand, TRUE, FALSE, &dfMin, &dfMax, &dfMean, &dfStdDev);
-    //GDALComputeRasterStatistics
-    //GDALSetRasterStatistics 
+    // GDALComputeRasterStatistics
+    // GDALSetRasterStatistics
     GDALGetRasterUnitType(hBand);
     GDALGetRasterOffset(hBand, &bSuccess);
-    //GDALSetRasterOffset
+    // GDALSetRasterOffset
     GDALGetRasterScale(hBand, &bSuccess);
-    //GDALSetRasterScale
-    //GDALComputeRasterMinMax(hBand, TRUE, adfMinMax);
-    //GDALFlushRasterCache(hBand)
-    //GDALGetDefaultHistogram (GDALRasterBandH hBand, double *pdfMin, double *pdfMax, int *pnBuckets, int **ppanHistogram, int bForce, GDALProgressFunc pfnProgress, void *pProgressData)
-    //GDALSetDefaultHistogram (GDALRasterBandH hBand, double dfMin, double dfMax, int nBuckets, int *panHistogram)
+    // GDALSetRasterScale
+    // GDALComputeRasterMinMax(hBand, TRUE, adfMinMax);
+    // GDALFlushRasterCache(hBand)
+    // GDALGetDefaultHistogram (GDALRasterBandH hBand, double *pdfMin, double *pdfMax, int *pnBuckets, int **ppanHistogram, int bForce, GDALProgressFunc pfnProgress, void *pProgressData)
+    // GDALSetDefaultHistogram (GDALRasterBandH hBand, double dfMin, double dfMax, int nBuckets, int *panHistogram)
     GDALGetRandomRasterSample(hBand, 1, &afSampleBuf);
     GDALGetRasterSampleOverview(hBand, 0); // returns a hBand
-    //GDALFillRaster
-    //GDALComputeBandStats
-    //GDALOverviewMagnitudeCorrection 
+    // GDALFillRaster
+    // GDALComputeBandStats
+    // GDALOverviewMagnitudeCorrection
     GDALGetDefaultRAT(hBand);
-    //GDALSetDefaultRAT
-    //GDALAddDerivedBandPixelFunc
+    // GDALSetDefaultRAT
+    // GDALAddDerivedBandPixelFunc
     hMaskBand = GDALGetMaskBand(hBand);
     if (hMaskBand != hBand)
         TortureBand(hMaskBand, FALSE);
+
     GDALGetMaskFlags(hBand);
-    //GDALCreateMaskBand
-    
+    // GDALCreateMaskBand
 }
 
 /************************************************************************/
@@ -130,10 +131,10 @@ static void TortureDS(const char *pszTarget, int bReadWriteOperations)
     int             nXSize, nYSize;
     int             nBands, iBand;
     double          adfGeotransform[6];
-    char          **papszFileList;
+    char            **papszFileList;
 
-    //hDS = GDALOpen(pszTarget, GA_Update);
-    //GDALClose(hDS);
+    // hDS = GDALOpen(pszTarget, GA_Update);
+    // GDALClose(hDS);
 
     hDS = GDALOpen(pszTarget, GA_ReadOnly);
     if (hDS == NULL)
@@ -144,19 +145,19 @@ static void TortureDS(const char *pszTarget, int bReadWriteOperations)
     // GDALGetMetadataItem (GDALMajorObjectH, const char *, const char *)
     // GDALSetMetadataItem (GDALMajorObjectH, const char *, const char *, const char *)
     GDALGetDescription(hDS);
-    //GDALSetDescription
+    // GDALSetDescription
     GDALGetDatasetDriver(hDS);
     papszFileList = GDALGetFileList(hDS);
     CSLDestroy(papszFileList);
     nXSize = GDALGetRasterXSize(hDS);
     nYSize = GDALGetRasterYSize(hDS);
     nBands = GDALGetRasterCount(hDS);
-    //GDALAddBand
-    //GDALDatasetRasterIO
+    // GDALAddBand
+    // GDALDatasetRasterIO
     GDALGetProjectionRef(hDS);
-    //GDALSetProjection
+    // GDALSetProjection
     GDALGetGeoTransform(hDS, adfGeotransform);
-    //GDALSetGeoTransform
+    // GDALSetGeoTransform
     GDALGetGCPCount(hDS);
     GDALGetGCPProjection(hDS);
     GDALGetGCPs(hDS);
@@ -164,13 +165,13 @@ static void TortureDS(const char *pszTarget, int bReadWriteOperations)
     // GDALGetInternalHandle
     GDALReferenceDataset(hDS);
     GDALDereferenceDataset(hDS);
-    //GDALBuildOverviews
+    // GDALBuildOverviews
     GDALGetAccess(hDS);
     // GDALFlushCache
     // GDALCreateDatasetMaskBand
     // GDALDatasetCopyWholeRaster
-    
-    for(iBand=0;iBand<nBands;iBand++)
+
+    for (iBand = 0; iBand < nBands; iBand++)
     {
         hBand = GDALGetRasterBand(hDS, iBand + 1);
         if (hBand == NULL)
@@ -187,46 +188,48 @@ static void TortureDS(const char *pszTarget, int bReadWriteOperations)
 /*                       ProcessTortureTarget()                         */
 /************************************************************************/
 
-static void ProcessTortureTarget( const char *pszTarget, 
-                                  char **papszSiblingList, 
-                                  int bRecursive, int bReportFailures,
-                                  int bReadWriteOperations)
+static void ProcessTortureTarget(const char *pszTarget,
+                                 char **papszSiblingList,
+                                 int bRecursive, int bReportFailures,
+                                 int bReadWriteOperations)
 
 {
     GDALDriverH hDriver;
     VSIStatBufL sStatBuf;
-    int i;
+    int         i;
 
-    hDriver = GDALIdentifyDriver( pszTarget, papszSiblingList );
+    hDriver = GDALIdentifyDriver(pszTarget, papszSiblingList);
 
-    if( hDriver != NULL )
+    if (hDriver != NULL)
     {
-        printf( "%s: %s\n", pszTarget, GDALGetDriverShortName( hDriver ) );
+        printf("%s: %s\n", pszTarget, GDALGetDriverShortName(hDriver));
         TortureDS(pszTarget, bReadWriteOperations);
     }
-    else if( bReportFailures )
-        printf( "%s: unrecognised\n", pszTarget );
+    else if (bReportFailures)
+        printf("%s: unrecognised\n", pszTarget);
 
-    if( !bRecursive || hDriver != NULL )
+    if (!bRecursive || hDriver != NULL)
         return;
 
-    if( VSIStatL( pszTarget, &sStatBuf ) != 0 
-        || !VSI_ISDIR( sStatBuf.st_mode ) )
+    if (VSIStatL(pszTarget, &sStatBuf) != 0
+        || !VSI_ISDIR(sStatBuf.st_mode))
         return;
 
-    papszSiblingList = VSIReadDir( pszTarget );
-    for( i = 0; papszSiblingList && papszSiblingList[i]; i++ )
+    papszSiblingList = VSIReadDir(pszTarget);
+
+    for (i = 0; papszSiblingList && papszSiblingList[i]; i++)
     {
-        if( EQUAL(papszSiblingList[i],"..") 
-            || EQUAL(papszSiblingList[i],".") )
+        if (EQUAL(papszSiblingList[i], "..")
+            || EQUAL(papszSiblingList[i], "."))
             continue;
 
-        CPLString osSubTarget = 
-            CPLFormFilename( pszTarget, papszSiblingList[i], NULL );
+        CPLString osSubTarget =
+            CPLFormFilename(pszTarget, papszSiblingList[i], NULL);
 
-        ProcessTortureTarget( osSubTarget, papszSiblingList, 
-                               bRecursive, bReportFailures, bReadWriteOperations );
+        ProcessTortureTarget(osSubTarget, papszSiblingList,
+                             bRecursive, bReportFailures, bReadWriteOperations);
     }
+
     CSLDestroy(papszSiblingList);
 }
 
@@ -234,34 +237,34 @@ static void ProcessTortureTarget( const char *pszTarget,
 /*                                main()                                */
 /************************************************************************/
 
-int main( int argc, char ** argv )
+int main(int argc, char **argv)
 
 {
-    int bRecursive = FALSE, bReportFailures = FALSE, bReadWriteOperations = FALSE;
-    char** papszArgv;
+    int  bRecursive = FALSE, bReportFailures = FALSE, bReadWriteOperations = FALSE;
+    char **papszArgv;
 
     GDALAllRegister();
 
-    argc = GDALGeneralCmdLineProcessor( argc, &argv, 0 );
-    if( argc < 1 )
-        exit( -argc );
+    argc = GDALGeneralCmdLineProcessor(argc, &argv, 0);
+    if (argc < 1)
+        exit(-argc);
 
-    if( argc < 2 )
+    if (argc < 2)
         Usage();
 
 /* -------------------------------------------------------------------- */
 /*      Scan for commandline switches                                   */
 /* -------------------------------------------------------------------- */
     papszArgv = argv + 1;
-    argc --;
+    argc--;
 
-    while( argc > 0 && papszArgv[0][0] == '-' )
+    while (argc > 0 && papszArgv[0][0] == '-')
     {
-        if( EQUAL(papszArgv[0],"-r") )
+        if (EQUAL(papszArgv[0], "-r"))
             bRecursive = TRUE;
-        else if( EQUAL(papszArgv[0],"-u") )
+        else if (EQUAL(papszArgv[0], "-u"))
             bReportFailures = TRUE;
-        else if( EQUAL(papszArgv[0],"-rw") )
+        else if (EQUAL(papszArgv[0], "-rw"))
             bReadWriteOperations = TRUE;
         else
             Usage();
@@ -273,10 +276,10 @@ int main( int argc, char ** argv )
 /* -------------------------------------------------------------------- */
 /*      Process given files.                                            */
 /* -------------------------------------------------------------------- */
-    while( argc > 0 )
+    while (argc > 0)
     {
-        ProcessTortureTarget( papszArgv[0], NULL, 
-                              bRecursive, bReportFailures, bReadWriteOperations );
+        ProcessTortureTarget(papszArgv[0], NULL,
+                             bRecursive, bReportFailures, bReadWriteOperations);
         argc--;
         papszArgv++;
     }
@@ -284,9 +287,8 @@ int main( int argc, char ** argv )
 /* -------------------------------------------------------------------- */
 /*      Cleanup                                                         */
 /* -------------------------------------------------------------------- */
-    CSLDestroy( argv );
+    CSLDestroy(argv);
     GDALDestroyDriverManager();
 
     return 0;
 }
-

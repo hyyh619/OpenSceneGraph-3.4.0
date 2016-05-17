@@ -7,34 +7,31 @@
 
 namespace osgFFmpeg
 {
+class FFmpegAudioStream : public osg::AudioStream
+{
+public:
 
-    class FFmpegAudioStream : public osg::AudioStream
-    {
-    public:
+FFmpegAudioStream(FFmpegDecoder *decoder = 0);
+FFmpegAudioStream(const FFmpegAudioStream&audio, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-        FFmpegAudioStream(FFmpegDecoder* decoder=0);
-        FFmpegAudioStream(const FFmpegAudioStream & audio, const osg::CopyOp & copyop = osg::CopyOp::SHALLOW_COPY);
+META_Object(osgFFmpeg, FFmpegAudioStream);
 
-        META_Object(osgFFmpeg, FFmpegAudioStream);
+virtual void setAudioSink(osg::AudioSink *audio_sink);
 
-        virtual void setAudioSink(osg::AudioSink* audio_sink);
-        
-        void consumeAudioBuffer(void * const buffer, const size_t size);
-        
-        int audioFrequency() const;
-        int audioNbChannels() const;
-        osg::AudioStream::SampleFormat audioSampleFormat() const;
+void consumeAudioBuffer(void* const buffer, const size_t size);
 
-        double duration() const;
+int audioFrequency() const;
+int audioNbChannels() const;
+osg::AudioStream::SampleFormat audioSampleFormat() const;
 
-    private:
+double duration() const;
 
-        virtual ~FFmpegAudioStream();
+private:
 
-        osg::ref_ptr<FFmpegDecoder>    m_decoder;
+virtual ~FFmpegAudioStream();
 
-    };
-
+osg::ref_ptr<FFmpegDecoder> m_decoder;
+};
 }
 
 

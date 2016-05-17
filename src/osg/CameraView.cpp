@@ -9,21 +9,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/CameraView>
 
 using namespace osg;
 
-CameraView::CameraView():
+CameraView::CameraView() :
     _fieldOfView(60.0),
     _fieldOfViewMode(VERTICAL),
     _focalLength(0.0)
-{
-}
+{}
 
-bool CameraView::computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const
+bool CameraView::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
 {
-    if (_referenceFrame==RELATIVE_RF)
+    if (_referenceFrame == RELATIVE_RF)
     {
         matrix.preMultTranslate(_position);
         matrix.preMultRotate(_attitude);
@@ -33,13 +32,14 @@ bool CameraView::computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const
         matrix.makeRotate(_attitude);
         matrix.postMultTranslate(_position);
     }
+
     return true;
 }
 
 
-bool CameraView::computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const
+bool CameraView::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
 {
-    if (_referenceFrame==RELATIVE_RF)
+    if (_referenceFrame == RELATIVE_RF)
     {
         matrix.postMultTranslate(-_position);
         matrix.postMultRotate(_attitude.inverse());
@@ -49,5 +49,6 @@ bool CameraView::computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const
         matrix.makeRotate(_attitude.inverse());
         matrix.preMultTranslate(-_position);
     }
+
     return true;
 }

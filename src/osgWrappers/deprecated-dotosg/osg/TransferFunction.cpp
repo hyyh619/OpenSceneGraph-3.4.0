@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool TransferFunction1D_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool TransferFunction1D_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool TransferFunction1D_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool TransferFunction1D_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(TransferFunction1D_Proxy)
 (
@@ -26,14 +26,15 @@ REGISTER_DOTOSGWRAPPER(TransferFunction1D_Proxy)
 );
 
 
-bool TransferFunction1D_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool TransferFunction1D_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osg::TransferFunction1D& tf = static_cast<osg::TransferFunction1D&>(obj);
+    osg::TransferFunction1D&tf = static_cast<osg::TransferFunction1D&>(obj);
 
     bool itrAdvanced = false;
 
     unsigned int numCells;
-    if (fr.read("NumberImageCells ",numCells))
+
+    if (fr.read("NumberImageCells ", numCells))
     {
         tf.allocate(numCells);
         itrAdvanced = true;
@@ -45,11 +46,11 @@ bool TransferFunction1D_readLocalData(osg::Object& obj, osgDB::Input &fr)
 
         fr += 2;
 
-        float v;
-        osg::Vec4 color;
+        float                             v;
+        osg::Vec4                         color;
         osg::TransferFunction1D::ColorMap colorMap;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
             if (fr.read(v, color.r(), color.g(), color.b(), color.a()))
             {
@@ -70,24 +71,26 @@ bool TransferFunction1D_readLocalData(osg::Object& obj, osgDB::Input &fr)
     return itrAdvanced;
 }
 
-bool TransferFunction1D_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool TransferFunction1D_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osg::TransferFunction1D& tf = static_cast<const osg::TransferFunction1D&>(obj);
-    const osg::TransferFunction1D::ColorMap& colorMap = tf.getColorMap();
+    const osg::TransferFunction1D          &tf       = static_cast<const osg::TransferFunction1D&>(obj);
+    const osg::TransferFunction1D::ColorMap&colorMap = tf.getColorMap();
 
-    fw.indent()<<"NumberImageCells "<<tf.getNumberImageCells()<<std::endl;
-    fw.indent()<<"Colours {"<<std::endl;
+    fw.indent() << "NumberImageCells " << tf.getNumberImageCells() << std::endl;
+    fw.indent() << "Colours {" <<         std::endl;
 
     fw.moveIn();
-    for(osg::TransferFunction1D::ColorMap::const_iterator itr = colorMap.begin();
-        itr != colorMap.end();
-        ++itr)
+
+    for (osg::TransferFunction1D::ColorMap::const_iterator itr = colorMap.begin();
+         itr != colorMap.end();
+         ++itr)
     {
-        const osg::Vec4& c = itr->second;
-        fw.indent()<<itr->first<<" "<<c.r()<<" "<<c.g()<<" "<<c.b()<<" "<<c.a()<<std::endl;
+        const osg::Vec4&c = itr->second;
+        fw.indent() << itr->first << " " << c.r() << " " << c.g() << " " << c.b() << " " << c.a() << std::endl;
     }
+
     fw.moveOut();
-    fw.indent()<<"}"<<std::endl;
+    fw.indent() << "}" << std::endl;
 
     return true;
 }

@@ -9,12 +9,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgFX/Version>
 #include <osg/Version>
 
 extern "C" {
-
 const char* osgFXGetVersion()
 {
     return osgGetVersion();
@@ -25,5 +24,4 @@ const char* osgFXGetLibraryName()
 {
     return "OpenSceneGraph FX (Special effects) Library";
 }
-
 }

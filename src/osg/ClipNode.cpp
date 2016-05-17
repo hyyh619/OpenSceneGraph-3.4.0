@@ -9,41 +9,42 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/ClipNode>
 
 #include <algorithm>
 
 using namespace osg;
 
-ClipNode::ClipNode():
+ClipNode::ClipNode() :
     _value(StateAttribute::ON),
     _referenceFrame(RELATIVE_RF)
 {
     setStateSet(new StateSet);
 }
 
-ClipNode::ClipNode(const ClipNode& cn, const CopyOp& copyop):
-    Group(cn,copyop),
+ClipNode::ClipNode(const ClipNode&cn, const CopyOp&copyop) :
+    Group(cn, copyop),
     _value(cn._value),
     _referenceFrame(cn._referenceFrame)
 {
     setStateSet(new StateSet);
-    for(ClipPlaneList::const_iterator itr=cn._planes.begin();
-        itr!=cn._planes.end();
-        ++itr)
+
+    for (ClipPlaneList::const_iterator itr = cn._planes.begin();
+         itr != cn._planes.end();
+         ++itr)
     {
-        ClipPlane* plane = dynamic_cast<ClipPlane*>(copyop(itr->get()));
+        ClipPlane *plane = dynamic_cast<ClipPlane*>(copyop(itr->get()));
         if (!plane)
             continue;
+
         _planes.push_back(plane);
         _stateset->setAssociatedModes(plane, _value);
     }
 }
 
 ClipNode::~ClipNode()
-{
-}
+{}
 
 
 void ClipNode::setReferenceFrame(ReferenceFrame rf)
@@ -52,38 +53,42 @@ void ClipNode::setReferenceFrame(ReferenceFrame rf)
 }
 
 // Create a 6 clip planes to create a clip box.
-void ClipNode::createClipBox(const BoundingBox& bb,unsigned int clipPlaneNumberBase)
+void ClipNode::createClipBox(const BoundingBox&bb, unsigned int clipPlaneNumberBase)
 {
     _planes.clear();
-    if (!_stateset.valid()) _stateset = new osg::StateSet;
+    if (!_stateset.valid())
+        _stateset = new osg::StateSet;
 
-    _planes.push_back(new ClipPlane(clipPlaneNumberBase  ,1.0,0.0,0.0,-bb.xMin()));
+    _planes.push_back(new ClipPlane(clipPlaneNumberBase, 1.0, 0.0, 0.0, -bb.xMin()));
     _stateset->setAssociatedModes(_planes.back().get(), _value);
-    _planes.push_back(new ClipPlane(clipPlaneNumberBase+1,-1.0,0.0,0.0,bb.xMax()));
-    _stateset->setAssociatedModes(_planes.back().get(), _value);
-
-    _planes.push_back(new ClipPlane(clipPlaneNumberBase+2,0.0,1.0,0.0,-bb.yMin()));
-    _stateset->setAssociatedModes(_planes.back().get(), _value);
-    _planes.push_back(new ClipPlane(clipPlaneNumberBase+3,0.0,-1.0,0.0,bb.yMax()));
+    _planes.push_back(new ClipPlane(clipPlaneNumberBase + 1, -1.0, 0.0, 0.0, bb.xMax()));
     _stateset->setAssociatedModes(_planes.back().get(), _value);
 
-    _planes.push_back(new ClipPlane(clipPlaneNumberBase+4,0.0,0.0,1.0,-bb.zMin()));
+    _planes.push_back(new ClipPlane(clipPlaneNumberBase + 2, 0.0, 1.0, 0.0, -bb.yMin()));
     _stateset->setAssociatedModes(_planes.back().get(), _value);
-    _planes.push_back(new ClipPlane(clipPlaneNumberBase+5,0.0,0.0,-1.0,bb.zMax()));
+    _planes.push_back(new ClipPlane(clipPlaneNumberBase + 3, 0.0, -1.0, 0.0, bb.yMax()));
+    _stateset->setAssociatedModes(_planes.back().get(), _value);
+
+    _planes.push_back(new ClipPlane(clipPlaneNumberBase + 4, 0.0, 0.0, 1.0, -bb.zMin()));
+    _stateset->setAssociatedModes(_planes.back().get(), _value);
+    _planes.push_back(new ClipPlane(clipPlaneNumberBase + 5, 0.0, 0.0, -1.0, bb.zMax()));
     _stateset->setAssociatedModes(_planes.back().get(), _value);
 }
 
 // Add a ClipPlane to a ClipNode. Return true if plane is added,
 // return false if plane already exists in ClipNode, or clipplane is false.
-bool ClipNode::addClipPlane(ClipPlane* clipplane)
+bool ClipNode::addClipPlane(ClipPlane *clipplane)
 {
-    if (!clipplane) return false;
+    if (!clipplane)
+        return false;
 
-    if (std::find(_planes.begin(),_planes.end(),clipplane)==_planes.end())
+    if (std::find(_planes.begin(), _planes.end(), clipplane) == _planes.end())
     {
         // cliplane doesn't exist in list so add it.
         _planes.push_back(clipplane);
-        if (!_stateset.valid()) _stateset = new osg::StateSet;
+        if (!_stateset.valid())
+            _stateset = new osg::StateSet;
+
         _stateset->setAssociatedModes(clipplane, _value);
         return true;
     }
@@ -95,12 +100,13 @@ bool ClipNode::addClipPlane(ClipPlane* clipplane)
 
 // Remove ClipPlane from a ClipNode. Return true if plane is removed,
 // return false if plane does not exists in ClipNode.
-bool ClipNode::removeClipPlane(ClipPlane* clipplane)
+bool ClipNode::removeClipPlane(ClipPlane *clipplane)
 {
-    if (!clipplane) return false;
+    if (!clipplane)
+        return false;
 
-    ClipPlaneList::iterator itr = std::find(_planes.begin(),_planes.end(),clipplane);
-    if (itr!=_planes.end())
+    ClipPlaneList::iterator itr = std::find(_planes.begin(), _planes.end(), clipplane);
+    if (itr != _planes.end())
     {
         // cliplane exist in list so erase it.
         _stateset->removeAssociatedModes(clipplane);
@@ -117,7 +123,7 @@ bool ClipNode::removeClipPlane(ClipPlane* clipplane)
 // return false if plane does not exists in ClipNode.
 bool ClipNode::removeClipPlane(unsigned int pos)
 {
-    if (pos<_planes.size())
+    if (pos < _planes.size())
     {
         ClipPlaneList::iterator itr = _planes.begin();
         std::advance(itr, pos);
@@ -132,22 +138,23 @@ bool ClipNode::removeClipPlane(unsigned int pos)
 }
 
 // Set the GLModes on StateSet associated with the ClipPlanes.
-void ClipNode::setStateSetModes(StateSet& stateset,StateAttribute::GLModeValue value) const
+void ClipNode::setStateSetModes(StateSet&stateset, StateAttribute::GLModeValue value) const
 {
-    for(ClipPlaneList::const_iterator itr=_planes.begin();
-        itr!=_planes.end();
-        ++itr)
+    for (ClipPlaneList::const_iterator itr = _planes.begin();
+         itr != _planes.end();
+         ++itr)
     {
-        stateset.setAssociatedModes(itr->get(),value);
+        stateset.setAssociatedModes(itr->get(), value);
     }
 }
 
 void ClipNode::setLocalStateSetModes(StateAttribute::GLModeValue value)
 {
     _value = value;
-    if (!_stateset) setStateSet(new StateSet);
+    if (!_stateset)
+        setStateSet(new StateSet);
 
-    setStateSetModes(*_stateset,value);
+    setStateSetModes(*_stateset, value);
 }
 
 BoundingSphere ClipNode::computeBound() const

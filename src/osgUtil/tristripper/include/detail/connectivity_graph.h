@@ -20,14 +20,10 @@
 
 namespace triangle_stripper
 {
-
-    namespace detail
-    {
-
-        void make_connectivity_graph(graph_array<triangle> & Triangles, const indices & Indices);
-
-    }
-
+namespace detail
+{
+void make_connectivity_graph(graph_array<triangle>&Triangles, const indices&Indices);
+}
 }
 
 

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "VolumeSwitchProperty.h"
@@ -19,13 +19,13 @@
 
 using namespace ive;
 
-void VolumeSwitchProperty::write(DataOutputStream* out)
+void VolumeSwitchProperty::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVEVOLUMESWITCHPROPERTY);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osgVolume::CompositeProperty* cp = dynamic_cast<osgVolume::CompositeProperty*>(this);
+    osgVolume::CompositeProperty *cp = dynamic_cast<osgVolume::CompositeProperty*>(this);
     if (cp)
         ((ive::VolumeCompositeProperty*)(cp))->write(out);
     else
@@ -34,10 +34,11 @@ void VolumeSwitchProperty::write(DataOutputStream* out)
     out->writeUInt(getActiveProperty());
 }
 
-void VolumeSwitchProperty::read(DataInputStream* in)
+void VolumeSwitchProperty::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVEVOLUMESWITCHPROPERTY)
         in_THROW_EXCEPTION("VolumeSwitchProperty::read(): Expected CompositeProperty identification.");
 
@@ -45,7 +46,7 @@ void VolumeSwitchProperty::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osgVolume::CompositeProperty* cp = dynamic_cast<osgVolume::CompositeProperty*>(this);
+    osgVolume::CompositeProperty *cp = dynamic_cast<osgVolume::CompositeProperty*>(this);
     if (cp)
         ((ive::VolumeCompositeProperty*)(cp))->read(in);
     else

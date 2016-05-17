@@ -5,18 +5,13 @@
 
 namespace mdl
 {
-
-
 // Maximum number of LODs per model
 const int MAX_LODS = 8;
 
 
 // Maximum number of bones per vertex
 const int MAX_BONES_PER_VERTEX = 3;
-
-
 }
 
 
 #endif
-

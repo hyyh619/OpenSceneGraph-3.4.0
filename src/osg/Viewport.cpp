@@ -9,27 +9,25 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Viewport>
 
 using namespace osg;
 
 Viewport::Viewport()
 {
-    _x = 0;
-    _y = 0;
-    _width = 800;
+    _x      = 0;
+    _y      = 0;
+    _width  = 800;
     _height = 600;
 }
 
 
 Viewport::~Viewport()
-{
-}
+{}
 
 void Viewport::apply(State&) const
 {
-    glViewport( static_cast<GLint>(_x),static_cast<GLint>(_y),
-                static_cast<GLsizei>(_width),static_cast<GLsizei>(_height) );
+    glViewport(static_cast<GLint>(_x), static_cast<GLint>(_y),
+               static_cast<GLsizei>(_width), static_cast<GLsizei>(_height));
 }
-

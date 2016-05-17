@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/CopyOp>
 #include <osg/Node>
 #include <osg/StateSet>
@@ -23,47 +23,51 @@
 
 using namespace osg;
 
-#define COPY_OP( TYPE, FLAG ) \
-TYPE* CopyOp::operator() (const TYPE* obj) const \
-{ \
-    if (obj && _flags&FLAG) \
-        return osg::clone(obj, *this); \
-    else \
-        return const_cast<TYPE*>(obj); \
-}
+#define COPY_OP(TYPE, FLAG)                            \
+    TYPE * CopyOp::operator() (const TYPE * obj) const \
+    {                                                  \
+        if (obj && _flags & FLAG)                      \
+            return osg::clone(obj, *this);             \
+        else                                           \
+            return const_cast<TYPE*>(obj);             \
+    }
 
-COPY_OP( Object,                   DEEP_COPY_OBJECTS )
-COPY_OP( StateSet,                 DEEP_COPY_STATESETS )
-COPY_OP( Image,                    DEEP_COPY_IMAGES )
-COPY_OP( Uniform,                  DEEP_COPY_UNIFORMS )
-COPY_OP( UniformCallback,          DEEP_COPY_CALLBACKS )
-COPY_OP( StateAttributeCallback,   DEEP_COPY_CALLBACKS )
-COPY_OP( Drawable,                 DEEP_COPY_DRAWABLES )
-COPY_OP( Texture,                  DEEP_COPY_TEXTURES )
-COPY_OP( Array,                    DEEP_COPY_ARRAYS )
-COPY_OP( PrimitiveSet,             DEEP_COPY_PRIMITIVES )
-COPY_OP( Shape,                    DEEP_COPY_SHAPES )
+COPY_OP(Object,                   DEEP_COPY_OBJECTS)
+COPY_OP(StateSet,                 DEEP_COPY_STATESETS)
+COPY_OP(Image,                    DEEP_COPY_IMAGES)
+COPY_OP(Uniform,                  DEEP_COPY_UNIFORMS)
+COPY_OP(UniformCallback,          DEEP_COPY_CALLBACKS)
+COPY_OP(StateAttributeCallback,   DEEP_COPY_CALLBACKS)
+COPY_OP(Drawable,                 DEEP_COPY_DRAWABLES)
+COPY_OP(Texture,                  DEEP_COPY_TEXTURES)
+COPY_OP(Array,                    DEEP_COPY_ARRAYS)
+COPY_OP(PrimitiveSet,             DEEP_COPY_PRIMITIVES)
+COPY_OP(Shape,                    DEEP_COPY_SHAPES)
 
-Referenced* CopyOp::operator() (const Referenced* ref) const
+Referenced * CopyOp::operator() (const Referenced * ref) const
 {
     return const_cast<Referenced*>(ref);
 }
 
-Node* CopyOp::operator() (const Node* node) const
+Node* CopyOp::operator()(const Node *node) const
 {
-    if (!node) return 0;
+    if (!node)
+        return 0;
 
-    const Drawable* drawable = node->asDrawable();
-    if (drawable) return operator()(drawable);
-    else if (_flags&DEEP_COPY_NODES) return osg::clone(node, *this);
-    else return const_cast<Node*>(node);
+    const Drawable *drawable = node->asDrawable();
+    if (drawable)
+        return operator()(drawable);
+    else if (_flags & DEEP_COPY_NODES)
+        return osg::clone(node, *this);
+    else
+        return const_cast<Node*>(node);
 }
 
-StateAttribute* CopyOp::operator() (const StateAttribute* attr) const
+StateAttribute* CopyOp::operator()(const StateAttribute *attr) const
 {
-    if (attr && _flags&DEEP_COPY_STATEATTRIBUTES)
+    if (attr && _flags & DEEP_COPY_STATEATTRIBUTES)
     {
-        const Texture* textbase = dynamic_cast<const Texture*>(attr);
+        const Texture *textbase = dynamic_cast<const Texture*>(attr);
         if (textbase)
         {
             return operator()(textbase);
@@ -77,26 +81,30 @@ StateAttribute* CopyOp::operator() (const StateAttribute* attr) const
         return const_cast<StateAttribute*>(attr);
 }
 
-Callback* CopyOp::operator() (const Callback* nc) const
+Callback* CopyOp::operator()(const Callback *nc) const
 {
-    if (nc && _flags&DEEP_COPY_CALLBACKS)
+    if (nc && _flags & DEEP_COPY_CALLBACKS)
     {
         // deep copy the full chain of callback
-        Callback* first = osg::clone(nc, *this);
-        if (!first) return 0;
+        Callback *first = osg::clone(nc, *this);
+        if (!first)
+            return 0;
 
         first->setNestedCallback(0);
         nc = nc->getNestedCallback();
+
         while (nc)
         {
-            Callback* ucb = osg::clone(nc, *this);
+            Callback *ucb = osg::clone(nc, *this);
             if (ucb)
             {
                 ucb->setNestedCallback(0);
                 first->addNestedCallback(ucb);
             }
+
             nc = nc->getNestedCallback();
         }
+
         return first;
     }
     else

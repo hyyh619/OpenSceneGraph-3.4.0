@@ -10,24 +10,25 @@
 #include <osgWidget/Box>
 #include <osgWidget/WindowManager>
 
-namespace osgWidget {
-
+namespace osgWidget
+{
 // Our Python library.
-namespace py {
+namespace py
+{
 #ifdef OSGWIDGET_USEPYTHON
-
 // TODO: Until I can find a way to move data around inside of the context, this will
 // have to do. I don't really like it, but I've got no choice.
-static PyObject* G_ERR = 0;
+static PyObject *G_ERR = 0;
 
-PyObject* newWindow(PyObject* self, PyObject* args) {
-    PyObject*   buffer = 0;
-    const char* name   = 0;
-    int         width  = 0;
-    int         height = 0;
+PyObject* newWindow(PyObject *self, PyObject *args)
+{
+    PyObject   *buffer = 0;
+    const char *name   = 0;
+    int        width   = 0;
+    int        height  = 0;
 
     /*
-    if(PyArg_ParseTuple(args, "sO!ii", &name, &PyBuffer_Type, &buffer, &width, &height)) {
+       if(PyArg_ParseTuple(args, "sO!ii", &name, &PyBuffer_Type, &buffer, &width, &height)) {
         const void* buf = 0;
         int         len = 0;
 
@@ -41,54 +42,57 @@ PyObject* newWindow(PyObject* self, PyObject* args) {
         else PyErr_SetString(G_ERR, "Couldn't read buffer data.");
 
         return 0;
-    }
-    */
+       }
+     */
 
     PyErr_SetString(G_ERR, "still testing...");
 
     return 0;
 }
 
-static PyMethodDef methods[] = {
+static PyMethodDef methods[] =
+{
     {
         "newWindow", newWindow, METH_VARARGS,
         "docstring"
     },
     { 0, 0, 0, 0 }
 };
-
 #endif
 }
 
 // A helper function for all those cases where we need to inform the user that there isn't
 // a LUA engine available.
-bool noPythonFail(const std::string& err) {
+bool noPythonFail(const std::string&err)
+{
     warn() << err << "; Python not compiled in library." << std::endl;
 
     return false;
 }
 
 // Our "private", internal data.
-struct PythonEngineData {
+struct PythonEngineData
+{
 #ifdef OSGWIDGET_USEPYTHON
-    PythonEngineData():
-    mod  (0),
-    err  (0),
-    main (0) {
-    }
+    PythonEngineData() :
+        mod  (0),
+        err  (0),
+        main (0) {}
 
-    bool valid() const {
+    bool valid() const
+    {
         return mod && err && main;
     }
 
-    PyObject* mod;
-    PyObject* err;
-    PyObject* main;
+    PyObject *mod;
+    PyObject *err;
+    PyObject *main;
 #endif
 };
 
-PythonEngine::PythonEngine(WindowManager* wm):
-_wm(wm) {
+PythonEngine::PythonEngine(WindowManager *wm) :
+    _wm(wm)
+{
 #ifdef OSGWIDGET_USEPYTHON
     _data = new PythonEngineData();
 
@@ -97,11 +101,13 @@ _wm(wm) {
 #endif
 }
 
-bool PythonEngine::initialize() {
+bool PythonEngine::initialize()
+{
 #ifdef OSGWIDGET_USEPYTHON
     Py_InitializeEx(0);
 
-    if(!_data->valid()) {
+    if (!_data->valid())
+    {
         _data->mod  = Py_InitModule3("osgwidget", py::methods, "main docstring");
         _data->err  = PyErr_NewException((char*)("osgwidget.error"), 0, 0);
         _data->main = PyModule_GetDict(PyImport_AddModule("__main__"));
@@ -121,9 +127,11 @@ bool PythonEngine::initialize() {
 #endif
 }
 
-bool PythonEngine::close() {
+bool PythonEngine::close()
+{
 #ifdef OSGWIDGET_USEPYTHON
-    if(_data->valid()) {
+    if (_data->valid())
+    {
         Py_DECREF(_data->err);
 
         Py_Finalize();
@@ -138,14 +146,17 @@ bool PythonEngine::close() {
 #endif
 }
 
-bool PythonEngine::eval(const std::string& code) {
+bool PythonEngine::eval(const std::string&code)
+{
 #ifdef OSGWIDGET_USEPYTHON
-    PyObject* r = PyRun_String(code.c_str(), Py_file_input, _data->main, _data->main);
+    PyObject *r = PyRun_String(code.c_str(), Py_file_input, _data->main, _data->main);
 
-    if(!r) {
+    if (!r)
+    {
         r = PyErr_Occurred();
 
-        if(r) {
+        if (r)
+        {
             PyErr_Print();
             PyErr_Clear();
         }
@@ -160,9 +171,11 @@ bool PythonEngine::eval(const std::string& code) {
 #endif
 }
 
-bool PythonEngine::runFile(const std::string& filePath) {
+bool PythonEngine::runFile(const std::string&filePath)
+{
 #ifdef OSGWIDGET_USEPYTHON
-    if(!osgDB::fileExists(filePath)) {
+    if (!osgDB::fileExists(filePath))
+    {
         warn()
             << "Couldn't find file \"" << filePath << "\" for PythonEngine."
             << std::endl
@@ -171,22 +184,25 @@ bool PythonEngine::runFile(const std::string& filePath) {
         return false;
     }
 
-    FILE*     f = fopen(filePath.c_str(), "r");
-    PyObject* r = PyRun_File(f, filePath.c_str(), Py_file_input, _data->main, _data->main);
+    FILE     *f = fopen(filePath.c_str(), "r");
+    PyObject *r = PyRun_File(f, filePath.c_str(), Py_file_input, _data->main, _data->main);
 
     fclose(f);
 
-    if(!r) {
+    if (!r)
+    {
         r = PyErr_Occurred();
 
-        if(r) {
+        if (r)
+        {
             // The following snippet lets us get the return code. That is: if the
             // script is stopped with sys.exit() or similar. We could use this
             // return code to do something sensible... later.
-            if(PyErr_ExceptionMatches(PyExc_SystemExit)) {
-                PyObject* ty = 0;
-                PyObject* er = 0;
-                PyObject* tr = 0;
+            if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            {
+                PyObject *ty = 0;
+                PyObject *er = 0;
+                PyObject *tr = 0;
 
                 PyErr_Fetch(&ty, &er, &tr);
 
@@ -195,7 +211,8 @@ bool PythonEngine::runFile(const std::string& filePath) {
                 Py_DECREF(er);
             }
 
-            else {
+            else
+            {
                 PyErr_Print();
                 PyErr_Clear();
             }
@@ -210,5 +227,4 @@ bool PythonEngine::runFile(const std::string& filePath) {
     return noPythonFail("Can't evaluate code in PythonEngine");
 #endif
 }
-
 }

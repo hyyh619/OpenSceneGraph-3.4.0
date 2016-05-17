@@ -34,29 +34,29 @@
 #include <math.h>
 #include "gdalbridge.h"
 
-static int 
-GDALInfoReportCorner( GDALDatasetH hDataset, 
-                      const char * corner_name,
-                      double x, double y );
+static int
+GDALInfoReportCorner(GDALDatasetH hDataset,
+                     const char *corner_name,
+                     double x, double y);
 
-int main( int argc, char ** argv )
+int main(int argc, char **argv)
 
 {
-    GDALDatasetH	hDataset;
-    GDALRasterBandH	hBand;
-    int			i, iBand;
-    double		adfGeoTransform[6];
-    GDALDriverH		hDriver;
-    char		**papszMetadata;
-    int                 bComputeMinMax = FALSE;
+    GDALDatasetH    hDataset;
+    GDALRasterBandH hBand;
+    int             i, iBand;
+    double          adfGeoTransform[6];
+    GDALDriverH     hDriver;
+    char            **papszMetadata;
+    int             bComputeMinMax = FALSE;
 
-    if( !GDALBridgeInitialize( "..", stderr ) )
+    if (!GDALBridgeInitialize("..", stderr))
     {
-        fprintf( stderr, "Unable to intiailize GDAL bridge.\n" );
-        exit( 10 );
+        fprintf(stderr, "Unable to intiailize GDAL bridge.\n");
+        exit(10);
     }
 
-    if( argc > 1 && strcmp(argv[1],"-mm") == 0 )
+    if (argc > 1 && strcmp(argv[1], "-mm") == 0)
     {
         bComputeMinMax = TRUE;
         argv++;
@@ -64,311 +64,315 @@ int main( int argc, char ** argv )
 
     GDALAllRegister();
 
-    hDataset = GDALOpen( argv[1], GA_ReadOnly );
-    
-    if( hDataset == NULL )
+    hDataset = GDALOpen(argv[1], GA_ReadOnly);
+
+    if (hDataset == NULL)
     {
-        fprintf( stderr,
-                 "GDALOpen failed - %d\n%s\n",
-                 CPLGetLastErrorNo(), CPLGetLastErrorMsg() );
-        exit( 1 );
+        fprintf(stderr,
+                "GDALOpen failed - %d\n%s\n",
+                CPLGetLastErrorNo(), CPLGetLastErrorMsg());
+        exit(1);
     }
-    
+
 /* -------------------------------------------------------------------- */
 /*      Report general info.                                            */
 /* -------------------------------------------------------------------- */
-    hDriver = GDALGetDatasetDriver( hDataset );
-    printf( "Driver: %s/%s\n",
-            GDALGetDriverShortName( hDriver ),
-            GDALGetDriverLongName( hDriver ) );
+    hDriver = GDALGetDatasetDriver(hDataset);
+    printf("Driver: %s/%s\n",
+           GDALGetDriverShortName(hDriver),
+           GDALGetDriverLongName(hDriver));
 
-    printf( "Size is %d, %d\n",
-            GDALGetRasterXSize( hDataset ), 
-            GDALGetRasterYSize( hDataset ) );
+    printf("Size is %d, %d\n",
+           GDALGetRasterXSize(hDataset),
+           GDALGetRasterYSize(hDataset));
 
 /* -------------------------------------------------------------------- */
 /*      Report projection.                                              */
 /* -------------------------------------------------------------------- */
-    if( GDALGetProjectionRef( hDataset ) != NULL )
+    if (GDALGetProjectionRef(hDataset) != NULL)
     {
-        OGRSpatialReferenceH  hSRS;
-        char		      *pszProjection;
+        OGRSpatialReferenceH hSRS;
+        char                 *pszProjection;
 
-        pszProjection = (char *) GDALGetProjectionRef( hDataset );
+        pszProjection = (char*) GDALGetProjectionRef(hDataset);
 
         hSRS = OSRNewSpatialReference(NULL);
-        if( OSRImportFromWkt( hSRS, &pszProjection ) == CE_None )
+        if (OSRImportFromWkt(hSRS, &pszProjection) == CE_None)
         {
-            char	*pszPrettyWkt = NULL;
+            char *pszPrettyWkt = NULL;
 
-            OSRExportToPrettyWkt( hSRS, &pszPrettyWkt, FALSE );
-            printf( "Coordinate System is:\n%s\n", pszPrettyWkt );
+            OSRExportToPrettyWkt(hSRS, &pszPrettyWkt, FALSE);
+            printf("Coordinate System is:\n%s\n", pszPrettyWkt);
         }
         else
-            printf( "Coordinate System is `%s'\n",
-                    GDALGetProjectionRef( hDataset ) );
+            printf("Coordinate System is `%s'\n",
+                   GDALGetProjectionRef(hDataset));
 
-        OSRDestroySpatialReference( hSRS );
+        OSRDestroySpatialReference(hSRS);
     }
 
 /* -------------------------------------------------------------------- */
 /*      Report Geotransform.                                            */
 /* -------------------------------------------------------------------- */
-    if( GDALGetGeoTransform( hDataset, adfGeoTransform ) == CE_None )
+    if (GDALGetGeoTransform(hDataset, adfGeoTransform) == CE_None)
     {
-        printf( "Origin = (%.6f,%.6f)\n",
-                adfGeoTransform[0], adfGeoTransform[3] );
+        printf("Origin = (%.6f,%.6f)\n",
+               adfGeoTransform[0], adfGeoTransform[3]);
 
-        printf( "Pixel Size = (%.6f,%.6f)\n",
-                adfGeoTransform[1], adfGeoTransform[5] );
+        printf("Pixel Size = (%.6f,%.6f)\n",
+               adfGeoTransform[1], adfGeoTransform[5]);
     }
 
 /* -------------------------------------------------------------------- */
 /*      Report GCPs.                                                    */
 /* -------------------------------------------------------------------- */
-    if( GDALGetGCPCount( hDataset ) > 0 )
+    if (GDALGetGCPCount(hDataset) > 0)
     {
-        printf( "GCP Projection = %s\n", GDALGetGCPProjection(hDataset) );
-        for( i = 0; i < GDALGetGCPCount(hDataset); i++ )
-        {
-            const GDAL_GCP	*psGCP;
-            
-            psGCP = GDALGetGCPs( hDataset ) + i;
+        printf("GCP Projection = %s\n", GDALGetGCPProjection(hDataset));
 
-            printf( "GCP[%3d]: Id=%s, Info=%s\n"
-                    "          (%g,%g) -> (%g,%g,%g)\n", 
-                    i, psGCP->pszId, psGCP->pszInfo, 
-                    psGCP->dfGCPPixel, psGCP->dfGCPLine, 
-                    psGCP->dfGCPX, psGCP->dfGCPY, psGCP->dfGCPZ );
+        for (i = 0; i < GDALGetGCPCount(hDataset); i++)
+        {
+            const GDAL_GCP *psGCP;
+
+            psGCP = GDALGetGCPs(hDataset) + i;
+
+            printf("GCP[%3d]: Id=%s, Info=%s\n"
+                   "          (%g,%g) -> (%g,%g,%g)\n",
+                   i, psGCP->pszId, psGCP->pszInfo,
+                   psGCP->dfGCPPixel, psGCP->dfGCPLine,
+                   psGCP->dfGCPX, psGCP->dfGCPY, psGCP->dfGCPZ);
         }
     }
 
 /* -------------------------------------------------------------------- */
 /*      Report metadata.                                                */
 /* -------------------------------------------------------------------- */
-    papszMetadata = GDALGetMetadata( hDataset, NULL );
-    if( papszMetadata != NULL )
+    papszMetadata = GDALGetMetadata(hDataset, NULL);
+    if (papszMetadata != NULL)
     {
-        printf( "Metadata:\n" );
-        for( i = 0; papszMetadata[i] != NULL; i++ )
+        printf("Metadata:\n");
+
+        for (i = 0; papszMetadata[i] != NULL; i++)
         {
-            printf( "  %s\n", papszMetadata[i] );
+            printf("  %s\n", papszMetadata[i]);
         }
     }
 
 /* -------------------------------------------------------------------- */
 /*      Report subdatasets.                                             */
 /* -------------------------------------------------------------------- */
-    papszMetadata = GDALGetMetadata( hDataset, "SUBDATASETS" );
-    if( papszMetadata != NULL )
+    papszMetadata = GDALGetMetadata(hDataset, "SUBDATASETS");
+    if (papszMetadata != NULL)
     {
-        printf( "Subdatasets:\n" );
-        for( i = 0; papszMetadata[i] != NULL; i++ )
+        printf("Subdatasets:\n");
+
+        for (i = 0; papszMetadata[i] != NULL; i++)
         {
-            printf( "  %s\n", papszMetadata[i] );
+            printf("  %s\n", papszMetadata[i]);
         }
     }
 
 /* -------------------------------------------------------------------- */
 /*      Report corners.                                                 */
 /* -------------------------------------------------------------------- */
-    printf( "Corner Coordinates:\n" );
-    GDALInfoReportCorner( hDataset, "Upper Left", 
-                          0.0, 0.0 );
-    GDALInfoReportCorner( hDataset, "Lower Left", 
-                          0.0, GDALGetRasterYSize(hDataset));
-    GDALInfoReportCorner( hDataset, "Upper Right", 
-                          GDALGetRasterXSize(hDataset), 0.0 );
-    GDALInfoReportCorner( hDataset, "Lower Right", 
-                          GDALGetRasterXSize(hDataset), 
-                          GDALGetRasterYSize(hDataset) );
-    GDALInfoReportCorner( hDataset, "Center", 
-                          GDALGetRasterXSize(hDataset)/2.0, 
-                          GDALGetRasterYSize(hDataset)/2.0 );
+    printf("Corner Coordinates:\n");
+    GDALInfoReportCorner(hDataset, "Upper Left",
+                         0.0, 0.0);
+    GDALInfoReportCorner(hDataset, "Lower Left",
+                         0.0, GDALGetRasterYSize(hDataset));
+    GDALInfoReportCorner(hDataset, "Upper Right",
+                         GDALGetRasterXSize(hDataset), 0.0);
+    GDALInfoReportCorner(hDataset, "Lower Right",
+                         GDALGetRasterXSize(hDataset),
+                         GDALGetRasterYSize(hDataset));
+    GDALInfoReportCorner(hDataset, "Center",
+                         GDALGetRasterXSize(hDataset) / 2.0,
+                         GDALGetRasterYSize(hDataset) / 2.0);
 
 /* ==================================================================== */
 /*      Loop over bands.                                                */
 /* ==================================================================== */
-    for( iBand = 0; iBand < GDALGetRasterCount( hDataset ); iBand++ )
+    for (iBand = 0; iBand < GDALGetRasterCount(hDataset); iBand++)
     {
-        double      dfMin, dfMax, adfCMinMax[2], dfNoData;
-        int         bGotMin, bGotMax, bGotNodata;
-        int         nBlockXSize, nBlockYSize;
+        double dfMin, dfMax, adfCMinMax[2], dfNoData;
+        int    bGotMin, bGotMax, bGotNodata;
+        int    nBlockXSize, nBlockYSize;
 
-        hBand = GDALGetRasterBand( hDataset, iBand+1 );
-        GDALGetBlockSize( hBand, &nBlockXSize, &nBlockYSize );
-        printf( "Band %d Block=%dx%d Type=%d, ColorInterp=%d\n", iBand+1,
-                nBlockXSize, nBlockYSize,
-                GDALGetRasterDataType(hBand),
-                GDALGetRasterColorInterpretation(hBand) );
+        hBand = GDALGetRasterBand(hDataset, iBand + 1);
+        GDALGetBlockSize(hBand, &nBlockXSize, &nBlockYSize);
+        printf("Band %d Block=%dx%d Type=%d, ColorInterp=%d\n", iBand + 1,
+               nBlockXSize, nBlockYSize,
+               GDALGetRasterDataType(hBand),
+               GDALGetRasterColorInterpretation(hBand));
 
-        dfMin = GDALGetRasterMinimum( hBand, &bGotMin );
-        dfMax = GDALGetRasterMaximum( hBand, &bGotMax );
-        printf( "  Min=%.3f/%d, Max=%.3f/%d",  dfMin, bGotMin, dfMax, bGotMax);
-        
-        if( bComputeMinMax )
+        dfMin = GDALGetRasterMinimum(hBand, &bGotMin);
+        dfMax = GDALGetRasterMaximum(hBand, &bGotMax);
+        printf("  Min=%.3f/%d, Max=%.3f/%d",  dfMin, bGotMin, dfMax, bGotMax);
+
+        if (bComputeMinMax)
         {
-            GDALComputeRasterMinMax( hBand, TRUE, adfCMinMax );
-            printf( ", Computed Min/Max=%.3f,%.3f", 
-                    adfCMinMax[0], adfCMinMax[1] );
-        }
-        printf( "\n" );
-
-        dfNoData = GDALGetRasterNoDataValue( hBand, &bGotNodata );
-        if( bGotNodata )
-        {
-            printf( "  NoData Value=%g\n", dfNoData );
+            GDALComputeRasterMinMax(hBand, TRUE, adfCMinMax);
+            printf(", Computed Min/Max=%.3f,%.3f",
+                   adfCMinMax[0], adfCMinMax[1]);
         }
 
-        if( GDALGetOverviewCount(hBand) > 0 )
-        {
-            int		iOverview;
+        printf("\n");
 
-            printf( "  Overviews: " );
-            for( iOverview = 0; 
+        dfNoData = GDALGetRasterNoDataValue(hBand, &bGotNodata);
+        if (bGotNodata)
+        {
+            printf("  NoData Value=%g\n", dfNoData);
+        }
+
+        if (GDALGetOverviewCount(hBand) > 0)
+        {
+            int iOverview;
+
+            printf("  Overviews: ");
+
+            for (iOverview = 0;
                  iOverview < GDALGetOverviewCount(hBand);
-                 iOverview++ )
+                 iOverview++)
             {
-                GDALRasterBandH	hOverview;
+                GDALRasterBandH hOverview;
 
-                if( iOverview != 0 )
-                    printf( ", " );
+                if (iOverview != 0)
+                    printf(", ");
 
-                hOverview = GDALGetOverview( hBand, iOverview );
-                printf( "%dx%d", 
-                        GDALGetRasterBandXSize( hOverview ),
-                        GDALGetRasterBandYSize( hOverview ) );
+                hOverview = GDALGetOverview(hBand, iOverview);
+                printf("%dx%d",
+                       GDALGetRasterBandXSize(hOverview),
+                       GDALGetRasterBandYSize(hOverview));
             }
-            printf( "\n" );
+
+            printf("\n");
         }
 
-        papszMetadata = GDALGetMetadata( hBand, NULL );
-        if( papszMetadata != NULL )
+        papszMetadata = GDALGetMetadata(hBand, NULL);
+        if (papszMetadata != NULL)
         {
-            printf( "Metadata:\n" );
-            for( i = 0; papszMetadata[i] != NULL; i++ )
+            printf("Metadata:\n");
+
+            for (i = 0; papszMetadata[i] != NULL; i++)
             {
-                printf( "  %s\n", papszMetadata[i] );
+                printf("  %s\n", papszMetadata[i]);
             }
         }
 
-        if( GDALGetRasterColorInterpretation(hBand) == GCI_PaletteIndex )
+        if (GDALGetRasterColorInterpretation(hBand) == GCI_PaletteIndex)
         {
-            GDALColorTableH	hTable;
-            int			i;
+            GDALColorTableH hTable;
+            int             i;
 
-            hTable = GDALGetRasterColorTable( hBand );
-            printf( "  Color Table (%s with %d entries)\n", 
-                    GDALGetPaletteInterpretationName(
-                        GDALGetPaletteInterpretation( hTable )), 
-                    GDALGetColorEntryCount( hTable ) );
+            hTable = GDALGetRasterColorTable(hBand);
+            printf("  Color Table (%s with %d entries)\n",
+                   GDALGetPaletteInterpretationName(
+                       GDALGetPaletteInterpretation(hTable)),
+                   GDALGetColorEntryCount(hTable));
 
-            for( i = 0; i < GDALGetColorEntryCount( hTable ); i++ )
+            for (i = 0; i < GDALGetColorEntryCount(hTable); i++)
             {
-                GDALColorEntry	sEntry;
+                GDALColorEntry sEntry;
 
-                GDALGetColorEntryAsRGB( hTable, i, &sEntry );
-                printf( "  %3d: %d,%d,%d,%d\n", 
-                        i, 
-                        sEntry.c1,
-                        sEntry.c2,
-                        sEntry.c3,
-                        sEntry.c4 );
+                GDALGetColorEntryAsRGB(hTable, i, &sEntry);
+                printf("  %3d: %d,%d,%d,%d\n",
+                       i,
+                       sEntry.c1,
+                       sEntry.c2,
+                       sEntry.c3,
+                       sEntry.c4);
             }
         }
     }
 
-    GDALClose( hDataset );
-    
-    exit( 0 );
+    GDALClose(hDataset);
+
+    exit(0);
 }
 
 /************************************************************************/
 /*                        GDALInfoReportCorner()                        */
 /************************************************************************/
 
-static int 
-GDALInfoReportCorner( GDALDatasetH hDataset, 
-                      const char * corner_name,
-                      double x, double y )
+static int
+GDALInfoReportCorner(GDALDatasetH hDataset,
+                     const char *corner_name,
+                     double x, double y)
 
 {
-    double	dfGeoX, dfGeoY;
-    const char  *pszProjection;
-    double	adfGeoTransform[6];
+    double                       dfGeoX, dfGeoY;
+    const char                   *pszProjection;
+    double                       adfGeoTransform[6];
     OGRCoordinateTransformationH hTransform = NULL;
-        
-    printf( "%-11s ", corner_name );
-    
+
+    printf("%-11s ", corner_name);
+
 /* -------------------------------------------------------------------- */
 /*      Transform the point into georeferenced coordinates.             */
 /* -------------------------------------------------------------------- */
-    if( GDALGetGeoTransform( hDataset, adfGeoTransform ) == CE_None )
+    if (GDALGetGeoTransform(hDataset, adfGeoTransform) == CE_None)
     {
         pszProjection = GDALGetProjectionRef(hDataset);
 
         dfGeoX = adfGeoTransform[0] + adfGeoTransform[1] * x
-            + adfGeoTransform[2] * y;
+                 + adfGeoTransform[2] * y;
         dfGeoY = adfGeoTransform[3] + adfGeoTransform[4] * x
-            + adfGeoTransform[5] * y;
+                 + adfGeoTransform[5] * y;
     }
 
     else
     {
-        printf( "(%7.1f,%7.1f)\n", x, y );
+        printf("(%7.1f,%7.1f)\n", x, y);
         return FALSE;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Report the georeferenced coordinates.                           */
 /* -------------------------------------------------------------------- */
-    if( fabs(dfGeoX) < 181 && fabs(dfGeoY) < 91 )
+    if (fabs(dfGeoX) < 181 && fabs(dfGeoY) < 91)
     {
-        printf( "(%12.7f,%12.7f) ", dfGeoX, dfGeoY );
-
+        printf("(%12.7f,%12.7f) ", dfGeoX, dfGeoY);
     }
     else
     {
-        printf( "(%12.3f,%12.3f) ", dfGeoX, dfGeoY );
+        printf("(%12.3f,%12.3f) ", dfGeoX, dfGeoY);
     }
 
 /* -------------------------------------------------------------------- */
 /*      Setup transformation to lat/long.                               */
 /* -------------------------------------------------------------------- */
-    if( pszProjection != NULL && strlen(pszProjection) > 0 )
+    if (pszProjection != NULL && strlen(pszProjection) > 0)
     {
         OGRSpatialReferenceH hProj, hLatLong = NULL;
 
-        hProj = OSRNewSpatialReference( pszProjection );
-        if( hProj != NULL )
-            hLatLong = OSRCloneGeogCS( hProj );
+        hProj = OSRNewSpatialReference(pszProjection);
+        if (hProj != NULL)
+            hLatLong = OSRCloneGeogCS(hProj);
 
-        if( hLatLong != NULL )
+        if (hLatLong != NULL)
         {
-            hTransform = OCTNewCoordinateTransformation( hProj, hLatLong );
-            OSRDestroySpatialReference( hLatLong );
+            hTransform = OCTNewCoordinateTransformation(hProj, hLatLong);
+            OSRDestroySpatialReference(hLatLong);
         }
 
-        if( hProj != NULL )
-            OSRDestroySpatialReference( hProj );
+        if (hProj != NULL)
+            OSRDestroySpatialReference(hProj);
     }
 
 /* -------------------------------------------------------------------- */
 /*      Transform to latlong and report.                                */
 /* -------------------------------------------------------------------- */
-    if( hTransform != NULL 
-        && OCTTransform(hTransform,1,&dfGeoX,&dfGeoY,NULL) )
+    if (hTransform != NULL
+        && OCTTransform(hTransform, 1, &dfGeoX, &dfGeoY, NULL))
     {
-        
-        printf( "(%s,", GDALDecToDMS( dfGeoX, "Long", 2 ) );
-        printf( "%s)", GDALDecToDMS( dfGeoY, "Lat", 2 ) );
+        printf("(%s,", GDALDecToDMS(dfGeoX, "Long", 2));
+        printf("%s)", GDALDecToDMS(dfGeoY, "Lat", 2));
     }
 
-    if( hTransform != NULL )
-        OCTDestroyCoordinateTransformation( hTransform );
-    
-    printf( "\n" );
+    if (hTransform != NULL)
+        OCTDestroyCoordinateTransformation(hTransform);
+
+    printf("\n");
 
     return TRUE;
 }
-

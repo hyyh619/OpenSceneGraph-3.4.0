@@ -1,26 +1,26 @@
 #ifndef HEADER_CURL_SRC_SETUP_H
 #define HEADER_CURL_SRC_SETUP_H
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 
 #define CURL_NO_OLDIES
 
@@ -64,7 +64,6 @@
 #ifdef TPF
 #include "config-tpf.h"
 #endif
-
 #endif /* HAVE_CONFIG_H */
 
 /*
@@ -136,10 +135,10 @@
 
 #ifdef TPF
 #  include <sys/socket.h>
-   /* change which select is used for the curl command line tool */
-#  define select(a,b,c,d,e) tpf_select_bsd(a,b,c,d,e)
-   /* and turn off the progress meter */
-#  define CONF_DEFAULT (0|CONF_NOPROGRESS)
+/* change which select is used for the curl command line tool */
+#  define select(a, b, c, d, e) tpf_select_bsd(a, b, c, d, e)
+/* and turn off the progress meter */
+#  define CONF_DEFAULT (0 | CONF_NOPROGRESS)
 #endif
 
 #include <stdio.h>
@@ -154,19 +153,19 @@
 #endif
 
 #if !defined(fileno) && !defined(WIN32) /* sunos 4 have this as a macro! */
-int fileno( FILE *stream);
+int fileno(FILE *stream);
 #endif
 
 #ifdef WIN32
-#define DIR_CHAR      "\\"
-#define DOT_CHAR      "_"
+#define DIR_CHAR "\\"
+#define DOT_CHAR "_"
 #else
 #ifdef __EMX__
 /* 20000318 mgs
  * OS/2 supports leading dots in filenames if the volume is formatted
  * with JFS or HPFS. */
-#define DIR_CHAR      "\\"
-#define DOT_CHAR      "."
+#define DIR_CHAR "\\"
+#define DOT_CHAR "."
 #else
 
 #ifdef DJGPP
@@ -174,13 +173,12 @@ int fileno( FILE *stream);
 #ifdef word
 #undef word
 #endif
-#define DIR_CHAR      "/"
-#define DOT_CHAR      "_"
+#define DIR_CHAR "/"
+#define DOT_CHAR "_"
 #else
 
-#define DIR_CHAR      "/"
-#define DOT_CHAR      "."
-
+#define DIR_CHAR "/"
+#define DOT_CHAR "."
 #endif /* !DJGPP */
 #endif /* !__EMX__ */
 #endif /* !WIN32 */

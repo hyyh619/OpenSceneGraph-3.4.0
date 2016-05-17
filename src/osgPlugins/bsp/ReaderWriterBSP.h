@@ -8,21 +8,17 @@
 
 namespace bsp
 {
-
-
 class ReaderWriterBSP : public osgDB::ReaderWriter
 {
 public:
 
-    virtual const char*   className() const;
+virtual const char*   className() const;
 
-    virtual bool   acceptsExtension(const std::string& extension) const;
+virtual bool   acceptsExtension(const std::string&extension) const;
 
-    virtual ReadResult   readNode(const std::string& file,
-                                  const Options* options) const;
+virtual ReadResult   readNode(const std::string&file,
+                              const Options *options) const;
 };
-
-
 }
 
 #endif

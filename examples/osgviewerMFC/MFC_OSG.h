@@ -14,43 +14,52 @@
 class cOSG
 {
 public:
-    cOSG(HWND hWnd);
-    ~cOSG();
+cOSG(HWND hWnd);
+~cOSG();
 
-    void InitOSG(std::string filename);
-    void InitManipulators(void);
-    void InitSceneGraph(void);
-    void InitCameraConfig(void);
-    void SetupWindow(void);
-    void SetupCamera(void);
-    void PreFrameUpdate(void);
-    void PostFrameUpdate(void);
-    void Done(bool value) { mDone = value; }
-    bool Done(void) { return mDone; }
-    //static void Render(void* ptr);
+void InitOSG(std::string filename);
+void InitManipulators(void);
+void InitSceneGraph(void);
+void InitCameraConfig(void);
+void SetupWindow(void);
+void SetupCamera(void);
+void PreFrameUpdate(void);
+void PostFrameUpdate(void);
+void Done(bool value)
+{
+    mDone = value;
+}
+bool Done(void)
+{
+    return mDone;
+}
+// static void Render(void* ptr);
 
-    osgViewer::Viewer* getViewer() { return mViewer; }
+osgViewer::Viewer* getViewer()
+{
+    return mViewer;
+}
 
 private:
-    bool mDone;
-    std::string m_ModelName;
-    HWND m_hWnd;
-    osgViewer::Viewer* mViewer;
-    osg::ref_ptr<osg::Group> mRoot;
-    osg::ref_ptr<osg::Node> mModel;
-    osg::ref_ptr<osgGA::TrackballManipulator> trackball;
-    osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
+bool                                            mDone;
+std::string                                     m_ModelName;
+HWND                                            m_hWnd;
+osgViewer::Viewer                               *mViewer;
+osg::ref_ptr<osg::Group>                        mRoot;
+osg::ref_ptr<osg::Node>                         mModel;
+osg::ref_ptr<osgGA::TrackballManipulator>       trackball;
+osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator;
 };
 
 class CRenderingThread : public OpenThreads::Thread
 {
 public:
-    CRenderingThread( cOSG* ptr );
-    virtual ~CRenderingThread();
+CRenderingThread(cOSG *ptr);
+virtual ~CRenderingThread();
 
-    virtual void run();
+virtual void run();
 
 protected:
-    cOSG* _ptr;
-    bool _done;
+cOSG *_ptr;
+bool _done;
 };

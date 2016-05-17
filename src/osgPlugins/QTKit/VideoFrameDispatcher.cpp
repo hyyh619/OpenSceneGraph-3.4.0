@@ -10,29 +10,27 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "VideoFrameDispatcher.h"
 #include <iostream>
 #include <osg/Timer>
 
-namespace osgVideo {
-
+namespace osgVideo
+{
 VideoImageStream::VideoImageStream()
     : osg::ImageStream()
     , _needsDispatching(false)
     , _dispatcher(NULL)
     , _queue(NULL)
-{
-}
+{}
 
-VideoImageStream::VideoImageStream(const VideoImageStream& image,const osg::CopyOp& copyop)
+VideoImageStream::VideoImageStream(const VideoImageStream&image, const osg::CopyOp&copyop)
     : osg::ImageStream(image, copyop)
     , _needsDispatching(image._needsDispatching)
     , _dispatcher(image._dispatcher)
     , _queue(NULL)
-{
-}
+{}
 
 VideoImageStream::~VideoImageStream()
 {
@@ -45,19 +43,20 @@ bool VideoImageStream::setNeedsDispatching(RequestMode request_mode)
     _needsDispatching = (_needsDispatching || (request_mode == RequestContinuousUpdate)) && (request_mode != StopUpdate);
     if (!_dispatcher)
         return false;
-    
-    if (request_mode == StopUpdate) {
+
+    if (request_mode == StopUpdate)
+    {
         _dispatcher->removeFromQueue(this);
     }
     else
     {
         _dispatcher->addToQueue(this);
     }
-    
+
     return (_dispatcher != NULL);
 }
 
-#pragma mark 
+#pragma mark
 
 VideoFrameDispatchQueue::VideoFrameDispatchQueue()
     : OpenThreads::Thread()
@@ -67,31 +66,32 @@ VideoFrameDispatchQueue::VideoFrameDispatchQueue()
     , _block()
     , _mutex()
     , _finished(false)
-{
-}
+{}
 
 void VideoFrameDispatchQueue::run()
 {
-    osg::Timer t;
+    osg::Timer          t;
     static unsigned int frame_delay = 1000 * 1000 / 120;
-    
+
     _block.reset();
     _block.block();
-    
-    while(!_finished)
+
+    while (!_finished)
     {
         unsigned int num_items(0);
         {
-            osg::Timer_t last_tick(t.tick());
+            osg::Timer_t                                last_tick(t.tick());
             OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
-            for(Queue::iterator i = _queue.begin(); i != _queue.end(); )
+
+            for (Queue::iterator i = _queue.begin(); i != _queue.end();)
             {
                 osg::observer_ptr<VideoImageStream> stream(*i);
-                
+
                 if (stream.valid() && stream->needsDispatching())
                 {
                     if (stream.valid())
                         stream->decodeFrame();
+
                     ++num_items;
                     ++i;
                 }
@@ -99,44 +99,46 @@ void VideoFrameDispatchQueue::run()
                 {
                     if (stream.valid())
                         stream->setDispatchQueue(NULL);
+
                     _queue.erase(i++);
                 }
-                
             }
+
             _numItems = num_items;
             if (_numItems > 0)
             {
                 unsigned int dt = t.delta_u(last_tick, t.tick());
-                if (dt < frame_delay) {
+                if (dt < frame_delay)
+                {
                     OpenThreads::Thread::microSleep(frame_delay - dt);
                 }
             }
         }
-        
+
         if (_numItems == 0)
         {
             // std::cout << this << " blocking" << std::endl;
             _block.reset();
             _block.block();
         }
-        
     }
 }
 
 void VideoFrameDispatchQueue::addItem(osgVideo::VideoImageStream *stream)
 {
-    if (_finished) return;
-    
+    if (_finished)
+        return;
+
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
     _queue.insert(stream);
     stream->setDispatchQueue(this);
-    
+
     _numItems = _queue.size();
     _block.release();
     // std::cout << this << " release" << std::endl;
 }
 
-void VideoFrameDispatchQueue::removeItem(osgVideo::VideoImageStream* stream)
+void VideoFrameDispatchQueue::removeItem(osgVideo::VideoImageStream *stream)
 {
     stream->setDispatchQueue(NULL);
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
@@ -159,9 +161,10 @@ VideoFrameDispatcher::VideoFrameDispatcher(unsigned int num_threads)
 {
     num_threads = num_threads ? num_threads : OpenThreads::GetNumberOfProcessors();
     OSG_ALWAYS << "VideoFrameDispatcher: creating " << num_threads << " queues." << std::endl;
-    for(unsigned int i = 0; i < num_threads; ++i)
+
+    for (unsigned int i = 0; i < num_threads; ++i)
     {
-        VideoFrameDispatchQueue* q = new VideoFrameDispatchQueue();
+        VideoFrameDispatchQueue *q = new VideoFrameDispatchQueue();
         q->start();
         _queues.push_back(q);
     }
@@ -173,15 +176,14 @@ void VideoFrameDispatcher::addToQueue(VideoImageStream *stream)
     stream->setThreadSafeRefUnref(true);
     if (stream->getDispatchQueue())
         return;
-    
-    VideoFrameDispatchQueue* queue = *std::min_element(_queues.begin(), _queues.end(), VideoFrameDispatchQueueComparator());
+
+    VideoFrameDispatchQueue *queue = *std::min_element(_queues.begin(), _queues.end(), VideoFrameDispatchQueueComparator());
     queue->addItem(stream);
 }
 
-void VideoFrameDispatcher::removeFromQueue(VideoImageStream* stream)
+void VideoFrameDispatcher::removeFromQueue(VideoImageStream *stream)
 {
-   if (stream->getDispatchQueue())
+    if (stream->getDispatchQueue())
         stream->getDispatchQueue()->removeItem(stream);
 }
-
 }

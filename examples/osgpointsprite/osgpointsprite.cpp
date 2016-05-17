@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osgpointsprite.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <osg/PointSprite>
 #include <osg/BlendFunc>
@@ -30,30 +30,32 @@
 
 #include <osgViewer/Viewer>
 
-osg::Geode *makeGalaxy(unsigned nvertices)
+osg::Geode* makeGalaxy(unsigned nvertices)
 {
-    osg::Geode *geode = new osg::Geode();
-    osg::Geometry *galaxy = new osg::Geometry();
+    osg::Geode     *geode    = new osg::Geode();
+    osg::Geometry  *galaxy   = new osg::Geometry();
     osg::Vec3Array *vertices = new osg::Vec3Array();
-    osg::Vec4Array *colors = new osg::Vec4Array();
-    osg::Vec4 ini(1,1,0,1);
-    osg::Vec4 fin(0,0,1,1);
+    osg::Vec4Array *colors   = new osg::Vec4Array();
+    osg::Vec4      ini(1, 1, 0, 1);
+    osg::Vec4      fin(0, 0, 1, 1);
 
     /** Formula for the two spirals */
-    for (unsigned i=0;i<nvertices/2;i++) {
-        float val = (i*2/(float)nvertices * 2 * 3.14159265359);
-        float modx1 = rand() / (float)RAND_MAX*2;
-        float mody1 = rand() / (float)RAND_MAX*2;
-        float modx2 = rand() / (float)RAND_MAX*2;
-        float mody2 = rand() / (float)RAND_MAX*2;
-        float modz1 = ((rand()-RAND_MAX/2) / (float)(RAND_MAX))*3/(val+1);
-        float modz2 = ((rand()-RAND_MAX/2) / (float)(RAND_MAX))*3/(val+1);
-        vertices->push_back(osg::Vec3(cos(val)*val+modx1, sin(val)*val+mody1, modz1));
-        vertices->push_back(osg::Vec3(-cos(val)*val+modx2, -sin(val)*val+mody2, modz2));
+    for (unsigned i = 0; i < nvertices / 2; i++)
+    {
+        float val   = (i * 2 / (float)nvertices * 2 * 3.14159265359);
+        float modx1 = rand() / (float)RAND_MAX * 2;
+        float mody1 = rand() / (float)RAND_MAX * 2;
+        float modx2 = rand() / (float)RAND_MAX * 2;
+        float mody2 = rand() / (float)RAND_MAX * 2;
+        float modz1 = ((rand() - RAND_MAX / 2) / (float)(RAND_MAX)) * 3 / (val + 1);
+        float modz2 = ((rand() - RAND_MAX / 2) / (float)(RAND_MAX)) * 3 / (val + 1);
+        vertices->push_back(osg::Vec3(cos(val) * val + modx1, sin(val) * val + mody1, modz1));
+        vertices->push_back(osg::Vec3(-cos(val) * val + modx2, -sin(val) * val + mody2, modz2));
 
-        colors->push_back(ini+(fin-ini)*(i*2/(float)nvertices));
-        colors->push_back(ini+(fin-ini)*(i*2/(float)nvertices));
+        colors->push_back(ini + (fin - ini) * (i * 2 / (float)nvertices));
+        colors->push_back(ini + (fin - ini) * (i * 2 / (float)nvertices));
     }
+
     galaxy->setVertexArray(vertices);
     galaxy->setColorArray(colors, osg::Array::BIND_PER_VERTEX);
     galaxy->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::POINTS, 0, nvertices));
@@ -92,7 +94,7 @@ osg::StateSet* makeStateSet(float size)
     return set;
 }
 
-int main(int, char *[])
+int main(int, char*[])
 {
     osgViewer::Viewer viewer;
 
@@ -105,4 +107,3 @@ int main(int, char *[])
 
     return viewer.run();
 }
-

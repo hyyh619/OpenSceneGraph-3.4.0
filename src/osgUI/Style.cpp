@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgUI/Style>
 #include <osg/io_utils>
@@ -26,9 +26,10 @@
 
 using namespace osgUI;
 
-osg::ref_ptr<Style>& Style::instance()
+osg::ref_ptr<Style>&Style::instance()
 {
     static osg::ref_ptr<Style> s_style = new Style;
+
     return s_style;
 }
 
@@ -37,69 +38,72 @@ OSG_INIT_SINGLETON_PROXY(StyleSingletonProxy, Style::instance())
 Style::Style()
 {
     osg::ref_ptr<osg::Image> image = new osg::Image;
-    image->allocateImage(1,1,1,GL_RGBA, GL_FLOAT);
-    *(reinterpret_cast<osg::Vec4f*>(image->data(0,0,0))) = osg::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+    image->allocateImage(1, 1, 1, GL_RGBA, GL_FLOAT);
+    *(reinterpret_cast<osg::Vec4f*>(image->data(0, 0, 0))) = osg::Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 
     _clipTexture = new osg::Texture2D;
     _clipTexture->setImage(image.get());
-    _clipTexture->setBorderColor(osg::Vec4f(1.0f,1.0f,1.0f,0.0f));
+    _clipTexture->setBorderColor(osg::Vec4f(1.0f, 1.0f, 1.0f, 0.0f));
     _clipTexture->setWrap(osg::Texture::WRAP_S, osg::Texture::CLAMP_TO_BORDER);
     _clipTexture->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP_TO_BORDER);
     _clipTexture->setFilter(osg::Texture::MIN_FILTER, osg::Texture::NEAREST);
     _clipTexture->setFilter(osg::Texture::MAG_FILTER, osg::Texture::NEAREST);
 
-    //image = osgDB::readImageFile("Images/lz.rgb");
-    //_clipTexture->setImage(image.get());
+    // image = osgDB::readImageFile("Images/lz.rgb");
+    // _clipTexture->setImage(image.get());
 
-    _disabledDepthWrite = new osg::Depth(osg::Depth::LESS,0.0, 1.0,false);
-    _enabledDepthWrite = new osg::Depth(osg::Depth::LESS,0.0, 1.0,true);
+    _disabledDepthWrite    = new osg::Depth(osg::Depth::LESS, 0.0, 1.0, false);
+    _enabledDepthWrite     = new osg::Depth(osg::Depth::LESS, 0.0, 1.0, true);
     _disableColorWriteMask = new osg::ColorMask(false, false, false, false);
 }
 
-Style::Style(const Style& style, const osg::CopyOp& copyop):
+Style::Style(const Style&style, const osg::CopyOp&copyop) :
     osg::Object(style, copyop),
     _clipTexture(style._clipTexture)
-{
-}
+{}
 
-osg::Node* Style::createFrame(const osg::BoundingBox& extents, const FrameSettings* frameSettings, const osg::Vec4& color)
+osg::Node* Style::createFrame(const osg::BoundingBox&extents, const FrameSettings *frameSettings, const osg::Vec4&color)
 {
     // OSG_NOTICE<<"createFrame"<<std::endl;
 
     osg::ref_ptr<osg::Geometry> geometry = new osg::Geometry;
+
     geometry->setName("Frame");
 
-    float topScale = 1.0f;
+    float topScale    = 1.0f;
     float bottomScale = 1.0f;
-    float leftScale = 1.0f;
-    float rightScale = 1.0f;
+    float leftScale   = 1.0f;
+    float rightScale  = 1.0f;
 
     if (frameSettings)
     {
-        switch(frameSettings->getShadow())
+        switch (frameSettings->getShadow())
         {
-            case(FrameSettings::PLAIN):
-                // default settings are appropriate for PLAIN
-                break;
-            case(FrameSettings::SUNKEN):
-                topScale = 0.6f;
-                bottomScale = 1.2f;
-                leftScale = 0.8f;
-                rightScale = 0.8f;
-                break;
-            case(FrameSettings::RAISED):
-                topScale = 1.2f;
-                bottomScale = 0.6f;
-                leftScale = 0.8f;
-                rightScale = 0.8f;
-                break;
+        case (FrameSettings::PLAIN):
+            // default settings are appropriate for PLAIN
+            break;
+
+        case (FrameSettings::SUNKEN):
+            topScale    = 0.6f;
+            bottomScale = 1.2f;
+            leftScale   = 0.8f;
+            rightScale  = 0.8f;
+            break;
+
+        case (FrameSettings::RAISED):
+            topScale    = 1.2f;
+            bottomScale = 0.6f;
+            leftScale   = 0.8f;
+            rightScale  = 0.8f;
+            break;
         }
     }
 
-    osg::Vec4 topColor(osg::minimum(color.r()*topScale,1.0f), osg::minimum(color.g()*topScale,1.0f), osg::minimum(color.b()*topScale,1.0f), color.a());
-    osg::Vec4 bottomColor(osg::minimum(color.r()*bottomScale,1.0f), osg::minimum(color.g()*bottomScale,1.0f), osg::minimum(color.b()*bottomScale,1.0f), color.a());
-    osg::Vec4 leftColor(osg::minimum(color.r()*leftScale,1.0f), osg::minimum(color.g()*leftScale,1.0f), osg::minimum(color.b()*leftScale,1.0f), color.a());
-    osg::Vec4 rightColor(osg::minimum(color.r()*rightScale,1.0f), osg::minimum(color.g()*rightScale,1.0f), osg::minimum(color.b()*rightScale,1.0f), color.a());
+    osg::Vec4 topColor(osg::minimum(color.r() * topScale, 1.0f), osg::minimum(color.g() * topScale, 1.0f), osg::minimum(color.b() * topScale, 1.0f), color.a());
+    osg::Vec4 bottomColor(osg::minimum(color.r() * bottomScale, 1.0f), osg::minimum(color.g() * bottomScale, 1.0f), osg::minimum(color.b() * bottomScale, 1.0f), color.a());
+    osg::Vec4 leftColor(osg::minimum(color.r() * leftScale, 1.0f), osg::minimum(color.g() * leftScale, 1.0f), osg::minimum(color.b() * leftScale, 1.0f), color.a());
+    osg::Vec4 rightColor(osg::minimum(color.r() * rightScale, 1.0f), osg::minimum(color.g() * rightScale, 1.0f), osg::minimum(color.b() * rightScale, 1.0f), color.a());
 
     float lineWidth = frameSettings ? frameSettings->getLineWidth() : 1.0f;
 
@@ -108,23 +112,23 @@ osg::Node* Style::createFrame(const osg::BoundingBox& extents, const FrameSettin
     osg::Vec3 outerTopLeft(extents.xMin(), extents.yMax(), extents.zMin());
     osg::Vec3 outerTopRight(extents.xMax(), extents.yMax(), extents.zMin());
 
-    osg::Vec3 innerBottomLeft(extents.xMin()+lineWidth, extents.yMin()+lineWidth, extents.zMin());
-    osg::Vec3 innerBottomRight(extents.xMax()-lineWidth, extents.yMin()+lineWidth, extents.zMin());
-    osg::Vec3 innerTopLeft(extents.xMin()+lineWidth, extents.yMax()-lineWidth, extents.zMin());
-    osg::Vec3 innerTopRight(extents.xMax()-lineWidth, extents.yMax()-lineWidth, extents.zMin());
+    osg::Vec3 innerBottomLeft(extents.xMin() + lineWidth, extents.yMin() + lineWidth, extents.zMin());
+    osg::Vec3 innerBottomRight(extents.xMax() - lineWidth, extents.yMin() + lineWidth, extents.zMin());
+    osg::Vec3 innerTopLeft(extents.xMin() + lineWidth, extents.yMax() - lineWidth, extents.zMin());
+    osg::Vec3 innerTopRight(extents.xMax() - lineWidth, extents.yMax() - lineWidth, extents.zMin());
 
     osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
     geometry->setVertexArray(vertices.get());
 
-    vertices->push_back( outerBottomLeft );   // 0
-    vertices->push_back( outerBottomRight );  // 1
-    vertices->push_back( outerTopLeft );      // 2
-    vertices->push_back( outerTopRight );     // 3
+    vertices->push_back(outerBottomLeft);     // 0
+    vertices->push_back(outerBottomRight);    // 1
+    vertices->push_back(outerTopLeft);        // 2
+    vertices->push_back(outerTopRight);       // 3
 
-    vertices->push_back( innerBottomLeft );  // 4
-    vertices->push_back( innerBottomRight ); // 5
-    vertices->push_back( innerTopLeft );     // 6
-    vertices->push_back( innerTopRight );    // 7
+    vertices->push_back(innerBottomLeft);    // 4
+    vertices->push_back(innerBottomRight);   // 5
+    vertices->push_back(innerTopLeft);       // 6
+    vertices->push_back(innerTopRight);      // 7
 
     osg::ref_ptr<osg::Vec4Array> colours = new osg::Vec4Array;
     geometry->setColorArray(colours.get(), osg::Array::BIND_PER_PRIMITIVE_SET);
@@ -180,13 +184,14 @@ osg::Node* Style::createFrame(const osg::BoundingBox& extents, const FrameSettin
     return geometry.release();
 }
 
-osg::Node* Style::createText(const osg::BoundingBox& extents, const AlignmentSettings* as, const TextSettings* ts, const std::string& text)
+osg::Node* Style::createText(const osg::BoundingBox&extents, const AlignmentSettings *as, const TextSettings *ts, const std::string&text)
 {
     // OSG_NOTICE<<"createText"<<std::endl;
 
-    osg::Vec4 textColor(0.0f,0.0,0.0f,1.0);
+    osg::Vec4 textColor(0.0f, 0.0, 0.0f, 1.0);
 
     osg::ref_ptr<osgText::Text> textDrawable = new osgText::Text;
+
     textDrawable->setName("Text");
 
     textDrawable->setText(text);
@@ -202,83 +207,94 @@ osg::Node* Style::createText(const osg::BoundingBox& extents, const AlignmentSet
     AlignmentSettings::Alignment alignment = as ? as->getAlignment() : AlignmentSettings::CENTER_CENTER;
     textDrawable->setAlignment(static_cast<osgText::TextBase::AlignmentType>(alignment));
 
-    switch(alignment)
+    switch (alignment)
     {
-        case(AlignmentSettings::LEFT_TOP):
-            textDrawable->setPosition( osg::Vec3(extents.xMin(), extents.yMax(), extents.zMin()) );
-            break;
-        case(AlignmentSettings::LEFT_CENTER):
-            textDrawable->setPosition( osg::Vec3(extents.xMin(), (extents.yMin()+extents.yMax())*0.5f, extents.zMin()) );
-            break;
-        case(AlignmentSettings::LEFT_BOTTOM):
-            textDrawable->setPosition( osg::Vec3(extents.xMin(), extents.yMin(), extents.zMin()) );
-            break;
+    case (AlignmentSettings::LEFT_TOP):
+        textDrawable->setPosition(osg::Vec3(extents.xMin(), extents.yMax(), extents.zMin()));
+        break;
 
-        case(AlignmentSettings::CENTER_TOP):
-            textDrawable->setPosition( osg::Vec3((extents.xMin()+extents.xMax())*0.5f, extents.yMax(), extents.zMin()) );
-            break;
-        case(AlignmentSettings::CENTER_CENTER):
-            textDrawable->setPosition( osg::Vec3((extents.xMin()+extents.xMax())*0.5f, (extents.yMin()+extents.yMax())*0.5f, extents.zMin()) );
-            break;
-        case(AlignmentSettings::CENTER_BOTTOM):
-            textDrawable->setPosition( osg::Vec3((extents.xMin()+extents.xMax())*0.5f, extents.yMin(), extents.zMin()) );
-            break;
+    case (AlignmentSettings::LEFT_CENTER):
+        textDrawable->setPosition(osg::Vec3(extents.xMin(), (extents.yMin() + extents.yMax()) * 0.5f, extents.zMin()));
+        break;
 
-        case(AlignmentSettings::RIGHT_TOP):
-            textDrawable->setPosition( osg::Vec3(extents.xMax(), extents.yMax(), extents.zMin()) );
-            break;
-        case(AlignmentSettings::RIGHT_CENTER):
-            textDrawable->setPosition( osg::Vec3(extents.xMax(), (extents.yMin()+extents.yMax())*0.5f, extents.zMin()) );
-            break;
-        case(AlignmentSettings::RIGHT_BOTTOM):
-            textDrawable->setPosition( osg::Vec3(extents.xMax(), extents.yMin(), extents.zMin()) );
-            break;
+    case (AlignmentSettings::LEFT_BOTTOM):
+        textDrawable->setPosition(osg::Vec3(extents.xMin(), extents.yMin(), extents.zMin()));
+        break;
 
-        case(AlignmentSettings::LEFT_BASE_LINE):
-            OSG_NOTICE<<"Text : LEFT_BASE_LINE"<<std::endl;
-            textDrawable->setPosition( osg::Vec3(extents.xMin(), (extents.yMin()+extents.yMax())*0.5f-textDrawable->getCharacterHeight()*0.5f, extents.zMin()) );
-            break;
-        case(AlignmentSettings::CENTER_BASE_LINE):
-            textDrawable->setPosition( osg::Vec3((extents.xMin()+extents.xMax())*0.5f, (extents.yMin()+extents.yMax())*0.5f-textDrawable->getCharacterHeight()*0.5, extents.zMin()) );
-            break;
-        case(AlignmentSettings::RIGHT_BASE_LINE):
-            textDrawable->setPosition( osg::Vec3(extents.xMax(), (extents.yMin()+extents.yMax())*0.5f-textDrawable->getCharacterHeight()*0.5, extents.zMin()) );
-            break;
+    case (AlignmentSettings::CENTER_TOP):
+        textDrawable->setPosition(osg::Vec3((extents.xMin() + extents.xMax()) * 0.5f, extents.yMax(), extents.zMin()));
+        break;
 
-        case(AlignmentSettings::LEFT_BOTTOM_BASE_LINE):
-        case(AlignmentSettings::CENTER_BOTTOM_BASE_LINE):
-        case(AlignmentSettings::RIGHT_BOTTOM_BASE_LINE):
+    case (AlignmentSettings::CENTER_CENTER):
+        textDrawable->setPosition(osg::Vec3((extents.xMin() + extents.xMax()) * 0.5f, (extents.yMin() + extents.yMax()) * 0.5f, extents.zMin()));
+        break;
 
-        default:
-            textDrawable->setPosition( osg::Vec3(extents.xMin(), extents.yMin(), extents.zMin()) );
-            break;
+    case (AlignmentSettings::CENTER_BOTTOM):
+        textDrawable->setPosition(osg::Vec3((extents.xMin() + extents.xMax()) * 0.5f, extents.yMin(), extents.zMin()));
+        break;
+
+    case (AlignmentSettings::RIGHT_TOP):
+        textDrawable->setPosition(osg::Vec3(extents.xMax(), extents.yMax(), extents.zMin()));
+        break;
+
+    case (AlignmentSettings::RIGHT_CENTER):
+        textDrawable->setPosition(osg::Vec3(extents.xMax(), (extents.yMin() + extents.yMax()) * 0.5f, extents.zMin()));
+        break;
+
+    case (AlignmentSettings::RIGHT_BOTTOM):
+        textDrawable->setPosition(osg::Vec3(extents.xMax(), extents.yMin(), extents.zMin()));
+        break;
+
+    case (AlignmentSettings::LEFT_BASE_LINE):
+        OSG_NOTICE << "Text : LEFT_BASE_LINE" << std::endl;
+        textDrawable->setPosition(osg::Vec3(extents.xMin(), (extents.yMin() + extents.yMax()) * 0.5f - textDrawable->getCharacterHeight() * 0.5f, extents.zMin()));
+        break;
+
+    case (AlignmentSettings::CENTER_BASE_LINE):
+        textDrawable->setPosition(osg::Vec3((extents.xMin() + extents.xMax()) * 0.5f, (extents.yMin() + extents.yMax()) * 0.5f - textDrawable->getCharacterHeight() * 0.5, extents.zMin()));
+        break;
+
+    case (AlignmentSettings::RIGHT_BASE_LINE):
+        textDrawable->setPosition(osg::Vec3(extents.xMax(), (extents.yMin() + extents.yMax()) * 0.5f - textDrawable->getCharacterHeight() * 0.5, extents.zMin()));
+        break;
+
+    case (AlignmentSettings::LEFT_BOTTOM_BASE_LINE):
+    case (AlignmentSettings::CENTER_BOTTOM_BASE_LINE):
+    case (AlignmentSettings::RIGHT_BOTTOM_BASE_LINE):
+
+    default:
+        textDrawable->setPosition(osg::Vec3(extents.xMin(), extents.yMin(), extents.zMin()));
+        break;
     }
 
     return textDrawable.release();
 }
 
-osg::Node* Style::createIcon(const osg::BoundingBox& extents, const std::string& filename, const osg::Vec4& color)
+osg::Node* Style::createIcon(const osg::BoundingBox&extents, const std::string&filename, const osg::Vec4&color)
 {
     osg::ref_ptr<osg::Object> object = osgDB::readObjectFile(filename);
+
     if (!object)
     {
-        //OSG_NOTICE<<"Warning: Style::createIcon(.., "<<filename<<") could not find icon file."<<std::endl;
-        //return 0;
+        // OSG_NOTICE<<"Warning: Style::createIcon(.., "<<filename<<") could not find icon file."<<std::endl;
+        // return 0;
     }
 
     osg::ref_ptr<osg::Image> image = dynamic_cast<osg::Image*>(object.get());
     if (image.valid())
     {
         osg::Vec3 center(extents.center());
-        float width = extents.xMax()-extents.xMin();
-        float height = extents.yMax()-extents.yMin();
-        float extentsAspectRatio = height/width;
+        float     width              = extents.xMax() - extents.xMin();
+        float     height             = extents.yMax() - extents.yMin();
+        float     extentsAspectRatio = height / width;
 
-        float imageAspectRatio = static_cast<float>(image->t())/static_cast<float>(image->s());
-        if (imageAspectRatio>extentsAspectRatio) width *= (extentsAspectRatio/imageAspectRatio);
-        else height *= (imageAspectRatio/extentsAspectRatio);
+        float imageAspectRatio = static_cast<float>(image->t()) / static_cast<float>(image->s());
+        if (imageAspectRatio > extentsAspectRatio)
+            width *= (extentsAspectRatio / imageAspectRatio);
+        else
+            height *= (imageAspectRatio / extentsAspectRatio);
 
-        osg::ref_ptr<osg::Geometry> geometry = osg::createTexturedQuadGeometry(osg::Vec3(center.x()-width*0.5f,center.y()-height*0.5f,center.z()),
+        osg::ref_ptr<osg::Geometry> geometry = osg::createTexturedQuadGeometry(osg::Vec3(center.x() - width * 0.5f, center.y() - height * 0.5f, center.z()),
                                                                                osg::Vec3(width, 0.0f, 0.0f),
                                                                                osg::Vec3(0.0f, height, 0.0f));
 
@@ -302,27 +318,30 @@ osg::Node* Style::createIcon(const osg::BoundingBox& extents, const std::string&
     osg::ref_ptr<osg::Node> node = dynamic_cast<osg::Node*>(object.get());
     if (!node)
     {
-        OSG_NOTICE<<"Warning: Style::createIcon(.., "<<filename<<") could not find icon file."<<std::endl;
+        OSG_NOTICE << "Warning: Style::createIcon(.., " << filename << ") could not find icon file." << std::endl;
 
-        osg::ref_ptr<osg::ShapeDrawable> ds = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0,0.0,0.0),1.0));
+        osg::ref_ptr<osg::ShapeDrawable> ds = new osg::ShapeDrawable(new osg::Sphere(osg::Vec3(0.0, 0.0, 0.0), 1.0));
 
         node = ds.get();
 
-        //return 0;
+        // return 0;
     }
 
     osg::ComputeBoundsVisitor cbv;
     node->accept(cbv);
     osg::BoundingBox bb = cbv.getBoundingBox();
-    osg::Vec3 bb_size(bb.xMax()-bb.xMin(), bb.zMax()-bb.zMin(), bb.zMax()-bb.zMin());
+    osg::Vec3        bb_size(bb.xMax() - bb.xMin(), bb.zMax() - bb.zMin(), bb.zMax() - bb.zMin());
 
-    osg::Vec3 scale( (bb_size.x()>0) ? (extents.xMax()-extents.xMin())/bb_size.x() : 1.0f,
-                     (bb_size.y()>0) ? (extents.yMax()-extents.yMin())/bb_size.y() : 1.0f,
-                     (bb_size.z()>0) ? (extents.zMax()-extents.zMin())/bb_size.z() : 1.0f);
+    osg::Vec3 scale((bb_size.x() > 0) ? (extents.xMax() - extents.xMin()) / bb_size.x() : 1.0f,
+                    (bb_size.y() > 0) ? (extents.yMax() - extents.yMin()) / bb_size.y() : 1.0f,
+                    (bb_size.z() > 0) ? (extents.zMax() - extents.zMin()) / bb_size.z() : 1.0f);
 
     float minNonZeroScale = scale.x();
-    if (scale.y()!=0.0 && scale.y()<minNonZeroScale) minNonZeroScale = scale.y();
-    if (scale.z()!=0.0 && scale.z()<minNonZeroScale) minNonZeroScale = scale.z();
+    if (scale.y() != 0.0 && scale.y() < minNonZeroScale)
+        minNonZeroScale = scale.y();
+
+    if (scale.z() != 0.0 && scale.z() < minNonZeroScale)
+        minNonZeroScale = scale.z();
 
     scale.set(minNonZeroScale, minNonZeroScale, minNonZeroScale);
 
@@ -345,69 +364,71 @@ osg::Node* Style::createIcon(const osg::BoundingBox& extents, const std::string&
         fstv.removeTransforms(group.get());
     }
 
-    if (group->getNumChildren()==1)
+    if (group->getNumChildren() == 1)
     {
         node = group->getChild(0);
 
         // remove references to avoid node from node being unreferenced afer the node ref_ptr<> is released().
-        group = 0;
+        group     = 0;
         transform = 0;
 
         return node.release();
     }
     else
     {
-        OSG_NOTICE<<"Warning: Style::createIcon(.., "<<filename<<"), error in creation of icon."<<std::endl;
+        OSG_NOTICE << "Warning: Style::createIcon(.., " << filename << "), error in creation of icon." << std::endl;
         return 0;
     }
 }
 
-osg::Node* Style::createPanel(const osg::BoundingBox& extents, const osg::Vec4& colour)
+osg::Node* Style::createPanel(const osg::BoundingBox&extents, const osg::Vec4&colour)
 {
     // OSG_NOTICE<<"createPanel"<<std::endl;
 
     osg::ref_ptr<osg::Geometry> geometry = new osg::Geometry;
+
     geometry->setName("Panel");
 
     osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
     geometry->setVertexArray(vertices.get());
 
-    vertices->push_back( osg::Vec3(extents.xMin(), extents.yMin(), extents.zMin()) );
-    vertices->push_back( osg::Vec3(extents.xMin(), extents.yMax(), extents.zMin()) );
-    vertices->push_back( osg::Vec3(extents.xMax(), extents.yMin(), extents.zMin()) );
-    vertices->push_back( osg::Vec3(extents.xMax(), extents.yMax(), extents.zMin()) );
+    vertices->push_back(osg::Vec3(extents.xMin(), extents.yMin(), extents.zMin()));
+    vertices->push_back(osg::Vec3(extents.xMin(), extents.yMax(), extents.zMin()));
+    vertices->push_back(osg::Vec3(extents.xMax(), extents.yMin(), extents.zMin()));
+    vertices->push_back(osg::Vec3(extents.xMax(), extents.yMax(), extents.zMin()));
 
     osg::ref_ptr<osg::Vec4Array> colours = new osg::Vec4Array;
     geometry->setColorArray(colours.get(), osg::Array::BIND_OVERALL);
 
-    colours->push_back( colour );
+    colours->push_back(colour);
 
-    geometry->addPrimitiveSet( new osg::DrawArrays(GL_TRIANGLE_STRIP, 0, 4) );
+    geometry->addPrimitiveSet(new osg::DrawArrays(GL_TRIANGLE_STRIP, 0, 4));
 
     return geometry.release();
 }
 
 
-osg::Node* Style::createDepthSetPanel(const osg::BoundingBox& extents)
+osg::Node* Style::createDepthSetPanel(const osg::BoundingBox&extents)
 {
     // OSG_NOTICE<<"createDepthSetPanel"<<std::endl;
 
     osg::ref_ptr<osg::Geometry> geometry = new osg::Geometry;
+
     geometry->setName("DepthSetPanel");
 
     osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
     geometry->setVertexArray(vertices.get());
 
-    vertices->push_back( osg::Vec3(extents.xMin(), extents.yMin(), extents.zMin()) );
-    vertices->push_back( osg::Vec3(extents.xMin(), extents.yMax(), extents.zMin()) );
-    vertices->push_back( osg::Vec3(extents.xMax(), extents.yMin(), extents.zMin()) );
-    vertices->push_back( osg::Vec3(extents.xMax(), extents.yMax(), extents.zMin()) );
+    vertices->push_back(osg::Vec3(extents.xMin(), extents.yMin(), extents.zMin()));
+    vertices->push_back(osg::Vec3(extents.xMin(), extents.yMax(), extents.zMin()));
+    vertices->push_back(osg::Vec3(extents.xMax(), extents.yMin(), extents.zMin()));
+    vertices->push_back(osg::Vec3(extents.xMax(), extents.yMax(), extents.zMin()));
 
-    geometry->addPrimitiveSet( new osg::DrawArrays(GL_TRIANGLE_STRIP, 0, 4) );
+    geometry->addPrimitiveSet(new osg::DrawArrays(GL_TRIANGLE_STRIP, 0, 4));
 
     osg::ref_ptr<osg::StateSet> stateset = geometry->getOrCreateStateSet();
-    stateset->setAttributeAndModes( _enabledDepthWrite.get(), osg::StateAttribute::ON | osg::StateAttribute::PROTECTED );
-    stateset->setAttributeAndModes( _disableColorWriteMask.get(), osg::StateAttribute::ON | osg::StateAttribute::PROTECTED );
+    stateset->setAttributeAndModes(_enabledDepthWrite.get(), osg::StateAttribute::ON | osg::StateAttribute::PROTECTED);
+    stateset->setAttributeAndModes(_disableColorWriteMask.get(), osg::StateAttribute::ON | osg::StateAttribute::PROTECTED);
     stateset->setRenderBinDetails(20, "TraversalOrderBin", osg::StateSet::OVERRIDE_PROTECTED_RENDERBIN_DETAILS);
     stateset->setNestRenderBins(false);
 
@@ -415,36 +436,35 @@ osg::Node* Style::createDepthSetPanel(const osg::BoundingBox& extents)
 }
 
 
-void Style::setupDialogStateSet(osg::StateSet* stateset, int binNum)
+void Style::setupDialogStateSet(osg::StateSet *stateset, int binNum)
 {
     stateset->setRenderBinDetails(binNum, "TraversalOrderBin", osg::StateSet::OVERRIDE_PROTECTED_RENDERBIN_DETAILS);
-    stateset->setMode( GL_LIGHTING, osg::StateAttribute::OFF );
-    stateset->setAttributeAndModes( _disabledDepthWrite.get(), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
+    stateset->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+    stateset->setAttributeAndModes(_disabledDepthWrite.get(), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
     stateset->setNestRenderBins(false);
 }
 
 void Style::setupPopupStateSet(osg::StateSet* /*stateset*/, int /*binNum*/)
-{
-}
+{}
 
-void Style::setupClipStateSet(const osg::BoundingBox& extents, osg::StateSet* stateset)
+void Style::setupClipStateSet(const osg::BoundingBox&extents, osg::StateSet *stateset)
 {
     unsigned int clipTextureUnit = 1;
 
-    stateset->setAttributeAndModes( new osg::AlphaFunc(osg::AlphaFunc::GREATER, 0.0f), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+    stateset->setAttributeAndModes(new osg::AlphaFunc(osg::AlphaFunc::GREATER, 0.0f), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 
-    stateset->setTextureAttributeAndModes( clipTextureUnit, _clipTexture.get(), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+    stateset->setTextureAttributeAndModes(clipTextureUnit, _clipTexture.get(), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 
-    osg::Matrixd matrix = osg::Matrixd::translate(osg::Vec3(-extents.xMin(), -extents.yMin(), -extents.zMin()))*
-                          osg::Matrixd::scale(osg::Vec3(1.0f/(extents.xMax()-extents.xMin()), 1.0f/(extents.yMax()-extents.yMin()), 1.0f));
+    osg::Matrixd matrix = osg::Matrixd::translate(osg::Vec3(-extents.xMin(), -extents.yMin(), -extents.zMin())) *
+                          osg::Matrixd::scale(osg::Vec3(1.0f / (extents.xMax() - extents.xMin()), 1.0f / (extents.yMax() - extents.yMin()), 1.0f));
 
-    OSG_NOTICE<<"setupClipState("
-            <<extents.xMin()<<", "<<extents.yMin()<<", "<<extents.zMin()<<", "
-            <<extents.xMax()<<", "<<extents.yMax()<<", "<<extents.zMax()<<")"<<std::endl;
+    OSG_NOTICE << "setupClipState("
+               << extents.xMin() << ", " << extents.yMin() << ", " << extents.zMin() << ", "
+               << extents.xMax() << ", " << extents.yMax() << ", " << extents.zMax() << ")" << std::endl;
 
 
     osg::ref_ptr<osg::TexGen> texgen = new osg::TexGen;
     texgen->setPlanesFromMatrix(matrix);
     texgen->setMode(osg::TexGen::OBJECT_LINEAR);
-    stateset->setTextureAttributeAndModes( clipTextureUnit, texgen.get(), osg::StateAttribute::ON);
+    stateset->setTextureAttributeAndModes(clipTextureUnit, texgen.get(), osg::StateAttribute::ON);
 }

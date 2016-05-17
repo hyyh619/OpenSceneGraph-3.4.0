@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgUtil/StateGraph>
 
 #include <osg/Notify>
@@ -19,7 +19,7 @@ using namespace osgUtil;
 
 void StateGraph::reset()
 {
-    _parent = NULL;
+    _parent   = NULL;
     _stateset = NULL;
 
     _depth = 0;
@@ -29,37 +29,37 @@ void StateGraph::reset()
 }
 
 /** recursively clean the StateGraph of all its drawables, lights and depths.
-  * Leaves children intact, and ready to be populated again.*/
+ * Leaves children intact, and ready to be populated again.*/
 void StateGraph::clean()
 {
-
     // clean local drawables etc.
     _leaves.clear();
 
     // call clean on all children.
-    for(ChildList::iterator itr=_children.begin();
-        itr!=_children.end();
-        ++itr)
+    for (ChildList::iterator itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
         itr->second->clean();
     }
-
 }
 
 /** recursively prune the StateGraph of empty children.*/
 void StateGraph::prune()
 {
     // call prune on all children.
-    ChildList::iterator citr=_children.begin();
-    while(citr!=_children.end())
+    ChildList::iterator citr = _children.begin();
+
+    while (citr != _children.end())
     {
         citr->second->prune();
 
         if (citr->second->empty())
         {
-            ChildList::iterator ditr= citr++;
+            ChildList::iterator ditr = citr++;
             _children.erase(ditr);
         }
-        else ++citr;
+        else
+            ++citr;
     }
 }

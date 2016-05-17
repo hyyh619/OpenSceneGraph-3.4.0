@@ -4,8 +4,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool MultiTextureControl_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool MultiTextureControl_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool MultiTextureControl_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool MultiTextureControl_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(MultiTextureControl_Proxy)
 (
@@ -16,15 +16,15 @@ REGISTER_DOTOSGWRAPPER(MultiTextureControl_Proxy)
     MultiTextureControl_writeLocalData
 );
 
-bool MultiTextureControl_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool MultiTextureControl_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgFX::MultiTextureControl &mtc = static_cast<osgFX::MultiTextureControl &>(obj);
-    bool iteratorAdvanced = false;
+    osgFX::MultiTextureControl&mtc             = static_cast<osgFX::MultiTextureControl&>(obj);
+    bool                      iteratorAdvanced = false;
 
     bool matchFirst = false;
-    if ((matchFirst=fr.matchSequence("TextureWeights {")) || fr.matchSequence("TextureWeights %i {"))
-    {
 
+    if ((matchFirst = fr.matchSequence("TextureWeights {")) || fr.matchSequence("TextureWeights %i {"))
+    {
         // set up coordinates.
         int entry = fr[0].getNoNestedBrackets();
         if (matchFirst)
@@ -36,13 +36,14 @@ bool MultiTextureControl_readLocalData(osg::Object &obj, osgDB::Input &fr)
             fr += 3;
         }
 
-        float weight=0.0f;
-        unsigned int i=0;
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        float        weight = 0.0f;
+        unsigned int i      = 0;
+
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
             if (fr[0].getFloat(weight))
             {
-                mtc.setTextureWeight(i,weight);
+                mtc.setTextureWeight(i, weight);
                 ++fr;
                 ++i;
             }
@@ -54,25 +55,25 @@ bool MultiTextureControl_readLocalData(osg::Object &obj, osgDB::Input &fr)
 
         iteratorAdvanced = true;
         ++fr;
-
     }
 
     return iteratorAdvanced;
 }
 
-bool MultiTextureControl_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool MultiTextureControl_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgFX::MultiTextureControl &mtc = static_cast<const osgFX::MultiTextureControl &>(obj);
+    const osgFX::MultiTextureControl&mtc = static_cast<const osgFX::MultiTextureControl&>(obj);
 
-    fw.indent() << "TextureWeights "<<mtc.getNumTextureWeights()<<" {"<< std::endl;
+    fw.indent() << "TextureWeights " << mtc.getNumTextureWeights() << " {" << std::endl;
     fw.moveIn();
 
-    for(unsigned int i=0; i<mtc.getNumTextureWeights();++i)
+    for (unsigned int i = 0; i < mtc.getNumTextureWeights(); ++i)
     {
-        fw.indent() << mtc.getTextureWeight(i)<<std::endl;
+        fw.indent() << mtc.getTextureWeight(i) << std::endl;
     }
+
     fw.moveOut();
-    fw.indent() << "}"<< std::endl;
+    fw.indent() << "}" << std::endl;
 
 
     return true;

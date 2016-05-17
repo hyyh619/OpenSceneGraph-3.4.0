@@ -2,8 +2,8 @@
  * $Id: ogr_srs_dict.cpp 11881 2007-08-13 18:03:48Z mloskot $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
- * Purpose:  Implement importFromDict() method to read a WKT SRS from a 
- *           coordinate system dictionary in a simple text format. 
+ * Purpose:  Implement importFromDict() method to read a WKT SRS from a
+ *           coordinate system dictionary in a simple text format.
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  *
  ******************************************************************************
@@ -41,18 +41,18 @@ CPL_CVSID("$Id: ogr_srs_dict.cpp 11881 2007-08-13 18:03:48Z mloskot $");
 /**
  * Read SRS from WKT dictionary.
  *
- * This method will attempt to find the indicated coordinate system identity 
+ * This method will attempt to find the indicated coordinate system identity
  * in the indicated dictionary file.  If found, the WKT representation is
- * imported and used to initialize this OGRSpatialReference.  
+ * imported and used to initialize this OGRSpatialReference.
  *
  * More complete information on the format of the dictionary files can
  * be found in the epsg.wkt file in the GDAL data tree.  The dictionary
  * files are searched for in the "GDAL" domain using CPLFindFile().  Normally
- * this results in searching /usr/local/share/gdal or somewhere similar. 
+ * this results in searching /usr/local/share/gdal or somewhere similar.
  *
  * This method is the same as the C function OSRImportFromDict().
  *
- * @param pszDictFile the name of the dictionary file to load.  
+ * @param pszDictFile the name of the dictionary file to load.
  *
  * @param pszCode the code to lookup in the dictionary.
  *
@@ -60,23 +60,23 @@ CPL_CVSID("$Id: ogr_srs_dict.cpp 11881 2007-08-13 18:03:48Z mloskot $");
  * found, and OGRERR_SRS_FAILURE if something more dramatic goes wrong.
  */
 
-OGRErr OGRSpatialReference::importFromDict( const char *pszDictFile, 
-                                            const char *pszCode )
+OGRErr OGRSpatialReference::importFromDict(const char *pszDictFile,
+                                           const char *pszCode)
 
 {
     const char *pszFilename;
-    FILE *fp;
-    OGRErr eErr = OGRERR_UNSUPPORTED_SRS;
+    FILE       *fp;
+    OGRErr     eErr = OGRERR_UNSUPPORTED_SRS;
 
 /* -------------------------------------------------------------------- */
 /*      Find and open file.                                             */
 /* -------------------------------------------------------------------- */
-    pszFilename = CPLFindFile( "gdal", pszDictFile );
-    if( pszFilename == NULL )
+    pszFilename = CPLFindFile("gdal", pszDictFile);
+    if (pszFilename == NULL)
         return OGRERR_UNSUPPORTED_SRS;
 
-    fp = VSIFOpen( pszFilename, "rb" );
-    if( fp == NULL )
+    fp = VSIFOpen(pszFilename, "rb");
+    if (fp == NULL)
         return OGRERR_UNSUPPORTED_SRS;
 
 /* -------------------------------------------------------------------- */
@@ -84,28 +84,28 @@ OGRErr OGRSpatialReference::importFromDict( const char *pszDictFile,
 /* -------------------------------------------------------------------- */
     const char *pszLine;
 
-    while( (pszLine = CPLReadLine(fp)) != NULL )
+    while ((pszLine = CPLReadLine(fp)) != NULL)
 
     {
-        if( pszLine[0] == '#' )
+        if (pszLine[0] == '#')
             /* do nothing */;
 
-        else if( EQUALN(pszLine,"include ",8) )
+        else if (EQUALN(pszLine, "include ", 8))
         {
-            eErr = importFromDict( pszLine + 8, pszCode );
-            if( eErr != OGRERR_UNSUPPORTED_SRS )
+            eErr = importFromDict(pszLine + 8, pszCode);
+            if (eErr != OGRERR_UNSUPPORTED_SRS)
                 break;
         }
 
-        else if( strstr(pszLine,",") == NULL )
+        else if (strstr(pszLine, ",") == NULL)
             /* do nothing */;
 
-        else if( EQUALN(pszLine,pszCode,strlen(pszCode))
-                 && pszLine[strlen(pszCode)] == ',' )
+        else if (EQUALN(pszLine, pszCode, strlen(pszCode))
+                 && pszLine[strlen(pszCode)] == ',')
         {
-            char *pszWKT = (char *) pszLine + strlen(pszCode)+1;
+            char *pszWKT = (char*) pszLine + strlen(pszCode) + 1;
 
-            eErr = importFromWkt( &pszWKT );
+            eErr = importFromWkt(&pszWKT);
             break;
         }
     }
@@ -113,8 +113,8 @@ OGRErr OGRSpatialReference::importFromDict( const char *pszDictFile,
 /* -------------------------------------------------------------------- */
 /*      Cleanup                                                         */
 /* -------------------------------------------------------------------- */
-    VSIFClose( fp );
-    
+    VSIFClose(fp);
+
     return eErr;
 }
 
@@ -122,13 +122,13 @@ OGRErr OGRSpatialReference::importFromDict( const char *pszDictFile,
 /*                         OSRImportFromDict()                          */
 /************************************************************************/
 
-OGRErr OSRImportFromDict( OGRSpatialReferenceH hSRS, 
-                          const char *pszDictFile, 
-                          const char *pszCode )
+OGRErr OSRImportFromDict(OGRSpatialReferenceH hSRS,
+                         const char *pszDictFile,
+                         const char *pszCode)
 
 {
-    VALIDATE_POINTER1( hSRS, "OSRImportFromDict", CE_Failure );
+    VALIDATE_POINTER1(hSRS, "OSRImportFromDict", CE_Failure);
 
-    return ((OGRSpatialReference *) hSRS)->importFromDict( pszDictFile,
-                                                           pszCode );
+    return ((OGRSpatialReference*) hSRS)->importFromDict(pszDictFile,
+                                                         pszCode);
 }

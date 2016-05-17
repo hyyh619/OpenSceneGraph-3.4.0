@@ -27,36 +27,36 @@
 
 enum VTFFlags
 {
-    VTF_FLAGS_POINTSAMPLE                          = 0x00000001,
-    VTF_FLAGS_TRILINEAR                            = 0x00000002,
-    VTF_FLAGS_CLAMP_S                              = 0x00000004,
-    VTF_FLAGS_CLAMP_T                              = 0x00000008,
-    VTF_FLAGS_ANISOTROPIC                          = 0x00000010,
-    VTF_FLAGS_HINT_DXT5                            = 0x00000020,
-    VTF_FLAGS_NOCOMPRESS                           = 0x00000040,
-    VTF_FLAGS_NORMAL                               = 0x00000080,
-    VTF_FLAGS_NOMIP                                = 0x00000100,
-    VTF_FLAGS_NOLOD                                = 0x00000200,
-    VTF_FLAGS_MINMIP                               = 0x00000400,
-    VTF_FLAGS_PROCEDURAL                           = 0x00000800,
-    VTF_FLAGS_ONEBITALPHA                          = 0x00001000,
-    VTF_FLAGS_EIGHTBITALPHA                        = 0x00002000,
-    VTF_FLAGS_ENVMAP                               = 0x00004000,
-    VTF_FLAGS_RENDERTARGET                         = 0x00008000,
-    VTF_FLAGS_DEPTHRENDERTARGET                    = 0x00010000,
-    VTF_FLAGS_NODEBUGOVERRIDE                      = 0x00020000,
-    VTF_FLAGS_SINGLECOPY                           = 0x00040000,
-    VTF_FLAGS_ONEOVERMIPLEVELINALPHA               = 0x00080000,
-    VTF_FLAGS_PREMULTCOLORBYONEOVERMIPLEVEL        = 0x00100000,
-    VTF_FLAGS_NORMALTODUDV                         = 0x00200000,
-    VTF_FLAGS_ALPHATESTMIPGENERATION               = 0x00400000,
-    VTF_FLAGS_NODEPTHBUFFER                        = 0x00800000,
-    VTF_FLAGS_NICEFILTERED                         = 0x01000000,
-    VTF_FLAGS_CLAMP_U                              = 0x02000000,
-    VTF_FLAGS_PRESWIZZLED                          = 0x04000000,
-    VTF_FLAGS_CACHEABLE                            = 0x08000000,
-    VTF_FLAGS_UNFILTERABLE_OK                      = 0x10000000,
-    VTF_FLAGS_LASTFLAG                             = 0x10000000
+    VTF_FLAGS_POINTSAMPLE                   = 0x00000001,
+    VTF_FLAGS_TRILINEAR                     = 0x00000002,
+    VTF_FLAGS_CLAMP_S                       = 0x00000004,
+    VTF_FLAGS_CLAMP_T                       = 0x00000008,
+    VTF_FLAGS_ANISOTROPIC                   = 0x00000010,
+    VTF_FLAGS_HINT_DXT5                     = 0x00000020,
+    VTF_FLAGS_NOCOMPRESS                    = 0x00000040,
+    VTF_FLAGS_NORMAL                        = 0x00000080,
+    VTF_FLAGS_NOMIP                         = 0x00000100,
+    VTF_FLAGS_NOLOD                         = 0x00000200,
+    VTF_FLAGS_MINMIP                        = 0x00000400,
+    VTF_FLAGS_PROCEDURAL                    = 0x00000800,
+    VTF_FLAGS_ONEBITALPHA                   = 0x00001000,
+    VTF_FLAGS_EIGHTBITALPHA                 = 0x00002000,
+    VTF_FLAGS_ENVMAP                        = 0x00004000,
+    VTF_FLAGS_RENDERTARGET                  = 0x00008000,
+    VTF_FLAGS_DEPTHRENDERTARGET             = 0x00010000,
+    VTF_FLAGS_NODEBUGOVERRIDE               = 0x00020000,
+    VTF_FLAGS_SINGLECOPY                    = 0x00040000,
+    VTF_FLAGS_ONEOVERMIPLEVELINALPHA        = 0x00080000,
+    VTF_FLAGS_PREMULTCOLORBYONEOVERMIPLEVEL = 0x00100000,
+    VTF_FLAGS_NORMALTODUDV                  = 0x00200000,
+    VTF_FLAGS_ALPHATESTMIPGENERATION        = 0x00400000,
+    VTF_FLAGS_NODEPTHBUFFER                 = 0x00800000,
+    VTF_FLAGS_NICEFILTERED                  = 0x01000000,
+    VTF_FLAGS_CLAMP_U                       = 0x02000000,
+    VTF_FLAGS_PRESWIZZLED                   = 0x04000000,
+    VTF_FLAGS_CACHEABLE                     = 0x08000000,
+    VTF_FLAGS_UNFILTERABLE_OK               = 0x10000000,
+    VTF_FLAGS_LASTFLAG                      = 0x10000000
 };
 
 
@@ -86,8 +86,8 @@ enum VTFLookDir
 
 enum VTFImageFormat
 {
-    VTF_FORMAT_UNKNOWN    = -1,
-    VTF_FORMAT_RGBA8888   = 0,
+    VTF_FORMAT_UNKNOWN  = -1,
+    VTF_FORMAT_RGBA8888 = 0,
     VTF_FORMAT_ABGR8888,
     VTF_FORMAT_RGB888,
     VTF_FORMAT_BGR888,
@@ -121,32 +121,32 @@ enum VTFImageFormat
 };
 
 
-#define VTF_FORMAT_DEFAULT   ((VTFImageFormat)-2)
+#define VTF_FORMAT_DEFAULT ((VTFImageFormat) - 2)
 
 
 struct VTFFileHeader
 {
-    char             magic_number[4];
-    unsigned int     file_version[2];
-    unsigned int     header_size;
-    unsigned short   image_width;
-    unsigned short   image_height;
-    unsigned int     image_flags;
-    unsigned short   num_frames;
-    unsigned short   start_frame;
+    char           magic_number[4];
+    unsigned int   file_version[2];
+    unsigned int   header_size;
+    unsigned short image_width;
+    unsigned short image_height;
+    unsigned int   image_flags;
+    unsigned short num_frames;
+    unsigned short start_frame;
 
-    unsigned char    padding_0[4];
-    osg::Vec3f       reflectivity_value;
-    unsigned char    padding_1[4];
+    unsigned char padding_0[4];
+    osg::Vec3f    reflectivity_value;
+    unsigned char padding_1[4];
 
-    float            bump_scale;
-    unsigned int     image_format;
-    unsigned char    num_mip_levels;
-    unsigned char    low_res_image_format;
-    unsigned char    padding_2[3];
-    unsigned char    low_res_image_width;
-    unsigned char    low_res_image_height;
-    unsigned short   image_depth;
+    float          bump_scale;
+    unsigned int   image_format;
+    unsigned char  num_mip_levels;
+    unsigned char  low_res_image_format;
+    unsigned char  padding_2[3];
+    unsigned char  low_res_image_width;
+    unsigned char  low_res_image_height;
+    unsigned short image_depth;
 };
 
 
@@ -162,8 +162,8 @@ struct DXT1TexelsBlock
 };
 
 
-bool ConvertImageFormat(unsigned int vtfFormat, int& internalFormat,
-                        int& pixelFormat, int& dataType)
+bool ConvertImageFormat(unsigned int vtfFormat, int&internalFormat,
+                        int&pixelFormat, int&dataType)
 {
     bool supported;
 
@@ -173,173 +173,173 @@ bool ConvertImageFormat(unsigned int vtfFormat, int& internalFormat,
     // Decode the format
     switch (static_cast<int>(vtfFormat))
     {
-        case VTF_FORMAT_DEFAULT:
-            supported = false;
-            break;
+    case VTF_FORMAT_DEFAULT:
+        supported = false;
+        break;
 
-        case VTF_FORMAT_UNKNOWN:
-            supported = false;
-            break;
+    case VTF_FORMAT_UNKNOWN:
+        supported = false;
+        break;
 
-        case VTF_FORMAT_RGBA8888:
-            internalFormat = GL_RGBA;
-            pixelFormat = GL_RGBA;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_RGBA8888:
+        internalFormat = GL_RGBA;
+        pixelFormat    = GL_RGBA;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_ABGR8888:
-            internalFormat = GL_RGBA;
-            pixelFormat = GL_ABGR_EXT;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_ABGR8888:
+        internalFormat = GL_RGBA;
+        pixelFormat    = GL_ABGR_EXT;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_RGB888:
-            internalFormat = GL_RGB;
-            pixelFormat = GL_RGB;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_RGB888:
+        internalFormat = GL_RGB;
+        pixelFormat    = GL_RGB;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_BGR888:
-            internalFormat = GL_RGB;
-            pixelFormat = GL_BGR;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_BGR888:
+        internalFormat = GL_RGB;
+        pixelFormat    = GL_BGR;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_RGB565:
-            internalFormat = GL_RGB;
-            pixelFormat = GL_RGB;
-            dataType = GL_UNSIGNED_SHORT_5_6_5;
-            break;
+    case VTF_FORMAT_RGB565:
+        internalFormat = GL_RGB;
+        pixelFormat    = GL_RGB;
+        dataType       = GL_UNSIGNED_SHORT_5_6_5;
+        break;
 
-        case VTF_FORMAT_I8:
-            internalFormat = GL_LUMINANCE;
-            pixelFormat = GL_LUMINANCE;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_I8:
+        internalFormat = GL_LUMINANCE;
+        pixelFormat    = GL_LUMINANCE;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_IA88:
-            internalFormat = GL_LUMINANCE_ALPHA;
-            pixelFormat = GL_LUMINANCE_ALPHA;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_IA88:
+        internalFormat = GL_LUMINANCE_ALPHA;
+        pixelFormat    = GL_LUMINANCE_ALPHA;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_P8:
-            // 8-bit paletted image, not supported
-            supported = false;
-            break;
+    case VTF_FORMAT_P8:
+        // 8-bit paletted image, not supported
+        supported = false;
+        break;
 
-        case VTF_FORMAT_A8:
-            internalFormat = GL_ALPHA;
-            pixelFormat = GL_ALPHA;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_A8:
+        internalFormat = GL_ALPHA;
+        pixelFormat    = GL_ALPHA;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_RGB888_BLUESCREEN:
-            // Ignore the "bluescreen" specification for now
-            internalFormat = GL_RGB;
-            pixelFormat = GL_RGB;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_RGB888_BLUESCREEN:
+        // Ignore the "bluescreen" specification for now
+        internalFormat = GL_RGB;
+        pixelFormat    = GL_RGB;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_BGR888_BLUESCREEN:
-            // Ignore the "bluescreen" specification for now
-            internalFormat = GL_RGB;
-            pixelFormat = GL_BGR;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_BGR888_BLUESCREEN:
+        // Ignore the "bluescreen" specification for now
+        internalFormat = GL_RGB;
+        pixelFormat    = GL_BGR;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_ARGB8888:
-            // ARGB not supported
-            supported = false;
-            break;
+    case VTF_FORMAT_ARGB8888:
+        // ARGB not supported
+        supported = false;
+        break;
 
-        case VTF_FORMAT_BGRA8888:
-            internalFormat = GL_RGBA;
-            pixelFormat = GL_BGRA;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_BGRA8888:
+        internalFormat = GL_RGBA;
+        pixelFormat    = GL_BGRA;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_DXT1:
-            internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
-            pixelFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_DXT1:
+        internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+        pixelFormat    = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_DXT3:
-            internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-            pixelFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_DXT3:
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+        pixelFormat    = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_DXT5:
-            internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-            pixelFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_DXT5:
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        pixelFormat    = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_BGRX8888:
-            internalFormat = GL_RGB;
-            pixelFormat = GL_BGRA;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_BGRX8888:
+        internalFormat = GL_RGB;
+        pixelFormat    = GL_BGRA;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_BGR565:
-            internalFormat = GL_RGB;
-            pixelFormat = GL_BGR;
-            dataType = GL_UNSIGNED_SHORT_5_6_5_REV;
-            break;
+    case VTF_FORMAT_BGR565:
+        internalFormat = GL_RGB;
+        pixelFormat    = GL_BGR;
+        dataType       = GL_UNSIGNED_SHORT_5_6_5_REV;
+        break;
 
-        case VTF_FORMAT_BGRX5551:
-            internalFormat = GL_RGB;
-            pixelFormat = GL_BGRA;
-            dataType = GL_UNSIGNED_SHORT_5_5_5_1;
-            break;
+    case VTF_FORMAT_BGRX5551:
+        internalFormat = GL_RGB;
+        pixelFormat    = GL_BGRA;
+        dataType       = GL_UNSIGNED_SHORT_5_5_5_1;
+        break;
 
-        case VTF_FORMAT_BGRA4444:
-            internalFormat = GL_RGBA;
-            pixelFormat = GL_BGRA;
-            dataType = GL_UNSIGNED_SHORT_4_4_4_4;
-            break;
+    case VTF_FORMAT_BGRA4444:
+        internalFormat = GL_RGBA;
+        pixelFormat    = GL_BGRA;
+        dataType       = GL_UNSIGNED_SHORT_4_4_4_4;
+        break;
 
-        case VTF_FORMAT_DXT1_ONEBITALPHA:
-            internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-            pixelFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-            dataType = GL_UNSIGNED_BYTE;
-            break;
+    case VTF_FORMAT_DXT1_ONEBITALPHA:
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        pixelFormat    = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        dataType       = GL_UNSIGNED_BYTE;
+        break;
 
-        case VTF_FORMAT_BGRA5551:
-            internalFormat = GL_RGBA;
-            pixelFormat = GL_BGRA;
-            dataType = GL_UNSIGNED_SHORT_5_5_5_1;
-            break;
+    case VTF_FORMAT_BGRA5551:
+        internalFormat = GL_RGBA;
+        pixelFormat    = GL_BGRA;
+        dataType       = GL_UNSIGNED_SHORT_5_5_5_1;
+        break;
 
-        case VTF_FORMAT_UV88:
-            supported = false;
-            break;
+    case VTF_FORMAT_UV88:
+        supported = false;
+        break;
 
-        case VTF_FORMAT_UVWQ8888:
-            supported = false;
-            break;
+    case VTF_FORMAT_UVWQ8888:
+        supported = false;
+        break;
 
-        case VTF_FORMAT_RGBA16161616F:
-            internalFormat = GL_RGBA;
-            pixelFormat = GL_RGBA;
-            dataType = GL_HALF_FLOAT;
-            break;
+    case VTF_FORMAT_RGBA16161616F:
+        internalFormat = GL_RGBA;
+        pixelFormat    = GL_RGBA;
+        dataType       = GL_HALF_FLOAT;
+        break;
 
-        case VTF_FORMAT_RGBA16161616:
-            internalFormat = GL_RGBA;
-            pixelFormat = GL_RGBA;
-            dataType = GL_UNSIGNED_SHORT;
-            break;
+    case VTF_FORMAT_RGBA16161616:
+        internalFormat = GL_RGBA;
+        pixelFormat    = GL_RGBA;
+        dataType       = GL_UNSIGNED_SHORT;
+        break;
 
-        case VTF_FORMAT_UVLX8888:
-            supported = false;
-            break;
+    case VTF_FORMAT_UVLX8888:
+        supported = false;
+        break;
 
-        default:
-            supported = false;
-            break;
+    default:
+        supported = false;
+        break;
     }
 
     // Return whether or not the format is supported
@@ -347,20 +347,20 @@ bool ConvertImageFormat(unsigned int vtfFormat, int& internalFormat,
 }
 
 
-osg::Image* ReadVTFFile(std::istream& _istream)
+osg::Image* ReadVTFFile(std::istream&_istream)
 {
-    VTFFileHeader     vtf_header;
-    bool              supported;
-    int               internalFormat;
-    int               pixelFormat;
-    int               dataType;
-    int               s, t, r;
-    unsigned int      lrSize;
-    unsigned char *   imageData;
-    unsigned int      size;
-    int               mip;
-    int               mipSize;
-    int               mipOffset;
+    VTFFileHeader vtf_header;
+    bool          supported;
+    int           internalFormat;
+    int           pixelFormat;
+    int           dataType;
+    int           s, t, r;
+    unsigned int  lrSize;
+    unsigned char *imageData;
+    unsigned int  size;
+    int           mip;
+    int           mipSize;
+    int           mipOffset;
 
     // Validate the file with the 'VTF\0' magic number
     _istream.read(&vtf_header.magic_number[0], 4);
@@ -375,22 +375,22 @@ osg::Image* ReadVTFFile(std::istream& _istream)
     }
 
     // Now, read the rest of the header
-    _istream.read((char *)&vtf_header.file_version[0], 8);
-    _istream.read((char *)&vtf_header.header_size, 4);
-    _istream.read((char *)&vtf_header.image_width, 2);
-    _istream.read((char *)&vtf_header.image_height, 2);
-    _istream.read((char *)&vtf_header.image_flags, 4);
-    _istream.read((char *)&vtf_header.num_frames, 2);
-    _istream.read((char *)&vtf_header.start_frame, 2);
+    _istream.read((char*)&vtf_header.file_version[0], 8);
+    _istream.read((char*)&vtf_header.header_size, 4);
+    _istream.read((char*)&vtf_header.image_width, 2);
+    _istream.read((char*)&vtf_header.image_height, 2);
+    _istream.read((char*)&vtf_header.image_flags, 4);
+    _istream.read((char*)&vtf_header.num_frames, 2);
+    _istream.read((char*)&vtf_header.start_frame, 2);
     _istream.ignore(4);
-    _istream.read((char *)&vtf_header.reflectivity_value, 12);
+    _istream.read((char*)&vtf_header.reflectivity_value, 12);
     _istream.ignore(4);
-    _istream.read((char *)&vtf_header.bump_scale, 4);
-    _istream.read((char *)&vtf_header.image_format, 4);
-    _istream.read((char *)&vtf_header.num_mip_levels, 1);
-    _istream.read((char *)&vtf_header.low_res_image_format, 4);
-    _istream.read((char *)&vtf_header.low_res_image_width, 1);
-    _istream.read((char *)&vtf_header.low_res_image_height, 1);
+    _istream.read((char*)&vtf_header.bump_scale, 4);
+    _istream.read((char*)&vtf_header.image_format, 4);
+    _istream.read((char*)&vtf_header.num_mip_levels, 1);
+    _istream.read((char*)&vtf_header.low_res_image_format, 4);
+    _istream.read((char*)&vtf_header.low_res_image_width, 1);
+    _istream.read((char*)&vtf_header.low_res_image_height, 1);
 
     // No depth in textures earlier than version 7.2
     if ((vtf_header.file_version[0] < 7) ||
@@ -403,7 +403,7 @@ osg::Image* ReadVTFFile(std::istream& _istream)
     else
     {
         // Read the image depth
-        _istream.read((char *)&vtf_header.image_depth, 2);
+        _istream.read((char*)&vtf_header.image_depth, 2);
     }
 
     // Skip past the rest of the header's space
@@ -533,9 +533,9 @@ osg::Image* ReadVTFFile(std::istream& _istream)
     if (vtf_header.num_mip_levels > 1)
     {
         // Set up the offsets vector
-        float power2_s = logf((float)s)/logf((float)2);
-        float power2_t = logf((float)t)/logf((float)2);
-        mipmaps.resize((unsigned int)osg::maximum(power2_s,power2_t),0);
+        float power2_s = logf((float)s) / logf((float)2);
+        float power2_t = logf((float)t) / logf((float)2);
+        mipmaps.resize((unsigned int)osg::maximum(power2_s, power2_t), 0);
 
         // Calculate the dimensions of each mipmap
         if ((vtf_header.image_format == VTF_FORMAT_DXT1) ||
@@ -544,17 +544,18 @@ osg::Image* ReadVTFFile(std::istream& _istream)
             (vtf_header.image_format == VTF_FORMAT_DXT5))
         {
             // Handle S3TC compressed mipmaps
-            int width = vtf_header.image_width;
+            int width  = vtf_header.image_width;
             int height = vtf_header.image_height;
             int blockSize;
 
             if ((vtf_header.image_format == VTF_FORMAT_DXT1) ||
                 (vtf_header.image_format == VTF_FORMAT_DXT1_ONEBITALPHA))
-               blockSize = 8;
+                blockSize = 8;
             else
-               blockSize = 16;
+                blockSize = 16;
 
             int offset = 0;
+
             for (unsigned int k = 1;
                  (k < vtf_header.num_mip_levels) && (width || height);
                  ++k)
@@ -562,15 +563,16 @@ osg::Image* ReadVTFFile(std::istream& _istream)
                 // Clamp dimensions to 1
                 if (width == 0)
                     width = 1;
+
                 if (height == 0)
                     height = 1;
 
                 // Compute and store the offset into the final image data
-                offset += (((width+3)/4) * ((height+3)/4) * blockSize);
-                mipmaps[k-1] = offset;
+                offset        += (((width + 3) / 4) * ((height + 3) / 4) * blockSize);
+                mipmaps[k - 1] = offset;
 
                 // Get the next level's dimensions
-                width >>= 1;
+                width  >>= 1;
                 height >>= 1;
             }
         }
@@ -578,30 +580,33 @@ osg::Image* ReadVTFFile(std::istream& _istream)
         {
             // Handle uncompressed mipmaps
             int offset = 0;
-            int width = vtf_header.image_width;
+            int width  = vtf_header.image_width;
             int height = vtf_header.image_height;
-            int depth = vtf_header.image_depth;
+            int depth  = vtf_header.image_depth;
+
             for (unsigned int k = 1;
                  (k < vtf_header.num_mip_levels) && (width || height || depth);
                  ++k)
             {
                 if (width == 0)
                     width = 1;
+
                 if (height == 0)
                     height = 1;
+
                 if (depth == 0)
                     depth = 1;
 
                 // Compute and store the offset into the final image data
                 offset += depth * height *
-                    osg::Image::computeRowWidthInBytes(width, pixelFormat,
-                                                       dataType, 1 );
-                mipmaps[k-1] = offset;
+                          osg::Image::computeRowWidthInBytes(width, pixelFormat,
+                                                             dataType, 1);
+                mipmaps[k - 1] = offset;
 
                 // Get the next level's dimensions
-                width >>= 1;
+                width  >>= 1;
                 height >>= 1;
-                depth >>= 1;
+                depth  >>= 1;
             }
         }
     }
@@ -621,15 +626,15 @@ osg::Image* ReadVTFFile(std::istream& _istream)
     // Compute the total image size
     size = osgImage->getTotalSizeInBytesIncludingMipmaps();
     OSG_INFO << "ReadVTFFile info : size = " << size << std::endl;
-    if(size <= 0)
+    if (size <= 0)
     {
         OSG_WARN << "ReadVTFFile warning: size <= 0" << std::endl;
         return NULL;
     }
 
     // Prepare to read the image data
-    imageData = new unsigned char [size];
-    if(!imageData)
+    imageData = new unsigned char[size];
+    if (!imageData)
     {
         OSG_WARN << "ReadVTFFile warning: imageData == NULL";
         OSG_WARN << std::endl;
@@ -648,10 +653,10 @@ osg::Image* ReadVTFFile(std::istream& _istream)
             mipOffset = mipmaps[mip];
 
             // Calculate the size of the mipmap
-            if (mip == vtf_header.num_mip_levels-2)
+            if (mip == vtf_header.num_mip_levels - 2)
                 mipSize = size - mipOffset;
             else
-                mipSize = mipmaps[mip+1] - mipOffset;
+                mipSize = mipmaps[mip + 1] - mipOffset;
 
             // Read the image data
             _istream.read((char*)&imageData[mipOffset], mipSize);
@@ -690,19 +695,20 @@ osg::Image* ReadVTFFile(std::istream& _istream)
             }
         }
     }
-*/
+ */
 
     // Now, set the actual image data and mipmap levels
-    osgImage->setImage(s,t,r, internalFormat, pixelFormat, dataType,
+    osgImage->setImage(s, t, r, internalFormat, pixelFormat, dataType,
                        imageData, osg::Image::USE_NEW_DELETE);
-    if (mipmaps.size()>0)  osgImage->setMipmapLevels(mipmaps);
+    if (mipmaps.size() > 0)
+        osgImage->setMipmapLevels(mipmaps);
 
     // Finally, return the image
     return osgImage.release();
 }
 
 
-bool WriteVTFFile(const osg::Image *img, std::ostream& fout)
+bool WriteVTFFile(const osg::Image *img, std::ostream&fout)
 {
     // Not supported
     return false;
@@ -712,92 +718,108 @@ bool WriteVTFFile(const osg::Image *img, std::ostream& fout)
 class ReaderWriterVTF : public osgDB::ReaderWriter
 {
 public:
-    virtual const char* className() const
+virtual const char* className() const
+{
+    return "VTF Image Reader/Writer";
+}
+
+virtual bool acceptsExtension(const std::string&extension) const
+{
+    return osgDB::equalCaseInsensitive(extension, "vtf");
+}
+
+virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    return readImage(file, options);
+}
+
+virtual ReadResult readObject(std::istream&fin, const Options *options) const
+{
+    return readImage(fin, options);
+}
+
+virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(file);
+
+    if (!acceptsExtension(ext))
+        return ReadResult::FILE_NOT_HANDLED;
+
+    std::string fileName = osgDB::findDataFile(file, options);
+
+    if (fileName.empty())
+        return ReadResult::FILE_NOT_FOUND;
+
+    osgDB::ifstream stream(fileName.c_str(), std::ios::in | std::ios::binary);
+    if (!stream)
+        return ReadResult::FILE_NOT_HANDLED;
+
+    ReadResult rr = readImage(stream, options);
+    if (rr.validImage())
+        rr.getImage()->setFileName(file);
+
+    return rr;
+}
+
+virtual ReadResult readImage(std::istream&fin, const Options *options) const
+{
+    osg::Image *osgImage = ReadVTFFile(fin);
+
+    if (osgImage == NULL)
+        return ReadResult::FILE_NOT_HANDLED;
+
+    if (options && options->getOptionString().find("vtf_flip") != std::string::npos)
     {
-        return "VTF Image Reader/Writer";
+        osgImage->flipVertical();
     }
 
-    virtual bool acceptsExtension(const std::string& extension) const
-    {
-        return osgDB::equalCaseInsensitive(extension, "vtf");
-    }
+    return osgImage;
+}
 
-    virtual ReadResult readObject(const std::string& file, const osgDB::ReaderWriter::Options* options) const
-    {
-        return readImage(file,options);
-    }
+virtual WriteResult writeObject(const osg::Object&object, const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    const osg::Image *image = dynamic_cast<const osg::Image*>(&object);
 
-    virtual ReadResult readObject(std::istream& fin, const Options* options) const
-    {
-        return readImage(fin,options);
-    }
+    if (!image)
+        return WriteResult::FILE_NOT_HANDLED;
 
-    virtual ReadResult readImage(const std::string& file, const osgDB::ReaderWriter::Options* options) const
-    {
-        std::string ext = osgDB::getLowerCaseFileExtension(file);
-        if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
+    return writeImage(*image, file, options);
+}
 
-        std::string fileName = osgDB::findDataFile( file, options );
+virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, const Options *options) const
+{
+    const osg::Image *image = dynamic_cast<const osg::Image*>(&object);
 
-        if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
+    if (!image)
+        return WriteResult::FILE_NOT_HANDLED;
 
-        osgDB::ifstream stream(fileName.c_str(), std::ios::in | std::ios::binary);
-        if(!stream) return ReadResult::FILE_NOT_HANDLED;
-        ReadResult rr = readImage(stream, options);
-        if(rr.validImage()) rr.getImage()->setFileName(file);
-        return rr;
-    }
-
-    virtual ReadResult readImage(std::istream& fin, const Options* options) const
-    {
-        osg::Image* osgImage = ReadVTFFile(fin);
-        if (osgImage==NULL) return ReadResult::FILE_NOT_HANDLED;
-
-        if (options && options->getOptionString().find("vtf_flip")!=std::string::npos)
-        {
-            osgImage->flipVertical();
-        }
-
-        return osgImage;
-    }
-
-    virtual WriteResult writeObject(const osg::Object& object,const std::string& file, const osgDB::ReaderWriter::Options* options) const
-    {
-        const osg::Image* image = dynamic_cast<const osg::Image*>(&object);
-        if (!image) return WriteResult::FILE_NOT_HANDLED;
-
-        return writeImage(*image,file,options);
-    }
-
-    virtual WriteResult writeObject(const osg::Object& object,std::ostream& fout,const Options* options) const
-    {
-        const osg::Image* image = dynamic_cast<const osg::Image*>(&object);
-        if (!image) return WriteResult::FILE_NOT_HANDLED;
-
-        return writeImage(*image,fout,options);
-    }
+    return writeImage(*image, fout, options);
+}
 
 
-    virtual WriteResult writeImage(const osg::Image &image,const std::string& file, const osgDB::ReaderWriter::Options* options) const
-    {
-        std::string ext = osgDB::getFileExtension(file);
-        if (!acceptsExtension(ext)) return WriteResult::FILE_NOT_HANDLED;
+virtual WriteResult writeImage(const osg::Image&image, const std::string&file, const osgDB::ReaderWriter::Options *options) const
+{
+    std::string ext = osgDB::getFileExtension(file);
 
-        osgDB::ofstream fout(file.c_str(), std::ios::out | std::ios::binary);
-        if(!fout) return WriteResult::ERROR_IN_WRITING_FILE;
+    if (!acceptsExtension(ext))
+        return WriteResult::FILE_NOT_HANDLED;
 
-        return writeImage(image,fout,options);
-    }
+    osgDB::ofstream fout(file.c_str(), std::ios::out | std::ios::binary);
+    if (!fout)
+        return WriteResult::ERROR_IN_WRITING_FILE;
 
-    virtual WriteResult writeImage(const osg::Image& image,std::ostream& fout,const Options*) const
-    {
-        bool success = WriteVTFFile(&image, fout);
+    return writeImage(image, fout, options);
+}
 
-        if(success)
-            return WriteResult::FILE_SAVED;
-        else
-            return WriteResult::ERROR_IN_WRITING_FILE;
-    }
+virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options*) const
+{
+    bool success = WriteVTFFile(&image, fout);
+
+    if (success)
+        return WriteResult::FILE_SAVED;
+    else
+        return WriteResult::ERROR_IN_WRITING_FILE;
+}
 };
 
 // now register with Registry to instantiate the above

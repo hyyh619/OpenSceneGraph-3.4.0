@@ -4,11 +4,13 @@
 #include <osgSim/Sector>
 #include "ReadWrite.h"
 
-namespace ive{
-class DirectionalSector : public osgSim::DirectionalSector, public ReadWrite {
+namespace ive
+{
+class DirectionalSector : public osgSim::DirectionalSector, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

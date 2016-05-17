@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "VolumeTransferFunctionProperty.h"
@@ -19,33 +19,33 @@
 
 using namespace ive;
 
-void VolumeTransferFunctionProperty::write(DataOutputStream* out)
+void VolumeTransferFunctionProperty::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVEVOLUMETRANSFERFUNCTIONPROPERTY);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Object* object = dynamic_cast<osg::Object*>(this);
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
     if (object)
         ((ive::Object*)(object))->write(out);
     else
         out_THROW_EXCEPTION("VolumeTransferFunctionProperty::write(): Could not cast this osgVolume::TransferFunctionProperty to an osg::Object.");
 
 
-    osg::TransferFunction1D* tf = dynamic_cast<osg::TransferFunction1D*>(getTransferFunction());
+    osg::TransferFunction1D *tf = dynamic_cast<osg::TransferFunction1D*>(getTransferFunction());
     if (tf)
     {
-
         out->writeUInt(1); // TransferFunction1D
         out->writeUInt(tf->getNumberImageCells());
 
-        const osg::TransferFunction1D::ColorMap& colourMap = tf->getColorMap();
+        const osg::TransferFunction1D::ColorMap&colourMap = tf->getColorMap();
 
         // count the number of colour entries in the map so we can write it to the .ive file
         unsigned int numColours = 0;
-        for(osg::TransferFunction1D::ColorMap::const_iterator itr = colourMap.begin();
-            itr != colourMap.end();
-            ++itr)
+
+        for (osg::TransferFunction1D::ColorMap::const_iterator itr = colourMap.begin();
+             itr != colourMap.end();
+             ++itr)
         {
             ++numColours;
         }
@@ -54,9 +54,9 @@ void VolumeTransferFunctionProperty::write(DataOutputStream* out)
         out->writeUInt(numColours);
 
         // write out the colour map entires
-        for(osg::TransferFunction1D::ColorMap::const_iterator itr = colourMap.begin();
-            itr != colourMap.end();
-            ++itr)
+        for (osg::TransferFunction1D::ColorMap::const_iterator itr = colourMap.begin();
+             itr != colourMap.end();
+             ++itr)
         {
             out->writeFloat(itr->first);
             out->writeVec4(itr->second);
@@ -68,10 +68,11 @@ void VolumeTransferFunctionProperty::write(DataOutputStream* out)
     }
 }
 
-void VolumeTransferFunctionProperty::read(DataInputStream* in)
+void VolumeTransferFunctionProperty::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVEVOLUMETRANSFERFUNCTIONPROPERTY)
         in_THROW_EXCEPTION("VolumeTransferFunctionProperty::read(): Expected CompositeProperty identification.");
 
@@ -79,27 +80,28 @@ void VolumeTransferFunctionProperty::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osg::Object* object = dynamic_cast<osg::Object*>(this);
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
     if (object)
         ((ive::Object*)(object))->read(in);
     else
         in_THROW_EXCEPTION("VolumeTransferFunctionProperty::write(): Could not cast this osgVolume::TransferFunctionProperty to an osg::Object.");
 
     unsigned int numDimensions = in->readUInt();
-    if (numDimensions==1)
+    if (numDimensions == 1)
     {
-        osg::TransferFunction1D* tf = new osg::TransferFunction1D;
+        osg::TransferFunction1D *tf = new osg::TransferFunction1D;
         setTransferFunction(tf);
 
         tf->allocate(in->readUInt());
 
-        osg::TransferFunction1D::ColorMap& colourMap = tf->getColorMap();
+        osg::TransferFunction1D::ColorMap&colourMap = tf->getColorMap();
 
         // count the number of colour entries in the map so we can write it to the .ive file
         unsigned int numColours = in->readUInt();
-        for(unsigned int i=0; i<numColours; ++i)
+
+        for (unsigned int i = 0; i < numColours; ++i)
         {
-            float value = in->readFloat();
+            float     value  = in->readFloat();
             osg::Vec4 colour = in->readVec4();
             colourMap[value] = colour;
         }
@@ -107,7 +109,5 @@ void VolumeTransferFunctionProperty::read(DataInputStream* in)
         tf->updateImage();
     }
     else
-    {
-    }
-
+    {}
 }

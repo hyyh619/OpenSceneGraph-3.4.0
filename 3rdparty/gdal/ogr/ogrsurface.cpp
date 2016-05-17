@@ -36,7 +36,7 @@
  * \brief Get the area of the surface object.
  *
  * For polygons the area is computed as the area of the outer ring less
- * the area of all internal rings. 
+ * the area of all internal rings.
  *
  * This method relates to the SFCOM ISurface::get_Area() method.
  *
@@ -51,7 +51,7 @@
  *
  * NOTE: Only implemented when GEOS included in build.
  *
- * @param poPoint point to be set with an internal point. 
+ * @param poPoint point to be set with an internal point.
  *
- * @return OGRERR_NONE if it succeeds or OGRERR_FAILURE otherwise. 
+ * @return OGRERR_NONE if it succeeds or OGRERR_FAILURE otherwise.
  */

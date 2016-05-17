@@ -1,13 +1,13 @@
-/* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield 
+/* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield
  *
- * This application is open source and may be redistributed and/or modified   
+ * This application is open source and may be redistributed and/or modified
  * freely and without restriction, both in commercial and non commercial applications,
  * as long as this copyright notice is maintained.
- * 
+ *
  * This application is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
+ */
 
 #include <osgDB/ReadFile>
 #include <osgUtil/Optimizer>
@@ -30,17 +30,17 @@
 
 #include <iostream>
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     // use an ArgumentParser object to manage the program arguments.
-    osg::ArgumentParser arguments(&argc,argv);
+    osg::ArgumentParser arguments(&argc, argv);
 
     arguments.getApplicationUsage()->setApplicationName(arguments.getApplicationName());
-    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName()+" is the standard OpenSceneGraph example which loads and visualises 3d models.");
-    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName()+" [options] filename ...");
-    arguments.getApplicationUsage()->addCommandLineOption("--image <filename>","Load an image and render it on a quad");
-    arguments.getApplicationUsage()->addCommandLineOption("--dem <filename>","Load an image/DEM and render it on a HeightField");
-    arguments.getApplicationUsage()->addCommandLineOption("--login <url> <username> <password>","Provide authentication information for http file access.");
+    arguments.getApplicationUsage()->setDescription(arguments.getApplicationName() + " is the standard OpenSceneGraph example which loads and visualises 3d models.");
+    arguments.getApplicationUsage()->setCommandLineUsage(arguments.getApplicationName() + " [options] filename ...");
+    arguments.getApplicationUsage()->addCommandLineOption("--image <filename>", "Load an image and render it on a quad");
+    arguments.getApplicationUsage()->addCommandLineOption("--dem <filename>", "Load an image/DEM and render it on a HeightField");
+    arguments.getApplicationUsage()->addCommandLineOption("--login <url> <username> <password>", "Provide authentication information for http file access.");
 
     osgViewer::Viewer viewer(arguments);
 
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
         arguments.getApplicationUsage()->write(std::cout, helpType);
         return 1;
     }
-    
+
     // report any errors if they have occurred when parsing the program arguments.
     if (arguments.errors())
     {
@@ -59,9 +59,9 @@ int main(int argc, char** argv)
     }
 
 #if 0
-    if (arguments.argc()<=1)
+    if (arguments.argc() <= 1)
     {
-        arguments.getApplicationUsage()->write(std::cout,osg::ApplicationUsage::COMMAND_LINE_OPTION);
+        arguments.getApplicationUsage()->write(std::cout, osg::ApplicationUsage::COMMAND_LINE_OPTION);
         return 1;
     }
 #endif
@@ -70,38 +70,39 @@ int main(int argc, char** argv)
     {
         osg::ref_ptr<osgGA::KeySwitchMatrixManipulator> keyswitchManipulator = new osgGA::KeySwitchMatrixManipulator;
 
-        keyswitchManipulator->addMatrixManipulator( '1', "Trackball", new osgGA::TrackballManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '2', "Flight", new osgGA::FlightManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '3', "Drive", new osgGA::DriveManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '4', "Terrain", new osgGA::TerrainManipulator() );
-        keyswitchManipulator->addMatrixManipulator( '5', "Spherical", new osgGA::SphericalManipulator() );
+        keyswitchManipulator->addMatrixManipulator('1', "Trackball", new osgGA::TrackballManipulator());
+        keyswitchManipulator->addMatrixManipulator('2', "Flight", new osgGA::FlightManipulator());
+        keyswitchManipulator->addMatrixManipulator('3', "Drive", new osgGA::DriveManipulator());
+        keyswitchManipulator->addMatrixManipulator('4', "Terrain", new osgGA::TerrainManipulator());
+        keyswitchManipulator->addMatrixManipulator('5', "Spherical", new osgGA::SphericalManipulator());
 
         std::string pathfile;
-        char keyForAnimationPath = '6';
-        while (arguments.read("-p",pathfile))
+        char        keyForAnimationPath = '6';
+
+        while (arguments.read("-p", pathfile))
         {
-            osgGA::AnimationPathManipulator* apm = new osgGA::AnimationPathManipulator(pathfile);
-            if (apm || !apm->valid()) 
+            osgGA::AnimationPathManipulator *apm = new osgGA::AnimationPathManipulator(pathfile);
+            if (apm || !apm->valid())
             {
                 unsigned int num = keyswitchManipulator->getNumMatrixManipulators();
-                keyswitchManipulator->addMatrixManipulator( keyForAnimationPath, "Path", apm );
+                keyswitchManipulator->addMatrixManipulator(keyForAnimationPath, "Path", apm);
                 keyswitchManipulator->selectMatrixManipulator(num);
                 ++keyForAnimationPath;
             }
         }
 
-        viewer.setCameraManipulator( keyswitchManipulator.get() );
+        viewer.setCameraManipulator(keyswitchManipulator.get());
     }
 
     // add the state manipulator
-    viewer.addEventHandler( new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()) );
-    
+    viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
+
     // add the thread model handler
     viewer.addEventHandler(new osgViewer::ThreadingHandler);
 
     // add the window size toggle handler
     viewer.addEventHandler(new osgViewer::WindowSizeHandler);
-        
+
     // add the stats handler
     viewer.addEventHandler(new osgViewer::StatsHandler);
 
@@ -119,7 +120,7 @@ int main(int argc, char** argv)
 
     std::string file = "http://www.openscenegraph.org/data/earth_bayarea/earth.ive";
 
-    osgDB::FileCache* fileCache = osgDB::Registry::instance()->getFileCache();
+    osgDB::FileCache *fileCache = osgDB::Registry::instance()->getFileCache();
     if (fileCache)
     {
         fileCache->loadDatabaseRevisionsForFile(file);
@@ -130,9 +131,9 @@ int main(int argc, char** argv)
 
     // load the data
     osg::ref_ptr<osg::Node> loadedModel = osgDB::readNodeFile(file);
-    if (!loadedModel) 
+    if (!loadedModel)
     {
-        std::cout << arguments.getApplicationName() <<": No data loaded" << std::endl;
+        std::cout << arguments.getApplicationName() << ": No data loaded" << std::endl;
         return 1;
     }
 
@@ -150,10 +151,9 @@ int main(int argc, char** argv)
     osgUtil::Optimizer optimizer;
     optimizer.optimize(loadedModel.get());
 
-    viewer.setSceneData( loadedModel.get() );
+    viewer.setSceneData(loadedModel.get());
 
     viewer.realize();
 
     return viewer.run();
-
 }

@@ -9,13 +9,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgVolume/VolumeSettings>
 
 using namespace osgVolume;
 
-VolumeSettings::VolumeSettings():
+VolumeSettings::VolumeSettings() :
     _technique(MultiPass),
     _shadingModel(Standard),
     _sampleRatioProperty(new SampleRatioProperty(1.0f)),
@@ -23,10 +23,9 @@ VolumeSettings::VolumeSettings():
     _cutoffProperty(new AlphaFuncProperty(0.0f)),
     _transparencyProperty(new TransparencyProperty(1.0f)),
     _isoSurfaceProperty(new IsoSurfaceProperty(0.0f))
-{
-}
+{}
 
-VolumeSettings::VolumeSettings(const VolumeSettings& vs,const osg::CopyOp& copyop):
+VolumeSettings::VolumeSettings(const VolumeSettings&vs, const osg::CopyOp&copyop) :
     Property(vs, copyop),
     _filename(vs._filename),
     _technique(vs._technique),
@@ -36,21 +35,29 @@ VolumeSettings::VolumeSettings(const VolumeSettings& vs,const osg::CopyOp& copyo
     _cutoffProperty(osg::clone(vs._cutoffProperty.get(), copyop)),
     _transparencyProperty(osg::clone(vs._transparencyProperty.get(), copyop)),
     _isoSurfaceProperty(osg::clone(vs._isoSurfaceProperty.get(), copyop))
-{
-}
+{}
 
-void VolumeSettings::accept(PropertyVisitor& pv)
+void VolumeSettings::accept(PropertyVisitor&pv)
 {
     pv.apply(*this);
 }
 
-void VolumeSettings::traverse(PropertyVisitor& pv)
+void VolumeSettings::traverse(PropertyVisitor&pv)
 {
-    if (_sampleRatioProperty.valid())                                   _sampleRatioProperty->accept(pv);
-    if (_sampleRatioWhenMovingProperty.valid())                         _sampleRatioWhenMovingProperty->accept(pv);
-    if (_cutoffProperty.valid())                                        _cutoffProperty->accept(pv);
-    if (_transparencyProperty.valid())                                  _transparencyProperty->accept(pv);
-    if (_isoSurfaceProperty.valid() && _shadingModel==Isosurface)       _isoSurfaceProperty->accept(pv);
+    if (_sampleRatioProperty.valid())
+        _sampleRatioProperty->accept(pv);
+
+    if (_sampleRatioWhenMovingProperty.valid())
+        _sampleRatioWhenMovingProperty->accept(pv);
+
+    if (_cutoffProperty.valid())
+        _cutoffProperty->accept(pv);
+
+    if (_transparencyProperty.valid())
+        _transparencyProperty->accept(pv);
+
+    if (_isoSurfaceProperty.valid() && _shadingModel == Isosurface)
+        _isoSurfaceProperty->accept(pv);
 }
 
 void VolumeSettings::setCutoff(float co)
@@ -58,7 +65,7 @@ void VolumeSettings::setCutoff(float co)
     _cutoffProperty->setValue(co);
     if (_isoSurfaceProperty.valid())
     {
-        OSG_NOTICE<<"Setting IsoSurface value to "<<co<<std::endl;
+        OSG_NOTICE << "Setting IsoSurface value to " << co << std::endl;
         _isoSurfaceProperty->setValue(co);
     }
 

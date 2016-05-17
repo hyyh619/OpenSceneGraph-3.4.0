@@ -15,25 +15,27 @@ extern "C" {
 }
 #endif
 
-namespace osgWidget {
-
+namespace osgWidget
+{
 // This namespace will include all of our Lua library functions. Otherwise, it'll be
 // an empty namespace. This is 100% for code clarity, as this namespace is internal and
 // not visible to the outside C/C++ world.
-namespace lua {
+namespace lua
+{
 #ifdef OSGWIDGET_USELUA
-
 // Strings representing our global REGISTRY values.
-const char* G_WM = "osgWidget_G_WindowManager";
+const char *G_WM = "osgWidget_G_WindowManager";
 
-WindowManager* getWindowManager(lua_State* L) {
+WindowManager* getWindowManager(lua_State *L)
+{
     lua_pushstring(L, G_WM);
     lua_gettable(L, LUA_REGISTRYINDEX);
 
     return reinterpret_cast<WindowManager*>(lua_touserdata(L, -1));
 }
 
-int newWindow(lua_State* L) {
+int newWindow(lua_State *L)
+{
     osg::ref_ptr<Window> w = new Box("testLUA", Box::HORIZONTAL);
 
     lua_pushstring(L, w->getName().c_str());
@@ -41,7 +43,8 @@ int newWindow(lua_State* L) {
     return 1;
 }
 
-int newWidget(lua_State* L) {
+int newWidget(lua_State *L)
+{
     osg::ref_ptr<Widget> w = new Widget("testLUA", 0.0f, 0.0f);
 
     lua_pushstring(L, w->getName().c_str());
@@ -49,38 +52,40 @@ int newWidget(lua_State* L) {
     return 1;
 }
 
-int getWindow(lua_State* L) {
-    WindowManager* wm = getWindowManager(L);
+int getWindow(lua_State *L)
+{
+    WindowManager *wm = getWindowManager(L);
 
     lua_pushlightuserdata(L, wm);
 
     return 1;
 }
-
 #endif
 }
 
 // A helper function for all those cases where we need to inform the user that there isn't
 // a LUA engine available.
-bool noLuaFail(const std::string& err) {
+bool noLuaFail(const std::string&err)
+{
     warn() << err << "; Lua not compiled in library." << std::endl;
 
     return false;
 }
 
 // Our "private", internal data.
-struct LuaEngineData {
+struct LuaEngineData
+{
 #ifdef OSGWIDGET_USELUA
-    LuaEngineData():
-    lua(0) {
-    }
+    LuaEngineData() :
+        lua(0) {}
 
-    lua_State* lua;
+    lua_State *lua;
 #endif
 };
 
-LuaEngine::LuaEngine(WindowManager* wm):
-_wm(wm) {
+LuaEngine::LuaEngine(WindowManager *wm) :
+    _wm(wm)
+{
 #ifdef OSGWIDGET_USELUA
     _data = new LuaEngineData();
 
@@ -89,7 +94,8 @@ _wm(wm) {
 #endif
 }
 
-bool LuaEngine::initialize() {
+bool LuaEngine::initialize()
+{
 #ifdef OSGWIDGET_USELUA
     _data->lua = lua_open();
 
@@ -118,7 +124,8 @@ bool LuaEngine::initialize() {
 #endif
 }
 
-bool LuaEngine::close() {
+bool LuaEngine::close()
+{
 #ifdef OSGWIDGET_USELUA
     lua_close(_data->lua);
 
@@ -131,9 +138,11 @@ bool LuaEngine::close() {
 #endif
 }
 
-bool LuaEngine::eval(const std::string& code) {
+bool LuaEngine::eval(const std::string&code)
+{
 #ifdef OSGWIDGET_USELUA
-    if(luaL_dostring(_data->lua, code.c_str())) {
+    if (luaL_dostring(_data->lua, code.c_str()))
+    {
         warn() << "LuaEngine::eval - " << lua_tostring(_data->lua, -1) << std::endl;
 
         return false;
@@ -146,15 +155,18 @@ bool LuaEngine::eval(const std::string& code) {
 #endif
 }
 
-bool LuaEngine::runFile(const std::string& filePath) {
+bool LuaEngine::runFile(const std::string&filePath)
+{
 #ifdef OSGWIDGET_USELUA
-    if(!osgDB::fileExists(filePath)) {
+    if (!osgDB::fileExists(filePath))
+    {
         warn() << "Couldn't find file \"" << filePath << "\" for LuaEngine." << std::endl;
 
         return false;
     }
 
-    if(luaL_dofile(_data->lua, filePath.c_str())) {
+    if (luaL_dofile(_data->lua, filePath.c_str()))
+    {
         warn() << "LuaEngine::runFile - " << lua_tostring(_data->lua, -1) << std::endl;
 
         return false;
@@ -166,5 +178,4 @@ bool LuaEngine::runFile(const std::string& filePath) {
     return noLuaFail("Can't run file in LuaEngine");
 #endif
 }
-
 }

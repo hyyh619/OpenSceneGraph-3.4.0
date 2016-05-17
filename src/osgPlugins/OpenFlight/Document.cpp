@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // OpenFlight� loader for OpenSceneGraph
@@ -47,12 +47,11 @@ Document::Document() :
     _lightPointAnimationPoolParent(false),
     _shaderPoolParent(false)
 {
-    _subsurfaceDepth = new osg::Depth(osg::Depth::LESS, 0.0, 1.0,false);
+    _subsurfaceDepth = new osg::Depth(osg::Depth::LESS, 0.0, 1.0, false);
 }
 
 Document::~Document()
-{
-}
+{}
 
 void Document::pushLevel()
 {
@@ -67,7 +66,7 @@ void Document::popLevel()
     if (!_levelStack.empty())
         _currentPrimaryRecord = _levelStack.back();
 
-    if (--_level<=0)
+    if (--_level <= 0)
         _done = true;
 }
 
@@ -94,7 +93,7 @@ void Document::pushExtension()
 
 void Document::popExtension()
 {
-    _currentPrimaryRecord=_extensionStack.back().get();
+    _currentPrimaryRecord = _extensionStack.back().get();
     if (!_currentPrimaryRecord.valid())
     {
         OSG_WARN << "Can't decide primary in Document::popExtension()." << std::endl;
@@ -107,25 +106,27 @@ void Document::popExtension()
 osg::Node* Document::getInstanceDefinition(int no)
 {
     InstanceDefinitionMap::iterator itr = _instanceDefinitionMap.find(no);
+
     if (itr != _instanceDefinitionMap.end())
         return (*itr).second.get();
 
     return NULL;
 }
 
-void Document::setSubSurfacePolygonOffset(int level, osg::PolygonOffset* po)
+void Document::setSubSurfacePolygonOffset(int level, osg::PolygonOffset *po)
 {
     _subsurfacePolygonOffsets[level] = po;
 }
 
 osg::PolygonOffset* Document::getSubSurfacePolygonOffset(int level)
 {
-    OSG_DEBUG<<"Document::getSubSurfacePolygonOffset("<<level<<")"<<std::endl;
-    osg::ref_ptr<osg::PolygonOffset>& po = _subsurfacePolygonOffsets[level];
+    OSG_DEBUG << "Document::getSubSurfacePolygonOffset(" << level << ")" << std::endl;
+    osg::ref_ptr<osg::PolygonOffset>&po = _subsurfacePolygonOffsets[level];
     if (!po)
     {
-        po = new osg::PolygonOffset(-1.0f*float(level), -1.0f);
+        po = new osg::PolygonOffset(-1.0f * float(level), -1.0f);
     }
+
     return po.get();
 }
 
@@ -135,12 +136,16 @@ double flt::unitsToMeters(CoordUnits unit)
     {
     case METERS:
         return 1.0;
+
     case KILOMETERS:
         return 1000.0;
+
     case FEET:
         return 0.3048;
+
     case INCHES:
         return 0.02540;
+
     case NAUTICAL_MILES:
         return 1852.0;
     }

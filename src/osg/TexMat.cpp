@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GL>
 #include <osg/TexMat>
 #include <osg/Notify>
@@ -17,33 +17,31 @@
 
 using namespace osg;
 
-TexMat::TexMat():
+TexMat::TexMat() :
     _scaleByTextureRectangleSize(false)
-{
-}
+{}
 
 
 TexMat::~TexMat()
-{
-}
+{}
 
-void TexMat::apply(State& state) const
+void TexMat::apply(State&state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
-    glMatrixMode( GL_TEXTURE );
+    glMatrixMode(GL_TEXTURE);
     glLoadMatrix(_matrix.ptr());
 
     if (_scaleByTextureRectangleSize)
     {
-        const osg::TextureRectangle* tex = dynamic_cast<const osg::TextureRectangle*>(state.getLastAppliedTextureAttribute(state.getActiveTextureUnit(), osg::StateAttribute::TEXTURE));
+        const osg::TextureRectangle *tex = dynamic_cast<const osg::TextureRectangle*>(state.getLastAppliedTextureAttribute(state.getActiveTextureUnit(), osg::StateAttribute::TEXTURE));
         if (tex)
         {
-            glScalef(tex->getTextureWidth(),tex->getTextureHeight(),1.0f);
+            glScalef(tex->getTextureWidth(), tex->getTextureHeight(), 1.0f);
         }
     }
 
-    glMatrixMode( GL_MODELVIEW );
+    glMatrixMode(GL_MODELVIEW);
 #else
-    OSG_NOTICE<<"Warning: TexMat::apply(State&) - not supported."<<std::endl;
+    OSG_NOTICE << "Warning: TexMat::apply(State&) - not supported." << std::endl;
 #endif
 }

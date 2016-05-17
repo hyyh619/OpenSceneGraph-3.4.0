@@ -9,19 +9,18 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/PositionAttitudeTransform>
 
 using namespace osg;
 
-PositionAttitudeTransform::PositionAttitudeTransform():
-    _scale(1.0,1.0,1.0)
-{
-}
+PositionAttitudeTransform::PositionAttitudeTransform() :
+    _scale(1.0, 1.0, 1.0)
+{}
 
-bool PositionAttitudeTransform::computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const
+bool PositionAttitudeTransform::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
 {
-    if (_referenceFrame==RELATIVE_RF)
+    if (_referenceFrame == RELATIVE_RF)
     {
         matrix.preMultTranslate(_position);
         matrix.preMultRotate(_attitude);
@@ -35,28 +34,30 @@ bool PositionAttitudeTransform::computeLocalToWorldMatrix(Matrix& matrix,NodeVis
         matrix.preMultScale(_scale);
         matrix.preMultTranslate(-_pivotPoint);
     }
+
     return true;
 }
 
 
-bool PositionAttitudeTransform::computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const
+bool PositionAttitudeTransform::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
 {
     if (_scale.x() == 0.0 || _scale.y() == 0.0 || _scale.z() == 0.0)
         return false;
 
-    if (_referenceFrame==RELATIVE_RF)
+    if (_referenceFrame == RELATIVE_RF)
     {
         matrix.postMultTranslate(-_position);
         matrix.postMultRotate(_attitude.inverse());
-        matrix.postMultScale(Vec3d(1.0/_scale.x(), 1.0/_scale.y(), 1.0/_scale.z()));
+        matrix.postMultScale(Vec3d(1.0 / _scale.x(), 1.0 / _scale.y(), 1.0 / _scale.z()));
         matrix.postMultTranslate(_pivotPoint);
     }
     else // absolute
     {
         matrix.makeRotate(_attitude.inverse());
         matrix.preMultTranslate(-_position);
-        matrix.postMultScale(Vec3d(1.0/_scale.x(), 1.0/_scale.y(), 1.0/_scale.z()));
+        matrix.postMultScale(Vec3d(1.0 / _scale.x(), 1.0 / _scale.y(), 1.0 / _scale.z()));
         matrix.postMultTranslate(_pivotPoint);
     }
+
     return true;
 }

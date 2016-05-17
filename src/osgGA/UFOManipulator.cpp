@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 /* Written by Don Burns */
 
@@ -19,53 +19,53 @@
 #include <osg/io_utils>
 
 #ifndef M_PI
-# define M_PI       3.14159265358979323846  /* pi */
+# define M_PI 3.14159265358979323846        /* pi */
 #endif
 
 using namespace osgGA;
 
-UFOManipulator::UFOManipulator():
-            _t0(0.0),
-            _shift(false),
-            _ctrl(false)
+UFOManipulator::UFOManipulator() :
+    _t0(0.0),
+    _shift(false),
+    _ctrl(false)
 {
-    _minHeightAboveGround          = 2.0;
-    _minDistanceInFront            = 5.0;
+    _minHeightAboveGround = 2.0;
+    _minDistanceInFront   = 5.0;
 
-    _speedAccelerationFactor       = 0.4;
-    _speedDecelerationFactor       = 0.90;
+    _speedAccelerationFactor = 0.4;
+    _speedDecelerationFactor = 0.90;
 
     _directionRotationRate         = 0.0;
-    _directionRotationAcceleration = M_PI*0.00005;
+    _directionRotationAcceleration = M_PI * 0.00005;
     _directionRotationDeceleration = 0.90;
 
-    _speedEpsilon                  = 0.02;
-    _directionRotationEpsilon      = 0.0001;
+    _speedEpsilon             = 0.02;
+    _directionRotationEpsilon = 0.0001;
 
     _viewOffsetDelta = M_PI * 0.0025;
     _pitchOffsetRate = 0.0;
-    _pitchOffset = 0.0;
+    _pitchOffset     = 0.0;
 
     _yawOffsetRate = 0.0;
-    _yawOffset = 0.0;
+    _yawOffset     = 0.0;
     _offset.makeIdentity();
 
     _decelerateOffsetRate = true;
-    _straightenOffset = false;
+    _straightenOffset     = false;
 
-    _direction.set( 0,1,0);
+    _direction.set(0, 1, 0);
     _stop();
 }
 
 UFOManipulator::~UFOManipulator()
-{
-}
+{}
 
-bool UFOManipulator::intersect(const osg::Vec3d& start, const osg::Vec3d& end, osg::Vec3d& intersection) const
+bool UFOManipulator::intersect(const osg::Vec3d&start, const osg::Vec3d&end, osg::Vec3d&intersection) const
 {
-    osg::ref_ptr<osgUtil::LineSegmentIntersector> lsi = new osgUtil::LineSegmentIntersector(start,end);
+    osg::ref_ptr<osgUtil::LineSegmentIntersector> lsi = new osgUtil::LineSegmentIntersector(start, end);
 
     osgUtil::IntersectionVisitor iv(lsi.get());
+
     iv.setTraversalMask(_intersectTraversalMask);
 
     _node->accept(iv);
@@ -75,10 +75,11 @@ bool UFOManipulator::intersect(const osg::Vec3d& start, const osg::Vec3d& end, o
         intersection = lsi->getIntersections().begin()->getWorldIntersectPoint();
         return true;
     }
+
     return false;
 }
 
-void UFOManipulator::setNode( osg::Node *node )
+void UFOManipulator::setNode(osg::Node *node)
 {
     _node = node;
 
@@ -104,28 +105,28 @@ const char* UFOManipulator::className() const
     return "UFO";
 }
 
-void UFOManipulator::setByMatrix( const osg::Matrixd &mat )
+void UFOManipulator::setByMatrix(const osg::Matrixd&mat)
 {
     _inverseMatrix = mat;
-    _matrix.invert( _inverseMatrix );
+    _matrix.invert(_inverseMatrix);
 
-    _position.set( _inverseMatrix(3,0), _inverseMatrix(3,1), _inverseMatrix(3,2 ));
+    _position.set(_inverseMatrix(3, 0), _inverseMatrix(3, 1), _inverseMatrix(3, 2));
     osg::Matrix R(_inverseMatrix);
-    R(3,0) = R(3,1) = R(3,2) = 0.0;
-    _direction = osg::Vec3d(0,0,-1) * R; // camera up is +Z, regardless of CoordinateFrame
+    R(3, 0)    = R(3, 1) = R(3, 2) = 0.0;
+    _direction = osg::Vec3d(0, 0, -1) * R; // camera up is +Z, regardless of CoordinateFrame
 
     _stop();
 }
 
-void UFOManipulator::setByInverseMatrix( const osg::Matrixd &invmat)
+void UFOManipulator::setByInverseMatrix(const osg::Matrixd&invmat)
 {
     _matrix = invmat;
-    _inverseMatrix.invert( _matrix );
+    _inverseMatrix.invert(_matrix);
 
-    _position.set( _inverseMatrix(3,0), _inverseMatrix(3,1), _inverseMatrix(3,2 ));
+    _position.set(_inverseMatrix(3, 0), _inverseMatrix(3, 1), _inverseMatrix(3, 2));
     osg::Matrix R(_inverseMatrix);
-    R(3,0) = R(3,1) = R(3,2) = 0.0;
-    _direction = osg::Vec3d(0,0,-1) * R; // camera up is +Z, regardless of CoordinateFrame
+    R(3, 0)    = R(3, 1) = R(3, 2) = 0.0;
+    _direction = osg::Vec3d(0, 0, -1) * R; // camera up is +Z, regardless of CoordinateFrame
 
     _stop();
 }
@@ -142,23 +143,23 @@ osg::Matrixd UFOManipulator::getInverseMatrix() const
 
 void UFOManipulator::computeHomePosition()
 {
-    if( !_node.valid() )
+    if (!_node.valid())
         return;
 
     osg::BoundingSphere bs = _node->getBound();
 
     /*
-       * Find the ground - Assumption: The ground is the hit of an intersection
-       * from a line segment extending from above to below the database at its
-       * horizontal center, that intersects the database closest to zero. */
+     * Find the ground - Assumption: The ground is the hit of an intersection
+     * from a line segment extending from above to below the database at its
+     * horizontal center, that intersects the database closest to zero. */
 
-    osg::CoordinateFrame cf( getCoordinateFrame(bs.center()) ); // not sure what position to use here
-    osg::Vec3d upVec( getUpVector(cf) );
+    osg::CoordinateFrame cf(getCoordinateFrame(bs.center()));   // not sure what position to use here
+    osg::Vec3d           upVec(getUpVector(cf));
 
-    osg::Vec3d A = bs.center() + (upVec*(bs.radius()*2));
-    osg::Vec3d B = bs.center() + (-upVec*(bs.radius()*2));
+    osg::Vec3d A = bs.center() + (upVec * (bs.radius() * 2));
+    osg::Vec3d B = bs.center() + (-upVec * (bs.radius() * 2));
 
-    if( (B-A).length() == 0.0)
+    if ((B - A).length() == 0.0)
     {
         return;
     }
@@ -170,33 +171,32 @@ void UFOManipulator::computeHomePosition()
     if (intersect(A, B, ip))
     {
         double d = ip.length();
-        if( d < ground )
+        if (d < ground)
             ground = d;
     }
     else
     {
-        //OSG_WARN<<"UFOManipulator : I can't find the ground!"<<std::endl;
+        // OSG_WARN<<"UFOManipulator : I can't find the ground!"<<std::endl;
         ground = 0.0;
     }
 
 
-    osg::Vec3d p(bs.center() + upVec*( ground + _minHeightAboveGround*1.25 ) );
-    setHomePosition( p, p + getFrontVector(cf), upVec );
+    osg::Vec3d p(bs.center() + upVec * (ground + _minHeightAboveGround * 1.25));
+    setHomePosition(p, p + getFrontVector(cf), upVec);
 }
 
 void UFOManipulator::init(const GUIEventAdapter&, GUIActionAdapter&)
 {
-    //home(ea.getTime());
+    // home(ea.getTime());
 
     _stop();
 }
 
-void UFOManipulator::home(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us)
+void UFOManipulator::home(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us)
 {
     home(ea.getTime());
     us.requestRedraw();
     us.requestContinuousUpdate(false);
-
 }
 
 void UFOManipulator::home(double)
@@ -204,75 +204,77 @@ void UFOManipulator::home(double)
     if (getAutoComputeHomePosition())
         computeHomePosition();
 
-    _position = _homeEye;
+    _position  = _homeEye;
     _direction = _homeCenter - _homeEye;
     _direction.normalize();
     _directionRotationRate = 0.0;
 
-    _inverseMatrix.makeLookAt( _homeEye, _homeCenter, _homeUp );
-    _matrix.invert( _inverseMatrix );
+    _inverseMatrix.makeLookAt(_homeEye, _homeCenter, _homeUp);
+    _matrix.invert(_inverseMatrix);
 
     _offset.makeIdentity();
 
     _forwardSpeed = 0.0;
-    _sideSpeed = 0.0;
-    _upSpeed = 0.0;
+    _sideSpeed    = 0.0;
+    _upSpeed      = 0.0;
 }
 
-bool UFOManipulator::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter &aa)
+bool UFOManipulator::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
 {
-    switch(ea.getEventType())
+    switch (ea.getEventType())
     {
-        case(osgGA::GUIEventAdapter::FRAME):
-            _frame(ea,aa);
-            return false;
-        default:
-            break;
+    case (osgGA::GUIEventAdapter::FRAME):
+        _frame(ea, aa);
+        return false;
+
+    default:
+        break;
     }
 
-    if (ea.getHandled()) return false;
+    if (ea.getHandled())
+        return false;
 
-    switch(ea.getEventType())
+    switch (ea.getEventType())
     {
-        case(osgGA::GUIEventAdapter::KEYUP):
-            _keyUp( ea, aa );
-            return false;
-            break;
+    case (osgGA::GUIEventAdapter::KEYUP):
+        _keyUp(ea, aa);
+        return false;
+        break;
 
-        case(osgGA::GUIEventAdapter::KEYDOWN):
-            _keyDown(ea, aa);
-            return false;
-            break;
+    case (osgGA::GUIEventAdapter::KEYDOWN):
+        _keyDown(ea, aa);
+        return false;
+        break;
 
-        case(osgGA::GUIEventAdapter::FRAME):
-            _frame(ea,aa);
-            return false;
-            break;
+    case (osgGA::GUIEventAdapter::FRAME):
+        _frame(ea, aa);
+        return false;
+        break;
 
-        default:
-            return false;
+    default:
+        return false;
     }
 }
 
-void UFOManipulator::getUsage(osg::ApplicationUsage& usage) const
+void UFOManipulator::getUsage(osg::ApplicationUsage&usage) const
 {
     /** Way too busy.  This needs to wait until we have a scrollable window
-    usage.addKeyboardMouseBinding("UFO Manipulator: <SpaceBar>",        "Reset the viewing angle to 0.0");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <UpArrow>",         "Acceleration forward.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <DownArrow>",       "Acceleration backward (or deceleration forward");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <LeftArrow>",       "Rotate view and direction of travel to the left.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <RightArrow>",      "Rotate view and direction of travel to the right.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <SpaceBar>",        "Brake.  Gradually decelerates linear and rotational movement.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/UpArrow>",   "Accelerate up.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/DownArrow>", "Accelerate down.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/LeftArrow>", "Accelerate (linearly) left.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/RightArrow>","Accelerate (linearly) right.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/SpaceBar>",  "Instant brake.  Immediately stop all linear and rotational movement.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Ctrl/UpArrow>",    "Rotate view (but not direction of travel) up.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Ctrl/DownArrow>",  "Rotate view (but not direction of travel) down.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Ctrl/LeftArrow>",  "Rotate view (but not direction of travel) left.");
-    usage.addKeyboardMouseBinding("UFO Manipulator: <Ctrl/RightArrow>", "Rotate view (but not direction of travel) right.");
-    */
+       usage.addKeyboardMouseBinding("UFO Manipulator: <SpaceBar>",        "Reset the viewing angle to 0.0");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <UpArrow>",         "Acceleration forward.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <DownArrow>",       "Acceleration backward (or deceleration forward");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <LeftArrow>",       "Rotate view and direction of travel to the left.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <RightArrow>",      "Rotate view and direction of travel to the right.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <SpaceBar>",        "Brake.  Gradually decelerates linear and rotational movement.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/UpArrow>",   "Accelerate up.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/DownArrow>", "Accelerate down.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/LeftArrow>", "Accelerate (linearly) left.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/RightArrow>","Accelerate (linearly) right.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Shift/SpaceBar>",  "Instant brake.  Immediately stop all linear and rotational movement.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Ctrl/UpArrow>",    "Rotate view (but not direction of travel) up.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Ctrl/DownArrow>",  "Rotate view (but not direction of travel) down.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Ctrl/LeftArrow>",  "Rotate view (but not direction of travel) left.");
+       usage.addKeyboardMouseBinding("UFO Manipulator: <Ctrl/RightArrow>", "Rotate view (but not direction of travel) right.");
+     */
     usage.addKeyboardMouseBinding("UFO: ", "Please see http://www.openscenegraph.org/html/UFOCameraManipulator.html");
     // Keep this one as it might be confusing
     usage.addKeyboardMouseBinding("UFO: H", "Reset the viewing position to home");
@@ -280,170 +282,176 @@ void UFOManipulator::getUsage(osg::ApplicationUsage& usage) const
 
 
 
-void UFOManipulator::_keyUp( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter & )
+void UFOManipulator::_keyUp(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
 {
-    switch( ea.getKey() )
+    switch (ea.getKey())
     {
-        case osgGA::GUIEventAdapter::KEY_Control_L:
-        case osgGA::GUIEventAdapter::KEY_Control_R:
-            _ctrl = false;
-            _decelerateOffsetRate = true;
-            _straightenOffset = false;
-            break;
+    case osgGA::GUIEventAdapter::KEY_Control_L:
+    case osgGA::GUIEventAdapter::KEY_Control_R:
+        _ctrl                 = false;
+        _decelerateOffsetRate = true;
+        _straightenOffset     = false;
+        break;
 
-        case osgGA::GUIEventAdapter::KEY_Shift_L:
-        case osgGA::GUIEventAdapter::KEY_Shift_R:
-            _shift = false;
-            _decelerateUpSideRate = true;
-            break;
+    case osgGA::GUIEventAdapter::KEY_Shift_L:
+    case osgGA::GUIEventAdapter::KEY_Shift_R:
+        _shift                = false;
+        _decelerateUpSideRate = true;
+        break;
     }
 }
 
-void UFOManipulator::_keyDown( const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter & )
+void UFOManipulator::_keyDown(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
 {
-    switch( ea.getKey() )
+    switch (ea.getKey())
     {
-        case osgGA::GUIEventAdapter::KEY_Control_L:
-        case osgGA::GUIEventAdapter::KEY_Control_R:
-            _ctrl = true;
-            break;
+    case osgGA::GUIEventAdapter::KEY_Control_L:
+    case osgGA::GUIEventAdapter::KEY_Control_R:
+        _ctrl = true;
+        break;
 
-        case osgGA::GUIEventAdapter::KEY_Shift_L :
-        case osgGA::GUIEventAdapter::KEY_Shift_R :
-            _shift = true;
-            break;
+    case osgGA::GUIEventAdapter::KEY_Shift_L:
+    case osgGA::GUIEventAdapter::KEY_Shift_R:
+        _shift = true;
+        break;
 
-        case osgGA::GUIEventAdapter::KEY_Up:
-            if( _ctrl )
+    case osgGA::GUIEventAdapter::KEY_Up:
+        if (_ctrl)
+        {
+            _pitchOffsetRate     -= _viewOffsetDelta;
+            _decelerateOffsetRate = false;
+        }
+        else
+        {
+            if (_shift)
             {
-                _pitchOffsetRate -= _viewOffsetDelta;
-                _decelerateOffsetRate = false;
+                _upSpeed             += _speedAccelerationFactor;
+                _decelerateUpSideRate = false;
             }
             else
-            {
-                if( _shift )
-                {
-                    _upSpeed += _speedAccelerationFactor;
-                    _decelerateUpSideRate = false;
-                }
-                else
-                    _forwardSpeed += _speedAccelerationFactor;
-            }
-            break;
+                _forwardSpeed += _speedAccelerationFactor;
+        }
 
-        case osgGA::GUIEventAdapter::KEY_Down:
-            if( _ctrl )
-            {
-                _pitchOffsetRate += _viewOffsetDelta;
-                _decelerateOffsetRate = false;
-            }
-            else
-            {
-                if( _shift )
-                {
-                    _upSpeed -= _speedAccelerationFactor;
-                    _decelerateUpSideRate = false;
-                }
-                else
-                    _forwardSpeed -= _speedAccelerationFactor;
-            }
-            break;
+        break;
 
-        case osgGA::GUIEventAdapter::KEY_Right:
-            if( _ctrl )
+    case osgGA::GUIEventAdapter::KEY_Down:
+        if (_ctrl)
+        {
+            _pitchOffsetRate     += _viewOffsetDelta;
+            _decelerateOffsetRate = false;
+        }
+        else
+        {
+            if (_shift)
             {
-                _yawOffsetRate += _viewOffsetDelta;
-                _decelerateOffsetRate = false;
+                _upSpeed             -= _speedAccelerationFactor;
+                _decelerateUpSideRate = false;
             }
             else
-            {
-                if(_shift)
-                {
-                    _sideSpeed += _speedAccelerationFactor;
-                    _decelerateUpSideRate = false;
-                }
-                else
-                    _directionRotationRate -= _directionRotationAcceleration;
-            }
-            break;
+                _forwardSpeed -= _speedAccelerationFactor;
+        }
 
-        case osgGA::GUIEventAdapter::KEY_Left:
-            if( _ctrl )
-            {
-                _yawOffsetRate -= _viewOffsetDelta;
-                _decelerateOffsetRate = false;
-            }
-            else
-            {
-                if(_shift)
-                {
-                    _sideSpeed -= _speedAccelerationFactor;
-                    _decelerateUpSideRate = false;
-                }
-                else
-                    _directionRotationRate += _directionRotationAcceleration;
-            }
-            break;
+        break;
 
-        case osgGA::GUIEventAdapter::KEY_Return:
-            if( _ctrl )
+    case osgGA::GUIEventAdapter::KEY_Right:
+        if (_ctrl)
+        {
+            _yawOffsetRate       += _viewOffsetDelta;
+            _decelerateOffsetRate = false;
+        }
+        else
+        {
+            if (_shift)
             {
-                _straightenOffset = true;
-            }
-            break;
-
-        case ' ':
-            if( _shift )
-            {
-                _stop();
+                _sideSpeed           += _speedAccelerationFactor;
+                _decelerateUpSideRate = false;
             }
             else
+                _directionRotationRate -= _directionRotationAcceleration;
+        }
+
+        break;
+
+    case osgGA::GUIEventAdapter::KEY_Left:
+        if (_ctrl)
+        {
+            _yawOffsetRate       -= _viewOffsetDelta;
+            _decelerateOffsetRate = false;
+        }
+        else
+        {
+            if (_shift)
             {
-                if( fabs(_forwardSpeed) > 0.0 )
-                {
-                    _forwardSpeed *= _speedDecelerationFactor;
-
-                    if( fabs(_forwardSpeed ) < _speedEpsilon )
-                        _forwardSpeed = 0.0;
-                }
-                if( fabs(_sideSpeed) > 0.0 )
-                {
-                    _sideSpeed *= _speedDecelerationFactor;
-
-                    if( fabs( _sideSpeed ) < _speedEpsilon )
-                        _sideSpeed = 0.0;
-                }
-
-                if( fabs(_upSpeed) > 0.0 )
-                {
-                    _upSpeed *= _speedDecelerationFactor;
-
-                    if( fabs( _upSpeed ) < _speedEpsilon )
-                        _sideSpeed = 0.0;
-                }
-
-
-                if( fabs(_directionRotationRate ) > 0.0 )
-                {
-                    _directionRotationRate *= _directionRotationDeceleration;
-                    if( fabs( _directionRotationRate ) < _directionRotationEpsilon )
-                        _directionRotationRate = 0.0;
-                }
-
+                _sideSpeed           -= _speedAccelerationFactor;
+                _decelerateUpSideRate = false;
             }
-            break;
+            else
+                _directionRotationRate += _directionRotationAcceleration;
+        }
 
-        case 'H':
-            home(ea.getTime());
-            break;
+        break;
+
+    case osgGA::GUIEventAdapter::KEY_Return:
+        if (_ctrl)
+        {
+            _straightenOffset = true;
+        }
+
+        break;
+
+    case ' ':
+        if (_shift)
+        {
+            _stop();
+        }
+        else
+        {
+            if (fabs(_forwardSpeed) > 0.0)
+            {
+                _forwardSpeed *= _speedDecelerationFactor;
+
+                if (fabs(_forwardSpeed) < _speedEpsilon)
+                    _forwardSpeed = 0.0;
+            }
+
+            if (fabs(_sideSpeed) > 0.0)
+            {
+                _sideSpeed *= _speedDecelerationFactor;
+
+                if (fabs(_sideSpeed) < _speedEpsilon)
+                    _sideSpeed = 0.0;
+            }
+
+            if (fabs(_upSpeed) > 0.0)
+            {
+                _upSpeed *= _speedDecelerationFactor;
+
+                if (fabs(_upSpeed) < _speedEpsilon)
+                    _sideSpeed = 0.0;
+            }
+
+
+            if (fabs(_directionRotationRate) > 0.0)
+            {
+                _directionRotationRate *= _directionRotationDeceleration;
+                if (fabs(_directionRotationRate) < _directionRotationEpsilon)
+                    _directionRotationRate = 0.0;
+            }
+        }
+
+        break;
+
+    case 'H':
+        home(ea.getTime());
+        break;
     }
-
 }
 
-void UFOManipulator::_frame( const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter & )
+void UFOManipulator::_frame(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
 {
     double t1 = ea.getTime();
-    if( _t0 == 0.0 )
+
+    if (_t0 == 0.0)
     {
         _t0 = ea.getTime();
         _dt = 0.0;
@@ -454,58 +462,57 @@ void UFOManipulator::_frame( const osgGA::GUIEventAdapter &ea, osgGA::GUIActionA
         _t0 = t1;
     }
 
-    osg::CoordinateFrame cf( getCoordinateFrame(_position) );
-    osg::Vec3d upVec( getUpVector(cf) );
-    if( fabs( _directionRotationRate ) > _directionRotationEpsilon )
+    osg::CoordinateFrame cf(getCoordinateFrame(_position));
+    osg::Vec3d           upVec(getUpVector(cf));
+    if (fabs(_directionRotationRate) > _directionRotationEpsilon)
     {
-      _direction = _direction * osg::Matrix::rotate( _directionRotationRate, upVec);
+        _direction = _direction * osg::Matrix::rotate(_directionRotationRate, upVec);
     }
 
     {
-      osg::Vec3d _sideVec = _direction * osg::Matrix::rotate( -M_PI*0.5, upVec);
+        osg::Vec3d _sideVec = _direction * osg::Matrix::rotate(-M_PI * 0.5, upVec);
 
-        _position += ((_direction       * _forwardSpeed) +
-                      (_sideVec         * _sideSpeed) +
+        _position += ((_direction * _forwardSpeed) +
+                      (_sideVec * _sideSpeed) +
                       (upVec * _upSpeed))
-                       * _dt;
-
+                     * _dt;
     }
 
     _pitchOffset += _pitchOffsetRate * _dt;
-    if( _pitchOffset >= M_PI || _pitchOffset < -M_PI )
+    if (_pitchOffset >= M_PI || _pitchOffset < -M_PI)
         _pitchOffset *= -1;
 
-    _yawOffset   += _yawOffsetRate   * _dt;
-    if( _yawOffset >= M_PI || _yawOffset < -M_PI )
+    _yawOffset += _yawOffsetRate * _dt;
+    if (_yawOffset >= M_PI || _yawOffset < -M_PI)
         _yawOffset *= -1;
 
-    _offset       = osg::Matrix::rotate( _yawOffset, getSideVector(cf),
-                                         _pitchOffset, getFrontVector(cf),
-                                         0.0, upVec);
+    _offset = osg::Matrix::rotate(_yawOffset, getSideVector(cf),
+                                  _pitchOffset, getFrontVector(cf),
+                                  0.0, upVec);
 
     _adjustPosition();
 
-    _inverseMatrix.makeLookAt( _position, _position + _direction, upVec);
+    _inverseMatrix.makeLookAt(_position, _position + _direction, upVec);
     _matrix.invert(_inverseMatrix);
 
-    if( _decelerateUpSideRate )
+    if (_decelerateUpSideRate)
     {
         _upSpeed   *= 0.98;
         _sideSpeed *= 0.98;
     }
 
-    if( _decelerateOffsetRate )
+    if (_decelerateOffsetRate)
     {
         _yawOffsetRate   *= 0.98;
         _pitchOffsetRate *= 0.98;
     }
 
-    if( _straightenOffset )
+    if (_straightenOffset)
     {
-        if( _shift )
+        if (_shift)
         {
-            _pitchOffset = 0.0;
-            _yawOffset = 0.0;
+            _pitchOffset     = 0.0;
+            _yawOffset       = 0.0;
             _pitchOffsetRate = 0.0;
             _yawOffsetRate   = 0.0;
         }
@@ -513,23 +520,24 @@ void UFOManipulator::_frame( const osgGA::GUIEventAdapter &ea, osgGA::GUIActionA
         {
             _pitchOffsetRate = 0.0;
             _yawOffsetRate   = 0.0;
-            _pitchOffset *= 0.99;
-            _yawOffset *= 0.99;
+            _pitchOffset    *= 0.99;
+            _yawOffset      *= 0.99;
 
-            if( fabs(_pitchOffset ) < 0.01 )
-                _pitchOffset = 0.0;
-            if( fabs(_yawOffset ) < 0.01 )
+            if (fabs(_pitchOffset) < 0.01)
                 _pitchOffset = 0.0;
 
+            if (fabs(_yawOffset) < 0.01)
+                _pitchOffset = 0.0;
         }
-        if( _pitchOffset == 0.0 && _yawOffset == 0.0 )
+
+        if (_pitchOffset == 0.0 && _yawOffset == 0.0)
             _straightenOffset = false;
     }
 }
 
 void UFOManipulator::_adjustPosition()
 {
-    if( !_node.valid() )
+    if (!_node.valid())
         return;
 
     // Forward line segment at 3 times our intersect distance
@@ -542,11 +550,11 @@ void UFOManipulator::_adjustPosition()
     osg::Vec3d ip;
     if (intersect(_position,
                   _position + (_direction * (_minDistanceInFront * 3.0)),
-                  ip ))
+                  ip))
     {
         double d = (ip - _position).length();
 
-        if( d < _minDistanceInFront )
+        if (d < _minDistanceInFront)
         {
             _position = ip + (_direction * -_minDistanceInFront);
             _stop();
@@ -554,33 +562,32 @@ void UFOManipulator::_adjustPosition()
     }
 
     // Check intersects below.
-    osg::CoordinateFrame cf( getCoordinateFrame(_position) );
-    osg::Vec3d upVec( getUpVector(cf) );
+    osg::CoordinateFrame cf(getCoordinateFrame(_position));
+    osg::Vec3d           upVec(getUpVector(cf));
 
     if (intersect(_position,
-                  _position - upVec*_minHeightAboveGround*3,
-                  ip ))
+                  _position - upVec * _minHeightAboveGround * 3,
+                  ip))
     {
         double d = (ip - _position).length();
 
-        if( d < _minHeightAboveGround )
-          _position = ip + (upVec * _minHeightAboveGround);
+        if (d < _minHeightAboveGround)
+            _position = ip + (upVec * _minHeightAboveGround);
     }
 }
 
 
 void UFOManipulator::_stop()
 {
-    _forwardSpeed = 0.0;
-    _sideSpeed = 0.0;
-    _upSpeed = 0.0;
+    _forwardSpeed          = 0.0;
+    _sideSpeed             = 0.0;
+    _upSpeed               = 0.0;
     _directionRotationRate = 0.0;
 }
 
-void UFOManipulator::getCurrentPositionAsLookAt( osg::Vec3d& eye, osg::Vec3d& center, osg::Vec3d& up )
+void UFOManipulator::getCurrentPositionAsLookAt(osg::Vec3d&eye, osg::Vec3d&center, osg::Vec3d&up)
 {
-    eye = _position;
+    eye    = _position;
     center = _position + _direction;
     up.set(getUpVector(getCoordinateFrame(_position)));
 }
-

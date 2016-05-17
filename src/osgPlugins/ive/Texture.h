@@ -4,11 +4,13 @@
 #include <osg/Texture>
 #include "ReadWrite.h"
 
-namespace ive{
-class Texture : public osg::Texture, public ReadWrite {
+namespace ive
+{
+class Texture : public osg::Texture, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

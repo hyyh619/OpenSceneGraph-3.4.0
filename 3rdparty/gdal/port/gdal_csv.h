@@ -34,7 +34,7 @@
 #include "cpl_port.h"
 
 CPL_C_START
-const char * GDALDefaultCSVFilename( const char *pszBasename );
+const char* GDALDefaultCSVFilename(const char *pszBasename);
 CPL_C_END
 
 #endif

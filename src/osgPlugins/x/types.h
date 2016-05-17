@@ -30,102 +30,111 @@
 
 #include <osg/Math>
 
-namespace DX {
+namespace DX
+{
+/*
+ * DirectX templates
+ * http://astronomy.swin.edu.au/~pbourke/geomformats/directx/
+ */
 
-    /*
-     * DirectX templates
-     * http://astronomy.swin.edu.au/~pbourke/geomformats/directx/
-     */
+// Vector
+typedef struct
+{
+    float x, y, z;
 
-    // Vector
-    typedef struct {
-        float x,y,z;
+    inline void normalize()
+    {
+        float lenRecip = 1.0f / sqrtf(x * x + y * y + z * z);
 
-        inline void normalize() {
-            float lenRecip = 1.0f / sqrtf(x * x + y * y + z * z);
-            x *= lenRecip;
-            y *= lenRecip;
-            z *= lenRecip;
-        }
-    } Vector;
+        x *= lenRecip;
+        y *= lenRecip;
+        z *= lenRecip;
+    }
+} Vector;
 
-    // Coords2d
-    typedef struct {
-        float u,v;
-    } Coords2d;
+// Coords2d
+typedef struct
+{
+    float u, v;
+} Coords2d;
 
-    // ColorRGBA
-    typedef struct {
-        float red,green,blue,alpha;
-    } ColorRGBA;
+// ColorRGBA
+typedef struct
+{
+    float red, green, blue, alpha;
+} ColorRGBA;
 
-    // ColorRGB
-    typedef struct {
-        float red,green,blue;
-    } ColorRGB;
+// ColorRGB
+typedef struct
+{
+    float red, green, blue;
+} ColorRGB;
 
-    // IndexedColor
-    typedef struct {
-        unsigned int index;
-        ColorRGBA indexColor;
-    } IndexedColor;
+// IndexedColor
+typedef struct
+{
+    unsigned int index;
+    ColorRGBA    indexColor;
+} IndexedColor;
 
-    // TextureFilename
-    typedef std::string TextureFilename;
+// TextureFilename
+typedef std::string TextureFilename;
 
-    // Material (potentially with multiple textures)
-    typedef struct {
-        // dgm - materials can have names for later reference
-        std::string name;
-        ColorRGBA faceColor;
-        float power;
-        ColorRGB specularColor;
-        ColorRGB emissiveColor;
-        std::vector<TextureFilename> texture;
-    } Material;
+// Material (potentially with multiple textures)
+typedef struct
+{
+    // dgm - materials can have names for later reference
+    std::string                  name;
+    ColorRGBA                    faceColor;
+    float                        power;
+    ColorRGB                     specularColor;
+    ColorRGB                     emissiveColor;
+    std::vector<TextureFilename> texture;
+} Material;
 
-    // MeshFace
-    typedef std::vector<unsigned int> MeshFace;
+// MeshFace
+typedef std::vector<unsigned int> MeshFace;
 
-    // MeshTextureCoords
-    typedef std::vector<Coords2d> MeshTextureCoords;
+// MeshTextureCoords
+typedef std::vector<Coords2d> MeshTextureCoords;
 
-    // MeshNormals
-    typedef struct {
-        std::vector<Vector> normals;
-        std::vector<MeshFace> faceNormals;
-    } MeshNormals;
+// MeshNormals
+typedef struct
+{
+    std::vector<Vector>   normals;
+    std::vector<MeshFace> faceNormals;
+} MeshNormals;
 
-    // MeshVertexColors.
-    typedef std::vector<IndexedColor> MeshVertexColors;
+// MeshVertexColors.
+typedef std::vector<IndexedColor> MeshVertexColors;
 
-    // MeshMaterialList
-    typedef struct {
-        std::vector<unsigned int> faceIndices;
-        std::vector<Material> material;
-    } MeshMaterialList;
+// MeshMaterialList
+typedef struct
+{
+    std::vector<unsigned int> faceIndices;
+    std::vector<Material>     material;
+} MeshMaterialList;
 
-    /// Tokenize a string.
-    extern void tokenize(const std::string& str, std::vector<std::string>& tokens, const std::string& delimiters = " \t\r\n;,");
+/// Tokenize a string.
+extern void tokenize(const std::string&str, std::vector<std::string>&tokens, const std::string&delimiters = " \t\r\n;,");
 
-    /// Parse 'Material'.
-    extern void parseMaterial(std::istream& fin, Material& material);
+/// Parse 'Material'.
+extern void parseMaterial(std::istream&fin, Material&material);
 
-    /// Read 'TextureFilename'.
-    extern void readTexFilename(std::istream& fin, TextureFilename& texture);
+/// Read 'TextureFilename'.
+extern void readTexFilename(std::istream&fin, TextureFilename&texture);
 
-    /// Read 'Coords2d'.
-    extern void readCoords2d(std::istream& fin, std::vector<Coords2d>& v, unsigned int count);
+/// Read 'Coords2d'.
+extern void readCoords2d(std::istream&fin, std::vector<Coords2d>&v, unsigned int count);
 
-    // Read 'Vector'
-    extern void readVector(std::istream& fin, std::vector<Vector>& v, unsigned int count);
+// Read 'Vector'
+extern void readVector(std::istream&fin, std::vector<Vector>&v, unsigned int count);
 
-    /// Read index list.
-    extern void readIndexList(std::istream& fin, std::vector<unsigned int>& v, unsigned int count);
+/// Read index list.
+extern void readIndexList(std::istream&fin, std::vector<unsigned int>&v, unsigned int count);
 
-    /// Read 'MeshFace'.
-    extern void readMeshFace(std::istream& fin, std::vector<MeshFace>& v, unsigned int count);
-
+/// Read 'MeshFace'.
+extern void readMeshFace(std::istream&fin, std::vector<MeshFace>&v, unsigned int count);
 } // namespace
 
 #endif

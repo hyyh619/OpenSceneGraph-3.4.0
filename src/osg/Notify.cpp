@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Notify>
 #include <osg/ApplicationUsage>
 #include <osg/ref_ptr>
@@ -21,26 +21,28 @@
 
 #include <ctype.h>
 
-#define OSG_INIT_SINGLETON_PROXY(ProxyName, Func) static struct ProxyName{ ProxyName() { Func; } } s_##ProxyName;
+#define OSG_INIT_SINGLETON_PROXY(ProxyName, Func) static struct ProxyName { ProxyName() { Func; } \
+} s_ ## ProxyName;
 
 namespace osg
 {
-
 class NullStreamBuffer : public std::streambuf
 {
 private:
-    std::streamsize xsputn(const std::streambuf::char_type * /*str*/, std::streamsize n)
-    {
-        return n;
-    }
+std::streamsize xsputn(const std::streambuf::char_type* /*str*/, std::streamsize n)
+{
+    return n;
+}
 };
 
 struct NullStream : public std::ostream
 {
 public:
-    NullStream():
+    NullStream() :
         std::ostream(new NullStreamBuffer)
-    { _buffer = dynamic_cast<NullStreamBuffer *>(rdbuf()); }
+    {
+        _buffer = dynamic_cast<NullStreamBuffer*>(rdbuf());
+    }
 
     ~NullStream()
     {
@@ -49,7 +51,7 @@ public:
     }
 
 protected:
-    NullStreamBuffer* _buffer;
+    NullStreamBuffer *_buffer;
 };
 
 /** Stream buffer calling notify handler when buffer is synchronized (usually on std::endl).
@@ -58,11 +60,16 @@ protected:
 struct NotifyStreamBuffer : public std::stringbuf
 {
     NotifyStreamBuffer() : _severity(osg::NOTICE)
-    {
-    }
+    {}
 
-    void setNotifyHandler(osg::NotifyHandler *handler) { _handler = handler; }
-    osg::NotifyHandler *getNotifyHandler() const { return _handler.get(); }
+    void setNotifyHandler(osg::NotifyHandler *handler)
+    {
+        _handler = handler;
+    }
+    osg::NotifyHandler* getNotifyHandler() const
+    {
+        return _handler.get();
+    }
 
     /** Sets severity for next call of notify handler */
     void setCurrentSeverity(osg::NotifySeverity severity)
@@ -74,7 +81,10 @@ struct NotifyStreamBuffer : public std::stringbuf
         }
     }
 
-    osg::NotifySeverity getCurrentSeverity() const { return _severity; }
+    osg::NotifySeverity getCurrentSeverity() const
+    {
+        return _severity;
+    }
 
 private:
 
@@ -83,20 +93,23 @@ private:
         sputc(0); // string termination
         if (_handler.valid())
             _handler->notify(_severity, pbase());
+
         pubseekpos(0, std::ios_base::out); // or str(std::string())
         return 0;
     }
 
     osg::ref_ptr<osg::NotifyHandler> _handler;
-    osg::NotifySeverity _severity;
+    osg::NotifySeverity              _severity;
 };
 
 struct NotifyStream : public std::ostream
 {
 public:
-    NotifyStream():
+    NotifyStream() :
         std::ostream(new NotifyStreamBuffer)
-    { _buffer = dynamic_cast<NotifyStreamBuffer *>(rdbuf()); }
+    {
+        _buffer = dynamic_cast<NotifyStreamBuffer*>(rdbuf());
+    }
 
     void setCurrentSeverity(osg::NotifySeverity severity)
     {
@@ -115,9 +128,8 @@ public:
     }
 
 protected:
-    NotifyStreamBuffer* _buffer;
+    NotifyStreamBuffer *_buffer;
 };
-
 }
 
 using namespace osg;
@@ -133,35 +145,44 @@ struct NotifySingleton
 
         _notifyLevel = osg::NOTICE; // Default value
 
-        char* OSGNOTIFYLEVEL=getenv("OSG_NOTIFY_LEVEL");
-        if (!OSGNOTIFYLEVEL) OSGNOTIFYLEVEL=getenv("OSGNOTIFYLEVEL");
-        if(OSGNOTIFYLEVEL)
-        {
+        char *OSGNOTIFYLEVEL = getenv("OSG_NOTIFY_LEVEL");
+        if (!OSGNOTIFYLEVEL)
+            OSGNOTIFYLEVEL = getenv("OSGNOTIFYLEVEL");
 
+        if (OSGNOTIFYLEVEL)
+        {
             std::string stringOSGNOTIFYLEVEL(OSGNOTIFYLEVEL);
 
             // Convert to upper case
-            for(std::string::iterator i=stringOSGNOTIFYLEVEL.begin();
-                i!=stringOSGNOTIFYLEVEL.end();
-                ++i)
+            for (std::string::iterator i = stringOSGNOTIFYLEVEL.begin();
+                 i != stringOSGNOTIFYLEVEL.end();
+                 ++i)
             {
-                *i=toupper(*i);
+                *i = toupper(*i);
             }
 
-            if(stringOSGNOTIFYLEVEL.find("ALWAYS")!=std::string::npos)          _notifyLevel=osg::ALWAYS;
-            else if(stringOSGNOTIFYLEVEL.find("FATAL")!=std::string::npos)      _notifyLevel=osg::FATAL;
-            else if(stringOSGNOTIFYLEVEL.find("WARN")!=std::string::npos)       _notifyLevel=osg::WARN;
-            else if(stringOSGNOTIFYLEVEL.find("NOTICE")!=std::string::npos)     _notifyLevel=osg::NOTICE;
-            else if(stringOSGNOTIFYLEVEL.find("DEBUG_INFO")!=std::string::npos) _notifyLevel=osg::DEBUG_INFO;
-            else if(stringOSGNOTIFYLEVEL.find("DEBUG_FP")!=std::string::npos)   _notifyLevel=osg::DEBUG_FP;
-            else if(stringOSGNOTIFYLEVEL.find("DEBUG")!=std::string::npos)      _notifyLevel=osg::DEBUG_INFO;
-            else if(stringOSGNOTIFYLEVEL.find("INFO")!=std::string::npos)       _notifyLevel=osg::INFO;
-            else std::cout << "Warning: invalid OSG_NOTIFY_LEVEL set ("<<stringOSGNOTIFYLEVEL<<")"<<std::endl;
-
+            if (stringOSGNOTIFYLEVEL.find("ALWAYS") != std::string::npos)
+                _notifyLevel = osg::ALWAYS;
+            else if (stringOSGNOTIFYLEVEL.find("FATAL") != std::string::npos)
+                _notifyLevel = osg::FATAL;
+            else if (stringOSGNOTIFYLEVEL.find("WARN") != std::string::npos)
+                _notifyLevel = osg::WARN;
+            else if (stringOSGNOTIFYLEVEL.find("NOTICE") != std::string::npos)
+                _notifyLevel = osg::NOTICE;
+            else if (stringOSGNOTIFYLEVEL.find("DEBUG_INFO") != std::string::npos)
+                _notifyLevel = osg::DEBUG_INFO;
+            else if (stringOSGNOTIFYLEVEL.find("DEBUG_FP") != std::string::npos)
+                _notifyLevel = osg::DEBUG_FP;
+            else if (stringOSGNOTIFYLEVEL.find("DEBUG") != std::string::npos)
+                _notifyLevel = osg::DEBUG_INFO;
+            else if (stringOSGNOTIFYLEVEL.find("INFO") != std::string::npos)
+                _notifyLevel = osg::INFO;
+            else
+                std::cout << "Warning: invalid OSG_NOTIFY_LEVEL set (" << stringOSGNOTIFYLEVEL << ")" << std::endl;
         }
 
         // Setup standard notify handler
-        osg::NotifyStreamBuffer *buffer = dynamic_cast<osg::NotifyStreamBuffer *>(_notifyStream.rdbuf());
+        osg::NotifyStreamBuffer *buffer = dynamic_cast<osg::NotifyStreamBuffer*>(_notifyStream.rdbuf());
         if (buffer && !buffer->getNotifyHandler())
             buffer->setNotifyHandler(new StandardNotifyHandler);
     }
@@ -171,9 +192,10 @@ struct NotifySingleton
     osg::NotifyStream   _notifyStream;
 };
 
-static NotifySingleton& getNotifySingleton()
+static NotifySingleton&getNotifySingleton()
 {
     static NotifySingleton s_NotifySingleton;
+
     return s_NotifySingleton;
 }
 
@@ -199,30 +221,34 @@ osg::NotifySeverity osg::getNotifyLevel()
 void osg::setNotifyHandler(osg::NotifyHandler *handler)
 {
     osg::NotifyStreamBuffer *buffer = static_cast<osg::NotifyStreamBuffer*>(getNotifySingleton()._notifyStream.rdbuf());
-    if (buffer) buffer->setNotifyHandler(handler);
+
+    if (buffer)
+        buffer->setNotifyHandler(handler);
 }
 
 osg::NotifyHandler* osg::getNotifyHandler()
 {
-    osg::NotifyStreamBuffer *buffer = static_cast<osg::NotifyStreamBuffer *>(getNotifySingleton()._notifyStream.rdbuf());
+    osg::NotifyStreamBuffer *buffer = static_cast<osg::NotifyStreamBuffer*>(getNotifySingleton()._notifyStream.rdbuf());
+
     return buffer ? buffer->getNotifyHandler() : 0;
 }
 
 
 #ifndef OSG_NOTIFY_DISABLED
-bool osg::isNotifyEnabled( osg::NotifySeverity severity )
+bool osg::isNotifyEnabled(osg::NotifySeverity severity)
 {
-    return severity<=getNotifySingleton()._notifyLevel;
+    return severity <= getNotifySingleton()._notifyLevel;
 }
 #endif
 
-std::ostream& osg::notify(const osg::NotifySeverity severity)
+std::ostream&osg::notify(const osg::NotifySeverity severity)
 {
     if (osg::isNotifyEnabled(severity))
     {
         getNotifySingleton()._notifyStream.setCurrentSeverity(severity);
         return getNotifySingleton()._notifyStream;
     }
+
     return getNotifySingleton()._nullStream;
 }
 
@@ -245,5 +271,4 @@ void osg::WinDebugNotifyHandler::notify(osg::NotifySeverity severity, const char
 {
     OutputDebugStringA(message);
 }
-
 #endif

@@ -1,15 +1,15 @@
 /**********************************************************************
- *
- *    FILE:            VertexProgram.cpp
- *
- *    DESCRIPTION:    Read/Write osg::VertexProgram in binary format to disk.
- *
- *    CREATED BY:     rpk@blue-newt.com
- *
- *    HISTORY:        Created 04/20/2004
- *
- *    Copyright 2004 Blue Newt Software
- **********************************************************************/
+*
+*    FILE:            VertexProgram.cpp
+*
+*    DESCRIPTION:    Read/Write osg::VertexProgram in binary format to disk.
+*
+*    CREATED BY:     rpk@blue-newt.com
+*
+*    HISTORY:        Created 04/20/2004
+*
+*    Copyright 2004 Blue Newt Software
+**********************************************************************/
 
 #include "Exception.h"
 #include "VertexProgram.h"
@@ -17,16 +17,16 @@
 
 using namespace ive;
 
-void VertexProgram::write( DataOutputStream* out )
+void VertexProgram::write(DataOutputStream *out)
 {
     // Write VertexProgram identification.
-    out->writeInt( IVEVERTEXPROGRAM );
+    out->writeInt(IVEVERTEXPROGRAM);
     // If the osg class is inherited by any other class we should
     // also write this to file.
-    osg::Object* obj = dynamic_cast<osg::Object*>(this);
-    if( obj )
+    osg::Object *obj = dynamic_cast<osg::Object*>(this);
+    if (obj)
     {
-        ( ( ive::Object* )( obj ) )->write( out );
+        (( ive::Object* )(obj))->write(out);
     }
     else
     {
@@ -35,31 +35,33 @@ void VertexProgram::write( DataOutputStream* out )
 
     // Write VertexProgram properties.
     // Write program.
-    out->writeString( this->getVertexProgram() );
+    out->writeString(this->getVertexProgram());
 }
 
-void VertexProgram::read(DataInputStream* in){
+void VertexProgram::read(DataInputStream *in)
+{
     // Read VertexProgram identification.
     int id = in->peekInt();
-    if( id == IVEVERTEXPROGRAM )
+
+    if (id == IVEVERTEXPROGRAM)
     {
         // Code to read VertexProgram properties.
         id = in->readInt();
 
         // handle Object data
-        osg::Object*  obj = dynamic_cast<osg::Object*>(this);
-        if( obj )
+        osg::Object *obj = dynamic_cast<osg::Object*>(this);
+        if (obj)
         {
-            ( ( ive::Object* )( obj ) )->read( in );
+            (( ive::Object* )(obj))->read(in);
         }
         else
         {
-            in_THROW_EXCEPTION( "Material::read(): Could not cast this osg::VertexProgram to an osg::Object." );
+            in_THROW_EXCEPTION("Material::read(): Could not cast this osg::VertexProgram to an osg::Object.");
         }
 
         // Read data
         std::string fp = in->readString();
-        this->setVertexProgram( fp );
+        this->setVertexProgram(fp);
     }
     else
     {

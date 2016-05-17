@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgDB/ImagePager>
 #include <osgDB/ReadFile>
@@ -26,7 +26,7 @@ using namespace osgDB;
 //
 struct ImagePager::SortFileRequestFunctor
 {
-    bool operator() (const osg::ref_ptr<ImagePager::ImageRequest>& lhs,const osg::ref_ptr<ImagePager::ImageRequest>& rhs) const
+    bool operator()(const osg::ref_ptr<ImagePager::ImageRequest>&lhs, const osg::ref_ptr<ImagePager::ImageRequest>&rhs) const
     {
         return (lhs->_timeToMergeBy < rhs->_timeToMergeBy);
     }
@@ -39,12 +39,13 @@ struct ImagePager::SortFileRequestFunctor
 //
 void ImagePager::RequestQueue::sort()
 {
-    std::sort(_requestList.begin(),_requestList.end(),SortFileRequestFunctor());
+    std::sort(_requestList.begin(), _requestList.end(), SortFileRequestFunctor());
 }
 
 unsigned int ImagePager::RequestQueue::size() const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_requestMutex);
+
     return _requestList.size();
 }
 
@@ -54,7 +55,7 @@ unsigned int ImagePager::RequestQueue::size() const
 //
 //  ReadQueue
 //
-ImagePager::ReadQueue::ReadQueue(ImagePager* pager, const std::string& name):
+ImagePager::ReadQueue::ReadQueue(ImagePager *pager, const std::string&name) :
     _pager(pager),
     _name(name)
 {
@@ -65,12 +66,12 @@ void ImagePager::ReadQueue::clear()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_requestMutex);
 
-    for(RequestList::iterator citr = _requestList.begin();
-        citr != _requestList.end();
-        ++citr)
+    for (RequestList::iterator citr = _requestList.begin();
+         citr != _requestList.end();
+         ++citr)
     {
         (*citr)->_attachmentPoint = 0;
-        (*citr)->_requestQueue = 0;
+        (*citr)->_requestQueue    = 0;
     }
 
     _requestList.clear();
@@ -78,19 +79,19 @@ void ImagePager::ReadQueue::clear()
     updateBlock();
 }
 
-void ImagePager::ReadQueue::add(ImagePager::ImageRequest* imageRequest)
+void ImagePager::ReadQueue::add(ImagePager::ImageRequest *imageRequest)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_requestMutex);
 
     _requestList.push_back(imageRequest);
     imageRequest->_requestQueue = this;
 
-    OSG_INFO<<"ImagePager::ReadQueue::add("<<imageRequest->_fileName<<"), size()="<<_requestList.size()<<std::endl;
+    OSG_INFO << "ImagePager::ReadQueue::add(" << imageRequest->_fileName << "), size()=" << _requestList.size() << std::endl;
 
     updateBlock();
 }
 
-void ImagePager::ReadQueue::takeFirst(osg::ref_ptr<ImageRequest>& databaseRequest)
+void ImagePager::ReadQueue::takeFirst(osg::ref_ptr<ImageRequest>&databaseRequest)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_requestMutex);
 
@@ -98,9 +99,9 @@ void ImagePager::ReadQueue::takeFirst(osg::ref_ptr<ImageRequest>& databaseReques
     {
         sort();
 
-        OSG_INFO<<"ImagePager::ReadQueue::takeFirst(..), size()="<<_requestList.size()<<std::endl;
+        OSG_INFO << "ImagePager::ReadQueue::takeFirst(..), size()=" << _requestList.size() << std::endl;
 
-        databaseRequest = _requestList.front();
+        databaseRequest                = _requestList.front();
         databaseRequest->_requestQueue = 0;
         _requestList.erase(_requestList.begin());
 
@@ -112,46 +113,44 @@ void ImagePager::ReadQueue::takeFirst(osg::ref_ptr<ImageRequest>& databaseReques
 //
 // ImageThread
 //
-ImagePager::ImageThread::ImageThread(ImagePager* pager, Mode mode, const std::string& name):
+ImagePager::ImageThread::ImageThread(ImagePager *pager, Mode mode, const std::string&name) :
     _done(false),
     _mode(mode),
     _pager(pager),
     _name(name)
-{
-}
+{}
 
-ImagePager::ImageThread::ImageThread(const ImageThread& dt, ImagePager* pager):
+ImagePager::ImageThread::ImageThread(const ImageThread&dt, ImagePager *pager) :
     _done(false),
     _mode(dt._mode),
     _pager(pager),
     _name(dt._name)
-{
-}
+{}
 
 ImagePager::ImageThread::~ImageThread()
-{
-}
+{}
 
 int ImagePager::ImageThread::cancel()
 {
     int result = 0;
 
-    if( isRunning() )
+    if (isRunning())
     {
-
         _done = true;
 
-        switch(_mode)
+        switch (_mode)
         {
-            case(HANDLE_ALL_REQUESTS):
-                _pager->_readQueue->release();
-                break;
-            case(HANDLE_NON_HTTP):
-                _pager->_readQueue->release();
-                break;
-            case(HANDLE_ONLY_HTTP):
-                _pager->_readQueue->release();
-                break;
+        case (HANDLE_ALL_REQUESTS):
+            _pager->_readQueue->release();
+            break;
+
+        case (HANDLE_NON_HTTP):
+            _pager->_readQueue->release();
+            break;
+
+        case (HANDLE_ONLY_HTTP):
+            _pager->_readQueue->release();
+            break;
         }
 
         // release the frameBlock and _databasePagerThreadBlock in case its holding up thread cancellation.
@@ -162,43 +161,44 @@ int ImagePager::ImageThread::cancel()
 
         // _startThreadCalled = false;
     }
-    //std::cout<<"ImagePager::cancel() thread stopped running"<<std::endl;
+
+    // std::cout<<"ImagePager::cancel() thread stopped running"<<std::endl;
     return result;
 }
 
-void ImagePager::signalBeginFrame(const osg::FrameStamp* framestamp)
+void ImagePager::signalBeginFrame(const osg::FrameStamp *framestamp)
 {
     if (framestamp)
     {
-        //OSG_INFO << "signalBeginFrame "<<framestamp->getFrameNumber()<<">>>>>>>>>>>>>>>>"<<std::endl;
+        // OSG_INFO << "signalBeginFrame "<<framestamp->getFrameNumber()<<">>>>>>>>>>>>>>>>"<<std::endl;
         _frameNumber.exchange(framestamp->getFrameNumber());
-
-    } //else OSG_INFO << "signalBeginFrame >>>>>>>>>>>>>>>>"<<std::endl;
+    } // else OSG_INFO << "signalBeginFrame >>>>>>>>>>>>>>>>"<<std::endl;
 }
 
 void ImagePager::signalEndFrame()
-{
-}
+{}
 
 
 void ImagePager::ImageThread::run()
 {
-    OSG_INFO<<"ImagePager::ImageThread::run() "<<this<<std::endl;
+    OSG_INFO << "ImagePager::ImageThread::run() " << this << std::endl;
     bool firstTime = true;
 
     osg::ref_ptr<ImagePager::ReadQueue> read_queue;
 
-    switch(_mode)
+    switch (_mode)
     {
-        case(HANDLE_ALL_REQUESTS):
-            read_queue = _pager->_readQueue;
-            break;
-        case(HANDLE_NON_HTTP):
-            read_queue = _pager->_readQueue;
-            break;
-        case(HANDLE_ONLY_HTTP):
-            read_queue = _pager->_readQueue;
-            break;
+    case (HANDLE_ALL_REQUESTS):
+        read_queue = _pager->_readQueue;
+        break;
+
+    case (HANDLE_NON_HTTP):
+        read_queue = _pager->_readQueue;
+        break;
+
+    case (HANDLE_ONLY_HTTP):
+        read_queue = _pager->_readQueue;
+        break;
     }
 
     do
@@ -216,7 +216,7 @@ void ImagePager::ImageThread::run()
             {
                 // OSG_NOTICE<<"   successful readImageFile("<<imageRequest->_fileName<<") index to assign = "<<imageRequest->_attachmentIndex<<std::endl;
 
-                osg::ImageSequence* is = dynamic_cast<osg::ImageSequence*>(imageRequest->_attachmentPoint.get());
+                osg::ImageSequence *is = dynamic_cast<osg::ImageSequence*>(imageRequest->_attachmentPoint.get());
                 if (is)
                 {
                     if (imageRequest->_attachmentIndex >= 0)
@@ -236,7 +236,6 @@ void ImagePager::ImageThread::run()
                     _pager->_completedQueue->_requestList.push_back(imageRequest);
                 }
             }
-
         }
         else
         {
@@ -253,24 +252,23 @@ void ImagePager::ImageThread::run()
             YieldCurrentThread();
             firstTime = false;
         }
+    }
+    while (!testCancel() && !_done);
 
-    } while (!testCancel() && !_done);
-
-    OSG_INFO<<"ImagePager::ImageThread::done()"<<std::endl;
-
+    OSG_INFO << "ImagePager::ImageThread::done()" << std::endl;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
 //
 // ImagePager
 //
-ImagePager::ImagePager():
+ImagePager::ImagePager() :
     _done(false)
 {
-    _startThreadCalled = false;
+    _startThreadCalled         = false;
     _databasePagerThreadPaused = false;
 
-    _readQueue = new ReadQueue(this,"Image Queue");
+    _readQueue      = new ReadQueue(this, "Image Queue");
     _completedQueue = new RequestQueue;
     _imageThreads.push_back(new ImageThread(this, ImageThread::HANDLE_ALL_REQUESTS, "Image Thread 1"));
     _imageThreads.push_back(new ImageThread(this, ImageThread::HANDLE_ALL_REQUESTS, "Image Thread 2"));
@@ -293,9 +291,9 @@ int ImagePager::cancel()
 {
     int result = 0;
 
-    for(ImageThreads::iterator itr = _imageThreads.begin();
-        itr != _imageThreads.end();
-        ++itr)
+    for (ImageThreads::iterator itr = _imageThreads.begin();
+         itr != _imageThreads.end();
+         ++itr)
     {
         (*itr)->setDone(true);
     }
@@ -303,36 +301,37 @@ int ImagePager::cancel()
     // release the frameBlock and _databasePagerThreadBlock in case its holding up thread cancellation.
     _readQueue->release();
 
-    for(ImageThreads::iterator itr = _imageThreads.begin();
-        itr != _imageThreads.end();
-        ++itr)
+    for (ImageThreads::iterator itr = _imageThreads.begin();
+         itr != _imageThreads.end();
+         ++itr)
     {
         (*itr)->cancel();
     }
 
-    _done = true;
+    _done              = true;
     _startThreadCalled = false;
 
-    //std::cout<<"DatabasePager::~DatabasePager() stopped running"<<std::endl;
+    // std::cout<<"DatabasePager::~DatabasePager() stopped running"<<std::endl;
     return result;
 }
 
-osg::Image* ImagePager::readImageFile(const std::string& fileName, const osg::Referenced* options)
+osg::Image* ImagePager::readImageFile(const std::string&fileName, const osg::Referenced *options)
 {
-    osgDB::Options* readOptions = dynamic_cast<osgDB::Options*>(const_cast<osg::Referenced*>(options));
+    osgDB::Options *readOptions = dynamic_cast<osgDB::Options*>(const_cast<osg::Referenced*>(options));
+
     return osgDB::readImageFile(fileName, readOptions);
 }
 
-void ImagePager::requestImageFile(const std::string& fileName, osg::Object* attachmentPoint, int attachmentIndex, double timeToMergeBy, const osg::FrameStamp* /*framestamp*/, osg::ref_ptr<osg::Referenced>& imageRequest, const osg::Referenced* options)
+void ImagePager::requestImageFile(const std::string&fileName, osg::Object *attachmentPoint, int attachmentIndex, double timeToMergeBy, const osg::FrameStamp* /*framestamp*/, osg::ref_ptr<osg::Referenced>&imageRequest, const osg::Referenced *options)
 {
+    osgDB::Options *readOptions = dynamic_cast<osgDB::Options*>(const_cast<osg::Referenced*>(options));
 
-    osgDB::Options* readOptions = dynamic_cast<osgDB::Options*>(const_cast<osg::Referenced*>(options));
     if (!readOptions)
     {
-       readOptions = Registry::instance()->getOptions();
+        readOptions = Registry::instance()->getOptions();
     }
 
-    bool alreadyAssigned = dynamic_cast<ImageRequest*>(imageRequest.get()) && (imageRequest->referenceCount()>1);
+    bool alreadyAssigned = dynamic_cast<ImageRequest*>(imageRequest.get()) && (imageRequest->referenceCount() > 1);
     if (alreadyAssigned)
     {
         // OSG_NOTICE<<"ImagePager::requestImageFile("<<fileName<<") alreadyAssigned"<<std::endl;
@@ -340,12 +339,12 @@ void ImagePager::requestImageFile(const std::string& fileName, osg::Object* atta
     }
 
     osg::ref_ptr<ImageRequest> request = new ImageRequest;
-    request->_timeToMergeBy = timeToMergeBy;
-    request->_fileName = fileName;
+    request->_timeToMergeBy   = timeToMergeBy;
+    request->_fileName        = fileName;
     request->_attachmentPoint = attachmentPoint;
     request->_attachmentIndex = attachmentIndex;
-    request->_requestQueue = _readQueue.get();
-    request->_readOptions = readOptions;
+    request->_requestQueue    = _readQueue.get();
+    request->_readOptions     = readOptions;
 
     imageRequest = request;
 
@@ -360,22 +359,21 @@ void ImagePager::requestImageFile(const std::string& fileName, osg::Object* atta
         if (!_startThreadCalled)
         {
             _startThreadCalled = true;
-            _done = false;
+            _done              = false;
 
-            for(ImageThreads::iterator itr = _imageThreads.begin();
-                itr != _imageThreads.end();
-                ++itr)
+            for (ImageThreads::iterator itr = _imageThreads.begin();
+                 itr != _imageThreads.end();
+                 ++itr)
             {
                 (*itr)->startThread();
             }
-
         }
     }
 }
 
 bool ImagePager::requiresUpdateSceneGraph() const
 {
-    //OSG_NOTICE<<"ImagePager::requiresUpdateSceneGraph()"<<std::endl;
+    // OSG_NOTICE<<"ImagePager::requiresUpdateSceneGraph()"<<std::endl;
     return !(_completedQueue->_requestList.empty());
 }
 
@@ -383,12 +381,12 @@ void ImagePager::updateSceneGraph(const osg::FrameStamp&)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_completedQueue->_requestMutex);
 
-    for(RequestQueue::RequestList::iterator itr = _completedQueue->_requestList.begin();
-        itr != _completedQueue->_requestList.end();
-        ++itr)
+    for (RequestQueue::RequestList::iterator itr = _completedQueue->_requestList.begin();
+         itr != _completedQueue->_requestList.end();
+         ++itr)
     {
-        ImageRequest* imageRequest = itr->get();
-        osg::Texture* texture = dynamic_cast<osg::Texture*>(imageRequest->_attachmentPoint.get());
+        ImageRequest *imageRequest = itr->get();
+        osg::Texture *texture      = dynamic_cast<osg::Texture*>(imageRequest->_attachmentPoint.get());
         if (texture)
         {
             int attachmentIndex = imageRequest->_attachmentIndex > 0 ? imageRequest->_attachmentIndex : 0;
@@ -396,10 +394,9 @@ void ImagePager::updateSceneGraph(const osg::FrameStamp&)
         }
         else
         {
-            OSG_NOTICE<<"ImagePager::updateSceneGraph() : error, image request attachment type not handled yet."<<std::endl;
+            OSG_NOTICE << "ImagePager::updateSceneGraph() : error, image request attachment type not handled yet." << std::endl;
         }
     }
 
     _completedQueue->_requestList.clear();
 }
-

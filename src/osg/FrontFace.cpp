@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GL>
 #include <osg/FrontFace>
 
@@ -22,8 +22,7 @@ FrontFace::FrontFace(Mode face)
 
 
 FrontFace::~FrontFace()
-{
-}
+{}
 
 void FrontFace::apply(State&) const
 {

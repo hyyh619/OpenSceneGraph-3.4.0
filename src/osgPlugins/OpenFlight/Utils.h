@@ -8,7 +8,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // Copyright(c) 2008 Skew Matrix Software LLC.
@@ -30,7 +30,6 @@
 
     #include <stdio.h>
     #define FLTEXP_DELETEFILE(file) remove((file))
-
 #endif
 
 #endif

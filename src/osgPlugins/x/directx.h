@@ -34,67 +34,72 @@
 #include "types.h"
 #include "mesh.h"
 
-namespace DX {
+namespace DX
+{
+/**
+ * DirectX object.
+ */
+class Object
+{
+public:
+/// Constructor.
+Object();
 
-    /**
-     * DirectX object.
-     */
-    class Object {
-    public:
-        /// Constructor.
-        Object();
+/// Destructor.
+virtual ~Object()
+{
+    clear();
+}
 
-        /// Destructor.
-        virtual ~Object() {
-            clear();
-        }
+/**
+ * Load model from stream.
+ * Discards old data.
+ * @param filename Filename.
+ * @return false if the model could not be loaded, else true.
+ */
+bool load(std::istream&fin);
 
-        /**
-         * Load model from stream.
-         * Discards old data.
-         * @param filename Filename.
-         * @return false if the model could not be loaded, else true.
-         */
-        bool load(std::istream& fin);
+/**
+ * Generate per-vertex normals for the entire model.
+ * Discards any previously loaded or generated normals.
+ * @param creaseAngle TODO: The angle above which two adjacent faces are no
+ * longer considered to belong to a common surface.
+ * @return false if an error occurred, else true.
+ */
+bool generateNormals(float creaseAngle = 80.0f);
 
-        /**
-         * Generate per-vertex normals for the entire model.
-         * Discards any previously loaded or generated normals.
-         * @param creaseAngle TODO: The angle above which two adjacent faces are no
-         * longer considered to belong to a common surface.
-         * @return false if an error occurred, else true.
-         */
-        bool generateNormals(float creaseAngle = 80.0f);
+/// Get number of meshes.
+inline unsigned int getNumMeshes() const
+{
+    return _meshes.size();
+}
 
-        /// Get number of meshes.
-        inline unsigned int getNumMeshes() const {
-            return _meshes.size();
-        }
+/// Get Mesh.
+inline Mesh* getMesh(unsigned int i)
+{
+    return _meshes[i];
+}
+inline const Mesh* getMesh(unsigned int i) const
+{
+    return _meshes[i];
+}
 
-        /// Get Mesh.
-        inline Mesh* getMesh(unsigned int i) {
-            return _meshes[i];
-        }
-        inline const Mesh* getMesh(unsigned int i) const {
-            return _meshes[i];
-        }
+/// Find global material.
+Material* findMaterial(const std::string&name);
 
-        /// Find global material.
-        Material * findMaterial(const std::string & name);
+/// Parse section until '}'; recurse as needed.
+void parseSection(std::istream&fin);
 
-        /// Parse section until '}'; recurse as needed.
-        void parseSection(std::istream& fin);
+private:
+// dgm - keep list of materials global to the file
+std::vector<Material> _globalMaterials;
 
-    private:
-        // dgm - keep list of materials global to the file
-        std::vector<Material> _globalMaterials;
+/// Meshes.
+std::vector<Mesh*> _meshes;
 
-        /// Meshes.
-        std::vector<Mesh*> _meshes;
-
-        /// Clear object.
-        void clear();
-    };
+/// Clear object.
+void clear();
+};
 } // namespace
 
 #endif

@@ -9,15 +9,15 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgDB/Options>
 #include <osgDB/Registry>
 
 using namespace osgDB;
 
-Options::Options(const Options& options,const osg::CopyOp& copyop):
-    osg::Object(options,copyop),
+Options::Options(const Options&options, const osg::CopyOp&copyop) :
+    osg::Object(options, copyop),
     _str(options._str),
     _databasePaths(options._databasePaths),
     _objectCacheHint(options._objectCacheHint),
@@ -34,14 +34,16 @@ Options::Options(const Options& options,const osg::CopyOp& copyop):
     _terrain(options._terrain),
     _parentGroup(options._parentGroup) {}
 
-void Options::parsePluginStringData(const std::string& str, char separator1, char separator2)
+void Options::parsePluginStringData(const std::string&str, char separator1, char separator2)
 {
     StringList valueList;
+
     split(str, valueList, separator1);
     if (valueList.size() > 0)
     {
         StringList keyAndValue;
-        for (StringList::iterator itr=valueList.begin(); itr!=valueList.end(); ++itr)
+
+        for (StringList::iterator itr = valueList.begin(); itr != valueList.end(); ++itr)
         {
             split(*itr, keyAndValue, separator2);
             if (keyAndValue.size() > 1)
@@ -52,6 +54,7 @@ void Options::parsePluginStringData(const std::string& str, char separator1, cha
             {
                 setPluginStringData(keyAndValue.front(), "true");
             }
+
             keyAndValue.clear();
         }
     }

@@ -20,45 +20,48 @@
 #include "io_service_pool.hpp"
 #include "request_handler.hpp"
 
-namespace http {
-namespace server {
-
+namespace http
+{
+namespace server
+{
 /// The top-level class of the HTTP server.
 class server
-  : private boost::noncopyable
+    : private boost::noncopyable
 {
 public:
-  /// Construct the server to listen on the specified TCP address and port, and
-  /// serve up files from the given directory.
-  explicit server(const std::string& address, const std::string& port,
-      const std::string& doc_root, std::size_t io_service_pool_size);
+/// Construct the server to listen on the specified TCP address and port, and
+/// serve up files from the given directory.
+explicit server(const std::string&address, const std::string&port,
+                const std::string&doc_root, std::size_t io_service_pool_size);
 
-  /// Run the server's io_service loop.
-  void run();
+/// Run the server's io_service loop.
+void run();
 
-  /// Stop the server.
-  void stop();
-  
-  void setCallback(request_handler::Callback* cb) { request_handler_.setCallback(cb); }
+/// Stop the server.
+void stop();
+
+void setCallback(request_handler::Callback *cb)
+{
+    request_handler_.setCallback(cb);
+}
 
 private:
-  /// Handle completion of an asynchronous accept operation.
-  void handle_accept(const asio::error_code& e);
+/// Handle completion of an asynchronous accept operation.
+void handle_accept(const asio::error_code&e);
 
-  /// The pool of io_service objects used to perform asynchronous operations.
-  io_service_pool io_service_pool_;
+/// The pool of io_service objects used to perform asynchronous operations.
+io_service_pool io_service_pool_;
 
-  /// Acceptor used to listen for incoming connections.
-  asio::ip::tcp::acceptor acceptor_;
+/// Acceptor used to listen for incoming connections.
+asio::ip::tcp::acceptor acceptor_;
 
-  /// The next connection to be accepted.
-  connection_ptr new_connection_;
+/// The next connection to be accepted.
+connection_ptr new_connection_;
 
-  /// The handler for all incoming requests.
-  request_handler request_handler_;
+/// The handler for all incoming requests.
+request_handler request_handler_;
 };
-
-} // namespace server
+}   // namespace server
 } // namespace http
 
 #endif // HTTP_SERVER_SERVER_HPP

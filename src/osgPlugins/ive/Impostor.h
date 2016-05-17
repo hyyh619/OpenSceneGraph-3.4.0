@@ -4,11 +4,13 @@
 #include <osgSim/Impostor>
 #include "ReadWrite.h"
 
-namespace ive{
-class Impostor : public osgSim::Impostor, public ReadWrite {
+namespace ive
+{
+class Impostor : public osgSim::Impostor, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

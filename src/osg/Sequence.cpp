@@ -44,7 +44,7 @@ Sequence::Sequence() :
     setNumChildrenRequiringUpdateTraversal(1);
 }
 
-Sequence::Sequence(const Sequence& seq, const CopyOp& copyop) :
+Sequence::Sequence(const Sequence&seq, const CopyOp&copyop) :
     Group(seq, copyop),
     _value(seq._value),
     _now(seq._now),
@@ -66,45 +66,47 @@ Sequence::Sequence(const Sequence& seq, const CopyOp& copyop) :
     _sync(seq._sync),
     _clearOnStop(seq._clearOnStop)
 {
-    setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal()+1);
+    setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal() + 1);
 }
 
-bool Sequence::addChild( Node *child)
+bool Sequence::addChild(Node *child)
 {
-    return Sequence::insertChild( _children.size(), child, _defaultTime);
+    return Sequence::insertChild(_children.size(), child, _defaultTime);
 }
 
-bool Sequence::addChild( Node *child, double t)
+bool Sequence::addChild(Node *child, double t)
 {
-    return Sequence::insertChild( _children.size(), child, t);
+    return Sequence::insertChild(_children.size(), child, t);
 }
 
-bool Sequence::insertChild( unsigned int index, Node *child)
+bool Sequence::insertChild(unsigned int index, Node *child)
 {
     return Sequence::insertChild(index, child, _defaultTime);
 }
 
-bool Sequence::insertChild( unsigned int index, Node *child, double t)
+bool Sequence::insertChild(unsigned int index, Node *child, double t)
 {
-    if (Group::insertChild(index,child))
+    if (Group::insertChild(index, child))
     {
-        if (index>=_frameTime.size())
+        if (index >= _frameTime.size())
         {
             Sequence::setTime(index, t);
         }
+
         _resetTotalTime = true;
         return true;
     }
+
     return false;
 }
 
-bool Sequence::removeChild( Node *child )
+bool Sequence::removeChild(Node *child)
 {
-    if (Group::removeChild(child ))
+    if (Group::removeChild(child))
     {
         unsigned int pos = getChildIndex(child);
         if (pos < _children.size())
-            return Sequence::removeChildren(pos,1);
+            return Sequence::removeChildren(pos, 1);
         else
             return false;
     }
@@ -112,14 +114,15 @@ bool Sequence::removeChild( Node *child )
         return false;
 }
 
-bool Sequence::removeChildren(unsigned int pos,unsigned int numChildrenToRemove)
+bool Sequence::removeChildren(unsigned int pos, unsigned int numChildrenToRemove)
 {
-    if (pos<_frameTime.size())
-        _frameTime.erase(_frameTime.begin()+pos,
-                         osg::minimum(_frameTime.begin()+(pos+numChildrenToRemove),
-                                      _frameTime.end()) );
+    if (pos < _frameTime.size())
+        _frameTime.erase(_frameTime.begin() + pos,
+                         osg::minimum(_frameTime.begin() + (pos + numChildrenToRemove),
+                                      _frameTime.end()));
+
     _resetTotalTime = true;
-    return Group::removeChildren(pos,numChildrenToRemove);
+    return Group::removeChildren(pos, numChildrenToRemove);
 }
 
 
@@ -127,7 +130,9 @@ bool Sequence::removeChildren(unsigned int pos,unsigned int numChildrenToRemove)
 // a time <0 will get set to 0
 void Sequence::setTime(unsigned int frame, double t)
 {
-    if (t<0.) t = 0.0;
+    if (t < 0.)
+        t = 0.0;
+
     unsigned int sz = _frameTime.size();
     if (frame < sz)
     {
@@ -140,7 +145,6 @@ void Sequence::setTime(unsigned int frame, double t)
             _frameTime.push_back(t);
         }
     }
-
 }
 
 // returns a frame time of -1 if frame is out of range
@@ -155,21 +159,20 @@ double Sequence::getTime(unsigned int frame) const
 void Sequence::setInterval(LoopMode mode, int begin, int end)
 {
     _loopMode = mode;
-    _end = end;
-    _begin = begin;
+    _end      = end;
+    _begin    = begin;
 
     // _value based on _begin & _end
     _value = -1;
 
     _resetTotalTime = true;
-
 }
 
 void Sequence::setDuration(float speed, int nreps)
 {
     _speed = speed;
     // -1 means loop forever
-    _nreps = (nreps < 0 ? -1:nreps);
+    _nreps = (nreps < 0 ? -1 : nreps);
     // countdown of laps around the track
     _nrepsRemain = _nreps;
 }
@@ -185,92 +188,98 @@ void Sequence::setMode(SequenceMode mode)
         _value = -1;
 
         // Figure out which direction to start stepping the sequence
-        ubegin = (_begin < 0 ?  (int)_frameTime.size()-1: _begin);
-        uend = (_end < 0 ? (int)_frameTime.size()-1: _end);
-        _step = (ubegin > uend ? -1 : 1);
+        ubegin = (_begin < 0 ?  (int)_frameTime.size() - 1 : _begin);
+        uend   = (_end < 0 ? (int)_frameTime.size() - 1 : _end);
+        _step  = (ubegin > uend ? -1 : 1);
 
         _start = -1.0;
-        _mode = mode;
-        if (_saveRealLastFrameTime>=0.)
+        _mode  = mode;
+        if (_saveRealLastFrameTime >= 0.)
         {
             _frameTime[_saveRealLastFrameValue] = _saveRealLastFrameTime;
-            _saveRealLastFrameTime = -1.;
+            _saveRealLastFrameTime              = -1.;
         }
+
         break;
+
     case STOP:
         _mode = mode;
         break;
+
     case PAUSE:
         if (_mode == START)
             _mode = PAUSE;
+
         break;
+
     case RESUME:
         if (_mode == PAUSE)
             _mode = START;
+
         break;
     }
 }
 
-void Sequence::traverse(NodeVisitor& nv)
+void Sequence::traverse(NodeVisitor&nv)
 {
-    if (getNumChildren()==0) return;
+    if (getNumChildren() == 0)
+        return;
 
-    const FrameStamp* framestamp = nv.getFrameStamp();
+    const FrameStamp *framestamp = nv.getFrameStamp();
     if (framestamp)
     {
         _now = framestamp->getSimulationTime();
     }
 
 
-    if (nv.getVisitorType()==NodeVisitor::UPDATE_VISITOR &&
+    if (nv.getVisitorType() == NodeVisitor::UPDATE_VISITOR &&
         _mode == START &&
-        !_frameTime.empty() && getNumChildren()!=0)
+        !_frameTime.empty() && getNumChildren() != 0)
     {
-
         // if begin or end < 0, make it last frame
-        int _ubegin = (_begin < 0 ?  (int)_frameTime.size()-1: _begin);
-        int _uend = (_end < 0 ? (int)_frameTime.size()-1: _end);
+        int _ubegin = (_begin < 0 ?  (int)_frameTime.size() - 1 : _begin);
+        int _uend   = (_end < 0 ? (int)_frameTime.size() - 1 : _end);
 
-        int _sbegin = osg::minimum(_ubegin,_uend);
-        int _send = osg::maximum(_ubegin,_uend);
+        int _sbegin = osg::minimum(_ubegin, _uend);
+        int _send   = osg::maximum(_ubegin, _uend);
 
         if (framestamp)
         {
             // hack for last frame time
-            if (_lastFrameTime>0. && _nrepsRemain==1 && _saveRealLastFrameTime<0.)
+            if (_lastFrameTime > 0. && _nrepsRemain == 1 && _saveRealLastFrameTime < 0.)
             {
-                if ( _loopMode == LOOP)
+                if (_loopMode == LOOP)
                 {
-                    if ((_step>0 && _value!=_send) || (_step<0 && _value!=_sbegin))
+                    if ((_step > 0 && _value != _send) || (_step < 0 && _value != _sbegin))
                     {
-                        _saveRealLastFrameTime=_frameTime[_uend];
+                        _saveRealLastFrameTime  = _frameTime[_uend];
                         _saveRealLastFrameValue = _uend;
-                        _frameTime[_uend] = _lastFrameTime;
-                        _resetTotalTime = true;
+                        _frameTime[_uend]       = _lastFrameTime;
+                        _resetTotalTime         = true;
                     }
                 }
                 else
                 {
-                    if (_step>0 && _value!=_sbegin)
+                    if (_step > 0 && _value != _sbegin)
                     {
-                        _saveRealLastFrameTime=_frameTime[_send];
+                        _saveRealLastFrameTime  = _frameTime[_send];
                         _saveRealLastFrameValue = _send;
-                        _frameTime[_send] = _lastFrameTime;
-                        _resetTotalTime = true;
+                        _frameTime[_send]       = _lastFrameTime;
+                        _resetTotalTime         = true;
                     }
-                    else if (_step<0 && _value!=_send)
+                    else if (_step < 0 && _value != _send)
                     {
-                        _saveRealLastFrameTime=_frameTime[_sbegin];
+                        _saveRealLastFrameTime  = _frameTime[_sbegin];
                         _saveRealLastFrameValue = _sbegin;
-                        _frameTime[_sbegin] = _lastFrameTime;
-                        _resetTotalTime = true;
+                        _frameTime[_sbegin]     = _lastFrameTime;
+                        _resetTotalTime         = true;
                     }
                 }
             }
 
             // I never know when to stop!
             // more fun for last frame time
-            if (_nrepsRemain==0)
+            if (_nrepsRemain == 0)
             {
                 if (!_clearOnStop)
                 {
@@ -278,19 +287,18 @@ void Sequence::traverse(NodeVisitor& nv)
                 }
                 else
                 {
-                    if ( (_loopMode == LOOP) &&
-                         ( (_step>0 && _value!=_send) ||
-                           (_step<0 && _value!=_sbegin)))
+                    if ((_loopMode == LOOP) &&
+                        ((_step > 0 && _value != _send) ||
+                         (_step < 0 && _value != _sbegin)))
                     {
                         _mode = STOP;
                     }
-                    else if ( (_loopMode == SWING) &&
-                              ( (_step<0 && _value!=_send) ||
-                                (_step>0 && _value!=_sbegin)))
+                    else if ((_loopMode == SWING) &&
+                             ((_step < 0 && _value != _send) ||
+                              (_step > 0 && _value != _sbegin)))
                     {
                         _mode = STOP;
                     }
-
                 }
             }
 
@@ -302,84 +310,83 @@ void Sequence::traverse(NodeVisitor& nv)
             // 1) still in the same frame, so have nothing to do
             // 2) just in the next frame
             // 3) need to calculate everything based on elapsed time
-            if ((_now - _start) > _frameTime[_value]*osg::absolute(_speed))
-            { // case 2 or case 3
+            if ((_now - _start) > _frameTime[_value] * osg::absolute(_speed))
+            {   // case 2 or case 3
                 // most of the time it's just the next frame in the sequence
                 int nextValue = _getNextValue();
                 if (!_sync ||
-                    ((_now - _start) <= (_frameTime[_value]+_frameTime[nextValue])*osg::absolute(_speed)) )
+                    ((_now - _start) <= (_frameTime[_value] + _frameTime[nextValue]) * osg::absolute(_speed)))
                 {
-                    _start += _frameTime[_value]*osg::absolute(_speed);
+                    _start += _frameTime[_value] * osg::absolute(_speed);
                     // repeat or change directions?
-                    if ( (_step>0 && nextValue==_send) ||
-                         (_step<0 && nextValue==_sbegin))
+                    if ((_step > 0 && nextValue == _send) ||
+                        (_step < 0 && nextValue == _sbegin))
                     {
-                        if (_nreps>0)
+                        if (_nreps > 0)
                             _nrepsRemain--;
 
                         // change direction
-                        if  (_loopMode == SWING)
+                        if (_loopMode == SWING)
                             _step = -_step;
-
                     }
+
                     _value = nextValue;
                 }
                 else // case 3
-        {
-            // recalculate everything based on elapsed time
+                {
+                    // recalculate everything based on elapsed time
 
-            // elapsed time from start of the frame
-            double deltaT = _now - _start;
+                    // elapsed time from start of the frame
+                    double deltaT = _now - _start;
 
-            // factors _speed into account
-            double adjTotalTime = _totalTime*osg::absolute(_speed);
+                    // factors _speed into account
+                    double adjTotalTime = _totalTime * osg::absolute(_speed);
 
-            // how many laps?
-            int loops = (int)(deltaT/adjTotalTime);
+                    // how many laps?
+                    int loops = (int)(deltaT / adjTotalTime);
 
 
-            // adjust reps & quick check to see if done because reps used up
+                    // adjust reps & quick check to see if done because reps used up
 
-            if (_nreps>0)
-            {
-            if (_loopMode == LOOP)
-                _nrepsRemain -= loops;
-            else
-                _nrepsRemain -= 2*loops;
+                    if (_nreps > 0)
+                    {
+                        if (_loopMode == LOOP)
+                            _nrepsRemain -= loops;
+                        else
+                            _nrepsRemain -= 2 * loops;
 
-            if (_nrepsRemain<=0)
-            {
-                _nrepsRemain = 0;
-                _mode = STOP;
-                OSG_WARN << "stopping because elapsed time greater or equal to time remaining to repeat the sequence\n";
-            }
-            }
+                        if (_nrepsRemain <= 0)
+                        {
+                            _nrepsRemain = 0;
+                            _mode        = STOP;
+                            OSG_WARN << "stopping because elapsed time greater or equal to time remaining to repeat the sequence\n";
+                        }
+                    }
 
-            // deduct off time for laps- _value shouldn't change as it's modulo the total time
-            double jumpStart = ((double)loops * adjTotalTime);
+                    // deduct off time for laps- _value shouldn't change as it's modulo the total time
+                    double jumpStart = ((double)loops * adjTotalTime);
 
-            // step through frames one at a time until caught up
-            while (deltaT-jumpStart > _frameTime[_value]*osg::absolute(_speed))
-            {
-            jumpStart +=  _frameTime[_value]*osg::absolute(_speed );
-            _value = _getNextValue();
-            }
+                    // step through frames one at a time until caught up
+                    while (deltaT - jumpStart > _frameTime[_value] * osg::absolute(_speed))
+                    {
+                        jumpStart += _frameTime[_value] * osg::absolute(_speed);
+                        _value     = _getNextValue();
+                    }
 
-            // set start time
-            _start += jumpStart;
-        }
+                    // set start time
+                    _start += jumpStart;
+                }
             }
         }
         else
             OSG_WARN << "osg::Sequence::traverse(NodeVisitor&) requires a valid FrameStamp to function, sequence not updated.\n";
-
     }
 
     // now do the traversal
-    if (nv.getTraversalMode()==NodeVisitor::TRAVERSE_ACTIVE_CHILDREN)
+    if (nv.getTraversalMode() == NodeVisitor::TRAVERSE_ACTIVE_CHILDREN)
     {
-        if ( !((_mode == STOP) && _clearOnStop) &&
-             (getValue()>=0 && getValue()<(int)_children.size()) )
+        if (!((_mode == STOP) && _clearOnStop) &&
+            (getValue() >= 0 && getValue() < (int)_children.size()))
         {
             _children[getValue()]->accept(nv);
         }
@@ -388,27 +395,27 @@ void Sequence::traverse(NodeVisitor& nv)
     {
         Group::traverse(nv);
     }
-
 }
 
 int Sequence::_getNextValue()
 {
-    if (_frameTime.empty() || getNumChildren()==0) return 0;
+    if (_frameTime.empty() || getNumChildren() == 0)
+        return 0;
 
     // if begin or end < 0, make it last frame
-    int _ubegin = (_begin < 0 ?  (int)_frameTime.size()-1: _begin);
-    int _uend = (_end < 0 ? (int)_frameTime.size()-1: _end);
+    int _ubegin = (_begin < 0 ?  (int)_frameTime.size() - 1 : _begin);
+    int _uend   = (_end < 0 ? (int)_frameTime.size() - 1 : _end);
 
-    int _sbegin = osg::minimum(_ubegin,_uend);
-    int _send = osg::maximum(_ubegin,_uend);
+    int _sbegin = osg::minimum(_ubegin, _uend);
+    int _send   = osg::maximum(_ubegin, _uend);
 
     int v = _value + _step * static_cast<int>(osg::sign(_speed));
 
-    if (_sbegin==_send)
+    if (_sbegin == _send)
     {
         return _sbegin;
     }
-    else if (v<=_send && v>=_sbegin)
+    else if (v <= _send && v >= _sbegin)
     {
         return v;
     }
@@ -417,48 +424,47 @@ int Sequence::_getNextValue()
         int vs = _send - _sbegin + 1;
         if (_loopMode == LOOP)
         {
-            v = ((v-_sbegin)%vs) + _sbegin;
-            if (v<_sbegin)
+            v = ((v - _sbegin) % vs) + _sbegin;
+            if (v < _sbegin)
             {
-                v+=vs;
+                v += vs;
             }
 
             return v;
         }
         else // SWING
         {
-            if (v>_send)
-                return (2*_send-v);
+            if (v > _send)
+                return (2 * _send - v);
             else
-                return (2*_sbegin-v);
-
+                return (2 * _sbegin - v);
         }
     }
-
 }
 
 void Sequence::_update()
 {
-    if (_frameTime.empty()) return;
+    if (_frameTime.empty())
+        return;
 
     // if begin or end < 0, make it last frame
-    int _ubegin = (_begin < 0 ?  (int)_frameTime.size()-1: _begin);
-    int _uend = (_end < 0 ? (int)_frameTime.size()-1: _end);
+    int _ubegin = (_begin < 0 ?  (int)_frameTime.size() - 1 : _begin);
+    int _uend   = (_end < 0 ? (int)_frameTime.size() - 1 : _end);
 
-    int _sbegin = osg::minimum(_ubegin,_uend);
-    int _send = osg::maximum(_ubegin,_uend);
+    int _sbegin = osg::minimum(_ubegin, _uend);
+    int _send   = osg::maximum(_ubegin, _uend);
 
     // if _value<0, new or restarted
-    if (_value<0)
+    if (_value < 0)
     {
-        _value = (_begin < 0 ?  (int)_frameTime.size()-1: _begin);
+        _value          = (_begin < 0 ?  (int)_frameTime.size() - 1 : _begin);
         _resetTotalTime = true;
     }
 
     // if _start<0, new or restarted
-    if (_start<0)
+    if (_start < 0)
     {
-        _start = _now;
+        _start          = _now;
         _resetTotalTime = true;
     }
 
@@ -469,19 +475,22 @@ void Sequence::_update()
         if (_loopMode == LOOP)
         {
             _totalTime = 0.0;
-            for (int i=_sbegin; i<=_send; i++)
+
+            for (int i = _sbegin; i <= _send; i++)
             {
                 _totalTime += _frameTime[i];
             }
         }
-        else //SWING
+        else // SWING
         {
             _totalTime = _frameTime[_sbegin];
+
             // ones in the middle get counted twice: 0 1 2 3 4 3 2 1 0
-            for (int i=_sbegin+1; i<_send; i++)
+            for (int i = _sbegin + 1; i < _send; i++)
             {
-                _totalTime += 2*_frameTime[i];
+                _totalTime += 2 * _frameTime[i];
             }
+
             if (_sbegin != _send)
             {
                 _totalTime += _frameTime[_send];
@@ -490,5 +499,4 @@ void Sequence::_update()
 
         _resetTotalTime = false;
     }
-
 }

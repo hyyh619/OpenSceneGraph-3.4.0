@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Geode>
 #include <osg/Geometry>
 #include <osg/Notify>
@@ -17,45 +17,42 @@
 #include <stdio.h>
 #include <math.h>
 
-#define square(x)   ((x)*(x))
+#define square(x) ((x) * (x))
 
 using namespace osg;
 
 Geode::Geode()
-{
-}
+{}
 
-Geode::Geode(const Geode& geode,const CopyOp& copyop):
-    Group(geode,copyop)
-{
-}
+Geode::Geode(const Geode&geode, const CopyOp&copyop) :
+    Group(geode, copyop)
+{}
 
 Geode::~Geode()
-{
-}
+{}
 
-bool Geode::addDrawable( Drawable* drawable )
+bool Geode::addDrawable(Drawable *drawable)
 {
     return addChild(drawable);
 }
 
 
-bool Geode::removeDrawable( Drawable* drawable )
+bool Geode::removeDrawable(Drawable *drawable)
 {
-    return removeDrawables(getDrawableIndex(drawable),1);
+    return removeDrawables(getDrawableIndex(drawable), 1);
 }
 
-bool Geode::removeDrawables(unsigned int pos,unsigned int numDrawablesToRemove)
+bool Geode::removeDrawables(unsigned int pos, unsigned int numDrawablesToRemove)
 {
     return removeChildren(pos, numDrawablesToRemove);
 }
 
-bool Geode::replaceDrawable( Drawable* origDrawable, Drawable* newDrawable )
+bool Geode::replaceDrawable(Drawable *origDrawable, Drawable *newDrawable)
 {
     return replaceChild(origDrawable, newDrawable);
 }
 
-bool Geode::setDrawable( unsigned  int i, Drawable* newDrawable )
+bool Geode::setDrawable(unsigned int i, Drawable *newDrawable)
 {
     return setChild(i, newDrawable);
 }
@@ -67,13 +64,13 @@ BoundingSphere Geode::computeBound() const
 
     _bbox.init();
 
-    for(NodeList::const_iterator itr = _children.begin();
-        itr!=_children.end();
-        ++itr)
+    for (NodeList::const_iterator itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
         if (itr->valid())
         {
-            const osg::Drawable* drawable = (*itr)->asDrawable();
+            const osg::Drawable *drawable = (*itr)->asDrawable();
             if (drawable)
             {
                 _bbox.expandBy(drawable->getBoundingBox());
@@ -89,16 +86,18 @@ BoundingSphere Geode::computeBound() const
     {
         bsphere.expandBy(_bbox);
     }
+
     return bsphere;
 }
 
-void Geode::compileDrawables(RenderInfo& renderInfo)
+void Geode::compileDrawables(RenderInfo&renderInfo)
 {
-    for(NodeList::iterator itr = _children.begin();
-        itr!=_children.end();
-        ++itr)
+    for (NodeList::iterator itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
-        osg::Drawable* drawable = itr->valid() ? (*itr)->asDrawable() : 0;
-        if (drawable) drawable->compileGLObjects(renderInfo);
+        osg::Drawable *drawable = itr->valid() ? (*itr)->asDrawable() : 0;
+        if (drawable)
+            drawable->compileGLObjects(renderInfo);
     }
 }

@@ -10,8 +10,8 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 #ifndef _trpage_compat_h_
 #define _trpage_compat_h_
@@ -28,19 +28,20 @@
     never directly interact with this class.
     {secret}
  */
-class trpgMatTable1_0 : public trpgMatTable {
+class trpgMatTable1_0 : public trpgMatTable
+{
 public:
-    trpgMatTable1_0() { };
-    trpgMatTable1_0(const trpgMatTable &);
+trpgMatTable1_0() { };
+trpgMatTable1_0(const trpgMatTable&);
 
-    /* This read method overrides the one from trpgMatTable and knows
-    how to read the old school material tables.
-     */
-    bool    Read(trpgReadBuffer &);
-    /* This write method can write a 2.0 material table as 1.0
-    style for backward compatibility.
-     */
-    bool    Write(trpgWriteBuffer &);
+/* This read method overrides the one from trpgMatTable and knows
+   how to read the old school material tables.
+ */
+bool    Read(trpgReadBuffer&);
+/* This write method can write a 2.0 material table as 1.0
+   style for backward compatibility.
+ */
+bool    Write(trpgWriteBuffer&);
 protected:
 };
 
@@ -50,19 +51,20 @@ protected:
     this class.
     {secret}
  */
-class trpgTexTable1_0 : public trpgTexTable {
+class trpgTexTable1_0 : public trpgTexTable
+{
 public:
-    trpgTexTable1_0() { };
-    trpgTexTable1_0(const trpgTexTable &);
+trpgTexTable1_0() { };
+trpgTexTable1_0(const trpgTexTable&);
 
-    /* This read method overrides the one from trpgTexTable and
-    knows how to read the old style texture table.
-     */
-    bool    Read(trpgReadBuffer &);
-    /* The write method can write a 2.0 texture table as 1.0
-    style for backward compatibility.
-     */
-    bool    Write(trpgWriteBuffer &);
+/* This read method overrides the one from trpgTexTable and
+   knows how to read the old style texture table.
+ */
+bool    Read(trpgReadBuffer&);
+/* The write method can write a 2.0 texture table as 1.0
+   style for backward compatibility.
+ */
+bool    Write(trpgWriteBuffer&);
 protected:
 };
 
@@ -70,15 +72,16 @@ protected:
     Knows how to read an old style texture.
     {secret}
  */
-class trpgTexture1_0 : public trpgTexture {
+class trpgTexture1_0 : public trpgTexture
+{
 public:
-    // Assignment operator from a regular trpgTexture
-    trpgTexture1_0 operator = (const trpgTexture &);
+// Assignment operator from a regular trpgTexture
+trpgTexture1_0 operator =(const trpgTexture&);
 
-    // Knows how to read old style textures
-    bool    Read(trpgReadBuffer &);
-    // Can write old style textures
-    bool    Write(trpgWriteBuffer &);
+// Knows how to read old style textures
+bool    Read(trpgReadBuffer&);
+// Can write old style textures
+bool    Write(trpgWriteBuffer&);
 protected:
 };
 
@@ -86,11 +89,12 @@ protected:
     Knows how to write an old style tile table.
     {secret}
  */
-class trpgTileTable1_0 : public trpgTileTable {
+class trpgTileTable1_0 : public trpgTileTable
+{
 public:
-    trpgTileTable1_0(const trpgTileTable &);
-    // Can write old style tile table
-    bool    Write(trpgWriteBuffer &);
+trpgTileTable1_0(const trpgTileTable&);
+// Can write old style tile table
+bool    Write(trpgWriteBuffer&);
 };
 
 #endif

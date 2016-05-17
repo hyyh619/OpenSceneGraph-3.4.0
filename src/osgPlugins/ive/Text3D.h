@@ -4,11 +4,13 @@
 #include <osgText/Text3D>
 #include "ReadWrite.h"
 
-namespace ive{
-class Text3D : public osgText::Text3D, public ReadWrite {
+namespace ive
+{
+class Text3D : public osgText::Text3D, public ReadWrite
+{
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/LOD>
 #include <osg/CullStack>
 
@@ -17,84 +17,86 @@
 
 using namespace osg;
 
-LOD::LOD():
+LOD::LOD() :
     _centerMode(USE_BOUNDING_SPHERE_CENTER),
     _radius(-1.0f),
     _rangeMode(DISTANCE_FROM_EYE_POINT)
-{
-}
+{}
 
-LOD::LOD(const LOD& lod,const CopyOp& copyop):
-        Group(lod,copyop),
-        _centerMode(lod._centerMode),
-        _userDefinedCenter(lod._userDefinedCenter),
-        _radius(lod._radius),
-        _rangeMode(lod._rangeMode),
-        _rangeList(lod._rangeList)
-{
-}
+LOD::LOD(const LOD&lod, const CopyOp&copyop) :
+    Group(lod, copyop),
+    _centerMode(lod._centerMode),
+    _userDefinedCenter(lod._userDefinedCenter),
+    _radius(lod._radius),
+    _rangeMode(lod._rangeMode),
+    _rangeList(lod._rangeList)
+{}
 
 
-void LOD::traverse(NodeVisitor& nv)
+void LOD::traverse(NodeVisitor&nv)
 {
-    switch(nv.getTraversalMode())
+    switch (nv.getTraversalMode())
     {
-        case(NodeVisitor::TRAVERSE_ALL_CHILDREN):
-            std::for_each(_children.begin(),_children.end(),NodeAcceptOp(nv));
-            break;
-        case(NodeVisitor::TRAVERSE_ACTIVE_CHILDREN):
+    case (NodeVisitor::TRAVERSE_ALL_CHILDREN):
+        std::for_each(_children.begin(), _children.end(), NodeAcceptOp(nv));
+        break;
+
+    case (NodeVisitor::TRAVERSE_ACTIVE_CHILDREN):
+    {
+        float required_range = 0;
+        if (_rangeMode == DISTANCE_FROM_EYE_POINT)
         {
-            float required_range = 0;
-            if (_rangeMode==DISTANCE_FROM_EYE_POINT)
+            required_range = nv.getDistanceToViewPoint(getCenter(), true);
+        }
+        else
+        {
+            osg::CullStack *cullStack = dynamic_cast<osg::CullStack*>(&nv);
+            if (cullStack && cullStack->getLODScale())
             {
-                required_range = nv.getDistanceToViewPoint(getCenter(),true);
+                required_range = cullStack->clampedPixelSize(getBound()) / cullStack->getLODScale();
             }
             else
             {
-                osg::CullStack* cullStack = dynamic_cast<osg::CullStack*>(&nv);
-                if (cullStack && cullStack->getLODScale())
+                // fallback to selecting the highest res tile by
+                // finding out the max range
+                for (unsigned int i = 0; i < _rangeList.size(); ++i)
                 {
-                    required_range = cullStack->clampedPixelSize(getBound()) / cullStack->getLODScale();
-                }
-                else
-                {
-                    // fallback to selecting the highest res tile by
-                    // finding out the max range
-                    for(unsigned int i=0;i<_rangeList.size();++i)
-                    {
-                        required_range = osg::maximum(required_range,_rangeList[i].first);
-                    }
+                    required_range = osg::maximum(required_range, _rangeList[i].first);
                 }
             }
-
-            unsigned int numChildren = _children.size();
-            if (_rangeList.size()<numChildren) numChildren=_rangeList.size();
-
-            for(unsigned int i=0;i<numChildren;++i)
-            {
-                if (_rangeList[i].first<=required_range && required_range<_rangeList[i].second)
-                {
-                    _children[i]->accept(nv);
-                }
-            }
-           break;
         }
-        default:
-            break;
+
+        unsigned int numChildren = _children.size();
+        if (_rangeList.size() < numChildren)
+            numChildren = _rangeList.size();
+
+        for (unsigned int i = 0; i < numChildren; ++i)
+        {
+            if (_rangeList[i].first <= required_range && required_range < _rangeList[i].second)
+            {
+                _children[i]->accept(nv);
+            }
+        }
+
+        break;
+    }
+
+    default:
+        break;
     }
 }
 
 BoundingSphere LOD::computeBound() const
 {
-    if (_centerMode==USER_DEFINED_CENTER && _radius>=0.0f)
+    if (_centerMode == USER_DEFINED_CENTER && _radius >= 0.0f)
     {
-        return BoundingSphere(_userDefinedCenter,_radius);
+        return BoundingSphere(_userDefinedCenter, _radius);
     }
-    else if (_centerMode==UNION_OF_BOUNDING_SPHERE_AND_USER_DEFINED && _radius>=0.0f)
+    else if (_centerMode == UNION_OF_BOUNDING_SPHERE_AND_USER_DEFINED && _radius >= 0.0f)
     {
-        BoundingSphere bs = BoundingSphere(_userDefinedCenter,_radius);
+        BoundingSphere bs = BoundingSphere(_userDefinedCenter, _radius);
         bs.expandBy(Group::computeBound());
-        //alternative (used in TxpPagedLOD)
+        // alternative (used in TxpPagedLOD)
         // bs.expandRadiusBy(Group::computeBound());
         return bs;
     }
@@ -104,20 +106,20 @@ BoundingSphere LOD::computeBound() const
     }
 }
 
-bool LOD::addChild( Node *child )
+bool LOD::addChild(Node *child)
 {
     if (Group::addChild(child))
     {
-
-        if (_children.size()>_rangeList.size())
+        if (_children.size() > _rangeList.size())
         {
             float maxRange = !_rangeList.empty() ? _rangeList.back().second : 0.0f;
 
-            _rangeList.resize(_children.size(),MinMaxPair(maxRange,maxRange));
+            _rangeList.resize(_children.size(), MinMaxPair(maxRange, maxRange));
         }
 
         return true;
     }
+
     return false;
 }
 
@@ -126,24 +128,30 @@ bool LOD::addChild(Node *child, float min, float max)
 {
     if (Group::addChild(child))
     {
-        if (_children.size()>_rangeList.size()) _rangeList.resize(_children.size(),MinMaxPair(min,min));
-        _rangeList[_children.size()-1].first = min;
-        _rangeList[_children.size()-1].second = max;
+        if (_children.size() > _rangeList.size())
+            _rangeList.resize(_children.size(), MinMaxPair(min, min));
+
+        _rangeList[_children.size() - 1].first  = min;
+        _rangeList[_children.size() - 1].second = max;
         return true;
     }
+
     return false;
 }
 
-bool LOD::removeChildren( unsigned int pos,unsigned int numChildrenToRemove)
+bool LOD::removeChildren(unsigned int pos, unsigned int numChildrenToRemove)
 {
-    if (pos<_rangeList.size()) _rangeList.erase(_rangeList.begin()+pos, osg::minimum(_rangeList.begin()+(pos+numChildrenToRemove), _rangeList.end()) );
+    if (pos < _rangeList.size())
+        _rangeList.erase(_rangeList.begin() + pos, osg::minimum(_rangeList.begin() + (pos + numChildrenToRemove), _rangeList.end()));
 
-    return Group::removeChildren(pos,numChildrenToRemove);
+    return Group::removeChildren(pos, numChildrenToRemove);
 }
 
-void LOD::setRange(unsigned int childNo, float min,float max)
+void LOD::setRange(unsigned int childNo, float min, float max)
 {
-    if (childNo>=_rangeList.size()) _rangeList.resize(childNo+1,MinMaxPair(min,min));
-    _rangeList[childNo].first=min;
-    _rangeList[childNo].second=max;
+    if (childNo >= _rangeList.size())
+        _rangeList.resize(childNo + 1, MinMaxPair(min, min));
+
+    _rangeList[childNo].first  = min;
+    _rangeList[childNo].second = max;
 }

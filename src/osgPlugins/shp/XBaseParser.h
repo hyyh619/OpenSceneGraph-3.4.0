@@ -15,8 +15,6 @@
 
 namespace ESRIShape
 {
-
-
 struct XBaseHeader
 {
     Byte    _versionNumber;
@@ -39,17 +37,17 @@ struct XBaseHeader
 
 struct XBaseFieldDescriptor
 {
-    Byte _name[11];
-    Byte _fieldType;
+    Byte    _name[11];
+    Byte    _fieldType;
     Integer _fieldDataAddress;
-    Byte _fieldLength;
-    Byte _decimalCount;
-    Short _reservedMultiUser;
-    Byte _workAreaID;
-    Short _reservedMultiUser2;
-    Byte _setFieldFlag;
-    Byte _reserved[7];
-    Byte _indexFieldFlag;
+    Byte    _fieldLength;
+    Byte    _decimalCount;
+    Short   _reservedMultiUser;
+    Byte    _workAreaID;
+    Short   _reservedMultiUser2;
+    Byte    _setFieldFlag;
+    Byte    _reserved[7];
+    Byte    _indexFieldFlag;
 
     void print();
     bool read(int fd);
@@ -58,25 +56,27 @@ struct XBaseFieldDescriptor
 
 class XBaseParser
 {
-    public:
+public:
 
-        typedef std::vector< osg::ref_ptr<osgSim::ShapeAttributeList> > ShapeAttributeListList;
+typedef std::vector<osg::ref_ptr<osgSim::ShapeAttributeList> > ShapeAttributeListList;
 
-        XBaseParser(const std::string& fileName);
-        ~XBaseParser() {}
+XBaseParser(const std::string&fileName);
+~XBaseParser() {}
 
-        const ShapeAttributeListList & getAttributeList() const { return _shapeAttributeListList; }
+const ShapeAttributeListList&getAttributeList() const
+{
+    return _shapeAttributeListList;
+}
 
-    private:
+private:
 
-        XBaseParser();
+XBaseParser();
 
-        bool parse(int fd);
+bool parse(int fd);
 
-        ShapeAttributeListList _shapeAttributeListList;
-        bool _valid;
+ShapeAttributeListList _shapeAttributeListList;
+bool                   _valid;
 };
-
 }
 
 

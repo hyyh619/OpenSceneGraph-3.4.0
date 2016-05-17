@@ -12,8 +12,8 @@ using namespace osgDB;
 
 
 // forward declare functions to use later.
-bool  AnimationPath_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool  AnimationPath_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool  AnimationPath_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool  AnimationPath_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 
 // register the read and write functions with the osgDB::Registry.
@@ -28,10 +28,12 @@ REGISTER_DOTOSGWRAPPER(AnimationPath)
 );
 
 
-bool AnimationPath_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool AnimationPath_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
     osg::AnimationPath *ap = dynamic_cast<osg::AnimationPath*>(&obj);
-    if (!ap) return false;
+
+    if (!ap)
+        return false;
 
 
     bool itAdvanced = false;
@@ -41,19 +43,19 @@ bool AnimationPath_readLocalData(osg::Object &obj, osgDB::Input &fr)
         if (fr[1].matchWord("SWING"))
         {
             ap->setLoopMode(AnimationPath::SWING);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
         else if (fr[1].matchWord("LOOP"))
         {
             ap->setLoopMode(AnimationPath::LOOP);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
         else if (fr[1].matchWord("NO_LOOPING"))
         {
             ap->setLoopMode(AnimationPath::NO_LOOPING);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
@@ -68,10 +70,10 @@ bool AnimationPath_readLocalData(osg::Object &obj, osgDB::Input &fr)
 
 
         double time;
-        Vec3d position,scale;
-        Quat rotation;
+        Vec3d  position, scale;
+        Quat   rotation;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
             if (fr[0].getFloat(time) &&
                 fr[1].getFloat(position[0]) &&
@@ -85,72 +87,73 @@ bool AnimationPath_readLocalData(osg::Object &obj, osgDB::Input &fr)
                 fr[9].getFloat(scale[1]) &&
                 fr[10].getFloat(scale[2]))
             {
-
-
-                osg::AnimationPath::ControlPoint ctrlPoint(position,rotation,scale);
+                osg::AnimationPath::ControlPoint ctrlPoint(position, rotation, scale);
                 ap->insert(time, ctrlPoint);
 
-                fr+=11;
+                fr += 11;
             }
-            else fr.advanceOverCurrentFieldOrBlock();
-
+            else
+                fr.advanceOverCurrentFieldOrBlock();
         }
 
         itAdvanced = true;
-
     }
 
     return itAdvanced;
 }
 
 
-bool AnimationPath_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool AnimationPath_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osg::AnimationPath* ap = dynamic_cast<const osg::AnimationPath*>(&obj);
-    if (!ap) return false;
+    const osg::AnimationPath *ap = dynamic_cast<const osg::AnimationPath*>(&obj);
+
+    if (!ap)
+        return false;
 
     fw.indent() << "LoopMode ";
-    switch(ap->getLoopMode())
+
+    switch (ap->getLoopMode())
     {
-        case AnimationPath::SWING:
-            fw << "SWING" <<std::endl;
-            break;
-        case AnimationPath::LOOP:
-            fw << "LOOP"<<std::endl;
-            break;
-        case AnimationPath::NO_LOOPING:
-            fw << "NO_LOOPING"<<std::endl;
-            break;
+    case AnimationPath::SWING:
+        fw << "SWING" << std::endl;
+        break;
+
+    case AnimationPath::LOOP:
+        fw << "LOOP" << std::endl;
+        break;
+
+    case AnimationPath::NO_LOOPING:
+        fw << "NO_LOOPING" << std::endl;
+        break;
     }
 
-    const AnimationPath::TimeControlPointMap& tcpm = ap->getTimeControlPointMap();
+    const AnimationPath::TimeControlPointMap&tcpm = ap->getTimeControlPointMap();
 
-    fw.indent() << "ControlPoints {"<< std::endl;
+    fw.indent() << "ControlPoints {" << std::endl;
     fw.moveIn();
 
     int prec = fw.precision();
     fw.precision(15);
 
-    for (AnimationPath::TimeControlPointMap::const_iterator itr=tcpm.begin();
-         itr!=tcpm.end();
+    for (AnimationPath::TimeControlPointMap::const_iterator itr = tcpm.begin();
+         itr != tcpm.end();
          ++itr)
     {
-        fw.indent() << itr->first << " " << itr->second.getPosition() << " " << itr->second.getRotation() << " " <<itr->second.getScale() << std::endl;
-
+        fw.indent() << itr->first << " " << itr->second.getPosition() << " " << itr->second.getRotation() << " " << itr->second.getScale() << std::endl;
     }
 
     fw.precision(prec);
 
     fw.moveOut();
-    fw.indent() << "}"<< std::endl;
+    fw.indent() << "}" << std::endl;
 
     return true;
 }
 
 
 // forward declare functions to use later.
-bool  AnimationPathCallback_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool  AnimationPathCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool  AnimationPathCallback_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool  AnimationPathCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 
 // register the read and write functions with the osgDB::Registry.
@@ -164,10 +167,12 @@ REGISTER_DOTOSGWRAPPER(AnimationPathCallback_Proxy)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool AnimationPathCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool AnimationPathCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
     osg::AnimationPathCallback *apc = dynamic_cast<osg::AnimationPathCallback*>(&obj);
-    if (!apc) return false;
+
+    if (!apc)
+        return false;
 
     bool iteratorAdvanced = false;
 
@@ -180,21 +185,21 @@ bool AnimationPathCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
 
         apc->setPivotPoint(pivot);
 
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
     if (fr.matchSequence("timeOffset %f"))
     {
         fr[1].getFloat(apc->_timeOffset);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
-    else if(fr.matchSequence("timeMultiplier %f"))
+    else if (fr.matchSequence("timeMultiplier %f"))
     {
         fr[1].getFloat(apc->_timeMultiplier);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -209,17 +214,17 @@ bool AnimationPathCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
 }
 
 
-bool AnimationPathCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool AnimationPathCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
+    const osg::AnimationPathCallback *apc = dynamic_cast<const osg::AnimationPathCallback*>(&obj);
+
+    if (!apc)
+        return false;
 
 
-    const osg::AnimationPathCallback* apc = dynamic_cast<const osg::AnimationPathCallback*>(&obj);
-    if (!apc) return false;
-
-
-    fw.indent() <<"pivotPoint " <<apc->getPivotPoint()<<std::endl;
-    fw.indent() <<"timeOffset " <<apc->_timeOffset<<std::endl;
-    fw.indent() <<"timeMultiplier " <<apc->_timeMultiplier << std::endl;
+    fw.indent() << "pivotPoint " <<     apc->getPivotPoint() << std::endl;
+    fw.indent() << "timeOffset " <<     apc->_timeOffset << std::endl;
+    fw.indent() << "timeMultiplier " << apc->_timeMultiplier << std::endl;
 
     if (apc->getAnimationPath())
     {

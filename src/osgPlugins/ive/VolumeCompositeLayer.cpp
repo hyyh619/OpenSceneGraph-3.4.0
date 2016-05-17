@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "VolumeCompositeLayer.h"
@@ -18,22 +18,23 @@
 
 using namespace ive;
 
-void VolumeCompositeLayer::write(DataOutputStream* out)
+void VolumeCompositeLayer::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVEVOLUMECOMPOSITELAYER);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osgVolume::Layer*  layer = dynamic_cast<osgVolume::Layer*>(this);
-    if  (layer)
+    osgVolume::Layer *layer = dynamic_cast<osgVolume::Layer*>(this);
+    if (layer)
         ((ive::VolumeLayer*)(layer))->write(out);
     else
         out_THROW_EXCEPTION("VolumeCompositeLayer::write(): Could not cast this osgVolume::CompositeLayer to an osgVolume::Layer.");
 
     out->writeUInt(getNumLayers());
-    for(unsigned int i=0; i<getNumLayers(); ++i)
+
+    for (unsigned int i = 0; i < getNumLayers(); ++i)
     {
-        if(getLayer(i))
+        if (getLayer(i))
         {
             out->writeBool(true);
             out->writeVolumeLayer(getLayer(i));
@@ -46,10 +47,11 @@ void VolumeCompositeLayer::write(DataOutputStream* out)
     }
 }
 
-void VolumeCompositeLayer::read(DataInputStream* in)
+void VolumeCompositeLayer::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVEVOLUMECOMPOSITELAYER)
         in_THROW_EXCEPTION("VolumeCompositeLayer::read(): Expected CompositeLayer identification.");
 
@@ -57,14 +59,15 @@ void VolumeCompositeLayer::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osgVolume::Layer*  layer = dynamic_cast<osgVolume::Layer*>(this);
+    osgVolume::Layer *layer = dynamic_cast<osgVolume::Layer*>(this);
     if (layer)
         ((ive::VolumeLayer*)(layer))->read(in);
     else
         in_THROW_EXCEPTION("VolumeCompositeLayer::read(): Could not cast this osgVolume::Layer to an osg::Group.");
 
     unsigned int numLayers = in->readUInt();
-    for(unsigned int i=0; i<numLayers; ++i)
+
+    for (unsigned int i = 0; i < numLayers; ++i)
     {
         bool readInlineLayer = in->readBool();
         if (readInlineLayer)

@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool Volume_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool Volume_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool Volume_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool Volume_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(Volume_Proxy)
 (
@@ -25,13 +25,14 @@ REGISTER_DOTOSGWRAPPER(Volume_Proxy)
     Volume_writeLocalData
 );
 
-bool Volume_readLocalData(osg::Object& obj, osgDB::Input &fr)
+bool Volume_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgVolume::Volume& volume = static_cast<osgVolume::Volume&>(obj);
+    osgVolume::Volume&volume = static_cast<osgVolume::Volume&>(obj);
 
     bool itrAdvanced = false;
 
     osg::ref_ptr<osg::Object> readObject = fr.readObjectOfType(osgDB::type_wrapper<osgVolume::VolumeTechnique>());
+
     if (readObject.valid())
     {
         volume.setVolumeTechniquePrototype(dynamic_cast<osgVolume::VolumeTechnique*>(readObject.get()));
@@ -41,11 +42,11 @@ bool Volume_readLocalData(osg::Object& obj, osgDB::Input &fr)
     return itrAdvanced;
 }
 
-bool Volume_writeLocalData(const osg::Object& obj, osgDB::Output& fw)
+bool Volume_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgVolume::Volume& volume = static_cast<const osgVolume::Volume&>(obj);
+    const osgVolume::Volume&volume = static_cast<const osgVolume::Volume&>(obj);
 
-    osg::notify(osg::NOTICE)<<"Volume write"<<std::endl;
+    osg::notify(osg::NOTICE) << "Volume write" << std::endl;
 
     if (volume.getVolumeTechniquePrototype())
     {

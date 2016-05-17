@@ -7,26 +7,27 @@
 #include <osgDB/FileUtils>
 #include <osgWidget/Table>
 
-bool osgWidget_Table_readData(osg::Object& /*obj*/, osgDB::Input& fr) {
-	osgWidget::warn() << "Table read" << std::endl;
+bool osgWidget_Table_readData(osg::Object& /*obj*/, osgDB::Input&fr)
+{
+    osgWidget::warn() << "Table read" << std::endl;
 
-	return false;
+    return false;
 }
 
-bool osgWidget_Table_writeData(const osg::Object& /*obj*/, osgDB::Output& fw)
+bool osgWidget_Table_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
 {
-	// const osgWidget::Table& model = static_cast<const osgWidget::Table&>(obj);
+    // const osgWidget::Table& model = static_cast<const osgWidget::Table&>(obj);
 
-	fw.indent() << fw.wrapString("Table stuff...") << std::endl;
+    fw.indent() << fw.wrapString("Table stuff...") << std::endl;
 
-	return true;
+    return true;
 }
 
 REGISTER_DOTOSGWRAPPER(g_osgWidget_TableProxy)
 (
-	new osgWidget::Table("unset"),
-	"osgWidget::Table",
-	"Object Node Group Transform MatrixTransform osgWidget::Table",
-	&osgWidget_Table_readData,
-	&osgWidget_Table_writeData
+    new osgWidget::Table("unset"),
+    "osgWidget::Table",
+    "Object Node Group Transform MatrixTransform osgWidget::Table",
+    &osgWidget_Table_readData,
+    &osgWidget_Table_writeData
 );

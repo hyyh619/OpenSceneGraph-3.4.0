@@ -9,18 +9,17 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/Object>
 #include <osg/UserDataContainer>
 
 namespace osg
 {
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Object
 //
-Object::Object(const Object& obj,const CopyOp& copyop):
+Object::Object(const Object&obj, const CopyOp&copyop) :
     Referenced(),
     _name(obj._name),
     _dataVariance(obj._dataVariance),
@@ -28,9 +27,9 @@ Object::Object(const Object& obj,const CopyOp& copyop):
 {
     if (obj._userDataContainer)
     {
-        if (copyop.getCopyFlags()&osg::CopyOp::DEEP_COPY_USERDATA)
+        if (copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_USERDATA)
         {
-            setUserDataContainer(osg::clone(obj._userDataContainer,copyop));
+            setUserDataContainer(osg::clone(obj._userDataContainer, copyop));
         }
         else
         {
@@ -41,36 +40,45 @@ Object::Object(const Object& obj,const CopyOp& copyop):
 
 Object::~Object()
 {
-    if (_userDataContainer) _userDataContainer->unref();
+    if (_userDataContainer)
+        _userDataContainer->unref();
 }
 
 
 void Object::setThreadSafeRefUnref(bool threadSafe)
 {
     Referenced::setThreadSafeRefUnref(threadSafe);
-    if (_userDataContainer) _userDataContainer->setThreadSafeRefUnref(threadSafe);
+
+    if (_userDataContainer)
+        _userDataContainer->setThreadSafeRefUnref(threadSafe);
 }
 
-void Object::setUserDataContainer(osg::UserDataContainer* udc)
+void Object::setUserDataContainer(osg::UserDataContainer *udc)
 {
-    if (_userDataContainer == udc) return;
+    if (_userDataContainer == udc)
+        return;
 
-    if (_userDataContainer) _userDataContainer->unref();
+    if (_userDataContainer)
+        _userDataContainer->unref();
 
     _userDataContainer = udc;
 
-    if (_userDataContainer) _userDataContainer->ref();
+    if (_userDataContainer)
+        _userDataContainer->ref();
 }
 
 osg::UserDataContainer* Object::getOrCreateUserDataContainer()
 {
-    if (!_userDataContainer) setUserDataContainer(new DefaultUserDataContainer());
+    if (!_userDataContainer)
+        setUserDataContainer(new DefaultUserDataContainer());
+
     return _userDataContainer;
 }
 
-void Object::setUserData(Referenced* obj)
+void Object::setUserData(Referenced *obj)
 {
-    if (getUserData()==obj) return;
+    if (getUserData() == obj)
+        return;
 
     getOrCreateUserDataContainer()->setUserData(obj);
 }
@@ -84,5 +92,4 @@ const Referenced* Object::getUserData() const
 {
     return _userDataContainer ? _userDataContainer->getUserData() : 0;
 }
-
 } // end of namespace osg

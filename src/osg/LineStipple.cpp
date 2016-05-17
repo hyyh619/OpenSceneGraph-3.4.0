@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/GL>
 #include <osg/LineStipple>
 #include <osg/Notify>
@@ -19,14 +19,13 @@ using namespace osg;
 
 LineStipple::LineStipple()
 {
-  _factor = 1;
-  _pattern = 0xffff;
+    _factor  = 1;
+    _pattern = 0xffff;
 }
 
 
 LineStipple::~LineStipple()
-{
-}
+{}
 
 void LineStipple::setFactor(GLint factor)
 {
@@ -43,7 +42,6 @@ void LineStipple::apply(State&) const
 #ifdef OSG_GL1_AVAILABLE
     glLineStipple(_factor, _pattern);
 #else
-    OSG_NOTICE<<"Warning: LineStipple::apply(State&) - not supported."<<std::endl;
+    OSG_NOTICE << "Warning: LineStipple::apply(State&) - not supported." << std::endl;
 #endif
 }
-

@@ -14,11 +14,13 @@ const unsigned int MASK_2D = 0xF0000000;
 const unsigned int MASK_3D = 0x0F000000;
 
 // Here we create (and later demonstrate) the use of a simple function callback.
-bool windowClicked(osgWidget::Event& ev) {
+bool windowClicked(osgWidget::Event&ev)
+{
     std::cout << "windowClicked: " << ev.getWindow()->getName() << std::endl;
 
-    if(ev.getData()) {
-        std::string* s = static_cast<std::string*>(ev.getData());
+    if (ev.getData())
+    {
+        std::string *s = static_cast<std::string*>(ev.getData());
 
         std::cout << "This is data attached to the event: " << *s << std::endl;
     }
@@ -26,7 +28,8 @@ bool windowClicked(osgWidget::Event& ev) {
     return true;
 }
 
-bool windowScrolled(osgWidget::Event& ev) {
+bool windowScrolled(osgWidget::Event&ev)
+{
     osgWidget::warn()
         << "scrolling up? " << ev.getWindowManager()->isMouseScrollingUp()
         << std::endl
@@ -37,8 +40,10 @@ bool windowScrolled(osgWidget::Event& ev) {
 
 // Here we dcreate a new class and show how to use a method callback (which differs from
 // a function callback in that we are required to also pass the "this" argument).
-struct Object {
-    bool windowClicked(osgWidget::Event& ev) {
+struct Object
+{
+    bool windowClicked(osgWidget::Event&ev)
+    {
         std::cout << "Object::windowClicked " << ev.getWindow()->getName() << std::endl;
 
         return true;
@@ -46,21 +51,23 @@ struct Object {
 };
 
 // This is the more "traditional" method of creating a callback.
-struct CallbackObject: public osgWidget::Callback {
-    CallbackObject(osgWidget::EventType evType):
-    osgWidget::Callback(evType) {
-    }
+struct CallbackObject : public osgWidget::Callback
+{
+    CallbackObject(osgWidget::EventType evType) :
+        osgWidget::Callback(evType) {}
 
-    virtual bool operator()(osgWidget::Event& ev) {
+    virtual bool operator()(osgWidget::Event&ev)
+    {
         std::cout << "here" << std::endl;
-        
+
         return false;
     }
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
     osgViewer::Viewer viewer;
-    
+
     // Let's get busy! The WindowManager class is actually an osg::Switch,
     // so you can add it to (ideally) an orthographic camera and have it behave as
     // expected. Note that you create a WindowManager with a NodeMask--it is very important
@@ -71,7 +78,7 @@ int main(int argc, char** argv) {
     // to demonstrate (and test) their usage. Finally, we pass the temporary WM_NO_BETA_WARN
     // argument, which prevents creating the orange warning window. :) It will be shown
     // in other examples...
-    osgWidget::WindowManager* wm = new osgWidget::WindowManager(
+    osgWidget::WindowManager *wm = new osgWidget::WindowManager(
         &viewer,
         1280.0f,
         1024.0f,
@@ -79,12 +86,12 @@ int main(int argc, char** argv) {
         osgWidget::WindowManager::WM_USE_LUA |
         osgWidget::WindowManager::WM_USE_PYTHON |
         osgWidget::WindowManager::WM_PICK_DEBUG
-    );
+        );
 
     // An actual osgWidget::Window is pure virtual, so we've got to use the osgWidget::Box
     // implementation for now. At a later time, support for Tables and other kinds of
     // advanced layout Window types will be added.
-    osgWidget::Window* box = new osgWidget::Box("box", osgWidget::Box::HORIZONTAL);
+    osgWidget::Window *box = new osgWidget::Box("box", osgWidget::Box::HORIZONTAL);
 
     // Now we actually attach our two types of callbacks to the box instance. The first
     // uses the simple function signature, the second uses a bound method, passing "this"
@@ -94,14 +101,14 @@ int main(int argc, char** argv) {
     static std::string data = "lol ur face!";
 
     /*
-    box->addCallback(new osgWidget::Callback(&windowClicked, osgWidget::EVENT_MOUSE_PUSH, &data));
-    box->addCallback(new osgWidget::Callback(&windowScrolled, osgWidget::EVENT_MOUSE_SCROLL));
-    box->addCallback(osgWidget::Callback(
+       box->addCallback(new osgWidget::Callback(&windowClicked, osgWidget::EVENT_MOUSE_PUSH, &data));
+       box->addCallback(new osgWidget::Callback(&windowScrolled, osgWidget::EVENT_MOUSE_SCROLL));
+       box->addCallback(osgWidget::Callback(
         &Object::windowClicked,
         &obj,
         osgWidget::EVENT_MOUSE_PUSH
-    ));
-    */
+       ));
+     */
 
     box->addCallback(new CallbackObject(osgWidget::EVENT_MOUSE_PUSH));
 
@@ -109,9 +116,9 @@ int main(int argc, char** argv) {
     // during testing which I've kept around for testing purposes. You'll notice
     // that you cannot move the box using the NullWidget, and that the NotifyWidget
     // is a bit verbose. :)
-    osgWidget::Widget* widget1 = new osgWidget::NotifyWidget("widget1", 300.0f, 100.0f);
-    osgWidget::Widget* widget2 = new osgWidget::NullWidget("widget2", 400.0f, 75.0f);
-    osgWidget::Widget* widget3 = new osgWidget::Widget("widget3", 100.0f, 100.0f);
+    osgWidget::Widget *widget1 = new osgWidget::NotifyWidget("widget1", 300.0f, 100.0f);
+    osgWidget::Widget *widget2 = new osgWidget::NullWidget("widget2", 400.0f, 75.0f);
+    osgWidget::Widget *widget3 = new osgWidget::Widget("widget3", 100.0f, 100.0f);
     // Set the colors of widget1 and widget3 to green.
     widget1->setColor(0.0f, 1.0f, 0.0f, 1.0f);
     widget1->setCanFill(true);
@@ -140,7 +147,7 @@ int main(int argc, char** argv) {
     // Now, lets clone our existing box and create a new copy of of it, also adding that
     // to the WindowManager. This demonstrates the usages of OSG's ->clone() support,
     // though that is abstracted by our META_UIObject macro.
-    osgWidget::Window* boxCopy = osg::clone(box, "newBox", osg::CopyOp::DEEP_COPY_ALL);
+    osgWidget::Window *boxCopy = osg::clone(box, "newBox", osg::CopyOp::DEEP_COPY_ALL);
 
     // Move our copy to make it visible.
     boxCopy->setOrigin(0.0f, 125.0f);
@@ -166,9 +173,9 @@ int main(int argc, char** argv) {
     // simply use the createParentOrthoCamera method of the WindowManager class,
     // which will wrap the calls to createOrthoCamera and addChild for us! Check out
     // some of the other examples to see this in action...
-    osg::Group*  group  = new osg::Group();
-    osg::Camera* camera = osgWidget::createOrthoCamera(1280.0f, 1024.0f);
-    osg::Node*   model  = osgDB::readNodeFile("cow.osgt");
+    osg::Group  *group  = new osg::Group();
+    osg::Camera *camera = osgWidget::createOrthoCamera(1280.0f, 1024.0f);
+    osg::Node   *model  = osgDB::readNodeFile("cow.osgt");
 
     // Add our event handler; is this better as a MatrixManipulator? Add a few other
     // helpful ViewerEventHandlers.
@@ -179,8 +186,8 @@ int main(int argc, char** argv) {
     viewer.addEventHandler(new osgViewer::StatsHandler());
     viewer.addEventHandler(new osgViewer::WindowSizeHandler());
     viewer.addEventHandler(new osgGA::StateSetManipulator(
-        viewer.getCamera()->getOrCreateStateSet()
-    ));
+                               viewer.getCamera()->getOrCreateStateSet()
+                               ));
 
     // Set our first non-UI node to be something other than the mask we created our
     // WindowManager with to avoid picking.
@@ -210,12 +217,12 @@ int main(int argc, char** argv) {
     viewer.setSceneData(group);
 
     /*
-    osgViewer::Viewer::Cameras cameras; 
-    viewer.getCameras(cameras);
-    osg::Camera* c = cameras[0];
-    osg::Matrix s = osg::Matrix::scale(1.0f, -1.0f, 1.0f);
-    c->setProjectionMatrix(s * c->getProjectionMatrix());
-    */
+       osgViewer::Viewer::Cameras cameras;
+       viewer.getCameras(cameras);
+       osg::Camera* c = cameras[0];
+       osg::Matrix s = osg::Matrix::scale(1.0f, -1.0f, 1.0f);
+       c->setProjectionMatrix(s * c->getProjectionMatrix());
+     */
 
     return viewer.run();
 }

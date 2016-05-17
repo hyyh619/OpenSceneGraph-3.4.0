@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/AlphaFunc>
 #include <osg/Notify>
@@ -24,15 +24,13 @@ AlphaFunc::AlphaFunc()
 
 
 AlphaFunc::~AlphaFunc()
-{
-}
+{}
 
 void AlphaFunc::apply(State&) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
-    glAlphaFunc((GLenum)_comparisonFunc,_referenceValue);
+    glAlphaFunc((GLenum)_comparisonFunc, _referenceValue);
 #else
-    OSG_NOTICE<<"Warning: AlphaFunc::apply(State&) - not supported."<<std::endl;
+    OSG_NOTICE << "Warning: AlphaFunc::apply(State&) - not supported." << std::endl;
 #endif
 }
-

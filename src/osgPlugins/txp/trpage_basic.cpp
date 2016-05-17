@@ -10,12 +10,12 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 /* trpage_basic.cpp
     Methods for checkable base class.
-    */
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -25,12 +25,12 @@
 /* Checkable
     This is just a class that checks validity.
     Starts out invalid.
-    */
+ */
 
 trpgCheckable::trpgCheckable()
 {
-    valid = false;
-    handle = -1;
+    valid       = false;
+    handle      = -1;
     writeHandle = false;
 }
 trpgCheckable::~trpgCheckable()
@@ -41,4 +41,3 @@ bool trpgCheckable::isValid() const
 {
     return valid;
 }
-

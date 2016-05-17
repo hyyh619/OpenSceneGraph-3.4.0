@@ -4,11 +4,13 @@
 #include <osg/Stencil>
 #include "ReadWrite.h"
 
-namespace ive{
-class Stencil : public osg::Stencil, public ReadWrite {
+namespace ive
+{
+class Stencil : public osg::Stencil, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

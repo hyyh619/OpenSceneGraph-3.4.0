@@ -10,12 +10,12 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 /* trpage_sys.h
     System specific declarations.
-    */
+ */
 
 #ifndef trpage_sys_h_
 #define trpage_sys_h_
@@ -32,8 +32,8 @@
 /*    *********************
     System Specific Section.
     This is currently set up for win32.
-    *********************
-    */
+ *********************
+ */
 
 #include <windows.h>
 
@@ -66,7 +66,6 @@ typedef __int64 int64;
 #ifndef int64
 typedef long long int64;
 #endif
-
 #endif
 
 // Basic data types

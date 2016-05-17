@@ -4,11 +4,13 @@
 #include <osg/CoordinateSystemNode>
 #include "ReadWrite.h"
 
-namespace ive{
-class CoordinateSystemNode : public osg::CoordinateSystemNode, public ReadWrite {
+namespace ive
+{
+class CoordinateSystemNode : public osg::CoordinateSystemNode, public ReadWrite
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

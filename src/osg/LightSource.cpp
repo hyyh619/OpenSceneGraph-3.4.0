@@ -9,12 +9,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/LightSource>
 
 using namespace osg;
 
-LightSource::LightSource():
+LightSource::LightSource() :
     _value(StateAttribute::ON),
     _referenceFrame(RELATIVE_RF)
 {
@@ -35,40 +35,41 @@ void LightSource::setReferenceFrame(ReferenceFrame rf)
     _referenceFrame = rf;
 }
 
-void LightSource::setLight(Light* light)
+void LightSource::setLight(Light *light)
 {
     _light = light;
     setLocalStateSetModes(_value);
 }
 
 // Set the GLModes on StateSet associated with the LightSource.
-void LightSource::setStateSetModes(StateSet& stateset,StateAttribute::GLModeValue value) const
+void LightSource::setStateSetModes(StateSet&stateset, StateAttribute::GLModeValue value) const
 {
     if (_light.valid())
     {
-        stateset.setAssociatedModes(_light.get(),value);
+        stateset.setAssociatedModes(_light.get(), value);
     }
 }
 
 void LightSource::setLocalStateSetModes(StateAttribute::GLModeValue value)
 {
-    if (!_stateset) setStateSet(new StateSet);
+    if (!_stateset)
+        setStateSet(new StateSet);
 
     _stateset->clear();
-    setStateSetModes(*_stateset,value);
+    setStateSetModes(*_stateset, value);
 }
 
 BoundingSphere LightSource::computeBound() const
 {
     BoundingSphere bsphere(Group::computeBound());
 
-    if (_light.valid() && _referenceFrame==RELATIVE_RF)
+    if (_light.valid() && _referenceFrame == RELATIVE_RF)
     {
-        const Vec4& pos = _light->getPosition();
-        if (pos[3]!=0.0f)
+        const Vec4&pos = _light->getPosition();
+        if (pos[3] != 0.0f)
         {
-            float div = 1.0f/pos[3];
-            bsphere.expandBy(Vec3(pos[0]*div,pos[1]*div,pos[2]*div));
+            float div = 1.0f / pos[3];
+            bsphere.expandBy(Vec3(pos[0] * div, pos[1] * div, pos[2] * div));
         }
     }
 
@@ -79,5 +80,6 @@ void LightSource::setThreadSafeRefUnref(bool threadSafe)
 {
     Group::setThreadSafeRefUnref(threadSafe);
 
-    if (_light.valid()) _light->setThreadSafeRefUnref(threadSafe);
+    if (_light.valid())
+        _light->setThreadSafeRefUnref(threadSafe);
 }

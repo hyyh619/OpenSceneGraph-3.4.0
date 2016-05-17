@@ -17,4 +17,3 @@ USE_DOTOSGWRAPPER(ShapeAttributeList_Proxy)
 USE_DOTOSGWRAPPER(g_VisibilityGroupProxy)
 
 extern "C" void dotosgwrapper_library_osgSim(void) {}
-

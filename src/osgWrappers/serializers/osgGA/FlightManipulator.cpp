@@ -6,9 +6,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgGA_FlightManipulator,
-                         new osgGA::FlightManipulator,
-                         osgGA::FlightManipulator,
-                         "osg::Object osgGA::FlightManipulator" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgGA_FlightManipulator,
+                        new osgGA::FlightManipulator,
+                        osgGA::FlightManipulator,
+                        "osg::Object osgGA::FlightManipulator")
+{}

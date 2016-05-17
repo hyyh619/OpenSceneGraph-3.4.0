@@ -10,8 +10,8 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool Node_readLocalData(Object& obj, Input& fr);
-bool Node_writeLocalData(const Object& obj, Output& fw);
+bool Node_readLocalData(Object&obj, Input&fr);
+bool Node_writeLocalData(const Object&obj, Output&fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Node)
@@ -23,17 +23,18 @@ REGISTER_DOTOSGWRAPPER(Node)
     &Node_writeLocalData
 );
 
-bool Node_readLocalData(Object& obj, Input& fr)
+bool Node_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    Node& node = static_cast<Node&>(obj);
+    Node&node = static_cast<Node&>(obj);
 
     unsigned int mask = node.getNodeMask();
+
     if (fr[0].matchWord("nodeMask") && fr[1].getUInt(mask))
     {
         node.setNodeMask(mask);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -43,13 +44,13 @@ bool Node_readLocalData(Object& obj, Input& fr)
         {
             node.setCullingActive(false);
             iteratorAdvanced = true;
-            fr+=2;
+            fr              += 2;
         }
         else if (fr[1].matchWord("TRUE"))
         {
             node.setCullingActive(true);
             iteratorAdvanced = true;
-            fr+=2;
+            fr              += 2;
         }
     }
 
@@ -58,23 +59,27 @@ bool Node_readLocalData(Object& obj, Input& fr)
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
-            if (fr[0].getStr()) node.addDescription(std::string(fr[0].getStr()));
+            if (fr[0].getStr())
+                node.addDescription(std::string(fr[0].getStr()));
+
             ++fr;
         }
-        iteratorAdvanced = true;
 
+        iteratorAdvanced = true;
     }
 
     while (fr.matchSequence("description %s"))
     {
-        if (fr[1].getStr()) node.addDescription(fr[1].getStr());
-        fr+=2;
+        if (fr[1].getStr())
+            node.addDescription(fr[1].getStr());
+
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
-    StateSet* readState = fr.readObjectOfType<StateSet>();
+    StateSet *readState = fr.readObjectOfType<StateSet>();
     if (readState)
     {
         node.setStateSet(readState);
@@ -87,20 +92,25 @@ bool Node_readLocalData(Object& obj, Input& fr)
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
-            NodeCallback* nodecallback = fr.readObjectOfType<NodeCallback>();
-            if (nodecallback) {
-                if (node.getUpdateCallback() == NULL) {
+            NodeCallback *nodecallback = fr.readObjectOfType<NodeCallback>();
+            if (nodecallback)
+            {
+                if (node.getUpdateCallback() == NULL)
+                {
                     node.setUpdateCallback(nodecallback);
-                } else {
+                }
+                else
+                {
                     node.getUpdateCallback()->addNestedCallback(nodecallback);
                 }
             }
-            else ++fr;
+            else
+                ++fr;
         }
-        iteratorAdvanced = true;
 
+        iteratorAdvanced = true;
     }
 
     while (fr.matchSequence("EventCallback {"))
@@ -108,20 +118,25 @@ bool Node_readLocalData(Object& obj, Input& fr)
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
-            NodeCallback* nodecallback = fr.readObjectOfType<NodeCallback>();
-            if (nodecallback) {
-                if (node.getEventCallback() == NULL) {
+            NodeCallback *nodecallback = fr.readObjectOfType<NodeCallback>();
+            if (nodecallback)
+            {
+                if (node.getEventCallback() == NULL)
+                {
                     node.setEventCallback(nodecallback);
-                } else {
+                }
+                else
+                {
                     node.getEventCallback()->addNestedCallback(nodecallback);
                 }
             }
-            else ++fr;
+            else
+                ++fr;
         }
-        iteratorAdvanced = true;
 
+        iteratorAdvanced = true;
     }
 
     while (fr.matchSequence("CullCallbacks {"))
@@ -129,20 +144,25 @@ bool Node_readLocalData(Object& obj, Input& fr)
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
-            NodeCallback* nodecallback = fr.readObjectOfType<NodeCallback>();
-            if (nodecallback) {
-                if (node.getCullCallback() == NULL) {
+            NodeCallback *nodecallback = fr.readObjectOfType<NodeCallback>();
+            if (nodecallback)
+            {
+                if (node.getCullCallback() == NULL)
+                {
                     node.setCullCallback(nodecallback);
-                } else {
+                }
+                else
+                {
                     node.getCullCallback()->addNestedCallback(nodecallback);
                 }
             }
-            else ++fr;
+            else
+                ++fr;
         }
-        iteratorAdvanced = true;
 
+        iteratorAdvanced = true;
     }
 
     if (fr.matchSequence("initialBound %f %f %f %f"))
@@ -153,7 +173,7 @@ bool Node_readLocalData(Object& obj, Input& fr)
         fr[3].getFloat(bs.center().z());
         fr[4].getFloat(bs.radius());
         node.setInitialBound(bs);
-        fr += 5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
@@ -162,51 +182,57 @@ bool Node_readLocalData(Object& obj, Input& fr)
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        while (!fr.eof() && fr[0].getNoNestedBrackets()>entry)
+        while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
-            Node::ComputeBoundingSphereCallback* callback = fr.readObjectOfType<Node::ComputeBoundingSphereCallback>();
-            if (callback) {
+            Node::ComputeBoundingSphereCallback *callback = fr.readObjectOfType<Node::ComputeBoundingSphereCallback>();
+            if (callback)
+            {
                 node.setComputeBoundingSphereCallback(callback);
             }
-            else ++fr;
+            else
+                ++fr;
         }
-        iteratorAdvanced = true;
 
+        iteratorAdvanced = true;
     }
 
     return iteratorAdvanced;
 }
 
 
-bool Node_writeLocalData(const Object& obj, Output& fw)
+bool Node_writeLocalData(const Object&obj, Output&fw)
 {
-    const Node& node = static_cast<const Node&>(obj);
+    const Node&node = static_cast<const Node&>(obj);
 
     fw.indent() << "nodeMask 0x" << hex << node.getNodeMask() << dec << std::endl;
 
     fw.indent() << "cullingActive ";
-    if (node.getCullingActive()) fw << "TRUE"<< std::endl;
-    else fw << "FALSE"<< std::endl;
+    if (node.getCullingActive())
+        fw << "TRUE" << std::endl;
+    else
+        fw << "FALSE" << std::endl;
 
 
     if (!node.getDescriptions().empty())
     {
-        if (node.getDescriptions().size()==1)
+        if (node.getDescriptions().size() == 1)
         {
-            fw.indent() << "description "<<fw.wrapString(node.getDescriptions().front())<< std::endl;
+            fw.indent() << "description " << fw.wrapString(node.getDescriptions().front()) << std::endl;
         }
         else
         {
-            fw.indent() << "description {"<< std::endl;
+            fw.indent() << "description {" << std::endl;
             fw.moveIn();
-            for(Node::DescriptionList::const_iterator ditr=node.getDescriptions().begin();
-                ditr!=node.getDescriptions().end();
-                ++ditr)
+
+            for (Node::DescriptionList::const_iterator ditr = node.getDescriptions().begin();
+                 ditr != node.getDescriptions().end();
+                 ++ditr)
             {
-                fw.indent() << fw.wrapString(*ditr)<< std::endl;
+                fw.indent() << fw.wrapString(*ditr) << std::endl;
             }
+
             fw.moveOut();
-            fw.indent() << "}"<< std::endl;
+            fw.indent() << "}" << std::endl;
         }
     }
 
@@ -244,8 +270,8 @@ bool Node_writeLocalData(const Object& obj, Output& fw)
 
     if (node.getInitialBound().valid())
     {
-        const osg::BoundingSphere& bs = node.getInitialBound();
-        fw.indent()<<"initialBound "<<bs.center()<<" "<<bs.radius()<<std::endl;
+        const osg::BoundingSphere         &bs = node.getInitialBound();
+        fw.indent() << "initialBound " << bs.center() << " " << bs.radius() << std::endl;
     }
 
     if (node.getComputeBoundingSphereCallback())

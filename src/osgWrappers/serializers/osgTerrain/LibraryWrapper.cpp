@@ -14,4 +14,3 @@ USE_SERIALIZER_WRAPPER(osgTerrain_TerrainTechnique)
 USE_SERIALIZER_WRAPPER(osgTerrain_TerrainTile)
 
 extern "C" void wrapper_serializer_library_osgTerrain(void) {}
-

@@ -12,10 +12,10 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool Box_readLocalData(Object& obj, Input& fr);
-bool Box_writeLocalData(const Object& obj, Output& fw);
+bool Box_readLocalData(Object&obj, Input&fr);
+bool Box_writeLocalData(const Object&obj, Output&fw);
 
-//register the read and write functions with the osgDB::Registry.
+// register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Box)
 (
     new osg::Box,
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(Box)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Box_readLocalData(Object& obj, Input& fr)
+bool Box_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    Box& box = static_cast<Box&>(obj);
+    Box&box = static_cast<Box&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -39,7 +39,7 @@ bool Box_readLocalData(Object& obj, Input& fr)
         fr[2].getFloat(center.y());
         fr[3].getFloat(center.z());
         box.setCenter(center);
-        fr+=4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -50,7 +50,7 @@ bool Box_readLocalData(Object& obj, Input& fr)
         fr[2].getFloat(lenghts.y());
         fr[3].getFloat(lenghts.z());
         box.setHalfLengths(lenghts);
-        fr+=4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -62,20 +62,20 @@ bool Box_readLocalData(Object& obj, Input& fr)
         fr[3].getFloat(rotation.z());
         fr[4].getFloat(rotation.w());
         box.setRotation(rotation);
-        fr+=5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
     return iteratorAdvanced;
 }
 
-bool Box_writeLocalData(const Object& obj, Output& fw)
+bool Box_writeLocalData(const Object&obj, Output&fw)
 {
-    const Box& box = static_cast<const Box&>(obj);
+    const Box&box = static_cast<const Box&>(obj);
 
-    fw.indent()<<"Center "<<box.getCenter()<<std::endl;
-    fw.indent()<<"HalfLengths "<<box.getHalfLengths()<<std::endl;
-    fw.indent()<<"Rotation "<<box.getRotation()<<std::endl;
+    fw.indent() << "Center " <<      box.getCenter() << std::endl;
+    fw.indent() << "HalfLengths " << box.getHalfLengths() << std::endl;
+    fw.indent() << "Rotation " <<    box.getRotation() << std::endl;
 
     return true;
 }

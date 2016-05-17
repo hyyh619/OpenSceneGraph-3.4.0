@@ -3,9 +3,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( osgParticleOperator,
-                         /*new osgParticle::Operator*/NULL,
-                         osgParticle::Operator,
-                         "osg::Object osgParticle::Operator" )
-{
-}
+REGISTER_OBJECT_WRAPPER(osgParticleOperator,
+                        /*new osgParticle::Operator*/ NULL,
+                        osgParticle::Operator,
+                        "osg::Object osgParticle::Operator")
+{}

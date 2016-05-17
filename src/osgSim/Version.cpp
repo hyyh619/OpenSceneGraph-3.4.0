@@ -9,13 +9,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgSim/Version>
 #include <osg/Version>
 
 extern "C" {
-
 const char* osgSimGetVersion()
 {
     return osgGetVersion();
@@ -26,5 +25,4 @@ const char* osgSimGetLibraryName()
 {
     return "OpenSceneGraph Sim (Visual Simulation) Library";
 }
-
 }

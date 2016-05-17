@@ -9,8 +9,8 @@ extern "C"
     #include "jerror.h"
 }
 
-#define EXIF_JPEG_MARKER   JPEG_APP0+1
+#define EXIF_JPEG_MARKER JPEG_APP0 + 1
 
-extern int EXIF_Orientation (j_decompress_ptr cinfo);
+extern int EXIF_Orientation(j_decompress_ptr cinfo);
 
 #endif

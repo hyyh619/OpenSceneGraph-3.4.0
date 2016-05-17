@@ -9,11 +9,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 /*    Dec 2010 - TileMapper was fixed and simplified
     Nick
-*/
+ */
 
 #ifndef __TILEMAPPER_H_
 #define __TILEMAPPER_H_
@@ -28,100 +28,104 @@
 
 namespace txp
 {
-
 struct TileIdentifier : public osg::Referenced
 {
-    TileIdentifier():
+    TileIdentifier() :
         x(-1),
         y(-1),
         lod(-1)
     {}
 
-    TileIdentifier(int ax, int ay, int alod):
+    TileIdentifier(int ax, int ay, int alod) :
         x(ax),
         y(ay),
         lod(alod)
     {}
 
-    TileIdentifier(const TileIdentifier& rhs):
+    TileIdentifier(const TileIdentifier&rhs) :
         osg::Referenced(),
-        x(rhs.x),
+                                    x(rhs.x),
         y(rhs.y),
         lod(rhs.lod)
     {}
 
-    TileIdentifier& operator = (const TileIdentifier& rhs)
+    TileIdentifier&operator =(const TileIdentifier&rhs)
     {
-        if (this==&rhs) return *this;
-        x = rhs.x;
-        y = rhs.y;
+        if (this == &rhs)
+            return *this;
+
+        x   = rhs.x;
+        y   = rhs.y;
         lod = rhs.lod;
         return *this;
     }
 
     void set(int ax, int ay, int alod)
     {
-        x = ax;
-        y = ay;
+        x   = ax;
+        y   = ay;
         lod = alod;
     }
 
-    bool operator < (const TileIdentifier& rhs) const
+    bool operator <(const TileIdentifier&rhs) const
     {
-        if (lod<rhs.lod)
+        if (lod < rhs.lod)
             return true;
-        if (lod>rhs.lod)
+
+        if (lod > rhs.lod)
             return false;
-        if (x<rhs.x)
+
+        if (x < rhs.x)
             return true;
-        if (x>rhs.x)
+
+        if (x > rhs.x)
             return false;
-        if (y<rhs.y)
+
+        if (y < rhs.y)
             return true;
-        if (y>rhs.y)
+
+        if (y > rhs.y)
             return false;
+
         return false;
     }
 
-    int x,y,lod;
-
+    int x, y, lod;
 };
 
 class TileMapper : public osg::NodeVisitor, public osg::CullStack
 {
 public:
 
-    typedef osg::Matrix::value_type value_type;
+typedef osg::Matrix::value_type value_type;
 
 
-    TileMapper():
-        osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN) {}
+TileMapper() :
+    osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN) {}
 
 
-    virtual osg::Vec3 getEyePoint() const
-    {
-        return getEyeLocal();
-    }
-    virtual float getDistanceToEyePoint(const osg::Vec3& pos, bool withLODScale) const;
-    virtual float getDistanceFromEyePoint(const osg::Vec3& pos, bool withLODScale) const;
+virtual osg::Vec3 getEyePoint() const
+{
+    return getEyeLocal();
+}
+virtual float getDistanceToEyePoint(const osg::Vec3&pos, bool withLODScale) const;
+virtual float getDistanceFromEyePoint(const osg::Vec3&pos, bool withLODScale) const;
 
-    virtual void apply(osg::Node& node);
-    virtual void apply(osg::Group& node);
-    virtual void apply(osg::Geode& node);
-    virtual void apply(osg::PagedLOD& node);
+virtual void apply(osg::Node&node);
+virtual void apply(osg::Group&node);
+virtual void apply(osg::Geode&node);
+virtual void apply(osg::PagedLOD&node);
 
-    void insertTile(const TileIdentifier& tid);
+void insertTile(const TileIdentifier&tid);
 
-    bool isTileNeighbourALowerLODLevel(const TileIdentifier& tid, int dx, int dy) const;
+bool isTileNeighbourALowerLODLevel(const TileIdentifier&tid, int dx, int dy) const;
 
 protected:
 
-    typedef std::map< TileIdentifier, int>        TileMap;
-    TileMap                                        _tileMap;
-    bool                                        _containsGeode;
-
+typedef std::map<TileIdentifier, int>        TileMap;
+TileMap _tileMap;
+bool    _containsGeode;
 };
-
 } // namespace
 
 #endif // __TILEMAPPER_H_

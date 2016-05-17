@@ -12,10 +12,10 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool Capsule_readLocalData(Object& obj, Input& fr);
-bool Capsule_writeLocalData(const Object& obj, Output& fw);
+bool Capsule_readLocalData(Object&obj, Input&fr);
+bool Capsule_writeLocalData(const Object&obj, Output&fw);
 
-//register the read and write functions with the osgDB::Registry.
+// register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Capsule)
 (
     new osg::Capsule,
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(Capsule)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Capsule_readLocalData(Object& obj, Input& fr)
+bool Capsule_readLocalData(Object&obj, Input&fr)
 {
     bool iteratorAdvanced = false;
 
-    Capsule& capsule = static_cast<Capsule&>(obj);
+    Capsule&capsule = static_cast<Capsule&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -39,7 +39,7 @@ bool Capsule_readLocalData(Object& obj, Input& fr)
         fr[2].getFloat(center.y());
         fr[3].getFloat(center.z());
         capsule.setCenter(center);
-        fr+=4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -48,7 +48,7 @@ bool Capsule_readLocalData(Object& obj, Input& fr)
         float radius;
         fr[1].getFloat(radius);
         capsule.setRadius(radius);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -57,7 +57,7 @@ bool Capsule_readLocalData(Object& obj, Input& fr)
         float height;
         fr[1].getFloat(height);
         capsule.setHeight(height);
-        fr+=2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
@@ -69,23 +69,21 @@ bool Capsule_readLocalData(Object& obj, Input& fr)
         fr[3].getFloat(rotation.z());
         fr[4].getFloat(rotation.w());
         capsule.setRotation(rotation);
-        fr+=5;
+        fr              += 5;
         iteratorAdvanced = true;
     }
 
     return iteratorAdvanced;
 }
 
-bool Capsule_writeLocalData(const Object& obj, Output& fw)
+bool Capsule_writeLocalData(const Object&obj, Output&fw)
 {
-    const Capsule& capsule = static_cast<const Capsule&>(obj);
+    const Capsule&capsule = static_cast<const Capsule&>(obj);
 
-    fw.indent()<<"Center "<<capsule.getCenter()<<std::endl;
-    fw.indent()<<"Radius "<<capsule.getRadius()<<std::endl;
-    fw.indent()<<"Height "<<capsule.getHeight()<<std::endl;
-    fw.indent()<<"Rotation "<<capsule.getRotation()<<std::endl;
+    fw.indent() << "Center " <<   capsule.getCenter() << std::endl;
+    fw.indent() << "Radius " <<   capsule.getRadius() << std::endl;
+    fw.indent() << "Height " <<   capsule.getHeight() << std::endl;
+    fw.indent() << "Rotation " << capsule.getRotation() << std::endl;
 
     return true;
 }
-
-

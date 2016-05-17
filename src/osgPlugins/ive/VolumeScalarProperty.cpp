@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "VolumeScalarProperty.h"
@@ -19,13 +19,13 @@
 
 using namespace ive;
 
-void VolumeScalarProperty::write(DataOutputStream* out)
+void VolumeScalarProperty::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVEVOLUMESCALARPROPERTY);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::Object* object = dynamic_cast<osg::Object*>(this);
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
     if (object)
         ((ive::Object*)(object))->write(out);
     else
@@ -34,10 +34,11 @@ void VolumeScalarProperty::write(DataOutputStream* out)
     out->writeFloat(getValue());
 }
 
-void VolumeScalarProperty::read(DataInputStream* in)
+void VolumeScalarProperty::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVEVOLUMESCALARPROPERTY)
         in_THROW_EXCEPTION("VolumeScalarProperty::read(): Expected CompositeProperty identification.");
 
@@ -45,7 +46,7 @@ void VolumeScalarProperty::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osg::Object* object = dynamic_cast<osg::Object*>(this);
+    osg::Object *object = dynamic_cast<osg::Object*>(this);
     if (object)
         ((ive::Object*)(object))->read(in);
     else

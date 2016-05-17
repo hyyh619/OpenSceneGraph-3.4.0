@@ -1,24 +1,23 @@
 /**********************************************************************
- *
- *    FILE:           ShapeAttributeList.cpp
- *
- *    DESCRIPTION:    Read/Write osgSim::ShapeAttributeList in binary
- *                    format to disk.
- *
- *    CREATED BY:     John Vidar Larring
- *
- *    HISTORY:        Created 25.8.2008
- *
- **********************************************************************/
+*
+*    FILE:           ShapeAttributeList.cpp
+*
+*    DESCRIPTION:    Read/Write osgSim::ShapeAttributeList in binary
+*                    format to disk.
+*
+*    CREATED BY:     John Vidar Larring
+*
+*    HISTORY:        Created 25.8.2008
+*
+**********************************************************************/
 
 #include "Exception.h"
 #include "ShapeAttributeList.h"
 
 using namespace ive;
 
-void ShapeAttributeList::write(DataOutputStream* out)
+void ShapeAttributeList::write(DataOutputStream *out)
 {
-
     // Write ShapeAttributeList's identification.
     out->writeInt(IVESHAPEATTRIBUTELIST);
 
@@ -34,11 +33,13 @@ void ShapeAttributeList::write(DataOutputStream* out)
     }
 }
 
-void ShapeAttributeList::read(DataInputStream* in)
+void ShapeAttributeList::read(DataInputStream *in)
 {
     // Peek on ShapeAttributeList's identification.
     int id = in->peekInt();
-    if(id == IVESHAPEATTRIBUTELIST){
+
+    if (id == IVESHAPEATTRIBUTELIST)
+    {
         // Read ShapeAttributeList's identification.
         id = in->readInt();
 
@@ -50,17 +51,18 @@ void ShapeAttributeList::read(DataInputStream* in)
         resize(count);
 
         // Read elements of the list
-        for (unsigned int i=0; i < count; i++)
+        for (unsigned int i = 0; i < count; i++)
         {
             read(in, (*this)[i]);
         }
     }
-    else{
+    else
+    {
         in_THROW_EXCEPTION("ShapeAttributeList::read(): Expected ShapeAttributeList identification.");
     }
 }
 
-void ShapeAttributeList::write(DataOutputStream* out, const osgSim::ShapeAttribute& sa)
+void ShapeAttributeList::write(DataOutputStream *out, const osgSim::ShapeAttribute&sa)
 {
     // Write name
     out->writeString(sa.getName());
@@ -75,20 +77,25 @@ void ShapeAttributeList::write(DataOutputStream* out, const osgSim::ShapeAttribu
     case osgSim::ShapeAttribute::INTEGER:
         out->writeInt(sa.getInt());
         break;
+
     case osgSim::ShapeAttribute::DOUBLE:
         out->writeDouble(sa.getDouble());
         break;
+
     case osgSim::ShapeAttribute::STRING:
         out->writeBool(sa.getString() != 0);
-        if (sa.getString()) out->writeString(std::string(sa.getString()));
+        if (sa.getString())
+            out->writeString(std::string(sa.getString()));
+
         break;
+
     default:
         // Ignore Unknown data type
         break;
     }
 }
 
-void ShapeAttributeList::read(DataInputStream* in, osgSim::ShapeAttribute& sa)
+void ShapeAttributeList::read(DataInputStream *in, osgSim::ShapeAttribute&sa)
 {
     // Read name
     sa.setName(in->readString());
@@ -99,21 +106,24 @@ void ShapeAttributeList::read(DataInputStream* in, osgSim::ShapeAttribute& sa)
     // Read data
     switch (type)
     {
-        case osgSim::ShapeAttribute::INTEGER:
-            sa.setValue(in->readInt());
-            break;
-        case osgSim::ShapeAttribute::DOUBLE:
-            sa.setValue(in->readDouble());
-            break;
-        case osgSim::ShapeAttribute::STRING:
-            if (in->readBool())
-                sa.setValue(in->readString().c_str());
-            else
-                sa.setValue((char*)0);
-            break;
-        default:
-            // Ignore Unknown data type
-            break;
+    case osgSim::ShapeAttribute::INTEGER:
+        sa.setValue(in->readInt());
+        break;
+
+    case osgSim::ShapeAttribute::DOUBLE:
+        sa.setValue(in->readDouble());
+        break;
+
+    case osgSim::ShapeAttribute::STRING:
+        if (in->readBool())
+            sa.setValue(in->readString().c_str());
+        else
+            sa.setValue((char*)0);
+
+        break;
+
+    default:
+        // Ignore Unknown data type
+        break;
     }
 }
-

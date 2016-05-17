@@ -10,14 +10,12 @@
 
 namespace mdl
 {
-
-
 struct MDLBodyPart
 {
-    int    mdl_name_index;
-    int    num_models;
-    int    body_part_base;
-    int    model_offset;
+    int mdl_name_index;
+    int num_models;
+    int body_part_base;
+    int model_offset;
 };
 
 
@@ -25,26 +23,23 @@ class BodyPart
 {
 protected:
 
-    typedef std::vector<Model *>    ModelList;
+typedef std::vector<Model*>    ModelList;
 
-    MDLBodyPart *    my_body_part;
+MDLBodyPart *my_body_part;
 
-    ModelList        part_models;
+ModelList part_models;
 
 public:
 
-    BodyPart(MDLBodyPart * myPart);
-    virtual ~BodyPart();
+BodyPart(MDLBodyPart *myPart);
+virtual ~BodyPart();
 
-    MDLBodyPart *    getBodyPart();
+MDLBodyPart*    getBodyPart();
 
-    void             addModel(Model * newModel);
-    int              getNumModels();
-    Model *          getModel(int modelIndex);
+void             addModel(Model *newModel);
+int              getNumModels();
+Model*          getModel(int modelIndex);
 };
-
-
 }
 
 #endif
-

@@ -8,8 +8,8 @@
 using namespace osg;
 using namespace osgDB;
 
-bool  ClusterCullingCallback_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool  ClusterCullingCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw); // register the read and write functions with the osgDB::Registry.
+bool  ClusterCullingCallback_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool  ClusterCullingCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw);   // register the read and write functions with the osgDB::Registry.
 
 REGISTER_DOTOSGWRAPPER(ClusterCullingCallback)
 (
@@ -20,10 +20,12 @@ REGISTER_DOTOSGWRAPPER(ClusterCullingCallback)
     &ClusterCullingCallback_writeLocalData
 );
 
-bool ClusterCullingCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool ClusterCullingCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    ClusterCullingCallback* ccc = dynamic_cast<ClusterCullingCallback*>(&obj);
-    if (!ccc) return false;
+    ClusterCullingCallback *ccc = dynamic_cast<ClusterCullingCallback*>(&obj);
+
+    if (!ccc)
+        return false;
 
     bool iteratorAdvanced = false;
 
@@ -32,7 +34,7 @@ bool ClusterCullingCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
         fr[1].getFloat(vec[0]) && fr[2].getFloat(vec[1]) && fr[3].getFloat(vec[2]))
     {
         ccc->setControlPoint(vec);
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -40,7 +42,7 @@ bool ClusterCullingCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
         fr[1].getFloat(vec[0]) && fr[2].getFloat(vec[1]) && fr[3].getFloat(vec[2]))
     {
         ccc->setNormal(vec);
-        fr += 4;
+        fr              += 4;
         iteratorAdvanced = true;
     }
 
@@ -48,32 +50,34 @@ bool ClusterCullingCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
     if (fr[0].matchWord("radius") && fr[1].getFloat(value))
     {
         ccc->setRadius(value);
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
     if (fr[0].matchWord("deviation") && fr[1].getFloat(value))
     {
         ccc->setDeviation(value);
-        fr += 2;
+        fr              += 2;
         iteratorAdvanced = true;
     }
 
     return iteratorAdvanced;
 }
 
-bool ClusterCullingCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool ClusterCullingCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const ClusterCullingCallback* ccc = dynamic_cast<const ClusterCullingCallback*>(&obj);
-    if (!ccc) return false;
+    const ClusterCullingCallback *ccc = dynamic_cast<const ClusterCullingCallback*>(&obj);
+
+    if (!ccc)
+        return false;
 
     int prec = fw.precision();
     fw.precision(15);
 
     fw.indent() << "controlPoint " << ccc->getControlPoint() << std::endl;
-    fw.indent() << "normal " << ccc->getNormal() << std::endl;
-    fw.indent() << "radius " << ccc->getRadius() << std::endl;
-    fw.indent() << "deviation " << ccc->getDeviation() << std::endl;
+    fw.indent() << "normal " <<       ccc->getNormal() << std::endl;
+    fw.indent() << "radius " <<       ccc->getRadius() << std::endl;
+    fw.indent() << "deviation " <<    ccc->getDeviation() << std::endl;
 
     fw.precision(prec);
 

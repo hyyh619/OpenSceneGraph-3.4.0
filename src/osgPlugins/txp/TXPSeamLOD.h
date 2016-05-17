@@ -48,29 +48,33 @@ class TXPSeamLOD : public osg::Group
 {
 public:
 
-    TXPSeamLOD();
+TXPSeamLOD();
 
-    TXPSeamLOD(int x, int y, int lod, int dx, int dy);
+TXPSeamLOD(int x, int y, int lod, int dx, int dy);
 
-    TXPSeamLOD(const TXPSeamLOD&,
-        const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+TXPSeamLOD(const TXPSeamLOD&,
+           const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
 
-    META_Node(txp, TXPSeamLOD);
+META_Node(txp, TXPSeamLOD);
 
-    virtual void traverse(osg::NodeVisitor& nv);
+virtual void traverse(osg::NodeVisitor&nv);
 
-    void setCenter( const osg::Vec3& center ) { _center = center; }
-    osg::Vec3 getCenter() { return _center; }
+void setCenter(const osg::Vec3&center)
+{
+    _center = center;
+}
+osg::Vec3 getCenter()
+{
+    return _center;
+}
 protected:
 
-    TileIdentifier _tid;
+TileIdentifier _tid;
 
-    int _dx;
-    int _dy;
-    osg::Vec3 _center;
+int       _dx;
+int       _dy;
+osg::Vec3 _center;
 };
-
 }
 
 #endif
-

@@ -33,10 +33,10 @@
 
 CPL_CVSID("$Id: gdalsimplewarp.cpp 15436 2008-09-24 19:26:31Z rouault $");
 
-static void 
-GDALSimpleWarpRemapping( int nBandCount, GByte **papabySrcData, 
-                         int nSrcXSize, int nSrcYSize,
-                         char **papszWarpOptions );
+static void
+GDALSimpleWarpRemapping(int nBandCount, GByte **papabySrcData,
+                        int nSrcXSize, int nSrcYSize,
+                        char **papszWarpOptions);
 
 /************************************************************************/
 /*                        GDALSimpleImageWarp()                         */
@@ -47,55 +47,55 @@ GDALSimpleWarpRemapping( int nBandCount, GByte **papabySrcData,
  *
  * Copies an image from a source dataset to a destination dataset applying
  * an application defined transformation.   This algorithm is called simple
- * because it lacks many options such as resampling kernels (other than 
+ * because it lacks many options such as resampling kernels (other than
  * nearest neighbour), support for data types other than 8bit, and the
  * ability to warp images without holding the entire source and destination
  * image in memory.
  *
- * The following option(s) may be passed in papszWarpOptions. 
+ * The following option(s) may be passed in papszWarpOptions.
  * <ul>
  * <li> "INIT=v[,v...]": This option indicates that the output dataset should
  * be initialized to the indicated value in any area valid data is not written.
- * Distinct values may be listed for each band separated by columns. 
+ * Distinct values may be listed for each band separated by columns.
  * </ul>
  *
- * @param hSrcDS the source image dataset. 
- * @param hDstDS the destination image dataset. 
+ * @param hSrcDS the source image dataset.
+ * @param hDstDS the destination image dataset.
  * @param nBandCount the number of bands to be warped.  If zero, all bands
  * will be processed.
- * @param panBandList the list of bands to translate. 
- * @param pfnTransform the transformation function to call.  See 
- * GDALTransformerFunc(). 
+ * @param panBandList the list of bands to translate.
+ * @param pfnTransform the transformation function to call.  See
+ * GDALTransformerFunc().
  * @param pTransformArg the callback handle to pass to pfnTransform.
- * @param pfnProgress the function used to report progress.  See 
- * GDALProgressFunc(). 
- * @param pProgressArg the callback handle to pass to pfnProgress. 
- * @param papszWarpOptions additional options controlling the warp. 
- * 
- * @return TRUE if the operation completes, or FALSE if an error occurs. 
+ * @param pfnProgress the function used to report progress.  See
+ * GDALProgressFunc().
+ * @param pProgressArg the callback handle to pass to pfnProgress.
+ * @param papszWarpOptions additional options controlling the warp.
+ *
+ * @return TRUE if the operation completes, or FALSE if an error occurs.
  */
 
 int CPL_STDCALL
-GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS, 
-                     int nBandCount, int *panBandList, 
-                     GDALTransformerFunc pfnTransform, void *pTransformArg,
-                     GDALProgressFunc pfnProgress, void *pProgressArg, 
-                     char **papszWarpOptions )
-    
-{
-    VALIDATE_POINTER1( hSrcDS, "GDALSimpleImageWarp", 0 );
-    VALIDATE_POINTER1( hDstDS, "GDALSimpleImageWarp", 0 );
+GDALSimpleImageWarp(GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
+                    int nBandCount, int *panBandList,
+                    GDALTransformerFunc pfnTransform, void *pTransformArg,
+                    GDALProgressFunc pfnProgress, void *pProgressArg,
+                    char **papszWarpOptions)
 
-    int		iBand, bCancelled = FALSE;
+{
+    VALIDATE_POINTER1(hSrcDS, "GDALSimpleImageWarp", 0);
+    VALIDATE_POINTER1(hDstDS, "GDALSimpleImageWarp", 0);
+
+    int iBand, bCancelled = FALSE;
 
 /* -------------------------------------------------------------------- */
 /*      If no bands provided assume we should process all bands.        */
 /* -------------------------------------------------------------------- */
-    if( nBandCount == 0 )
+    if (nBandCount == 0)
     {
         int nResult;
 
-        nBandCount = GDALGetRasterCount( hSrcDS ); 
+        nBandCount = GDALGetRasterCount(hSrcDS);
         if (nBandCount == 0)
         {
             CPLError(CE_Failure, CPLE_AppDefined,
@@ -103,25 +103,25 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
             return FALSE;
         }
 
-        panBandList = (int *) CPLCalloc(sizeof(int),nBandCount);
+        panBandList = (int*) CPLCalloc(sizeof(int), nBandCount);
 
-        for( iBand = 0; iBand < nBandCount; iBand++ )
-            panBandList[iBand] = iBand+1;
+        for (iBand = 0; iBand < nBandCount; iBand++)
+            panBandList[iBand] = iBand + 1;
 
-        nResult = GDALSimpleImageWarp( hSrcDS, hDstDS, nBandCount, panBandList,
-                                       pfnTransform, pTransformArg, 
-                                       pfnProgress, pProgressArg, 
-                                       papszWarpOptions );
-        CPLFree( panBandList );
+        nResult = GDALSimpleImageWarp(hSrcDS, hDstDS, nBandCount, panBandList,
+                                      pfnTransform, pTransformArg,
+                                      pfnProgress, pProgressArg,
+                                      papszWarpOptions);
+        CPLFree(panBandList);
         return nResult;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Post initial progress.                                          */
 /* -------------------------------------------------------------------- */
-    if( pfnProgress )
+    if (pfnProgress)
     {
-        if( !pfnProgress( 0.0, "", pProgressArg ) )
+        if (!pfnProgress(0.0, "", pProgressArg))
             return FALSE;
     }
 
@@ -132,34 +132,35 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
     int   nSrcYSize = GDALGetRasterYSize(hSrcDS);
     GByte **papabySrcData;
 
-    papabySrcData = (GByte **) CPLCalloc(nBandCount,sizeof(GByte*));
-    for( iBand = 0; iBand < nBandCount; iBand++ )
+    papabySrcData = (GByte**) CPLCalloc(nBandCount, sizeof(GByte*));
+
+    for (iBand = 0; iBand < nBandCount; iBand++)
     {
-        papabySrcData[iBand] = (GByte *) VSIMalloc(nSrcXSize*nSrcYSize);
-        
-        GDALRasterIO( GDALGetRasterBand(hSrcDS,panBandList[iBand]), GF_Read,
-                      0, 0, nSrcXSize, nSrcYSize, 
-                      papabySrcData[iBand], nSrcXSize, nSrcYSize, GDT_Byte, 
-                      0, 0 );
+        papabySrcData[iBand] = (GByte*) VSIMalloc(nSrcXSize * nSrcYSize);
+
+        GDALRasterIO(GDALGetRasterBand(hSrcDS, panBandList[iBand]), GF_Read,
+                     0, 0, nSrcXSize, nSrcYSize,
+                     papabySrcData[iBand], nSrcXSize, nSrcYSize, GDT_Byte,
+                     0, 0);
     }
 
 /* -------------------------------------------------------------------- */
 /*      Check for remap request(s).                                     */
 /* -------------------------------------------------------------------- */
-    GDALSimpleWarpRemapping( nBandCount, papabySrcData, nSrcXSize, nSrcYSize,
-                             papszWarpOptions );
+    GDALSimpleWarpRemapping(nBandCount, papabySrcData, nSrcXSize, nSrcYSize,
+                            papszWarpOptions);
 
 /* -------------------------------------------------------------------- */
 /*      Allocate scanline buffers for output image.                     */
 /* -------------------------------------------------------------------- */
-    int nDstXSize = GDALGetRasterXSize( hDstDS );
-    int nDstYSize = GDALGetRasterYSize( hDstDS );
+    int   nDstXSize = GDALGetRasterXSize(hDstDS);
+    int   nDstYSize = GDALGetRasterYSize(hDstDS);
     GByte **papabyDstLine;
 
-    papabyDstLine = (GByte **) CPLCalloc(nBandCount,sizeof(GByte*));
-    
-    for( iBand = 0; iBand < nBandCount; iBand++ )
-        papabyDstLine[iBand] = (GByte *) CPLMalloc( nDstXSize );
+    papabyDstLine = (GByte**) CPLCalloc(nBandCount, sizeof(GByte*));
+
+    for (iBand = 0; iBand < nBandCount; iBand++)
+        papabyDstLine[iBand] = (GByte*) CPLMalloc(nDstXSize);
 
 /* -------------------------------------------------------------------- */
 /*      Allocate x,y,z coordinate arrays for transformation ... one     */
@@ -168,10 +169,10 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
     double *padfX, *padfY, *padfZ;
     int    *pabSuccess;
 
-    padfX = (double *) CPLMalloc(sizeof(double) * nDstXSize);
-    padfY = (double *) CPLMalloc(sizeof(double) * nDstXSize);
-    padfZ = (double *) CPLMalloc(sizeof(double) * nDstXSize);
-    pabSuccess = (int *) CPLMalloc(sizeof(int) * nDstXSize);
+    padfX      = (double*) CPLMalloc(sizeof(double) * nDstXSize);
+    padfY      = (double*) CPLMalloc(sizeof(double) * nDstXSize);
+    padfZ      = (double*) CPLMalloc(sizeof(double) * nDstXSize);
+    pabSuccess = (int*) CPLMalloc(sizeof(int) * nDstXSize);
 
 /* -------------------------------------------------------------------- */
 /*      Establish the value we will use to initialize the bands.  We    */
@@ -180,26 +181,26 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
 /*      overridden by passed                                            */
 /*      option(s).                                                      */
 /* -------------------------------------------------------------------- */
-    int         *panBandInit;
+    int *panBandInit;
 
-    panBandInit = (int *) CPLCalloc(sizeof(int),nBandCount);
-    if( CSLFetchNameValue( papszWarpOptions, "INIT" ) )
+    panBandInit = (int*) CPLCalloc(sizeof(int), nBandCount);
+    if (CSLFetchNameValue(papszWarpOptions, "INIT"))
     {
         int  iBand, nTokenCount;
-        char **papszTokens = 
-            CSLTokenizeStringComplex( CSLFetchNameValue( papszWarpOptions, 
-                                                         "INIT" ),
-                                      " ,", FALSE, FALSE );
+        char **papszTokens =
+            CSLTokenizeStringComplex(CSLFetchNameValue(papszWarpOptions,
+                                                       "INIT"),
+                                     " ,", FALSE, FALSE);
 
         nTokenCount = CSLCount(papszTokens);
 
-        for( iBand = 0; iBand < nBandCount; iBand++ )
+        for (iBand = 0; iBand < nBandCount; iBand++)
         {
-            if( nTokenCount == 0 )
+            if (nTokenCount == 0)
                 panBandInit[iBand] = 0;
             else
-                panBandInit[iBand] = 
-                    atoi(papszTokens[MIN(iBand,nTokenCount-1)]);
+                panBandInit[iBand] =
+                    atoi(papszTokens[MIN(iBand, nTokenCount - 1)]);
         }
 
         CSLDestroy(papszTokens);
@@ -210,25 +211,25 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
 /* -------------------------------------------------------------------- */
     int iDstY;
 
-    for( iDstY = 0; iDstY < nDstYSize; iDstY++ )
+    for (iDstY = 0; iDstY < nDstYSize; iDstY++)
     {
         int iDstX;
 
         // Clear output buffer to "transparent" value.  Shouldn't we
         // really be reading from the destination file to support overlay?
-        for( iBand = 0; iBand < nBandCount; iBand++ )
+        for (iBand = 0; iBand < nBandCount; iBand++)
         {
-            if( panBandInit[iBand] == -1 )
-                GDALRasterIO( GDALGetRasterBand(hDstDS,iBand+1), GF_Read,
-                              0, iDstY, nDstXSize, 1, 
-                              papabyDstLine[iBand], nDstXSize, 1, GDT_Byte, 
-                              0, 0 );
+            if (panBandInit[iBand] == -1)
+                GDALRasterIO(GDALGetRasterBand(hDstDS, iBand + 1), GF_Read,
+                             0, iDstY, nDstXSize, 1,
+                             papabyDstLine[iBand], nDstXSize, 1, GDT_Byte,
+                             0, 0);
             else
-                memset( papabyDstLine[iBand], panBandInit[iBand], nDstXSize );
+                memset(papabyDstLine[iBand], panBandInit[iBand], nDstXSize);
         }
 
         // Set point to transform.
-        for( iDstX = 0; iDstX < nDstXSize; iDstX++ )
+        for (iDstX = 0; iDstX < nDstXSize; iDstX++)
         {
             padfX[iDstX] = iDstX + 0.5;
             padfY[iDstX] = iDstY + 0.5;
@@ -237,19 +238,19 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
 
         // Transform the points from destination pixel/line coordinates
         // to source pixel/line coordinates.
-        pfnTransform( pTransformArg, TRUE, nDstXSize, 
-                      padfX, padfY, padfZ, pabSuccess );
+        pfnTransform(pTransformArg, TRUE, nDstXSize,
+                     padfX, padfY, padfZ, pabSuccess);
 
         // Loop over the output scanline.
-        for( iDstX = 0; iDstX < nDstXSize; iDstX++ )
+        for (iDstX = 0; iDstX < nDstXSize; iDstX++)
         {
-            if( !pabSuccess[iDstX] )
+            if (!pabSuccess[iDstX])
                 continue;
 
             // We test against the value before casting to avoid the
             // problem of asymmetric truncation effects around zero.  That is
-            // -0.5 will be 0 when cast to an int. 
-            if( padfX[iDstX] < 0.0 || padfY[iDstX] < 0.0 )
+            // -0.5 will be 0 when cast to an int.
+            if (padfX[iDstX] < 0.0 || padfY[iDstX] < 0.0)
                 continue;
 
             int iSrcX, iSrcY, iSrcOffset;
@@ -257,29 +258,29 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
             iSrcX = (int) padfX[iDstX];
             iSrcY = (int) padfY[iDstX];
 
-            if( iSrcX >= nSrcXSize || iSrcY >= nSrcYSize )
+            if (iSrcX >= nSrcXSize || iSrcY >= nSrcYSize)
                 continue;
 
             iSrcOffset = iSrcX + iSrcY * nSrcXSize;
-            
-            for( iBand = 0; iBand < nBandCount; iBand++ )
+
+            for (iBand = 0; iBand < nBandCount; iBand++)
                 papabyDstLine[iBand][iDstX] = papabySrcData[iBand][iSrcOffset];
         }
 
-        // Write scanline to disk. 
-        for( iBand = 0; iBand < nBandCount; iBand++ )
+        // Write scanline to disk.
+        for (iBand = 0; iBand < nBandCount; iBand++)
         {
-            GDALRasterIO( GDALGetRasterBand(hDstDS,iBand+1), GF_Write,
-                          0, iDstY, nDstXSize, 1, 
-                          papabyDstLine[iBand], nDstXSize, 1, GDT_Byte, 0, 0 );
+            GDALRasterIO(GDALGetRasterBand(hDstDS, iBand + 1), GF_Write,
+                         0, iDstY, nDstXSize, 1,
+                         papabyDstLine[iBand], nDstXSize, 1, GDT_Byte, 0, 0);
         }
 
-        if( pfnProgress != NULL )
+        if (pfnProgress != NULL)
         {
-            if( !pfnProgress( (iDstY+1) / (double) nDstYSize, 
-                              "", pProgressArg ) )
+            if (!pfnProgress((iDstY + 1) / (double) nDstYSize,
+                             "", pProgressArg))
             {
-                CPLError( CE_Failure, CPLE_UserInterrupt, "User terminated" );
+                CPLError(CE_Failure, CPLE_UserInterrupt, "User terminated");
                 bCancelled = TRUE;
                 break;
             }
@@ -289,20 +290,20 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
 /* -------------------------------------------------------------------- */
 /*      Cleanup working buffers.                                        */
 /* -------------------------------------------------------------------- */
-    for( iBand = 0; iBand < nBandCount; iBand++ )
+    for (iBand = 0; iBand < nBandCount; iBand++)
     {
-        CPLFree( papabyDstLine[iBand] );
-        CPLFree( papabySrcData[iBand] );
+        CPLFree(papabyDstLine[iBand]);
+        CPLFree(papabySrcData[iBand]);
     }
 
-    CPLFree( panBandInit );
-    CPLFree( papabyDstLine );
-    CPLFree( papabySrcData );
-    CPLFree( padfX );
-    CPLFree( padfY );
-    CPLFree( padfZ );
-    CPLFree( pabSuccess );
-    
+    CPLFree(panBandInit);
+    CPLFree(papabyDstLine);
+    CPLFree(papabySrcData);
+    CPLFree(padfX);
+    CPLFree(padfY);
+    CPLFree(padfZ);
+    CPLFree(pabSuccess);
+
     return !bCancelled;
 }
 
@@ -317,53 +318,51 @@ GDALSimpleImageWarp( GDALDatasetH hSrcDS, GDALDatasetH hDstDS,
 /*      all bands at once (ie. to remap an RGB value to another).       */
 /************************************************************************/
 
-static void 
-GDALSimpleWarpRemapping( int nBandCount, GByte **papabySrcData, 
-                         int nSrcXSize, int nSrcYSize,
-                         char **papszWarpOptions )
+static void
+GDALSimpleWarpRemapping(int nBandCount, GByte **papabySrcData,
+                        int nSrcXSize, int nSrcYSize,
+                        char **papszWarpOptions)
 
 {
-
 /* ==================================================================== */
 /*      Process any and all single value REMAP commands.                */
 /* ==================================================================== */
     int  iRemap;
-    char **papszRemaps = CSLFetchNameValueMultiple( papszWarpOptions, 
-                                                    "REMAP" );
+    char **papszRemaps = CSLFetchNameValueMultiple(papszWarpOptions,
+                                                   "REMAP");
 
-    for( iRemap = 0; iRemap < CSLCount(papszRemaps); iRemap++ )
+    for (iRemap = 0; iRemap < CSLCount(papszRemaps); iRemap++)
     {
-
 /* -------------------------------------------------------------------- */
 /*      What are the pixel values to map from and to?                   */
 /* -------------------------------------------------------------------- */
-        char **papszTokens = CSLTokenizeString( papszRemaps[iRemap] );
+        char **papszTokens = CSLTokenizeString(papszRemaps[iRemap]);
         int  nFromValue, nToValue;
-        
-        if( CSLCount(papszTokens) != 2 )
+
+        if (CSLCount(papszTokens) != 2)
         {
-            CPLError( CE_Warning, CPLE_AppDefined,
-                      "Ill formed REMAP `%s' ignored in GDALSimpleWarpRemapping()", 
-                      papszRemaps[iRemap] );
+            CPLError(CE_Warning, CPLE_AppDefined,
+                     "Ill formed REMAP `%s' ignored in GDALSimpleWarpRemapping()",
+                     papszRemaps[iRemap]);
             continue;
         }
 
         nFromValue = atoi(papszTokens[0]);
-        nToValue = atoi(papszTokens[1]);
-        
-        CSLDestroy( papszTokens );
+        nToValue   = atoi(papszTokens[1]);
+
+        CSLDestroy(papszTokens);
 
 /* -------------------------------------------------------------------- */
 /*      Pass over each band searching for matches.                      */
 /* -------------------------------------------------------------------- */
-        for( int iBand = 0; iBand < nBandCount; iBand++ )
+        for (int iBand = 0; iBand < nBandCount; iBand++)
         {
-            GByte *pabyData = papabySrcData[iBand];
+            GByte *pabyData   = papabySrcData[iBand];
             int   nPixelCount = nSrcXSize * nSrcYSize;
-            
-            while( nPixelCount != 0 )
+
+            while (nPixelCount != 0)
             {
-                if( *pabyData == nFromValue )
+                if (*pabyData == nFromValue)
                     *pabyData = (GByte) nToValue;
 
                 pabyData++;
@@ -372,75 +371,75 @@ GDALSimpleWarpRemapping( int nBandCount, GByte **papabySrcData,
         }
     }
 
-    CSLDestroy( papszRemaps );
+    CSLDestroy(papszRemaps);
 
 /* ==================================================================== */
 /*      Process any and all REMAP_MULTI commands.                       */
 /* ==================================================================== */
-    papszRemaps = CSLFetchNameValueMultiple( papszWarpOptions, 
-                                             "REMAP_MULTI" );
+    papszRemaps = CSLFetchNameValueMultiple(papszWarpOptions,
+                                            "REMAP_MULTI");
 
-    for( iRemap = 0; iRemap < CSLCount(papszRemaps); iRemap++ )
+    for (iRemap = 0; iRemap < CSLCount(papszRemaps); iRemap++)
     {
 /* -------------------------------------------------------------------- */
 /*      What are the pixel values to map from and to?                   */
 /* -------------------------------------------------------------------- */
-        char **papszTokens = CSLTokenizeString( papszRemaps[iRemap] );
-        int *panFromValue, *panToValue;
+        char **papszTokens = CSLTokenizeString(papszRemaps[iRemap]);
+        int  *panFromValue, *panToValue;
         int  nMapBandCount, iBand;
 
-        if( CSLCount(papszTokens) % 2 == 1 
-            || CSLCount(papszTokens) == 0 
-            || CSLCount(papszTokens) > nBandCount * 2 )
+        if (CSLCount(papszTokens) % 2 == 1
+            || CSLCount(papszTokens) == 0
+            || CSLCount(papszTokens) > nBandCount * 2)
         {
-            CPLError( CE_Warning, CPLE_AppDefined,
-                      "Ill formed REMAP_MULTI `%s' ignored in GDALSimpleWarpRemapping()", 
-                      papszRemaps[iRemap] );
+            CPLError(CE_Warning, CPLE_AppDefined,
+                     "Ill formed REMAP_MULTI `%s' ignored in GDALSimpleWarpRemapping()",
+                     papszRemaps[iRemap]);
             continue;
         }
 
         nMapBandCount = CSLCount(papszTokens) / 2;
-        
-        panFromValue = (int *) CPLMalloc(sizeof(int) * nMapBandCount );
-        panToValue = (int *) CPLMalloc(sizeof(int) * nMapBandCount );
 
-        for( iBand = 0; iBand < nMapBandCount; iBand++ )
+        panFromValue = (int*) CPLMalloc(sizeof(int) * nMapBandCount);
+        panToValue   = (int*) CPLMalloc(sizeof(int) * nMapBandCount);
+
+        for (iBand = 0; iBand < nMapBandCount; iBand++)
         {
             panFromValue[iBand] = atoi(papszTokens[iBand]);
-            panToValue[iBand] = atoi(papszTokens[iBand+nMapBandCount]);
+            panToValue[iBand]   = atoi(papszTokens[iBand + nMapBandCount]);
         }
 
-        CSLDestroy( papszTokens );
+        CSLDestroy(papszTokens);
 
 /* -------------------------------------------------------------------- */
 /*      Search for matching values to replace.                          */
 /* -------------------------------------------------------------------- */
-        int   nPixelCount = nSrcXSize * nSrcYSize;
-        int   iPixel;
+        int nPixelCount = nSrcXSize * nSrcYSize;
+        int iPixel;
 
-        for( iPixel = 0; iPixel < nPixelCount; iPixel++ )
+        for (iPixel = 0; iPixel < nPixelCount; iPixel++)
         {
-            if( papabySrcData[0][iPixel] != panFromValue[0] )
+            if (papabySrcData[0][iPixel] != panFromValue[0])
                 continue;
 
             int bMatch = TRUE;
 
-            for( iBand = 1; iBand < nMapBandCount; iBand++ )
+            for (iBand = 1; iBand < nMapBandCount; iBand++)
             {
-                if( papabySrcData[iBand][iPixel] != panFromValue[iBand] )
+                if (papabySrcData[iBand][iPixel] != panFromValue[iBand])
                     bMatch = FALSE;
             }
 
-            if( !bMatch )
+            if (!bMatch)
                 continue;
 
-            for( iBand = 0; iBand < nMapBandCount; iBand++ )
+            for (iBand = 0; iBand < nMapBandCount; iBand++)
                 papabySrcData[iBand][iPixel] = (GByte) panToValue[iBand];
         }
 
-        CPLFree( panFromValue );
-        CPLFree( panToValue );
+        CPLFree(panFromValue);
+        CPLFree(panToValue);
     }
 
-    CSLDestroy( papszRemaps );
+    CSLDestroy(papszRemaps);
 }

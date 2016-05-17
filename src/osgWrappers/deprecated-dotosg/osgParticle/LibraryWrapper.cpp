@@ -39,4 +39,3 @@ USE_DOTOSGWRAPPER(SmokeTrailEffect_Proxy)
 USE_DOTOSGWRAPPER(VariableRateCounter_Proxy)
 
 extern "C" void dotosgwrapper_library_osgParticle(void) {}
-

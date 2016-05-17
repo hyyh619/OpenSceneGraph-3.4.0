@@ -4,11 +4,13 @@
 #include <osg/Geode>
 #include "ReadWrite.h"
 
-namespace ive{
-class Geode : public ReadWrite, public osg::Geode{
+namespace ive
+{
+class Geode : public ReadWrite, public osg::Geode
+{
 public:
-	void write(DataOutputStream* out);
-	void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

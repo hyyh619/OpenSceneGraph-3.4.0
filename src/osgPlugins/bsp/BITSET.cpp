@@ -13,42 +13,42 @@
 
 bool BITSET::Init(int numberOfBits)
 {
-  //Delete any memory allocated to bits
-  m_bits.clear();
+    // Delete any memory allocated to bits
+    m_bits.clear();
 
-  //Calculate size
-  m_numBytes=(numberOfBits>>3)+1;
+    // Calculate size
+    m_numBytes = (numberOfBits >> 3) + 1;
 
-  //Create memory
-  m_bits.reserve(m_numBytes);
-  m_bits_aux=&m_bits[0];
+    // Create memory
+    m_bits.reserve(m_numBytes);
+    m_bits_aux = &m_bits[0];
 
-  ClearAll();
+    ClearAll();
 
-  return true;
+    return true;
 }
 
 void BITSET::ClearAll()
 {
-  memset(m_bits_aux, 0, m_numBytes);
+    memset(m_bits_aux, 0, m_numBytes);
 }
 
 void BITSET::SetAll()
 {
-  memset(m_bits_aux, 0xFF, m_numBytes);
+    memset(m_bits_aux, 0xFF, m_numBytes);
 }
 
 void BITSET::Clear(int bitNumber)
 {
-  m_bits_aux[bitNumber>>3] &= ~(1<<(bitNumber & 7));
+    m_bits_aux[bitNumber >> 3] &= ~(1 << (bitNumber & 7));
 }
 
 void BITSET::Set(int bitNumber)
 {
-  m_bits_aux[bitNumber>>3] |= 1<<(bitNumber&7);
+    m_bits_aux[bitNumber >> 3] |= 1 << (bitNumber & 7);
 }
 
 unsigned char BITSET::IsSet(int bitNumber) const
 {
-  return static_cast<unsigned char>(m_bits_aux[bitNumber>>3] & 1<<(bitNumber&7));
+    return static_cast<unsigned char>(m_bits_aux[bitNumber >> 3] & 1 << (bitNumber & 7));
 }

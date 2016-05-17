@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
-*/
+ */
 
 #include <osgDB/FileNameUtils>
 #include <osgDB/FileUtils>
@@ -21,13 +21,14 @@
 using namespace p3d;
 
 SpellChecker::SpellChecker()
-{
-}
+{}
 
-void SpellChecker::checkP3dXml(const std::string& filename) const
+void SpellChecker::checkP3dXml(const std::string&filename) const
 {
-    std::string foundFileName = osgDB::findDataFile( filename );
-    if (foundFileName.empty()) return;
+    std::string foundFileName = osgDB::findDataFile(filename);
+
+    if (foundFileName.empty())
+        return;
 
     std::ifstream fin(foundFileName.c_str());
 
@@ -38,68 +39,74 @@ void SpellChecker::checkP3dXml(const std::string& filename) const
     osg::ref_ptr<osgDB::XmlNode> doc = new osgDB::XmlNode;
     doc->read(input);
 
-    if (!doc) return;
+    if (!doc)
+        return;
 
     checkXml(doc.get());
 }
 
-void SpellChecker::checkXml(osgDB::XmlNode* node) const
+void SpellChecker::checkXml(osgDB::XmlNode *node) const
 {
-    if (node->name=="page") checkWords(node->contents);
-    else if (node->name=="paragraph") checkWords(node->contents);
-    else if (node->name=="bullet") checkWords(node->contents);
+    if (node->name == "page")
+        checkWords(node->contents);
+    else if (node->name == "paragraph")
+        checkWords(node->contents);
+    else if (node->name == "bullet")
+        checkWords(node->contents);
 
-    for(osgDB::XmlNode::Children::iterator itr = node->children.begin();
-        itr != node->children.end();
-        ++itr)
+    for (osgDB::XmlNode::Children::iterator itr = node->children.begin();
+         itr != node->children.end();
+         ++itr)
     {
         checkXml(itr->get());
     }
 }
 
-void SpellChecker::checkWords(const std::string& words) const
+void SpellChecker::checkWords(const std::string&words) const
 {
-    OSG_NOTICE<<"--"<<std::endl<<words<<std::endl;
+    OSG_NOTICE << "--" << std::endl << words << std::endl;
 
 
 #if 0
-    const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    std::string::size_type start = words.find_first_of(alpha);
-    while(start != std::string::npos)
-    {
-        std::string::size_type end = words.find_first_not_of(alpha, start+1);
+    const char             alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    std::string::size_type start   = words.find_first_of(alpha);
 
-        std::string word = words.substr(start, end-start);
+    while (start != std::string::npos)
+    {
+        std::string::size_type end = words.find_first_not_of(alpha, start + 1);
+
+        std::string word = words.substr(start, end - start);
         if (!isCorrect(word))
         {
-            OSG_NOTICE<<"Error : "<<word<<std::endl;
+            OSG_NOTICE << "Error : " << word << std::endl;
         }
 
-        start = (end!=std::string::npos) ? words.find_first_of(alpha, end+1) : std::string::npos;
+        start = (end != std::string::npos) ? words.find_first_of(alpha, end + 1) : std::string::npos;
     }
 #endif
 }
 
-bool SpellChecker::isCorrect(const std::string& word) const
+bool SpellChecker::isCorrect(const std::string&word) const
 {
-    OSG_NOTICE<<"SpellChecker::isCorrect("<<word<<")"<<std::endl;
+    OSG_NOTICE << "SpellChecker::isCorrect(" << word << ")" << std::endl;
     return true;
 }
 
-SpellChecker::WordList SpellChecker::suggest(const std::string& word) const
+SpellChecker::WordList SpellChecker::suggest(const std::string&word) const
 {
     return WordList();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 XmlPatcher::XmlPatcher()
-{
-}
+{}
 
-void XmlPatcher::stripP3dXml(const std::string& filename, std::ostream& fout) const
+void XmlPatcher::stripP3dXml(const std::string&filename, std::ostream&fout) const
 {
-    std::string foundFileName = osgDB::findDataFile( filename );
-    if (foundFileName.empty()) return;
+    std::string foundFileName = osgDB::findDataFile(filename);
+
+    if (foundFileName.empty())
+        return;
 
     std::ifstream fin(foundFileName.c_str());
 
@@ -110,51 +117,56 @@ void XmlPatcher::stripP3dXml(const std::string& filename, std::ostream& fout) co
     osg::ref_ptr<osgDB::XmlNode> doc = new osgDB::XmlNode;
     doc->read(input);
 
-    if (!doc) return;
+    if (!doc)
+        return;
 
     stripXml(doc.get(), fout);
 }
 
-void XmlPatcher::stripXml(osgDB::XmlNode* node, std::ostream& fout) const
+void XmlPatcher::stripXml(osgDB::XmlNode *node, std::ostream&fout) const
 {
-    if (node->name=="presentation" ||
-        node->name=="slide" ||
-        node->name=="layer" ||
-        node->name=="page" ||
-        node->name=="paragraph" ||
-        node->name=="bullet")
+    if (node->name == "presentation" ||
+        node->name == "slide" ||
+        node->name == "layer" ||
+        node->name == "page" ||
+        node->name == "paragraph" ||
+        node->name == "bullet")
     {
         if (!(node->children.empty()))
         {
-            fout<<"<"<<node->name<<">"<<std::endl;
-            for(osgDB::XmlNode::Children::iterator itr = node->children.begin();
-                itr != node->children.end();
-                ++itr)
+            fout << "<" << node->name << ">" << std::endl;
+
+            for (osgDB::XmlNode::Children::iterator itr = node->children.begin();
+                 itr != node->children.end();
+                 ++itr)
             {
                 stripXml(itr->get(), fout);
             }
-            fout<<"</"<<node->name<<">"<<std::endl;
+
+            fout << "</" << node->name << ">" << std::endl;
         }
         else
         {
-            fout<<"<"<<node->name<<">"<<node->contents<<"</"<<node->name<<">"<<std::endl;
+            fout << "<" << node->name << ">" << node->contents << "</" << node->name << ">" << std::endl;
         }
     }
     else
     {
-        for(osgDB::XmlNode::Children::iterator itr = node->children.begin();
-            itr != node->children.end();
-            ++itr)
+        for (osgDB::XmlNode::Children::iterator itr = node->children.begin();
+             itr != node->children.end();
+             ++itr)
         {
             stripXml(itr->get(), fout);
         }
     }
 }
 
-osgDB::XmlNode* XmlPatcher::simplifyP3dXml(const std::string& filename) const
+osgDB::XmlNode* XmlPatcher::simplifyP3dXml(const std::string&filename) const
 {
-    std::string foundFileName = osgDB::findDataFile( filename );
-    if (foundFileName.empty()) return 0;
+    std::string foundFileName = osgDB::findDataFile(filename);
+
+    if (foundFileName.empty())
+        return 0;
 
     std::ifstream fin(foundFileName.c_str());
 
@@ -165,32 +177,36 @@ osgDB::XmlNode* XmlPatcher::simplifyP3dXml(const std::string& filename) const
     osg::ref_ptr<osgDB::XmlNode> doc = new osgDB::XmlNode;
     doc->read(input);
 
-    if (!doc) return 0;
+    if (!doc)
+        return 0;
 
     return simplifyXml(doc.get());
 }
 
-osgDB::XmlNode* XmlPatcher::simplifyXml(osgDB::XmlNode* node) const
+osgDB::XmlNode* XmlPatcher::simplifyXml(osgDB::XmlNode *node) const
 {
     if (node->name.empty() ||
-        node->name=="presentation" ||
-        node->name=="slide" ||
-        node->name=="layer" ||
-        node->name=="page" ||
-        node->name=="paragraph" ||
-        node->name=="bullet")
+        node->name == "presentation" ||
+        node->name == "slide" ||
+        node->name == "layer" ||
+        node->name == "page" ||
+        node->name == "paragraph" ||
+        node->name == "bullet")
     {
-        osgDB::XmlNode* newNode = new osgDB::XmlNode;
-        newNode->type = node->type;
-        newNode->name = node->name;
+        osgDB::XmlNode *newNode = new osgDB::XmlNode;
+        newNode->type     = node->type;
+        newNode->name     = node->name;
         newNode->contents = node->contents;
-        for(osgDB::XmlNode::Children::iterator itr = node->children.begin();
-            itr != node->children.end();
-            ++itr)
+
+        for (osgDB::XmlNode::Children::iterator itr = node->children.begin();
+             itr != node->children.end();
+             ++itr)
         {
-            osgDB::XmlNode* child = simplifyXml(itr->get());
-            if (child)  newNode->children.push_back(child);
+            osgDB::XmlNode *child = simplifyXml(itr->get());
+            if (child)
+                newNode->children.push_back(child);
         }
+
         return newNode;
     }
     else
@@ -198,13 +214,16 @@ osgDB::XmlNode* XmlPatcher::simplifyXml(osgDB::XmlNode* node) const
         return 0;
     }
 }
-osgDB::XmlNode* XmlPatcher::mergeP3dXml(const std::string& lhs_filename, const std::string& rhs_filename) const
+osgDB::XmlNode* XmlPatcher::mergeP3dXml(const std::string&lhs_filename, const std::string&rhs_filename) const
 {
-    std::string lhs_foundFileName = osgDB::findDataFile( lhs_filename );
-    if (lhs_foundFileName.empty()) return 0;
+    std::string lhs_foundFileName = osgDB::findDataFile(lhs_filename);
 
-    std::string rhs_foundFileName = osgDB::findDataFile( rhs_filename );
-    if (rhs_foundFileName.empty()) return 0;
+    if (lhs_foundFileName.empty())
+        return 0;
+
+    std::string rhs_foundFileName = osgDB::findDataFile(rhs_filename);
+    if (rhs_foundFileName.empty())
+        return 0;
 
     osg::ref_ptr<osgDB::XmlNode> lhs_doc = new osgDB::XmlNode;
     osg::ref_ptr<osgDB::XmlNode> rhs_doc = new osgDB::XmlNode;
@@ -217,7 +236,8 @@ osgDB::XmlNode* XmlPatcher::mergeP3dXml(const std::string& lhs_filename, const s
         input.readAllDataIntoBuffer();
 
         lhs_doc->read(input);
-        if (!lhs_doc) return 0;
+        if (!lhs_doc)
+            return 0;
     }
 
     {
@@ -228,22 +248,24 @@ osgDB::XmlNode* XmlPatcher::mergeP3dXml(const std::string& lhs_filename, const s
         input.readAllDataIntoBuffer();
 
         rhs_doc->read(input);
-        if (!rhs_doc) return 0;
+        if (!rhs_doc)
+            return 0;
     }
 
     lhs_doc = mergeXml(lhs_doc.get(), rhs_doc.get());
     return lhs_doc.release();
 }
 
-osgDB::XmlNode* XmlPatcher::mergeXml(osgDB::XmlNode* lhs_node, osgDB::XmlNode* rhs_node) const
+osgDB::XmlNode* XmlPatcher::mergeXml(osgDB::XmlNode *lhs_node, osgDB::XmlNode *rhs_node) const
 {
     if (lhs_node->name == rhs_node->name)
     {
         lhs_node->contents = rhs_node->contents;
         osgDB::XmlNode::Children::iterator rhs_itr = rhs_node->children.begin();
-        for(osgDB::XmlNode::Children::iterator lhs_itr = lhs_node->children.begin();
-            lhs_itr != lhs_node->children.end() && rhs_itr != rhs_node->children.end();
-            ++lhs_itr)
+
+        for (osgDB::XmlNode::Children::iterator lhs_itr = lhs_node->children.begin();
+             lhs_itr != lhs_node->children.end() && rhs_itr != rhs_node->children.end();
+             ++lhs_itr)
         {
             if ((*lhs_itr)->name == (*rhs_itr)->name)
             {
@@ -252,5 +274,6 @@ osgDB::XmlNode* XmlPatcher::mergeXml(osgDB::XmlNode* lhs_node, osgDB::XmlNode* r
             }
         }
     }
+
     return lhs_node;
 }

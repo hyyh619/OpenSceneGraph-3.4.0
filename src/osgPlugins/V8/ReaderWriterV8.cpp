@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgDB/FileNameUtils>
 #include <osgDB/FileUtils>
@@ -19,61 +19,74 @@
 
 class ReaderWriterV8 : public osgDB::ReaderWriter
 {
-    public:
+public:
 
-        ReaderWriterV8()
+ReaderWriterV8()
+{
+    supportsExtension("v8", "JavaScript");
+    supportsExtension("js", "JavaScript");
+}
+
+virtual const char* className() const
+{
+    return "V8 JavaScript ScriptEngine plugin";
+}
+
+virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+{
+    return readScript(fin, options);
+}
+
+virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+{
+    if (file == "ScriptEngine.V8")
+        return new v8::V8ScriptEngine();
+
+    if (file == "ScriptEngine.js")
+        return new v8::V8ScriptEngine();
+
+    return readScript(file);
+}
+
+virtual ReadResult readScript(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+{
+    osg::ref_ptr<osg::Script> script = new osg::Script;
+
+    script->setLanguage("js");
+
+    std::string str;
+
+    while (fin)
+    {
+        int c = fin.get();
+        if (c >= 0 && c <= 255)
         {
-            supportsExtension("v8","JavaScript");
-            supportsExtension("js","JavaScript");
+            str.push_back(c);
         }
+    }
 
-        virtual const char* className() const { return "V8 JavaScript ScriptEngine plugin"; }
+    script->setScript(str);
 
-        virtual ReadResult readObject(std::istream& fin, const osgDB::ReaderWriter::Options* options =NULL) const
-        {
-            return readScript(fin, options);
-        }
+    return script.release();
+}
 
-        virtual ReadResult readObject(const std::string& file, const osgDB::ReaderWriter::Options* options =NULL) const
-        {
-            if (file=="ScriptEngine.V8") return new v8::V8ScriptEngine();
-            if (file=="ScriptEngine.js") return new v8::V8ScriptEngine();
+virtual ReadResult readScript(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+{
+    std::string ext = osgDB::getLowerCaseFileExtension(file);
 
-            return readScript(file);
-        }
+    if (!acceptsExtension(ext))
+        return ReadResult::FILE_NOT_HANDLED;
 
-        virtual ReadResult readScript(std::istream& fin,const osgDB::ReaderWriter::Options* options =NULL) const
-        {
-            osg::ref_ptr<osg::Script> script = new osg::Script;
-            script->setLanguage("js");
+    std::string fileName = osgDB::findDataFile(file, options);
+    if (fileName.empty())
+        return ReadResult::FILE_NOT_FOUND;
 
-            std::string str;
-            while(fin)
-            {
-                int c = fin.get();
-                if (c>=0 && c<=255)
-                {
-                    str.push_back(c);
-                }
-            }
-            script->setScript(str);
+    osgDB::ifstream istream(fileName.c_str(), std::ios::in);
+    if (!istream)
+        return ReadResult::FILE_NOT_HANDLED;
 
-            return script.release();
-        }
-
-        virtual ReadResult readScript(const std::string& file, const osgDB::ReaderWriter::Options* options =NULL) const
-        {
-            std::string ext = osgDB::getLowerCaseFileExtension(file);
-            if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;
-
-            std::string fileName = osgDB::findDataFile( file, options );
-            if (fileName.empty()) return ReadResult::FILE_NOT_FOUND;
-
-            osgDB::ifstream istream(fileName.c_str(), std::ios::in);
-            if(!istream) return ReadResult::FILE_NOT_HANDLED;
-
-            return readScript(istream, options);
-        }
+    return readScript(istream, options);
+}
 };
 
 // now register with Registry to instantiate the above

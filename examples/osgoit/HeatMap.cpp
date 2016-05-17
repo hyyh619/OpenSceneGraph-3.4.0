@@ -36,7 +36,8 @@
 ///////////////////////////////////////////////////////////////////////////
 // in-line GLSL source code
 
-static const char *VertexShader = {
+static const char *VertexShader =
+{
     "#version 120\n"
     "uniform float maximum;\n"
     "uniform float maxheight;\n"
@@ -73,24 +74,36 @@ static const char *FragmentShader =
 class MyGeometry : public osg::Geometry
 {
 public:
-    MyGeometry(osg::BoundingBox bounds)
-    {
-        m_bounds = bounds;
-        m_bsphere = osg::BoundingSphere(bounds);
-    }
+MyGeometry(osg::BoundingBox bounds)
+{
+    m_bounds  = bounds;
+    m_bsphere = osg::BoundingSphere(bounds);
+}
 
-    // an attempt to return a reasonable bounding box. Still does not prevent clipping of the heat map.
-    virtual const osg::BoundingBox& getBoundingBox() const {return m_bounds;}
-    virtual osg::BoundingBox computeBoundingBox() const {return m_bounds;}
+// an attempt to return a reasonable bounding box. Still does not prevent clipping of the heat map.
+virtual const osg::BoundingBox&getBoundingBox() const
+{
+    return m_bounds;
+}
+virtual osg::BoundingBox computeBoundingBox() const
+{
+    return m_bounds;
+}
 #ifdef OSG_USE_BOUND
-    virtual osg::Bound getBound() const { return osg::Bound(m_bounds, m_bounds); }
+virtual osg::Bound getBound() const
+{
+    return osg::Bound(m_bounds, m_bounds);
+}
 #else
-    virtual const osg::BoundingSphere& getBound() const {return m_bsphere;}
+virtual const osg::BoundingSphere&getBound() const
+{
+    return m_bsphere;
+}
 #endif
 
 protected:
-    osg::BoundingBox m_bounds;
-    osg::BoundingSphere m_bsphere;
+osg::BoundingBox    m_bounds;
+osg::BoundingSphere m_bsphere;
 };
 
 Heatmap::Heatmap(float width, float depth, float maxheight, unsigned int K, unsigned int N, float maximum, float transparency)
@@ -100,35 +113,42 @@ Heatmap::Heatmap(float width, float depth, float maxheight, unsigned int K, unsi
     const int O = 4;
 
     // create Geometry object to store all the vertices primitives.
-    osg::Geometry *meshGeom  = new MyGeometry(osg::BoundingBox(osg::Vec3(-width/2, -depth/2, 0), osg::Vec3(width/2, depth/2, maxheight)));
+    osg::Geometry *meshGeom = new MyGeometry(osg::BoundingBox(osg::Vec3(-width / 2, -depth / 2, 0), osg::Vec3(width / 2, depth / 2, maxheight)));
 
     // we use a float attribute array storing texcoords
-    osg::Vec2Array* xypositions = new osg::Vec2Array();
+    osg::Vec2Array *xypositions = new osg::Vec2Array();
     xypositions->setName("xypos");
 
     // create vertex coordinates
-    osg::Vec3Array* vertices = new osg::Vec3Array();
-    osg::Vec3 off(-width/2, -depth/2, 0);
-    for (unsigned int y=0; y < O*N; y++) {
+    osg::Vec3Array *vertices = new osg::Vec3Array();
+    osg::Vec3      off(-width / 2, -depth / 2, 0);
+
+    for (unsigned int y = 0; y < O * N; y++)
+    {
         if (y % 2 == 0)
         {
-            for (unsigned int x=0; x < O*K; x++) {
-                vertices->push_back(osg::Vec3(width*x/(O*K-1), depth*y/(O*N-1), 0.0)+off);
-                xypositions->push_back(osg::Vec2(((float)x+0.5f)/(O*K),((float)y+0.5f)/(O*N)));
+            for (unsigned int x = 0; x < O * K; x++)
+            {
+                vertices->push_back(osg::Vec3(width * x / (O * K - 1), depth * y / (O * N - 1), 0.0) + off);
+                xypositions->push_back(osg::Vec2(((float)x + 0.5f) / (O * K), ((float)y + 0.5f) / (O * N)));
             }
         }
         else
         {
-            vertices->push_back(osg::Vec3(0, depth*y/(O*N-1), 0.0)+off);
-            xypositions->push_back(osg::Vec2(0.5f/(O*K),((float)y+0.5f)/(O*N)));
-            for (unsigned int x=0; x < O*K-1; x++) {
-                vertices->push_back(osg::Vec3(width*(0.5+x)/(O*K-1), depth*y/(O*N-1), 0.0)+off);
-                xypositions->push_back(osg::Vec2(((float)(x+0.5f)+0.5f)/(O*K),((float)y+0.5f)/(O*N)));
+            vertices->push_back(osg::Vec3(0, depth * y / (O * N - 1), 0.0) + off);
+            xypositions->push_back(osg::Vec2(0.5f / (O * K), ((float)y + 0.5f) / (O * N)));
+
+            for (unsigned int x = 0; x < O * K - 1; x++)
+            {
+                vertices->push_back(osg::Vec3(width * (0.5 + x) / (O * K - 1), depth * y / (O * N - 1), 0.0) + off);
+                xypositions->push_back(osg::Vec2(((float)(x + 0.5f) + 0.5f) / (O * K), ((float)y + 0.5f) / (O * N)));
             }
-            vertices->push_back(osg::Vec3(width, depth*y/(O*N-1), 0.0)+off);
-            xypositions->push_back(osg::Vec2(1.0f-0.5f/(O*K),((float)y+0.5f)/(O*N)));
+
+            vertices->push_back(osg::Vec3(width, depth * y / (O * N - 1), 0.0) + off);
+            xypositions->push_back(osg::Vec2(1.0f - 0.5f / (O * K), ((float)y + 0.5f) / (O * N)));
         }
     }
+
     xypositions->setBinding(osg::Array::BIND_PER_VERTEX);
     xypositions->setNormalize(false);
 
@@ -136,44 +156,59 @@ Heatmap::Heatmap(float width, float depth, float maxheight, unsigned int K, unsi
     meshGeom->setVertexArray(vertices);
 
     // generate several tri strips to form a mesh
-    GLuint *indices = new GLuint[4*O*K];
-    for (unsigned int y=0; y < O*N-1; y++) {
+    GLuint *indices = new GLuint[4 * O * K];
+
+    for (unsigned int y = 0; y < O * N - 1; y++)
+    {
         if (y % 2 == 0)
         {
-            int base  = (y/2) * (O*K+O*K+1);
-            int base2 = (y/2) * (O*K+O*K+1) + O*K;
-            int i=0; for (unsigned int x=0; x < O*K; x++) { indices[i++] = base2+x; indices[i++] = base+x;}
-            indices[i++] = base2+O*K;
+            int base  = (y / 2) * (O * K + O * K + 1);
+            int base2 = (y / 2) * (O * K + O * K + 1) + O * K;
+            int i     = 0;
+
+            for (unsigned int x = 0; x < O * K; x++)
+            {
+                indices[i++] = base2 + x; indices[i++] = base + x;
+            }
+
+            indices[i++] = base2 + O * K;
             meshGeom->addPrimitiveSet(new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLE_STRIP, i, indices));
         }
         else
         {
-            int base = (y/2) * (O*K+O*K+1) + O*K;
-            int base2 = (y/2) * (O*K+O*K+1) + O*K + O*K+1;
-            int i=0; for (unsigned int x=0; x < O*K; x++) { indices[i++] = base+x; indices[i++] = base2+x;}
-            indices[i++] = base+O*K;
+            int base  = (y / 2) * (O * K + O * K + 1) + O * K;
+            int base2 = (y / 2) * (O * K + O * K + 1) + O * K + O * K + 1;
+            int i     = 0;
+
+            for (unsigned int x = 0; x < O * K; x++)
+            {
+                indices[i++] = base + x; indices[i++] = base2 + x;
+            }
+
+            indices[i++] = base + O * K;
             meshGeom->addPrimitiveSet(new osg::DrawElementsUInt(osg::PrimitiveSet::TRIANGLE_STRIP, i, indices));
         }
     }
+
     delete[] indices;
 
     // create vertex and fragment shader
-    osg::Program* program = new osg::Program;
-    program->setName( "mesh" );
+    osg::Program *program = new osg::Program;
+    program->setName("mesh");
     program->addBindAttribLocation("xypos", 6);
-    program->addShader( new osg::Shader( osg::Shader::VERTEX, VertexShader ) );
-    program->addShader( new osg::Shader( osg::Shader::FRAGMENT, DepthPeeling::PeelingShader ) );
-    program->addShader( new osg::Shader( osg::Shader::FRAGMENT, FragmentShader ) );
+    program->addShader(new osg::Shader(osg::Shader::VERTEX, VertexShader));
+    program->addShader(new osg::Shader(osg::Shader::FRAGMENT, DepthPeeling::PeelingShader));
+    program->addShader(new osg::Shader(osg::Shader::FRAGMENT, FragmentShader));
 
     // create a 1D texture for color lookups
     colorimg = new osg::Image();
     colorimg->allocateImage(5, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE);
     unsigned char *data = colorimg->data();
-    *data++ =   0; *data++ =   0; *data++ = 255; *data++ =   0;  // fully transparent blue
-    *data++ =   0; *data++ = 255; *data++ = 255; *data++ = 255;  // turquoise
-    *data++ =   0; *data++ = 255; *data++ =   0; *data++ = 255;  // green
-    *data++ = 255; *data++ = 255; *data++ =   0; *data++ = 255;  // yellow
-    *data++ = 255; *data++ =   0; *data++ =   0; *data++ = 255;  // red
+    *data++  = 0; *data++ = 0; *data++ = 255; *data++ = 0;       // fully transparent blue
+    *data++  = 0; *data++ = 255; *data++ = 255; *data++ = 255;   // turquoise
+    *data++  = 0; *data++ = 255; *data++ = 0; *data++ = 255;     // green
+    *data++  = 255; *data++ = 255; *data++ = 0; *data++ = 255;   // yellow
+    *data++  = 255; *data++ = 0; *data++ = 0; *data++ = 255;     // red
     colortex = new osg::Texture1D(colorimg.get());
     colortex->setFilter(osg::Texture::MIN_FILTER, osg::Texture::LINEAR);
     colortex->setFilter(osg::Texture::MAG_FILTER, osg::Texture::LINEAR);
@@ -197,17 +232,17 @@ Heatmap::Heatmap(float width, float depth, float maxheight, unsigned int K, unsi
     meshstate->setMode(GL_BLEND,  osg::StateAttribute::ON);
     meshstate->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
     meshstate->setAttributeAndModes(program, osg::StateAttribute::ON);
-    meshstate->setTextureAttributeAndModes(0,colortex.get(),osg::StateAttribute::ON);
-    meshstate->setTextureAttributeAndModes(1,m_tex2.get(),osg::StateAttribute::ON);
+    meshstate->setTextureAttributeAndModes(0, colortex.get(), osg::StateAttribute::ON);
+    meshstate->setTextureAttributeAndModes(1, m_tex2.get(), osg::StateAttribute::ON);
 
     // uniforms for height and color scaling
-    maximumUniform = new osg::Uniform( "maximum", (float)maximum );
-    maxheightUniform = new osg::Uniform( "maxheight", (float)maxheight );
-    transparencyUniform = new osg::Uniform( "transparency", (float)transparency);
+    maximumUniform      = new osg::Uniform("maximum", (float)maximum);
+    maxheightUniform    = new osg::Uniform("maxheight", (float)maxheight);
+    transparencyUniform = new osg::Uniform("transparency", (float)transparency);
 
-    osg::Uniform* texUniform = new osg::Uniform(osg::Uniform::SAMPLER_1D, "colortex");
+    osg::Uniform *texUniform = new osg::Uniform(osg::Uniform::SAMPLER_1D, "colortex");
     texUniform->set(0);
-    osg::Uniform* texUniform2 = new osg::Uniform(osg::Uniform::SAMPLER_2D, "datatex");
+    osg::Uniform *texUniform2 = new osg::Uniform(osg::Uniform::SAMPLER_2D, "datatex");
     texUniform2->set(1);
     meshstate->addUniform(texUniform);
     meshstate->addUniform(texUniform2);
@@ -222,15 +257,14 @@ Heatmap::Heatmap(float width, float depth, float maxheight, unsigned int K, unsi
 
 void Heatmap::setData(float *buffer, float maxheight, float maximum, float transparency)
 {
-    memcpy(m_data, buffer, m_N*m_K*sizeof(float));
+    memcpy(m_data, buffer, m_N * m_K * sizeof(float));
 
-    maximumUniform->set( maximum );
-    maxheightUniform->set( maxheight );
-    transparencyUniform->set ( transparency );
+    maximumUniform->set(maximum);
+    maxheightUniform->set(maxheight);
+    transparencyUniform->set (transparency);
 
     m_img2.get()->dirty();
 }
 
 Heatmap::~Heatmap()
-{
-}
+{}

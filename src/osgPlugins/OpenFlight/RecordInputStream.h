@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 //
 // OpenFlight® loader for OpenSceneGraph
@@ -23,8 +23,8 @@
 #include "Record.h"
 #include "DataInputStream.h"
 
-namespace flt {
-
+namespace flt
+{
 class Document;
 
 typedef int opcode_type;
@@ -32,21 +32,26 @@ typedef std::streamsize size_type;
 
 class RecordInputStream : public DataInputStream
 {
-    public:
+public:
 
-        explicit RecordInputStream(std::streambuf* sb);
+explicit RecordInputStream(std::streambuf *sb);
 
-        bool readRecord(Document&);
-        bool readRecordBody(opcode_type, size_type, Document&);
+bool readRecord(Document&);
+bool readRecordBody(opcode_type, size_type, Document &);
 
-        inline std::streamsize getRecordSize() const { return _recordSize; }
-        inline std::streamsize getRecordBodySize() const { return _recordSize-(std::streamsize)4; }
+inline std::streamsize getRecordSize() const
+{
+    return _recordSize;
+}
+inline std::streamsize getRecordBodySize() const
+{
+    return _recordSize - (std::streamsize)4;
+}
 
-    protected:
+protected:
 
-        std::streamsize _recordSize;
+std::streamsize _recordSize;
 };
-
 } // end namespace
 
 #endif

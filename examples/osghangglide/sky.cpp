@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osghangglide.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include <math.h>
 
@@ -34,10 +34,10 @@
 
 using namespace osg;
 
-Node *makeSky( void )
+Node* makeSky(void)
 {
-    int i, j;
-    float lev[] = { -5, -1.0, 1.0, 15.0, 30.0, 60.0, 90.0  };
+    int   i, j;
+    float lev[]   = { -5, -1.0, 1.0, 15.0, 30.0, 60.0, 90.0  };
     float cc[][4] =
     {
         { 0.0, 0.0, 0.15 },
@@ -51,27 +51,27 @@ Node *makeSky( void )
     float x, y, z;
     float alpha, theta;
     float radius = 20.0f;
-    int nlev = sizeof( lev )/sizeof(float);
+    int   nlev   = sizeof(lev) / sizeof(float);
 
     Geometry *geom = new Geometry;
 
-    Vec3Array& coords = *(new Vec3Array(19*nlev));
-    Vec4Array& colors = *(new Vec4Array(19*nlev));
-    Vec2Array& tcoords = *(new Vec2Array(19*nlev));
+    Vec3Array&coords  = *(new Vec3Array(19 * nlev));
+    Vec4Array&colors  = *(new Vec4Array(19 * nlev));
+    Vec2Array&tcoords = *(new Vec2Array(19 * nlev));
 
 
     int ci = 0;
 
-    for( i = 0; i < nlev; i++ )
+    for (i = 0; i < nlev; i++)
     {
-        for( j = 0; j <= 18; j++ )
+        for (j = 0; j <= 18; j++)
         {
             alpha = osg::DegreesToRadians(lev[i]);
-            theta = osg::DegreesToRadians((float)(j*20));
+            theta = osg::DegreesToRadians((float)(j * 20));
 
-            x = radius * cosf( alpha ) * cosf( theta );
-            y = radius * cosf( alpha ) * -sinf( theta );
-            z = radius * sinf( alpha );
+            x = radius * cosf(alpha) * cosf(theta);
+            y = radius * cosf(alpha) * -sinf(theta);
+            z = radius * sinf(alpha);
 
             coords[ci][0] = x;
             coords[ci][1] = y;
@@ -82,33 +82,31 @@ Node *makeSky( void )
             colors[ci][2] = cc[i][2];
             colors[ci][3] = 1.0;
 
-            tcoords[ci][0] = (float)j/18.0;
-            tcoords[ci][1] = (float)i/(float)(nlev-1);
+            tcoords[ci][0] = (float)j / 18.0;
+            tcoords[ci][1] = (float)i / (float)(nlev - 1);
 
             ci++;
         }
-
-
     }
 
-    for( i = 0; i < nlev-1; i++ )
+    for (i = 0; i < nlev - 1; i++)
     {
-        DrawElementsUShort* drawElements = new DrawElementsUShort(PrimitiveSet::TRIANGLE_STRIP);
+        DrawElementsUShort *drawElements = new DrawElementsUShort(PrimitiveSet::TRIANGLE_STRIP);
         drawElements->reserve(38);
 
-        for( j = 0; j <= 18; j++ )
+        for (j = 0; j <= 18; j++)
         {
-            drawElements->push_back((i+1)*19+j);
-            drawElements->push_back((i+0)*19+j);
+            drawElements->push_back((i + 1) * 19 + j);
+            drawElements->push_back((i + 0) * 19 + j);
         }
 
         geom->addPrimitiveSet(drawElements);
     }
 
-    geom->setVertexArray( &coords );
-    geom->setTexCoordArray( 0, &tcoords );
+    geom->setVertexArray(&coords);
+    geom->setTexCoordArray(0, &tcoords);
 
-    geom->setColorArray( &colors, Array::BIND_PER_VERTEX );
+    geom->setColorArray(&colors, Array::BIND_PER_VERTEX);
 
 
     Texture2D *tex = new Texture2D;
@@ -116,26 +114,26 @@ Node *makeSky( void )
 
     StateSet *dstate = new StateSet;
 
-    dstate->setTextureAttributeAndModes(0, tex, StateAttribute::OFF );
-    dstate->setTextureAttribute(0, new TexEnv );
-    dstate->setMode( GL_LIGHTING, StateAttribute::OFF );
-    dstate->setMode( GL_CULL_FACE, StateAttribute::ON );
+    dstate->setTextureAttributeAndModes(0, tex, StateAttribute::OFF);
+    dstate->setTextureAttribute(0, new TexEnv);
+    dstate->setMode(GL_LIGHTING, StateAttribute::OFF);
+    dstate->setMode(GL_CULL_FACE, StateAttribute::ON);
 
 
     // clear the depth to the far plane.
-    osg::Depth* depth = new osg::Depth;
+    osg::Depth *depth = new osg::Depth;
     depth->setFunction(osg::Depth::ALWAYS);
-    depth->setRange(1.0,1.0);
-    dstate->setAttributeAndModes(depth,StateAttribute::ON );
+    depth->setRange(1.0, 1.0);
+    dstate->setAttributeAndModes(depth, StateAttribute::ON);
 
-    dstate->setRenderBinDetails(-2,"RenderBin");
+    dstate->setRenderBinDetails(-2, "RenderBin");
 
-    geom->setStateSet( dstate );
+    geom->setStateSet(dstate);
 
     Geode *geode = new Geode;
-    geode->addDrawable( geom );
+    geode->addDrawable(geom);
 
-    geode->setName( "Sky" );
+    geode->setName("Sky");
 
     return geode;
 }

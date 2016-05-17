@@ -7,42 +7,42 @@
 
 using namespace osg;
 
-OrientationConverter::OrientationConverter( void )
+OrientationConverter::OrientationConverter(void)
 {
-   R.makeIdentity();
-   T.makeIdentity();
-   _trans_set = false;
-   _use_world_frame = false;
-   S.makeIdentity();
+    R.makeIdentity();
+    T.makeIdentity();
+    _trans_set       = false;
+    _use_world_frame = false;
+    S.makeIdentity();
 }
 
-void OrientationConverter::setRotation( const Vec3 &from, const Vec3 &to )
+void OrientationConverter::setRotation(const Vec3&from, const Vec3&to)
 {
-    R = Matrix::rotate( from, to );
+    R = Matrix::rotate(from, to);
 }
 
-void OrientationConverter::setRotation( float degrees, const Vec3 &axis )
+void OrientationConverter::setRotation(float degrees, const Vec3&axis)
 {
-    R = Matrix::rotate( osg::DegreesToRadians(degrees), axis );
+    R = Matrix::rotate(osg::DegreesToRadians(degrees), axis);
 }
 
-void OrientationConverter::setTranslation( const Vec3 &trans )
+void OrientationConverter::setTranslation(const Vec3&trans)
 {
-    T = Matrix::translate(trans);
+    T          = Matrix::translate(trans);
     _trans_set = true;
 }
 
-void OrientationConverter::setScale( const Vec3 &scale )
+void OrientationConverter::setScale(const Vec3&scale)
 {
     S = Matrix::scale(scale);
 }
 
-void OrientationConverter::useWorldFrame( bool worldFrame )
+void OrientationConverter::useWorldFrame(bool worldFrame)
 {
-   _use_world_frame = worldFrame;
+    _use_world_frame = worldFrame;
 }
 
-Node* OrientationConverter::convert( Node *node )
+Node* OrientationConverter::convert(Node *node)
 {
     // Order of operations here is :
     // 1. If world frame option not set, translate to world origin (0,0,0)
@@ -53,7 +53,7 @@ Node* OrientationConverter::convert( Node *node )
     //    else if world frame option not set,
     //        - translate back to model's original origin.
     BoundingSphere bs = node->getBound();
-    Matrix C;
+    Matrix         C;
 
     if (_use_world_frame)
     {
@@ -61,24 +61,24 @@ Node* OrientationConverter::convert( Node *node )
     }
     else
     {
-        C = Matrix::translate( -bs.center() );
-        
+        C = Matrix::translate(-bs.center());
+
         if (_trans_set == false)
-            T = Matrix::translate( bs.center() );
+            T = Matrix::translate(bs.center());
     }
 
 
-    osg::Group* root = new osg::Group;
-    osg::MatrixTransform* transform = new osg::MatrixTransform;
+    osg::Group           *root      = new osg::Group;
+    osg::MatrixTransform *transform = new osg::MatrixTransform;
 
     transform->setDataVariance(osg::Object::STATIC);
-    transform->setMatrix( C * R * S * T );
-    
+    transform->setMatrix(C * R * S * T);
+
     if (!S.isIdentity())
     {
         #if !defined(OSG_GLES2_AVAILABLE)
-            // Add a normalize state. This will be removed if the FlattenStaticTransformsVisitor works
-            transform->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
+        // Add a normalize state. This will be removed if the FlattenStaticTransformsVisitor works
+        transform->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
         #endif
     }
 
@@ -88,6 +88,6 @@ Node* OrientationConverter::convert( Node *node )
     osgUtil::Optimizer::FlattenStaticTransformsVisitor fstv;
     root->accept(fstv);
     fstv.removeTransforms(root);
-    
+
     return root->getChild(0);
 }

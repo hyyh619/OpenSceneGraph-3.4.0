@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool ShadowVolume_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool ShadowVolume_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool ShadowVolume_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool ShadowVolume_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(ShadowVolume_Proxy)
 (

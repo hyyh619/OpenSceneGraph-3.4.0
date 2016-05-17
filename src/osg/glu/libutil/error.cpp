@@ -34,21 +34,21 @@
 
 // define GL values not provided by some GL headers.
 #ifndef GL_TABLE_TOO_LARGE
-    #define GL_TABLE_TOO_LARGE  0x8031
+    #define GL_TABLE_TOO_LARGE 0x8031
 #endif
 
 #ifndef GL_STACK_OVERFLOW
-    #define GL_STACK_OVERFLOW   0x0503
+    #define GL_STACK_OVERFLOW 0x0503
 #endif
 
 #ifndef GL_STACK_UNDERFLOW
-    #define GL_STACK_UNDERFLOW  0x0504
+    #define GL_STACK_UNDERFLOW 0x0504
 #endif
 
 namespace osg
 {
-
-static unsigned char *__gluNurbsErrors[] = {
+static unsigned char *__gluNurbsErrors[] =
+{
     (unsigned char*) " ",
     (unsigned char*) "spline order un-supported",
     (unsigned char*) "too few knots",
@@ -89,12 +89,13 @@ static unsigned char *__gluNurbsErrors[] = {
     (unsigned char*) "duplicate point on piecewise linear trimming curve",
 };
 
-const unsigned char *__gluNURBSErrorString( int errnum )
+const unsigned char* __gluNURBSErrorString(int errnum)
 {
     return __gluNurbsErrors[errnum];
 }
 
-static unsigned char *__gluTessErrors[] = {
+static unsigned char *__gluTessErrors[] =
+{
     (unsigned char*) " ",
     (unsigned char*) "gluTessBeginPolygon() must precede a gluTessEndPolygon()",
     (unsigned char*) "gluTessBeginContour() must precede a gluTessEndContour()",
@@ -104,35 +105,35 @@ static unsigned char *__gluTessErrors[] = {
     (unsigned char*) "need combine callback",
 };
 
-const unsigned char *__gluTessErrorString( int errnum )
+const unsigned char* __gluTessErrorString(int errnum)
 {
     return __gluTessErrors[errnum];
-} /* __glTessErrorString() */
+}   /* __glTessErrorString() */
 
 
 struct token_string
 {
-   GLuint Token;
-   const char *String;
+    GLuint     Token;
+    const char *String;
 };
 
 static const struct token_string Errors[] = {
-   { GL_NO_ERROR, "no error" },
-   { GL_INVALID_ENUM, "invalid enumerant" },
-   { GL_INVALID_VALUE, "invalid value" },
-   { GL_INVALID_OPERATION, "invalid operation" },
-   { GL_STACK_OVERFLOW, "stack overflow" },
-   { GL_STACK_UNDERFLOW, "stack underflow" },
-   { GL_OUT_OF_MEMORY, "out of memory" },
-   { GL_TABLE_TOO_LARGE, "table too large" },
-   { GL_INVALID_FRAMEBUFFER_OPERATION_EXT, "invalid framebuffer operation" },
-   /* GLU */
-   { GLU_INVALID_ENUM, "invalid enumerant" },
-   { GLU_INVALID_VALUE, "invalid value" },
-   { GLU_OUT_OF_MEMORY, "out of memory" },
-   { GLU_INCOMPATIBLE_GL_VERSION, "incompatible gl version" },
-   { GLU_INVALID_OPERATION, "invalid operation" },
-   { ~0u, NULL } /* end of list indicator */
+    { GL_NO_ERROR, "no error" },
+    { GL_INVALID_ENUM, "invalid enumerant" },
+    { GL_INVALID_VALUE, "invalid value" },
+    { GL_INVALID_OPERATION, "invalid operation" },
+    { GL_STACK_OVERFLOW, "stack overflow" },
+    { GL_STACK_UNDERFLOW, "stack underflow" },
+    { GL_OUT_OF_MEMORY, "out of memory" },
+    { GL_TABLE_TOO_LARGE, "table too large" },
+    { GL_INVALID_FRAMEBUFFER_OPERATION_EXT, "invalid framebuffer operation" },
+    /* GLU */
+    { GLU_INVALID_ENUM, "invalid enumerant" },
+    { GLU_INVALID_VALUE, "invalid value" },
+    { GLU_OUT_OF_MEMORY, "out of memory" },
+    { GLU_INCOMPATIBLE_GL_VERSION, "incompatible gl version" },
+    { GLU_INVALID_OPERATION, "invalid operation" },
+    { ~0u, NULL } /* end of list indicator */
 };
 
 
@@ -140,14 +141,18 @@ static const struct token_string Errors[] = {
 const GLubyte* gluErrorString(GLenum errorCode)
 {
     int i;
-    for (i = 0; Errors[i].String; i++) {
-        if (Errors[i].Token == errorCode)
-            return (const GLubyte *) Errors[i].String;
-    }
-    if ((errorCode >= GLU_TESS_ERROR1) && (errorCode <= GLU_TESS_ERROR6)) {
-        return (const GLubyte *) __gluTessErrorString(errorCode - (GLU_TESS_ERROR1 - 1));
-    }
-    return (const GLubyte *) 0;
-}
 
+    for (i = 0; Errors[i].String; i++)
+    {
+        if (Errors[i].Token == errorCode)
+            return (const GLubyte*) Errors[i].String;
+    }
+
+    if ((errorCode >= GLU_TESS_ERROR1) && (errorCode <= GLU_TESS_ERROR6))
+    {
+        return (const GLubyte*) __gluTessErrorString(errorCode - (GLU_TESS_ERROR1 - 1));
+    }
+
+    return (const GLubyte*) 0;
+}
 } // end of namespace osg

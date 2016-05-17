@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 
 #include <osgText/TextBase>
@@ -28,11 +28,11 @@
 using namespace osg;
 using namespace osgText;
 
-//#define TREES_CODE_FOR_MAKING_SPACES_EDITABLE
+// #define TREES_CODE_FOR_MAKING_SPACES_EDITABLE
 
-TextBase::TextBase():
-    _color(1.0f,1.0f,1.0f,1.0f),
-    _fontSize(32,32),
+TextBase::TextBase() :
+    _color(1.0f, 1.0f, 1.0f, 1.0f),
+    _fontSize(32, 32),
     _characterHeight(32),
     _characterSizeMode(OBJECT_COORDS),
     _maximumWidth(0.0f),
@@ -53,8 +53,8 @@ TextBase::TextBase():
     setSupportsDisplayList(false);
 }
 
-TextBase::TextBase(const TextBase& textBase,const osg::CopyOp& copyop):
-    osg::Drawable(textBase,copyop),
+TextBase::TextBase(const TextBase&textBase, const osg::CopyOp&copyop) :
+    osg::Drawable(textBase, copyop),
     _color(textBase._color),
     _font(textBase._font),
     _style(textBase._style),
@@ -76,14 +76,12 @@ TextBase::TextBase(const TextBase& textBase,const osg::CopyOp& copyop):
     _textBBColor(textBase._textBBColor),
     _kerningType(textBase._kerningType),
     _lineCount(textBase._lineCount)
-{
-}
+{}
 
 TextBase::~TextBase()
-{
-}
+{}
 
-void TextBase::setColor(const osg::Vec4& color)
+void TextBase::setColor(const osg::Vec4&color)
 {
     _color = color;
 }
@@ -91,22 +89,25 @@ void TextBase::setColor(const osg::Vec4& color)
 
 void TextBase::setFont(osg::ref_ptr<Font> font)
 {
-    if (_font==font) return;
+    if (_font == font)
+        return;
 
     _font = font;
 
     computeGlyphRepresentation();
 }
 
-void TextBase::setFont(const std::string& fontfile)
+void TextBase::setFont(const std::string&fontfile)
 {
     setFont(readRefFontFile(fontfile));
 }
 
 void TextBase::setFontResolution(unsigned int width, unsigned int height)
 {
-    FontResolution size(width,height);
-    if (_fontSize==size) return;
+    FontResolution size(width, height);
+
+    if (_fontSize == size)
+        return;
 
     _fontSize = size;
     computeGlyphRepresentation();
@@ -114,7 +115,8 @@ void TextBase::setFontResolution(unsigned int width, unsigned int height)
 
 void TextBase::setCharacterSize(float height)
 {
-    if (_characterHeight==height) return;
+    if (_characterHeight == height)
+        return;
 
     _characterHeight = height;
     computeGlyphRepresentation();
@@ -122,24 +124,27 @@ void TextBase::setCharacterSize(float height)
 
 void TextBase::setCharacterSize(float height, float aspectRatio)
 {
-    if (getCharacterAspectRatio()!=aspectRatio)
+    if (getCharacterAspectRatio() != aspectRatio)
     {
         getOrCreateStyle()->setWidthRatio(aspectRatio);
     }
+
     setCharacterSize(height);
 }
 
 void TextBase::setMaximumWidth(float maximumWidth)
 {
-    if (_maximumWidth==maximumWidth) return;
+    if (_maximumWidth == maximumWidth)
+        return;
 
     _maximumWidth = maximumWidth;
     computeGlyphRepresentation();
 }
 
-void  TextBase::setMaximumHeight(float maximumHeight)
+void TextBase::setMaximumHeight(float maximumHeight)
 {
-    if (_maximumHeight==maximumHeight) return;
+    if (_maximumHeight == maximumHeight)
+        return;
 
     _maximumHeight = maximumHeight;
     computeGlyphRepresentation();
@@ -147,40 +152,43 @@ void  TextBase::setMaximumHeight(float maximumHeight)
 
 void TextBase::setLineSpacing(float lineSpacing)
 {
-    if (_lineSpacing==lineSpacing) return;
+    if (_lineSpacing == lineSpacing)
+        return;
 
     _lineSpacing = lineSpacing;
     computeGlyphRepresentation();
 }
 
 
-void TextBase::setText(const String& text)
+void TextBase::setText(const String&text)
 {
-    if (_text==text) return;
+    if (_text == text)
+        return;
 
     _text = text;
     computeGlyphRepresentation();
 }
 
-void TextBase::setText(const std::string& text)
+void TextBase::setText(const std::string&text)
 {
     setText(String(text));
 }
 
-void TextBase::setText(const std::string& text,String::Encoding encoding)
+void TextBase::setText(const std::string&text, String::Encoding encoding)
 {
-    setText(String(text,encoding));
+    setText(String(text, encoding));
 }
 
 
-void TextBase::setText(const wchar_t* text)
+void TextBase::setText(const wchar_t *text)
 {
     setText(String(text));
 }
 
-void TextBase::setPosition(const osg::Vec3& pos)
+void TextBase::setPosition(const osg::Vec3&pos)
 {
-    if (_position==pos) return;
+    if (_position == pos)
+        return;
 
     _position = pos;
     computePositions();
@@ -188,7 +196,8 @@ void TextBase::setPosition(const osg::Vec3& pos)
 
 void TextBase::setAlignment(AlignmentType alignment)
 {
-    if (_alignment==alignment) return;
+    if (_alignment == alignment)
+        return;
 
     _alignment = alignment;
     computeGlyphRepresentation();
@@ -198,45 +207,52 @@ void TextBase::setAxisAlignment(AxisAlignment axis)
 {
     _axisAlignment = axis;
 
-    switch(axis)
+    switch (axis)
     {
     case XZ_PLANE:
         setAutoRotateToScreen(false);
-        setRotation(osg::Quat(osg::inDegrees(90.0f),osg::Vec3(1.0f,0.0f,0.0f)));
+        setRotation(osg::Quat(osg::inDegrees(90.0f), osg::Vec3(1.0f, 0.0f, 0.0f)));
         break;
+
     case REVERSED_XZ_PLANE:
         setAutoRotateToScreen(false);
-        setRotation(osg::Quat(osg::inDegrees(180.0f),osg::Vec3(0.0f,1.0f,0.0f))*
-                    osg::Quat(osg::inDegrees(90.0f),osg::Vec3(1.0f,0.0f,0.0f)));
+        setRotation(osg::Quat(osg::inDegrees(180.0f), osg::Vec3(0.0f, 1.0f, 0.0f)) *
+                    osg::Quat(osg::inDegrees(90.0f), osg::Vec3(1.0f, 0.0f, 0.0f)));
         break;
+
     case YZ_PLANE:
         setAutoRotateToScreen(false);
-        setRotation(osg::Quat(osg::inDegrees(90.0f),osg::Vec3(1.0f,0.0f,0.0f))*
-                    osg::Quat(osg::inDegrees(90.0f),osg::Vec3(0.0f,0.0f,1.0f)));
+        setRotation(osg::Quat(osg::inDegrees(90.0f), osg::Vec3(1.0f, 0.0f, 0.0f)) *
+                    osg::Quat(osg::inDegrees(90.0f), osg::Vec3(0.0f, 0.0f, 1.0f)));
         break;
+
     case REVERSED_YZ_PLANE:
         setAutoRotateToScreen(false);
-        setRotation(osg::Quat(osg::inDegrees(180.0f),osg::Vec3(0.0f,1.0f,0.0f))*
-                    osg::Quat(osg::inDegrees(90.0f),osg::Vec3(1.0f,0.0f,0.0f))*
-                    osg::Quat(osg::inDegrees(90.0f),osg::Vec3(0.0f,0.0f,1.0f)));
+        setRotation(osg::Quat(osg::inDegrees(180.0f), osg::Vec3(0.0f, 1.0f, 0.0f)) *
+                    osg::Quat(osg::inDegrees(90.0f), osg::Vec3(1.0f, 0.0f, 0.0f)) *
+                    osg::Quat(osg::inDegrees(90.0f), osg::Vec3(0.0f, 0.0f, 1.0f)));
         break;
+
     case XY_PLANE:
         setAutoRotateToScreen(false);
         setRotation(osg::Quat());  // nop - already on XY plane.
         break;
+
     case REVERSED_XY_PLANE:
         setAutoRotateToScreen(false);
-        setRotation(osg::Quat(osg::inDegrees(180.0f),osg::Vec3(0.0f,1.0f,0.0f)));
+        setRotation(osg::Quat(osg::inDegrees(180.0f), osg::Vec3(0.0f, 1.0f, 0.0f)));
         break;
+
     case SCREEN:
         setAutoRotateToScreen(true);
         setRotation(osg::Quat());  // nop - already on XY plane.
         break;
+
     default: break;
     }
 }
 
-void TextBase::setRotation(const osg::Quat& quat)
+void TextBase::setRotation(const osg::Quat&quat)
 {
     _rotation = quat;
     computePositions();
@@ -245,7 +261,8 @@ void TextBase::setRotation(const osg::Quat& quat)
 
 void TextBase::setAutoRotateToScreen(bool autoRotateToScreen)
 {
-    if (_autoRotateToScreen==autoRotateToScreen) return;
+    if (_autoRotateToScreen == autoRotateToScreen)
+        return;
 
     _autoRotateToScreen = autoRotateToScreen;
     computePositions();
@@ -254,7 +271,8 @@ void TextBase::setAutoRotateToScreen(bool autoRotateToScreen)
 
 void TextBase::setLayout(Layout layout)
 {
-    if (_layout==layout) return;
+    if (_layout == layout)
+        return;
 
     _layout = layout;
     computeGlyphRepresentation();
@@ -263,9 +281,10 @@ void TextBase::setLayout(Layout layout)
 
 void TextBase::setDrawMode(unsigned int mode)
 {
-    if (_drawMode==mode) return;
+    if (_drawMode == mode)
+        return;
 
-    _drawMode=mode;
+    _drawMode = mode;
 }
 
 
@@ -281,23 +300,23 @@ void TextBase::setBoundingBoxMargin(float margin)
 
 osg::BoundingBox TextBase::computeBoundingBox() const
 {
-    osg::BoundingBox  bbox;
+    osg::BoundingBox bbox;
 
     if (_textBB.valid())
     {
-        for(unsigned int i=0;i<_autoTransformCache.size();++i)
+        for (unsigned int i = 0; i < _autoTransformCache.size(); ++i)
         {
-            if (_autoTransformCache[i]._traversalNumber>=0)
+            if (_autoTransformCache[i]._traversalNumber >= 0)
             {
-                osg::Matrix& matrix = _autoTransformCache[i]._matrix;
-                bbox.expandBy(_textBB.corner(0)*matrix);
-                bbox.expandBy(_textBB.corner(1)*matrix);
-                bbox.expandBy(_textBB.corner(2)*matrix);
-                bbox.expandBy(_textBB.corner(3)*matrix);
-                bbox.expandBy(_textBB.corner(4)*matrix);
-                bbox.expandBy(_textBB.corner(5)*matrix);
-                bbox.expandBy(_textBB.corner(6)*matrix);
-                bbox.expandBy(_textBB.corner(7)*matrix);
+                osg::Matrix&matrix = _autoTransformCache[i]._matrix;
+                bbox.expandBy(_textBB.corner(0) * matrix);
+                bbox.expandBy(_textBB.corner(1) * matrix);
+                bbox.expandBy(_textBB.corner(2) * matrix);
+                bbox.expandBy(_textBB.corner(3) * matrix);
+                bbox.expandBy(_textBB.corner(4) * matrix);
+                bbox.expandBy(_textBB.corner(5) * matrix);
+                bbox.expandBy(_textBB.corner(6) * matrix);
+                bbox.expandBy(_textBB.corner(7) * matrix);
             }
         }
 
@@ -312,9 +331,9 @@ osg::BoundingBox TextBase::computeBoundingBox() const
             if (_autoRotateToScreen)
             {
                 // use bounding sphere encompassing the maximum size of the text centered on the _position
-                double radius = _textBB.radius();
+                double    radius = _textBB.radius();
                 osg::Vec3 diagonal(radius, radius, radius);
-                bbox.set(_position-diagonal, _position+diagonal);
+                bbox.set(_position - diagonal, _position + diagonal);
             }
             else
             {
@@ -322,14 +341,14 @@ osg::BoundingBox TextBase::computeBoundingBox() const
                 matrix.makeTranslate(-_offset);
                 matrix.postMultRotate(_rotation);
                 matrix.postMultTranslate(_position);
-                bbox.expandBy(_textBB.corner(0)*matrix);
-                bbox.expandBy(_textBB.corner(1)*matrix);
-                bbox.expandBy(_textBB.corner(2)*matrix);
-                bbox.expandBy(_textBB.corner(3)*matrix);
-                bbox.expandBy(_textBB.corner(4)*matrix);
-                bbox.expandBy(_textBB.corner(5)*matrix);
-                bbox.expandBy(_textBB.corner(6)*matrix);
-                bbox.expandBy(_textBB.corner(7)*matrix);
+                bbox.expandBy(_textBB.corner(0) * matrix);
+                bbox.expandBy(_textBB.corner(1) * matrix);
+                bbox.expandBy(_textBB.corner(2) * matrix);
+                bbox.expandBy(_textBB.corner(3) * matrix);
+                bbox.expandBy(_textBB.corner(4) * matrix);
+                bbox.expandBy(_textBB.corner(5) * matrix);
+                bbox.expandBy(_textBB.corner(6) * matrix);
+                bbox.expandBy(_textBB.corner(7) * matrix);
             }
         }
     }
@@ -339,7 +358,7 @@ osg::BoundingBox TextBase::computeBoundingBox() const
 
 void TextBase::computePositions()
 {
-    unsigned int size = osg::maximum(osg::DisplaySettings::instance()->getMaxNumberOfGraphicsContexts(),_autoTransformCache.size());
+    unsigned int size = osg::maximum(osg::DisplaySettings::instance()->getMaxNumberOfGraphicsContexts(), _autoTransformCache.size());
 
     // FIXME: OPTIMIZE: This would be one of the ideal locations to
     // call computeAverageGlyphWidthAndHeight(). It is out of the contextID loop
@@ -348,7 +367,7 @@ void TextBase::computePositions()
     // or member variables, but we would need a system to know if the values are stale.)
 
 
-    for(unsigned int i=0;i<size;++i)
+    for (unsigned int i = 0; i < size; ++i)
     {
         computePositions(i);
     }
@@ -367,110 +386,121 @@ void TextBase::resizeGLObjectBuffers(unsigned int maxSize)
 }
 
 
-void TextBase::releaseGLObjects(osg::State* state) const
+void TextBase::releaseGLObjects(osg::State *state) const
 {
     Drawable::releaseGLObjects(state);
 }
 
-void TextBase::positionCursor(const osg::Vec2 & endOfLine_coords, osg::Vec2 & cursor, unsigned int linelength)
+void TextBase::positionCursor(const osg::Vec2&endOfLine_coords, osg::Vec2&cursor, unsigned int linelength)
 {
-    switch(_layout)
+    switch (_layout)
     {
-        case LEFT_TO_RIGHT:
+    case LEFT_TO_RIGHT:
+    {
+        switch (_alignment)
         {
-            switch (_alignment)
-            {
-                // nothing to be done for these
-                //case LEFT_TOP:
-                //case LEFT_CENTER:
-                //case LEFT_BOTTOM:
-                //case LEFT_BASE_LINE:
-                //case LEFT_BOTTOM_BASE_LINE:
-                //  break;
-                case CENTER_TOP:
-                case CENTER_CENTER:
-                case CENTER_BOTTOM:
-                case CENTER_BASE_LINE:
-                case CENTER_BOTTOM_BASE_LINE:
-                    cursor.x() = (cursor.x() - endOfLine_coords.x()) * 0.5f;
-                    break;
-                case RIGHT_TOP:
-                case RIGHT_CENTER:
-                case RIGHT_BOTTOM:
-                case RIGHT_BASE_LINE:
-                case RIGHT_BOTTOM_BASE_LINE:
-                    cursor.x() = cursor.x() - endOfLine_coords.x();
-                    break;
-                default:
-                    break;
-            }
+        // nothing to be done for these
+        // case LEFT_TOP:
+        // case LEFT_CENTER:
+        // case LEFT_BOTTOM:
+        // case LEFT_BASE_LINE:
+        // case LEFT_BOTTOM_BASE_LINE:
+        //  break;
+        case CENTER_TOP:
+        case CENTER_CENTER:
+        case CENTER_BOTTOM:
+        case CENTER_BASE_LINE:
+        case CENTER_BOTTOM_BASE_LINE:
+            cursor.x() = (cursor.x() - endOfLine_coords.x()) * 0.5f;
+            break;
+
+        case RIGHT_TOP:
+        case RIGHT_CENTER:
+        case RIGHT_BOTTOM:
+        case RIGHT_BASE_LINE:
+        case RIGHT_BOTTOM_BASE_LINE:
+            cursor.x() = cursor.x() - endOfLine_coords.x();
+            break;
+
+        default:
             break;
         }
-        case RIGHT_TO_LEFT:
+
+        break;
+    }
+
+    case RIGHT_TO_LEFT:
+    {
+        switch (_alignment)
         {
-            switch (_alignment)
-            {
-                case LEFT_TOP:
-                case LEFT_CENTER:
-                case LEFT_BOTTOM:
-                case LEFT_BASE_LINE:
-                case LEFT_BOTTOM_BASE_LINE:
-                    cursor.x() = 2*cursor.x() - endOfLine_coords.x();
-                    break;
-                case CENTER_TOP:
-                case CENTER_CENTER:
-                case CENTER_BOTTOM:
-                case CENTER_BASE_LINE:
-                case CENTER_BOTTOM_BASE_LINE:
-                    cursor.x() = cursor.x() + (cursor.x() - endOfLine_coords.x()) * 0.5f;
-                    break;
-                    // nothing to be done for these
-                    //case RIGHT_TOP:
-                    //case RIGHT_CENTER:
-                    //case RIGHT_BOTTOM:
-                    //case RIGHT_BASE_LINE:
-                    //case RIGHT_BOTTOM_BASE_LINE:
-                    //  break;
-                default:
-                    break;
-            }
+        case LEFT_TOP:
+        case LEFT_CENTER:
+        case LEFT_BOTTOM:
+        case LEFT_BASE_LINE:
+        case LEFT_BOTTOM_BASE_LINE:
+            cursor.x() = 2 * cursor.x() - endOfLine_coords.x();
+            break;
+
+        case CENTER_TOP:
+        case CENTER_CENTER:
+        case CENTER_BOTTOM:
+        case CENTER_BASE_LINE:
+        case CENTER_BOTTOM_BASE_LINE:
+            cursor.x() = cursor.x() + (cursor.x() - endOfLine_coords.x()) * 0.5f;
+            break;
+
+        // nothing to be done for these
+        // case RIGHT_TOP:
+        // case RIGHT_CENTER:
+        // case RIGHT_BOTTOM:
+        // case RIGHT_BASE_LINE:
+        // case RIGHT_BOTTOM_BASE_LINE:
+        //  break;
+        default:
             break;
         }
-        case VERTICAL:
+
+        break;
+    }
+
+    case VERTICAL:
+    {
+        switch (_alignment)
         {
-            switch (_alignment)
-            {
-                // TODO: current behaviour top baselines lined up in both cases - need to implement
-                //       top of characters aligment - Question is this necessary?
-                // ... otherwise, nothing to be done for these 6 cases
-                //case LEFT_TOP:
-                //case CENTER_TOP:
-                //case RIGHT_TOP:
-                //  break;
-                //case LEFT_BASE_LINE:
-                //case CENTER_BASE_LINE:
-                //case RIGHT_BASE_LINE:
-                //  break;
-                case LEFT_CENTER:
-                case CENTER_CENTER:
-                case RIGHT_CENTER:
-                    cursor.y() = cursor.y() + (cursor.y() - endOfLine_coords.y()) * 0.5f;
-                    break;
-                case LEFT_BOTTOM_BASE_LINE:
-                case CENTER_BOTTOM_BASE_LINE:
-                case RIGHT_BOTTOM_BASE_LINE:
-                    cursor.y() = cursor.y() - (linelength * _characterHeight);
-                    break;
-                case LEFT_BOTTOM:
-                case CENTER_BOTTOM:
-                case RIGHT_BOTTOM:
-                    cursor.y() = 2*cursor.y() - endOfLine_coords.y();
-                    break;
-                default:
-                    break;
-            }
+        // TODO: current behaviour top baselines lined up in both cases - need to implement
+        //       top of characters aligment - Question is this necessary?
+        // ... otherwise, nothing to be done for these 6 cases
+        // case LEFT_TOP:
+        // case CENTER_TOP:
+        // case RIGHT_TOP:
+        //  break;
+        // case LEFT_BASE_LINE:
+        // case CENTER_BASE_LINE:
+        // case RIGHT_BASE_LINE:
+        //  break;
+        case LEFT_CENTER:
+        case CENTER_CENTER:
+        case RIGHT_CENTER:
+            cursor.y() = cursor.y() + (cursor.y() - endOfLine_coords.y()) * 0.5f;
+            break;
+
+        case LEFT_BOTTOM_BASE_LINE:
+        case CENTER_BOTTOM_BASE_LINE:
+        case RIGHT_BOTTOM_BASE_LINE:
+            cursor.y() = cursor.y() - (linelength * _characterHeight);
+            break;
+
+        case LEFT_BOTTOM:
+        case CENTER_BOTTOM:
+        case RIGHT_BOTTOM:
+            cursor.y() = 2 * cursor.y() - endOfLine_coords.y();
+            break;
+
+        default:
             break;
         }
+
+        break;
+    }
     }
 }
-

@@ -25,8 +25,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool OQN_readLocalData( osg::Object &obj, osgDB::Input &fr );
-bool OQN_writeLocalData( const osg::Object &obj, osgDB::Output &fw );
+bool OQN_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool OQN_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(OcclusionQueryNode)
 (
@@ -37,59 +37,63 @@ REGISTER_DOTOSGWRAPPER(OcclusionQueryNode)
     OQN_writeLocalData
 );
 
-bool OQN_readLocalData( osg::Object &obj, osgDB::Input &fr )
+bool OQN_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osg::OcclusionQueryNode& oqn = static_cast<osg::OcclusionQueryNode&>( obj );
-    bool advanced( false );
-    int param;
-    if (fr[0].matchWord( "QueriesEnabled" ))
+    osg::OcclusionQueryNode&oqn = static_cast<osg::OcclusionQueryNode&>(obj);
+    bool                   advanced(false);
+    int                    param;
+
+    if (fr[0].matchWord("QueriesEnabled"))
     {
-        bool enable( fr[1].getStr() == std::string("TRUE") );
-        oqn.setQueriesEnabled( enable );
-        fr+=2;
+        bool enable(fr[1].getStr() == std::string("TRUE"));
+        oqn.setQueriesEnabled(enable);
+        fr      += 2;
         advanced = true;
     }
-    if (fr.matchSequence( "VisibilityThreshold %i" ))
+
+    if (fr.matchSequence("VisibilityThreshold %i"))
     {
-        fr[1].getInt( param );
-        oqn.setVisibilityThreshold( param );
-        fr+=2;
+        fr[1].getInt(param);
+        oqn.setVisibilityThreshold(param);
+        fr      += 2;
         advanced = true;
     }
-    if (fr.matchSequence( "QueryFrameCount %i" ))
+
+    if (fr.matchSequence("QueryFrameCount %i"))
     {
-        fr[1].getInt( param );
-        oqn.setQueryFrameCount( param );
-        fr+=2;
+        fr[1].getInt(param);
+        oqn.setQueryFrameCount(param);
+        fr      += 2;
         advanced = true;
     }
-    if (fr[0].matchWord( "DebugDisplay" ))
+
+    if (fr[0].matchWord("DebugDisplay"))
     {
-        bool enable( fr[1].getStr() == std::string("TRUE") );
-        oqn.setDebugDisplay( enable );
-        fr+=2;
+        bool enable(fr[1].getStr() == std::string("TRUE"));
+        oqn.setDebugDisplay(enable);
+        fr      += 2;
         advanced = true;
     }
 
     return advanced;
 }
 
-bool OQN_writeLocalData( const osg::Object &obj, osgDB::Output &fw )
+bool OQN_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osg::OcclusionQueryNode& oqn = static_cast<const osg::OcclusionQueryNode&>( obj );
+    const osg::OcclusionQueryNode&oqn = static_cast<const osg::OcclusionQueryNode&>(obj);
 
-    //fw.writeObject( oqn.getOQN(i));
+    // fw.writeObject( oqn.getOQN(i));
 
     fw.indent() << "QueriesEnabled " <<
-        (oqn.getQueriesEnabled() ? "TRUE" : "FALSE")
-        << std::endl;
+    (oqn.getQueriesEnabled() ? "TRUE" : "FALSE")
+                << std::endl;
     fw.indent() << "VisibilityThreshold " <<
         oqn.getVisibilityThreshold() << std::endl;
     fw.indent() << "QueryFrameCount " <<
         oqn.getQueryFrameCount() << std::endl;
     fw.indent() << "DebugDisplay " <<
-        (oqn.getDebugDisplay() ? "TRUE" : "FALSE")
-        << std::endl;
+    (oqn.getDebugDisplay() ? "TRUE" : "FALSE")
+                << std::endl;
 
     return true;
 }

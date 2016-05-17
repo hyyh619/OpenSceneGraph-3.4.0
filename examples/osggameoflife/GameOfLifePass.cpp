@@ -1,20 +1,20 @@
 /* OpenSceneGraph example, osggameoflife.
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-*/
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
 
 #include "GameOfLifePass.h"
 #include <osgDB/FileUtils>
@@ -22,13 +22,13 @@
 
 ProcessPass::ProcessPass(osg::TextureRectangle *in_tex,
                          osg::TextureRectangle *out_tex,
-                         int width, int height):
+                         int width, int height) :
     _TextureWidth(width),
     _TextureHeight(height)
 {
     _RootGroup = new osg::Group;
 
-    _InTexture = in_tex;
+    _InTexture  = in_tex;
     _OutTexture = out_tex;
 
     _Camera = new osg::Camera;
@@ -41,8 +41,7 @@ ProcessPass::ProcessPass(osg::TextureRectangle *in_tex,
 }
 
 ProcessPass::~ProcessPass()
-{
-}
+{}
 
 osg::ref_ptr<osg::Group> ProcessPass::createTexturedQuad()
 {
@@ -51,6 +50,7 @@ osg::ref_ptr<osg::Group> ProcessPass::createTexturedQuad()
     osg::ref_ptr<osg::Geode> quad_geode = new osg::Geode;
 
     osg::ref_ptr<osg::Vec3Array> quad_coords = new osg::Vec3Array; // vertex coords
+
     // counter-clockwise
     quad_coords->push_back(osg::Vec3d(0, 0, -1));
     quad_coords->push_back(osg::Vec3d(1, 0, -1));
@@ -63,11 +63,11 @@ osg::ref_ptr<osg::Group> ProcessPass::createTexturedQuad()
     quad_tcoords->push_back(osg::Vec2(_TextureWidth, _TextureHeight));
     quad_tcoords->push_back(osg::Vec2(0, _TextureHeight));
 
-    osg::ref_ptr<osg::Geometry> quad_geom = new osg::Geometry;
-    osg::ref_ptr<osg::DrawArrays> quad_da = new osg::DrawArrays(osg::PrimitiveSet::QUADS,0,4);
+    osg::ref_ptr<osg::Geometry>   quad_geom = new osg::Geometry;
+    osg::ref_ptr<osg::DrawArrays> quad_da   = new osg::DrawArrays(osg::PrimitiveSet::QUADS, 0, 4);
 
     osg::ref_ptr<osg::Vec4Array> quad_colors = new osg::Vec4Array;
-    quad_colors->push_back(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+    quad_colors->push_back(osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
     quad_geom->setVertexArray(quad_coords.get());
     quad_geom->setTexCoordArray(0, quad_tcoords.get());
@@ -75,8 +75,8 @@ osg::ref_ptr<osg::Group> ProcessPass::createTexturedQuad()
     quad_geom->setColorArray(quad_colors.get(), osg::Array::BIND_OVERALL);
 
     _StateSet = quad_geom->getOrCreateStateSet();
-    _StateSet->setMode(GL_LIGHTING,osg::StateAttribute::OFF);
-    _StateSet->setMode(GL_DEPTH_TEST,osg::StateAttribute::OFF);
+    _StateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+    _StateSet->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
 
     _StateSet->setTextureAttributeAndModes(0, _InTexture.get(), osg::StateAttribute::ON);
 
@@ -95,7 +95,7 @@ void ProcessPass::setupCamera()
     _Camera->setClearMask(GL_DEPTH_BUFFER_BIT);
 
     // projection and view
-    _Camera->setProjectionMatrix(osg::Matrix::ortho2D(0,1,0,1));
+    _Camera->setProjectionMatrix(osg::Matrix::ortho2D(0, 1, 0, 1));
     _Camera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
     _Camera->setViewMatrix(osg::Matrix::identity());
 
@@ -111,13 +111,14 @@ void ProcessPass::setupCamera()
 void ProcessPass::setShader(std::string filename)
 {
     std::string foundFile = osgDB::findDataFile(filename);
+
     if (foundFile.empty())
     {
-        osg::notify(osg::NOTICE)<<"Could not file shader file: "<<filename<<std::endl;
+        osg::notify(osg::NOTICE) << "Could not file shader file: " << filename << std::endl;
         return;
     }
 
-    osg::ref_ptr<osg::Shader> fshader = new osg::Shader( osg::Shader::FRAGMENT );
+    osg::ref_ptr<osg::Shader> fshader = new osg::Shader(osg::Shader::FRAGMENT);
     fshader->loadShaderSourceFromFile(foundFile);
 
     _FragmentProgram = 0;
@@ -125,14 +126,14 @@ void ProcessPass::setShader(std::string filename)
 
     _FragmentProgram->addShader(fshader.get());
 
-    _StateSet->setAttributeAndModes(_FragmentProgram.get(), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE );
+    _StateSet->setAttributeAndModes(_FragmentProgram.get(), osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 GameOfLifePass::GameOfLifePass(osg::Image *in_image)
 {
-    _TextureWidth = in_image->s();
+    _TextureWidth  = in_image->s();
     _TextureHeight = in_image->t();
 
     _RootGroup = new osg::Group;
@@ -171,12 +172,13 @@ GameOfLifePass::~GameOfLifePass()
 osg::ref_ptr<osg::TextureRectangle> GameOfLifePass::getOutputTexture()
 {
     int out_tex = (_ActiveBranch == 0) ? 1 : 0;
+
     return _ProcessPass[out_tex]->getOutputTexture();
 }
 
 void GameOfLifePass::activateBranch()
 {
-    int onb = _ActiveBranch;
+    int onb  = _ActiveBranch;
     int offb = (onb == 1) ? 0 : 1;
 
     _BranchSwith[onb]->setAllChildrenOn();
@@ -191,13 +193,13 @@ void GameOfLifePass::flip()
 
 void GameOfLifePass::createOutputTextures()
 {
-    for (int i=0; i<2; i++) {
+    for (int i = 0; i < 2; i++)
+    {
         _InOutTextureLife[i] = new osg::TextureRectangle;
 
         _InOutTextureLife[i]->setTextureSize(_TextureWidth, _TextureHeight);
         _InOutTextureLife[i]->setInternalFormat(GL_RGBA);
-        _InOutTextureLife[i]->setFilter(osg::Texture2D::MIN_FILTER,osg::Texture2D::NEAREST);
-        _InOutTextureLife[i]->setFilter(osg::Texture2D::MAG_FILTER,osg::Texture2D::NEAREST);
+        _InOutTextureLife[i]->setFilter(osg::Texture2D::MIN_FILTER, osg::Texture2D::NEAREST);
+        _InOutTextureLife[i]->setFilter(osg::Texture2D::MAG_FILTER, osg::Texture2D::NEAREST);
     }
 }
-

@@ -24,7 +24,7 @@
 #include <limits>
 #include <iostream>
 
-const char *DepthPeeling::PeelingShader =
+const char*DepthPeeling::PeelingShader =
 {
     "#version 120\n"
 #ifdef USE_TEXTURE_RECTANGLE
@@ -58,100 +58,101 @@ const char *DepthPeeling::PeelingShader =
 class PreDrawFBOCallback : public osg::Camera::DrawCallback
 {
 public:
-  PreDrawFBOCallback( osg::FrameBufferObject* fbo, osg::FrameBufferObject* source_fbo, unsigned int width, unsigned int height, osg::Texture *dt, osg::Texture *ct ) :
- _fbo(fbo), _source_fbo(source_fbo), _depthTexture(dt), _colorTexture(ct), _width(width), _height(height) {}
+PreDrawFBOCallback(osg::FrameBufferObject *fbo, osg::FrameBufferObject *source_fbo, unsigned int width, unsigned int height, osg::Texture *dt, osg::Texture *ct) :
+    _fbo(fbo), _source_fbo(source_fbo), _depthTexture(dt), _colorTexture(ct), _width(width), _height(height) {}
 
-  virtual void operator () (osg::RenderInfo& renderInfo) const
-  {
-      // switching only the frame buffer attachments is actually faster than switching the framebuffer
+virtual void operator ()(osg::RenderInfo&renderInfo) const
+{
+    // switching only the frame buffer attachments is actually faster than switching the framebuffer
 #ifdef USE_PACKED_DEPTH_STENCIL
 #ifdef USE_TEXTURE_RECTANGLE
-     _fbo->setAttachment(osg::Camera::PACKED_DEPTH_STENCIL_BUFFER, osg::FrameBufferAttachment((osg::TextureRectangle*)(_depthTexture.get())));
+    _fbo->setAttachment(osg::Camera::PACKED_DEPTH_STENCIL_BUFFER, osg::FrameBufferAttachment((osg::TextureRectangle*)(_depthTexture.get())));
 #else
-     _fbo->setAttachment(osg::Camera::PACKED_DEPTH_STENCIL_BUFFER, osg::FrameBufferAttachment((osg::Texture2D*)(_depthTexture.get())));
+    _fbo->setAttachment(osg::Camera::PACKED_DEPTH_STENCIL_BUFFER, osg::FrameBufferAttachment((osg::Texture2D*)(_depthTexture.get())));
 #endif
 #else
 #ifdef USE_TEXTURE_RECTANGLE
-     _fbo->setAttachment(osg::Camera::DEPTH_BUFFER, osg::FrameBufferAttachment((osg::TextureRectangle*)(_depthTexture.get())));
+    _fbo->setAttachment(osg::Camera::DEPTH_BUFFER, osg::FrameBufferAttachment((osg::TextureRectangle*)(_depthTexture.get())));
 #else
-     _fbo->setAttachment(osg::Camera::DEPTH_BUFFER, osg::FrameBufferAttachment((osg::Texture2D*)(_depthTexture.get())));
+    _fbo->setAttachment(osg::Camera::DEPTH_BUFFER, osg::FrameBufferAttachment((osg::Texture2D*)(_depthTexture.get())));
 #endif
 #endif
 #ifdef USE_TEXTURE_RECTANGLE
-     _fbo->setAttachment(osg::Camera::COLOR_BUFFER0, osg::FrameBufferAttachment((osg::TextureRectangle*)(_colorTexture.get())));
+    _fbo->setAttachment(osg::Camera::COLOR_BUFFER0, osg::FrameBufferAttachment((osg::TextureRectangle*)(_colorTexture.get())));
 #else
-     _fbo->setAttachment(osg::Camera::COLOR_BUFFER0, osg::FrameBufferAttachment((osg::Texture2D*)(_colorTexture.get())));
+    _fbo->setAttachment(osg::Camera::COLOR_BUFFER0, osg::FrameBufferAttachment((osg::Texture2D*)(_colorTexture.get())));
 #endif
 
-     // check if we need to do some depth buffer copying from a source FBO into the current FBO
-     if (_source_fbo.get() != NULL)
-     {
-         osg::GLExtensions* ext = renderInfo.getState()->get<osg::GLExtensions>();
-         bool fbo_supported = ext && ext->isFrameBufferObjectSupported;
-         if (fbo_supported && ext->glBlitFramebuffer)
-         {
-             // blit the depth buffer from the solid geometry fbo into the current transparency fbo
-             (_fbo.get())->apply(*renderInfo.getState(), osg::FrameBufferObject::DRAW_FRAMEBUFFER);
-             (_source_fbo.get())->apply(*renderInfo.getState(), osg::FrameBufferObject::READ_FRAMEBUFFER);
+    // check if we need to do some depth buffer copying from a source FBO into the current FBO
+    if (_source_fbo.get() != NULL)
+    {
+        osg::GLExtensions *ext          = renderInfo.getState()->get<osg::GLExtensions>();
+        bool              fbo_supported = ext && ext->isFrameBufferObjectSupported;
+        if (fbo_supported && ext->glBlitFramebuffer)
+        {
+            // blit the depth buffer from the solid geometry fbo into the current transparency fbo
+            (_fbo.get())->apply(*renderInfo.getState(), osg::FrameBufferObject::DRAW_FRAMEBUFFER);
+            (_source_fbo.get())->apply(*renderInfo.getState(), osg::FrameBufferObject::READ_FRAMEBUFFER);
 
 //             glReadBuffer(GL_COLOR_ATTACHMENT0_EXT); // only needed to blit the color buffer
 //             glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT); // only needed to blit the color buffer
-             ext->glBlitFramebuffer(
-                 0, 0, static_cast<GLint>(_width), static_cast<GLint>(_height),
-                 0, 0, static_cast<GLint>(_width), static_cast<GLint>(_height),
+            ext->glBlitFramebuffer(
+                0, 0, static_cast<GLint>(_width), static_cast<GLint>(_height),
+                0, 0, static_cast<GLint>(_width), static_cast<GLint>(_height),
 #ifdef USE_PACKED_DEPTH_STENCIL
-                 GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+                GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 #else
-                 GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+                GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 #endif
-             (_fbo.get())->apply(*renderInfo.getState(), osg::FrameBufferObject::READ_FRAMEBUFFER);
-             (_fbo.get())->apply(*renderInfo.getState(), osg::FrameBufferObject::DRAW_FRAMEBUFFER);
-         }
-     }
-     // switch to this fbo, if it isn't already bound
-     (_fbo.get())->apply( *renderInfo.getState() );
-  }
+            (_fbo.get())->apply(*renderInfo.getState(), osg::FrameBufferObject::READ_FRAMEBUFFER);
+            (_fbo.get())->apply(*renderInfo.getState(), osg::FrameBufferObject::DRAW_FRAMEBUFFER);
+        }
+    }
+
+    // switch to this fbo, if it isn't already bound
+    (_fbo.get())->apply(*renderInfo.getState());
+}
 protected:
-  osg::ref_ptr<osg::FrameBufferObject> _fbo;
-  osg::ref_ptr<osg::FrameBufferObject> _source_fbo;
-  osg::ref_ptr<osg::Texture> _depthTexture;
-  osg::ref_ptr<osg::Texture> _colorTexture;
-  unsigned int _width;
-  unsigned int _height;
+osg::ref_ptr<osg::FrameBufferObject> _fbo;
+osg::ref_ptr<osg::FrameBufferObject> _source_fbo;
+osg::ref_ptr<osg::Texture>           _depthTexture;
+osg::ref_ptr<osg::Texture>           _colorTexture;
+unsigned int                         _width;
+unsigned int                         _height;
 };
 
 
 class PostDrawFBOCallback : public osg::Camera::DrawCallback
 {
 public:
-  PostDrawFBOCallback(bool restore) : _restore(restore) {}
+PostDrawFBOCallback(bool restore) : _restore(restore) {}
 
-  virtual void operator () (osg::RenderInfo& renderInfo) const
-  {
+virtual void operator ()(osg::RenderInfo&renderInfo) const
+{
     // only unbind the fbo if this is the last transparency pass
     if (_restore)
     {
-        renderInfo.getState()->get<osg::GLExtensions>()->glBindFramebuffer( GL_FRAMEBUFFER_EXT, 0 );
+        renderInfo.getState()->get<osg::GLExtensions>()->glBindFramebuffer(GL_FRAMEBUFFER_EXT, 0);
     }
-  }
+}
 protected:
-  bool _restore;
+bool _restore;
 };
 
 
 DepthPeeling::CullCallback::CullCallback(unsigned int texUnit, unsigned int offsetValue) :
     _texUnit(texUnit),
     _offsetValue(offsetValue)
-{
-}
+{}
 
-void DepthPeeling::CullCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
+void DepthPeeling::CullCallback::operator()(osg::Node *node, osg::NodeVisitor *nv)
 {
-    osgUtil::CullVisitor* cullVisitor = static_cast<osgUtil::CullVisitor*>(nv);
-    osgUtil::RenderStage* renderStage = cullVisitor->getCurrentRenderStage();
-    const osg::Viewport* viewport = renderStage->getViewport();
+    osgUtil::CullVisitor *cullVisitor = static_cast<osgUtil::CullVisitor*>(nv);
+    osgUtil::RenderStage *renderStage = cullVisitor->getCurrentRenderStage();
+    const osg::Viewport  *viewport    = renderStage->getViewport();
 
     osg::Matrixd m(*cullVisitor->getProjectionMatrix());
+
     m.postMultTranslate(osg::Vec3d(1, 1, 1));
     m.postMultScale(osg::Vec3d(0.5, 0.5, 0.5));
 
@@ -160,7 +161,7 @@ void DepthPeeling::CullCallback::operator()(osg::Node* node, osg::NodeVisitor* n
     m.postMultScale(osg::Vec3d(viewport->width(), viewport->height(), 1));
 #else
 #ifndef USE_NON_POWER_OF_TWO_TEXTURE
-    m.postMultScale(osg::Vec3d(viewport->width()/double(_texWidth), viewport->height()/double(_texHeight), 1));
+    m.postMultScale(osg::Vec3d(viewport->width() / double(_texWidth), viewport->height() / double(_texHeight), 1));
 #endif
 #endif
 
@@ -171,8 +172,8 @@ void DepthPeeling::CullCallback::operator()(osg::Node* node, osg::NodeVisitor* n
         m.postMultTranslate(osg::Vec3d(0, 0, -ldexp(double(_offsetValue), -24)));
     }
 
-    osg::TexMat* texMat = new osg::TexMat(m);
-    osg::StateSet* stateSet = new osg::StateSet;
+    osg::TexMat   *texMat   = new osg::TexMat(m);
+    osg::StateSet *stateSet = new osg::StateSet;
     stateSet->setTextureAttribute(_texUnit, texMat);
 
     if (_texUnit != 0)
@@ -185,13 +186,13 @@ void DepthPeeling::CullCallback::operator()(osg::Node* node, osg::NodeVisitor* n
         // osg::Uniform::SAMPLER_2D_RECT_SHADOW not yet available in OSG 3.0.1
         // osg::Uniform* depthUniform = new osg::Uniform(osg::Uniform::SAMPLER_2D_RECT_SHADOW, "depthtex");
         // depthUniform->set((int)_texUnit);
-        osg::Uniform* depthUniform = new osg::Uniform("depthtex", (int)_texUnit);
-        osg::Uniform *invWidthUniform = new osg::Uniform("invWidth", (float)1.0f);
+        osg::Uniform *depthUniform     = new osg::Uniform("depthtex", (int)_texUnit);
+        osg::Uniform *invWidthUniform  = new osg::Uniform("invWidth", (float)1.0f);
         osg::Uniform *invHeightUniform = new osg::Uniform("invHeight", (float)1.0f);
 #else
-        osg::Uniform* depthUniform = new osg::Uniform(osg::Uniform::SAMPLER_2D_SHADOW, "depthtex");
+        osg::Uniform *depthUniform = new osg::Uniform(osg::Uniform::SAMPLER_2D_SHADOW, "depthtex");
         depthUniform->set((int)_texUnit);
-        osg::Uniform *invWidthUniform = new osg::Uniform("invWidth", (float)1.0f / _texWidth);
+        osg::Uniform *invWidthUniform  = new osg::Uniform("invWidth", (float)1.0f / _texWidth);
         osg::Uniform *invHeightUniform = new osg::Uniform("invHeight", (float)1.0f / _texHeight);
 #endif
         osg::Uniform *offsetXUniform = new osg::Uniform("offsetX", (float)viewport->x());
@@ -213,32 +214,34 @@ void DepthPeeling::CullCallback::operator()(osg::Node* node, osg::NodeVisitor* n
 
 osg::Node* DepthPeeling::createQuad(unsigned int layerNumber, unsigned int numTiles)
 {
-    float tileSpan = 1;
+    float tileSpan    = 1;
     float tileOffsetX = 0;
     float tileOffsetY = 0;
-    if (_showAllLayers) {
-        tileSpan /= numTiles;
-        tileOffsetX = tileSpan * (layerNumber%numTiles);
-        tileOffsetY = 1 - tileSpan * (1 + layerNumber/numTiles);
+
+    if (_showAllLayers)
+    {
+        tileSpan   /= numTiles;
+        tileOffsetX = tileSpan * (layerNumber % numTiles);
+        tileOffsetY = 1 - tileSpan * (1 + layerNumber / numTiles);
     }
 
-    osg::Vec3Array* vertices = new osg::Vec3Array;
+    osg::Vec3Array *vertices = new osg::Vec3Array;
 
-    vertices->push_back(osg::Vec3f(tileOffsetX           , tileOffsetY            , 0));
-    vertices->push_back(osg::Vec3f(tileOffsetX           , tileOffsetY  + tileSpan, 0));
-    vertices->push_back(osg::Vec3f(tileOffsetX + tileSpan, tileOffsetY  + tileSpan, 0));
-    vertices->push_back(osg::Vec3f(tileOffsetX + tileSpan, tileOffsetY            , 0));
+    vertices->push_back(osg::Vec3f(tileOffsetX, tileOffsetY, 0));
+    vertices->push_back(osg::Vec3f(tileOffsetX, tileOffsetY + tileSpan, 0));
+    vertices->push_back(osg::Vec3f(tileOffsetX + tileSpan, tileOffsetY + tileSpan, 0));
+    vertices->push_back(osg::Vec3f(tileOffsetX + tileSpan, tileOffsetY, 0));
 
-    osg::Vec3Array* colors = new osg::Vec3Array;
+    osg::Vec3Array *colors = new osg::Vec3Array;
     colors->push_back(osg::Vec3(1, 1, 1));
 
-    osg::Vec2Array* texcoords = new osg::Vec2Array;
+    osg::Vec2Array *texcoords = new osg::Vec2Array;
     texcoords->push_back(osg::Vec2f(0, 0));
     texcoords->push_back(osg::Vec2f(0, 1));
     texcoords->push_back(osg::Vec2f(1, 1));
     texcoords->push_back(osg::Vec2f(1, 0));
 
-    osg::Geometry* geometry = new osg::Geometry;
+    osg::Geometry *geometry = new osg::Geometry;
     geometry->setVertexArray(vertices);
     geometry->setTexCoordArray(0, texcoords);
 
@@ -246,7 +249,7 @@ osg::Node* DepthPeeling::createQuad(unsigned int layerNumber, unsigned int numTi
 
     geometry->addPrimitiveSet(new osg::DrawArrays(GL_QUADS, 0, 4));
 
-    osg::Geode* geode = new osg::Geode;
+    osg::Geode *geode = new osg::Geode;
     geode->addDrawable(geometry);
 
     return geode;
@@ -264,7 +267,9 @@ void DepthPeeling::createPeeling()
     // create depth textures
     _depthTextures.clear();
     _depthTextures.resize(3);
-    for (unsigned int i = 0; i < 3; ++i) {
+
+    for (unsigned int i = 0; i < 3; ++i)
+    {
 #ifdef USE_TEXTURE_RECTANGLE
         _depthTextures[i] = new osg::TextureRectangle;
 #else
@@ -294,8 +299,9 @@ void DepthPeeling::createPeeling()
     // create the cameras for the individual depth peel layers
     _colorTextures.clear();
     _colorTextures.resize(_numPasses);
-    for (unsigned int i = 0; i < _numPasses; ++i) {
 
+    for (unsigned int i = 0; i < _numPasses; ++i)
+    {
         // create textures for the color buffers
 #ifdef USE_TEXTURE_RECTANGLE
         osg::ref_ptr<osg::TextureRectangle> colorTexture = new osg::TextureRectangle;
@@ -328,7 +334,7 @@ void DepthPeeling::createPeeling()
     transparentNodeNoPeel->getOrCreateStateSet()->setRenderBinDetails(99, "RenderBin", osg::StateSet::OVERRIDE_RENDERBIN_DETAILS);
 
     // create a node for depth peeled transparent rendering (any layers below).
-    osg::TexGenNode* transparentNodePeel = new osg::TexGenNode;
+    osg::TexGenNode *transparentNodePeel = new osg::TexGenNode;
     transparentNodePeel->setReferenceFrame(osg::TexGenNode::ABSOLUTE_RF);
     transparentNodePeel->setTextureUnit(_texUnit);
     transparentNodePeel->getTexGen()->setMode(osg::TexGen::EYE_LINEAR);
@@ -338,7 +344,7 @@ void DepthPeeling::createPeeling()
 
     // only render fragments that are not completely transparent
     transparentNodePeel->getOrCreateStateSet()->setAttributeAndModes(new osg::AlphaFunc(osg::AlphaFunc::GREATER, 0.01),
-                                    osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
+                                                                     osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
 
     // generate texcoords for the depth texture, supporting the fixed function pipeline
     transparentNodePeel->getOrCreateStateSet()->setTextureMode(_texUnit, GL_TEXTURE_GEN_S, osg::StateAttribute::ON);
@@ -351,18 +357,18 @@ void DepthPeeling::createPeeling()
     osg::ref_ptr<osg::FrameBufferObject> fbos[2] = {new osg::FrameBufferObject(), new osg::FrameBufferObject()};
 
     // create the cameras for the individual depth peel layers
-    for (unsigned int i = 0; i < _numPasses; ++i) {
-
+    for (unsigned int i = 0; i < _numPasses; ++i)
+    {
         // get the pointers to the required fbo, color and depth textures for each camera instance
         // we perform ping ponging between two depth textures
-        osg::FrameBufferObject *fbo0 = (i >= 1) ? fbos[0].get() : NULL;
-        osg::FrameBufferObject *fbo  = (i >= 1) ? fbos[1].get() : fbos[0].get();
-        osg::Texture *colorTexture     = _colorTextures[i].get();
-        osg::Texture *depthTexture     = (i >= 1) ? _depthTextures[1+(i-1)%2].get() : _depthTextures[i].get();
-        osg::Texture *prevDepthTexture = (i >= 2) ? _depthTextures[1+(i-2)%2].get() : NULL;
+        osg::FrameBufferObject *fbo0             = (i >= 1) ? fbos[0].get() : NULL;
+        osg::FrameBufferObject *fbo              = (i >= 1) ? fbos[1].get() : fbos[0].get();
+        osg::Texture           *colorTexture     = _colorTextures[i].get();
+        osg::Texture           *depthTexture     = (i >= 1) ? _depthTextures[1 + (i - 1) % 2].get() : _depthTextures[i].get();
+        osg::Texture           *prevDepthTexture = (i >= 2) ? _depthTextures[1 + (i - 2) % 2].get() : NULL;
 
         // all our peeling layer cameras are post render
-        osg::Camera* camera = new osg::Camera;
+        osg::Camera *camera = new osg::Camera;
         camera->setDataVariance(osg::Object::DYNAMIC);
         camera->setInheritanceMask(osg::Camera::ALL_VARIABLES);
         camera->setRenderOrder(osg::Camera::POST_RENDER, i);
@@ -377,26 +383,35 @@ void DepthPeeling::createPeeling()
 
         // the peeled layers are rendered with blending forced off
         // and the depth buffer is directly taken from camera 0 via framebuffer blit
-        if (i > 0) {
+        if (i > 0)
+        {
             camera->getOrCreateStateSet()->setMode(GL_BLEND, osg::StateAttribute::OFF | osg::StateAttribute::OVERRIDE);
             camera->setClearMask(GL_COLOR_BUFFER_BIT);
-        } else {
+        }
+        else
+        {
             // camera 0 has to clear both the depth and color buffers
             camera->setClearMask(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
         }
 
         // add the correct geometry for each pass.
         // the peeling passes also need read access to prevDepthTexture and a cull callback
-        if (0 == i) {        // solid geometry
+        if (0 == i)          // solid geometry
+        {
             camera->addChild(pre_solidNode);
-        } else if (1 == i) { // topmost layer peeling pass
+        }
+        else if (1 == i)     // topmost layer peeling pass
+        {
             camera->addChild(transparentNodeNoPeel);
-        } else {             // behind layers peeling passes
+        }
+        else                 // behind layers peeling passes
+        {
             camera->addChild(transparentNodePeel);
             // set depth (shadow) texture for depth peeling and add a cull callback
             camera->getOrCreateStateSet()->setTextureAttributeAndModes(_texUnit, prevDepthTexture);
             camera->addCullCallback(ccb);
         }
+
         _root->addChild(camera);
     }
 
@@ -411,22 +426,23 @@ void DepthPeeling::createPeeling()
     _compositeCamera->setViewMatrix(osg::Matrix());
     _compositeCamera->setProjectionMatrix(osg::Matrix::ortho2D(0, 1, 0, 1));
     _compositeCamera->setCullCallback(new CullCallback(0, 0));
-    osg::StateSet* stateSet = _compositeCamera->getOrCreateStateSet();
+    osg::StateSet *stateSet = _compositeCamera->getOrCreateStateSet();
     stateSet->setRenderBinDetails(100, "TraversalOrderBin", osg::StateSet::OVERRIDE_RENDERBIN_DETAILS);
     _root->addChild(_compositeCamera.get());
 
     // solid geometry is blended first, transparency layers are blended in back to front order.
     // this order is achieved by rendering using a TraversalOrderBin (see camera stateset).
-    for (unsigned int i = _numPasses; i > 0; --i) {
-        osg::Node* geode = createQuad(i%_numPasses, numTiles);
+    for (unsigned int i = _numPasses; i > 0; --i)
+    {
+        osg::Node     *geode    = createQuad(i % _numPasses, numTiles);
         osg::StateSet *stateSet = geode->getOrCreateStateSet();
-        stateSet->setTextureAttributeAndModes(0, _colorTextures[i%_numPasses].get(), osg::StateAttribute::ON);
+        stateSet->setTextureAttributeAndModes(0, _colorTextures[i % _numPasses].get(), osg::StateAttribute::ON);
         stateSet->setAttribute(new osg::BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
         stateSet->setMode(GL_BLEND, osg::StateAttribute::ON);
         stateSet->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-        osg::Depth* depth = new osg::Depth;
-        depth->setWriteMask( false );
-        stateSet->setAttributeAndModes( depth, osg::StateAttribute::ON );
+        osg::Depth *depth = new osg::Depth;
+        depth->setWriteMask(false);
+        stateSet->setAttributeAndModes(depth, osg::StateAttribute::ON);
         stateSet->setMode(GL_DEPTH_TEST, osg::StateAttribute::OFF);
         _compositeCamera->addChild(geode);
     }
@@ -446,13 +462,13 @@ DepthPeeling::DepthPeeling(unsigned int width, unsigned int height) :
     createPeeling();
 }
 
-void DepthPeeling::setSolidScene(osg::Node* scene)
+void DepthPeeling::setSolidScene(osg::Node *scene)
 {
     _solidscene->removeChildren(0, _solidscene->getNumChildren());
     _solidscene->addChild(scene);
 }
 
-void DepthPeeling::setTransparentScene(osg::Node* scene)
+void DepthPeeling::setTransparentScene(osg::Node *scene)
 {
     _transparentscene->removeChildren(0, _transparentscene->getNumChildren());
     _transparentscene->addChild(scene);
@@ -468,20 +484,24 @@ void DepthPeeling::resize(int width, int height)
 #ifdef USE_TEXTURE_RECTANGLE
     for (unsigned int i = 0; i < 3; ++i)
         _depthTextures[i]->setTextureSize(width, height);
+
     for (unsigned int i = 0; i < _colorTextures.size(); ++i)
         _colorTextures[i]->setTextureSize(width, height);
-    _texWidth = width;
+
+    _texWidth  = width;
     _texHeight = height;
 #else
 #ifndef USE_NON_POWER_OF_TWO_TEXTURE
-    width = nextPowerOfTwo(width);
+    width  = nextPowerOfTwo(width);
     height = nextPowerOfTwo(height);
 #endif
     _depthTextures[0]->setTextureSize(width, height);
     _depthTextures[1]->setTextureSize(width, height);
+
     for (unsigned int i = 0; i < _colorTextures.size(); ++i)
         _colorTextures[i]->setTextureSize(width, height);
-    _texWidth = width;
+
+    _texWidth  = width;
     _texHeight = height;
 #endif
     createPeeling();
@@ -491,8 +511,10 @@ void DepthPeeling::setNumPasses(unsigned int numPasses)
 {
     if (numPasses == _numPasses)
         return;
+
     if (numPasses == unsigned(-1))
         return;
+
     _numPasses = numPasses;
     createPeeling();
 }
@@ -505,6 +527,7 @@ void DepthPeeling::setTexUnit(unsigned int texUnit)
 {
     if (texUnit == _texUnit)
         return;
+
     _texUnit = texUnit;
     createPeeling();
 }
@@ -513,6 +536,7 @@ void DepthPeeling::setShowAllLayers(bool showAllLayers)
 {
     if (showAllLayers == _showAllLayers)
         return;
+
     _showAllLayers = showAllLayers;
     createPeeling();
 }
@@ -525,6 +549,7 @@ void DepthPeeling::setOffsetValue(unsigned int offsetValue)
 {
     if (offsetValue == _offsetValue)
         return;
+
     _offsetValue = offsetValue;
     createPeeling();
 }
@@ -534,39 +559,49 @@ unsigned int DepthPeeling::getOffsetValue() const
 }
 
 
-DepthPeeling::EventHandler::EventHandler(DepthPeeling* depthPeeling) :
+DepthPeeling::EventHandler::EventHandler(DepthPeeling *depthPeeling) :
     _depthPeeling(depthPeeling)
 { }
 
 
 /** Handle events, return true if handled, false otherwise. */
-bool DepthPeeling::EventHandler::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*)
+bool DepthPeeling::EventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*)
 {
-    if (ea.getEventType() == osgGA::GUIEventAdapter::RESIZE) {
+    if (ea.getEventType() == osgGA::GUIEventAdapter::RESIZE)
+    {
         _depthPeeling->resize(ea.getWindowWidth(), ea.getWindowHeight());
         return true;
     }
 
-    if (ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN) {
-        switch (ea.getKey()) {
+    if (ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
+    {
+        switch (ea.getKey())
+        {
         case 'm':
             _depthPeeling->setNumPasses(_depthPeeling->getNumPasses() + 1);
             return true;
+
         case 'n':
             _depthPeeling->setNumPasses(_depthPeeling->getNumPasses() - 1);
             return true;
+
         case 'p':
             _depthPeeling->setOffsetValue(_depthPeeling->getOffsetValue() + 1);
             return true;
+
         case 'o':
             _depthPeeling->setOffsetValue(_depthPeeling->getOffsetValue() - 1);
             return true;
+
         case 'l':
             _depthPeeling->setShowAllLayers(!_depthPeeling->getShowAllLayers());
             return true;
+
         default:
             return false;
-        };
+        }
+
+        ;
     }
 
     return false;

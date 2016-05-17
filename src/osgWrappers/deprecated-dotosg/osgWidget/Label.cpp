@@ -7,27 +7,27 @@
 #include <osgDB/FileUtils>
 #include <osgWidget/Label>
 
-bool osgWidget_Label_readData(osg::Object& /*obj*/, osgDB::Input& fr)
+bool osgWidget_Label_readData(osg::Object& /*obj*/, osgDB::Input&fr)
 {
-	osgWidget::warn() << "Label read" << std::endl;
+    osgWidget::warn() << "Label read" << std::endl;
 
-	return false;
+    return false;
 }
 
-bool osgWidget_Label_writeData(const osg::Object& /*obj*/, osgDB::Output& fw)
+bool osgWidget_Label_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
 {
-	// const osgWidget::Label& model = static_cast<const osgWidget::Label&>(obj);
+    // const osgWidget::Label& model = static_cast<const osgWidget::Label&>(obj);
 
-	fw.indent() << fw.wrapString("Label stuff...") << std::endl;
+    fw.indent() << fw.wrapString("Label stuff...") << std::endl;
 
-	return true;
+    return true;
 }
 
 REGISTER_DOTOSGWRAPPER(g_osgWidget_LabelProxy)
 (
-	new osgWidget::Label("unset"),
-	"osgWidget::Label",
-	"Object Drawable Geometry osgWidget::Widget osgWidget::Label",
-	&osgWidget_Label_readData,
-	&osgWidget_Label_writeData
+    new osgWidget::Label("unset"),
+    "osgWidget::Label",
+    "Object Drawable Geometry osgWidget::Widget osgWidget::Label",
+    &osgWidget_Label_readData,
+    &osgWidget_Label_writeData
 );

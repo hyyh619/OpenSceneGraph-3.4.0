@@ -11,19 +11,20 @@
 
 const unsigned int MASK_2D = 0xF0000000;
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
     osgViewer::Viewer viewer;
 
-    osgWidget::WindowManager* wm = new osgWidget::WindowManager(
+    osgWidget::WindowManager *wm = new osgWidget::WindowManager(
         &viewer,
         1280.0f,
         1024.0f,
         MASK_2D,
         osgWidget::WindowManager::WM_PICK_DEBUG
-    );
-    
-    osgWidget::Box*   box   = new osgWidget::Box("vbox", osgWidget::Box::VERTICAL);
-    osgWidget::Input* input = new osgWidget::Input("input", "", 50);
+        );
+
+    osgWidget::Box   *box   = new osgWidget::Box("vbox", osgWidget::Box::VERTICAL);
+    osgWidget::Input *input = new osgWidget::Input("input", "", 50);
 
     input->setFont("fonts/VeraMono.ttf");
     input->setFontColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -41,9 +42,9 @@ int main(int argc, char** argv) {
         50,
         static_cast<int>(wm->getWidth()),
         static_cast<int>(wm->getHeight())
-    );
+        );
 
-    osg::Camera* camera = wm->createParentOrthoCamera();
+    osg::Camera *camera = wm->createParentOrthoCamera();
 
     viewer.addEventHandler(new osgWidget::MouseHandler(wm));
     viewer.addEventHandler(new osgWidget::KeyboardHandler(wm));

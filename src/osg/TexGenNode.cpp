@@ -9,12 +9,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/TexGenNode>
 
 using namespace osg;
 
-TexGenNode::TexGenNode():
+TexGenNode::TexGenNode() :
     _referenceFrame(RELATIVE_RF)
 {
     // switch off culling of tex gen nodes by default.
@@ -25,8 +25,8 @@ TexGenNode::TexGenNode():
     _texgen = new TexGen;
 }
 
-TexGenNode::TexGenNode(const TexGenNode& cn, const CopyOp& copyop):
-    Group(cn,copyop),
+TexGenNode::TexGenNode(const TexGenNode&cn, const CopyOp&copyop) :
+    Group(cn, copyop),
     _textureUnit(cn._textureUnit),
     _texgen(static_cast<TexGen*>(copyop(cn._texgen.get()))),
     _referenceFrame(cn._referenceFrame)
@@ -34,7 +34,7 @@ TexGenNode::TexGenNode(const TexGenNode& cn, const CopyOp& copyop):
     setStateSet(new StateSet);
 }
 
-TexGenNode::TexGenNode(TexGen *texgen):
+TexGenNode::TexGenNode(TexGen *texgen) :
     _referenceFrame(RELATIVE_RF)
 {
     // switch off culling of tex gen nodes by default.
@@ -46,15 +46,14 @@ TexGenNode::TexGenNode(TexGen *texgen):
 }
 
 TexGenNode::~TexGenNode()
-{
-}
+{}
 
 void TexGenNode::setReferenceFrame(ReferenceFrame rf)
 {
     _referenceFrame = rf;
 }
 
-void TexGenNode::setTexGen(TexGen* texgen)
+void TexGenNode::setTexGen(TexGen *texgen)
 {
     _texgen = texgen;
 }
@@ -64,5 +63,6 @@ void TexGenNode::setThreadSafeRefUnref(bool threadSafe)
 {
     Group::setThreadSafeRefUnref(threadSafe);
 
-    if (_texgen.valid()) _texgen->setThreadSafeRefUnref(threadSafe);
+    if (_texgen.valid())
+        _texgen->setThreadSafeRefUnref(threadSafe);
 }

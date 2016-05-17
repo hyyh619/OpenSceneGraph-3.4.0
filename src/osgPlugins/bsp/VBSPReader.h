@@ -14,11 +14,9 @@
 
 namespace bsp
 {
-
-
 // The magic number for a Valve BSP file is 'VBSP' in little-endian
 // order
-const int MAGIC_NUMBER = (('P'<<24)+('S'<<16)+('B'<<8)+'V');
+const int MAGIC_NUMBER = (('P' << 24) + ('S' << 16) + ('B' << 8) + 'V');
 
 
 enum LumpType
@@ -162,25 +160,25 @@ const char LUMP_DESCRIPTION[][64] =
 
 struct LumpEntry
 {
-    int   file_offset;
-    int   lump_length;
-    int   lump_version;
-    char  ident_code[4];
+    int  file_offset;
+    int  lump_length;
+    int  lump_version;
+    char ident_code[4];
 };
 
 
 struct Header
 {
-    int        magic_number;
-    int        bsp_version;
-    LumpEntry  lump_table[MAX_LUMPS];
-    int        map_revision;
+    int       magic_number;
+    int       bsp_version;
+    LumpEntry lump_table[MAX_LUMPS];
+    int       map_revision;
 };
 
 
 struct GameHeader
 {
-    int              num_lumps;
+    int num_lumps;
 
     // This is followed by this many GameLump entries (see below)
 };
@@ -188,21 +186,21 @@ struct GameHeader
 
 struct GameLump
 {
-    int               lump_id;
-    unsigned short    lump_flags;
-    unsigned short    lump_version;
-    int               lump_offset;
-    int               lump_length;
+    int            lump_id;
+    unsigned short lump_flags;
+    unsigned short lump_version;
+    int            lump_offset;
+    int            lump_length;
 };
 
 
 // This is the ID for the static prop game lump
-const int STATIC_PROP_ID = (('s'<<24)+('p'<<16)+('r'<<8)+'p');
+const int STATIC_PROP_ID = (('s' << 24) + ('p' << 16) + ('r' << 8) + 'p');
 
 
 struct StaticPropModelNames
 {
-    int    num_model_names;
+    int num_model_names;
 
     // This is followed by this many names, each 128 characters long
 };
@@ -210,7 +208,7 @@ struct StaticPropModelNames
 
 struct StaticPropLeaves
 {
-    int   num_leaf_entries;
+    int num_leaf_entries;
 
     // This is followed by this many unsigned shorts, indicating which BSP
     // leaves this prop occupies
@@ -219,7 +217,7 @@ struct StaticPropLeaves
 
 struct StaticProps
 {
-    int   num_static_props;
+    int num_static_props;
 
     // This is followed by this many StaticProp entries (see VBSPData.h), note
     // that there are two possible StaticProp versions, depending on the
@@ -231,57 +229,55 @@ class VBSPReader
 {
 protected:
 
-    std::string                map_name;
+std::string map_name;
 
-    osg::ref_ptr<VBSPData>     bsp_data;
+osg::ref_ptr<VBSPData> bsp_data;
 
-    osg::ref_ptr<osg::Node>    root_node;
+osg::ref_ptr<osg::Node> root_node;
 
-    char *                     texdata_string;
-    int *                      texdata_string_table;
-    int                        num_texdata_string_table_entries;
+char *texdata_string;
+int  *texdata_string_table;
+int  num_texdata_string_table_entries;
 
 
-    void   processEntities(std::istream & str, int offset, int length);
-    void   processModels(std::istream & str, int offset, int length);
-    void   processPlanes(std::istream & str, int offset, int length);
-    void   processVertices(std::istream & str, int offset, int length);
-    void   processEdges(std::istream & str, int offset, int length);
-    void   processSurfEdges(std::istream & str, int offset, int length);
-    void   processFaces(std::istream & str, int offset, int length);
-    void   processTexInfo(std::istream & str, int offset, int length);
-    void   processTexData(std::istream & str, int offset, int length);
-    void   processTexDataStringTable(std::istream & str, int offset,
-                                     int length);
-    void   processTexDataStringData(std::istream & str, int offset, int length);
-    void   processDispInfo(std::istream & str, int offset, int length);
-    void   processDispVerts(std::istream & str, int offset, int length);
-    void   processGameData(std::istream & str, int offset, int length);
-    void   processStaticProps(std::istream & str, int offset, int length,
-                              int lumpVersion);
+void   processEntities(std::istream&str, int offset, int length);
+void   processModels(std::istream&str, int offset, int length);
+void   processPlanes(std::istream&str, int offset, int length);
+void   processVertices(std::istream&str, int offset, int length);
+void   processEdges(std::istream&str, int offset, int length);
+void   processSurfEdges(std::istream&str, int offset, int length);
+void   processFaces(std::istream&str, int offset, int length);
+void   processTexInfo(std::istream&str, int offset, int length);
+void   processTexData(std::istream&str, int offset, int length);
+void   processTexDataStringTable(std::istream&str, int offset,
+                                 int length);
+void   processTexDataStringData(std::istream&str, int offset, int length);
+void   processDispInfo(std::istream&str, int offset, int length);
+void   processDispVerts(std::istream&str, int offset, int length);
+void   processGameData(std::istream&str, int offset, int length);
+void   processStaticProps(std::istream&str, int offset, int length,
+                          int lumpVersion);
 
-    std::string       getToken(std::string str, const char * delim,
-                               size_t & index);
+std::string       getToken(std::string str, const char *delim,
+                           size_t&index);
 
-    osg::ref_ptr<osg::StateSet>   createBlendShader(osg::Texture * tex1,
-                                                    osg::Texture * tex2);
+osg::ref_ptr<osg::StateSet>   createBlendShader(osg::Texture *tex1,
+                                                osg::Texture *tex2);
 
-    osg::ref_ptr<osg::Texture>    readTextureFile(std::string file);
-    osg::ref_ptr<osg::StateSet>   readMaterialFile(std::string file);
+osg::ref_ptr<osg::Texture>    readTextureFile(std::string file);
+osg::ref_ptr<osg::StateSet>   readMaterialFile(std::string file);
 
-    void   createScene();
+void   createScene();
 
 public:
 
-    VBSPReader();
-    virtual ~VBSPReader();
+VBSPReader();
+virtual ~VBSPReader();
 
-    bool   readFile(const std::string & file);
+bool   readFile(const std::string&file);
 
-    osg::ref_ptr<osg::Node>   getRootNode();
+osg::ref_ptr<osg::Node>   getRootNode();
 };
-
-
 }
 
 #endif

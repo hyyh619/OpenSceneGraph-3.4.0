@@ -4,11 +4,13 @@
 #include <osgText/FadeText>
 #include "ReadWrite.h"
 
-namespace ive{
-class FadeText : public osgText::FadeText, public ReadWrite {
+namespace ive
+{
+class FadeText : public osgText::FadeText, public ReadWrite
+{
 public:
-    void write(DataOutputStream* out);
-    void read(DataInputStream* in);
+void write(DataOutputStream *out);
+void read(DataInputStream *in);
 };
 }
 

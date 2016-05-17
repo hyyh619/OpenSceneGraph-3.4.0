@@ -3,9 +3,8 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-REGISTER_OBJECT_WRAPPER( AudioSink,
-                         /*new osg::AudioSink*/NULL,
-                         osg::AudioSink,
-                         "osg::Object osg::AudioSink" )
-{
-}
+REGISTER_OBJECT_WRAPPER(AudioSink,
+                        /*new osg::AudioSink*/ NULL,
+                        osg::AudioSink,
+                        "osg::Object osg::AudioSink")
+{}

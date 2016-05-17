@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osg/ShadowVolumeOccluder>
 #include <osg/CullStack>
 
@@ -20,29 +20,31 @@ using namespace osg;
 
 
 
-typedef std::pair<unsigned int,Vec3>    Point; // bool=true signifies a newly created point, false indicates original point.
+typedef std::pair<unsigned int, Vec3>    Point; // bool=true signifies a newly created point, false indicates original point.
 typedef std::vector<Point>      PointList;
 typedef std::vector<Vec3>       VertexList;
 
 
 // copyVertexListToPointList a vector for Vec3 into a vector of Point's.
-void copyVertexListToPointList(const VertexList& in,PointList& out)
+void copyVertexListToPointList(const VertexList&in, PointList&out)
 {
     out.reserve(in.size());
-    for(VertexList::const_iterator itr=in.begin();
-        itr!=in.end();
-        ++itr)
+
+    for (VertexList::const_iterator itr = in.begin();
+         itr != in.end();
+         ++itr)
     {
-        out.push_back(Point(0,*itr));
+        out.push_back(Point(0, *itr));
     }
 }
 
-void copyPointListToVertexList(const PointList& in,VertexList& out)
+void copyPointListToVertexList(const PointList&in, VertexList&out)
 {
     out.reserve(in.size());
-    for(PointList::const_iterator itr=in.begin();
-        itr!=in.end();
-        ++itr)
+
+    for (PointList::const_iterator itr = in.begin();
+         itr != in.end();
+         ++itr)
     {
         out.push_back(itr->second);
     }
@@ -50,41 +52,42 @@ void copyPointListToVertexList(const PointList& in,VertexList& out)
 
 // clip the convex hull 'in' to plane to generate a clipped convex hull 'out'
 // return true if points remain after clipping.
-unsigned int clip(const Plane& plane,const PointList& in, PointList& out,unsigned int planeMask)
+unsigned int clip(const Plane&plane, const PointList&in, PointList&out, unsigned int planeMask)
 {
     std::vector<float> distance;
+
     distance.reserve(in.size());
-    for(PointList::const_iterator itr=in.begin();
-        itr!=in.end();
-        ++itr)
+
+    for (PointList::const_iterator itr = in.begin();
+         itr != in.end();
+         ++itr)
     {
         distance.push_back(plane.distance(itr->second));
     }
 
     out.clear();
 
-    for(unsigned int i=0;i<in.size();++i)
+    for (unsigned int i = 0; i < in.size(); ++i)
     {
-        unsigned int i_1 = (i+1)%in.size(); // do the mod to wrap the index round back to the start.
+        unsigned int i_1 = (i + 1) % in.size(); // do the mod to wrap the index round back to the start.
 
-        if (distance[i]>=0.0f)
+        if (distance[i] >= 0.0f)
         {
             out.push_back(in[i]);
 
 
-            if (distance[i_1]<0.0f)
+            if (distance[i_1] < 0.0f)
             {
                 unsigned int mask = (in[i].first & in[i_1].first) | planeMask;
-                float r = distance[i_1]/(distance[i_1]-distance[i]);
-                out.push_back(Point(mask,in[i].second*r+in[i_1].second*(1.0f-r)));
+                float        r    = distance[i_1] / (distance[i_1] - distance[i]);
+                out.push_back(Point(mask, in[i].second * r + in[i_1].second * (1.0f - r)));
             }
-
         }
-        else if (distance[i_1]>0.0f)
+        else if (distance[i_1] > 0.0f)
         {
             unsigned int mask = (in[i].first & in[i_1].first) | planeMask;
-            float r = distance[i_1]/(distance[i_1]-distance[i]);
-            out.push_back(Point(mask,in[i].second*r+in[i_1].second*(1.0f-r)));
+            float        r    = distance[i_1] / (distance[i_1] - distance[i]);
+            out.push_back(Point(mask, in[i].second * r + in[i_1].second * (1.0f - r)));
         }
     }
 
@@ -93,17 +96,21 @@ unsigned int clip(const Plane& plane,const PointList& in, PointList& out,unsigne
 
 // clip the convex hull 'in' to planeList to generate a clipped convex hull 'out'
 // return true if points remain after clipping.
-unsigned int clip(const Polytope::PlaneList& planeList,const VertexList& vin,PointList& out)
+unsigned int clip(const Polytope::PlaneList&planeList, const VertexList&vin, PointList&out)
 {
     PointList in;
-    copyVertexListToPointList(vin,in);
+
+    copyVertexListToPointList(vin, in);
 
     unsigned int planeMask = 0x1;
-    for(Polytope::PlaneList::const_iterator itr=planeList.begin();
-        itr!=planeList.end();
-        ++itr)
+
+    for (Polytope::PlaneList::const_iterator itr = planeList.begin();
+         itr != planeList.end();
+         ++itr)
     {
-        if (!clip(*itr,in,out,planeMask)) return false;
+        if (!clip(*itr, in, out, planeMask))
+            return false;
+
         in.swap(out);
         planeMask <<= 1;
     }
@@ -113,77 +120,77 @@ unsigned int clip(const Polytope::PlaneList& planeList,const VertexList& vin,Poi
     return out.size();
 }
 
-void transform(PointList& points,const osg::Matrix& matrix)
+void transform(PointList&points, const osg::Matrix&matrix)
 {
-    for(PointList::iterator itr=points.begin();
-        itr!=points.end();
-        ++itr)
+    for (PointList::iterator itr = points.begin();
+         itr != points.end();
+         ++itr)
     {
-        itr->second = itr->second*matrix;
+        itr->second = itr->second * matrix;
     }
 }
 
-void transform(const PointList& in,PointList& out,const osg::Matrix& matrix)
+void transform(const PointList&in, PointList&out, const osg::Matrix&matrix)
 {
-    for(PointList::const_iterator itr=in.begin();
-        itr!=in.end();
-        ++itr)
+    for (PointList::const_iterator itr = in.begin();
+         itr != in.end();
+         ++itr)
     {
-        out.push_back(Point(itr->first,itr->second * matrix));
+        out.push_back(Point(itr->first, itr->second * matrix));
     }
 }
 
-void pushToFarPlane(PointList& points)
+void pushToFarPlane(PointList&points)
 {
-    for(PointList::iterator itr=points.begin();
-        itr!=points.end();
-        ++itr)
+    for (PointList::iterator itr = points.begin();
+         itr != points.end();
+         ++itr)
     {
         itr->second.z() = 1.0f;
     }
 }
 
-void computePlanes(const PointList& front, const PointList& back, Polytope::PlaneList& planeList)
+void computePlanes(const PointList&front, const PointList&back, Polytope::PlaneList&planeList)
 {
-    for(unsigned int i=0;i<front.size();++i)
+    for (unsigned int i = 0; i < front.size(); ++i)
     {
-        unsigned int i_1 = (i+1)%front.size(); // do the mod to wrap the index round back to the start.
+        unsigned int i_1 = (i + 1) % front.size(); // do the mod to wrap the index round back to the start.
         if (!(front[i].first & front[i_1].first))
         {
-            planeList.push_back(Plane(front[i].second,front[i_1].second,back[i].second));
+            planeList.push_back(Plane(front[i].second, front[i_1].second, back[i].second));
         }
     }
 }
 
-Plane computeFrontPlane(const PointList& front)
+Plane computeFrontPlane(const PointList&front)
 {
-    return Plane(front[2].second,front[1].second,front[0].second);
+    return Plane(front[2].second, front[1].second, front[0].second);
 }
 
 // compute the volume between the front and back polygons of the occluder/hole.
-float computePolytopeVolume(const PointList& front, const PointList& back)
+float computePolytopeVolume(const PointList&front, const PointList&back)
 {
-    float volume = 0.0f;
-    Vec3 frontStart = front[0].second;
-    Vec3 backStart = back[0].second;
-    for(unsigned int i=1;i<front.size()-1;++i)
+    float volume     = 0.0f;
+    Vec3  frontStart = front[0].second;
+    Vec3  backStart  = back[0].second;
+
+    for (unsigned int i = 1; i < front.size() - 1; ++i)
     {
-        volume += computeVolume(frontStart, front[i].second, front[i+1].second,
-                                backStart, back[i].second, back[i+1].second);
+        volume += computeVolume(frontStart, front[i].second, front[i + 1].second,
+                                backStart, back[i].second, back[i + 1].second);
     }
+
     return volume;
 }
 
-bool ShadowVolumeOccluder::computeOccluder(const NodePath& nodePath,const ConvexPlanarOccluder& occluder,CullStack& cullStack,bool /*createDrawables*/)
+bool ShadowVolumeOccluder::computeOccluder(const NodePath&nodePath, const ConvexPlanarOccluder&occluder, CullStack&cullStack, bool /*createDrawables*/)
 {
-
-
 //    std::cout<<"    Computing Occluder"<<std::endl;
 
-    CullingSet& cullingset = cullStack.getCurrentCullingSet();
+    CullingSet&cullingset = cullStack.getCurrentCullingSet();
 
-    const RefMatrix& MV = *cullStack.getModelViewMatrix();
-    const RefMatrix& P = *cullStack.getProjectionMatrix();
+    const RefMatrix&MV = *cullStack.getModelViewMatrix();
+    const RefMatrix&P  = *cullStack.getProjectionMatrix();
 
     // take a reference to the NodePath to this occluder.
     _nodePath = nodePath;
@@ -203,7 +210,7 @@ bool ShadowVolumeOccluder::computeOccluder(const NodePath& nodePath,const Convex
 
 
     // compute the transformation matrix which takes form local coords into clip space.
-    Matrix MVP(MV*P);
+    Matrix MVP(MV * P);
 
     // for the occluder polygon and each of the holes do
     //     first transform occluder polygon into clipspace by multiple it by c[i] = v[i]*(MV*P)
@@ -213,151 +220,158 @@ bool ShadowVolumeOccluder::computeOccluder(const NodePath& nodePath,const Convex
     //     compute volume (quality) between front polygon in projection space and back polygon in projection space.
 
 
-    const VertexList& vertices_in = occluder.getOccluder().getVertexList();
+    const VertexList&vertices_in = occluder.getOccluder().getVertexList();
 
     PointList points;
 
-    if (clip(cullingset.getFrustum().getPlaneList(),vertices_in,points)>=3)
+    if (clip(cullingset.getFrustum().getPlaneList(), vertices_in, points) >= 3)
     {
         // compute the points on the far plane.
         PointList farPoints;
         farPoints.reserve(points.size());
-        transform(points,farPoints,MVP);
+        transform(points, farPoints, MVP);
         pushToFarPlane(farPoints);
-        transform(farPoints,invP);
+        transform(farPoints, invP);
 
         // move the occlude points into projection space.
-        transform(points,MV);
+        transform(points, MV);
 
         // use the points on the front plane as reference vertices on the _occluderVolume
         // so that the vertices can later by used to test for occlusion of the occluder itself.
-        copyPointListToVertexList(points,_occluderVolume.getReferenceVertexList());
+        copyPointListToVertexList(points, _occluderVolume.getReferenceVertexList());
 
         // create the front face of the occluder
         Plane occludePlane = computeFrontPlane(points);
         _occluderVolume.add(occludePlane);
 
         // create the sides of the occluder
-        computePlanes(points,farPoints,_occluderVolume.getPlaneList());
+        computePlanes(points, farPoints, _occluderVolume.getPlaneList());
 
         _occluderVolume.setupMask();
 
         // if the front face is pointing away from the eye point flip the whole polytope.
-        if (occludePlane[3]>0.0f)
+        if (occludePlane[3] > 0.0f)
         {
             _occluderVolume.flip();
         }
 
-        _volume = computePolytopeVolume(points,farPoints)/volumeview;
+        _volume = computePolytopeVolume(points, farPoints) / volumeview;
 
 
-        for(ConvexPlanarOccluder::HoleList::const_iterator hitr=occluder.getHoleList().begin();
-            hitr!=occluder.getHoleList().end();
-            ++hitr)
+        for (ConvexPlanarOccluder::HoleList::const_iterator hitr = occluder.getHoleList().begin();
+             hitr != occluder.getHoleList().end();
+             ++hitr)
         {
             PointList points;
-            if (clip(cullingset.getFrustum().getPlaneList(),hitr->getVertexList(),points)>=3)
+            if (clip(cullingset.getFrustum().getPlaneList(), hitr->getVertexList(), points) >= 3)
             {
                 _holeList.push_back(Polytope());
-                Polytope& polytope = _holeList.back();
+                Polytope&polytope = _holeList.back();
 
                 // compute the points on the far plane.
                 PointList farPoints;
                 farPoints.reserve(points.size());
-                transform(points,farPoints,MVP);
+                transform(points, farPoints, MVP);
                 pushToFarPlane(farPoints);
-                transform(farPoints,invP);
+                transform(farPoints, invP);
 
                 // move the occlude points into projection space.
-                transform(points,MV);
+                transform(points, MV);
 
                 // use the points on the front plane as reference vertices on the _occluderVolume
                 // so that the vertices can later by used to test for occlusion of the occluder itself.
-                copyPointListToVertexList(points,polytope.getReferenceVertexList());
+                copyPointListToVertexList(points, polytope.getReferenceVertexList());
 
                 // create the front face of the occluder
                 Plane occludePlane = computeFrontPlane(points);
 
                 // create the sides of the occluder
-                computePlanes(points,farPoints,polytope.getPlaneList());
+                computePlanes(points, farPoints, polytope.getPlaneList());
 
                 polytope.setupMask();
 
                 // if the front face is pointing away from the eye point flip the whole polytope.
-                if (occludePlane[3]>0.0f)
+                if (occludePlane[3] > 0.0f)
                 {
                     polytope.flip();
                 }
 
                 // remove the hole's volume from the occluder volume.
-                _volume -= computePolytopeVolume(points,farPoints)/volumeview;
+                _volume -= computePolytopeVolume(points, farPoints) / volumeview;
             }
-
         }
 
-        //std::cout << "final volume = "<<_volume<<std::endl;
+        // std::cout << "final volume = "<<_volume<<std::endl;
 
         return true;
     }
+
     return false;
 }
 
-bool ShadowVolumeOccluder::contains(const std::vector<Vec3>& vertices)
+bool ShadowVolumeOccluder::contains(const std::vector<Vec3>&vertices)
 {
     if (_occluderVolume.containsAllOf(vertices))
     {
-        for(HoleList::iterator itr=_holeList.begin();
-            itr!=_holeList.end();
-            ++itr)
+        for (HoleList::iterator itr = _holeList.begin();
+             itr != _holeList.end();
+             ++itr)
         {
             PointList points;
-            if (clip(itr->getPlaneList(),vertices,points)>=3) return false;
+            if (clip(itr->getPlaneList(), vertices, points) >= 3)
+                return false;
         }
+
         return true;
     }
+
     return false;
 }
 
-bool ShadowVolumeOccluder::contains(const BoundingSphere& bound)
+bool ShadowVolumeOccluder::contains(const BoundingSphere&bound)
 {
-    //std::cout << "Sphere testing occluder "<<this<<" mask="<<_occluderVolume.getCurrentMask();
+    // std::cout << "Sphere testing occluder "<<this<<" mask="<<_occluderVolume.getCurrentMask();
     if (_occluderVolume.containsAllOf(bound))
     {
-        for(HoleList::iterator itr=_holeList.begin();
-            itr!=_holeList.end();
-            ++itr)
+        for (HoleList::iterator itr = _holeList.begin();
+             itr != _holeList.end();
+             ++itr)
         {
             if (itr->contains(bound))
             {
-                //std::cout << " - not in occluder"<<std::endl;
+                // std::cout << " - not in occluder"<<std::endl;
                 return false;
             }
         }
-        //std::cout << " - in occluder ******"<<std::endl;
+
+        // std::cout << " - in occluder ******"<<std::endl;
         return true;
     }
-    //std::cout << " - not in occluder"<<std::endl;
+
+    // std::cout << " - not in occluder"<<std::endl;
     return false;
 }
 
-bool ShadowVolumeOccluder::contains(const BoundingBox& bound)
+bool ShadowVolumeOccluder::contains(const BoundingBox&bound)
 {
-    //std::cout << "Box testing occluder "<<this<<" mask="<<_occluderVolume.getCurrentMask();
+    // std::cout << "Box testing occluder "<<this<<" mask="<<_occluderVolume.getCurrentMask();
     if (_occluderVolume.containsAllOf(bound))
     {
-        for(HoleList::iterator itr=_holeList.begin();
-            itr!=_holeList.end();
-            ++itr)
+        for (HoleList::iterator itr = _holeList.begin();
+             itr != _holeList.end();
+             ++itr)
         {
             if (itr->contains(bound))
             {
-                //std::cout << " + not in occluder"<<std::endl;
+                // std::cout << " + not in occluder"<<std::endl;
                 return false;
             }
         }
-        //std::cout << "+ in occluder ********"<<std::endl;
+
+        // std::cout << "+ in occluder ********"<<std::endl;
         return true;
     }
-    //std::cout << "+ not in occluder"<<std::endl;
+
+    // std::cout << "+ not in occluder"<<std::endl;
     return false;
 }

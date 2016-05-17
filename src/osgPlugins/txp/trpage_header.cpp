@@ -10,8 +10,8 @@
    Tucson, AZ  85711
    info@terrex.com
    Tel: (520) 323-7990
-   ************************
-   */
+ ************************
+ */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -21,14 +21,14 @@
     Source for trpgHeader methods.
     The only reason to change this is if you want to add something
      to the header definition.
-     */
+ */
 
 #include <trpage_geom.h>
 #include <trpage_read.h>
 
 /* Write Header class
     Fill it in and write it out.
-    */
+ */
 
 // Constructor
 trpgHeader::trpgHeader()
@@ -36,23 +36,24 @@ trpgHeader::trpgHeader()
     Reset();
 }
 trpgHeader::~trpgHeader()
-{
-}
+{}
 
 // Validity check
 bool trpgHeader::isValid() const
 {
     // We also need to check that this is a 'master' archive here.
-    if((verMajor>=TRPG_NOMERGE_VERSION_MAJOR) && (verMinor>=TRPG_NOMERGE_VERSION_MINOR))
+    if ((verMajor >= TRPG_NOMERGE_VERSION_MAJOR) && (verMinor >= TRPG_NOMERGE_VERSION_MINOR))
     {
         return true;
     }
-    else {
+    else
+    {
         if (numLods <= 0)
         {
             strcpy(errMess, "Number of LOD <= 0");
             return false;
         }
+
         if (sw.x == ne.x && sw.y == ne.y)
         {
             strcpy(errMess, "Mbr is invalid");
@@ -68,46 +69,48 @@ bool trpgHeader::isValid() const
 void trpgHeader::Reset()
 {
     // Initialize to a default state
-    verMinor = TRPG_VERSION_MINOR;
-    verMajor = TRPG_VERSION_MAJOR;
+    verMinor   = TRPG_VERSION_MINOR;
+    verMajor   = TRPG_VERSION_MAJOR;
     dbVerMinor = 0;
     dbVerMajor = 0;
-    origin = trpg3dPoint(0,0,0);
-    sw = ne = trpg2dPoint(0,0);
-    tileType = DatabaseLocal;
+    origin     = trpg3dPoint(0, 0, 0);
+    sw         = ne = trpg2dPoint(0, 0);
+    tileType   = DatabaseLocal;
 
     numLods = 0;
     lodSizes.resize(0);
     lodRanges.resize(0);
     tileSize.resize(0);
     maxGroupID = -1;
-    flags = 0;
+    flags      = 0;
     errMess[0] = '\0';
-    cols = -1;
-    rows = -1;
+    cols       = -1;
+    rows       = -1;
 }
 
 // Set functions
-void trpgHeader::SetVersion(int32 vmaj,int32 vmin)
+void trpgHeader::SetVersion(int32 vmaj, int32 vmin)
 {
     verMinor = vmin;
     verMajor = vmaj;
 }
-void trpgHeader::SetDbVersion(int32 vmaj,int32 vmin)
+void trpgHeader::SetDbVersion(int32 vmaj, int32 vmin)
 {
     dbVerMinor = vmin;
     dbVerMajor = vmaj;
 }
-void trpgHeader::SetTileSize(int id,const trpg2dPoint &pt)
+void trpgHeader::SetTileSize(int id, const trpg2dPoint&pt)
 {
-    if (id < 0 || id >= (int)tileSize.size())  return;
+    if (id < 0 || id >= (int)tileSize.size())
+        return;
+
     tileSize[id] = pt;
 }
-void trpgHeader::SetOrigin(const trpg3dPoint &pt)
+void trpgHeader::SetOrigin(const trpg3dPoint&pt)
 {
     origin = pt;
 }
-void trpgHeader::SetExtents(const trpg2dPoint &in_sw,const trpg2dPoint &in_ne)
+void trpgHeader::SetExtents(const trpg2dPoint&in_sw, const trpg2dPoint&in_ne)
 {
     sw = in_sw;
     ne = in_ne;
@@ -118,13 +121,15 @@ void trpgHeader::SetTileOriginType(trpgTileType type)
 }
 void trpgHeader::SetNumLods(int no)
 {
-    if (no < 0)  return;
+    if (no < 0)
+        return;
+
     numLods = no;
 
     lodSizes.resize(no);
     lodRanges.resize(no);
 }
-void trpgHeader::SetLodSize(int no,const trpg2iPoint &pt)
+void trpgHeader::SetLodSize(int no, const trpg2iPoint&pt)
 {
     if (no < 0 || no >= numLods)
         return;
@@ -133,10 +138,10 @@ void trpgHeader::SetLodSize(int no,const trpg2iPoint &pt)
 }
 void trpgHeader::SetLodSize(const trpg2iPoint *pt)
 {
-    for (int i=0;i<numLods;i++)
+    for (int i = 0; i < numLods; i++)
         lodSizes[i] = pt[i];
 }
-void trpgHeader::SetLodRange(int no,float64 r)
+void trpgHeader::SetLodRange(int no, float64 r)
 {
     if (no < 0 || no >= numLods)
         return;
@@ -145,29 +150,32 @@ void trpgHeader::SetLodRange(int no,float64 r)
 }
 void trpgHeader::SetLodRange(const float64 *r)
 {
-    for (int i=0;i<numLods;i++)
+    for (int i = 0; i < numLods; i++)
         lodRanges[i] = r[i];
 }
-void trpgHeader::AddLod(const trpg2iPoint &pt,const trpg2dPoint &sz,float64 r)
+void trpgHeader::AddLod(const trpg2iPoint&pt, const trpg2dPoint&sz, float64 r)
 {
     lodRanges.push_back(r);
     lodSizes.push_back(pt);
     tileSize.push_back(sz);
     numLods++;
 }
-void trpgHeader::SetLod(const trpg2iPoint &pt,const trpg2dPoint &sz,float64 r,unsigned int lod)
+void trpgHeader::SetLod(const trpg2iPoint&pt, const trpg2dPoint&sz, float64 r, unsigned int lod)
 {
-    if (lodRanges.size()<=lod)
-        lodRanges.resize(lod+1);
-    lodRanges[lod]=r;
-    if (lodSizes.size()<=lod)
-        lodSizes.resize(lod+1);
-    lodSizes[lod]=pt;
-    if (tileSize.size()<=lod)
-        tileSize.resize(lod+1);
-    tileSize[lod]=sz;
-    if (numLods<=static_cast<int>(lod))
-        numLods=lod+1;
+    if (lodRanges.size() <= lod)
+        lodRanges.resize(lod + 1);
+
+    lodRanges[lod] = r;
+    if (lodSizes.size() <= lod)
+        lodSizes.resize(lod + 1);
+
+    lodSizes[lod] = pt;
+    if (tileSize.size() <= lod)
+        tileSize.resize(lod + 1);
+
+    tileSize[lod] = sz;
+    if (numLods <= static_cast<int>(lod))
+        numLods = lod + 1;
 }
 void trpgHeader::SetMaxGroupID(int id)
 {
@@ -180,9 +188,8 @@ int trpgHeader::AddGroupID(void)
 }
 
 // Write out to a buffer
-bool trpgHeader::Write(trpgWriteBuffer &buf)
+bool trpgHeader::Write(trpgWriteBuffer&buf)
 {
-
     if (!isValid())
         return false;
 
@@ -199,16 +206,20 @@ bool trpgHeader::Write(trpgWriteBuffer &buf)
     buf.Add((int32)numLods);
 
     buf.Begin(TRPGHEAD_LODINFO);
-    for (int i=0;i<numLods;i++) {
+
+    for (int i = 0; i < numLods; i++)
+    {
         buf.Add(lodSizes[i]);
         buf.Add(lodRanges[i]);
         buf.Add(tileSize[i]);
     }
+
     buf.End();
 
     buf.Add(maxGroupID);
 
-    if((verMajor >= TRPG_NOMERGE_VERSION_MAJOR) && (verMinor >=TRPG_NOMERGE_VERSION_MINOR)) {
+    if ((verMajor >= TRPG_NOMERGE_VERSION_MAJOR) && (verMinor >= TRPG_NOMERGE_VERSION_MINOR))
+    {
         buf.Add(flags);
         buf.Add(rows);
         buf.Add(cols);
@@ -221,82 +232,103 @@ bool trpgHeader::Write(trpgWriteBuffer &buf)
 
 /* ********
    Read Header class.
-   */
+ */
 
 // Get Functions
-bool trpgHeader::GetVersion(int32 &vmaj,int32 &vmin) const
+bool trpgHeader::GetVersion(int32&vmaj, int32&vmin) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     vmin = verMinor;
     vmaj = verMajor;
     return true;
 }
-bool trpgHeader::GetDbVersion(int32 &vmaj,int32 &vmin) const
+bool trpgHeader::GetDbVersion(int32&vmaj, int32&vmin) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     vmaj = dbVerMajor;
     vmin = dbVerMinor;
     return true;
 }
-bool trpgHeader::GetTileSize(int id,trpg2dPoint &pt) const
+bool trpgHeader::GetTileSize(int id, trpg2dPoint&pt) const
 {
-    if (!isValid()) return false;
-    if (id < 0 || id >= (int)tileSize.size())  return false;
+    if (!isValid())
+        return false;
+
+    if (id < 0 || id >= (int)tileSize.size())
+        return false;
+
     pt = tileSize[id];
     return true;
 }
-bool trpgHeader::GetOrigin(trpg3dPoint &pt) const
+bool trpgHeader::GetOrigin(trpg3dPoint&pt) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     pt = origin;
     return true;
 }
-bool trpgHeader::GetTileOriginType(trpgTileType &type) const
+bool trpgHeader::GetTileOriginType(trpgTileType&type) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     type = tileType;
     return true;
 }
-bool trpgHeader::GetNumLods(int32 &no) const
+bool trpgHeader::GetNumLods(int32&no) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     no = numLods;
     return true;
 }
-bool trpgHeader::GetLodSize(int32 id,trpg2iPoint &pt) const
+bool trpgHeader::GetLodSize(int32 id, trpg2iPoint&pt) const
 {
-    if (!isValid() || (id < 0 || id >= numLods)) return false;
+    if (!isValid() || (id < 0 || id >= numLods))
+        return false;
+
     pt = lodSizes[id];
     return true;
 }
-bool trpgHeader::GetLodRange(int32 id,float64 &range) const
+bool trpgHeader::GetLodRange(int32 id, float64&range) const
 {
-    if (!isValid() || (id < 0 || id >= numLods)) return false;
+    if (!isValid() || (id < 0 || id >= numLods))
+        return false;
+
     range = lodRanges[id];
     return true;
 }
-bool trpgHeader::GetExtents(trpg2dPoint &osw,trpg2dPoint &one) const
+bool trpgHeader::GetExtents(trpg2dPoint&osw, trpg2dPoint&one) const
 {
-    if (!isValid()) return false;
+    if (!isValid())
+        return false;
+
     osw = sw;
     one = ne;
     return true;
 }
-bool trpgHeader::GetMaxGroupID(int &id) const
+bool trpgHeader::GetMaxGroupID(int&id) const
 {
     id = maxGroupID;
     return true;
 }
 
 // Read in the header
-bool trpgHeader::Read(trpgReadBuffer &buf)
+bool trpgHeader::Read(trpgReadBuffer&buf)
 {
-    uint8 i8;
+    uint8     i8;
     trpgToken tok;
-    bool status;
-    int32 len;
+    bool      status;
+    int32     len;
 
-    try {
+    try
+    {
         buf.Get(verMajor);
         buf.Get(verMinor);
         buf.Get(dbVerMajor);
@@ -306,26 +338,32 @@ bool trpgHeader::Read(trpgReadBuffer &buf)
         buf.Get(ne);
         buf.Get(i8);  tileType = (trpgTileType)i8;
         buf.Get(numLods);
-        if (numLods < 0) throw 1;
+        if (numLods < 0)
+            throw 1;
 
         // Read in the LOD range info
-        buf.GetToken(tok,len);
-        if (tok != TRPGHEAD_LODINFO)  throw 1;
+        buf.GetToken(tok, len);
+        if (tok != TRPGHEAD_LODINFO)
+            throw 1;
+
         buf.PushLimit(len);
         status = ReadLodInfo(buf);
         buf.PopLimit();
-        if (!status) throw 1;
+        if (!status)
+            throw 1;
 
         // Added after the first version (but still in 1.0)
         buf.Get(maxGroupID);
-        if((verMajor >= TRPG_NOMERGE_VERSION_MAJOR) && (verMinor >=TRPG_NOMERGE_VERSION_MINOR)) {
+        if ((verMajor >= TRPG_NOMERGE_VERSION_MAJOR) && (verMinor >= TRPG_NOMERGE_VERSION_MINOR))
+        {
             buf.Get(flags);
             buf.Get(rows);
             buf.Get(cols);
         }
     }
 
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
@@ -333,14 +371,16 @@ bool trpgHeader::Read(trpgReadBuffer &buf)
 }
 
 // Read the LOD info (separate token)
-bool trpgHeader::ReadLodInfo(trpgReadBuffer &buf)
+bool trpgHeader::ReadLodInfo(trpgReadBuffer&buf)
 {
-    float64 range;
+    float64     range;
     trpg2iPoint pt;
     trpg2dPoint sz;
 
-    try {
-        for (int i=0;i<numLods;i++) {
+    try
+    {
+        for (int i = 0; i < numLods; i++)
+        {
             buf.Get(pt);
             buf.Get(range);
             buf.Get(sz);
@@ -349,10 +389,10 @@ bool trpgHeader::ReadLodInfo(trpgReadBuffer &buf)
             tileSize.push_back(sz);
         }
     }
-    catch (...) {
+    catch (...)
+    {
         return false;
     }
 
     return true;
 }
-

@@ -9,122 +9,135 @@
 
 const unsigned int MASK_2D = 0xF0000000;
 
-class ABCWidget: public osgWidget::Label {
+class ABCWidget : public osgWidget::Label
+{
 public:
-    ABCWidget(const std::string& label):
-    osgWidget::Label("", label) {
-        setFont("fonts/Vera.ttf");
-        setFontSize(20);
-        setCanFill(true);
-        setShadow(0.08f);
-        addSize(10.0f, 10.0f);
-    }
+ABCWidget(const std::string&label) :
+    osgWidget::Label("", label)
+{
+    setFont("fonts/Vera.ttf");
+    setFontSize(20);
+    setCanFill(true);
+    setShadow(0.08f);
+    addSize(10.0f, 10.0f);
+}
 };
 
-class Button: public osgWidget::Label {
+class Button : public osgWidget::Label
+{
 public:
-    Button(const std::string& label):
-    osgWidget::Label("", label) {
-        setFont("fonts/Vera.ttf");
-        setFontSize(30);
-        setColor(0.8f, 0.2f, 0.2f, 0.8f);
-        setCanFill(true);
-        setShadow(0.1f);
-        setEventMask(osgWidget::EVENT_MASK_MOUSE_CLICK);
-        addSize(20.0f, 20.0f);
-    }
+Button(const std::string&label) :
+    osgWidget::Label("", label)
+{
+    setFont("fonts/Vera.ttf");
+    setFontSize(30);
+    setColor(0.8f, 0.2f, 0.2f, 0.8f);
+    setCanFill(true);
+    setShadow(0.1f);
+    setEventMask(osgWidget::EVENT_MASK_MOUSE_CLICK);
+    addSize(20.0f, 20.0f);
+}
 
-    // NOTE! I need to make it clearer than Push/Release can happen so fast that
-    // the changes you make aren't visible with your refresh rate. Throttling state
-    // changes and what-have-you on mousePush/mouseRelease/etc. is going to be
-    // annoying...
+// NOTE! I need to make it clearer than Push/Release can happen so fast that
+// the changes you make aren't visible with your refresh rate. Throttling state
+// changes and what-have-you on mousePush/mouseRelease/etc. is going to be
+// annoying...
 
-    virtual bool mousePush(double, double, const osgWidget::WindowManager*) {
-        addColor(0.2f, 0.2f, 0.2f, 0.0f);
-        
-        return true;
-    }
+virtual bool mousePush(double, double, const osgWidget::WindowManager*)
+{
+    addColor(0.2f, 0.2f, 0.2f, 0.0f);
 
-    virtual bool mouseRelease(double, double, const osgWidget::WindowManager*) {
-        addColor(-0.2f, -0.2f, -0.2f, 0.0f);
-        
-        return true;
-    }
+    return true;
+}
+
+virtual bool mouseRelease(double, double, const osgWidget::WindowManager*)
+{
+    addColor(-0.2f, -0.2f, -0.2f, 0.0f);
+
+    return true;
+}
 };
 
-class AddRemove: public osgWidget::Box {
-    osg::ref_ptr<osgWidget::Window> _win1;
+class AddRemove : public osgWidget::Box
+{
+osg::ref_ptr<osgWidget::Window> _win1;
 
 public:
-    AddRemove():
+AddRemove() :
     osgWidget::Box ("buttons", osgWidget::Box::VERTICAL),
-    _win1          (new osgWidget::Box("win1", osgWidget::Box::VERTICAL)) {
-        addWidget(new Button("Add Widget"));
-        addWidget(new Button("Remove Widget"));
+    _win1          (new osgWidget::Box("win1", osgWidget::Box::VERTICAL))
+{
+    addWidget(new Button("Add Widget"));
+    addWidget(new Button("Remove Widget"));
 
-        // Take special note here! Not only do the Button objects have their
-        // own overridden methods for changing the color, but they have attached
-        // callbacks for doing the work with local data.
-        getByName("Widget_1")->addCallback(new osgWidget::Callback(
-            &AddRemove::handlePressAdd,
-            this,
-            osgWidget::EVENT_MOUSE_PUSH
-        ));
+    // Take special note here! Not only do the Button objects have their
+    // own overridden methods for changing the color, but they have attached
+    // callbacks for doing the work with local data.
+    getByName("Widget_1")->addCallback(new osgWidget::Callback(
+                                           &AddRemove::handlePressAdd,
+                                           this,
+                                           osgWidget::EVENT_MOUSE_PUSH
+                                           ));
 
-        getByName("Widget_2")->addCallback(new osgWidget::Callback(
-            &AddRemove::handlePressRemove,
-            this,
-            osgWidget::EVENT_MOUSE_PUSH
-        ));
-    }
+    getByName("Widget_2")->addCallback(new osgWidget::Callback(
+                                           &AddRemove::handlePressRemove,
+                                           this,
+                                           osgWidget::EVENT_MOUSE_PUSH
+                                           ));
+}
 
-    virtual void managed(osgWidget::WindowManager* wm) {
-        osgWidget::Box::managed(wm);
+virtual void managed(osgWidget::WindowManager *wm)
+{
+    osgWidget::Box::managed(wm);
 
-        _win1->setOrigin(250.0f, 0.0f);
+    _win1->setOrigin(250.0f, 0.0f);
 
-        wm->addChild(_win1.get());
-    }
+    wm->addChild(_win1.get());
+}
 
-    bool handlePressAdd(osgWidget::Event& ev) {
-        static unsigned int num = 0;
+bool handlePressAdd(osgWidget::Event&ev)
+{
+    static unsigned int num = 0;
 
-        std::stringstream ss;
+    std::stringstream ss;
 
-        ss << "a random widget " << num;
+    ss << "a random widget " << num;
 
-        _win1->addWidget(new ABCWidget(ss.str()));
+    _win1->addWidget(new ABCWidget(ss.str()));
 
-        num++;
+    num++;
 
-        return true;
-    }
+    return true;
+}
 
-    bool handlePressRemove(osgWidget::Event& ev) {
-        // TODO: Temporary hack!
-        const osgWidget::Box::Vector& v = _win1->getObjects();
-    
-        if(!v.size()) return false;
+bool handlePressRemove(osgWidget::Event&ev)
+{
+    // TODO: Temporary hack!
+    const osgWidget::Box::Vector&v = _win1->getObjects();
 
-        osgWidget::Widget* w = _win1->getObjects()[v.size() - 1].get();
+    if (!v.size())
+        return false;
 
-        _win1->removeWidget(w);
+    osgWidget::Widget *w = _win1->getObjects()[v.size() - 1].get();
 
-        return true;
-    }
+    _win1->removeWidget(w);
+
+    return true;
+}
 };
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
     osgViewer::Viewer viewer;
 
-    osgWidget::WindowManager* wm = new osgWidget::WindowManager(
+    osgWidget::WindowManager *wm = new osgWidget::WindowManager(
         &viewer,
         1280.0f,
         1024.0f,
         MASK_2D
-    );
-    
-    osgWidget::Box* buttons = new AddRemove();
+        );
+
+    osgWidget::Box *buttons = new AddRemove();
 
     wm->addChild(buttons);
 

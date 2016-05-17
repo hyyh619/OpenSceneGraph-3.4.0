@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool Scribe_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool Scribe_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool Scribe_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool Scribe_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(Scribe_Proxy)
 (
@@ -17,26 +17,30 @@ REGISTER_DOTOSGWRAPPER(Scribe_Proxy)
     Scribe_writeLocalData
 );
 
-bool Scribe_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool Scribe_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgFX::Scribe &myobj = static_cast<osgFX::Scribe &>(obj);
-    bool itAdvanced = false;
+    osgFX::Scribe&myobj     = static_cast<osgFX::Scribe&>(obj);
+    bool         itAdvanced = false;
 
-    if (fr[0].matchWord("wireframeColor")) {
+    if (fr[0].matchWord("wireframeColor"))
+    {
         osg::Vec4 w;
         if (fr[1].getFloat(w.x()) && fr[2].getFloat(w.y()) &&
-            fr[3].getFloat(w.z()) && fr[4].getFloat(w.w())) {
+            fr[3].getFloat(w.z()) && fr[4].getFloat(w.w()))
+        {
             myobj.setWireframeColor(w);
-            fr += 5;
+            fr        += 5;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("wireframeLineWidth")) {
+    if (fr[0].matchWord("wireframeLineWidth"))
+    {
         float f;
-        if (fr[1].getFloat(f)) {
+        if (fr[1].getFloat(f))
+        {
             myobj.setWireframeLineWidth(f);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
@@ -44,11 +48,11 @@ bool Scribe_readLocalData(osg::Object &obj, osgDB::Input &fr)
     return itAdvanced;
 }
 
-bool Scribe_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool Scribe_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgFX::Scribe &myobj = static_cast<const osgFX::Scribe &>(obj);
+    const osgFX::Scribe&myobj = static_cast<const osgFX::Scribe&>(obj);
 
-    fw.indent() << "wireframeColor " << myobj.getWireframeColor() << "\n";
+    fw.indent() << "wireframeColor " <<     myobj.getWireframeColor() << "\n";
     fw.indent() << "wireframeLineWidth " << myobj.getWireframeLineWidth() << "\n";
 
     return true;

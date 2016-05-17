@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/ObserverNodePath>
 #include <osg/Notify>
@@ -17,35 +17,35 @@
 using namespace osg;
 
 Observer::Observer()
-{
-}
+{}
 
 Observer::~Observer()
-{
-}
+{}
 
-ObserverSet::ObserverSet(const Referenced* observedObject):
+ObserverSet::ObserverSet(const Referenced *observedObject) :
     _observedObject(const_cast<Referenced*>(observedObject))
 {
-    //OSG_NOTICE<<"ObserverSet::ObserverSet() "<<this<<std::endl;
+    // OSG_NOTICE<<"ObserverSet::ObserverSet() "<<this<<std::endl;
 }
 
 ObserverSet::~ObserverSet()
 {
-    //OSG_NOTICE<<"ObserverSet::~ObserverSet() "<<this<<", _observers.size()="<<_observers.size()<<std::endl;
+    // OSG_NOTICE<<"ObserverSet::~ObserverSet() "<<this<<", _observers.size()="<<_observers.size()<<std::endl;
 }
 
-void ObserverSet::addObserver(Observer* observer)
+void ObserverSet::addObserver(Observer *observer)
 {
-    //OSG_NOTICE<<"ObserverSet::addObserver("<<observer<<") "<<this<<std::endl;
+    // OSG_NOTICE<<"ObserverSet::addObserver("<<observer<<") "<<this<<std::endl;
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     _observers.insert(observer);
 }
 
-void ObserverSet::removeObserver(Observer* observer)
+void ObserverSet::removeObserver(Observer *observer)
 {
-    //OSG_NOTICE<<"ObserverSet::removeObserver("<<observer<<") "<<this<<std::endl;
+    // OSG_NOTICE<<"ObserverSet::removeObserver("<<observer<<") "<<this<<std::endl;
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
+
     _observers.erase(observer);
 }
 
@@ -53,7 +53,8 @@ Referenced* ObserverSet::addRefLock()
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
-    if (!_observedObject) return 0;
+    if (!_observedObject)
+        return 0;
 
     int refCount = _observedObject->ref();
     if (refCount == 1)
@@ -68,16 +69,17 @@ Referenced* ObserverSet::addRefLock()
     return _observedObject;
 }
 
-void ObserverSet::signalObjectDeleted(void* ptr)
+void ObserverSet::signalObjectDeleted(void *ptr)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
-    for(Observers::iterator itr = _observers.begin();
-        itr != _observers.end();
-        ++itr)
+    for (Observers::iterator itr = _observers.begin();
+         itr != _observers.end();
+         ++itr)
     {
         (*itr)->objectDeleted(ptr);
     }
+
     _observers.clear();
 
     // reset the observed object so that we know that it's now detached.

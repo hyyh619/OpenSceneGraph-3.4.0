@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/Texture2D>
 #include <osg/CoordinateSystemNode>
@@ -21,23 +21,24 @@
 
 using namespace osgShadow;
 
-ShadowedScene::ShadowedScene(ShadowTechnique* st)
+ShadowedScene::ShadowedScene(ShadowTechnique *st)
 {
     setNumChildrenRequiringUpdateTraversal(1);
 
     setShadowSettings(new ShadowSettings);
 
-    if (st) setShadowTechnique(st);
+    if (st)
+        setShadowTechnique(st);
 }
 
-ShadowedScene::ShadowedScene(const ShadowedScene& ss, const osg::CopyOp& copyop):
-    osg::Group(ss,copyop)
+ShadowedScene::ShadowedScene(const ShadowedScene&ss, const osg::CopyOp&copyop) :
+    osg::Group(ss, copyop)
 {
-    setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal()+1);
+    setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal() + 1);
 
     if (ss._shadowTechnique.valid())
     {
-        setShadowTechnique( dynamic_cast<osgShadow::ShadowTechnique*>(ss._shadowTechnique->clone(copyop)) );
+        setShadowTechnique(dynamic_cast<osgShadow::ShadowTechnique*>(ss._shadowTechnique->clone(copyop)));
     }
 
     if (ss._shadowSettings)
@@ -48,7 +49,6 @@ ShadowedScene::ShadowedScene(const ShadowedScene& ss, const osg::CopyOp& copyop)
     {
         setShadowSettings(new ShadowSettings);
     }
-
 }
 
 ShadowedScene::~ShadowedScene()
@@ -56,7 +56,7 @@ ShadowedScene::~ShadowedScene()
     setShadowTechnique(0);
 }
 
-void ShadowedScene::traverse(osg::NodeVisitor& nv)
+void ShadowedScene::traverse(osg::NodeVisitor&nv)
 {
     if (_shadowTechnique.valid())
     {
@@ -68,14 +68,15 @@ void ShadowedScene::traverse(osg::NodeVisitor& nv)
     }
 }
 
-void ShadowedScene::setShadowSettings(ShadowSettings* ss)
+void ShadowedScene::setShadowSettings(ShadowSettings *ss)
 {
     _shadowSettings = ss;
 }
 
-void ShadowedScene::setShadowTechnique(ShadowTechnique* technique)
+void ShadowedScene::setShadowTechnique(ShadowTechnique *technique)
 {
-    if (_shadowTechnique == technique) return;
+    if (_shadowTechnique == technique)
+        return;
 
     if (_shadowTechnique.valid())
     {
@@ -111,12 +112,16 @@ void ShadowedScene::dirty()
 
 void ShadowedScene::resizeGLObjectBuffers(unsigned int maxSize)
 {
-    if (_shadowTechnique.valid()) _shadowTechnique->resizeGLObjectBuffers(maxSize);
+    if (_shadowTechnique.valid())
+        _shadowTechnique->resizeGLObjectBuffers(maxSize);
+
     Group::resizeGLObjectBuffers(maxSize);
 }
 
-void ShadowedScene::releaseGLObjects(osg::State* state) const
+void ShadowedScene::releaseGLObjects(osg::State *state) const
 {
-    if (_shadowTechnique.valid()) _shadowTechnique->releaseGLObjects(state);
+    if (_shadowTechnique.valid())
+        _shadowTechnique->releaseGLObjects(state);
+
     Group::releaseGLObjects(state);
 }

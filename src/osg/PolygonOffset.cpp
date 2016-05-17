@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <string.h>
 
 #include <osg/GL>
@@ -19,12 +19,12 @@
 using namespace osg;
 
 static float s_FactorMultipler = 1.0f;
-static float s_UnitsMultipler = 1.0f;
-static bool s_MultiplerSet = false;
+static float s_UnitsMultipler  = 1.0f;
+static bool  s_MultiplerSet    = false;
 
 void PolygonOffset::setFactorMultiplier(float multiplier)
 {
-    s_MultiplerSet = true;
+    s_MultiplerSet    = true;
     s_FactorMultipler = multiplier;
 }
 
@@ -35,7 +35,7 @@ float PolygonOffset::getFactorMultiplier()
 
 void PolygonOffset::setUnitsMultiplier(float multiplier)
 {
-    s_MultiplerSet = true;
+    s_MultiplerSet   = true;
     s_UnitsMultipler = multiplier;
 }
 
@@ -56,41 +56,39 @@ void PolygonOffset::setFactorAndUnitsMultipliersUsingBestGuessForDriver()
     // OSG_NOTICE<<"PolygonOffset::setFactorAndUnitMultipliersUsingBestGuessForDriver()"<<std::endl;
 
 #if 0
-    const GLubyte* renderer = glGetString(GL_RENDERER);
+    const GLubyte *renderer = glGetString(GL_RENDERER);
     if (renderer)
     {
-        if ((strstr((const char*)renderer,"Radeon")!=0) ||
-            (strstr((const char*)renderer,"RADEON")!=0) ||
-            (strstr((const char*)renderer,"ALL-IN-WONDER")!=0))
+        if ((strstr((const char*)renderer, "Radeon") != 0) ||
+            (strstr((const char*)renderer, "RADEON") != 0) ||
+            (strstr((const char*)renderer, "ALL-IN-WONDER") != 0))
         {
             setFactorMultiplier(1.0f);
             setUnitsMultiplier(128.0f);
-            OSG_INFO<<"PolygonOffset::setFactorAndUnitsMultipliersUsingBestGuessForDriver() apply ATI workaround."<<std::endl;
+            OSG_INFO << "PolygonOffset::setFactorAndUnitsMultipliersUsingBestGuessForDriver() apply ATI workaround." << std::endl;
         }
     }
 #endif
 }
 
 
-PolygonOffset::PolygonOffset():
+PolygonOffset::PolygonOffset() :
     _factor(0.0f),
     _units(0.0f)
-{
-}
+{}
 
-PolygonOffset::PolygonOffset(float factor, float units):
+PolygonOffset::PolygonOffset(float factor, float units) :
     _factor(factor),
     _units(units)
-{
-}
+{}
 
 PolygonOffset::~PolygonOffset()
-{
-}
+{}
 
 void PolygonOffset::apply(State&) const
 {
-    if (!s_MultiplerSet) setFactorAndUnitsMultipliersUsingBestGuessForDriver();
+    if (!s_MultiplerSet)
+        setFactorAndUnitsMultipliersUsingBestGuessForDriver();
 
     glPolygonOffset(_factor * s_FactorMultipler,
                     _units * s_UnitsMultipler);

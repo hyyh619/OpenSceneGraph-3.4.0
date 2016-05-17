@@ -1,16 +1,16 @@
-/*  -*-c++-*- 
+/*  -*-c++-*-
  *  Copyright (C) 2008 Cedric Pinson <mornifle@plopbyte.net>
  *
- * This library is open source and may be redistributed and/or modified under  
- * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or 
+ * This library is open source and may be redistributed and/or modified under
+ * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
  * (at your option) any later version.  The full license is in LICENSE file
  * included with this distribution, and on the openscenegraph.org website.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <iostream>
 #include <osg/Geometry>
@@ -32,15 +32,17 @@
 struct GeometryFinder : public osg::NodeVisitor
 {
     osg::ref_ptr<osg::Geometry> _geom;
-    GeometryFinder() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
-    void apply(osg::Geode& geode) 
+    GeometryFinder() :          osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
+    void apply(osg::Geode&geode)
     {
         if (_geom.valid())
             return;
-        for (unsigned int i = 0; i < geode.getNumDrawables(); i++) 
+
+        for (unsigned int i = 0; i < geode.getNumDrawables(); i++)
         {
-            osg::Geometry* geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
-            if (geom) {
+            osg::Geometry *geom = dynamic_cast<osg::Geometry*>(geode.getDrawable(i));
+            if (geom)
+            {
                 _geom = geom;
                 return;
             }
@@ -48,9 +50,10 @@ struct GeometryFinder : public osg::NodeVisitor
     }
 };
 
-osg::ref_ptr<osg::Geometry> getShape(const std::string& name)
+osg::ref_ptr<osg::Geometry> getShape(const std::string&name)
 {
     osg::ref_ptr<osg::Node> shape0 = osgDB::readNodeFile(name);
+
     if (shape0)
     {
         GeometryFinder finder;
@@ -64,15 +67,16 @@ osg::ref_ptr<osg::Geometry> getShape(const std::string& name)
 }
 
 
-int main (int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     osg::ArgumentParser arguments(&argc, argv);
-    osgViewer::Viewer viewer(arguments);
+    osgViewer::Viewer   viewer(arguments);
 
-    osgAnimation::Animation* animation = new osgAnimation::Animation;
-    osgAnimation::FloatLinearChannel* channel0 = new osgAnimation::FloatLinearChannel;
-    channel0->getOrCreateSampler()->getOrCreateKeyframeContainer()->push_back(osgAnimation::FloatKeyframe(0,0.0));
-    channel0->getOrCreateSampler()->getOrCreateKeyframeContainer()->push_back(osgAnimation::FloatKeyframe(1,1.0));
+    osgAnimation::Animation          *animation = new osgAnimation::Animation;
+    osgAnimation::FloatLinearChannel *channel0  = new osgAnimation::FloatLinearChannel;
+
+    channel0->getOrCreateSampler()->getOrCreateKeyframeContainer()->push_back(osgAnimation::FloatKeyframe(0, 0.0));
+    channel0->getOrCreateSampler()->getOrCreateKeyframeContainer()->push_back(osgAnimation::FloatKeyframe(1, 1.0));
     channel0->setTargetName("MorphNodeCallback");
     channel0->setName("0");
 
@@ -80,32 +84,34 @@ int main (int argc, char* argv[])
     animation->setName("Morph");
     animation->computeDuration();
     animation->setPlayMode(osgAnimation::Animation::PPONG);
-    osgAnimation::BasicAnimationManager* bam = new osgAnimation::BasicAnimationManager;
+    osgAnimation::BasicAnimationManager *bam = new osgAnimation::BasicAnimationManager;
     bam->registerAnimation(animation);
 
     osg::ref_ptr<osg::Geometry> geom0 = getShape("morphtarget_shape0.osg");
-    if (!geom0) {
+    if (!geom0)
+    {
         std::cerr << "can't read morphtarget_shape0.osg" << std::endl;
         return 0;
     }
 
     osg::ref_ptr<osg::Geometry> geom1 = getShape("morphtarget_shape1.osg");
-    if (!geom1) {
+    if (!geom1)
+    {
         std::cerr << "can't read morphtarget_shape1.osg" << std::endl;
         return 0;
     }
 
     // initialize with the first shape
-    osgAnimation::MorphGeometry* morph = new osgAnimation::MorphGeometry(*geom0);
+    osgAnimation::MorphGeometry *morph = new osgAnimation::MorphGeometry(*geom0);
     morph->addMorphTarget(geom1.get());
 
     viewer.setCameraManipulator(new osgGA::TrackballManipulator());
 
 
-    osg::Group* scene = new osg::Group;
+    osg::Group *scene = new osg::Group;
     scene->addUpdateCallback(bam);
-    
-    osg::Geode* geode = new osg::Geode;
+
+    osg::Geode *geode = new osg::Geode;
     geode->addDrawable(morph);
     geode->addUpdateCallback(new osgAnimation::UpdateMorph("MorphNodeCallback"));
     scene->addChild(geode);
@@ -115,7 +121,7 @@ int main (int argc, char* argv[])
     viewer.addEventHandler(new osgGA::StateSetManipulator(viewer.getCamera()->getOrCreateStateSet()));
 
     // let's run !
-    viewer.setSceneData( scene );
+    viewer.setSceneData(scene);
     viewer.realize();
 
     bam->playAnimation(animation);
@@ -130,5 +136,3 @@ int main (int argc, char* argv[])
 
     return 0;
 }
-
-

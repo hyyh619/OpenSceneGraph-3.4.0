@@ -1,24 +1,24 @@
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2009, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2009, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 #include "setup.h"
 
 #include <curl/curl.h>
@@ -47,28 +47,30 @@ static int vms_shell = -1;
  */
 int is_vms_shell(void)
 {
-  char *shell;
+    char *shell;
 
-  /* Have we checked the shell yet? */
-  if(vms_shell >= 0)
-    return vms_shell;
+    /* Have we checked the shell yet? */
+    if (vms_shell >= 0)
+        return vms_shell;
 
-  shell = getenv("SHELL");
+    shell = getenv("SHELL");
 
-  /* No shell, means DCL */
-  if(shell == NULL) {
-    vms_shell = 1;
-    return 1;
-  }
+    /* No shell, means DCL */
+    if (shell == NULL)
+    {
+        vms_shell = 1;
+        return 1;
+    }
 
-  /* Have to make sure some one did not set shell to DCL */
-  if(strcmp(shell, "DCL") == 0) {
-    vms_shell = 1;
-    return 1;
-  }
+    /* Have to make sure some one did not set shell to DCL */
+    if (strcmp(shell, "DCL") == 0)
+    {
+        vms_shell = 1;
+        return 1;
+    }
 
-  vms_shell = 0;
-  return 0;
+    vms_shell = 0;
+    return 0;
 }
 
 /*
@@ -90,22 +92,26 @@ int is_vms_shell(void)
 
 void vms_special_exit(int code, int vms_show)
 {
-  int vms_code;
+    int vms_code;
 
-  /* The Posix exit mode is only available after VMS 7.0 */
+    /* The Posix exit mode is only available after VMS 7.0 */
 #if __CRTL_VER >= 70000000
-  if(is_vms_shell() == 0) {
-    decc$__posix_exit(code);
-  }
+    if (is_vms_shell() == 0)
+    {
+        decc$__posix_exit(code);
+    }
 #endif
 
-  if(code > CURL_LAST) {   /* If CURL_LAST exceeded then */
-    vms_code = CURL_LAST;  /* curlmsg.h is out of sync.  */
-  }
-  else {
-    vms_code = vms_cond[code] | vms_show;
-  }
-  decc$exit(vms_code);
+    if (code > CURL_LAST)  /* If CURL_LAST exceeded then */
+    {
+        vms_code = CURL_LAST; /* curlmsg.h is out of sync.  */
+    }
+    else
+    {
+        vms_code = vms_cond[code] | vms_show;
+    }
+
+    decc$exit(vms_code);
 }
 
 #if defined(__DECC) && !defined(__VAX) && \
@@ -124,22 +130,24 @@ void vms_special_exit(int code, int vms_show)
 #include <unixlib.h>
 
 /* Structure to hold a DECC$* feature name and its desired value. */
-typedef struct {
-  char *name;
-  int value;
+typedef struct
+{
+    char *name;
+    int  value;
 } decc_feat_t;
 
 /* Array of DECC$* feature names and their desired values. */
-static decc_feat_t decc_feat_array[] = {
-  /* Preserve command-line case with SET PROCESS/PARSE_STYLE=EXTENDED */
-  { "DECC$ARGV_PARSE_STYLE", 1 },
-  /* Preserve case for file names on ODS5 disks. */
-  { "DECC$EFS_CASE_PRESERVE", 1 },
-  /* Enable multiple dots (and most characters) in ODS5 file names,
-     while preserving VMS-ness of ";version". */
-  { "DECC$EFS_CHARSET", 1 },
-  /* List terminator. */
-  { (char *)NULL, 0 }
+static decc_feat_t decc_feat_array[] =
+{
+    /* Preserve command-line case with SET PROCESS/PARSE_STYLE=EXTENDED */
+    { "DECC$ARGV_PARSE_STYLE", 1 },
+    /* Preserve case for file names on ODS5 disks. */
+    { "DECC$EFS_CASE_PRESERVE", 1 },
+    /* Enable multiple dots (and most characters) in ODS5 file names,
+       while preserving VMS-ness of ";version". */
+    { "DECC$EFS_CHARSET", 1 },
+    /* List terminator. */
+    { (char*)NULL, 0 }
 };
 
 /* Flag to sense if decc_init() was called. */
@@ -148,49 +156,53 @@ static int decc_init_done = -1;
 /* LIB$INITIALIZE initialization function. */
 static void decc_init(void)
 {
-  int feat_index;
-  int feat_value;
-  int feat_value_max;
-  int feat_value_min;
-  int i;
-  int sts;
+    int feat_index;
+    int feat_value;
+    int feat_value_max;
+    int feat_value_min;
+    int i;
+    int sts;
 
-  /* Set the global flag to indicate that LIB$INITIALIZE worked. */
-  decc_init_done = 1;
+    /* Set the global flag to indicate that LIB$INITIALIZE worked. */
+    decc_init_done = 1;
 
-  /* Loop through all items in the decc_feat_array[]. */
-  for(i = 0; decc_feat_array[i].name != NULL; i++) {
+    /* Loop through all items in the decc_feat_array[]. */
+    for (i = 0; decc_feat_array[i].name != NULL; i++)
+    {
+        /* Get the feature index. */
+        feat_index = decc$feature_get_index(decc_feat_array[i].name);
 
-    /* Get the feature index. */
-    feat_index = decc$feature_get_index( decc_feat_array[i].name);
+        if (feat_index >= 0)
+        {
+            /* Valid item.  Collect its properties. */
+            feat_value     = decc$feature_get_value(feat_index, 1);
+            feat_value_min = decc$feature_get_value(feat_index, 2);
+            feat_value_max = decc$feature_get_value(feat_index, 3);
 
-    if(feat_index >= 0) {
-      /* Valid item.  Collect its properties. */
-      feat_value = decc$feature_get_value( feat_index, 1);
-      feat_value_min = decc$feature_get_value( feat_index, 2);
-      feat_value_max = decc$feature_get_value( feat_index, 3);
-
-      if((decc_feat_array[i].value >= feat_value_min) &&
-         (decc_feat_array[i].value <= feat_value_max)) {
-        /* Valid value.  Set it if necessary. */
-        if(feat_value != decc_feat_array[i].value) {
-          sts = decc$feature_set_value( feat_index, 1,
-                                        decc_feat_array[i].value);
+            if ((decc_feat_array[i].value >= feat_value_min) &&
+                (decc_feat_array[i].value <= feat_value_max))
+            {
+                /* Valid value.  Set it if necessary. */
+                if (feat_value != decc_feat_array[i].value)
+                {
+                    sts = decc$feature_set_value(feat_index, 1,
+                                                 decc_feat_array[i].value);
+                }
+            }
+            else
+            {
+                /* Invalid DECC feature value. */
+                printf(" INVALID DECC FEATURE VALUE, %d: %d <= %s <= %d.\n",
+                       feat_value,
+                       feat_value_min, decc_feat_array[i].name, feat_value_max);
+            }
         }
-      }
-      else {
-        /* Invalid DECC feature value. */
-        printf(" INVALID DECC FEATURE VALUE, %d: %d <= %s <= %d.\n",
-               feat_value,
-               feat_value_min, decc_feat_array[i].name, feat_value_max);
-      }
+        else
+        {
+            /* Invalid DECC feature name. */
+            printf(" UNKNOWN DECC FEATURE: %s.\n", decc_feat_array[i].name);
+        }
     }
-    else {
-      /* Invalid DECC feature name. */
-      printf(" UNKNOWN DECC FEATURE: %s.\n", decc_feat_array[i].name);
-    }
-
-  }
 }
 
 /* Get "decc_init()" into a valid, loaded LIB$INITIALIZE PSECT. */
@@ -214,8 +226,5 @@ int dmy_lib$initialize = (int) LIB$INITIALIZE;
 #pragma extern_model restore
 
 #pragma standard
-
 #endif /* __DECC && !__VAX && __CRTL_VER && __CRTL_VER >= 70301000 */
-
 #endif /* __VMS */
-

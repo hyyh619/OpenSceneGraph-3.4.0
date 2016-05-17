@@ -11,8 +11,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  FluidProgram_readLocalData(osg::Object &obj, osgDB::Input &fr);
-bool  FluidProgram_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool  FluidProgram_readLocalData(osg::Object&obj, osgDB::Input&fr);
+bool  FluidProgram_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
 
 REGISTER_DOTOSGWRAPPER(FluidProgram_Proxy)
 (
@@ -23,42 +23,50 @@ REGISTER_DOTOSGWRAPPER(FluidProgram_Proxy)
     FluidProgram_writeLocalData
 );
 
-bool FluidProgram_readLocalData(osg::Object &obj, osgDB::Input &fr)
+bool FluidProgram_readLocalData(osg::Object&obj, osgDB::Input&fr)
 {
-    osgParticle::FluidProgram &myobj = static_cast<osgParticle::FluidProgram &>(obj);
-    bool itAdvanced = false;
+    osgParticle::FluidProgram&myobj     = static_cast<osgParticle::FluidProgram&>(obj);
+    bool                     itAdvanced = false;
 
     osg::Vec3 vec;
-    float f;
+    float     f;
 
-    if (fr[0].matchWord("acceleration")) {
-        if (fr[1].getFloat(vec.x()) && fr[2].getFloat(vec.y()) && fr[3].getFloat(vec.z())) {
+    if (fr[0].matchWord("acceleration"))
+    {
+        if (fr[1].getFloat(vec.x()) && fr[2].getFloat(vec.y()) && fr[3].getFloat(vec.z()))
+        {
             myobj.setAcceleration(vec);
-            fr += 4;
+            fr        += 4;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("viscosity")) {
-        if (fr[1].getFloat(f)) {
+    if (fr[0].matchWord("viscosity"))
+    {
+        if (fr[1].getFloat(f))
+        {
             myobj.setFluidViscosity(f);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("density")) {
-        if (fr[1].getFloat(f)) {
+    if (fr[0].matchWord("density"))
+    {
+        if (fr[1].getFloat(f))
+        {
             myobj.setFluidDensity(f);
-            fr += 2;
+            fr        += 2;
             itAdvanced = true;
         }
     }
 
-    if (fr[0].matchWord("wind")) {
-        if (fr[1].getFloat(vec.x()) && fr[2].getFloat(vec.y()) && fr[3].getFloat(vec.z())) {
+    if (fr[0].matchWord("wind"))
+    {
+        if (fr[1].getFloat(vec.x()) && fr[2].getFloat(vec.y()) && fr[3].getFloat(vec.z()))
+        {
             myobj.setWind(vec);
-            fr += 4;
+            fr        += 4;
             itAdvanced = true;
         }
     }
@@ -66,12 +74,12 @@ bool FluidProgram_readLocalData(osg::Object &obj, osgDB::Input &fr)
     return itAdvanced;
 }
 
-bool FluidProgram_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
+bool FluidProgram_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 {
-    const osgParticle::FluidProgram &myobj = static_cast<const osgParticle::FluidProgram &>(obj);
+    const osgParticle::FluidProgram&myobj = static_cast<const osgParticle::FluidProgram&>(obj);
 
     osg::Vec3 vec;
-    float f;
+    float     f;
 
     vec = myobj.getAcceleration();
     fw.indent() << "acceleration " << vec << std::endl;

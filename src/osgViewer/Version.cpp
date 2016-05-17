@@ -9,12 +9,11 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #include <osgViewer/Version>
 #include <osg/Version>
 
 extern "C" {
-
 const char* osgViewerGetVersion()
 {
     return osgGetVersion();
@@ -25,5 +24,4 @@ const char* osgViewerGetLibraryName()
 {
     return "OpenSceneGraph Viewer Library";
 }
-
 }

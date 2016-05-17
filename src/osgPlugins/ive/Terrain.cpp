@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "Terrain.h"
@@ -20,14 +20,14 @@
 
 using namespace ive;
 
-void Terrain::write(DataOutputStream* out)
+void Terrain::write(DataOutputStream *out)
 {
     // Write Terrain's identification.
     out->writeInt(IVETERRAIN);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osg::CoordinateSystemNode*  csn = dynamic_cast<osg::CoordinateSystemNode*>(this);
-    if(csn)
+    osg::CoordinateSystemNode *csn = dynamic_cast<osg::CoordinateSystemNode*>(this);
+    if (csn)
         ((ive::CoordinateSystemNode*)(csn))->write(out);
     else
         out_THROW_EXCEPTION("Terrain::write(): Could not cast this osgTerrain::Terrain to an osg::CoordinateSystemNode.");
@@ -39,17 +39,19 @@ void Terrain::write(DataOutputStream* out)
     TerrainTile::writeTerrainTechnique(out, getTerrainTechniquePrototype());
 }
 
-void Terrain::read(DataInputStream* in)
+void Terrain::read(DataInputStream *in)
 {
     // Peek on Terrain's identification.
     int id = in->peekInt();
-    if (id != IVETERRAIN) in_THROW_EXCEPTION("TerrainTile::read(): Expected Terrain identification.");
+
+    if (id != IVETERRAIN)
+        in_THROW_EXCEPTION("TerrainTile::read(): Expected Terrain identification.");
 
     // Read Terrain's identification.
     id = in->readInt();
 
-    osg::CoordinateSystemNode*  csn = dynamic_cast<osg::CoordinateSystemNode*>(this);
-    if(csn)
+    osg::CoordinateSystemNode *csn = dynamic_cast<osg::CoordinateSystemNode*>(this);
+    if (csn)
         ((ive::CoordinateSystemNode*)(csn))->read(in);
     else
         in_THROW_EXCEPTION("Terrain::read(): Could not cast this osgTerran::Terrain to an osg::CoordinateSystemNode.");
@@ -60,4 +62,3 @@ void Terrain::read(DataInputStream* in)
 
     setTerrainTechniquePrototype(TerrainTile::readTerrainTechnique(in));
 }
-

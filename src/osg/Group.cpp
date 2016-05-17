@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/Group>
 #include <osg/BoundingBox>
@@ -26,58 +26,58 @@
 using namespace osg;
 
 Group::Group()
-{
-}
+{}
 
-Group::Group(const Group& group,const CopyOp& copyop):
-    Node(group,copyop)
+Group::Group(const Group&group, const CopyOp&copyop) :
+    Node(group, copyop)
 {
-    for(NodeList::const_iterator itr=group._children.begin();
-        itr!=group._children.end();
-        ++itr)
+    for (NodeList::const_iterator itr = group._children.begin();
+         itr != group._children.end();
+         ++itr)
     {
-        Node* child = copyop(itr->get());
-        if (child) addChild(child);
+        Node *child = copyop(itr->get());
+        if (child)
+            addChild(child);
     }
 }
 
 Group::~Group()
 {
     // remove reference to this from children's parent lists.
-    for(NodeList::iterator itr=_children.begin();
-        itr!=_children.end();
-        ++itr)
+    for (NodeList::iterator itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
         (*itr)->removeParent(this);
     }
-
 }
 
 
-void Group::traverse(NodeVisitor& nv)
+void Group::traverse(NodeVisitor&nv)
 {
-    for(NodeList::iterator itr=_children.begin();
-        itr!=_children.end();
-        ++itr)
+    for (NodeList::iterator itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
         (*itr)->accept(nv);
     }
 }
 
 
-bool Group::addChild( Node *child )
+bool Group::addChild(Node *child)
 {
-    return Group::insertChild( _children.size(), child );
+    return Group::insertChild(_children.size(), child);
 }
 
-bool Group::insertChild( unsigned int index, Node *child )
+bool Group::insertChild(unsigned int index, Node *child)
 {
-    if (!child) return false;
+    if (!child)
+        return false;
 
 #if ENSURE_CHILD_IS_UNIQUE
     if (containsNode(child))
     {
-        OSG_WARN<<"Adding non unique child to osg::Group, ignoring call"<<std::endl;
+        OSG_WARN << "Adding non unique child to osg::Group, ignoring call" << std::endl;
         return false;
     }
 #endif
@@ -85,8 +85,9 @@ bool Group::insertChild( unsigned int index, Node *child )
     if (child)
     {
         // handle deprecated geometry configurations by calling fixDeprecatedData().
-        osg::Geometry* geometry = child->asGeometry();
-        if (geometry && geometry->containsDeprecatedData()) geometry->fixDeprecatedData();
+        osg::Geometry *geometry = child->asGeometry();
+        if (geometry && geometry->containsDeprecatedData())
+            geometry->fixDeprecatedData();
 
 
         // note ref_ptr<> automatically handles incrementing child's reference count.
@@ -97,7 +98,7 @@ bool Group::insertChild( unsigned int index, Node *child )
         }
         else
         {
-            _children.insert(_children.begin()+index, child);
+            _children.insert(_children.begin() + index, child);
         }
 
         // register as parent of child.
@@ -110,45 +111,46 @@ bool Group::insertChild( unsigned int index, Node *child )
 
         // could now require app traversal thanks to the new subgraph,
         // so need to check and update if required.
-        if (child->getNumChildrenRequiringUpdateTraversal()>0 ||
+        if (child->getNumChildrenRequiringUpdateTraversal() > 0 ||
             child->getUpdateCallback())
         {
             setNumChildrenRequiringUpdateTraversal(
-                getNumChildrenRequiringUpdateTraversal()+1
+                getNumChildrenRequiringUpdateTraversal() + 1
                 );
         }
 
         // could now require app traversal thanks to the new subgraph,
         // so need to check and update if required.
-        if (child->getNumChildrenRequiringEventTraversal()>0 ||
+        if (child->getNumChildrenRequiringEventTraversal() > 0 ||
             child->getEventCallback())
         {
             setNumChildrenRequiringEventTraversal(
-                getNumChildrenRequiringEventTraversal()+1
+                getNumChildrenRequiringEventTraversal() + 1
                 );
         }
 
         // could now require disabling of culling thanks to the new subgraph,
         // so need to check and update if required.
-        if (child->getNumChildrenWithCullingDisabled()>0 ||
+        if (child->getNumChildrenWithCullingDisabled() > 0 ||
             !child->getCullingActive())
         {
             setNumChildrenWithCullingDisabled(
-                getNumChildrenWithCullingDisabled()+1
+                getNumChildrenWithCullingDisabled() + 1
                 );
         }
 
-        if (child->getNumChildrenWithOccluderNodes()>0 ||
+        if (child->getNumChildrenWithOccluderNodes() > 0 ||
             dynamic_cast<osg::OccluderNode*>(child))
         {
             setNumChildrenWithOccluderNodes(
-                getNumChildrenWithOccluderNodes()+1
+                getNumChildrenWithOccluderNodes() + 1
                 );
         }
 
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 unsigned int Group::getNumChildren() const
@@ -157,97 +159,105 @@ unsigned int Group::getNumChildren() const
 }
 
 
-bool Group::removeChild( Node *child )
+bool Group::removeChild(Node *child)
 {
     unsigned int pos = getChildIndex(child);
-    if (pos<_children.size()) return removeChildren(pos,1);
-    else return false;
+
+    if (pos < _children.size())
+        return removeChildren(pos, 1);
+    else
+        return false;
 }
 
 
-bool Group::removeChildren(unsigned int pos,unsigned int numChildrenToRemove)
+bool Group::removeChildren(unsigned int pos, unsigned int numChildrenToRemove)
 {
-    if (pos<_children.size() && numChildrenToRemove>0)
+    if (pos < _children.size() && numChildrenToRemove > 0)
     {
-        unsigned int endOfRemoveRange = pos+numChildrenToRemove;
-        if (endOfRemoveRange>_children.size())
+        unsigned int endOfRemoveRange = pos + numChildrenToRemove;
+        if (endOfRemoveRange > _children.size())
         {
-            OSG_DEBUG<<"Warning: Group::removeChild(i,numChildrenToRemove) has been passed an excessive number"<<std::endl;
-            OSG_DEBUG<<"         of chilren to remove, trimming just to end of child list."<<std::endl;
-            endOfRemoveRange=_children.size();
+            OSG_DEBUG << "Warning: Group::removeChild(i,numChildrenToRemove) has been passed an excessive number" << std::endl;
+            OSG_DEBUG << "         of chilren to remove, trimming just to end of child list." << std::endl;
+            endOfRemoveRange = _children.size();
         }
 
-        unsigned int updateCallbackRemoved = 0;
-        unsigned int eventCallbackRemoved = 0;
+        unsigned int updateCallbackRemoved                 = 0;
+        unsigned int eventCallbackRemoved                  = 0;
         unsigned int numChildrenWithCullingDisabledRemoved = 0;
-        unsigned int numChildrenWithOccludersRemoved = 0;
+        unsigned int numChildrenWithOccludersRemoved       = 0;
 
-        for(unsigned i=pos;i<endOfRemoveRange;++i)
+        for (unsigned i = pos; i < endOfRemoveRange; ++i)
         {
-            osg::Node* child = _children[i].get();
+            osg::Node *child = _children[i].get();
             // remove this Geode from the child parent list.
             child->removeParent(this);
 
-            if (child->getNumChildrenRequiringUpdateTraversal()>0 || child->getUpdateCallback()) ++updateCallbackRemoved;
+            if (child->getNumChildrenRequiringUpdateTraversal() > 0 || child->getUpdateCallback())
+                ++updateCallbackRemoved;
 
-            if (child->getNumChildrenRequiringEventTraversal()>0 || child->getEventCallback()) ++eventCallbackRemoved;
+            if (child->getNumChildrenRequiringEventTraversal() > 0 || child->getEventCallback())
+                ++eventCallbackRemoved;
 
-            if (child->getNumChildrenWithCullingDisabled()>0 || !child->getCullingActive()) ++numChildrenWithCullingDisabledRemoved;
+            if (child->getNumChildrenWithCullingDisabled() > 0 || !child->getCullingActive())
+                ++numChildrenWithCullingDisabledRemoved;
 
-            if (child->getNumChildrenWithOccluderNodes()>0 || dynamic_cast<osg::OccluderNode*>(child)) ++numChildrenWithOccludersRemoved;
-
+            if (child->getNumChildrenWithOccluderNodes() > 0 || dynamic_cast<osg::OccluderNode*>(child))
+                ++numChildrenWithOccludersRemoved;
         }
 
-        childRemoved(pos,endOfRemoveRange-pos);
+        childRemoved(pos, endOfRemoveRange - pos);
 
-        _children.erase(_children.begin()+pos,_children.begin()+endOfRemoveRange);
+        _children.erase(_children.begin() + pos, _children.begin() + endOfRemoveRange);
 
         if (updateCallbackRemoved)
         {
-            setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal()-updateCallbackRemoved);
+            setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal() - updateCallbackRemoved);
         }
 
         if (eventCallbackRemoved)
         {
-            setNumChildrenRequiringEventTraversal(getNumChildrenRequiringEventTraversal()-eventCallbackRemoved);
+            setNumChildrenRequiringEventTraversal(getNumChildrenRequiringEventTraversal() - eventCallbackRemoved);
         }
 
         if (numChildrenWithCullingDisabledRemoved)
         {
-            setNumChildrenWithCullingDisabled(getNumChildrenWithCullingDisabled()-numChildrenWithCullingDisabledRemoved);
+            setNumChildrenWithCullingDisabled(getNumChildrenWithCullingDisabled() - numChildrenWithCullingDisabledRemoved);
         }
 
         if (numChildrenWithOccludersRemoved)
         {
-            setNumChildrenWithOccluderNodes(getNumChildrenWithOccluderNodes()-numChildrenWithOccludersRemoved);
+            setNumChildrenWithOccluderNodes(getNumChildrenWithOccluderNodes() - numChildrenWithOccludersRemoved);
         }
 
         dirtyBound();
 
         return true;
     }
-    else return false;
+    else
+        return false;
 }
 
 
-bool Group::replaceChild( Node *origNode, Node *newNode )
+bool Group::replaceChild(Node *origNode, Node *newNode)
 {
-    if (newNode==NULL || origNode==newNode) return false;
+    if (newNode == NULL || origNode == newNode)
+        return false;
 
     unsigned int pos = getChildIndex(origNode);
-    if (pos<_children.size())
+    if (pos < _children.size())
     {
-        return setChild(pos,newNode);
+        return setChild(pos, newNode);
     }
+
     return false;
 }
 
 
-bool Group::setChild( unsigned  int i, Node* newNode )
+bool Group::setChild(unsigned int i, Node *newNode)
 {
-    if (i<_children.size() && newNode)
+    if (i < _children.size() && newNode)
     {
-
         ref_ptr<Node> origNode = _children[i];
 
         // first remove for origNode's parent list.
@@ -266,96 +276,101 @@ bool Group::setChild( unsigned  int i, Node* newNode )
         // could now require update traversal thanks to the new subgraph,
         // so need to check and update if required.
         int delta_numChildrenRequiringUpdateTraversal = 0;
-        if (origNode->getNumChildrenRequiringUpdateTraversal()>0 ||
+        if (origNode->getNumChildrenRequiringUpdateTraversal() > 0 ||
             origNode->getUpdateCallback())
         {
             --delta_numChildrenRequiringUpdateTraversal;
         }
-        if (newNode->getNumChildrenRequiringUpdateTraversal()>0 ||
+
+        if (newNode->getNumChildrenRequiringUpdateTraversal() > 0 ||
             newNode->getUpdateCallback())
         {
             ++delta_numChildrenRequiringUpdateTraversal;
         }
 
-        if (delta_numChildrenRequiringUpdateTraversal!=0)
+        if (delta_numChildrenRequiringUpdateTraversal != 0)
         {
             setNumChildrenRequiringUpdateTraversal(
-                getNumChildrenRequiringUpdateTraversal()+delta_numChildrenRequiringUpdateTraversal
+                getNumChildrenRequiringUpdateTraversal() + delta_numChildrenRequiringUpdateTraversal
                 );
         }
 
         // could now require event traversal thanks to the new subgraph,
         // so need to check and Event if required.
         int delta_numChildrenRequiringEventTraversal = 0;
-        if (origNode->getNumChildrenRequiringEventTraversal()>0 ||
+        if (origNode->getNumChildrenRequiringEventTraversal() > 0 ||
             origNode->getEventCallback())
         {
             --delta_numChildrenRequiringEventTraversal;
         }
-        if (newNode->getNumChildrenRequiringEventTraversal()>0 ||
+
+        if (newNode->getNumChildrenRequiringEventTraversal() > 0 ||
             newNode->getEventCallback())
         {
             ++delta_numChildrenRequiringEventTraversal;
         }
 
-        if (delta_numChildrenRequiringEventTraversal!=0)
+        if (delta_numChildrenRequiringEventTraversal != 0)
         {
             setNumChildrenRequiringEventTraversal(
-                getNumChildrenRequiringEventTraversal()+delta_numChildrenRequiringEventTraversal
+                getNumChildrenRequiringEventTraversal() + delta_numChildrenRequiringEventTraversal
                 );
         }
 
         // could now require disabling of culling thanks to the new subgraph,
         // so need to check and update if required.
         int delta_numChildrenWithCullingDisabled = 0;
-        if (origNode->getNumChildrenWithCullingDisabled()>0 ||
+        if (origNode->getNumChildrenWithCullingDisabled() > 0 ||
             !origNode->getCullingActive())
         {
             --delta_numChildrenWithCullingDisabled;
         }
-        if (newNode->getNumChildrenWithCullingDisabled()>0 ||
+
+        if (newNode->getNumChildrenWithCullingDisabled() > 0 ||
             !newNode->getCullingActive())
         {
             ++delta_numChildrenWithCullingDisabled;
         }
 
-        if (delta_numChildrenWithCullingDisabled!=0)
+        if (delta_numChildrenWithCullingDisabled != 0)
         {
             setNumChildrenWithCullingDisabled(
-                getNumChildrenWithCullingDisabled()+delta_numChildrenWithCullingDisabled
+                getNumChildrenWithCullingDisabled() + delta_numChildrenWithCullingDisabled
                 );
         }
 
         // could now require disabling of culling thanks to the new subgraph,
         // so need to check and update if required.
         int delta_numChildrenWithOccluderNodes = 0;
-        if (origNode->getNumChildrenWithOccluderNodes()>0 ||
+        if (origNode->getNumChildrenWithOccluderNodes() > 0 ||
             dynamic_cast<osg::OccluderNode*>(origNode.get()))
         {
             --delta_numChildrenWithOccluderNodes;
         }
-        if (newNode->getNumChildrenWithOccluderNodes()>0 ||
+
+        if (newNode->getNumChildrenWithOccluderNodes() > 0 ||
             dynamic_cast<osg::OccluderNode*>(newNode))
         {
             ++delta_numChildrenWithOccluderNodes;
         }
 
-        if (delta_numChildrenWithOccluderNodes!=0)
+        if (delta_numChildrenWithOccluderNodes != 0)
         {
             setNumChildrenWithOccluderNodes(
-                getNumChildrenWithOccluderNodes()+delta_numChildrenWithOccluderNodes
+                getNumChildrenWithOccluderNodes() + delta_numChildrenWithOccluderNodes
                 );
         }
 
         return true;
     }
-    else return false;
-
+    else
+        return false;
 }
 
 BoundingSphere Group::computeBound() const
 {
     BoundingSphere bsphere;
+
     if (_children.empty())
     {
         return bsphere;
@@ -368,22 +383,23 @@ BoundingSphere Group::computeBound() const
     BoundingBox bb;
     bb.init();
     NodeList::const_iterator itr;
-    for(itr=_children.begin();
-        itr!=_children.end();
-        ++itr)
+
+    for (itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
-        osg::Node* child = itr->get();
-        const osg::Transform* transform = child->asTransform();
-        if (!transform || transform->getReferenceFrame()==osg::Transform::RELATIVE_RF)
+        osg::Node            *child     = itr->get();
+        const osg::Transform *transform = child->asTransform();
+        if (!transform || transform->getReferenceFrame() == osg::Transform::RELATIVE_RF)
         {
-            osg::Drawable* drawable = child->asDrawable();
+            osg::Drawable *drawable = child->asDrawable();
             if (drawable)
             {
                 bb.expandBy(drawable->getBoundingBox());
             }
             else
             {
-                const osg::BoundingSphere& bs = child->getBound();
+                const osg::BoundingSphere&bs = child->getBound();
                 bb.expandBy(bs);
             }
         }
@@ -396,15 +412,16 @@ BoundingSphere Group::computeBound() const
 
     bsphere._center = bb.center();
     bsphere._radius = 0.0f;
-    for(itr=_children.begin();
-        itr!=_children.end();
-        ++itr)
+
+    for (itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
-        osg::Node* child = itr->get();
-        const osg::Transform* transform = child->asTransform();
-        if (!transform || transform->getReferenceFrame()==osg::Transform::RELATIVE_RF)
+        osg::Node            *child     = itr->get();
+        const osg::Transform *transform = child->asTransform();
+        if (!transform || transform->getReferenceFrame() == osg::Transform::RELATIVE_RF)
         {
-            const BoundingSphere& bs = child->getBound();
+            const BoundingSphere&bs = child->getBound();
             bsphere.expandRadiusBy(bs);
         }
     }
@@ -416,9 +433,9 @@ void Group::setThreadSafeRefUnref(bool threadSafe)
 {
     Node::setThreadSafeRefUnref(threadSafe);
 
-    for(NodeList::const_iterator itr=_children.begin();
-        itr!=_children.end();
-        ++itr)
+    for (NodeList::const_iterator itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
         (*itr)->setThreadSafeRefUnref(threadSafe);
     }
@@ -428,21 +445,21 @@ void Group::resizeGLObjectBuffers(unsigned int maxSize)
 {
     Node::resizeGLObjectBuffers(maxSize);
 
-    for(NodeList::const_iterator itr=_children.begin();
-        itr!=_children.end();
-        ++itr)
+    for (NodeList::const_iterator itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
         (*itr)->resizeGLObjectBuffers(maxSize);
     }
 }
 
-void Group::releaseGLObjects(osg::State* state) const
+void Group::releaseGLObjects(osg::State *state) const
 {
     Node::releaseGLObjects(state);
 
-    for(NodeList::const_iterator itr=_children.begin();
-        itr!=_children.end();
-        ++itr)
+    for (NodeList::const_iterator itr = _children.begin();
+         itr != _children.end();
+         ++itr)
     {
         (*itr)->releaseGLObjects(state);
     }

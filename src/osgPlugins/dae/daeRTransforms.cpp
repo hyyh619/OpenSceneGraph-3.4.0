@@ -38,7 +38,7 @@ using namespace osgDAE;
 // converted to column-order matrices and concatenated using matrix post-multiplication.
 osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
 {
-    osg::MatrixTransform* resultNode = NULL;
+    osg::MatrixTransform *resultNode = NULL;
 
     if (isBone)
     {
@@ -49,21 +49,22 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
         resultNode = new osg::MatrixTransform;
     }
 
-    osg::Callback* pNodeCallback = resultNode->getUpdateCallback();
+    osg::Callback                                                     *pNodeCallback = resultNode->getUpdateCallback();
     std::vector<osg::ref_ptr<osgAnimation::StackedTransformElement> > transformElements;
-    osg::ref_ptr<osgAnimation::StackedTransformElement> pLastStaticTransformElement;
+    osg::ref_ptr<osgAnimation::StackedTransformElement>               pLastStaticTransformElement;
 
     // Process all coordinate system contributing elements in order!
     size_t count = node->getContents().getCount();
-    for (size_t i = 0; i < count; i++ )
+
+    for (size_t i = 0; i < count; i++)
     {
-        daeElement* pDaeElement = node->getContents()[i];
+        daeElement                                          *pDaeElement      = node->getContents()[i];
         osg::ref_ptr<osgAnimation::StackedTransformElement> pTransformElement = NULL;
 
-        if (domRotate * pDomRotate = daeSafeCast< domRotate >( pDaeElement ))
+        if (domRotate *pDomRotate = daeSafeCast<domRotate>(pDaeElement))
         {
-            const domFloat4& r = pDomRotate->getValue();
-            if (r.getCount() != 4 )
+            const domFloat4&r = pDomRotate->getValue();
+            if (r.getCount() != 4)
             {
                 OSG_WARN << "Data is wrong size for rotate" << std::endl;
                 continue;
@@ -71,84 +72,84 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
 
             pTransformElement = new osgAnimation::StackedRotateAxisElement(pDomRotate->getSid() ? pDomRotate->getSid() : "", osg::Vec3(r[0], r[1], r[2]), osg::DegreesToRadians(r[3]));
         }
-        else if (domTranslate * pDomTranslate = daeSafeCast< domTranslate >( pDaeElement ))
+        else if (domTranslate *pDomTranslate = daeSafeCast<domTranslate>(pDaeElement))
         {
-            const domFloat3& t = pDomTranslate->getValue();
-            if (t.getCount() != 3 )
+            const domFloat3&t = pDomTranslate->getValue();
+            if (t.getCount() != 3)
             {
-                OSG_WARN<<"Data is wrong size for translate"<<std::endl;
+                OSG_WARN << "Data is wrong size for translate" << std::endl;
                 continue;
             }
 
             pTransformElement = new osgAnimation::StackedTranslateElement(pDomTranslate->getSid() ?  pDomTranslate->getSid() : "", osg::Vec3(t[0], t[1], t[2]));
         }
-        else if (domScale * pDomScale = daeSafeCast< domScale >( pDaeElement ))
+        else if (domScale *pDomScale = daeSafeCast<domScale>(pDaeElement))
         {
-            const domFloat3& s = pDomScale->getValue();
-            if (s.getCount() != 3 )
+            const domFloat3&s = pDomScale->getValue();
+            if (s.getCount() != 3)
             {
-                OSG_WARN<<"Data is wrong size for scale"<<std::endl;
+                OSG_WARN << "Data is wrong size for scale" << std::endl;
                 continue;
             }
 
             pTransformElement = new osgAnimation::StackedScaleElement(pDomScale->getSid() ? pDomScale->getSid() : "", osg::Vec3(s[0], s[1], s[2]));
         }
-        else if (domMatrix * pDomMatrix = daeSafeCast< domMatrix >( pDaeElement ))
+        else if (domMatrix *pDomMatrix = daeSafeCast<domMatrix>(pDaeElement))
         {
-            if (pDomMatrix->getValue().getCount() != 16 )
+            if (pDomMatrix->getValue().getCount() != 16)
             {
-                OSG_WARN<<"Data is wrong size for matrix"<<std::endl;
+                OSG_WARN << "Data is wrong size for matrix" << std::endl;
                 continue;
             }
 
             pTransformElement = new osgAnimation::StackedMatrixElement(pDomMatrix->getSid() ? pDomMatrix->getSid() : "",
-                osg::Matrix(    pDomMatrix->getValue()[0], pDomMatrix->getValue()[4], pDomMatrix->getValue()[8], pDomMatrix->getValue()[12],
-                pDomMatrix->getValue()[1], pDomMatrix->getValue()[5], pDomMatrix->getValue()[9], pDomMatrix->getValue()[13],
-                pDomMatrix->getValue()[2], pDomMatrix->getValue()[6], pDomMatrix->getValue()[10], pDomMatrix->getValue()[14],
-                pDomMatrix->getValue()[3], pDomMatrix->getValue()[7], pDomMatrix->getValue()[11], pDomMatrix->getValue()[15]));
+                                                                       osg::Matrix(pDomMatrix->getValue()[0], pDomMatrix->getValue()[4], pDomMatrix->getValue()[8], pDomMatrix->getValue()[12],
+                                                                                   pDomMatrix->getValue()[1], pDomMatrix->getValue()[5], pDomMatrix->getValue()[9], pDomMatrix->getValue()[13],
+                                                                                   pDomMatrix->getValue()[2], pDomMatrix->getValue()[6], pDomMatrix->getValue()[10], pDomMatrix->getValue()[14],
+                                                                                   pDomMatrix->getValue()[3], pDomMatrix->getValue()[7], pDomMatrix->getValue()[11], pDomMatrix->getValue()[15]));
         }
-        else if (domLookat * pDomLookat = daeSafeCast< domLookat >( pDaeElement ))
+        else if (domLookat *pDomLookat = daeSafeCast<domLookat>(pDaeElement))
         {
-            if (pDomLookat->getValue().getCount() != 9 )
+            if (pDomLookat->getValue().getCount() != 9)
             {
-                OSG_WARN<<"Data is wrong size for lookat"<<std::endl;
+                OSG_WARN << "Data is wrong size for lookat" << std::endl;
                 continue;
             }
 
             pTransformElement = new osgAnimation::StackedMatrixElement(pDomLookat->getSid() ? pDomLookat->getSid() : "",
-                osg::Matrix::lookAt(
-                osg::Vec3(pDomLookat->getValue()[0], pDomLookat->getValue()[1], pDomLookat->getValue()[2]),
-                osg::Vec3(pDomLookat->getValue()[3], pDomLookat->getValue()[4], pDomLookat->getValue()[5]),
-                osg::Vec3(pDomLookat->getValue()[6], pDomLookat->getValue()[7], pDomLookat->getValue()[8])));
+                                                                       osg::Matrix::lookAt(
+                                                                           osg::Vec3(pDomLookat->getValue()[0], pDomLookat->getValue()[1], pDomLookat->getValue()[2]),
+                                                                           osg::Vec3(pDomLookat->getValue()[3], pDomLookat->getValue()[4], pDomLookat->getValue()[5]),
+                                                                           osg::Vec3(pDomLookat->getValue()[6], pDomLookat->getValue()[7], pDomLookat->getValue()[8])));
         }
-        else if (domSkew * pDomSkew = daeSafeCast< domSkew >( pDaeElement ))
+        else if (domSkew *pDomSkew = daeSafeCast<domSkew>(pDaeElement))
         {
-            if (pDomSkew->getValue().getCount() != 7 )
+            if (pDomSkew->getValue().getCount() != 7)
             {
-                OSG_WARN<<"Data is wrong size for skew"<<std::endl;
+                OSG_WARN << "Data is wrong size for skew" << std::endl;
                 continue;
             }
 
-            const domFloat7& s = pDomSkew->getValue();
+            const domFloat7&s = pDomSkew->getValue();
 
             float shear = sin(osg::DegreesToRadians(s[0]));
             // axis of rotation
-            osg::Vec3f around(s[1],s[2],s[3]);
+            osg::Vec3f around(s[1], s[2], s[3]);
             // axis of translation
-            osg::Vec3f along(s[4],s[5],s[6]);
+            osg::Vec3f along(s[4], s[5], s[6]);
 
-            //This maths is untested so may be transposed or negated or just completely wrong.
+            // This maths is untested so may be transposed or negated or just completely wrong.
             osg::Vec3f normal = along ^ around;
             normal.normalize();
             around.normalize();
             along *= shear / along.length();
 
             pTransformElement = new osgAnimation::StackedMatrixElement(pDomSkew->getSid() ? pDomSkew->getSid() : "",
-                osg::Matrix(
-                normal.x() * along.x() + 1.0f, normal.x() * along.y(), normal.x() * along.z(), 0.0f,
-                normal.y() * along.x(), normal.y() * along.y() + 1.0f, normal.y() * along.z(), 0.0f,
-                normal.z() * along.x(), normal.z() * along.y(), normal.z() * along.z() + 1.0f, 0.0f,
-                0.0f, 0.0f, 0.0f, 1.0f));
+                                                                       osg::Matrix(
+                                                                           normal.x() * along.x() + 1.0f, normal.x() * along.y(), normal.x() * along.z(), 0.0f,
+                                                                           normal.y() * along.x(), normal.y() * along.y() + 1.0f, normal.y() * along.z(), 0.0f,
+                                                                           normal.z() * along.x(), normal.z() * along.y(), normal.z() * along.z() + 1.0f, 0.0f,
+                                                                           0.0f, 0.0f, 0.0f, 1.0f));
         }
 
         if (pTransformElement)
@@ -164,6 +165,7 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
                     transformElements.push_back(pLastStaticTransformElement);
                     pLastStaticTransformElement = NULL;
                 }
+
                 transformElements.push_back(pTransformElement);
 
                 // Animated element so we need an AnimationUpdateCallback
@@ -180,7 +182,8 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
                 {
                     _domChannelOsgAnimationUpdateCallbackMap[iter->second] = pNodeCallback;
                     ++iter;
-                } while (iter != _daeElementDomChannelMap.end() && iter->first == pDaeElement);
+                }
+                while (iter != _daeElementDomChannelMap.end() && iter->first == pDaeElement);
             }
             else if (pLastStaticTransformElement)
             {
@@ -210,10 +213,10 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
     // Build a matrix for the MatrixTransform and add the elements to the updateCallback
     osg::Matrix matrix;
 
-    osgAnimation::UpdateMatrixTransform* pUpdateStackedTransform =
+    osgAnimation::UpdateMatrixTransform *pUpdateStackedTransform =
         dynamic_cast<osgAnimation::UpdateMatrixTransform*>(pNodeCallback);
 
-    for (size_t i=0; i < transformElements.size(); i++)
+    for (size_t i = 0; i < transformElements.size(); i++)
     {
         transformElements[i]->applyToMatrix(matrix);
         if (pUpdateStackedTransform)
@@ -227,27 +230,28 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
     osg::Vec3 scale = matrix.getScale();
     if ((scale.x() != 1) || (scale.y() != 1) || (scale.z() != 1))
     {
-        osg::StateSet* ss = resultNode->getOrCreateStateSet();
+        osg::StateSet *ss = resultNode->getOrCreateStateSet();
         if (scale.x() == scale.y() && scale.y() == scale.z())
         {
             // This mode may be quicker than GL_NORMALIZE, but ONLY works if x, y & z components of scale are the same.
-            ss->setMode(GL_RESCALE_NORMAL, osg::StateAttribute::ON|osg::StateAttribute::OVERRIDE);
+            ss->setMode(GL_RESCALE_NORMAL, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
         }
         else
         {
             // This mode may be slower than GL_RESCALE_NORMAL, but does work if x, y & z components of scale are not the same.
-            ss->setMode(GL_NORMALIZE, osg::StateAttribute::ON|osg::StateAttribute::OVERRIDE);
+            ss->setMode(GL_NORMALIZE, osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
         }
     }
 
     return resultNode;
 }
 
-osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
+osg::Group* daeReader::processOsgDOFTransform(domTechnique *teq)
 {
-    osgSim::DOFTransform* dof = new osgSim::DOFTransform;
+    osgSim::DOFTransform *dof = new osgSim::DOFTransform;
 
-    domAny* any = daeSafeCast< domAny >(teq->getChild("MinHPR"));
+    domAny *any = daeSafeCast<domAny>(teq->getChild("MinHPR"));
+
     if (any)
     {
         dof->setMinHPR(parseVec3String(any->getValue()));
@@ -257,7 +261,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'MinHPR' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("MaxHPR"));
+    any = daeSafeCast<domAny>(teq->getChild("MaxHPR"));
     if (any)
     {
         dof->setMaxHPR(parseVec3String(any->getValue()));
@@ -267,7 +271,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'MaxHPR' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("IncrementHPR"));
+    any = daeSafeCast<domAny>(teq->getChild("IncrementHPR"));
     if (any)
     {
         dof->setIncrementHPR(parseVec3String(any->getValue()));
@@ -277,7 +281,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'IncrementHPR' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("CurrentHPR"));
+    any = daeSafeCast<domAny>(teq->getChild("CurrentHPR"));
     if (any)
     {
         dof->setCurrentHPR(parseVec3String(any->getValue()));
@@ -287,7 +291,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'CurrentHPR' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("MinTranslate"));
+    any = daeSafeCast<domAny>(teq->getChild("MinTranslate"));
     if (any)
     {
         dof->setMinTranslate(parseVec3String(any->getValue()));
@@ -297,7 +301,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'MinTranslate' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("MaxTranslate"));
+    any = daeSafeCast<domAny>(teq->getChild("MaxTranslate"));
     if (any)
     {
         dof->setMaxTranslate(parseVec3String(any->getValue()));
@@ -307,7 +311,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'MaxTranslate' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("IncrementTranslate"));
+    any = daeSafeCast<domAny>(teq->getChild("IncrementTranslate"));
     if (any)
     {
         dof->setIncrementTranslate(parseVec3String(any->getValue()));
@@ -317,7 +321,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'IncrementTranslate' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("CurrentTranslate"));
+    any = daeSafeCast<domAny>(teq->getChild("CurrentTranslate"));
     if (any)
     {
         dof->setCurrentTranslate(parseVec3String(any->getValue()));
@@ -327,7 +331,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'CurrentTranslate' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("MinScale"));
+    any = daeSafeCast<domAny>(teq->getChild("MinScale"));
     if (any)
     {
         dof->setMinScale(parseVec3String(any->getValue()));
@@ -337,7 +341,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'MinScale' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("MaxScale"));
+    any = daeSafeCast<domAny>(teq->getChild("MaxScale"));
     if (any)
     {
         dof->setMaxScale(parseVec3String(any->getValue()));
@@ -347,7 +351,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'MaxScale' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("IncrementScale"));
+    any = daeSafeCast<domAny>(teq->getChild("IncrementScale"));
     if (any)
     {
         dof->setIncrementScale(parseVec3String(any->getValue()));
@@ -357,7 +361,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'IncrementScale' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("CurrentScale"));
+    any = daeSafeCast<domAny>(teq->getChild("CurrentScale"));
     if (any)
     {
         dof->setCurrentScale(parseVec3String(any->getValue()));
@@ -367,7 +371,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'CurrentScale' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("MultOrder"));
+    any = daeSafeCast<domAny>(teq->getChild("MultOrder"));
     if (any)
     {
         dof->setHPRMultOrder((osgSim::DOFTransform::MultOrder)parseString<int>(any->getValue()));
@@ -377,7 +381,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'MultOrder' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("LimitationFlags"));
+    any = daeSafeCast<domAny>(teq->getChild("LimitationFlags"));
     if (any)
     {
         dof->setLimitationFlags(parseString<unsigned long>(any->getValue()));
@@ -387,7 +391,7 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'LimitationFlags' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("AnimationOn"));
+    any = daeSafeCast<domAny>(teq->getChild("AnimationOn"));
     if (any)
     {
         dof->setAnimationOn(parseString<bool>(any->getValue()));
@@ -397,12 +401,12 @@ osg::Group* daeReader::processOsgDOFTransform(domTechnique* teq)
         OSG_WARN << "Expected element 'AnimationOn' not found" << std::endl;
     }
 
-    any = daeSafeCast< domAny >(teq->getChild("PutMatrix"));
+    any = daeSafeCast<domAny>(teq->getChild("PutMatrix"));
     if (any)
     {
         osg::Matrix mat = parseMatrixString(any->getValue());
         dof->setPutMatrix(mat);
-        dof->setInversePutMatrix( osg::Matrixd::inverse( mat ) );
+        dof->setInversePutMatrix(osg::Matrixd::inverse(mat));
     }
     else
     {

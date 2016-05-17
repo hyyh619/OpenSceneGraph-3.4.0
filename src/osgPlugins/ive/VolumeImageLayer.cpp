@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "Exception.h"
 #include "VolumeImageLayer.h"
@@ -19,14 +19,14 @@
 
 using namespace ive;
 
-void VolumeImageLayer::write(DataOutputStream* out)
+void VolumeImageLayer::write(DataOutputStream *out)
 {
     // Write Layer's identification.
     out->writeInt(IVEVOLUMEIMAGELAYER);
 
     // If the osg class is inherited by any other class we should also write this to file.
-    osgVolume::Layer*  layer = dynamic_cast<osgVolume::Layer*>(this);
-    if  (layer)
+    osgVolume::Layer *layer = dynamic_cast<osgVolume::Layer*>(this);
+    if (layer)
         ((ive::VolumeLayer*)(layer))->write(out);
     else
         out_THROW_EXCEPTION("VolumeImageLayer::write(): Could not cast this osgVolume::ImageLayer to an osgVolume::Layer.");
@@ -34,17 +34,18 @@ void VolumeImageLayer::write(DataOutputStream* out)
 
     IncludeImageMode imMode = out->getIncludeImageMode(getImage());
 
-    if (getFileName().empty() && imMode==IMAGE_REFERENCE_FILE) imMode = IMAGE_INCLUDE_DATA;
+    if (getFileName().empty() && imMode == IMAGE_REFERENCE_FILE)
+        imMode = IMAGE_INCLUDE_DATA;
 
     out->writeChar(imMode);
-    out->writeImage(imMode,getImage());
-
+    out->writeImage(imMode, getImage());
 }
 
-void VolumeImageLayer::read(DataInputStream* in)
+void VolumeImageLayer::read(DataInputStream *in)
 {
     // Peek on Layer's identification.
     int id = in->peekInt();
+
     if (id != IVEVOLUMEIMAGELAYER)
         in_THROW_EXCEPTION("VolumeImageLayer::read(): Expected ImageLayer identification.");
 
@@ -52,7 +53,7 @@ void VolumeImageLayer::read(DataInputStream* in)
     id = in->readInt();
 
     // If the osg class is inherited by any other class we should also read this from file.
-    osgVolume::Layer*  layer = dynamic_cast<osgVolume::Layer*>(this);
+    osgVolume::Layer *layer = dynamic_cast<osgVolume::Layer*>(this);
     if (layer)
         ((ive::VolumeLayer*)(layer))->read(in);
     else
@@ -61,7 +62,7 @@ void VolumeImageLayer::read(DataInputStream* in)
     // Should we read image data from stream
     IncludeImageMode includeImg = (IncludeImageMode)in->readChar();
 
-    if (includeImg==IMAGE_REFERENCE_FILE)
+    if (includeImg == IMAGE_REFERENCE_FILE)
     {
         setFileName(in->readString());
     }

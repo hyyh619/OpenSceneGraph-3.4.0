@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/Hint>
 #include <osg/StateSet>
@@ -18,14 +18,16 @@ using namespace osg;
 
 void Hint::apply(State& /*state*/) const
 {
-    if (_target==GL_NONE || _mode==GL_NONE) return;
+    if (_target == GL_NONE || _mode == GL_NONE)
+        return;
 
     glHint(_target, _mode);
 }
 
 void Hint::setTarget(GLenum target)
 {
-    if (_target==target) return;
+    if (_target == target)
+        return;
 
     if (_parents.empty())
     {
@@ -43,11 +45,12 @@ void Hint::setTarget(GLenum target)
     // remove this attribute from its parents as its position is being changed
     // and would no longer be valid.
     ParentList::iterator itr;
-    for(itr = parents.begin();
-        itr != parents.end();
-        ++itr)
+
+    for (itr = parents.begin();
+         itr != parents.end();
+         ++itr)
     {
-        osg::StateSet* stateset = *itr;
+        osg::StateSet *stateset = *itr;
         stateset->removeAttribute(this);
     }
 
@@ -55,12 +58,11 @@ void Hint::setTarget(GLenum target)
     _target = target;
 
     // add this attribute back into its original parents with its new position
-    for(itr = parents.begin();
-        itr != parents.end();
-        ++itr)
+    for (itr = parents.begin();
+         itr != parents.end();
+         ++itr)
     {
-        osg::StateSet* stateset = *itr;
+        osg::StateSet *stateset = *itr;
         stateset->setAttribute(this);
     }
 }
-

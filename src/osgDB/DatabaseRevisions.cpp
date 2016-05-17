@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osgDB/DatabaseRevisions>
 #include <osgDB/FileUtils>
@@ -24,33 +24,32 @@ using namespace osgDB;
 // FilelList
 //
 FileList::FileList()
-{
-}
+{}
 
-FileList::FileList(const FileList& fileList, const osg::CopyOp & copyop):
+FileList::FileList(const FileList&fileList, const osg::CopyOp&copyop) :
     osg::Object(fileList, copyop),
     _files(fileList._files)
-{
-}
+{}
 
 FileList::~FileList()
-{
-}
+{}
 
-bool FileList::removeFile(const std::string& filename)
+bool FileList::removeFile(const std::string&filename)
 {
     FileNames::iterator itr = _files.find(filename);
-    if (itr==_files.end()) return false;
+
+    if (itr == _files.end())
+        return false;
 
     _files.erase(itr);
     return true;
 }
 
-void FileList::append(FileList* fileList)
+void FileList::append(FileList *fileList)
 {
-    for(FileNames::iterator itr = fileList->_files.begin();
-        itr != fileList->_files.end();
-        ++itr)
+    for (FileNames::iterator itr = fileList->_files.begin();
+         itr != fileList->_files.end();
+         ++itr)
     {
         _files.insert(*itr);
     }
@@ -62,44 +61,51 @@ void FileList::append(FileList* fileList)
 // DatabaseRevision
 //
 DatabaseRevision::DatabaseRevision()
-{
-}
+{}
 
-DatabaseRevision::DatabaseRevision(const DatabaseRevision& revision, const osg::CopyOp & copyop):
+DatabaseRevision::DatabaseRevision(const DatabaseRevision&revision, const osg::CopyOp&copyop) :
     osg::Object(revision, copyop),
     _databasePath(revision._databasePath),
     _filesAdded(revision._filesAdded),
     _filesRemoved(revision._filesRemoved),
     _filesModified(revision._filesModified)
-{
-}
+{}
 
 DatabaseRevision::~DatabaseRevision()
-{
-}
+{}
 
-bool DatabaseRevision::isFileBlackListed(const std::string& filename) const
+bool DatabaseRevision::isFileBlackListed(const std::string&filename) const
 {
-    OSG_INFO<<"DatabaseRevision("<<getName()<<")::isFileBlackListed("<<filename<<")"<<std::endl;
+    OSG_INFO << "DatabaseRevision(" << getName() << ")::isFileBlackListed(" << filename << ")" << std::endl;
 
-    if (_databasePath.length()>=filename.length()) return false;
-    if (filename.compare(0,_databasePath.length(), _databasePath)!=0) return false;
+    if (_databasePath.length() >= filename.length())
+        return false;
+
+    if (filename.compare(0, _databasePath.length(), _databasePath) != 0)
+        return false;
 
     std::string localPath(filename,
-                         _databasePath.empty() ? 0 : _databasePath.length()+1,
-                         std::string::npos);
+                          _databasePath.empty() ? 0 : _databasePath.length() + 1,
+                          std::string::npos);
 
     return (_filesRemoved.valid() && _filesRemoved->containsFile(localPath)) ||
            (_filesModified.valid() && _filesModified->containsFile(localPath));
 }
 
 
-bool DatabaseRevision::removeFile(const std::string& filename)
+bool DatabaseRevision::removeFile(const std::string&filename)
 {
     bool removed = false;
-    if (_filesAdded.valid()) removed = _filesAdded->removeFile(filename) | removed;
-    if (_filesRemoved.valid()) removed = _filesRemoved->removeFile(filename) | removed;
-    if (_filesModified.valid()) removed = _filesModified->removeFile(filename) | removed;
+
+    if (_filesAdded.valid())
+        removed = _filesAdded->removeFile(filename) | removed;
+
+    if (_filesRemoved.valid())
+        removed = _filesRemoved->removeFile(filename) | removed;
+
+    if (_filesModified.valid())
+        removed = _filesModified->removeFile(filename) | removed;
+
     return removed;
 }
 
@@ -108,30 +114,30 @@ bool DatabaseRevision::removeFile(const std::string& filename)
 // DatabaseRevisions
 //
 DatabaseRevisions::DatabaseRevisions()
-{
-}
+{}
 
-DatabaseRevisions::DatabaseRevisions(const DatabaseRevisions& revisions, const osg::CopyOp & copyop):
+DatabaseRevisions::DatabaseRevisions(const DatabaseRevisions&revisions, const osg::CopyOp&copyop) :
     osg::Object(revisions, copyop),
     _databasePath(revisions._databasePath),
     _revisionList(revisions._revisionList)
-{
-}
+{}
 
 DatabaseRevisions::~DatabaseRevisions()
-{
-}
+{}
 
-void DatabaseRevisions::addRevision(DatabaseRevision* revision)
+void DatabaseRevisions::addRevision(DatabaseRevision *revision)
 {
-    if (!revision) return;
+    if (!revision)
+        return;
 
-    for(DatabaseRevisionList::iterator itr = _revisionList.begin();
-        itr != _revisionList.end();
-        ++itr)
+    for (DatabaseRevisionList::iterator itr = _revisionList.begin();
+         itr != _revisionList.end();
+         ++itr)
     {
-        if (*itr == revision) return;
-        if ((*itr)->getName()==revision->getName())
+        if (*itr == revision)
+            return;
+
+        if ((*itr)->getName() == revision->getName())
         {
             (*itr) = revision;
             return;
@@ -141,11 +147,11 @@ void DatabaseRevisions::addRevision(DatabaseRevision* revision)
     _revisionList.push_back(revision);
 }
 
-void DatabaseRevisions::removeRevision(DatabaseRevision* revision)
+void DatabaseRevisions::removeRevision(DatabaseRevision *revision)
 {
-    for(DatabaseRevisionList::iterator itr = _revisionList.begin();
-        itr != _revisionList.end();
-        ++itr)
+    for (DatabaseRevisionList::iterator itr = _revisionList.begin();
+         itr != _revisionList.end();
+         ++itr)
     {
         if (*itr == revision)
         {
@@ -155,31 +161,34 @@ void DatabaseRevisions::removeRevision(DatabaseRevision* revision)
     }
 }
 
-bool DatabaseRevisions::isFileBlackListed(const std::string& filename) const
+bool DatabaseRevisions::isFileBlackListed(const std::string&filename) const
 {
-    for(DatabaseRevisionList::const_iterator itr = _revisionList.begin();
-        itr != _revisionList.end();
-        ++itr)
+    for (DatabaseRevisionList::const_iterator itr = _revisionList.begin();
+         itr != _revisionList.end();
+         ++itr)
     {
         if ((*itr)->isFileBlackListed(filename))
         {
-            OSG_INFO<<"File is black listed "<<filename<<std::endl;
+            OSG_INFO << "File is black listed " << filename << std::endl;
             return true;
         }
     }
+
     return false;
 }
 
-bool DatabaseRevisions::removeFile(const std::string& filename)
+bool DatabaseRevisions::removeFile(const std::string&filename)
 {
-    OSG_INFO<<"Remove file "<<filename<<std::endl;
+    OSG_INFO << "Remove file " << filename << std::endl;
 
     bool removed = false;
-    for(DatabaseRevisionList::iterator itr = _revisionList.begin();
-        itr != _revisionList.end();
-        ++itr)
+
+    for (DatabaseRevisionList::iterator itr = _revisionList.begin();
+         itr != _revisionList.end();
+         ++itr)
     {
         removed = (*itr)->removeFile(filename) | removed;
     }
+
     return removed;
 }

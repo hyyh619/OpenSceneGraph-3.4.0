@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include <osg/Capability>
 #include <osg/GLExtensions>
@@ -18,48 +18,46 @@
 using namespace osg;
 
 
-Capability::Capability():
+Capability::Capability() :
     _capability(0)
-{
-}
+{}
 
 Capability::~Capability()
-{
-}
+{}
 
-Capabilityi::Capabilityi():
+Capabilityi::Capabilityi() :
     _index(0)
-{
-}
+{}
 
 Capabilityi::~Capabilityi()
-{
-}
+{}
 
-void Enablei::apply(State& state) const
+void Enablei::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (extensions->glEnablei)
     {
-        OSG_INFO<<"extensions->glEnablei("<<_capability<<", "<<_index<<")"<<std::endl;
+        OSG_INFO << "extensions->glEnablei(" << _capability << ", " << _index << ")" << std::endl;
         extensions->glEnablei(_capability, static_cast<GLuint>(_index));
     }
     else
     {
-        OSG_WARN<<"Warning: Enablei::apply(..) failed, Enablei is not support by OpenGL driver."<<std::endl;
+        OSG_WARN << "Warning: Enablei::apply(..) failed, Enablei is not support by OpenGL driver." << std::endl;
     }
 }
 
-void Disablei::apply(State& state) const
+void Disablei::apply(State&state) const
 {
-    const GLExtensions* extensions = state.get<GLExtensions>();
+    const GLExtensions *extensions = state.get<GLExtensions>();
+
     if (extensions->glDisablei)
     {
-        OSG_INFO<<"extensions->glDisablei("<<_capability<<", "<<_index<<")"<<std::endl;
+        OSG_INFO << "extensions->glDisablei(" << _capability << ", " << _index << ")" << std::endl;
         extensions->glDisablei(_capability, static_cast<GLuint>(_index));
     }
     else
     {
-        OSG_WARN<<"Warning: Enablei::apply(..) failed, Enablei is not support by OpenGL driver."<<std::endl;
+        OSG_WARN << "Warning: Enablei::apply(..) failed, Enablei is not support by OpenGL driver." << std::endl;
     }
 }

@@ -26,81 +26,87 @@
 
 #include "types.h"
 
-namespace DX {
+namespace DX
+{
+class Object;
 
-    class Object;
+/**
+ * DirectX mesh.
+ */
+class Mesh
+{
+public:
+Mesh(Object *obj);
+virtual ~Mesh()
+{
+    clear();
+}
 
-    /**
-     * DirectX mesh.
-     */
-    class Mesh {
-    public:
-        Mesh(Object * obj);
-        virtual ~Mesh() {
-            clear();
-        }
+void clear();
 
-        void clear();
+/**
+ * Generate per-vertex normals for the mesh.
+ * @return false if an error occurred, else true.
+ */
+bool generateNormals(float creaseAngle);
 
-        /**
-         * Generate per-vertex normals for the mesh.
-         * @return false if an error occurred, else true.
-         */
-        bool generateNormals(float creaseAngle);
+/// Get Vertices.
+const std::vector<Vector>&getVertices() const
+{
+    return _vertices;
+}
 
-        /// Get Vertices.
-        const std::vector<Vector> & getVertices() const {
-            return _vertices;
-        }
+/// Get MeshFaces.
+const std::vector<MeshFace>&getFaces() const
+{
+    return _faces;
+}
 
-        /// Get MeshFaces.
-        const std::vector<MeshFace> & getFaces() const {
-            return _faces;
-        }
+/// Get MeshTextureCoords.
+inline const MeshTextureCoords* getMeshTextureCoords() const
+{
+    return _textureCoords;
+}
 
-        /// Get MeshTextureCoords.
-        inline const MeshTextureCoords* getMeshTextureCoords() const {
-            return _textureCoords;
-        }
+/// Get MeshMaterialList.
+inline const MeshMaterialList* getMeshMaterialList() const
+{
+    return _materialList;
+}
 
-        /// Get MeshMaterialList.
-        inline const MeshMaterialList* getMeshMaterialList() const {
-            return _materialList;
-        }
+/// Get MeshNormals.
+inline const MeshNormals* getMeshNormals() const
+{
+    return _normals;
+}
 
-        /// Get MeshNormals.
-        inline const MeshNormals* getMeshNormals() const {
-            return _normals;
-        }
+/// Parse 'Mesh'.
+void parseMesh(std::istream&fin);
 
-        /// Parse 'Mesh'.
-        void parseMesh(std::istream& fin);
+private:
+Object *_obj;
 
-    private:
-        Object * _obj;
+std::vector<Vector>   _vertices;
+std::vector<MeshFace> _faces;
 
-        std::vector<Vector> _vertices;
-        std::vector<MeshFace> _faces;
+/// Normals (per-face).
+MeshNormals *_normals;
 
-        /// Normals (per-face).
-        MeshNormals* _normals;
+/// Texture coordinates (per-vertex).
+MeshTextureCoords *_textureCoords;
 
-        /// Texture coordinates (per-vertex).
-        MeshTextureCoords* _textureCoords;
+/// Materials.
+MeshMaterialList *_materialList;
 
-        /// Materials.
-        MeshMaterialList* _materialList;
+/// Parse 'MeshNormals'.
+void parseMeshNormals(std::istream&fin);
 
-        /// Parse 'MeshNormals'.
-        void parseMeshNormals(std::istream& fin);
+/// Parse 'MeshMaterialList'.
+void parseMeshMaterialList(std::istream&fin);
 
-        /// Parse 'MeshMaterialList'.
-        void parseMeshMaterialList(std::istream& fin);
-
-        /// Read 'MeshTextureCoords'.
-        void readMeshTexCoords(std::istream& fin);
-    };
-
+/// Read 'MeshTextureCoords'.
+void readMeshTexCoords(std::istream&fin);
+};
 } // namespace
 
 #endif

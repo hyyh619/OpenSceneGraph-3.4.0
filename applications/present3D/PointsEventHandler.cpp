@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
-*/
+ */
 
 #include "PointsEventHandler.h"
 
@@ -17,49 +17,52 @@
 PointsEventHandler::PointsEventHandler()
 {
     _point = new osg::Point;
-    //_point->setDistanceAttenuation(osg::Vec3(0.0,0.0000,0.05f));
+    // _point->setDistanceAttenuation(osg::Vec3(0.0,0.0000,0.05f));
 }
 
-bool PointsEventHandler::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter&)
+bool PointsEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
 {
-    switch(ea.getEventType())
+    switch (ea.getEventType())
     {
-        case(osgGA::GUIEventAdapter::KEYDOWN):
+    case (osgGA::GUIEventAdapter::KEYDOWN):
+    {
+        if (ea.getKey() == '+' || ea.getKey() == osgGA::GUIEventAdapter::KEY_KP_Add)
         {
-            if (ea.getKey()=='+' || ea.getKey()==osgGA::GUIEventAdapter::KEY_KP_Add)
-            {
-               changePointSize(1.0f);
-               return true;
-            }
-            else if (ea.getKey()=='-' || ea.getKey()==osgGA::GUIEventAdapter::KEY_KP_Subtract)
-            {
-               changePointSize(-1.0f);
-               return true;
-            }
-            else if (ea.getKey()=='<')
-            {
-               changePointAttenuation(1.1f);
-               return true;
-            }
-            else if (ea.getKey()=='>')
-            {
-               changePointAttenuation(1.0f/1.1f);
-               return true;
-            }
-            break;
+            changePointSize(1.0f);
+            return true;
         }
-        default:
-            break;
+        else if (ea.getKey() == '-' || ea.getKey() == osgGA::GUIEventAdapter::KEY_KP_Subtract)
+        {
+            changePointSize(-1.0f);
+            return true;
+        }
+        else if (ea.getKey() == '<')
+        {
+            changePointAttenuation(1.1f);
+            return true;
+        }
+        else if (ea.getKey() == '>')
+        {
+            changePointAttenuation(1.0f / 1.1f);
+            return true;
+        }
+
+        break;
     }
+
+    default:
+        break;
+    }
+
     return false;
 }
 
-void PointsEventHandler::getUsage(osg::ApplicationUsage& usage) const
+void PointsEventHandler::getUsage(osg::ApplicationUsage&usage) const
 {
-    usage.addKeyboardMouseBinding("+","Increase point size");
-    usage.addKeyboardMouseBinding("-","Reduce point size");
-    usage.addKeyboardMouseBinding(">","Increase point size");
-    usage.addKeyboardMouseBinding("<","Reduce point size");
+    usage.addKeyboardMouseBinding("+", "Increase point size");
+    usage.addKeyboardMouseBinding("-", "Reduce point size");
+    usage.addKeyboardMouseBinding(">", "Increase point size");
+    usage.addKeyboardMouseBinding("<", "Reduce point size");
 }
 
 float PointsEventHandler::getPointSize() const
@@ -69,28 +72,30 @@ float PointsEventHandler::getPointSize() const
 
 void PointsEventHandler::setPointSize(float psize)
 {
-    if (psize>0.0)
+    if (psize > 0.0)
     {
         _point->setSize(psize);
         _stateset->setAttribute(_point.get());
     }
     else
     {
-        _stateset->setAttribute(_point.get(),osg::StateAttribute::INHERIT);
+        _stateset->setAttribute(_point.get(), osg::StateAttribute::INHERIT);
     }
-    osg::notify(osg::INFO)<<"Point size "<<psize<<std::endl;
+
+    osg::notify(osg::INFO) << "Point size " << psize << std::endl;
 }
 
 void PointsEventHandler::changePointSize(float delta)
 {
-    setPointSize(getPointSize()+delta);
+    setPointSize(getPointSize() + delta);
 }
 
 void PointsEventHandler::changePointAttenuation(float scale)
 {
     if (_point.valid())
     {
-        _point->setDistanceAttenuation(_point->getDistanceAttenuation()*scale);
-        if (_stateset.valid()) _stateset->setAttribute(_point.get());
+        _point->setDistanceAttenuation(_point->getDistanceAttenuation() * scale);
+        if (_stateset.valid())
+            _stateset->setAttribute(_point.get());
     }
 }

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #include "LightPointSpriteDrawable.h"
 
@@ -17,21 +17,20 @@
 
 using namespace osgSim;
 
-LightPointSpriteDrawable::LightPointSpriteDrawable():
+LightPointSpriteDrawable::LightPointSpriteDrawable() :
     osgSim::LightPointDrawable()
 {
     _sprite = new osg::PointSprite;
 }
 
-LightPointSpriteDrawable::LightPointSpriteDrawable(const LightPointSpriteDrawable& lpsd,const osg::CopyOp& copyop):
-    osgSim::LightPointDrawable(lpsd,copyop)
-{
-}
+LightPointSpriteDrawable::LightPointSpriteDrawable(const LightPointSpriteDrawable&lpsd, const osg::CopyOp&copyop) :
+    osgSim::LightPointDrawable(lpsd, copyop)
+{}
 
-void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo& renderInfo) const
+void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo&renderInfo) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
-    osg::State& state = *renderInfo.getState();
+    osg::State&state = *renderInfo.getState();
 
     if (!state.getModeValidity(GL_POINT_SPRITE_ARB))
     {
@@ -39,84 +38,82 @@ void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo& renderInfo) c
         return;
     }
 
-    state.applyMode(GL_POINT_SMOOTH,true);
-    state.applyMode(GL_BLEND,true);
-    state.applyMode(GL_LIGHTING,false);
-    state.applyTextureMode(0,GL_TEXTURE_2D,true);
+    state.applyMode(GL_POINT_SMOOTH, true);
+    state.applyMode(GL_BLEND, true);
+    state.applyMode(GL_LIGHTING, false);
+    state.applyTextureMode(0, GL_TEXTURE_2D, true);
 
-    state.applyMode(GL_POINT_SPRITE_ARB,true);
-    state.applyTextureAttribute(0,_sprite.get());
+    state.applyMode(GL_POINT_SPRITE_ARB, true);
+    state.applyTextureAttribute(0, _sprite.get());
     // Assume the point sprite texture map is already specified
     // (typically in the owning LightPointNode StateSet).
 
 
-    glHint(GL_POINT_SMOOTH_HINT,GL_NICEST);
+    glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
     state.applyAttribute(_depthOn.get());
 
     state.applyAttribute(_blendOneMinusSrcAlpha.get());
-    state.applyMode(GL_POINT_SMOOTH,true);
+    state.applyMode(GL_POINT_SMOOTH, true);
 
     SizedLightPointList::const_iterator sitr;
-    unsigned int pointsize;
-    for(pointsize=1,sitr=_sizedOpaqueLightPointList.begin();
-        sitr!=_sizedOpaqueLightPointList.end();
-        ++sitr,++pointsize)
-    {
+    unsigned int                        pointsize;
 
-        const LightPointList& lpl = *sitr;
+    for (pointsize = 1, sitr = _sizedOpaqueLightPointList.begin();
+         sitr != _sizedOpaqueLightPointList.end();
+         ++sitr, ++pointsize)
+    {
+        const LightPointList&lpl = *sitr;
         if (!lpl.empty())
         {
             glPointSize(pointsize);
-            //glInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
-            state.setInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
-            glDrawArrays(GL_POINTS,0,lpl.size());
+            // glInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
+            state.setInterleavedArrays(GL_C4UB_V3F, 0, &lpl.front());
+            glDrawArrays(GL_POINTS, 0, lpl.size());
         }
     }
 
-    state.applyMode(GL_BLEND,true);
+    state.applyMode(GL_BLEND, true);
     state.applyAttribute(_depthOff.get());
 
 
     state.applyAttribute(_blendOneMinusSrcAlpha.get());
 
-    for(pointsize=1,sitr=_sizedBlendedLightPointList.begin();
-        sitr!=_sizedBlendedLightPointList.end();
-        ++sitr,++pointsize)
+    for (pointsize = 1, sitr = _sizedBlendedLightPointList.begin();
+         sitr != _sizedBlendedLightPointList.end();
+         ++sitr, ++pointsize)
     {
-
-        const LightPointList& lpl = *sitr;
+        const LightPointList&lpl = *sitr;
         if (!lpl.empty())
         {
             glPointSize(pointsize);
-            //glInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
-            state.setInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
-            glDrawArrays(GL_POINTS,0,lpl.size());
+            // glInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
+            state.setInterleavedArrays(GL_C4UB_V3F, 0, &lpl.front());
+            glDrawArrays(GL_POINTS, 0, lpl.size());
         }
     }
 
 
     state.applyAttribute(_blendOne.get());
 
-    for(pointsize=1,sitr=_sizedAdditiveLightPointList.begin();
-        sitr!=_sizedAdditiveLightPointList.end();
-        ++sitr,++pointsize)
+    for (pointsize = 1, sitr = _sizedAdditiveLightPointList.begin();
+         sitr != _sizedAdditiveLightPointList.end();
+         ++sitr, ++pointsize)
     {
-
-        const LightPointList& lpl = *sitr;
+        const LightPointList&lpl = *sitr;
         if (!lpl.empty())
         {
-            //state.applyMode(GL_POINT_SMOOTH,pointsize!=1);
+            // state.applyMode(GL_POINT_SMOOTH,pointsize!=1);
             glPointSize(pointsize);
-            //glInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
-            state.setInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
-            glDrawArrays(GL_POINTS,0,lpl.size());
+            // glInterleavedArrays(GL_C4UB_V3F,0,&lpl.front());
+            state.setInterleavedArrays(GL_C4UB_V3F, 0, &lpl.front());
+            glDrawArrays(GL_POINTS, 0, lpl.size());
         }
     }
 
     glPointSize(1);
 
-    glHint(GL_POINT_SMOOTH_HINT,GL_FASTEST);
+    glHint(GL_POINT_SMOOTH_HINT, GL_FASTEST);
 
     state.haveAppliedAttribute(osg::StateAttribute::POINT);
 
@@ -126,8 +123,6 @@ void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo& renderInfo) c
     // restore the state afterwards.
     state.apply();
 #else
-    OSG_NOTICE<<"Warning: LightPointDrawable not supported."<<std::endl;
+    OSG_NOTICE << "Warning: LightPointDrawable not supported." << std::endl;
 #endif
 }
-
-
