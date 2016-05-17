@@ -264,14 +264,11 @@ pip-log.txt
 Android_MinGW/
 Android_MinGW_Dynamic_Library/
 project/
-Android/
 Android_Studio_gnustl_static/
 
 *.Po
-<<<<<<< HEAD
 Android_Build.xls
-=======
 
 Windows/
 source.files
->>>>>>> origin/master
+
