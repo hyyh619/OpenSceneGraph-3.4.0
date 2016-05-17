@@ -1,33 +1,33 @@
 #ifndef __PINGPONG_H
 #define __PINGPONG_H
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2007, 2009, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2007, 2009, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 
 #include <stdarg.h>
 
 #include "setup.h"
 
 #if !defined(CURL_DISABLE_IMAP) || !defined(CURL_DISABLE_FTP) || \
-  !defined(CURL_DISABLE_POP3) || !defined(CURL_DISABLE_SMTP)
+    !defined(CURL_DISABLE_POP3) || !defined(CURL_DISABLE_SMTP)
 #define USE_PINGPONG
 #endif
 
@@ -40,33 +40,34 @@ struct connectdata;
  *
  * It holds response cache and non-blocking sending data.
  */
-struct pingpong {
-  char *cache;     /* data cache between getresponse()-calls */
-  size_t cache_size;  /* size of cache in bytes */
-  size_t nread_resp;  /* number of bytes currently read of a server response */
-  char *linestart_resp; /* line start pointer for the server response
-                           reader function */
-  bool pending_resp;  /* set TRUE when a server response is pending or in
-                         progress, and is cleared once the last response is
-                         read */
-  char *sendthis; /* allocated pointer to a buffer that is to be sent to the
-                     server */
-  size_t sendleft; /* number of bytes left to send from the sendthis buffer */
-  size_t sendsize; /* total size of the sendthis buffer */
-  struct timeval response; /* set to Curl_tvnow() when a command has been sent
-                              off, used to time-out response reading */
-  long response_time; /* When no timeout is given, this is the amount of
-                         seconds we await for a server response. */
+struct pingpong
+{
+    char   *cache; /* data cache between getresponse()-calls */
+    size_t cache_size; /* size of cache in bytes */
+    size_t nread_resp; /* number of bytes currently read of a server response */
+    char   *linestart_resp; /* line start pointer for the server response
+                               reader function */
+    bool pending_resp; /* set TRUE when a server response is pending or in
+                          progress, and is cleared once the last response is
+                          read */
+    char *sendthis; /* allocated pointer to a buffer that is to be sent to the
+                       server */
+    size_t         sendleft; /* number of bytes left to send from the sendthis buffer */
+    size_t         sendsize; /* total size of the sendthis buffer */
+    struct timeval response; /* set to Curl_tvnow() when a command has been sent
+                                off, used to time-out response reading */
+    long response_time; /* When no timeout is given, this is the amount of
+                           seconds we await for a server response. */
 
-  struct connectdata *conn; /* points to the connectdata struct that this
-                               belongs to */
+    struct connectdata *conn; /* points to the connectdata struct that this
+                                 belongs to */
 
-  /* Function pointers the protocols MUST implement and provide for the
-     pingpong layer to function */
+    /* Function pointers the protocols MUST implement and provide for the
+       pingpong layer to function */
 
-  CURLcode (*statemach_act)(struct connectdata *conn);
+    CURLcode (*statemach_act)(struct connectdata *conn);
 
-  int (*endofresp)(struct pingpong *pp, int *code);
+    int (*endofresp)(struct pingpong *pp, int *code);
 };
 
 /*

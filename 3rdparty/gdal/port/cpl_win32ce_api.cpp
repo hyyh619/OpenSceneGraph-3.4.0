@@ -45,12 +45,12 @@ CPL_CVSID("$Id: cpl_win32ce_api.cpp 10645 2007-01-18 02:22:39Z warmerdam $");
 HMODULE CE_LoadLibraryA(LPCSTR lpLibFileName)
 {
     HMODULE hLib = NULL;
-    
-    size_t nLen = 0;
+
+    size_t nLen       = 0;
     LPTSTR pszWideStr = 0;
 
     /* Covert filename buffer to Unicode. */
-    nLen = MultiByteToWideChar (CP_ACP, 0, lpLibFileName, -1, NULL, 0) ;
+    nLen       = MultiByteToWideChar (CP_ACP, 0, lpLibFileName, -1, NULL, 0);
     pszWideStr = (wchar_t*)malloc(sizeof(wchar_t) * nLen);
     MultiByteToWideChar(CP_ACP, 0, lpLibFileName, -1, pszWideStr, nLen);
 
@@ -66,11 +66,11 @@ FARPROC CE_GetProcAddressA(HMODULE hModule, LPCSTR lpProcName)
 {
     FARPROC proc = NULL;
 
-    size_t nLen = 0;
+    size_t nLen       = 0;
     LPTSTR pszWideStr = 0;
 
     /* Covert filename buffer to Unicode. */
-    nLen = MultiByteToWideChar (CP_ACP, 0, lpProcName, -1, NULL, 0) ;
+    nLen       = MultiByteToWideChar (CP_ACP, 0, lpProcName, -1, NULL, 0);
     pszWideStr = (wchar_t*)malloc(sizeof(wchar_t) * nLen);
     MultiByteToWideChar(CP_ACP, 0, lpProcName, -1, pszWideStr, nLen);
 
@@ -95,7 +95,7 @@ DWORD CE_GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 
     /* Get module filename to wide-char buffer */
     dwLen = GetModuleFileName(hModule, szWBuf, nSize);
-   
+
     /* Covert buffer from Unicode to ANSI string. */
     WideCharToMultiByte(CP_ACP, 0, szWBuf, -1, lpFilename, dwLen, NULL, NULL);
 
@@ -103,28 +103,26 @@ DWORD CE_GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 }
 
 HANDLE CE_CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess,
-                   DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-                   DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes,
-                   HANDLE hTemplateFile)
+                      DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+                      DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes,
+                      HANDLE hTemplateFile)
 {
     HANDLE hFile = INVALID_HANDLE_VALUE;
-    
-    size_t nLen  = 0;
-    wchar_t * pszWideStr = NULL;
-    
+
+    size_t  nLen        = 0;
+    wchar_t *pszWideStr = NULL;
+
     /* Covert filename buffer to Unicode. */
-    nLen = MultiByteToWideChar (CP_ACP, 0, lpFileName, -1, NULL, 0) ;
+    nLen       = MultiByteToWideChar (CP_ACP, 0, lpFileName, -1, NULL, 0);
     pszWideStr = (wchar_t*)malloc(sizeof(wchar_t) * nLen);
     MultiByteToWideChar(CP_ACP, 0, lpFileName, -1, pszWideStr, nLen);
 
     hFile = CreateFileW(pszWideStr, dwDesiredAccess, dwShareMode, lpSecurityAttributes,
-                       dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
+                        dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile);
 
     /* Free me! */
     free(pszWideStr);
 
     return hFile;
 }
-
-
 #endif /* #ifdef WIN32CE */

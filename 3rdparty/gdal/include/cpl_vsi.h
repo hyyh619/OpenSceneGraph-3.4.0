@@ -4,7 +4,7 @@
  * Project:  CPL - Common Portability Library
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  * Purpose:  Include file defining Virtual File System (VSI) functions, a
- *           layer over POSIX file and other system services. 
+ *           layer over POSIX file and other system services.
  *
  ******************************************************************************
  * Copyright (c) 1998, Frank Warmerdam
@@ -78,43 +78,43 @@ CPL_C_START
 /*      API.                                                            */
 /* ==================================================================== */
 
-FILE CPL_DLL *  VSIFOpen( const char *, const char * );
-int CPL_DLL     VSIFClose( FILE * );
-int CPL_DLL     VSIFSeek( FILE *, long, int );
-long CPL_DLL    VSIFTell( FILE * );
-void CPL_DLL    VSIRewind( FILE * );
-void CPL_DLL    VSIFFlush( FILE * );
+FILE CPL_DLL*  VSIFOpen(const char*, const char*);
+int CPL_DLL     VSIFClose(FILE*);
+int CPL_DLL     VSIFSeek(FILE*, long, int);
+long CPL_DLL    VSIFTell(FILE*);
+void CPL_DLL    VSIRewind(FILE*);
+void CPL_DLL    VSIFFlush(FILE*);
 
-size_t CPL_DLL  VSIFRead( void *, size_t, size_t, FILE * );
-size_t CPL_DLL  VSIFWrite( const void *, size_t, size_t, FILE * );
-char CPL_DLL   *VSIFGets( char *, int, FILE * );
-int CPL_DLL     VSIFPuts( const char *, FILE * );
-int CPL_DLL     VSIFPrintf( FILE *, const char *, ... ) CPL_PRINT_FUNC_FORMAT(2, 3);
+size_t CPL_DLL VSIFRead(void*, size_t, size_t, FILE*);
+size_t CPL_DLL VSIFWrite(const void*, size_t, size_t, FILE*);
+char CPL_DLL* VSIFGets(char*, int, FILE*);
+int CPL_DLL     VSIFPuts(const char*, FILE*);
+int CPL_DLL     VSIFPrintf(FILE*, const char*, ...) CPL_PRINT_FUNC_FORMAT(2, 3);
 
-int CPL_DLL     VSIFGetc( FILE * );
-int CPL_DLL     VSIFPutc( int, FILE * );
-int CPL_DLL     VSIUngetc( int, FILE * );
-int CPL_DLL     VSIFEof( FILE * );
+int CPL_DLL     VSIFGetc(FILE*);
+int CPL_DLL     VSIFPutc(int, FILE*);
+int CPL_DLL     VSIUngetc(int, FILE*);
+int CPL_DLL     VSIFEof(FILE*);
 
 /* ==================================================================== */
 /*      VSIStat() related.                                              */
 /* ==================================================================== */
 
 typedef struct stat VSIStatBuf;
-int CPL_DLL VSIStat( const char *, VSIStatBuf * );
+int CPL_DLL VSIStat(const char*, VSIStatBuf*);
 
 #ifdef _WIN32
-#  define VSI_ISLNK(x)  ( 0 )            /* N/A on Windows */
-#  define VSI_ISREG(x)  ((x) & S_IFREG)
-#  define VSI_ISDIR(x)  ((x) & S_IFDIR)
-#  define VSI_ISCHR(x)  ((x) & S_IFCHR)
-#  define VSI_ISBLK(x)  ( 0 )            /* N/A on Windows */
+#  define VSI_ISLNK(x) (0)               /* N/A on Windows */
+#  define VSI_ISREG(x) ((x) & S_IFREG)
+#  define VSI_ISDIR(x) ((x) & S_IFDIR)
+#  define VSI_ISCHR(x) ((x) & S_IFCHR)
+#  define VSI_ISBLK(x) (0)               /* N/A on Windows */
 #else
-#  define VSI_ISLNK(x)  S_ISLNK(x)
-#  define VSI_ISREG(x)  S_ISREG(x)
-#  define VSI_ISDIR(x)  S_ISDIR(x)
-#  define VSI_ISCHR(x)  S_ISCHR(x)
-#  define VSI_ISBLK(x)  S_ISBLK(x)
+#  define VSI_ISLNK(x) S_ISLNK(x)
+#  define VSI_ISREG(x) S_ISREG(x)
+#  define VSI_ISDIR(x) S_ISDIR(x)
+#  define VSI_ISCHR(x) S_ISCHR(x)
+#  define VSI_ISBLK(x) S_ISBLK(x)
 #endif
 
 /* ==================================================================== */
@@ -135,61 +135,61 @@ typedef struct _VSILFILE VSILFILE;
 typedef FILE VSILFILE;
 #endif
 
-VSILFILE CPL_DLL *  VSIFOpenL( const char *, const char * );
-int CPL_DLL     VSIFCloseL( VSILFILE * );
-int CPL_DLL     VSIFSeekL( VSILFILE *, vsi_l_offset, int );
-vsi_l_offset CPL_DLL VSIFTellL( VSILFILE * );
-void CPL_DLL    VSIRewindL( VSILFILE * );
-size_t CPL_DLL  VSIFReadL( void *, size_t, size_t, VSILFILE * );
-size_t CPL_DLL  VSIFWriteL( const void *, size_t, size_t, VSILFILE * );
-int CPL_DLL     VSIFEofL( VSILFILE * );
-int CPL_DLL     VSIFFlushL( VSILFILE * );
-int CPL_DLL     VSIFPrintfL( VSILFILE *, const char *, ... ) CPL_PRINT_FUNC_FORMAT(2, 3);
-int CPL_DLL     VSIFPutcL( int, VSILFILE * );
+VSILFILE CPL_DLL*  VSIFOpenL(const char*, const char*);
+int CPL_DLL     VSIFCloseL(VSILFILE*);
+int CPL_DLL VSIFSeekL(VSILFILE*, vsi_l_offset, int);
+vsi_l_offset CPL_DLL VSIFTellL(VSILFILE*);
+void CPL_DLL    VSIRewindL(VSILFILE*);
+size_t CPL_DLL VSIFReadL(void*, size_t, size_t, VSILFILE*);
+size_t CPL_DLL VSIFWriteL(const void*, size_t, size_t, VSILFILE*);
+int CPL_DLL     VSIFEofL(VSILFILE*);
+int CPL_DLL     VSIFFlushL(VSILFILE*);
+int CPL_DLL     VSIFPrintfL(VSILFILE*, const char*, ...) CPL_PRINT_FUNC_FORMAT(2, 3);
+int CPL_DLL     VSIFPutcL(int, VSILFILE*);
 
 #if defined(VSI_STAT64_T)
 typedef struct VSI_STAT64_T VSIStatBufL;
 #else
-#define VSIStatBufL    VSIStatBuf
+#define VSIStatBufL VSIStatBuf
 #endif
 
-int CPL_DLL     VSIStatL( const char *, VSIStatBufL * );
+int CPL_DLL     VSIStatL(const char*, VSIStatBufL*);
 
-#define VSI_STAT_EXISTS_FLAG    0x1
-#define VSI_STAT_NATURE_FLAG    0x2
-#define VSI_STAT_SIZE_FLAG      0x4
+#define VSI_STAT_EXISTS_FLAG 0x1
+#define VSI_STAT_NATURE_FLAG 0x2
+#define VSI_STAT_SIZE_FLAG   0x4
 
-int CPL_DLL     VSIStatExL( const char * pszFilename, VSIStatBufL * psStatBuf, int nFlags );
+int CPL_DLL     VSIStatExL(const char *pszFilename, VSIStatBufL *psStatBuf, int nFlags);
 
-int CPL_DLL     VSIIsCaseSensitiveFS( const char * pszFilename );
+int CPL_DLL     VSIIsCaseSensitiveFS(const char *pszFilename);
 
 /* ==================================================================== */
 /*      Memory allocation                                               */
 /* ==================================================================== */
 
-void CPL_DLL   *VSICalloc( size_t, size_t );
-void CPL_DLL   *VSIMalloc( size_t );
-void CPL_DLL    VSIFree( void * );
-void CPL_DLL   *VSIRealloc( void *, size_t );
-char CPL_DLL   *VSIStrdup( const char * );
+void CPL_DLL*VSICalloc(size_t, size_t);
+void CPL_DLL*VSIMalloc(size_t);
+void CPL_DLL    VSIFree(void*);
+void CPL_DLL*VSIRealloc(void*, size_t);
+char CPL_DLL* VSIStrdup(const char*);
 
 /**
- VSIMalloc2 allocates (nSize1 * nSize2) bytes.
- In case of overflow of the multiplication, or if memory allocation fails, a
- NULL pointer is returned and a CE_Failure error is raised with CPLError().
- If nSize1 == 0 || nSize2 == 0, a NULL pointer will also be returned.
- CPLFree() or VSIFree() can be used to free memory allocated by this function.
-*/
-void CPL_DLL *VSIMalloc2( size_t nSize1, size_t nSize2 );
+   VSIMalloc2 allocates (nSize1 * nSize2) bytes.
+   In case of overflow of the multiplication, or if memory allocation fails, a
+   NULL pointer is returned and a CE_Failure error is raised with CPLError().
+   If nSize1 == 0 || nSize2 == 0, a NULL pointer will also be returned.
+   CPLFree() or VSIFree() can be used to free memory allocated by this function.
+ */
+void CPL_DLL* VSIMalloc2(size_t nSize1, size_t nSize2);
 
 /**
- VSIMalloc3 allocates (nSize1 * nSize2 * nSize3) bytes.
- In case of overflow of the multiplication, or if memory allocation fails, a
- NULL pointer is returned and a CE_Failure error is raised with CPLError().
- If nSize1 == 0 || nSize2 == 0 || nSize3 == 0, a NULL pointer will also be returned.
- CPLFree() or VSIFree() can be used to free memory allocated by this function.
-*/
-void CPL_DLL *VSIMalloc3( size_t nSize1, size_t nSize2, size_t nSize3 );
+   VSIMalloc3 allocates (nSize1 * nSize2 * nSize3) bytes.
+   In case of overflow of the multiplication, or if memory allocation fails, a
+   NULL pointer is returned and a CE_Failure error is raised with CPLError().
+   If nSize1 == 0 || nSize2 == 0 || nSize3 == 0, a NULL pointer will also be returned.
+   CPLFree() or VSIFree() can be used to free memory allocated by this function.
+ */
+void CPL_DLL* VSIMalloc3(size_t nSize1, size_t nSize2, size_t nSize3);
 
 
 /* ==================================================================== */
@@ -197,12 +197,12 @@ void CPL_DLL *VSIMalloc3( size_t nSize1, size_t nSize2, size_t nSize3 );
 /* ==================================================================== */
 
 #define CPLReadDir VSIReadDir
-char CPL_DLL **VSIReadDir( const char * );
-int CPL_DLL VSIMkdir( const char * pathname, long mode );
-int CPL_DLL VSIRmdir( const char * pathname );
-int CPL_DLL VSIUnlink( const char * pathname );
-int CPL_DLL VSIRename( const char * oldpath, const char * newpath );
-char CPL_DLL *VSIStrerror( int );
+char CPL_DLL** VSIReadDir(const char*);
+int CPL_DLL VSIMkdir(const char *pathname, long mode);
+int CPL_DLL VSIRmdir(const char *pathname);
+int CPL_DLL VSIUnlink(const char *pathname);
+int CPL_DLL VSIRename(const char *oldpath, const char *newpath);
+char CPL_DLL* VSIStrerror(int);
 
 /* ==================================================================== */
 /*      Install special file access handlers.                           */
@@ -219,24 +219,24 @@ void CPL_DLL VSIInstallSparseFileHandler(void);
 void VSIInstallTarFileHandler(void); /* No reason to export that */
 void CPL_DLL VSICleanupFileManager(void);
 
-VSILFILE CPL_DLL *VSIFileFromMemBuffer( const char *pszFilename,
-                                    GByte *pabyData, 
-                                    vsi_l_offset nDataLength,
-                                    int bTakeOwnership );
-GByte CPL_DLL *VSIGetMemFileBuffer( const char *pszFilename, 
-                                    vsi_l_offset *pnDataLength, 
-                                    int bUnlinkAndSeize );
+VSILFILE CPL_DLL* VSIFileFromMemBuffer(const char *pszFilename,
+                                       GByte *pabyData,
+                                       vsi_l_offset nDataLength,
+                                       int bTakeOwnership);
+GByte CPL_DLL* VSIGetMemFileBuffer(const char *pszFilename,
+                                   vsi_l_offset *pnDataLength,
+                                   int bUnlinkAndSeize);
 
 /* ==================================================================== */
 /*      Time quering.                                                   */
 /* ==================================================================== */
 
-unsigned long CPL_DLL VSITime( unsigned long * );
-const char CPL_DLL *VSICTime( unsigned long );
-struct tm CPL_DLL *VSIGMTime( const time_t *pnTime,
-                              struct tm *poBrokenTime );
-struct tm CPL_DLL *VSILocalTime( const time_t *pnTime,
-                                 struct tm *poBrokenTime );
+unsigned long CPL_DLL VSITime(unsigned long*);
+const char CPL_DLL* VSICTime(unsigned long);
+struct tm CPL_DLL* VSIGMTime(const time_t *pnTime,
+                             struct tm *poBrokenTime);
+struct tm CPL_DLL* VSILocalTime(const time_t *pnTime,
+                                struct tm *poBrokenTime);
 
 /* -------------------------------------------------------------------- */
 /*      the following can be turned on for detailed logging of          */
@@ -250,15 +250,15 @@ struct tm CPL_DLL *VSILocalTime( const time_t *pnTime,
 
 #include "cpl_error.h"
 
-#define VSIDebug4(f,a1,a2,a3,a4)   CPLDebug( "VSI", f, a1, a2, a3, a4 );
-#define VSIDebug3( f, a1, a2, a3 ) CPLDebug( "VSI", f, a1, a2, a3 );
-#define VSIDebug2( f, a1, a2 )     CPLDebug( "VSI", f, a1, a2 );
-#define VSIDebug1( f, a1 )         CPLDebug( "VSI", f, a1 );
+#define VSIDebug4(f, a1, a2, a3, a4) CPLDebug("VSI", f, a1, a2, a3, a4);
+#define VSIDebug3(f, a1, a2, a3)     CPLDebug("VSI", f, a1, a2, a3);
+#define VSIDebug2(f, a1, a2)         CPLDebug("VSI", f, a1, a2);
+#define VSIDebug1(f, a1)             CPLDebug("VSI", f, a1);
 #else
-#define VSIDebug4( f, a1, a2, a3, a4 ) {}
-#define VSIDebug3( f, a1, a2, a3 ) {}
-#define VSIDebug2( f, a1, a2 )     {}
-#define VSIDebug1( f, a1 )         {}
+#define VSIDebug4(f, a1, a2, a3, a4) {}
+#define VSIDebug3(f, a1, a2, a3)     {}
+#define VSIDebug2(f, a1, a2)         {}
+#define VSIDebug1(f, a1)             {}
 #endif
 
 CPL_C_END

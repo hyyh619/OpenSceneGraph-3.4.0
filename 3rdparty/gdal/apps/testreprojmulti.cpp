@@ -36,34 +36,36 @@
 
 CPL_CVSID("$Id: testreprojmulti.cpp 20592 2010-09-12 17:28:30Z rouault $");
 
-double* padfRefX;
-double* padfRefY;
-double* padfRefResultX;
-double* padfRefResultY;
+double                      *padfRefX;
+double                      *padfRefY;
+double                      *padfRefResultX;
+double                      *padfRefResultY;
 OGRCoordinateTransformation *poCT;
-volatile int nIter = 0;
-int bCreateCTInThread = FALSE;
-OGRSpatialReference oSrcSRS, oDstSRS;
-int nCountIter = 10000;
+volatile int                nIter             = 0;
+int                         bCreateCTInThread = FALSE;
+OGRSpatialReference         oSrcSRS, oDstSRS;
+int                         nCountIter = 10000;
 
-void ReprojFunc(void* unused)
+void ReprojFunc(void *unused)
 {
-    double* padfResultX;
-    double* padfResultY;
+    double *padfResultX;
+    double *padfResultY;
+
     padfResultX = (double*)CPLMalloc(1024 * sizeof(double));
     padfResultY = (double*)CPLMalloc(1024 * sizeof(double));
     OGRCoordinateTransformation *poCTInThread;
     if (!bCreateCTInThread)
         poCTInThread = poCT;
-    while(TRUE)
+
+    while (TRUE)
     {
         if (bCreateCTInThread)
-            poCTInThread = OGRCreateCoordinateTransformation(&oSrcSRS,&oDstSRS);
+            poCTInThread = OGRCreateCoordinateTransformation(&oSrcSRS, &oDstSRS);
 
         CPLAtomicInc(&nIter);
         memcpy(padfResultX, padfRefX, 1024 * sizeof(double));
         memcpy(padfResultY, padfRefY, 1024 * sizeof(double));
-        poCT->TransformEx( 1024, padfResultX, padfResultY, NULL, NULL );
+        poCT->TransformEx(1024, padfResultX, padfResultY, NULL, NULL);
 
         /* Check that the results are consistant with the reference results */
         assert(memcmp(padfResultX, padfRefResultX, 1024 * sizeof(double)) == 0);
@@ -74,16 +76,17 @@ void ReprojFunc(void* unused)
     }
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     int nThreads = 2;
-    
+
     int i;
-    for(i=0;i<argc;i++)
+
+    for (i = 0; i < argc; i++)
     {
-        if (EQUAL(argv[i], "-threads") && i+1 < argc)
+        if (EQUAL(argv[i], "-threads") && i + 1 < argc)
             nThreads = atoi(argv[++i]);
-        else if (EQUAL(argv[i], "-iter") && i+1 < argc)
+        else if (EQUAL(argv[i], "-iter") && i + 1 < argc)
             nCountIter = atoi(argv[++i]);
         else if (EQUAL(argv[i], "-createctinthread"))
             bCreateCTInThread = TRUE;
@@ -91,29 +94,30 @@ int main(int argc, char* argv[])
 
     oSrcSRS.importFromEPSG(4326);
     oDstSRS.importFromEPSG(32631);
-    poCT = OGRCreateCoordinateTransformation(&oSrcSRS,&oDstSRS);
+    poCT = OGRCreateCoordinateTransformation(&oSrcSRS, &oDstSRS);
     if (poCT == NULL)
         return -1;
 
-    padfRefX = (double*)CPLMalloc(1024 * sizeof(double));
-    padfRefY = (double*)CPLMalloc(1024 * sizeof(double));
+    padfRefX       = (double*)CPLMalloc(1024 * sizeof(double));
+    padfRefY       = (double*)CPLMalloc(1024 * sizeof(double));
     padfRefResultX = (double*)CPLMalloc(1024 * sizeof(double));
     padfRefResultY = (double*)CPLMalloc(1024 * sizeof(double));
 
-    for(i=0;i<1024;i++)
+    for (i = 0; i < 1024; i++)
     {
         padfRefX[i] = 2 + i / 1024.;
         padfRefY[i] = 49 + i / 1024.;
     }
+
     memcpy(padfRefResultX, padfRefX, 1024 * sizeof(double));
     memcpy(padfRefResultY, padfRefY, 1024 * sizeof(double));
 
-    poCT->TransformEx( 1024, padfRefResultX, padfRefResultY, NULL, NULL );
+    poCT->TransformEx(1024, padfRefResultX, padfRefResultY, NULL, NULL);
 
-    for(i=0;i<nThreads;i++)
+    for (i = 0; i < nThreads; i++)
         CPLCreateThread(ReprojFunc, NULL);
 
-    while(nIter < nCountIter)
+    while (nIter < nCountIter)
         CPLSleep(0.001);
 
     return 0;

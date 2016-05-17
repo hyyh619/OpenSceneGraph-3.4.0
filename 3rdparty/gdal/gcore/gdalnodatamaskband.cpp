@@ -36,20 +36,20 @@ CPL_CVSID("$Id: gdalnodatamaskband.cpp 19692 2010-05-13 17:16:55Z rouault $");
 /*                        GDALNoDataMaskBand()                          */
 /************************************************************************/
 
-GDALNoDataMaskBand::GDALNoDataMaskBand( GDALRasterBand *poParent )
+GDALNoDataMaskBand::GDALNoDataMaskBand(GDALRasterBand *poParent)
 
 {
-    poDS = NULL;
+    poDS  = NULL;
     nBand = 0;
 
     nRasterXSize = poParent->GetXSize();
     nRasterYSize = poParent->GetYSize();
 
     eDataType = GDT_Byte;
-    poParent->GetBlockSize( &nBlockXSize, &nBlockYSize );
+    poParent->GetBlockSize(&nBlockXSize, &nBlockYSize);
 
     this->poParent = poParent;
-    dfNoDataValue = poParent->GetNoDataValue();
+    dfNoDataValue  = poParent->GetNoDataValue();
 }
 
 /************************************************************************/
@@ -58,52 +58,51 @@ GDALNoDataMaskBand::GDALNoDataMaskBand( GDALRasterBand *poParent )
 
 GDALNoDataMaskBand::~GDALNoDataMaskBand()
 
-{
-}
+{}
 
 /************************************************************************/
 /*                             IReadBlock()                             */
 /************************************************************************/
 
-CPLErr GDALNoDataMaskBand::IReadBlock( int nXBlockOff, int nYBlockOff,
-                                         void * pImage )
+CPLErr GDALNoDataMaskBand::IReadBlock(int nXBlockOff, int nYBlockOff,
+                                      void *pImage)
 
 {
     GDALDataType eWrkDT;
-  
+
 /* -------------------------------------------------------------------- */
 /*      Decide on a working type.                                       */
 /* -------------------------------------------------------------------- */
-    switch( poParent->GetRasterDataType() ) 
+    switch (poParent->GetRasterDataType())
     {
-      case GDT_Byte:
+    case GDT_Byte:
         eWrkDT = GDT_Byte;
         break;
 
-      case GDT_UInt16:
-      case GDT_UInt32:
+    case GDT_UInt16:
+    case GDT_UInt32:
         eWrkDT = GDT_UInt32;
         break;
 
-      case GDT_Int16:
-      case GDT_Int32:
-      case GDT_CInt16:
-      case GDT_CInt32:
+    case GDT_Int16:
+    case GDT_Int32:
+    case GDT_CInt16:
+    case GDT_CInt32:
         eWrkDT = GDT_Int32;
         break;
 
-      case GDT_Float32:
-      case GDT_CFloat32:
+    case GDT_Float32:
+    case GDT_CFloat32:
         eWrkDT = GDT_Float32;
         break;
-    
-      case GDT_Float64:
-      case GDT_CFloat64:
+
+    case GDT_Float64:
+    case GDT_CFloat64:
         eWrkDT = GDT_Float64;
         break;
-    
-      default:
-        CPLAssert( FALSE );
+
+    default:
+        CPLAssert(FALSE);
         eWrkDT = GDT_Float64;
         break;
     }
@@ -111,14 +110,14 @@ CPLErr GDALNoDataMaskBand::IReadBlock( int nXBlockOff, int nYBlockOff,
 /* -------------------------------------------------------------------- */
 /*      Read the image data.                                            */
 /* -------------------------------------------------------------------- */
-    GByte *pabySrc;
+    GByte  *pabySrc;
     CPLErr eErr;
 
-    pabySrc = (GByte *) VSIMalloc3( GDALGetDataTypeSize(eWrkDT)/8, nBlockXSize, nBlockYSize );
+    pabySrc = (GByte*) VSIMalloc3(GDALGetDataTypeSize(eWrkDT) / 8, nBlockXSize, nBlockYSize);
     if (pabySrc == NULL)
     {
-        CPLError( CE_Failure, CPLE_OutOfMemory,
-                  "GDALNoDataMaskBand::IReadBlock: Out of memory for buffer." );
+        CPLError(CE_Failure, CPLE_OutOfMemory,
+                 "GDALNoDataMaskBand::IReadBlock: Out of memory for buffer.");
         return CE_Failure;
     }
 
@@ -126,6 +125,7 @@ CPLErr GDALNoDataMaskBand::IReadBlock( int nXBlockOff, int nYBlockOff,
     int nXSizeRequest = nBlockXSize;
     if (nXBlockOff * nBlockXSize + nBlockXSize > nRasterXSize)
         nXSizeRequest = nRasterXSize - nXBlockOff * nBlockXSize;
+
     int nYSizeRequest = nBlockYSize;
     if (nYBlockOff * nBlockYSize + nBlockYSize > nRasterYSize)
         nYSizeRequest = nRasterYSize - nYBlockOff * nBlockYSize;
@@ -134,15 +134,15 @@ CPLErr GDALNoDataMaskBand::IReadBlock( int nXBlockOff, int nYBlockOff,
     {
         /* memset the whole buffer to avoid Valgrind warnings in case we can't */
         /* fetch a full block */
-        memset(pabySrc, 0, GDALGetDataTypeSize(eWrkDT)/8 * nBlockXSize * nBlockYSize );
+        memset(pabySrc, 0, GDALGetDataTypeSize(eWrkDT) / 8 * nBlockXSize * nBlockYSize);
     }
 
-    eErr = poParent->RasterIO( GF_Read,
-                               nXBlockOff * nBlockXSize, nYBlockOff * nBlockYSize,
-                               nXSizeRequest, nYSizeRequest,
-                               pabySrc, nXSizeRequest, nYSizeRequest,
-                               eWrkDT, 0, nBlockXSize * (GDALGetDataTypeSize(eWrkDT)/8) );
-    if( eErr != CE_None )
+    eErr = poParent->RasterIO(GF_Read,
+                              nXBlockOff * nBlockXSize, nYBlockOff * nBlockYSize,
+                              nXSizeRequest, nYSizeRequest,
+                              pabySrc, nXSizeRequest, nYSizeRequest,
+                              eWrkDT, 0, nBlockXSize * (GDALGetDataTypeSize(eWrkDT) / 8));
+    if (eErr != CE_None)
         return eErr;
 
     int bIsNoDataNan = CPLIsNan(dfNoDataValue);
@@ -151,88 +151,89 @@ CPLErr GDALNoDataMaskBand::IReadBlock( int nXBlockOff, int nYBlockOff,
 /*      Process different cases.                                        */
 /* -------------------------------------------------------------------- */
     int i;
-    switch( eWrkDT )
+
+    switch (eWrkDT)
     {
-      case GDT_Byte:
-      {
-          GByte byNoData = (GByte) dfNoDataValue;
+    case GDT_Byte:
+    {
+        GByte byNoData = (GByte) dfNoDataValue;
 
-          for( i = nBlockXSize * nBlockYSize - 1; i >= 0; i-- )
-          {
-              if( pabySrc[i] == byNoData )
-                  ((GByte *) pImage)[i] = 0;
-              else
-                  ((GByte *) pImage)[i] = 255;
-          }
-      }
-      break;
+        for (i = nBlockXSize * nBlockYSize - 1; i >= 0; i--)
+        {
+            if (pabySrc[i] == byNoData)
+                ((GByte*) pImage)[i] = 0;
+            else
+                ((GByte*) pImage)[i] = 255;
+        }
+    }
+    break;
 
-      case GDT_UInt32:
-      {
-          GUInt32 nNoData = (GUInt32) dfNoDataValue;
+    case GDT_UInt32:
+    {
+        GUInt32 nNoData = (GUInt32) dfNoDataValue;
 
-          for( i = nBlockXSize * nBlockYSize - 1; i >= 0; i-- )
-          {
-              if( ((GUInt32 *)pabySrc)[i] == nNoData )
-                  ((GByte *) pImage)[i] = 0;
-              else
-                  ((GByte *) pImage)[i] = 255;
-          }
-      }
-      break;
+        for (i = nBlockXSize * nBlockYSize - 1; i >= 0; i--)
+        {
+            if (((GUInt32*)pabySrc)[i] == nNoData)
+                ((GByte*) pImage)[i] = 0;
+            else
+                ((GByte*) pImage)[i] = 255;
+        }
+    }
+    break;
 
-      case GDT_Int32:
-      {
-          GInt32 nNoData = (GInt32) dfNoDataValue;
+    case GDT_Int32:
+    {
+        GInt32 nNoData = (GInt32) dfNoDataValue;
 
-          for( i = nBlockXSize * nBlockYSize - 1; i >= 0; i-- )
-          {
-              if( ((GInt32 *)pabySrc)[i] == nNoData )
-                  ((GByte *) pImage)[i] = 0;
-              else
-                  ((GByte *) pImage)[i] = 255;
-          }
-      }
-      break;
+        for (i = nBlockXSize * nBlockYSize - 1; i >= 0; i--)
+        {
+            if (((GInt32*)pabySrc)[i] == nNoData)
+                ((GByte*) pImage)[i] = 0;
+            else
+                ((GByte*) pImage)[i] = 255;
+        }
+    }
+    break;
 
-      case GDT_Float32:
-      {
-          float fNoData = (float) dfNoDataValue;
+    case GDT_Float32:
+    {
+        float fNoData = (float) dfNoDataValue;
 
-          for( i = nBlockXSize * nBlockYSize - 1; i >= 0; i-- )
-          {
-              float fVal =((float *)pabySrc)[i];
-              if( bIsNoDataNan && CPLIsNan(fVal))
-                  ((GByte *) pImage)[i] = 0;
-              else if( EQUAL_TO_NODATA(fVal, fNoData) )
-                  ((GByte *) pImage)[i] = 0;
-              else
-                  ((GByte *) pImage)[i] = 255;
-          }
-      }
-      break;
+        for (i = nBlockXSize * nBlockYSize - 1; i >= 0; i--)
+        {
+            float fVal = ((float*)pabySrc)[i];
+            if (bIsNoDataNan && CPLIsNan(fVal))
+                ((GByte*) pImage)[i] = 0;
+            else if (EQUAL_TO_NODATA(fVal, fNoData))
+                ((GByte*) pImage)[i] = 0;
+            else
+                ((GByte*) pImage)[i] = 255;
+        }
+    }
+    break;
 
-      case GDT_Float64:
-      {
-          for( i = nBlockXSize * nBlockYSize - 1; i >= 0; i-- )
-          {
-              double dfVal =((double *)pabySrc)[i];
-              if( bIsNoDataNan && CPLIsNan(dfVal))
-                  ((GByte *) pImage)[i] = 0;
-              else if( EQUAL_TO_NODATA(dfVal, dfNoDataValue) )
-                  ((GByte *) pImage)[i] = 0;
-              else
-                  ((GByte *) pImage)[i] = 255;
-          }
-      }
-      break;
+    case GDT_Float64:
+    {
+        for (i = nBlockXSize * nBlockYSize - 1; i >= 0; i--)
+        {
+            double dfVal = ((double*)pabySrc)[i];
+            if (bIsNoDataNan && CPLIsNan(dfVal))
+                ((GByte*) pImage)[i] = 0;
+            else if (EQUAL_TO_NODATA(dfVal, dfNoDataValue))
+                ((GByte*) pImage)[i] = 0;
+            else
+                ((GByte*) pImage)[i] = 255;
+        }
+    }
+    break;
 
-      default:
-        CPLAssert( FALSE );
+    default:
+        CPLAssert(FALSE);
         break;
     }
 
-    CPLFree( pabySrc );
+    CPLFree(pabySrc);
 
     return CE_None;
 }

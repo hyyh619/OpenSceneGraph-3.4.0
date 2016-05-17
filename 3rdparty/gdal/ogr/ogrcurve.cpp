@@ -2,7 +2,7 @@
  * $Id: ogrcurve.cpp 16574 2009-03-14 13:09:10Z rouault $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
- * Purpose:  The OGRCurve geometry class. 
+ * Purpose:  The OGRCurve geometry class.
  * Author:   Frank Warmerdam, warmerda@home.com
  *
  ******************************************************************************
@@ -33,12 +33,10 @@
 CPL_CVSID("$Id: ogrcurve.cpp 16574 2009-03-14 13:09:10Z rouault $");
 
 OGRCurve::OGRCurve()
-{
-}
+{}
 
 OGRCurve::~OGRCurve()
-{
-}
+{}
 
 /************************************************************************/
 /*                            get_IsClosed()                            */
@@ -58,13 +56,13 @@ OGRCurve::~OGRCurve()
 int OGRCurve::get_IsClosed() const
 
 {
-    OGRPoint            oStartPoint, oEndPoint;
+    OGRPoint oStartPoint, oEndPoint;
 
-    StartPoint( &oStartPoint );
-    EndPoint( &oEndPoint );
+    StartPoint(&oStartPoint);
+    EndPoint(&oEndPoint);
 
-    if( oStartPoint.getX() == oEndPoint.getX()
-        && oStartPoint.getY() == oEndPoint.getY() )
+    if (oStartPoint.getX() == oEndPoint.getX()
+        && oStartPoint.getY() == oEndPoint.getY())
     {
         return TRUE;
     }
@@ -117,4 +115,3 @@ int OGRCurve::get_IsClosed() const
  *                   for this curve.
  * @param poPoint the point to be assigned the curve position.
  */
-

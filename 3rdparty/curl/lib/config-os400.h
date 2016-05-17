@@ -350,19 +350,19 @@
 #define RETSIGTYPE void
 
 /* The size of `int', as computed by sizeof. */
-#define SIZEOF_INT              4
+#define SIZEOF_INT 4
 
 /* The size of a `long double', as computed by sizeof. */
-#define SIZEOF_LONG_DOUBLE      8
+#define SIZEOF_LONG_DOUBLE 8
 
 /* Define if the compiler supports the 'long long' data type. */
 #define HAVE_LONGLONG
 
 /* The size of a `long long', as computed by sizeof. */
-#define SIZEOF_LONG_LONG        8
+#define SIZEOF_LONG_LONG 8
 
 /* The size of `short', as computed by sizeof. */
-#define SIZEOF_SHORT            2
+#define SIZEOF_SHORT 2
 
 /* Whether long long constants must be suffixed by LL. */
 
@@ -390,7 +390,7 @@
 #undef const
 
 /* type to use in place of in_addr_t if not defined */
-#define in_addr_t       unsigned long
+#define in_addr_t unsigned long
 
 /* Define to `unsigned' if <sys/types.h> does not define. */
 #undef size_t
@@ -424,7 +424,7 @@
 #define GETNAMEINFO_QUAL_ARG1 const
 
 /* Define to the type of arg 1 for getnameinfo. */
-#define GETNAMEINFO_TYPE_ARG1 struct sockaddr *
+#define GETNAMEINFO_TYPE_ARG1 struct sockaddr*
 
 /* Define to the type of arg 2 for getnameinfo. */
 #define GETNAMEINFO_TYPE_ARG2 socklen_t
@@ -442,7 +442,7 @@
 #define RECV_TYPE_ARG1 int
 
 /* Define to the type of arg 2 for recv. */
-#define RECV_TYPE_ARG2 char *
+#define RECV_TYPE_ARG2 char*
 
 /* Define to the type of arg 3 for recv. */
 #define RECV_TYPE_ARG3 int
@@ -487,7 +487,7 @@
 #define SEND_QUAL_ARG2
 
 /* Define to the type of arg 2 for send. */
-#define SEND_TYPE_ARG2 char *
+#define SEND_TYPE_ARG2 char*
 
 /* Define to the type of arg 3 for send. */
 #define SEND_TYPE_ARG3 int
@@ -502,7 +502,7 @@
 #define USE_QSOSSL
 
 /* Use the system keyring as the default CA bundle. */
-#define CURL_CA_BUNDLE  "/QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB"
+#define CURL_CA_BUNDLE "/QIBM/UserData/ICSS/Cert/Server/DEFAULT.KDB"
 
 /* ---------------------------------------------------------------- */
 /*                       ADDITIONAL DEFINITIONS                     */
@@ -510,8 +510,7 @@
 
 /* The following must be defined BEFORE system header files inclusion. */
 
-#define __ptr128                       /* No teraspace. */
-#define qadrt_use_fputc_inline         /* Generate fputc() wrapper inline. */
-#define qadrt_use_fread_inline         /* Generate fread() wrapper inline. */
-#define qadrt_use_fwrite_inline        /* Generate fwrite() wrapper inline. */
-
+#define __ptr128                /* No teraspace. */
+#define qadrt_use_fputc_inline  /* Generate fputc() wrapper inline. */
+#define qadrt_use_fread_inline  /* Generate fread() wrapper inline. */
+#define qadrt_use_fwrite_inline /* Generate fwrite() wrapper inline. */

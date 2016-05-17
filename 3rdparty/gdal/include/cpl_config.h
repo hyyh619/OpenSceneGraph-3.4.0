@@ -23,7 +23,7 @@
 /* #undef HAVE_DBMALLOC_H */
 
 /* Define to 1 if you have the declaration of `strtof', and to 0 if you don't.
-   */
+ */
 #define HAVE_DECL_STRTOF 1
 
 /* Define to 1 if you have the <direct.h> header file. */
@@ -142,7 +142,7 @@
 /* #undef ICONV_CONST */
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+ */
 #define LT_OBJDIR ".libs/"
 
 /* Define for Mac OSX Framework build */

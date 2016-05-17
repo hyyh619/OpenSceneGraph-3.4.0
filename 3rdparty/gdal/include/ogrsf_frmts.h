@@ -53,83 +53,89 @@ class OGRSFDriver;
 
 class CPL_DLL OGRLayer
 {
-  protected:
-    int          m_bFilterIsEnvelope;
-    OGRGeometry *m_poFilterGeom;
-    OGREnvelope  m_sFilterEnvelope;
-    
-    int          FilterGeometry( OGRGeometry * );
-    int          InstallFilter( OGRGeometry * );
+protected:
+int         m_bFilterIsEnvelope;
+OGRGeometry *m_poFilterGeom;
+OGREnvelope m_sFilterEnvelope;
 
-  public:
-    OGRLayer();
-    virtual     ~OGRLayer();
+int          FilterGeometry(OGRGeometry*);
+int          InstallFilter(OGRGeometry*);
 
-    virtual OGRGeometry *GetSpatialFilter();
-    virtual void        SetSpatialFilter( OGRGeometry * );
-    virtual void        SetSpatialFilterRect( double dfMinX, double dfMinY,
-                                              double dfMaxX, double dfMaxY );
+public:
+OGRLayer();
+virtual ~OGRLayer();
 
-    virtual OGRErr      SetAttributeFilter( const char * );
+virtual OGRGeometry* GetSpatialFilter();
+virtual void        SetSpatialFilter(OGRGeometry*);
+virtual void        SetSpatialFilterRect(double dfMinX, double dfMinY,
+                                         double dfMaxX, double dfMaxY);
 
-    virtual void        ResetReading() = 0;
-    virtual OGRFeature *GetNextFeature() = 0;
-    virtual OGRErr      SetNextByIndex( long nIndex );
-    virtual OGRFeature *GetFeature( long nFID );
-    virtual OGRErr      SetFeature( OGRFeature *poFeature );
-    virtual OGRErr      CreateFeature( OGRFeature *poFeature );
-    virtual OGRErr      DeleteFeature( long nFID );
+virtual OGRErr      SetAttributeFilter(const char*);
 
-    virtual const char *GetName();
-    virtual OGRwkbGeometryType GetGeomType();
-    virtual OGRFeatureDefn *GetLayerDefn() = 0;
+virtual void        ResetReading()   = 0;
+virtual OGRFeature* GetNextFeature() = 0;
+virtual OGRErr      SetNextByIndex(long nIndex);
+virtual OGRFeature* GetFeature(long nFID);
+virtual OGRErr      SetFeature(OGRFeature *poFeature);
+virtual OGRErr      CreateFeature(OGRFeature *poFeature);
+virtual OGRErr      DeleteFeature(long nFID);
 
-    virtual OGRSpatialReference *GetSpatialRef() { return NULL; }
+virtual const char* GetName();
+virtual OGRwkbGeometryType GetGeomType();
+virtual OGRFeatureDefn* GetLayerDefn() = 0;
 
-    virtual int         GetFeatureCount( int bForce = TRUE );
-    virtual OGRErr      GetExtent(OGREnvelope *psExtent, int bForce = TRUE);
+virtual OGRSpatialReference* GetSpatialRef()
+{
+    return NULL;
+}
 
-    virtual int         TestCapability( const char * ) = 0;
+virtual int         GetFeatureCount(int bForce = TRUE);
+virtual OGRErr      GetExtent(OGREnvelope *psExtent, int bForce = TRUE);
 
-    virtual const char *GetInfo( const char * );
+virtual int         TestCapability(const char*) = 0;
 
-    virtual OGRErr      CreateField( OGRFieldDefn *poField,
-                                     int bApproxOK = TRUE );
+virtual const char* GetInfo(const char*);
 
-    virtual OGRErr      SyncToDisk();
+virtual OGRErr      CreateField(OGRFieldDefn *poField,
+                                int bApproxOK = TRUE);
 
-    virtual OGRStyleTable *GetStyleTable();
-    virtual void        SetStyleTableDirectly( OGRStyleTable *poStyleTable );
-                            
-    virtual void        SetStyleTable(OGRStyleTable *poStyleTable);
+virtual OGRErr      SyncToDisk();
 
-    virtual OGRErr      StartTransaction();
-    virtual OGRErr      CommitTransaction();
-    virtual OGRErr      RollbackTransaction();
+virtual OGRStyleTable* GetStyleTable();
+virtual void        SetStyleTableDirectly(OGRStyleTable *poStyleTable);
 
-    virtual const char *GetFIDColumn();
-    virtual const char *GetGeometryColumn();
+virtual void        SetStyleTable(OGRStyleTable *poStyleTable);
 
-    virtual OGRErr      SetIgnoredFields( const char **papszFields );
+virtual OGRErr      StartTransaction();
+virtual OGRErr      CommitTransaction();
+virtual OGRErr      RollbackTransaction();
 
-    int                 Reference();
-    int                 Dereference();
-    int                 GetRefCount() const;
+virtual const char* GetFIDColumn();
+virtual const char* GetGeometryColumn();
 
-    GIntBig             GetFeaturesRead();
-    
-    /* consider these private */
-    OGRErr               InitializeIndexSupport( const char * );
-    OGRLayerAttrIndex   *GetIndex() { return m_poAttrIndex; }
+virtual OGRErr      SetIgnoredFields(const char **papszFields);
 
- protected:
-    OGRStyleTable       *m_poStyleTable;
-    OGRFeatureQuery     *m_poAttrQuery;
-    OGRLayerAttrIndex   *m_poAttrIndex;
+int                 Reference();
+int                 Dereference();
+int                 GetRefCount() const;
 
-    int                  m_nRefCount;
+GIntBig             GetFeaturesRead();
 
-    GIntBig              m_nFeaturesRead;
+/* consider these private */
+OGRErr               InitializeIndexSupport(const char*);
+OGRLayerAttrIndex* GetIndex()
+{
+    return m_poAttrIndex;
+}
+
+protected:
+OGRStyleTable     *m_poStyleTable;
+OGRFeatureQuery   *m_poAttrQuery;
+OGRLayerAttrIndex *m_poAttrIndex;
+
+int m_nRefCount;
+
+GIntBig m_nFeaturesRead;
 };
 
 
@@ -145,66 +151,66 @@ class CPL_DLL OGRLayer
  *
  * When an OGRDataSource is destroyed, all it's associated OGRLayers objects
  * are also destroyed.
- */ 
+ */
 
 class CPL_DLL OGRDataSource
 {
-    friend class OGRSFDriverRegistrar;
+friend class OGRSFDriverRegistrar;
 
-    void        *m_hMutex;
+void *m_hMutex;
 
-  public:
+public:
 
-    OGRDataSource();
-    virtual     ~OGRDataSource();
-    static void         DestroyDataSource( OGRDataSource * );
+OGRDataSource();
+virtual ~OGRDataSource();
+static void         DestroyDataSource(OGRDataSource*);
 
-    virtual const char  *GetName() = 0;
+virtual const char* GetName() = 0;
 
-    virtual int         GetLayerCount() = 0;
-    virtual OGRLayer    *GetLayer(int) = 0;
-    virtual OGRLayer    *GetLayerByName(const char *);
-    virtual OGRErr      DeleteLayer(int);
+virtual int         GetLayerCount() = 0;
+virtual OGRLayer* GetLayer(int)     = 0;
+virtual OGRLayer* GetLayerByName(const char*);
+virtual OGRErr      DeleteLayer(int);
 
-    virtual int         TestCapability( const char * ) = 0;
+virtual int         TestCapability(const char*) = 0;
 
-    virtual OGRLayer   *CreateLayer( const char *pszName, 
-                                     OGRSpatialReference *poSpatialRef = NULL,
-                                     OGRwkbGeometryType eGType = wkbUnknown,
-                                     char ** papszOptions = NULL );
-    virtual OGRLayer   *CopyLayer( OGRLayer *poSrcLayer, 
-                                   const char *pszNewName, 
-                                   char **papszOptions = NULL );
+virtual OGRLayer* CreateLayer(const char *pszName,
+                              OGRSpatialReference *poSpatialRef = NULL,
+                              OGRwkbGeometryType eGType = wkbUnknown,
+                              char **papszOptions = NULL);
+virtual OGRLayer* CopyLayer(OGRLayer *poSrcLayer,
+                            const char *pszNewName,
+                            char **papszOptions = NULL);
 
-    virtual OGRStyleTable *GetStyleTable();
-    virtual void        SetStyleTableDirectly( OGRStyleTable *poStyleTable );
-                            
-    virtual void        SetStyleTable(OGRStyleTable *poStyleTable);
+virtual OGRStyleTable* GetStyleTable();
+virtual void        SetStyleTableDirectly(OGRStyleTable *poStyleTable);
 
-    virtual OGRLayer *  ExecuteSQL( const char *pszStatement,
-                                    OGRGeometry *poSpatialFilter,
-                                    const char *pszDialect );
-    virtual void        ReleaseResultSet( OGRLayer * poResultsSet );
+virtual void        SetStyleTable(OGRStyleTable *poStyleTable);
 
-    virtual OGRErr      SyncToDisk();
+virtual OGRLayer*  ExecuteSQL(const char *pszStatement,
+                              OGRGeometry *poSpatialFilter,
+                              const char *pszDialect);
+virtual void        ReleaseResultSet(OGRLayer *poResultsSet);
 
-    int                 Reference();
-    int                 Dereference();
-    int                 GetRefCount() const;
-    int                 GetSummaryRefCount() const;
-    OGRErr              Release();
+virtual OGRErr      SyncToDisk();
 
-    OGRSFDriver        *GetDriver() const;
-    void                SetDriver( OGRSFDriver *poDriver );
+int                 Reference();
+int                 Dereference();
+int                 GetRefCount() const;
+int                 GetSummaryRefCount() const;
+OGRErr              Release();
 
-  protected:
+OGRSFDriver* GetDriver() const;
+void                SetDriver(OGRSFDriver *poDriver);
 
-    OGRErr              ProcessSQLCreateIndex( const char * );
-    OGRErr              ProcessSQLDropIndex( const char * );
+protected:
 
-    OGRStyleTable      *m_poStyleTable;
-    int                 m_nRefCount;
-    OGRSFDriver        *m_poDriver;
+OGRErr              ProcessSQLCreateIndex(const char*);
+OGRErr              ProcessSQLDropIndex(const char*);
+
+OGRStyleTable *m_poStyleTable;
+int           m_nRefCount;
+OGRSFDriver   *m_poDriver;
 };
 
 /************************************************************************/
@@ -222,22 +228,22 @@ class CPL_DLL OGRDataSource
 
 class CPL_DLL OGRSFDriver
 {
-  public:
-    virtual     ~OGRSFDriver();
+public:
+virtual ~OGRSFDriver();
 
-    virtual const char  *GetName() = 0;
+virtual const char* GetName() = 0;
 
-    virtual OGRDataSource *Open( const char *pszName, int bUpdate=FALSE ) = 0;
+virtual OGRDataSource* Open(const char *pszName, int bUpdate = FALSE) = 0;
 
-    virtual int         TestCapability( const char * ) = 0;
+virtual int         TestCapability(const char*) = 0;
 
-    virtual OGRDataSource *CreateDataSource( const char *pszName,
-                                             char ** = NULL );
-    virtual OGRErr      DeleteDataSource( const char *pszName );
+virtual OGRDataSource* CreateDataSource(const char *pszName,
+                                        char** = NULL);
+virtual OGRErr      DeleteDataSource(const char *pszName);
 
-    virtual OGRDataSource *CopyDataSource( OGRDataSource *poSrcDS, 
-                                           const char *pszNewName, 
-                                           char **papszOptions = NULL );
+virtual OGRDataSource* CopyDataSource(OGRDataSource *poSrcDS,
+                                      const char *pszNewName,
+                                      char **papszOptions = NULL);
 };
 
 
@@ -247,7 +253,7 @@ class CPL_DLL OGRSFDriver
 
 /**
  * Singleton manager for OGRSFDriver instances that will be used to try
- * and open datasources.  Normally the registrar is populated with 
+ * and open datasources.  Normally the registrar is populated with
  * standard drivers using the OGRRegisterAll() function and does not need
  * to be directly accessed.  The driver registrar and all registered drivers
  * may be cleaned up on shutdown using OGRCleanupAll().
@@ -255,40 +261,43 @@ class CPL_DLL OGRSFDriver
 
 class CPL_DLL OGRSFDriverRegistrar
 {
-    int         nDrivers;
-    OGRSFDriver **papoDrivers;
+int         nDrivers;
+OGRSFDriver **papoDrivers;
 
-                OGRSFDriverRegistrar();
+OGRSFDriverRegistrar();
 
-    int         nOpenDSCount;
-    char        **papszOpenDSRawName;
-    OGRDataSource **papoOpenDS;
-    OGRSFDriver **papoOpenDSDriver;
-    GIntBig     *panOpenDSPID;
+int           nOpenDSCount;
+char          **papszOpenDSRawName;
+OGRDataSource **papoOpenDS;
+OGRSFDriver   **papoOpenDSDriver;
+GIntBig       *panOpenDSPID;
 
-  public:
+public:
 
-                ~OGRSFDriverRegistrar();
+~OGRSFDriverRegistrar();
 
-    static OGRSFDriverRegistrar *GetRegistrar();
-    static OGRDataSource *Open( const char *pszName, int bUpdate=FALSE,
-                                OGRSFDriver ** ppoDriver = NULL );
+static OGRSFDriverRegistrar* GetRegistrar();
+static OGRDataSource* Open(const char *pszName, int bUpdate = FALSE,
+                           OGRSFDriver **ppoDriver = NULL);
 
-    OGRDataSource *OpenShared( const char *pszName, int bUpdate=FALSE,
-                               OGRSFDriver ** ppoDriver = NULL );
-    OGRErr      ReleaseDataSource( OGRDataSource * );
+OGRDataSource* OpenShared(const char *pszName, int bUpdate = FALSE,
+                          OGRSFDriver **ppoDriver = NULL);
+OGRErr      ReleaseDataSource(OGRDataSource*);
 
-    void        RegisterDriver( OGRSFDriver * poDriver );
-    void        DeregisterDriver( OGRSFDriver * poDriver );
+void        RegisterDriver(OGRSFDriver *poDriver);
+void        DeregisterDriver(OGRSFDriver *poDriver);
 
-    int         GetDriverCount( void );
-    OGRSFDriver *GetDriver( int iDriver );
-    OGRSFDriver *GetDriverByName( const char * );
+int         GetDriverCount(void);
+OGRSFDriver* GetDriver(int iDriver);
+OGRSFDriver* GetDriverByName(const char*);
 
-    int         GetOpenDSCount() { return nOpenDSCount; } 
-    OGRDataSource *GetOpenDS( int );
+int         GetOpenDSCount()
+{
+    return nOpenDSCount;
+}
+OGRDataSource* GetOpenDS(int);
 
-    void        AutoLoadDrivers();
+void        AutoLoadDrivers();
 };
 
 /* -------------------------------------------------------------------- */

@@ -42,28 +42,29 @@ void Usage()
     int iDriver;
     int nDriverCount;
 
-    printf( "Usage: gdal2ogr [--help-general] [-f format_name]\n"
-            "                [-b band_number] [-l dest_layer_name]\n"
-            "                [-t type]\n"
-            "                gdal_datasource_src_name ogr_datasource_dst_name\n"
-            "\n"
-            " -f format_name: output file format name, possible values are:\n");
+    printf("Usage: gdal2ogr [--help-general] [-f format_name]\n"
+           "                [-b band_number] [-l dest_layer_name]\n"
+           "                [-t type]\n"
+           "                gdal_datasource_src_name ogr_datasource_dst_name\n"
+           "\n"
+           " -f format_name: output file format name, possible values are:\n");
 
     nDriverCount = OGRGetDriverCount();
-    for( iDriver = 0; iDriver <nDriverCount; iDriver++ )
+
+    for (iDriver = 0; iDriver < nDriverCount; iDriver++)
     {
         OGRSFDriverH hDriver = OGRGetDriver(iDriver);
 
-        if( OGR_Dr_TestCapability(hDriver, ODrCCreateDataSource ) )
-            printf( "     -f \"%s\"\n", OGR_Dr_GetName(hDriver) );
+        if (OGR_Dr_TestCapability(hDriver, ODrCCreateDataSource))
+            printf("     -f \"%s\"\n", OGR_Dr_GetName(hDriver));
     }
 
-    printf( " -b band_number: band number of the GDAL datasource (1 by default)\n"
-            " -l dest_layer_name : name of the layer created in the OGR datasource\n"
-            "                      (basename of the OGR datasource by default)\n"
-            " -t type: one of POINT, POINT25D (default), POLYGON\n"
-            "\n"
-            "Create an OGR datasource from the values of a GDAL dataset.\n\n");
+    printf(" -b band_number: band number of the GDAL datasource (1 by default)\n"
+           " -l dest_layer_name : name of the layer created in the OGR datasource\n"
+           "                      (basename of the OGR datasource by default)\n"
+           " -t type: one of POINT, POINT25D (default), POLYGON\n"
+           "\n"
+           "Create an OGR datasource from the values of a GDAL dataset.\n\n");
 
     exit(1);
 }
@@ -72,44 +73,44 @@ void Usage()
 /*                                main()                                */
 /************************************************************************/
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-    const char     *pszFormat = "ESRI Shapefile";
-    char           *pszLayerName = NULL;
-    const char     *pszSrcFilename = NULL, *pszDstFilename = NULL;
-    int             iBand = 1;
-    GDALDatasetH    hDS;
-    GDALRasterBandH hBand;
-    int             nXSize, nYSize;
-    int             i, j;
-    FILE           *fOut = NULL;
-    double         *padfBuffer;
-    double          adfGeotransform[6];
-    OGRSFDriverH    hOGRDriver;
-    OGRDataSourceH  hOGRDS;
-    OGRLayerH       hOGRLayer;
+    const char         *pszFormat      = "ESRI Shapefile";
+    char               *pszLayerName   = NULL;
+    const char         *pszSrcFilename = NULL, *pszDstFilename = NULL;
+    int                iBand           = 1;
+    GDALDatasetH       hDS;
+    GDALRasterBandH    hBand;
+    int                nXSize, nYSize;
+    int                i, j;
+    FILE               *fOut = NULL;
+    double             *padfBuffer;
+    double             adfGeotransform[6];
+    OGRSFDriverH       hOGRDriver;
+    OGRDataSourceH     hOGRDS;
+    OGRLayerH          hOGRLayer;
     OGRwkbGeometryType eType = wkbPoint25D;
-    int             xStep = 1, yStep = 1;
+    int                xStep = 1, yStep = 1;
 
     OGRRegisterAll();
     GDALAllRegister();
 
-    argc = GDALGeneralCmdLineProcessor( argc, &argv, 0 );
-    if( argc < 1 )
-        exit( -argc );
+    argc = GDALGeneralCmdLineProcessor(argc, &argv, 0);
+    if (argc < 1)
+        exit(-argc);
 
 /* -------------------------------------------------------------------- */
 /*      Parse arguments.                                                */
 /* -------------------------------------------------------------------- */
-    for( i = 1; i < argc; i++ )
+    for (i = 1; i < argc; i++)
     {
-        if ( EQUAL(argv[i], "-b") && i < argc - 1)
+        if (EQUAL(argv[i], "-b") && i < argc - 1)
             iBand = atoi(argv[++i]);
-        else if ( EQUAL(argv[i], "-f") && i < argc - 1)
+        else if (EQUAL(argv[i], "-f") && i < argc - 1)
             pszFormat = argv[++i];
-        else if ( EQUAL(argv[i], "-l") && i < argc - 1)
+        else if (EQUAL(argv[i], "-l") && i < argc - 1)
             pszLayerName = CPLStrdup(argv[++i]);
-        else if ( EQUAL(argv[i], "-t") && i < argc - 1)
+        else if (EQUAL(argv[i], "-t") && i < argc - 1)
         {
             i++;
             if (EQUAL(argv[i], "POLYGON"))
@@ -123,19 +124,19 @@ int main(int argc, char* argv[])
                 fprintf(stderr, "unhandled geometry type : %s\n", argv[i]);
             }
         }
-        else if ( EQUAL(argv[i], "-step") && i < argc - 1)
+        else if (EQUAL(argv[i], "-step") && i < argc - 1)
             xStep = yStep = atoi(argv[++i]);
-        else if ( argv[i][0] == '-')
+        else if (argv[i][0] == '-')
             Usage();
-        else if( pszSrcFilename == NULL )
+        else if (pszSrcFilename == NULL)
             pszSrcFilename = argv[i];
-        else if(  pszDstFilename == NULL )
+        else if (pszDstFilename == NULL)
             pszDstFilename = argv[i];
         else
             Usage();
     }
 
-    if( pszSrcFilename == NULL || pszDstFilename == NULL)
+    if (pszSrcFilename == NULL || pszDstFilename == NULL)
         Usage();
 
 /* -------------------------------------------------------------------- */
@@ -170,10 +171,10 @@ int main(int argc, char* argv[])
     /* Special case for CSV : we generate the appropriate VRT file in the same time */
     if (EQUAL(pszFormat, "CSV") && EQUAL(CPLGetExtension(pszDstFilename), "CSV"))
     {
-        FILE* fOutCSVT;
-        FILE* fOutVRT;
-        char* pszDstFilenameCSVT;
-        char* pszDstFilenameVRT;
+        FILE *fOutCSVT;
+        FILE *fOutVRT;
+        char *pszDstFilenameCSVT;
+        char *pszDstFilenameVRT;
 
         fOut = fopen(pszDstFilename, "wt");
         if (fOut == NULL)
@@ -181,6 +182,7 @@ int main(int argc, char* argv[])
             fprintf(stderr, "Can't open %s for writing\n", pszDstFilename);
             exit(1);
         }
+
         fprintf(fOut, "x,y,z\n");
 
         pszDstFilenameCSVT = CPLMalloc(strlen(pszDstFilename) + 2);
@@ -192,6 +194,7 @@ int main(int argc, char* argv[])
             fprintf(stderr, "Can't open %s for writing\n", pszDstFilenameCSVT);
             exit(1);
         }
+
         CPLFree(pszDstFilenameCSVT);
         fprintf(fOutCSVT, "Real,Real,Real\n");
         fclose(fOutCSVT);
@@ -205,6 +208,7 @@ int main(int argc, char* argv[])
             fprintf(stderr, "Can't open %s for writing\n", pszDstFilenameVRT);
             exit(1);
         }
+
         CPLFree(pszDstFilenameVRT);
         fprintf(fOutVRT, "<OGRVRTDataSource>\n");
         fprintf(fOutVRT, "  <OGRVRTLayer name=\"%s\">\n", CPLGetBasename(pszDstFilename));
@@ -219,7 +223,7 @@ int main(int argc, char* argv[])
     else
     {
         OGRSpatialReferenceH hSRS = NULL;
-        const char* pszWkt;
+        const char           *pszWkt;
 
         hOGRDriver = OGRGetDriverByName(pszFormat);
         if (hOGRDriver == NULL)
@@ -244,8 +248,8 @@ int main(int argc, char* argv[])
         if (pszLayerName == NULL)
             pszLayerName = CPLStrdup(CPLGetBasename(pszDstFilename));
 
-        hOGRLayer = OGR_DS_CreateLayer( hOGRDS, pszLayerName,
-                                        hSRS, eType, NULL);
+        hOGRLayer = OGR_DS_CreateLayer(hOGRDS, pszLayerName,
+                                       hSRS, eType, NULL);
 
         if (hSRS)
             OSRDestroySpatialReference(hSRS);
@@ -258,27 +262,28 @@ int main(int argc, char* argv[])
 
         if (eType != wkbPoint25D)
         {
-            OGRFieldDefnH hFieldDefn =  OGR_Fld_Create( "z", OFTReal );
+            OGRFieldDefnH hFieldDefn = OGR_Fld_Create("z", OFTReal);
             OGR_L_CreateField(hOGRLayer, hFieldDefn, 0);
-            OGR_Fld_Destroy( hFieldDefn );
+            OGR_Fld_Destroy(hFieldDefn);
         }
     }
 
 
     padfBuffer = (double*)CPLMalloc(nXSize * sizeof(double));
 
-#define GET_X(j, i) adfGeotransform[0] + (j) * adfGeotransform[1] + (i) * adfGeotransform[2]
-#define GET_Y(j, i) adfGeotransform[3] + (j) * adfGeotransform[4] + (i) * adfGeotransform[5]
+#define GET_X(j, i)  adfGeotransform[0] + (j) * adfGeotransform[1] + (i) * adfGeotransform[2]
+#define GET_Y(j, i)  adfGeotransform[3] + (j) * adfGeotransform[4] + (i) * adfGeotransform[5]
 #define GET_XY(j, i) GET_X(j, i), GET_Y(j, i)
 
 /* -------------------------------------------------------------------- */
 /*     "Translate" the source dataset                                   */
 /* -------------------------------------------------------------------- */
-    for(i=0;i<nYSize;i+=yStep)
+    for (i = 0; i < nYSize; i += yStep)
     {
-        GDALRasterIO( hBand, GF_Read, 0, i, nXSize, 1,
-                      padfBuffer, nXSize, 1, GDT_Float64, 0, 0);
-        for(j=0;j<nXSize;j+=xStep)
+        GDALRasterIO(hBand, GF_Read, 0, i, nXSize, 1,
+                     padfBuffer, nXSize, 1, GDT_Float64, 0, 0);
+
+        for (j = 0; j < nXSize; j += xStep)
         {
             if (fOut)
             {
@@ -287,7 +292,7 @@ int main(int argc, char* argv[])
             }
             else
             {
-                OGRFeatureH hFeature = OGR_F_Create(OGR_L_GetLayerDefn(hOGRLayer));
+                OGRFeatureH  hFeature  = OGR_F_Create(OGR_L_GetLayerDefn(hOGRLayer));
                 OGRGeometryH hGeometry = OGR_G_CreateGeometry(eType);
                 if (eType == wkbPoint25D)
                 {
@@ -310,6 +315,7 @@ int main(int argc, char* argv[])
                     OGR_G_AddGeometryDirectly(hGeometry, hLinearRing);
                     OGR_F_SetFieldDouble(hFeature, 0, padfBuffer[j]);
                 }
+
                 OGR_F_SetGeometryDirectly(hFeature, hGeometry);
                 OGR_L_CreateFeature(hOGRLayer, hFeature);
                 OGR_F_Destroy(hFeature);
@@ -324,15 +330,16 @@ int main(int argc, char* argv[])
         fclose(fOut);
     else
         OGR_DS_Destroy(hOGRDS);
+
     GDALClose(hDS);
 
     CPLFree(padfBuffer);
     CPLFree(pszLayerName);
 
-    GDALDumpOpenDatasets( stderr );
+    GDALDumpOpenDatasets(stderr);
     GDALDestroyDriverManager();
     OGRCleanupAll();
-    CSLDestroy( argv );
+    CSLDestroy(argv);
 
     return 0;
 }

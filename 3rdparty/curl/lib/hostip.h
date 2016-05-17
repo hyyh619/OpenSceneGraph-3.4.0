@@ -1,26 +1,26 @@
 #ifndef HEADER_CURL_HOSTIP_H
 #define HEADER_CURL_HOSTIP_H
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 
 #include "setup.h"
 #include "hash.h"
@@ -61,8 +61,8 @@
 #endif
 #else
 #define CURL_ASYNC_SUCCESS CURLE_OK
-#define ares_cancel(x) do {} while(0)
-#define ares_destroy(x) do {} while(0)
+#define ares_cancel(x)  do {} while (0)
+#define ares_destroy(x) do {} while (0)
 #endif
 
 struct addrinfo;
@@ -77,15 +77,16 @@ struct connectdata;
  *
  * Returns a struct curl_hash pointer on success, NULL on failure.
  */
-struct curl_hash *Curl_global_host_cache_init(void);
+struct curl_hash* Curl_global_host_cache_init(void);
 void Curl_global_host_cache_dtor(void);
 
-struct Curl_dns_entry {
-  Curl_addrinfo *addr;
-  /* timestamp == 0 -- entry not in hostcache
-     timestamp != 0 -- entry is in hostcache */
-  time_t timestamp;
-  long inuse;      /* use-counter, make very sure you decrease this
+struct Curl_dns_entry
+{
+    Curl_addrinfo *addr;
+    /* timestamp == 0 -- entry not in hostcache
+       timestamp != 0 -- entry is in hostcache */
+    time_t timestamp;
+    long   inuse;  /* use-counter, make very sure you decrease this
                       when you're done using the address you received */
 };
 
@@ -99,8 +100,8 @@ struct Curl_dns_entry {
 /* return codes */
 #define CURLRESOLV_TIMEDOUT -2
 #define CURLRESOLV_ERROR    -1
-#define CURLRESOLV_RESOLVED  0
-#define CURLRESOLV_PENDING   1
+#define CURLRESOLV_RESOLVED 0
+#define CURLRESOLV_PENDING  1
 int Curl_resolv(struct connectdata *conn, const char *hostname,
                 int port, struct Curl_dns_entry **dnsentry);
 int Curl_resolv_timeout(struct connectdata *conn, const char *hostname,
@@ -119,7 +120,7 @@ bool Curl_ipvalid(struct SessionHandle *data);
  * name resolve layers (selected at build-time). They all take this same set
  * of arguments
  */
-Curl_addrinfo *Curl_getaddrinfo(struct connectdata *conn,
+Curl_addrinfo* Curl_getaddrinfo(struct connectdata *conn,
                                 const char *hostname,
                                 int port,
                                 int *waitp);
@@ -147,13 +148,13 @@ void Curl_resolv_unlock(struct SessionHandle *data,
 void Curl_scan_cache_used(void *user, void *ptr);
 
 /* make a new dns cache and return the handle */
-struct curl_hash *Curl_mk_dnscache(void);
+struct curl_hash* Curl_mk_dnscache(void);
 
 /* prune old entries from the DNS cache */
 void Curl_hostcache_prune(struct SessionHandle *data);
 
 /* Return # of adresses in a Curl_addrinfo struct */
-int Curl_num_addresses (const Curl_addrinfo *addr);
+int Curl_num_addresses(const Curl_addrinfo *addr);
 
 #if defined(CURLDEBUG) && defined(HAVE_GETNAMEINFO)
 int curl_dogetnameinfo(GETNAMEINFO_QUAL_ARG1 GETNAMEINFO_TYPE_ARG1 sa,
@@ -165,7 +166,7 @@ int curl_dogetnameinfo(GETNAMEINFO_QUAL_ARG1 GETNAMEINFO_TYPE_ARG1 sa,
 #endif
 
 /* IPv4 threadsafe resolve function used for synch and asynch builds */
-Curl_addrinfo *Curl_ipv4_resolve_r(const char * hostname, int port);
+Curl_addrinfo* Curl_ipv4_resolve_r(const char *hostname, int port);
 
 /*
  * Curl_addrinfo_callback() is used when we build with any asynch specialty.
@@ -182,7 +183,7 @@ CURLcode Curl_addrinfo_callback(struct connectdata *conn,
  * given in the 'ip' argument. The result will be stored in the buf that is
  * bufsize bytes big.
  */
-const char *Curl_printable_address(const Curl_addrinfo *ip,
+const char* Curl_printable_address(const Curl_addrinfo *ip,
                                    char *buf, size_t bufsize);
 
 /*
@@ -190,7 +191,7 @@ const char *Curl_printable_address(const Curl_addrinfo *ip,
  *
  * Returns the Curl_dns_entry entry pointer or NULL if the storage failed.
  */
-struct Curl_dns_entry *
+struct Curl_dns_entry*
 Curl_cache_addr(struct SessionHandle *data, Curl_addrinfo *addr,
                 const char *hostname, int port);
 

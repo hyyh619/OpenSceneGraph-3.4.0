@@ -80,16 +80,16 @@ CPL_CVSID("$Id: ogr_srs_panorama.cpp 19799 2010-06-04 10:48:04Z dron $");
 /*  "Panorama" ellipsod codes.                                          */
 /************************************************************************/
 
-#define PAN_ELLIPSOID_NONE          -1L
-#define PAN_ELLIPSOID_KRASSOVSKY    1L  // Krassovsky, 1940
-#define PAN_ELLIPSOID_WGS72         2L  // WGS, 1972
-#define PAN_ELLIPSOID_INT1924       3L  // International, 1924 (Hayford, 1909)
-#define PAN_ELLIPSOID_CLARCKE1880   4L  // Clarke, 1880
-#define PAN_ELLIPSOID_CLARCKE1866   5L  // Clarke, 1866 (NAD1927)
-#define PAN_ELLIPSOID_EVEREST1830   6L  // Everest, 1830
-#define PAN_ELLIPSOID_BESSEL1841    7L  // Bessel, 1841
-#define PAN_ELLIPSOID_AIRY1830      8L  // Airy, 1830
-#define PAN_ELLIPSOID_WGS84         9L  // WGS, 1984 (GPS)
+#define PAN_ELLIPSOID_NONE        -1L
+#define PAN_ELLIPSOID_KRASSOVSKY  1L    // Krassovsky, 1940
+#define PAN_ELLIPSOID_WGS72       2L    // WGS, 1972
+#define PAN_ELLIPSOID_INT1924     3L    // International, 1924 (Hayford, 1909)
+#define PAN_ELLIPSOID_CLARCKE1880 4L    // Clarke, 1880
+#define PAN_ELLIPSOID_CLARCKE1866 5L    // Clarke, 1866 (NAD1927)
+#define PAN_ELLIPSOID_EVEREST1830 6L    // Everest, 1830
+#define PAN_ELLIPSOID_BESSEL1841  7L    // Bessel, 1841
+#define PAN_ELLIPSOID_AIRY1830    8L    // Airy, 1830
+#define PAN_ELLIPSOID_WGS84       9L    // WGS, 1984 (GPS)
 
 /************************************************************************/
 /*  Correspondence between "Panorama" and EPSG datum codes.             */
@@ -109,7 +109,7 @@ static const long aoDatums[] =
     4200    // Pulkovo, 1995
 };
 
-#define NUMBER_OF_DATUMS        (long)(sizeof(aoDatums)/sizeof(aoDatums[0]))
+#define NUMBER_OF_DATUMS (long)(sizeof(aoDatums) / sizeof(aoDatums[0]))
 
 /************************************************************************/
 /*  Correspondence between "Panorama" and EPSG ellipsoid codes.         */
@@ -129,20 +129,20 @@ static const long aoEllips[] =
     7030    // WGS, 1984 (GPS)
 };
 
-#define NUMBER_OF_ELLIPSOIDS    (sizeof(aoEllips)/sizeof(aoEllips[0]))
+#define NUMBER_OF_ELLIPSOIDS (sizeof(aoEllips) / sizeof(aoEllips[0]))
 
 /************************************************************************/
 /*                        OSRImportFromPanorama()                       */
 /************************************************************************/
 
-OGRErr OSRImportFromPanorama( OGRSpatialReferenceH hSRS,
-                              long iProjSys, long iDatum, long iEllips,
-                              double *padfPrjParams )
+OGRErr OSRImportFromPanorama(OGRSpatialReferenceH hSRS,
+                             long iProjSys, long iDatum, long iEllips,
+                             double *padfPrjParams)
 
 {
-    return ((OGRSpatialReference *) hSRS)->importFromPanorama( iProjSys,
-                                                               iDatum,iEllips,
-                                                               padfPrjParams );
+    return ((OGRSpatialReference*) hSRS)->importFromPanorama(iProjSys,
+                                                             iDatum, iEllips,
+                                                             padfPrjParams);
 }
 
 /************************************************************************/
@@ -190,7 +190,7 @@ OGRErr OSRImportFromPanorama( OGRSpatialReferenceH hSRS,
  * </pre>
  *
  * @param iEllips Input spheroid.
- * 
+ *
  *      <h4>Supported Spheroids</h4>
  * <pre>
  *       1: Krassovsky, 1940
@@ -221,12 +221,12 @@ OGRErr OSRImportFromPanorama( OGRSpatialReferenceH hSRS,
  * zero. If NULL supplied instead of array pointer default values will be used
  * (i.e., zeroes).
  *
- * @return OGRERR_NONE on success or an error code in case of failure. 
+ * @return OGRERR_NONE on success or an error code in case of failure.
  */
 
-OGRErr OGRSpatialReference::importFromPanorama( long iProjSys, long iDatum,
-                                                long iEllips,
-                                                double *padfPrjParams )
+OGRErr OGRSpatialReference::importFromPanorama(long iProjSys, long iDatum,
+                                               long iEllips,
+                                               double *padfPrjParams)
 
 {
     Clear();
@@ -234,235 +234,236 @@ OGRErr OGRSpatialReference::importFromPanorama( long iProjSys, long iDatum,
 /* -------------------------------------------------------------------- */
 /*      Use safe defaults if projection parameters are not supplied.    */
 /* -------------------------------------------------------------------- */
-    int     bProjAllocated = FALSE;
+    int bProjAllocated = FALSE;
 
-    if( padfPrjParams == NULL )
+    if (padfPrjParams == NULL)
     {
-        int     i;
+        int i;
 
-        padfPrjParams = (double *)CPLMalloc( 8 * sizeof(double) );
-        if ( !padfPrjParams )
+        padfPrjParams = (double*)CPLMalloc(8 * sizeof(double));
+        if (!padfPrjParams)
             return OGRERR_NOT_ENOUGH_MEMORY;
-        for ( i = 0; i < 7; i++ )
+
+        for (i = 0; i < 7; i++)
             padfPrjParams[i] = 0.0;
+
         bProjAllocated = TRUE;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Operate on the basis of the projection code.                    */
 /* -------------------------------------------------------------------- */
-    switch ( iProjSys )
+    switch (iProjSys)
     {
-        case PAN_PROJ_NONE:
-            break;
+    case PAN_PROJ_NONE:
+        break;
 
-        case PAN_PROJ_UTM:
-            {
-                long nZone;
+    case PAN_PROJ_UTM:
+    {
+        long nZone;
 
-                if ( padfPrjParams[7] == 0.0 )
-                    nZone = (long)TO_ZONE(padfPrjParams[3]);
-                else
-                    nZone = (long) padfPrjParams[7];
+        if (padfPrjParams[7] == 0.0)
+            nZone = (long)TO_ZONE(padfPrjParams[3]);
+        else
+            nZone = (long) padfPrjParams[7];
 
-                // XXX: no way to determine south hemisphere. Always assume
-                // nothern hemisphere.
-                SetUTM( nZone, TRUE );
-            }
-            break;
+        // XXX: no way to determine south hemisphere. Always assume
+        // nothern hemisphere.
+        SetUTM(nZone, TRUE);
+    }
+    break;
 
-        case PAN_PROJ_WAG1:
-            SetWagner( 1, 0.0,
-                       padfPrjParams[5], padfPrjParams[6] );
-            break;
+    case PAN_PROJ_WAG1:
+        SetWagner(1, 0.0,
+                  padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-        case PAN_PROJ_MERCAT:
-            SetMercator( TO_DEGREES * padfPrjParams[0],
+    case PAN_PROJ_MERCAT:
+        SetMercator(TO_DEGREES * padfPrjParams[0],
+                    TO_DEGREES * padfPrjParams[3],
+                    padfPrjParams[4],
+                    padfPrjParams[5], padfPrjParams[6]);
+        break;
+
+    case PAN_PROJ_PS:
+        SetPS(TO_DEGREES * padfPrjParams[2],
+              TO_DEGREES * padfPrjParams[3],
+              padfPrjParams[4],
+              padfPrjParams[5], padfPrjParams[6]);
+        break;
+
+    case PAN_PROJ_POLYC:
+        SetPolyconic(TO_DEGREES * padfPrjParams[2],
+                     TO_DEGREES * padfPrjParams[3],
+                     padfPrjParams[5], padfPrjParams[6]);
+        break;
+
+    case PAN_PROJ_EC:
+        SetEC(TO_DEGREES * padfPrjParams[0],
+              TO_DEGREES * padfPrjParams[1],
+              TO_DEGREES * padfPrjParams[2],
+              TO_DEGREES * padfPrjParams[3],
+              padfPrjParams[5], padfPrjParams[6]);
+        break;
+
+    case PAN_PROJ_LCC:
+        SetLCC(TO_DEGREES * padfPrjParams[0],
+               TO_DEGREES * padfPrjParams[1],
+               TO_DEGREES * padfPrjParams[2],
+               TO_DEGREES * padfPrjParams[3],
+               padfPrjParams[5], padfPrjParams[6]);
+        break;
+
+    case PAN_PROJ_TM:
+    {
+        // XXX: we need zone number to compute false easting
+        // parameter, because usually it is not contained in the
+        // "Panorama" projection definition.
+        // FIXME: what to do with negative values?
+        long   nZone;
+        double dfCenterLong;
+
+        if (padfPrjParams[7] == 0.0)
+        {
+            nZone        = (long)TO_ZONE(padfPrjParams[3]);
+            dfCenterLong = TO_DEGREES * padfPrjParams[3];
+        }
+        else
+        {
+            nZone        = (long) padfPrjParams[7];
+            dfCenterLong = 6 * nZone - 3;
+        }
+
+        padfPrjParams[5] = nZone * 1000000.0 + 500000.0;
+        padfPrjParams[4] = 1.0;
+        SetTM(TO_DEGREES * padfPrjParams[2],
+              dfCenterLong,
+              padfPrjParams[4],
+              padfPrjParams[5], padfPrjParams[6]);
+    }
+    break;
+
+    case PAN_PROJ_STEREO:
+        SetStereographic(TO_DEGREES * padfPrjParams[2],
                          TO_DEGREES * padfPrjParams[3],
                          padfPrjParams[4],
-                         padfPrjParams[5], padfPrjParams[6] );
-            break;
+                         padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-        case PAN_PROJ_PS:
-            SetPS( TO_DEGREES * padfPrjParams[2],
-                   TO_DEGREES * padfPrjParams[3],
-                   padfPrjParams[4],
-                   padfPrjParams[5], padfPrjParams[6] );
-            break;
+    case PAN_PROJ_AE:
+        SetAE(TO_DEGREES * padfPrjParams[0],
+              TO_DEGREES * padfPrjParams[3],
+              padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-        case PAN_PROJ_POLYC:
-            SetPolyconic( TO_DEGREES * padfPrjParams[2],
-                          TO_DEGREES * padfPrjParams[3],
-                          padfPrjParams[5], padfPrjParams[6] );
-            break;
-
-        case PAN_PROJ_EC:
-            SetEC( TO_DEGREES * padfPrjParams[0],
-                   TO_DEGREES * padfPrjParams[1],
-                   TO_DEGREES * padfPrjParams[2],
-                   TO_DEGREES * padfPrjParams[3],
-                   padfPrjParams[5], padfPrjParams[6] );
-            break;
-
-        case PAN_PROJ_LCC:
-            SetLCC( TO_DEGREES * padfPrjParams[0],
-                    TO_DEGREES * padfPrjParams[1],
-                    TO_DEGREES * padfPrjParams[2],
+    case PAN_PROJ_GNOMON:
+        SetGnomonic(TO_DEGREES * padfPrjParams[2],
                     TO_DEGREES * padfPrjParams[3],
-                    padfPrjParams[5], padfPrjParams[6] );
-            break;
+                    padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-        case PAN_PROJ_TM:
-            {
-                // XXX: we need zone number to compute false easting
-                // parameter, because usually it is not contained in the
-                // "Panorama" projection definition.
-                // FIXME: what to do with negative values?
-                long    nZone;
-                double  dfCenterLong;
+    case PAN_PROJ_MOLL:
+        SetMollweide(TO_DEGREES * padfPrjParams[3],
+                     padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-                if ( padfPrjParams[7] == 0.0 )
-                {
-                    nZone = (long)TO_ZONE(padfPrjParams[3]);
-                    dfCenterLong = TO_DEGREES * padfPrjParams[3];
-                }
-                else
-                {
-                    nZone = (long) padfPrjParams[7];
-                    dfCenterLong = 6 * nZone - 3;
-                }
+    case PAN_PROJ_LAEA:
+        SetLAEA(TO_DEGREES * padfPrjParams[0],
+                TO_DEGREES * padfPrjParams[3],
+                padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-                padfPrjParams[5] = nZone * 1000000.0 + 500000.0;
-                padfPrjParams[4] = 1.0;
-                SetTM( TO_DEGREES * padfPrjParams[2],
-                       dfCenterLong,
-                       padfPrjParams[4],
-                       padfPrjParams[5], padfPrjParams[6] );
-            }
-            break;
+    case PAN_PROJ_EQC:
+        SetEquirectangular(TO_DEGREES * padfPrjParams[0],
+                           TO_DEGREES * padfPrjParams[3],
+                           padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-        case PAN_PROJ_STEREO:
-            SetStereographic( TO_DEGREES * padfPrjParams[2],
-                              TO_DEGREES * padfPrjParams[3],
-                              padfPrjParams[4],
-                              padfPrjParams[5], padfPrjParams[6] );
-            break;
+    case PAN_PROJ_CEA:
+        SetCEA(TO_DEGREES * padfPrjParams[0],
+               TO_DEGREES * padfPrjParams[3],
+               padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-        case PAN_PROJ_AE:
-            SetAE( TO_DEGREES * padfPrjParams[0],
-                   TO_DEGREES * padfPrjParams[3],
-                   padfPrjParams[5], padfPrjParams[6] );
-            break;
+    case PAN_PROJ_IMWP:
+        SetIWMPolyconic(TO_DEGREES * padfPrjParams[0],
+                        TO_DEGREES * padfPrjParams[1],
+                        TO_DEGREES * padfPrjParams[3],
+                        padfPrjParams[5], padfPrjParams[6]);
+        break;
 
-        case PAN_PROJ_GNOMON:
-            SetGnomonic( TO_DEGREES * padfPrjParams[2],
-                         TO_DEGREES * padfPrjParams[3],
-                         padfPrjParams[5], padfPrjParams[6] );
-            break;
-
-        case PAN_PROJ_MOLL:
-            SetMollweide( TO_DEGREES * padfPrjParams[3],
-                          padfPrjParams[5], padfPrjParams[6] );
-            break;
-
-        case PAN_PROJ_LAEA:
-            SetLAEA( TO_DEGREES * padfPrjParams[0],
-                     TO_DEGREES * padfPrjParams[3],
-                     padfPrjParams[5], padfPrjParams[6] );
-            break;
-
-        case PAN_PROJ_EQC:
-            SetEquirectangular( TO_DEGREES * padfPrjParams[0],
-                                TO_DEGREES * padfPrjParams[3],
-                                padfPrjParams[5], padfPrjParams[6] );
-            break;
-
-        case PAN_PROJ_CEA:
-            SetCEA( TO_DEGREES * padfPrjParams[0],
-                    TO_DEGREES * padfPrjParams[3],
-                    padfPrjParams[5], padfPrjParams[6] );
-            break;
-
-        case PAN_PROJ_IMWP:
-            SetIWMPolyconic( TO_DEGREES * padfPrjParams[0],
-                             TO_DEGREES * padfPrjParams[1],
-                             TO_DEGREES * padfPrjParams[3],
-                             padfPrjParams[5], padfPrjParams[6] );
-            break;
-
-        default:
-            CPLDebug( "OSR_Panorama", "Unsupported projection: %ld", iProjSys );
-            SetLocalCS( CPLString().Printf("\"Panorama\" projection number %ld",
-                                   iProjSys) );
-            break;
-
+    default:
+        CPLDebug("OSR_Panorama", "Unsupported projection: %ld", iProjSys);
+        SetLocalCS(CPLString().Printf("\"Panorama\" projection number %ld",
+                                      iProjSys));
+        break;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Try to translate the datum/spheroid.                            */
 /* -------------------------------------------------------------------- */
 
-    if ( !IsLocal() )
+    if (!IsLocal())
     {
-        if ( iDatum > 0 && iDatum < NUMBER_OF_DATUMS && aoDatums[iDatum] )
+        if (iDatum > 0 && iDatum < NUMBER_OF_DATUMS && aoDatums[iDatum])
         {
             OGRSpatialReference oGCS;
-            oGCS.importFromEPSG( aoDatums[iDatum] );
-            CopyGeogCSFrom( &oGCS );
+            oGCS.importFromEPSG(aoDatums[iDatum]);
+            CopyGeogCSFrom(&oGCS);
         }
 
-        else if ( iEllips > 0
-                  && iEllips < (long)NUMBER_OF_ELLIPSOIDS
-                  && aoEllips[iEllips] )
+        else if (iEllips > 0
+                 && iEllips < (long)NUMBER_OF_ELLIPSOIDS
+                 && aoEllips[iEllips])
         {
-            char    *pszName = NULL;
-            double  dfSemiMajor, dfInvFlattening;
+            char   *pszName = NULL;
+            double dfSemiMajor, dfInvFlattening;
 
-            if ( OSRGetEllipsoidInfo( aoEllips[iEllips], &pszName,
-                            &dfSemiMajor, &dfInvFlattening ) == OGRERR_NONE )
+            if (OSRGetEllipsoidInfo(aoEllips[iEllips], &pszName,
+                                    &dfSemiMajor, &dfInvFlattening) == OGRERR_NONE)
             {
-                SetGeogCS( CPLString().Printf(
-                            "Unknown datum based upon the %s ellipsoid",
-                            pszName ),
-                           CPLString().Printf(
-                            "Not specified (based on %s spheroid)", pszName ),
-                           pszName, dfSemiMajor, dfInvFlattening,
-                           NULL, 0.0, NULL, 0.0 );
-                SetAuthority( "SPHEROID", "EPSG", aoEllips[iEllips] );
+                SetGeogCS(CPLString().Printf(
+                              "Unknown datum based upon the %s ellipsoid",
+                              pszName),
+                          CPLString().Printf(
+                              "Not specified (based on %s spheroid)", pszName),
+                          pszName, dfSemiMajor, dfInvFlattening,
+                          NULL, 0.0, NULL, 0.0);
+                SetAuthority("SPHEROID", "EPSG", aoEllips[iEllips]);
             }
             else
             {
-                CPLError( CE_Warning, CPLE_AppDefined,
-                          "Failed to lookup ellipsoid code %ld, likely due to"
-                          " missing GDAL gcs.csv\n"
-                          " file.  Falling back to use Pulkovo 42.", iEllips );
-                SetWellKnownGeogCS( "EPSG:4284" );
+                CPLError(CE_Warning, CPLE_AppDefined,
+                         "Failed to lookup ellipsoid code %ld, likely due to"
+                         " missing GDAL gcs.csv\n"
+                         " file.  Falling back to use Pulkovo 42.", iEllips);
+                SetWellKnownGeogCS("EPSG:4284");
             }
 
-            if ( pszName )
-                CPLFree( pszName );
+            if (pszName)
+                CPLFree(pszName);
         }
 
         else
         {
-            CPLError( CE_Warning, CPLE_AppDefined,
-                      "Wrong datum code %ld. Supported datums are 1--%ld only.\n"
-                      "Falling back to use Pulkovo 42.",
-                      iDatum, NUMBER_OF_DATUMS - 1 );
-            SetWellKnownGeogCS( "EPSG:4284" );
+            CPLError(CE_Warning, CPLE_AppDefined,
+                     "Wrong datum code %ld. Supported datums are 1--%ld only.\n"
+                     "Falling back to use Pulkovo 42.",
+                     iDatum, NUMBER_OF_DATUMS - 1);
+            SetWellKnownGeogCS("EPSG:4284");
         }
     }
 
 /* -------------------------------------------------------------------- */
 /*      Grid units translation                                          */
 /* -------------------------------------------------------------------- */
-    if( IsLocal() || IsProjected() )
-        SetLinearUnits( SRS_UL_METER, 1.0 );
+    if (IsLocal() || IsProjected())
+        SetLinearUnits(SRS_UL_METER, 1.0);
 
     FixupOrdering();
 
-    if ( bProjAllocated && padfPrjParams )
-        CPLFree( padfPrjParams );
+    if (bProjAllocated && padfPrjParams)
+        CPLFree(padfPrjParams);
 
     return OGRERR_NONE;
 }
@@ -471,15 +472,15 @@ OGRErr OGRSpatialReference::importFromPanorama( long iProjSys, long iDatum,
 /*                      OSRExportToPanorama()                           */
 /************************************************************************/
 
-OGRErr OSRExportToPanorama( OGRSpatialReferenceH hSRS,
-                            long *piProjSys, long *piDatum, long *piEllips,
-                            long *piZone, double *padfPrjParams )
+OGRErr OSRExportToPanorama(OGRSpatialReferenceH hSRS,
+                           long *piProjSys, long *piDatum, long *piEllips,
+                           long *piZone, double *padfPrjParams)
 
 {
-    return ((OGRSpatialReference *) hSRS)->exportToPanorama( piProjSys,
-                                                             piDatum, piEllips,
-                                                             piZone,
-                                                             padfPrjParams );
+    return ((OGRSpatialReference*) hSRS)->exportToPanorama(piProjSys,
+                                                           piDatum, piEllips,
+                                                           piZone,
+                                                           padfPrjParams);
 }
 
 /************************************************************************/
@@ -499,295 +500,296 @@ OGRErr OSRExportToPanorama( OGRSpatialReferenceH hSRS,
  *
  * @param piEllips Pointer to variable, where the spheroid code will be
  * returned.
- * 
+ *
  * @param piZone Pointer to variable, where the zone for UTM projection
  * system will be returned.
  *
  * @param padfPrjParams an existing 7 double buffer into which the
  * projection parameters will be placed. See importFromPanorama()
  * for the list of parameters.
- * 
- * @return OGRERR_NONE on success or an error code on failure. 
+ *
+ * @return OGRERR_NONE on success or an error code on failure.
  */
 
-OGRErr OGRSpatialReference::exportToPanorama( long *piProjSys, long *piDatum,
-                                              long *piEllips, long *piZone,
-                                              double *padfPrjParams ) const
+OGRErr OGRSpatialReference::exportToPanorama(long *piProjSys, long *piDatum,
+                                             long *piEllips, long *piZone,
+                                             double *padfPrjParams) const
 
 {
-    CPLAssert( padfPrjParams );
+    CPLAssert(padfPrjParams);
 
-    const char  *pszProjection = GetAttrValue("PROJECTION");
+    const char *pszProjection = GetAttrValue("PROJECTION");
 
 /* -------------------------------------------------------------------- */
 /*      Fill all projection parameters with zero.                       */
 /* -------------------------------------------------------------------- */
-    int     i;
+    int i;
 
-    *piDatum = 0L;
+    *piDatum  = 0L;
     *piEllips = 0L;
-    *piZone = 0L;
-    for ( i = 0; i < 7; i++ )
+    *piZone   = 0L;
+
+    for (i = 0; i < 7; i++)
         padfPrjParams[i] = 0.0;
 
 /* ==================================================================== */
 /*      Handle the projection definition.                               */
 /* ==================================================================== */
-    if( IsLocal() )
+    if (IsLocal())
         *piProjSys = PAN_PROJ_NONE;
 
-    else if( pszProjection == NULL )
+    else if (pszProjection == NULL)
     {
 #ifdef DEBUG
-        CPLDebug( "OSR_Panorama",
-                  "Empty projection definition, considered as Geographic" );
+        CPLDebug("OSR_Panorama",
+                 "Empty projection definition, considered as Geographic");
 #endif
         *piProjSys = PAN_PROJ_NONE;
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_MERCATOR_1SP) )
+    else if (EQUAL(pszProjection, SRS_PT_MERCATOR_1SP))
     {
-        *piProjSys = PAN_PROJ_MERCAT;
+        *piProjSys       = PAN_PROJ_MERCAT;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[0] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[4] = GetNormProjParm( SRS_PP_SCALE_FACTOR, 1.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
-    }
-
-    else if( EQUAL(pszProjection, SRS_PT_POLAR_STEREOGRAPHIC) )
-    {
-        *piProjSys = PAN_PROJ_PS;
-        padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[2] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[4] = GetNormProjParm( SRS_PP_SCALE_FACTOR, 1.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
-    }
-
-    else if( EQUAL(pszProjection, SRS_PT_POLYCONIC) )
-    {
-        *piProjSys = PAN_PROJ_POLYC;
-        padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[2] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
-    }
-
-    else if( EQUAL(pszProjection, SRS_PT_EQUIDISTANT_CONIC) )
-    {
-        *piProjSys = PAN_PROJ_EC;
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
         padfPrjParams[0] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_STANDARD_PARALLEL_1, 0.0 );
-        padfPrjParams[1] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_STANDARD_PARALLEL_2, 0.0 );
-        padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[2] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[4] = GetNormProjParm(SRS_PP_SCALE_FACTOR, 1.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP) )
+    else if (EQUAL(pszProjection, SRS_PT_POLAR_STEREOGRAPHIC))
     {
-        *piProjSys = PAN_PROJ_LCC;
-        padfPrjParams[0] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_STANDARD_PARALLEL_1, 0.0 );
-        padfPrjParams[1] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_STANDARD_PARALLEL_2, 0.0 );
+        *piProjSys       = PAN_PROJ_PS;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[2] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[2] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[4] = GetNormProjParm(SRS_PP_SCALE_FACTOR, 1.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_TRANSVERSE_MERCATOR) )
+    else if (EQUAL(pszProjection, SRS_PT_POLYCONIC))
+    {
+        *piProjSys       = PAN_PROJ_POLYC;
+        padfPrjParams[3] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[2] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
+    }
+
+    else if (EQUAL(pszProjection, SRS_PT_EQUIDISTANT_CONIC))
+    {
+        *piProjSys       = PAN_PROJ_EC;
+        padfPrjParams[0] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_STANDARD_PARALLEL_1, 0.0);
+        padfPrjParams[1] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_STANDARD_PARALLEL_2, 0.0);
+        padfPrjParams[3] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[2] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
+    }
+
+    else if (EQUAL(pszProjection, SRS_PT_LAMBERT_CONFORMAL_CONIC_2SP))
+    {
+        *piProjSys       = PAN_PROJ_LCC;
+        padfPrjParams[0] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_STANDARD_PARALLEL_1, 0.0);
+        padfPrjParams[1] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_STANDARD_PARALLEL_2, 0.0);
+        padfPrjParams[3] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[2] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
+    }
+
+    else if (EQUAL(pszProjection, SRS_PT_TRANSVERSE_MERCATOR))
     {
         int bNorth;
 
-        *piZone = GetUTMZone( &bNorth );
+        *piZone = GetUTMZone(&bNorth);
 
-        if( *piZone != 0 )
+        if (*piZone != 0)
         {
             *piProjSys = PAN_PROJ_UTM;
-            if( !bNorth )
-                *piZone = - *piZone;
-        }            
+            if (!bNorth)
+                *piZone = -*piZone;
+        }
         else
         {
-            *piProjSys = PAN_PROJ_TM;
+            *piProjSys       = PAN_PROJ_TM;
             padfPrjParams[3] =
-                TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-            padfPrjParams[2] = 
-                TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
+                TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+            padfPrjParams[2] =
+                TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
             padfPrjParams[4] =
-                GetNormProjParm( SRS_PP_SCALE_FACTOR, 1.0 );
+                GetNormProjParm(SRS_PP_SCALE_FACTOR, 1.0);
             padfPrjParams[5] =
-                GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
+                GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
             padfPrjParams[6] =
-                GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+                GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
         }
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_WAGNER_I) )
+    else if (EQUAL(pszProjection, SRS_PT_WAGNER_I))
     {
-        *piProjSys = PAN_PROJ_WAG1;
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+        *piProjSys       = PAN_PROJ_WAG1;
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_STEREOGRAPHIC) )
+    else if (EQUAL(pszProjection, SRS_PT_STEREOGRAPHIC))
     {
-        *piProjSys = PAN_PROJ_STEREO;
+        *piProjSys       = PAN_PROJ_STEREO;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[2] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[4] = GetNormProjParm( SRS_PP_SCALE_FACTOR, 1.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[2] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[4] = GetNormProjParm(SRS_PP_SCALE_FACTOR, 1.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_AZIMUTHAL_EQUIDISTANT) )
+    else if (EQUAL(pszProjection, SRS_PT_AZIMUTHAL_EQUIDISTANT))
     {
-        *piProjSys = PAN_PROJ_AE;
+        *piProjSys       = PAN_PROJ_AE;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_LONGITUDE_OF_CENTER, 0.0 );
-        padfPrjParams[0] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_CENTER, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_LONGITUDE_OF_CENTER, 0.0);
+        padfPrjParams[0] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_CENTER, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_GNOMONIC) )
+    else if (EQUAL(pszProjection, SRS_PT_GNOMONIC))
     {
-        *piProjSys = PAN_PROJ_GNOMON;
+        *piProjSys       = PAN_PROJ_GNOMON;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[2] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[2] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_MOLLWEIDE) )
+    else if (EQUAL(pszProjection, SRS_PT_MOLLWEIDE))
     {
-        *piProjSys = PAN_PROJ_MOLL;
+        *piProjSys       = PAN_PROJ_MOLL;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA) )
+    else if (EQUAL(pszProjection, SRS_PT_LAMBERT_AZIMUTHAL_EQUAL_AREA))
     {
-        *piProjSys = PAN_PROJ_LAEA;
+        *piProjSys       = PAN_PROJ_LAEA;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[0] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[0] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_EQUIRECTANGULAR) )
+    else if (EQUAL(pszProjection, SRS_PT_EQUIRECTANGULAR))
     {
-        *piProjSys = PAN_PROJ_EQC;
+        *piProjSys       = PAN_PROJ_EQC;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[0] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_ORIGIN, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[0] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_ORIGIN, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_CYLINDRICAL_EQUAL_AREA) )
+    else if (EQUAL(pszProjection, SRS_PT_CYLINDRICAL_EQUAL_AREA))
     {
-        *piProjSys = PAN_PROJ_CEA;
+        *piProjSys       = PAN_PROJ_CEA;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[2] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_STANDARD_PARALLEL_1, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[2] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_STANDARD_PARALLEL_1, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
-    else if( EQUAL(pszProjection, SRS_PT_IMW_POLYCONIC) )
+    else if (EQUAL(pszProjection, SRS_PT_IMW_POLYCONIC))
     {
-        *piProjSys = PAN_PROJ_IMWP;
+        *piProjSys       = PAN_PROJ_IMWP;
         padfPrjParams[3] =
-            TO_RADIANS * GetNormProjParm( SRS_PP_CENTRAL_MERIDIAN, 0.0 );
-        padfPrjParams[0] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_1ST_POINT, 0.0 );
-        padfPrjParams[1] = 
-            TO_RADIANS * GetNormProjParm( SRS_PP_LATITUDE_OF_2ND_POINT, 0.0 );
-        padfPrjParams[5] = GetNormProjParm( SRS_PP_FALSE_EASTING, 0.0 );
-        padfPrjParams[6] = GetNormProjParm( SRS_PP_FALSE_NORTHING, 0.0 );
+            TO_RADIANS * GetNormProjParm(SRS_PP_CENTRAL_MERIDIAN, 0.0);
+        padfPrjParams[0] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_1ST_POINT, 0.0);
+        padfPrjParams[1] =
+            TO_RADIANS * GetNormProjParm(SRS_PP_LATITUDE_OF_2ND_POINT, 0.0);
+        padfPrjParams[5] = GetNormProjParm(SRS_PP_FALSE_EASTING, 0.0);
+        padfPrjParams[6] = GetNormProjParm(SRS_PP_FALSE_NORTHING, 0.0);
     }
 
     // Projection unsupported by "Panorama" GIS
     else
     {
-        CPLDebug( "OSR_Panorama",
-                  "Projection \"%s\" unsupported by \"Panorama\" GIS. "
-                  "Geographic system will be used.", pszProjection );
+        CPLDebug("OSR_Panorama",
+                 "Projection \"%s\" unsupported by \"Panorama\" GIS. "
+                 "Geographic system will be used.", pszProjection);
         *piProjSys = PAN_PROJ_NONE;
     }
- 
+
 /* -------------------------------------------------------------------- */
 /*      Translate the datum.                                            */
 /* -------------------------------------------------------------------- */
-    const char  *pszDatum = GetAttrValue( "DATUM" );
+    const char *pszDatum = GetAttrValue("DATUM");
 
-    if ( pszDatum == NULL )
+    if (pszDatum == NULL)
     {
-        *piDatum = PAN_DATUM_NONE;
+        *piDatum  = PAN_DATUM_NONE;
         *piEllips = PAN_ELLIPSOID_NONE;
     }
-    else if ( EQUAL( pszDatum, "Pulkovo_1942" ) )
+    else if (EQUAL(pszDatum, "Pulkovo_1942"))
     {
-        *piDatum = PAN_DATUM_PULKOVO42;
+        *piDatum  = PAN_DATUM_PULKOVO42;
         *piEllips = PAN_ELLIPSOID_KRASSOVSKY;
     }
-    else if( EQUAL( pszDatum, SRS_DN_WGS84 ) )
+    else if (EQUAL(pszDatum, SRS_DN_WGS84))
     {
-        *piDatum = PAN_DATUM_WGS84;
+        *piDatum  = PAN_DATUM_WGS84;
         *piEllips = PAN_ELLIPSOID_WGS84;
     }
 
     // If not found well known datum, translate ellipsoid
     else
     {
-        double      dfSemiMajor = GetSemiMajor();
-        double      dfInvFlattening = GetInvFlattening();
-        size_t      i;
+        double dfSemiMajor     = GetSemiMajor();
+        double dfInvFlattening = GetInvFlattening();
+        size_t i;
 
 #ifdef DEBUG
-        CPLDebug( "OSR_Panorama",
-                  "Datum \"%s\" unsupported by \"Panorama\" GIS. "
-                  "Trying to translate an ellipsoid definition.", pszDatum );
+        CPLDebug("OSR_Panorama",
+                 "Datum \"%s\" unsupported by \"Panorama\" GIS. "
+                 "Trying to translate an ellipsoid definition.", pszDatum);
 #endif
-       
-        for ( i = 0; i < NUMBER_OF_ELLIPSOIDS; i++ )
-        {
-            if ( aoEllips[i] )
-            {
-                double  dfSM = 0.0;
-                double  dfIF = 1.0;
 
-                if ( OSRGetEllipsoidInfo( aoEllips[i], NULL,
-                                          &dfSM, &dfIF ) == OGRERR_NONE
-                     && CPLIsEqual(dfSemiMajor, dfSM)
-                     && CPLIsEqual(dfInvFlattening, dfIF) )
+        for (i = 0; i < NUMBER_OF_ELLIPSOIDS; i++)
+        {
+            if (aoEllips[i])
+            {
+                double dfSM = 0.0;
+                double dfIF = 1.0;
+
+                if (OSRGetEllipsoidInfo(aoEllips[i], NULL,
+                                        &dfSM, &dfIF) == OGRERR_NONE
+                    && CPLIsEqual(dfSemiMajor, dfSM)
+                    && CPLIsEqual(dfInvFlattening, dfIF))
                 {
                     *piEllips = i;
                     break;
@@ -795,18 +797,17 @@ OGRErr OGRSpatialReference::exportToPanorama( long *piProjSys, long *piDatum,
             }
         }
 
-        if ( i == NUMBER_OF_ELLIPSOIDS )    // Didn't found matches.
+        if (i == NUMBER_OF_ELLIPSOIDS)      // Didn't found matches.
         {
 #ifdef DEBUG
-            CPLDebug( "OSR_Panorama",
-                      "Ellipsoid \"%s\" unsupported by \"Panorama\" GIS.",
-                      pszDatum );
+            CPLDebug("OSR_Panorama",
+                     "Ellipsoid \"%s\" unsupported by \"Panorama\" GIS.",
+                     pszDatum);
 #endif
-            *piDatum = PAN_DATUM_NONE;
+            *piDatum  = PAN_DATUM_NONE;
             *piEllips = PAN_ELLIPSOID_NONE;
         }
     }
 
     return OGRERR_NONE;
 }
-

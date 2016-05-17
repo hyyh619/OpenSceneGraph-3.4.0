@@ -73,16 +73,17 @@ static void* OGRExpatRealloc(void *ptr, size_t size)
 /*                  OGRExpatUnknownEncodingHandler()                    */
 /************************************************************************/
 
-static int OGRExpatUnknownEncodingHandler (void *unused_encodingHandlerData,
-                                           const XML_Char *name,
-                                           XML_Encoding *info)
+static int OGRExpatUnknownEncodingHandler(void *unused_encodingHandlerData,
+                                          const XML_Char *name,
+                                          XML_Encoding *info)
 {
     if (!(EQUAL(name, "WINDOWS-1252")))
         return XML_STATUS_ERROR;
 
     /* Map CP1252 bytes to Unicode values */
     int i;
-    for(i=0;i<0x80;i++)
+
+    for (i = 0; i < 0x80; i++)
         info->map[i] = i;
 
     info->map[0x80] = 0x20AC;
@@ -118,7 +119,7 @@ static int OGRExpatUnknownEncodingHandler (void *unused_encodingHandlerData,
     info->map[0x9E] = 0x017E;
     info->map[0x9F] = 0x0178;
 
-    for(i=0xA0;i<=0xFF;i++)
+    for (i = 0xA0; i <= 0xFF; i++)
         info->map[i] = i;
 
     info->data    = NULL;
@@ -135,9 +136,10 @@ static int OGRExpatUnknownEncodingHandler (void *unused_encodingHandlerData,
 XML_Parser OGRCreateExpatXMLParser()
 {
     XML_Memory_Handling_Suite memsuite;
-    memsuite.malloc_fcn = OGRExpatMalloc;
+
+    memsuite.malloc_fcn  = OGRExpatMalloc;
     memsuite.realloc_fcn = OGRExpatRealloc;
-    memsuite.free_fcn = free;
+    memsuite.free_fcn    = free;
     XML_Parser hParser = XML_ParserCreate_MM(NULL, &memsuite, NULL);
 
     XML_SetUnknownEncodingHandler(hParser,

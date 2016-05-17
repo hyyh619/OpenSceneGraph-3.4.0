@@ -6,14 +6,14 @@
 #include <time.h>
 
 int
-main ()
+main()
 {
-if ((struct tm *) 0)
-return 0;
-  ;
-  return 0;
-}
+    if ((struct tm*) 0)
+        return 0;
 
+    ;
+    return 0;
+}
 #endif
 
 #ifdef HAVE_FCNTL_O_NONBLOCK
@@ -40,13 +40,15 @@ return 0;
 #endif
 
 int
-main ()
+main()
 {
-      /* O_NONBLOCK source test */
-      int flags = 0;
-      if(0 != fcntl(0, F_SETFL, flags | O_NONBLOCK))
-          return 1;
-      return 0;
+    /* O_NONBLOCK source test */
+    int flags = 0;
+
+    if (0 != fcntl(0, F_SETFL, flags | O_NONBLOCK))
+        return 1;
+
+    return 0;
 }
 #endif
 
@@ -54,21 +56,21 @@ main ()
 #include <sys/types.h>
 #include <netdb.h>
 int
-main ()
+main()
 {
+    char                *address;
+    int                 length;
+    int                 type;
+    struct hostent      h;
+    struct hostent_data hdata;
+    int                 rc;
 
-char * address;
-int length;
-int type;
-struct hostent h;
-struct hostent_data hdata;
-int rc;
 #ifndef gethostbyaddr_r
-  (void)gethostbyaddr_r;
+    (void)gethostbyaddr_r;
 #endif
-rc = gethostbyaddr_r(address, length, type, &h, &hdata);
-  ;
-  return 0;
+    rc = gethostbyaddr_r(address, length, type, &h, &hdata);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYADDR_R_5_REENTRANT
@@ -76,45 +78,44 @@ rc = gethostbyaddr_r(address, length, type, &h, &hdata);
 #include <sys/types.h>
 #include <netdb.h>
 int
-main ()
+main()
 {
+    char                *address;
+    int                 length; q
+    int                 type;
+    struct hostent      h;
+    struct hostent_data hdata;
+    int                 rc;
 
-char * address;
-int length;q
-int type;
-struct hostent h;
-struct hostent_data hdata;
-int rc;
 #ifndef gethostbyaddr_r
-  (void)gethostbyaddr_r;
+    (void)gethostbyaddr_r;
 #endif
-rc = gethostbyaddr_r(address, length, type, &h, &hdata);
-  ;
-  return 0;
+    rc = gethostbyaddr_r(address, length, type, &h, &hdata);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYADDR_R_7
 #include <sys/types.h>
 #include <netdb.h>
 int
-main ()
+main()
 {
-
-char * address;
-int length;
-int type;
-struct hostent h;
-char buffer[8192];
-int h_errnop;
-struct hostent * hp;
+    char           *address;
+    int            length;
+    int            type;
+    struct hostent h;
+    char           buffer[8192];
+    int            h_errnop;
+    struct hostent *hp;
 
 #ifndef gethostbyaddr_r
-  (void)gethostbyaddr_r;
+    (void)gethostbyaddr_r;
 #endif
-hp = gethostbyaddr_r(address, length, type, &h,
-                     buffer, 8192, &h_errnop);
-  ;
-  return 0;
+    hp = gethostbyaddr_r(address, length, type, &h,
+                         buffer, 8192, &h_errnop);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYADDR_R_7_REENTRANT
@@ -122,49 +123,47 @@ hp = gethostbyaddr_r(address, length, type, &h,
 #include <sys/types.h>
 #include <netdb.h>
 int
-main ()
+main()
 {
-
-char * address;
-int length;
-int type;
-struct hostent h;
-char buffer[8192];
-int h_errnop;
-struct hostent * hp;
+    char           *address;
+    int            length;
+    int            type;
+    struct hostent h;
+    char           buffer[8192];
+    int            h_errnop;
+    struct hostent *hp;
 
 #ifndef gethostbyaddr_r
-  (void)gethostbyaddr_r;
+    (void)gethostbyaddr_r;
 #endif
-hp = gethostbyaddr_r(address, length, type, &h,
-                     buffer, 8192, &h_errnop);
-  ;
-  return 0;
+    hp = gethostbyaddr_r(address, length, type, &h,
+                         buffer, 8192, &h_errnop);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYADDR_R_8
 #include <sys/types.h>
 #include <netdb.h>
 int
-main ()
+main()
 {
-
-char * address;
-int length;
-int type;
-struct hostent h;
-char buffer[8192];
-int h_errnop;
-struct hostent * hp;
-int rc;
+    char           *address;
+    int            length;
+    int            type;
+    struct hostent h;
+    char           buffer[8192];
+    int            h_errnop;
+    struct hostent *hp;
+    int            rc;
 
 #ifndef gethostbyaddr_r
-  (void)gethostbyaddr_r;
+    (void)gethostbyaddr_r;
 #endif
-rc = gethostbyaddr_r(address, length, type, &h,
-                     buffer, 8192, &hp, &h_errnop);
-  ;
-  return 0;
+    rc = gethostbyaddr_r(address, length, type, &h,
+                         buffer, 8192, &hp, &h_errnop);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYADDR_R_8_REENTRANT
@@ -172,25 +171,24 @@ rc = gethostbyaddr_r(address, length, type, &h,
 #include <sys/types.h>
 #include <netdb.h>
 int
-main ()
+main()
 {
-
-char * address;
-int length;
-int type;
-struct hostent h;
-char buffer[8192];
-int h_errnop;
-struct hostent * hp;
-int rc;
+    char           *address;
+    int            length;
+    int            type;
+    struct hostent h;
+    char           buffer[8192];
+    int            h_errnop;
+    struct hostent *hp;
+    int            rc;
 
 #ifndef gethostbyaddr_r
-  (void)gethostbyaddr_r;
+    (void)gethostbyaddr_r;
 #endif
-rc = gethostbyaddr_r(address, length, type, &h,
-                     buffer, 8192, &hp, &h_errnop);
-  ;
-  return 0;
+    rc = gethostbyaddr_r(address, length, type, &h,
+                         buffer, 8192, &hp, &h_errnop);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYNAME_R_3
@@ -198,19 +196,19 @@ rc = gethostbyaddr_r(address, length, type, &h,
 #include <sys/types.h>
 #include <netdb.h>
 #undef NULL
-#define NULL (void *)0
+#define NULL (void*)0
 
 int
-main ()
+main()
 {
+    struct hostent_data data;
 
-struct hostent_data data;
 #ifndef gethostbyname_r
-  (void)gethostbyname_r;
+    (void)gethostbyname_r;
 #endif
-gethostbyname_r(NULL, NULL, NULL);
-  ;
-  return 0;
+    gethostbyname_r(NULL, NULL, NULL);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYNAME_R_3_REENTRANT
@@ -219,19 +217,19 @@ gethostbyname_r(NULL, NULL, NULL);
 #include <sys/types.h>
 #include <netdb.h>
 #undef NULL
-#define NULL (void *)0
+#define NULL (void*)0
 
 int
-main ()
+main()
 {
+    struct hostent_data data;
 
-struct hostent_data data;
 #ifndef gethostbyname_r
-  (void)gethostbyname_r;
+    (void)gethostbyname_r;
 #endif
-gethostbyname_r(NULL, NULL, NULL);
-  ;
-  return 0;
+    gethostbyname_r(NULL, NULL, NULL);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYNAME_R_5
@@ -239,17 +237,17 @@ gethostbyname_r(NULL, NULL, NULL);
 #include <netinet/in.h>
 #include <netdb.h>
 #undef NULL
-#define NULL (void *)0
+#define NULL (void*)0
 
 int
-main ()
+main()
 {
 #ifndef gethostbyname_r
-  (void)gethostbyname_r;
+    (void)gethostbyname_r;
 #endif
-gethostbyname_r(NULL, NULL, NULL, 0, NULL);
-  ;
-  return 0;
+    gethostbyname_r(NULL, NULL, NULL, 0, NULL);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYNAME_R_5_REENTRANT
@@ -257,36 +255,34 @@ gethostbyname_r(NULL, NULL, NULL, 0, NULL);
 #include <sys/types.h>
 #include <netdb.h>
 #undef NULL
-#define NULL (void *)0
+#define NULL (void*)0
 
 int
-main ()
+main()
 {
-
 #ifndef gethostbyname_r
-  (void)gethostbyname_r;
+    (void)gethostbyname_r;
 #endif
-gethostbyname_r(NULL, NULL, NULL, 0, NULL);
-  ;
-  return 0;
+    gethostbyname_r(NULL, NULL, NULL, 0, NULL);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYNAME_R_6
 #include <sys/types.h>
 #include <netdb.h>
 #undef NULL
-#define NULL (void *)0
+#define NULL (void*)0
 
 int
-main ()
+main()
 {
-
 #ifndef gethostbyname_r
-  (void)gethostbyname_r;
+    (void)gethostbyname_r;
 #endif
-gethostbyname_r(NULL, NULL, NULL, 0, NULL, NULL);
-  ;
-  return 0;
+    gethostbyname_r(NULL, NULL, NULL, 0, NULL, NULL);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETHOSTBYNAME_R_6_REENTRANT
@@ -294,18 +290,17 @@ gethostbyname_r(NULL, NULL, NULL, 0, NULL, NULL);
 #include <sys/types.h>
 #include <netdb.h>
 #undef NULL
-#define NULL (void *)0
+#define NULL (void*)0
 
 int
-main ()
+main()
 {
-
 #ifndef gethostbyname_r
-  (void)gethostbyname_r;
+    (void)gethostbyname_r;
 #endif
-gethostbyname_r(NULL, NULL, NULL, 0, NULL, NULL);
-  ;
-  return 0;
+    gethostbyname_r(NULL, NULL, NULL, 0, NULL, NULL);
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_SOCKLEN_T
@@ -316,14 +311,16 @@ gethostbyname_r(NULL, NULL, NULL, 0, NULL, NULL);
 #include <sys/socket.h>
 #endif
 int
-main ()
+main()
 {
-if ((socklen_t *) 0)
-  return 0;
-if (sizeof (socklen_t))
-  return 0;
-  ;
-  return 0;
+    if ((socklen_t*) 0)
+        return 0;
+
+    if (sizeof(socklen_t))
+        return 0;
+
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_IN_ADDR_T
@@ -332,14 +329,16 @@ if (sizeof (socklen_t))
 #include <arpa/inet.h>
 
 int
-main ()
+main()
 {
-if ((in_addr_t *) 0)
-  return 0;
-if (sizeof (in_addr_t))
-  return 0;
-  ;
-  return 0;
+    if ((in_addr_t*) 0)
+        return 0;
+
+    if (sizeof(in_addr_t))
+        return 0;
+
+    ;
+    return 0;
 }
 #endif
 
@@ -351,12 +350,13 @@ if (sizeof (in_addr_t))
 #include <stdbool.h>
 #endif
 int
-main ()
+main()
 {
-if (sizeof (bool *) )
-  return 0;
-  ;
-  return 0;
+    if (sizeof(bool*))
+        return 0;
+
+    ;
+    return 0;
 }
 #endif
 
@@ -365,7 +365,10 @@ if (sizeof (bool *) )
 #include <stdarg.h>
 #include <string.h>
 #include <float.h>
-int main() { return 0; }
+int main()
+{
+    return 0;
+}
 #endif
 #ifdef RETSIGTYPE_TEST
 #include <sys/types.h>
@@ -376,13 +379,13 @@ int main() { return 0; }
 #ifdef __cplusplus
 extern "C" void (*signal (int, void (*)(int)))(int);
 #else
-void (*signal ()) ();
+void (*signal ())();
 #endif
 
 int
-main ()
+main()
 {
-  return 0;
+    return 0;
 }
 #endif
 #ifdef HAVE_INET_NTOA_R_DECL
@@ -393,10 +396,10 @@ typedef void (*func_type)();
 int main()
 {
 #ifndef inet_ntoa_r
-  func_type func;
-  func = (func_type)inet_ntoa_r;
+    func_type func;
+    func = (func_type)inet_ntoa_r;
 #endif
-  return 0;
+    return 0;
 }
 #endif
 #ifdef HAVE_INET_NTOA_R_DECL_REENTRANT
@@ -408,10 +411,10 @@ typedef void (*func_type)();
 int main()
 {
 #ifndef inet_ntoa_r
-  func_type func;
-  func = (func_type)&inet_ntoa_r;
+    func_type func;
+    func = (func_type) & inet_ntoa_r;
 #endif
-  return 0;
+    return 0;
 }
 #endif
 #ifdef HAVE_GETADDRINFO
@@ -419,20 +422,23 @@ int main()
 #include <sys/types.h>
 #include <sys/socket.h>
 
-int main(void) {
+int main(void)
+{
     struct addrinfo hints, *ai;
-    int error;
+    int             error;
 
     memset(&hints, 0, sizeof(hints));
-    hints.ai_family = AF_UNSPEC;
+    hints.ai_family   = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
 #ifndef getaddrinfo
     (void)getaddrinfo;
 #endif
     error = getaddrinfo("127.0.0.1", "8080", &hints, &ai);
-    if (error) {
+    if (error)
+    {
         return 1;
     }
+
     return 0;
 }
 #endif
@@ -442,15 +448,18 @@ int main(void) {
 #endif
 #define _FILE_OFFSET_BITS 64
 #include <sys/types.h>
- /* Check that off_t can represent 2**63 - 1 correctly.
-    We can't simply define LARGE_OFF_T to be 9223372036854775807,
-    since some C++ compilers masquerading as C compilers
-    incorrectly reject 9223372036854775807.  */
+/* Check that off_t can represent 2**63 - 1 correctly.
+   We can't simply define LARGE_OFF_T to be 9223372036854775807,
+   since some C++ compilers masquerading as C compilers
+   incorrectly reject 9223372036854775807.  */
 #define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
-  int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
-                       && LARGE_OFF_T % 2147483647 == 1)
-                      ? 1 : -1];
-int main () { ; return 0; }
+int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
+                    && LARGE_OFF_T % 2147483647 == 1)
+                   ? 1 : -1];
+int main()
+{
+    ; return 0;
+}
 #endif
 #ifdef HAVE_IOCTLSOCKET
 /* includes start */
@@ -469,17 +478,15 @@ int main () { ; return 0; }
 #endif
 
 int
-main ()
+main()
 {
-
 /* ioctlsocket source code */
- int socket;
- unsigned long flags = ioctlsocket(socket, FIONBIO, &flags);
+    int           socket;
+    unsigned long flags = ioctlsocket(socket, FIONBIO, &flags);
 
-  ;
-  return 0;
+    ;
+    return 0;
 }
-
 #endif
 #ifdef HAVE_IOCTLSOCKET_CAMEL
 /* includes start */
@@ -498,14 +505,14 @@ main ()
 #endif
 
 int
-main ()
+main()
 {
-
 /* IoctlSocket source code */
-    if(0 != IoctlSocket(0, 0, 0))
-      return 1;
-  ;
-  return 0;
+    if (0 != IoctlSocket(0, 0, 0))
+        return 1;
+
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_IOCTLSOCKET_CAMEL_FIONBIO
@@ -525,15 +532,16 @@ main ()
 #endif
 
 int
-main ()
+main()
 {
-
 /* IoctlSocket source code */
-        long flags = 0;
-        if(0 != ioctlsocket(0, FIONBIO, &flags))
-          return 1;
-  ;
-  return 0;
+    long flags = 0;
+
+    if (0 != ioctlsocket(0, FIONBIO, &flags))
+        return 1;
+
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_IOCTLSOCKET_FIONBIO
@@ -553,15 +561,15 @@ main ()
 #endif
 
 int
-main ()
+main()
 {
+    int flags = 0;
 
-        int flags = 0;
-        if(0 != ioctlsocket(0, FIONBIO, &flags))
-          return 1;
+    if (0 != ioctlsocket(0, FIONBIO, &flags))
+        return 1;
 
-  ;
-  return 0;
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_IOCTL_FIONBIO
@@ -584,15 +592,15 @@ main ()
 #endif
 
 int
-main ()
+main()
 {
+    int flags = 0;
 
-        int flags = 0;
-        if(0 != ioctl(0, FIONBIO, &flags))
-          return 1;
+    if (0 != ioctl(0, FIONBIO, &flags))
+        return 1;
 
-  ;
-  return 0;
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_IOCTL_SIOCGIFADDR
@@ -616,14 +624,15 @@ main ()
 #include <net/if.h>
 
 int
-main ()
+main()
 {
-        struct ifreq ifr;
-        if(0 != ioctl(0, SIOCGIFADDR, &ifr))
-          return 1;
+    struct ifreq ifr;
 
-  ;
-  return 0;
+    if (0 != ioctl(0, SIOCGIFADDR, &ifr))
+        return 1;
+
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_SETSOCKOPT_SO_NONBLOCK
@@ -651,25 +660,29 @@ main ()
 /* includes end */
 
 int
-main ()
+main()
 {
-        if(0 != setsockopt(0, SOL_SOCKET, SO_NONBLOCK, 0, 0))
-          return 1;
-  ;
-  return 0;
+    if (0 != setsockopt(0, SOL_SOCKET, SO_NONBLOCK, 0, 0))
+        return 1;
+
+    ;
+    return 0;
 }
 #endif
 #ifdef HAVE_GLIBC_STRERROR_R
 #include <string.h>
 #include <errno.h>
 int
-main () {
-  char buffer[1024]; /* big enough to play with */
-  char *string =
-    strerror_r(EACCES, buffer, sizeof(buffer));
+main()
+{
+    char buffer[1024]; /* big enough to play with */
+    char *string =
+        strerror_r(EACCES, buffer, sizeof(buffer));
+
     /* this should've returned a string */
-    if(!string || !string[0])
-      return 99;
+    if (!string || !string[0])
+        return 99;
+
     return 0;
 }
 #endif
@@ -677,14 +690,17 @@ main () {
 #include <string.h>
 #include <errno.h>
 int
-main () {
-  char buffer[1024]; /* big enough to play with */
-  int error =
-    strerror_r(EACCES, buffer, sizeof(buffer));
+main()
+{
+    char buffer[1024]; /* big enough to play with */
+    int  error =
+        strerror_r(EACCES, buffer, sizeof(buffer));
+
     /* This should've returned zero, and written an error string in the
        buffer.*/
-    if(!buffer[0] || error)
-      return 99;
+    if (!buffer[0] || error)
+        return 99;
+
     return 0;
 }
 #endif

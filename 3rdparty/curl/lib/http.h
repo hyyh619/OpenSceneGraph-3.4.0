@@ -2,26 +2,26 @@
 #define __HTTP_H
 
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 #ifndef CURL_DISABLE_HTTP
 
 extern const struct Curl_handler Curl_handler_http;
@@ -34,9 +34,9 @@ bool Curl_compareheader(const char *headerline,  /* line to check */
                         const char *header,   /* header keyword _with_ colon */
                         const char *content); /* content string to find */
 
-char *Curl_checkheaders(struct SessionHandle *data, const char *thisheader);
+char* Curl_checkheaders(struct SessionHandle *data, const char *thisheader);
 
-char *Curl_copy_header_value(const char *h);
+char* Curl_copy_header_value(const char *h);
 
 
 /* ------------------------------------------------------------------------- */
@@ -45,27 +45,28 @@ char *Curl_copy_header_value(const char *h);
  * from repeated function invokes. Used so that the entire HTTP request can
  * be sent in one go.
  */
-struct Curl_send_buffer {
-  char *buffer;
-  size_t size_max;
-  size_t size_used;
+struct Curl_send_buffer
+{
+    char   *buffer;
+    size_t size_max;
+    size_t size_used;
 };
 typedef struct Curl_send_buffer Curl_send_buffer;
 
-Curl_send_buffer *Curl_add_buffer_init(void);
+Curl_send_buffer* Curl_add_buffer_init(void);
 CURLcode Curl_add_bufferf(Curl_send_buffer *in, const char *fmt, ...);
 CURLcode Curl_add_buffer(Curl_send_buffer *in, const void *inptr, size_t size);
 CURLcode Curl_add_buffer_send(Curl_send_buffer *in,
-                         struct connectdata *conn,
-                         long *bytes_written,
-                         size_t included_body_bytes,
-                         int socketindex);
+                              struct connectdata *conn,
+                              long *bytes_written,
+                              size_t included_body_bytes,
+                              int socketindex);
 
 
 CURLcode Curl_add_timecondition(struct SessionHandle *data,
                                 Curl_send_buffer *buf);
 CURLcode Curl_add_custom_headers(struct connectdata *conn,
-                                   Curl_send_buffer *req_buffer);
+                                 Curl_send_buffer *req_buffer);
 
 
 /* ftp can use this as well */
@@ -75,7 +76,7 @@ CURLcode Curl_proxyCONNECT(struct connectdata *conn,
 
 /* protocol-specific functions set up to be called by the main engine */
 CURLcode Curl_http(struct connectdata *conn, bool *done);
-CURLcode Curl_http_done(struct connectdata *, CURLcode, bool premature);
+CURLcode Curl_http_done(struct connectdata*, CURLcode, bool premature);
 CURLcode Curl_http_connect(struct connectdata *conn, bool *done);
 
 /* The following functions are defined in http_chunks.c */
@@ -96,7 +97,7 @@ int Curl_http_should_fail(struct connectdata *conn);
    selected to use no auth at all. Ie, we actively select no auth, as opposed
    to not having one selected. The other CURLAUTH_* defines are present in the
    public curl/curl.h header. */
-#define CURLAUTH_PICKNONE (1<<30) /* don't use auth */
+#define CURLAUTH_PICKNONE (1 << 30) /* don't use auth */
 
 /* MAX_INITIAL_POST_SIZE indicates the number of bytes that will make the POST
    data get included in the initial data chunk sent to the server. If the
@@ -109,49 +110,51 @@ int Curl_http_should_fail(struct connectdata *conn);
    always be afforded to send twice.
 
    It must not be greater than 64K to work on VMS.
-*/
+ */
 #ifndef MAX_INITIAL_POST_SIZE
-#define MAX_INITIAL_POST_SIZE (64*1024)
+#define MAX_INITIAL_POST_SIZE (64 * 1024)
 #endif
 
 #ifndef TINY_INITIAL_POST_SIZE
 #define TINY_INITIAL_POST_SIZE 1024
 #endif
-
 #endif /* CURL_DISABLE_HTTP */
 
 /****************************************************************************
  * HTTP unique setup
  ***************************************************************************/
-struct HTTP {
-  struct FormData *sendit;
-  curl_off_t postsize; /* off_t to handle large file sizes */
-  const char *postdata;
+struct HTTP
+{
+    struct FormData *sendit;
+    curl_off_t      postsize; /* off_t to handle large file sizes */
+    const char      *postdata;
 
-  const char *p_pragma;      /* Pragma: string */
-  const char *p_accept;      /* Accept: string */
-  curl_off_t readbytecount;
-  curl_off_t writebytecount;
+    const char *p_pragma;    /* Pragma: string */
+    const char *p_accept;    /* Accept: string */
+    curl_off_t readbytecount;
+    curl_off_t writebytecount;
 
-  /* For FORM posting */
-  struct Form form;
+    /* For FORM posting */
+    struct Form form;
 
-  struct back {
-    curl_read_callback fread_func; /* backup storage for fread pointer */
-    void *fread_in;           /* backup storage for fread_in pointer */
-    const char *postdata;
-    curl_off_t postsize;
-  } backup;
+    struct back
+    {
+        curl_read_callback fread_func; /* backup storage for fread pointer */
+        void               *fread_in; /* backup storage for fread_in pointer */
+        const char         *postdata;
+        curl_off_t         postsize;
+    } backup;
 
-  enum {
-    HTTPSEND_NADA,    /* init */
-    HTTPSEND_REQUEST, /* sending a request */
-    HTTPSEND_BODY,    /* sending body */
-    HTTPSEND_LAST     /* never use this */
-  } sending;
+    enum
+    {
+        HTTPSEND_NADA, /* init */
+        HTTPSEND_REQUEST, /* sending a request */
+        HTTPSEND_BODY, /* sending body */
+        HTTPSEND_LAST /* never use this */
+    } sending;
 
-  void *send_buffer; /* used if the request couldn't be sent in one chunk,
-                        points to an allocated send_buffer struct */
+    void *send_buffer; /* used if the request couldn't be sent in one chunk,
+                          points to an allocated send_buffer struct */
 };
 
 CURLcode Curl_http_readwrite_headers(struct SessionHandle *data,

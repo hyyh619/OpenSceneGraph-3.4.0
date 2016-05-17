@@ -35,7 +35,7 @@
 
 /************************************************************************/
 /* ==================================================================== */
-/*				RawDataset				*/
+/*                              RawDataset                              */
 /* ==================================================================== */
 /************************************************************************/
 
@@ -46,16 +46,15 @@ class RawRasterBand;
  */
 class CPL_DLL RawDataset : public GDALPamDataset
 {
-    friend class RawRasterBand;
+friend class RawRasterBand;
 
-  protected:
-    virtual CPLErr      IRasterIO( GDALRWFlag, int, int, int, int,
-                                   void *, int, int, GDALDataType,
-                                   int, int *, int, int, int );
-  public:
-                 RawDataset();
-                 ~RawDataset() = 0;
-
+protected:
+virtual CPLErr IRasterIO(GDALRWFlag, int, int, int, int,
+                         void*, int, int, GDALDataType,
+                         int, int*, int, int, int);
+public:
+RawDataset();
+~RawDataset() = 0;
 };
 
 /************************************************************************/
@@ -72,90 +71,114 @@ class CPL_DLL RawDataset : public GDALPamDataset
 class CPL_DLL RawRasterBand : public GDALPamRasterBand
 {
 protected:
-    friend class RawDataset;
+friend class RawDataset;
 
-    FILE       *fpRaw;
-    VSILFILE   *fpRawL;
-    int         bIsVSIL;
+FILE     *fpRaw;
+VSILFILE *fpRawL;
+int      bIsVSIL;
 
-    vsi_l_offset nImgOffset;
-    int		nPixelOffset;
-    int		nLineOffset;
-    int         nLineSize;
-    int		bNativeOrder;
+vsi_l_offset nImgOffset;
+int          nPixelOffset;
+int          nLineOffset;
+int          nLineSize;
+int          bNativeOrder;
 
-    int		nLoadedScanline;
-    void	*pLineBuffer;
-    void        *pLineStart;
-    int         bDirty;
+int  nLoadedScanline;
+void *pLineBuffer;
+void *pLineStart;
+int  bDirty;
 
-    GDALColorTable *poCT;
-    GDALColorInterp eInterp;
+GDALColorTable  *poCT;
+GDALColorInterp eInterp;
 
-    char           **papszCategoryNames;
-    
-    int         bOwnsFP;
+char **papszCategoryNames;
 
-    int         Seek( vsi_l_offset, int );
-    size_t      Read( void *, size_t, size_t );
-    size_t      Write( void *, size_t, size_t );
+int bOwnsFP;
 
-    CPLErr      AccessBlock( vsi_l_offset nBlockOff, int nBlockSize,
-                             void * pData );
-    int         IsLineLoaded( int nLineOff, int nLines );
-    void        Initialize();
+int    Seek(vsi_l_offset, int);
+size_t Read(void*, size_t, size_t);
+size_t Write(void*, size_t, size_t);
 
-    virtual CPLErr  IRasterIO( GDALRWFlag, int, int, int, int,
-                              void *, int, int, GDALDataType,
-                              int, int );
+CPLErr      AccessBlock(vsi_l_offset nBlockOff, int nBlockSize,
+                        void *pData);
+int         IsLineLoaded(int nLineOff, int nLines);
+void        Initialize();
+
+virtual CPLErr IRasterIO(GDALRWFlag, int, int, int, int,
+                         void*, int, int, GDALDataType,
+                         int, int);
 
 public:
 
-                 RawRasterBand( GDALDataset *poDS, int nBand, void * fpRaw,
-                                vsi_l_offset nImgOffset, int nPixelOffset,
-                                int nLineOffset,
-                                GDALDataType eDataType, int bNativeOrder,
-                                int bIsVSIL = FALSE, int bOwnsFP = FALSE );
+RawRasterBand(GDALDataset *poDS, int nBand, void *fpRaw,
+              vsi_l_offset nImgOffset, int nPixelOffset,
+              int nLineOffset,
+              GDALDataType eDataType, int bNativeOrder,
+              int bIsVSIL = FALSE, int bOwnsFP = FALSE);
 
-                 RawRasterBand( void * fpRaw,
-                                vsi_l_offset nImgOffset, int nPixelOffset,
-                                int nLineOffset,
-                                GDALDataType eDataType, int bNativeOrder,
-                                int nXSize, int nYSize, int bIsVSIL = FALSE, int bOwnsFP = FALSE );
+RawRasterBand(void *fpRaw,
+              vsi_l_offset nImgOffset, int nPixelOffset,
+              int nLineOffset,
+              GDALDataType eDataType, int bNativeOrder,
+              int nXSize, int nYSize, int bIsVSIL = FALSE, int bOwnsFP = FALSE);
 
-                 ~RawRasterBand() /* = 0 */ ;
+~RawRasterBand() /* = 0 */;
 
-    // should override RasterIO eventually.
-    
-    virtual CPLErr  IReadBlock( int, int, void * );
-    virtual CPLErr  IWriteBlock( int, int, void * );
+// should override RasterIO eventually.
 
-    virtual GDALColorTable *GetColorTable();
-    virtual GDALColorInterp GetColorInterpretation();
-    virtual CPLErr SetColorTable( GDALColorTable * ); 
-    virtual CPLErr SetColorInterpretation( GDALColorInterp );
+virtual CPLErr  IReadBlock(int, int, void*);
+virtual CPLErr  IWriteBlock(int, int, void*);
 
-    virtual char **GetCategoryNames();
-    virtual CPLErr SetCategoryNames( char ** );
+virtual GDALColorTable* GetColorTable();
+virtual GDALColorInterp GetColorInterpretation();
+virtual CPLErr SetColorTable(GDALColorTable*);
+virtual CPLErr SetColorInterpretation(GDALColorInterp);
 
-    virtual CPLErr  FlushCache();
+virtual char** GetCategoryNames();
+virtual CPLErr SetCategoryNames(char**);
 
-    CPLErr          AccessLine( int iLine );
+virtual CPLErr  FlushCache();
 
-    void            SetAccess( GDALAccess eAccess );
-    
-    // this is deprecated.
-    void	 StoreNoDataValue( double );
+CPLErr          AccessLine(int iLine);
 
-    // Query methods for internal data. 
-    vsi_l_offset GetImgOffset() { return nImgOffset; }
-    int          GetPixelOffset() { return nPixelOffset; }
-    int          GetLineOffset() { return nLineOffset; }
-    int          GetNativeOrder() { return bNativeOrder; }
-    int          GetIsVSIL() { return bIsVSIL; }
-    FILE        *GetFP() { return (bIsVSIL) ? (FILE*)fpRawL : fpRaw; }
-    VSILFILE    *GetFPL() { CPLAssert(bIsVSIL); return fpRawL; }
-    int          GetOwnsFP() { return bOwnsFP; }
+void            SetAccess(GDALAccess eAccess);
+
+// this is deprecated.
+void         StoreNoDataValue(double);
+
+// Query methods for internal data.
+vsi_l_offset GetImgOffset()
+{
+    return nImgOffset;
+}
+int          GetPixelOffset()
+{
+    return nPixelOffset;
+}
+int          GetLineOffset()
+{
+    return nLineOffset;
+}
+int          GetNativeOrder()
+{
+    return bNativeOrder;
+}
+int          GetIsVSIL()
+{
+    return bIsVSIL;
+}
+FILE* GetFP()
+{
+    return (bIsVSIL) ? (FILE*)fpRawL : fpRaw;
+}
+VSILFILE* GetFPL()
+{
+    CPLAssert(bIsVSIL); return fpRawL;
+}
+int          GetOwnsFP()
+{
+    return bOwnsFP;
+}
 };
 
 #endif // GDAL_FRMTS_RAW_RAWDATASET_H_INCLUDED

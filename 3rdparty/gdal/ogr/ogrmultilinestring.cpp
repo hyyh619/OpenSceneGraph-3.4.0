@@ -37,16 +37,14 @@ CPL_CVSID("$Id: ogrmultilinestring.cpp 18913 2010-02-24 23:41:17Z rouault $");
 /************************************************************************/
 
 OGRMultiLineString::OGRMultiLineString()
-{
-}
+{}
 
 /************************************************************************/
 /*                        ~OGRMultiLineString()                         */
 /************************************************************************/
 
 OGRMultiLineString::~OGRMultiLineString()
-{
-}
+{}
 
 /************************************************************************/
 /*                          getGeometryType()                           */
@@ -55,7 +53,7 @@ OGRMultiLineString::~OGRMultiLineString()
 OGRwkbGeometryType OGRMultiLineString::getGeometryType() const
 
 {
-    if( getCoordinateDimension() == 3 )
+    if (getCoordinateDimension() == 3)
         return wkbMultiLineString25D;
     else
         return wkbMultiLineString;
@@ -65,7 +63,7 @@ OGRwkbGeometryType OGRMultiLineString::getGeometryType() const
 /*                          getGeometryName()                           */
 /************************************************************************/
 
-const char * OGRMultiLineString::getGeometryName() const
+const char* OGRMultiLineString::getGeometryName() const
 
 {
     return "MULTILINESTRING";
@@ -75,31 +73,31 @@ const char * OGRMultiLineString::getGeometryName() const
 /*                        addGeometryDirectly()                         */
 /************************************************************************/
 
-OGRErr OGRMultiLineString::addGeometryDirectly( OGRGeometry * poNewGeom )
+OGRErr OGRMultiLineString::addGeometryDirectly(OGRGeometry *poNewGeom)
 
 {
-    if( poNewGeom->getGeometryType() != wkbLineString 
-        && poNewGeom->getGeometryType() != wkbLineString25D ) 
+    if (poNewGeom->getGeometryType() != wkbLineString
+        && poNewGeom->getGeometryType() != wkbLineString25D)
         return OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
 
-    return OGRGeometryCollection::addGeometryDirectly( poNewGeom );
+    return OGRGeometryCollection::addGeometryDirectly(poNewGeom);
 }
 
 /************************************************************************/
 /*                               clone()                                */
 /************************************************************************/
 
-OGRGeometry *OGRMultiLineString::clone() const
+OGRGeometry* OGRMultiLineString::clone() const
 
 {
-    OGRMultiLineString  *poNewGC;
+    OGRMultiLineString *poNewGC;
 
     poNewGC = new OGRMultiLineString;
-    poNewGC->assignSpatialReference( getSpatialReference() );
+    poNewGC->assignSpatialReference(getSpatialReference());
 
-    for( int i = 0; i < getNumGeometries(); i++ )
+    for (int i = 0; i < getNumGeometries(); i++)
     {
-        poNewGC->addGeometry( getGeometryRef(i) );
+        poNewGC->addGeometry(getGeometryRef(i));
     }
 
     return poNewGC;
@@ -112,12 +110,12 @@ OGRGeometry *OGRMultiLineString::clone() const
 /*      `MULTILINESTRING ((x y, x y, ...),(x y, ...),...)'.             */
 /************************************************************************/
 
-OGRErr OGRMultiLineString::importFromWkt( char ** ppszInput )
+OGRErr OGRMultiLineString::importFromWkt(char **ppszInput)
 
 {
-    char        szToken[OGR_WKT_TOKEN_MAX];
-    const char  *pszInput = *ppszInput;
-    OGRErr      eErr;
+    char       szToken[OGR_WKT_TOKEN_MAX];
+    const char *pszInput = *ppszInput;
+    OGRErr     eErr;
 
 /* -------------------------------------------------------------------- */
 /*      Clear existing rings.                                           */
@@ -127,21 +125,21 @@ OGRErr OGRMultiLineString::importFromWkt( char ** ppszInput )
 /* -------------------------------------------------------------------- */
 /*      Read and verify the ``MULTILINESTRING'' keyword token.          */
 /* -------------------------------------------------------------------- */
-    pszInput = OGRWktReadToken( pszInput, szToken );
+    pszInput = OGRWktReadToken(pszInput, szToken);
 
-    if( !EQUAL(szToken,getGeometryName()) )
+    if (!EQUAL(szToken, getGeometryName()))
         return OGRERR_CORRUPT_DATA;
 
 /* -------------------------------------------------------------------- */
 /*      Check for EMPTY ...                                             */
 /* -------------------------------------------------------------------- */
     const char *pszPreScan;
-    int bHasZ = FALSE, bHasM = FALSE;
+    int        bHasZ = FALSE, bHasM = FALSE;
 
-    pszPreScan = OGRWktReadToken( pszInput, szToken );
-    if( EQUAL(szToken,"EMPTY") )
+    pszPreScan = OGRWktReadToken(pszInput, szToken);
+    if (EQUAL(szToken, "EMPTY"))
     {
-        *ppszInput = (char *) pszPreScan;
+        *ppszInput = (char*) pszPreScan;
         empty();
         return OGRERR_NONE;
     }
@@ -149,15 +147,15 @@ OGRErr OGRMultiLineString::importFromWkt( char ** ppszInput )
 /* -------------------------------------------------------------------- */
 /*      Check for Z, M or ZM. Will ignore the Measure                   */
 /* -------------------------------------------------------------------- */
-    else if( EQUAL(szToken,"Z") )
+    else if (EQUAL(szToken, "Z"))
     {
         bHasZ = TRUE;
     }
-    else if( EQUAL(szToken,"M") )
+    else if (EQUAL(szToken, "M"))
     {
         bHasM = TRUE;
     }
-    else if( EQUAL(szToken,"ZM") )
+    else if (EQUAL(szToken, "ZM"))
     {
         bHasZ = TRUE;
         bHasM = TRUE;
@@ -165,11 +163,11 @@ OGRErr OGRMultiLineString::importFromWkt( char ** ppszInput )
 
     if (bHasZ || bHasM)
     {
-        pszInput = pszPreScan;
-        pszPreScan = OGRWktReadToken( pszInput, szToken );
-        if( EQUAL(szToken,"EMPTY") )
+        pszInput   = pszPreScan;
+        pszPreScan = OGRWktReadToken(pszInput, szToken);
+        if (EQUAL(szToken, "EMPTY"))
         {
-            *ppszInput = (char *) pszPreScan;
+            *ppszInput = (char*) pszPreScan;
             empty();
             /* FIXME?: In theory we should store the dimension and M presence */
             /* if we want to allow round-trip with ExportToWKT v1.2 */
@@ -177,26 +175,26 @@ OGRErr OGRMultiLineString::importFromWkt( char ** ppszInput )
         }
     }
 
-    if( !EQUAL(szToken,"(") )
+    if (!EQUAL(szToken, "("))
         return OGRERR_CORRUPT_DATA;
 
-    if ( !bHasZ && !bHasM )
+    if (!bHasZ && !bHasM)
     {
         /* Test for old-style MULTILINESTRING(EMPTY) */
-        pszPreScan = OGRWktReadToken( pszPreScan, szToken );
-        if( EQUAL(szToken,"EMPTY") )
+        pszPreScan = OGRWktReadToken(pszPreScan, szToken);
+        if (EQUAL(szToken, "EMPTY"))
         {
-            pszPreScan = OGRWktReadToken( pszPreScan, szToken );
+            pszPreScan = OGRWktReadToken(pszPreScan, szToken);
 
-            if( EQUAL(szToken,",") )
+            if (EQUAL(szToken, ","))
             {
                 /* This is OK according to SFSQL SPEC. */
             }
-            else if( !EQUAL(szToken,")") )
+            else if (!EQUAL(szToken, ")"))
                 return OGRERR_CORRUPT_DATA;
             else
             {
-                *ppszInput = (char *) pszPreScan;
+                *ppszInput = (char*) pszPreScan;
                 empty();
                 return OGRERR_NONE;
             }
@@ -204,7 +202,7 @@ OGRErr OGRMultiLineString::importFromWkt( char ** ppszInput )
     }
 
     /* Skip first '(' */
-    pszInput = OGRWktReadToken( pszInput, szToken );
+    pszInput = OGRWktReadToken(pszInput, szToken);
 
 /* ==================================================================== */
 /*      Read each line in turn.  Note that we try to reuse the same     */
@@ -213,71 +211,73 @@ OGRErr OGRMultiLineString::importFromWkt( char ** ppszInput )
 /* ==================================================================== */
     OGRRawPoint *paoPoints = NULL;
     int         nMaxPoints = 0;
-    double      *padfZ = NULL;
-    
+    double      *padfZ     = NULL;
+
     do
     {
-        int     nPoints = 0;
+        int nPoints = 0;
 
-        const char* pszNext = OGRWktReadToken( pszInput, szToken );
-        if (EQUAL(szToken,"EMPTY"))
+        const char *pszNext = OGRWktReadToken(pszInput, szToken);
+        if (EQUAL(szToken, "EMPTY"))
         {
-            eErr = addGeometryDirectly( new OGRLineString() );
-            if( eErr != OGRERR_NONE )
+            eErr = addGeometryDirectly(new OGRLineString());
+            if (eErr != OGRERR_NONE)
                 return eErr;
 
-            pszInput = OGRWktReadToken( pszNext, szToken );
-            if ( !EQUAL(szToken, ",") )
+            pszInput = OGRWktReadToken(pszNext, szToken);
+            if (!EQUAL(szToken, ","))
                 break;
 
             continue;
         }
+
 /* -------------------------------------------------------------------- */
 /*      Read points for one line from input.                            */
 /* -------------------------------------------------------------------- */
-        pszInput = OGRWktReadPoints( pszInput, &paoPoints, &padfZ, &nMaxPoints,
-                                     &nPoints );
+        pszInput = OGRWktReadPoints(pszInput, &paoPoints, &padfZ, &nMaxPoints,
+                                    &nPoints);
 
-        if( pszInput == NULL || nPoints == 0 )
+        if (pszInput == NULL || nPoints == 0)
         {
             eErr = OGRERR_CORRUPT_DATA;
             break;
         }
-        
+
 /* -------------------------------------------------------------------- */
 /*      Create the new line, and add to collection.                     */
 /* -------------------------------------------------------------------- */
-        OGRLineString   *poLine;
+        OGRLineString *poLine;
 
         poLine = new OGRLineString();
         /* Ignore Z array when we have a MULTILINESTRING M */
         if (bHasM && !bHasZ)
-            poLine->setPoints( nPoints, paoPoints, NULL );
+            poLine->setPoints(nPoints, paoPoints, NULL);
         else
-            poLine->setPoints( nPoints, paoPoints, padfZ );
+            poLine->setPoints(nPoints, paoPoints, padfZ);
 
-        eErr = addGeometryDirectly( poLine ); 
+        eErr = addGeometryDirectly(poLine);
 
 /* -------------------------------------------------------------------- */
 /*      Read the delimeter following the ring.                          */
 /* -------------------------------------------------------------------- */
-        
-        pszInput = OGRWktReadToken( pszInput, szToken );
-    } while( szToken[0] == ',' && eErr == OGRERR_NONE );
+
+        pszInput = OGRWktReadToken(pszInput, szToken);
+    }
+    while (szToken[0] == ',' && eErr == OGRERR_NONE);
 
 /* -------------------------------------------------------------------- */
 /*      freak if we don't get a closing bracket.                        */
 /* -------------------------------------------------------------------- */
-    CPLFree( paoPoints );
-    CPLFree( padfZ );
-   
-    if( eErr != OGRERR_NONE )
+    CPLFree(paoPoints);
+    CPLFree(padfZ);
+
+    if (eErr != OGRERR_NONE)
         return eErr;
 
-    if( szToken[0] != ')' )
+    if (szToken[0] != ')')
         return OGRERR_CORRUPT_DATA;
-    
-    *ppszInput = (char *) pszInput;
+
+    *ppszInput = (char*) pszInput;
     return OGRERR_NONE;
 }
 
@@ -288,29 +288,29 @@ OGRErr OGRMultiLineString::importFromWkt( char ** ppszInput )
 /*      equivelent.  This could be made alot more CPU efficient!        */
 /************************************************************************/
 
-OGRErr OGRMultiLineString::exportToWkt( char ** ppszDstText ) const
+OGRErr OGRMultiLineString::exportToWkt(char **ppszDstText) const
 
 {
-    char        **papszLines;
-    int         iLine, nCumulativeLength = 0, nValidLineStrings=0;
-    OGRErr      eErr;
+    char   **papszLines;
+    int    iLine, nCumulativeLength = 0, nValidLineStrings = 0;
+    OGRErr eErr;
 
 /* -------------------------------------------------------------------- */
 /*      Build a list of strings containing the stuff for each ring.     */
 /* -------------------------------------------------------------------- */
-    papszLines = (char **) CPLCalloc(sizeof(char *),getNumGeometries());
+    papszLines = (char**) CPLCalloc(sizeof(char*), getNumGeometries());
 
-    for( iLine = 0; iLine < getNumGeometries(); iLine++ )
+    for (iLine = 0; iLine < getNumGeometries(); iLine++)
     {
-        eErr = getGeometryRef(iLine)->exportToWkt( &(papszLines[iLine]) );
-        if( eErr != OGRERR_NONE )
+        eErr = getGeometryRef(iLine)->exportToWkt(&(papszLines[iLine]));
+        if (eErr != OGRERR_NONE)
             return eErr;
 
-        if( !EQUALN(papszLines[iLine],"LINESTRING (", 12) )
+        if (!EQUALN(papszLines[iLine], "LINESTRING (", 12))
         {
-            CPLDebug( "OGR", "OGRMultiLineString::exportToWkt() - skipping %s.",
-                      papszLines[iLine] );
-            CPLFree( papszLines[iLine] );
+            CPLDebug("OGR", "OGRMultiLineString::exportToWkt() - skipping %s.",
+                     papszLines[iLine]);
+            CPLFree(papszLines[iLine]);
             papszLines[iLine] = NULL;
             continue;
         }
@@ -318,13 +318,13 @@ OGRErr OGRMultiLineString::exportToWkt( char ** ppszDstText ) const
         nCumulativeLength += strlen(papszLines[iLine] + 11);
         nValidLineStrings++;
     }
-    
+
 /* -------------------------------------------------------------------- */
 /*      Return MULTILINESTRING EMPTY if we get no valid line string.    */
 /* -------------------------------------------------------------------- */
-    if( nValidLineStrings == 0 )
+    if (nValidLineStrings == 0)
     {
-        CPLFree( papszLines );
+        CPLFree(papszLines);
         *ppszDstText = CPLStrdup("MULTILINESTRING EMPTY");
         return OGRERR_NONE;
     }
@@ -333,9 +333,9 @@ OGRErr OGRMultiLineString::exportToWkt( char ** ppszDstText ) const
 /*      Allocate exactly the right amount of space for the              */
 /*      aggregated string.                                              */
 /* -------------------------------------------------------------------- */
-    *ppszDstText = (char *) VSIMalloc(nCumulativeLength+getNumGeometries()+20);
+    *ppszDstText = (char*) VSIMalloc(nCumulativeLength + getNumGeometries() + 20);
 
-    if( *ppszDstText == NULL )
+    if (*ppszDstText == NULL)
         return OGRERR_NOT_ENOUGH_MEMORY;
 
 /* -------------------------------------------------------------------- */
@@ -343,28 +343,29 @@ OGRErr OGRMultiLineString::exportToWkt( char ** ppszDstText ) const
 /* -------------------------------------------------------------------- */
     char *pszAppendPoint = *ppszDstText;
 
-    strcpy( pszAppendPoint, "MULTILINESTRING (" );
+    strcpy(pszAppendPoint, "MULTILINESTRING (");
 
     int bMustWriteComma = FALSE;
-    for( iLine = 0; iLine < getNumGeometries(); iLine++ )
-    {                                                           
-        if( papszLines[iLine] == NULL )
+
+    for (iLine = 0; iLine < getNumGeometries(); iLine++)
+    {
+        if (papszLines[iLine] == NULL)
             continue;
 
-        if( bMustWriteComma )
-            strcat( pszAppendPoint, "," );
+        if (bMustWriteComma)
+            strcat(pszAppendPoint, ",");
+
         bMustWriteComma = TRUE;
-        
-        strcat( pszAppendPoint, papszLines[iLine] + 11 );
+
+        strcat(pszAppendPoint, papszLines[iLine] + 11);
         pszAppendPoint += strlen(pszAppendPoint);
 
-        VSIFree( papszLines[iLine] );
+        VSIFree(papszLines[iLine]);
     }
 
-    strcat( pszAppendPoint, ")" );
+    strcat(pszAppendPoint, ")");
 
-    CPLFree( papszLines );
+    CPLFree(papszLines);
 
     return OGRERR_NONE;
 }
-

@@ -45,8 +45,8 @@ OGRLineString::OGRLineString()
 
 {
     nPointCount = 0;
-    paoPoints = NULL;
-    padfZ = NULL;
+    paoPoints   = NULL;
+    padfZ       = NULL;
 }
 
 /************************************************************************/
@@ -56,10 +56,11 @@ OGRLineString::OGRLineString()
 OGRLineString::~OGRLineString()
 
 {
-    if( paoPoints != NULL )
-        OGRFree( paoPoints );
-    if( padfZ != NULL )
-        OGRFree( padfZ );
+    if (paoPoints != NULL)
+        OGRFree(paoPoints);
+
+    if (padfZ != NULL)
+        OGRFree(padfZ);
 }
 
 /************************************************************************/
@@ -69,7 +70,7 @@ OGRLineString::~OGRLineString()
 OGRwkbGeometryType OGRLineString::getGeometryType() const
 
 {
-    if( getCoordinateDimension() == 3 )
+    if (getCoordinateDimension() == 3)
         return wkbLineString25D;
     else
         return wkbLineString;
@@ -89,7 +90,7 @@ void OGRLineString::flattenTo2D()
 /*                          getGeometryName()                           */
 /************************************************************************/
 
-const char * OGRLineString::getGeometryName() const
+const char* OGRLineString::getGeometryName() const
 
 {
     return "LINESTRING";
@@ -99,17 +100,17 @@ const char * OGRLineString::getGeometryName() const
 /*                               clone()                                */
 /************************************************************************/
 
-OGRGeometry *OGRLineString::clone() const
+OGRGeometry* OGRLineString::clone() const
 
 {
-    OGRLineString       *poNewLineString;
+    OGRLineString *poNewLineString;
 
     poNewLineString = new OGRLineString();
 
-    poNewLineString->assignSpatialReference( getSpatialReference() );
-    poNewLineString->setPoints( nPointCount, paoPoints, padfZ );
-    poNewLineString->setCoordinateDimension( getCoordinateDimension() );
-    
+    poNewLineString->assignSpatialReference(getSpatialReference());
+    poNewLineString->setPoints(nPointCount, paoPoints, padfZ);
+    poNewLineString->setCoordinateDimension(getCoordinateDimension());
+
     return poNewLineString;
 }
 
@@ -120,7 +121,7 @@ OGRGeometry *OGRLineString::clone() const
 void OGRLineString::empty()
 
 {
-    setNumPoints( 0 );
+    setNumPoints(0);
 }
 
 /************************************************************************/
@@ -137,13 +138,13 @@ int OGRLineString::getDimension() const
 /*                       setCoordinateDimension()                       */
 /************************************************************************/
 
-void OGRLineString::setCoordinateDimension( int nNewDimension )
+void OGRLineString::setCoordinateDimension(int nNewDimension)
 
 {
     nCoordDimension = nNewDimension;
-    if( nNewDimension == 2 )
+    if (nNewDimension == 2)
         Make2D();
-    else if( nNewDimension == 3 )
+    else if (nNewDimension == 3)
         Make3D();
 }
 
@@ -167,11 +168,12 @@ int OGRLineString::WkbSize() const
 void OGRLineString::Make2D()
 
 {
-    if( padfZ != NULL )
+    if (padfZ != NULL)
     {
-        OGRFree( padfZ );
+        OGRFree(padfZ);
         padfZ = NULL;
     }
+
     nCoordDimension = 2;
 }
 
@@ -182,13 +184,14 @@ void OGRLineString::Make2D()
 void OGRLineString::Make3D()
 
 {
-    if( padfZ == NULL )
+    if (padfZ == NULL)
     {
-        if( nPointCount == 0 )
-            padfZ = (double *) OGRCalloc(sizeof(double),1);
+        if (nPointCount == 0)
+            padfZ = (double*) OGRCalloc(sizeof(double), 1);
         else
-            padfZ = (double *) OGRCalloc(sizeof(double),nPointCount);
+            padfZ = (double*) OGRCalloc(sizeof(double), nPointCount);
     }
+
     nCoordDimension = 3;
 }
 
@@ -205,18 +208,18 @@ void OGRLineString::Make3D()
  * @param poPoint a point to initialize with the fetched point.
  */
 
-void    OGRLineString::getPoint( int i, OGRPoint * poPoint ) const
+void OGRLineString::getPoint(int i, OGRPoint *poPoint) const
 
 {
-    assert( i >= 0 );
-    assert( i < nPointCount );
-    assert( poPoint != NULL );
+    assert(i >= 0);
+    assert(i < nPointCount);
+    assert(poPoint != NULL);
 
-    poPoint->setX( paoPoints[i].x );
-    poPoint->setY( paoPoints[i].y );
+    poPoint->setX(paoPoints[i].x);
+    poPoint->setY(paoPoints[i].y);
 
-    if( getCoordinateDimension() == 3 && padfZ != NULL )
-        poPoint->setZ( padfZ[i] );
+    if (getCoordinateDimension() == 3 && padfZ != NULL)
+        poPoint->setZ(padfZ[i]);
 }
 
 /**
@@ -224,7 +227,7 @@ void    OGRLineString::getPoint( int i, OGRPoint * poPoint ) const
  *
  * \brief Fetch vertex count.
  *
- * Returns the number of vertices in the line string.  
+ * Returns the number of vertices in the line string.
  *
  * @return vertex count.
  */
@@ -237,7 +240,7 @@ void    OGRLineString::getPoint( int i, OGRPoint * poPoint ) const
  * Returns the X value at the indicated vertex.   If iVertex is out of range a
  * crash may occur, no internal range checking is performed.
  *
- * @param iVertex the vertex to return, between 0 and getNumPoints()-1. 
+ * @param iVertex the vertex to return, between 0 and getNumPoints()-1.
  *
  * @return X value.
  */
@@ -250,7 +253,7 @@ void    OGRLineString::getPoint( int i, OGRPoint * poPoint ) const
  * Returns the Y value at the indicated vertex.   If iVertex is out of range a
  * crash may occur, no internal range checking is performed.
  *
- * @param iVertex the vertex to return, between 0 and getNumPoints()-1. 
+ * @param iVertex the vertex to return, between 0 and getNumPoints()-1.
  *
  * @return X value.
  */
@@ -266,17 +269,17 @@ void    OGRLineString::getPoint( int i, OGRPoint * poPoint ) const
  * value is available, 0.0 is returned.  If iVertex is out of range a
  * crash may occur, no internal range checking is performed.
  *
- * @param iVertex the vertex to return, between 0 and getNumPoints()-1. 
+ * @param iVertex the vertex to return, between 0 and getNumPoints()-1.
  *
  * @return Z value.
  */
 
-double OGRLineString::getZ( int iVertex ) const
+double OGRLineString::getZ(int iVertex) const
 
 {
-    if( padfZ != NULL && iVertex >= 0 && iVertex < nPointCount 
-        && nCoordDimension >= 3 )
-        return( padfZ[iVertex] );
+    if (padfZ != NULL && iVertex >= 0 && iVertex < nPointCount
+        && nCoordDimension >= 3)
+        return(padfZ[iVertex]);
     else
         return 0.0;
 }
@@ -290,56 +293,58 @@ double OGRLineString::getZ( int iVertex ) const
  *
  * This method primary exists to preset the number of points in a linestring
  * geometry before setPoint() is used to assign them to avoid reallocating
- * the array larger with each call to addPoint(). 
+ * the array larger with each call to addPoint().
  *
  * This method has no SFCOM analog.
  *
  * @param nNewPointCount the new number of points for geometry.
  */
 
-void OGRLineString::setNumPoints( int nNewPointCount )
+void OGRLineString::setNumPoints(int nNewPointCount)
 
 {
-    if( nNewPointCount == 0 )
+    if (nNewPointCount == 0)
     {
-        OGRFree( paoPoints );
+        OGRFree(paoPoints);
         paoPoints = NULL;
-        
-        OGRFree( padfZ );
+
+        OGRFree(padfZ);
         padfZ = NULL;
-        
+
         nPointCount = 0;
         return;
     }
 
-    if( nNewPointCount > nPointCount )
+    if (nNewPointCount > nPointCount)
     {
-        OGRRawPoint* paoNewPoints = (OGRRawPoint *)
-            VSIRealloc(paoPoints, sizeof(OGRRawPoint) * nNewPointCount);
+        OGRRawPoint *paoNewPoints = (OGRRawPoint*)
+                                    VSIRealloc(paoPoints, sizeof(OGRRawPoint) * nNewPointCount);
         if (paoNewPoints == NULL)
         {
             CPLError(CE_Failure, CPLE_OutOfMemory,
                      "Could not allocate array for %d points", nNewPointCount);
             return;
         }
+
         paoPoints = paoNewPoints;
-        
-        memset( paoPoints + nPointCount,
-                0, sizeof(OGRRawPoint) * (nNewPointCount - nPointCount) );
-        
-        if( getCoordinateDimension() == 3 )
+
+        memset(paoPoints + nPointCount,
+               0, sizeof(OGRRawPoint) * (nNewPointCount - nPointCount));
+
+        if (getCoordinateDimension() == 3)
         {
-            double* padfNewZ = (double *)
-                VSIRealloc( padfZ, sizeof(double)*nNewPointCount );
+            double *padfNewZ = (double*)
+                               VSIRealloc(padfZ, sizeof(double) * nNewPointCount);
             if (padfNewZ == NULL)
             {
                 CPLError(CE_Failure, CPLE_OutOfMemory,
-                     "Could not allocate array for %d points", nNewPointCount);
+                         "Could not allocate array for %d points", nNewPointCount);
                 return;
             }
+
             padfZ = padfNewZ;
-            memset( padfZ + nPointCount, 0,
-                    sizeof(double) * (nNewPointCount - nPointCount) );
+            memset(padfZ + nPointCount, 0,
+                   sizeof(double) * (nNewPointCount - nPointCount));
         }
     }
 
@@ -358,15 +363,15 @@ void OGRLineString::setNumPoints( int nNewPointCount )
  * accomodate the request.
  *
  * There is no SFCOM analog to this method.
- * 
+ *
  * @param iPoint the index of the vertex to assign (zero based).
  * @param poPoint the value to assign to the vertex.
  */
 
-void OGRLineString::setPoint( int iPoint, OGRPoint * poPoint )
+void OGRLineString::setPoint(int iPoint, OGRPoint *poPoint)
 
 {
-    setPoint( iPoint, poPoint->getX(), poPoint->getY(), poPoint->getZ() );
+    setPoint(iPoint, poPoint->getX(), poPoint->getY(), poPoint->getZ());
 }
 
 /************************************************************************/
@@ -379,7 +384,7 @@ void OGRLineString::setPoint( int iPoint, OGRPoint * poPoint )
  * If iPoint is larger than the number of necessary the number of existing
  * points in the line string, the point count will be increased to
  * accomodate the request.
- * 
+ *
  * There is no SFCOM analog to this method.
  *
  * @param iPoint the index of the vertex to assign (zero based).
@@ -388,15 +393,15 @@ void OGRLineString::setPoint( int iPoint, OGRPoint * poPoint )
  * @param zIn input Z coordinate to assign (defaults to zero).
  */
 
-void OGRLineString::setPoint( int iPoint, double xIn, double yIn, double zIn )
+void OGRLineString::setPoint(int iPoint, double xIn, double yIn, double zIn)
 
 {
-    if( getCoordinateDimension() == 2 )
+    if (getCoordinateDimension() == 2)
         Make3D();
 
-    if( iPoint >= nPointCount )
+    if (iPoint >= nPointCount)
     {
-        setNumPoints( iPoint+1 );
+        setNumPoints(iPoint + 1);
         if (nPointCount < iPoint + 1)
             return;
     }
@@ -404,23 +409,23 @@ void OGRLineString::setPoint( int iPoint, double xIn, double yIn, double zIn )
     paoPoints[iPoint].x = xIn;
     paoPoints[iPoint].y = yIn;
 
-    if( zIn != 0.0 )
+    if (zIn != 0.0)
     {
         Make3D();
         padfZ[iPoint] = zIn;
     }
-    else if( getCoordinateDimension() == 3 )
+    else if (getCoordinateDimension() == 3)
     {
         padfZ[iPoint] = 0.0;
     }
 }
 
-void OGRLineString::setPoint( int iPoint, double xIn, double yIn )
+void OGRLineString::setPoint(int iPoint, double xIn, double yIn)
 
 {
-    if( iPoint >= nPointCount )
+    if (iPoint >= nPointCount)
     {
-        setNumPoints( iPoint+1 );
+        setNumPoints(iPoint + 1);
         if (nPointCount < iPoint + 1)
             return;
     }
@@ -444,13 +449,13 @@ void OGRLineString::setPoint( int iPoint, double xIn, double yIn )
  * @param poPoint the point to assign to the new vertex.
  */
 
-void OGRLineString::addPoint( OGRPoint * poPoint )
+void OGRLineString::addPoint(OGRPoint *poPoint)
 
 {
-    if ( poPoint->getCoordinateDimension() < 3 )
-        setPoint( nPointCount, poPoint->getX(), poPoint->getY() );
+    if (poPoint->getCoordinateDimension() < 3)
+        setPoint(nPointCount, poPoint->getX(), poPoint->getY());
     else
-        setPoint( nPointCount, poPoint->getX(), poPoint->getY(), poPoint->getZ() );
+        setPoint(nPointCount, poPoint->getX(), poPoint->getY(), poPoint->getZ());
 }
 
 /************************************************************************/
@@ -470,16 +475,16 @@ void OGRLineString::addPoint( OGRPoint * poPoint )
  * @param z the Z coordinate to assign to the new point (defaults to zero).
  */
 
-void OGRLineString::addPoint( double x, double y, double z )
+void OGRLineString::addPoint(double x, double y, double z)
 
 {
-    setPoint( nPointCount, x, y, z );
+    setPoint(nPointCount, x, y, z);
 }
 
-void OGRLineString::addPoint( double x, double y )
+void OGRLineString::addPoint(double x, double y)
 
 {
-    setPoint( nPointCount, x, y );
+    setPoint(nPointCount, x, y);
 }
 
 /************************************************************************/
@@ -500,27 +505,27 @@ void OGRLineString::addPoint( double x, double y )
  * @param padfZ the Z values that go with the points (optional, may be NULL).
  */
 
-void OGRLineString::setPoints( int nPointsIn, OGRRawPoint * paoPointsIn,
-                               double * padfZ )
+void OGRLineString::setPoints(int nPointsIn, OGRRawPoint *paoPointsIn,
+                              double *padfZ)
 
 {
-    setNumPoints( nPointsIn );
+    setNumPoints(nPointsIn);
     if (nPointCount < nPointsIn)
         return;
 
-    memcpy( paoPoints, paoPointsIn, sizeof(OGRRawPoint) * nPointsIn);
+    memcpy(paoPoints, paoPointsIn, sizeof(OGRRawPoint) * nPointsIn);
 
 /* -------------------------------------------------------------------- */
 /*      Check 2D/3D.                                                    */
 /* -------------------------------------------------------------------- */
-    if( padfZ == NULL && getCoordinateDimension() > 2 )
+    if (padfZ == NULL && getCoordinateDimension() > 2)
     {
         Make2D();
     }
-    else if( padfZ )
+    else if (padfZ)
     {
         Make3D();
-        memcpy( this->padfZ, padfZ, sizeof(double) * nPointsIn );
+        memcpy(this->padfZ, padfZ, sizeof(double) * nPointsIn);
     }
 }
 
@@ -543,35 +548,35 @@ void OGRLineString::setPoints( int nPointsIn, OGRRawPoint * paoPointsIn,
  * NULL for 2D objects).
  */
 
-void OGRLineString::setPoints( int nPointsIn, double * padfX, double * padfY,
-                               double * padfZ )
+void OGRLineString::setPoints(int nPointsIn, double *padfX, double *padfY,
+                              double *padfZ)
 
 {
-    int         i;
+    int i;
 
 /* -------------------------------------------------------------------- */
 /*      Check 2D/3D.                                                    */
 /* -------------------------------------------------------------------- */
-    if( padfZ == NULL )
+    if (padfZ == NULL)
         Make2D();
     else
         Make3D();
-    
+
 /* -------------------------------------------------------------------- */
 /*      Assign values.                                                  */
 /* -------------------------------------------------------------------- */
-    setNumPoints( nPointsIn );
+    setNumPoints(nPointsIn);
     if (nPointCount < nPointsIn)
         return;
 
-    for( i = 0; i < nPointsIn; i++ )
+    for (i = 0; i < nPointsIn; i++)
     {
         paoPoints[i].x = padfX[i];
         paoPoints[i].y = padfY[i];
     }
 
-    if( this->padfZ != NULL )
-        memcpy( this->padfZ, padfZ, sizeof(double) * nPointsIn );
+    if (this->padfZ != NULL)
+        memcpy(this->padfZ, padfZ, sizeof(double) * nPointsIn);
 }
 
 /************************************************************************/
@@ -591,22 +596,22 @@ void OGRLineString::setPoints( int nPointsIn, double * padfX, double * padfY,
  * @param padfZ the Z values that go with the points (optional, may be NULL).
  */
 
-void OGRLineString::getPoints( OGRRawPoint * paoPointsOut, double * padfZ ) const
+void OGRLineString::getPoints(OGRRawPoint *paoPointsOut, double *padfZ) const
 {
-    if ( ! paoPointsOut )
+    if (!paoPointsOut)
         return;
-        
-    memcpy( paoPointsOut, paoPoints, sizeof(OGRRawPoint) * nPointCount );
+
+    memcpy(paoPointsOut, paoPoints, sizeof(OGRRawPoint) * nPointCount);
 
 /* -------------------------------------------------------------------- */
 /*      Check 2D/3D.                                                    */
 /* -------------------------------------------------------------------- */
-    if( padfZ )
+    if (padfZ)
     {
-        if ( this->padfZ )
-            memcpy( padfZ, this->padfZ, sizeof(double) * nPointCount );
+        if (this->padfZ)
+            memcpy(padfZ, this->padfZ, sizeof(double) * nPointCount);
         else
-            memset( padfZ, 0, sizeof(double) * nPointCount );
+            memset(padfZ, 0, sizeof(double) * nPointCount);
     }
 }
 
@@ -620,63 +625,64 @@ void OGRLineString::getPoints( OGRRawPoint * paoPointsOut, double * padfZ ) cons
  *
  * Adds the request range of vertices to the end of this line string
  * in an efficient manner.  If the nStartVertex is larger than the
- * nEndVertex then the vertices will be reversed as they are copied. 
+ * nEndVertex then the vertices will be reversed as they are copied.
  *
- * @param poOtherLine the other OGRLineString. 
+ * @param poOtherLine the other OGRLineString.
  * @param nStartVertex the first vertex to copy, defaults to 0 to start
- * with the first vertex in the other linestring. 
- * @param nEndVertex the last vertex to copy, defaults to -1 indicating 
- * the last vertex of the other line string. 
+ * with the first vertex in the other linestring.
+ * @param nEndVertex the last vertex to copy, defaults to -1 indicating
+ * the last vertex of the other line string.
  */
 
-void OGRLineString::addSubLineString( const OGRLineString *poOtherLine, 
-                                      int nStartVertex, int nEndVertex )
+void OGRLineString::addSubLineString(const OGRLineString *poOtherLine,
+                                     int nStartVertex, int nEndVertex)
 
 {
     int nOtherLineNumPoints = poOtherLine->getNumPoints();
+
     if (nOtherLineNumPoints == 0)
         return;
 
 /* -------------------------------------------------------------------- */
 /*      Do a bit of argument defaulting and validation.                 */
 /* -------------------------------------------------------------------- */
-    if( nEndVertex == -1 )
+    if (nEndVertex == -1)
         nEndVertex = nOtherLineNumPoints - 1;
 
-    if( nStartVertex < 0 || nEndVertex < 0 
-        || nStartVertex >= nOtherLineNumPoints 
-        || nEndVertex >= nOtherLineNumPoints )
+    if (nStartVertex < 0 || nEndVertex < 0
+        || nStartVertex >= nOtherLineNumPoints
+        || nEndVertex >= nOtherLineNumPoints)
     {
-        CPLAssert( FALSE );
+        CPLAssert(FALSE);
         return;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Grow this linestring to hold the additional points.             */
 /* -------------------------------------------------------------------- */
-    int nOldPoints = nPointCount;
-    int nPointsToAdd = ABS(nEndVertex-nStartVertex) + 1;
+    int nOldPoints   = nPointCount;
+    int nPointsToAdd = ABS(nEndVertex - nStartVertex) + 1;
 
-    setNumPoints( nPointsToAdd + nOldPoints );
+    setNumPoints(nPointsToAdd + nOldPoints);
     if (nPointCount < nPointsToAdd + nOldPoints)
         return;
 
 /* -------------------------------------------------------------------- */
 /*      Copy the x/y points - forward copies use memcpy.                */
 /* -------------------------------------------------------------------- */
-    if( nEndVertex >= nStartVertex )
+    if (nEndVertex >= nStartVertex)
     {
-        memcpy( paoPoints + nOldPoints, 
-                poOtherLine->paoPoints + nStartVertex, 
-                sizeof(OGRRawPoint) * nPointsToAdd );
-        if( poOtherLine->padfZ != NULL )
+        memcpy(paoPoints + nOldPoints,
+               poOtherLine->paoPoints + nStartVertex,
+               sizeof(OGRRawPoint) * nPointsToAdd);
+        if (poOtherLine->padfZ != NULL)
         {
             Make3D();
-            memcpy( padfZ + nOldPoints, poOtherLine->padfZ + nStartVertex,
-                    sizeof(double) * nPointsToAdd );
+            memcpy(padfZ + nOldPoints, poOtherLine->padfZ + nStartVertex,
+                   sizeof(double) * nPointsToAdd);
         }
     }
-    
+
 /* -------------------------------------------------------------------- */
 /*      Copy the x/y points - reverse copies done double by double.     */
 /* -------------------------------------------------------------------- */
@@ -684,21 +690,21 @@ void OGRLineString::addSubLineString( const OGRLineString *poOtherLine,
     {
         int i;
 
-        for( i = 0; i < nPointsToAdd; i++ )
+        for (i = 0; i < nPointsToAdd; i++)
         {
-            paoPoints[i+nOldPoints].x = 
-                poOtherLine->paoPoints[nStartVertex-i].x;
-            paoPoints[i+nOldPoints].y = 
-                poOtherLine->paoPoints[nStartVertex-i].y;
+            paoPoints[i + nOldPoints].x =
+                poOtherLine->paoPoints[nStartVertex - i].x;
+            paoPoints[i + nOldPoints].y =
+                poOtherLine->paoPoints[nStartVertex - i].y;
         }
 
-        if( poOtherLine->padfZ != NULL )
+        if (poOtherLine->padfZ != NULL)
         {
             Make3D();
 
-            for( i = 0; i < nPointsToAdd; i++ )
+            for (i = 0; i < nPointsToAdd; i++)
             {
-                padfZ[i+nOldPoints] = poOtherLine->padfZ[nStartVertex-i];
+                padfZ[i + nOldPoints] = poOtherLine->padfZ[nStartVertex - i];
             }
         }
     }
@@ -711,20 +717,20 @@ void OGRLineString::addSubLineString( const OGRLineString *poOtherLine,
 /*      format.                                                         */
 /************************************************************************/
 
-OGRErr OGRLineString::importFromWkb( unsigned char * pabyData,
-                                     int nSize )
+OGRErr OGRLineString::importFromWkb(unsigned char *pabyData,
+                                    int nSize)
 
 {
-    OGRwkbByteOrder     eByteOrder;
-    
-    if( nSize < 9 && nSize != -1 )
+    OGRwkbByteOrder eByteOrder;
+
+    if (nSize < 9 && nSize != -1)
         return OGRERR_NOT_ENOUGH_DATA;
 
 /* -------------------------------------------------------------------- */
 /*      Get the byte order byte.                                        */
 /* -------------------------------------------------------------------- */
-    eByteOrder = DB2_V72_FIX_BYTE_ORDER((OGRwkbByteOrder) *pabyData);
-    if (!( eByteOrder == wkbXDR || eByteOrder == wkbNDR ))
+    eByteOrder = DB2_V72_FIX_BYTE_ORDER((OGRwkbByteOrder) * pabyData);
+    if (!(eByteOrder == wkbXDR || eByteOrder == wkbNDR))
         return OGRERR_CORRUPT_DATA;
 
 /* -------------------------------------------------------------------- */
@@ -733,32 +739,32 @@ OGRErr OGRLineString::importFromWkb( unsigned char * pabyData,
 /*      one byte.                                                       */
 /* -------------------------------------------------------------------- */
     OGRwkbGeometryType eGeometryType;
-    int bIs3D = FALSE;
+    int                bIs3D = FALSE;
 
-    if( eByteOrder == wkbNDR )
+    if (eByteOrder == wkbNDR)
     {
         eGeometryType = (OGRwkbGeometryType) pabyData[1];
-        bIs3D = pabyData[4] & 0x80 || pabyData[2] & 0x80;
+        bIs3D         = pabyData[4] & 0x80 || pabyData[2] & 0x80;
     }
     else
     {
         eGeometryType = (OGRwkbGeometryType) pabyData[4];
-        bIs3D = pabyData[1] & 0x80 || pabyData[3] & 0x80;
+        bIs3D         = pabyData[1] & 0x80 || pabyData[3] & 0x80;
     }
 
-    if( eGeometryType != wkbLineString )
+    if (eGeometryType != wkbLineString)
         return OGRERR_CORRUPT_DATA;
 
 /* -------------------------------------------------------------------- */
 /*      Get the vertex count.                                           */
 /* -------------------------------------------------------------------- */
-    int         nNewNumPoints;
-    
-    memcpy( &nNewNumPoints, pabyData + 5, 4 );
-    
-    if( OGR_SWAP( eByteOrder ) )
+    int nNewNumPoints;
+
+    memcpy(&nNewNumPoints, pabyData + 5, 4);
+
+    if (OGR_SWAP(eByteOrder))
         nNewNumPoints = CPL_SWAP32(nNewNumPoints);
-    
+
     /* Check if the wkb stream buffer is big enough to store
      * fetched number of points.
      * 16 or 24 - size of point structure
@@ -766,62 +772,63 @@ OGRErr OGRLineString::importFromWkb( unsigned char * pabyData,
     int nPointSize = (bIs3D ? 24 : 16);
     if (nNewNumPoints < 0 || nNewNumPoints > INT_MAX / nPointSize)
         return OGRERR_CORRUPT_DATA;
+
     int nBufferMinSize = nPointSize * nNewNumPoints;
 
-    if( nSize != -1 && nBufferMinSize > nSize-9 )
+    if (nSize != -1 && nBufferMinSize > nSize - 9)
     {
-        CPLError( CE_Failure, CPLE_AppDefined,
-                  "Length of input WKB is too small" );
+        CPLError(CE_Failure, CPLE_AppDefined,
+                 "Length of input WKB is too small");
         return OGRERR_NOT_ENOUGH_DATA;
     }
 
-    setNumPoints( nNewNumPoints );
+    setNumPoints(nNewNumPoints);
     if (nPointCount < nNewNumPoints)
         return OGRERR_FAILURE;
-    
-    if( bIs3D )
+
+    if (bIs3D)
         Make3D();
     else
         Make2D();
-    
+
 /* -------------------------------------------------------------------- */
 /*      Get the vertex.                                                 */
 /* -------------------------------------------------------------------- */
     int i = 0;
-    
-    if( bIs3D )
+
+    if (bIs3D)
     {
-        for( i = 0; i < nPointCount; i++ )
+        for (i = 0; i < nPointCount; i++)
         {
-            memcpy( paoPoints + i, pabyData + 9 + i*24, 16 );
-            memcpy( padfZ + i, pabyData + 9 + 16 + i*24, 8 );
+            memcpy(paoPoints + i, pabyData + 9 + i * 24, 16);
+            memcpy(padfZ + i, pabyData + 9 + 16 + i * 24, 8);
         }
     }
     else
     {
-        memcpy( paoPoints, pabyData + 9, 16 * nPointCount );
+        memcpy(paoPoints, pabyData + 9, 16 * nPointCount);
     }
-    
+
 /* -------------------------------------------------------------------- */
 /*      Byte swap if needed.                                            */
 /* -------------------------------------------------------------------- */
-    if( OGR_SWAP( eByteOrder ) )
+    if (OGR_SWAP(eByteOrder))
     {
-        for( i = 0; i < nPointCount; i++ )
+        for (i = 0; i < nPointCount; i++)
         {
-            CPL_SWAPDOUBLE( &(paoPoints[i].x) );
-            CPL_SWAPDOUBLE( &(paoPoints[i].y) );
+            CPL_SWAPDOUBLE(&(paoPoints[i].x));
+            CPL_SWAPDOUBLE(&(paoPoints[i].y));
         }
 
-        if( bIs3D )
+        if (bIs3D)
         {
-            for( i = 0; i < nPointCount; i++ )
+            for (i = 0; i < nPointCount; i++)
             {
-                CPL_SWAPDOUBLE( padfZ + i );
+                CPL_SWAPDOUBLE(padfZ + i);
             }
         }
     }
-    
+
     return OGRERR_NONE;
 }
 
@@ -831,8 +838,8 @@ OGRErr OGRLineString::importFromWkb( unsigned char * pabyData,
 /*      Build a well known binary representation of this object.        */
 /************************************************************************/
 
-OGRErr  OGRLineString::exportToWkb( OGRwkbByteOrder eByteOrder,
-                               unsigned char * pabyData ) const
+OGRErr OGRLineString::exportToWkb(OGRwkbByteOrder eByteOrder,
+                                  unsigned char *pabyData) const
 
 {
 /* -------------------------------------------------------------------- */
@@ -844,51 +851,51 @@ OGRErr  OGRLineString::exportToWkb( OGRwkbByteOrder eByteOrder,
 /*      Set the geometry feature type.                                  */
 /* -------------------------------------------------------------------- */
     GUInt32 nGType = getGeometryType();
-    
-    if( eByteOrder == wkbNDR )
-        nGType = CPL_LSBWORD32( nGType );
-    else
-        nGType = CPL_MSBWORD32( nGType );
 
-    memcpy( pabyData + 1, &nGType, 4 );
-    
+    if (eByteOrder == wkbNDR)
+        nGType = CPL_LSBWORD32(nGType);
+    else
+        nGType = CPL_MSBWORD32(nGType);
+
+    memcpy(pabyData + 1, &nGType, 4);
+
 /* -------------------------------------------------------------------- */
 /*      Copy in the data count.                                         */
 /* -------------------------------------------------------------------- */
-    memcpy( pabyData+5, &nPointCount, 4 );
+    memcpy(pabyData + 5, &nPointCount, 4);
 
 /* -------------------------------------------------------------------- */
 /*      Copy in the raw data.                                           */
 /* -------------------------------------------------------------------- */
-    int         i;
-    
-    if( getCoordinateDimension() == 3 )
+    int i;
+
+    if (getCoordinateDimension() == 3)
     {
-        for( i = 0; i < nPointCount; i++ )
+        for (i = 0; i < nPointCount; i++)
         {
-            memcpy( pabyData + 9 + 24*i, paoPoints+i, 16 );
-            memcpy( pabyData + 9 + 16 + 24*i, padfZ+i, 8 );
+            memcpy(pabyData + 9 + 24 * i, paoPoints + i, 16);
+            memcpy(pabyData + 9 + 16 + 24 * i, padfZ + i, 8);
         }
     }
     else
-        memcpy( pabyData+9, paoPoints, 16 * nPointCount );
+        memcpy(pabyData + 9, paoPoints, 16 * nPointCount);
 
 /* -------------------------------------------------------------------- */
 /*      Swap if needed.                                                 */
 /* -------------------------------------------------------------------- */
-    if( OGR_SWAP( eByteOrder ) )
+    if (OGR_SWAP(eByteOrder))
     {
-        int     nCount;
+        int nCount;
 
-        nCount = CPL_SWAP32( nPointCount );
-        memcpy( pabyData+5, &nCount, 4 );
+        nCount = CPL_SWAP32(nPointCount);
+        memcpy(pabyData + 5, &nCount, 4);
 
-        for( i = getCoordinateDimension() * nPointCount - 1; i >= 0; i-- )
+        for (i = getCoordinateDimension() * nPointCount - 1; i >= 0; i--)
         {
-            CPL_SWAP64PTR( pabyData + 9 + 8 * i );
+            CPL_SWAP64PTR(pabyData + 9 + 8 * i);
         }
     }
-    
+
     return OGRERR_NONE;
 }
 
@@ -899,56 +906,56 @@ OGRErr  OGRLineString::exportToWkb( OGRwkbByteOrder eByteOrder,
 /*      `LINESTRING ( x y, x y, ...)',                                  */
 /************************************************************************/
 
-OGRErr OGRLineString::importFromWkt( char ** ppszInput )
+OGRErr OGRLineString::importFromWkt(char **ppszInput)
 
 {
-    char        szToken[OGR_WKT_TOKEN_MAX];
-    const char  *pszInput = *ppszInput;
+    char       szToken[OGR_WKT_TOKEN_MAX];
+    const char *pszInput = *ppszInput;
 
-    if( paoPoints != NULL )
+    if (paoPoints != NULL)
     {
         nPointCount = 0;
 
-        CPLFree( paoPoints );
+        CPLFree(paoPoints);
         paoPoints = NULL;
-        
-        CPLFree( padfZ );
+
+        CPLFree(padfZ);
         padfZ = NULL;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Read and verify the ``LINESTRING'' keyword token.               */
 /* -------------------------------------------------------------------- */
-    pszInput = OGRWktReadToken( pszInput, szToken );
+    pszInput = OGRWktReadToken(pszInput, szToken);
 
-    if( !EQUAL(szToken,getGeometryName()) )
+    if (!EQUAL(szToken, getGeometryName()))
         return OGRERR_CORRUPT_DATA;
 
 /* -------------------------------------------------------------------- */
 /*      Check for EMPTY                                                 */
 /* -------------------------------------------------------------------- */
     const char *pszPreScan;
-    int bHasZ = FALSE, bHasM = FALSE;
+    int        bHasZ = FALSE, bHasM = FALSE;
 
-    pszPreScan = OGRWktReadToken( pszInput, szToken );
-    if( EQUAL(szToken,"EMPTY") )
+    pszPreScan = OGRWktReadToken(pszInput, szToken);
+    if (EQUAL(szToken, "EMPTY"))
     {
-        *ppszInput = (char *) pszPreScan;
+        *ppszInput = (char*) pszPreScan;
         return OGRERR_NONE;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Check for Z, M or ZM. Will ignore the Measure                   */
 /* -------------------------------------------------------------------- */
-    else if( EQUAL(szToken,"Z") )
+    else if (EQUAL(szToken, "Z"))
     {
         bHasZ = TRUE;
     }
-    else if( EQUAL(szToken,"M") )
+    else if (EQUAL(szToken, "M"))
     {
         bHasM = TRUE;
     }
-    else if( EQUAL(szToken,"ZM") )
+    else if (EQUAL(szToken, "ZM"))
     {
         bHasZ = TRUE;
         bHasM = TRUE;
@@ -956,11 +963,11 @@ OGRErr OGRLineString::importFromWkt( char ** ppszInput )
 
     if (bHasZ || bHasM)
     {
-        pszInput = pszPreScan;
-        pszPreScan = OGRWktReadToken( pszInput, szToken );
-        if( EQUAL(szToken,"EMPTY") )
+        pszInput   = pszPreScan;
+        pszPreScan = OGRWktReadToken(pszInput, szToken);
+        if (EQUAL(szToken, "EMPTY"))
         {
-            *ppszInput = (char *) pszPreScan;
+            *ppszInput = (char*) pszPreScan;
             empty();
             /* FIXME?: In theory we should store the dimension and M presence */
             /* if we want to allow round-trip with ExportToWKT v1.2 */
@@ -968,22 +975,22 @@ OGRErr OGRLineString::importFromWkt( char ** ppszInput )
         }
     }
 
-    if( !EQUAL(szToken,"(") )
+    if (!EQUAL(szToken, "("))
         return OGRERR_CORRUPT_DATA;
 
-    if ( !bHasZ && !bHasM )
+    if (!bHasZ && !bHasM)
     {
         /* Test for old-style LINESTRING(EMPTY) */
-        pszPreScan = OGRWktReadToken( pszPreScan, szToken );
-        if( EQUAL(szToken,"EMPTY") )
+        pszPreScan = OGRWktReadToken(pszPreScan, szToken);
+        if (EQUAL(szToken, "EMPTY"))
         {
-            pszInput = OGRWktReadToken( pszPreScan, szToken );
+            pszInput = OGRWktReadToken(pszPreScan, szToken);
 
-            if( !EQUAL(szToken,")") )
+            if (!EQUAL(szToken, ")"))
                 return OGRERR_CORRUPT_DATA;
             else
             {
-                *ppszInput = (char *) pszInput;
+                *ppszInput = (char*) pszInput;
                 empty();
                 return OGRERR_NONE;
             }
@@ -993,18 +1000,18 @@ OGRErr OGRLineString::importFromWkt( char ** ppszInput )
 /* -------------------------------------------------------------------- */
 /*      Read the point list.                                            */
 /* -------------------------------------------------------------------- */
-    int      nMaxPoint = 0;
+    int nMaxPoint = 0;
 
     nPointCount = 0;
 
-    pszInput = OGRWktReadPoints( pszInput, &paoPoints, &padfZ, &nMaxPoint,
-                                 &nPointCount );
-    if( pszInput == NULL )
+    pszInput = OGRWktReadPoints(pszInput, &paoPoints, &padfZ, &nMaxPoint,
+                                &nPointCount);
+    if (pszInput == NULL)
         return OGRERR_CORRUPT_DATA;
 
-    *ppszInput = (char *) pszInput;
+    *ppszInput = (char*) pszInput;
 
-    if( padfZ == NULL )
+    if (padfZ == NULL)
         nCoordDimension = 2;
     else
     {
@@ -1018,7 +1025,7 @@ OGRErr OGRLineString::importFromWkt( char ** ppszInput )
         else
             nCoordDimension = 3;
     }
-    
+
     return OGRERR_NONE;
 }
 
@@ -1029,19 +1036,19 @@ OGRErr OGRLineString::importFromWkt( char ** ppszInput )
 /*      equivelent.  This could be made alot more CPU efficient!        */
 /************************************************************************/
 
-OGRErr OGRLineString::exportToWkt( char ** ppszDstText ) const
+OGRErr OGRLineString::exportToWkt(char **ppszDstText) const
 
 {
-    int         nMaxString = nPointCount * 40 * 3 + 20;
-    int         nRetLen = 0;
+    int nMaxString = nPointCount * 40 * 3 + 20;
+    int nRetLen    = 0;
 
 /* -------------------------------------------------------------------- */
 /*      Handle special empty case.                                      */
 /* -------------------------------------------------------------------- */
-    if( nPointCount == 0 )
+    if (nPointCount == 0)
     {
         CPLString osEmpty;
-        osEmpty.Printf("%s EMPTY",getGeometryName());
+        osEmpty.Printf("%s EMPTY", getGeometryName());
         *ppszDstText = CPLStrdup(osEmpty);
         return OGRERR_NONE;
     }
@@ -1049,48 +1056,48 @@ OGRErr OGRLineString::exportToWkt( char ** ppszDstText ) const
 /* -------------------------------------------------------------------- */
 /*      General case.                                                   */
 /* -------------------------------------------------------------------- */
-    *ppszDstText = (char *) VSIMalloc( nMaxString );
-    if( *ppszDstText == NULL )
+    *ppszDstText = (char*) VSIMalloc(nMaxString);
+    if (*ppszDstText == NULL)
         return OGRERR_NOT_ENOUGH_MEMORY;
 
-    sprintf( *ppszDstText, "%s (", getGeometryName() );
+    sprintf(*ppszDstText, "%s (", getGeometryName());
 
-    for( int i = 0; i < nPointCount; i++ )
+    for (int i = 0; i < nPointCount; i++)
     {
-        if( nMaxString <= (int) strlen(*ppszDstText+nRetLen) + 32 + nRetLen )
+        if (nMaxString <= (int) strlen(*ppszDstText + nRetLen) + 32 + nRetLen)
         {
-            CPLDebug( "OGR", 
-                      "OGRLineString::exportToWkt() ... buffer overflow.\n"
-                      "nMaxString=%d, strlen(*ppszDstText) = %d, i=%d\n"
-                      "*ppszDstText = %s", 
-                      nMaxString, (int) strlen(*ppszDstText), i, *ppszDstText );
+            CPLDebug("OGR",
+                     "OGRLineString::exportToWkt() ... buffer overflow.\n"
+                     "nMaxString=%d, strlen(*ppszDstText) = %d, i=%d\n"
+                     "*ppszDstText = %s",
+                     nMaxString, (int) strlen(*ppszDstText), i, *ppszDstText);
 
-            VSIFree( *ppszDstText );
+            VSIFree(*ppszDstText);
             *ppszDstText = NULL;
             return OGRERR_NOT_ENOUGH_MEMORY;
         }
-        
-        if( i > 0 )
-            strcat( *ppszDstText + nRetLen, "," );
+
+        if (i > 0)
+            strcat(*ppszDstText + nRetLen, ",");
 
         nRetLen += strlen(*ppszDstText + nRetLen);
-        if( getCoordinateDimension() == 3 )
-            OGRMakeWktCoordinate( *ppszDstText + nRetLen,
-                                  paoPoints[i].x,
-                                  paoPoints[i].y,
-                                  padfZ[i],
-                                  nCoordDimension );
+        if (getCoordinateDimension() == 3)
+            OGRMakeWktCoordinate(*ppszDstText + nRetLen,
+                                 paoPoints[i].x,
+                                 paoPoints[i].y,
+                                 padfZ[i],
+                                 nCoordDimension);
         else
-            OGRMakeWktCoordinate( *ppszDstText + nRetLen,
-                                  paoPoints[i].x,
-                                  paoPoints[i].y,
-                                  0.0,
-                                  nCoordDimension );
+            OGRMakeWktCoordinate(*ppszDstText + nRetLen,
+                                 paoPoints[i].x,
+                                 paoPoints[i].y,
+                                 0.0,
+                                 nCoordDimension);
 
         nRetLen += strlen(*ppszDstText + nRetLen);
     }
 
-    strcat( *ppszDstText+nRetLen, ")" );
+    strcat(*ppszDstText + nRetLen, ")");
 
     return OGRERR_NONE;
 }
@@ -1104,18 +1111,18 @@ OGRErr OGRLineString::exportToWkt( char ** ppszDstText ) const
 double OGRLineString::get_Length() const
 
 {
-    double      dfLength = 0;
-    int         i;
+    double dfLength = 0;
+    int    i;
 
-    for( i = 0; i < nPointCount-1; i++ )
+    for (i = 0; i < nPointCount - 1; i++)
     {
-        double      dfDeltaX, dfDeltaY;
+        double dfDeltaX, dfDeltaY;
 
-        dfDeltaX = paoPoints[i+1].x - paoPoints[i].x;
-        dfDeltaY = paoPoints[i+1].y - paoPoints[i].y;
-        dfLength += sqrt(dfDeltaX*dfDeltaX + dfDeltaY*dfDeltaY);
+        dfDeltaX  = paoPoints[i + 1].x - paoPoints[i].x;
+        dfDeltaY  = paoPoints[i + 1].y - paoPoints[i].y;
+        dfLength += sqrt(dfDeltaX * dfDeltaX + dfDeltaY * dfDeltaY);
     }
-    
+
     return dfLength;
 }
 
@@ -1123,20 +1130,20 @@ double OGRLineString::get_Length() const
 /*                             StartPoint()                             */
 /************************************************************************/
 
-void OGRLineString::StartPoint( OGRPoint * poPoint ) const
+void OGRLineString::StartPoint(OGRPoint *poPoint) const
 
 {
-    getPoint( 0, poPoint );
+    getPoint(0, poPoint);
 }
 
 /************************************************************************/
 /*                              EndPoint()                              */
 /************************************************************************/
 
-void OGRLineString::EndPoint( OGRPoint * poPoint ) const
+void OGRLineString::EndPoint(OGRPoint *poPoint) const
 
 {
-    getPoint( nPointCount-1, poPoint );
+    getPoint(nPointCount - 1, poPoint);
 }
 
 /************************************************************************/
@@ -1145,64 +1152,64 @@ void OGRLineString::EndPoint( OGRPoint * poPoint ) const
 /*      Get an interpolated point at some distance along the curve.     */
 /************************************************************************/
 
-void OGRLineString::Value( double dfDistance, OGRPoint * poPoint ) const
+void OGRLineString::Value(double dfDistance, OGRPoint *poPoint) const
 
 {
-    double      dfLength = 0;
-    int         i;
+    double dfLength = 0;
+    int    i;
 
-    if( dfDistance < 0 )
+    if (dfDistance < 0)
     {
-        StartPoint( poPoint );
+        StartPoint(poPoint);
         return;
     }
 
-    for( i = 0; i < nPointCount-1; i++ )
+    for (i = 0; i < nPointCount - 1; i++)
     {
-        double      dfDeltaX, dfDeltaY, dfSegLength;
+        double dfDeltaX, dfDeltaY, dfSegLength;
 
-        dfDeltaX = paoPoints[i+1].x - paoPoints[i].x;
-        dfDeltaY = paoPoints[i+1].y - paoPoints[i].y;
-        dfSegLength = sqrt(dfDeltaX*dfDeltaX + dfDeltaY*dfDeltaY);
+        dfDeltaX    = paoPoints[i + 1].x - paoPoints[i].x;
+        dfDeltaY    = paoPoints[i + 1].y - paoPoints[i].y;
+        dfSegLength = sqrt(dfDeltaX * dfDeltaX + dfDeltaY * dfDeltaY);
 
         if (dfSegLength > 0)
         {
-            if( (dfLength <= dfDistance) && ((dfLength + dfSegLength) >= 
-                                             dfDistance) )
+            if ((dfLength <= dfDistance) && ((dfLength + dfSegLength) >=
+                                             dfDistance))
             {
-                double      dfRatio;
+                double dfRatio;
 
                 dfRatio = (dfDistance - dfLength) / dfSegLength;
 
-                poPoint->setX( paoPoints[i].x * (1 - dfRatio)
-                               + paoPoints[i+1].x * dfRatio );
-                poPoint->setY( paoPoints[i].y * (1 - dfRatio)
-                               + paoPoints[i+1].y * dfRatio );
+                poPoint->setX(paoPoints[i].x * (1 - dfRatio)
+                              + paoPoints[i + 1].x * dfRatio);
+                poPoint->setY(paoPoints[i].y * (1 - dfRatio)
+                              + paoPoints[i + 1].y * dfRatio);
 
-                if( getCoordinateDimension() == 3 )
-                    poPoint->setZ( padfZ[i] * (1 - dfRatio)
-                                   + padfZ[i] * dfRatio );
-                
+                if (getCoordinateDimension() == 3)
+                    poPoint->setZ(padfZ[i] * (1 - dfRatio)
+                                  + padfZ[i] * dfRatio);
+
                 return;
             }
 
             dfLength += dfSegLength;
         }
     }
-    
-    EndPoint( poPoint );
+
+    EndPoint(poPoint);
 }
 
 /************************************************************************/
 /*                            getEnvelope()                             */
 /************************************************************************/
 
-void OGRLineString::getEnvelope( OGREnvelope * psEnvelope ) const
+void OGRLineString::getEnvelope(OGREnvelope *psEnvelope) const
 
 {
-    double      dfMinX, dfMinY, dfMaxX, dfMaxY;
+    double dfMinX, dfMinY, dfMaxX, dfMaxY;
 
-    if( nPointCount == 0 )
+    if (nPointCount == 0)
     {
         psEnvelope->MinX = 0;
         psEnvelope->MaxX = 0;
@@ -1210,19 +1217,22 @@ void OGRLineString::getEnvelope( OGREnvelope * psEnvelope ) const
         psEnvelope->MaxY = 0;
         return;
     }
-    
+
     dfMinX = dfMaxX = paoPoints[0].x;
     dfMinY = dfMaxY = paoPoints[0].y;
 
-    for( int iPoint = 1; iPoint < nPointCount; iPoint++ )
+    for (int iPoint = 1; iPoint < nPointCount; iPoint++)
     {
-        if( dfMaxX < paoPoints[iPoint].x )
+        if (dfMaxX < paoPoints[iPoint].x)
             dfMaxX = paoPoints[iPoint].x;
-        if( dfMaxY < paoPoints[iPoint].y )
+
+        if (dfMaxY < paoPoints[iPoint].y)
             dfMaxY = paoPoints[iPoint].y;
-        if( dfMinX > paoPoints[iPoint].x )
+
+        if (dfMinX > paoPoints[iPoint].x)
             dfMinX = paoPoints[iPoint].x;
-        if( dfMinY > paoPoints[iPoint].y )
+
+        if (dfMinY > paoPoints[iPoint].y)
             dfMinY = paoPoints[iPoint].y;
     }
 
@@ -1236,27 +1246,27 @@ void OGRLineString::getEnvelope( OGREnvelope * psEnvelope ) const
 /*                               Equals()                                */
 /************************************************************************/
 
-OGRBoolean OGRLineString::Equals( OGRGeometry * poOther ) const
+OGRBoolean OGRLineString::Equals(OGRGeometry *poOther) const
 
 {
-    OGRLineString       *poOLine = (OGRLineString *) poOther;
-    
-    if( poOLine == this )
+    OGRLineString *poOLine = (OGRLineString*) poOther;
+
+    if (poOLine == this)
         return TRUE;
-    
-    if( poOther->getGeometryType() != getGeometryType() )
+
+    if (poOther->getGeometryType() != getGeometryType())
         return FALSE;
 
     // we should eventually test the SRS.
 
-    if( getNumPoints() != poOLine->getNumPoints() )
+    if (getNumPoints() != poOLine->getNumPoints())
         return FALSE;
 
-    for( int iPoint = 0; iPoint < getNumPoints(); iPoint++ )
+    for (int iPoint = 0; iPoint < getNumPoints(); iPoint++)
     {
-        if( getX(iPoint) != poOLine->getX(iPoint)
-            || getY(iPoint) != poOLine->getY(iPoint) 
-            || getZ(iPoint) != poOLine->getZ(iPoint) )
+        if (getX(iPoint) != poOLine->getX(iPoint)
+            || getY(iPoint) != poOLine->getY(iPoint)
+            || getZ(iPoint) != poOLine->getZ(iPoint))
             return FALSE;
     }
 
@@ -1267,15 +1277,15 @@ OGRBoolean OGRLineString::Equals( OGRGeometry * poOther ) const
 /*                             transform()                              */
 /************************************************************************/
 
-OGRErr OGRLineString::transform( OGRCoordinateTransformation *poCT )
+OGRErr OGRLineString::transform(OGRCoordinateTransformation *poCT)
 
 {
 #ifdef DISABLE_OGRGEOM_TRANSFORM
     return OGRERR_FAILURE;
 #else
-    double      *xyz;
-    int         *pabSuccess;
-    int         i, j;
+    double *xyz;
+    int    *pabSuccess;
+    int    i, j;
 
 /* -------------------------------------------------------------------- */
 /*   Make a copy of the points to operate on, so as to be able to       */
@@ -1283,47 +1293,48 @@ OGRErr OGRLineString::transform( OGRCoordinateTransformation *poCT )
 /*   or keeping intact the original geometry if only full reprojection  */
 /*   allowed.                                                           */
 /* -------------------------------------------------------------------- */
-    xyz = (double *) VSIMalloc(sizeof(double) * nPointCount * 3);
-    pabSuccess = (int *) VSICalloc(sizeof(int), nPointCount);
-    if( xyz == NULL || pabSuccess == NULL )
+    xyz        = (double*) VSIMalloc(sizeof(double) * nPointCount * 3);
+    pabSuccess = (int*) VSICalloc(sizeof(int), nPointCount);
+    if (xyz == NULL || pabSuccess == NULL)
     {
         VSIFree(xyz);
         VSIFree(pabSuccess);
         return OGRERR_NOT_ENOUGH_MEMORY;
     }
 
-    for( i = 0; i < nPointCount; i++ )
+    for (i = 0; i < nPointCount; i++)
     {
-        xyz[i  ] = paoPoints[i].x;
-        xyz[i+nPointCount] = paoPoints[i].y;
-        if( padfZ )
-            xyz[i+nPointCount*2] = padfZ[i];
+        xyz[i]               = paoPoints[i].x;
+        xyz[i + nPointCount] = paoPoints[i].y;
+        if (padfZ)
+            xyz[i + nPointCount * 2] = padfZ[i];
         else
-            xyz[i+nPointCount*2] = 0.0;
+            xyz[i + nPointCount * 2] = 0.0;
     }
 
 /* -------------------------------------------------------------------- */
 /*      Transform and reapply.                                          */
 /* -------------------------------------------------------------------- */
-    poCT->TransformEx( nPointCount, xyz, xyz + nPointCount,
-                       xyz+nPointCount*2, pabSuccess );
+    poCT->TransformEx(nPointCount, xyz, xyz + nPointCount,
+                      xyz + nPointCount * 2, pabSuccess);
 
-    const char* pszEnablePartialReprojection = NULL;
+    const char *pszEnablePartialReprojection = NULL;
 
-    for( i = 0, j = 0; i < nPointCount; i++ )
+    for (i = 0, j = 0; i < nPointCount; i++)
     {
         if (pabSuccess[i])
         {
-            xyz[j] = xyz[i];
-            xyz[j+nPointCount] = xyz[i+nPointCount];
-            xyz[j+2*nPointCount] = xyz[i+2*nPointCount];
-            j ++;
+            xyz[j]                   = xyz[i];
+            xyz[j + nPointCount]     = xyz[i + nPointCount];
+            xyz[j + 2 * nPointCount] = xyz[i + 2 * nPointCount];
+            j++;
         }
         else
         {
             if (pszEnablePartialReprojection == NULL)
                 pszEnablePartialReprojection =
                     CPLGetConfigOption("OGR_ENABLE_PARTIAL_REPROJECTION", NULL);
+
             if (pszEnablePartialReprojection == NULL)
             {
                 static int bHasWarned = FALSE;
@@ -1332,28 +1343,30 @@ OGRErr OGRLineString::transform( OGRCoordinateTransformation *poCT )
                     /* Check that there is at least one valid reprojected point */
                     /* and issue an error giving an hint to use OGR_ENABLE_PARTIAL_REPROJECTION */
                     int bHasOneValidPoint = (j != 0);
-                    for( ; i < nPointCount && !bHasOneValidPoint; i++ )
+
+                    for (; i < nPointCount && !bHasOneValidPoint; i++)
                     {
                         if (pabSuccess[i])
                             bHasOneValidPoint = TRUE;
                     }
+
                     if (bHasOneValidPoint)
                     {
                         bHasWarned = TRUE;
                         CPLError(CE_Failure, CPLE_AppDefined,
-                                "Full reprojection failed, but partial is possible if you define "
-                                "OGR_ENABLE_PARTIAL_REPROJECTION configuration option to TRUE");
+                                 "Full reprojection failed, but partial is possible if you define "
+                                 "OGR_ENABLE_PARTIAL_REPROJECTION configuration option to TRUE");
                     }
                 }
 
-                CPLFree( xyz );
-                CPLFree( pabSuccess );
+                CPLFree(xyz);
+                CPLFree(pabSuccess);
                 return OGRERR_FAILURE;
             }
             else if (!CSLTestBoolean(pszEnablePartialReprojection))
             {
-                CPLFree( xyz );
-                CPLFree( pabSuccess );
+                CPLFree(xyz);
+                CPLFree(pabSuccess);
                 return OGRERR_FAILURE;
             }
         }
@@ -1361,17 +1374,17 @@ OGRErr OGRLineString::transform( OGRCoordinateTransformation *poCT )
 
     if (j == 0 && nPointCount != 0)
     {
-        CPLFree( xyz );
-        CPLFree( pabSuccess );
+        CPLFree(xyz);
+        CPLFree(pabSuccess);
         return OGRERR_FAILURE;
     }
 
-    setPoints( j, xyz, xyz+nPointCount,
-            ( padfZ ) ? xyz+nPointCount*2 : NULL);
-    CPLFree( xyz );
-    CPLFree( pabSuccess );
+    setPoints(j, xyz, xyz + nPointCount,
+              (padfZ) ? xyz + nPointCount * 2 : NULL);
+    CPLFree(xyz);
+    CPLFree(pabSuccess);
 
-    assignSpatialReference( poCT->GetTargetCS() );
+    assignSpatialReference(poCT->GetTargetCS());
 
     return OGRERR_NONE;
 #endif
@@ -1381,7 +1394,7 @@ OGRErr OGRLineString::transform( OGRCoordinateTransformation *poCT )
 /*                               IsEmpty()                              */
 /************************************************************************/
 
-OGRBoolean OGRLineString::IsEmpty(  ) const
+OGRBoolean OGRLineString::IsEmpty() const
 {
     return (nPointCount == 0);
 }
@@ -1390,7 +1403,7 @@ OGRBoolean OGRLineString::IsEmpty(  ) const
 /*                     OGRLineString::segmentize()                      */
 /************************************************************************/
 
-void OGRLineString::segmentize( double dfMaxLength )
+void OGRLineString::segmentize(double dfMaxLength)
 {
     if (dfMaxLength <= 0)
     {
@@ -1399,22 +1412,22 @@ void OGRLineString::segmentize( double dfMaxLength )
         return;
     }
 
-    int i;
-    OGRRawPoint* paoNewPoints = NULL;
-    double* padfNewZ = NULL;
-    int nNewPointCount = 0;
-    double dfSquareMaxLength = dfMaxLength * dfMaxLength;
+    int         i;
+    OGRRawPoint *paoNewPoints     = NULL;
+    double      *padfNewZ         = NULL;
+    int         nNewPointCount    = 0;
+    double      dfSquareMaxLength = dfMaxLength * dfMaxLength;
 
-    for( i = 0; i < nPointCount; i++ )
+    for (i = 0; i < nPointCount; i++)
     {
-        paoNewPoints = (OGRRawPoint *)
-            OGRRealloc(paoNewPoints, sizeof(OGRRawPoint) * (nNewPointCount + 1));
+        paoNewPoints = (OGRRawPoint*)
+                       OGRRealloc(paoNewPoints, sizeof(OGRRawPoint) * (nNewPointCount + 1));
         paoNewPoints[nNewPointCount] = paoPoints[i];
 
-        if( getCoordinateDimension() == 3 )
+        if (getCoordinateDimension() == 3)
         {
-            padfNewZ = (double *)
-                OGRRealloc(padfNewZ, sizeof(double) * (nNewPointCount + 1));
+            padfNewZ = (double*)
+                       OGRRealloc(padfNewZ, sizeof(double) * (nNewPointCount + 1));
             padfNewZ[nNewPointCount] = padfZ[i];
         }
 
@@ -1423,27 +1436,27 @@ void OGRLineString::segmentize( double dfMaxLength )
         if (i == nPointCount - 1)
             break;
 
-        double dfX = paoPoints[i+1].x - paoPoints[i].x;
-        double dfY = paoPoints[i+1].y - paoPoints[i].y;
+        double dfX          = paoPoints[i + 1].x - paoPoints[i].x;
+        double dfY          = paoPoints[i + 1].y - paoPoints[i].y;
         double dfSquareDist = dfX * dfX + dfY * dfY;
         if (dfSquareDist > dfSquareMaxLength)
         {
             int nIntermediatePoints = (int)floor(sqrt(dfSquareDist / dfSquareMaxLength));
             int j;
 
-            paoNewPoints = (OGRRawPoint *)
-                OGRRealloc(paoNewPoints, sizeof(OGRRawPoint) * (nNewPointCount + nIntermediatePoints));
-            if( getCoordinateDimension() == 3 )
+            paoNewPoints = (OGRRawPoint*)
+                           OGRRealloc(paoNewPoints, sizeof(OGRRawPoint) * (nNewPointCount + nIntermediatePoints));
+            if (getCoordinateDimension() == 3)
             {
-                padfNewZ = (double *)
-                    OGRRealloc(padfNewZ, sizeof(double) * (nNewPointCount + nIntermediatePoints));
+                padfNewZ = (double*)
+                           OGRRealloc(padfNewZ, sizeof(double) * (nNewPointCount + nIntermediatePoints));
             }
 
-            for(j=1;j<=nIntermediatePoints;j++)
+            for (j = 1; j <= nIntermediatePoints; j++)
             {
                 paoNewPoints[nNewPointCount + j - 1].x = paoPoints[i].x + j * dfX / (nIntermediatePoints + 1);
                 paoNewPoints[nNewPointCount + j - 1].y = paoPoints[i].y + j * dfY / (nIntermediatePoints + 1);
-                if( getCoordinateDimension() == 3 )
+                if (getCoordinateDimension() == 3)
                 {
                     /* No interpolation */
                     padfNewZ[nNewPointCount + j - 1] = 0;
@@ -1455,10 +1468,10 @@ void OGRLineString::segmentize( double dfMaxLength )
     }
 
     OGRFree(paoPoints);
-    paoPoints = paoNewPoints;
+    paoPoints   = paoNewPoints;
     nPointCount = nNewPointCount;
 
-    if( getCoordinateDimension() == 3 )
+    if (getCoordinateDimension() == 3)
     {
         OGRFree(padfZ);
         padfZ = padfNewZ;
@@ -1472,7 +1485,8 @@ void OGRLineString::segmentize( double dfMaxLength )
 void OGRLineString::swapXY()
 {
     int i;
-    for( i = 0; i < nPointCount; i++ )
+
+    for (i = 0; i < nPointCount; i++)
     {
         double dfTemp = paoPoints[i].x;
         paoPoints[i].x = paoPoints[i].y;

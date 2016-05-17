@@ -34,53 +34,53 @@
 #include "gdal_priv.h"
 
 CPL_C_START
-void	GDALRegister_MEM(void);
-GDALRasterBandH CPL_DLL MEMCreateRasterBand( GDALDataset *, int, GByte *,
-                                             GDALDataType, int, int, int );
+void    GDALRegister_MEM(void);
+GDALRasterBandH CPL_DLL MEMCreateRasterBand(GDALDataset*, int, GByte*,
+                                            GDALDataType, int, int, int);
 CPL_C_END
 
 /************************************************************************/
-/*				MEMDataset				*/
+/*                              MEMDataset                              */
 /************************************************************************/
 
 class MEMRasterBand;
 
 class CPL_DLL MEMDataset : public GDALDataset
 {
-    int         bGeoTransformSet;
-    double	adfGeoTransform[6];
+int    bGeoTransformSet;
+double adfGeoTransform[6];
 
-    char        *pszProjection;
+char *pszProjection;
 
-    int          nGCPCount;
-    GDAL_GCP    *pasGCPs;
-    CPLString    osGCPProjection;
+int       nGCPCount;
+GDAL_GCP  *pasGCPs;
+CPLString osGCPProjection;
 
-  public:
-                 MEMDataset();
-    virtual      ~MEMDataset();
+public:
+MEMDataset();
+virtual ~MEMDataset();
 
-    virtual const char *GetProjectionRef(void);
-    virtual CPLErr SetProjection( const char * );
+virtual const char* GetProjectionRef(void);
+virtual CPLErr SetProjection(const char*);
 
-    virtual CPLErr GetGeoTransform( double * );
-    virtual CPLErr SetGeoTransform( double * );
+virtual CPLErr GetGeoTransform(double*);
+virtual CPLErr SetGeoTransform(double*);
 
-    virtual void *GetInternalHandle( const char * );
+virtual void* GetInternalHandle(const char*);
 
-    virtual int    GetGCPCount();
-    virtual const char *GetGCPProjection();
-    virtual const GDAL_GCP *GetGCPs();
-    virtual CPLErr SetGCPs( int nGCPCount, const GDAL_GCP *pasGCPList,
-                            const char *pszGCPProjection );
+virtual int    GetGCPCount();
+virtual const char* GetGCPProjection();
+virtual const GDAL_GCP* GetGCPs();
+virtual CPLErr SetGCPs(int nGCPCount, const GDAL_GCP *pasGCPList,
+                       const char *pszGCPProjection);
 
-    virtual CPLErr        AddBand( GDALDataType eType, 
-                                   char **papszOptions=NULL );
+virtual CPLErr        AddBand(GDALDataType eType,
+                              char **papszOptions = NULL);
 
-    static GDALDataset *Open( GDALOpenInfo * );
-    static GDALDataset *Create( const char * pszFilename,
-                                int nXSize, int nYSize, int nBands,
-                                GDALDataType eType, char ** papszParmList );
+static GDALDataset* Open(GDALOpenInfo*);
+static GDALDataset* Create(const char *pszFilename,
+                           int nXSize, int nYSize, int nBands,
+                           GDALDataType eType, char **papszParmList);
 };
 
 /************************************************************************/
@@ -89,69 +89,71 @@ class CPL_DLL MEMDataset : public GDALDataset
 
 class CPL_DLL MEMRasterBand : public GDALPamRasterBand
 {
-  protected:
+protected:
 
-    GByte      *pabyData;
-    int         nPixelOffset;
-    int         nLineOffset;
-    int         bOwnData;
+GByte *pabyData;
+int   nPixelOffset;
+int   nLineOffset;
+int   bOwnData;
 
-    int         bNoDataSet;
-    double      dfNoData;
+int    bNoDataSet;
+double dfNoData;
 
-    GDALColorTable *poColorTable;
-    GDALColorInterp eColorInterp;
+GDALColorTable  *poColorTable;
+GDALColorInterp eColorInterp;
 
-    char           *pszUnitType;
-    char           **papszCategoryNames;
-    
-    double         dfOffset;
-    double         dfScale;
+char *pszUnitType;
+char **papszCategoryNames;
 
-    CPLXMLNode    *psSavedHistograms;
-  public:
+double dfOffset;
+double dfScale;
 
-                   MEMRasterBand( GDALDataset *poDS, int nBand,
-                                  GByte *pabyData, GDALDataType eType,
-                                  int nPixelOffset, int nLineOffset,
-                                  int bAssumeOwnership,  const char * pszPixelType = NULL);
-    virtual        ~MEMRasterBand();
+CPLXMLNode *psSavedHistograms;
+public:
 
-    // should override RasterIO eventually.
+MEMRasterBand(GDALDataset *poDS, int nBand,
+              GByte *pabyData, GDALDataType eType,
+              int nPixelOffset, int nLineOffset,
+              int bAssumeOwnership,  const char *pszPixelType = NULL);
+virtual ~MEMRasterBand();
 
-    virtual CPLErr IReadBlock( int, int, void * );
-    virtual CPLErr IWriteBlock( int, int, void * );
+// should override RasterIO eventually.
 
-    virtual double GetNoDataValue( int *pbSuccess = NULL );
-    virtual CPLErr SetNoDataValue( double );
+virtual CPLErr IReadBlock(int, int, void*);
+virtual CPLErr IWriteBlock(int, int, void*);
 
-    virtual GDALColorInterp GetColorInterpretation();
-    virtual GDALColorTable *GetColorTable();
-    virtual CPLErr SetColorTable( GDALColorTable * ); 
+virtual double GetNoDataValue(int *pbSuccess = NULL);
+virtual CPLErr SetNoDataValue(double);
 
-    virtual CPLErr SetColorInterpretation( GDALColorInterp );
+virtual GDALColorInterp GetColorInterpretation();
+virtual GDALColorTable* GetColorTable();
+virtual CPLErr SetColorTable(GDALColorTable*);
 
-    virtual const char *GetUnitType();
-    CPLErr SetUnitType( const char * ); 
+virtual CPLErr SetColorInterpretation(GDALColorInterp);
 
-    virtual char **GetCategoryNames();
-    virtual CPLErr SetCategoryNames( char ** );
+virtual const char* GetUnitType();
+CPLErr SetUnitType(const char*);
 
-    virtual double GetOffset( int *pbSuccess = NULL );
-    CPLErr SetOffset( double );
-    virtual double GetScale( int *pbSuccess = NULL );
-    CPLErr SetScale( double );
+virtual char** GetCategoryNames();
+virtual CPLErr SetCategoryNames(char**);
 
-    virtual CPLErr SetDefaultHistogram( double dfMin, double dfMax,
-                                        int nBuckets, int *panHistogram );
-    virtual CPLErr GetDefaultHistogram( double *pdfMin, double *pdfMax,
-                                        int *pnBuckets, int ** ppanHistogram,
-                                        int bForce,
-                                        GDALProgressFunc, void *pProgressData);
+virtual double GetOffset(int *pbSuccess = NULL);
+CPLErr SetOffset(double);
+virtual double GetScale(int *pbSuccess = NULL);
+CPLErr SetScale(double);
 
-    // allow access to MEM driver's private internal memory buffer
-    GByte *GetData(void) const {return(pabyData);}
+virtual CPLErr SetDefaultHistogram(double dfMin, double dfMax,
+                                   int nBuckets, int *panHistogram);
+virtual CPLErr GetDefaultHistogram(double *pdfMin, double *pdfMax,
+                                   int *pnBuckets, int **ppanHistogram,
+                                   int bForce,
+                                   GDALProgressFunc, void *pProgressData);
+
+// allow access to MEM driver's private internal memory buffer
+GByte* GetData(void) const
+{
+    return(pabyData);
+}
 };
 
 #endif /* ndef MEMDATASET_H_INCLUDED */
-

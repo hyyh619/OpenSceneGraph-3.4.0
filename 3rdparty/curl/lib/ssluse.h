@@ -1,26 +1,26 @@
 #ifndef __SSLUSE_H
 #define __SSLUSE_H
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 
 #ifdef USE_SSLEAY
 /*
@@ -51,7 +51,7 @@ void Curl_ossl_session_free(void *ptr);
 CURLcode Curl_ossl_set_engine_default(struct SessionHandle *data);
 
 /* Build list of OpenSSL engines */
-struct curl_slist *Curl_ossl_engines_list(struct SessionHandle *data);
+struct curl_slist* Curl_ossl_engines_list(struct SessionHandle *data);
 
 int Curl_ossl_init(void);
 void Curl_ossl_cleanup(void);
@@ -79,22 +79,21 @@ bool Curl_ossl_data_pending(const struct connectdata *conn,
                             int connindex);
 
 /* API setup for OpenSSL */
-#define curlssl_init Curl_ossl_init
-#define curlssl_cleanup Curl_ossl_cleanup
-#define curlssl_connect Curl_ossl_connect
+#define curlssl_init                Curl_ossl_init
+#define curlssl_cleanup             Curl_ossl_cleanup
+#define curlssl_connect             Curl_ossl_connect
 #define curlssl_connect_nonblocking Curl_ossl_connect_nonblocking
 #define curlssl_session_free(x) Curl_ossl_session_free(x)
 #define curlssl_close_all Curl_ossl_close_all
-#define curlssl_close Curl_ossl_close
-#define curlssl_shutdown(x,y) Curl_ossl_shutdown(x,y)
-#define curlssl_set_engine(x,y) Curl_ossl_set_engine(x,y)
+#define curlssl_close     Curl_ossl_close
+#define curlssl_shutdown(x, y)        Curl_ossl_shutdown(x, y)
+#define curlssl_set_engine(x, y)      Curl_ossl_set_engine(x, y)
 #define curlssl_set_engine_default(x) Curl_ossl_set_engine_default(x)
-#define curlssl_engines_list(x) Curl_ossl_engines_list(x)
-#define curlssl_send Curl_ossl_send
-#define curlssl_recv Curl_ossl_recv
-#define curlssl_version Curl_ossl_version
+#define curlssl_engines_list(x)       Curl_ossl_engines_list(x)
+#define curlssl_send      Curl_ossl_send
+#define curlssl_recv      Curl_ossl_recv
+#define curlssl_version   Curl_ossl_version
 #define curlssl_check_cxn Curl_ossl_check_cxn
-#define curlssl_data_pending(x,y) Curl_ossl_data_pending(x,y)
-
+#define curlssl_data_pending(x, y) Curl_ossl_data_pending(x, y)
 #endif /* USE_SSLEAY */
 #endif /* __SSLUSE_H */

@@ -39,8 +39,8 @@
 /************************************************************************/
 #ifdef __GNUC__
 
-static void GDALInitialize(void) __attribute__ ((constructor)) ;
-static void GDALDestroy(void)    __attribute__ ((destructor)) ;
+static void GDALInitialize(void) __attribute__ ((constructor));
+static void GDALDestroy(void)    __attribute__ ((destructor));
 
 /************************************************************************/
 /* Called when GDAL is loaded by loader or by dlopen(),                 */
@@ -50,7 +50,7 @@ static void GDALDestroy(void)    __attribute__ ((destructor)) ;
 static void GDALInitialize(void)
 {
     // nothing to do
-    //CPLDebug("GDAL", "Library loaded");
+    // CPLDebug("GDAL", "Library loaded");
 }
 
 /************************************************************************/
@@ -61,7 +61,7 @@ static void GDALInitialize(void)
 static void GDALDestroy(void)
 {
     // TODO: Confirm if calling CPLCleanupTLS here is safe
-    //CPLCleanupTLS();
+    // CPLCleanupTLS();
 
     CPLDebug("GDAL", "In GDALDestroy - unloading GDAL shared library.");
     GDALDestroyDriverManager();
@@ -70,7 +70,6 @@ static void GDALDestroy(void)
     OGRCleanupAll();
 #endif
 }
-
 #endif // __GNUC__
 
 
@@ -108,8 +107,6 @@ extern "C" int WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRese
 #endif
     }
 
-	return 1; // ignroed for all reasons but DLL_PROCESS_ATTACH
+    return 1;     // ignroed for all reasons but DLL_PROCESS_ATTACH
 }
-
 #endif // _MSC_VER
-

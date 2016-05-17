@@ -1,36 +1,36 @@
 #ifndef __SETUP_ONCE_H
 #define __SETUP_ONCE_H
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2009, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2009, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 
 
 /********************************************************************
- *                              NOTICE                              *
- *                             ========                             *
- *                                                                  *
- *  Content of header files lib/setup_once.h and ares/setup_once.h  *
- *  must be kept in sync. Modify the other one if you change this.  *
- *                                                                  *
- ********************************************************************/
+*                              NOTICE                              *
+*                             ========                             *
+*                                                                  *
+*  Content of header files lib/setup_once.h and ares/setup_once.h  *
+*  must be kept in sync. Modify the other one if you change this.  *
+*                                                                  *
+********************************************************************/
 
 
 /*
@@ -86,9 +86,10 @@
  */
 
 #ifndef HAVE_STRUCT_TIMEVAL
-struct timeval {
- long tv_sec;
- long tv_usec;
+struct timeval
+{
+    long tv_sec;
+    long tv_usec;
 };
 #endif
 
@@ -107,9 +108,9 @@ struct timeval {
 
 #if defined(__minix)
 /* Minix doesn't support recv on TCP sockets */
-#define sread(x,y,z) (ssize_t)read((RECV_TYPE_ARG1)(x), \
-                                   (RECV_TYPE_ARG2)(y), \
-                                   (RECV_TYPE_ARG3)(z))
+#define sread(x, y, z) (ssize_t)read((RECV_TYPE_ARG1)(x), \
+                                     (RECV_TYPE_ARG2)(y), \
+                                     (RECV_TYPE_ARG3)(z))
 
 #elif defined(HAVE_RECV)
 /*
@@ -139,29 +140,29 @@ struct timeval {
     !defined(RECV_TYPE_ARG3) || \
     !defined(RECV_TYPE_ARG4) || \
     !defined(RECV_TYPE_RETV)
-  /* */
-  Error Missing_definition_of_return_and_arguments_types_of_recv
-  /* */
+/* */
+Error Missing_definition_of_return_and_arguments_types_of_recv
+/* */
 #else
-#define sread(x,y,z) (ssize_t)recv((RECV_TYPE_ARG1)(x), \
-                                   (RECV_TYPE_ARG2)(y), \
-                                   (RECV_TYPE_ARG3)(z), \
-                                   (RECV_TYPE_ARG4)(0))
+#define sread(x, y, z) (ssize_t)recv((RECV_TYPE_ARG1)(x), \
+                                     (RECV_TYPE_ARG2)(y), \
+                                     (RECV_TYPE_ARG3)(z), \
+                                     (RECV_TYPE_ARG4)(0))
 #endif
 #else /* HAVE_RECV */
 #ifndef sread
-  /* */
-  Error Missing_definition_of_macro_sread
-  /* */
+/* */
+Error Missing_definition_of_macro_sread
+/* */
 #endif
 #endif /* HAVE_RECV */
 
 
 #if defined(__minix)
 /* Minix doesn't support send on TCP sockets */
-#define swrite(x,y,z) (ssize_t)write((SEND_TYPE_ARG1)(x), \
-                                    (SEND_TYPE_ARG2)(y), \
-                                    (SEND_TYPE_ARG3)(z))
+#define swrite(x, y, z) (ssize_t)write((SEND_TYPE_ARG1)(x), \
+                                       (SEND_TYPE_ARG2)(y), \
+                                       (SEND_TYPE_ARG3)(z))
 
 #elif defined(HAVE_SEND)
 #if !defined(SEND_TYPE_ARG1) || \
@@ -170,20 +171,20 @@ struct timeval {
     !defined(SEND_TYPE_ARG3) || \
     !defined(SEND_TYPE_ARG4) || \
     !defined(SEND_TYPE_RETV)
-  /* */
-  Error Missing_definition_of_return_and_arguments_types_of_send
-  /* */
+/* */
+Error Missing_definition_of_return_and_arguments_types_of_send
+/* */
 #else
-#define swrite(x,y,z) (ssize_t)send((SEND_TYPE_ARG1)(x), \
-                                    (SEND_TYPE_ARG2)(y), \
-                                    (SEND_TYPE_ARG3)(z), \
-                                    (SEND_TYPE_ARG4)(SEND_4TH_ARG))
+#define swrite(x, y, z) (ssize_t)send((SEND_TYPE_ARG1)(x), \
+                                      (SEND_TYPE_ARG2)(y), \
+                                      (SEND_TYPE_ARG3)(z), \
+                                      (SEND_TYPE_ARG4)(SEND_4TH_ARG))
 #endif
 #else /* HAVE_SEND */
 #ifndef swrite
-  /* */
-  Error Missing_definition_of_macro_swrite
-  /* */
+/* */
+Error Missing_definition_of_macro_swrite
+/* */
 #endif
 #endif /* HAVE_SEND */
 
@@ -200,22 +201,22 @@ struct timeval {
     !defined(RECVFROM_TYPE_ARG5) || \
     !defined(RECVFROM_TYPE_ARG6) || \
     !defined(RECVFROM_TYPE_RETV)
-  /* */
-  Error Missing_definition_of_return_and_arguments_types_of_recvfrom
-  /* */
+/* */
+Error Missing_definition_of_return_and_arguments_types_of_recvfrom
+/* */
 #else
-#define sreadfrom(s,b,bl,f,fl) (ssize_t)recvfrom((RECVFROM_TYPE_ARG1)  (s),  \
-                                                 (RECVFROM_TYPE_ARG2 *)(b),  \
-                                                 (RECVFROM_TYPE_ARG3)  (bl), \
-                                                 (RECVFROM_TYPE_ARG4)  (0),  \
-                                                 (RECVFROM_TYPE_ARG5 *)(f),  \
-                                                 (RECVFROM_TYPE_ARG6 *)(fl))
+#define sreadfrom(s, b, bl, f, fl) (ssize_t)recvfrom((RECVFROM_TYPE_ARG1)  (s),  \
+                                                     (RECVFROM_TYPE_ARG2*)(b),   \
+                                                     (RECVFROM_TYPE_ARG3)  (bl), \
+                                                     (RECVFROM_TYPE_ARG4)  (0),  \
+                                                     (RECVFROM_TYPE_ARG5*)(f),   \
+                                                     (RECVFROM_TYPE_ARG6*)(fl))
 #endif
 #else /* HAVE_RECVFROM */
 #ifndef sreadfrom
-  /* */
-  Error Missing_definition_of_macro_sreadfrom
-  /* */
+/* */
+Error Missing_definition_of_macro_sreadfrom
+/* */
 #endif
 #endif /* HAVE_RECVFROM */
 
@@ -233,11 +234,11 @@ struct timeval {
  */
 
 #if defined(HAVE_CLOSESOCKET)
-#  define sclose(x)  closesocket((x))
+#  define sclose(x) closesocket((x))
 #elif defined(HAVE_CLOSESOCKET_CAMEL)
-#  define sclose(x)  CloseSocket((x))
+#  define sclose(x) CloseSocket((x))
 #else
-#  define sclose(x)  close((x))
+#  define sclose(x) close((x))
 #endif
 
 
@@ -256,8 +257,8 @@ struct timeval {
 #define ISUPPER(x)  (isupper((int)  ((unsigned char)x)))
 #define ISLOWER(x)  (islower((int)  ((unsigned char)x)))
 
-#define ISBLANK(x)  (int)((((unsigned char)x) == ' ') || \
-                          (((unsigned char)x) == '\t'))
+#define ISBLANK(x) (int)((((unsigned char)x) == ' ') || \
+                         (((unsigned char)x) == '\t'))
 
 
 /*
@@ -340,11 +341,11 @@ typedef int sig_atomic_t;
  */
 
 #ifdef USE_WINSOCK
-#define SOCKERRNO         ((int)WSAGetLastError())
-#define SET_SOCKERRNO(x)  (WSASetLastError((int)(x)))
+#define SOCKERRNO ((int)WSAGetLastError())
+#define SET_SOCKERRNO(x) (WSASetLastError((int)(x)))
 #else
-#define SOCKERRNO         (errno)
-#define SET_SOCKERRNO(x)  (errno = (x))
+#define SOCKERRNO (errno)
+#define SET_SOCKERRNO(x) (errno = (x))
 #endif
 
 
@@ -354,11 +355,11 @@ typedef int sig_atomic_t;
  */
 
 #ifdef WIN32
-#define ERRNO         ((int)GetLastError())
-#define SET_ERRNO(x)  (SetLastError((DWORD)(x)))
+#define ERRNO ((int)GetLastError())
+#define SET_ERRNO(x) (SetLastError((DWORD)(x)))
 #else
-#define ERRNO         (errno)
-#define SET_ERRNO(x)  (errno = (x))
+#define ERRNO (errno)
+#define SET_ERRNO(x) (errno = (x))
 #endif
 
 
@@ -368,52 +369,52 @@ typedef int sig_atomic_t;
 
 #ifdef USE_WINSOCK
 #undef  EBADF            /* override definition in errno.h */
-#define EBADF            WSAEBADF
+#define EBADF WSAEBADF
 #undef  EINTR            /* override definition in errno.h */
-#define EINTR            WSAEINTR
+#define EINTR WSAEINTR
 #undef  EINVAL           /* override definition in errno.h */
-#define EINVAL           WSAEINVAL
-#define EWOULDBLOCK      WSAEWOULDBLOCK
-#define EINPROGRESS      WSAEINPROGRESS
-#define EALREADY         WSAEALREADY
-#define ENOTSOCK         WSAENOTSOCK
-#define EDESTADDRREQ     WSAEDESTADDRREQ
-#define EMSGSIZE         WSAEMSGSIZE
-#define EPROTOTYPE       WSAEPROTOTYPE
-#define ENOPROTOOPT      WSAENOPROTOOPT
-#define EPROTONOSUPPORT  WSAEPROTONOSUPPORT
-#define ESOCKTNOSUPPORT  WSAESOCKTNOSUPPORT
-#define EOPNOTSUPP       WSAEOPNOTSUPP
-#define EPFNOSUPPORT     WSAEPFNOSUPPORT
-#define EAFNOSUPPORT     WSAEAFNOSUPPORT
-#define EADDRINUSE       WSAEADDRINUSE
-#define EADDRNOTAVAIL    WSAEADDRNOTAVAIL
-#define ENETDOWN         WSAENETDOWN
-#define ENETUNREACH      WSAENETUNREACH
-#define ENETRESET        WSAENETRESET
-#define ECONNABORTED     WSAECONNABORTED
-#define ECONNRESET       WSAECONNRESET
-#define ENOBUFS          WSAENOBUFS
-#define EISCONN          WSAEISCONN
-#define ENOTCONN         WSAENOTCONN
-#define ESHUTDOWN        WSAESHUTDOWN
-#define ETOOMANYREFS     WSAETOOMANYREFS
-#define ETIMEDOUT        WSAETIMEDOUT
-#define ECONNREFUSED     WSAECONNREFUSED
-#define ELOOP            WSAELOOP
+#define EINVAL          WSAEINVAL
+#define EWOULDBLOCK     WSAEWOULDBLOCK
+#define EINPROGRESS     WSAEINPROGRESS
+#define EALREADY        WSAEALREADY
+#define ENOTSOCK        WSAENOTSOCK
+#define EDESTADDRREQ    WSAEDESTADDRREQ
+#define EMSGSIZE        WSAEMSGSIZE
+#define EPROTOTYPE      WSAEPROTOTYPE
+#define ENOPROTOOPT     WSAENOPROTOOPT
+#define EPROTONOSUPPORT WSAEPROTONOSUPPORT
+#define ESOCKTNOSUPPORT WSAESOCKTNOSUPPORT
+#define EOPNOTSUPP      WSAEOPNOTSUPP
+#define EPFNOSUPPORT    WSAEPFNOSUPPORT
+#define EAFNOSUPPORT    WSAEAFNOSUPPORT
+#define EADDRINUSE      WSAEADDRINUSE
+#define EADDRNOTAVAIL   WSAEADDRNOTAVAIL
+#define ENETDOWN        WSAENETDOWN
+#define ENETUNREACH     WSAENETUNREACH
+#define ENETRESET       WSAENETRESET
+#define ECONNABORTED    WSAECONNABORTED
+#define ECONNRESET      WSAECONNRESET
+#define ENOBUFS         WSAENOBUFS
+#define EISCONN         WSAEISCONN
+#define ENOTCONN        WSAENOTCONN
+#define ESHUTDOWN       WSAESHUTDOWN
+#define ETOOMANYREFS    WSAETOOMANYREFS
+#define ETIMEDOUT       WSAETIMEDOUT
+#define ECONNREFUSED    WSAECONNREFUSED
+#define ELOOP           WSAELOOP
 #ifndef ENAMETOOLONG     /* possible previous definition in errno.h */
-#define ENAMETOOLONG     WSAENAMETOOLONG
+#define ENAMETOOLONG WSAENAMETOOLONG
 #endif
-#define EHOSTDOWN        WSAEHOSTDOWN
-#define EHOSTUNREACH     WSAEHOSTUNREACH
+#define EHOSTDOWN    WSAEHOSTDOWN
+#define EHOSTUNREACH WSAEHOSTUNREACH
 #ifndef ENOTEMPTY        /* possible previous definition in errno.h */
-#define ENOTEMPTY        WSAENOTEMPTY
+#define ENOTEMPTY WSAENOTEMPTY
 #endif
-#define EPROCLIM         WSAEPROCLIM
-#define EUSERS           WSAEUSERS
-#define EDQUOT           WSAEDQUOT
-#define ESTALE           WSAESTALE
-#define EREMOTE          WSAEREMOTE
+#define EPROCLIM WSAEPROCLIM
+#define EUSERS   WSAEUSERS
+#define EDQUOT   WSAEDQUOT
+#define ESTALE   WSAESTALE
+#define EREMOTE  WSAEREMOTE
 #endif
 
 
@@ -432,9 +433,9 @@ typedef int sig_atomic_t;
  */
 
 #ifdef __VMS
-#define argv_item_t  __char_ptr32
+#define argv_item_t __char_ptr32
 #else
-#define argv_item_t  char *
+#define argv_item_t char*
 #endif
 
 
@@ -447,4 +448,3 @@ typedef int sig_atomic_t;
 
 
 #endif /* __SETUP_ONCE_H */
-

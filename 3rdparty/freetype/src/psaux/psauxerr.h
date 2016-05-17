@@ -16,12 +16,12 @@
 /***************************************************************************/
 
 
-  /*************************************************************************/
-  /*                                                                       */
-  /* This file is used to define the PS auxiliary module error enumeration */
-  /* constants.                                                            */
-  /*                                                                       */
-  /*************************************************************************/
+/*************************************************************************/
+/*                                                                       */
+/* This file is used to define the PS auxiliary module error enumeration */
+/* constants.                                                            */
+/*                                                                       */
+/*************************************************************************/
 
 #ifndef __PSAUXERR_H__
 #define __PSAUXERR_H__
@@ -30,8 +30,8 @@
 
 #undef __FTERRORS_H__
 
-#define FT_ERR_PREFIX  PSaux_Err_
-#define FT_ERR_BASE    FT_Mod_Err_PSaux
+#define FT_ERR_PREFIX PSaux_Err_
+#define FT_ERR_BASE   FT_Mod_Err_PSaux
 
 #include FT_ERRORS_H
 

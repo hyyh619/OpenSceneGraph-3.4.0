@@ -1,32 +1,32 @@
 #ifndef __SSLGEN_H
 #define __SSLGEN_H
 /***************************************************************************
- *                                  _   _ ____  _
- *  Project                     ___| | | |  _ \| |
- *                             / __| | | | |_) | |
- *                            | (__| |_| |  _ <| |___
- *                             \___|\___/|_| \_\_____|
- *
- * Copyright (C) 1998 - 2008, 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
- *
- * This software is licensed as described in the file COPYING, which
- * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
- *
- * You may opt to use, copy, modify, merge, publish, distribute and/or sell
- * copies of the Software, and permit persons to whom the Software is
- * furnished to do so, under the terms of the COPYING file.
- *
- * This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
- * KIND, either express or implied.
- *
- ***************************************************************************/
+*                                  _   _ ____  _
+*  Project                     ___| | | |  _ \| |
+*                             / __| | | | |_) | |
+*                            | (__| |_| |  _ <| |___
+*                             \___|\___/|_| \_\_____|
+*
+* Copyright (C) 1998 - 2008, 2010, Daniel Stenberg, <daniel@haxx.se>, et al.
+*
+* This software is licensed as described in the file COPYING, which
+* you should have received as part of this distribution. The terms
+* are also available at http://curl.haxx.se/docs/copyright.html.
+*
+* You may opt to use, copy, modify, merge, publish, distribute and/or sell
+* copies of the Software, and permit persons to whom the Software is
+* furnished to do so, under the terms of the COPYING file.
+*
+* This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+* KIND, either express or implied.
+*
+***************************************************************************/
 
-bool Curl_ssl_config_matches(struct ssl_config_data* data,
-                             struct ssl_config_data* needle);
-bool Curl_clone_ssl_config(struct ssl_config_data* source,
-                           struct ssl_config_data* dest);
-void Curl_free_ssl_config(struct ssl_config_data* sslc);
+bool Curl_ssl_config_matches(struct ssl_config_data *data,
+                             struct ssl_config_data *needle);
+bool Curl_clone_ssl_config(struct ssl_config_data *source,
+                           struct ssl_config_data *dest);
+void Curl_free_ssl_config(struct ssl_config_data *sslc);
 
 #ifdef USE_SSL
 int Curl_ssl_init(void);
@@ -43,7 +43,7 @@ CURLcode Curl_ssl_shutdown(struct connectdata *conn, int sockindex);
 CURLcode Curl_ssl_set_engine(struct SessionHandle *data, const char *engine);
 /* Sets engine as default for all SSL operations */
 CURLcode Curl_ssl_set_engine_default(struct SessionHandle *data);
-struct curl_slist *Curl_ssl_engines_list(struct SessionHandle *data);
+struct curl_slist* Curl_ssl_engines_list(struct SessionHandle *data);
 
 /* If the write would block (EWOULDBLOCK) or fail, we we return -1.
  * The error or -1 (for EWOULDBLOCK) is then stored in *curlcode.
@@ -68,7 +68,7 @@ ssize_t Curl_ssl_recv(struct connectdata *conn, /* connection data */
                                                    -1 means EWOULDBLOCK */
 
 /* init the SSL session ID cache */
-CURLcode Curl_ssl_initsessions(struct SessionHandle *, long);
+CURLcode Curl_ssl_initsessions(struct SessionHandle*, long);
 size_t Curl_ssl_version(char *buffer, size_t size);
 bool Curl_ssl_data_pending(const struct connectdata *conn,
                            int connindex);
@@ -92,23 +92,22 @@ void Curl_ssl_delsessionid(struct connectdata *conn, void *ssl_sessionid);
 
 #else
 /* When SSL support is not present, just define away these function calls */
-#define Curl_ssl_init() 1
-#define Curl_ssl_cleanup() do { } while (0)
-#define Curl_ssl_connect(x,y) CURLE_FAILED_INIT
+#define Curl_ssl_init()        1
+#define Curl_ssl_cleanup()     do { } while (0)
+#define Curl_ssl_connect(x, y) CURLE_FAILED_INIT
 #define Curl_ssl_close_all(x)
-#define Curl_ssl_close(x,y)
-#define Curl_ssl_shutdown(x,y) CURLE_FAILED_INIT
-#define Curl_ssl_set_engine(x,y) CURLE_FAILED_INIT
+#define Curl_ssl_close(x, y)
+#define Curl_ssl_shutdown(x, y)        CURLE_FAILED_INIT
+#define Curl_ssl_set_engine(x, y)      CURLE_FAILED_INIT
 #define Curl_ssl_set_engine_default(x) CURLE_FAILED_INIT
-#define Curl_ssl_engines_list(x) NULL
-#define Curl_ssl_send(a,b,c,d,e) -1
-#define Curl_ssl_recv(a,b,c,d,e) -1
-#define Curl_ssl_initsessions(x,y) CURLE_OK
-#define Curl_ssl_version(x,y) 0
-#define Curl_ssl_data_pending(x,y) 0
-#define Curl_ssl_check_cxn(x) 0
+#define Curl_ssl_engines_list(x)       NULL
+#define Curl_ssl_send(a, b, c, d, e)   - 1
+#define Curl_ssl_recv(a, b, c, d, e)   - 1
+#define Curl_ssl_initsessions(x, y)    CURLE_OK
+#define Curl_ssl_version(x, y)         0
+#define Curl_ssl_data_pending(x, y)    0
+#define Curl_ssl_check_cxn(x)          0
 #define Curl_ssl_free_certinfo(x)
-
 #endif
 
 #endif /* USE_SSL */

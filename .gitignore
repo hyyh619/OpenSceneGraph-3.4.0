@@ -268,4 +268,10 @@ Android/
 Android_Studio_gnustl_static/
 
 *.Po
+<<<<<<< HEAD
 Android_Build.xls
+=======
+
+Windows/
+source.files
+>>>>>>> origin/master

@@ -41,90 +41,90 @@
 class GDALRasterAttributeField
 {
 public:
-    CPLString         sName;
+CPLString sName;
 
-    GDALRATFieldType  eType;
+GDALRATFieldType eType;
 
-    GDALRATFieldUsage eUsage;
+GDALRATFieldUsage eUsage;
 
-    std::vector<GInt32> anValues;
-    std::vector<double> adfValues;
-    std::vector<CPLString> aosValues;
+std::vector<GInt32>    anValues;
+std::vector<double>    adfValues;
+std::vector<CPLString> aosValues;
 };
 
 /************************************************************************/
 /*                       GDALRasterAttributeTable                       */
 /************************************************************************/
 
-//! Raster Attribute Table container.
+// ! Raster Attribute Table container.
 
-class CPL_DLL GDALRasterAttributeTable 
+class CPL_DLL GDALRasterAttributeTable
 {
-    friend const char * CPL_STDCALL GDALRATGetNameOfCol( GDALRasterAttributeTableH, int );
-    friend const char * CPL_STDCALL GDALRATGetValueAsString( GDALRasterAttributeTableH, int, int );
+friend const char*CPL_STDCALL GDALRATGetNameOfCol(GDALRasterAttributeTableH, int);
+friend const char*CPL_STDCALL GDALRATGetValueAsString(GDALRasterAttributeTableH, int, int);
 
 private:
-    std::vector<GDALRasterAttributeField> aoFields;
+std::vector<GDALRasterAttributeField> aoFields;
 
-    int bLinearBinning;
-    double dfRow0Min;
-    double dfBinSize;
+int    bLinearBinning;
+double dfRow0Min;
+double dfBinSize;
 
-    void  AnalyseColumns();
-    int   bColumnsAnalysed;
-    int   nMinCol;
-    int   nMaxCol;
+void  AnalyseColumns();
+int bColumnsAnalysed;
+int nMinCol;
+int nMaxCol;
 
-    int   nRowCount;
+int nRowCount;
 
-    CPLString     osWorkingResult;
+CPLString osWorkingResult;
 
 public:
-    GDALRasterAttributeTable();
-    GDALRasterAttributeTable(const GDALRasterAttributeTable&);
-    ~GDALRasterAttributeTable();
+GDALRasterAttributeTable();
+GDALRasterAttributeTable(const GDALRasterAttributeTable&);
+~GDALRasterAttributeTable();
 
-    GDALRasterAttributeTable *Clone() const;
-    
-    int           GetColumnCount() const;
+GDALRasterAttributeTable* Clone() const;
 
-    const char   *GetNameOfCol( int ) const;
-    GDALRATFieldUsage GetUsageOfCol( int ) const;
-    GDALRATFieldType GetTypeOfCol( int ) const;
-    
-    int           GetColOfUsage( GDALRATFieldUsage ) const;
+int           GetColumnCount() const;
 
-    int           GetRowCount() const;
+const char* GetNameOfCol(int) const;
+GDALRATFieldUsage GetUsageOfCol(int) const;
+GDALRATFieldType GetTypeOfCol(int) const;
 
-    const char   *GetValueAsString( int iRow, int iField ) const;
-    int           GetValueAsInt( int iRow, int iField ) const;
-    double        GetValueAsDouble( int iRow, int iField ) const;
+int GetColOfUsage(GDALRATFieldUsage) const;
 
-    void          SetValue( int iRow, int iField, const char *pszValue );
-    void          SetValue( int iRow, int iField, double dfValue);
-    void          SetValue( int iRow, int iField, int nValue );
-    void          SetRowCount( int iCount );
+int           GetRowCount() const;
 
-    int           GetRowOfValue( double dfValue ) const;
-    int           GetRowOfValue( int nValue ) const;
-    int           GetColorOfValue( double dfValue, GDALColorEntry *psEntry ) const;
+const char* GetValueAsString(int iRow, int iField) const;
+int           GetValueAsInt(int iRow, int iField) const;
+double        GetValueAsDouble(int iRow, int iField) const;
 
-    double        GetRowMin( int iRow ) const;
-    double        GetRowMax( int iRow ) const;
+void          SetValue(int iRow, int iField, const char *pszValue);
+void          SetValue(int iRow, int iField, double dfValue);
+void          SetValue(int iRow, int iField, int nValue);
+void          SetRowCount(int iCount);
 
-    CPLErr        CreateColumn( const char *pszFieldName, 
-                                GDALRATFieldType eFieldType, 
-                                GDALRATFieldUsage eFieldUsage );
-    CPLErr        SetLinearBinning( double dfRow0Min, double dfBinSize );
-    int           GetLinearBinning( double *pdfRow0Min, double *pdfBinSize ) const;
+int           GetRowOfValue(double dfValue) const;
+int           GetRowOfValue(int nValue) const;
+int           GetColorOfValue(double dfValue, GDALColorEntry *psEntry) const;
 
-    CPLXMLNode   *Serialize() const;
-    CPLErr        XMLInit( CPLXMLNode *, const char * );
+double        GetRowMin(int iRow) const;
+double        GetRowMax(int iRow) const;
 
-    CPLErr        InitializeFromColorTable( const GDALColorTable * );
-    GDALColorTable *TranslateToColorTable( int nEntryCount = -1 );
-    
-    void          DumpReadable( FILE * = NULL );
+CPLErr        CreateColumn(const char *pszFieldName,
+                           GDALRATFieldType eFieldType,
+                           GDALRATFieldUsage eFieldUsage);
+CPLErr        SetLinearBinning(double dfRow0Min, double dfBinSize);
+int           GetLinearBinning(double *pdfRow0Min, double *pdfBinSize) const;
+
+CPLXMLNode* Serialize() const;
+CPLErr        XMLInit(CPLXMLNode*, const char*);
+
+CPLErr        InitializeFromColorTable(const GDALColorTable*);
+GDALColorTable* TranslateToColorTable(int nEntryCount = -1);
+
+void          DumpReadable(FILE* = NULL);
 };
 
 #endif /* ndef GDAL_RAT_H_INCLUDED */

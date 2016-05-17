@@ -231,7 +231,7 @@
 #define GETNAMEINFO_QUAL_ARG1 const
 
 /* Define to the type of arg 1 for getnameinfo. */
-#define GETNAMEINFO_TYPE_ARG1 struct sockaddr *
+#define GETNAMEINFO_TYPE_ARG1 struct sockaddr*
 
 /* Define to the type of arg 2 for getnameinfo. */
 #define GETNAMEINFO_TYPE_ARG2 socklen_t
@@ -249,7 +249,7 @@
 #define RECV_TYPE_ARG1 SOCKET
 
 /* Define to the type of arg 2 for recv. */
-#define RECV_TYPE_ARG2 char *
+#define RECV_TYPE_ARG2 char*
 
 /* Define to the type of arg 3 for recv. */
 #define RECV_TYPE_ARG3 int
@@ -294,7 +294,7 @@
 #define SEND_QUAL_ARG2 const
 
 /* Define to the type of arg 2 for send. */
-#define SEND_TYPE_ARG2 char *
+#define SEND_TYPE_ARG2 char*
 
 /* Define to the type of arg 3 for send. */
 #define SEND_TYPE_ARG3 int
@@ -318,8 +318,8 @@
 /* Define ssize_t if it is not an available 'typedefed' type */
 #ifndef _SSIZE_T_DEFINED
 #  if (defined(__WATCOMC__) && (__WATCOMC__ >= 1240)) || \
-      defined(__POCC__) || \
-      defined(__MINGW32__)
+    defined(__POCC__) ||                                 \
+    defined(__MINGW32__)
 #  elif defined(_WIN64)
 #    define _SSIZE_T_DEFINED
 #    define ssize_t __int64
@@ -403,7 +403,7 @@
 
 /* Define to avoid VS2005 complaining about portable C functions */
 #if defined(_MSC_VER) && (_MSC_VER >= 1400)
-#define _CRT_SECURE_NO_DEPRECATE 1
+#define _CRT_SECURE_NO_DEPRECATE  1
 #define _CRT_NONSTDC_NO_DEPRECATE 1
 #endif
 
@@ -431,7 +431,7 @@
    for VS2008 we will target the minimum Officially supported build target,
    which happens to be Windows XP. */
 #if defined(_MSC_VER) && (_MSC_VER >= 1500)
-#  define VS2008_DEFAULT_TARGET  0x0501
+#  define VS2008_DEFAULT_TARGET 0x0501
 #endif
 
 /* VS2008 default target settings and minimum build target check */
@@ -537,7 +537,7 @@
 #if defined(CURL_HAS_NOVELL_LDAPSDK) || defined(CURL_HAS_MOZILLA_LDAPSDK)
 #undef CURL_LDAP_HYBRID
 #undef CURL_LDAP_WIN
-#define HAVE_LDAP_SSL_H 1
+#define HAVE_LDAP_SSL_H     1
 #define HAVE_LDAP_URL_PARSE 1
 #elif defined(CURL_HAS_OPENLDAP_LDAPSDK)
 #undef CURL_LDAP_HYBRID

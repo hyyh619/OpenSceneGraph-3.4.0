@@ -3,8 +3,8 @@
  *
  * Project:  CPL - Common Portability Library
  * Author:   Frank Warmerdam, warmerdam@pobox.com
- * Purpose:  Include file providing low level portability services for CPL.  
- *           This should be the first include file for any CPL based code.  
+ * Purpose:  Include file providing low level portability services for CPL.
+ *           This should be the first include file for any CPL based code.
  *
  ******************************************************************************
  * Copyright (c) 1998, 2005, Frank Warmerdam <warmerdam@pobox.com>
@@ -130,7 +130,7 @@
 
 #if defined(HAVE_ERRNO_H)
 #  include <errno.h>
-#endif 
+#endif
 
 #ifdef HAVE_LOCALE_H
 #  include <locale.h>
@@ -160,24 +160,24 @@
 /* ==================================================================== */
 
 /*---------------------------------------------------------------------
- *        types for 16 and 32 bits integers, etc...
- *--------------------------------------------------------------------*/
+*        types for 16 and 32 bits integers, etc...
+*--------------------------------------------------------------------*/
 #if UINT_MAX == 65535
-typedef long            GInt32;
-typedef unsigned long   GUInt32;
+typedef long GInt32;
+typedef unsigned long GUInt32;
 #else
-typedef int             GInt32;
-typedef unsigned int    GUInt32;
+typedef int GInt32;
+typedef unsigned int GUInt32;
 #endif
 
-typedef short           GInt16;
-typedef unsigned short  GUInt16;
-typedef unsigned char   GByte;
+typedef short GInt16;
+typedef unsigned short GUInt16;
+typedef unsigned char GByte;
 /* hack for PDF driver and poppler >= 0.15.0 that defines incompatible "typedef bool GBool" */
 /* in include/poppler/goo/gtypes.h */
 #ifndef CPL_GBOOL_DEFINED
 #define CPL_GBOOL_DEFINED
-typedef int             GBool;
+typedef int GBool;
 #endif
 
 /* -------------------------------------------------------------------- */
@@ -187,31 +187,30 @@ typedef int             GBool;
 #if defined(WIN32) && defined(_MSC_VER)
 
 #define VSI_LARGE_API_SUPPORTED
-typedef __int64          GIntBig;
+typedef __int64 GIntBig;
 typedef unsigned __int64 GUIntBig;
 
 #elif HAVE_LONG_LONG
 
-typedef long long        GIntBig;
+typedef long long GIntBig;
 typedef unsigned long long GUIntBig;
 
 #else
 
-typedef long             GIntBig;
-typedef unsigned long    GUIntBig;
-
+typedef long GIntBig;
+typedef unsigned long GUIntBig;
 #endif
 
 #if defined(__MSVCRT__) || (defined(WIN32) && defined(_MSC_VER))
-  #define CPL_FRMT_GB_WITHOUT_PREFIX     "I64"
+  #define CPL_FRMT_GB_WITHOUT_PREFIX "I64"
 #elif HAVE_LONG_LONG
-  #define CPL_FRMT_GB_WITHOUT_PREFIX     "ll"
+  #define CPL_FRMT_GB_WITHOUT_PREFIX "ll"
 #else
-  #define CPL_FRMT_GB_WITHOUT_PREFIX     "l"
+  #define CPL_FRMT_GB_WITHOUT_PREFIX "l"
 #endif
 
-#define CPL_FRMT_GIB     "%" CPL_FRMT_GB_WITHOUT_PREFIX "d"
-#define CPL_FRMT_GUIB    "%" CPL_FRMT_GB_WITHOUT_PREFIX "u"
+#define CPL_FRMT_GIB  "%" CPL_FRMT_GB_WITHOUT_PREFIX "d"
+#define CPL_FRMT_GUIB "%" CPL_FRMT_GB_WITHOUT_PREFIX "u"
 
 /* Workaround VC6 bug */
 #if defined(_MSC_VER) && (_MSC_VER <= 1200)
@@ -224,8 +223,8 @@ typedef unsigned long    GUIntBig;
 /*      Other standard services.                                        */
 /* ==================================================================== */
 #ifdef __cplusplus
-#  define CPL_C_START           extern "C" {
-#  define CPL_C_END             }
+#  define CPL_C_START extern "C" {
+#  define CPL_C_END   }
 #else
 #  define CPL_C_START
 #  define CPL_C_END
@@ -233,10 +232,10 @@ typedef unsigned long    GUIntBig;
 
 #ifndef CPL_DLL
 #if defined(_MSC_VER) && !defined(CPL_DISABLE_DLL)
-#  define CPL_DLL     __declspec(dllexport)
+#  define CPL_DLL __declspec(dllexport)
 #else
 #  if defined(USE_GCC_VISIBILITY_FLAG)
-#    define CPL_DLL     __attribute__ ((visibility("default")))
+#    define CPL_DLL __attribute__ ((visibility("default")))
 #  else
 #    define CPL_DLL
 #  endif
@@ -252,31 +251,31 @@ typedef unsigned long    GUIntBig;
 
 #ifndef CPL_STDCALL
 #if defined(_MSC_VER) && !defined(CPL_DISABLE_STDCALL)
-#  define CPL_STDCALL     __stdcall
+#  define CPL_STDCALL __stdcall
 #else
 #  define CPL_STDCALL
 #endif
 #endif
 
 #ifdef _MSC_VER
-#  define FORCE_CDECL  __cdecl
+#  define FORCE_CDECL __cdecl
 #else
-#  define FORCE_CDECL 
+#  define FORCE_CDECL
 #endif
 
 /* TODO : support for other compilers needed */
 #if defined(__GNUC__) || defined(_MSC_VER)
-#define HAS_CPL_INLINE  1
-#define CPL_INLINE __inline
+#define HAS_CPL_INLINE 1
+#define CPL_INLINE     __inline
 #elif defined(__SUNPRO_CC)
-#define HAS_CPL_INLINE  1
-#define CPL_INLINE inline
+#define HAS_CPL_INLINE 1
+#define CPL_INLINE     inline
 #else
 #define CPL_INLINE
 #endif
 
 #ifndef NULL
-#  define NULL  0
+#  define NULL 0
 #endif
 
 #ifndef FALSE
@@ -284,16 +283,16 @@ typedef unsigned long    GUIntBig;
 #endif
 
 #ifndef TRUE
-#  define TRUE  1
+#  define TRUE 1
 #endif
 
 #ifndef MAX
-#  define MIN(a,b)      ((a<b) ? a : b)
-#  define MAX(a,b)      ((a>b) ? a : b)
+#  define MIN(a, b) ((a < b) ? a : b)
+#  define MAX(a, b) ((a > b) ? a : b)
 #endif
 
 #ifndef ABS
-#  define ABS(x)        ((x<0) ? (-1*(x)) : x)
+#  define ABS(x) ((x < 0) ? (-1 * (x)) : x)
 #endif
 
 /* -------------------------------------------------------------------- */
@@ -302,23 +301,23 @@ typedef unsigned long    GUIntBig;
 /*      effects.                                                        */
 /* -------------------------------------------------------------------- */
 #ifndef CPLIsEqual
-#  define CPLIsEqual(x,y) (fabs((x) - (y)) < 0.0000000000001)
+#  define CPLIsEqual(x, y) (fabs((x) - (y)) < 0.0000000000001)
 #endif
 
 #ifndef EQUAL
 #if defined(WIN32) || defined(WIN32CE)
-#  define EQUALN(a,b,n)           (strnicmp(a,b,n)==0)
-#  define EQUAL(a,b)              (stricmp(a,b)==0)
+#  define EQUALN(a, b, n) (strnicmp(a, b, n) == 0)
+#  define EQUAL(a, b)     (stricmp(a, b) == 0)
 #else
-#  define EQUALN(a,b,n)           (strncasecmp(a,b,n)==0)
-#  define EQUAL(a,b)              (strcasecmp(a,b)==0)
+#  define EQUALN(a, b, n) (strncasecmp(a, b, n) == 0)
+#  define EQUAL(a, b)     (strcasecmp(a, b) == 0)
 #endif
 #endif
 
 #ifdef macos_pre10
-int strcasecmp(char * str1, char * str2);
-int strncasecmp(char * str1, char * str2, int len);
-char * strdup (char *instr);
+int strcasecmp(char *str1, char *str2);
+int strncasecmp(char *str1, char *str2, int len);
+char* strdup(char *instr);
 #endif
 
 #ifndef CPL_THREADLOCAL
@@ -336,13 +335,13 @@ char * strdup (char *instr);
 /* -------------------------------------------------------------------- */
 #ifdef _MSC_VER
 #  include <float.h>
-#  define CPLIsNan(x) _isnan(x)
-#  define CPLIsInf(x) (!_isnan(x) && !_finite(x))
+#  define CPLIsNan(x)    _isnan(x)
+#  define CPLIsInf(x)    (!_isnan(x) && !_finite(x))
 #  define CPLIsFinite(x) _finite(x)
 #else
 #  define CPLIsNan(x) isnan(x)
-#  ifdef isinf 
-#    define CPLIsInf(x) isinf(x)
+#  ifdef isinf
+#    define CPLIsInf(x)    isinf(x)
 #    define CPLIsFinite(x) (!isnan(x) && !isinf(x))
 #  else
 #    define CPLIsInf(x)    FALSE
@@ -351,17 +350,17 @@ char * strdup (char *instr);
 #endif
 
 /*---------------------------------------------------------------------
- *                         CPL_LSB and CPL_MSB
- * Only one of these 2 macros should be defined and specifies the byte 
- * ordering for the current platform.  
- * This should be defined in the Makefile, but if it is not then
- * the default is CPL_LSB (Intel ordering, LSB first).
- *--------------------------------------------------------------------*/
+*                         CPL_LSB and CPL_MSB
+* Only one of these 2 macros should be defined and specifies the byte
+* ordering for the current platform.
+* This should be defined in the Makefile, but if it is not then
+* the default is CPL_LSB (Intel ordering, LSB first).
+*--------------------------------------------------------------------*/
 #if defined(WORDS_BIGENDIAN) && !defined(CPL_MSB) && !defined(CPL_LSB)
 #  define CPL_MSB
 #endif
 
-#if ! ( defined(CPL_LSB) || defined(CPL_MSB) )
+#if !(defined(CPL_LSB) || defined(CPL_MSB))
 #define CPL_LSB
 #endif
 
@@ -372,66 +371,66 @@ char * strdup (char *instr);
 #endif
 
 /*---------------------------------------------------------------------
- *        Little endian <==> big endian byte swap macros.
- *--------------------------------------------------------------------*/
+*        Little endian <==> big endian byte swap macros.
+*--------------------------------------------------------------------*/
 
-#define CPL_SWAP16(x) \
-        ((GUInt16)( \
-            (((GUInt16)(x) & 0x00ffU) << 8) | \
-            (((GUInt16)(x) & 0xff00U) >> 8) ))
+#define CPL_SWAP16(x)                      \
+    ((GUInt16)(                            \
+         (((GUInt16)(x) & 0x00ffU) << 8) | \
+         (((GUInt16)(x) & 0xff00U) >> 8)))
 
-#define CPL_SWAP16PTR(x) \
-{                                                                 \
-    GByte       byTemp, *_pabyDataT = (GByte *) (x);              \
-                                                                  \
-    byTemp = _pabyDataT[0];                                       \
-    _pabyDataT[0] = _pabyDataT[1];                                \
-    _pabyDataT[1] = byTemp;                                       \
-}                                                                    
-                                                            
-#define CPL_SWAP32(x) \
-        ((GUInt32)( \
-            (((GUInt32)(x) & (GUInt32)0x000000ffUL) << 24) | \
-            (((GUInt32)(x) & (GUInt32)0x0000ff00UL) <<  8) | \
-            (((GUInt32)(x) & (GUInt32)0x00ff0000UL) >>  8) | \
-            (((GUInt32)(x) & (GUInt32)0xff000000UL) >> 24) ))
+#define CPL_SWAP16PTR(x)                          \
+    {                                             \
+        GByte byTemp, *_pabyDataT = (GByte*) (x); \
+                                                  \
+        byTemp        = _pabyDataT[0];            \
+        _pabyDataT[0] = _pabyDataT[1];            \
+        _pabyDataT[1] = byTemp;                   \
+    }
 
-#define CPL_SWAP32PTR(x) \
-{                                                                 \
-    GByte       byTemp, *_pabyDataT = (GByte *) (x);              \
-                                                                  \
-    byTemp = _pabyDataT[0];                                       \
-    _pabyDataT[0] = _pabyDataT[3];                                \
-    _pabyDataT[3] = byTemp;                                       \
-    byTemp = _pabyDataT[1];                                       \
-    _pabyDataT[1] = _pabyDataT[2];                                \
-    _pabyDataT[2] = byTemp;                                       \
-}                                                                    
-                                                            
-#define CPL_SWAP64PTR(x) \
-{                                                                 \
-    GByte       byTemp, *_pabyDataT = (GByte *) (x);              \
-                                                                  \
-    byTemp = _pabyDataT[0];                                       \
-    _pabyDataT[0] = _pabyDataT[7];                                \
-    _pabyDataT[7] = byTemp;                                       \
-    byTemp = _pabyDataT[1];                                       \
-    _pabyDataT[1] = _pabyDataT[6];                                \
-    _pabyDataT[6] = byTemp;                                       \
-    byTemp = _pabyDataT[2];                                       \
-    _pabyDataT[2] = _pabyDataT[5];                                \
-    _pabyDataT[5] = byTemp;                                       \
-    byTemp = _pabyDataT[3];                                       \
-    _pabyDataT[3] = _pabyDataT[4];                                \
-    _pabyDataT[4] = byTemp;                                       \
-}                                                                    
-                                                            
+#define CPL_SWAP32(x)                                     \
+    ((GUInt32)(                                           \
+         (((GUInt32)(x) & (GUInt32)0x000000ffUL) << 24) | \
+         (((GUInt32)(x) & (GUInt32)0x0000ff00UL) << 8) |  \
+         (((GUInt32)(x) & (GUInt32)0x00ff0000UL) >> 8) |  \
+         (((GUInt32)(x) & (GUInt32)0xff000000UL) >> 24)))
+
+#define CPL_SWAP32PTR(x)                          \
+    {                                             \
+        GByte byTemp, *_pabyDataT = (GByte*) (x); \
+                                                  \
+        byTemp        = _pabyDataT[0];            \
+        _pabyDataT[0] = _pabyDataT[3];            \
+        _pabyDataT[3] = byTemp;                   \
+        byTemp        = _pabyDataT[1];            \
+        _pabyDataT[1] = _pabyDataT[2];            \
+        _pabyDataT[2] = byTemp;                   \
+    }
+
+#define CPL_SWAP64PTR(x)                          \
+    {                                             \
+        GByte byTemp, *_pabyDataT = (GByte*) (x); \
+                                                  \
+        byTemp        = _pabyDataT[0];            \
+        _pabyDataT[0] = _pabyDataT[7];            \
+        _pabyDataT[7] = byTemp;                   \
+        byTemp        = _pabyDataT[1];            \
+        _pabyDataT[1] = _pabyDataT[6];            \
+        _pabyDataT[6] = byTemp;                   \
+        byTemp        = _pabyDataT[2];            \
+        _pabyDataT[2] = _pabyDataT[5];            \
+        _pabyDataT[5] = byTemp;                   \
+        byTemp        = _pabyDataT[3];            \
+        _pabyDataT[3] = _pabyDataT[4];            \
+        _pabyDataT[4] = byTemp;                   \
+    }
+
 
 /* Until we have a safe 64 bits integer data type defined, we'll replace
  * this version of the CPL_SWAP64() macro with a less efficient one.
  */
 /*
-#define CPL_SWAP64(x) \
+   #define CPL_SWAP64(x) \
         ((uint64)( \
             (uint64)(((uint64)(x) & (uint64)0x00000000000000ffULL) << 56) | \
             (uint64)(((uint64)(x) & (uint64)0x000000000000ff00ULL) << 40) | \
@@ -441,44 +440,44 @@ char * strdup (char *instr);
             (uint64)(((uint64)(x) & (uint64)0x0000ff0000000000ULL) >> 24) | \
             (uint64)(((uint64)(x) & (uint64)0x00ff000000000000ULL) >> 40) | \
             (uint64)(((uint64)(x) & (uint64)0xff00000000000000ULL) >> 56) ))
-*/
+ */
 
 #define CPL_SWAPDOUBLE(p) CPL_SWAP64PTR(p)
 
 #ifdef CPL_MSB
-#  define CPL_MSBWORD16(x)      (x)
-#  define CPL_LSBWORD16(x)      CPL_SWAP16(x)
-#  define CPL_MSBWORD32(x)      (x)
-#  define CPL_LSBWORD32(x)      CPL_SWAP32(x)
-#  define CPL_MSBPTR16(x)       
-#  define CPL_LSBPTR16(x)       CPL_SWAP16PTR(x)
-#  define CPL_MSBPTR32(x)       
-#  define CPL_LSBPTR32(x)       CPL_SWAP32PTR(x)
-#  define CPL_MSBPTR64(x)       
-#  define CPL_LSBPTR64(x)       CPL_SWAP64PTR(x)
+#  define CPL_MSBWORD16(x) (x)
+#  define CPL_LSBWORD16(x) CPL_SWAP16(x)
+#  define CPL_MSBWORD32(x) (x)
+#  define CPL_LSBWORD32(x) CPL_SWAP32(x)
+#  define CPL_MSBPTR16(x)
+#  define CPL_LSBPTR16(x) CPL_SWAP16PTR(x)
+#  define CPL_MSBPTR32(x)
+#  define CPL_LSBPTR32(x) CPL_SWAP32PTR(x)
+#  define CPL_MSBPTR64(x)
+#  define CPL_LSBPTR64(x) CPL_SWAP64PTR(x)
 #else
-#  define CPL_LSBWORD16(x)      (x)
-#  define CPL_MSBWORD16(x)      CPL_SWAP16(x)
-#  define CPL_LSBWORD32(x)      (x)
-#  define CPL_MSBWORD32(x)      CPL_SWAP32(x)
-#  define CPL_LSBPTR16(x)       
-#  define CPL_MSBPTR16(x)       CPL_SWAP16PTR(x)
-#  define CPL_LSBPTR32(x)       
-#  define CPL_MSBPTR32(x)       CPL_SWAP32PTR(x)
-#  define CPL_LSBPTR64(x)       
-#  define CPL_MSBPTR64(x)       CPL_SWAP64PTR(x)
+#  define CPL_LSBWORD16(x) (x)
+#  define CPL_MSBWORD16(x) CPL_SWAP16(x)
+#  define CPL_LSBWORD32(x) (x)
+#  define CPL_MSBWORD32(x) CPL_SWAP32(x)
+#  define CPL_LSBPTR16(x)
+#  define CPL_MSBPTR16(x) CPL_SWAP16PTR(x)
+#  define CPL_LSBPTR32(x)
+#  define CPL_MSBPTR32(x) CPL_SWAP32PTR(x)
+#  define CPL_LSBPTR64(x)
+#  define CPL_MSBPTR64(x) CPL_SWAP64PTR(x)
 #endif
 
 /** Return a Int16 from the 2 bytes ordered in LSB order at address x */
-#define CPL_LSBINT16PTR(x)    ((*(GByte*)(x)) | ((*(GByte*)((x)+1)) << 8))
+#define CPL_LSBINT16PTR(x) ((*(GByte*)(x)) | ((*(GByte*)((x) + 1)) << 8))
 
 /** Return a Int32 from the 4 bytes ordered in LSB order at address x */
-#define CPL_LSBINT32PTR(x)    ((*(GByte*)(x)) | ((*(GByte*)((x)+1)) << 8) | \
-                              ((*(GByte*)((x)+2)) << 16) | ((*(GByte*)((x)+3)) << 24))
+#define CPL_LSBINT32PTR(x) ((*(GByte*)(x)) | ((*(GByte*)((x) + 1)) << 8) | \
+                            ((*(GByte*)((x) + 2)) << 16) | ((*(GByte*)((x) + 3)) << 24))
 
 
 /* Utility macro to explicitly mark intentionally unreferenced parameters. */
-#ifndef UNREFERENCED_PARAM 
+#ifndef UNREFERENCED_PARAM
 #  ifdef UNREFERENCED_PARAMETER /* May be defined by Windows API */
 #    define UNREFERENCED_PARAM(param) UNREFERENCED_PARAMETER(param)
 #  else
@@ -496,19 +495,19 @@ char * strdup (char *instr);
 
 #ifndef DISABLE_CVSID
 #if defined(__GNUC__) && __GNUC__ >= 4
-#  define CPL_CVSID(string)     static char cpl_cvsid[] __attribute__((used)) = string;
+#  define CPL_CVSID(string) static char cpl_cvsid[] __attribute__((used)) = string;
 #else
-#  define CPL_CVSID(string)     static char cpl_cvsid[] = string; \
-static char *cvsid_aw() { return( cvsid_aw() ? ((char *) NULL) : cpl_cvsid ); }
+#  define CPL_CVSID(string) static char cpl_cvsid[] = string; \
+    static char*cvsid_aw() { return (cvsid_aw() ? ((char*) NULL) : cpl_cvsid); }
 #endif
 #else
 #  define CPL_CVSID(string)
 #endif
 
 #if defined(__GNUC__) && __GNUC__ >= 3 && !defined(DOXYGEN_SKIP)
-#define CPL_PRINT_FUNC_FORMAT( format_idx, arg_idx )  __attribute__((__format__ (__printf__, format_idx, arg_idx)))
+#define CPL_PRINT_FUNC_FORMAT(format_idx, arg_idx) __attribute__((__format__ (__printf__, format_idx, arg_idx)))
 #else
-#define CPL_PRINT_FUNC_FORMAT( format_idx, arg_idx )
+#define CPL_PRINT_FUNC_FORMAT(format_idx, arg_idx)
 #endif
 
 #endif /* ndef CPL_BASE_H_INCLUDED */

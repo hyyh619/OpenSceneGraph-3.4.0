@@ -36,17 +36,17 @@ CPL_CVSID("$Id: gdalallvalidmaskband.cpp 15044 2008-07-26 12:04:05Z rouault $");
 /*                        GDALAllValidMaskBand()                        */
 /************************************************************************/
 
-GDALAllValidMaskBand::GDALAllValidMaskBand( GDALRasterBand *poParent )
+GDALAllValidMaskBand::GDALAllValidMaskBand(GDALRasterBand *poParent)
 
 {
-    poDS = NULL;
+    poDS  = NULL;
     nBand = 0;
 
     nRasterXSize = poParent->GetXSize();
     nRasterYSize = poParent->GetYSize();
 
     eDataType = GDT_Byte;
-    poParent->GetBlockSize( &nBlockXSize, &nBlockYSize );
+    poParent->GetBlockSize(&nBlockXSize, &nBlockYSize);
 }
 
 /************************************************************************/
@@ -55,18 +55,17 @@ GDALAllValidMaskBand::GDALAllValidMaskBand( GDALRasterBand *poParent )
 
 GDALAllValidMaskBand::~GDALAllValidMaskBand()
 
-{
-}
+{}
 
 /************************************************************************/
 /*                             IReadBlock()                             */
 /************************************************************************/
 
-CPLErr GDALAllValidMaskBand::IReadBlock( int nXBlockOff, int nYBlockOff,
-                                         void * pImage )
+CPLErr GDALAllValidMaskBand::IReadBlock(int nXBlockOff, int nYBlockOff,
+                                        void *pImage)
 
 {
-    memset( pImage, 255, nBlockXSize * nBlockYSize );
+    memset(pImage, 255, nBlockXSize * nBlockYSize);
 
     return CE_None;
 }
@@ -75,7 +74,7 @@ CPLErr GDALAllValidMaskBand::IReadBlock( int nXBlockOff, int nYBlockOff,
 /*                            GetMaskBand()                             */
 /************************************************************************/
 
-GDALRasterBand *GDALAllValidMaskBand::GetMaskBand()
+GDALRasterBand* GDALAllValidMaskBand::GetMaskBand()
 
 {
     return this;
