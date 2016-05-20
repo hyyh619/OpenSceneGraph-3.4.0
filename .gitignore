@@ -260,8 +260,8 @@ pip-log.txt
 3rdparty/gdal/port/.svn/
 3rdparty/gdal/port/.libs/
 
-project/
 Android_Studio_gnustl_static_OES2/
+Android_Studio_gnustl_static_OES11/
 Windows_Dynamic_OES11/
 Windows_Static/
 
