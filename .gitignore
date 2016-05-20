@@ -262,12 +262,11 @@ pip-log.txt
 
 project/
 Android_Studio_gnustl_static_OES2/
-Windows_Dynamic_OES11/
-Windows_Static/
+Windows_Dynamic_OES2/
+Windows/
 
 *.Po
 Android_Build.xls
 
-Windows/
 source.files
 
