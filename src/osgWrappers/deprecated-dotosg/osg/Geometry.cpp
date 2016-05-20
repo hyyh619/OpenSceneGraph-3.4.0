@@ -876,7 +876,7 @@ Array* Array_readLocalData(Input&fr)
 }
 
 
-bool Array_writeLocalData(const Array&array, Output&fw)
+bool Array_writeLocalData(const Array& array, Output& fw)
 {
     if (array.referenceCount() > 1)
     {
@@ -1571,7 +1571,7 @@ const char* Geometry_getBindingTypeStr(deprecated_osg::Geometry::AttributeBindin
     }
 }
 
-bool Geometry_matchPrimitiveModeStr(const char *str, GLenum&mode)
+bool Geometry_matchPrimitiveModeStr(const char *str, GLenum &mode)
 {
     if (strcmp(str, "POINTS") == 0)
         mode = PrimitiveSet::POINTS;
