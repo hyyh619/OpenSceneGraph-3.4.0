@@ -86,9 +86,9 @@ TechniqueEventHandler()
 
 META_Object(osglogicopApp, TechniqueEventHandler);
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 protected:
 
@@ -100,7 +100,7 @@ osg::LogicOp *_logicOp;
 int          _ops_index;
 };
 
-bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -137,7 +137,7 @@ bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAc
     }
 }
 
-void TechniqueEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void TechniqueEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("- or Left Arrow", "Advance to next opcode");
     usage.addKeyboardMouseBinding("+ or Right Array", "Move to previous opcode");

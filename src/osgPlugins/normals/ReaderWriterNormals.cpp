@@ -24,17 +24,17 @@ virtual const char* className()
     return "Normals Pseudo Loader";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "normals");
 }
 
-virtual ReadResult readObject(const std::string&fileName, const Options *opt) const
+virtual ReadResult readObject(const std::string &fileName, const Options *opt) const
 {
     return readNode(fileName, opt);
 }
 
-virtual ReadResult readNode(const std::string&fileName, const Options *options) const
+virtual ReadResult readNode(const std::string &fileName, const Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 
@@ -93,7 +93,7 @@ virtual ReadResult readNode(const std::string&fileName, const Options *options) 
             osg::ref_ptr<osg::Group> group = new osg::Group;
             group->addChild(node.get());
 
-            const osg::BoundingSphere&bsph = group->getBound();
+            const osg::BoundingSphere &bsph = group->getBound();
             scale = bsph.radius() * 0.05f * scale;         // default is 5% of bounding-sphere radius
 
             if (mode == Normals::VertexNormals)

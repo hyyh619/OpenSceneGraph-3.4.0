@@ -46,7 +46,7 @@ GUIEventAdapter::GUIEventAdapter() :
     _touchData(NULL)
 {}
 
-GUIEventAdapter::GUIEventAdapter(const GUIEventAdapter&rhs, const osg::CopyOp&copyop) :
+GUIEventAdapter::GUIEventAdapter(const GUIEventAdapter &rhs, const osg::CopyOp &copyop) :
     osgGA::Event(rhs, copyop),
     _eventType(rhs._eventType),
     _context(rhs._context),
@@ -122,7 +122,7 @@ void GUIEventAdapter::addTouchPoint(unsigned int id, TouchPhase phase, float x, 
     _touchData->addTouchPoint(id, phase, x, y, tapCount);
 }
 
-void GUIEventAdapter::copyPointerDataFrom(const osgGA::GUIEventAdapter&sourceEvent)
+void GUIEventAdapter::copyPointerDataFrom(const osgGA::GUIEventAdapter &sourceEvent)
 {
     setGraphicsContext(const_cast<osg::GraphicsContext*>(sourceEvent.getGraphicsContext()));
     setX(sourceEvent.getX());

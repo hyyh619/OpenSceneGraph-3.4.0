@@ -30,7 +30,7 @@
 #include <iostream>
 
 // create text drawable at 'pos'
-osg::Geode* createText(const std::string&str, const osg::Vec3&pos)
+osg::Geode* createText(const std::string &str, const osg::Vec3 &pos)
 {
     // text drawable
     osgText::Text *text = new osgText::Text;
@@ -109,8 +109,8 @@ osg::Node* createScaledNode(osg::Node *node, float targetScale)
     // create scale matrix
     osg::MatrixTransform *transform = new osg::MatrixTransform;
 
-    const osg::BoundingSphere&bsphere = node->getBound();
-    float                    scale    = targetScale / bsphere._radius;
+    const osg::BoundingSphere &bsphere = node->getBound();
+    float                     scale    = targetScale / bsphere._radius;
 
     transform->setMatrix(osg::Matrix::scale(scale, scale, scale));
     transform->setDataVariance(osg::Object::STATIC);
@@ -123,7 +123,7 @@ osg::Node* createScaledNode(osg::Node *node, float targetScale)
     return transform;
 }
 
-osg::Sequence* createSequence(osg::ArgumentParser&arguments)
+osg::Sequence* createSequence(osg::ArgumentParser &arguments)
 {
     // assumes any remaining parameters are models
     osg::Sequence *seq = new osg::Sequence;
@@ -181,7 +181,7 @@ SequenceEventHandler(osg::Sequence *seq)
 }
 
 // handle keydown events
-virtual bool handle(const osgGA::GUIEventAdapter&ea,
+virtual bool handle(const osgGA::GUIEventAdapter &ea,
                     osgGA::GUIActionAdapter&)
 {
     if (ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)

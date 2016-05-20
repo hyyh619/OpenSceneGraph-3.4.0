@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkImages(const osg::Texture2DArray&tex)
+static bool checkImages(const osg::Texture2DArray &tex)
 {
     return tex.getNumImages() > 0;
 }
 
-static bool readImages(osgDB::InputStream&is, osg::Texture2DArray&tex)
+static bool readImages(osgDB::InputStream &is, osg::Texture2DArray &tex)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -23,7 +23,7 @@ static bool readImages(osgDB::InputStream&is, osg::Texture2DArray&tex)
     return true;
 }
 
-static bool writeImages(osgDB::OutputStream&os, const osg::Texture2DArray&tex)
+static bool writeImages(osgDB::OutputStream &os, const osg::Texture2DArray &tex)
 {
     unsigned int size = tex.getNumImages();
 

@@ -24,16 +24,16 @@ struct SwigMovePointer
     {
         delete ptr;
     }
-    SwigMovePointer&operator=(SwigMovePointer&rhs)
+    SwigMovePointer&operator=(SwigMovePointer &rhs)
     {
         T *oldptr = ptr; ptr = 0; delete oldptr; ptr = rhs.ptr; rhs.ptr = 0; return *this;
     }
 } pointer;
-SwigValueWrapper&operator=(const SwigValueWrapper<T>&rhs);
-SwigValueWrapper(const SwigValueWrapper<T>&rhs);
+SwigValueWrapper&operator=(const SwigValueWrapper<T> &rhs);
+SwigValueWrapper(const SwigValueWrapper<T> &rhs);
 public:
 SwigValueWrapper() : pointer(0) { }
-SwigValueWrapper&operator=(const T&t)
+SwigValueWrapper&operator=(const T &t)
 {
     SwigMovePointer tmp(new T(t)); pointer = tmp; return *this;
 }
@@ -3345,7 +3345,7 @@ public:
 SwigPtr_PyObject() : _obj(0)
 {}
 
-SwigPtr_PyObject(const SwigPtr_PyObject&item) : _obj(item._obj)
+SwigPtr_PyObject(const SwigPtr_PyObject &item) : _obj(item._obj)
 {
     Py_XINCREF(_obj);
 }
@@ -3358,7 +3358,7 @@ SwigPtr_PyObject(PyObject *obj, bool initial_ref = true) : _obj(obj)
     }
 }
 
-SwigPtr_PyObject&operator=(const SwigPtr_PyObject&item)
+SwigPtr_PyObject&operator=(const SwigPtr_PyObject &item)
 {
     Py_XINCREF(item._obj);
     Py_XDECREF(_obj);

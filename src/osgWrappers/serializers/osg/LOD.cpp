@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _userDefinedCenter, _radius
-static bool checkUserCenter(const osg::LOD&node)
+static bool checkUserCenter(const osg::LOD &node)
 {
     return (node.getCenterMode() == osg::LOD::USER_DEFINED_CENTER) || (node.getCenterMode() == osg::LOD::UNION_OF_BOUNDING_SPHERE_AND_USER_DEFINED);
 }
 
-static bool readUserCenter(osgDB::InputStream&is, osg::LOD&node)
+static bool readUserCenter(osgDB::InputStream &is, osg::LOD &node)
 {
     osg::Vec3d center; double radius;
 
@@ -18,19 +18,19 @@ static bool readUserCenter(osgDB::InputStream&is, osg::LOD&node)
     return true;
 }
 
-static bool writeUserCenter(osgDB::OutputStream&os, const osg::LOD&node)
+static bool writeUserCenter(osgDB::OutputStream &os, const osg::LOD &node)
 {
     os << osg::Vec3d(node.getCenter()) << (double)node.getRadius() << std::endl;
     return true;
 }
 
 // _rangeList
-static bool checkRangeList(const osg::LOD&node)
+static bool checkRangeList(const osg::LOD &node)
 {
     return node.getNumRanges() > 0;
 }
 
-static bool readRangeList(osgDB::InputStream&is, osg::LOD&node)
+static bool readRangeList(osgDB::InputStream &is, osg::LOD &node)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -45,9 +45,9 @@ static bool readRangeList(osgDB::InputStream&is, osg::LOD&node)
     return true;
 }
 
-static bool writeRangeList(osgDB::OutputStream&os, const osg::LOD&node)
+static bool writeRangeList(osgDB::OutputStream &os, const osg::LOD &node)
 {
-    const osg::LOD::RangeList&ranges = node.getRangeList();
+    const osg::LOD::RangeList &ranges = node.getRangeList();
 
     os.writeSize(ranges.size()); os << os.BEGIN_BRACKET << std::endl;
 

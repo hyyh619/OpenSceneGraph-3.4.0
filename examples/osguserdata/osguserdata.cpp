@@ -35,7 +35,7 @@ class MyUserDataContainer : public osg::DefaultUserDataContainer
 {
 public:
 MyUserDataContainer() {}
-MyUserDataContainer(const MyUserDataContainer&udc, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) :
+MyUserDataContainer(const MyUserDataContainer &udc, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
     DefaultUserDataContainer(udc, copyop) {}
 
 META_Object(MyNamespace, MyUserDataContainer)
@@ -104,47 +104,47 @@ virtual void apply(double value)
 {
     OSG_NOTICE << " double " << value;
 }
-virtual void apply(const std::string&value)
+virtual void apply(const std::string &value)
 {
     OSG_NOTICE << " string " << value;
 }
-virtual void apply(const osg::Vec2f&value)
+virtual void apply(const osg::Vec2f &value)
 {
     OSG_NOTICE << " Vec2f " << value;
 }
-virtual void apply(const osg::Vec3f&value)
+virtual void apply(const osg::Vec3f &value)
 {
     OSG_NOTICE << " Vec3f " << value;
 }
-virtual void apply(const osg::Vec4f&value)
+virtual void apply(const osg::Vec4f &value)
 {
     OSG_NOTICE << " Vec4f " << value;
 }
-virtual void apply(const osg::Vec2d&value)
+virtual void apply(const osg::Vec2d &value)
 {
     OSG_NOTICE << " Vec2d " << value;
 }
-virtual void apply(const osg::Vec3d&value)
+virtual void apply(const osg::Vec3d &value)
 {
     OSG_NOTICE << " Vec3d " << value;
 }
-virtual void apply(const osg::Vec4d&value)
+virtual void apply(const osg::Vec4d &value)
 {
     OSG_NOTICE << " Vec4d " << value;
 }
-virtual void apply(const osg::Quat&value)
+virtual void apply(const osg::Quat &value)
 {
     OSG_NOTICE << " Quat " << value;
 }
-virtual void apply(const osg::Plane&value)
+virtual void apply(const osg::Plane &value)
 {
     OSG_NOTICE << " Plane " << value;
 }
-virtual void apply(const osg::Matrixf&value)
+virtual void apply(const osg::Matrixf &value)
 {
     OSG_NOTICE << " Matrixf " << value;
 }
-virtual void apply(const osg::Matrixd&value)
+virtual void apply(const osg::Matrixd &value)
 {
     OSG_NOTICE << " Matrixd " << value;
 }

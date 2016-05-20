@@ -30,7 +30,7 @@ CubeMapGenerator::CubeMapGenerator(int texture_size)
     }
 }
 
-CubeMapGenerator::CubeMapGenerator(const CubeMapGenerator&copy, const osg::CopyOp&copyop)
+CubeMapGenerator::CubeMapGenerator(const CubeMapGenerator &copy, const osg::CopyOp &copyop)
     :    osg::Referenced(copy),
     texture_size_(copy.texture_size_)
 {

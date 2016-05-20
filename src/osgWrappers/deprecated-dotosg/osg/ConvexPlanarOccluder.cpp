@@ -13,8 +13,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ConvexPlanarOccluder_readLocalData(Object&obj, Input&fr);
-bool ConvexPlanarOccluder_writeLocalData(const Object&obj, Output&fw);
+bool ConvexPlanarOccluder_readLocalData(Object &obj, Input &fr);
+bool ConvexPlanarOccluder_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(ConvexPlanarOccluder)
@@ -27,19 +27,19 @@ REGISTER_DOTOSGWRAPPER(ConvexPlanarOccluder)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool ConvexPlanarOccluder_readLocalData(Object&obj, Input&fr)
+bool ConvexPlanarOccluder_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ConvexPlanarOccluder&cpo = static_cast<ConvexPlanarOccluder&>(obj);
+    ConvexPlanarOccluder &cpo = static_cast<ConvexPlanarOccluder&>(obj);
 
 
     bool matchFirst;
 
     if ((matchFirst = fr.matchSequence("Occluder {")) || fr.matchSequence("Occluder %i {"))
     {
-        ConvexPlanarPolygon            &cpp        = cpo.getOccluder();
-        ConvexPlanarPolygon::VertexList&vertexList = cpp.getVertexList();
+        ConvexPlanarPolygon             &cpp        = cpo.getOccluder();
+        ConvexPlanarPolygon::VertexList &vertexList = cpp.getVertexList();
 
         // set up coordinates.
         int entry = fr[0].getNoNestedBrackets();
@@ -76,14 +76,14 @@ bool ConvexPlanarOccluder_readLocalData(Object&obj, Input&fr)
         ++fr;
     }
 
-    ConvexPlanarOccluder::HoleList&holeList = cpo.getHoleList();
+    ConvexPlanarOccluder::HoleList &holeList = cpo.getHoleList();
 
     while ((matchFirst = fr.matchSequence("Hole {")) || fr.matchSequence("Hole %i {"))
     {
         holeList.push_back(ConvexPlanarPolygon());
 
-        ConvexPlanarPolygon            &cpp        = holeList.back();
-        ConvexPlanarPolygon::VertexList&vertexList = cpp.getVertexList();
+        ConvexPlanarPolygon             &cpp        = holeList.back();
+        ConvexPlanarPolygon::VertexList &vertexList = cpp.getVertexList();
 
         // set up coordinates.
         int entry = fr[0].getNoNestedBrackets();
@@ -124,13 +124,13 @@ bool ConvexPlanarOccluder_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool ConvexPlanarOccluder_writeLocalData(const Object&obj, Output&fw)
+bool ConvexPlanarOccluder_writeLocalData(const Object &obj, Output &fw)
 {
-    const ConvexPlanarOccluder&cpo = static_cast<const ConvexPlanarOccluder&>(obj);
+    const ConvexPlanarOccluder &cpo = static_cast<const ConvexPlanarOccluder&>(obj);
 
     // write out the occluder polygon.
     {
-        const ConvexPlanarPolygon::VertexList&vertexList = cpo.getOccluder().getVertexList();
+        const ConvexPlanarPolygon::VertexList &vertexList = cpo.getOccluder().getVertexList();
 
         fw.indent() << "Occluder " << vertexList.size() << "{" << std::endl;
         fw.moveIn();
@@ -147,13 +147,13 @@ bool ConvexPlanarOccluder_writeLocalData(const Object&obj, Output&fw)
     }
 
     // write out any holes.
-    const ConvexPlanarOccluder::HoleList&holeList = cpo.getHoleList();
+    const ConvexPlanarOccluder::HoleList &holeList = cpo.getHoleList();
 
     for (ConvexPlanarOccluder::HoleList::const_iterator holeItr = holeList.begin();
          holeItr != holeList.end();
          ++holeItr)
     {
-        const ConvexPlanarPolygon::VertexList&vertexList = holeItr->getVertexList();
+        const ConvexPlanarPolygon::VertexList &vertexList = holeItr->getVertexList();
 
         fw.indent() << "Hole " << vertexList.size() << "{" << std::endl;
         fw.moveIn();

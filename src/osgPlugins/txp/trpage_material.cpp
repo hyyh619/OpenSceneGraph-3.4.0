@@ -85,7 +85,7 @@ void trpgMatTable::SetNumMaterial(int /*no*/)
 }
 
 
-void trpgMatTable::SetMaterial(int nm, const trpgMaterial&mat)
+void trpgMatTable::SetMaterial(int nm, const trpgMaterial &mat)
 {
     materialMap[nm] = mat;
     numMat          = materialMap.size();
@@ -93,7 +93,7 @@ void trpgMatTable::SetMaterial(int nm, const trpgMaterial&mat)
 
 #define CEQ(ca, cb) (ca.red == cb.red && ca.green == cb.green && ca.blue == cb.blue)
 
-int trpgMatTable::AddMaterial(const trpgMaterial&mat, bool lookForExisting)
+int trpgMatTable::AddMaterial(const trpgMaterial &mat, bool lookForExisting)
 {
     trpgMaterial cmat = mat; // necessary?
 
@@ -117,7 +117,7 @@ int trpgMatTable::AddMaterial(const trpgMaterial&mat, bool lookForExisting)
         for (; itr != materialMap.end(); itr++)
         {
             baseMat = itr->first;
-            const trpgMaterial&bm = itr->second;
+            const trpgMaterial &bm = itr->second;
             if (bm.shadeModel == 999)
             {
                 // this is an 'empty' entry.  Means we won't find it, either.
@@ -142,8 +142,8 @@ int trpgMatTable::AddMaterial(const trpgMaterial&mat, bool lookForExisting)
 
                 for (i = 0; i < cmat.texEnvs.size(); i++)
                 {
-                    const trpgTextureEnv&e1 = cmat.texEnvs[i];
-                    const trpgTextureEnv&e2 = bm.texEnvs[i];
+                    const trpgTextureEnv &e1 = cmat.texEnvs[i];
+                    const trpgTextureEnv &e2 = bm.texEnvs[i];
                     if (e1.envMode != e2.envMode ||
                         e1.minFilter != e2.minFilter ||
                         e1.magFilter != e2.magFilter ||
@@ -178,7 +178,7 @@ int trpgMatTable::AddMaterial(const trpgMaterial&mat, bool lookForExisting)
 }
 
 // Write out material table
-bool trpgMatTable::Write(trpgWriteBuffer&buf)
+bool trpgMatTable::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -208,7 +208,7 @@ bool trpgMatTable::Write(trpgWriteBuffer&buf)
  */
 
 // Get functions
-bool trpgMatTable::GetNumTable(int&no) const
+bool trpgMatTable::GetNumTable(int &no) const
 {
     if (!isValid())
     {
@@ -219,7 +219,7 @@ bool trpgMatTable::GetNumTable(int&no) const
     no = numTable;
     return true;
 }
-bool trpgMatTable::GetNumMaterial(int&no) const
+bool trpgMatTable::GetNumMaterial(int &no) const
 {
     if (!isValid())
     {
@@ -231,7 +231,7 @@ bool trpgMatTable::GetNumMaterial(int&no) const
     return true;
 }
 
-bool trpgMatTable::GetMaterial(int nt, int nm, trpgMaterial&mat) const
+bool trpgMatTable::GetMaterial(int nt, int nm, trpgMaterial &mat) const
 {
     if (!isValid())
         return false;
@@ -255,7 +255,7 @@ const trpgMaterial* trpgMatTable::GetMaterialRef(int nt, int nm) const
 }
 
 
-bool trpgMatTable::Read(trpgReadBuffer&buf)
+bool trpgMatTable::Read(trpgReadBuffer &buf)
 {
     trpgMaterial mat;
     trpgToken    matTok;
@@ -346,13 +346,13 @@ void trpgTextureEnv::SetWrap(int s, int t)
     wrapS = s;
     wrapT = t;
 }
-void trpgTextureEnv::SetBorderColor(const trpgColor&col)
+void trpgTextureEnv::SetBorderColor(const trpgColor &col)
 {
     borderCol = col;
 }
 
 // Write function
-bool trpgTextureEnv::Write(trpgWriteBuffer&buf)
+bool trpgTextureEnv::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -387,7 +387,7 @@ bool trpgTextureEnv::Write(trpgWriteBuffer&buf)
  **************
  */
 // Get functions
-bool trpgTextureEnv::GetEnvMode(int32&ret) const
+bool trpgTextureEnv::GetEnvMode(int32 &ret) const
 {
     if (!isValid())
         return false;
@@ -395,7 +395,7 @@ bool trpgTextureEnv::GetEnvMode(int32&ret) const
     ret = envMode;
     return true;
 }
-bool trpgTextureEnv::GetMinFilter(int32&ret) const
+bool trpgTextureEnv::GetMinFilter(int32 &ret) const
 {
     if (!isValid())
         return false;
@@ -403,7 +403,7 @@ bool trpgTextureEnv::GetMinFilter(int32&ret) const
     ret = minFilter;
     return true;
 }
-bool trpgTextureEnv::GetMagFilter(int32&ret) const
+bool trpgTextureEnv::GetMagFilter(int32 &ret) const
 {
     if (!isValid())
         return false;
@@ -411,7 +411,7 @@ bool trpgTextureEnv::GetMagFilter(int32&ret) const
     ret = magFilter;
     return true;
 }
-bool trpgTextureEnv::GetWrap(int&S, int&T) const
+bool trpgTextureEnv::GetWrap(int &S, int &T) const
 {
     if (!isValid())
         return false;
@@ -420,7 +420,7 @@ bool trpgTextureEnv::GetWrap(int&S, int&T) const
     T = wrapT;
     return true;
 }
-bool trpgTextureEnv::GetBorderColor(trpgColor&col) const
+bool trpgTextureEnv::GetBorderColor(trpgColor &col) const
 {
     if (!isValid())
         return false;
@@ -439,7 +439,7 @@ void           *Parse(trpgToken, trpgReadBuffer &);
 trpgTextureEnv *tenv;
 };
 
-void* textureEnvCB::Parse(trpgToken tok, trpgReadBuffer&buf)
+void* textureEnvCB::Parse(trpgToken tok, trpgReadBuffer &buf)
 {
     int       envMode;
     int       minFilter;
@@ -487,7 +487,7 @@ void* textureEnvCB::Parse(trpgToken tok, trpgReadBuffer&buf)
     return tenv;
 }
 
-bool trpgTextureEnv::Read(trpgReadBuffer&buf)
+bool trpgTextureEnv::Read(trpgReadBuffer &buf)
 {
     trpgr_Parser parse;
     textureEnvCB teCb;
@@ -563,23 +563,23 @@ bool trpgMaterial::isValid() const
 
 
 // Set functions
-void trpgMaterial::SetColor(const trpgColor&col)
+void trpgMaterial::SetColor(const trpgColor &col)
 {
     color = col;
 }
-void trpgMaterial::SetAmbient(const trpgColor&col)
+void trpgMaterial::SetAmbient(const trpgColor &col)
 {
     ambient = col;
 }
-void trpgMaterial::SetDiffuse(const trpgColor&col)
+void trpgMaterial::SetDiffuse(const trpgColor &col)
 {
     diffuse = col;
 }
-void trpgMaterial::SetSpecular(const trpgColor&col)
+void trpgMaterial::SetSpecular(const trpgColor &col)
 {
     specular = col;
 }
-void trpgMaterial::SetEmission(const trpgColor&col)
+void trpgMaterial::SetEmission(const trpgColor &col)
 {
     emission = col;
 }
@@ -628,7 +628,7 @@ void trpgMaterial::SetNumTexture(int no)
     texids.resize(no);
     texEnvs.resize(no);
 }
-void trpgMaterial::SetTexture(int no, int id, const trpgTextureEnv&env)
+void trpgMaterial::SetTexture(int no, int id, const trpgTextureEnv &env)
 {
     if (no < 0 || (unsigned int)no >= texids.size())
         return;
@@ -636,7 +636,7 @@ void trpgMaterial::SetTexture(int no, int id, const trpgTextureEnv&env)
     texids[no]  = id;
     texEnvs[no] = env;
 }
-int trpgMaterial::AddTexture(int id, const trpgTextureEnv&env)
+int trpgMaterial::AddTexture(int id, const trpgTextureEnv &env)
 {
     texids.push_back(id);
     texEnvs.push_back(env);
@@ -681,7 +681,7 @@ void trpgMaterial::SetAttr(int attrCode, int val)
 }
 
 // Write to buffer
-bool trpgMaterial::Write(trpgWriteBuffer&buf)
+bool trpgMaterial::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -769,7 +769,7 @@ bool trpgMaterial::Write(trpgWriteBuffer&buf)
  ***************
  */
 // Get methods
-bool trpgMaterial::GetColor(trpgColor&col) const
+bool trpgMaterial::GetColor(trpgColor &col) const
 {
     if (!isValid())
         return false;
@@ -777,7 +777,7 @@ bool trpgMaterial::GetColor(trpgColor&col) const
     col = color;
     return true;
 }
-bool trpgMaterial::GetAmbient(trpgColor&col) const
+bool trpgMaterial::GetAmbient(trpgColor &col) const
 {
     if (!isValid())
         return false;
@@ -785,7 +785,7 @@ bool trpgMaterial::GetAmbient(trpgColor&col) const
     col = ambient;
     return true;
 }
-bool trpgMaterial::GetDiffuse(trpgColor&col) const
+bool trpgMaterial::GetDiffuse(trpgColor &col) const
 {
     if (!isValid())
         return false;
@@ -793,7 +793,7 @@ bool trpgMaterial::GetDiffuse(trpgColor&col) const
     col = diffuse;
     return true;
 }
-bool trpgMaterial::GetSpecular(trpgColor&col) const
+bool trpgMaterial::GetSpecular(trpgColor &col) const
 {
     if (!isValid())
         return false;
@@ -801,7 +801,7 @@ bool trpgMaterial::GetSpecular(trpgColor&col) const
     col = specular;
     return true;
 }
-bool trpgMaterial::GetEmission(trpgColor&col) const
+bool trpgMaterial::GetEmission(trpgColor &col) const
 {
     if (!isValid())
         return false;
@@ -809,7 +809,7 @@ bool trpgMaterial::GetEmission(trpgColor&col) const
     col = emission;
     return true;
 }
-bool trpgMaterial::GetShininess(float64&shin) const
+bool trpgMaterial::GetShininess(float64 &shin) const
 {
     if (!isValid())
         return false;
@@ -817,7 +817,7 @@ bool trpgMaterial::GetShininess(float64&shin) const
     shin = shininess;
     return true;
 }
-bool trpgMaterial::GetShadeModel(int&sm) const
+bool trpgMaterial::GetShadeModel(int &sm) const
 {
     if (!isValid())
         return false;
@@ -825,7 +825,7 @@ bool trpgMaterial::GetShadeModel(int&sm) const
     sm = shadeModel;
     return true;
 }
-bool trpgMaterial::GetPointSize(float64&ps) const
+bool trpgMaterial::GetPointSize(float64 &ps) const
 {
     if (!isValid())
         return false;
@@ -833,7 +833,7 @@ bool trpgMaterial::GetPointSize(float64&ps) const
     ps = pointSize;
     return true;
 }
-bool trpgMaterial::GetLineWidth(float64&lw) const
+bool trpgMaterial::GetLineWidth(float64 &lw) const
 {
     if (!isValid())
         return false;
@@ -841,7 +841,7 @@ bool trpgMaterial::GetLineWidth(float64&lw) const
     lw = lineWidth;
     return true;
 }
-bool trpgMaterial::GetCullMode(int32&cull) const
+bool trpgMaterial::GetCullMode(int32 &cull) const
 {
     if (!isValid())
         return false;
@@ -849,7 +849,7 @@ bool trpgMaterial::GetCullMode(int32&cull) const
     cull = cullMode;
     return true;
 }
-bool trpgMaterial::GetAlphaFunc(int&af) const
+bool trpgMaterial::GetAlphaFunc(int &af) const
 {
     if (!isValid())
         return false;
@@ -857,7 +857,7 @@ bool trpgMaterial::GetAlphaFunc(int&af) const
     af = alphaFunc;
     return true;
 }
-bool trpgMaterial::GetAlphaRef(float64&ar) const
+bool trpgMaterial::GetAlphaRef(float64 &ar) const
 {
     if (!isValid())
         return false;
@@ -865,7 +865,7 @@ bool trpgMaterial::GetAlphaRef(float64&ar) const
     ar = alphaRef;
     return true;
 }
-bool trpgMaterial::GetAlpha(float64&a) const
+bool trpgMaterial::GetAlpha(float64 &a) const
 {
     if (!isValid())
         return false;
@@ -873,7 +873,7 @@ bool trpgMaterial::GetAlpha(float64&a) const
     a = alpha;
     return true;
 }
-bool trpgMaterial::GetAutoNormal(bool&an) const
+bool trpgMaterial::GetAutoNormal(bool &an) const
 {
     if (!isValid())
         return false;
@@ -881,7 +881,7 @@ bool trpgMaterial::GetAutoNormal(bool&an) const
     an = autoNormal;
     return true;
 }
-bool trpgMaterial::GetNumTexture(int&no) const
+bool trpgMaterial::GetNumTexture(int &no) const
 {
     if (!isValid())
         return false;
@@ -889,7 +889,7 @@ bool trpgMaterial::GetNumTexture(int&no) const
     no = numTex;
     return true;
 }
-bool trpgMaterial::GetTexture(int no, int&id, trpgTextureEnv&te) const
+bool trpgMaterial::GetTexture(int no, int &id, trpgTextureEnv &te) const
 {
     if (!isValid() || no < 0 || no >= numTex)
         return false;
@@ -898,7 +898,7 @@ bool trpgMaterial::GetTexture(int no, int&id, trpgTextureEnv&te) const
     te = texEnvs[no];
     return true;
 }
-bool trpgMaterial::GetNumTile(int&no) const
+bool trpgMaterial::GetNumTile(int &no) const
 {
     if (!isValid())
         return false;
@@ -906,7 +906,7 @@ bool trpgMaterial::GetNumTile(int&no) const
     no = numTile;
     return true;
 }
-bool trpgMaterial::GetIsBumpMap(bool&ret) const
+bool trpgMaterial::GetIsBumpMap(bool &ret) const
 {
     if (!isValid())
         return false;
@@ -914,7 +914,7 @@ bool trpgMaterial::GetIsBumpMap(bool&ret) const
     ret = isBump;
     return true;
 }
-bool trpgMaterial::GetAttr(int attrCode, int&ret) const
+bool trpgMaterial::GetAttr(int attrCode, int &ret) const
 {
     switch (attrCode)
     {
@@ -951,7 +951,7 @@ public:
 void         *Parse(trpgToken, trpgReadBuffer &);
 trpgMaterial *mat;
 };
-void* materialCB::Parse(trpgToken tok, trpgReadBuffer&buf)
+void* materialCB::Parse(trpgToken tok, trpgReadBuffer &buf)
 {
     trpgColor      color;
     float64        shininess;
@@ -1093,7 +1093,7 @@ void* materialCB::Parse(trpgToken tok, trpgReadBuffer&buf)
     return mat;
 }
 
-bool trpgMaterial::Read(trpgReadBuffer&buf)
+bool trpgMaterial::Read(trpgReadBuffer &buf)
 {
     trpgr_Parser parse;
     materialCB   matCb;
@@ -1140,7 +1140,7 @@ trpgTexture::trpgTexture()
 }
 
 // Copy construction
-trpgTexture::trpgTexture(const trpgTexture&in) :
+trpgTexture::trpgTexture(const trpgTexture &in) :
     trpgReadWriteable(in)
 {
     mode     = in.mode;
@@ -1246,7 +1246,7 @@ void trpgTexture::SetImageMode(ImageMode inMode)
 {
     mode = inMode;
 }
-bool trpgTexture::GetImageMode(ImageMode&outMode) const
+bool trpgTexture::GetImageMode(ImageMode &outMode) const
 {
     outMode = mode;
 
@@ -1256,19 +1256,19 @@ void trpgTexture::SetImageType(ImageType inType)
 {
     type = inType;
 }
-bool trpgTexture::GetImageType(ImageType&outType) const
+bool trpgTexture::GetImageType(ImageType &outType) const
 {
     outType = type;
 
     return true;
 }
 
-void trpgTexture::SetImageSize(const trpg2iPoint&inSize)
+void trpgTexture::SetImageSize(const trpg2iPoint &inSize)
 {
     sizeX = inSize.x;
     sizeY = inSize.y;
 }
-bool trpgTexture::GetImageSize(trpg2iPoint&outSize) const
+bool trpgTexture::GetImageSize(trpg2iPoint &outSize) const
 {
     if (mode != Local && mode != Template)
         return false;
@@ -1282,12 +1282,12 @@ void trpgTexture::SetIsMipmap(bool val)
 {
     isMipmap = val;
 }
-bool trpgTexture::GetIsMipmap(bool&ret) const
+bool trpgTexture::GetIsMipmap(bool &ret) const
 {
     ret = isMipmap;
     return true;
 }
-bool trpgTexture::GetImageAddr(trpgwAppAddress&outAddr) const
+bool trpgTexture::GetImageAddr(trpgwAppAddress &outAddr) const
 {
     if (mode != Local)
         return false;
@@ -1296,11 +1296,11 @@ bool trpgTexture::GetImageAddr(trpgwAppAddress&outAddr) const
 
     return true;
 }
-void trpgTexture::SetImageAddr(const trpgwAppAddress&inAddr)
+void trpgTexture::SetImageAddr(const trpgwAppAddress &inAddr)
 {
     addr = inAddr;
 }
-bool trpgTexture::GetImageDepth(int32&depth) const
+bool trpgTexture::GetImageDepth(int32 &depth) const
 {
     switch (type)
     {
@@ -1367,7 +1367,7 @@ void trpgTexture::SetNumLayer(int layers)
     numLayer = layers;
 }
 
-bool trpgTexture::GetNumLayer(int&layers) const
+bool trpgTexture::GetNumLayer(int &layers) const
 {
     if (!isValid())
         return false;
@@ -1385,7 +1385,7 @@ void trpgTexture::AddTile()
 {
     useCount++;
 }
-bool trpgTexture::GetNumTile(int&num) const
+bool trpgTexture::GetNumTile(int &num) const
 {
     if (!isValid())
         return false;
@@ -1395,7 +1395,7 @@ bool trpgTexture::GetNumTile(int&num) const
 }
 
 // Copy operator
-trpgTexture&trpgTexture::operator =(const trpgTexture&in)
+trpgTexture&trpgTexture::operator =(const trpgTexture &in)
 {
     mode = in.mode;
     type = in.type;
@@ -1421,7 +1421,7 @@ trpgTexture&trpgTexture::operator =(const trpgTexture&in)
 }
 
 // Equality operator
-int trpgTexture::operator ==(const trpgTexture&in) const
+int trpgTexture::operator ==(const trpgTexture &in) const
 {
     if (mode != in.mode)
         return 0;
@@ -1522,7 +1522,7 @@ int32 trpgTexture::MipLevelOffset(int miplevel)
 
 
 // Write function
-bool trpgTexture::Write(trpgWriteBuffer&buf)
+bool trpgTexture::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -1550,7 +1550,7 @@ bool trpgTexture::Write(trpgWriteBuffer&buf)
 }
 
 // Read function
-bool trpgTexture::Read(trpgReadBuffer&buf)
+bool trpgTexture::Read(trpgReadBuffer &buf)
 {
     char texName[1024];
 
@@ -1795,7 +1795,7 @@ trpgTexTable::trpgTexTable()
     currentRow = -1;
     currentCol = -1;
 }
-trpgTexTable::trpgTexTable(const trpgTexTable&in) :
+trpgTexTable::trpgTexTable(const trpgTexTable &in) :
     trpgReadWriteable(in)
 {
     *this = in;
@@ -1846,7 +1846,7 @@ void trpgTexTable::SetNumTextures(int /*no*/)
     // obsolete. This method doesn't need to do anything since we're using a map instead of a vector.
     //    texList.resize(no);
 }
-int trpgTexTable::AddTexture(const trpgTexture&inTex)
+int trpgTexTable::AddTexture(const trpgTexture &inTex)
 {
     TeAttrHdl hdl = inTex.GetHandle();
 
@@ -1863,7 +1863,7 @@ int trpgTexTable::AddTexture(const trpgTexture&inTex)
 
     return hdl;
 }
-int trpgTexTable::FindAddTexture(const trpgTexture&inTex)
+int trpgTexTable::FindAddTexture(const trpgTexture &inTex)
 {
     TextureMapType::iterator itr = textureMap.begin();
 
@@ -1878,7 +1878,7 @@ int trpgTexTable::FindAddTexture(const trpgTexture&inTex)
 
     return AddTexture(inTex);
 }
-void trpgTexTable::SetTexture(int id, const trpgTexture&inTex)
+void trpgTexTable::SetTexture(int id, const trpgTexture &inTex)
 {
     if (id < 0)
         return;
@@ -1887,7 +1887,7 @@ void trpgTexTable::SetTexture(int id, const trpgTexture&inTex)
 }
 
 // Copy operator
-trpgTexTable&trpgTexTable::operator =(const trpgTexTable&in)
+trpgTexTable&trpgTexTable::operator =(const trpgTexTable &in)
 {
     Reset();
     TextureMapType::const_iterator itr = in.textureMap.begin();
@@ -1903,7 +1903,7 @@ trpgTexTable&trpgTexTable::operator =(const trpgTexTable&in)
 }
 
 // Write Texture table
-bool trpgTexTable::Write(trpgWriteBuffer&buf)
+bool trpgTexTable::Write(trpgWriteBuffer &buf)
 {
     int32 numTex;
 
@@ -1930,7 +1930,7 @@ bool trpgTexTable::Write(trpgWriteBuffer&buf)
  ***********
  */
 // Get functions
-bool trpgTexTable::GetNumTextures(int&no) const
+bool trpgTexTable::GetNumTextures(int &no) const
 {
     no = textureMap.size();
     if (!isValid())
@@ -1938,7 +1938,7 @@ bool trpgTexTable::GetNumTextures(int&no) const
 
     return true;
 }
-bool trpgTexTable::GetTexture(int id, trpgTexture&ret) const
+bool trpgTexTable::GetTexture(int id, trpgTexture &ret) const
 {
     if (!isValid())
         return false;
@@ -1971,7 +1971,7 @@ const trpgTexture* trpgTexTable::GetTextureRef(int id) const
     return ret;
 }
 
-const trpgTexture* trpgTexTable::FindByName(const char *name, int&texid) const
+const trpgTexture* trpgTexTable::FindByName(const char *name, int &texid) const
 {
     TextureMapType::const_iterator itr = textureMap.begin();
 
@@ -1990,7 +1990,7 @@ const trpgTexture* trpgTexTable::FindByName(const char *name, int&texid) const
     return 0;
 }
 
-bool trpgTexTable::Read(trpgReadBuffer&buf)
+bool trpgTexTable::Read(trpgReadBuffer &buf)
 {
     int32     numTex;
     trpgToken texTok;
@@ -2071,7 +2071,7 @@ void trpgLocalMaterial::Reset()
     addr[0].row    = -1;
 }
 
-bool trpgLocalMaterial::GetBaseMaterial(int32&subTable, int32&matID) const
+bool trpgLocalMaterial::GetBaseMaterial(int32 &subTable, int32 &matID) const
 {
     if (!isValid())
         return false;
@@ -2081,7 +2081,7 @@ bool trpgLocalMaterial::GetBaseMaterial(int32&subTable, int32&matID) const
     return true;
 }
 
-void trpgLocalMaterial::SetSubImageInfo(const SubImageInfo&info)
+void trpgLocalMaterial::SetSubImageInfo(const SubImageInfo &info)
 {
     sx         = info.sx;
     sy         = info.sy;
@@ -2091,7 +2091,7 @@ void trpgLocalMaterial::SetSubImageInfo(const SubImageInfo&info)
     destHeight = info.destHeight;
 }
 
-bool trpgLocalMaterial::GetSubImageInfo(SubImageInfo&info) const
+bool trpgLocalMaterial::GetSubImageInfo(SubImageInfo &info) const
 {
     if (!isValid())
         return false;
@@ -2106,12 +2106,12 @@ bool trpgLocalMaterial::GetSubImageInfo(SubImageInfo&info) const
     return true;
 }
 
-void trpgLocalMaterial::SetAddr(const trpgwAppAddress&inAddr)
+void trpgLocalMaterial::SetAddr(const trpgwAppAddress &inAddr)
 {
     addr[0] = inAddr;
 }
 
-void trpgLocalMaterial::SetNthAddr(unsigned int subtable, const trpgwAppAddress&inAddr)
+void trpgLocalMaterial::SetNthAddr(unsigned int subtable, const trpgwAppAddress &inAddr)
 {
     if (addr.size() <= subtable)
         addr.resize(subtable + 1);
@@ -2119,7 +2119,7 @@ void trpgLocalMaterial::SetNthAddr(unsigned int subtable, const trpgwAppAddress&
     addr[subtable] = inAddr;
 }
 
-bool trpgLocalMaterial::GetAddr(trpgwAppAddress&inAddr) const
+bool trpgLocalMaterial::GetAddr(trpgwAppAddress &inAddr) const
 {
     if (!isValid())
         return false;
@@ -2128,7 +2128,7 @@ bool trpgLocalMaterial::GetAddr(trpgwAppAddress&inAddr) const
     return true;
 }
 
-bool trpgLocalMaterial::GetNthAddr(unsigned int subtable, trpgwAppAddress&inAddr) const
+bool trpgLocalMaterial::GetNthAddr(unsigned int subtable, trpgwAppAddress &inAddr) const
 {
     if (!isValid())
         return false;
@@ -2140,7 +2140,7 @@ bool trpgLocalMaterial::GetNthAddr(unsigned int subtable, trpgwAppAddress&inAddr
     return true;
 }
 
-bool trpgLocalMaterial::GetNumLocals(int&numLocals) const
+bool trpgLocalMaterial::GetNumLocals(int &numLocals) const
 {
     if (!isValid())
         return false;
@@ -2177,7 +2177,7 @@ bool trpgLocalMaterial::isValid() const
 
 // Write method
 
-bool trpgLocalMaterial::Write(trpgWriteBuffer&buf)
+bool trpgLocalMaterial::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -2215,7 +2215,7 @@ bool trpgLocalMaterial::Write(trpgWriteBuffer&buf)
 
 // Read method
 
-bool trpgLocalMaterial::Read(trpgReadBuffer&buf)
+bool trpgLocalMaterial::Read(trpgReadBuffer &buf)
 {
     try
     {

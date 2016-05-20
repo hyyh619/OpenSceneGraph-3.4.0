@@ -23,13 +23,13 @@ Switch::Switch() :
     _newChildDefaultValue(true)
 {}
 
-Switch::Switch(const Switch&sw, const CopyOp&copyop) :
+Switch::Switch(const Switch &sw, const CopyOp &copyop) :
     Group(sw, copyop),
     _newChildDefaultValue(sw._newChildDefaultValue),
     _values(sw._values)
 {}
 
-void Switch::traverse(NodeVisitor&nv)
+void Switch::traverse(NodeVisitor &nv)
 {
     if (nv.getTraversalMode() == NodeVisitor::TRAVERSE_ACTIVE_CHILDREN)
     {
@@ -218,7 +218,7 @@ BoundingSphere Switch::computeBound() const
         {
             if (_values[pos] == true)
             {
-                const osg::BoundingSphere&bs = _children[pos]->getBound();
+                const osg::BoundingSphere &bs = _children[pos]->getBound();
                 bb.expandBy(bs);
             }
         }
@@ -239,7 +239,7 @@ BoundingSphere Switch::computeBound() const
         {
             if (_values[pos] == true)
             {
-                const osg::BoundingSphere&bs = _children[pos]->getBound();
+                const osg::BoundingSphere &bs = _children[pos]->getBound();
                 bsphere.expandRadiusBy(bs);
             }
         }

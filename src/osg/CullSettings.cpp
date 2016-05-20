@@ -21,7 +21,7 @@
 
 using namespace osg;
 
-CullSettings::CullSettings(const CullSettings&cs)
+CullSettings::CullSettings(const CullSettings &cs)
 {
     setCullSettings(cs);
 }
@@ -49,7 +49,7 @@ void CullSettings::setDefaults()
     // _nearFarRatio = 0.00005f;
 }
 
-void CullSettings::setCullSettings(const CullSettings&rhs)
+void CullSettings::setCullSettings(const CullSettings &rhs)
 {
     _inheritanceMask                         = rhs._inheritanceMask;
     _inheritanceMaskActionOnAttributeSetting = rhs._inheritanceMaskActionOnAttributeSetting;
@@ -72,7 +72,7 @@ void CullSettings::setCullSettings(const CullSettings&rhs)
 }
 
 
-void CullSettings::inheritCullSettings(const CullSettings&settings, unsigned int inheritanceMask)
+void CullSettings::inheritCullSettings(const CullSettings &settings, unsigned int inheritanceMask)
 {
     if (inheritanceMask & COMPUTE_NEAR_FAR_MODE)
         _computeNearFar = settings._computeNearFar;
@@ -144,7 +144,7 @@ void CullSettings::readEnvironmentalVariables()
     }
 }
 
-void CullSettings::readCommandLine(ArgumentParser&arguments)
+void CullSettings::readCommandLine(ArgumentParser &arguments)
 {
     // report the usage options.
     if (arguments.getApplicationUsage())
@@ -177,7 +177,7 @@ void CullSettings::readCommandLine(ArgumentParser&arguments)
     }
 }
 
-void CullSettings::write(std::ostream&out)
+void CullSettings::write(std::ostream &out)
 {
     out << "CullSettings: " << this << " {" << std::endl;
 

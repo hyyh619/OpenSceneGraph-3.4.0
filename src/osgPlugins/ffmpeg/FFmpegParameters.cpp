@@ -42,7 +42,7 @@ FFmpegParameters::~FFmpegParameters()
 }
 
 
-void FFmpegParameters::parse(const std::string&name, const std::string&value)
+void FFmpegParameters::parse(const std::string &name, const std::string &value)
 {
     if (value.empty())
     {

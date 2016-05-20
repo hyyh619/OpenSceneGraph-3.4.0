@@ -40,12 +40,12 @@ bool isValid(void) const;
 void Reset(void);
 void AddPoint(const trpg3dPoint&);
 void AddPoint(double, double, double);
-void GetMBR(trpg3dPoint&ll, trpg3dPoint&ur) const;
+void GetMBR(trpg3dPoint &ll, trpg3dPoint &ur) const;
 trpg3dPoint GetLL(void) const;
 trpg3dPoint GetUR(void) const;
 void Union(const trpgMBR&);
 //    bool Overlap(const trpgMBR &) const;
-bool Overlap(const trpg2dPoint&ll, const trpg2dPoint&ur) const;
+bool Overlap(const trpg2dPoint &ll, const trpg2dPoint &ur) const;
 //    bool Within(const trpg3dPoint &) const
 bool Within(const trpg2dPoint&) const;
 protected:

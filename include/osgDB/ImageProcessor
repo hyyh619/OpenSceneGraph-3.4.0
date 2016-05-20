@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGDB_IMAGEPROCESSOR
 #define OSGDB_IMAGEPROCESSOR 1
@@ -17,20 +17,19 @@
 #include <osg/Object>
 
 namespace osgDB {
+    class ImageProcessor: public osg::Object
+    {
+public:
 
-class ImageProcessor : public osg::Object
-{
-    public:
-
-        ImageProcessor():
+        ImageProcessor() :
             osg::Object(true) {}
 
-        ImageProcessor(const ImageProcessor& rw,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY):
-            osg::Object(rw,copyop) {}
+        ImageProcessor(const ImageProcessor &rw, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
+            osg::Object(rw, copyop) {}
 
         virtual ~ImageProcessor() {}
 
-        META_Object(osgDB,ImageProcessor);
+        META_Object(osgDB, ImageProcessor);
 
         enum CompressionMethod
         {
@@ -48,7 +47,6 @@ class ImageProcessor : public osg::Object
 
         virtual void compress(osg::Image& /*image*/, osg::Texture::InternalFormatMode /*compressedFormat*/, bool /*generateMipMap*/, bool /*resizeToPowerOfTwo*/, CompressionMethod /*method*/, CompressionQuality /*quality*/) {}
         virtual void generateMipMap(osg::Image& /*image*/, bool /*resizeToPowerOfTwo*/, CompressionMethod /*method*/) {}
-};
-
+    };
 }
 #endif

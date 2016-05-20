@@ -13,8 +13,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ClipPlane_readLocalData(Object&obj, Input&fr);
-bool ClipPlane_writeLocalData(const Object&obj, Output&fw);
+bool ClipPlane_readLocalData(Object &obj, Input &fr);
+bool ClipPlane_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(ClipPlane)
@@ -27,11 +27,11 @@ REGISTER_DOTOSGWRAPPER(ClipPlane)
 );
 
 
-bool ClipPlane_readLocalData(Object&obj, Input&fr)
+bool ClipPlane_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ClipPlane&clipplane = static_cast<ClipPlane&>(obj);
+    ClipPlane &clipplane = static_cast<ClipPlane&>(obj);
 
     if (fr.matchSequence("clipPlaneNum %i"))
     {
@@ -61,9 +61,9 @@ bool ClipPlane_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool ClipPlane_writeLocalData(const Object&obj, Output&fw)
+bool ClipPlane_writeLocalData(const Object &obj, Output &fw)
 {
-    const ClipPlane&clipplane = static_cast<const ClipPlane&>(obj);
+    const ClipPlane &clipplane = static_cast<const ClipPlane&>(obj);
 
     fw.indent() << "clipPlaneNum " << clipplane.getClipPlaneNum() << std::endl;
 

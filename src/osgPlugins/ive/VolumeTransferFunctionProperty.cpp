@@ -38,7 +38,7 @@ void VolumeTransferFunctionProperty::write(DataOutputStream *out)
         out->writeUInt(1); // TransferFunction1D
         out->writeUInt(tf->getNumberImageCells());
 
-        const osg::TransferFunction1D::ColorMap&colourMap = tf->getColorMap();
+        const osg::TransferFunction1D::ColorMap &colourMap = tf->getColorMap();
 
         // count the number of colour entries in the map so we can write it to the .ive file
         unsigned int numColours = 0;
@@ -94,7 +94,7 @@ void VolumeTransferFunctionProperty::read(DataInputStream *in)
 
         tf->allocate(in->readUInt());
 
-        osg::TransferFunction1D::ColorMap&colourMap = tf->getColorMap();
+        osg::TransferFunction1D::ColorMap &colourMap = tf->getColorMap();
 
         // count the number of colour entries in the map so we can write it to the .ive file
         unsigned int numColours = in->readUInt();

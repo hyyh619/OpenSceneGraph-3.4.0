@@ -24,7 +24,7 @@ BlendFunci::BlendFunci() :
 BlendFunci::~BlendFunci()
 {}
 
-void BlendFunci::apply(State&state) const
+void BlendFunci::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

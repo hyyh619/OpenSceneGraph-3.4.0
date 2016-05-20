@@ -124,7 +124,7 @@ bool XBaseFieldDescriptor::read(int fd)
 }
 
 
-XBaseParser::XBaseParser(const std::string&fileName) :
+XBaseParser::XBaseParser(const std::string &fileName) :
     _valid(false)
 {
     if (!fileName.empty())

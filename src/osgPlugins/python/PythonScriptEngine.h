@@ -24,14 +24,14 @@ class PythonScriptEngine : public osg::ScriptEngine
 {
 public:
 PythonScriptEngine();
-PythonScriptEngine(const PythonScriptEngine&rhs, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+PythonScriptEngine(const PythonScriptEngine &rhs, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(lua, PythonScriptEngine)
 
 virtual const std::string & getLanguage() const { return _language; }
 
 /** run a Script.*/
-virtual bool run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters);
+virtual bool run(osg::Script *script, const std::string &entryPoint, osg::Parameters &inputParameters, osg::Parameters &outputParameters);
 
 /** get the Python main object.*/
 PyObject* getPythonMain()

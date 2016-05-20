@@ -24,9 +24,9 @@ using namespace osgManipulator;
 
 namespace
 {
-osg::Vec2d computeScale(const osg::Vec3d&startProjectedPoint,
-                        const osg::Vec3d&projectedPoint,
-                        const osg::Vec2d&scaleCenter)
+osg::Vec2d computeScale(const osg::Vec3d &startProjectedPoint,
+                        const osg::Vec3d &projectedPoint,
+                        const osg::Vec2d &scaleCenter)
 {
     osg::Vec2d scale(1.0, 1.0);
 
@@ -55,7 +55,7 @@ Scale2DDragger::Scale2DDragger(ScaleMode scaleMode) : Dragger(), _minScale(0.001
 Scale2DDragger::~Scale2DDragger()
 {}
 
-bool Scale2DDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool Scale2DDragger::handle(const PointerInfo &pointer, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     // Check if the dragger node is in the nodepath.
     if (!pointer.contains(this))

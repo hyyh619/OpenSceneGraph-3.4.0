@@ -35,7 +35,7 @@ GeometryTechnique::GeometryTechnique()
     setFilterMatrixAs(GAUSSIAN);
 }
 
-GeometryTechnique::GeometryTechnique(const GeometryTechnique&gt, const osg::CopyOp&copyop) :
+GeometryTechnique::GeometryTechnique(const GeometryTechnique &gt, const osg::CopyOp &copyop) :
     TerrainTechnique(gt, copyop)
 {
     setFilterBias(gt._filterBias);
@@ -64,7 +64,7 @@ void GeometryTechnique::setFilterWidth(float filterWidth)
         _filterWidthUniform->set(filterWidth);
 }
 
-void GeometryTechnique::setFilterMatrix(const osg::Matrix3&matrix)
+void GeometryTechnique::setFilterMatrix(const osg::Matrix3 &matrix)
 {
     _filterMatrix = matrix;
     if (!_filterMatrixUniform)
@@ -183,7 +183,7 @@ Locator* GeometryTechnique::computeMasterLocator()
     return masterLocator;
 }
 
-osg::Vec3d GeometryTechnique::computeCenterModel(BufferData&buffer, Locator *masterLocator)
+osg::Vec3d GeometryTechnique::computeCenterModel(BufferData &buffer, Locator *masterLocator)
 {
     if (!masterLocator)
         return osg::Vec3d(0.0, 0.0, 0.0);
@@ -255,9 +255,9 @@ typedef std::vector<int> Indices;
 typedef std::pair<osg::ref_ptr<osg::Vec2Array>, Locator*> TexCoordLocatorPair;
 typedef std::map<Layer*, TexCoordLocatorPair> LayerToTexCoordMap;
 
-VertexNormalGenerator(Locator *masterLocator, const osg::Vec3d&centerModel, int numRows, int numColmns, float scaleHeight, bool createSkirt);
+VertexNormalGenerator(Locator *masterLocator, const osg::Vec3d &centerModel, int numRows, int numColmns, float scaleHeight, bool createSkirt);
 
-void populateCenter(osgTerrain::Layer *elevationLayer, LayerToTexCoordMap&layerToTexCoordMap);
+void populateCenter(osgTerrain::Layer *elevationLayer, LayerToTexCoordMap &layerToTexCoordMap);
 void populateLeftBoundary(osgTerrain::Layer *elevationLayer);
 void populateRightBoundary(osgTerrain::Layer *elevationLayer);
 void populateAboveBoundary(osgTerrain::Layer *elevationLayer);
@@ -270,9 +270,9 @@ unsigned int capacity() const
     return _vertices->capacity();
 }
 
-inline void setVertex(int c, int r, const osg::Vec3&v, const osg::Vec3&n)
+inline void setVertex(int c, int r, const osg::Vec3 &v, const osg::Vec3 &n)
 {
-    int&i = index(c, r);
+    int &i = index(c, r);
 
     if (i == 0)
     {
@@ -323,7 +323,7 @@ inline int vertex_index(int c, int r) const
     int i = _indices[(r + 1) * (_numColumns + 2) + c + 1]; return i - 1;
 }
 
-inline bool vertex(int c, int r, osg::Vec3&v) const
+inline bool vertex(int c, int r, osg::Vec3 &v) const
 {
     int i = index(c, r);
 
@@ -338,7 +338,7 @@ inline bool vertex(int c, int r, osg::Vec3&v) const
     return true;
 }
 
-inline bool computeNormal(int c, int r, osg::Vec3&n) const
+inline bool computeNormal(int c, int r, osg::Vec3 &n) const
 {
 #if 1
     return computeNormalWithNoDiagonals(c, r, n);
@@ -347,7 +347,7 @@ inline bool computeNormal(int c, int r, osg::Vec3&n) const
 #endif
 }
 
-inline bool computeNormalWithNoDiagonals(int c, int r, osg::Vec3&n) const
+inline bool computeNormalWithNoDiagonals(int c, int r, osg::Vec3 &n) const
 {
     osg::Vec3 center;
     bool      center_valid = vertex(c, r,  center);
@@ -391,7 +391,7 @@ inline bool computeNormalWithNoDiagonals(int c, int r, osg::Vec3&n) const
     return n.normalize() != 0.0f;
 }
 
-inline bool computeNormalWithDiagonals(int c, int r, osg::Vec3&n) const
+inline bool computeNormalWithDiagonals(int c, int r, osg::Vec3 &n) const
 {
     osg::Vec3 center;
     bool      center_valid = vertex(c, r,  center);
@@ -477,7 +477,7 @@ osg::ref_ptr<osg::FloatArray> _elevations;
 osg::ref_ptr<osg::Vec3Array> _boundaryVertices;
 };
 
-VertexNormalGenerator::VertexNormalGenerator(Locator *masterLocator, const osg::Vec3d&centerModel, int numRows, int numColumns, float scaleHeight, bool createSkirt) :
+VertexNormalGenerator::VertexNormalGenerator(Locator *masterLocator, const osg::Vec3d &centerModel, int numRows, int numColumns, float scaleHeight, bool createSkirt) :
     _masterLocator(masterLocator),
     _centerModel(centerModel),
     _numRows(numRows),
@@ -503,7 +503,7 @@ VertexNormalGenerator::VertexNormalGenerator(Locator *masterLocator, const osg::
     _boundaryVertices->reserve(_numRows * 2 + _numColumns * 2 + 4);
 }
 
-void VertexNormalGenerator::populateCenter(osgTerrain::Layer *elevationLayer, LayerToTexCoordMap&layerToTexCoordMap)
+void VertexNormalGenerator::populateCenter(osgTerrain::Layer *elevationLayer, LayerToTexCoordMap &layerToTexCoordMap)
 {
     // OSG_NOTICE<<std::endl<<"VertexNormalGenerator::populateCenter("<<elevationLayer<<")"<<std::endl;
 
@@ -828,7 +828,7 @@ void VertexNormalGenerator::computeNormals()
     }
 }
 
-void GeometryTechnique::generateGeometry(BufferData&buffer, Locator *masterLocator, const osg::Vec3d&centerModel)
+void GeometryTechnique::generateGeometry(BufferData &buffer, Locator *masterLocator, const osg::Vec3d &centerModel)
 {
     Terrain           *terrain        = _terrainTile->getTerrain();
     osgTerrain::Layer *elevationLayer = _terrainTile->getElevationLayer();
@@ -930,7 +930,7 @@ void GeometryTechnique::generateGeometry(BufferData&buffer, Locator *masterLocat
                     }
                 }
 
-                VertexNormalGenerator::TexCoordLocatorPair&tclp = layerToTexCoordMap[colorLayer];
+                VertexNormalGenerator::TexCoordLocatorPair &tclp = layerToTexCoordMap[colorLayer];
                 tclp.first = new osg::Vec2Array;
                 tclp.first->reserve(numVertices);
                 tclp.second = locator ? locator : masterLocator;
@@ -1415,7 +1415,7 @@ void GeometryTechnique::generateGeometry(BufferData&buffer, Locator *masterLocat
     }
 }
 
-void GeometryTechnique::applyColorLayers(BufferData&buffer)
+void GeometryTechnique::applyColorLayers(BufferData &buffer)
 {
     typedef std::map<osgTerrain::Layer*, osg::Texture*> LayerToTextureMap;
     LayerToTextureMap layerToTextureMap;
@@ -1507,7 +1507,7 @@ void GeometryTechnique::applyColorLayers(BufferData&buffer)
     }
 }
 
-void GeometryTechnique::applyTransparency(BufferData&buffer)
+void GeometryTechnique::applyTransparency(BufferData &buffer)
 {
     TerrainTile::BlendingPolicy blendingPolicy = _terrainTile->getBlendingPolicy();
 
@@ -1584,7 +1584,7 @@ void GeometryTechnique::cull(osgUtil::CullVisitor *cv)
 }
 
 
-void GeometryTechnique::traverse(osg::NodeVisitor&nv)
+void GeometryTechnique::traverse(osg::NodeVisitor &nv)
 {
     if (!_terrainTile)
         return;

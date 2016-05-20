@@ -15,7 +15,7 @@ CollectCameraViewsNodeVisitor(CameraViewSwitchManipulator::CameraViewList *camer
     _cameraViews(cameraViews)
 {}
 
-virtual void apply(CameraView&node)
+virtual void apply(CameraView &node)
 {
     _cameraViews->push_back(&node);
 }
@@ -33,13 +33,13 @@ void CameraViewSwitchManipulator::setNode(osg::Node *node)
     _node->accept(visitor);
 }
 
-void CameraViewSwitchManipulator::getUsage(osg::ApplicationUsage&usage) const
+void CameraViewSwitchManipulator::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("CameraViewSwitcher: [", "Decrease current camera number");
     usage.addKeyboardMouseBinding("CameraViewSwitcher: ]", "Increase current camera number");
 }
 
-bool CameraViewSwitchManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&)
+bool CameraViewSwitchManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter&)
 {
     if (ea.getHandled())
         return false;

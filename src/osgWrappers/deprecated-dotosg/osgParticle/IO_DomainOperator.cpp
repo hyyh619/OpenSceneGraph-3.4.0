@@ -9,8 +9,8 @@
 #include <osg/io_utils>
 #include <iostream>
 
-bool  DomainOperator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  DomainOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  DomainOperator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  DomainOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(DomainOperator_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(DomainOperator_Proxy)
     DomainOperator_writeLocalData
 );
 
-bool DomainOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool DomainOperator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::DomainOperator&dp        = static_cast<osgParticle::DomainOperator&>(obj);
-    bool                       itAdvanced = false;
+    osgParticle::DomainOperator &dp        = static_cast<osgParticle::DomainOperator&>(obj);
+    bool                        itAdvanced = false;
 
     std::string typeName;
 
@@ -120,13 +120,13 @@ bool DomainOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool DomainOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool DomainOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::DomainOperator&dp = static_cast<const osgParticle::DomainOperator&>(obj);
+    const osgParticle::DomainOperator &dp = static_cast<const osgParticle::DomainOperator&>(obj);
 
     for (unsigned int i = 0; i < dp.getNumDomains(); ++i)
     {
-        const osgParticle::DomainOperator::Domain&domain = dp.getDomain(i);
+        const osgParticle::DomainOperator::Domain &domain = dp.getDomain(i);
 
         switch (domain.type)
         {

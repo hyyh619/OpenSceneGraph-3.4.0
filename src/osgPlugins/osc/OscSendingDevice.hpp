@@ -56,24 +56,24 @@ class OscSendingDevice : public osgGA::Device
 {
 public:
 typedef osc::int64 MsgIdType;
-OscSendingDevice(const std::string&address, int port, unsigned int numMessagesPerEvent = 1, unsigned int delay_between_sends_in_millisecs = 0);
+OscSendingDevice(const std::string &address, int port, unsigned int numMessagesPerEvent = 1, unsigned int delay_between_sends_in_millisecs = 0);
 ~OscSendingDevice();
-virtual void sendEvent(const osgGA::Event&ea);
+virtual void sendEvent(const osgGA::Event &ea);
 virtual const char* className() const
 {
     return "OSC sending device";
 }
 
 private:
-bool sendEventImpl(const osgGA::Event&ea, MsgIdType msg_id);
-bool sendUIEventImpl(const osgGA::GUIEventAdapter&ea, MsgIdType msg_id);
+bool sendEventImpl(const osgGA::Event &ea, MsgIdType msg_id);
+bool sendUIEventImpl(const osgGA::GUIEventAdapter &ea, MsgIdType msg_id);
 void beginBundle(MsgIdType msg_id);
-void beginSendInputRange(const osgGA::GUIEventAdapter&ea, MsgIdType msg_id);
+void beginSendInputRange(const osgGA::GUIEventAdapter &ea, MsgIdType msg_id);
 void beginMultiTouchSequence();
-bool sendMultiTouchData(const osgGA::GUIEventAdapter&ea);
-int getButtonNum(const osgGA::GUIEventAdapter&ea);
-void sendUserDataContainer(const std::string&key, const osg::UserDataContainer *udc, bool asBundle, MsgIdType msg_id);
-std::string transliterateKey(const std::string&key) const;
+bool sendMultiTouchData(const osgGA::GUIEventAdapter &ea);
+int getButtonNum(const osgGA::GUIEventAdapter &ea);
+void sendUserDataContainer(const std::string &key, const osg::UserDataContainer *udc, bool asBundle, MsgIdType msg_id);
+std::string transliterateKey(const std::string &key) const;
 
 UdpTransmitSocket                    _transmitSocket;
 char                                 *_buffer;

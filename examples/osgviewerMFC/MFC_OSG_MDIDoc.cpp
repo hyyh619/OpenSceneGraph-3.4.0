@@ -40,7 +40,7 @@ BOOL CMFC_OSG_MDIDoc::OnOpenDocument(LPCTSTR lpszPathName)
 
 // CMFC_OSG_MDIDoc serialization
 
-void CMFC_OSG_MDIDoc::Serialize(CArchive&ar)
+void CMFC_OSG_MDIDoc::Serialize(CArchive &ar)
 {
     if (ar.IsStoring())
     {
@@ -61,7 +61,7 @@ void CMFC_OSG_MDIDoc::AssertValid() const
     CDocument::AssertValid();
 }
 
-void CMFC_OSG_MDIDoc::Dump(CDumpContext&dc) const
+void CMFC_OSG_MDIDoc::Dump(CDumpContext &dc) const
 {
     CDocument::Dump(dc);
 }

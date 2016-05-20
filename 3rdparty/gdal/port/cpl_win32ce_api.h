@@ -78,22 +78,22 @@ HANDLE CE_CreateFileA(
    #ifdef LoadLibrary
  #  undef  LoadLibrary
  #  define LoadLibrary CE_LoadLibraryA
- ###endif
+ ####endif
 
- ###ifdef GetProcAddress
+ ####ifdef GetProcAddress
  #  undef  GetProcAddress
  #  define GetProcAddress CE_GetProcAddressA
- ###endif
+ ####endif
 
- ###ifdef GetModuleFileName
+ ####ifdef GetModuleFileName
  #  undef  GetModuleFileName
  #  define GetModuleFileName CE_GetModuleFileNameA
- ###endif
+ ####endif
 
- ###ifdef CreateFile
+ ####ifdef CreateFile
  #  undef  CreateFile
  #  define CreateFile CE_CreateFileA
- ###endif
+ ####endif
  */
 
 #ifdef __cplusplus

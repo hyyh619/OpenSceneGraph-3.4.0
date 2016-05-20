@@ -37,11 +37,11 @@ class FltExportVisitor;
 class TexturePaletteManager
 {
 public:
-TexturePaletteManager(const FltExportVisitor&nv, const ExportOptions&fltOpt);
+TexturePaletteManager(const FltExportVisitor &nv, const ExportOptions &fltOpt);
 
 int add(int unit, const osg::Texture2D *texture);
 
-void write(DataOutputStream&dos) const;
+void write(DataOutputStream &dos) const;
 
 protected:
 
@@ -55,9 +55,9 @@ int _currIndex;
 typedef std::map<const osg::Texture2D*, int> TextureIndexMap;
 TextureIndexMap _indexMap;
 
-const FltExportVisitor&_nv;
+const FltExportVisitor &_nv;
 
-const ExportOptions&_fltOpt;
+const ExportOptions &_fltOpt;
 };
 }
 

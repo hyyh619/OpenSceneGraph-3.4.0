@@ -11,9 +11,9 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TexEnv_readLocalData(Object&obj, Input&fr);
-bool TexEnv_writeLocalData(const Object&obj, Output&fw);
-bool TexEnv_matchModeStr(const char *str, TexEnv::Mode&mode);
+bool TexEnv_readLocalData(Object &obj, Input &fr);
+bool TexEnv_writeLocalData(const Object &obj, Output &fw);
+bool TexEnv_matchModeStr(const char *str, TexEnv::Mode &mode);
 const char* TexEnv_getModeStr(TexEnv::Mode mode);
 
 // register the read and write functions with the osgDB::Registry.
@@ -27,11 +27,11 @@ REGISTER_DOTOSGWRAPPER(TexEnv)
 );
 
 
-bool TexEnv_readLocalData(Object&obj, Input&fr)
+bool TexEnv_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    TexEnv&texenv = static_cast<TexEnv&>(obj);
+    TexEnv &texenv = static_cast<TexEnv&>(obj);
 
     TexEnv::Mode mode;
 
@@ -59,9 +59,9 @@ bool TexEnv_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool TexEnv_writeLocalData(const Object&obj, Output&fw)
+bool TexEnv_writeLocalData(const Object &obj, Output &fw)
 {
-    const TexEnv&texenv = static_cast<const TexEnv&>(obj);
+    const TexEnv &texenv = static_cast<const TexEnv&>(obj);
 
     fw.indent() << "mode " << TexEnv_getModeStr(texenv.getMode()) << std::endl;
 
@@ -82,7 +82,7 @@ bool TexEnv_writeLocalData(const Object&obj, Output&fw)
     return true;
 }
 
-bool TexEnv_matchModeStr(const char *str, TexEnv::Mode&mode)
+bool TexEnv_matchModeStr(const char *str, TexEnv::Mode &mode)
 {
     if (strcmp(str, "DECAL") == 0)
         mode = TexEnv::DECAL;

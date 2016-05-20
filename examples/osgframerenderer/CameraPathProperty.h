@@ -12,15 +12,15 @@ class CameraPathProperty : public gsc::UpdateProperty
 public:
 
 CameraPathProperty() {}
-CameraPathProperty(const std::string&filename)
+CameraPathProperty(const std::string &filename)
 {
     setAnimationPathFileName(filename);
 }
-CameraPathProperty(const CameraPathProperty&cpp, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) {}
+CameraPathProperty(const CameraPathProperty &cpp, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) {}
 
 META_Object(gsc, CameraPathProperty);
 
-void setAnimationPathFileName(const std::string&filename)
+void setAnimationPathFileName(const std::string &filename)
 {
     _filename = filename; loadAnimationPath();
 }
@@ -42,7 +42,7 @@ const osg::AnimationPath* getAnimationPath() const
     return _animationPath.get();
 }
 
-bool getTimeRange(double&startTime, double&endTime) const;
+bool getTimeRange(double &startTime, double &endTime) const;
 
 void resetTimeRange(double startTime, double endTime);
 

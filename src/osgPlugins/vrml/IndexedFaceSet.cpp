@@ -25,8 +25,8 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedFaceSet(openv
         std::auto_ptr<openvrml::field_value> fv   = vrml_ifs->field("coord");
         const openvrml::sfnode               *sfn = dynamic_cast<const openvrml::sfnode*>(fv.get());
 
-        openvrml::coordinate_node         *vrml_coord_node = dynamic_cast<openvrml::coordinate_node*>((sfn->value()).get());
-        const std::vector<openvrml::vec3f>&vrml_coord      = vrml_coord_node->point();
+        openvrml::coordinate_node          *vrml_coord_node = dynamic_cast<openvrml::coordinate_node*>((sfn->value()).get());
+        const std::vector<openvrml::vec3f> &vrml_coord      = vrml_coord_node->point();
 
         osg::ref_ptr<osg::Vec3Array> osg_vertices = new osg::Vec3Array();
 
@@ -80,8 +80,8 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedFaceSet(openv
 
         if (vrml_tex_coord_node != 0) // if no texture, node is NULL pointer
         {
-            const std::vector<openvrml::vec2f>&vrml_tex_coord = vrml_tex_coord_node->point();
-            osg::ref_ptr<osg::Vec2Array>      osg_texcoords   = new osg::Vec2Array();
+            const std::vector<openvrml::vec2f> &vrml_tex_coord = vrml_tex_coord_node->point();
+            osg::ref_ptr<osg::Vec2Array>       osg_texcoords   = new osg::Vec2Array();
 
             unsigned i;
 
@@ -126,7 +126,7 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedFaceSet(openv
 
         if (vrml_normal_node != 0) // if no normals, node is NULL pointer
         {
-            const std::vector<openvrml::vec3f>&vrml_normal_coord = vrml_normal_node->vector();
+            const std::vector<openvrml::vec3f> &vrml_normal_coord = vrml_normal_node->vector();
 
             osg::ref_ptr<osg::Vec3Array> osg_normalcoords = new osg::Vec3Array();
 
@@ -186,7 +186,7 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedFaceSet(openv
 
         if (vrml_color_node != 0) // if no colors, node is NULL pointer
         {
-            const std::vector<openvrml::color>&vrml_colors = vrml_color_node->color();
+            const std::vector<openvrml::color> &vrml_colors = vrml_color_node->color();
 
             osg::ref_ptr<osg::Vec3Array> osg_colors = new osg::Vec3Array();
 
@@ -255,7 +255,7 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedFaceSet(openv
 #else
         // GvdB: So I ended up computing the smoothing normals myself. Also, I might add support for "creaseAngle" if a big need for it rises.
         //       However, for now I can perfectly live with the fact that all edges are smoothed despite the use of a crease angle.
-        osg::Vec3Array&coords = *static_cast<osg::Vec3Array*>(osg_geom->getVertexArray());
+        osg::Vec3Array &coords = *static_cast<osg::Vec3Array*>(osg_geom->getVertexArray());
         assert(coords.size());
 
         osg::Vec3Array *normals = new osg::Vec3Array(coords.size());
@@ -266,16 +266,16 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedFaceSet(openv
         }
 
 
-        const osg::IntArray  &indices = *static_cast<const osg::IntArray*>(osg_geom->getVertexIndices());
-        osg::DrawArrayLengths&lengths = *static_cast<osg::DrawArrayLengths*>(osg_geom->getPrimitiveSet(0));
-        unsigned             index    = 0;
+        const osg::IntArray   &indices = *static_cast<const osg::IntArray*>(osg_geom->getVertexIndices());
+        osg::DrawArrayLengths &lengths = *static_cast<osg::DrawArrayLengths*>(osg_geom->getPrimitiveSet(0));
+        unsigned              index    = 0;
 
         for (osg::DrawArrayLengths::iterator it = lengths.begin(); it != lengths.end(); ++it)
         {
             assert(*it >= 3);
-            const osg::Vec3&v0 = coords[indices[index]];
-            const osg::Vec3&v1 = coords[indices[index + 1]];
-            const osg::Vec3&v2 = coords[indices[index + 2]];
+            const osg::Vec3 &v0 = coords[indices[index]];
+            const osg::Vec3 &v1 = coords[indices[index + 1]];
+            const osg::Vec3 &v2 = coords[indices[index + 2]];
 
             osg::Vec3 normal = (v1 - v0) ^ (v2 - v0);
             normal.normalize();
@@ -301,7 +301,7 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedFaceSet(openv
 #endif
     }
 
-    osg::DrawArrayLengths&lengths = *static_cast<osg::DrawArrayLengths*>(osg_geom->getPrimitiveSet(0));
+    osg::DrawArrayLengths &lengths = *static_cast<osg::DrawArrayLengths*>(osg_geom->getPrimitiveSet(0));
 
     osg::DrawArrayLengths::iterator it = lengths.begin();
     if (it != lengths.end())

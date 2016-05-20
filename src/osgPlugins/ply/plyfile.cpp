@@ -1166,7 +1166,7 @@ void ply_set_property(
     PlyProperty *prop,
     PlyProperty *prop_ptr,
     PlyElement *elem,
-    const int&index
+    const int &index
     )
 {
     prop_ptr->internal_type  = prop->internal_type;
@@ -1179,7 +1179,7 @@ void ply_set_property(
 }
 
 // Tokenize a property using the given delimiter
-void tokenizeProperties(const char *pnames, std::vector<std::string>&tokens, const std::string&delimiter)
+void tokenizeProperties(const char *pnames, std::vector<std::string> &tokens, const std::string &delimiter)
 {
     std::string            propNames(pnames);
     std::string::size_type lastPos = propNames.find_first_not_of(delimiter, 0);

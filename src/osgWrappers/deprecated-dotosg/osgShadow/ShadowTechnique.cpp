@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool ShadowTechnique_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool ShadowTechnique_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool ShadowTechnique_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool ShadowTechnique_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ShadowTechnique_Proxy)
 (

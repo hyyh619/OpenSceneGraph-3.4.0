@@ -62,8 +62,8 @@
 class DxfPrimitiveIndexWriter : public osg::PrimitiveIndexFunctor
 {
 public:
-DxfPrimitiveIndexWriter(std::ostream&fout, osg::Geometry *geo, const Layer&layer, AcadColor&acad,
-                        const osg::Matrix&m = osg::Matrix::identity(), bool writeTriangleAs3DFace = true) :
+DxfPrimitiveIndexWriter(std::ostream &fout, osg::Geometry *geo, const Layer &layer, AcadColor &acad,
+                        const osg::Matrix &m = osg::Matrix::identity(), bool writeTriangleAs3DFace = true) :
     osg::PrimitiveIndexFunctor(),
                                             _fout(fout),
     _geo(geo),
@@ -500,7 +500,7 @@ void DxfPrimitiveIndexWriter::drawArrays(GLenum mode, GLint first, GLsizei count
 
 
 // TODO - illegal acad characters
-std::string DXFWriterNodeVisitor::getLayerName(const std::string&defaultvalue)
+std::string DXFWriterNodeVisitor::getLayerName(const std::string &defaultvalue)
 {
     std::string layerName = defaultvalue;
     std::transform(layerName.begin(), layerName.end(), layerName.begin(), toupper);
@@ -564,12 +564,12 @@ void DXFWriterNodeVisitor::processStateSet(osg::StateSet *ss)
     osg::Material *mat = dynamic_cast<osg::Material*>(ss->getAttribute(osg::StateAttribute::MATERIAL));
     if (mat)
     {
-        const osg::Vec4&color = mat->getDiffuse(osg::Material::FRONT);
+        const osg::Vec4 &color = mat->getDiffuse(osg::Material::FRONT);
         _layer._color = _acadColor.findColor(color.asABGR() >> 8);
     }
 }
 
-void DXFWriterNodeVisitor::processGeometry(osg::Geometry *geo, osg::Matrix&m)
+void DXFWriterNodeVisitor::processGeometry(osg::Geometry *geo, osg::Matrix &m)
 {
     // We only want to create a new layer for geometry with something to draw
     if (geo->getVertexArray() && geo->getVertexArray()->getNumElements())
@@ -644,7 +644,7 @@ void DXFWriterNodeVisitor::processGeometry(osg::Geometry *geo, osg::Matrix&m)
 
 
 
-void DXFWriterNodeVisitor::apply(osg::Geode&node)
+void DXFWriterNodeVisitor::apply(osg::Geode &node)
 {
     pushStateSet(node.getStateSet());
     osg::Matrix  m     = osg::computeLocalToWorld(getNodePath());
@@ -666,7 +666,7 @@ void DXFWriterNodeVisitor::apply(osg::Geode&node)
 }
 
 
-bool DXFWriterNodeVisitor::writeHeader(const osg::BoundingSphere&bound)
+bool DXFWriterNodeVisitor::writeHeader(const osg::BoundingSphere &bound)
 {
     if (_layers.empty())
     {

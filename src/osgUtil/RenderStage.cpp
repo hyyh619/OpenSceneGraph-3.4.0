@@ -94,7 +94,7 @@ RenderStage::RenderStage(SortMode mode) :
     _imageReadPixelDataType = GL_UNSIGNED_BYTE;
 }
 
-RenderStage::RenderStage(const RenderStage&rhs, const osg::CopyOp&copyop) :
+RenderStage::RenderStage(const RenderStage &rhs, const osg::CopyOp &copyop) :
     RenderBin(rhs, copyop),
     _stageDrawnThisFrame(false),
     _preRenderList(rhs._preRenderList),
@@ -223,7 +223,7 @@ void RenderStage::addPostRenderStage(RenderStage *rs, int order)
     }
 }
 
-void RenderStage::drawPreRenderStages(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
+void RenderStage::drawPreRenderStages(osg::RenderInfo &renderInfo, RenderLeaf* &previous)
 {
     if (_preRenderList.empty())
         return;
@@ -240,7 +240,7 @@ void RenderStage::drawPreRenderStages(osg::RenderInfo&renderInfo, RenderLeaf*&pr
 }
 
 
-void RenderStage::runCameraSetUp(osg::RenderInfo&renderInfo)
+void RenderStage::runCameraSetUp(osg::RenderInfo &renderInfo)
 {
     _cameraRequiresSetUp = false;
 
@@ -251,12 +251,12 @@ void RenderStage::runCameraSetUp(osg::RenderInfo&renderInfo)
 
     _cameraAttachmentMapModifiedCount = _camera->getAttachmentMapModifiedCount();
 
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     osg::Camera::RenderTargetImplementation renderTargetImplementation = _camera->getRenderTargetImplementation();
     osg::Camera::RenderTargetImplementation renderTargetFallback       = _camera->getRenderTargetFallback();
 
-    osg::Camera::BufferAttachmentMap&bufferAttachments = _camera->getBufferAttachmentMap();
+    osg::Camera::BufferAttachmentMap &bufferAttachments = _camera->getBufferAttachmentMap();
 
     _bufferAttachmentMap.clear();
 
@@ -400,7 +400,7 @@ void RenderStage::runCameraSetUp(osg::RenderInfo&renderInfo)
                      itr != bufferAttachments.end();
                      ++itr)
                 {
-                    osg::Camera::Attachment&attachment = itr->second;
+                    osg::Camera::Attachment &attachment = itr->second;
                     samples      = maximum(samples, attachment._multisampleSamples);
                     colorSamples = maximum(colorSamples, attachment._multisampleColorSamples);
                 }
@@ -846,9 +846,9 @@ void RenderStage::runCameraSetUp(osg::RenderInfo&renderInfo)
     }
 }
 
-void RenderStage::copyTexture(osg::RenderInfo&renderInfo)
+void RenderStage::copyTexture(osg::RenderInfo &renderInfo)
 {
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     if (_readBufferApplyMask)
     {
@@ -921,12 +921,12 @@ void RenderStage::copyTexture(osg::RenderInfo&renderInfo)
     }
 }
 
-void RenderStage::drawInner(osg::RenderInfo&renderInfo, RenderLeaf*&previous, bool&doCopyTexture)
+void RenderStage::drawInner(osg::RenderInfo &renderInfo, RenderLeaf* &previous, bool &doCopyTexture)
 {
     struct SubFunc
     {
-        static void applyReadFBO(bool&apply_read_fbo,
-                                 const FrameBufferObject *read_fbo, osg::State&state)
+        static void applyReadFBO(bool &apply_read_fbo,
+                                 const FrameBufferObject *read_fbo, osg::State &state)
         {
             if (read_fbo->isMultisample())
             {
@@ -944,7 +944,7 @@ void RenderStage::drawInner(osg::RenderInfo&renderInfo, RenderLeaf*&previous, bo
         }
     };
 
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     osg::GLExtensions *ext          = _fbo.valid() ? state.get<osg::GLExtensions>() : 0;
     bool              fbo_supported = ext && ext->isFrameBufferObjectSupported;
@@ -1156,7 +1156,7 @@ void RenderStage::drawInner(osg::RenderInfo&renderInfo, RenderLeaf*&previous, bo
     if (fbo_supported && _camera.valid())
     {
         // now generate mipmaps if they are required.
-        const osg::Camera::BufferAttachmentMap&bufferAttachments = _camera->getBufferAttachmentMap();
+        const osg::Camera::BufferAttachmentMap &bufferAttachments = _camera->getBufferAttachmentMap();
 
         for (osg::Camera::BufferAttachmentMap::const_iterator itr = bufferAttachments.begin();
              itr != bufferAttachments.end();
@@ -1174,7 +1174,7 @@ void RenderStage::drawInner(osg::RenderInfo&renderInfo, RenderLeaf*&previous, bo
 
 struct DrawInnerOperation : public osg::Operation
 {
-    DrawInnerOperation(RenderStage *stage, osg::RenderInfo&renderInfo) :
+    DrawInnerOperation(RenderStage *stage, osg::RenderInfo &renderInfo) :
         osg::Referenced(true),
         osg::Operation("DrawInnerStage", false),
         _stage(stage),
@@ -1202,7 +1202,7 @@ struct DrawInnerOperation : public osg::Operation
 };
 
 
-void RenderStage::draw(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
+void RenderStage::draw(osg::RenderInfo &renderInfo, RenderLeaf* &previous)
 {
     if (_stageDrawnThisFrame)
         return;
@@ -1231,7 +1231,7 @@ void RenderStage::draw(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
         runCameraSetUp(renderInfo);
     }
 
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     osg::State           *useState       = &state;
     osg::GraphicsContext *callingContext = state.getGraphicsContext();
@@ -1379,9 +1379,9 @@ void RenderStage::draw(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
         renderInfo.popCamera();
 }
 
-void RenderStage::drawImplementation(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
+void RenderStage::drawImplementation(osg::RenderInfo &renderInfo, RenderLeaf* &previous)
 {
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     if (!_viewport)
     {
@@ -1468,7 +1468,7 @@ void RenderStage::drawImplementation(osg::RenderInfo&renderInfo, RenderLeaf*&pre
     state.apply();
 }
 
-void RenderStage::drawPostRenderStages(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
+void RenderStage::drawPostRenderStages(osg::RenderInfo &renderInfo, RenderLeaf* &previous)
 {
     if (_postRenderList.empty())
         return;
@@ -1485,7 +1485,7 @@ void RenderStage::drawPostRenderStages(osg::RenderInfo&renderInfo, RenderLeaf*&p
 }
 
 // Statistics features
-bool RenderStage::getStats(Statistics&stats) const
+bool RenderStage::getStats(Statistics &stats) const
 {
     bool statsCollected = false;
 

@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Billboard_readLocalData(Object&obj, Input&fr);
-bool Billboard_writeLocalData(const Object&obj, Output&fw);
+bool Billboard_readLocalData(Object &obj, Input &fr);
+bool Billboard_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Billboard)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(Billboard)
     &Billboard_writeLocalData
 );
 
-bool Billboard_readLocalData(Object&obj, Input&fr)
+bool Billboard_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Billboard&billboard = static_cast<Billboard&>(obj);
+    Billboard &billboard = static_cast<Billboard&>(obj);
 
     if (fr[0].matchWord("Mode"))
     {
@@ -79,7 +79,7 @@ bool Billboard_readLocalData(Object&obj, Input&fr)
         // set up coordinates.
         int entry = fr[0].getNoNestedBrackets();
 
-        Billboard::PositionList&positionList = billboard.getPositionList();
+        Billboard::PositionList &positionList = billboard.getPositionList();
         positionList.clear();
 
         if (matchFirst)
@@ -115,9 +115,9 @@ bool Billboard_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Billboard_writeLocalData(const Object&obj, Output&fw)
+bool Billboard_writeLocalData(const Object &obj, Output &fw)
 {
-    const Billboard&billboard = static_cast<const Billboard&>(obj);
+    const Billboard &billboard = static_cast<const Billboard&>(obj);
 
     switch (billboard.getMode())
     {

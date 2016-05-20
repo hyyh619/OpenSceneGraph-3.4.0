@@ -41,7 +41,7 @@ TranslateInLineCommand::TranslateInLineCommand()
     _line = new osg::LineSegment;
 }
 
-TranslateInLineCommand::TranslateInLineCommand(const osg::LineSegment::vec_type&s, const osg::LineSegment::vec_type&e)
+TranslateInLineCommand::TranslateInLineCommand(const osg::LineSegment::vec_type &s, const osg::LineSegment::vec_type &e)
 {
     _line = new osg::LineSegment(s, e);
 }
@@ -66,7 +66,7 @@ MotionCommand* TranslateInLineCommand::createCommandInverse()
 TranslateInPlaneCommand::TranslateInPlaneCommand()
 {}
 
-TranslateInPlaneCommand::TranslateInPlaneCommand(const osg::Plane&plane) : _plane(plane)
+TranslateInPlaneCommand::TranslateInPlaneCommand(const osg::Plane &plane) : _plane(plane)
 {}
 
 TranslateInPlaneCommand::~TranslateInPlaneCommand()

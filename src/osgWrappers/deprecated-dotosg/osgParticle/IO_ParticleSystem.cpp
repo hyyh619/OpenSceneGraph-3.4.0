@@ -10,11 +10,11 @@
 #include <iostream>
 #include <string>
 
-extern bool  read_particle(osgDB::Input&fr, osgParticle::Particle&P);
-extern void  write_particle(const osgParticle::Particle&P, osgDB::Output&fw);
+extern bool  read_particle(osgDB::Input &fr, osgParticle::Particle &P);
+extern void  write_particle(const osgParticle::Particle &P, osgDB::Output &fw);
 
-bool  ParticleSystem_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ParticleSystem_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ParticleSystem_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ParticleSystem_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ParticleSystem_Proxy)
 (
@@ -25,10 +25,10 @@ REGISTER_DOTOSGWRAPPER(ParticleSystem_Proxy)
     ParticleSystem_writeLocalData
 );
 
-bool ParticleSystem_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ParticleSystem_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::ParticleSystem&myobj     = static_cast<osgParticle::ParticleSystem&>(obj);
-    bool                       itAdvanced = false;
+    osgParticle::ParticleSystem &myobj     = static_cast<osgParticle::ParticleSystem&>(obj);
+    bool                        itAdvanced = false;
 
     if (fr[0].matchWord("particleAlignment"))
     {
@@ -231,9 +231,9 @@ bool ParticleSystem_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool ParticleSystem_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ParticleSystem_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::ParticleSystem&myobj = static_cast<const osgParticle::ParticleSystem&>(obj);
+    const osgParticle::ParticleSystem &myobj = static_cast<const osgParticle::ParticleSystem&>(obj);
 
     fw.indent() << "particleAlignment ";
 

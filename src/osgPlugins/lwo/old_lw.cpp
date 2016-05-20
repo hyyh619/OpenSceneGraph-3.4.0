@@ -402,7 +402,7 @@ gint lw_is_lwobject(const char *lw_file)
 }
 
 
-lwObject* lw_object_read(const char *lw_file, std::ostream&output)
+lwObject* lw_object_read(const char *lw_file, std::ostream &output)
 {
     FILE     *f         = NULL;
     lwObject *lw_object = NULL;

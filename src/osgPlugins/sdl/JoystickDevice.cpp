@@ -88,7 +88,7 @@ JoystickDevice::JoystickDevice()
 JoystickDevice::~JoystickDevice()
 {}
 
-void JoystickDevice::capture(ValueList&axisValues, ValueList&buttonValues) const
+void JoystickDevice::capture(ValueList &axisValues, ValueList &buttonValues) const
 {
     if (_joystick)
     {

@@ -10,9 +10,9 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ColorMask_readLocalData(Object&obj, Input&fr);
-bool ColorMask_writeLocalData(const Object&obj, Output&fw);
-bool ColorMask_matchModeStr(const char *str, bool&mode);
+bool ColorMask_readLocalData(Object &obj, Input &fr);
+bool ColorMask_writeLocalData(const Object &obj, Output &fw);
+bool ColorMask_matchModeStr(const char *str, bool &mode);
 const char* ColorMask_getModeStr(bool mode);
 
 // register the read and write functions with the osgDB::Registry.
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(ColorMask)
 );
 
 
-bool ColorMask_readLocalData(Object&obj, Input&fr)
+bool ColorMask_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ColorMask&colormask = static_cast<ColorMask&>(obj);
+    ColorMask &colormask = static_cast<ColorMask&>(obj);
 
     bool redMask = colormask.getRedMask();
 
@@ -70,9 +70,9 @@ bool ColorMask_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool ColorMask_writeLocalData(const Object&obj, Output&fw)
+bool ColorMask_writeLocalData(const Object &obj, Output &fw)
 {
-    const ColorMask&colormask = static_cast<const ColorMask&>(obj);
+    const ColorMask &colormask = static_cast<const ColorMask&>(obj);
 
     fw.indent() << "redMask " << ColorMask_getModeStr(colormask.getRedMask()) << std::endl;
     fw.indent() << "greenMask " << ColorMask_getModeStr(colormask.getGreenMask()) << std::endl;
@@ -82,7 +82,7 @@ bool ColorMask_writeLocalData(const Object&obj, Output&fw)
 }
 
 
-bool ColorMask_matchModeStr(const char *str, bool&mode)
+bool ColorMask_matchModeStr(const char *str, bool &mode)
 {
     if (strcmp(str, "TRUE") == 0)
         mode = true;

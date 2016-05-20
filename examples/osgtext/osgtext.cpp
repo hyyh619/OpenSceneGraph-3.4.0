@@ -438,7 +438,7 @@ osg::Group* createHUDText()
 
 
 // create text which sits in 3D space such as would be inserted into a normal model
-osg::Group* create3DText(const osg::Vec3&center, float radius)
+osg::Group* create3DText(const osg::Vec3 &center, float radius)
 {
     osg::Geode *geode = new osg::Geode;
 
@@ -557,7 +557,7 @@ class UpdateTextOperation : public osg::Operation
 {
 public:
 
-UpdateTextOperation(const osg::Vec3&center, float diameter, osg::Group *group) :
+UpdateTextOperation(const osg::Vec3 &center, float diameter, osg::Group *group) :
     osg::Referenced(true),
     Operation("UpdateTextOperation", true),
     _center(center),

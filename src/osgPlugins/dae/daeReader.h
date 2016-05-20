@@ -69,7 +69,7 @@ namespace osgDAE
 {
 class domSourceReader;
 
-inline daeElement* getElementFromURI(daeURI&uri)
+inline daeElement* getElementFromURI(daeURI &uri)
 {
     if (uri.getState() == daeURI::uri_loaded || uri.getState() == daeURI::uri_pending)
     {
@@ -78,7 +78,7 @@ inline daeElement* getElementFromURI(daeURI&uri)
 
     return uri.getElement();
 }
-inline daeElement* getElementFromIDRef(daeIDRef&idref)
+inline daeElement* getElementFromIDRef(daeIDRef &idref)
 {
     if (idref.getState() == daeIDRef::id_loaded || idref.getState() == daeIDRef::id_pending)
     {
@@ -89,7 +89,7 @@ inline daeElement* getElementFromIDRef(daeIDRef&idref)
 }
 
 template<typename TInputArray, typename TInputType>
-bool findInputSourceBySemantic(TInputArray&inputs, const char *semantic, daeElement*&element,
+bool findInputSourceBySemantic(TInputArray &inputs, const char *semantic, daeElement* &element,
                                TInputType **input = NULL, int unit = 0)
 {
     element = NULL;
@@ -115,7 +115,7 @@ bool findInputSourceBySemantic(TInputArray&inputs, const char *semantic, daeElem
 
 /// Convert string to value using it's stream operator
 template<typename T>
-T parseString(const std::string&valueAsString)
+T parseString(const std::string &valueAsString)
 {
     std::stringstream str;
 
@@ -125,7 +125,7 @@ T parseString(const std::string&valueAsString)
     return result;
 }
 
-inline osg::Vec3 parseVec3String(const std::string&valueAsString)
+inline osg::Vec3 parseVec3String(const std::string &valueAsString)
 {
     std::stringstream str;
 
@@ -135,7 +135,7 @@ inline osg::Vec3 parseVec3String(const std::string&valueAsString)
     return result;
 }
 
-inline osg::Matrix parseMatrixString(const std::string&valueAsString)
+inline osg::Matrix parseMatrixString(const std::string &valueAsString)
 {
     std::stringstream str;
 
@@ -175,8 +175,8 @@ struct Options
 daeReader(DAE *dae_, const Options *pluginOptions);
 virtual ~daeReader();
 
-bool convert(std::istream&fin);
-bool convert(const std::string&fileURI);
+bool convert(std::istream &fin);
+bool convert(const std::string &fileURI);
 
 osg::Node* getRootNode()
 {
@@ -238,7 +238,7 @@ TextureParameters()
     transparent(false), opaque(FX_OPAQUE_ENUM_A_ONE), transparency(1.0f)
 {}
 
-bool operator <(const TextureParameters&rhs) const
+bool operator <(const TextureParameters &rhs) const
 {
     int diffStr = filename.compare(rhs.filename);
 
@@ -322,7 +322,7 @@ osg::Node*    processNode(domNode *node, bool skeleton);
 osg::Transform*    processOsgMatrixTransform(domNode *node, bool isBone);
 
 template<typename T>
-inline void getTransparencyCounts(daeDatabase*, int&zero, int&one) const;
+inline void getTransparencyCounts(daeDatabase*, int &zero, int &one) const;
 
 /** Earlier versions of the COLLADA 1.4 spec state that transparency values
    of 0 mean 100% opacity, but this has been changed in later versions to state
@@ -335,9 +335,9 @@ bool findInvertTransparency(daeDatabase*) const;
 osgAnimation::BasicAnimationManager* processAnimationLibraries(domCOLLADA *document);
 void processAnimationClip(osgAnimation::BasicAnimationManager *pOsgAnimationManager, domAnimation_clip *pDomAnimationClip);
 void processAnimationMap(const TargetChannelPartMap&, osgAnimation::Animation *pOsgAnimation);
-ChannelPart* processSampler(domChannel *pDomChannel, SourceMap&sources);
-void processAnimationChannels(domAnimation *pDomAnimation, TargetChannelPartMap&tcm);
-void processChannel(domChannel *pDomChannel, SourceMap&sources, TargetChannelPartMap&tcm);
+ChannelPart* processSampler(domChannel *pDomChannel, SourceMap &sources);
+void processAnimationChannels(domAnimation *pDomAnimation, TargetChannelPartMap &tcm);
+void processChannel(domChannel *pDomChannel, SourceMap &sources, TargetChannelPartMap &tcm);
 void extractTargetName(const std::string&, std::string&, std::string&, std::string&);
 
 // Processing of OSG specific info stored in node extras
@@ -373,20 +373,20 @@ osg::Node* processMorph(domMorph *pDomMorph, domBind_material *pDomBindMaterial)
 osg::Node* processInstanceController(domInstance_controller *ictrl);
 
 template<typename T>
-void processSinglePPrimitive(osg::Geode *geode, const domMesh *pDomMesh, const T *group, SourceMap&sources, GLenum mode);
+void processSinglePPrimitive(osg::Geode *geode, const domMesh *pDomMesh, const T *group, SourceMap &sources, GLenum mode);
 
 template<typename T>
-void processMultiPPrimitive(osg::Geode *geode, const domMesh *pDomMesh, const T *group, SourceMap&sources, GLenum mode);
+void processMultiPPrimitive(osg::Geode *geode, const domMesh *pDomMesh, const T *group, SourceMap &sources, GLenum mode);
 
-void processPolylist(osg::Geode *geode, const domMesh *pDomMesh, const domPolylist *group, SourceMap&sources, TessellateMode tessellateMode);
+void processPolylist(osg::Geode *geode, const domMesh *pDomMesh, const domPolylist *group, SourceMap &sources, TessellateMode tessellateMode);
 
 template<typename T>
-void processPolygons(osg::Geode *geode, const domMesh *pDomMesh, const T *group, SourceMap&sources, GLenum mode, TessellateMode tessellateMode);
+void processPolygons(osg::Geode *geode, const domMesh *pDomMesh, const T *group, SourceMap &sources, GLenum mode, TessellateMode tessellateMode);
 
 void resolveMeshArrays(const domP_Array&,
-                       const domInputLocalOffset_Array&inputs, const domMesh *pDomMesh,
-                       osg::Geometry *geometry, SourceMap&sources,
-                       std::vector<std::vector<GLuint> >&vertexLists);
+                       const domInputLocalOffset_Array &inputs, const domMesh *pDomMesh,
+                       osg::Geometry *geometry, SourceMap &sources,
+                       std::vector<std::vector<GLuint> > &vertexLists);
 
 // material/effect processing
 void processBindMaterial(domBind_material *bm, domGeometry *geom, osg::Geode *geode, osg::Geode *cachedGeode);
@@ -405,8 +405,8 @@ void processTransparencySettings(domCommon_transparent_type *ctt,
                                  osg::StateSet*,
                                  osg::Material *material,
                                  unsigned int diffuseTextureUnit);
-bool GetFloat4Param(xsNCName Reference, domFloat4&f4) const;
-bool GetFloatParam(xsNCName Reference, domFloat&f) const;
+bool GetFloat4Param(xsNCName Reference, domFloat4 &f4) const;
+bool GetFloatParam(xsNCName Reference, domFloat &f) const;
 
 std::string processImagePath(const domImage*) const;
 osg::Image    *processImageTransparency(const osg::Image*, domFx_opaque_enum, float transparency) const;

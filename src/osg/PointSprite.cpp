@@ -28,7 +28,7 @@ PointSprite::PointSprite()
 PointSprite::~PointSprite()
 {}
 
-int PointSprite::compare(const StateAttribute&sa) const
+int PointSprite::compare(const StateAttribute &sa) const
 {
     COMPARE_StateAttribute_Types(PointSprite, sa)
 
@@ -38,7 +38,7 @@ int PointSprite::compare(const StateAttribute&sa) const
 }
 
 
-bool PointSprite::checkValidityOfAssociatedModes(osg::State&state) const
+bool PointSprite::checkValidityOfAssociatedModes(osg::State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
     bool               modeValid   = extensions->isPointSpriteSupported;
@@ -52,7 +52,7 @@ bool PointSprite::checkValidityOfAssociatedModes(osg::State&state) const
     return modeValid;
 }
 
-void PointSprite::apply(osg::State&state) const
+void PointSprite::apply(osg::State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

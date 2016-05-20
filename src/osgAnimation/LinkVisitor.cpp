@@ -51,7 +51,7 @@ void LinkVisitor::handle_stateset(osg::StateSet *stateset)
     if (!stateset)
         return;
 
-    const osg::StateSet::AttributeList&attr = stateset->getAttributeList();
+    const osg::StateSet::AttributeList &attr = stateset->getAttributeList();
 
     for (osg::StateSet::AttributeList::const_iterator it = attr.begin(); it != attr.end(); ++it)
     {
@@ -62,7 +62,7 @@ void LinkVisitor::handle_stateset(osg::StateSet *stateset)
     }
 }
 
-void LinkVisitor::apply(osg::Node&node)
+void LinkVisitor::apply(osg::Node &node)
 {
     osg::StateSet *st = node.getStateSet();
 
@@ -83,7 +83,7 @@ void LinkVisitor::apply(osg::Node&node)
     traverse(node);
 }
 
-void LinkVisitor::apply(osg::Geode&node)
+void LinkVisitor::apply(osg::Geode &node)
 {
     for (unsigned int i = 0; i < node.getNumDrawables(); i++)
     {

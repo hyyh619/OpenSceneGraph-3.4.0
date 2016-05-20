@@ -28,7 +28,7 @@ using namespace osg;
 Group::Group()
 {}
 
-Group::Group(const Group&group, const CopyOp&copyop) :
+Group::Group(const Group &group, const CopyOp &copyop) :
     Node(group, copyop)
 {
     for (NodeList::const_iterator itr = group._children.begin();
@@ -53,7 +53,7 @@ Group::~Group()
 }
 
 
-void Group::traverse(NodeVisitor&nv)
+void Group::traverse(NodeVisitor &nv)
 {
     for (NodeList::iterator itr = _children.begin();
          itr != _children.end();
@@ -399,7 +399,7 @@ BoundingSphere Group::computeBound() const
             }
             else
             {
-                const osg::BoundingSphere&bs = child->getBound();
+                const osg::BoundingSphere &bs = child->getBound();
                 bb.expandBy(bs);
             }
         }
@@ -421,7 +421,7 @@ BoundingSphere Group::computeBound() const
         const osg::Transform *transform = child->asTransform();
         if (!transform || transform->getReferenceFrame() == osg::Transform::RELATIVE_RF)
         {
-            const BoundingSphere&bs = child->getBound();
+            const BoundingSphere &bs = child->getBound();
             bsphere.expandRadiusBy(bs);
         }
     }

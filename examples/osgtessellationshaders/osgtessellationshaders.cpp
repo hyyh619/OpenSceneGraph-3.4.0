@@ -217,7 +217,7 @@ KeyboardEventHandler(osg::ref_ptr<osg::Uniform> tessInnerU, osg::ref_ptr<osg::Un
     tessOuterU->get(_tessOuter);
 }
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&gaa)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &gaa)
 {
     if (ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
     {

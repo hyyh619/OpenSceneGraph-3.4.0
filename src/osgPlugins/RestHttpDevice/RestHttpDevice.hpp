@@ -27,20 +27,20 @@ class RequestHandler : public osg::Referenced
 {
 public:
 typedef std::map<std::string, std::string> Arguments;
-RequestHandler(const std::string&request_path)
+RequestHandler(const std::string &request_path)
     : osg::Referenced()
     , _requestPath(request_path)
     , _device(NULL)
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const Arguments&arguments, http::server::reply&reply) = 0;
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const Arguments &arguments, http::server::reply &reply) = 0;
 
 const std::string&getRequestPath() const
 {
     return _requestPath;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": no description available";
 }
@@ -55,14 +55,14 @@ RestHttpDevice* getDevice()
     return _device;
 }
 
-void reportMissingArgument(const std::string&argument, http::server::reply&reply) const
+void reportMissingArgument(const std::string &argument, http::server::reply &reply) const
 {
     OSG_WARN << "RequestHandler :: missing argument '" << argument << "' for " << getRequestPath() << std::endl;
     reply.content = "{ \"result\": 0, \"error\": \"missing argument '" + argument + "'\"}";
     reply.status  = http::server::reply::ok;
 }
 
-bool sendOkReply(http::server::reply&reply)
+bool sendOkReply(http::server::reply &reply)
 {
     if (reply.content.empty())
     {
@@ -72,7 +72,7 @@ bool sendOkReply(http::server::reply&reply)
     return true;
 }
 
-bool getStringArgument(const Arguments&arguments, const std::string&argument, http::server::reply&reply, std::string&result) const
+bool getStringArgument(const Arguments &arguments, const std::string &argument, http::server::reply &reply, std::string &result) const
 {
     Arguments::const_iterator itr = arguments.find(argument);
 
@@ -86,7 +86,7 @@ bool getStringArgument(const Arguments&arguments, const std::string&argument, ht
     return true;
 }
 
-bool getHexArgument(const Arguments&arguments, const std::string&argument, http::server::reply&reply, int&value) const
+bool getHexArgument(const Arguments &arguments, const std::string &argument, http::server::reply &reply, int &value) const
 {
     std::string hex_str;
 
@@ -97,7 +97,7 @@ bool getHexArgument(const Arguments&arguments, const std::string&argument, http:
     return true;
 }
 
-bool getIntArgument(const Arguments&arguments, const std::string&argument, http::server::reply&reply, int&value) const
+bool getIntArgument(const Arguments &arguments, const std::string &argument, http::server::reply &reply, int &value) const
 {
     std::string str;
 
@@ -108,7 +108,7 @@ bool getIntArgument(const Arguments&arguments, const std::string&argument, http:
     return true;
 }
 
-bool getDoubleArgument(const Arguments&arguments, const std::string&argument, http::server::reply&reply, double&value) const
+bool getDoubleArgument(const Arguments &arguments, const std::string &argument, http::server::reply &reply, double &value) const
 {
     std::string str;
 
@@ -120,13 +120,13 @@ bool getDoubleArgument(const Arguments&arguments, const std::string&argument, ht
 }
 
 /// set the request-path, works only from the constructor
-void setRequestPath(const std::string&request_path)
+void setRequestPath(const std::string &request_path)
 {
     _requestPath = request_path;
 }
 protected:
 
-double getTimeStamp(const Arguments&arguments, http::server::reply&reply)
+double getTimeStamp(const Arguments &arguments, http::server::reply &reply)
 {
     double time_stamp(0.0);
 
@@ -134,7 +134,7 @@ double getTimeStamp(const Arguments&arguments, http::server::reply&reply)
     return time_stamp;
 }
 
-double getLocalTime(const Arguments&arguments, http::server::reply&reply)
+double getLocalTime(const Arguments &arguments, http::server::reply &reply)
 {
     return getLocalTime(getTimeStamp(arguments, reply));
 }
@@ -153,18 +153,18 @@ friend class RestHttpDevice;
 
 typedef std::multimap<std::string, osg::ref_ptr<RequestHandler> > RequestHandlerMap;
 
-RestHttpDevice(const std::string&listening_address, const std::string&listening_port, const std::string&doc_path);
+RestHttpDevice(const std::string &listening_address, const std::string &listening_port, const std::string &doc_path);
 ~RestHttpDevice();
 
 void addRequestHandler(RequestHandler *handler);
 
-bool handleRequest(const std::string&request_path,  http::server::reply&reply);
+bool handleRequest(const std::string &request_path,  http::server::reply &reply);
 
 virtual void run();
 
-void describeTo(std::ostream&out) const;
+void describeTo(std::ostream &out) const;
 
-friend std::ostream&operator<<(std::ostream&out, const RestHttpDevice&device)
+friend std::ostream&operator<<(std::ostream &out, const RestHttpDevice &device)
 {
     device.describeTo(out);
     return out;
@@ -221,7 +221,7 @@ void setTargetMousePosition(float x, float y, bool force = false)
 
 
 private:
-void parseArguments(const std::string request_path, RequestHandler::Arguments&arguments);
+void parseArguments(const std::string request_path, RequestHandler::Arguments &arguments);
 http::server::server _server;
 RequestHandlerMap    _map;
 std::string          _serverAddress, _serverPort, _documentRoot;
@@ -237,9 +237,9 @@ bool                 _targetMouseChanged;
 class SendKeystrokeRequestHandler : public RestHttpDevice::RequestHandler
 {
 public:
-SendKeystrokeRequestHandler(const std::string&request_path, int key) : RestHttpDevice::RequestHandler(request_path), _key(key) {}
+SendKeystrokeRequestHandler(const std::string &request_path, int key) : RestHttpDevice::RequestHandler(request_path), _key(key) {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const Arguments&arguments, http::server::reply&reply)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const Arguments &arguments, http::server::reply &reply)
 {
     double local_time = getLocalTime(arguments, reply);
 
@@ -249,7 +249,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return sendOkReply(reply);
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": send KEY_DOWN + KEY_UP, code: 0x" << std::hex << _key << std::dec;
 }

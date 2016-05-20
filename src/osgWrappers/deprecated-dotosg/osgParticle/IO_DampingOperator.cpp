@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  DampingOperator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  DampingOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  DampingOperator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  DampingOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(DampingOperator_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(DampingOperator_Proxy)
     DampingOperator_writeLocalData
 );
 
-bool DampingOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool DampingOperator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::DampingOperator&dp        = static_cast<osgParticle::DampingOperator&>(obj);
-    bool                        itAdvanced = false;
+    osgParticle::DampingOperator &dp        = static_cast<osgParticle::DampingOperator&>(obj);
+    bool                         itAdvanced = false;
 
     osg::Vec3 a;
 
@@ -52,10 +52,10 @@ bool DampingOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool DampingOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool DampingOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::DampingOperator&dp = static_cast<const osgParticle::DampingOperator&>(obj);
-    osg::Vec3                         a   = dp.getDamping();
+    const osgParticle::DampingOperator &dp = static_cast<const osgParticle::DampingOperator&>(obj);
+    osg::Vec3                          a   = dp.getDamping();
 
     fw.indent() << "damping " << a.x() << " " << a.y() << " " << a.z() << std::endl;
 

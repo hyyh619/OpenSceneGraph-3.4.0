@@ -4,10 +4,10 @@
 
 namespace osgWidget
 {
-Canvas::Canvas(const std::string&name) :
+Canvas::Canvas(const std::string &name) :
     Window(name) {}
 
-Canvas::Canvas(const Canvas&canvas, const osg::CopyOp&co) :
+Canvas::Canvas(const Canvas &canvas, const osg::CopyOp &co) :
     Window(canvas, co) {}
 
 void Canvas::_resizeImplementation(point_type /*w*/, point_type /*h*/)

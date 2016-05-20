@@ -32,7 +32,7 @@ namespace osgVolume
 RayTracedTechnique::RayTracedTechnique()
 {}
 
-RayTracedTechnique::RayTracedTechnique(const RayTracedTechnique&fft, const osg::CopyOp&copyop) :
+RayTracedTechnique::RayTracedTechnique(const RayTracedTechnique &fft, const osg::CopyOp &copyop) :
     VolumeTechnique(fft, copyop)
 {}
 
@@ -510,7 +510,7 @@ void RayTracedTechnique::cleanSceneGraph()
     OSG_NOTICE << "RayTracedTechnique::cleanSceneGraph()" << std::endl;
 }
 
-void RayTracedTechnique::traverse(osg::NodeVisitor&nv)
+void RayTracedTechnique::traverse(osg::NodeVisitor &nv)
 {
     // OSG_NOTICE<<"RayTracedTechnique::traverse(osg::NodeVisitor& nv)"<<std::endl;
     if (!_volumeTile)

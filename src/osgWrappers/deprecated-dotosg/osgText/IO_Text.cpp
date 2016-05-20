@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool Text_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Text_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Text_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Text_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Text_Proxy)
 (
@@ -25,7 +25,7 @@ REGISTER_DOTOSGWRAPPER(Text_Proxy)
 );
 
 
-osgText::Text::BackdropType convertBackdropTypeStringToEnum(std::string&str)
+osgText::Text::BackdropType convertBackdropTypeStringToEnum(std::string &str)
 {
     if (str == "DROP_SHADOW_BOTTOM_RIGHT")
         return osgText::Text::DROP_SHADOW_BOTTOM_RIGHT;
@@ -79,7 +79,7 @@ std::string convertBackdropTypeEnumToString(osgText::Text::BackdropType backdrop
 }
 
 
-osgText::Text::BackdropImplementation convertBackdropImplementationStringToEnum(std::string&str)
+osgText::Text::BackdropImplementation convertBackdropImplementationStringToEnum(std::string &str)
 {
     if (str == "POLYGON_OFFSET")
         return osgText::Text::POLYGON_OFFSET;
@@ -108,7 +108,7 @@ std::string convertBackdropImplementationEnumToString(osgText::Text::BackdropImp
     }
 }
 
-osgText::Text::ColorGradientMode convertColorGradientModeStringToEnum(std::string&str)
+osgText::Text::ColorGradientMode convertColorGradientModeStringToEnum(std::string &str)
 {
     if (str == "SOLID")
         return osgText::Text::SOLID;
@@ -134,10 +134,10 @@ std::string convertColorGradientModeEnumToString(osgText::Text::ColorGradientMod
 }
 
 
-bool Text_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Text_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgText::Text&text      = static_cast<osgText::Text&>(obj);
-    bool         itAdvanced = false;
+    osgText::Text &text      = static_cast<osgText::Text&>(obj);
+    bool          itAdvanced = false;
 
 
     // backdropType
@@ -275,9 +275,9 @@ bool Text_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool Text_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Text_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgText::Text&text = static_cast<const osgText::Text&>(obj);
+    const osgText::Text &text = static_cast<const osgText::Text&>(obj);
 
     // backdropType
     fw.indent() << "backdropType " << convertBackdropTypeEnumToString(text.getBackdropType()) << std::endl;

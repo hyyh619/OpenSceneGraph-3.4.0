@@ -26,7 +26,7 @@ ImageDetails::ImageDetails() :
     _texelScale(1.0, 1.0, 1.0, 1.0)
 {}
 
-ImageDetails::ImageDetails(const ImageDetails&rhs, const osg::CopyOp&copyop) :
+ImageDetails::ImageDetails(const ImageDetails &rhs, const osg::CopyOp &copyop) :
     osg::Object(rhs, copyop),
     _texelOffset(rhs._texelOffset),
     _texelScale(rhs._texelScale),
@@ -38,7 +38,7 @@ Layer::Layer() :
     _magFilter(osg::Texture::LINEAR)
 {}
 
-Layer::Layer(const Layer&layer, const osg::CopyOp&copyop) :
+Layer::Layer(const Layer &layer, const osg::CopyOp &copyop) :
     osg::Object(layer, copyop),
     _filename(layer._filename),
     _minFilter(layer._minFilter),
@@ -98,7 +98,7 @@ ImageLayer::ImageLayer(osg::Image *image) :
     _image(image)
 {}
 
-ImageLayer::ImageLayer(const ImageLayer&imageLayer, const osg::CopyOp&copyop) :
+ImageLayer::ImageLayer(const ImageLayer &imageLayer, const osg::CopyOp &copyop) :
     Layer(imageLayer, copyop),
     _texelOffset(imageLayer._texelOffset),
     _texelScale(imageLayer._texelScale),
@@ -132,7 +132,7 @@ unsigned int ImageLayer::getModifiedCount() const
         return _image->getModifiedCount();
 }
 
-bool ImageLayer::computeMinMax(osg::Vec4&minValue, osg::Vec4&maxValue)
+bool ImageLayer::computeMinMax(osg::Vec4 &minValue, osg::Vec4 &maxValue)
 {
     if (_image.valid())
         return osg::computeMinMax(_image.get(), minValue, maxValue);
@@ -140,7 +140,7 @@ bool ImageLayer::computeMinMax(osg::Vec4&minValue, osg::Vec4&maxValue)
         return false;
 }
 
-void ImageLayer::offsetAndScaleImage(const osg::Vec4&offset, const osg::Vec4&scale)
+void ImageLayer::offsetAndScaleImage(const osg::Vec4 &offset, const osg::Vec4 &scale)
 {
     if (!_image)
         return;
@@ -242,7 +242,7 @@ bool ImageLayer::requiresUpdateTraversal() const
     return dynamic_cast<osg::ImageStream*>(_image.get()) != 0;
 }
 
-void ImageLayer::update(osg::NodeVisitor&nv)
+void ImageLayer::update(osg::NodeVisitor &nv)
 {
     if (_image.valid())
         _image->update(&nv);
@@ -255,7 +255,7 @@ void ImageLayer::update(osg::NodeVisitor&nv)
 CompositeLayer::CompositeLayer()
 {}
 
-CompositeLayer::CompositeLayer(const CompositeLayer&compositeLayer, const osg::CopyOp&copyop) :
+CompositeLayer::CompositeLayer(const CompositeLayer &compositeLayer, const osg::CopyOp &copyop) :
     Layer(compositeLayer, copyop)
 {}
 
@@ -278,7 +278,7 @@ bool CompositeLayer::requiresUpdateTraversal() const
     return false;
 }
 
-void CompositeLayer::update(osg::NodeVisitor&nv)
+void CompositeLayer::update(osg::NodeVisitor &nv)
 {
     for (Layers::const_iterator itr = _layers.begin();
          itr != _layers.end();

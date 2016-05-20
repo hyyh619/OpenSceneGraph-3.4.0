@@ -25,7 +25,7 @@ using namespace std;
 
 static
 std::string
-trim(const string&str)
+trim(const string &str)
 {
     if (!str.size())
         return str;
@@ -38,7 +38,7 @@ trim(const string&str)
 /*
  ************** readerBase
  */
-bool readerBase::readGroup(std::ifstream&f, codeValue&cv)
+bool readerBase::readGroup(std::ifstream &f, codeValue &cv)
 {
     cv.reset();
     if (readGroupCode(f, cv._groupCode))
@@ -96,7 +96,7 @@ bool readerText::success(bool inSuccess, string type)
     return inSuccess;
 }
 
-bool readerText::getTrimmedLine(std::ifstream&f)
+bool readerText::getTrimmedLine(std::ifstream &f)
 {
     static string line = "";
 
@@ -112,7 +112,7 @@ bool readerText::getTrimmedLine(std::ifstream&f)
 }
 
 
-bool readerText::readGroupCode(std::ifstream&f, int&groupcode)
+bool readerText::readGroupCode(std::ifstream &f, int &groupcode)
 {
     if (getTrimmedLine(f))
     {
@@ -124,7 +124,7 @@ bool readerText::readGroupCode(std::ifstream&f, int&groupcode)
         return false;
     }
 }
-bool readerText::readValue(std::ifstream&f, string&s)
+bool readerText::readValue(std::ifstream &f, string &s)
 {
     if (getTrimmedLine(f))
     {
@@ -137,7 +137,7 @@ bool readerText::readValue(std::ifstream&f, string&s)
         return false;
     }
 }
-bool readerText::readValue(std::ifstream&f, bool&b)
+bool readerText::readValue(std::ifstream &f, bool &b)
 {
     if (getTrimmedLine(f))
     {
@@ -149,7 +149,7 @@ bool readerText::readValue(std::ifstream&f, bool&b)
         return false;
     }
 }
-bool readerText::readValue(std::ifstream&f, short&s)
+bool readerText::readValue(std::ifstream &f, short &s)
 {
     if (getTrimmedLine(f))
     {
@@ -161,7 +161,7 @@ bool readerText::readValue(std::ifstream&f, short&s)
         return false;
     }
 }
-bool readerText::readValue(std::ifstream&f, int&i)
+bool readerText::readValue(std::ifstream &f, int &i)
 {
     if (getTrimmedLine(f))
     {
@@ -174,7 +174,7 @@ bool readerText::readValue(std::ifstream&f, int&i)
     }
 }
 
-bool readerText::readValue(std::ifstream&f, long&l)
+bool readerText::readValue(std::ifstream &f, long &l)
 {
     if (getTrimmedLine(f))
     {
@@ -186,7 +186,7 @@ bool readerText::readValue(std::ifstream&f, long&l)
         return false;
     }
 }
-bool readerText::readValue(std::ifstream&f, double&d)
+bool readerText::readValue(std::ifstream &f, double &d)
 {
     if (getTrimmedLine(f))
     {
@@ -240,7 +240,7 @@ dxfReader::openFile(std::string fileName)
 }
 
 bool
-dxfReader::nextGroupCode(codeValue&cv)
+dxfReader::nextGroupCode(codeValue &cv)
 {
     return (_reader->readGroup(_ifs, cv));
 }

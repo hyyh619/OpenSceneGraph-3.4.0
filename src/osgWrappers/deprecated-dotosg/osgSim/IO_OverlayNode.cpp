@@ -10,8 +10,8 @@ using namespace osgDB;
 using namespace osgSim;
 
 // forward declare functions to use later.
-bool OverlayNode_readLocalData(Object&obj, Input&fr);
-bool OverlayNode_writeLocalData(const Object&obj, Output&fw);
+bool OverlayNode_readLocalData(Object &obj, Input &fr);
+bool OverlayNode_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(g_OverlayNodeProxy)
@@ -23,11 +23,11 @@ REGISTER_DOTOSGWRAPPER(g_OverlayNodeProxy)
     &OverlayNode_writeLocalData
 );
 
-bool OverlayNode_readLocalData(Object&obj, Input&fr)
+bool OverlayNode_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    OverlayNode&es = static_cast<OverlayNode&>(obj);
+    OverlayNode &es = static_cast<OverlayNode&>(obj);
 
     if (fr.matchSequence("technique"))
     {
@@ -99,9 +99,9 @@ bool OverlayNode_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool OverlayNode_writeLocalData(const Object&obj, Output&fw)
+bool OverlayNode_writeLocalData(const Object &obj, Output &fw)
 {
-    const OverlayNode&es = static_cast<const OverlayNode&>(obj);
+    const OverlayNode &es = static_cast<const OverlayNode&>(obj);
 
     fw.indent() << "technique ";
     if (es.getOverlayTechnique() == OverlayNode::OBJECT_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY)

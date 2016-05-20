@@ -16,8 +16,8 @@
 
 #include <osgTerrain/TerrainTile>
 
-bool ImageLayer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool ImageLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool ImageLayer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool ImageLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ImageLayer_Proxy)
 (
@@ -28,9 +28,9 @@ REGISTER_DOTOSGWRAPPER(ImageLayer_Proxy)
     ImageLayer_writeLocalData
 );
 
-bool ImageLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ImageLayer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgTerrain::ImageLayer&layer = static_cast<osgTerrain::ImageLayer&>(obj);
+    osgTerrain::ImageLayer &layer = static_cast<osgTerrain::ImageLayer&>(obj);
 
     bool itrAdvanced = false;
 
@@ -62,9 +62,9 @@ bool ImageLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool ImageLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ImageLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgTerrain::ImageLayer&layer = static_cast<const osgTerrain::ImageLayer&>(obj);
+    const osgTerrain::ImageLayer &layer = static_cast<const osgTerrain::ImageLayer&>(obj);
 
     std::string fileName = layer.getFileName();
 

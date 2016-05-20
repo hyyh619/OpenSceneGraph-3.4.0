@@ -177,7 +177,7 @@ osg::Program                          *_program;
 osg::ref_ptr<osg::VertexBufferObject> genbuffer;    // Renderer buffer
 osg::Vec4Array                        *vAry;
 
-virtual void drawImplementation(osg::RenderInfo&renderInfo) const;
+virtual void drawImplementation(osg::RenderInfo &renderInfo) const;
 };
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -213,7 +213,7 @@ GLuint SomePointsGenerator::getNumPrimitivesGenerated() const
     return vAry->size() * 4;
 }
 
-void SomePointsGenerator::drawImplementation(osg::RenderInfo&renderInfo) const
+void SomePointsGenerator::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     // get output buffer
     unsigned int contextID = renderInfo.getState()->getContextID();

@@ -61,7 +61,7 @@ public:
 PreDrawFBOCallback(osg::FrameBufferObject *fbo, osg::FrameBufferObject *source_fbo, unsigned int width, unsigned int height, osg::Texture *dt, osg::Texture *ct) :
     _fbo(fbo), _source_fbo(source_fbo), _depthTexture(dt), _colorTexture(ct), _width(width), _height(height) {}
 
-virtual void operator ()(osg::RenderInfo&renderInfo) const
+virtual void operator ()(osg::RenderInfo &renderInfo) const
 {
     // switching only the frame buffer attachments is actually faster than switching the framebuffer
 #ifdef USE_PACKED_DEPTH_STENCIL
@@ -127,7 +127,7 @@ class PostDrawFBOCallback : public osg::Camera::DrawCallback
 public:
 PostDrawFBOCallback(bool restore) : _restore(restore) {}
 
-virtual void operator ()(osg::RenderInfo&renderInfo) const
+virtual void operator ()(osg::RenderInfo &renderInfo) const
 {
     // only unbind the fbo if this is the last transparency pass
     if (_restore)
@@ -565,7 +565,7 @@ DepthPeeling::EventHandler::EventHandler(DepthPeeling *depthPeeling) :
 
 
 /** Handle events, return true if handled, false otherwise. */
-bool DepthPeeling::EventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*)
+bool DepthPeeling::EventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*)
 {
     if (ea.getEventType() == osgGA::GUIEventAdapter::RESIZE)
     {

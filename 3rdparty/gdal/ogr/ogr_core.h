@@ -60,7 +60,7 @@ int  IsInit() const
 {
     return MinX != 0 || MinY != 0 || MaxX != 0 || MaxY != 0;
 }
-void Merge(OGREnvelope const&sOther)
+void Merge(OGREnvelope const &sOther)
 {
     if (IsInit())
     {
@@ -93,7 +93,7 @@ void Merge(double dfX, double dfY)
     }
 }
 
-void Intersect(OGREnvelope const&sOther)
+void Intersect(OGREnvelope const &sOther)
 {
     if (Intersects(sOther))
     {
@@ -121,13 +121,13 @@ void Intersect(OGREnvelope const&sOther)
     }
 }
 
-int Intersects(OGREnvelope const&other) const
+int Intersects(OGREnvelope const &other) const
 {
     return MinX <= other.MaxX && MaxX >= other.MinX &&
            MinY <= other.MaxY && MaxY >= other.MinY;
 }
 
-int Contains(OGREnvelope const&other) const
+int Contains(OGREnvelope const &other) const
 {
     return MinX <= other.MinX && MinY <= other.MinY &&
            MaxX >= other.MaxX && MaxY >= other.MaxY;

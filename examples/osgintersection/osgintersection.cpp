@@ -36,7 +36,7 @@
 
 struct MyReadCallback : public osgUtil::IntersectionVisitor::ReadCallback
 {
-    virtual osg::Node* readNodeFile(const std::string&filename)
+    virtual osg::Node* readNodeFile(const std::string &filename)
     {
         return osgDB::readNodeFile(filename);
     }
@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 
             for (unsigned int i = 0; i < los.getNumLOS(); i++)
             {
-                const osgSim::LineOfSight::Intersections&intersections = los.getIntersections(i);
+                const osgSim::LineOfSight::Intersections &intersections = los.getIntersections(i);
 
                 for (osgSim::LineOfSight::Intersections::const_iterator itr = intersections.begin();
                      itr != intersections.end();
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
             std::cout << "Completed in " << osg::Timer::instance()->delta_s(startTick, endTick) << std::endl;
 
             typedef osgSim::ElevationSlice::DistanceHeightList DistanceHeightList;
-            const DistanceHeightList&dhl = es.getDistanceHeightIntersections();
+            const DistanceHeightList &dhl = es.getDistanceHeightIntersections();
             std::cout << "Number of intersections =" << dhl.size() << std::endl;
 
             for (DistanceHeightList::const_iterator dhitr = dhl.begin();
@@ -205,7 +205,7 @@ int main(int argc, char **argv)
         {
             std::cout << "Found intersections " << std::endl;
 
-            osgUtil::IntersectorGroup::Intersectors&intersectors = intersectorGroup->getIntersectors();
+            osgUtil::IntersectorGroup::Intersectors &intersectors = intersectorGroup->getIntersectors();
 
             for (osgUtil::IntersectorGroup::Intersectors::iterator intersector_itr = intersectors.begin();
                  intersector_itr != intersectors.end();
@@ -214,13 +214,13 @@ int main(int argc, char **argv)
                 osgUtil::LineSegmentIntersector *lsi = dynamic_cast<osgUtil::LineSegmentIntersector*>(intersector_itr->get());
                 if (lsi)
                 {
-                    osgUtil::LineSegmentIntersector::Intersections&intersections = lsi->getIntersections();
+                    osgUtil::LineSegmentIntersector::Intersections &intersections = lsi->getIntersections();
 
                     for (osgUtil::LineSegmentIntersector::Intersections::iterator itr = intersections.begin();
                          itr != intersections.end();
                          ++itr)
                     {
-                        const osgUtil::LineSegmentIntersector::Intersection&intersection = *itr;
+                        const osgUtil::LineSegmentIntersector::Intersection &intersection = *itr;
                         std::cout << "  ratio " << intersection.ratio << std::endl;
                         std::cout << "  point " << intersection.localIntersectionPoint << std::endl;
                         std::cout << "  normal " << intersection.localIntersectionNormal << std::endl;
@@ -256,13 +256,13 @@ int main(int argc, char **argv)
 
         if (intersector->containsIntersections())
         {
-            osgUtil::LineSegmentIntersector::Intersections&intersections = intersector->getIntersections();
+            osgUtil::LineSegmentIntersector::Intersections &intersections = intersector->getIntersections();
 
             for (osgUtil::LineSegmentIntersector::Intersections::iterator itr = intersections.begin();
                  itr != intersections.end();
                  ++itr)
             {
-                const osgUtil::LineSegmentIntersector::Intersection&intersection = *itr;
+                const osgUtil::LineSegmentIntersector::Intersection &intersection = *itr;
                 std::cout << "  ratio " << intersection.ratio << std::endl;
                 std::cout << "  point " << intersection.localIntersectionPoint << std::endl;
                 std::cout << "  normal " << intersection.localIntersectionNormal << std::endl;

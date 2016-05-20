@@ -15,8 +15,8 @@ namespace http
 {
 namespace server
 {
-server::server(const std::string&address, const std::string&port,
-               const std::string&doc_root, std::size_t io_service_pool_size)
+server::server(const std::string &address, const std::string &port,
+               const std::string &doc_root, std::size_t io_service_pool_size)
     : io_service_pool_(io_service_pool_size),
     acceptor_(io_service_pool_.get_io_service()),
     new_connection_(new connection(
@@ -49,7 +49,7 @@ void server::stop()
     io_service_pool_.stop();
 }
 
-void server::handle_accept(const asio::error_code&e)
+void server::handle_accept(const asio::error_code &e)
 {
     if (!e)
     {

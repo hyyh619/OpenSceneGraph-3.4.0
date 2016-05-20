@@ -118,10 +118,10 @@ struct VirtualMethod2;
 
 struct Visitor
 {
-    virtual void apply(InlineMethod&m);
-    virtual void apply(Method&m);
-    virtual void apply(VirtualMethod&m);
-    virtual void apply(VirtualMethod2&m);
+    virtual void apply(InlineMethod &m);
+    virtual void apply(Method &m);
+    virtual void apply(VirtualMethod &m);
+    virtual void apply(VirtualMethod2 &m);
     virtual ~Visitor() {}
 };
 
@@ -132,7 +132,7 @@ struct InlineMethod
     {
         OPERATION
     }
-    virtual void accept(Visitor&visitor)
+    virtual void accept(Visitor &visitor)
     {
         visitor.apply(*this);
     }
@@ -141,7 +141,7 @@ struct InlineMethod
 
 struct Method
 {
-    virtual void accept(Visitor&visitor)
+    virtual void accept(Visitor &visitor)
     {
         visitor.apply(*this);
     }
@@ -156,7 +156,7 @@ void Method::method()
 
 struct VirtualMethod
 {
-    virtual void accept(Visitor&visitor)
+    virtual void accept(Visitor &visitor)
     {
         visitor.apply(*this);
     }
@@ -173,7 +173,7 @@ struct VirtualMethod2 : public VirtualMethod
 {
     VirtualMethod2() { }
 
-    virtual void accept(Visitor&visitor)
+    virtual void accept(Visitor &visitor)
     {
         visitor.apply(*this);
     }
@@ -188,38 +188,38 @@ void VirtualMethod2::method()
     OPERATION
 }
 
-void Visitor::apply(Method&m)
+void Visitor::apply(Method &m)
 {
     m.method();
 }
-void Visitor::apply(VirtualMethod&m)
+void Visitor::apply(VirtualMethod &m)
 {
     m.method();
 }
-void Visitor::apply(InlineMethod&m)
+void Visitor::apply(InlineMethod &m)
 {
     m.method();
 }
-void Visitor::apply(VirtualMethod2&m)
+void Visitor::apply(VirtualMethod2 &m)
 {
     m.method();
 }
 
 struct CustomVisitor
 {
-    virtual void apply(InlineMethod&m)
+    virtual void apply(InlineMethod &m)
     {
         m.method();
     }
-    virtual void apply(Method&m)
+    virtual void apply(Method &m)
     {
         m.method();
     }
-    virtual void apply(VirtualMethod&m)
+    virtual void apply(VirtualMethod &m)
     {
         m.method();
     }
-    virtual void apply(VirtualMethod2&m)
+    virtual void apply(VirtualMethod2 &m)
     {
         m.method();
     }

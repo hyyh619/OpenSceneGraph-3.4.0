@@ -7,8 +7,8 @@
 
 #include <osg/Notify>
 
-bool  ParticleEffect_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ParticleEffect_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ParticleEffect_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ParticleEffect_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ParticleEffect_Proxy)
 (
@@ -19,10 +19,10 @@ REGISTER_DOTOSGWRAPPER(ParticleEffect_Proxy)
     ParticleEffect_writeLocalData
 );
 
-bool ParticleEffect_readLocalData(osg::Object&object, osgDB::Input&fr)
+bool ParticleEffect_readLocalData(osg::Object &object, osgDB::Input &fr)
 {
-    osgParticle::ParticleEffect&effect     = static_cast<osgParticle::ParticleEffect&>(object);
-    bool                       itrAdvanced = false;
+    osgParticle::ParticleEffect &effect     = static_cast<osgParticle::ParticleEffect&>(object);
+    bool                        itrAdvanced = false;
 
     if (fr.matchSequence("textFileName %s"))
     {
@@ -190,9 +190,9 @@ bool ParticleEffect_readLocalData(osg::Object&object, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool ParticleEffect_writeLocalData(const osg::Object&object, osgDB::Output&fw)
+bool ParticleEffect_writeLocalData(const osg::Object &object, osgDB::Output &fw)
 {
-    const osgParticle::ParticleEffect&effect = static_cast<const osgParticle::ParticleEffect&>(object);
+    const osgParticle::ParticleEffect &effect = static_cast<const osgParticle::ParticleEffect&>(object);
 
     fw.indent() << "textFileName " <<     fw.wrapString(effect.getTextureFileName()) << std::endl;
     fw.indent() << "position " <<         effect.getPosition() << std::endl;

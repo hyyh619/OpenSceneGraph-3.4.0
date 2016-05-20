@@ -40,7 +40,7 @@ RenderBinPrototypeList()
     add("TraversalOrderBin", new RenderBin(RenderBin::TRAVERSAL_ORDER));
 }
 
-void add(const std::string&name, RenderBin *bin)
+void add(const std::string &name, RenderBin *bin)
 {
     (*this)[name] = bin;
 }
@@ -73,7 +73,7 @@ RenderBin * RenderBin::getRenderBinPrototype(const std::string & binName)
     return NULL;
 }
 
-RenderBin* RenderBin::createRenderBin(const std::string&binName)
+RenderBin* RenderBin::createRenderBin(const std::string &binName)
 {
     RenderBinPrototypeList *list = renderBinPrototypeList();
 
@@ -88,7 +88,7 @@ RenderBin* RenderBin::createRenderBin(const std::string&binName)
     return new RenderBin;
 }
 
-void RenderBin::addRenderBinPrototype(const std::string&binName, RenderBin *proto)
+void RenderBin::addRenderBinPrototype(const std::string &binName, RenderBin *proto)
 {
     RenderBinPrototypeList *list = renderBinPrototypeList();
 
@@ -191,7 +191,7 @@ RenderBin::RenderBin(SortMode mode)
 #endif
 }
 
-RenderBin::RenderBin(const RenderBin&rhs, const CopyOp&copyop) :
+RenderBin::RenderBin(const RenderBin &rhs, const CopyOp &copyop) :
     Object(rhs, copyop),
     _binNum(rhs._binNum),
     _parent(rhs._parent),
@@ -409,7 +409,7 @@ void RenderBin::copyLeavesFromStateGraphListToRenderLeafList()
     _stateGraphList.clear();
 }
 
-RenderBin* RenderBin::find_or_insert(int binNum, const std::string&binName)
+RenderBin* RenderBin::find_or_insert(int binNum, const std::string &binName)
 {
     // search for appropriate bin.
     RenderBinList::iterator itr = _bins.find(binNum);
@@ -441,7 +441,7 @@ RenderBin* RenderBin::find_or_insert(int binNum, const std::string&binName)
     return rb;
 }
 
-void RenderBin::draw(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
+void RenderBin::draw(osg::RenderInfo &renderInfo, RenderLeaf* &previous)
 {
     renderInfo.pushRenderBin(this);
 
@@ -455,9 +455,9 @@ void RenderBin::draw(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
     renderInfo.popRenderBin();
 }
 
-void RenderBin::drawImplementation(osg::RenderInfo&renderInfo, RenderLeaf*&previous)
+void RenderBin::drawImplementation(osg::RenderInfo &renderInfo, RenderLeaf* &previous)
 {
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     // OSG_NOTICE<<"begin RenderBin::drawImplementation "<<className()<<" sortMode "<<getSortMode()<<std::endl;
 
@@ -551,7 +551,7 @@ void RenderBin::drawImplementation(osg::RenderInfo&renderInfo, RenderLeaf*&previ
 }
 
 // stats
-bool RenderBin::getStats(Statistics&stats) const
+bool RenderBin::getStats(Statistics &stats) const
 {
     stats.addBins(1);
 

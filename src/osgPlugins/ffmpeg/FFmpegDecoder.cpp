@@ -55,7 +55,7 @@ FFmpegDecoder::~FFmpegDecoder()
 }
 
 
-bool FFmpegDecoder::open(const std::string&filename, FFmpegParameters *parameters)
+bool FFmpegDecoder::open(const std::string &filename, FFmpegParameters *parameters)
 {
     try
     {
@@ -179,13 +179,13 @@ bool FFmpegDecoder::open(const std::string&filename, FFmpegParameters *parameter
         {
             m_audio_decoder.open(m_audio_stream, parameters);
         }
-        catch (const std::runtime_error&error)
+        catch (const std::runtime_error &error)
         {
             OSG_WARN << "FFmpegImageStream::open audio failed, audio stream will be disabled: " << error.what() << std::endl;
         }
     }
 
-    catch (const std::runtime_error&error)
+    catch (const std::runtime_error &error)
     {
         OSG_WARN << "FFmpegImageStream::open : " << error.what() << std::endl;
         return false;

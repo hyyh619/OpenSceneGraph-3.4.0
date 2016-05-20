@@ -32,7 +32,7 @@ public:
 enum RequestMode { RequestContinuousUpdate, RequestSingleUpdate, StopUpdate };
 
 VideoImageStream();
-VideoImageStream(const VideoImageStream&image, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+VideoImageStream(const VideoImageStream &image, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 ~VideoImageStream();
 virtual bool needsDispatching() const
 {
@@ -102,7 +102,7 @@ bool               _finished;
 
 struct VideoFrameDispatchQueueComparator
 {
-    bool operator()(const osg::ref_ptr<VideoFrameDispatchQueue>&lhs, const osg::ref_ptr<VideoFrameDispatchQueue>&rhs) const
+    bool operator()(const osg::ref_ptr<VideoFrameDispatchQueue> &lhs, const osg::ref_ptr<VideoFrameDispatchQueue> &rhs) const
     {
         return lhs->getNumItemsInQueue() < rhs->getNumItemsInQueue();
     }

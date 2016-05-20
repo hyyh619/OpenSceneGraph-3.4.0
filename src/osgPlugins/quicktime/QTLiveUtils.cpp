@@ -628,7 +628,7 @@ std::vector<OSG_SGDeviceList> probe_sequence_grabber_components()
 }
 
 
-void get_video_device_bounds_idstr(short deviceID, short deviceInputID, short&out_width, short&out_height, Str63&out_deviceIDStr)
+void get_video_device_bounds_idstr(short deviceID, short deviceInputID, short &out_width, short &out_height, Str63 &out_deviceIDStr)
 {
     // Extra scopes for DEBUG and breakpoint/stack checking plus QT init/destroy
     {
@@ -776,7 +776,7 @@ void get_video_device_bounds_idstr(short deviceID, short deviceInputID, short&ou
     }
 }
 
-void get_sound_device_idstr(short soundDeviceID, short soundDeviceInputID, Str63&out_soundDeviceIDStr)
+void get_sound_device_idstr(short soundDeviceID, short soundDeviceInputID, Str63 &out_soundDeviceIDStr)
 {
     // Extra scopes for DEBUG and breakpoint/stack checking plus QT init/destroy
     {

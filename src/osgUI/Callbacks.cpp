@@ -21,13 +21,13 @@
 
 using namespace osgUI;
 
-CloseCallback::CloseCallback(const std::string&callbackName, osgUI::Widget *closeWidget) :
+CloseCallback::CloseCallback(const std::string &callbackName, osgUI::Widget *closeWidget) :
     _closeWidget(closeWidget)
 {
     setName(callbackName);
 }
 
-CloseCallback::CloseCallback(const CloseCallback&hc, const osg::CopyOp&copyop)
+CloseCallback::CloseCallback(const CloseCallback &hc, const osg::CopyOp &copyop)
 {}
 
 bool CloseCallback::run(osg::Object *object, osg::Parameters&, osg::Parameters&) const
@@ -46,7 +46,7 @@ bool CloseCallback::run(osg::Object *object, osg::Parameters&, osg::Parameters&)
              itr != nodePathList.end();
              ++itr)
         {
-            osg::NodePath&nodePath = *itr;
+            osg::NodePath &nodePath = *itr;
 
             for (osg::NodePath::reverse_iterator ritr = nodePath.rbegin();
                  ritr != nodePath.rend();
@@ -72,11 +72,11 @@ HandleCallback::HandleCallback()
     setName("handle");
 }
 
-HandleCallback::HandleCallback(const HandleCallback&hc, const osg::CopyOp&copyop) :
+HandleCallback::HandleCallback(const HandleCallback &hc, const osg::CopyOp &copyop) :
     osg::CallbackObject(hc, copyop)
 {}
 
-bool HandleCallback::run(osg::Object *object, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+bool HandleCallback::run(osg::Object *object, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
 {
     if (inputParameters.size() >= 2)
     {
@@ -102,11 +102,11 @@ DragCallback::DragCallback() :
     _dragging(false)
 {}
 
-DragCallback::DragCallback(const DragCallback&hc, const osg::CopyOp&copyop) :
+DragCallback::DragCallback(const DragCallback &hc, const osg::CopyOp &copyop) :
     HandleCallback(hc, copyop)
 {}
 
-osg::Transform* findNearestTransform(const osg::NodePath&nodePath)
+osg::Transform* findNearestTransform(const osg::NodePath &nodePath)
 {
     osg::Transform *transform = 0;
 

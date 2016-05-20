@@ -43,7 +43,7 @@ trpgLightAttr::trpgLightAttr(void)
     Reset();
 }
 
-trpgLightAttr::trpgLightAttr(const trpgLightAttr&in) :
+trpgLightAttr::trpgLightAttr(const trpgLightAttr &in) :
     trpgReadWriteable(in)
 {
     data.commentStr = NULL;
@@ -132,7 +132,7 @@ void trpgLightAttr::SetRandomIntensity(trpgLightAttr::LightQuality in_randomInte
 {
     data.randomIntensity = in_randomIntensity;
 }
-void trpgLightAttr::SetCalligraphicAttr(trpgLightAttr::CalligraphicAttr&in_calligraphicAttr)
+void trpgLightAttr::SetCalligraphicAttr(trpgLightAttr::CalligraphicAttr &in_calligraphicAttr)
 {
     data.calligraphicAttr = in_calligraphicAttr;
 }
@@ -148,7 +148,7 @@ void trpgLightAttr::SetCalligraphicMaxDefocus(float64 in_maxDefocus)
 {
     data.calligraphicAttr.maxDefocus = in_maxDefocus;
 }
-void trpgLightAttr::SetPerformerAttr(trpgLightAttr::PerformerAttr&in_performerAttr)
+void trpgLightAttr::SetPerformerAttr(trpgLightAttr::PerformerAttr &in_performerAttr)
 {
     data.performerAttr = in_performerAttr;
 }
@@ -189,7 +189,7 @@ void trpgLightAttr::SetPerformerFogScale(float64 in_fogScale)
 {
     data.performerAttr.fogScale = in_fogScale;
 }
-void trpgLightAttr::SetAnimationAttr(trpgLightAttr::AnimationAttr&in_animationAttr)
+void trpgLightAttr::SetAnimationAttr(trpgLightAttr::AnimationAttr &in_animationAttr)
 {
     data.animationAttr = in_animationAttr;
 }
@@ -226,155 +226,155 @@ void trpgLightAttr::SetComment(const char *inStr)
     strcpy(data.commentStr, inStr);
 }
 // Getters
-void trpgLightAttr::GetType(trpgLightAttr::LightType&out_type)
+void trpgLightAttr::GetType(trpgLightAttr::LightType &out_type)
 {
     out_type = data.type;
 }
-void trpgLightAttr::GetDirectionality(trpgLightAttr::LightDirectionality&out_directionality)
+void trpgLightAttr::GetDirectionality(trpgLightAttr::LightDirectionality &out_directionality)
 {
     out_directionality = data.directionality;
 }
-void trpgLightAttr::GetFrontColor(trpgColor&out_frontColor)
+void trpgLightAttr::GetFrontColor(trpgColor &out_frontColor)
 {
     out_frontColor = data.frontColor;
 }
-void trpgLightAttr::GetFrontIntensity(float64&out_frontIntensity)
+void trpgLightAttr::GetFrontIntensity(float64 &out_frontIntensity)
 {
     out_frontIntensity = data.frontIntensity;
 }
-void trpgLightAttr::GetBackColor(trpgColor&out_backColor)
+void trpgLightAttr::GetBackColor(trpgColor &out_backColor)
 {
     out_backColor = data.backColor;
 }
-void trpgLightAttr::GetBackIntensity(float64&out_backIntensity)
+void trpgLightAttr::GetBackIntensity(float64 &out_backIntensity)
 {
     out_backIntensity = data.backIntensity;
 }
-void trpgLightAttr::GetNormal(trpg3dPoint&out_normal)
+void trpgLightAttr::GetNormal(trpg3dPoint &out_normal)
 {
     out_normal = data.normal;
 }
-void trpgLightAttr::GetSMC(int32&out_smc)
+void trpgLightAttr::GetSMC(int32 &out_smc)
 {
     out_smc = data.smc;
 }
-void trpgLightAttr::GetFID(int32&out_fid)
+void trpgLightAttr::GetFID(int32 &out_fid)
 {
     out_fid = data.fid;
 }
-void trpgLightAttr::GetFlags(int32&out_flags)
+void trpgLightAttr::GetFlags(int32 &out_flags)
 {
     out_flags = data.flags;
 }
-void trpgLightAttr::GetHLobeAngle(float64&out_hLobeAngle)
+void trpgLightAttr::GetHLobeAngle(float64 &out_hLobeAngle)
 {
     out_hLobeAngle = data.horizontalLobeAngle;
 }
-void trpgLightAttr::GetVLobeAngle(float64&out_vLobeAngle)
+void trpgLightAttr::GetVLobeAngle(float64 &out_vLobeAngle)
 {
     out_vLobeAngle = data.verticalLobeAngle;
 }
-void trpgLightAttr::GetLobeRollAngle(float64&out_lobeRollAngle)
+void trpgLightAttr::GetLobeRollAngle(float64 &out_lobeRollAngle)
 {
     out_lobeRollAngle = data.lobeRollAngle;
 }
-void trpgLightAttr::GetLobeFalloff(float64&out_lobeFalloff)
+void trpgLightAttr::GetLobeFalloff(float64 &out_lobeFalloff)
 {
     out_lobeFalloff = data.lobeFalloff;
 }
-void trpgLightAttr::GetAmbient(float64&out_ambientIntensity)
+void trpgLightAttr::GetAmbient(float64 &out_ambientIntensity)
 {
     out_ambientIntensity = data.ambientIntensity;
 }
-void trpgLightAttr::GetQuality(trpgLightAttr::LightQuality&out_quality)
+void trpgLightAttr::GetQuality(trpgLightAttr::LightQuality &out_quality)
 {
     out_quality = data.quality;
 }
-void trpgLightAttr::GetRascalSignificance(float64&out_rascalSignificance)
+void trpgLightAttr::GetRascalSignificance(float64 &out_rascalSignificance)
 {
     out_rascalSignificance = data.rascalSignificance;
 }
-void trpgLightAttr::GetRandomIntensity(trpgLightAttr::LightQuality&out_randomIntensity)
+void trpgLightAttr::GetRandomIntensity(trpgLightAttr::LightQuality &out_randomIntensity)
 {
     out_randomIntensity = data.randomIntensity;
 }
-void trpgLightAttr::GetCalligraphicAttr(trpgLightAttr::CalligraphicAttr&out_calligraphicAttr)
+void trpgLightAttr::GetCalligraphicAttr(trpgLightAttr::CalligraphicAttr &out_calligraphicAttr)
 {
     out_calligraphicAttr = data.calligraphicAttr;
 }
-void trpgLightAttr::GetCalligraphicDrawOrder(int32&out_drawOrder)
+void trpgLightAttr::GetCalligraphicDrawOrder(int32 &out_drawOrder)
 {
     out_drawOrder = data.calligraphicAttr.drawOrder;
 }
-void trpgLightAttr::GetCalligraphicMinDefocus(float64&out_minDefocus)
+void trpgLightAttr::GetCalligraphicMinDefocus(float64 &out_minDefocus)
 {
     out_minDefocus = data.calligraphicAttr.minDefocus;
 }
-void trpgLightAttr::GetCalligraphicMaxDefocus(float64&out_maxDefocus)
+void trpgLightAttr::GetCalligraphicMaxDefocus(float64 &out_maxDefocus)
 {
     out_maxDefocus = data.calligraphicAttr.maxDefocus;
 }
-void trpgLightAttr::GetPerformerAttr(trpgLightAttr::PerformerAttr&out_performerAttr)
+void trpgLightAttr::GetPerformerAttr(trpgLightAttr::PerformerAttr &out_performerAttr)
 {
     out_performerAttr = data.performerAttr;
 }
-void trpgLightAttr::GetPerformerFlags(int32&out_flags)
+void trpgLightAttr::GetPerformerFlags(int32 &out_flags)
 {
     out_flags = data.performerAttr.flags;
 }
-void trpgLightAttr::GetPerformerMinPixelSize(float64&out_minPxSize)
+void trpgLightAttr::GetPerformerMinPixelSize(float64 &out_minPxSize)
 {
     out_minPxSize = data.performerAttr.minPixelSize;
 }
-void trpgLightAttr::GetPerformerMaxPixelSize(float64&out_maxPxSize)
+void trpgLightAttr::GetPerformerMaxPixelSize(float64 &out_maxPxSize)
 {
     out_maxPxSize = data.performerAttr.maxPixelSize;
 }
-void trpgLightAttr::GetPerformerActualSize(float64&out_actualSize)
+void trpgLightAttr::GetPerformerActualSize(float64 &out_actualSize)
 {
     out_actualSize = data.performerAttr.actualSize;
 }
-void trpgLightAttr::GetPerformerTpPixelSize(float64&out_tpPixelSize)
+void trpgLightAttr::GetPerformerTpPixelSize(float64 &out_tpPixelSize)
 {
     out_tpPixelSize = data.performerAttr.transparentPixelSize;
 }
-void trpgLightAttr::GetPerformerTpFalloffExp(float64&out_tpFalloffExp)
+void trpgLightAttr::GetPerformerTpFalloffExp(float64 &out_tpFalloffExp)
 {
     out_tpFalloffExp = data.performerAttr.transparentFallofExp;
 }
-void trpgLightAttr::GetPerformerTpScale(float64&out_tpScale)
+void trpgLightAttr::GetPerformerTpScale(float64 &out_tpScale)
 {
     out_tpScale = data.performerAttr.transparentScale;
 }
-void trpgLightAttr::GetPerformerTpClamp(float64&out_tpClamp)
+void trpgLightAttr::GetPerformerTpClamp(float64 &out_tpClamp)
 {
     out_tpClamp = data.performerAttr.transparentClamp;
 }
-void trpgLightAttr::GetPerformerFogScale(float64&out_fogScale)
+void trpgLightAttr::GetPerformerFogScale(float64 &out_fogScale)
 {
     out_fogScale = data.performerAttr.fogScale;
 }
-void trpgLightAttr::GetAnimationAttr(trpgLightAttr::AnimationAttr&out_animationAttr)
+void trpgLightAttr::GetAnimationAttr(trpgLightAttr::AnimationAttr &out_animationAttr)
 {
     out_animationAttr = data.animationAttr;
 }
-void trpgLightAttr::GetAnimationPeriod(float64&out_period)
+void trpgLightAttr::GetAnimationPeriod(float64 &out_period)
 {
     out_period = data.animationAttr.period;
 }
-void trpgLightAttr::GetAnimationPhaseDelay(float64&out_phaseDelay)
+void trpgLightAttr::GetAnimationPhaseDelay(float64 &out_phaseDelay)
 {
     out_phaseDelay = data.animationAttr.phaseDelay;
 }
-void trpgLightAttr::GetAnimationTimeOn(float64&out_timeOn)
+void trpgLightAttr::GetAnimationTimeOn(float64 &out_timeOn)
 {
     out_timeOn = data.animationAttr.timeOn;
 }
-void trpgLightAttr::GetAnimationVector(trpg3dPoint&out_vector)
+void trpgLightAttr::GetAnimationVector(trpg3dPoint &out_vector)
 {
     out_vector = data.animationAttr.vector;
 }
-void trpgLightAttr::GetAnimationFlags(int32&flags)
+void trpgLightAttr::GetAnimationFlags(int32 &flags)
 {
     flags = data.animationAttr.flags;
 }
@@ -383,7 +383,7 @@ const char* trpgLightAttr::GetComment()
     return data.commentStr;
 }
 // Writes this class to a write buffer
-bool trpgLightAttr::Write(trpgWriteBuffer&buf)
+bool trpgLightAttr::Write(trpgWriteBuffer &buf)
 {
     buf.Begin(TRPGLIGHTATTR);
 
@@ -463,7 +463,7 @@ public:
 void          *Parse(trpgToken, trpgReadBuffer &);
 trpgLightAttr *lightAttr;
 };
-void* lightAttrCB::Parse(trpgToken tok, trpgReadBuffer&buf)
+void* lightAttrCB::Parse(trpgToken tok, trpgReadBuffer &buf)
 {
     int         type_data;
     int         directionality_data;
@@ -585,7 +585,7 @@ void* lightAttrCB::Parse(trpgToken tok, trpgReadBuffer&buf)
 }
 
 // Reads this class from a read buffer
-bool trpgLightAttr::Read(trpgReadBuffer&buf)
+bool trpgLightAttr::Read(trpgReadBuffer &buf)
 {
     Reset();
 
@@ -612,7 +612,7 @@ bool trpgLightAttr::isValid(void) const
     return true;
 }
 
-trpgLightAttr&trpgLightAttr::operator =(const trpgLightAttr&in)
+trpgLightAttr&trpgLightAttr::operator =(const trpgLightAttr &in)
 {
     data = in.data;
     if (in.data.commentStr)
@@ -626,7 +626,7 @@ trpgLightAttr&trpgLightAttr::operator =(const trpgLightAttr&in)
     return *this;
 }
 
-bool trpgLightAttr::operator ==(const trpgLightAttr&in)
+bool trpgLightAttr::operator ==(const trpgLightAttr &in)
 {
     // this doesn't work, so do it a hard way
     // return memcmp( &data,&in.data,sizeof(data) ) == 0;
@@ -752,7 +752,7 @@ bool trpgLightAttr::operator ==(const trpgLightAttr&in)
     return true;
 }
 
-bool trpgLightAttr::operator !=(const trpgLightAttr&in)
+bool trpgLightAttr::operator !=(const trpgLightAttr &in)
 {
     return !operator==(in);
 }
@@ -812,7 +812,7 @@ trpgLight::trpgLight(void)
     index = -1;
 }
 
-trpgLight::trpgLight(const trpgLight&in) :
+trpgLight::trpgLight(const trpgLight &in) :
     trpgReadWriteable(in)
 {
     operator=(in);
@@ -836,13 +836,13 @@ void trpgLight::AddVertex(trpg3dPoint pt)
 }
 
 // Returns the number of locations, this light is located at
-void trpgLight::GetNumVertices(uint32&nvertices) const
+void trpgLight::GetNumVertices(uint32 &nvertices) const
 {
     nvertices = lightPoints.size();
 }
 
 // Returns the location at a given index
-bool trpgLight::GetVertex(uint32 ix, trpg3dPoint&pt) const
+bool trpgLight::GetVertex(uint32 ix, trpg3dPoint &pt) const
 {
     if (ix < lightPoints.size())
     {
@@ -907,7 +907,7 @@ bool trpgLight::GetVertices(float32 *fts) const
 
 
 // Returns the index of the Light Attributes in the Light Table
-void trpgLight::GetAttrIndex(int&ix) const
+void trpgLight::GetAttrIndex(int &ix) const
 {
     ix = index;
 }
@@ -926,7 +926,7 @@ void trpgLight::Reset(void)
 }
 
 // Writes this class to a write buffer
-bool trpgLight::Write(trpgWriteBuffer&buf)
+bool trpgLight::Write(trpgWriteBuffer &buf)
 {
     int numVertices = lightPoints.size();
 
@@ -947,7 +947,7 @@ bool trpgLight::Write(trpgWriteBuffer&buf)
 }
 
 // Reads this class from a read buffer
-bool trpgLight::Read(trpgReadBuffer&buf)
+bool trpgLight::Read(trpgReadBuffer &buf)
 {
     Reset();
 
@@ -966,7 +966,7 @@ bool trpgLight::Read(trpgReadBuffer&buf)
 }
 
 // operator
-trpgLight&trpgLight::operator =(const trpgLight&in)
+trpgLight&trpgLight::operator =(const trpgLight &in)
 {
     Reset();
 
@@ -987,7 +987,7 @@ trpgLight&trpgLight::operator =(const trpgLight&in)
 trpgLightTable::trpgLightTable()
 {}
 
-trpgLightTable::trpgLightTable(const trpgLightTable&in) :
+trpgLightTable::trpgLightTable(const trpgLightTable &in) :
     trpgReadWriteable(in)
 {
     *this = in;
@@ -1027,7 +1027,7 @@ bool trpgLightTable::isValid() const
 }
 
 // Set functions
-int trpgLightTable::AddLightAttr(const trpgLightAttr&inLight)
+int trpgLightTable::AddLightAttr(const trpgLightAttr &inLight)
 {
     int handle = inLight.GetHandle();
 
@@ -1039,7 +1039,7 @@ int trpgLightTable::AddLightAttr(const trpgLightAttr&inLight)
     lightMap[handle] = inLight;
     return handle;
 }
-int trpgLightTable::FindAddLightAttr(const trpgLightAttr&inLight)
+int trpgLightTable::FindAddLightAttr(const trpgLightAttr &inLight)
 {
     LightMapType::iterator itr = lightMap.begin();
 
@@ -1054,7 +1054,7 @@ int trpgLightTable::FindAddLightAttr(const trpgLightAttr&inLight)
 
 
 // Copy operator
-trpgLightTable&trpgLightTable::operator =(const trpgLightTable&in)
+trpgLightTable&trpgLightTable::operator =(const trpgLightTable &in)
 {
     Reset();
 
@@ -1071,7 +1071,7 @@ trpgLightTable&trpgLightTable::operator =(const trpgLightTable&in)
 }
 
 // Write Light table
-bool trpgLightTable::Write(trpgWriteBuffer&buf)
+bool trpgLightTable::Write(trpgWriteBuffer &buf)
 {
     int32 numLights;
 
@@ -1098,7 +1098,7 @@ bool trpgLightTable::Write(trpgWriteBuffer&buf)
  ***********
  */
 // Get functions
-bool trpgLightTable::GetNumLightAttrs(int&no) const
+bool trpgLightTable::GetNumLightAttrs(int &no) const
 {
     if (!isValid())
         return false;
@@ -1121,7 +1121,7 @@ const trpgLightAttr* trpgLightTable::GetLightAttrRef(int id) const
     return &itr->second;
 }
 
-bool trpgLightTable::Read(trpgReadBuffer&buf)
+bool trpgLightTable::Read(trpgReadBuffer &buf)
 {
     int32     numLights;
     trpgToken lightTok;

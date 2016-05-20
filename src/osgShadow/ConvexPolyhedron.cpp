@@ -96,9 +96,9 @@ struct FaceDistances
 };
 } // namespace
 
-ConvexPolyhedron::ConvexPolyhedron(const osg::Matrix&matrix,
-                                   const osg::Matrix&inverse,
-                                   const osg::BoundingBox&bb)
+ConvexPolyhedron::ConvexPolyhedron(const osg::Matrix &matrix,
+                                   const osg::Matrix &inverse,
+                                   const osg::BoundingBox &bb)
 {
     setToBoundingBox(bb);
 
@@ -124,7 +124,7 @@ void ConvexPolyhedron::setToUnitFrustum(bool withNear, bool withFar)
     _faces.clear();
 
     {   // left plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "left";
         face.plane.set(1.0, 0.0, 0.0, 1.0);
         face.vertices.push_back(v000);
@@ -134,7 +134,7 @@ void ConvexPolyhedron::setToUnitFrustum(bool withNear, bool withFar)
     }
 
     {   // right plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "right";
         face.plane.set(-1.0, 0.0, 0.0, 1.0);
         face.vertices.push_back(v100);
@@ -144,7 +144,7 @@ void ConvexPolyhedron::setToUnitFrustum(bool withNear, bool withFar)
     }
 
     {   // bottom plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "bottom";
         face.plane.set(0.0, 1.0, 0.0, 1.0);
         face.vertices.push_back(v000);
@@ -154,7 +154,7 @@ void ConvexPolyhedron::setToUnitFrustum(bool withNear, bool withFar)
     }
 
     {   // top plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "top";
         face.plane.set(0.0, -1.0, 0.0, 1.0);
         face.vertices.push_back(v010);
@@ -165,7 +165,7 @@ void ConvexPolyhedron::setToUnitFrustum(bool withNear, bool withFar)
 
     if (withNear)
     {   // near plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "near";
         face.plane.set(0.0, 0.0, 1.0, 1.0);
         face.vertices.push_back(v000);
@@ -176,7 +176,7 @@ void ConvexPolyhedron::setToUnitFrustum(bool withNear, bool withFar)
 
     if (withFar)
     {   // far plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "far";
         face.plane.set(0.0, 0.0, -1.0, 1.0);
         face.vertices.push_back(v001);
@@ -186,7 +186,7 @@ void ConvexPolyhedron::setToUnitFrustum(bool withNear, bool withFar)
     }
 }
 
-void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox&bb)
+void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox &bb)
 {
     _faces.clear();
 
@@ -208,7 +208,7 @@ void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox&bb)
 
 
     {   // x min plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "xMin";
         face.plane.set(1.0, 0.0, 0.0, -bb.xMin());
         face.vertices.push_back(v000);
@@ -218,7 +218,7 @@ void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox&bb)
     }
 
     {   // x max plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "xMax";
         face.plane.set(-1.0, 0.0, 0.0, bb.xMax());
         face.vertices.push_back(v100);
@@ -228,7 +228,7 @@ void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox&bb)
     }
 
     {   // y min plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "yMin";
         face.plane.set(0.0, 1.0, 0.0, -bb.yMin());
         face.vertices.push_back(v000);
@@ -238,7 +238,7 @@ void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox&bb)
     }
 
     {   // y max plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "yMax";
         face.plane.set(0.0, -1.0, 0.0, bb.yMax());
         face.vertices.push_back(v010);
@@ -247,7 +247,7 @@ void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox&bb)
         face.vertices.push_back(v110);
     }
     {   // z min plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "zMin";
         face.plane.set(0.0, 0.0, 1.0, -bb.zMin());
         face.vertices.push_back(v000);
@@ -257,7 +257,7 @@ void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox&bb)
     }
 
     {   // z max plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "zMax";
         face.plane.set(0.0, 0.0, -1.0, bb.zMax());
         face.vertices.push_back(v001);
@@ -267,7 +267,7 @@ void ConvexPolyhedron::setToBoundingBox(const osg::BoundingBox&bb)
     }
 }
 
-void ConvexPolyhedron::transform(const osg::Matrix&matrix, const osg::Matrix&inverse)
+void ConvexPolyhedron::transform(const osg::Matrix &matrix, const osg::Matrix &inverse)
 {
     bool requires_infinite_plane_clip = false;
 
@@ -277,7 +277,7 @@ void ConvexPolyhedron::transform(const osg::Matrix&matrix, const osg::Matrix&inv
          itr != _faces.end() && !requires_infinite_plane_clip;
          ++itr)
     {
-        Face&face = *itr;
+        Face &face = *itr;
         face.plane.transformProvidingInverse(inverse);
 
         for (Vertices::iterator vitr = face.vertices.begin();
@@ -312,7 +312,7 @@ void ConvexPolyhedron::transform(const osg::Matrix&matrix, const osg::Matrix&inv
     checkCoherency(true, "ConvexPolyhedron::transform");
 }
 
-void ConvexPolyhedron::transformClip(const osg::Matrix&matrix, const osg::Matrix&inverse)
+void ConvexPolyhedron::transformClip(const osg::Matrix &matrix, const osg::Matrix &inverse)
 {
     double tolerance = 0.00001;
 
@@ -400,18 +400,18 @@ void ConvexPolyhedron::transformClip(const osg::Matrix&matrix, const osg::Matrix
         // cut the face if some points above and below plane
         // assert( fd->below > 0 && fd->above > 0 );
 
-        Face     &face      = *(fd->itr);
-        Points   &vertices  = fd->points;
-        Distances&distances = fd->distances;
-        Vertices newFaceVertices;
-        Vertices newVertices;
+        Face      &face      = *(fd->itr);
+        Points    &vertices  = fd->points;
+        Distances &distances = fd->distances;
+        Vertices  newFaceVertices;
+        Vertices  newVertices;
 
         for (unsigned int i = 0; i < vertices.size(); ++i)
         {
-            osg::Vec4d&va         = vertices[i];
-            osg::Vec4d&vb         = vertices[(i + 1) % vertices.size()];
-            double    &distance_a = distances[i];
-            double    &distance_b = distances[(i + 1) % vertices.size()];
+            osg::Vec4d &va         = vertices[i];
+            osg::Vec4d &vb         = vertices[(i + 1) % vertices.size()];
+            double     &distance_a = distances[i];
+            double     &distance_b = distances[(i + 1) % vertices.size()];
 
             // Is first edge point above or on the plane?
             if (-point_plane_tolerance <= distance_a)
@@ -687,7 +687,7 @@ void ConvexPolyhedron::transformClip(const osg::Matrix&matrix, const osg::Matrix
 }
 
 bool ConvexPolyhedron::mergeFaces
-    (const Face&face0, const Face&face1, Face&face)
+    (const Face &face0, const Face &face1, Face &face)
 {
     typedef std::pair<osg::Vec3d, osg::Vec3d>  Edge;
     typedef std::set<Edge> Edges;
@@ -826,7 +826,7 @@ bool ConvexPolyhedron::mergeFaces
 }
 
 void ConvexPolyhedron::mergeCoplanarFaces
-    (const double&dot_tolerance, const double&delta_tolerance)
+    (const double &dot_tolerance, const double &delta_tolerance)
 {
     for (Faces::iterator itr0 = _faces.begin();
          itr0 != _faces.end();
@@ -921,7 +921,7 @@ void ConvexPolyhedron::removeDuplicateVertices(void)
              vitr != itr->vertices.end();
              ++vitr)
         {
-            osg::Vec4d&v = points[*vitr];
+            osg::Vec4d &v = points[*vitr];
             *vitr = osg::Vec3d(v[0], v[1], v[2]);
         }
     }
@@ -1042,8 +1042,8 @@ void ConvexPolyhedron::removeDuplicateVertices(void)
 }
 
 int ConvexPolyhedron::pointsColinear
-    (const osg::Vec3d&a, const osg::Vec3d&b, const osg::Vec3d&c,
-    const double&dot_tolerance, const double&delta_tolerance)
+    (const osg::Vec3d &a, const osg::Vec3d &b, const osg::Vec3d &c,
+    const double &dot_tolerance, const double &delta_tolerance)
 {
     osg::Vec3d va = b - a;
     osg::Vec3d vb = c - b;
@@ -1060,7 +1060,7 @@ int ConvexPolyhedron::pointsColinear
     return 0; // nope. not collinear
 }
 
-int ConvexPolyhedron::isFacePolygonConvex(Face&face, bool ignoreColinearVertices)
+int ConvexPolyhedron::isFacePolygonConvex(Face &face, bool ignoreColinearVertices)
 {
     int positive = 0, negative = 0, colinear = 0;
 
@@ -1136,7 +1136,7 @@ bool ConvexPolyhedron::checkCoherency
          itr != _faces.end();
          ++itr)
     {
-        Face&face = *itr;
+        Face &face = *itr;
 
         if (checkForNonConvexPolys && !isFacePolygonConvex(face))
         {
@@ -1150,12 +1150,12 @@ bool ConvexPolyhedron::checkCoherency
 #endif
         }
 
-        Vertices&vertices = face.vertices;
+        Vertices &vertices = face.vertices;
 
         for (unsigned int i = 0; i < vertices.size(); ++i)
         {
-            osg::Vec3d&a = vertices[i];
-            osg::Vec3d&b = vertices[(i + 1) % vertices.size()];
+            osg::Vec3d &a = vertices[i];
+            osg::Vec3d &b = vertices[(i + 1) % vertices.size()];
             ++vertexCounter[a];
             if (a < b)
                 ++edgeCounter[Edge(a, b)];
@@ -1169,7 +1169,7 @@ bool ConvexPolyhedron::checkCoherency
          itr != edgeCounter.end();
          ++itr)
     {
-        const Edge&e = itr->first;
+        const Edge &e = itr->first;
 
         if (e.first.isNaN())
         {
@@ -1249,7 +1249,7 @@ bool ConvexPolyhedron::checkCoherency
     return result && convex;
 }
 
-osg::BoundingBox ConvexPolyhedron::computeBoundingBox(const osg::Matrix&m) const
+osg::BoundingBox ConvexPolyhedron::computeBoundingBox(const osg::Matrix &m) const
 {
     osg::BoundingBox bb;
 
@@ -1273,7 +1273,7 @@ osg::BoundingBox ConvexPolyhedron::computeBoundingBox(const osg::Matrix&m) const
     return bb;
 }
 
-void ConvexPolyhedron::cut(const osg::Polytope&polytope)
+void ConvexPolyhedron::cut(const osg::Polytope &polytope)
 {
     const char *apc[6] = { "left", "right", "bottom", "top", "near", "far" };
     char       ac[16];
@@ -1302,7 +1302,7 @@ void ConvexPolyhedron::cut(const osg::Polytope&polytope)
     removeDuplicateVertices();
 }
 
-void ConvexPolyhedron::cut(const ConvexPolyhedron&polytope)
+void ConvexPolyhedron::cut(const ConvexPolyhedron &polytope)
 {
     for (Faces::const_iterator itr = polytope._faces.begin();
          itr != polytope._faces.end();
@@ -1314,7 +1314,7 @@ void ConvexPolyhedron::cut(const ConvexPolyhedron&polytope)
     removeDuplicateVertices();
 }
 
-void ConvexPolyhedron::cut(const osg::Plane&plane, const std::string&name)
+void ConvexPolyhedron::cut(const osg::Plane &plane, const std::string &name)
 {
     if (_faces.empty())
         return;
@@ -1405,19 +1405,19 @@ void ConvexPolyhedron::cut(const osg::Plane&plane, const std::string&name)
         // cut the face if some points above and below plane
         // assert( fd->below > 0 && fd->above > 0 );
 
-        Face     &face      = *(fd->itr);
-        Vertices &vertices  = face.vertices;
-        Distances&distances = fd->distances;
-        Vertices newFaceVertices;
-        Vertices newVertices;
+        Face      &face      = *(fd->itr);
+        Vertices  &vertices  = face.vertices;
+        Distances &distances = fd->distances;
+        Vertices  newFaceVertices;
+        Vertices  newVertices;
 
 
         for (unsigned int i = 0; i < vertices.size(); ++i)
         {
-            osg::Vec3d&va         = vertices[i];
-            osg::Vec3d&vb         = vertices[(i + 1) % vertices.size()];
-            double    &distance_a = distances[i];
-            double    &distance_b = distances[(i + 1) % vertices.size()];
+            osg::Vec3d &va         = vertices[i];
+            osg::Vec3d &vb         = vertices[(i + 1) % vertices.size()];
+            double     &distance_a = distances[i];
+            double     &distance_b = distances[(i + 1) % vertices.size()];
 
             // Is first edge point above or on the plane?
             if (-point_plane_tolerance <= distance_a)
@@ -1656,7 +1656,7 @@ void ConvexPolyhedron::cut(const osg::Plane&plane, const std::string&name)
 //    removeDuplicateVertices( );
 }
 ////////////////////////////////////////////////////////////////////////////
-void ConvexPolyhedron::extrude(const osg::Vec3d&offset)
+void ConvexPolyhedron::extrude(const osg::Vec3d &offset)
 {
     if (offset.length2() == 0)
         return;
@@ -1672,12 +1672,12 @@ void ConvexPolyhedron::extrude(const osg::Vec3d&offset)
          itr != _faces.end();
          ++itr)
     {
-        Face&face = *itr;
+        Face &face = *itr;
 
         for (unsigned int i = 0; i < face.vertices.size(); ++i)
         {
-            osg::Vec3d&va = face.vertices[i];
-            osg::Vec3d&vb = face.vertices[(i + 1) % face.vertices.size()];
+            osg::Vec3d &va = face.vertices[i];
+            osg::Vec3d &vb = face.vertices[(i + 1) % face.vertices.size()];
             if (va < vb)
                 edgeMap[Edge(va, vb)].push_back(&face);
             else
@@ -1690,7 +1690,7 @@ void ConvexPolyhedron::extrude(const osg::Vec3d&offset)
          itr != _faces.end();
          ++itr)
     {
-        Face&face = *itr;
+        Face &face = *itr;
 
         double dotOffset = face.plane.dotProductNormal(offset);
 
@@ -1716,8 +1716,8 @@ void ConvexPolyhedron::extrude(const osg::Vec3d&offset)
          eitr != edgeMap.end();
          ++eitr)
     {
-        const Edge     &edge      = eitr->first;
-        const EdgeFaces&edgeFaces = eitr->second;
+        const Edge      &edge      = eitr->first;
+        const EdgeFaces &edgeFaces = eitr->second;
 
         if (edgeFaces.size() == 1)
         {
@@ -1786,9 +1786,9 @@ void ConvexPolyhedron::extrude(const osg::Vec3d&offset)
          itr != silhouetteFaces.end();
          ++itr)
     {
-        SilhouetteEdges&edges    = itr->second;
-        Vertices       &vertices = itr->first->vertices;
-        Vertices       newVertices;
+        SilhouetteEdges &edges    = itr->second;
+        Vertices        &vertices = itr->first->vertices;
+        Vertices        newVertices;
 
         for (unsigned int i = 0; i < vertices.size(); i++)
         {
@@ -1830,7 +1830,7 @@ void ConvexPolyhedron::extrude(const osg::Vec3d&offset)
     checkCoherency(true, "ConvexPolyhedron::extrude");
 }
 ////////////////////////////////////////////////////////////////////////////
-void ConvexPolyhedron::translate(const osg::Vec3d&offset)
+void ConvexPolyhedron::translate(const osg::Vec3d &offset)
 {
     for (Faces::iterator itr = _faces.begin(); itr != _faces.end(); ++itr)
     {
@@ -1845,7 +1845,7 @@ void ConvexPolyhedron::translate(const osg::Vec3d&offset)
     }
 }
 ////////////////////////////////////////////////////////////////////////////
-void ConvexPolyhedron::getPolytope(osg::Polytope&polytope) const
+void ConvexPolyhedron::getPolytope(osg::Polytope &polytope) const
 {
     for (Faces::const_iterator itr = _faces.begin();
          itr != _faces.end();
@@ -1855,7 +1855,7 @@ void ConvexPolyhedron::getPolytope(osg::Polytope&polytope) const
     }
 }
 ////////////////////////////////////////////////////////////////////////////
-void ConvexPolyhedron::getPoints(Vertices&vertices) const
+void ConvexPolyhedron::getPoints(Vertices &vertices) const
 {
     typedef std::set<osg::Vec3d> VerticesSet;
     VerticesSet verticesSet;
@@ -1864,7 +1864,7 @@ void ConvexPolyhedron::getPoints(Vertices&vertices) const
          itr != _faces.end();
          ++itr)
     {
-        const Face&face = *itr;
+        const Face &face = *itr;
 
         for (Vertices::const_iterator vitr = face.vertices.begin();
              vitr != face.vertices.end();
@@ -1882,8 +1882,8 @@ void ConvexPolyhedron::getPoints(Vertices&vertices) const
     }
 }
 ////////////////////////////////////////////////////////////////////////////
-osg::Geometry* ConvexPolyhedron::buildGeometry(const osg::Vec4d&colorOutline,
-                                               const osg::Vec4d&colorInside,
+osg::Geometry* ConvexPolyhedron::buildGeometry(const osg::Vec4d &colorOutline,
+                                               const osg::Vec4d &colorInside,
                                                osg::Geometry *geometry) const
 {
     if (!geometry)
@@ -1938,14 +1938,14 @@ bool ConvexPolyhedron::dumpGeometry
     const osg::Plane *plane,
     ConvexPolyhedron *base,
     const char *filename,
-    const osg::Vec4d&colorOutline,
-    const osg::Vec4d&colorInside,
-    const osg::Vec4d&faceColorOutline,
-    const osg::Vec4d&faceColorInside,
-    const osg::Vec4d&planeColorOutline,
-    const osg::Vec4d&planeColorInside,
-    const osg::Vec4d&baseColorOutline,
-    const osg::Vec4d&baseColorInside) const
+    const osg::Vec4d &colorOutline,
+    const osg::Vec4d &colorInside,
+    const osg::Vec4d &faceColorOutline,
+    const osg::Vec4d &faceColorInside,
+    const osg::Vec4d &planeColorOutline,
+    const osg::Vec4d &planeColorInside,
+    const osg::Vec4d &baseColorOutline,
+    const osg::Vec4d &baseColorInside) const
 {
     osg::Group *group = new osg::Group();
     osg::Geode *geode = new osg::Geode();

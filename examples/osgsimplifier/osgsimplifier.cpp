@@ -27,10 +27,10 @@ class KeyboardEventHandler : public osgGA::GUIEventHandler
 {
 public:
 
-KeyboardEventHandler(unsigned int&flag) : _flag(flag)
+KeyboardEventHandler(unsigned int &flag) : _flag(flag)
 {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -60,7 +60,7 @@ virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
 
 private:
 
-unsigned int&_flag;
+unsigned int &_flag;
 };
 
 

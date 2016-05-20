@@ -8,7 +8,7 @@ osgParticle::Emitter::Emitter()
     _usedeftemp(true)
 {}
 
-osgParticle::Emitter::Emitter(const Emitter&copy, const osg::CopyOp&copyop)
+osgParticle::Emitter::Emitter(const Emitter &copy, const osg::CopyOp &copyop)
     :     ParticleProcessor(copy, copyop),
     _usedeftemp(copy._usedeftemp),
     _ptemp(copy._ptemp)

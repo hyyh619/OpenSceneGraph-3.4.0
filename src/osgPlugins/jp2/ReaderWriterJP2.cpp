@@ -222,18 +222,18 @@ virtual const char* className() const
     return "JPEG 2000 Image Reader/Writer";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readObject(std::istream&fin, const Options *options) const
+virtual ReadResult readObject(std::istream &fin, const Options *options) const
 {
     return readImage(fin, options);
 }
 
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(file);
 
@@ -312,7 +312,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return image;
 }
 
-virtual ReadResult readImage(std::istream&fin, const Options *options) const
+virtual ReadResult readImage(std::istream &fin, const Options *options) const
 {
     char              c;
     char              *sdata;
@@ -382,7 +382,7 @@ virtual ReadResult readImage(std::istream&fin, const Options *options) const
     return image;
 }
 
-virtual WriteResult writeObject(const osg::Object&object, const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     const osg::Image *image = dynamic_cast<const osg::Image*>(&object);
 
@@ -392,7 +392,7 @@ virtual WriteResult writeObject(const osg::Object&object, const std::string&file
     return writeImage(*image, file, options);
 }
 
-virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, const Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, std::ostream &fout, const Options *options) const
 {
     const osg::Image *image = dynamic_cast<const osg::Image*>(&object);
 
@@ -402,7 +402,7 @@ virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, con
     return writeImage(*image, fout, options);
 }
 
-virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 
@@ -505,7 +505,7 @@ virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName,
     return WriteResult::FILE_SAVED;
 }
 
-WriteResult writeImage(const osg::Image&img, std::ostream&fout, const Options *options) const
+WriteResult writeImage(const osg::Image &img, std::ostream &fout, const Options *options) const
 {
     if (!img.isDataContiguous())
     {

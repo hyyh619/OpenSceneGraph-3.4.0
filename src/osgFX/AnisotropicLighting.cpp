@@ -29,7 +29,7 @@ ViewMatrixExtractor()
     _first_context(-1)
 {}
 
-ViewMatrixExtractor(const ViewMatrixExtractor&copy, const osg::CopyOp&copyop)
+ViewMatrixExtractor(const ViewMatrixExtractor &copy, const osg::CopyOp &copyop)
     : osg::StateAttribute(copy, copyop),
     _vp(static_cast<osg::VertexProgram*>(copyop(copy._vp.get()))),
     _param(copy._param),
@@ -45,7 +45,7 @@ ViewMatrixExtractor(osg::VertexProgram *vp, int param)
 
 META_StateAttribute(osgFX, ViewMatrixExtractor, VIEWMATRIXEXTRACTOR);
 
-int compare(const osg::StateAttribute&sa) const
+int compare(const osg::StateAttribute &sa) const
 {
     COMPARE_StateAttribute_Types(ViewMatrixExtractor, sa);
     if (_vp.get() != rhs._vp.get())
@@ -60,7 +60,7 @@ int compare(const osg::StateAttribute&sa) const
     return 0;
 }
 
-void apply(osg::State&state) const
+void apply(osg::State &state) const
 {
     if (_first_context == -1)
     {
@@ -143,7 +143,7 @@ DefaultTechnique(int lightnum, osg::Texture2D *texture)
     _texture(texture)
 {}
 
-void getRequiredExtensions(std::vector<std::string>&extensions) const
+void getRequiredExtensions(std::vector<std::string> &extensions) const
 {
     extensions.push_back("GL_ARB_vertex_program");
 }
@@ -261,7 +261,7 @@ AnisotropicLighting::AnisotropicLighting()
     _texture->setWrap(osg::Texture::WRAP_T, osg::Texture::CLAMP);
 }
 
-AnisotropicLighting::AnisotropicLighting(const AnisotropicLighting&copy, const osg::CopyOp&copyop)
+AnisotropicLighting::AnisotropicLighting(const AnisotropicLighting &copy, const osg::CopyOp &copyop)
     :    Effect(copy, copyop),
     _lightnum(copy._lightnum),
     _texture(static_cast<osg::Texture2D*>(copyop(copy._texture.get())))

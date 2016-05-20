@@ -78,7 +78,7 @@ daeWriter::ArrayNIndices::ArrayNIndices(osg::Array *valArray, osg::IndexArray *i
 }
 
 
-std::string toString(const osg::Vec3f&value)
+std::string toString(const osg::Vec3f &value)
 {
     std::stringstream str;
 
@@ -86,7 +86,7 @@ std::string toString(const osg::Vec3f&value)
     return str.str();
 }
 
-std::string toString(const osg::Vec3d&value)
+std::string toString(const osg::Vec3d &value)
 {
     std::stringstream str;
 
@@ -94,7 +94,7 @@ std::string toString(const osg::Vec3d&value)
     return str.str();
 }
 
-std::string toString(const osg::Matrix&value)
+std::string toString(const osg::Matrix &value)
 {
     std::stringstream str;
 
@@ -117,7 +117,7 @@ daeWriter::Options::Options()
     relativiseImagesPathNbUpDirs(0)
 {}
 
-daeWriter::daeWriter(DAE *dae_, const std::string&fileURI, const std::string&directory, const std::string&srcDirectory, const osgDB::ReaderWriter::Options *options, TraversalMode tm, const Options *pluginOptions) : osg::NodeVisitor(tm),
+daeWriter::daeWriter(DAE *dae_, const std::string &fileURI, const std::string &directory, const std::string &srcDirectory, const osgDB::ReaderWriter::Options *options, TraversalMode tm, const Options *pluginOptions) : osg::NodeVisitor(tm),
     dae(dae_),
     _domLibraryAnimations(NULL),
     rootName(*dae_),
@@ -165,7 +165,7 @@ daeWriter::daeWriter(DAE *dae_, const std::string&fileURI, const std::string&dir
 daeWriter::~daeWriter()
 {}
 
-void daeWriter::debugPrint(osg::Node&node)
+void daeWriter::debugPrint(osg::Node &node)
 {
 #ifdef _DEBUG
     std::string indent = "";
@@ -179,7 +179,7 @@ void daeWriter::debugPrint(osg::Node&node)
 }
 
 
-void daeWriter::setRootNode(const osg::Node&node)
+void daeWriter::setRootNode(const osg::Node &node)
 {
     std::string fname = osgDB::findDataFile(node.getName());
 
@@ -190,7 +190,7 @@ void daeWriter::setRootNode(const osg::Node&node)
 }
 
 // ### provide a name to node
-std::string daeWriter::getNodeName(const osg::Node&node, const std::string&defaultName)
+std::string daeWriter::getNodeName(const osg::Node &node, const std::string &defaultName)
 {
     std::string nodeName;
 
@@ -203,7 +203,7 @@ std::string daeWriter::getNodeName(const osg::Node&node, const std::string&defau
 }
 
 // NODE
-void daeWriter::apply(osg::Node&node)
+void daeWriter::apply(osg::Node &node)
 {
     debugPrint(node);
 
@@ -222,7 +222,7 @@ void daeWriter::updateCurrentDaeNode()
     }
 }
 
-std::string daeWriter::uniquify(const std::string&_name)
+std::string daeWriter::uniquify(const std::string &_name)
 {
     const std::string                    name(_pluginOptions.namesUseCodepage ? osgDB::convertStringFromCurrentCodePageToUTF8(_name) : _name);
     std::map<std::string, int>::iterator iter = uniqueNames.find(name);
@@ -262,7 +262,7 @@ void daeWriter::createAssetTag(bool isZUpAxis)
 
 // Overloaded version of createAssetTag that provides the ability to specify
 // user defined values for child elements within asset tags
-void daeWriter::createAssetTag(const osg::Node&node)
+void daeWriter::createAssetTag(const osg::Node &node)
 {
     domAsset              *asset   = daeSafeCast<domAsset>(dom->add(COLLADA_ELEMENT_ASSET));
     domAsset::domCreated  *c       = daeSafeCast<domAsset::domCreated>(asset->add("created"));
@@ -403,7 +403,7 @@ void daeWriter::createAssetTag(const osg::Node&node)
     }
 }
 
-void daeWriter::traverse(osg::Node&node)
+void daeWriter::traverse(osg::Node &node)
 {
     pushStateSet(node.getStateSet());
 

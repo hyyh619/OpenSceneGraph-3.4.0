@@ -23,7 +23,7 @@
 
 #define USE_LOCAL_SHADERS
 
-static double distance(const osg::Vec3&coord, const osg::Matrix&matrix)
+static double distance(const osg::Vec3 &coord, const osg::Matrix &matrix)
 {
     // copied from CullVisitor.cpp
     return -(coord[0] * matrix(0, 2) + coord[1] * matrix(1, 2) + coord[2] * matrix(2, 2) + matrix(3, 2));
@@ -61,7 +61,7 @@ osgParticle::ParticleSystem::ParticleSystem()
     setSupportsDisplayList(false);
 }
 
-osgParticle::ParticleSystem::ParticleSystem(const ParticleSystem&copy, const osg::CopyOp&copyop)
+osgParticle::ParticleSystem::ParticleSystem(const ParticleSystem &copy, const osg::CopyOp &copyop)
     :    osg::Drawable(copy, copyop),
     _def_bbox(copy._def_bbox),
     _alignment(copy._alignment),
@@ -92,7 +92,7 @@ osgParticle::ParticleSystem::ParticleSystem(const ParticleSystem&copy, const osg
 osgParticle::ParticleSystem::~ParticleSystem()
 {}
 
-void osgParticle::ParticleSystem::update(double dt, osg::NodeVisitor&nv)
+void osgParticle::ParticleSystem::update(double dt, osg::NodeVisitor &nv)
 {
     // reset bounds
     _reset_bounds_flag = true;
@@ -118,7 +118,7 @@ void osgParticle::ParticleSystem::update(double dt, osg::NodeVisitor&nv)
 
     for (unsigned int i = 0; i < _particles.size(); ++i)
     {
-        Particle&particle = _particles[i];
+        Particle &particle = _particles[i];
         if (particle.isAlive())
         {
             if (particle.update(dt, _useShaders))
@@ -144,7 +144,7 @@ void osgParticle::ParticleSystem::update(double dt, osg::NodeVisitor&nv)
 
             for (unsigned int i = 0; i < _particles.size(); ++i)
             {
-                Particle&particle = _particles[i];
+                Particle &particle = _particles[i];
                 if (particle.isAlive())
                     particle.setDepth(distance(particle.getPosition(), modelview) * scale);
                 else
@@ -176,9 +176,9 @@ void osgParticle::ParticleSystem::update(double dt, osg::NodeVisitor&nv)
     dirtyBound();
 }
 
-void osgParticle::ParticleSystem::drawImplementation(osg::RenderInfo&renderInfo) const
+void osgParticle::ParticleSystem::drawImplementation(osg::RenderInfo &renderInfo) const
 {
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     ScopedReadLock lock(_readWriteMutex);
 
@@ -237,7 +237,7 @@ void osgParticle::ParticleSystem::drawImplementation(osg::RenderInfo&renderInfo)
 #endif
 }
 
-void osgParticle::ParticleSystem::setDefaultAttributes(const std::string&texturefile, bool emissive_particles, bool lighting, int texture_unit)
+void osgParticle::ParticleSystem::setDefaultAttributes(const std::string &texturefile, bool emissive_particles, bool lighting, int texture_unit)
 {
     osg::StateSet *stateset = new osg::StateSet;
 
@@ -283,7 +283,7 @@ void osgParticle::ParticleSystem::setDefaultAttributes(const std::string&texture
 }
 
 
-void osgParticle::ParticleSystem::setDefaultAttributesUsingShaders(const std::string&texturefile, bool emissive_particles, int texture_unit)
+void osgParticle::ParticleSystem::setDefaultAttributesUsingShaders(const std::string &texturefile, bool emissive_particles, int texture_unit)
 {
     osg::StateSet *stateset = new osg::StateSet;
 
@@ -374,7 +374,7 @@ void osgParticle::ParticleSystem::setDefaultAttributesUsingShaders(const std::st
 }
 
 
-void osgParticle::ParticleSystem::single_pass_render(osg::RenderInfo&renderInfo, const osg::Matrix&modelview) const
+void osgParticle::ParticleSystem::single_pass_render(osg::RenderInfo &renderInfo, const osg::Matrix &modelview) const
 {
     _draw_count = 0;
     if (_particles.size() <= 0)
@@ -470,8 +470,8 @@ void osgParticle::ParticleSystem::single_pass_render(osg::RenderInfo&renderInfo,
                 continue;
             }
 
-            const osg::Vec3&angle           = currentParticle->getAngle();
-            bool           requiresRotation = (angle.x() != 0.0f || angle.y() != 0.0f || angle.z() != 0.0f);
+            const osg::Vec3 &angle           = currentParticle->getAngle();
+            bool            requiresRotation = (angle.x() != 0.0f || angle.y() != 0.0f || angle.z() != 0.0f);
             if (requiresRotation)
             {
                 osg::Matrix R;
@@ -509,7 +509,7 @@ void osgParticle::ParticleSystem::single_pass_render(osg::RenderInfo&renderInfo,
         startParticle->endRender(gl);
 }
 
-void osgParticle::ParticleSystem::render_vertex_array(osg::RenderInfo&renderInfo) const
+void osgParticle::ParticleSystem::render_vertex_array(osg::RenderInfo &renderInfo) const
 {
     if (_particles.size() <= 0)
         return;
@@ -530,7 +530,7 @@ void osgParticle::ParticleSystem::render_vertex_array(osg::RenderInfo&renderInfo
     GLsizei propOffset  = (float*)(&(itr->_alive)) - ptr;      // Alive, size & alpha
 
     // Draw particles as arrays
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
     state.lazyDisablingOfVertexAttributes();
     state.setColorPointer(4, GL_FLOAT, stride * sizeof(float), ptr + colorOffset);
     state.setVertexPointer(3, GL_FLOAT, stride * sizeof(float), ptr + posOffset);

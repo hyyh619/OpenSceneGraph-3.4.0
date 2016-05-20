@@ -60,7 +60,7 @@ void Object::clear()
     _meshes.clear();
 }
 
-bool Object::load(std::istream&fin)
+bool Object::load(std::istream &fin)
 {
     // read header
     char buf[256];
@@ -94,7 +94,7 @@ bool Object::generateNormals(float creaseAngle)
     return result;
 }
 
-Material* Object::findMaterial(const std::string&name)
+Material* Object::findMaterial(const std::string &name)
 {
     std::vector<Material>::iterator itr;
 
@@ -118,7 +118,7 @@ Material* Object::findMaterial(const std::string&name)
 **********************************************************************/
 
 // Parse section
-void Object::parseSection(std::istream&fin)
+void Object::parseSection(std::istream &fin)
 {
     char buf[256];
 

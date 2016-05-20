@@ -112,7 +112,7 @@ void domSourceReader::convert(bool doublePrecision)
 
     if (float_array)
     {
-        daeDoubleArray&va = *float_array;
+        daeDoubleArray &va = *float_array;
 
         switch (m_array_type)
         {

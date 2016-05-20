@@ -200,8 +200,8 @@ osg::Node* createScene()
         {
             osg::Geometry *geometry = new osg::Geometry;
 
-            osg::Vec3Array  &v     = *(new osg::Vec3Array(numColumns * numRows));
-            osg::Vec4ubArray&color = *(new osg::Vec4ubArray(1));
+            osg::Vec3Array   &v     = *(new osg::Vec3Array(numColumns * numRows));
+            osg::Vec4ubArray &color = *(new osg::Vec4ubArray(1));
 
             color[0].set(255, 255, 255, 255);
 
@@ -237,7 +237,7 @@ osg::Node* createScene()
 
             for (r = 0; r < numRows - 1; ++r)
             {
-                osg::DrawElementsUShort&drawElements = *(new osg::DrawElementsUShort(GL_QUAD_STRIP, 2 * numColumns));
+                osg::DrawElementsUShort &drawElements = *(new osg::DrawElementsUShort(GL_QUAD_STRIP, 2 * numColumns));
                 geometry->addPrimitiveSet(&drawElements);
                 int ei = 0;
 

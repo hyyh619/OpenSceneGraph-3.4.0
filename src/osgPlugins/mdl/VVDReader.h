@@ -81,7 +81,7 @@ public:
 VVDReader();
 virtual ~VVDReader();
 
-bool   readFile(const std::string&file);
+bool   readFile(const std::string &file);
 
 int         getNumLODVertices(int lod);
 

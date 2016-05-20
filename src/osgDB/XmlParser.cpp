@@ -18,7 +18,7 @@
 
 using namespace osgDB;
 
-XmlNode* osgDB::readXmlFile(const std::string&filename, const Options *options)
+XmlNode* osgDB::readXmlFile(const std::string &filename, const Options *options)
 {
     std::string foundFile = osgDB::findDataFile(filename, options);
 
@@ -46,7 +46,7 @@ XmlNode* osgDB::readXmlFile(const std::string&filename, const Options *options)
     }
 }
 
-std::string osgDB::trimEnclosingSpaces(const std::string&str)
+std::string osgDB::trimEnclosingSpaces(const std::string &str)
 {
     if (str.empty())
         return str;
@@ -65,7 +65,7 @@ std::string osgDB::trimEnclosingSpaces(const std::string&str)
 }
 
 
-XmlNode* osgDB::readXmlStream(std::istream&fin)
+XmlNode* osgDB::readXmlStream(std::istream &fin)
 {
     XmlNode::Input input;
 
@@ -89,7 +89,7 @@ XmlNode::ControlMap::ControlMap()
     setUpControlMappings();
 }
 
-void XmlNode::ControlMap::addControlToCharacter(const std::string&control, int c)
+void XmlNode::ControlMap::addControlToCharacter(const std::string &control, int c)
 {
     _controlToCharacterMap[control] = c;
     _characterToControlMap[c]       = control;
@@ -115,14 +115,14 @@ XmlNode::Input::Input(const Input&) :
 
 XmlNode::Input::~Input()
 {}
-void XmlNode::Input::open(const std::string&filename)
+void XmlNode::Input::open(const std::string &filename)
 {
     _fin.open(filename.c_str());
 }
 
-void XmlNode::Input::attach(std::istream&fin)
+void XmlNode::Input::attach(std::istream &fin)
 {
-    std::ios&fios = _fin;
+    std::ios &fios = _fin;
 
     fios.rdbuf(fin.rdbuf());
 }
@@ -155,7 +155,7 @@ XmlNode::XmlNode()
     type = UNASSIGNED;
 }
 
-bool XmlNode::read(Input&input)
+bool XmlNode::read(Input &input)
 {
     if (type == UNASSIGNED)
         type = ROOT;
@@ -445,14 +445,14 @@ bool XmlNode::read(Input&input)
     return false;
 }
 
-bool XmlNode::write(std::ostream&fout, const std::string&indent) const
+bool XmlNode::write(std::ostream &fout, const std::string &indent) const
 {
     ControlMap controlMap;
 
     return write(controlMap, fout, indent);
 }
 
-bool XmlNode::write(const ControlMap&controlMap, std::ostream&fout, const std::string&indent) const
+bool XmlNode::write(const ControlMap &controlMap, std::ostream &fout, const std::string &indent) const
 {
     switch (type)
     {
@@ -508,7 +508,7 @@ bool XmlNode::write(const ControlMap&controlMap, std::ostream&fout, const std::s
     return false;
 }
 
-bool XmlNode::writeString(const ControlMap&controlMap, std::ostream&fout, const std::string&str) const
+bool XmlNode::writeString(const ControlMap &controlMap, std::ostream &fout, const std::string &str) const
 {
     for (std::string::const_iterator itr = str.begin();
          itr != str.end();
@@ -525,7 +525,7 @@ bool XmlNode::writeString(const ControlMap&controlMap, std::ostream&fout, const 
     return true;
 }
 
-bool XmlNode::writeChildren(const ControlMap& /*controlMap*/, std::ostream&fout, const std::string&indent) const
+bool XmlNode::writeChildren(const ControlMap& /*controlMap*/, std::ostream &fout, const std::string &indent) const
 {
     for (Children::const_iterator citr = children.begin();
          citr != children.end();
@@ -538,7 +538,7 @@ bool XmlNode::writeChildren(const ControlMap& /*controlMap*/, std::ostream&fout,
     return true;
 }
 
-bool XmlNode::writeProperties(const ControlMap&controlMap, std::ostream&fout) const
+bool XmlNode::writeProperties(const ControlMap &controlMap, std::ostream &fout) const
 {
     for (Properties::const_iterator oitr = properties.begin();
          oitr != properties.end();
@@ -554,7 +554,7 @@ bool XmlNode::writeProperties(const ControlMap&controlMap, std::ostream&fout) co
     return true;
 }
 
-bool XmlNode::readAndReplaceControl(std::string&contents, XmlNode::Input&input)
+bool XmlNode::readAndReplaceControl(std::string &contents, XmlNode::Input &input)
 {
     int         c = 0;
     std::string value;

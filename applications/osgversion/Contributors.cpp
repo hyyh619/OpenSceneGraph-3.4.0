@@ -677,7 +677,7 @@ NameCorrection nameCorrections[] =
 };
 
 
-bool validName(const string&first)
+bool validName(const string &first)
 {
     // Check for valid names
     for (unsigned int i = 0; i < sizeof(validNames) / sizeof(char*); ++i)
@@ -711,7 +711,7 @@ bool validName(const string&first)
 }
 
 
-string typoCorrection(const string&name)
+string typoCorrection(const string &name)
 {
     // Loop over all known typo corrections
     for (unsigned int i = 0; i < sizeof(typoCorrections) / sizeof(TypoCorrection); ++i)
@@ -728,7 +728,7 @@ string typoCorrection(const string&name)
 }
 
 
-void nameCorrection(NamePair&name)
+void nameCorrection(NamePair &name)
 {
     // Loop over all known name corrections
     for (unsigned int i = 0; i < sizeof(nameCorrections) / sizeof(NameCorrection); ++i)
@@ -748,7 +748,7 @@ void nameCorrection(NamePair&name)
 }
 
 
-void lastValidCharacter(const string&name, unsigned int&pos, char c)
+void lastValidCharacter(const string &name, unsigned int &pos, char c)
 {
     for (unsigned int i = 0; i < pos; ++i)
     {
@@ -761,7 +761,7 @@ void lastValidCharacter(const string&name, unsigned int&pos, char c)
 }
 
 
-void lastValidCharacter(const string&name, unsigned int&last)
+void lastValidCharacter(const string &name, unsigned int &last)
 {
     lastValidCharacter(name, last, '.');
     lastValidCharacter(name, last, ',');
@@ -774,7 +774,7 @@ void lastValidCharacter(const string&name, unsigned int&last)
 }
 
 
-NamePair createName(const string&first, const string&second)
+NamePair createName(const string &first, const string &second)
 {
     if (first.empty())
         return EmptyNamePair;
@@ -829,7 +829,7 @@ NamePair createName(const string&first, const string&second)
 }
 
 
-bool submissionsSequence(const Words&words, unsigned int&i)
+bool submissionsSequence(const Words &words, unsigned int &i)
 {
     if (i + 1 >= words.size())
         return false;
@@ -882,7 +882,7 @@ bool submissionsSequence(const Words&words, unsigned int&i)
 }
 
 
-void readContributors(NameMap&names, const string&file)
+void readContributors(NameMap &names, const string &file)
 {
     osgDB::ifstream fin(file.c_str());
 
@@ -975,7 +975,7 @@ void readContributors(NameMap&names, const string&file)
 }
 
 
-void buildContributors(NameMap&names)
+void buildContributors(NameMap &names)
 {
     // top five contributors
     ++names[NamePair("Robert",     "Osfield")];
@@ -997,7 +997,7 @@ void buildContributors(NameMap&names)
 }
 
 
-void printContributors(const std::string&changeLog, bool printNumEntries)
+void printContributors(const std::string &changeLog, bool printNumEntries)
 {
     NameMap names;
 

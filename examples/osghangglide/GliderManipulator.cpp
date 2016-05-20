@@ -43,7 +43,7 @@ void GliderManipulator::setNode(osg::Node *node)
     _node = node;
     if (_node.get())
     {
-        const osg::BoundingSphere&boundingSphere = _node->getBound();
+        const osg::BoundingSphere &boundingSphere = _node->getBound();
         _modelScale = boundingSphere._radius;
     }
 }
@@ -61,11 +61,11 @@ osg::Node* GliderManipulator::getNode()
     return _node.get();
 }
 
-void GliderManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void GliderManipulator::home(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     if (_node.get())
     {
-        const osg::BoundingSphere&boundingSphere = _node->getBound();
+        const osg::BoundingSphere &boundingSphere = _node->getBound();
 
         osg::Vec3 eye = boundingSphere._center + osg::Vec3(-boundingSphere._radius * 0.25f, -boundingSphere._radius * 0.25f, -boundingSphere._radius * 0.03f);
 
@@ -84,7 +84,7 @@ void GliderManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
 }
 
 
-void GliderManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void GliderManipulator::init(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     flushMouseEventStack();
 
@@ -99,7 +99,7 @@ void GliderManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
 }
 
 
-bool GliderManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool GliderManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     switch (ea.getEventType())
     {
@@ -178,7 +178,7 @@ bool GliderManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
     }
 }
 
-void GliderManipulator::getUsage(osg::ApplicationUsage&usage) const
+void GliderManipulator::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("Flight: Space", "Reset the viewing position to home");
     usage.addKeyboardMouseBinding("Flight: q", "Automatically yaw when banked (default)");
@@ -192,14 +192,14 @@ void GliderManipulator::flushMouseEventStack()
 }
 
 
-void GliderManipulator::addMouseEvent(const GUIEventAdapter&ea)
+void GliderManipulator::addMouseEvent(const GUIEventAdapter &ea)
 {
     _ga_t1 = _ga_t0;
     _ga_t0 = &ea;
 }
 
 
-void GliderManipulator::setByMatrix(const osg::Matrixd&matrix)
+void GliderManipulator::setByMatrix(const osg::Matrixd &matrix)
 {
     _eye      = matrix.getTrans();
     _rotation = matrix.getRotate();
@@ -216,7 +216,7 @@ osg::Matrixd GliderManipulator::getInverseMatrix() const
     return osg::Matrixd::translate(-_eye) * osg::Matrixd::rotate(_rotation.inverse());
 }
 
-void GliderManipulator::computePosition(const osg::Vec3&eye, const osg::Vec3&lv, const osg::Vec3&up)
+void GliderManipulator::computePosition(const osg::Vec3 &eye, const osg::Vec3 &lv, const osg::Vec3 &up)
 {
     osg::Vec3 f(lv);
 

@@ -22,16 +22,16 @@ UserDataContainer::UserDataContainer() :
     Object(true)
 {}
 
-UserDataContainer::UserDataContainer(const UserDataContainer&udc, const osg::CopyOp&copyop) :
+UserDataContainer::UserDataContainer(const UserDataContainer &udc, const osg::CopyOp &copyop) :
     Object(udc, copyop)
 {}
 
-Object* UserDataContainer::getUserObject(const std::string&name, unsigned int startPos)
+Object* UserDataContainer::getUserObject(const std::string &name, unsigned int startPos)
 {
     return getUserObject(getUserObjectIndex(name, startPos));
 }
 
-const Object* UserDataContainer::getUserObject(const std::string&name, unsigned int startPos) const
+const Object* UserDataContainer::getUserObject(const std::string &name, unsigned int startPos) const
 {
     return getUserObject(getUserObjectIndex(name, startPos));
 }
@@ -43,7 +43,7 @@ const Object* UserDataContainer::getUserObject(const std::string&name, unsigned 
 DefaultUserDataContainer::DefaultUserDataContainer()
 {}
 
-DefaultUserDataContainer::DefaultUserDataContainer(const DefaultUserDataContainer&udc, const osg::CopyOp&copyop) :
+DefaultUserDataContainer::DefaultUserDataContainer(const DefaultUserDataContainer &udc, const osg::CopyOp &copyop) :
     UserDataContainer(udc, copyop)
 {
     _userData        = udc._userData;
@@ -158,7 +158,7 @@ unsigned int DefaultUserDataContainer::getUserObjectIndex(const osg::Object *obj
     return _objectList.size();
 }
 
-unsigned int DefaultUserDataContainer::getUserObjectIndex(const std::string&name, unsigned int startPos) const
+unsigned int DefaultUserDataContainer::getUserObjectIndex(const std::string &name, unsigned int startPos) const
 {
     for (unsigned int i = startPos; i < _objectList.size(); ++i)
     {
@@ -170,7 +170,7 @@ unsigned int DefaultUserDataContainer::getUserObjectIndex(const std::string&name
     return _objectList.size();
 }
 
-void DefaultUserDataContainer::setDescriptions(const DescriptionList&descriptions)
+void DefaultUserDataContainer::setDescriptions(const DescriptionList &descriptions)
 {
     _descriptionList = descriptions;
 }
@@ -190,7 +190,7 @@ unsigned int DefaultUserDataContainer::getNumDescriptions() const
     return _descriptionList.size();
 }
 
-void DefaultUserDataContainer::addDescription(const std::string&desc)
+void DefaultUserDataContainer::addDescription(const std::string &desc)
 {
     _descriptionList.push_back(desc);
 }

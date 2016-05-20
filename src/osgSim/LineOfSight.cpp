@@ -34,7 +34,7 @@ void DatabaseCacheReadCallback::clearDatabaseCache()
 void DatabaseCacheReadCallback::pruneUnusedDatabaseCache()
 {}
 
-osg::Node* DatabaseCacheReadCallback::readNodeFile(const std::string&filename)
+osg::Node* DatabaseCacheReadCallback::readNodeFile(const std::string &filename)
 {
     // first check to see if file is already loaded.
     {
@@ -98,7 +98,7 @@ void LineOfSight::clear()
     _LOSList.clear();
 }
 
-unsigned int LineOfSight::addLOS(const osg::Vec3d&start, const osg::Vec3d&end)
+unsigned int LineOfSight::addLOS(const osg::Vec3d &start, const osg::Vec3d &end)
 {
     unsigned int index = _LOSList.size();
 
@@ -124,8 +124,8 @@ void LineOfSight::computeIntersections(osg::Node *scene, osg::Node::NodeMask tra
 
     scene->accept(_intersectionVisitor);
 
-    unsigned int                           index         = 0;
-    osgUtil::IntersectorGroup::Intersectors&intersectors = intersectorGroup->getIntersectors();
+    unsigned int                            index         = 0;
+    osgUtil::IntersectorGroup::Intersectors &intersectors = intersectorGroup->getIntersectors();
 
     for (osgUtil::IntersectorGroup::Intersectors::iterator intersector_itr = intersectors.begin();
          intersector_itr != intersectors.end();
@@ -134,16 +134,16 @@ void LineOfSight::computeIntersections(osg::Node *scene, osg::Node::NodeMask tra
         osgUtil::LineSegmentIntersector *lsi = dynamic_cast<osgUtil::LineSegmentIntersector*>(intersector_itr->get());
         if (lsi)
         {
-            Intersections&intersectionsLOS = _LOSList[index]._intersections;
+            Intersections &intersectionsLOS = _LOSList[index]._intersections;
             _LOSList[index]._intersections.clear();
 
-            osgUtil::LineSegmentIntersector::Intersections&intersections = lsi->getIntersections();
+            osgUtil::LineSegmentIntersector::Intersections &intersections = lsi->getIntersections();
 
             for (osgUtil::LineSegmentIntersector::Intersections::iterator itr = intersections.begin();
                  itr != intersections.end();
                  ++itr)
             {
-                const osgUtil::LineSegmentIntersector::Intersection&intersection = *itr;
+                const osgUtil::LineSegmentIntersector::Intersection &intersection = *itr;
                 if (intersection.matrix.valid())
                     intersectionsLOS.push_back(intersection.localIntersectionPoint * (*intersection.matrix));
                 else
@@ -153,7 +153,7 @@ void LineOfSight::computeIntersections(osg::Node *scene, osg::Node::NodeMask tra
     }
 }
 
-LineOfSight::Intersections LineOfSight::computeIntersections(osg::Node *scene, const osg::Vec3d&start, const osg::Vec3d&end, osg::Node::NodeMask traversalMask)
+LineOfSight::Intersections LineOfSight::computeIntersections(osg::Node *scene, const osg::Vec3d &start, const osg::Vec3d &end, osg::Node::NodeMask traversalMask)
 {
     LineOfSight  los;
     unsigned int index = los.addLOS(start, end);

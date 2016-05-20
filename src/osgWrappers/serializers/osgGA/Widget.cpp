@@ -74,7 +74,7 @@ struct LeaveImplementation : public osgDB::MethodObject
 
 struct Traverse : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters&) const
     {
         osgGA::Widget    *widget = reinterpret_cast<osgGA::Widget*>(objectPtr);
         osg::NodeVisitor *nv     = (inputParameters.size() >= 1) ? dynamic_cast<osg::NodeVisitor*>(inputParameters[0].get()) : 0;
@@ -89,7 +89,7 @@ struct Traverse : public osgDB::MethodObject
 
 struct TraverseImplementation : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters&) const
     {
         osgGA::Widget    *widget = reinterpret_cast<osgGA::Widget*>(objectPtr);
         osg::NodeVisitor *nv     = (inputParameters.size() >= 1) ? dynamic_cast<osg::NodeVisitor*>(inputParameters[0].get()) : 0;
@@ -104,7 +104,7 @@ struct TraverseImplementation : public osgDB::MethodObject
 
 struct Handle : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters&) const
     {
         osgGA::Widget       *widget = reinterpret_cast<osgGA::Widget*>(objectPtr);
         osgGA::EventVisitor *ev     = (inputParameters.size() >= 1) ? dynamic_cast<osgGA::EventVisitor*>(inputParameters[0].get()) : 0;
@@ -120,7 +120,7 @@ struct Handle : public osgDB::MethodObject
 
 struct HandleImplementation : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters&) const
     {
         osgGA::Widget       *widget = reinterpret_cast<osgGA::Widget*>(objectPtr);
         osgGA::EventVisitor *ev     = (inputParameters.size() >= 1) ? dynamic_cast<osgGA::EventVisitor*>(inputParameters[0].get()) : 0;

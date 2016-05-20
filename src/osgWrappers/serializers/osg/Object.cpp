@@ -6,12 +6,12 @@
 #include <osg/Notify>
 #include <string.h>
 
-static bool checkUserData(const osg::Object&obj)
+static bool checkUserData(const osg::Object &obj)
 {
     return (obj.getUserData() && dynamic_cast<const osg::Object*>(obj.getUserData()));
 }
 
-static bool readUserData(osgDB::InputStream&is, osg::Object&obj)
+static bool readUserData(osgDB::InputStream &is, osg::Object &obj)
 {
     is >> is.BEGIN_BRACKET;
     osg::Object *object = is.readObject();
@@ -22,7 +22,7 @@ static bool readUserData(osgDB::InputStream&is, osg::Object&obj)
     return true;
 }
 
-static bool writeUserData(osgDB::OutputStream&os, const osg::Object&obj)
+static bool writeUserData(osgDB::OutputStream &os, const osg::Object &obj)
 {
     os << os.BEGIN_BRACKET << std::endl;
     os.writeObject(dynamic_cast<const osg::Object*>(obj.getUserData()));

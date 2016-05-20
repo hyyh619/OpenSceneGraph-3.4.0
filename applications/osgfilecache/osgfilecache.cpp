@@ -46,12 +46,12 @@ struct Extents
         _min(minX, minY),
         _max(maxX, maxY) {}
 
-    Extents(const Extents&extents) :
+    Extents(const Extents &extents) :
         _maxLevel(extents._maxLevel),
         _min(extents._min),
         _max(extents._max) {}
 
-    Extents&operator =(const Extents&rhs)
+    Extents&operator =(const Extents &rhs)
     {
         if (&rhs == this)
             return *this;
@@ -63,7 +63,7 @@ struct Extents
         return *this;
     }
 
-    bool intersects(unsigned level, osg::Vec2d&in_min, osg::Vec2d&in_max)
+    bool intersects(unsigned level, osg::Vec2d &in_min, osg::Vec2d &in_max)
     {
         osg::notify(osg::INFO) << "intersects(" << level << ", min=" << in_min << " max=" << in_max << ")" << std::endl;
         osg::notify(osg::INFO) << "  _maxLevel=" << _maxLevel << ", _min=" << _min << " _max=" << _max << std::endl;
@@ -155,7 +155,7 @@ void addExtents(unsigned int maxLevel)
     _extentsList.push_back(Extents(maxLevel, DBL_MAX, DBL_MAX, -DBL_MAX, -DBL_MAX));
 }
 
-void apply(osg::CoordinateSystemNode&cs)
+void apply(osg::CoordinateSystemNode &cs)
 {
     _csnStack.push_back(&cs);
 
@@ -165,7 +165,7 @@ void apply(osg::CoordinateSystemNode&cs)
     _csnStack.pop_back();
 }
 
-void apply(osg::Group&group)
+void apply(osg::Group &group)
 {
     if (s_ExitApplication)
         return;
@@ -206,7 +206,7 @@ void apply(osg::Group&group)
     traverse(group);
 }
 
-void apply(osg::Transform&transform)
+void apply(osg::Transform &transform)
 {
     osg::Matrix matrix;
 
@@ -222,7 +222,7 @@ void apply(osg::Transform&transform)
     popMatrix();
 }
 
-void apply(osg::PagedLOD&plod)
+void apply(osg::PagedLOD &plod)
 {
     if (s_ExitApplication)
         return;
@@ -269,7 +269,7 @@ void apply(osg::PagedLOD&plod)
     --_currentLevel;
 }
 
-void apply(osg::Geode&geode)
+void apply(osg::Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
@@ -283,7 +283,7 @@ void apply(osg::Geode&geode)
     }
 }
 
-osg::Node* readNodeFileAndWriteToCache(const std::string&filename)
+osg::Node* readNodeFileAndWriteToCache(const std::string &filename)
 {
     osg::Node *node = 0;
 
@@ -319,7 +319,7 @@ osg::Node* readNodeFileAndWriteToCache(const std::string&filename)
 
 protected:
 
-inline void pushMatrix(osg::Matrix&matrix)
+inline void pushMatrix(osg::Matrix &matrix)
 {
     _matrixStack.push_back(matrix);
 }
@@ -329,7 +329,7 @@ inline void popMatrix()
     _matrixStack.pop_back();
 }
 
-void convertXYZToLatLongHeight(osg::EllipsoidModel *em, osg::Vec3d&v)
+void convertXYZToLatLongHeight(osg::EllipsoidModel *em, osg::Vec3d &v)
 {
     em->convertXYZToLatLongHeight(v.x(), v.y(), v.z(),
                                   v.y(), v.x(), v.z());
@@ -344,7 +344,7 @@ void initBound()
     _max.set(-DBL_MAX, -DBL_MAX);
 }
 
-void updateBound(osg::Vec3d&v)
+void updateBound(osg::Vec3d &v)
 {
     if (v.x() < _min.x())
         _min.x() = v.x();
@@ -359,7 +359,7 @@ void updateBound(osg::Vec3d&v)
         _max.y() = v.y();
 }
 
-void updateBound(osg::Vec3Array&vertices)
+void updateBound(osg::Vec3Array &vertices)
 {
     // set up matrix
     osg::Matrix matrix;

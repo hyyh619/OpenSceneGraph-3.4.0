@@ -69,7 +69,7 @@ typedef struct _PVRTexHeader
     }
 
     template<class T>
-    inline void swapBytes(T&s)
+    inline void swapBytes(T &s)
     {
         if (sizeof(T) == 1)
             return;
@@ -116,7 +116,7 @@ virtual const char* className() const
 }
 
 
-ReadResult readPVRStream(std::istream&fin) const
+ReadResult readPVRStream(std::istream &fin) const
 {
     PVRTexHeader header;
 
@@ -236,22 +236,22 @@ ReadResult readPVRStream(std::istream&fin) const
     return ReadResult::FILE_NOT_HANDLED;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options* = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options* = NULL) const
 {
     return readPVRStream(fin);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

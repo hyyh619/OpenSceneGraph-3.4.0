@@ -19,7 +19,7 @@ const char* ReaderWriterMDL::className() const
 }
 
 
-bool ReaderWriterMDL::acceptsExtension(const std::string&extension) const
+bool ReaderWriterMDL::acceptsExtension(const std::string &extension) const
 {
     // If the extension is empty or "mdl", we accept it
     return osgDB::equalCaseInsensitive(extension, "mdl") || extension.empty();
@@ -27,7 +27,7 @@ bool ReaderWriterMDL::acceptsExtension(const std::string&extension) const
 
 
 ReaderWriter::ReadResult ReaderWriterMDL::readNode(
-    const std::string&file,
+    const std::string &file,
     const ReaderWriter::Options *options) const
 {
     MDLReader *mdlReader;

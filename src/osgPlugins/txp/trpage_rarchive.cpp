@@ -109,7 +109,7 @@ trpgrAppFileCache* trpgr_Archive::GetNewRAppFileCache(const char *fullBase, cons
     return new trpgrAppFileCache(fullBase, ext);
 }
 
-trpgrImageHelper* trpgr_Archive::GetNewRImageHelper(trpgEndian ness, char *dir, const trpgMatTable&matTable, const trpgTexTable&texTable)
+trpgrImageHelper* trpgr_Archive::GetNewRImageHelper(trpgEndian ness, char *dir, const trpgMatTable &matTable, const trpgTexTable &texTable)
 {
     bool separateGeo = false;
     int  majorVer, minorVer;
@@ -343,7 +343,7 @@ bool trpgr_Archive::ReadHeader(bool readAllBlocks)
 // Read a tile into a read buffer
 // For version 2.1 only  tile with lod=0 are stored in the tile table, so an
 // error will be returned if you try to use the table with a differrent lod.
-bool trpgr_Archive::ReadTile(uint32 x, uint32 y, uint32 lod, trpgMemReadBuffer&buf)
+bool trpgr_Archive::ReadTile(uint32 x, uint32 y, uint32 lod, trpgMemReadBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -394,7 +394,7 @@ bool trpgr_Archive::ReadTile(uint32 x, uint32 y, uint32 lod, trpgMemReadBuffer&b
     return status;
 }
 
-bool trpgr_Archive::ReadExternalTile(uint32 x, uint32 y, uint32 lod, trpgMemReadBuffer&buf)
+bool trpgr_Archive::ReadExternalTile(uint32 x, uint32 y, uint32 lod, trpgMemReadBuffer &buf)
 {
     // Figure out the file name
     char filename[1024];
@@ -452,7 +452,7 @@ bool trpgr_Archive::ReadExternalTile(uint32 x, uint32 y, uint32 lod, trpgMemRead
 
     return true;
 }
-bool trpgr_Archive::ReadTile(const trpgwAppAddress&addr, trpgMemReadBuffer&buf)
+bool trpgr_Archive::ReadTile(const trpgwAppAddress &addr, trpgMemReadBuffer &buf)
 {
     // Fetch the appendable file from the cache
     trpgrAppFile *tf = tileCache->GetFile(ness, addr.file, addr.col, addr.row);
@@ -514,7 +514,7 @@ trpgEndian trpgr_Archive::GetEndian() const
 }
 
 // Utility MBR routine
-bool trpgr_Archive::trpgGetTileMBR(uint32 x, uint32 y, uint32 lod, trpg3dPoint&ll, trpg3dPoint&ur) const
+bool trpgr_Archive::trpgGetTileMBR(uint32 x, uint32 y, uint32 lod, trpg3dPoint &ll, trpg3dPoint &ur) const
 {
     if (!header.isValid())
         return false;
@@ -551,13 +551,13 @@ bool trpgr_Archive::trpgGetTileMBR(uint32 x, uint32 y, uint32 lod, trpg3dPoint&l
  */
 
 trpgrImageHelper::trpgrImageHelper(trpgEndian inNess, char *inDir,
-                                   const trpgMatTable&inMatTable, const trpgTexTable&inTexTable, bool separateGeoTyp)
+                                   const trpgMatTable &inMatTable, const trpgTexTable &inTexTable, bool separateGeoTyp)
 {
     Init(inNess, inDir, inMatTable, inTexTable, separateGeoTyp);
 }
 
 void trpgrImageHelper::Init(trpgEndian inNess, char *inDir,
-                            const trpgMatTable&inMatTable, const trpgTexTable&inTexTable, bool separateGeoTyp)
+                            const trpgMatTable &inMatTable, const trpgTexTable &inTexTable, bool separateGeoTyp)
 {
     ness = inNess;
     strcpy(dir, inDir);
@@ -650,13 +650,13 @@ bool trpgrImageHelper::GetMipLevelLocalGL(int miplevel, const trpgTexture *tex, 
 
 
 bool trpgrImageHelper::GetImageInfoForLocalMat(const trpgLocalMaterial *locMat,
-                                               const trpgMaterial **retMat, const trpgTexture **retTex, int&totSize)
+                                               const trpgMaterial **retMat, const trpgTexture **retTex, int &totSize)
 {
     return GetNthImageInfoForLocalMat(locMat, 0, retMat, retTex, totSize);
 }
 
 bool trpgrImageHelper::GetNthImageInfoForLocalMat(const trpgLocalMaterial *locMat, int index,
-                                                  const trpgMaterial **retMat, const trpgTexture **retTex, int&totSize)
+                                                  const trpgMaterial **retMat, const trpgTexture **retTex, int &totSize)
 {
     // Get the base material for the Local Material
     int32 matSubTable, matID;

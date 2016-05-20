@@ -88,7 +88,7 @@ void SharedStateManager::share(osg::Node *node, OpenThreads::Mutex *mt)
 // ----------------------------------------------------------------
 // SharedStateManager::apply
 // ----------------------------------------------------------------
-void SharedStateManager::apply(osg::Node&node)
+void SharedStateManager::apply(osg::Node &node)
 {
     osg::StateSet *ss = node.getStateSet();
 
@@ -97,7 +97,7 @@ void SharedStateManager::apply(osg::Node&node)
 
     traverse(node);
 }
-void SharedStateManager::apply(osg::Geode&geode)
+void SharedStateManager::apply(osg::Geode &geode)
 {
     osg::StateSet *ss = geode.getStateSet();
 
@@ -184,7 +184,7 @@ void SharedStateManager::setStateSet(osg::StateSet *ss, osg::Object *object)
 // ----------------------------------------------------------------
 void SharedStateManager::shareTextures(osg::StateSet *ss)
 {
-    const osg::StateSet::TextureAttributeList&texAttributes = ss->getTextureAttributeList();
+    const osg::StateSet::TextureAttributeList &texAttributes = ss->getTextureAttributeList();
 
     for (unsigned int unit = 0; unit < texAttributes.size(); ++unit)
     {

@@ -431,7 +431,7 @@ const char* ReceivedMessageArgument::AsSymbol() const
 }
 
 
-void ReceivedMessageArgument::AsBlob(const void*&data, unsigned long&size) const
+void ReceivedMessageArgument::AsBlob(const void* &data, unsigned long &size) const
 {
     if (!typeTag_)
         throw MissingArgumentException();
@@ -442,7 +442,7 @@ void ReceivedMessageArgument::AsBlob(const void*&data, unsigned long&size) const
 }
 
 
-void ReceivedMessageArgument::AsBlobUnchecked(const void*&data, unsigned long&size) const
+void ReceivedMessageArgument::AsBlobUnchecked(const void* &data, unsigned long &size) const
 {
     size = ToUInt32(argument_);
     data = (void*)(argument_ + 4);
@@ -518,14 +518,14 @@ void ReceivedMessageArgumentIterator::Advance()
 
 // ------------------------------------------------------------------------------
 
-ReceivedMessage::ReceivedMessage(const ReceivedPacket&packet)
+ReceivedMessage::ReceivedMessage(const ReceivedPacket &packet)
     : addressPattern_(packet.Contents())
 {
     Init(packet.Contents(), packet.Size());
 }
 
 
-ReceivedMessage::ReceivedMessage(const ReceivedBundleElement&bundleElement)
+ReceivedMessage::ReceivedMessage(const ReceivedBundleElement &bundleElement)
     : addressPattern_(bundleElement.Contents())
 {
     Init(bundleElement.Contents(), bundleElement.Size());
@@ -677,14 +677,14 @@ void ReceivedMessage::Init(const char *message, unsigned long size)
 
 // ------------------------------------------------------------------------------
 
-ReceivedBundle::ReceivedBundle(const ReceivedPacket&packet)
+ReceivedBundle::ReceivedBundle(const ReceivedPacket &packet)
     : elementCount_(0)
 {
     Init(packet.Contents(), packet.Size());
 }
 
 
-ReceivedBundle::ReceivedBundle(const ReceivedBundleElement&bundleElement)
+ReceivedBundle::ReceivedBundle(const ReceivedBundleElement &bundleElement)
     : elementCount_(0)
 {
     Init(bundleElement.Contents(), bundleElement.Size());

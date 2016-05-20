@@ -55,7 +55,7 @@ CameraPacket() : _masterKilled(false)
     _byte_order = SWAP_BYTES_COMPARE;
 }
 
-void setPacket(const osg::Matrix&matrix, const osg::FrameStamp *frameStamp)
+void setPacket(const osg::Matrix &matrix, const osg::FrameStamp *frameStamp)
 {
     _matrix = matrix;
     if (frameStamp)
@@ -64,14 +64,14 @@ void setPacket(const osg::Matrix&matrix, const osg::FrameStamp *frameStamp)
     }
 }
 
-void getModelView(osg::Matrix&matrix, float angle_offset = 0.0f)
+void getModelView(osg::Matrix &matrix, float angle_offset = 0.0f)
 {
     matrix = _matrix * osg::Matrix::rotate(osg::DegreesToRadians(angle_offset), 0.0f, 1.0f, 0.0f);
 }
 
-void readEventQueue(osgViewer::Viewer&viewer);
+void readEventQueue(osgViewer::Viewer &viewer);
 
-void writeEventQueue(osgViewer::Viewer&viewer);
+void writeEventQueue(osgViewer::Viewer &viewer);
 
 void setMasterKilled(const bool flag)
 {
@@ -311,7 +311,7 @@ inline double readDouble()
     double c = 0.0; read8((char*)&c); return c;
 }
 
-void write(const osg::FrameStamp&fs)
+void write(const osg::FrameStamp &fs)
 {
     osg::notify(osg::NOTICE) << "writeFramestamp = " << fs.getFrameNumber() << " " << fs.getReferenceTime() << std::endl;
 
@@ -320,7 +320,7 @@ void write(const osg::FrameStamp&fs)
     writeDouble(fs.getSimulationTime());
 }
 
-void read(osg::FrameStamp&fs)
+void read(osg::FrameStamp &fs)
 {
     fs.setFrameNumber(readUInt());
     fs.setReferenceTime(readDouble());
@@ -329,7 +329,7 @@ void read(osg::FrameStamp&fs)
     osg::notify(osg::NOTICE) << "readFramestamp = " << fs.getFrameNumber() << " " << fs.getReferenceTime() << std::endl;
 }
 
-void write(const osg::Matrix&matrix)
+void write(const osg::Matrix &matrix)
 {
     writeDouble(matrix(0, 0));
     writeDouble(matrix(0, 1));
@@ -354,7 +354,7 @@ void write(const osg::Matrix&matrix)
     osg::notify(osg::NOTICE) << "writeMatrix = " << matrix << std::endl;
 }
 
-void read(osg::Matrix&matrix)
+void read(osg::Matrix &matrix)
 {
     matrix(0, 0) = readDouble();
     matrix(0, 1) = readDouble();
@@ -379,7 +379,7 @@ void read(osg::Matrix&matrix)
     osg::notify(osg::NOTICE) << "readMatrix = " << matrix << std::endl;
 }
 
-void write(const osgGA::GUIEventAdapter&event)
+void write(const osgGA::GUIEventAdapter &event)
 {
     writeUInt(event.getEventType());
     writeUInt(event.getKey());
@@ -399,7 +399,7 @@ void write(const osgGA::GUIEventAdapter&event)
     writeDouble(event.getTime());
 }
 
-void read(osgGA::GUIEventAdapter&event)
+void read(osgGA::GUIEventAdapter &event)
 {
     event.setEventType((osgGA::GUIEventAdapter::EventType)readUInt());
     event.setKey(readUInt());
@@ -421,7 +421,7 @@ void read(osgGA::GUIEventAdapter&event)
     event.setTime(readDouble());
 }
 
-void write(CameraPacket&cameraPacket)
+void write(CameraPacket &cameraPacket)
 {
     writeUInt(cameraPacket._byte_order);
 
@@ -442,7 +442,7 @@ void write(CameraPacket&cameraPacket)
     }
 }
 
-void read(CameraPacket&cameraPacket)
+void read(CameraPacket &cameraPacket)
 {
     cameraPacket._byte_order = readUInt();
     if (cameraPacket._byte_order != SWAP_BYTES_COMPARE)
@@ -467,7 +467,7 @@ void read(CameraPacket&cameraPacket)
 }
 };
 
-void CameraPacket::readEventQueue(osgViewer::Viewer&viewer)
+void CameraPacket::readEventQueue(osgViewer::Viewer &viewer)
 {
     _events.clear();
 
@@ -493,7 +493,7 @@ void CameraPacket::readEventQueue(osgViewer::Viewer&viewer)
     osg::notify(osg::INFO) << "written events = " << _events.size() << std::endl;
 }
 
-void CameraPacket::writeEventQueue(osgViewer::Viewer&viewer)
+void CameraPacket::writeEventQueue(osgViewer::Viewer &viewer)
 {
     osg::notify(osg::INFO) << "received events = " << _events.size() << std::endl;
 

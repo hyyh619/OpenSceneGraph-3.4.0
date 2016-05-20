@@ -31,7 +31,7 @@ Texture1D::Texture1D(osg::Image *image) :
     setImage(image);
 }
 
-Texture1D::Texture1D(const Texture1D&text, const CopyOp&copyop) :
+Texture1D::Texture1D(const Texture1D &text, const CopyOp &copyop) :
     Texture(text, copyop),
     _textureWidth(text._textureWidth),
     _numMipmapLevels(text._numMipmapLevels),
@@ -45,7 +45,7 @@ Texture1D::~Texture1D()
     setImage(NULL);
 }
 
-int Texture1D::compare(const StateAttribute&sa) const
+int Texture1D::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -130,7 +130,7 @@ void Texture1D::setImage(Image *image)
 }
 
 
-void Texture1D::apply(State&state) const
+void Texture1D::apply(State &state) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
     // get the contextID (user defined ID of 0 upwards) for the
@@ -270,7 +270,7 @@ void Texture1D::computeInternalFormat() const
         computeInternalFormatType();
 }
 
-void Texture1D::applyTexImage1D(GLenum target, Image *image, State&state, GLsizei&inwidth, GLsizei&numMipmapLevels) const
+void Texture1D::applyTexImage1D(GLenum target, Image *image, State &state, GLsizei &inwidth, GLsizei &numMipmapLevels) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
     // if we don't have a valid image we can't create a texture!
@@ -374,7 +374,7 @@ void Texture1D::applyTexImage1D(GLenum target, Image *image, State&state, GLsize
 #endif
 }
 
-void Texture1D::copyTexImage1D(State&state, int x, int y, int width)
+void Texture1D::copyTexImage1D(State &state, int x, int y, int width)
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
     const unsigned int contextID = state.getContextID();
@@ -432,7 +432,7 @@ void Texture1D::copyTexImage1D(State&state, int x, int y, int width)
 #endif
 }
 
-void Texture1D::copyTexSubImage1D(State&state, int xoffset, int x, int y, int width)
+void Texture1D::copyTexSubImage1D(State &state, int xoffset, int x, int y, int width)
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
     const unsigned int contextID = state.getContextID();
@@ -463,7 +463,7 @@ void Texture1D::copyTexSubImage1D(State&state, int xoffset, int x, int y, int wi
 #endif
 }
 
-void Texture1D::allocateMipmap(State&state) const
+void Texture1D::allocateMipmap(State &state) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
     const unsigned int contextID = state.getContextID();

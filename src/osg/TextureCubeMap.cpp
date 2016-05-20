@@ -41,7 +41,7 @@ TextureCubeMap::TextureCubeMap() :
     setUseHardwareMipMapGeneration(false);
 }
 
-TextureCubeMap::TextureCubeMap(const TextureCubeMap&text, const CopyOp&copyop) :
+TextureCubeMap::TextureCubeMap(const TextureCubeMap &text, const CopyOp &copyop) :
     Texture(text, copyop),
     _textureWidth(text._textureWidth),
     _textureHeight(text._textureHeight),
@@ -66,7 +66,7 @@ TextureCubeMap::~TextureCubeMap()
     setImage(5, NULL);
 }
 
-int TextureCubeMap::compare(const StateAttribute&sa) const
+int TextureCubeMap::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -208,7 +208,7 @@ void TextureCubeMap::computeInternalFormat() const
         computeInternalFormatType();
 }
 
-void TextureCubeMap::apply(State&state) const
+void TextureCubeMap::apply(State &state) const
 {
     // get the contextID (user defined ID of 0 upwards) for the
     // current OpenGL context.
@@ -373,7 +373,7 @@ void TextureCubeMap::apply(State&state) const
     }
 }
 
-void TextureCubeMap::copyTexSubImageCubeMap(State&state, int face, int xoffset, int yoffset, int x, int y, int width, int height)
+void TextureCubeMap::copyTexSubImageCubeMap(State &state, int face, int xoffset, int yoffset, int x, int y, int width, int height)
 {
     const unsigned int contextID   = state.getContextID();
     const GLExtensions *extensions = state.get<GLExtensions>();
@@ -442,7 +442,7 @@ void TextureCubeMap::copyTexSubImageCubeMap(State&state, int face, int xoffset, 
     }
 }
 
-void TextureCubeMap::allocateMipmap(State&state) const
+void TextureCubeMap::allocateMipmap(State &state) const
 {
     const unsigned int contextID = state.getContextID();
 

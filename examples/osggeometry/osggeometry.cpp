@@ -60,7 +60,7 @@
 
 struct NormalPrint
 {
-    void operator()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, bool) const
+    void operator()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, bool) const
     {
         osg::Vec3 normal = (v2 - v1) ^ (v3 - v2);
 
@@ -70,7 +70,7 @@ struct NormalPrint
 };
 
 // decompose Drawable primitives into triangles, print out these triangles and computed normals.
-void printTriangles(const std::string&name, osg::Drawable&drawable)
+void printTriangles(const std::string &name, osg::Drawable &drawable)
 {
     std::cout << name << std::endl;
 

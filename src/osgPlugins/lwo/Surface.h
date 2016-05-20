@@ -41,11 +41,11 @@ enum Sidedness
 typedef std::multimap<std::string, Block> Block_map;
 
 Surface();
-Surface(const lwo2::FORM::SURF *surf, const Clip_map&clips);
+Surface(const lwo2::FORM::SURF *surf, const Clip_map &clips);
 
-void compile(const lwo2::FORM::SURF *surf, const Clip_map&clips);
+void compile(const lwo2::FORM::SURF *surf, const Clip_map &clips);
 
-osg::Group* apply(osg::Geometry *geo, const VertexMap_map *texture_maps, const VertexMap_map *rgb_maps, const VertexMap_map *rgba_maps, int max_tex_units, bool use_osgfx, bool force_arb_compression, const VertexMap_binding_map&texmap_bindings, const osgDB::ReaderWriter::Options *db_options) const;
+osg::Group* apply(osg::Geometry *geo, const VertexMap_map *texture_maps, const VertexMap_map *rgb_maps, const VertexMap_map *rgba_maps, int max_tex_units, bool use_osgfx, bool force_arb_compression, const VertexMap_binding_map &texmap_bindings, const osgDB::ReaderWriter::Options *db_options) const;
 
 void generate_stateset(unsigned int max_tex_units, bool force_arb_compression, const osgDB::ReaderWriter::Options *options) const;
 
@@ -53,7 +53,7 @@ inline const std::string&get_name() const
 {
     return name_;
 }
-inline void set_name(const std::string&n)
+inline void set_name(const std::string &n)
 {
     name_ = n;
 }

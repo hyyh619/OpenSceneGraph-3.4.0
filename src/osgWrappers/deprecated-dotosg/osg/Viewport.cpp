@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Viewport_readLocalData(Object&obj, Input&fr);
-bool Viewport_writeLocalData(const Object&obj, Output&fw);
+bool Viewport_readLocalData(Object &obj, Input &fr);
+bool Viewport_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Viewport)
@@ -22,7 +22,7 @@ REGISTER_DOTOSGWRAPPER(Viewport)
 );
 
 
-bool Viewport_readLocalData(Object&obj, Input&fr)
+bool Viewport_readLocalData(Object &obj, Input &fr)
 {
     bool   iteratorAdvanced = false;
     double x                = 0, y = 0, width = 0, height = 0;
@@ -51,15 +51,15 @@ bool Viewport_readLocalData(Object&obj, Input&fr)
         iteratorAdvanced = true;
     }
 
-    Viewport&viewport = static_cast<Viewport&>(obj);
+    Viewport &viewport = static_cast<Viewport&>(obj);
     viewport.setViewport(x, y, width, height);
     return iteratorAdvanced;
 }
 
 
-bool Viewport_writeLocalData(const Object&obj, Output&fw)
+bool Viewport_writeLocalData(const Object &obj, Output &fw)
 {
-    const Viewport&viewport = static_cast<const Viewport&>(obj);
+    const Viewport &viewport = static_cast<const Viewport&>(obj);
 
     fw.indent() << "x " <<      viewport.x() << std::endl;
     fw.indent() << "y " <<      viewport.y() << std::endl;

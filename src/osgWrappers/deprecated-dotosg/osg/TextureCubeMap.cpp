@@ -10,8 +10,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TextureCubeMap_readLocalData(Object&obj, Input&fr);
-bool TextureCubeMap_writeLocalData(const Object&obj, Output&fw);
+bool TextureCubeMap_readLocalData(Object &obj, Input &fr);
+bool TextureCubeMap_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(TextureCubeMap)
@@ -46,11 +46,11 @@ REGISTER_DOTOSGWRAPPER(TextureCubeMap)
         }                                                                  \
     }                                                                      \
 
-bool TextureCubeMap_readLocalData(Object&obj, Input&fr)
+bool TextureCubeMap_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    TextureCubeMap&texture = static_cast<TextureCubeMap&>(obj);
+    TextureCubeMap &texture = static_cast<TextureCubeMap&>(obj);
 
     bool matched = true;
 
@@ -103,9 +103,9 @@ bool TextureCubeMap_readLocalData(Object&obj, Input&fr)
         }                                                                                                                    \
     }
 
-    bool TextureCubeMap_writeLocalData(const Object&obj, Output&fw)
+    bool TextureCubeMap_writeLocalData(const Object &obj, Output &fw)
     {
-        const TextureCubeMap&texture = static_cast<const TextureCubeMap&>(obj);
+        const TextureCubeMap &texture = static_cast<const TextureCubeMap&>(obj);
 
         WRITE_IMAGE(POSITIVE_X)
         WRITE_IMAGE(NEGATIVE_X)

@@ -46,7 +46,7 @@ osg::Uniform* RigTransformHardware::getMatrixPaletteUniform()
 }
 
 
-void RigTransformHardware::computeMatrixPaletteUniform(const osg::Matrix&transformFromSkeletonToGeometry, const osg::Matrix&invTransformFromSkeletonToGeometry)
+void RigTransformHardware::computeMatrixPaletteUniform(const osg::Matrix &transformFromSkeletonToGeometry, const osg::Matrix &invTransformFromSkeletonToGeometry)
 {
     for (int i = 0; i < (int)_bonePalette.size(); i++)
     {
@@ -70,7 +70,7 @@ int RigTransformHardware::getNumVertexes() const
     return _nbVertexes;
 }
 
-bool RigTransformHardware::createPalette(int nbVertexes, BoneMap boneMap, const VertexInfluenceSet::VertexIndexToBoneWeightMap&vertexIndexToBoneWeightMap)
+bool RigTransformHardware::createPalette(int nbVertexes, BoneMap boneMap, const VertexInfluenceSet::VertexIndexToBoneWeightMap &vertexIndexToBoneWeightMap)
 {
     typedef std::map<std::string, int> BoneNameCountMap;
     typedef std::map<std::string, int> BoneNamePaletteIndex;
@@ -86,13 +86,13 @@ bool RigTransformHardware::createPalette(int nbVertexes, BoneMap boneMap, const 
 
     for (VertexInfluenceSet::VertexIndexToBoneWeightMap::const_iterator it = vertexIndexToBoneWeightMap.begin(); it != vertexIndexToBoneWeightMap.end(); ++it)
     {
-        int                                     vertexIndex        = it->first;
-        const VertexInfluenceSet::BoneWeightList&boneWeightList    = it->second;
-        int                                     bonesForThisVertex = 0;
+        int                                      vertexIndex        = it->first;
+        const VertexInfluenceSet::BoneWeightList &boneWeightList    = it->second;
+        int                                      bonesForThisVertex = 0;
 
         for (VertexInfluenceSet::BoneWeightList::const_iterator it = boneWeightList.begin(); it != boneWeightList.end(); ++it)
         {
-            const VertexInfluenceSet::BoneWeight&bw = *it;
+            const VertexInfluenceSet::BoneWeight &bw = *it;
             if (boneNameCountMap.find(bw.getBoneName()) != boneNameCountMap.end())
             {
                 boneNameCountMap[bw.getBoneName()]++;
@@ -210,7 +210,7 @@ void RigTransformHardware::setShader(osg::Shader *shader)
     _shader = shader;
 }
 
-bool RigTransformHardware::init(RigGeometry&geom)
+bool RigTransformHardware::init(RigGeometry &geom)
 {
     osg::Geometry  &source      = *geom.getSourceGeometry();
     osg::Vec3Array *positionSrc = dynamic_cast<osg::Vec3Array*>(source.getVertexArray());
@@ -284,7 +284,7 @@ bool RigTransformHardware::init(RigGeometry&geom)
     _needInit = false;
     return true;
 }
-void RigTransformHardware::operator()(RigGeometry&geom)
+void RigTransformHardware::operator()(RigGeometry &geom)
 {
     if (_needInit)
         if (!init(geom))

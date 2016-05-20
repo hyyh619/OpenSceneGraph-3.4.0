@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool LightSource_readLocalData(Object&obj, Input&fr);
-bool LightSource_writeLocalData(const Object&obj, Output&fw);
+bool LightSource_readLocalData(Object &obj, Input &fr);
+bool LightSource_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(LightSource)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(LightSource)
     &LightSource_writeLocalData
 );
 
-bool LightSource_readLocalData(Object&obj, Input&fr)
+bool LightSource_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    LightSource&lightsource = static_cast<LightSource&>(obj);
+    LightSource &lightsource = static_cast<LightSource&>(obj);
 
     if (fr[0].matchWord("referenceFrame"))
     {
@@ -64,9 +64,9 @@ bool LightSource_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool LightSource_writeLocalData(const Object&obj, Output&fw)
+bool LightSource_writeLocalData(const Object &obj, Output &fw)
 {
-    const LightSource&lightsource = static_cast<const LightSource&>(obj);
+    const LightSource &lightsource = static_cast<const LightSource&>(obj);
 
     fw.indent() << "referenceFrame ";
 

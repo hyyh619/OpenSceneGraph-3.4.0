@@ -93,8 +93,8 @@ EVT_IDLE(MainFrame::OnIdle)
 END_EVENT_TABLE()
 
 /* My frame constructor */
-MainFrame::MainFrame(wxFrame *frame, const wxString&title, const wxPoint&pos,
-                     const wxSize&size, long style)
+MainFrame::MainFrame(wxFrame *frame, const wxString &title, const wxPoint &pos,
+                     const wxSize &size, long style)
     : wxFrame(frame, wxID_ANY, title, pos, size, style)
 {}
 
@@ -103,7 +103,7 @@ void MainFrame::SetViewer(osgViewer::Viewer *viewer)
     _viewer = viewer;
 }
 
-void MainFrame::OnIdle(wxIdleEvent&event)
+void MainFrame::OnIdle(wxIdleEvent &event)
 {
     if (!_viewer->isRealized())
         return;
@@ -133,7 +133,7 @@ EVT_MOUSEWHEEL          (OSGCanvas::OnMouseWheel)
 END_EVENT_TABLE()
 
 OSGCanvas::OSGCanvas(wxWindow *parent, wxWindowID id,
-                     const wxPoint&pos, const wxSize&size, long style, const wxString&name, int *attributes)
+                     const wxPoint &pos, const wxSize &size, long style, const wxString &name, int *attributes)
     : wxGLCanvas(parent, id, pos, size, style | wxFULL_REPAINT_ON_RESIZE, name, attributes)
 {
     // default cursor to standard
@@ -149,7 +149,7 @@ void OSGCanvas::OnPaint(wxPaintEvent&WXUNUSED(event))
     wxPaintDC dc(this);
 }
 
-void OSGCanvas::OnSize(wxSizeEvent&event)
+void OSGCanvas::OnSize(wxSizeEvent &event)
 {
     // this is also necessary to update the context on some platforms
     wxGLCanvas::OnSize(event);
@@ -172,7 +172,7 @@ void OSGCanvas::OnEraseBackground(wxEraseEvent&WXUNUSED(event))
     /* Do nothing, to avoid flashing on MSW */
 }
 
-void OSGCanvas::OnChar(wxKeyEvent&event)
+void OSGCanvas::OnChar(wxKeyEvent &event)
 {
 #if wxUSE_UNICODE
     int key = event.GetUnicodeKey();
@@ -187,7 +187,7 @@ void OSGCanvas::OnChar(wxKeyEvent&event)
     // event.Skip() to allow processing to continue.
 }
 
-void OSGCanvas::OnKeyUp(wxKeyEvent&event)
+void OSGCanvas::OnKeyUp(wxKeyEvent &event)
 {
 #if wxUSE_UNICODE
     int key = event.GetUnicodeKey();
@@ -202,13 +202,13 @@ void OSGCanvas::OnKeyUp(wxKeyEvent&event)
     // event.Skip() to allow processing to continue.
 }
 
-void OSGCanvas::OnMouseEnter(wxMouseEvent&event)
+void OSGCanvas::OnMouseEnter(wxMouseEvent &event)
 {
     // Set focus to ourselves, so keyboard events get directed to us
     SetFocus();
 }
 
-void OSGCanvas::OnMouseDown(wxMouseEvent&event)
+void OSGCanvas::OnMouseDown(wxMouseEvent &event)
 {
     if (_graphics_window.valid())
     {
@@ -217,7 +217,7 @@ void OSGCanvas::OnMouseDown(wxMouseEvent&event)
     }
 }
 
-void OSGCanvas::OnMouseUp(wxMouseEvent&event)
+void OSGCanvas::OnMouseUp(wxMouseEvent &event)
 {
     if (_graphics_window.valid())
     {
@@ -226,13 +226,13 @@ void OSGCanvas::OnMouseUp(wxMouseEvent&event)
     }
 }
 
-void OSGCanvas::OnMouseMotion(wxMouseEvent&event)
+void OSGCanvas::OnMouseMotion(wxMouseEvent &event)
 {
     if (_graphics_window.valid())
         _graphics_window->getEventQueue()->mouseMotion(event.GetX(), event.GetY());
 }
 
-void OSGCanvas::OnMouseWheel(wxMouseEvent&event)
+void OSGCanvas::OnMouseWheel(wxMouseEvent &event)
 {
     int delta = event.GetWheelRotation() / event.GetWheelDelta() * event.GetLinesPerAction();
 

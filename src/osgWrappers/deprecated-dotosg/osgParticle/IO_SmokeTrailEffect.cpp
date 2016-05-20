@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  SmokeTrailEffect_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  SmokeTrailEffect_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  SmokeTrailEffect_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  SmokeTrailEffect_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(SmokeTrailEffect_Proxy)
 (

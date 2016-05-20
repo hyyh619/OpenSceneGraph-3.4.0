@@ -86,7 +86,7 @@ ps_table_new(PS_Table table,
     table->capacity  = 0;
     table->cursor    = 0;
 
-    *(PS_Table_FuncsRec*)&table->funcs = ps_table_funcs;
+    *(PS_Table_FuncsRec*) &table->funcs = ps_table_funcs;
 
 Exit:
     if (error)

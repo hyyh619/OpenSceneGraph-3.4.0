@@ -45,7 +45,7 @@
 class MyPager : public osgDB::DatabasePager
 {
 public:
-virtual void updateSceneGraph(const osg::FrameStamp&frameStamp)
+virtual void updateSceneGraph(const osg::FrameStamp &frameStamp)
 {
     if (frameStamp.getFrameNumber() % 60 == 0)
     {

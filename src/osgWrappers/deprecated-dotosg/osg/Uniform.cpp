@@ -16,12 +16,12 @@ using namespace osgDB;
 using namespace std;
 
 // reuse from Geometry.cpp
-bool Array_writeLocalData(const Array& array, Output& fw);
-Array* Array_readLocalData(Input&fr);
+bool Array_writeLocalData(const Array &array, Output &fw);
+Array* Array_readLocalData(Input &fr);
 
 // forward declare functions to use later.
-bool Uniform_readLocalData(Object&obj, Input&fr);
-bool Uniform_writeLocalData(const Object&obj, Output&fw);
+bool Uniform_readLocalData(Object &obj, Input &fr);
+bool Uniform_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Uniform)
@@ -34,10 +34,10 @@ REGISTER_DOTOSGWRAPPER(Uniform)
 );
 
 
-bool Uniform_readLocalData(Object&obj, Input&fr)
+bool Uniform_readLocalData(Object &obj, Input &fr)
 {
-    bool   iteratorAdvanced = false;
-    Uniform&uniform         = static_cast<Uniform&>(obj);
+    bool    iteratorAdvanced = false;
+    Uniform &uniform         = static_cast<Uniform&>(obj);
 
     if (fr[0].matchWord("type"))
     {
@@ -262,9 +262,9 @@ bool Uniform_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Uniform_writeLocalData(const Object&obj, Output&fw)
+bool Uniform_writeLocalData(const Object &obj, Output &fw)
 {
-    const Uniform&uniform = static_cast<const Uniform&>(obj);
+    const Uniform &uniform = static_cast<const Uniform&>(obj);
 
     // post-May 2006 format (OSG versions > 1.0)
     fw.indent() << "type "

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGUTIL_TRANSFORMATTRIBUTEFUNCTOR
 #define OSGUTIL_TRANSFORMATTRIBUTEFUNCTOR 1
@@ -20,27 +20,24 @@
 #include <osgUtil/Export>
 
 namespace osgUtil {
-
 /** Functor for transforming a drawable's vertex and normal attributes by specified matrix.
-  * typically used for flattening transform down onto drawable leaves. */
-class OSGUTIL_EXPORT TransformAttributeFunctor : public osg::Drawable::AttributeFunctor
-{
-    public:
+ * typically used for flattening transform down onto drawable leaves. */
+    class OSGUTIL_EXPORT TransformAttributeFunctor: public osg::Drawable::AttributeFunctor
+    {
+public:
 
         /** Construct a functor to transform a drawable's vertex and normal attributes by specified matrix.*/
-        TransformAttributeFunctor(const osg::Matrix& m);
+        TransformAttributeFunctor(const osg::Matrix & m);
 
         virtual ~TransformAttributeFunctor();
 
         /** Do the work of transforming vertex and normal attributes. */
-        virtual void apply(osg::Drawable::AttributeType type,unsigned int count,osg::Vec3* begin);
-        virtual void apply(osg::Drawable::AttributeType type,unsigned int count,osg::Vec3d* begin);
+        virtual void apply(osg::Drawable::AttributeType type, unsigned int count, osg::Vec3 *begin);
+        virtual void apply(osg::Drawable::AttributeType type, unsigned int count, osg::Vec3d *begin);
 
         osg::Matrix _m;
         osg::Matrix _im;
-
-};
-
+    };
 }
 
 #endif

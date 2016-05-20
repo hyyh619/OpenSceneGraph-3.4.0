@@ -33,7 +33,7 @@
 #define SERIALIZER() OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_serializerMutex)
 
 osgDB::ReaderWriter::ReadResult
-ReaderWriterDAE::readNode(std::istream&fin,
+ReaderWriterDAE::readNode(std::istream &fin,
                           const osgDB::ReaderWriter::Options *options) const
 {
     SERIALIZER();
@@ -108,7 +108,7 @@ ReaderWriterDAE::readNode(std::istream&fin,
 
 
 osgDB::ReaderWriter::ReadResult
-ReaderWriterDAE::readNode(const std::string&fname,
+ReaderWriterDAE::readNode(const std::string &fname,
                           const osgDB::ReaderWriter::Options *options) const
 {
     SERIALIZER();
@@ -198,8 +198,8 @@ ReaderWriterDAE::readNode(const std::string&fname,
 ///////////////////////////////////////////////////////////////////////////
 
 osgDB::ReaderWriter::WriteResult
-ReaderWriterDAE::writeNode(const osg::Node&node,
-                           const std::string&fname, const osgDB::ReaderWriter::Options *options) const
+ReaderWriterDAE::writeNode(const osg::Node &node,
+                           const std::string &fname, const osgDB::ReaderWriter::Options *options) const
 {
     SERIALIZER();
 
@@ -217,11 +217,11 @@ ReaderWriterDAE::writeNode(const osg::Node&node,
     {
         pDAE = (DAE*)options->getPluginData("DAE");
 
-        const std::string&baseDir = options->getPluginStringData("baseImageDir");          // Rename "srcModelPath" (and call getFilePath() on it)?
+        const std::string &baseDir = options->getPluginStringData("baseImageDir");          // Rename "srcModelPath" (and call getFilePath() on it)?
         if (!baseDir.empty())
             srcDirectory = baseDir;
 
-        const std::string&relativiseImagesPathNbUpDirs = options->getPluginStringData("DAE-relativiseImagesPathNbUpDirs");
+        const std::string &relativiseImagesPathNbUpDirs = options->getPluginStringData("DAE-relativiseImagesPathNbUpDirs");
         if (!relativiseImagesPathNbUpDirs.empty())
         {
             std::istringstream iss(relativiseImagesPathNbUpDirs);
@@ -308,7 +308,7 @@ ReaderWriterDAE::writeNode(const osg::Node&node,
     return retVal;
 }
 
-static void replace(std::string&str, const char from, const std::string&to)
+static void replace(std::string &str, const char from, const std::string &to)
 {
     // Replace for all occurrences
     for (std::string::size_type pos = str.find(from); pos != std::string::npos; pos = str.find(from))
@@ -317,7 +317,7 @@ static void replace(std::string&str, const char from, const std::string&to)
     }
 }
 
-static void replace(std::string&str, const std::string&from, const std::string&to)
+static void replace(std::string &str, const std::string &from, const std::string &to)
 {
     // Replace for all occurrences
     std::size_t lenFrom = from.size();
@@ -329,7 +329,7 @@ static void replace(std::string&str, const std::string&from, const std::string&t
     }
 }
 
-std::string ReaderWriterDAE::ConvertFilePathToColladaCompatibleURI(const std::string&FilePath)
+std::string ReaderWriterDAE::ConvertFilePathToColladaCompatibleURI(const std::string &FilePath)
 {
 #ifdef OSG_USE_UTF8_FILENAME
     std::string path(cdom::nativePathToUri(FilePath));
@@ -364,7 +364,7 @@ std::string ReaderWriterDAE::ConvertFilePathToColladaCompatibleURI(const std::st
     return path;
 }
 
-std::string ReaderWriterDAE::ConvertColladaCompatibleURIToFilePath(const std::string&uri)
+std::string ReaderWriterDAE::ConvertColladaCompatibleURIToFilePath(const std::string &uri)
 {
     // Reciprocal of ConvertFilePathToColladaCompatibleURI()
 #ifdef OSG_USE_UTF8_FILENAME

@@ -116,7 +116,7 @@ META_setComment(_lpn)
 META_dispose(_lpn)
 
 // Add lightpoint, add two if bidirectional.
-virtual void addVertex(Vertex&vertex)
+virtual void addVertex(Vertex &vertex)
 {
     osgSim::LightPoint lp;
 
@@ -179,7 +179,7 @@ protected:
 
 virtual ~LightPoint() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 
@@ -269,7 +269,7 @@ META_setComment(_lpn)
 META_dispose(_lpn)
 
 // Add lightpoint, add two if bidirectional.
-virtual void addVertex(Vertex&vertex)
+virtual void addVertex(Vertex &vertex)
 {
     osgSim::LightPoint lp;
 
@@ -378,7 +378,7 @@ protected:
 
 virtual ~IndexedLightPoint() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id              = in.readString(8);
     int32       appearanceIndex = in.readInt32();
@@ -452,7 +452,7 @@ protected:
 
 virtual ~LightPointSystem() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 
@@ -490,7 +490,7 @@ virtual void readRecord(RecordInputStream&in, Document&document)
         _parent->addChild(*((osg::Group*)_switch.get()));
 }
 
-virtual void dispose(Document&document)
+virtual void dispose(Document &document)
 {
     if (!_switch.valid())
         return;

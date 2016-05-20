@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ImageSequence_readLocalData(Object&obj, Input&fr);
-bool ImageSequence_writeLocalData(const Object&obj, Output&fw);
+bool ImageSequence_readLocalData(Object &obj, Input &fr);
+bool ImageSequence_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(ImageSequence)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(ImageSequence)
     &ImageSequence_writeLocalData
 );
 
-bool ImageSequence_readLocalData(Object&obj, Input&fr)
+bool ImageSequence_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ImageSequence&is = static_cast<ImageSequence&>(obj);
+    ImageSequence &is = static_cast<ImageSequence&>(obj);
 
     std::string modeStr;
 
@@ -102,9 +102,9 @@ bool ImageSequence_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool ImageSequence_writeLocalData(const Object&obj, Output&fw)
+bool ImageSequence_writeLocalData(const Object &obj, Output &fw)
 {
-    const ImageSequence&is = static_cast<const ImageSequence&>(obj);
+    const ImageSequence &is = static_cast<const ImageSequence&>(obj);
 
     // no current image writing code here
     // as it is all handled by osg::Registry::writeImage() via plugins.
@@ -139,7 +139,7 @@ bool ImageSequence_writeLocalData(const Object&obj, Output&fw)
         fw.indent() << "FileNames {" << std::endl;
         fw.moveIn();
 
-        const osg::ImageSequence::ImageDataList&id = is.getImageDataList();
+        const osg::ImageSequence::ImageDataList &id = is.getImageDataList();
 
         for (osg::ImageSequence::ImageDataList::const_iterator itr = id.begin();
              itr != id.end();

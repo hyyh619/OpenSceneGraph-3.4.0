@@ -63,7 +63,7 @@ QWidget* addViewWidget(osgQt::GraphicsWindowQt *gw, osg::Node *scene)
     return gw->getGLWidget();
 }
 
-osgQt::GraphicsWindowQt* createGraphicsWindow(int x, int y, int w, int h, const std::string&name = "", bool windowDecoration = false)
+osgQt::GraphicsWindowQt* createGraphicsWindow(int x, int y, int w, int h, const std::string &name = "", bool windowDecoration = false)
 {
     osg::DisplaySettings                       *ds    = osg::DisplaySettings::instance().get();
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;

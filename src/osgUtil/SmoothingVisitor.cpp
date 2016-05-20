@@ -61,7 +61,7 @@ struct SmoothTriangleFunctor
         }
     }
 
-    inline void updateNormal(const osg::Vec3&normal, const osg::Vec3 *vptr)
+    inline void updateNormal(const osg::Vec3 &normal, const osg::Vec3 *vptr)
     {
         std::pair<CoordinateSet::iterator, CoordinateSet::iterator> p =
             _coordSet.equal_range(vptr);
@@ -75,7 +75,7 @@ struct SmoothTriangleFunctor
         }
     }
 
-    inline void operator()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, bool treatVertexDataAsTemporary)
+    inline void operator()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, bool treatVertexDataAsTemporary)
     {
         if (!treatVertexDataAsTemporary)
         {
@@ -90,7 +90,7 @@ struct SmoothTriangleFunctor
     }
 };
 
-static void smooth_old(osg::Geometry&geom)
+static void smooth_old(osg::Geometry &geom)
 {
     OSG_INFO << "smooth_old(" << &geom << ")" << std::endl;
     Geometry::PrimitiveSetList           &primitives = geom.getPrimitiveSetList();
@@ -207,10 +207,10 @@ struct SmoothTriangleIndexFunctor
             return;
         }
 
-        const osg::Vec3&v1 = (*_vertices)[p1];
-        const osg::Vec3&v2 = (*_vertices)[p2];
-        const osg::Vec3&v3 = (*_vertices)[p3];
-        osg::Vec3      normal((v2 - v1) ^ (v3 - v1));
+        const osg::Vec3 &v1 = (*_vertices)[p1];
+        const osg::Vec3 &v2 = (*_vertices)[p2];
+        const osg::Vec3 &v3 = (*_vertices)[p3];
+        osg::Vec3       normal((v2 - v1) ^ (v3 - v1));
 
         normal.normalize();
 
@@ -239,11 +239,11 @@ struct FindSharpEdgesFunctor
         Triangle(unsigned int primitiveSetIndex, unsigned int p1, unsigned int p2, unsigned int p3) :
             _primitiveSetIndex(primitiveSetIndex), _p1(p1), _p2(p2), _p3(p3) {}
 
-        Triangle(const Triangle&tri) :
+        Triangle(const Triangle &tri) :
             osg::Referenced(true),
             _primitiveSetIndex(tri._primitiveSetIndex), _p1(tri._p1), _p2(tri._p2), _p3(tri._p3) {}
 
-        Triangle&operator =(const Triangle&tri)
+        Triangle&operator =(const Triangle &tri)
         {
             _primitiveSetIndex = tri._primitiveSetIndex;
             _p1                = tri._p1;
@@ -375,7 +375,7 @@ struct FindSharpEdgesFunctor
             _problemVertexVector[p]->_triangles.push_back(tri);
     }
 
-    bool checkDeviation(unsigned int p, osg::Vec3&normal)
+    bool checkDeviation(unsigned int p, osg::Vec3 &normal)
     {
         float deviation = normal * (*_normals)[p];
 
@@ -384,10 +384,10 @@ struct FindSharpEdgesFunctor
 
     osg::Vec3 computeNormal(unsigned int p1, unsigned int p2, unsigned int p3)
     {
-        const osg::Vec3&v1 = (*_vertices)[p1];
-        const osg::Vec3&v2 = (*_vertices)[p2];
-        const osg::Vec3&v3 = (*_vertices)[p3];
-        osg::Vec3      normal((v2 - v1) ^ (v3 - v1));
+        const osg::Vec3 &v1 = (*_vertices)[p1];
+        const osg::Vec3 &v2 = (*_vertices)[p2];
+        const osg::Vec3 &v3 = (*_vertices)[p3];
+        osg::Vec3       normal((v2 - v1) ^ (v3 - v1));
 
         normal.normalize();
         return normal;
@@ -429,53 +429,53 @@ public:
         _end(i) {}
 
     template<class ARRAY>
-    void apply_imp(ARRAY&array)
+    void apply_imp(ARRAY &array)
     {
         _end = array.size();
         array.push_back(array[_i]);
     }
 
-    virtual void apply(osg::ByteArray&ba)
+    virtual void apply(osg::ByteArray &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::ShortArray&ba)
+    virtual void apply(osg::ShortArray &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::IntArray&ba)
+    virtual void apply(osg::IntArray &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::UByteArray&ba)
+    virtual void apply(osg::UByteArray &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::UShortArray&ba)
+    virtual void apply(osg::UShortArray &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::UIntArray&ba)
+    virtual void apply(osg::UIntArray &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::Vec4ubArray&ba)
+    virtual void apply(osg::Vec4ubArray &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::FloatArray&ba)
+    virtual void apply(osg::FloatArray &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::Vec2Array&ba)
+    virtual void apply(osg::Vec2Array &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::Vec3Array&ba)
+    virtual void apply(osg::Vec3Array &ba)
     {
         apply_imp(ba);
     }
-    virtual void apply(osg::Vec4Array&ba)
+    virtual void apply(osg::Vec4Array &ba)
     {
         apply_imp(ba);
     }
@@ -609,7 +609,7 @@ public:
         }
     }
 
-    osg::PrimitiveSet* createPrimitiveSet(Triangles&triangles)
+    osg::PrimitiveSet* createPrimitiveSet(Triangles &triangles)
     {
         osg::ref_ptr<osg::DrawElements> elements = (_vertices->size() < 16384) ?
                                                    static_cast<osg::DrawElements*>(new osg::DrawElementsUShort(GL_TRIANGLES)) :
@@ -671,7 +671,7 @@ public:
 };
 
 
-static void smooth_new(osg::Geometry&geom, double creaseAngle)
+static void smooth_new(osg::Geometry &geom, double creaseAngle)
 {
     OSG_INFO << "smooth_new(" << &geom << ", " << osg::RadiansToDegrees(creaseAngle) << ")" << std::endl;
 
@@ -745,7 +745,7 @@ SmoothingVisitor::SmoothingVisitor() :
 SmoothingVisitor::~SmoothingVisitor()
 {}
 
-void SmoothingVisitor::smooth(osg::Geometry&geom, double creaseAngle)
+void SmoothingVisitor::smooth(osg::Geometry &geom, double creaseAngle)
 {
     if (creaseAngle == osg::PI)
     {
@@ -758,7 +758,7 @@ void SmoothingVisitor::smooth(osg::Geometry&geom, double creaseAngle)
 }
 
 
-void SmoothingVisitor::apply(osg::Geode&geode)
+void SmoothingVisitor::apply(osg::Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); i++)
     {

@@ -41,7 +41,7 @@ void TestManipulator::setNode(osg::Node *node)
     _node = node;
     if (_node.get())
     {
-        const osg::BoundingSphere&boundingSphere = _node->getBound();
+        const osg::BoundingSphere &boundingSphere = _node->getBound();
         _modelScale = boundingSphere._radius;
     }
 }
@@ -60,11 +60,11 @@ osg::Node* TestManipulator::getNode()
 
 
 /*ea*/
-void TestManipulator::home(const GUIEventAdapter&, GUIActionAdapter&us)
+void TestManipulator::home(const GUIEventAdapter&, GUIActionAdapter &us)
 {
     if (_node.get())
     {
-        const osg::BoundingSphere&boundingSphere = _node->getBound();
+        const osg::BoundingSphere &boundingSphere = _node->getBound();
 
         computePosition(boundingSphere.center() + osg::Vec3(0.0f, 0.0f, 20.0f),
                         osg::Vec3(0.0f, 1.0f, 0.0f),
@@ -80,7 +80,7 @@ void TestManipulator::init(const GUIEventAdapter&, GUIActionAdapter&)
     flushMouseEventStack();
 }
 
-bool TestManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool TestManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     switch (ea.getEventType())
     {
@@ -203,13 +203,13 @@ void TestManipulator::flushMouseEventStack()
 }
 
 
-void TestManipulator::addMouseEvent(const GUIEventAdapter&ea)
+void TestManipulator::addMouseEvent(const GUIEventAdapter &ea)
 {
     _ga_t1 = _ga_t0;
     _ga_t0 = &ea;
 }
 
-void TestManipulator::setByMatrix(const osg::Matrixd&matrix)
+void TestManipulator::setByMatrix(const osg::Matrixd &matrix)
 {
     _center   = matrix.getTrans();
     _rotation = matrix.getRotate();
@@ -226,7 +226,7 @@ osg::Matrixd TestManipulator::getInverseMatrix() const
     return osg::Matrixd::translate(-_center) * osg::Matrixd::rotate(_rotation.inverse());
 }
 
-void TestManipulator::computePosition(const osg::Vec3&eye, const osg::Vec3&lv, const osg::Vec3&up)
+void TestManipulator::computePosition(const osg::Vec3 &eye, const osg::Vec3 &lv, const osg::Vec3 &up)
 {
     osg::Vec3 f(lv);
 

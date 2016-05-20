@@ -100,7 +100,7 @@ WriteWrapper(trpgReadWriteable *in_wr)
 {
     wr = in_wr;
 };
-void* Parse(trpgToken, trpgReadBuffer&buf)
+void* Parse(trpgToken, trpgReadBuffer &buf)
 {
     if (wr->Read(buf))
         return wr;
@@ -170,7 +170,7 @@ bool trpgr_Parser::TokenIsValid(trpgToken tok)
    it (1) runs out of buffer or (2) fails.
    Note: Good place to return an exception, but keep it simple for now.
  */
-bool trpgr_Parser::Parse(trpgReadBuffer&buf)
+bool trpgr_Parser::Parse(trpgReadBuffer &buf)
 {
     bool ret = true;
 

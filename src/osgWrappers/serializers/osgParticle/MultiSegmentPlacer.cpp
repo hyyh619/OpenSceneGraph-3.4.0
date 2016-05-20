@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkVertices(const osgParticle::MultiSegmentPlacer&placer)
+static bool checkVertices(const osgParticle::MultiSegmentPlacer &placer)
 {
     return placer.numVertices() > 0;
 }
 
-static bool readVertices(osgDB::InputStream&is, osgParticle::MultiSegmentPlacer&placer)
+static bool readVertices(osgDB::InputStream &is, osgParticle::MultiSegmentPlacer &placer)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -22,7 +22,7 @@ static bool readVertices(osgDB::InputStream&is, osgParticle::MultiSegmentPlacer&
     return true;
 }
 
-static bool writeVertices(osgDB::OutputStream&os, const osgParticle::MultiSegmentPlacer&placer)
+static bool writeVertices(osgDB::OutputStream &os, const osgParticle::MultiSegmentPlacer &placer)
 {
     unsigned int size = placer.numVertices();
 

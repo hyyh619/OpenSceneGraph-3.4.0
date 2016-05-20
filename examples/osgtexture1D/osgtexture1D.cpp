@@ -181,9 +181,9 @@ int main(int argc, char **argv)
     texgenNode->setReferenceFrame(osg::TexGenNode::ABSOLUTE_RF);
     texgenNode->getTexGen()->setMode(osg::TexGen::OBJECT_LINEAR);
 
-    const osg::BoundingSphere&bs    = loadedModel->getBound();
-    float                    zBase  = bs.center().z() - bs.radius();
-    float                    zScale = 2.0f / bs.radius();
+    const osg::BoundingSphere &bs    = loadedModel->getBound();
+    float                     zBase  = bs.center().z() - bs.radius();
+    float                     zScale = 2.0f / bs.radius();
     texgenNode->getTexGen()->setPlane(osg::TexGen::S, osg::Plane(0.0f, 0.0f, zScale, -zBase));
 
     texgenNode->setUpdateCallback(new AnimateTexGenCallback());

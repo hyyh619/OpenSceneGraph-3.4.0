@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 // Code by: Jeremy Moles (cubicool) 2007-2008
 
@@ -19,24 +19,22 @@
 #include <osgWidget/WindowManager>
 
 namespace osgWidget {
+    struct PythonEngineData;
 
-struct PythonEngineData;
+    class OSGWIDGET_EXPORT PythonEngine: public ScriptEngine {
+public:
+        PythonEngine(WindowManager * = 0);
 
-class OSGWIDGET_EXPORT PythonEngine: public ScriptEngine {
-    public:
-        PythonEngine(WindowManager* = 0);
+        bool initialize();
+        bool close();
+        bool eval(const std::string&);
+        bool runFile(const std::string&);
 
-        bool initialize ();
-        bool close      ();
-        bool eval       (const std::string&);
-        bool runFile    (const std::string&);
+protected:
 
-    protected:
-
-        PythonEngineData* _data;
-        WindowManager*    _wm;
-};
-
+        PythonEngineData *_data;
+        WindowManager    *_wm;
+    };
 }
 
 #endif

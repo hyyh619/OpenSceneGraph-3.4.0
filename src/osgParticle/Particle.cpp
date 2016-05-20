@@ -144,7 +144,7 @@ bool osgParticle::Particle::update(double dt, bool onlyTimeStamp)
     return true;
 }
 
-void osgParticle::Particle::render(osg::GLBeginEndAdapter *gl, const osg::Vec3&xpos, const osg::Vec3&px, const osg::Vec3&py, float scale) const
+void osgParticle::Particle::render(osg::GLBeginEndAdapter *gl, const osg::Vec3 &xpos, const osg::Vec3 &px, const osg::Vec3 &py, float scale) const
 {
     gl->Color4f(_current_color.x(),
                 _current_color.y(),
@@ -235,7 +235,7 @@ void osgParticle::Particle::render(osg::GLBeginEndAdapter *gl, const osg::Vec3&x
     }
 }
 
-void osgParticle::Particle::render(osg::RenderInfo&renderInfo, const osg::Vec3&xpos, const osg::Vec3&xrot) const
+void osgParticle::Particle::render(osg::RenderInfo &renderInfo, const osg::Vec3 &xpos, const osg::Vec3 &xrot) const
 {
 #if defined(OSG_GL_MATRICES_AVAILABLE)
     if (_drawable.valid())
@@ -272,12 +272,12 @@ void osgParticle::Particle::setUpTexCoordsAsPartOfConnectedParticleSystem(Partic
     {
         update(0.0, false);
 
-        Particle       *previousParticle = ps->getParticle(getPreviousParticle());
-        const osg::Vec3&previousPosition = previousParticle->getPosition();
-        const osg::Vec3&newPosition      = getPosition();
-        float          distance          = (newPosition - previousPosition).length();
-        float          s_coord_delta     = 0.5f * distance / getCurrentSize();
-        float          s_coord           = previousParticle->_s_coord + s_coord_delta;
+        Particle        *previousParticle = ps->getParticle(getPreviousParticle());
+        const osg::Vec3 &previousPosition = previousParticle->getPosition();
+        const osg::Vec3 &newPosition      = getPosition();
+        float           distance          = (newPosition - previousPosition).length();
+        float           s_coord_delta     = 0.5f * distance / getCurrentSize();
+        float           s_coord           = previousParticle->_s_coord + s_coord_delta;
 
         setTextureTile(1, 1, 0);
         _cur_tile = 0;

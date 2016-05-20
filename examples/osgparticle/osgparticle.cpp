@@ -48,17 +48,17 @@ public:
 VortexOperator()
     : osgParticle::Operator(), center_(0, 0, 0), axis_(0, 0, 1), intensity_(0.1f) {}
 
-VortexOperator(const VortexOperator&copy, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY)
+VortexOperator(const VortexOperator &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY)
     : osgParticle::Operator(copy, copyop), center_(copy.center_), axis_(copy.axis_), intensity_(copy.intensity_) {}
 
 META_Object(osgParticle, VortexOperator);
 
-void setCenter(const osg::Vec3&c)
+void setCenter(const osg::Vec3 &c)
 {
     center_ = c;
 }
 
-void setAxis(const osg::Vec3&a)
+void setAxis(const osg::Vec3 &a)
 {
     axis_ = a / a.length();
 }

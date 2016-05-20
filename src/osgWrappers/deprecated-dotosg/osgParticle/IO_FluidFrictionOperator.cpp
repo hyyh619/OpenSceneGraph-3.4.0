@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  FluidFrictionOperator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  FluidFrictionOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  FluidFrictionOperator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  FluidFrictionOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(FluidFrictionOperator_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(FluidFrictionOperator_Proxy)
     FluidFrictionOperator_writeLocalData
 );
 
-bool FluidFrictionOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool FluidFrictionOperator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::FluidFrictionOperator&aop       = static_cast<osgParticle::FluidFrictionOperator&>(obj);
-    bool                              itAdvanced = false;
+    osgParticle::FluidFrictionOperator &aop       = static_cast<osgParticle::FluidFrictionOperator&>(obj);
+    bool                               itAdvanced = false;
 
     float     f;
     osg::Vec3 w;
@@ -72,9 +72,9 @@ bool FluidFrictionOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool FluidFrictionOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool FluidFrictionOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::FluidFrictionOperator&aop = static_cast<const osgParticle::FluidFrictionOperator&>(obj);
+    const osgParticle::FluidFrictionOperator &aop = static_cast<const osgParticle::FluidFrictionOperator&>(obj);
 
     fw.indent() << "fluidDensity " <<   aop.getFluidDensity() << std::endl;
     fw.indent() << "fluidViscosity " << aop.getFluidViscosity() << std::endl;

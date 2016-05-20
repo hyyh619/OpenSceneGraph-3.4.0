@@ -81,7 +81,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     return 0;
 }
 
-BOOL CMainFrame::PreCreateWindow(CREATESTRUCT&cs)
+BOOL CMainFrame::PreCreateWindow(CREATESTRUCT &cs)
 {
     if (!CMDIFrameWnd::PreCreateWindow(cs))
         return FALSE;
@@ -101,7 +101,7 @@ void CMainFrame::AssertValid() const
     CMDIFrameWnd::AssertValid();
 }
 
-void CMainFrame::Dump(CDumpContext&dc) const
+void CMainFrame::Dump(CDumpContext &dc) const
 {
     CMDIFrameWnd::Dump(dc);
 }

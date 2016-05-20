@@ -15,7 +15,7 @@
 #include <osgDB/FileUtils>
 #include <osgDB/fstream>
 
-bool Utility::readFile(const char *fName, std::string&s)
+bool Utility::readFile(const char *fName, std::string &s)
 {
     std::string foundFile = osgDB::findDataFile(fName);
 

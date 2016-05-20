@@ -23,7 +23,7 @@ ColorMaski::ColorMaski() :
 ColorMaski::~ColorMaski()
 {}
 
-void ColorMaski::apply(State&state) const
+void ColorMaski::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

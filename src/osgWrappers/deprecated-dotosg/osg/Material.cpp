@@ -13,9 +13,9 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Material_readLocalData(Object&obj, Input&fr);
-bool Material_writeLocalData(const Object&obj, Output&fw);
-bool Material_matchFaceAndColor(Input&fr, const char *name, Material::Face&mf, Vec4&color);
+bool Material_readLocalData(Object &obj, Input &fr);
+bool Material_writeLocalData(const Object &obj, Output &fw);
+bool Material_matchFaceAndColor(Input &fr, const char *name, Material::Face &mf, Vec4 &color);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Material)
@@ -28,11 +28,11 @@ REGISTER_DOTOSGWRAPPER(Material)
 );
 
 
-bool Material_readLocalData(Object&obj, Input&fr)
+bool Material_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Material&material = static_cast<Material&>(obj);
+    Material &material = static_cast<Material&>(obj);
 
     Vec4           data(0.0f,  0.0f, 0.0f, 1.0f);
     Material::Face mf = Material::FRONT_AND_BACK;
@@ -145,7 +145,7 @@ bool Material_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Material_matchFaceAndColor(Input&fr, const char *name, Material::Face&mf, Vec4&color)
+bool Material_matchFaceAndColor(Input &fr, const char *name, Material::Face &mf, Vec4 &color)
 {
     bool iteratorAdvanced = false;
 
@@ -182,9 +182,9 @@ bool Material_matchFaceAndColor(Input&fr, const char *name, Material::Face&mf, V
 }
 
 
-bool Material_writeLocalData(const Object&obj, Output&fw)
+bool Material_writeLocalData(const Object &obj, Output &fw)
 {
-    const Material&material = static_cast<const Material&>(obj);
+    const Material &material = static_cast<const Material&>(obj);
 
     switch (material.getColorMode())
     {

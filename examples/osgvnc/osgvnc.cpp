@@ -10,7 +10,7 @@ public:
 
 EscapeHandler() {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (ea.getHandled())
         return false;

@@ -222,7 +222,7 @@ public:
 
 
 CPLString(void) {}
-CPLString(const std::string&oStr) : gdal_std_string(oStr) {}
+CPLString(const std::string &oStr) : gdal_std_string(oStr) {}
 CPLString(const char *pszStr) : gdal_std_string(pszStr) {}
 
 operator const char* (void) const { return c_str(); }
@@ -260,7 +260,7 @@ CPLString&Trim();
 CPLString&Recode(const char *pszSrcEncoding, const char *pszDstEncoding);
 
 /* case insensitive find alternates */
-size_t    ifind(const std::string&str, size_t pos = 0) const;
+size_t    ifind(const std::string &str, size_t pos = 0) const;
 size_t    ifind(const char *s, size_t pos = 0) const;
 };
 

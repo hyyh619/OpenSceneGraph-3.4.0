@@ -15,7 +15,7 @@ END_USER_TABLE()
 USER_READ_FUNC(Shape, readShapeValue)
 USER_WRITE_FUNC(Shape, writeShapeValue)
 
-bool readParticle(osgDB::InputStream&is, osgParticle::Particle&p)
+bool readParticle(osgDB::InputStream &is, osgParticle::Particle &p)
 {
     is >> is.BEGIN_BRACKET;
 
@@ -83,7 +83,7 @@ bool readParticle(osgDB::InputStream&is, osgParticle::Particle&p)
     return true;
 }
 
-bool writeParticle(osgDB::OutputStream&os, const osgParticle::Particle&p)
+bool writeParticle(osgDB::OutputStream &os, const osgParticle::Particle &p)
 {
     os << os.BEGIN_BRACKET << std::endl;
 

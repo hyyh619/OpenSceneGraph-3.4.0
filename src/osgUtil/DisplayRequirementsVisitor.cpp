@@ -29,7 +29,7 @@ DisplayRequirementsVisitor::DisplayRequirementsVisitor()
     setTraversalMode(NodeVisitor::TRAVERSE_ALL_CHILDREN);
 }
 
-void DisplayRequirementsVisitor::applyStateSet(StateSet&stateset)
+void DisplayRequirementsVisitor::applyStateSet(StateSet &stateset)
 {
     if (!_ds)
         _ds = new osg::DisplaySettings;
@@ -53,7 +53,7 @@ void DisplayRequirementsVisitor::applyStateSet(StateSet&stateset)
     }
 }
 
-void DisplayRequirementsVisitor::apply(Node&node)
+void DisplayRequirementsVisitor::apply(Node &node)
 {
     osg::StateSet *stateset = node.getStateSet();
 
@@ -76,7 +76,7 @@ void DisplayRequirementsVisitor::apply(Node&node)
     traverse(node);
 }
 
-void DisplayRequirementsVisitor::apply(Geode&geode)
+void DisplayRequirementsVisitor::apply(Geode &geode)
 {
     osg::StateSet *geode_stateset = geode.getStateSet();
 

@@ -7,14 +7,14 @@
 #include <osgDB/FileUtils>
 #include <osgWidget/Label>
 
-bool osgWidget_Label_readData(osg::Object& /*obj*/, osgDB::Input&fr)
+bool osgWidget_Label_readData(osg::Object& /*obj*/, osgDB::Input &fr)
 {
     osgWidget::warn() << "Label read" << std::endl;
 
     return false;
 }
 
-bool osgWidget_Label_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
+bool osgWidget_Label_writeData(const osg::Object& /*obj*/, osgDB::Output &fw)
 {
     // const osgWidget::Label& model = static_cast<const osgWidget::Label&>(obj);
 

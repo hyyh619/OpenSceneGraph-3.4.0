@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGSIM_VISIBILITYGROUP
 #define OSGSIM_VISIBILITYGROUP 1
@@ -21,56 +21,75 @@
 #include <osgSim/Export>
 
 namespace osgSim {
-
 /** VisibilityGroup renders (traverses) it's children only when the camera is inside a specified visibility volume.
  * The visibility volume is intersected with a line segment that extends from
  * the current camera's eye-point along the view vector for a given segment length.
  * If an intersection is detected then the node's children are traversed.
  */
-class OSGSIM_EXPORT VisibilityGroup : public osg::Group
-{
-    public :
+    class OSGSIM_EXPORT VisibilityGroup: public osg::Group
+    {
+public:
 
         VisibilityGroup();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        VisibilityGroup(const VisibilityGroup&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+        VisibilityGroup(const VisibilityGroup &, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Node(osgSim, VisibilityGroup);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        virtual void traverse(osg::NodeVisitor &nv);
 
         /** Set the subgraph that is intersected for the visibility determination.*/
-        void setVisibilityVolume(osg::Node* node) { _visibilityVolume = node; }
+        void setVisibilityVolume(osg::Node *node)
+        {
+            _visibilityVolume = node;
+        }
 
         /** Get the subgraph that is intersected for the visibility determination.*/
-        osg::Node* getVisibilityVolume() { return _visibilityVolume.get(); }
+        osg::Node* getVisibilityVolume()
+        {
+            return _visibilityVolume.get();
+        }
 
         /** Get the const subgraph that is intersected for the visibility determination.*/
-        const osg::Node* getVisibilityVolume() const { return _visibilityVolume.get(); }
+        const osg::Node* getVisibilityVolume() const
+        {
+            return _visibilityVolume.get();
+        }
 
         /** Set the traversal mask for the intersection testing.*/
-        void setVolumeIntersectionMask(osg::Node::NodeMask mask) { _volumeIntersectionMask = mask; }
+        void setVolumeIntersectionMask(osg::Node::NodeMask mask)
+        {
+            _volumeIntersectionMask = mask;
+        }
 
         /** Get the traversal mask for the intersection testing.*/
-        osg::Node::NodeMask getVolumeIntersectionMask() const { return _volumeIntersectionMask; }
+        osg::Node::NodeMask getVolumeIntersectionMask() const
+        {
+            return _volumeIntersectionMask;
+        }
 
         /** Set the length of the intersection segment.
          * The segments extends this many database units from the camera eye-point along the look vector.
          * If this is left at zero then the diameter of the bounding sphere of the visibility volume is used.*/
-        void setSegmentLength(float length) { _segmentLength = length; }
+        void setSegmentLength(float length)
+        {
+            _segmentLength = length;
+        }
 
         /** Get the length of the intersection segment.*/
-        float getSegmentLength() const { return _segmentLength; }
+        float getSegmentLength() const
+        {
+            return _segmentLength;
+        }
 
-    protected :
+protected:
 
         virtual ~VisibilityGroup() {}
 
-        osg::ref_ptr<osg::Node> _visibilityVolume;
+        osg::ref_ptr < osg::Node > _visibilityVolume;
         osg::Node::NodeMask _volumeIntersectionMask;
-        float _segmentLength;
-};
-
+        float               _segmentLength;
+    };
 }
 #endif

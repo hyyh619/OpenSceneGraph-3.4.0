@@ -147,7 +147,7 @@ ModelInstance()
 
 // load source from a file.
 static void
-LoadShaderSource(osg::Shader *shader, const std::string&fileName)
+LoadShaderSource(osg::Shader *shader, const std::string &fileName)
 {
     std::string fqFileName = osgDB::findDataFile(fileName);
 

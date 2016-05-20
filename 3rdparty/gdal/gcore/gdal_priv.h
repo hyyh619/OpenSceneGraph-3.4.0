@@ -246,7 +246,7 @@ GByte *pabyHeader;
 /* Internal method for now. Might be subject to later revisions */
 GDALDatasetH GDALOpenInternal(const char *pszFilename, GDALAccess eAccess,
                               const char* const *papszAllowedDrivers);
-GDALDatasetH GDALOpenInternal(GDALOpenInfo&oOpenInfo,
+GDALDatasetH GDALOpenInternal(GDALOpenInfo &oOpenInfo,
                               const char* const *papszAllowedDrivers);
 
 // ! A set of associated raster bands, usually from one file.
@@ -258,7 +258,7 @@ friend GDALDatasetH CPL_STDCALL GDALOpenShared(const char*, GDALAccess);
 
 /* Internal method for now. Might be subject to later revisions */
 friend GDALDatasetH GDALOpenInternal(const char*, GDALAccess, const char* const *papszAllowedDrivers);
-friend GDALDatasetH GDALOpenInternal(GDALOpenInfo&oOpenInfo,
+friend GDALDatasetH GDALOpenInternal(GDALOpenInfo &oOpenInfo,
                                      const char* const *papszAllowedDrivers);
 
 friend class GDALDriver;
@@ -960,8 +960,8 @@ GDALDefaultBuildOverviews(GDALDataset *hSrcDS, const char *pszBasename,
                           GDALProgressFunc pfnProgress, void *pProgressData);
 
 int CPL_DLL GDALBandGetBestOverviewLevel(GDALRasterBand *poBand,
-                                         int&nXOff, int&nYOff,
-                                         int&nXSize, int&nYSize,
+                                         int &nXOff, int &nYOff,
+                                         int &nXSize, int &nYSize,
                                          int nBufXSize, int nBufYSize);
 
 int CPL_DLL GDALOvLevelAdjust(int nOvLevel, int nXSize);

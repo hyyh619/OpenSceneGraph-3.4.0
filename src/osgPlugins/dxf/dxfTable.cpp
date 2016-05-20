@@ -14,7 +14,7 @@
 #include "codeValue.h"
 
 
-void dxfLayer::assign(dxfFile*, codeValue&cv)
+void dxfLayer::assign(dxfFile*, codeValue &cv)
 {
     switch (cv._groupCode)
     {
@@ -35,7 +35,7 @@ void dxfLayer::assign(dxfFile*, codeValue&cv)
     }
 }
 
-void dxfLayerTable::assign(dxfFile *dxf, codeValue&cv)
+void dxfLayerTable::assign(dxfFile *dxf, codeValue &cv)
 {
     std::string s = cv._string;
 

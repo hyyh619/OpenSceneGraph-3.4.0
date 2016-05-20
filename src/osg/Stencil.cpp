@@ -49,7 +49,7 @@ static Stencil::Operation validateOperation(const GLExtensions *extensions, Sten
         return op == Stencil::INCR_WRAP ? Stencil::INCR : Stencil::DECR;
 }
 
-void Stencil::apply(State&state) const
+void Stencil::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
     Operation          sf          = validateOperation(extensions, _sfail);

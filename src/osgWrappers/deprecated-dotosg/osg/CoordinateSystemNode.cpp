@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool CoordinateSystemNode_readLocalData(Object&obj, Input&fr);
-bool CoordinateSystemNode_writeLocalData(const Object&obj, Output&fw);
+bool CoordinateSystemNode_readLocalData(Object &obj, Input &fr);
+bool CoordinateSystemNode_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(CoordinateSystemNode)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(CoordinateSystemNode)
     &CoordinateSystemNode_writeLocalData
 );
 
-bool CoordinateSystemNode_readLocalData(Object&obj, Input&fr)
+bool CoordinateSystemNode_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    CoordinateSystemNode&csn = static_cast<CoordinateSystemNode&>(obj);
+    CoordinateSystemNode &csn = static_cast<CoordinateSystemNode&>(obj);
 
     if (fr.matchSequence("Format %s"))
     {
@@ -55,9 +55,9 @@ bool CoordinateSystemNode_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool CoordinateSystemNode_writeLocalData(const Object&obj, Output&fw)
+bool CoordinateSystemNode_writeLocalData(const Object &obj, Output &fw)
 {
-    const CoordinateSystemNode&csn = static_cast<const CoordinateSystemNode&>(obj);
+    const CoordinateSystemNode &csn = static_cast<const CoordinateSystemNode&>(obj);
 
     fw.indent() << "Format " <<           fw.wrapString(csn.getFormat()) << std::endl;
     fw.indent() << "CoordinateSystem " << fw.wrapString(csn.getCoordinateSystem()) << std::endl;

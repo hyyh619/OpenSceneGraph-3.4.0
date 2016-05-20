@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkAngle(const osgSim::ConeSector&sector)
+static bool checkAngle(const osgSim::ConeSector &sector)
 {
     return true;
 }
 
-static bool readAngle(osgDB::InputStream&is, osgSim::ConeSector&sector)
+static bool readAngle(osgDB::InputStream &is, osgSim::ConeSector &sector)
 {
     float angle, fadeAngle;
 
@@ -17,7 +17,7 @@ static bool readAngle(osgDB::InputStream&is, osgSim::ConeSector&sector)
     return true;
 }
 
-static bool writeAngle(osgDB::OutputStream&os, const osgSim::ConeSector&sector)
+static bool writeAngle(osgDB::OutputStream &os, const osgSim::ConeSector &sector)
 {
     os << sector.getAngle() << sector.getFadeAngle() << std::endl;
     return true;

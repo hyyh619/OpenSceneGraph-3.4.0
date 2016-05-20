@@ -26,7 +26,7 @@ struct FadeTextData : public osg::Referenced
         _fadeText(fadeText),
         _visible(true) {}
 
-    bool operator <(const FadeTextData&rhs) const
+    bool operator <(const FadeTextData &rhs) const
     {
         return _fadeText < rhs._fadeText;
     }
@@ -56,7 +56,7 @@ struct FadeTextData : public osg::Referenced
 
 struct FadeTextPolytopeData : public FadeTextData, public osg::Polytope
 {
-    FadeTextPolytopeData(FadeTextData&fadeTextData) :
+    FadeTextPolytopeData(FadeTextData &fadeTextData) :
         FadeTextData(fadeTextData)
     {
         _referenceVertexList.push_back(_vertices[0]);
@@ -65,7 +65,7 @@ struct FadeTextPolytopeData : public FadeTextData, public osg::Polytope
         _referenceVertexList.push_back(_vertices[3]);
     }
 
-    void addEdgePlane(const osg::Vec3&corner, const osg::Vec3&edge)
+    void addEdgePlane(const osg::Vec3 &corner, const osg::Vec3 &edge)
     {
         osg::Vec3 normal(edge.y(), -edge.x(), 0.0f);
 
@@ -112,7 +112,7 @@ struct FadeTextPolytopeData : public FadeTextData, public osg::Polytope
 #endif
     }
 
-    inline bool contains(const std::vector<osg::Vec3>&vertices)
+    inline bool contains(const std::vector<osg::Vec3> &vertices)
     {
         for (std::vector<osg::Vec3>::const_iterator itr = vertices.begin();
              itr != vertices.end();
@@ -179,7 +179,7 @@ struct GlobalFadeText : public osg::Referenced
         {
             osg::View *view = vitr->first;
 
-            FadeTextSet&fadeTextSet = _viewFadeTextMap[view];
+            FadeTextSet &fadeTextSet = _viewFadeTextMap[view];
             fadeTextSet.clear();
 
             FadeTextPolytopeMap fadeTextPolytopeMap;
@@ -197,7 +197,7 @@ struct GlobalFadeText : public osg::Referenced
                          fitr != userData->_fadeTextInView.end();
                          ++fitr)
                     {
-                        FadeTextData&fadeTextData = *fitr;
+                        FadeTextData &fadeTextData = *fitr;
                         if (fadeTextSet.count(fadeTextData._fadeText) == 0)
                         {
                             fadeTextSet.insert(fadeTextData._fadeText);
@@ -224,14 +224,14 @@ struct GlobalFadeText : public osg::Referenced
                 if (inner_itr == fadeTextPolytopeMap.end())
                     break;
 
-                FadeTextPolytopeData&outer_ftpm = *(outer_itr->second);
+                FadeTextPolytopeData &outer_ftpm = *(outer_itr->second);
                 outer_ftpm.buildPolytope();
 
                 // OSG_NOTICE<<"Outer z "<<outer_ftpm.getNearestZ()<<std::endl;
 
                 while (inner_itr != fadeTextPolytopeMap.end())
                 {
-                    FadeTextPolytopeData&inner_ftpm = *(inner_itr->second);
+                    FadeTextPolytopeData &inner_ftpm = *(inner_itr->second);
 
                     // OSG_NOTICE<<"Inner z "<<inner_ftpm.getNearestZ()<<std::endl;
 
@@ -293,23 +293,23 @@ struct FadeText::FadeTextUpdateCallback : public osg::Drawable::UpdateCallback
         GlobalFadeText *gft = getGlobalFadeText();
         gft->updateIfRequired(frameNumber);
 
-        osgText::FadeText::ViewBlendColourMap&vbcm = fadeText->getViewBlendColourMap();
+        osgText::FadeText::ViewBlendColourMap &vbcm = fadeText->getViewBlendColourMap();
 
         _ftd._fadeText = fadeText;
 
         float fadeSpeed = fadeText->getFadeSpeed();
 
-        GlobalFadeText::ViewFadeTextMap&vftm = gft->_viewFadeTextMap;
+        GlobalFadeText::ViewFadeTextMap &vftm = gft->_viewFadeTextMap;
 
         for (GlobalFadeText::ViewFadeTextMap::iterator itr = vftm.begin();
              itr != vftm.end();
              ++itr)
         {
-            osg::View                  *view        = itr->first;
-            GlobalFadeText::FadeTextSet&fadeTextSet = itr->second;
-            bool                       visible      = fadeTextSet.count(fadeText) != 0;
+            osg::View                   *view        = itr->first;
+            GlobalFadeText::FadeTextSet &fadeTextSet = itr->second;
+            bool                        visible      = fadeTextSet.count(fadeText) != 0;
 
-            osg::Vec4&tec = vbcm[view];
+            osg::Vec4 &tec = vbcm[view];
             tec[0] = 1.0f;
             tec[1] = 1.0f;
             tec[2] = 1.0f;
@@ -341,7 +341,7 @@ FadeText::FadeText()
     init();
 }
 
-FadeText::FadeText(const Text&text, const osg::CopyOp&copyop) :
+FadeText::FadeText(const Text &text, const osg::CopyOp &copyop) :
     Text(text, copyop)
 {
     init();
@@ -357,9 +357,9 @@ void FadeText::init()
 
 
 
-void FadeText::drawImplementation(osg::RenderInfo&renderInfo) const
+void FadeText::drawImplementation(osg::RenderInfo &renderInfo) const
 {
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     ViewBlendColourMap::iterator itr = _viewBlendColourMap.find(renderInfo.getView());
 
@@ -405,7 +405,7 @@ void FadeText::drawImplementation(osg::RenderInfo&renderInfo) const
 
 
 
-    osgText::Text::AutoTransformCache&atc = _autoTransformCache[renderInfo.getContextID()];
+    osgText::Text::AutoTransformCache &atc = _autoTransformCache[renderInfo.getContextID()];
 
     osg::Matrix lmv = atc._matrix;
     lmv.postMult(state.getModelViewMatrix());

@@ -5,12 +5,12 @@
 
 #if 0
 
-static bool checkColorMap(const osg::TransferFunction1D&func)
+static bool checkColorMap(const osg::TransferFunction1D &func)
 {
     return func.getColorMap().size() > 0;
 }
 
-static bool readColorMap(osgDB::InputStream&is, osg::TransferFunction1D&func)
+static bool readColorMap(osgDB::InputStream &is, osg::TransferFunction1D &func)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -26,9 +26,9 @@ static bool readColorMap(osgDB::InputStream&is, osg::TransferFunction1D&func)
     return true;
 }
 
-static bool writeColorMap(osgDB::OutputStream&os, const osg::TransferFunction1D&func)
+static bool writeColorMap(osgDB::OutputStream &os, const osg::TransferFunction1D &func)
 {
-    const osg::TransferFunction1D::ColorMap&map = func.getColorMap();
+    const osg::TransferFunction1D::ColorMap &map = func.getColorMap();
 
     os.writeSize(map.size()); os << os.BEGIN_BRACKET << std::endl;
 

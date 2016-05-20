@@ -95,7 +95,7 @@ dxfFile::getVariable(std::string var)
 
 /// parse the dxf sections
 short
-dxfFile::assign(codeValue&cv)
+dxfFile::assign(codeValue &cv)
 {
     std::string s = cv._string;
 

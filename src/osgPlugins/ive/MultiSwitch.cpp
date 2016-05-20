@@ -36,7 +36,7 @@ void MultiSwitch::write(DataOutputStream *out)
     out->writeBool(getNewChildDefaultValue());
     out->writeUInt(getActiveSwitchSet());
 
-    const osgSim::MultiSwitch::SwitchSetList&switchset = getSwitchSetList();
+    const osgSim::MultiSwitch::SwitchSetList &switchset = getSwitchSetList();
     out->writeUInt(switchset.size());
 
     for (unsigned int s = 0; s < switchset.size(); ++s)

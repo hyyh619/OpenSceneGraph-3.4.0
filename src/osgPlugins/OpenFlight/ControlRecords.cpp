@@ -36,7 +36,7 @@ PushLevel() {}
 
 META_Record(PushLevel)
 
-virtual void readRecord(RecordInputStream& /*in*/, Document&document)
+virtual void readRecord(RecordInputStream& /*in*/, Document &document)
 {
     document.pushLevel();
 }
@@ -60,7 +60,7 @@ PopLevel() {}
 
 META_Record(PopLevel)
 
-virtual void read(RecordInputStream& /*in*/, Document&document)
+virtual void read(RecordInputStream& /*in*/, Document &document)
 {
     PrimaryRecord *parentPrimary  = document.getTopOfLevelStack();
     PrimaryRecord *currentPrimary = document.getCurrentPrimaryRecord();
@@ -99,7 +99,7 @@ PushSubface() {}
 
 META_Record(PushSubface)
 
-virtual void read(RecordInputStream& /*in*/, Document&document)
+virtual void read(RecordInputStream& /*in*/, Document &document)
 {
     document.pushSubface();
 }
@@ -123,7 +123,7 @@ PopSubface() {}
 
 META_Record(PopSubface)
 
-virtual void read(RecordInputStream& /*in*/, Document&document)
+virtual void read(RecordInputStream& /*in*/, Document &document)
 {
     document.popSubface();
 }
@@ -147,7 +147,7 @@ PushExtension() {}
 
 META_Record(PushExtension)
 
-virtual void read(RecordInputStream&in, Document&document)
+virtual void read(RecordInputStream &in, Document &document)
 {
     readRecord(in, document);
     document.pushExtension();
@@ -172,7 +172,7 @@ PopExtension() {}
 
 META_Record(PopExtension)
 
-virtual void read(RecordInputStream&in, Document&document)
+virtual void read(RecordInputStream &in, Document &document)
 {
     readRecord(in, document);
     document.popExtension();
@@ -197,7 +197,7 @@ PushAttribute() {}
 
 META_Record(PushAttribute)
 
-virtual void read(RecordInputStream&in, Document&document)
+virtual void read(RecordInputStream &in, Document &document)
 {
     readRecord(in, document);
 }
@@ -221,7 +221,7 @@ PopAttribute() {}
 
 META_Record(PopAttribute)
 
-virtual void read(RecordInputStream&in, Document&document)
+virtual void read(RecordInputStream &in, Document &document)
 {
     readRecord(in, document);
 }

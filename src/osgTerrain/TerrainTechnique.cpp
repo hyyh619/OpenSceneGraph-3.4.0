@@ -67,7 +67,7 @@ TerrainTechnique::TerrainTechnique() :
     setThreadSafeRefUnref(true);
 }
 
-TerrainTechnique::TerrainTechnique(const TerrainTechnique&TerrainTechnique, const osg::CopyOp&copyop) :
+TerrainTechnique::TerrainTechnique(const TerrainTechnique &TerrainTechnique, const osg::CopyOp &copyop) :
     osg::Object(TerrainTechnique, copyop),
     _terrainTile(0)
 {}
@@ -109,7 +109,7 @@ void TerrainTechnique::cleanSceneGraph()
     OSG_NOTICE << className() << "::cleanSceneGraph(..) not implementated yet" << std::endl;
 }
 
-void TerrainTechnique::traverse(osg::NodeVisitor&nv)
+void TerrainTechnique::traverse(osg::NodeVisitor &nv)
 {
     if (!_terrainTile)
         return;

@@ -61,7 +61,7 @@ osg::Node* createHandleNode(Scale2DDragger *cornerScaleDragger, float handleScal
     return geode;
 }
 
-osg::Node* createHandleScene(const osg::Vec3&pos, osg::Node *handleNode, float handleScaleFactor)
+osg::Node* createHandleScene(const osg::Vec3 &pos, osg::Node *handleNode, float handleScaleFactor)
 {
     osg::AutoTransform *at = new osg::AutoTransform;
 
@@ -215,7 +215,7 @@ TabPlaneDragger::TabPlaneDragger(float handleScaleFactor)
 TabPlaneDragger::~TabPlaneDragger()
 {}
 
-bool TabPlaneDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool TabPlaneDragger::handle(const PointerInfo &pointer, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (ea.getButtonMask() & osgGA::GUIEventAdapter::RIGHT_MOUSE_BUTTON)
         return false;

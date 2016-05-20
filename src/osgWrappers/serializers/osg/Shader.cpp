@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkShaderSource(const osg::Shader&shader)
+static bool checkShaderSource(const osg::Shader &shader)
 {
     return !shader.getShaderSource().empty();
 }
 
-static bool readShaderSource(osgDB::InputStream&is, osg::Shader&shader)
+static bool readShaderSource(osgDB::InputStream &is, osg::Shader &shader)
 {
     std::string  code;
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
@@ -25,7 +25,7 @@ static bool readShaderSource(osgDB::InputStream&is, osg::Shader&shader)
     return true;
 }
 
-static bool writeShaderSource(osgDB::OutputStream&os, const osg::Shader&shader)
+static bool writeShaderSource(osgDB::OutputStream &os, const osg::Shader &shader)
 {
     std::vector<std::string> lines;
     std::istringstream       iss(shader.getShaderSource());

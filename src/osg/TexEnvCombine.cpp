@@ -41,7 +41,7 @@ TexEnvCombine::TexEnvCombine() :
 TexEnvCombine::~TexEnvCombine()
 {}
 
-void TexEnvCombine::apply(State&state) const
+void TexEnvCombine::apply(State &state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     unsigned int contextID = state.getContextID();

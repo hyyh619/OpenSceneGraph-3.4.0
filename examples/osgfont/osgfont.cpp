@@ -9,13 +9,13 @@
 
 void textInfo(osgText::Text *text)
 {
-    const osgText::Text::TextureGlyphQuadMap&tgqm = text->getTextureGlyphQuadMap();
+    const osgText::Text::TextureGlyphQuadMap &tgqm = text->getTextureGlyphQuadMap();
 
     const osgText::Text::TextureGlyphQuadMap::const_iterator tgqmi = tgqm.begin();
 
-    const osgText::Text::GlyphQuads&gq = tgqmi->second;
+    const osgText::Text::GlyphQuads &gq = tgqmi->second;
 
-    osgText::String&s = text->getText();
+    osgText::String &s = text->getText();
 
     for (unsigned int i = 0; i < s.size(); i++)
     {
@@ -57,7 +57,7 @@ osg::Camera* createOrthoCamera(double width, double height)
     return camera;
 }
 
-osgText::Text* createLabel(const std::string&l, const char *f, unsigned int size)
+osgText::Text* createLabel(const std::string &l, const char *f, unsigned int size)
 {
     static osg::Vec3 pos(10.0f, 10.0f, 0.0f);
 

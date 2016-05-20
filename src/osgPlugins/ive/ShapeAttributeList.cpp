@@ -62,7 +62,7 @@ void ShapeAttributeList::read(DataInputStream *in)
     }
 }
 
-void ShapeAttributeList::write(DataOutputStream *out, const osgSim::ShapeAttribute&sa)
+void ShapeAttributeList::write(DataOutputStream *out, const osgSim::ShapeAttribute &sa)
 {
     // Write name
     out->writeString(sa.getName());
@@ -95,7 +95,7 @@ void ShapeAttributeList::write(DataOutputStream *out, const osgSim::ShapeAttribu
     }
 }
 
-void ShapeAttributeList::read(DataInputStream *in, osgSim::ShapeAttribute&sa)
+void ShapeAttributeList::read(DataInputStream *in, osgSim::ShapeAttribute &sa)
 {
     // Read name
     sa.setName(in->readString());

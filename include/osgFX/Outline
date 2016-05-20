@@ -37,16 +37,17 @@ namespace osgFX
      * camera->setClearMask(clearMask | GL_STENCIL_BUFFER_BIT);
      * camera->setClearStencil(0);
      */
-    class OSGFX_EXPORT Outline : public Effect
+    class OSGFX_EXPORT Outline: public Effect
     {
-    public:
+public:
         /// Constructor.
         Outline();
 
         /// Copy constructor.
-        Outline(const Outline& copy, const osg::CopyOp& op = osg::CopyOp::SHALLOW_COPY) : Effect(copy, op) {
-            _width = copy._width;
-            _color = copy._color;
+        Outline(const Outline &copy, const osg::CopyOp &op = osg::CopyOp::SHALLOW_COPY) : Effect(copy, op)
+        {
+            _width     = copy._width;
+            _color     = copy._color;
             _technique = copy._technique;
         }
 
@@ -60,27 +61,28 @@ namespace osgFX
         void setWidth(float w);
 
         /// Get outline width.
-        float getWidth() const {
+        float getWidth() const
+        {
             return _width;
         }
 
         /// Set outline color.
-        void setColor(const osg::Vec4& color);
+        void setColor(const osg::Vec4 &color);
 
         /// Get outline color.
-        const osg::Vec4& getColor() const {
+        const osg::Vec4&getColor() const
+        {
             return _color;
         }
 
-    protected:
+protected:
         /// Destructor.
-        virtual ~Outline() {
-        }
+        virtual ~Outline() {}
 
         /// Define available techniques.
         bool define_techniques();
 
-    private:
+private:
         /// Outline width.
         float _width;
 
@@ -88,10 +90,9 @@ namespace osgFX
         osg::Vec4 _color;
 
         /// Technique.
-        class OutlineTechnique;
-        OutlineTechnique* _technique;
+        class            OutlineTechnique;
+        OutlineTechnique *_technique;
     };
-
 }
 
 #endif

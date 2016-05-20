@@ -40,7 +40,7 @@ trpgModel::trpgModel()
     writeHandle = false;
 }
 
-trpgModel::trpgModel(const trpgModel&in) :
+trpgModel::trpgModel(const trpgModel &in) :
     trpgReadWriteable(in)
 {
     if (in.name)
@@ -120,7 +120,7 @@ bool trpgModel::isValid() const
 }
 
 // Copy from one to another
-trpgModel&trpgModel::operator =(const trpgModel&in)
+trpgModel&trpgModel::operator =(const trpgModel &in)
 {
     if (name)
     {
@@ -140,7 +140,7 @@ trpgModel&trpgModel::operator =(const trpgModel&in)
 }
 
 // Compare two models
-int trpgModel::operator ==(const trpgModel&in) const
+int trpgModel::operator ==(const trpgModel &in) const
 {
     if (type != in.type)
         return 0;
@@ -172,7 +172,7 @@ int trpgModel::operator ==(const trpgModel&in) const
 }
 
 // Write a model reference out
-bool trpgModel::Write(trpgWriteBuffer&buf)
+bool trpgModel::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -224,7 +224,7 @@ bool trpgModel::Write(trpgWriteBuffer&buf)
  *******************
  */
 // Get methods
-bool trpgModel::GetType(int&t)
+bool trpgModel::GetType(int &t)
 {
     if (!isValid())
         return false;
@@ -241,7 +241,7 @@ bool trpgModel::GetName(char *str, int strLen) const
     strncpy(str, name, MIN(len, strLen) + 1);
     return true;
 }
-bool trpgModel::GetNumTiles(int&ret) const
+bool trpgModel::GetNumTiles(int &ret) const
 {
     if (!isValid())
         return false;
@@ -249,7 +249,7 @@ bool trpgModel::GetNumTiles(int&ret) const
     ret = useCount;
     return true;
 }
-bool trpgModel::GetReference(trpgDiskRef&ref) const
+bool trpgModel::GetReference(trpgDiskRef &ref) const
 {
     if (!isValid() || type != Local)
         return false;
@@ -258,7 +258,7 @@ bool trpgModel::GetReference(trpgDiskRef&ref) const
     return true;
 }
 
-bool trpgModel::Read(trpgReadBuffer&buf, bool hasHandle)
+bool trpgModel::Read(trpgReadBuffer &buf, bool hasHandle)
 {
     // MD: added complexity here - written multiple ways by
     // mistake, unraveling the various cases.
@@ -348,7 +348,7 @@ void trpgModelTable::SetNumModels(int /*no*/)
     // This method isn't needed with a map
     // models.resize(no);
 }
-void trpgModelTable::SetModel(int id, const trpgModel&mod)
+void trpgModelTable::SetModel(int id, const trpgModel &mod)
 {
     if (id < 0)
         return;
@@ -357,7 +357,7 @@ void trpgModelTable::SetModel(int id, const trpgModel&mod)
     // models[id] = mod;
 }
 
-int trpgModelTable::AddModel(trpgModel&mod)
+int trpgModelTable::AddModel(trpgModel &mod)
 {
     int hdl = modelsMap.size();
 
@@ -371,7 +371,7 @@ int trpgModelTable::AddModel(trpgModel&mod)
     return mod.GetHandle();
 }
 
-int trpgModelTable::FindAddModel(trpgModel&mod)
+int trpgModelTable::FindAddModel(trpgModel &mod)
 {
     ModelMapType::iterator itr = modelsMap.begin();
 
@@ -386,7 +386,7 @@ int trpgModelTable::FindAddModel(trpgModel&mod)
     return AddModel(mod);
 }
 
-bool trpgModelTable::FindByName(const char *name, unsigned int&mId)
+bool trpgModelTable::FindByName(const char *name, unsigned int &mId)
 {
     ModelMapType::const_iterator itr = modelsMap.begin();
 
@@ -426,7 +426,7 @@ bool trpgModelTable::isValid() const
 
 
 // Write out the model table
-bool trpgModelTable::Write(trpgWriteBuffer&buf)
+bool trpgModelTable::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -451,7 +451,7 @@ bool trpgModelTable::Write(trpgWriteBuffer&buf)
  */
 
 // Get methods
-bool trpgModelTable::GetNumModels(int&nm) const
+bool trpgModelTable::GetNumModels(int &nm) const
 {
     if (!isValid())
         return false;
@@ -459,7 +459,7 @@ bool trpgModelTable::GetNumModels(int&nm) const
     nm = modelsMap.size();
     return true;
 }
-bool trpgModelTable::GetModel(int id, trpgModel&model) const
+bool trpgModelTable::GetModel(int id, trpgModel &model) const
 {
     if (!isValid() || id < 0)  // || id >= models.size())
         return false;
@@ -489,7 +489,7 @@ trpgModel* trpgModelTable::GetModelRef(int id)
     return &(itr->second);
 }
 
-bool trpgModelTable::Read(trpgReadBuffer&buf)
+bool trpgModelTable::Read(trpgReadBuffer &buf)
 {
     int32     numModel;
     trpgToken tok;

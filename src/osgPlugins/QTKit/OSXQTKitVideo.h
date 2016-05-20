@@ -46,7 +46,7 @@ virtual bool valid() const
     return (getStatus() != INVALID);
 }
 
-void open(const std::string&file_name);
+void open(const std::string &file_name);
 
 virtual void setVolume(float);
 virtual float getVolume() const;

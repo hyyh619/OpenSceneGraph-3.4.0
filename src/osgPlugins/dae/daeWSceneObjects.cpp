@@ -36,7 +36,7 @@ using namespace ColladaDOM141;
 using namespace osgDAE;
 
 // Write non-standard node data as extra of type "Node" with "OpenSceneGraph" technique
-void daeWriter::writeNodeExtra(osg::Node&node)
+void daeWriter::writeNodeExtra(osg::Node &node)
 {
     unsigned int numDesc = node.getDescriptions().size();
 
@@ -71,7 +71,7 @@ void daeWriter::writeNodeExtra(osg::Node&node)
     }
 }
 
-void daeWriter::apply(osg::Group&node)
+void daeWriter::apply(osg::Group &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();
@@ -103,16 +103,16 @@ void daeWriter::apply(osg::Group&node)
 
         domAny *valueLists = (domAny*)teq->add("ValueLists");
 
-        unsigned int                            pos        = 0;
-        const osgSim::MultiSwitch::SwitchSetList&switchset = multiswitch->getSwitchSetList();
+        unsigned int                             pos        = 0;
+        const osgSim::MultiSwitch::SwitchSetList &switchset = multiswitch->getSwitchSetList();
 
         for (osgSim::MultiSwitch::SwitchSetList::const_iterator sitr = switchset.begin();
              sitr != switchset.end();
              ++sitr, ++pos)
         {
-            domAny                              *valueList = (domAny*)valueLists->add("ValueList");
-            std::stringstream                   fw;
-            const osgSim::MultiSwitch::ValueList&values = *sitr;
+            domAny                               *valueList = (domAny*)valueLists->add("ValueList");
+            std::stringstream                    fw;
+            const osgSim::MultiSwitch::ValueList &values = *sitr;
 
             for (osgSim::MultiSwitch::ValueList::const_iterator itr = values.begin();
                  itr != values.end();
@@ -146,7 +146,7 @@ void daeWriter::apply(osg::Group&node)
 }
 
 
-void daeWriter::apply(osg::Switch&node)
+void daeWriter::apply(osg::Switch &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();
@@ -170,8 +170,8 @@ void daeWriter::apply(osg::Switch&node)
 
         domAny *valueList = (domAny*)teq->add("ValueList");
 
-        std::stringstream           fw;
-        const osg::Switch::ValueList&values = node.getValueList();
+        std::stringstream            fw;
+        const osg::Switch::ValueList &values = node.getValueList();
 
         for (osg::Switch::ValueList::const_iterator itr = values.begin();
              itr != values.end();
@@ -196,7 +196,7 @@ void daeWriter::apply(osg::Switch&node)
     traverse(node);
 }
 
-void daeWriter::apply(osg::Sequence&node)
+void daeWriter::apply(osg::Sequence &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();
@@ -276,7 +276,7 @@ void daeWriter::apply(osg::Sequence&node)
     traverse(node);
 }
 
-void daeWriter::apply(osg::LOD&node)
+void daeWriter::apply(osg::LOD &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();
@@ -320,8 +320,8 @@ void daeWriter::apply(osg::LOD&node)
 
         domAny *valueLists = (domAny*)teq->add("RangeList");
 
-        unsigned int             pos        = 0;
-        const osg::LOD::RangeList&rangelist = node.getRangeList();
+        unsigned int              pos        = 0;
+        const osg::LOD::RangeList &rangelist = node.getRangeList();
 
         for (osg::LOD::RangeList::const_iterator sitr = rangelist.begin();
              sitr != rangelist.end();
@@ -340,12 +340,12 @@ void daeWriter::apply(osg::LOD&node)
     traverse(node);
 }
 
-void daeWriter::apply(osg::ProxyNode&node)
+void daeWriter::apply(osg::ProxyNode &node)
 {
     OSG_WARN << "ProxyNode. Missing " << node.getNumChildren() << " children" << std::endl;
 }
 
-void daeWriter::apply(osg::LightSource&node)
+void daeWriter::apply(osg::LightSource &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();
@@ -481,7 +481,7 @@ void daeWriter::apply(osg::LightSource&node)
     traverse(node);
 }
 
-void daeWriter::apply(osg::Camera&node)
+void daeWriter::apply(osg::Camera &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();
@@ -507,7 +507,7 @@ void daeWriter::apply(osg::Camera&node)
     traverse(node);
 }
 
-void daeWriter::apply(osg::CameraView&node)
+void daeWriter::apply(osg::CameraView &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();

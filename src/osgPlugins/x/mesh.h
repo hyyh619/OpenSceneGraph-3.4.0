@@ -81,7 +81,7 @@ inline const MeshNormals* getMeshNormals() const
 }
 
 /// Parse 'Mesh'.
-void parseMesh(std::istream&fin);
+void parseMesh(std::istream &fin);
 
 private:
 Object *_obj;
@@ -99,13 +99,13 @@ MeshTextureCoords *_textureCoords;
 MeshMaterialList *_materialList;
 
 /// Parse 'MeshNormals'.
-void parseMeshNormals(std::istream&fin);
+void parseMeshNormals(std::istream &fin);
 
 /// Parse 'MeshMaterialList'.
-void parseMeshMaterialList(std::istream&fin);
+void parseMeshMaterialList(std::istream &fin);
 
 /// Read 'MeshTextureCoords'.
-void readMeshTexCoords(std::istream&fin);
+void readMeshTexCoords(std::istream &fin);
 };
 } // namespace
 

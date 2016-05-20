@@ -29,7 +29,7 @@ virtual const char* className() const
     return "TransferFunction Reader/Writer";
 }
 
-ReadResult readTransferFunction(std::istream&fin) const
+ReadResult readTransferFunction(std::istream &fin) const
 {
     osg::TransferFunction1D::ColorMap colorMap;
 
@@ -109,7 +109,7 @@ ReadResult readTransferFunction(std::istream&fin) const
              itr != colorMap.end();
              ++itr)
         {
-            osg::Vec4&c = itr->second;
+            osg::Vec4 &c = itr->second;
             c.r() *= colorScale;
             c.g() *= colorScale;
             c.b() *= colorScale;
@@ -123,12 +123,12 @@ ReadResult readTransferFunction(std::istream&fin) const
     return tf;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options*) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options*) const
 {
     return readTransferFunction(fin);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -147,16 +147,16 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
         return ReadResult::ERROR_IN_READING_FILE;
 }
 
-virtual WriteResult writeTransferFunction(const osg::TransferFunction1D *tf, std::ostream&fout) const
+virtual WriteResult writeTransferFunction(const osg::TransferFunction1D *tf, std::ostream &fout) const
 {
-    const osg::TransferFunction1D::ColorMap&cm        = tf->getColorMap();
-    float                                  colorScale = 255.0f;
+    const osg::TransferFunction1D::ColorMap &cm        = tf->getColorMap();
+    float                                   colorScale = 255.0f;
 
     for (osg::TransferFunction1D::ColorMap::const_iterator itr = cm.begin();
          itr != cm.end();
          ++itr)
     {
-        const osg::Vec4&c = itr->second;
+        const osg::Vec4 &c = itr->second;
         fout << itr->first << " " << c.r() * colorScale << " " << c.g() * colorScale << " " << c.b() * colorScale << " " << c.a() * colorScale << std::endl;
     }
 
@@ -164,7 +164,7 @@ virtual WriteResult writeTransferFunction(const osg::TransferFunction1D *tf, std
 }
 
 
-virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, const osgDB::ReaderWriter::Options*) const
+virtual WriteResult writeObject(const osg::Object &object, std::ostream &fout, const osgDB::ReaderWriter::Options*) const
 {
     const osg::TransferFunction1D *tf = dynamic_cast<const osg::TransferFunction1D*>(&object);
 
@@ -174,7 +174,7 @@ virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, con
     return writeTransferFunction(tf, fout);
 }
 
-virtual WriteResult writeObject(const osg::Object&object, const std::string&fileName, const osgDB::ReaderWriter::Options*) const
+virtual WriteResult writeObject(const osg::Object &object, const std::string &fileName, const osgDB::ReaderWriter::Options*) const
 {
     OSG_NOTICE << "ReaderWriterTF::writeObject" << fileName << std::endl;
 

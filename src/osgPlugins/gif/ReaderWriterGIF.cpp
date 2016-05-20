@@ -396,7 +396,7 @@ int gif_read_stream(GifFileType *gfile, GifByteType *gdata, int glength)
 }
 
 unsigned char*
-simage_gif_load(std::istream&fin,
+simage_gif_load(std::istream &fin,
                 int *width_ret,
                 int *height_ret,
                 int *numComponents_ret,
@@ -647,7 +647,7 @@ virtual const char* className() const
     return "GIF Image Reader";
 }
 
-ReadResult readGIFStream(std::istream&fin) const
+ReadResult readGIFStream(std::istream &fin) const
 {
     unsigned char *imageData = NULL;
     int           width_ret;
@@ -705,22 +705,22 @@ ReadResult readGIFStream(std::istream&fin) const
     return pOsgImage;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options* = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options* = NULL) const
 {
     return readGIFStream(fin);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

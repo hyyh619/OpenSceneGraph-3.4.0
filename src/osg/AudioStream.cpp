@@ -22,6 +22,6 @@ AudioSink::AudioSink() :
 AudioStream::AudioStream()
 {}
 
-AudioStream::AudioStream(const AudioStream&audio, const CopyOp&copyop) :
+AudioStream::AudioStream(const AudioStream &audio, const CopyOp &copyop) :
     osg::Object(audio, copyop)
 {}

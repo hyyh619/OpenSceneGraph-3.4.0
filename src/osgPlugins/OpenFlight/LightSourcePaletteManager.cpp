@@ -60,7 +60,7 @@ int LightSourcePaletteManager::add(osg::Light const *light)
 }
 
 void
-LightSourcePaletteManager::write(DataOutputStream&dos) const
+LightSourcePaletteManager::write(DataOutputStream &dos) const
 {
     using osg::Vec4f;
 
@@ -77,8 +77,8 @@ LightSourcePaletteManager::write(DataOutputStream&dos) const
         static char lightName[64];
         sprintf(lightName, "Light%02d", m.Light->getLightNum());
 
-        int        lightType = INFINITE_LIGHT;
-        Vec4f const&lightPos = m.Light->getPosition();
+        int         lightType = INFINITE_LIGHT;
+        Vec4f const &lightPos = m.Light->getPosition();
         if (lightPos.w() != 0)
         {
             if (m.Light->getSpotCutoff() < 180)

@@ -46,11 +46,11 @@ public:
 TXPPagedLOD();
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-TXPPagedLOD(const TXPPagedLOD&, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+TXPPagedLOD(const TXPPagedLOD&, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Node(txp, TXPPagedLOD);
 
-virtual void traverse(osg::NodeVisitor&nv);
+virtual void traverse(osg::NodeVisitor &nv);
 
 inline void setTileId(int x, int y, int lod)
 {

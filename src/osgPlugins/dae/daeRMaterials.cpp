@@ -39,7 +39,7 @@ using namespace ColladaDOM141;
 #endif
 
 template<typename T>
-void daeReader::getTransparencyCounts(daeDatabase *database, int&zero, int&one) const
+void daeReader::getTransparencyCounts(daeDatabase *database, int &zero, int &one) const
 {
     std::vector<T*> constantVec;
 
@@ -133,9 +133,9 @@ void daeReader::processBindMaterial(domBind_material *bm, domGeometry *geom, osg
         std::string   materialName    = drawable->getName();
         osg::Geometry *cachedGeometry = dynamic_cast<osg::Geometry*>(cachedGeode->getDrawable(i)->asGeometry());
 
-        domInstance_material_Array&ima = bm->getTechnique_common()->getInstance_material_array();
-        std::string               symbol;
-        bool                      found = false;
+        domInstance_material_Array &ima = bm->getTechnique_common()->getInstance_material_array();
+        std::string                symbol;
+        bool                       found = false;
 
         for (size_t j = 0; j < ima.getCount(); j++)
         {
@@ -302,27 +302,27 @@ void daeReader::processProfileCOMMON(osg::StateSet *ss, domProfile_COMMON *pc)
     ss->setMode(GL_CULL_FACE, osg::StateAttribute::ON);   // Cull Back faces
 
     // See if there are any extra's that are supported by OpenSceneGraph
-    const domExtra_Array&ExtraArray    = pc->getExtra_array();
-    size_t              NumberOfExtras = ExtraArray.getCount();
-    size_t              CurrentExtra;
+    const domExtra_Array &ExtraArray    = pc->getExtra_array();
+    size_t               NumberOfExtras = ExtraArray.getCount();
+    size_t               CurrentExtra;
 
     for (CurrentExtra = 0; CurrentExtra < NumberOfExtras; CurrentExtra++)
     {
-        const domTechnique_Array&TechniqueArray    = ExtraArray[CurrentExtra]->getTechnique_array();
-        size_t                  NumberOfTechniques = TechniqueArray.getCount();
-        size_t                  CurrentTechnique;
+        const domTechnique_Array &TechniqueArray    = ExtraArray[CurrentExtra]->getTechnique_array();
+        size_t                   NumberOfTechniques = TechniqueArray.getCount();
+        size_t                   CurrentTechnique;
 
         for (CurrentTechnique = 0; CurrentTechnique < NumberOfTechniques; CurrentTechnique++)
         {
             //  <technique profile="GOOGLEEARTH">
             //      <double_sided>0</double_sided>
             //  </technique>
-            const domTechniqueRef&TechniqueRef = TechniqueArray[CurrentTechnique];
+            const domTechniqueRef &TechniqueRef = TechniqueArray[CurrentTechnique];
             if (TechniqueRef->getProfile() && strcmp(TechniqueRef->getProfile(), "GOOGLEEARTH") == 0)
             {
-                const daeElementRefArray&ElementArray    = TechniqueRef->getContents();
-                size_t                  NumberOfElements = ElementArray.getCount();
-                size_t                  CurrentElement;
+                const daeElementRefArray &ElementArray    = TechniqueRef->getContents();
+                size_t                   NumberOfElements = ElementArray.getCount();
+                size_t                   CurrentElement;
 
                 for (CurrentElement = 0; CurrentElement < NumberOfElements; CurrentElement++)
                 {
@@ -616,7 +616,7 @@ bool daeReader::processColorOrTextureType(const osg::StateSet *ss,
     {
         if (cot->getColor() != NULL)
         {
-            domFloat4&f4 = cot->getColor()->getValue();
+            domFloat4 &f4 = cot->getColor()->getValue();
             mat->setEmission(osg::Material::FRONT_AND_BACK, osg::Vec4(f4[0], f4[1], f4[2], (f4.getCount() == 4) ? f4[3] : 1.0));
             retVal = true;
         }
@@ -648,7 +648,7 @@ bool daeReader::processColorOrTextureType(const osg::StateSet *ss,
     {
         if (cot->getColor() != NULL)
         {
-            domFloat4&f4 = cot->getColor()->getValue();
+            domFloat4 &f4 = cot->getColor()->getValue();
             mat->setAmbient(osg::Material::FRONT_AND_BACK, osg::Vec4(f4[0], f4[1], f4[2], (f4.getCount() == 4) ? f4[3] : 1.0));
             retVal = true;
         }
@@ -682,7 +682,7 @@ bool daeReader::processColorOrTextureType(const osg::StateSet *ss,
     {
         if (cot->getColor() != NULL)
         {
-            domFloat4&f4 = cot->getColor()->getValue();
+            domFloat4 &f4 = cot->getColor()->getValue();
             mat->setDiffuse(osg::Material::FRONT_AND_BACK, osg::Vec4(f4[0], f4[1], f4[2], (f4.getCount() == 4) ? f4[3] : 1.0));
             retVal = true;
         }
@@ -735,7 +735,7 @@ bool daeReader::processColorOrTextureType(const osg::StateSet *ss,
     {
         if (cot->getColor() != NULL)
         {
-            domFloat4&f4 = cot->getColor()->getValue();
+            domFloat4 &f4 = cot->getColor()->getValue();
             mat->setSpecular(osg::Material::FRONT_AND_BACK, osg::Vec4(f4[0], f4[1], f4[2], (f4.getCount() == 4) ? f4[3] : 1.0));
             retVal = true;
         }
@@ -774,7 +774,7 @@ bool daeReader::processColorOrTextureType(const osg::StateSet *ss,
     return retVal;
 }
 
-bool daeReader::GetFloat4Param(xsNCName Reference, domFloat4&f4) const
+bool daeReader::GetFloat4Param(xsNCName Reference, domFloat4 &f4) const
 {
     std::string MyReference = Reference;
 
@@ -789,8 +789,8 @@ bool daeReader::GetFloat4Param(xsNCName Reference, domFloat4&f4) const
         // look here first for setparams
         // I am sure there must be a better way of doing this
         // Maybe the Collada DAE guys can give us a parameter management mechanism !
-        const domInstance_effect::domSetparam_Array&SetParamArray    = _currentInstance_effect->getSetparam_array();
-        size_t                                     NumberOfSetParams = SetParamArray.getCount();
+        const domInstance_effect::domSetparam_Array &SetParamArray    = _currentInstance_effect->getSetparam_array();
+        size_t                                      NumberOfSetParams = SetParamArray.getCount();
 
         for (size_t i = 0; i < NumberOfSetParams; i++)
         {
@@ -822,7 +822,7 @@ bool daeReader::GetFloat4Param(xsNCName Reference, domFloat4&f4) const
         return false;
 }
 
-bool daeReader::GetFloatParam(xsNCName Reference, domFloat&f) const
+bool daeReader::GetFloatParam(xsNCName Reference, domFloat &f) const
 {
     std::string MyReference = Reference;
 
@@ -837,8 +837,8 @@ bool daeReader::GetFloatParam(xsNCName Reference, domFloat&f) const
         // look here first for setparams
         // I am sure there must be a better way of doing this
         // Maybe the Collada DAE guys can give us a parameter management mechanism !
-        const domInstance_effect::domSetparam_Array&SetParamArray    = _currentInstance_effect->getSetparam_array();
-        size_t                                     NumberOfSetParams = SetParamArray.getCount();
+        const domInstance_effect::domSetparam_Array &SetParamArray    = _currentInstance_effect->getSetparam_array();
+        size_t                                      NumberOfSetParams = SetParamArray.getCount();
 
         for (size_t i = 0; i < NumberOfSetParams; i++)
         {
@@ -967,7 +967,7 @@ std::string daeReader::processImagePath(const domImage *pDomImage) const
     return std::string();
 }
 
-float luminance(const osg::Vec4&color)
+float luminance(const osg::Vec4 &color)
 {
     return
         color.r() * 0.212671f +
@@ -1129,7 +1129,7 @@ osg::Texture2D* daeReader::processTexture(
         }
 
         // look for the domImage based on the surface initialization stuff
-        daeIDRef&ref = surface->getFx_surface_init_common()->getInit_from_array()[0]->getValue();
+        daeIDRef &ref = surface->getFx_surface_init_common()->getInit_from_array()[0]->getValue();
         dImg = daeSafeCast<domImage>(getElementFromIDRef(ref));
     }
 
@@ -1164,7 +1164,7 @@ osg::Texture2D* daeReader::processTexture(
 
         if (sampler->getBorder_color() != NULL)
         {
-            const domFloat4&col = sampler->getBorder_color()->getValue();
+            const domFloat4 &col = sampler->getBorder_color()->getValue();
             parameters.border.set(col[0], col[1], col[2], col[3]);
         }
     }
@@ -1277,7 +1277,7 @@ void daeReader::processTransparencySettings(domCommon_transparent_type *ctt,
         opaque = ctt->getOpaque();
         if (ctt->getColor())
         {
-            const domFx_color_common&domColorValue = ctt->getColor()->getValue();
+            const domFx_color_common &domColorValue = ctt->getColor()->getValue();
             transparentColor.set(
                 domColorValue.get(0),
                 domColorValue.get(1),
@@ -1347,13 +1347,13 @@ bool daeReader::copyTextureCoordinateSet(const osg::StateSet *ss, const osg::Geo
     if (!ss->getTextureAttribute(localTextureUnit, osg::StateAttribute::TEXTURE))
         return false;
 
-    const std::string&texCoordSetName = _texCoordSetMap
-                                        [TextureToCoordSetMap::key_type(ss, tuu)];
+    const std::string &texCoordSetName = _texCoordSetMap
+                                         [TextureToCoordSetMap::key_type(ss, tuu)];
     if (texCoordSetName.empty())
         return false;
 
-    const domInstance_material::domBind_vertex_input_Array&bvia = im->getBind_vertex_input_array();
-    size_t                                                k;
+    const domInstance_material::domBind_vertex_input_Array &bvia = im->getBind_vertex_input_array();
+    size_t                                                 k;
 
     for (k = 0; k < bvia.getCount(); k++)
     {
@@ -1378,7 +1378,7 @@ bool daeReader::copyTextureCoordinateSet(const osg::StateSet *ss, const osg::Geo
         OSG_WARN << "Failed to find matching <bind_vertex_input> for " << texCoordSetName << std::endl;
 
         // bind_vertex_input failed, we try bind
-        const domInstance_material::domBind_Array&ba = im->getBind_array();
+        const domInstance_material::domBind_Array &ba = im->getBind_array();
 
         for (k = 0; k < ba.getCount(); k++)
         {

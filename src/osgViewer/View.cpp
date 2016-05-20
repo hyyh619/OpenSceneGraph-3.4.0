@@ -45,7 +45,7 @@
 
 using namespace osgViewer;
 
-osg::DisplaySettings* ViewConfig::getActiveDisplaySetting(osgViewer::View&view) const
+osg::DisplaySettings* ViewConfig::getActiveDisplaySetting(osgViewer::View &view) const
 {
     return view.getDisplaySettings()  ? view.getDisplaySettings() : osg::DisplaySettings::instance().get();
 }
@@ -59,12 +59,12 @@ CollectedCoordinateSystemNodesVisitor() :
 
 META_NodeVisitor("osgViewer", "CollectedCoordinateSystemNodesVisitor")
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     traverse(node);
 }
 
-virtual void apply(osg::CoordinateSystemNode&node)
+virtual void apply(osg::CoordinateSystemNode &node)
 {
     if (_pathToCoordinateSystemNode.empty())
     {
@@ -93,7 +93,7 @@ public:
 ViewerCoordinateFrameCallback(osgViewer::View *view) :
     _view(view) {}
 
-virtual osg::CoordinateFrame getCoordinateFrame(const osg::Vec3d&position) const
+virtual osg::CoordinateFrame getCoordinateFrame(const osg::Vec3d &position) const
 {
     OSG_DEBUG << "getCoordinateFrame(" << position << ")" << std::endl;
 
@@ -177,7 +177,7 @@ View::View() :
 }
 
 
-View::View(const osgViewer::View&view, const osg::CopyOp&copyop) :
+View::View(const osgViewer::View &view, const osg::CopyOp &copyop) :
     osg::Object(true),
     osg::View(view, copyop),
     osgGA::GUIActionAdapter(),
@@ -200,7 +200,7 @@ View::~View()
     OSG_INFO << "Destructing osgViewer::View" << std::endl;
 }
 
-void View::take(osg::View&rhs)
+void View::take(osg::View &rhs)
 {
     osg::View::take(rhs);
 
@@ -418,7 +418,7 @@ void View::removeEventHandler(osgGA::EventHandler *eventHandler)
     }
 }
 
-void View::setCoordinateSystemNodePath(const osg::NodePath&nodePath)
+void View::setCoordinateSystemNodePath(const osg::NodePath &nodePath)
 {
     _coordinateSystemNodePath.setNodePath(nodePath);
 }
@@ -479,12 +479,12 @@ void View::setUpViewOnSingleScreen(unsigned int screenNum)
     apply(new osgViewer::SingleScreen(screenNum));
 }
 
-void View::setUpViewFor3DSphericalDisplay(double radius, double collar, unsigned int screenNum, osg::Image *intensityMap, const osg::Matrixd&projectorMatrix)
+void View::setUpViewFor3DSphericalDisplay(double radius, double collar, unsigned int screenNum, osg::Image *intensityMap, const osg::Matrixd &projectorMatrix)
 {
     apply(new osgViewer::SphericalDisplay(radius, collar, screenNum, intensityMap, projectorMatrix));
 }
 
-void View::setUpViewForPanoramicSphericalDisplay(double radius, double collar, unsigned int screenNum, osg::Image *intensityMap, const osg::Matrixd&projectorMatrix)
+void View::setUpViewForPanoramicSphericalDisplay(double radius, double collar, unsigned int screenNum, osg::Image *intensityMap, const osg::Matrixd &projectorMatrix)
 {
     apply(new osgViewer::PanoramicSphericalDisplay(radius, collar, screenNum, intensityMap, projectorMatrix));
 }
@@ -499,7 +499,7 @@ DepthPartitionSettings::DepthPartitionSettings(DepthMode mode) :
     _zNear(1.0), _zMid(5.0), _zFar(1000.0)
 {}
 
-bool DepthPartitionSettings::getDepthRange(osg::View&view, unsigned int partition, double&zNear, double&zFar)
+bool DepthPartitionSettings::getDepthRange(osg::View &view, unsigned int partition, double &zNear, double &zFar)
 {
     switch (_mode)
     {
@@ -600,7 +600,7 @@ struct MyUpdateSlaveCallback : public osg::View::Slave::UpdateSlaveCallback
 {
     MyUpdateSlaveCallback(DepthPartitionSettings *dps, unsigned int partition) : _dps(dps), _partition(partition) {}
 
-    virtual void updateSlave(osg::View&view, osg::View::Slave&slave)
+    virtual void updateSlave(osg::View &view, osg::View::Slave &slave)
     {
         slave.updateSlaveImplementation(view);
 
@@ -647,7 +647,7 @@ struct MyUpdateSlaveCallback : public osg::View::Slave::UpdateSlaveCallback
 
 typedef std::list<osg::ref_ptr<osg::Camera> > Cameras;
 
-Cameras getActiveCameras(osg::View&view)
+Cameras getActiveCameras(osg::View &view)
 {
     Cameras activeCameras;
 
@@ -658,7 +658,7 @@ Cameras getActiveCameras(osg::View&view)
 
     for (unsigned int i = 0; i < view.getNumSlaves(); ++i)
     {
-        osg::View::Slave&slave = view.getSlave(i);
+        osg::View::Slave &slave = view.getSlave(i);
         if (slave._camera.valid() && slave._camera->getGraphicsContext())
         {
             activeCameras.push_back(slave._camera.get());
@@ -699,7 +699,7 @@ bool View::setUpDepthPartitionForCamera(osg::Camera *cameraToPartition, DepthPar
         if (i >= getNumSlaves())
             return false;
 
-        osg::View::Slave&slave = getSlave(i);
+        osg::View::Slave &slave = getSlave(i);
 
         useMastersSceneData = slave._useMastersSceneData;
         projectionOffset    = slave._projectionOffset;
@@ -726,7 +726,7 @@ bool View::setUpDepthPartitionForCamera(osg::Camera *cameraToPartition, DepthPar
 
         addSlave(camera.get());
 
-        osg::View::Slave&slave = getSlave(getNumSlaves() - 1);
+        osg::View::Slave &slave = getSlave(getNumSlaves() - 1);
 
         slave._useMastersSceneData = useMastersSceneData;
         slave._projectionOffset    = projectionOffset;
@@ -749,7 +749,7 @@ bool View::setUpDepthPartitionForCamera(osg::Camera *cameraToPartition, DepthPar
 
         addSlave(camera.get());
 
-        osg::View::Slave&slave = getSlave(getNumSlaves() - 1);
+        osg::View::Slave &slave = getSlave(getNumSlaves() - 1);
         slave._useMastersSceneData = useMastersSceneData;
         slave._projectionOffset    = projectionOffset;
         slave._viewOffset          = viewOffset;
@@ -829,7 +829,7 @@ void View::assignSceneDataToCameras()
 
     for (unsigned i = 0; i < getNumSlaves(); ++i)
     {
-        Slave&slave = getSlave(i);
+        Slave &slave = getSlave(i);
         if (slave._camera.valid() && slave._useMastersSceneData)
         {
             slave._camera->removeChildren(0, slave._camera->getNumChildren());
@@ -901,7 +901,7 @@ bool View::containsCamera(const osg::Camera *camera) const
 
     for (unsigned i = 0; i < getNumSlaves(); ++i)
     {
-        const Slave&slave = getSlave(i);
+        const Slave &slave = getSlave(i);
         if (slave._camera == camera)
             return true;
     }
@@ -910,7 +910,7 @@ bool View::containsCamera(const osg::Camera *camera) const
 }
 
 
-const osg::Camera* View::getCameraContainingPosition(float x, float y, float&local_x, float&local_y) const
+const osg::Camera* View::getCameraContainingPosition(float x, float y, float &local_x, float &local_y) const
 {
     const osgGA::GUIEventAdapter    *eventState   = getEventQueue()->getCurrentEventState();
     const osgViewer::GraphicsWindow *gw           = dynamic_cast<const osgViewer::GraphicsWindow*>(eventState->getGraphicsContext());
@@ -970,7 +970,7 @@ const osg::Camera* View::getCameraContainingPosition(float x, float y, float&loc
 
     for (int i = getNumSlaves() - 1; i >= 0; --i)
     {
-        const Slave&slave = getSlave(i);
+        const Slave &slave = getSlave(i);
         if (slave._camera.valid() &&
             slave._camera->getAllowEventFocus() &&
             slave._camera->getRenderTargetImplementation() == osg::Camera::FRAME_BUFFER)
@@ -1016,7 +1016,7 @@ const osg::Camera* View::getCameraContainingPosition(float x, float y, float&loc
     return 0;
 }
 
-bool View::computeIntersections(float x, float y, osgUtil::LineSegmentIntersector::Intersections&intersections, osg::Node::NodeMask traversalMask)
+bool View::computeIntersections(float x, float y, osgUtil::LineSegmentIntersector::Intersections &intersections, osg::Node::NodeMask traversalMask)
 {
     float             local_x, local_y;
     const osg::Camera *camera = getCameraContainingPosition(x, y, local_x, local_y);
@@ -1029,7 +1029,7 @@ bool View::computeIntersections(float x, float y, osgUtil::LineSegmentIntersecto
         return false;
 }
 
-bool View::computeIntersections(float x, float y, const osg::NodePath&nodePath, osgUtil::LineSegmentIntersector::Intersections&intersections, osg::Node::NodeMask traversalMask)
+bool View::computeIntersections(float x, float y, const osg::NodePath &nodePath, osgUtil::LineSegmentIntersector::Intersections &intersections, osg::Node::NodeMask traversalMask)
 {
     float             local_x, local_y;
     const osg::Camera *camera = getCameraContainingPosition(x, y, local_x, local_y);
@@ -1042,7 +1042,7 @@ bool View::computeIntersections(float x, float y, const osg::NodePath&nodePath, 
         return false;
 }
 
-bool View::computeIntersections(const osgGA::GUIEventAdapter&ea, osgUtil::LineSegmentIntersector::Intersections&intersections, osg::Node::NodeMask traversalMask)
+bool View::computeIntersections(const osgGA::GUIEventAdapter &ea, osgUtil::LineSegmentIntersector::Intersections &intersections, osg::Node::NodeMask traversalMask)
 {
 #if 1
     if (ea.getNumPointerData() >= 1)
@@ -1058,7 +1058,7 @@ bool View::computeIntersections(const osgGA::GUIEventAdapter&ea, osgUtil::LineSe
     return computeIntersections(ea.getX(), ea.getY(), intersections, traversalMask);
 }
 
-bool View::computeIntersections(const osgGA::GUIEventAdapter&ea, const osg::NodePath&nodePath, osgUtil::LineSegmentIntersector::Intersections&intersections, osg::Node::NodeMask traversalMask)
+bool View::computeIntersections(const osgGA::GUIEventAdapter &ea, const osg::NodePath &nodePath, osgUtil::LineSegmentIntersector::Intersections &intersections, osg::Node::NodeMask traversalMask)
 {
 #if 1
     if (ea.getNumPointerData() >= 1)
@@ -1074,7 +1074,7 @@ bool View::computeIntersections(const osgGA::GUIEventAdapter&ea, const osg::Node
     return computeIntersections(ea.getX(), ea.getY(), nodePath, intersections, traversalMask);
 }
 
-bool View::computeIntersections(const osg::Camera *camera, osgUtil::Intersector::CoordinateFrame cf, float x, float y, osgUtil::LineSegmentIntersector::Intersections&intersections, osg::Node::NodeMask traversalMask)
+bool View::computeIntersections(const osg::Camera *camera, osgUtil::Intersector::CoordinateFrame cf, float x, float y, osgUtil::LineSegmentIntersector::Intersections &intersections, osg::Node::NodeMask traversalMask)
 {
     if (!camera)
         return false;
@@ -1097,7 +1097,7 @@ bool View::computeIntersections(const osg::Camera *camera, osgUtil::Intersector:
     }
 }
 
-bool View::computeIntersections(const osg::Camera *camera, osgUtil::Intersector::CoordinateFrame cf, float x, float y, const osg::NodePath&nodePath, osgUtil::LineSegmentIntersector::Intersections&intersections, osg::Node::NodeMask traversalMask)
+bool View::computeIntersections(const osg::Camera *camera, osgUtil::Intersector::CoordinateFrame cf, float x, float y, const osg::NodePath &nodePath, osgUtil::LineSegmentIntersector::Intersections &intersections, osg::Node::NodeMask traversalMask)
 {
     if (!camera || nodePath.empty())
         return false;
@@ -1257,7 +1257,7 @@ osg::Camera* View::assignKeystoneDistortionCamera(osg::DisplaySettings *ds, osg:
 
 
 
-void View::StereoSlaveCallback::updateSlave(osg::View&view, osg::View::Slave&slave)
+void View::StereoSlaveCallback::updateSlave(osg::View &view, osg::View::Slave &slave)
 {
     osg::Camera     *camera      = slave._camera.get();
     osgViewer::View *viewer_view = dynamic_cast<osgViewer::View*>(&view);
@@ -1330,7 +1330,7 @@ osg::Camera* View::assignStereoCamera(osg::DisplaySettings *ds, osg::GraphicsCon
     addSlave(camera.get(), osg::Matrixd::identity(), osg::Matrixd::identity());
 
     // assign update callback to maintain the correct view and projection matrices
-    osg::View::Slave&slave = getSlave(getNumSlaves() - 1);
+    osg::View::Slave &slave = getSlave(getNumSlaves() - 1);
     slave._updateSlaveCallback = new StereoSlaveCallback(ds, eyeScale);
 
     return camera.release();

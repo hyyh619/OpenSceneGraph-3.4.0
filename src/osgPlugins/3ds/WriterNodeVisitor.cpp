@@ -30,7 +30,7 @@
 #include <string.h>
 
 
-void copyOsgMatrixToLib3dsMatrix(Lib3dsMatrix lib3ds_matrix, const osg::Matrix&osg_matrix)
+void copyOsgMatrixToLib3dsMatrix(Lib3dsMatrix lib3ds_matrix, const osg::Matrix &osg_matrix)
 {
     for (int row = 0; row < 4; ++row)
     {
@@ -41,33 +41,33 @@ void copyOsgMatrixToLib3dsMatrix(Lib3dsMatrix lib3ds_matrix, const osg::Matrix&o
     }
 }
 
-inline void copyOsgVectorToLib3dsVector(Lib3dsVector lib3ds_vector, const osg::Vec3f&osg_vector)
+inline void copyOsgVectorToLib3dsVector(Lib3dsVector lib3ds_vector, const osg::Vec3f &osg_vector)
 {
     lib3ds_vector[0] = osg_vector[0];
     lib3ds_vector[1] = osg_vector[1];
     lib3ds_vector[2] = osg_vector[2];
 }
-inline void copyOsgVectorToLib3dsVector(Lib3dsVector lib3ds_vector, const osg::Vec3d&osg_vector)
-{
-    lib3ds_vector[0] = osg_vector[0];
-    lib3ds_vector[1] = osg_vector[1];
-    lib3ds_vector[2] = osg_vector[2];
-}
-
-inline void copyOsgColorToLib3dsColor(Lib3dsVector lib3ds_vector, const osg::Vec4f&osg_vector)
-{
-    lib3ds_vector[0] = osg_vector[0];
-    lib3ds_vector[1] = osg_vector[1];
-    lib3ds_vector[2] = osg_vector[2];
-}
-inline void copyOsgColorToLib3dsColor(Lib3dsVector lib3ds_vector, const osg::Vec4d&osg_vector)
+inline void copyOsgVectorToLib3dsVector(Lib3dsVector lib3ds_vector, const osg::Vec3d &osg_vector)
 {
     lib3ds_vector[0] = osg_vector[0];
     lib3ds_vector[1] = osg_vector[1];
     lib3ds_vector[2] = osg_vector[2];
 }
 
-inline void copyOsgQuatToLib3dsQuat(float lib3ds_vector[4], const osg::Quat&osg_quat)
+inline void copyOsgColorToLib3dsColor(Lib3dsVector lib3ds_vector, const osg::Vec4f &osg_vector)
+{
+    lib3ds_vector[0] = osg_vector[0];
+    lib3ds_vector[1] = osg_vector[1];
+    lib3ds_vector[2] = osg_vector[2];
+}
+inline void copyOsgColorToLib3dsColor(Lib3dsVector lib3ds_vector, const osg::Vec4d &osg_vector)
+{
+    lib3ds_vector[0] = osg_vector[0];
+    lib3ds_vector[1] = osg_vector[1];
+    lib3ds_vector[2] = osg_vector[2];
+}
+
+inline void copyOsgQuatToLib3dsQuat(float lib3ds_vector[4], const osg::Quat &osg_quat)
 {
     // lib3ds_vector[0] = osg_quat[3];        // Not sure
     // lib3ds_vector[1] = osg_quat[0];
@@ -86,7 +86,7 @@ inline void copyOsgQuatToLib3dsQuat(float lib3ds_vector[4], const osg::Quat&osg_
 
 /// Checks if a filename (\b not path) is 8.3 (an empty name is never 8.3, and a path is never 8.3).
 /// Please note the '8' and '3' limitations are in \b bytes, not in characters (which is different when using UTF8).
-bool is83(const std::string&s)
+bool is83(const std::string &s)
 {
     // 012345678901
     // ABCDEFGH.ABC
@@ -120,7 +120,7 @@ inline std::string::size_type maxNameLen(bool extendedFilePaths, bool isNodeName
 }
 
 /// Tests if the given string is a path supported by 3DS format (8.3, 63 chars max, non empty).
-inline bool is3DSName(const std::string&s, bool extendedFilePaths, bool isNodeName)
+inline bool is3DSName(const std::string &s, bool extendedFilePaths, bool isNodeName)
 {
     unsigned int len = s.length();
 
@@ -145,7 +145,7 @@ class PrimitiveIndexWriter : public osg::PrimitiveIndexFunctor
 {
 public:
 PrimitiveIndexWriter(osg::Geometry  *geo,
-                     ListTriangle&listTriangles,
+                     ListTriangle &listTriangles,
                      unsigned int drawable_n,
                      unsigned int material) :
     osg::PrimitiveIndexFunctor(),
@@ -415,7 +415,7 @@ void PrimitiveIndexWriter::drawArrays(GLenum mode, GLint first, GLsizei count)
 
 
 
-WriterNodeVisitor::Material::Material(WriterNodeVisitor&writerNodeVisitor, osg::StateSet *stateset, osg::Material *mat, osg::Texture *tex, bool preserveName, int index) :
+WriterNodeVisitor::Material::Material(WriterNodeVisitor &writerNodeVisitor, osg::StateSet *stateset, osg::Material *mat, osg::Texture *tex, bool preserveName, int index) :
     index(index),
     diffuse(1, 1, 1, 1),
     ambient(0.2, 0.2, 0.2, 1),
@@ -498,7 +498,7 @@ WriterNodeVisitor::Material::Material(WriterNodeVisitor&writerNodeVisitor, osg::
 
 
 /// Converts an extension to a 3-letters long one equivalent.
-std::string convertExt(const std::string&path, bool extendedFilePaths)
+std::string convertExt(const std::string &path, bool extendedFilePaths)
 {
     if (extendedFilePaths)
         return path;                           // Extensions are not truncated for extended filenames
@@ -515,9 +515,9 @@ std::string convertExt(const std::string&path, bool extendedFilePaths)
 }
 
 
-WriterNodeVisitor::WriterNodeVisitor(Lib3dsFile *file3ds, const std::string&fileName,
+WriterNodeVisitor::WriterNodeVisitor(Lib3dsFile *file3ds, const std::string &fileName,
                                      const osgDB::ReaderWriter::Options *options,
-                                     const std::string&srcDirectory) :
+                                     const std::string &srcDirectory) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _succeeded(true),
     _srcDirectory(srcDirectory),
@@ -562,7 +562,7 @@ void WriterNodeVisitor::writeMaterials()
     {
         for (MaterialMap::iterator itr = _materialMap.begin(); itr != _materialMap.end(); ++itr)
         {
-            const Material&mat = itr->second;
+            const Material &mat = itr->second;
             if (mat.index != static_cast<int>(iMat))
                 continue;                                             // Ugly thing (2)
 
@@ -608,7 +608,7 @@ void WriterNodeVisitor::writeMaterials()
                     _imageSet.insert(ImageSet::value_type(mat.image.get(), path));
                 }
 
-                Lib3dsTextureMap&tex = mat3ds->texture1_map;
+                Lib3dsTextureMap &tex = mat3ds->texture1_map;
                 strcpy(tex.name, path.c_str());
                 // Here we don't assume anything about initial flags state (actually it is set to LIB3DS_TEXTURE_NO_TILE by lib3DS, but this is subject to change)
                 if (mat.texture_transparency)
@@ -635,7 +635,7 @@ void WriterNodeVisitor::writeMaterials()
 /// The function assumes the UTF8 string is valid.
 ///\return A valid UTF8 string which size is less or equal to \c byteLimit.
 // May be moved in osgDB/ConvertUTF?
-std::string utf8TruncateBytes(const std::string&s, std::string::size_type byteLimit)
+std::string utf8TruncateBytes(const std::string &s, std::string::size_type byteLimit)
 {
     // Untruncated strings
     if (s.size() <= byteLimit)
@@ -664,7 +664,7 @@ std::string utf8TruncateBytes(const std::string&s, std::string::size_type byteLi
 #    define truncateFilenameBytes(str, size) std::string(str, 0, size)
 #endif
 
-std::string WriterNodeVisitor::getUniqueName(const std::string&_defaultValue, bool isNodeName, const std::string&_defaultPrefix, int currentPrefixLen)
+std::string WriterNodeVisitor::getUniqueName(const std::string &_defaultValue, bool isNodeName, const std::string &_defaultPrefix, int currentPrefixLen)
 {
     // const unsigned int MAX_LENGTH = maxNameLen(_extendedFilePaths);
     const unsigned int MAX_PREFIX_LENGTH = _extendedFilePaths ? 52 : 6;        // Arbitrarily defined for short names, kept enough room for displaying UINT_MAX (10 characters) for long names.
@@ -677,8 +677,8 @@ std::string WriterNodeVisitor::getUniqueName(const std::string&_defaultValue, bo
     currentPrefixLen = osg::clampBelow(currentPrefixLen, static_cast<int>(MAX_PREFIX_LENGTH));
 
     // Tests if default name is valid and unique
-    NameMap  &nameMap   = isNodeName ? _nodeNameMap : _imageNameMap;
-    PrefixMap&prefixMap = isNodeName ? _nodePrefixMap : _imagePrefixMap;
+    NameMap   &nameMap   = isNodeName ? _nodeNameMap : _imageNameMap;
+    PrefixMap &prefixMap = isNodeName ? _nodePrefixMap : _imagePrefixMap;
 
     // Handling of paths is simple. Algorithm:
     //    - For short names, subdirectories are simply forbidden. Use the simple file name.
@@ -832,7 +832,7 @@ std::string WriterNodeVisitor::getUniqueName(const std::string&_defaultValue, bo
     return "ERROR";
 }
 
-std::string WriterNodeVisitor::getMaterialName(const std::string&inputMaterialName)
+std::string WriterNodeVisitor::getMaterialName(const std::string &inputMaterialName)
 {
     std::string result;
 
@@ -910,7 +910,7 @@ int WriterNodeVisitor::processStateSet(osg::StateSet *ss)
  *  \return the position of the vertice in the final mesh.
  */
 unsigned int
-WriterNodeVisitor::getMeshIndexForGeometryIndex(MapIndices&index_vert,
+WriterNodeVisitor::getMeshIndexForGeometryIndex(MapIndices &index_vert,
                                                 unsigned int index,
                                                 unsigned int drawable_n)
 {
@@ -928,9 +928,9 @@ WriterNodeVisitor::getMeshIndexForGeometryIndex(MapIndices&index_vert,
 
 
 void
-WriterNodeVisitor::buildMesh(osg::Geode&geo,
-                             const osg::Matrix&mat,
-                             MapIndices&index_vert,
+WriterNodeVisitor::buildMesh(osg::Geode &geo,
+                             const osg::Matrix &mat,
+                             MapIndices &index_vert,
                              bool texcoords,
                              Lib3dsMesh        *mesh)
 {
@@ -951,14 +951,14 @@ WriterNodeVisitor::buildMesh(osg::Geode&geo,
 
         if (basevecs->getType() == osg::Array::Vec3ArrayType)
         {
-            const osg::Vec3Array&vecs = *static_cast<const osg::Vec3Array*>(basevecs);
+            const osg::Vec3Array &vecs = *static_cast<const osg::Vec3Array*>(basevecs);
             copyOsgVectorToLib3dsVector(mesh->vertices[it->second], vecs[it->first.first] * mat);
         }
         else if (basevecs->getType() == osg::Array::Vec3dArrayType)
         {
             // Handle double presision vertices by converting them to float with a warning
             OSG_NOTICE << "3DS format only supports single precision vertices. Converting double precision to single." << std::endl;
-            const osg::Vec3dArray&vecs = *static_cast<const osg::Vec3dArray*>(basevecs);
+            const osg::Vec3dArray &vecs = *static_cast<const osg::Vec3dArray*>(basevecs);
             copyOsgVectorToLib3dsVector(mesh->vertices[it->second], vecs[it->first.first] * mat);
         }
         else
@@ -986,7 +986,7 @@ WriterNodeVisitor::buildMesh(osg::Geode&geo,
                 return;
             }
 
-            const osg::Vec2Array&vecs = *static_cast<const osg::Vec2Array*>(texarray);
+            const osg::Vec2Array &vecs = *static_cast<const osg::Vec2Array*>(texarray);
             mesh->texcos[it->second][0] = vecs[it->first.first][0];
             mesh->texcos[it->second][1] = vecs[it->first.first][1];
         }
@@ -1000,7 +1000,7 @@ WriterNodeVisitor::buildMesh(osg::Geode&geo,
 }
 
 unsigned int
-WriterNodeVisitor::calcVertices(osg::Geode&geo)
+WriterNodeVisitor::calcVertices(osg::Geode &geo)
 {
     unsigned int numVertice = 0;
 
@@ -1016,9 +1016,9 @@ WriterNodeVisitor::calcVertices(osg::Geode&geo)
 
 
 void
-WriterNodeVisitor::buildFaces(osg::Geode&geo,
-                              const osg::Matrix&mat,
-                              ListTriangle&listTriangles,
+WriterNodeVisitor::buildFaces(osg::Geode &geo,
+                              const osg::Matrix &mat,
+                              ListTriangle &listTriangles,
                               bool texcoords)
 {
     unsigned int nbTrianglesRemaining = listTriangles.size();
@@ -1088,7 +1088,7 @@ WriterNodeVisitor::buildFaces(osg::Geode&geo,
             lib3ds_mesh_resize_vertices(mesh, osg::minimum(nbVerticesRemaining,  MAX_VERTICES), texcoords ? 0 : 1, 0);        // Not mandatory but will allocate once a big block
         }
 
-        Lib3dsFace&face = mesh->faces[numFace++];
+        Lib3dsFace &face = mesh->faces[numFace++];
         face.index[0] = getMeshIndexForGeometryIndex(index_vert, it->first.t1, it->second);
         face.index[1] = getMeshIndexForGeometryIndex(index_vert, it->first.t2, it->second);
         face.index[2] = getMeshIndexForGeometryIndex(index_vert, it->first.t3, it->second);
@@ -1105,9 +1105,9 @@ WriterNodeVisitor::buildFaces(osg::Geode&geo,
 
 void
 WriterNodeVisitor::createListTriangle(osg::Geometry *geo,
-                                      ListTriangle&listTriangles,
-                                      bool&texcoords,
-                                      unsigned int&drawable_n)
+                                      ListTriangle &listTriangles,
+                                      bool &texcoords,
+                                      unsigned int &drawable_n)
 {
     const osg::Array *basevecs = geo->getVertexArray();
 
@@ -1139,7 +1139,7 @@ WriterNodeVisitor::createListTriangle(osg::Geometry *geo,
     }
 }
 
-void WriterNodeVisitor::apply(osg::Geode&node)
+void WriterNodeVisitor::apply(osg::Geode &node)
 {
     pushStateSet(node.getStateSet());
     // _nameStack.push_back(node.getName());
@@ -1176,7 +1176,7 @@ void WriterNodeVisitor::apply(osg::Geode&node)
         traverse(node);
 }
 
-void WriterNodeVisitor::apply(osg::Billboard&node)
+void WriterNodeVisitor::apply(osg::Billboard &node)
 {
     // TODO Does not handle Billboards' points yet
 
@@ -1228,7 +1228,7 @@ void WriterNodeVisitor::apply(osg::Billboard&node)
 
 
 
-void WriterNodeVisitor::apply(osg::Group&node)
+void WriterNodeVisitor::apply(osg::Group &node)
 {
     pushStateSet(node.getStateSet());
     Lib3dsMeshInstanceNode *parent = _cur3dsNode;
@@ -1245,7 +1245,7 @@ void WriterNodeVisitor::apply(osg::Group&node)
     popStateSet(node.getStateSet());
 }
 
-void WriterNodeVisitor::apply(osg::MatrixTransform&node)
+void WriterNodeVisitor::apply(osg::MatrixTransform &node)
 {
     pushStateSet(node.getStateSet());
     Lib3dsMeshInstanceNode *parent = _cur3dsNode;
@@ -1262,7 +1262,7 @@ void WriterNodeVisitor::apply(osg::MatrixTransform&node)
     popStateSet(node.getStateSet());
 }
 
-void WriterNodeVisitor::apply3DSMatrixNode(osg::Node&node, const osg::Matrix *m, const char* const prefix)
+void WriterNodeVisitor::apply3DSMatrixNode(osg::Node &node, const osg::Matrix *m, const char* const prefix)
 {
     // Note: Creating a mesh instance with no transform and then copying the matrix doesn't work (matrix seems to be a temporary/computed value)
     Lib3dsMeshInstanceNode *parent  = _cur3dsNode;

@@ -30,7 +30,7 @@ TexGen::~TexGen()
 {}
 
 
-void TexGen::setPlane(Coord which, const Plane&plane)
+void TexGen::setPlane(Coord which, const Plane &plane)
 {
     switch (which)
     {
@@ -78,7 +78,7 @@ Plane&TexGen::getPlane(Coord which)
     }
 }
 
-void TexGen::setPlanesFromMatrix(const Matrixd&matrix)
+void TexGen::setPlanesFromMatrix(const Matrixd &matrix)
 {
     _plane_s.set(matrix(0, 0), matrix(1, 0), matrix(2, 0), matrix(3, 0));
     _plane_t.set(matrix(0, 1), matrix(1, 1), matrix(2, 1), matrix(3, 1));

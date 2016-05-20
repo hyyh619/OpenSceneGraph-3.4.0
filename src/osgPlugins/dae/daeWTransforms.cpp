@@ -30,7 +30,7 @@ using namespace ColladaDOM141;
 using namespace osgDAE;
 
 
-void daeWriter::writeUpdateTransformElements(const osg::Vec3&pos, const osg::Quat&q,    const osg::Vec3&s)
+void daeWriter::writeUpdateTransformElements(const osg::Vec3 &pos, const osg::Quat &q,    const osg::Vec3 &s)
 {
     // Make a scale place element
     domScale *scale = daeSafeCast<domScale>(currentNode->add(COLLADA_ELEMENT_SCALE));
@@ -63,7 +63,7 @@ void daeWriter::writeUpdateTransformElements(const osg::Vec3&pos, const osg::Qua
 }
 
 // MATRIX
-void daeWriter::apply(osg::MatrixTransform&node)
+void daeWriter::apply(osg::MatrixTransform &node)
 {
 #ifdef _DEBUG
     debugPrint(node);
@@ -83,7 +83,7 @@ void daeWriter::apply(osg::MatrixTransform&node)
         {
             handled = true;
 
-            const osg::Matrix&mat = node.getMatrix();
+            const osg::Matrix &mat = node.getMatrix();
 
             // Note: though this is a generic matrix, based on the fact that it will be animated by and UpdateMatrixTransform,
             // we assume the initial matrix can be decomposed into translation, rotation and scale elements
@@ -117,7 +117,7 @@ void daeWriter::apply(osg::MatrixTransform&node)
 }
 
 // POSATT
-void daeWriter::apply(osg::PositionAttitudeTransform&node)
+void daeWriter::apply(osg::PositionAttitudeTransform &node)
 {
 #ifdef _DEBUG
     debugPrint(node);
@@ -127,9 +127,9 @@ void daeWriter::apply(osg::PositionAttitudeTransform&node)
     std::string nodeName = getNodeName(node, "positionAttitudeTransform");
     currentNode->setId(nodeName.c_str());
 
-    const osg::Vec3&pos = node.getPosition();
-    const osg::Quat&q   = node.getAttitude();
-    const osg::Vec3&s   = node.getScale();
+    const osg::Vec3 &pos = node.getPosition();
+    const osg::Quat &q   = node.getAttitude();
+    const osg::Vec3 &s   = node.getScale();
 
     osg::Callback *ncb    = node.getUpdateCallback();
     bool          handled = false;
@@ -183,7 +183,7 @@ void daeWriter::apply(osg::PositionAttitudeTransform&node)
     traverse(node);
 }
 
-void daeWriter::apply(osg::Transform&node)
+void daeWriter::apply(osg::Transform &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();
@@ -337,7 +337,7 @@ void daeWriter::apply(osg::Transform&node)
     traverse(node);
 }
 
-void daeWriter::apply(osg::CoordinateSystemNode&node)
+void daeWriter::apply(osg::CoordinateSystemNode &node)
 {
     OSG_WARN << "CoordinateSystemNode. Missing " << node.getNumChildren() << " children" << std::endl;
 }

@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool ShadowTexture_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool ShadowTexture_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool ShadowTexture_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool ShadowTexture_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ShadowTexture_Proxy)
 (

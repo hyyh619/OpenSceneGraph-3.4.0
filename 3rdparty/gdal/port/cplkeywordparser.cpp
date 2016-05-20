@@ -142,7 +142,7 @@ int CPLKeywordParser::ReadGroup(const char *pszPathPrefix)
 /*      white space, ignore comments, split on '='.                     */
 /************************************************************************/
 
-int CPLKeywordParser::ReadPair(CPLString&osName, CPLString&osValue)
+int CPLKeywordParser::ReadPair(CPLString &osName, CPLString &osValue)
 
 {
     osName  = "";
@@ -247,7 +247,7 @@ int CPLKeywordParser::ReadPair(CPLString&osName, CPLString&osValue)
 /*                              ReadWord()                              */
 /************************************************************************/
 
-int CPLKeywordParser::ReadWord(CPLString&osWord)
+int CPLKeywordParser::ReadWord(CPLString &osWord)
 
 {
     osWord = "";

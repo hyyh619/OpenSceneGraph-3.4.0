@@ -29,7 +29,7 @@ namespace ElevationSliceUtils
 {
 struct DistanceHeightCalculator
 {
-    DistanceHeightCalculator(osg::EllipsoidModel *em, const osg::Vec3d&startPoint, osg::Vec3d&endPoint) :
+    DistanceHeightCalculator(osg::EllipsoidModel *em, const osg::Vec3d &startPoint, osg::Vec3d &endPoint) :
         _em(em),
         _startPoint(startPoint),
         _startNormal(startPoint),
@@ -84,7 +84,7 @@ struct DistanceHeightCalculator
     }
 
 
-    void computeDistanceHeight(const osg::Vec3d&v, double&distance, double&height) const
+    void computeDistanceHeight(const osg::Vec3d &v, double &distance, double &height) const
     {
         osg::Vec3d vNormal = v;
 
@@ -150,17 +150,17 @@ struct DistanceHeightXYZ
         distance(0.0),
         height(0.0) {}
 
-    DistanceHeightXYZ(const DistanceHeightXYZ&dh) :
+    DistanceHeightXYZ(const DistanceHeightXYZ &dh) :
         distance(dh.distance),
         height(dh.height),
         position(dh.position) {}
 
-    DistanceHeightXYZ(double d, double h, const osg::Vec3d&pos) :
+    DistanceHeightXYZ(double d, double h, const osg::Vec3d &pos) :
         distance(d),
         height(h),
         position(pos) {}
 
-    bool operator <(const DistanceHeightXYZ&rhs) const
+    bool operator <(const DistanceHeightXYZ &rhs) const
     {
         // small distance values first
         if (distance < rhs.distance)
@@ -173,17 +173,17 @@ struct DistanceHeightXYZ
         return (height < rhs.height);
     }
 
-    bool operator ==(const DistanceHeightXYZ&rhs) const
+    bool operator ==(const DistanceHeightXYZ &rhs) const
     {
         return distance == rhs.distance && height == rhs.height;
     }
 
-    bool operator !=(const DistanceHeightXYZ&rhs) const
+    bool operator !=(const DistanceHeightXYZ &rhs) const
     {
         return distance != rhs.distance || height != rhs.height;
     }
 
-    bool equal_distance(const DistanceHeightXYZ&rhs, double epsilon = 1e-6) const
+    bool equal_distance(const DistanceHeightXYZ &rhs, double epsilon = 1e-6) const
     {
         return osg::absolute(rhs.distance - distance) <= epsilon;
     }
@@ -196,13 +196,13 @@ struct DistanceHeightXYZ
 struct Point : public osg::Referenced, public DistanceHeightXYZ
 {
     Point() {}
-    Point(double d, double h, const osg::Vec3d&pos) :
+    Point(double d, double h, const osg::Vec3d &pos) :
         DistanceHeightXYZ(d, h, pos)
     {
         // OSG_NOTICE<<"Point::Point distance="<<distance<<" height="<<height<<" position="<<position<<std::endl;
     }
 
-    Point(const Point&point) :
+    Point(const Point &point) :
         osg::Referenced(),
                            DistanceHeightXYZ(point) {}
 };
@@ -227,7 +227,7 @@ struct Segment
     }
 
 
-    bool operator <(const Segment&rhs) const
+    bool operator <(const Segment &rhs) const
     {
         if (*_p1 < *rhs._p1)
             return true;
@@ -249,7 +249,7 @@ struct Segment
         ENCLOSED
     };
 
-    Classification compare(const Segment&rhs) const
+    Classification compare(const Segment &rhs) const
     {
         if (*_p1 == *rhs._p1 && *_p2 == *rhs._p2)
             return IDENTICAL;
@@ -296,7 +296,7 @@ struct Segment
         return _p1->height + ((_p2->height - _p1->height) * (d - _p1->distance) / delta);
     }
 
-    double deltaHeight(Point&point) const
+    double deltaHeight(Point &point) const
     {
         return point.height - height(point.distance);
     }
@@ -317,7 +317,7 @@ struct Segment
                          _p1->position * one_minus_r + _p2->position * r);
     }
 
-    Point* createIntersectionPoint(const Segment&rhs) const
+    Point* createIntersectionPoint(const Segment &rhs) const
     {
         double A = _p1->distance;
         double B = _p2->distance - _p1->distance;
@@ -372,7 +372,7 @@ struct LineConstructor
 
 
 
-    void add(double d, double h, const osg::Vec3d&pos)
+    void add(double d, double h, const osg::Vec3d &pos)
     {
         osg::ref_ptr<Point> newPoint = new Point(d, h, pos);
 
@@ -404,7 +404,7 @@ struct LineConstructor
              itr != _segments.end();
              ++itr)
         {
-            const Segment&seg = *itr;
+            const Segment &seg = *itr;
             OSG_NOTICE << "p1 = " << (seg._p1->distance) << " " << (seg._p1->height) << "  p2 = " << (seg._p2->distance) << " " << (seg._p2->height) << "\t";
 
             SegmentSet::iterator nextItr = itr;
@@ -442,8 +442,8 @@ struct LineConstructor
                  itr != _segments.end();
                  ++itr)
             {
-                const Segment&s = *itr;
-                osg::Vec3d   p;
+                const Segment &s = *itr;
+                osg::Vec3d    p;
 
 
                 double latitude, longitude, height;
@@ -496,8 +496,8 @@ struct LineConstructor
                     // need to work out which points are overlapping - lhs_p2 && rhs_p1  or  lhs_p1 and rhs_p2
                     // also need to check for cross cases.
 
-                    const Segment&lhs = *itr;
-                    const Segment&rhs = *nextItr;
+                    const Segment &lhs = *itr;
+                    const Segment &rhs = *nextItr;
 
                     bool rhs_p1_inside = (lhs._p1->distance <= rhs._p1->distance) && (rhs._p1->distance <= lhs._p2->distance);
                     bool lhs_p2_inside = (rhs._p1->distance <= lhs._p2->distance) && (lhs._p2->distance <= rhs._p2->distance);
@@ -615,10 +615,10 @@ struct LineConstructor
                 {
                     // need to work out if rhs is below lhs or rhs is above lhs or crossing
 
-                    const Segment&enclosing = *itr;
-                    const Segment&enclosed  = *nextItr;
-                    double       dh1        = enclosing.deltaHeight(*enclosed._p1);
-                    double       dh2        = enclosing.deltaHeight(*enclosed._p2);
+                    const Segment &enclosing = *itr;
+                    const Segment &enclosed  = *nextItr;
+                    double        dh1        = enclosing.deltaHeight(*enclosed._p1);
+                    double        dh2        = enclosing.deltaHeight(*enclosed._p2);
 
                     if (dh1 <= epsilon && dh2 <= epsilon)
                     {
@@ -925,10 +925,10 @@ struct LineConstructor
                 case (Segment::ENCLOSED):
                 {
                     // need to work out if lhs is below rhs or lhs is above rhs or crossing
-                    const Segment&enclosing = *nextItr;
-                    const Segment&enclosed  = *itr;
-                    double       dh1        = enclosing.deltaHeight(*enclosed._p1);
-                    double       dh2        = enclosing.deltaHeight(*enclosed._p2);
+                    const Segment &enclosing = *nextItr;
+                    const Segment &enclosed  = *itr;
+                    double        dh1        = enclosing.deltaHeight(*enclosed._p1);
+                    double        dh2        = enclosing.deltaHeight(*enclosed._p2);
 
                     double d_left  = enclosed._p1->distance - enclosing._p1->distance;
                     double d_right = enclosing._p2->distance - enclosed._p2->distance;
@@ -1103,7 +1103,7 @@ struct LineConstructor
         return total;
     }
 
-    void copyPoints(ElevationSlice::Vec3dList&intersections, ElevationSlice::DistanceHeightList&distanceHeightIntersections)
+    void copyPoints(ElevationSlice::Vec3dList &intersections, ElevationSlice::DistanceHeightList &distanceHeightIntersections)
     {
         SegmentSet::iterator prevItr = _segments.begin();
         SegmentSet::iterator nextItr = prevItr;
@@ -1247,7 +1247,7 @@ void ElevationSlice::computeIntersections(osg::Node *scene, osg::Node::NodeMask 
 
     scene->accept(_intersectionVisitor);
 
-    osgUtil::PlaneIntersector::Intersections&intersections = intersector->getIntersections();
+    osgUtil::PlaneIntersector::Intersections &intersections = intersector->getIntersections();
 
     typedef osgUtil::PlaneIntersector::Intersection::Polyline Polyline;
     typedef osgUtil::PlaneIntersector::Intersection::Attributes Attributes;
@@ -1260,7 +1260,7 @@ void ElevationSlice::computeIntersections(osg::Node *scene, osg::Node::NodeMask 
              itr != intersections.end();
              ++itr)
         {
-            osgUtil::PlaneIntersector::Intersection&intersection = *itr;
+            osgUtil::PlaneIntersector::Intersection &intersection = *itr;
 
             if (intersection.matrix.valid())
             {
@@ -1285,8 +1285,8 @@ void ElevationSlice::computeIntersections(osg::Node *scene, osg::Node::NodeMask 
              itr != intersections.end();
              ++itr)
         {
-            osgUtil::PlaneIntersector::Intersection&intersection = *itr;
-            osg::Geometry                          *geometry     = new osg::Geometry;
+            osgUtil::PlaneIntersector::Intersection &intersection = *itr;
+            osg::Geometry                           *geometry     = new osg::Geometry;
 
             osg::Vec3Array *vertices = new osg::Vec3Array;
             vertices->reserve(intersection.polyline.size());
@@ -1326,7 +1326,7 @@ void ElevationSlice::computeIntersections(osg::Node *scene, osg::Node::NodeMask 
                  itr != intersections.end();
                  ++itr)
             {
-                osgUtil::PlaneIntersector::Intersection&intersection = *itr;
+                osgUtil::PlaneIntersector::Intersection &intersection = *itr;
 
                 if (intersection.attributes.size() != intersection.polyline.size())
                     continue;
@@ -1337,8 +1337,8 @@ void ElevationSlice::computeIntersections(osg::Node *scene, osg::Node::NodeMask 
                      pitr != intersection.polyline.end();
                      ++pitr, ++aitr)
                 {
-                    const osg::Vec3d&v = *pitr;
-                    double          distance, height;
+                    const osg::Vec3d &v = *pitr;
+                    double           distance, height;
                     dhc.computeDistanceHeight(v, distance, height);
 
                     double pi_height = *aitr;
@@ -1358,15 +1358,15 @@ void ElevationSlice::computeIntersections(osg::Node *scene, osg::Node::NodeMask 
                  itr != intersections.end();
                  ++itr)
             {
-                osgUtil::PlaneIntersector::Intersection&intersection = *itr;
+                osgUtil::PlaneIntersector::Intersection &intersection = *itr;
 
                 for (Polyline::iterator pitr = intersection.polyline.begin();
                      pitr != intersection.polyline.end();
                      ++pitr)
                 {
-                    const osg::Vec3d&v = *pitr;
-                    osg::Vec2d      delta_xy(v.x() - _startPoint.x(), v.y() - _startPoint.y());
-                    double          distance = delta_xy.length();
+                    const osg::Vec3d &v = *pitr;
+                    osg::Vec2d       delta_xy(v.x() - _startPoint.x(), v.y() - _startPoint.y());
+                    double           distance = delta_xy.length();
 
                     constructor.add(distance, v.z(), v);
                 }
@@ -1434,7 +1434,7 @@ void ElevationSlice::computeIntersections(osg::Node *scene, osg::Node::NodeMask 
     }
 }
 
-ElevationSlice::Vec3dList ElevationSlice::computeElevationSlice(osg::Node *scene, const osg::Vec3d&startPoint, const osg::Vec3d&endPoint, osg::Node::NodeMask traversalMask)
+ElevationSlice::Vec3dList ElevationSlice::computeElevationSlice(osg::Node *scene, const osg::Vec3d &startPoint, const osg::Vec3d &endPoint, osg::Node::NodeMask traversalMask)
 {
     ElevationSlice es;
 

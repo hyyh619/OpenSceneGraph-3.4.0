@@ -48,7 +48,7 @@ class MoveEarthySkyWithEyePointTransform : public osg::Transform
 {
 public:
 /** Get the transformation matrix which moves from local coords to world coords.*/
-virtual bool computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+virtual bool computeLocalToWorldMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(nv);
 
@@ -62,7 +62,7 @@ virtual bool computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv)
 }
 
 /** Get the transformation matrix which moves from world coords to local coords.*/
-virtual bool computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+virtual bool computeWorldToLocalMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     std::cout << "computing transform" << std::endl;
 

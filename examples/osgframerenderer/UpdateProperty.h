@@ -14,7 +14,7 @@ class UpdateProperty : public osg::Object
 public:
 
 UpdateProperty() {}
-UpdateProperty(const UpdateProperty&up, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) {}
+UpdateProperty(const UpdateProperty &up, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) {}
 
 META_Object(gsc, UpdateProperty);
 

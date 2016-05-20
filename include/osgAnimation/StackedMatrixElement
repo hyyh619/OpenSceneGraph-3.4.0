@@ -23,32 +23,51 @@
 
 namespace osgAnimation
 {
-
-    class OSGANIMATION_EXPORT StackedMatrixElement : public StackedTransformElement
+    class OSGANIMATION_EXPORT StackedMatrixElement: public StackedTransformElement
     {
-    public:
+public:
         META_Object(osgAnimation, StackedMatrixElement);
 
         StackedMatrixElement();
-        StackedMatrixElement(const StackedMatrixElement&, const osg::CopyOp&);
-        StackedMatrixElement(const std::string& name, const osg::Matrix& matrix);
-        StackedMatrixElement(const osg::Matrix& matrix);
+        StackedMatrixElement(const StackedMatrixElement &, const osg::CopyOp &);
+        StackedMatrixElement(const std::string & name, const osg::Matrix & matrix);
+        StackedMatrixElement(const osg::Matrix & matrix);
 
-        void applyToMatrix(osg::Matrix& matrix) const { matrix = _matrix * matrix; }
-        osg::Matrix getAsMatrix() const { return _matrix; }
-        const osg::Matrix& getMatrix() const { return _matrix;}
-        void setMatrix(const osg::Matrix& matrix) { _matrix = matrix;}
-        bool isIdentity() const { return _matrix.isIdentity(); }
+        void applyToMatrix(osg::Matrix &matrix) const
+        {
+            matrix = _matrix * matrix;
+        }
+        osg::Matrix getAsMatrix() const
+        {
+            return _matrix;
+        }
+        const osg::Matrix&getMatrix() const
+        {
+            return _matrix;
+        }
+        void setMatrix(const osg::Matrix &matrix)
+        {
+            _matrix = matrix;
+        }
+        bool isIdentity() const
+        {
+            return _matrix.isIdentity();
+        }
         void update(float t = 0.0);
         virtual Target* getOrCreateTarget();
-        virtual Target* getTarget() {return _target.get();}
-        virtual const Target* getTarget() const {return _target.get();}
+        virtual Target* getTarget()
+        {
+            return _target.get();
+        }
+        virtual const Target* getTarget() const
+        {
+            return _target.get();
+        }
 
-    protected:
+protected:
         osg::Matrix _matrix;
-        osg::ref_ptr<MatrixTarget> _target;
+        osg::ref_ptr < MatrixTarget > _target;
     };
-
 }
 
 #endif

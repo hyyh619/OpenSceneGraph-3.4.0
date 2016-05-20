@@ -11,8 +11,8 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool DOFTransform_readLocalData(Object&obj, Input&fr);
-bool DOFTransform_writeLocalData(const Object&obj, Output&fw);
+bool DOFTransform_readLocalData(Object &obj, Input &fr);
+bool DOFTransform_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(g_DOFTransformProxy)
@@ -25,11 +25,11 @@ REGISTER_DOTOSGWRAPPER(g_DOFTransformProxy)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool DOFTransform_readLocalData(Object&obj, Input&fr)
+bool DOFTransform_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    DOFTransform&dof = static_cast<DOFTransform&>(obj);
+    DOFTransform &dof = static_cast<DOFTransform&>(obj);
 
     if (fr.matchSequence("PutMatrix {"))
     {
@@ -140,11 +140,11 @@ bool DOFTransform_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool DOFTransform_writeLocalData(const Object&obj, Output&fw)
+bool DOFTransform_writeLocalData(const Object &obj, Output &fw)
 {
-    const DOFTransform&transform = static_cast<const DOFTransform&>(obj);
+    const DOFTransform &transform = static_cast<const DOFTransform&>(obj);
 
-    const Matrix&matrix = transform.getPutMatrix();
+    const Matrix &matrix = transform.getPutMatrix();
 
     fw.indent() << "PutMatrix {" << std::endl;
     fw.moveIn();

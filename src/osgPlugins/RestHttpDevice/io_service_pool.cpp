@@ -61,7 +61,7 @@ void io_service_pool::stop()
 asio::io_service&io_service_pool::get_io_service()
 {
     // Use a round-robin scheme to choose the next io_service to use.
-    asio::io_service&io_service = *io_services_[next_io_service_];
+    asio::io_service &io_service = *io_services_[next_io_service_];
 
     ++next_io_service_;
     if (next_io_service_ == io_services_.size())

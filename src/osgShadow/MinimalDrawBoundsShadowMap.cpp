@@ -36,7 +36,7 @@ MinimalDrawBoundsShadowMap::MinimalDrawBoundsShadowMap() : BaseClass()
 {}
 
 MinimalDrawBoundsShadowMap::MinimalDrawBoundsShadowMap
-    (const MinimalDrawBoundsShadowMap&copy, const osg::CopyOp&copyop) :
+    (const MinimalDrawBoundsShadowMap &copy, const osg::CopyOp &copyop) :
     BaseClass(copy, copyop)
 {}
 
@@ -188,17 +188,17 @@ osg::BoundingBox MinimalDrawBoundsShadowMap::ViewData::scanImage
     return bb;
 }
 
-void MinimalDrawBoundsShadowMap::ViewData::performBoundAnalysis(const osg::Camera&camera)
+void MinimalDrawBoundsShadowMap::ViewData::performBoundAnalysis(const osg::Camera &camera)
 {
     if (!_projection.valid())
         return;
 
-    osg::Camera::BufferAttachmentMap&bam
+    osg::Camera::BufferAttachmentMap &bam
         = const_cast<osg::Camera&>(camera).getBufferAttachmentMap();
 #if ANALYSIS_DEPTH
-    osg::Camera::Attachment&attachment = bam[osg::Camera::DEPTH_BUFFER];
+    osg::Camera::Attachment &attachment = bam[osg::Camera::DEPTH_BUFFER];
 #else
-    osg::Camera::Attachment&attachment = bam[osg::Camera::COLOR_BUFFER];
+    osg::Camera::Attachment &attachment = bam[osg::Camera::COLOR_BUFFER];
 #endif
 
     const osg::ref_ptr<osg::Image> image = attachment._image.get();

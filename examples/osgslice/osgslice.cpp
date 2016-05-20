@@ -39,7 +39,7 @@ SliceProcessor() : _sliceNumber(128), _sliceDelta(0.1), _nearPlane(0.0), _farPla
 {
     //
 }
-SliceProcessor(const double&objectRadius, unsigned int numberSlices) : _sliceNumber(numberSlices)
+SliceProcessor(const double &objectRadius, unsigned int numberSlices) : _sliceNumber(numberSlices)
 {
     _sliceDelta = (objectRadius * 2) / _sliceNumber;
     _nearPlane  = objectRadius;                                 // note: distance from viewpoint is going to be set 2x radius
@@ -118,8 +118,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    const osg::BoundingSphere&bs = loadedModel->getBound();
-    SliceProcessor           *sp = new SliceProcessor((double)bs.radius(), numberSlices);
+    const osg::BoundingSphere &bs = loadedModel->getBound();
+    SliceProcessor            *sp = new SliceProcessor((double)bs.radius(), numberSlices);
     if (nearClip != 0.0)
         sp->_nearPlane = nearClip;
 

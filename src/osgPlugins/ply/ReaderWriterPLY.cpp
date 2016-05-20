@@ -48,7 +48,7 @@ virtual const char* className()
 {
     return "ReaderWriterPLY";
 }
-virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options*) const;
+virtual ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options*) const;
 protected:
 };
 
@@ -61,7 +61,7 @@ REGISTER_OSGPLUGIN(ply, ReaderWriterPLY)
 // ! \osgDB. Load read ply file and if it successes return the osg::Node
 // !
 ///////////////////////////////////////////////////////////////////////////////
-osgDB::ReaderWriter::ReadResult ReaderWriterPLY::readNode(const std::string&filename, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterPLY::readNode(const std::string &filename, const osgDB::ReaderWriter::Options *options) const
 {
     // Get the file extension
     std::string ext = osgDB::getFileExtension(filename);

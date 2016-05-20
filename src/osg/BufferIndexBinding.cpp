@@ -30,7 +30,7 @@ BufferIndexBinding::BufferIndexBinding(GLenum target, GLuint index, BufferObject
     : _target(target), _index(index), _bufferObject(bo), _offset(offset), _size(size)
 {}
 
-BufferIndexBinding::BufferIndexBinding(const BufferIndexBinding&rhs, const CopyOp&copyop)
+BufferIndexBinding::BufferIndexBinding(const BufferIndexBinding &rhs, const CopyOp &copyop)
     : StateAttribute(rhs, copyop),
     _target(rhs._target), _index(rhs._index),
     _bufferObject(static_cast<BufferObject*>(copyop(rhs._bufferObject.get()))),
@@ -41,7 +41,7 @@ BufferIndexBinding::BufferIndexBinding(const BufferIndexBinding&rhs, const CopyO
 BufferIndexBinding::~BufferIndexBinding()
 {}
 
-void BufferIndexBinding::apply(State&state) const
+void BufferIndexBinding::apply(State &state) const
 {
     if (_bufferObject.valid())
     {
@@ -71,8 +71,8 @@ UniformBufferBinding::UniformBufferBinding(GLuint index, BufferObject *bo, GLint
     : BufferIndexBinding(GL_UNIFORM_BUFFER, index, bo, offset, size)
 {}
 
-UniformBufferBinding::UniformBufferBinding(const UniformBufferBinding&rhs,
-                                           const CopyOp&copyop)
+UniformBufferBinding::UniformBufferBinding(const UniformBufferBinding &rhs,
+                                           const CopyOp &copyop)
     : BufferIndexBinding(rhs, copyop)
 {}
 
@@ -85,7 +85,7 @@ TransformFeedbackBufferBinding::TransformFeedbackBufferBinding(GLuint index, Buf
     : BufferIndexBinding(GL_TRANSFORM_FEEDBACK_BUFFER, index, bo, offset, size)
 {}
 
-TransformFeedbackBufferBinding::TransformFeedbackBufferBinding(const TransformFeedbackBufferBinding&rhs, const CopyOp&copyop)
+TransformFeedbackBufferBinding::TransformFeedbackBufferBinding(const TransformFeedbackBufferBinding &rhs, const CopyOp &copyop)
     : BufferIndexBinding(rhs, copyop)
 {}
 
@@ -98,11 +98,11 @@ AtomicCounterBufferBinding::AtomicCounterBufferBinding(GLuint index, BufferObjec
     : BufferIndexBinding(GL_ATOMIC_COUNTER_BUFFER, index, bo, offset, size)
 {}
 
-AtomicCounterBufferBinding::AtomicCounterBufferBinding(const AtomicCounterBufferBinding&rhs, const CopyOp&copyop)
+AtomicCounterBufferBinding::AtomicCounterBufferBinding(const AtomicCounterBufferBinding &rhs, const CopyOp &copyop)
     : BufferIndexBinding(rhs, copyop)
 {}
 
-void AtomicCounterBufferBinding::readData(osg::State&state, osg::UIntArray&uintArray) const
+void AtomicCounterBufferBinding::readData(osg::State &state, osg::UIntArray &uintArray) const
 {
     if (!_bufferObject)
         return;
@@ -140,7 +140,7 @@ ShaderStorageBufferBinding::ShaderStorageBufferBinding(GLuint index, BufferObjec
     : BufferIndexBinding(GL_SHADER_STORAGE_BUFFER, index, bo, offset, size)
 {}
 
-ShaderStorageBufferBinding::ShaderStorageBufferBinding(const ShaderStorageBufferBinding&rhs, const CopyOp&copyop)
+ShaderStorageBufferBinding::ShaderStorageBufferBinding(const ShaderStorageBufferBinding &rhs, const CopyOp &copyop)
     : BufferIndexBinding(rhs, copyop)
 {}
 } // namespace osg

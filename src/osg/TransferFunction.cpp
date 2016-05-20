@@ -26,7 +26,7 @@ using namespace osg;
 TransferFunction::TransferFunction()
 {}
 
-TransferFunction::TransferFunction(const TransferFunction&tf, const CopyOp&copyop) :
+TransferFunction::TransferFunction(const TransferFunction &tf, const CopyOp &copyop) :
     Object(tf, copyop)
 {}
 
@@ -40,7 +40,7 @@ TransferFunction::~TransferFunction()
 TransferFunction1D::TransferFunction1D()
 {}
 
-TransferFunction1D::TransferFunction1D(const TransferFunction1D&tf, const CopyOp&copyop) :
+TransferFunction1D::TransferFunction1D(const TransferFunction1D &tf, const CopyOp &copyop) :
     TransferFunction(tf, copyop)
 {
     allocate(tf.getNumberImageCells());
@@ -55,7 +55,7 @@ void TransferFunction1D::allocate(unsigned int numX)
     updateImage();
 }
 
-void TransferFunction1D::clear(const osg::Vec4&color)
+void TransferFunction1D::clear(const osg::Vec4 &color)
 {
     ColorMap newColours;
 
@@ -65,7 +65,7 @@ void TransferFunction1D::clear(const osg::Vec4&color)
     assign(newColours);
 }
 
-void TransferFunction1D::assignToImage(float lower_v, const osg::Vec4&lower_c, float upper_v, const osg::Vec4&upper_c)
+void TransferFunction1D::assignToImage(float lower_v, const osg::Vec4 &lower_c, float upper_v, const osg::Vec4 &upper_c)
 {
     int       endPos     = getNumberImageCells() - 1;
     float     minimum    = _colorMap.begin()->first;
@@ -113,7 +113,7 @@ void TransferFunction1D::assignToImage(float lower_v, const osg::Vec4&lower_c, f
 }
 
 
-void TransferFunction1D::setColor(float v, const osg::Vec4&color, bool updateImage)
+void TransferFunction1D::setColor(float v, const osg::Vec4 &color, bool updateImage)
 {
     if (!updateImage)
     {
@@ -177,11 +177,11 @@ osg::Vec4 TransferFunction1D::getColor(float v) const
     // range.first will be at the next element after v, so move it before.
     --range.first;
 
-    float          vBefore  = range.first->first;
-    const osg::Vec4&cBefore = range.first->second;
+    float           vBefore  = range.first->first;
+    const osg::Vec4 &cBefore = range.first->second;
 
-    float          vAfter  = range.second->first;
-    const osg::Vec4&cAfter = range.second->second;
+    float           vAfter  = range.second->first;
+    const osg::Vec4 &cAfter = range.second->second;
 
     float r = (v - vBefore) / (vAfter - vBefore);
 
@@ -189,7 +189,7 @@ osg::Vec4 TransferFunction1D::getColor(float v) const
 }
 
 
-void TransferFunction1D::assign(const ColorMap&newColours)
+void TransferFunction1D::assign(const ColorMap &newColours)
 {
     if (&_colorMap != &newColours)
         _colorMap = newColours;
@@ -228,10 +228,10 @@ void TransferFunction1D::updateImage()
          upper_itr != _colorMap.end();
          ++upper_itr)
     {
-        float          lower_v  = lower_itr->first;
-        const osg::Vec4&lower_c = lower_itr->second;
-        float          upper_v  = upper_itr->first;
-        const osg::Vec4&upper_c = upper_itr->second;
+        float           lower_v  = lower_itr->first;
+        const osg::Vec4 &lower_c = lower_itr->second;
+        float           upper_v  = upper_itr->first;
+        const osg::Vec4 &upper_c = upper_itr->second;
 
         assignToImage(lower_v, lower_c, upper_v, upper_c);
 

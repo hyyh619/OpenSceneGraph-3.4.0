@@ -36,7 +36,7 @@ static const char* const PATH_SEPARATORS     = "/\\";
 static unsigned int      PATH_SEPARATORS_LEN = 2;
 
 
-std::string osgDB::getFilePath(const std::string&fileName)
+std::string osgDB::getFilePath(const std::string &fileName)
 {
     std::string::size_type slash = fileName.find_last_of(PATH_SEPARATORS);
 
@@ -47,7 +47,7 @@ std::string osgDB::getFilePath(const std::string&fileName)
 }
 
 
-std::string osgDB::getSimpleFileName(const std::string&fileName)
+std::string osgDB::getSimpleFileName(const std::string &fileName)
 {
     std::string::size_type slash = fileName.find_last_of(PATH_SEPARATORS);
 
@@ -58,7 +58,7 @@ std::string osgDB::getSimpleFileName(const std::string&fileName)
 }
 
 
-std::string osgDB::getFileExtension(const std::string&fileName)
+std::string osgDB::getFileExtension(const std::string &fileName)
 {
     std::string::size_type dot   = fileName.find_last_of('.');
     std::string::size_type slash = fileName.find_last_of(PATH_SEPARATORS);
@@ -69,7 +69,7 @@ std::string osgDB::getFileExtension(const std::string&fileName)
     return std::string(fileName.begin() + dot + 1, fileName.end());
 }
 
-std::string osgDB::getFileExtensionIncludingDot(const std::string&fileName)
+std::string osgDB::getFileExtensionIncludingDot(const std::string &fileName)
 {
     std::string::size_type dot   = fileName.find_last_of('.');
     std::string::size_type slash = fileName.find_last_of(PATH_SEPARATORS);
@@ -80,7 +80,7 @@ std::string osgDB::getFileExtensionIncludingDot(const std::string&fileName)
     return std::string(fileName.begin() + dot, fileName.end());
 }
 
-std::string osgDB::convertFileNameToWindowsStyle(const std::string&fileName)
+std::string osgDB::convertFileNameToWindowsStyle(const std::string &fileName)
 {
     std::string new_fileName(fileName);
 
@@ -94,7 +94,7 @@ std::string osgDB::convertFileNameToWindowsStyle(const std::string&fileName)
     return new_fileName;
 }
 
-std::string osgDB::convertFileNameToUnixStyle(const std::string&fileName)
+std::string osgDB::convertFileNameToUnixStyle(const std::string &fileName)
 {
     std::string new_fileName(fileName);
 
@@ -117,7 +117,7 @@ char osgDB::getNativePathSeparator()
 #endif
 }
 
-bool osgDB::isFileNameNativeStyle(const std::string&fileName)
+bool osgDB::isFileNameNativeStyle(const std::string &fileName)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
     return fileName.find(UNIX_PATH_SEPARATOR) == std::string::npos; // return true if no unix style slash exist
@@ -126,7 +126,7 @@ bool osgDB::isFileNameNativeStyle(const std::string&fileName)
 #endif
 }
 
-std::string osgDB::convertFileNameToNativeStyle(const std::string&fileName)
+std::string osgDB::convertFileNameToNativeStyle(const std::string &fileName)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
     return convertFileNameToWindowsStyle(fileName);
@@ -137,12 +137,12 @@ std::string osgDB::convertFileNameToNativeStyle(const std::string&fileName)
 
 
 
-std::string osgDB::getLowerCaseFileExtension(const std::string&filename)
+std::string osgDB::getLowerCaseFileExtension(const std::string &filename)
 {
     return convertToLowerCase(osgDB::getFileExtension(filename));
 }
 
-std::string osgDB::convertToLowerCase(const std::string&str)
+std::string osgDB::convertToLowerCase(const std::string &str)
 {
     std::string lowcase_str(str);
 
@@ -157,7 +157,7 @@ std::string osgDB::convertToLowerCase(const std::string&str)
 }
 
 // strip one level of extension from the filename.
-std::string osgDB::getNameLessExtension(const std::string&fileName)
+std::string osgDB::getNameLessExtension(const std::string &fileName)
 {
     std::string::size_type dot   = fileName.find_last_of('.');
     std::string::size_type slash = fileName.find_last_of(PATH_SEPARATORS);        // Finds forward slash *or* back slash
@@ -170,7 +170,7 @@ std::string osgDB::getNameLessExtension(const std::string&fileName)
 
 
 // strip all extensions from the filename.
-std::string osgDB::getNameLessAllExtensions(const std::string&fileName)
+std::string osgDB::getNameLessAllExtensions(const std::string &fileName)
 {
     // Finds start serach position: from last slash, or the beginning of the string if none found
     std::string::size_type startPos = fileName.find_last_of(PATH_SEPARATORS);            // Finds forward slash *or* back slash
@@ -185,7 +185,7 @@ std::string osgDB::getNameLessAllExtensions(const std::string&fileName)
     return std::string(fileName.begin(), fileName.begin() + dot);
 }
 
-std::string osgDB::getStrippedName(const std::string&fileName)
+std::string osgDB::getStrippedName(const std::string &fileName)
 {
     std::string simpleName = getSimpleFileName(fileName);
 
@@ -193,7 +193,7 @@ std::string osgDB::getStrippedName(const std::string&fileName)
 }
 
 
-bool osgDB::equalCaseInsensitive(const std::string&lhs, const std::string&rhs)
+bool osgDB::equalCaseInsensitive(const std::string &lhs, const std::string &rhs)
 {
     if (lhs.size() != rhs.size())
         return false;
@@ -213,7 +213,7 @@ bool osgDB::equalCaseInsensitive(const std::string&lhs, const std::string&rhs)
     return true;
 }
 
-bool osgDB::equalCaseInsensitive(const std::string&lhs, const char *rhs)
+bool osgDB::equalCaseInsensitive(const std::string &lhs, const char *rhs)
 {
     if (rhs == NULL || lhs.size() != strlen(rhs))
         return false;
@@ -235,7 +235,7 @@ bool osgDB::equalCaseInsensitive(const std::string&lhs, const char *rhs)
 
 
 
-bool osgDB::containsServerAddress(const std::string&filename)
+bool osgDB::containsServerAddress(const std::string &filename)
 {
     // need to check for ://
     std::string::size_type pos(filename.find("://"));
@@ -248,7 +248,7 @@ bool osgDB::containsServerAddress(const std::string&filename)
     return Registry::instance()->isProtocolRegistered(proto);
 }
 
-std::string osgDB::getServerProtocol(const std::string&filename)
+std::string osgDB::getServerProtocol(const std::string &filename)
 {
     std::string::size_type pos(filename.find("://"));
 
@@ -258,7 +258,7 @@ std::string osgDB::getServerProtocol(const std::string&filename)
     return "";
 }
 
-std::string osgDB::getServerAddress(const std::string&filename)
+std::string osgDB::getServerAddress(const std::string &filename)
 {
     std::string::size_type pos(filename.find("://"));
 
@@ -278,7 +278,7 @@ std::string osgDB::getServerAddress(const std::string&filename)
     return "";
 }
 
-std::string osgDB::getServerFileName(const std::string&filename)
+std::string osgDB::getServerFileName(const std::string &filename)
 {
     std::string::size_type pos(filename.find("://"));
 
@@ -298,7 +298,7 @@ std::string osgDB::getServerFileName(const std::string&filename)
     return filename;
 }
 
-std::string osgDB::concatPaths(const std::string&left, const std::string&right)
+std::string osgDB::concatPaths(const std::string &left, const std::string &right)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
     const char delimiterNative  = WINDOWS_PATH_SEPARATOR;
@@ -329,7 +329,7 @@ std::string osgDB::concatPaths(const std::string&left, const std::string&right)
     }
 }
 
-std::string osgDB::getRealPath(const std::string&path)
+std::string osgDB::getRealPath(const std::string &path)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
 #ifdef OSG_USE_UTF8_FILENAME
@@ -421,7 +421,7 @@ namespace osgDB
 class PathIterator
 {
 public:
-PathIterator(const std::string&v);
+PathIterator(const std::string &v);
 bool valid() const
 {
     return start != end;
@@ -440,7 +440,7 @@ std::string::const_iterator next(std::string::const_iterator it);
 };
 }
 
-osgDB::PathIterator::PathIterator(const std::string&v) : end(v.end()), start(v.begin()), stop(v.begin())
+osgDB::PathIterator::PathIterator(const std::string &v) : end(v.end()), start(v.begin()), stop(v.begin())
 {
     operator++();
 }
@@ -476,7 +476,7 @@ std::string::const_iterator osgDB::PathIterator::next(std::string::const_iterato
     return std::find_first_of(it, end, PATH_SEPARATORS, PATH_SEPARATORS + PATH_SEPARATORS_LEN);
 }
 
-void osgDB::getPathElements(const std::string&path, std::vector<std::string>&out_elements)
+void osgDB::getPathElements(const std::string &path, std::vector<std::string> &out_elements)
 {
     out_elements.clear();
 
@@ -485,7 +485,7 @@ void osgDB::getPathElements(const std::string&path, std::vector<std::string>&out
 }
 
 
-std::string osgDB::getPathRoot(const std::string&path)
+std::string osgDB::getPathRoot(const std::string &path)
 {
     // Test for unix root
     if (path.empty())
@@ -504,7 +504,7 @@ std::string osgDB::getPathRoot(const std::string&path)
     return "";
 }
 
-bool osgDB::isAbsolutePath(const std::string&path)
+bool osgDB::isAbsolutePath(const std::string &path)
 {
     // Test for unix root
     if (path.empty())
@@ -520,7 +520,7 @@ bool osgDB::isAbsolutePath(const std::string&path)
     return path[1] == ':';        // We should check that path[0] is a letter, but as ':' is invalid in paths in other cases, that's not a problem.
 }
 
-std::string osgDB::getPathRelative(const std::string&from, const std::string&to)
+std::string osgDB::getPathRelative(const std::string &from, const std::string &to)
 {
     // This implementation is not 100% robust, and should be replaced with C++0x "std::path" as soon as possible.
 

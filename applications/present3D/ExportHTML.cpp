@@ -17,7 +17,7 @@
 #include <iostream>
 
 template<typename A, typename B, typename C>
-std::string createString(const A&a, const B&b, const C&c)
+std::string createString(const A &a, const B &b, const C &c)
 {
     std::ostringstream hos;
 
@@ -26,7 +26,7 @@ std::string createString(const A&a, const B&b, const C&c)
 }
 
 template<typename A, typename B, typename C, typename D>
-std::string createString(const A&a, const B&b, const C&c, const D&d)
+std::string createString(const A &a, const B &b, const C &c, const D &d)
 {
     std::ostringstream hos;
 
@@ -42,7 +42,7 @@ SnapImageDrawCallback() :
     _snapImageOnNextFrame(false)
 {}
 
-void setFileName(const std::string&filename)
+void setFileName(const std::string &filename)
 {
     _filename = filename;
 }
@@ -60,7 +60,7 @@ bool getSnapImageOnNextFrame() const
     return _snapImageOnNextFrame;
 }
 
-virtual void operator ()(const osg::Camera&camera) const
+virtual void operator ()(const osg::Camera &camera) const
 {
     if (!_snapImageOnNextFrame)
         return;
@@ -88,7 +88,7 @@ std::string  _filename;
 mutable bool _snapImageOnNextFrame;
 };
 
-std::string ExportHTML::createFileName(const std::string&basename, unsigned int page, const std::string&ext)
+std::string ExportHTML::createFileName(const std::string &basename, unsigned int page, const std::string &ext)
 {
     if (page == 0)
         return basename + ext;
@@ -96,7 +96,7 @@ std::string ExportHTML::createFileName(const std::string&basename, unsigned int 
         return createString(basename, '_', page, ext);
 }
 
-bool ExportHTML::write(osgPresentation::SlideEventHandler *seh, osgViewer::Viewer&viewer, const std::string&filename)
+bool ExportHTML::write(osgPresentation::SlideEventHandler *seh, osgViewer::Viewer &viewer, const std::string &filename)
 {
     std::string image_basename;
     std::string image_ext;

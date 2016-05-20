@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGVOLUME_RAYTRACEDTECHNIQUE
 #define OSGVOLUME_RAYTRACEDTECHNIQUE 1
@@ -18,38 +18,36 @@
 #include <osg/MatrixTransform>
 
 namespace osgVolume {
-
-class OSGVOLUME_EXPORT RayTracedTechnique : public VolumeTechnique
-{
-    public:
+    class OSGVOLUME_EXPORT RayTracedTechnique: public VolumeTechnique
+    {
+public:
 
         RayTracedTechnique();
 
-        RayTracedTechnique(const RayTracedTechnique&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+        RayTracedTechnique(const RayTracedTechnique &, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Object(osgVolume, RayTracedTechnique);
 
         virtual void init();
 
-        virtual void update(osgUtil::UpdateVisitor* nv);
+        virtual void update(osgUtil::UpdateVisitor *nv);
 
-        virtual void cull(osgUtil::CullVisitor* nv);
+        virtual void cull(osgUtil::CullVisitor *nv);
 
         /** Clean scene graph from any terrain technique specific nodes.*/
         virtual void cleanSceneGraph();
 
         /** Traverse the terrain subgraph.*/
-        virtual void traverse(osg::NodeVisitor& nv);
+        virtual void traverse(osg::NodeVisitor &nv);
 
-    protected:
+protected:
 
         virtual ~RayTracedTechnique();
 
-        osg::ref_ptr<osg::MatrixTransform> _transform;
+        osg::ref_ptr < osg::MatrixTransform > _transform;
 
-        osg::ref_ptr<osg::StateSet> _whenMovingStateSet;
-};
-
+        osg::ref_ptr < osg::StateSet > _whenMovingStateSet;
+    };
 }
 
 #endif

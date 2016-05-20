@@ -723,10 +723,10 @@ Quat snuggle(Quat q, HVect *k)
 }
 }
 
-void osg::Matrixf::decompose(osg::Vec3f&t,
-                             osg::Quat&r,
-                             osg::Vec3f&s,
-                             osg::Quat&so) const
+void osg::Matrixf::decompose(osg::Vec3f &t,
+                             osg::Quat &r,
+                             osg::Vec3f &s,
+                             osg::Quat &so) const
 {
     Vec3d temp_trans;
     Vec3d temp_scale;
@@ -737,10 +737,10 @@ void osg::Matrixf::decompose(osg::Vec3f&t,
 }
 
 
-void osg::Matrixf::decompose(osg::Vec3d&t,
-                             osg::Quat&r,
-                             osg::Vec3d&s,
-                             osg::Quat&so) const
+void osg::Matrixf::decompose(osg::Vec3d &t,
+                             osg::Quat &r,
+                             osg::Vec3d &s,
+                             osg::Quat &so) const
 {
     MatrixDecomposition::_affineParts parts;
     MatrixDecomposition::_HMatrix hmatrix;
@@ -779,10 +779,10 @@ void osg::Matrixf::decompose(osg::Vec3d&t,
     so.set(parts.u.x, parts.u.y, parts.u.z, parts.u.w);
 }
 
-void osg::Matrixd::decompose(osg::Vec3f&t,
-                             osg::Quat&r,
-                             osg::Vec3f&s,
-                             osg::Quat&so) const
+void osg::Matrixd::decompose(osg::Vec3f &t,
+                             osg::Quat &r,
+                             osg::Vec3f &s,
+                             osg::Quat &so) const
 {
     Vec3d temp_trans;
     Vec3d temp_scale;
@@ -792,10 +792,10 @@ void osg::Matrixd::decompose(osg::Vec3f&t,
     s = temp_scale;
 }
 
-void osg::Matrixd::decompose(osg::Vec3d&t,
-                             osg::Quat&r,
-                             osg::Vec3d&s,
-                             osg::Quat&so) const
+void osg::Matrixd::decompose(osg::Vec3d &t,
+                             osg::Quat &r,
+                             osg::Vec3d &s,
+                             osg::Quat &so) const
 {
     MatrixDecomposition::_affineParts parts;
     MatrixDecomposition::_HMatrix hmatrix;

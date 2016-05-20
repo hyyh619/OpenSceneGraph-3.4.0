@@ -72,7 +72,7 @@ extern const char *builtinMimeTypeExtMappings[];
 class Registry::AvailableReaderWriterIterator
 {
 public:
-AvailableReaderWriterIterator(Registry::ReaderWriterList&rwList, OpenThreads::ReentrantMutex&pluginMutex) :
+AvailableReaderWriterIterator(Registry::ReaderWriterList &rwList, OpenThreads::ReentrantMutex &pluginMutex) :
     _rwList(rwList),
     _pluginMutex(pluginMutex) {}
 
@@ -104,8 +104,8 @@ AvailableReaderWriterIterator&operator =(const AvailableReaderWriterIterator&)
     return *this;
 }
 
-Registry::ReaderWriterList &_rwList;
-OpenThreads::ReentrantMutex&_pluginMutex;
+Registry::ReaderWriterList  &_rwList;
+OpenThreads::ReentrantMutex &_pluginMutex;
 
 std::set<ReaderWriter*> _rwUsed;
 
@@ -129,7 +129,7 @@ ReaderWriter* get()
 class Registry::AvailableArchiveIterator
 {
 public:
-AvailableArchiveIterator(Registry::ArchiveCache&archives, OpenThreads::ReentrantMutex&mutex) :
+AvailableArchiveIterator(Registry::ArchiveCache &archives, OpenThreads::ReentrantMutex &mutex) :
     _archives(archives),
     _mutex(mutex) {}
 
@@ -161,8 +161,8 @@ AvailableArchiveIterator&operator =(const AvailableArchiveIterator&)
     return *this;
 }
 
-Registry::ArchiveCache     &_archives;
-OpenThreads::ReentrantMutex&_mutex;
+Registry::ArchiveCache      &_archives;
+OpenThreads::ReentrantMutex &_mutex;
 
 std::set<Archive*> _archivesUsed;
 
@@ -220,7 +220,7 @@ static MethodPair methods[] =
 Proxy myproxy(methods);
 #endif
 
-void PrintFilePathList(std::ostream&stream, const FilePathList&filepath)
+void PrintFilePathList(std::ostream &stream, const FilePathList &filepath)
 {
     for (FilePathList::const_iterator itr = filepath.begin();
          itr != filepath.end();
@@ -550,13 +550,13 @@ void Registry::initDataFilePathList()
     setDataFilePathList(filepath);
 }
 
-void Registry::setDataFilePathList(const std::string&paths)
+void Registry::setDataFilePathList(const std::string &paths)
 {
     _dataFilePath.clear();
     convertStringPathIntoFilePathList(paths, _dataFilePath);
 }
 
-void Registry::setLibraryFilePathList(const std::string&paths)
+void Registry::setLibraryFilePathList(const std::string &paths)
 {
     _libraryFilePath.clear(); convertStringPathIntoFilePathList(paths, _libraryFilePath);
 }
@@ -585,7 +585,7 @@ void Registry::initLibraryFilePathList()
 }
 
 
-void Registry::readCommandLine(osg::ArgumentParser&arguments)
+void Registry::readCommandLine(osg::ArgumentParser &arguments)
 {
     // report the usage options.
     if (arguments.getApplicationUsage())
@@ -655,7 +655,7 @@ ImageProcessor* Registry::getImageProcessor()
     return getImageProcessorForExtension("nvtt");
 }
 
-ImageProcessor* Registry::getImageProcessorForExtension(const std::string&ext)
+ImageProcessor* Registry::getImageProcessorForExtension(const std::string &ext)
 {
     {
         OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_pluginMutex);
@@ -721,7 +721,7 @@ void Registry::addMimeTypeExtensionMapping(const std::string fromMimeType, const
     _mimeTypeExtMap[fromMimeType] = toExt;
 }
 
-bool Registry::readPluginAliasConfigurationFile(const std::string&file)
+bool Registry::readPluginAliasConfigurationFile(const std::string &file)
 {
     std::string fileName = osgDB::findDataFile(file);
 
@@ -769,7 +769,7 @@ bool Registry::readPluginAliasConfigurationFile(const std::string&file)
     return true;
 }
 
-std::string Registry::trim(const std::string&str)
+std::string Registry::trim(const std::string &str)
 {
     if (!str.size())
         return str;
@@ -783,12 +783,12 @@ std::string Registry::trim(const std::string&str)
 }
 
 
-std::string Registry::createLibraryNameForFile(const std::string&fileName)
+std::string Registry::createLibraryNameForFile(const std::string &fileName)
 {
     return createLibraryNameForExtension(getFileExtension(fileName));
 }
 
-std::string Registry::createLibraryNameForExtension(const std::string&ext)
+std::string Registry::createLibraryNameForExtension(const std::string &ext)
 {
     std::string lowercase_ext;
 
@@ -818,7 +818,7 @@ std::string Registry::createLibraryNameForExtension(const std::string&ext)
 #endif
 }
 
-std::string Registry::createLibraryNameForNodeKit(const std::string&name)
+std::string Registry::createLibraryNameForNodeKit(const std::string &name)
 {
 #if defined(__CYGWIN__)
     return "cyg" + name + OSG_LIBRARY_POSTFIX_WITH_QUOTES + ".dll";
@@ -833,7 +833,7 @@ std::string Registry::createLibraryNameForNodeKit(const std::string&name)
 #endif
 }
 
-Registry::LoadStatus Registry::loadLibrary(const std::string&fileName)
+Registry::LoadStatus Registry::loadLibrary(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_pluginMutex);
 
@@ -857,7 +857,7 @@ Registry::LoadStatus Registry::loadLibrary(const std::string&fileName)
 }
 
 
-bool Registry::closeLibrary(const std::string&fileName)
+bool Registry::closeLibrary(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_pluginMutex);
     DynamicLibraryList::iterator                         ditr = getLibraryItr(fileName);
@@ -879,7 +879,7 @@ void Registry::closeAllLibraries()
     _dlList.clear();
 }
 
-Registry::DynamicLibraryList::iterator Registry::getLibraryItr(const std::string&fileName)
+Registry::DynamicLibraryList::iterator Registry::getLibraryItr(const std::string &fileName)
 {
     DynamicLibraryList::iterator ditr = _dlList.begin();
 
@@ -892,7 +892,7 @@ Registry::DynamicLibraryList::iterator Registry::getLibraryItr(const std::string
     return _dlList.end();
 }
 
-DynamicLibrary* Registry::getLibrary(const std::string&fileName)
+DynamicLibrary* Registry::getLibrary(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_pluginMutex);
     DynamicLibraryList::iterator                         ditr = getLibraryItr(fileName);
@@ -903,7 +903,7 @@ DynamicLibrary* Registry::getLibrary(const std::string&fileName)
         return NULL;
 }
 
-ReaderWriter* Registry::getReaderWriterForExtension(const std::string&ext)
+ReaderWriter* Registry::getReaderWriterForExtension(const std::string &ext)
 {
     // record the existing reader writer.
     std::set<ReaderWriter*> rwOriginal;
@@ -940,7 +940,7 @@ ReaderWriter* Registry::getReaderWriterForExtension(const std::string&ext)
     return NULL;
 }
 
-ReaderWriter* Registry::getReaderWriterForMimeType(const std::string&mimeType)
+ReaderWriter* Registry::getReaderWriterForMimeType(const std::string &mimeType)
 {
     MimeTypeExtensionMap::const_iterator i = _mimeTypeExtMap.find(mimeType);
 
@@ -966,13 +966,13 @@ struct concrete_wrapper : basic_type_wrapper
 
 struct Registry::ReadObjectFunctor : public Registry::ReadFunctor
 {
-    ReadObjectFunctor(const std::string&filename, const Options *options) : ReadFunctor(filename, options) {}
+    ReadObjectFunctor(const std::string &filename, const Options *options) : ReadFunctor(filename, options) {}
 
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw) const
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw) const
     {
         return rw.readObject(_filename, _options);
     }
-    virtual bool isValid(ReaderWriter::ReadResult&readResult) const
+    virtual bool isValid(ReaderWriter::ReadResult &readResult) const
     {
         return readResult.validObject();
     }
@@ -981,7 +981,7 @@ struct Registry::ReadObjectFunctor : public Registry::ReadFunctor
         return object != 0;
     }
 
-    virtual ReadFunctor* cloneType(const std::string&filename, const Options *options) const
+    virtual ReadFunctor* cloneType(const std::string &filename, const Options *options) const
     {
         return new ReadObjectFunctor(filename, options);
     }
@@ -989,13 +989,13 @@ struct Registry::ReadObjectFunctor : public Registry::ReadFunctor
 
 struct Registry::ReadImageFunctor : public Registry::ReadFunctor
 {
-    ReadImageFunctor(const std::string&filename, const Options *options) : ReadFunctor(filename, options) {}
+    ReadImageFunctor(const std::string &filename, const Options *options) : ReadFunctor(filename, options) {}
 
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw) const
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw) const
     {
         return rw.readImage(_filename, _options);
     }
-    virtual bool isValid(ReaderWriter::ReadResult&readResult) const
+    virtual bool isValid(ReaderWriter::ReadResult &readResult) const
     {
         return readResult.validImage();
     }
@@ -1004,7 +1004,7 @@ struct Registry::ReadImageFunctor : public Registry::ReadFunctor
         return dynamic_cast<osg::Image*>(object) != 0;
     }
 
-    virtual ReadFunctor* cloneType(const std::string&filename, const Options *options) const
+    virtual ReadFunctor* cloneType(const std::string &filename, const Options *options) const
     {
         return new ReadImageFunctor(filename, options);
     }
@@ -1012,13 +1012,13 @@ struct Registry::ReadImageFunctor : public Registry::ReadFunctor
 
 struct Registry::ReadHeightFieldFunctor : public Registry::ReadFunctor
 {
-    ReadHeightFieldFunctor(const std::string&filename, const Options *options) : ReadFunctor(filename, options) {}
+    ReadHeightFieldFunctor(const std::string &filename, const Options *options) : ReadFunctor(filename, options) {}
 
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw) const
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw) const
     {
         return rw.readHeightField(_filename, _options);
     }
-    virtual bool isValid(ReaderWriter::ReadResult&readResult) const
+    virtual bool isValid(ReaderWriter::ReadResult &readResult) const
     {
         return readResult.validHeightField();
     }
@@ -1027,7 +1027,7 @@ struct Registry::ReadHeightFieldFunctor : public Registry::ReadFunctor
         return dynamic_cast<osg::HeightField*>(object) != 0;
     }
 
-    virtual ReadFunctor* cloneType(const std::string&filename, const Options *options) const
+    virtual ReadFunctor* cloneType(const std::string &filename, const Options *options) const
     {
         return new ReadHeightFieldFunctor(filename, options);
     }
@@ -1035,13 +1035,13 @@ struct Registry::ReadHeightFieldFunctor : public Registry::ReadFunctor
 
 struct Registry::ReadNodeFunctor : public Registry::ReadFunctor
 {
-    ReadNodeFunctor(const std::string&filename, const Options *options) : ReadFunctor(filename, options) {}
+    ReadNodeFunctor(const std::string &filename, const Options *options) : ReadFunctor(filename, options) {}
 
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw) const
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw) const
     {
         return rw.readNode(_filename, _options);
     }
-    virtual bool isValid(ReaderWriter::ReadResult&readResult) const
+    virtual bool isValid(ReaderWriter::ReadResult &readResult) const
     {
         return readResult.validNode();
     }
@@ -1050,7 +1050,7 @@ struct Registry::ReadNodeFunctor : public Registry::ReadFunctor
         return dynamic_cast<osg::Node*>(object) != 0;
     }
 
-    virtual ReadFunctor* cloneType(const std::string&filename, const Options *options) const
+    virtual ReadFunctor* cloneType(const std::string &filename, const Options *options) const
     {
         return new ReadNodeFunctor(filename, options);
     }
@@ -1058,7 +1058,7 @@ struct Registry::ReadNodeFunctor : public Registry::ReadFunctor
 
 struct Registry::ReadArchiveFunctor : public Registry::ReadFunctor
 {
-    ReadArchiveFunctor(const std::string&filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, const Options *options) :
+    ReadArchiveFunctor(const std::string &filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, const Options *options) :
         ReadFunctor(filename, options),
         _status(status),
         _indexBlockSizeHint(indexBlockSizeHint) {}
@@ -1066,11 +1066,11 @@ struct Registry::ReadArchiveFunctor : public Registry::ReadFunctor
     ReaderWriter::ArchiveStatus _status;
     unsigned int                _indexBlockSizeHint;
 
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw) const
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw) const
     {
         return rw.openArchive(_filename, _status, _indexBlockSizeHint, _options);
     }
-    virtual bool isValid(ReaderWriter::ReadResult&readResult) const
+    virtual bool isValid(ReaderWriter::ReadResult &readResult) const
     {
         return readResult.validArchive();
     }
@@ -1079,7 +1079,7 @@ struct Registry::ReadArchiveFunctor : public Registry::ReadFunctor
         return dynamic_cast<osgDB::Archive*>(object) != 0;
     }
 
-    virtual ReadFunctor* cloneType(const std::string&filename, const Options *options) const
+    virtual ReadFunctor* cloneType(const std::string &filename, const Options *options) const
     {
         return new ReadArchiveFunctor(filename, _status, _indexBlockSizeHint, options);
     }
@@ -1087,13 +1087,13 @@ struct Registry::ReadArchiveFunctor : public Registry::ReadFunctor
 
 struct Registry::ReadShaderFunctor : public Registry::ReadFunctor
 {
-    ReadShaderFunctor(const std::string&filename, const Options *options) : ReadFunctor(filename, options) {}
+    ReadShaderFunctor(const std::string &filename, const Options *options) : ReadFunctor(filename, options) {}
 
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw) const
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw) const
     {
         return rw.readShader(_filename, _options);
     }
-    virtual bool isValid(ReaderWriter::ReadResult&readResult) const
+    virtual bool isValid(ReaderWriter::ReadResult &readResult) const
     {
         return readResult.validShader();
     }
@@ -1102,7 +1102,7 @@ struct Registry::ReadShaderFunctor : public Registry::ReadFunctor
         return dynamic_cast<osg::Shader*>(object) != 0;
     }
 
-    virtual ReadFunctor* cloneType(const std::string&filename, const Options *options) const
+    virtual ReadFunctor* cloneType(const std::string &filename, const Options *options) const
     {
         return new ReadShaderFunctor(filename, options);
     }
@@ -1110,13 +1110,13 @@ struct Registry::ReadShaderFunctor : public Registry::ReadFunctor
 
 struct Registry::ReadScriptFunctor : public Registry::ReadFunctor
 {
-    ReadScriptFunctor(const std::string&filename, const Options *options) : ReadFunctor(filename, options) {}
+    ReadScriptFunctor(const std::string &filename, const Options *options) : ReadFunctor(filename, options) {}
 
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw) const
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw) const
     {
         return rw.readScript(_filename, _options);
     }
-    virtual bool isValid(ReaderWriter::ReadResult&readResult) const
+    virtual bool isValid(ReaderWriter::ReadResult &readResult) const
     {
         return readResult.validScript();
     }
@@ -1125,7 +1125,7 @@ struct Registry::ReadScriptFunctor : public Registry::ReadFunctor
         return dynamic_cast<osg::Script*>(object) != 0;
     }
 
-    virtual ReadFunctor* cloneType(const std::string&filename, const Options *options) const
+    virtual ReadFunctor* cloneType(const std::string &filename, const Options *options) const
     {
         return new ReadScriptFunctor(filename, options);
     }
@@ -1145,7 +1145,7 @@ void Registry::addArchiveExtension(const std::string ext)
     _archiveExtList.push_back(ext);
 }
 
-std::string Registry::findDataFileImplementation(const std::string&filename, const Options *options, CaseSensitivity caseSensitivity)
+std::string Registry::findDataFileImplementation(const std::string &filename, const Options *options, CaseSensitivity caseSensitivity)
 {
     if (filename.empty())
         return filename;
@@ -1177,7 +1177,7 @@ std::string Registry::findDataFileImplementation(const std::string&filename, con
         }
     }
 
-    const FilePathList&filepaths = Registry::instance()->getDataFilePathList();
+    const FilePathList &filepaths = Registry::instance()->getDataFilePathList();
     if (!filepaths.empty())
     {
         fileFound = findFileInPath(filename, filepaths, caseSensitivity);
@@ -1229,12 +1229,12 @@ std::string Registry::findDataFileImplementation(const std::string&filename, con
     return std::string();
 }
 
-std::string Registry::findLibraryFileImplementation(const std::string&filename, const Options* /*options*/, CaseSensitivity caseSensitivity)
+std::string Registry::findLibraryFileImplementation(const std::string &filename, const Options* /*options*/, CaseSensitivity caseSensitivity)
 {
     if (filename.empty())
         return filename;
 
-    const FilePathList&filepath = Registry::instance()->getLibraryFilePathList();
+    const FilePathList &filepath = Registry::instance()->getLibraryFilePathList();
 
     std::string fileFound = findFileInPath(filename, filepath, caseSensitivity);
     if (!fileFound.empty())
@@ -1261,7 +1261,7 @@ std::string Registry::findLibraryFileImplementation(const std::string&filename, 
 
 
 
-ReaderWriter::ReadResult Registry::read(const ReadFunctor&readFunctor)
+ReaderWriter::ReadResult Registry::read(const ReadFunctor &readFunctor)
 {
     for (ArchiveExtensionList::iterator aitr = _archiveExtList.begin();
          aitr != _archiveExtList.end();
@@ -1409,7 +1409,7 @@ ReaderWriter::ReadResult Registry::read(const ReadFunctor&readFunctor)
     return result;
 }
 
-ReaderWriter::ReadResult Registry::readImplementation(const ReadFunctor&readFunctor, Options::CacheHintOptions cacheHint)
+ReaderWriter::ReadResult Registry::readImplementation(const ReadFunctor &readFunctor, Options::CacheHintOptions cacheHint)
 {
     std::string file(readFunctor._filename);
 
@@ -1475,7 +1475,7 @@ ReaderWriter::ReadResult Registry::readImplementation(const ReadFunctor&readFunc
 }
 
 
-ReaderWriter::ReadResult Registry::openArchiveImplementation(const std::string&fileName, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, const Options *options)
+ReaderWriter::ReadResult Registry::openArchiveImplementation(const std::string &fileName, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, const Options *options)
 {
     osg::ref_ptr<osgDB::Archive> archive = getRefFromArchiveCache(fileName);
 
@@ -1496,12 +1496,12 @@ ReaderWriter::ReadResult Registry::openArchiveImplementation(const std::string&f
 }
 
 
-ReaderWriter::ReadResult Registry::readObjectImplementation(const std::string&fileName, const Options *options)
+ReaderWriter::ReadResult Registry::readObjectImplementation(const std::string &fileName, const Options *options)
 {
     return readImplementation(ReadObjectFunctor(fileName, options), Options::CACHE_OBJECTS);
 }
 
-ReaderWriter::WriteResult Registry::writeObjectImplementation(const Object&obj, const std::string&fileName, const Options *options)
+ReaderWriter::WriteResult Registry::writeObjectImplementation(const Object &obj, const std::string &fileName, const Options *options)
 {
     // record the errors reported by readerwriters.
     typedef std::vector<ReaderWriter::WriteResult> Results;
@@ -1559,12 +1559,12 @@ ReaderWriter::WriteResult Registry::writeObjectImplementation(const Object&obj, 
 
 
 
-ReaderWriter::ReadResult Registry::readImageImplementation(const std::string&fileName, const Options *options)
+ReaderWriter::ReadResult Registry::readImageImplementation(const std::string &fileName, const Options *options)
 {
     return readImplementation(ReadImageFunctor(fileName, options), Options::CACHE_IMAGES);
 }
 
-ReaderWriter::WriteResult Registry::writeImageImplementation(const Image&image, const std::string&fileName, const Options *options)
+ReaderWriter::WriteResult Registry::writeImageImplementation(const Image &image, const std::string &fileName, const Options *options)
 {
     // record the errors reported by readerwriters.
     typedef std::vector<ReaderWriter::WriteResult> Results;
@@ -1621,12 +1621,12 @@ ReaderWriter::WriteResult Registry::writeImageImplementation(const Image&image, 
 }
 
 
-ReaderWriter::ReadResult Registry::readHeightFieldImplementation(const std::string&fileName, const Options *options)
+ReaderWriter::ReadResult Registry::readHeightFieldImplementation(const std::string &fileName, const Options *options)
 {
     return readImplementation(ReadHeightFieldFunctor(fileName, options), Options::CACHE_HEIGHTFIELDS);
 }
 
-ReaderWriter::WriteResult Registry::writeHeightFieldImplementation(const HeightField&HeightField, const std::string&fileName, const Options *options)
+ReaderWriter::WriteResult Registry::writeHeightFieldImplementation(const HeightField &HeightField, const std::string &fileName, const Options *options)
 {
     // record the errors reported by readerwriters.
     typedef std::vector<ReaderWriter::WriteResult> Results;
@@ -1683,7 +1683,7 @@ ReaderWriter::WriteResult Registry::writeHeightFieldImplementation(const HeightF
 }
 
 
-ReaderWriter::ReadResult Registry::readNodeImplementation(const std::string&fileName, const Options *options)
+ReaderWriter::ReadResult Registry::readNodeImplementation(const std::string &fileName, const Options *options)
 {
 #if 0
     osg::Timer_t             startTick = osg::Timer::instance()->tick();
@@ -1697,7 +1697,7 @@ ReaderWriter::ReadResult Registry::readNodeImplementation(const std::string&file
 #endif
 }
 
-ReaderWriter::WriteResult Registry::writeNodeImplementation(const Node&node, const std::string&fileName, const Options *options)
+ReaderWriter::WriteResult Registry::writeNodeImplementation(const Node &node, const std::string &fileName, const Options *options)
 {
     // record the errors reported by reader&writer.
     typedef std::vector<ReaderWriter::WriteResult> Results;
@@ -1755,12 +1755,12 @@ ReaderWriter::WriteResult Registry::writeNodeImplementation(const Node&node, con
     return result;
 }
 
-ReaderWriter::ReadResult Registry::readShaderImplementation(const std::string&fileName, const Options *options)
+ReaderWriter::ReadResult Registry::readShaderImplementation(const std::string &fileName, const Options *options)
 {
     return readImplementation(ReadShaderFunctor(fileName, options), Options::CACHE_SHADERS);
 }
 
-ReaderWriter::WriteResult Registry::writeShaderImplementation(const Shader&shader, const std::string&fileName, const Options *options)
+ReaderWriter::WriteResult Registry::writeShaderImplementation(const Shader &shader, const std::string &fileName, const Options *options)
 {
     // record the errors reported by readerwriters.
     typedef std::vector<ReaderWriter::WriteResult> Results;
@@ -1818,12 +1818,12 @@ ReaderWriter::WriteResult Registry::writeShaderImplementation(const Shader&shade
     return result;
 }
 
-ReaderWriter::ReadResult Registry::readScriptImplementation(const std::string&fileName, const Options *options)
+ReaderWriter::ReadResult Registry::readScriptImplementation(const std::string &fileName, const Options *options)
 {
     return readImplementation(ReadScriptFunctor(fileName, options), Options::CACHE_IMAGES);
 }
 
-ReaderWriter::WriteResult Registry::writeScriptImplementation(const Script&image, const std::string&fileName, const Options *options)
+ReaderWriter::WriteResult Registry::writeScriptImplementation(const Script &image, const std::string &fileName, const Options *options)
 {
     // record the errors reported by readerwriters.
     typedef std::vector<ReaderWriter::WriteResult> Results;
@@ -1879,29 +1879,29 @@ ReaderWriter::WriteResult Registry::writeScriptImplementation(const Script&image
     return result;
 }
 
-void Registry::addEntryToObjectCache(const std::string&filename, osg::Object *object, double timestamp)
+void Registry::addEntryToObjectCache(const std::string &filename, osg::Object *object, double timestamp)
 {
     if (_objectCache.valid())
         _objectCache->addEntryToObjectCache(filename, object, timestamp);
 }
 
-osg::Object* Registry::getFromObjectCache(const std::string&filename)
+osg::Object* Registry::getFromObjectCache(const std::string &filename)
 {
     return _objectCache.valid() ? _objectCache->getFromObjectCache(filename) : 0;
 }
 
-osg::ref_ptr<osg::Object> Registry::getRefFromObjectCache(const std::string&filename)
+osg::ref_ptr<osg::Object> Registry::getRefFromObjectCache(const std::string &filename)
 {
     return _objectCache.valid() ? _objectCache->getRefFromObjectCache(filename) : 0;
 }
 
-void Registry::updateTimeStampOfObjectsInCacheWithExternalReferences(const osg::FrameStamp&frameStamp)
+void Registry::updateTimeStampOfObjectsInCacheWithExternalReferences(const osg::FrameStamp &frameStamp)
 {
     if (_objectCache.valid())
         _objectCache->updateTimeStampOfObjectsInCacheWithExternalReferences(frameStamp.getReferenceTime());
 }
 
-void Registry::removeExpiredObjectsInCache(const osg::FrameStamp&frameStamp)
+void Registry::removeExpiredObjectsInCache(const osg::FrameStamp &frameStamp)
 {
     double expiryTime = frameStamp.getReferenceTime() - _expiryDelay;
 
@@ -1909,7 +1909,7 @@ void Registry::removeExpiredObjectsInCache(const osg::FrameStamp&frameStamp)
         _objectCache->removeExpiredObjectsInCache(expiryTime);
 }
 
-void Registry::removeFromObjectCache(const std::string&filename)
+void Registry::removeFromObjectCache(const std::string &filename)
 {
     if (_objectCache.valid())
         _objectCache->removeFromObjectCache(filename);
@@ -1921,7 +1921,7 @@ void Registry::clearObjectCache()
         _objectCache->clear();
 }
 
-void Registry::addToArchiveCache(const std::string&fileName, osgDB::Archive *archive)
+void Registry::addToArchiveCache(const std::string &fileName, osgDB::Archive *archive)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_archiveCacheMutex);
 
@@ -1929,7 +1929,7 @@ void Registry::addToArchiveCache(const std::string&fileName, osgDB::Archive *arc
 }
 
 /** Remove archive from cache.*/
-void Registry::removeFromArchiveCache(const std::string&fileName)
+void Registry::removeFromArchiveCache(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_archiveCacheMutex);
     ArchiveCache::iterator                      itr = _archiveCache.find(fileName);
@@ -1940,7 +1940,7 @@ void Registry::removeFromArchiveCache(const std::string&fileName)
     }
 }
 
-osgDB::Archive* Registry::getFromArchiveCache(const std::string&fileName)
+osgDB::Archive* Registry::getFromArchiveCache(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_archiveCacheMutex);
     ArchiveCache::iterator                      itr = _archiveCache.find(fileName);
@@ -1951,7 +1951,7 @@ osgDB::Archive* Registry::getFromArchiveCache(const std::string&fileName)
         return 0;
 }
 
-osg::ref_ptr<osgDB::Archive> Registry::getRefFromArchiveCache(const std::string&fileName)
+osg::ref_ptr<osgDB::Archive> Registry::getRefFromArchiveCache(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_archiveCacheMutex);
     ArchiveCache::iterator                      itr = _archiveCache.find(fileName);
@@ -1987,17 +1987,17 @@ SharedStateManager* Registry::getOrCreateSharedStateManager()
 }
 
 
-void Registry::registerProtocol(const std::string&protocol)
+void Registry::registerProtocol(const std::string &protocol)
 {
     _registeredProtocols.insert(convertToLowerCase(protocol));
 }
 
-bool Registry::isProtocolRegistered(const std::string&protocol)
+bool Registry::isProtocolRegistered(const std::string &protocol)
 {
     return (_registeredProtocols.find(convertToLowerCase(protocol)) != _registeredProtocols.end());
 }
 
-void Registry::getReaderWriterListForProtocol(const std::string&protocol, ReaderWriterList&results) const
+void Registry::getReaderWriterListForProtocol(const std::string &protocol, ReaderWriterList &results) const
 {
     for (ReaderWriterList::const_iterator i = _rwList.begin(); i != _rwList.end(); ++i)
     {
@@ -2007,7 +2007,7 @@ void Registry::getReaderWriterListForProtocol(const std::string&protocol, Reader
 }
 
 
-ReaderWriter* Registry::getReaderWriterForProtocolAndExtension(const std::string&protocol, const std::string&extension)
+ReaderWriter* Registry::getReaderWriterForProtocolAndExtension(const std::string &protocol, const std::string &extension)
 {
     // try first the registered ReaderWriter
     ReaderWriter *result = getReaderWriterForExtension(extension);

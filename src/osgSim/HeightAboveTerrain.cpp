@@ -31,7 +31,7 @@ void HeightAboveTerrain::clear()
     _HATList.clear();
 }
 
-unsigned int HeightAboveTerrain::addPoint(const osg::Vec3d&point)
+unsigned int HeightAboveTerrain::addPoint(const osg::Vec3d &point)
 {
     unsigned int index = _HATList.size();
 
@@ -87,8 +87,8 @@ void HeightAboveTerrain::computeIntersections(osg::Node *scene, osg::Node::NodeM
 
     scene->accept(_intersectionVisitor);
 
-    unsigned int                           index         = 0;
-    osgUtil::IntersectorGroup::Intersectors&intersectors = intersectorGroup->getIntersectors();
+    unsigned int                            index         = 0;
+    osgUtil::IntersectorGroup::Intersectors &intersectors = intersectorGroup->getIntersectors();
 
     for (osgUtil::IntersectorGroup::Intersectors::iterator intersector_itr = intersectors.begin();
          intersector_itr != intersectors.end();
@@ -97,19 +97,19 @@ void HeightAboveTerrain::computeIntersections(osg::Node *scene, osg::Node::NodeM
         osgUtil::LineSegmentIntersector *lsi = dynamic_cast<osgUtil::LineSegmentIntersector*>(intersector_itr->get());
         if (lsi)
         {
-            osgUtil::LineSegmentIntersector::Intersections&intersections = lsi->getIntersections();
+            osgUtil::LineSegmentIntersector::Intersections &intersections = lsi->getIntersections();
             if (!intersections.empty())
             {
-                const osgUtil::LineSegmentIntersector::Intersection&intersection     = *intersections.begin();
-                osg::Vec3d                                         intersectionPoint = intersection.matrix.valid() ? intersection.localIntersectionPoint * (*intersection.matrix) :
-                                                                                       intersection.localIntersectionPoint;
+                const osgUtil::LineSegmentIntersector::Intersection &intersection     = *intersections.begin();
+                osg::Vec3d                                          intersectionPoint = intersection.matrix.valid() ? intersection.localIntersectionPoint * (*intersection.matrix) :
+                                                                                        intersection.localIntersectionPoint;
                 _HATList[index]._hat = (_HATList[index]._point - intersectionPoint).length();
             }
         }
     }
 }
 
-double HeightAboveTerrain::computeHeightAboveTerrain(osg::Node *scene, const osg::Vec3d&point, osg::Node::NodeMask traversalMask)
+double HeightAboveTerrain::computeHeightAboveTerrain(osg::Node *scene, const osg::Vec3d &point, osg::Node::NodeMask traversalMask)
 {
     HeightAboveTerrain hat;
     unsigned int       index = hat.addPoint(point);

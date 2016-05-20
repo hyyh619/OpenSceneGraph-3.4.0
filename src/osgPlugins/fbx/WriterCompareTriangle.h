@@ -16,16 +16,16 @@ struct Triangle
 class WriterCompareTriangle
 {
 public:
-WriterCompareTriangle(const osg::Geode&geode,
+WriterCompareTriangle(const osg::Geode &geode,
                       unsigned int nbVertices);
 
-bool operator()(const std::pair<Triangle, int>&t1,
-                const std::pair<Triangle, int>&t2) const;
+bool operator()(const std::pair<Triangle, int> &t1,
+                const std::pair<Triangle, int> &t2) const;
 private:
 void     // This function prevents the scene being cut into too many boxes
-setMaxMin(unsigned int&nbVerticesX,
-          unsigned int&nbVerticesY,
-          unsigned int&nbVerticesZ) const;
+setMaxMin(unsigned int &nbVerticesX,
+          unsigned int &nbVerticesY,
+          unsigned int &nbVerticesZ) const;
 
 /**
  *  Cut the scene in different box to sort.
@@ -34,7 +34,7 @@ setMaxMin(unsigned int&nbVerticesX,
  */
 void
 cutscene(int nbVertices,
-         const osg::BoundingBox&sceneBox);
+         const osg::BoundingBox &sceneBox);
 
 /**
  *  Find in which box those points are.

@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkAzimRange(const osgSim::AzimElevationSector&sector)
+static bool checkAzimRange(const osgSim::AzimElevationSector &sector)
 {
     return true;
 }
 
-static bool readAzimRange(osgDB::InputStream&is, osgSim::AzimElevationSector&sector)
+static bool readAzimRange(osgDB::InputStream &is, osgSim::AzimElevationSector &sector)
 {
     float minAzimuth, maxAzimuth, fadeAngle;
 
@@ -17,7 +17,7 @@ static bool readAzimRange(osgDB::InputStream&is, osgSim::AzimElevationSector&sec
     return true;
 }
 
-static bool writeAzimRange(osgDB::OutputStream&os, const osgSim::AzimElevationSector&sector)
+static bool writeAzimRange(osgDB::OutputStream &os, const osgSim::AzimElevationSector &sector)
 {
     float minAzimuth, maxAzimuth, fadeAngle;
 
@@ -26,12 +26,12 @@ static bool writeAzimRange(osgDB::OutputStream&os, const osgSim::AzimElevationSe
     return true;
 }
 
-static bool checkElevationRange(const osgSim::AzimElevationSector&sector)
+static bool checkElevationRange(const osgSim::AzimElevationSector &sector)
 {
     return true;
 }
 
-static bool readElevationRange(osgDB::InputStream&is, osgSim::AzimElevationSector&sector)
+static bool readElevationRange(osgDB::InputStream &is, osgSim::AzimElevationSector &sector)
 {
     float minElevation, maxElevation, fadeAngle;
 
@@ -40,7 +40,7 @@ static bool readElevationRange(osgDB::InputStream&is, osgSim::AzimElevationSecto
     return true;
 }
 
-static bool writeElevationRange(osgDB::OutputStream&os, const osgSim::AzimElevationSector&sector)
+static bool writeElevationRange(osgDB::OutputStream &os, const osgSim::AzimElevationSector &sector)
 {
     os << sector.getMinElevation() << sector.getMaxElevation() << sector.getFadeAngle() << std::endl;
     return true;

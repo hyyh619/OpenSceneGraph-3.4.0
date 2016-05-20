@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkDraggers(const osgManipulator::CompositeDragger&dragger)
+static bool checkDraggers(const osgManipulator::CompositeDragger &dragger)
 {
     return dragger.getNumDraggers() > 0;
 }
 
-static bool readDraggers(osgDB::InputStream&is, osgManipulator::CompositeDragger&dragger)
+static bool readDraggers(osgDB::InputStream &is, osgManipulator::CompositeDragger &dragger)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -23,7 +23,7 @@ static bool readDraggers(osgDB::InputStream&is, osgManipulator::CompositeDragger
     return true;
 }
 
-static bool writeDraggers(osgDB::OutputStream&os, const osgManipulator::CompositeDragger&dragger)
+static bool writeDraggers(osgDB::OutputStream &os, const osgManipulator::CompositeDragger &dragger)
 {
     unsigned int size = dragger.getNumDraggers();
 

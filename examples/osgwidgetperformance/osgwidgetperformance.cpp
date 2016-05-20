@@ -5,7 +5,7 @@
 #include <osgWidget/WindowManager>
 #include <osgWidget/Util>
 
-void setupArguments(osg::ArgumentParser&args)
+void setupArguments(osg::ArgumentParser &args)
 {
     args.getApplicationUsage()->setDescription(
         args.getApplicationName() + " is a performance testing application for osgWidget."
@@ -41,7 +41,7 @@ void setupArguments(osg::ArgumentParser&args)
         );
 }
 
-void readSize(osg::ArgumentParser&args, const char *opt, unsigned int&val)
+void readSize(osg::ArgumentParser &args, const char *opt, unsigned int &val)
 {
     std::string size;
 
@@ -61,7 +61,7 @@ int doError(const char *errorMsg)
     return 1;
 }
 
-int doApp(osgViewer::Viewer&viewer, osg::Node *node, unsigned int width, unsigned int height)
+int doApp(osgViewer::Viewer &viewer, osg::Node *node, unsigned int width, unsigned int height)
 {
     osgWidget::WindowManager *wm = new osgWidget::WindowManager(&viewer, width, height, 0x12);
 

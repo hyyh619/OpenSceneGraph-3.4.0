@@ -210,7 +210,7 @@ public:
 VTXReader(VVDReader *vvd, MDLRoot *mdlRoot);
 virtual ~VTXReader();
 
-bool   readFile(const std::string&file);
+bool   readFile(const std::string &file);
 
 osg::ref_ptr<osg::Node>   getModel();
 };

@@ -64,7 +64,7 @@ Lwo2::~Lwo2()
 }
 
 bool
-Lwo2::ReadFile(const string&filename)
+Lwo2::ReadFile(const string &filename)
 {
     OSG_INFO << "Opening file: " << filename << std::endl;
 
@@ -205,7 +205,7 @@ Lwo2::_read_float()
 // read null terminated string
 
 string&
-Lwo2::_read_string(string&str)
+Lwo2::_read_string(string &str)
 {
     char c;
 
@@ -490,7 +490,7 @@ void Lwo2::_read_polygons_mapping(unsigned long size)
             OSG_DEBUG << "    \t" << point_index << "\t" << polygon_index << "\t" << Vec2(u, v) << endl;
 
             // apply texture coordinates
-            PointsList&points_list = _current_layer->_polygons[polygon_index];
+            PointsList &points_list = _current_layer->_polygons[polygon_index];
 
             for (unsigned int i = 0; i < points_list.size(); i++)
             {
@@ -657,7 +657,7 @@ void Lwo2::_read_surface(unsigned long size)
 // Generation OSG Geode object from parsed LWO2 file
 
 bool
-Lwo2::GenerateGroup(Group&group)
+Lwo2::GenerateGroup(Group &group)
 {
     if (!_successfully_read)
         return false;

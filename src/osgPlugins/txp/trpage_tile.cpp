@@ -71,7 +71,7 @@ void trpgTileTable::SetNumTiles(int nx, int ny, int lod)
 {
     if (localBlock)
     {
-        LodInfo&li = lodInfo[lod];
+        LodInfo &li = lodInfo[lod];
         li.numX = nx;  li.numY = ny;
         li.addr.resize(1);
         li.elev_min.resize(1, 0.0);
@@ -90,7 +90,7 @@ void trpgTileTable::SetNumTiles(int nx, int ny, int lod)
         // If there's a pre-existing table, we need to preserve the entries
         LodInfo oldLodInfo = lodInfo[lod];
 
-        LodInfo&li = lodInfo[lod];
+        LodInfo &li = lodInfo[lod];
         li.numX = nx;  li.numY = ny;
         int numTile = li.numX * li.numY;
         li.addr.resize(numTile);
@@ -116,7 +116,7 @@ void trpgTileTable::SetNumTiles(int nx, int ny, int lod)
 
     valid = true;
 }
-void trpgTileTable::SetTile(int x, int y, int lod, trpgwAppAddress&ref, float32 zmin, float32 zmax)
+void trpgTileTable::SetTile(int x, int y, int lod, trpgwAppAddress &ref, float32 zmin, float32 zmax)
 {
     if (lod < 0 || lod >= static_cast<int>(lodInfo.size()))
         return;
@@ -124,8 +124,8 @@ void trpgTileTable::SetTile(int x, int y, int lod, trpgwAppAddress&ref, float32 
     if (mode == External)
         return;
 
-    LodInfo&li = lodInfo[lod];
-    int    loc;
+    LodInfo &li = lodInfo[lod];
+    int     loc;
     if (localBlock)
     {
         loc = 0;
@@ -150,7 +150,7 @@ bool trpgTileTable::isValid() const
 
 // Get methods
 
-bool trpgTileTable::GetMode(TileMode&outMode) const
+bool trpgTileTable::GetMode(TileMode &outMode) const
 {
     if (!isValid())
         return false;
@@ -159,7 +159,7 @@ bool trpgTileTable::GetMode(TileMode&outMode) const
     return true;
 }
 
-bool trpgTileTable::GetTile(int x, int y, int lod, trpgwAppAddress&ref, float32&zmin, float32&zmax) const
+bool trpgTileTable::GetTile(int x, int y, int lod, trpgwAppAddress &ref, float32 &zmin, float32 &zmax) const
 {
     if (!isValid())
         return false;
@@ -170,8 +170,8 @@ bool trpgTileTable::GetTile(int x, int y, int lod, trpgwAppAddress&ref, float32&
     if (mode == External)
         return false;
 
-    const LodInfo&li = lodInfo[lod];
-    int          loc;
+    const LodInfo &li = lodInfo[lod];
+    int           loc;
     if (localBlock)
     {
         loc = 0;
@@ -192,7 +192,7 @@ bool trpgTileTable::GetTile(int x, int y, int lod, trpgwAppAddress&ref, float32&
 }
 
 // Write tile table
-bool trpgTileTable::Write(trpgWriteBuffer&buf)
+bool trpgTileTable::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -212,14 +212,14 @@ bool trpgTileTable::Write(trpgWriteBuffer&buf)
         // Write each terrain LOD set
         for (int i = 0; i < numLod; i++)
         {
-            LodInfo&li = lodInfo[i];
+            LodInfo &li = lodInfo[i];
             if (localBlock)
             {
                 // only one x and one y in a local archive
                 buf.Add(1);
                 buf.Add(1);
                 // local blocks always use index 0
-                trpgwAppAddress&ref = li.addr[0];
+                trpgwAppAddress &ref = li.addr[0];
                 buf.Add((int32)ref.file);
                 buf.Add((int32)ref.offset);
 
@@ -235,7 +235,7 @@ bool trpgTileTable::Write(trpgWriteBuffer&buf)
 
                 for (j = 0; j < li.addr.size(); j++)
                 {
-                    trpgwAppAddress&ref = li.addr[j];
+                    trpgwAppAddress &ref = li.addr[j];
                     buf.Add((int32)ref.file);
                     buf.Add((int32)ref.offset);
                 }
@@ -260,7 +260,7 @@ bool trpgTileTable::Write(trpgWriteBuffer&buf)
  */
 
 
-bool trpgTileTable::Read(trpgReadBuffer&buf)
+bool trpgTileTable::Read(trpgReadBuffer &buf)
 {
     valid = false;
 
@@ -282,7 +282,7 @@ bool trpgTileTable::Read(trpgReadBuffer&buf)
 
             for (int i = 0; i < numLod; i++)
             {
-                LodInfo&li = lodInfo[i];
+                LodInfo &li = lodInfo[i];
                 if (localBlock)
                 {
                     if (li.addr.size() == 0)
@@ -299,7 +299,7 @@ bool trpgTileTable::Read(trpgReadBuffer&buf)
                     int32 file, offset;
                     buf.Get(file);
                     buf.Get(offset);
-                    trpgwAppAddress&ref = li.addr[pos];
+                    trpgwAppAddress &ref = li.addr[pos];
                     ref.file   = file;
                     ref.offset = offset;
                     ref.col    = currentCol;
@@ -330,7 +330,7 @@ bool trpgTileTable::Read(trpgReadBuffer&buf)
                         int32 file, offset;
                         buf.Get(file);
                         buf.Get(offset);
-                        trpgwAppAddress&ref = li.addr[j];
+                        trpgwAppAddress &ref = li.addr[j];
                         ref.file   = file;
                         ref.offset = offset;
                     }
@@ -423,12 +423,12 @@ void trpgTileHeader::SetDate(int32 d)
 
 // Local material methods
 
-void trpgTileHeader::AddLocalMaterial(trpgLocalMaterial&locMat)
+void trpgTileHeader::AddLocalMaterial(trpgLocalMaterial &locMat)
 {
     locMats.push_back(locMat);
 }
 
-bool trpgTileHeader::GetNumLocalMaterial(int32&retNum) const
+bool trpgTileHeader::GetNumLocalMaterial(int32 &retNum) const
 {
     if (!isValid())
         return false;
@@ -438,7 +438,7 @@ bool trpgTileHeader::GetNumLocalMaterial(int32&retNum) const
     return true;
 }
 
-bool trpgTileHeader::GetLocalMaterial(int32 id, trpgLocalMaterial&retMat) const
+bool trpgTileHeader::GetLocalMaterial(int32 id, trpgLocalMaterial &retMat) const
 {
     if (id < 0 || id >= static_cast<int>(locMats.size()))
         return false;
@@ -457,7 +457,7 @@ const std::vector<trpgLocalMaterial>*trpgTileHeader::GetLocalMaterialList() cons
 }
 
 // Get methods
-bool trpgTileHeader::GetNumMaterial(int32&no) const
+bool trpgTileHeader::GetNumMaterial(int32 &no) const
 {
     if (!isValid())
         return false;
@@ -465,7 +465,7 @@ bool trpgTileHeader::GetNumMaterial(int32&no) const
     no = matList.size();
     return true;
 }
-bool trpgTileHeader::GetMaterial(int32 id, int32&mat) const
+bool trpgTileHeader::GetMaterial(int32 id, int32 &mat) const
 {
     if (!isValid() || id < 0 || id >= static_cast<int>(matList.size()))
         return false;
@@ -473,7 +473,7 @@ bool trpgTileHeader::GetMaterial(int32 id, int32&mat) const
     mat = matList[id];
     return true;
 }
-bool trpgTileHeader::GetNumModel(int32&no) const
+bool trpgTileHeader::GetNumModel(int32 &no) const
 {
     if (!isValid())
         return false;
@@ -481,7 +481,7 @@ bool trpgTileHeader::GetNumModel(int32&no) const
     no = modelList.size();
     return true;
 }
-bool trpgTileHeader::GetModel(int32 id, int32&m) const
+bool trpgTileHeader::GetModel(int32 id, int32 &m) const
 {
     if (!isValid() || id < 0 || id >= static_cast<int>(modelList.size()))
         return false;
@@ -489,7 +489,7 @@ bool trpgTileHeader::GetModel(int32 id, int32&m) const
     m = modelList[id];
     return true;
 }
-bool trpgTileHeader::GetDate(int32&d) const
+bool trpgTileHeader::GetDate(int32 &d) const
 {
     if (!isValid())
         return false;
@@ -505,7 +505,7 @@ bool trpgTileHeader::isValid() const
 }
 
 // Write to a buffer
-bool trpgTileHeader::Write(trpgWriteBuffer&buf)
+bool trpgTileHeader::Write(trpgWriteBuffer &buf)
 {
     unsigned int i;
 
@@ -558,7 +558,7 @@ void           *Parse(trpgToken, trpgReadBuffer &);
 trpgTileHeader *head;
 };
 
-void* tileHeaderCB::Parse(trpgToken tok, trpgReadBuffer&buf)
+void* tileHeaderCB::Parse(trpgToken tok, trpgReadBuffer &buf)
 {
     int32 no, id, date, i;
 
@@ -617,7 +617,7 @@ void* tileHeaderCB::Parse(trpgToken tok, trpgReadBuffer&buf)
                     throw 1;
 
                 buf.PushLimit(len);
-                trpgLocalMaterial&locMat = (*locMats)[i];
+                trpgLocalMaterial &locMat = (*locMats)[i];
                 locMat.Read(buf);
                 // Set the row/col for later finding
                 trpgwAppAddress addr;
@@ -644,7 +644,7 @@ void* tileHeaderCB::Parse(trpgToken tok, trpgReadBuffer&buf)
 }
 
 // Read tile header
-bool trpgTileHeader::Read(trpgReadBuffer&buf)
+bool trpgTileHeader::Read(trpgReadBuffer &buf)
 {
     tileHeaderCB tcb;
     trpgr_Parser parse;

@@ -33,7 +33,7 @@ RotateSphereDragger::RotateSphereDragger() : _prevPtOnSphere(true)
 RotateSphereDragger::~RotateSphereDragger()
 {}
 
-bool RotateSphereDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool RotateSphereDragger::handle(const PointerInfo &pointer, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     // Check if the dragger node is in the nodepath.
     if (!pointer.contains(this))

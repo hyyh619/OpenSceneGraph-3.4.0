@@ -274,7 +274,7 @@ voidpf ZLIB_INTERNAL zcalloc(voidpf opaque, unsigned items, unsigned size)
 
     /* Normalize the pointer to seg:0 */
     *((ush*)&buf + 1)        += ((ush)((uch*)buf - 0) + 15) >> 4;
-    *(ush*)&buf               = 0;
+    *(ush*) &buf              = 0;
     table[next_ptr++].new_ptr = buf;
     return buf;
 }

@@ -38,7 +38,7 @@ void HelpHandler::reset()
     _camera->setGraphicsContext(0);
 }
 
-bool HelpHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool HelpHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     osgViewer::View *view = dynamic_cast<osgViewer::View*>(&aa);
 
@@ -161,7 +161,7 @@ void HelpHandler::setUpScene(osgViewer::ViewerBase *viewer)
         pos.y() -= characterSize * 2.5f;
     }
 
-    const osg::ApplicationUsage::UsageMap&keyboardBinding = _applicationUsage->getKeyboardMouseBindings();
+    const osg::ApplicationUsage::UsageMap &keyboardBinding = _applicationUsage->getKeyboardMouseBindings();
 
     for (osg::ApplicationUsage::UsageMap::const_iterator itr = keyboardBinding.begin();
          itr != keyboardBinding.end();
@@ -212,7 +212,7 @@ void HelpHandler::setUpScene(osgViewer::ViewerBase *viewer)
 }
 
 
-void HelpHandler::getUsage(osg::ApplicationUsage&usage) const
+void HelpHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     if (_keyEventTogglesOnScreenHelp)
         usage.addKeyboardMouseBinding(_keyEventTogglesOnScreenHelp, "Onscreen help.");

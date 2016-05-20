@@ -40,9 +40,9 @@ Impostor::Impostor()
 }
 
 
-ImpostorSprite* Impostor::findBestImpostorSprite(unsigned int contextID, const osg::Vec3&currLocalEyePoint) const
+ImpostorSprite* Impostor::findBestImpostorSprite(unsigned int contextID, const osg::Vec3 &currLocalEyePoint) const
 {
-    ImpostorSpriteList&impostorSpriteList = _impostorSpriteListBuffer[contextID];
+    ImpostorSpriteList &impostorSpriteList = _impostorSpriteListBuffer[contextID];
 
     float          min_distance2   = FLT_MAX;
     ImpostorSprite *impostorSprite = NULL;
@@ -66,7 +66,7 @@ void Impostor::addImpostorSprite(unsigned int contextID, ImpostorSprite *is)
 {
     if (is && is->getParent() != this)
     {
-        ImpostorSpriteList&impostorSpriteList = _impostorSpriteListBuffer[contextID];
+        ImpostorSpriteList &impostorSpriteList = _impostorSpriteListBuffer[contextID];
 
         // add it to my impostor list first, so it remains referenced
         // when its reference in the previous_owner is removed.
@@ -74,8 +74,8 @@ void Impostor::addImpostorSprite(unsigned int contextID, ImpostorSprite *is)
 
         if (is->getParent())
         {
-            Impostor          *previous_owner = is->getParent();
-            ImpostorSpriteList&isl            = previous_owner->_impostorSpriteListBuffer[contextID];
+            Impostor           *previous_owner = is->getParent();
+            ImpostorSpriteList &isl            = previous_owner->_impostorSpriteListBuffer[contextID];
 
             // find and erase reference to is.
             for (ImpostorSpriteList::iterator itr = isl.begin();
@@ -99,14 +99,14 @@ osg::BoundingSphere Impostor::computeBound() const
     return LOD::computeBound();
 }
 
-inline osgUtil::CullVisitor::value_type distance(const osg::Vec3&coord, const osg::Matrix&matrix)
+inline osgUtil::CullVisitor::value_type distance(const osg::Vec3 &coord, const osg::Matrix &matrix)
 {
     // std::cout << "distance("<<coord<<", "<<matrix<<")"<<std::endl;
 
     return -((osgUtil::CullVisitor::value_type)coord[0] * (osgUtil::CullVisitor::value_type)matrix(0, 2) + (osgUtil::CullVisitor::value_type)coord[1] * (osgUtil::CullVisitor::value_type)matrix(1, 2) + (osgUtil::CullVisitor::value_type)coord[2] * (osgUtil::CullVisitor::value_type)matrix(2, 2) + matrix(3, 2));
 }
 
-void Impostor::traverse(osg::NodeVisitor&nv)
+void Impostor::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getVisitorType() != osg::NodeVisitor::CULL_VISITOR)
     {
@@ -122,8 +122,8 @@ void Impostor::traverse(osg::NodeVisitor&nv)
     }
 
 
-    osg::Vec3           eyeLocal = nv.getEyePoint();
-    const BoundingSphere&bs      = getBound();
+    osg::Vec3            eyeLocal = nv.getEyePoint();
+    const BoundingSphere &bs      = getBound();
 
     unsigned int contextID = cv->getState() ? cv->getState()->getContextID() : 0;
 
@@ -142,7 +142,7 @@ void Impostor::traverse(osg::NodeVisitor&nv)
         // within the impostor distance threshold therefore attempt
         // to use impostor instead.
 
-        RefMatrix&matrix = *cv->getModelViewMatrix();
+        RefMatrix &matrix = *cv->getModelViewMatrix();
 
         // search for the best fit ImpostorSprite;
         ImpostorSprite *impostorSprite = findBestImpostorSprite(contextID, eyeLocal);
@@ -220,9 +220,9 @@ ImpostorSprite* Impostor::createImpostorSprite(osgUtil::CullVisitor *cv)
     // projection matrix...
     bool isPerspectiveProjection = true;
 
-    const Matrix        &matrix   = *(cv->getModelViewMatrix());
-    const BoundingSphere&bs       = getBound();
-    osg::Vec3           eye_local = cv->getEyeLocal();
+    const Matrix         &matrix   = *(cv->getModelViewMatrix());
+    const BoundingSphere &bs       = getBound();
+    osg::Vec3            eye_local = cv->getEyeLocal();
 
     if (!bs.valid())
     {
@@ -264,9 +264,9 @@ ImpostorSprite* Impostor::createImpostorSprite(osgUtil::CullVisitor *cv)
 
     // convert the corners of the sprite (in world coords) into their
     // equivalent window coordinates by using the camera's project method.
-    const osg::Matrix&MVPW   = *(cv->getMVPW());
-    Vec3             c00_win = c00 * MVPW;
-    Vec3             c11_win = c11 * MVPW;
+    const osg::Matrix &MVPW   = *(cv->getMVPW());
+    Vec3              c00_win = c00 * MVPW;
+    Vec3              c11_win = c11 * MVPW;
 
     // adjust texture size to be nearest power of 2.
 
@@ -295,7 +295,7 @@ ImpostorSprite* Impostor::createImpostorSprite(osgUtil::CullVisitor *cv)
     float rounded_tp2 = floorf(tp2 + bias);
     int   new_t       = (int)(powf(2.0f, rounded_tp2));
 
-    const osg::Viewport&viewport = *(cv->getViewport());
+    const osg::Viewport &viewport = *(cv->getViewport());
 
     // if dimension is bigger than window divide it down.
     while (new_s > viewport.width())

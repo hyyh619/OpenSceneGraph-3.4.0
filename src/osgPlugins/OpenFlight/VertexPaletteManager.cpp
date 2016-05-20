@@ -25,7 +25,7 @@
 
 namespace flt
 {
-VertexPaletteManager::VertexPaletteManager(const ExportOptions&fltOpt)
+VertexPaletteManager::VertexPaletteManager(const ExportOptions &fltOpt)
     : _currentSizeBytes(8),
     _current(NULL),
     _vertices(NULL),
@@ -51,7 +51,7 @@ VertexPaletteManager::~VertexPaletteManager()
 }
 
 void
-VertexPaletteManager::add(const osg::Geometry&geom)
+VertexPaletteManager::add(const osg::Geometry &geom)
 {
     const osg::Array *v = geom.getVertexArray();
 
@@ -148,7 +148,7 @@ VertexPaletteManager::byteOffset(unsigned int idx) const
 }
 
 void
-VertexPaletteManager::write(DataOutputStream&dos) const
+VertexPaletteManager::write(DataOutputStream &dos) const
 {
     if (_currentSizeBytes == 8)
         // Empty palette. Don't write anything.

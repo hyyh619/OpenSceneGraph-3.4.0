@@ -73,7 +73,7 @@ typedef struct _rawImageRec
     }
 
     template<class T>
-    inline void swapBytes(T&s)
+    inline void swapBytes(T &s)
     {
         if (sizeof(T) == 1)
             return;
@@ -164,7 +164,7 @@ static void RawImageClose(rawImageRec *raw)
 }
 
 
-static rawImageRec* RawImageOpen(std::istream&fin)
+static rawImageRec* RawImageOpen(std::istream &fin)
 {
     union
     {
@@ -511,7 +511,7 @@ virtual const char* className() const
     return "RGB Image Reader/Writer";
 }
 
-ReadResult readRGBStream(std::istream&fin) const
+ReadResult readRGBStream(std::istream &fin) const
 {
     rawImageRec *raw;
 
@@ -551,22 +551,22 @@ ReadResult readRGBStream(std::istream&fin) const
     return image;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options* = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options* = NULL) const
 {
     return readRGBStream(fin);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -588,7 +588,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-WriteResult writeRGBStream(const osg::Image&img, std::ostream&fout, const std::string&name) const
+WriteResult writeRGBStream(const osg::Image &img, std::ostream &fout, const std::string &name) const
 {
     rawImageRec raw;
 
@@ -708,7 +708,7 @@ WriteResult writeRGBStream(const osg::Image&img, std::ostream&fout, const std::s
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, std::ostream&fout, const osgDB::ReaderWriter::Options*) const
+virtual WriteResult writeImage(const osg::Image &img, std::ostream &fout, const osgDB::ReaderWriter::Options*) const
 {
     if (img.isCompressed())
     {
@@ -725,7 +725,7 @@ virtual WriteResult writeImage(const osg::Image&img, std::ostream&fout, const os
     return writeRGBStream(img, fout, "");
 }
 
-virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName, const osgDB::ReaderWriter::Options*) const
+virtual WriteResult writeImage(const osg::Image &img, const std::string &fileName, const osgDB::ReaderWriter::Options*) const
 {
     if (img.isCompressed())
     {

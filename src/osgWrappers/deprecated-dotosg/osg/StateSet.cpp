@@ -29,15 +29,15 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool GeoState_readLocalData(Object&obj, Input&fr);
+bool GeoState_readLocalData(Object &obj, Input &fr);
 
-bool StateSet_readLocalData(Object&obj, Input&fr);
-bool StateSet_writeLocalData(const Object&obj, Output&fw);
+bool StateSet_readLocalData(Object &obj, Input &fr);
+bool StateSet_writeLocalData(const Object &obj, Output &fw);
 
-bool StateSet_matchModeStr(const char *str, StateAttribute::GLModeValue&mode);
+bool StateSet_matchModeStr(const char *str, StateAttribute::GLModeValue &mode);
 const char* StateSet_getModeStr(StateAttribute::GLModeValue mode);
 
-bool StateSet_matchRenderBinModeStr(const char *str, StateSet::RenderBinMode&mode);
+bool StateSet_matchRenderBinModeStr(const char *str, StateSet::RenderBinMode &mode);
 const char* StateSet_getRenderBinModeStr(StateSet::RenderBinMode mode);
 
 // register the read and write functions with the osgDB::Registry.
@@ -81,7 +81,7 @@ struct ModesAndNames
         return _TextureGLModeSet.find(mode) != _TextureGLModeSet.end();
     }
 
-    inline bool getGLModeForName(const std::string&str, osg::StateAttribute::GLMode&mode) const
+    inline bool getGLModeForName(const std::string &str, osg::StateAttribute::GLMode &mode) const
     {
         GLNameToGLModeMap::const_iterator nitr = _GLNameToGLModeMap.find(str);
 
@@ -96,7 +96,7 @@ struct ModesAndNames
         }
     }
 
-    inline bool getNameForGLMode(const osg::StateAttribute::GLMode&mode, std::string&str) const
+    inline bool getNameForGLMode(const osg::StateAttribute::GLMode &mode, std::string &str) const
     {
         GLModeToGLNameMap::const_iterator nitr = _GLModeToGLNameMap.find(mode);
 
@@ -197,12 +197,12 @@ ModesAndNames::ModesAndNames()
 
 //////////////////////////////////////////////////////////////////////
 
-bool GeoState_readLocalData(Object&obj, Input&fr)
+bool GeoState_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
     // note, StateSet replaced GeoState April 2001.
-    StateSet&statset = static_cast<StateSet&>(obj);
+    StateSet &statset = static_cast<StateSet&>(obj);
 
     statset.setRenderingHint(StateSet::OPAQUE_BIN);
 
@@ -322,12 +322,12 @@ bool GeoState_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool StateSet_readLocalData(Object&obj, Input&fr)
+bool StateSet_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
     // note, StateSet replaced GeoState April 2001.
-    StateSet&stateset = static_cast<StateSet&>(obj);
+    StateSet &stateset = static_cast<StateSet&>(obj);
 
     // read the rendering hint value.
     if (fr[0].matchWord("rendering_hint"))
@@ -571,14 +571,14 @@ bool StateSet_readLocalData(Object&obj, Input&fr)
 
 // visual studio 6.0 doesn't appear to define std::max?!? So do our own here..
 template<class T>
-T mymax(const T&a, const T&b)
+T mymax(const T &a, const T &b)
 {
     return (((a) > (b)) ? (a) : (b));
 }
 
-bool StateSet_writeLocalData(const Object&obj, Output&fw)
+bool StateSet_writeLocalData(const Object &obj, Output &fw)
 {
-    const StateSet&stateset = static_cast<const StateSet&>(obj);
+    const StateSet &stateset = static_cast<const StateSet&>(obj);
 
     // write the rendering hint value.
     fw.indent() << "rendering_hint ";
@@ -610,7 +610,7 @@ bool StateSet_writeLocalData(const Object&obj, Output&fw)
     }
 
 
-    const StateSet::ModeList&ml = stateset.getModeList();
+    const StateSet::ModeList &ml = stateset.getModeList();
 
     for (StateSet::ModeList::const_iterator mitr = ml.begin();
          mitr != ml.end();
@@ -628,7 +628,7 @@ bool StateSet_writeLocalData(const Object&obj, Output&fw)
         }
     }
 
-    const StateSet::UniformList&ul = stateset.getUniformList();
+    const StateSet::UniformList &ul = stateset.getUniformList();
 
     for (StateSet::UniformList::const_iterator uitr = ul.begin();
          uitr != ul.end();
@@ -637,7 +637,7 @@ bool StateSet_writeLocalData(const Object&obj, Output&fw)
         fw.writeObject(*(uitr->second.first));
     }
 
-    const StateSet::AttributeList&sl = stateset.getAttributeList();
+    const StateSet::AttributeList &sl = stateset.getAttributeList();
 
     for (StateSet::AttributeList::const_iterator sitr = sl.begin();
          sitr != sl.end();
@@ -647,9 +647,9 @@ bool StateSet_writeLocalData(const Object&obj, Output&fw)
     }
 
 
-    const StateSet::TextureModeList     &tml    = stateset.getTextureModeList();
-    const StateSet::TextureAttributeList&tal    = stateset.getTextureAttributeList();
-    unsigned int                        maxUnit = mymax(tml.size(), tal.size());
+    const StateSet::TextureModeList      &tml    = stateset.getTextureModeList();
+    const StateSet::TextureAttributeList &tal    = stateset.getTextureAttributeList();
+    unsigned int                         maxUnit = mymax(tml.size(), tal.size());
 
     for (unsigned int unit = 0; unit < maxUnit; ++unit)
     {
@@ -658,7 +658,7 @@ bool StateSet_writeLocalData(const Object&obj, Output&fw)
 
         if (unit < tml.size())
         {
-            const StateSet::ModeList&ml = tml[unit];
+            const StateSet::ModeList &ml = tml[unit];
 
             for (StateSet::ModeList::const_iterator mitr = ml.begin();
                  mitr != ml.end();
@@ -679,7 +679,7 @@ bool StateSet_writeLocalData(const Object&obj, Output&fw)
 
         if (unit < tal.size())
         {
-            const StateSet::AttributeList&sl = tal[unit];
+            const StateSet::AttributeList &sl = tal[unit];
 
             for (StateSet::AttributeList::const_iterator sitr = sl.begin();
                  sitr != sl.end();
@@ -715,7 +715,7 @@ bool StateSet_writeLocalData(const Object&obj, Output&fw)
 }
 
 
-bool StateSet_matchModeStr(const char *str, StateAttribute::GLModeValue&mode)
+bool StateSet_matchModeStr(const char *str, StateAttribute::GLModeValue &mode)
 {
     if (strcmp(str, "INHERIT") == 0)
         mode = StateAttribute::INHERIT;
@@ -772,7 +772,7 @@ const char* StateSet_getModeStr(StateAttribute::GLModeValue value)
     return "";
 }
 
-bool StateSet_matchRenderBinModeStr(const char *str, StateSet::RenderBinMode&mode)
+bool StateSet_matchRenderBinModeStr(const char *str, StateSet::RenderBinMode &mode)
 {
     if (strcmp(str, "INHERIT") == 0)
         mode = StateSet::INHERIT_RENDERBIN_DETAILS;

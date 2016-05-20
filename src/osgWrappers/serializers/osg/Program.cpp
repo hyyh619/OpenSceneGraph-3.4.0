@@ -17,7 +17,7 @@
     }                                                                              \
     static bool write ## PROP(osgDB::OutputStream & os, const osg::Program & attr) \
     {                                                                              \
-        const osg::Program::TYPE&plist = attr.get ## TYPE();                       \
+        const osg::Program::TYPE &plist = attr.get ## TYPE();                      \
         os.writeSize(plist.size()); os << os.BEGIN_BRACKET << std::endl;           \
         for (osg::Program::TYPE::const_iterator itr = plist.begin();               \
              itr != plist.end(); ++itr) {                                          \
@@ -48,12 +48,12 @@ PROGRAM_PARAMETER_FUNC(GeometryInputType, GL_GEOMETRY_INPUT_TYPE_EXT)
 PROGRAM_PARAMETER_FUNC(GeometryOutputType, GL_GEOMETRY_OUTPUT_TYPE_EXT)
 
 // _shaderList
-static bool checkShaders(const osg::Program&attr)
+static bool checkShaders(const osg::Program &attr)
 {
     return attr.getNumShaders() > 0;
 }
 
-static bool readShaders(osgDB::InputStream&is, osg::Program&attr)
+static bool readShaders(osgDB::InputStream &is, osg::Program &attr)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -68,7 +68,7 @@ static bool readShaders(osgDB::InputStream&is, osg::Program&attr)
     return true;
 }
 
-static bool writeShaders(osgDB::OutputStream&os, const osg::Program&attr)
+static bool writeShaders(osgDB::OutputStream &os, const osg::Program &attr)
 {
     unsigned int size = attr.getNumShaders();
 
@@ -83,11 +83,11 @@ static bool writeShaders(osgDB::OutputStream&os, const osg::Program&attr)
     return true;
 }
 // feedBackVaryings
-static bool checkFeedBackVaryingsName(const osg::Program&attr)
+static bool checkFeedBackVaryingsName(const osg::Program &attr)
 {
     return true;
 }
-static bool readFeedBackVaryingsName(osgDB::InputStream&is, osg::Program&attr)
+static bool readFeedBackVaryingsName(osgDB::InputStream &is, osg::Program &attr)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -101,7 +101,7 @@ static bool readFeedBackVaryingsName(osgDB::InputStream&is, osg::Program&attr)
     is >> is.END_BRACKET;
     return true;
 }
-static bool writeFeedBackVaryingsName(osgDB::OutputStream&os, const osg::Program&attr)
+static bool writeFeedBackVaryingsName(osgDB::OutputStream &os, const osg::Program &attr)
 {
     unsigned int size = attr.getNumTransformFeedBackVaryings();
 
@@ -116,11 +116,11 @@ static bool writeFeedBackVaryingsName(osgDB::OutputStream&os, const osg::Program
     return true;
 }
 // feedBack mode
-static bool checkFeedBackMode(const osg::Program&attr)
+static bool checkFeedBackMode(const osg::Program &attr)
 {
     return true;
 }
-static bool readFeedBackMode(osgDB::InputStream&is, osg::Program&attr)
+static bool readFeedBackMode(osgDB::InputStream &is, osg::Program &attr)
 {
     unsigned int size;
 
@@ -128,13 +128,13 @@ static bool readFeedBackMode(osgDB::InputStream&is, osg::Program&attr)
     attr.setTransformFeedBackMode(size);
     return true;
 }
-static bool writeFeedBackMode(osgDB::OutputStream&os, const osg::Program&attr)
+static bool writeFeedBackMode(osgDB::OutputStream &os, const osg::Program &attr)
 {
     os << attr.getTransformFeedBackMode() << std::endl;
     return true;
 }
 // _numGroupsX/Y/Z
-static bool checkComputeGroups(const osg::Program&attr)
+static bool checkComputeGroups(const osg::Program &attr)
 {
     GLint numX = 0, numY = 0, numZ = 0;
 
@@ -142,7 +142,7 @@ static bool checkComputeGroups(const osg::Program&attr)
     return numX > 0 && numY > 0 && numZ > 0;
 }
 
-static bool readComputeGroups(osgDB::InputStream&is, osg::Program&attr)
+static bool readComputeGroups(osgDB::InputStream &is, osg::Program &attr)
 {
     GLint numX = 0, numY = 0, numZ = 0;
 
@@ -151,7 +151,7 @@ static bool readComputeGroups(osgDB::InputStream&is, osg::Program&attr)
     return true;
 }
 
-static bool writeComputeGroups(osgDB::OutputStream&os, const osg::Program&attr)
+static bool writeComputeGroups(osgDB::OutputStream &os, const osg::Program &attr)
 {
     GLint numX = 0, numY = 0, numZ = 0;
 

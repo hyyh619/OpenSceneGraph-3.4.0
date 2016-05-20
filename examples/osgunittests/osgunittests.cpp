@@ -33,7 +33,7 @@
 
 #include <iostream>
 
-extern void runFileNameUtilsTest(osg::ArgumentParser&arguments);
+extern void runFileNameUtilsTest(osg::ArgumentParser &arguments);
 
 void testFrustum(double left, double right, double bottom, double top, double zNear, double zFar)
 {
@@ -109,7 +109,7 @@ void testPerspective(double fovy, double aspect, double zNear, double zFar)
     std::cout << std::endl;
 }
 
-void testLookAt(const osg::Vec3&eye, const osg::Vec3&center, const osg::Vec3&up)
+void testLookAt(const osg::Vec3 &eye, const osg::Vec3 &center, const osg::Vec3 &up)
 {
     osg::Matrix mv;
 
@@ -127,7 +127,7 @@ void testLookAt(const osg::Vec3&eye, const osg::Vec3&center, const osg::Vec3&up)
 }
 
 
-void testMatrixInvert(const osg::Matrix&matrix)
+void testMatrixInvert(const osg::Matrix &matrix)
 {
     // Invert it twice using the two inversion functions and view the results
     osg::notify(osg::NOTICE) << "testMatrixInvert(" << std::endl;
@@ -176,7 +176,7 @@ void sizeOfTest()
 /// versus
 ///  (mat(q1)*mat(q2)*scale).getRotate()
 /// for a range of rotations
-void testGetQuatFromMatrix(const osg::Vec3d&scale)
+void testGetQuatFromMatrix(const osg::Vec3d &scale)
 {
     // Options
 
@@ -355,7 +355,7 @@ void testGetQuatFromMatrix(const osg::Vec3d&scale)
     std::cout << "Time for testGetQuatFromMatrix with " << count << " iterations: " << duration << std::endl << std::endl;
 }
 
-void testQuatRotate(const osg::Vec3d&from, const osg::Vec3d&to)
+void testQuatRotate(const osg::Vec3d &from, const osg::Vec3d &to)
 {
     osg::Quat q_nicolas;
 
@@ -371,7 +371,7 @@ void testQuatRotate(const osg::Vec3d&from, const osg::Vec3d&to)
     std::cout << "  from * M4x4(q_original) = " << from * osg::Matrixd::rotate(q_original) << std::endl;
 }
 
-void testQuat(const osg::Vec3d&quat_scale)
+void testQuat(const osg::Vec3d &quat_scale)
 {
     osg::Quat q1;
 
@@ -485,7 +485,7 @@ class NotifyThread : public OpenThreads::Thread
 {
 public:
 
-NotifyThread(osg::NotifySeverity level, const std::string&message) :
+NotifyThread(osg::NotifySeverity level, const std::string &message) :
     _done(false),
     _level(level),
     _message(message) {}

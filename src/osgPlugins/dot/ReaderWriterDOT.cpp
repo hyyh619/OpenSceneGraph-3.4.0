@@ -22,12 +22,12 @@ virtual const char* className() const
 {
     return "DOT Writer";
 }
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "dot");
 }
 
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options *options = NULL) const
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options *options = NULL) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 
@@ -45,7 +45,7 @@ virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, 
     return WriteResult(WriteResult::ERROR_IN_WRITING_FILE);
 }
 
-virtual WriteResult writeNode(const osg::Node&node, std::ostream&fout, const Options *options = NULL) const
+virtual WriteResult writeNode(const osg::Node &node, std::ostream &fout, const Options *options = NULL) const
 {
     osgDot::SimpleDotVisitor sdv;
 

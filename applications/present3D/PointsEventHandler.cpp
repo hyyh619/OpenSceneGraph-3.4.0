@@ -20,7 +20,7 @@ PointsEventHandler::PointsEventHandler()
     // _point->setDistanceAttenuation(osg::Vec3(0.0,0.0000,0.05f));
 }
 
-bool PointsEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool PointsEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -57,7 +57,7 @@ bool PointsEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActio
     return false;
 }
 
-void PointsEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void PointsEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("+", "Increase point size");
     usage.addKeyboardMouseBinding("-", "Reduce point size");

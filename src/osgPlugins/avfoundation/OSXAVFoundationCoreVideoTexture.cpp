@@ -45,7 +45,7 @@ OSXAVFoundationCoreVideoTexture::OSXAVFoundationCoreVideoTexture(osg::Image *ima
 }
 
 
-OSXAVFoundationCoreVideoTexture::OSXAVFoundationCoreVideoTexture(const OSXAVFoundationCoreVideoTexture&text, const osg::CopyOp&copyop)
+OSXAVFoundationCoreVideoTexture::OSXAVFoundationCoreVideoTexture(const OSXAVFoundationCoreVideoTexture &text, const osg::CopyOp &copyop)
     : osg::Texture(text, copyop)
     , _textureTarget(text._textureTarget)
     , _textureWidth(text._textureWidth)
@@ -58,7 +58,7 @@ OSXAVFoundationCoreVideoTexture::OSXAVFoundationCoreVideoTexture(const OSXAVFoun
 OSXAVFoundationCoreVideoTexture::~OSXAVFoundationCoreVideoTexture() {}
 
 
-int OSXAVFoundationCoreVideoTexture::compare(const osg::StateAttribute&sa) const
+int OSXAVFoundationCoreVideoTexture::compare(const osg::StateAttribute &sa) const
 {
     COMPARE_StateAttribute_Types(OSXAVFoundationCoreVideoTexture, sa)
 
@@ -145,7 +145,7 @@ void OSXAVFoundationCoreVideoTexture::setImage(osg::Image *image)
 
 
 
-void OSXAVFoundationCoreVideoTexture::apply(osg::State&state) const
+void OSXAVFoundationCoreVideoTexture::apply(osg::State &state) const
 {
     if (!_image.valid())
         return;

@@ -59,7 +59,7 @@ static osg::Vec3 centerScope(0.0f, 0.0f, 0.0f);
 
 
 /** create quad at specified position. */
-osg::Drawable* createSquare(const osg::Vec3&corner, const osg::Vec3&width, const osg::Vec3&height, osg::Image *image = NULL)
+osg::Drawable* createSquare(const osg::Vec3 &corner, const osg::Vec3 &width, const osg::Vec3 &height, osg::Image *image = NULL)
 {
     // set up the Geometry.
     osg::Geometry *geom = new osg::Geometry;
@@ -109,7 +109,7 @@ osg::Drawable* createSquare(const osg::Vec3&corner, const osg::Vec3&width, const
     return geom;
 }
 
-osg::Image* createBillboardImage(const osg::Vec4&centerColour, unsigned int size, float power)
+osg::Image* createBillboardImage(const osg::Vec4 &centerColour, unsigned int size, float power)
 {
     osg::Vec4 backgroundColour = centerColour;
 
@@ -149,7 +149,7 @@ osg::Image* createBillboardImage(const osg::Vec4&centerColour, unsigned int size
     // return osgDB::readImageFile("spot.dds");
 }
 
-osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, double looptime)
+osg::AnimationPath* createAnimationPath(const osg::Vec3 &center, float radius, double looptime)
 {
     // set up the animation path
     osg::AnimationPath *animationPath = new osg::AnimationPath;
@@ -271,9 +271,9 @@ SolarSystem()
 osg::MatrixTransform* createTranslationAndTilt(double translation, double tilt);
 osg::MatrixTransform* createRotation(double orbit, double speed);
 
-osg::Geode* createSpace(const std::string&name, const std::string&textureName);
-osg::Geode* createPlanet(double radius, const std::string&name, const osg::Vec4&color, const std::string&textureName);
-osg::Geode* createPlanet(double radius, const std::string&name, const osg::Vec4&color, const std::string&textureName1, const std::string&textureName2);
+osg::Geode* createSpace(const std::string &name, const std::string &textureName);
+osg::Geode* createPlanet(double radius, const std::string &name, const osg::Vec4 &color, const std::string &textureName);
+osg::Geode* createPlanet(double radius, const std::string &name, const osg::Vec4 &color, const std::string &textureName1, const std::string &textureName2);
 osg::Group* createSunLight();
 
 void rotateSpeedCorrection()
@@ -321,11 +321,11 @@ void printParameters();
 class FindNamedNodeVisitor : public osg::NodeVisitor
 {
 public:
-FindNamedNodeVisitor(const std::string&name) :
+FindNamedNodeVisitor(const std::string &name) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _name(name) {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     if (node.getName() == _name)
     {
@@ -368,7 +368,7 @@ osg::MatrixTransform* SolarSystem::createTranslationAndTilt(double /*translation
 }// end SolarSystem::createTranslationAndTilt
 
 
-osg::Geode* SolarSystem::createSpace(const std::string&name, const std::string&textureName)
+osg::Geode* SolarSystem::createSpace(const std::string &name, const std::string &textureName)
 {
     osg::Sphere *spaceSphere = new osg::Sphere(osg::Vec3(0.0, 0.0, 0.0), _radiusSpace);
 
@@ -395,7 +395,7 @@ osg::Geode* SolarSystem::createSpace(const std::string&name, const std::string&t
 }// end SolarSystem::createSpace
 
 
-osg::Geode* SolarSystem::createPlanet(double radius, const std::string&name, const osg::Vec4&color, const std::string&textureName)
+osg::Geode* SolarSystem::createPlanet(double radius, const std::string &name, const osg::Vec4 &color, const std::string &textureName)
 {
     // create a container that makes the sphere drawable
     osg::Geometry *sPlanetSphere = new osg::Geometry();
@@ -500,7 +500,7 @@ osg::Geode* SolarSystem::createPlanet(double radius, const std::string&name, con
     return(geodePlanet);
 }// end SolarSystem::createPlanet
 
-osg::Geode* SolarSystem::createPlanet(double radius, const std::string&name, const osg::Vec4&color, const std::string&textureName1, const std::string&textureName2)
+osg::Geode* SolarSystem::createPlanet(double radius, const std::string &name, const osg::Vec4 &color, const std::string &textureName1, const std::string &textureName2)
 {
     osg::Geode *geodePlanet = createPlanet(radius, name, color, textureName1);
 

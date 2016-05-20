@@ -12,8 +12,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool Text3D_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Text3D_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Text3D_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Text3D_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Text3D_Proxy)
 (
@@ -45,10 +45,10 @@ std::string convertRenderModeEnumToString(osgText::Text3D::RenderMode renderMode
     }
 }
 
-bool Text3D_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Text3D_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgText::Text3D&text      = static_cast<osgText::Text3D&>(obj);
-    bool           itAdvanced = false;
+    osgText::Text3D &text      = static_cast<osgText::Text3D&>(obj);
+    bool            itAdvanced = false;
 
 
     // characterDepth
@@ -79,9 +79,9 @@ bool Text3D_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool Text3D_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Text3D_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgText::Text3D&text = static_cast<const osgText::Text3D&>(obj);
+    const osgText::Text3D &text = static_cast<const osgText::Text3D&>(obj);
 
     fw.indent() << "characterDepth " << text.getCharacterDepth() << std::endl;
 

@@ -688,10 +688,10 @@ typedef struct st_dynamic_fns
  * be implemented with the symbol name "v_check", and a default implementation
  * can be fully instantiated with IMPLEMENT_DYNAMIC_CHECK_FN(). */
 typedef unsigned long (*dynamic_v_check_fn)(unsigned long ossl_version);
-#define IMPLEMENT_DYNAMIC_CHECK_FN()                                \
-    OPENSSL_EXPORT unsigned long v_check(unsigned long v);          \
-    OPENSSL_EXPORT unsigned long v_check(unsigned long v) {         \
-        if (v >= OSSL_DYNAMIC_OLDEST) return OSSL_DYNAMIC_VERSION;  \
+#define IMPLEMENT_DYNAMIC_CHECK_FN()                               \
+    OPENSSL_EXPORT unsigned long v_check(unsigned long v);         \
+    OPENSSL_EXPORT unsigned long v_check(unsigned long v) {        \
+        if (v >= OSSL_DYNAMIC_OLDEST) return OSSL_DYNAMIC_VERSION; \
         return 0; }
 
 /* This function is passed the ENGINE structure to initialise with its own

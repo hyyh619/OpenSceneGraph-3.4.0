@@ -19,7 +19,7 @@
 using namespace std;
 
 void
-dxfBlock::assign(dxfFile *dxf, codeValue&cv)
+dxfBlock::assign(dxfFile *dxf, codeValue &cv)
 {
     string s = cv._string;
 

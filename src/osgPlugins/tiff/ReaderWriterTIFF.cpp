@@ -544,11 +544,11 @@ simage_tiff_identify(const char*,
 #define pack(a, b) ((a) << 8 | (b))
 
 unsigned char*
-simage_tiff_load(std::istream&fin,
-                 int&width_ret,
-                 int&height_ret,
-                 int&numComponents_ret,
-                 uint16&bitspersample)
+simage_tiff_load(std::istream &fin,
+                 int &width_ret,
+                 int &height_ret,
+                 int &numComponents_ret,
+                 uint16 &bitspersample)
 {
     TIFF          *in;
     uint16        dataType;
@@ -849,7 +849,7 @@ virtual const char* className() const
 {
     return "TIFF Image Reader";
 }
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     if (osgDB::equalCaseInsensitive(extension, "tiff"))
         return true;
@@ -860,7 +860,7 @@ virtual bool acceptsExtension(const std::string&extension) const
     return false;
 }
 
-ReadResult readTIFStream(std::istream&fin) const
+ReadResult readTIFStream(std::istream &fin) const
 {
     unsigned char *imageData        = NULL;
     int           width_ret         = -1;
@@ -907,7 +907,7 @@ ReadResult readTIFStream(std::istream&fin) const
     return pOsgImage;
 }
 
-WriteResult::WriteStatus writeTIFStream(std::ostream&fout, const osg::Image&img, const osgDB::ReaderWriter::Options *options) const
+WriteResult::WriteStatus writeTIFStream(std::ostream &fout, const osg::Image &img, const osgDB::ReaderWriter::Options *options) const
 {
     int compressionType = COMPRESSION_PACKBITS;
 
@@ -1051,22 +1051,22 @@ WriteResult::WriteStatus writeTIFStream(std::ostream&fout, const osg::Image&img,
     return WriteResult::FILE_SAVED;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options* = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options* = NULL) const
 {
     return readTIFStream(fin);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -1088,14 +1088,14 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     WriteResult::WriteStatus ws = writeTIFStream(fout, img, options);
 
     return ws;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 

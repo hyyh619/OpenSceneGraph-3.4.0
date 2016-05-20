@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _fileNames
-static bool checkFileNames(const osg::ImageSequence&image)
+static bool checkFileNames(const osg::ImageSequence &image)
 {
     return image.getNumImageData() > 0;
 }
 
-static bool readFileNames(osgDB::InputStream&is, osg::ImageSequence&image)
+static bool readFileNames(osgDB::InputStream &is, osg::ImageSequence &image)
 {
     unsigned int files = 0; is >> files >> is.BEGIN_BRACKET;
 
@@ -26,9 +26,9 @@ static bool readFileNames(osgDB::InputStream&is, osg::ImageSequence&image)
     return true;
 }
 
-static bool writeFileNames(osgDB::OutputStream&os, const osg::ImageSequence&image)
+static bool writeFileNames(osgDB::OutputStream &os, const osg::ImageSequence &image)
 {
-    const osg::ImageSequence::ImageDataList&imageDataList = image.getImageDataList();
+    const osg::ImageSequence::ImageDataList &imageDataList = image.getImageDataList();
 
     os.writeSize(imageDataList.size()); os << os.BEGIN_BRACKET << std::endl;
 
@@ -45,12 +45,12 @@ static bool writeFileNames(osgDB::OutputStream&os, const osg::ImageSequence&imag
 }
 
 // _images
-static bool checkImages(const osg::ImageSequence&image)
+static bool checkImages(const osg::ImageSequence &image)
 {
     return false;
 }
 
-static bool readImages(osgDB::InputStream&is, osg::ImageSequence&image)
+static bool readImages(osgDB::InputStream &is, osg::ImageSequence &image)
 {
     unsigned int images = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -65,9 +65,9 @@ static bool readImages(osgDB::InputStream&is, osg::ImageSequence&image)
     return true;
 }
 
-static bool writeImages(osgDB::OutputStream&os, const osg::ImageSequence&image)
+static bool writeImages(osgDB::OutputStream &os, const osg::ImageSequence &image)
 {
-    const osg::ImageSequence::ImageDataList&imageDataList = image.getImageDataList();
+    const osg::ImageSequence::ImageDataList &imageDataList = image.getImageDataList();
 
     os.writeSize(imageDataList.size()); os << os.BEGIN_BRACKET << std::endl;
 

@@ -9,7 +9,7 @@ ImageOptions::ImageOptions()
     init();
 }
 
-ImageOptions::ImageOptions(const std::string&str)
+ImageOptions::ImageOptions(const std::string &str)
 {
     init();
     _str = str;

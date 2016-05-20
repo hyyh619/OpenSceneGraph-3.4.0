@@ -61,7 +61,7 @@ trpg3dPoint trpgMBR::GetUR() const
 {
     return ur;
 }
-void trpgMBR::AddPoint(const trpg3dPoint&pt)
+void trpgMBR::AddPoint(const trpg3dPoint &pt)
 {
     if (valid)
     {
@@ -82,13 +82,13 @@ void trpgMBR::AddPoint(double x, double y, double z)
 {
     AddPoint(trpg3dPoint(x, y, z));
 }
-void trpgMBR::GetMBR(trpg3dPoint&oll, trpg3dPoint&our) const
+void trpgMBR::GetMBR(trpg3dPoint &oll, trpg3dPoint &our) const
 {
     oll = ll;
     our = ur;
 }
 // Add the input MBR to this one
-void trpgMBR::Union(const trpgMBR&in)
+void trpgMBR::Union(const trpgMBR &in)
 {
     if (valid)
     {
@@ -105,7 +105,7 @@ void trpgMBR::Union(const trpgMBR&in)
     }
 }
 // See if there's any overlap between the two MBRs
-bool trpgMBR::Overlap(const trpg2dPoint&ill, const trpg2dPoint&iur) const
+bool trpgMBR::Overlap(const trpg2dPoint &ill, const trpg2dPoint &iur) const
 {
     if (!isValid())
         return false;
@@ -131,7 +131,7 @@ bool trpgMBR::Overlap(const trpg2dPoint&ill, const trpg2dPoint&iur) const
     return false;
 }
 // Check if a given 2d point is within the MBR
-bool trpgMBR::Within(const trpg2dPoint&pt) const
+bool trpgMBR::Within(const trpg2dPoint &pt) const
 {
     if (inRange(ll.x, ur.x, pt.x) && inRange(ll.y, ur.y, pt.y))
         return true;
@@ -252,7 +252,7 @@ trpgReadGeometryHelper(trpgSceneGraphParser *in_parse)
 {
     parse = in_parse;
 }
-void* Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgReadGeometry *geom = new trpgReadGeometry();
     trpgGeometry     *data = geom->GetData();
@@ -289,7 +289,7 @@ trpgReadGroupHelper(trpgSceneGraphParser *in_parse)
 {
     parse = in_parse;
 }
-void* Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgReadGroup *group = new trpgReadGroup();
     trpgGroup     *data  = group->GetData();
@@ -323,7 +323,7 @@ trpgReadBillboardHelper(trpgSceneGraphParser *in_parse)
 {
     parse = in_parse;
 }
-void* Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgReadBillboard *group = new trpgReadBillboard();
     trpgBillboard     *data  = group->GetData();
@@ -357,7 +357,7 @@ trpgReadAttachHelper(trpgSceneGraphParser *in_parse)
 {
     parse = in_parse;
 }
-void* Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgReadAttach *attach = new trpgReadAttach();
     trpgAttach     *data   = attach->GetData();
@@ -392,7 +392,7 @@ trpgReadChildRefHelper(trpgSceneGraphParser *in_parse)
 {
     parse = in_parse;
 }
-void* Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgReadChildRef *childRef = new trpgReadChildRef();
     trpgChildRef     *data     = childRef->GetData();
@@ -423,7 +423,7 @@ trpgReadLodHelper(trpgSceneGraphParser *in_parse)
 {
     parse = in_parse;
 }
-void* Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgReadLod *lod  = new trpgReadLod();
     trpgLod     *data = lod->GetData();
@@ -457,7 +457,7 @@ trpgReadModelRefHelper(trpgSceneGraphParser *in_parse)
 {
     parse = in_parse;
 }
-void* Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgReadModelRef *mod  = new trpgReadModelRef();
     trpgModelRef     *data = mod->GetData();
@@ -486,7 +486,7 @@ trpgReadTileHeaderHelper(trpgSceneGraphParser *in_parse)
 {
     parse = in_parse;
 }
-void* Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgReadTileHeader *th   = parse->GetTileHeaderRef();
     trpgTileHeader     *data = th->GetData();
@@ -552,7 +552,7 @@ trpgReadTileHeader* trpgSceneGraphParser::GetTileHeaderRef()
 
 // Parse Scene
 // Parse a buffer and return the resulting scene graph
-trpgReadNode* trpgSceneGraphParser::ParseScene(trpgReadBuffer&buf, GroupMap&inGmap)
+trpgReadNode* trpgSceneGraphParser::ParseScene(trpgReadBuffer &buf, GroupMap &inGmap)
 {
     gmap = &inGmap;
     trpgTileHeader *data = tileHead.GetData();
@@ -633,7 +633,7 @@ trpgSceneGraphParser::GroupMap* trpgSceneGraphParser::GetGroupMap()
  */
 
 // Test all the tiles in an archive
-bool trpgTestArchive(trpgr_Archive&archive)
+bool trpgTestArchive(trpgr_Archive &archive)
 {
     int                            numLod;
     trpg2iPoint                    tileSize;

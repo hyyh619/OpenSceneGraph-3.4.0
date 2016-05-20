@@ -30,7 +30,7 @@ void PositionalStateContainer::reset()
     _texAttrListMap.clear();
 }
 
-void PositionalStateContainer::draw(osg::State&state, RenderLeaf*&previous, const osg::Matrix *postMultMatrix)
+void PositionalStateContainer::draw(osg::State &state, RenderLeaf* &previous, const osg::Matrix *postMultMatrix)
 {
     if (previous)
     {

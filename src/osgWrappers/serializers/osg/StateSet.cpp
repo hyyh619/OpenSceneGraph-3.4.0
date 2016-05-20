@@ -3,7 +3,7 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static int readValue(osgDB::InputStream&is)
+static int readValue(osgDB::InputStream &is)
 {
     int value = 0;
 
@@ -33,7 +33,7 @@ static int readValue(osgDB::InputStream&is)
     return value;
 }
 
-static void readModes(osgDB::InputStream&is, osg::StateSet::ModeList&modes)
+static void readModes(osgDB::InputStream &is, osg::StateSet::ModeList &modes)
 {
     unsigned int size = is.readSize();
 
@@ -52,7 +52,7 @@ static void readModes(osgDB::InputStream&is, osg::StateSet::ModeList&modes)
     }
 }
 
-static void readAttributes(osgDB::InputStream&is, osg::StateSet::AttributeList&attrs)
+static void readAttributes(osgDB::InputStream &is, osg::StateSet::AttributeList &attrs)
 {
     unsigned int size = is.readSize();
 
@@ -73,7 +73,7 @@ static void readAttributes(osgDB::InputStream&is, osg::StateSet::AttributeList&a
     }
 }
 
-static void writeValue(osgDB::OutputStream&os, int value)
+static void writeValue(osgDB::OutputStream &os, int value)
 {
     if (os.isBinary())
         os << value;
@@ -119,7 +119,7 @@ static void writeValue(osgDB::OutputStream&os, int value)
     }
 }
 
-static void writeModes(osgDB::OutputStream&os, const osg::StateSet::ModeList&modes)
+static void writeModes(osgDB::OutputStream &os, const osg::StateSet::ModeList &modes)
 {
     os.writeSize(modes.size());
     if (modes.size() > 0)
@@ -140,7 +140,7 @@ static void writeModes(osgDB::OutputStream&os, const osg::StateSet::ModeList&mod
     os << std::endl;
 }
 
-static void writeAttributes(osgDB::OutputStream&os, const osg::StateSet::AttributeList&attrs)
+static void writeAttributes(osgDB::OutputStream &os, const osg::StateSet::AttributeList &attrs)
 {
     os.writeSize(attrs.size());
     if (attrs.size() > 0)
@@ -163,12 +163,12 @@ static void writeAttributes(osgDB::OutputStream&os, const osg::StateSet::Attribu
 }
 
 // _modeList
-static bool checkModeList(const osg::StateSet&ss)
+static bool checkModeList(const osg::StateSet &ss)
 {
     return ss.getModeList().size() > 0;
 }
 
-static bool readModeList(osgDB::InputStream&is, osg::StateSet&ss)
+static bool readModeList(osgDB::InputStream &is, osg::StateSet &ss)
 {
     osg::StateSet::ModeList modes; readModes(is, modes);
 
@@ -181,19 +181,19 @@ static bool readModeList(osgDB::InputStream&is, osg::StateSet&ss)
     return true;
 }
 
-static bool writeModeList(osgDB::OutputStream&os, const osg::StateSet&ss)
+static bool writeModeList(osgDB::OutputStream &os, const osg::StateSet &ss)
 {
     writeModes(os, ss.getModeList());
     return true;
 }
 
 // _attributeList
-static bool checkAttributeList(const osg::StateSet&ss)
+static bool checkAttributeList(const osg::StateSet &ss)
 {
     return ss.getAttributeList().size() > 0;
 }
 
-static bool readAttributeList(osgDB::InputStream&is, osg::StateSet&ss)
+static bool readAttributeList(osgDB::InputStream &is, osg::StateSet &ss)
 {
     osg::StateSet::AttributeList attrs; readAttributes(is, attrs);
 
@@ -206,19 +206,19 @@ static bool readAttributeList(osgDB::InputStream&is, osg::StateSet&ss)
     return true;
 }
 
-static bool writeAttributeList(osgDB::OutputStream&os, const osg::StateSet&ss)
+static bool writeAttributeList(osgDB::OutputStream &os, const osg::StateSet &ss)
 {
     writeAttributes(os, ss.getAttributeList());
     return true;
 }
 
 // _textureModeList
-static bool checkTextureModeList(const osg::StateSet&ss)
+static bool checkTextureModeList(const osg::StateSet &ss)
 {
     return ss.getTextureModeList().size() > 0;
 }
 
-static bool readTextureModeList(osgDB::InputStream&is, osg::StateSet&ss)
+static bool readTextureModeList(osgDB::InputStream &is, osg::StateSet &ss)
 {
     unsigned int            size = is.readSize(); is >> is.BEGIN_BRACKET;
     osg::StateSet::ModeList modes;
@@ -241,9 +241,9 @@ static bool readTextureModeList(osgDB::InputStream&is, osg::StateSet&ss)
     return true;
 }
 
-static bool writeTextureModeList(osgDB::OutputStream&os, const osg::StateSet&ss)
+static bool writeTextureModeList(osgDB::OutputStream &os, const osg::StateSet &ss)
 {
-    const osg::StateSet::TextureModeList&tml = ss.getTextureModeList();
+    const osg::StateSet::TextureModeList &tml = ss.getTextureModeList();
 
     os.writeSize(tml.size()); os << os.BEGIN_BRACKET << std::endl;
 
@@ -259,12 +259,12 @@ static bool writeTextureModeList(osgDB::OutputStream&os, const osg::StateSet&ss)
 }
 
 // _textureAttributeList
-static bool checkTextureAttributeList(const osg::StateSet&ss)
+static bool checkTextureAttributeList(const osg::StateSet &ss)
 {
     return ss.getTextureAttributeList().size() > 0;
 }
 
-static bool readTextureAttributeList(osgDB::InputStream&is, osg::StateSet&ss)
+static bool readTextureAttributeList(osgDB::InputStream &is, osg::StateSet &ss)
 {
     unsigned int                 size = is.readSize(); is >> is.BEGIN_BRACKET;
     osg::StateSet::AttributeList attrs;
@@ -287,9 +287,9 @@ static bool readTextureAttributeList(osgDB::InputStream&is, osg::StateSet&ss)
     return true;
 }
 
-static bool writeTextureAttributeList(osgDB::OutputStream&os, const osg::StateSet&ss)
+static bool writeTextureAttributeList(osgDB::OutputStream &os, const osg::StateSet &ss)
 {
-    const osg::StateSet::TextureAttributeList&tal = ss.getTextureAttributeList();
+    const osg::StateSet::TextureAttributeList &tal = ss.getTextureAttributeList();
 
     os.writeSize(tal.size()); os << os.BEGIN_BRACKET << std::endl;
 
@@ -305,12 +305,12 @@ static bool writeTextureAttributeList(osgDB::OutputStream&os, const osg::StateSe
 }
 
 // _uniformList
-static bool checkUniformList(const osg::StateSet&ss)
+static bool checkUniformList(const osg::StateSet &ss)
 {
     return ss.getUniformList().size() > 0;
 }
 
-static bool readUniformList(osgDB::InputStream&is, osg::StateSet&ss)
+static bool readUniformList(osgDB::InputStream &is, osg::StateSet &ss)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -327,9 +327,9 @@ static bool readUniformList(osgDB::InputStream&is, osg::StateSet&ss)
     return true;
 }
 
-static bool writeUniformList(osgDB::OutputStream&os, const osg::StateSet&ss)
+static bool writeUniformList(osgDB::OutputStream &os, const osg::StateSet &ss)
 {
-    const osg::StateSet::UniformList&ul = ss.getUniformList();
+    const osg::StateSet::UniformList &ul = ss.getUniformList();
 
     os.writeSize(ul.size()); os << os.BEGIN_BRACKET << std::endl;
 

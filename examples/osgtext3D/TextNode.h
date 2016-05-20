@@ -34,14 +34,14 @@ class /*OSGTEXT_EXPORT*/ Layout : public osg::Object
 public:
 
 Layout();
-Layout(const Layout&layout, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+Layout(const Layout &layout, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(osgText, Layout)
 
 /// default Layout implementation used if no other is specified on TextNode
 static osg::ref_ptr<Layout>&getDefaultLayout();
 
-virtual void layout(TextNode&text) const;
+virtual void layout(TextNode &text) const;
 
 protected:
 };
@@ -51,7 +51,7 @@ class /*OSGTEXT_EXPORT*/ TextTechnique : public osg::Object
 public:
 
 TextTechnique();
-TextTechnique(const TextTechnique&technique, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+TextTechnique(const TextTechnique &technique, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(osgText, TextTechnique)
 
@@ -71,16 +71,16 @@ static osg::ref_ptr<TextTechnique>&getDefaultTextTechinque();
 virtual void start();
 
 /// called by Layout engine to place individual characters
-virtual void addCharacter(const osg::Vec3&position, const osg::Vec3&size, Glyph *glyph, Style *style);
+virtual void addCharacter(const osg::Vec3 &position, const osg::Vec3 &size, Glyph *glyph, Style *style);
 
 /// called by Layout engine to place individual characters
-virtual void addCharacter(const osg::Vec3&position, const osg::Vec3&size, Glyph3D *glyph, Style *style);
+virtual void addCharacter(const osg::Vec3 &position, const osg::Vec3 &size, Glyph3D *glyph, Style *style);
 
 /// finish building new charater layout
 virtual void finish();
 
 /// provide traversal control
-virtual void traverse(osg::NodeVisitor&nv);
+virtual void traverse(osg::NodeVisitor &nv);
 
 protected:
 
@@ -99,11 +99,11 @@ class /*OSGTEXT_EXPORT*/ TextNode : public osg::Group
 public:
 
 TextNode();
-TextNode(const TextNode&text, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+TextNode(const TextNode &text, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Node(osgText, TextNode)
 
-virtual void traverse(osg::NodeVisitor&nv);
+virtual void traverse(osg::NodeVisitor &nv);
 
 void setFont(Font *font)
 {
@@ -174,8 +174,8 @@ const TextTechnique* getTextTechnique() const
     return _technique.get();
 }
 
-void setText(const std::string&str);
-void setText(const String&str)
+void setText(const std::string &str);
+void setText(const String &str)
 {
     _string = str;
 }
@@ -188,7 +188,7 @@ const String&getText() const
     return _string;
 }
 
-void setPosition(const osg::Vec3d&position)
+void setPosition(const osg::Vec3d &position)
 {
     _position = position;
 }
@@ -197,7 +197,7 @@ const osg::Vec3d&getPosition() const
     return _position;
 }
 
-void setRotation(const osg::Quat&rotation)
+void setRotation(const osg::Quat &rotation)
 {
     _rotation = rotation;
 }

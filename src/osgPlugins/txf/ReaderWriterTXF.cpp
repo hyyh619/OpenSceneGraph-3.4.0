@@ -32,7 +32,7 @@ virtual const char* className() const
     return "TXF Font Reader/Writer";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -56,7 +56,7 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
     return font.release();
 }
 
-virtual ReadResult readObject(std::istream&stream, const osgDB::ReaderWriter::Options*) const
+virtual ReadResult readObject(std::istream &stream, const osgDB::ReaderWriter::Options*) const
 {
     TXFFont                     *impl = new TXFFont("streamed font");
     osg::ref_ptr<osgText::Font> font  = new osgText::Font(impl);

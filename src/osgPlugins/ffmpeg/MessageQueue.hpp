@@ -25,11 +25,11 @@ MessageQueue();
 
 void clear();
 
-void push(const T&value);
+void push(const T &value);
 
 value_type pop();
-value_type tryPop(bool&is_empty);
-value_type timedPop(bool&is_empty, unsigned long ms);
+value_type tryPop(bool &is_empty);
+value_type timedPop(bool &is_empty, unsigned long ms);
 
 private:
 
@@ -73,7 +73,7 @@ void MessageQueue<T>::clear()
 
 
 template<class T>
-void MessageQueue<T>::push(const T&value)
+void MessageQueue<T>::push(const T &value)
 {
     {
         ScopedLock lock(m_mutex);
@@ -102,7 +102,7 @@ typename MessageQueue<T>::value_type MessageQueue<T>::pop()
 
 
 template<class T>
-typename MessageQueue<T>::value_type MessageQueue<T>::tryPop(bool&is_empty)
+typename MessageQueue<T>::value_type MessageQueue<T>::tryPop(bool &is_empty)
 {
     ScopedLock lock(m_mutex);
 
@@ -120,7 +120,7 @@ typename MessageQueue<T>::value_type MessageQueue<T>::tryPop(bool&is_empty)
 
 
 template<class T>
-typename MessageQueue<T>::value_type MessageQueue<T>::timedPop(bool&is_empty, const unsigned long ms)
+typename MessageQueue<T>::value_type MessageQueue<T>::timedPop(bool &is_empty, const unsigned long ms)
 {
     ScopedLock lock(m_mutex);
 

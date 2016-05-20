@@ -71,9 +71,9 @@ TechniqueEventHandler()
 
 META_Object(osgBlendEquationApp, TechniqueEventHandler);
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 protected:
 
@@ -89,7 +89,7 @@ int _eq_index;
 
 
 
-bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -126,7 +126,7 @@ bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAc
     }
 }
 
-void TechniqueEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void TechniqueEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("Left Arrow", "Advance to next equation");
     usage.addKeyboardMouseBinding("Right Array", "Move to previous equation");

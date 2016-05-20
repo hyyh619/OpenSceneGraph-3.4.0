@@ -70,7 +70,7 @@ TXPNode::TXPNode() :
     setCullingActive(false);
 }
 
-TXPNode::TXPNode(const TXPNode&txpNode, const osg::CopyOp&copyop) :
+TXPNode::TXPNode(const TXPNode &txpNode, const osg::CopyOp &copyop) :
     osg::Group(txpNode, copyop),
     _originX(txpNode._originX),
     _originY(txpNode._originY)
@@ -98,7 +98,7 @@ TXPNode::~TXPNode()
     }
 }
 
-void TXPNode::traverse(osg::NodeVisitor&nv)
+void TXPNode::traverse(osg::NodeVisitor &nv)
 {
     switch (nv.getVisitorType())
     {
@@ -111,8 +111,8 @@ void TXPNode::traverse(osg::NodeVisitor&nv)
         {
 // #define PRINT_TILEMAPP_TIMEINFO
 #ifdef PRINT_TILEMAPP_TIMEINFO
-            const osg::Timer&timer = *osg::Timer::instance();
-            osg::Timer_t    start  = timer.tick();
+            const osg::Timer &timer = *osg::Timer::instance();
+            osg::Timer_t     start  = timer.tick();
             std::cout << "Doing visible tile search" << std::endl;
 #endif          // PRINT_TILEMAPP_TIMEINFO
 
@@ -177,12 +177,12 @@ osg::BoundingSphere TXPNode::computeBound() const
 #endif
 }
 
-void TXPNode::setArchiveName(const std::string&archiveName)
+void TXPNode::setArchiveName(const std::string &archiveName)
 {
     _archiveName = archiveName;
 }
 
-void TXPNode::setOptions(const std::string&options)
+void TXPNode::setOptions(const std::string &options)
 {
     _options = options;
 }
@@ -242,7 +242,7 @@ bool TXPNode::loadArchive(TXPArchive *archive)
     return true;
 }
 
-void TXPNode::updateEye(osg::NodeVisitor&nv)
+void TXPNode::updateEye(osg::NodeVisitor &nv)
 {
     if (!_pageManager)
     {

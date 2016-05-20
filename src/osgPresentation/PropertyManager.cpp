@@ -15,7 +15,7 @@
 
 using namespace osgPresentation;
 
-const osg::Object* osgPresentation::getUserObject(const osg::NodePath&nodepath, const std::string&name)
+const osg::Object* osgPresentation::getUserObject(const osg::NodePath &nodepath, const std::string &name)
 {
     for (osg::NodePath::const_reverse_iterator itr = nodepath.rbegin();
          itr != nodepath.rend();
@@ -30,7 +30,7 @@ const osg::Object* osgPresentation::getUserObject(const osg::NodePath&nodepath, 
     return 0;
 }
 
-bool osgPresentation::containsPropertyReference(const std::string&str)
+bool osgPresentation::containsPropertyReference(const std::string &str)
 {
     return (str.find('$') != std::string::npos);
 }
@@ -105,7 +105,7 @@ MySetValueVisitor(double in_r1, double in_r2, osg::ValueObject *in_object2) :
 {}
 
 template<typename T>
-void combineRealUserValue(T&value) const
+void combineRealUserValue(T &value) const
 {
     typedef osg::TemplateValueObject<T> UserValueObject;
     const UserValueObject *uvo = _object2 ? dynamic_cast<const UserValueObject*>(_object2) : 0;
@@ -118,7 +118,7 @@ void combineRealUserValue(T&value) const
 }
 
 template<typename T>
-void combineIntegerUserValue(T&value) const
+void combineIntegerUserValue(T &value) const
 {
     typedef osg::TemplateValueObject<T> UserValueObject;
     const UserValueObject *uvo = _object2 ? dynamic_cast<const UserValueObject*>(_object2) : 0;
@@ -131,7 +131,7 @@ void combineIntegerUserValue(T&value) const
 }
 
 template<typename T>
-void combineDiscretUserValue(T&value) const
+void combineDiscretUserValue(T &value) const
 {
     if (_r1 < _r2)   // choose value2 if possible
     {
@@ -165,83 +165,83 @@ void combineMatrixUserValue(T& /*value*/) const
 }
 
 
-virtual void apply(bool&value)
+virtual void apply(bool &value)
 {
     combineDiscretUserValue(value);
 }
-virtual void apply(char&value)
+virtual void apply(char &value)
 {
     combineDiscretUserValue(value);
 }
-virtual void apply(unsigned char&value)
+virtual void apply(unsigned char &value)
 {
     combineDiscretUserValue(value);
 }
-virtual void apply(short&value)
+virtual void apply(short &value)
 {
     combineIntegerUserValue(value);
 }
-virtual void apply(unsigned short&value)
+virtual void apply(unsigned short &value)
 {
     combineIntegerUserValue(value);
 }
-virtual void apply(int&value)
+virtual void apply(int &value)
 {
     combineIntegerUserValue(value);
 }
-virtual void apply(unsigned int&value)
+virtual void apply(unsigned int &value)
 {
     combineIntegerUserValue(value);
 }
-virtual void apply(float&value)
+virtual void apply(float &value)
 {
     combineRealUserValue(value);
 }
-virtual void apply(double&value)
+virtual void apply(double &value)
 {
     combineRealUserValue(value);
 }
-virtual void apply(std::string&value)
+virtual void apply(std::string &value)
 {
     combineDiscretUserValue(value);
 }
-virtual void apply(osg::Vec2f&value)
+virtual void apply(osg::Vec2f &value)
 {
     combineRealUserValue(value);
 }
-virtual void apply(osg::Vec3f&value)
+virtual void apply(osg::Vec3f &value)
 {
     combineRealUserValue(value);
 }
-virtual void apply(osg::Vec4f&value)
+virtual void apply(osg::Vec4f &value)
 {
     combineRealUserValue(value);
 }
-virtual void apply(osg::Vec2d&value)
+virtual void apply(osg::Vec2d &value)
 {
     combineRealUserValue(value);
 }
-virtual void apply(osg::Vec3d&value)
+virtual void apply(osg::Vec3d &value)
 {
     combineRealUserValue(value);
 }
-virtual void apply(osg::Vec4d&value)
+virtual void apply(osg::Vec4d &value)
 {
     combineRealUserValue(value);
 }
-virtual void apply(osg::Quat&value)
+virtual void apply(osg::Quat &value)
 {
     combineRotationUserValue(value);
 }
-virtual void apply(osg::Plane&value)
+virtual void apply(osg::Plane &value)
 {
     combinePlaneUserValue(value);
 }
-virtual void apply(osg::Matrixf&value)
+virtual void apply(osg::Matrixf &value)
 {
     combineMatrixUserValue(value);
 }
-virtual void apply(osg::Matrixd&value)
+virtual void apply(osg::Matrixd &value)
 {
     combineMatrixUserValue(value);
 }
@@ -252,7 +252,7 @@ double           _r1, _r2;
 osg::ValueObject *_object2;
 };
 
-void PropertyAnimation::update(osg::Node&node)
+void PropertyAnimation::update(osg::Node &node)
 {
     OSG_NOTICE << "PropertyAnimation::update()" << this << std::endl;
 
@@ -399,7 +399,7 @@ void ImageSequenceUpdateCallback::operator()(osg::Node *node, osg::NodeVisitor *
 }
 
 
-bool PropertyEventCallback::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool PropertyEventCallback::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     bool mouseEvent = (ea.getEventType() == osgGA::GUIEventAdapter::MOVE ||
                        ea.getEventType() == osgGA::GUIEventAdapter::DRAG ||

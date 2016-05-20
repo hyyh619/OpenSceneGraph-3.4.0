@@ -76,7 +76,7 @@ public:
 SetToTransparentBin() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-virtual void appply(osg::Node&node)
+virtual void appply(osg::Node &node)
 {
     if (node.getStateSet())
     {
@@ -85,7 +85,7 @@ virtual void appply(osg::Node&node)
     }
 }
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     if (geode.getStateSet())
     {
@@ -114,12 +114,12 @@ HUDTransform::HUDTransform(HUDSettings *hudSettings) :
 
 HUDTransform::~HUDTransform() {}
 
-bool HUDTransform::computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+bool HUDTransform::computeLocalToWorldMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     return _hudSettings->getModelViewMatrix(matrix, nv);
 }
 
-bool HUDTransform::computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+bool HUDTransform::computeWorldToLocalMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     return _hudSettings->getInverseModelViewMatrix(matrix, nv);
 }
@@ -180,7 +180,7 @@ void SlideShowConstructor::setPresentationAspectRatio(float aspectRatio)
     _slideWidth = _slideHeight * aspectRatio;
 }
 
-void SlideShowConstructor::setPresentationAspectRatio(const std::string&str)
+void SlideShowConstructor::setPresentationAspectRatio(const std::string &str)
 {
     if (str == "Reality Theatre")
         setPresentationAspectRatio(3.0f);
@@ -278,14 +278,14 @@ LayerAttributes* SlideShowConstructor::getOrCreateLayerAttributes(osg::Node *nod
     return la;
 }
 
-void SlideShowConstructor::setBackgroundColor(const osg::Vec4&color, bool updateClearNode)
+void SlideShowConstructor::setBackgroundColor(const osg::Vec4 &color, bool updateClearNode)
 {
     _backgroundColor = color;
     if (updateClearNode && _slideClearNode.valid())
         _slideClearNode->setClearColor(_backgroundColor);
 }
 
-void SlideShowConstructor::setTextColor(const osg::Vec4&color)
+void SlideShowConstructor::setTextColor(const osg::Vec4 &color)
 {
     _titleFontDataDefault.color = color;
     _textFontDataDefault.color  = color;
@@ -294,7 +294,7 @@ void SlideShowConstructor::setTextColor(const osg::Vec4&color)
     _textFontData.color  = _textFontDataDefault.color;
 }
 
-void SlideShowConstructor::setPresentationName(const std::string&name)
+void SlideShowConstructor::setPresentationName(const std::string &name)
 {
     _presentationName = name;
     if (_presentationSwitch.valid())
@@ -310,7 +310,7 @@ void SlideShowConstructor::setPresentationDuration(double duration)
     }
 }
 
-osg::ScriptEngine* SlideShowConstructor::getOrCreateScriptEngine(const std::string&language)
+osg::ScriptEngine* SlideShowConstructor::getOrCreateScriptEngine(const std::string &language)
 {
     ScriptEngineMap::iterator itr = _scriptEngines.find(language);
 
@@ -323,7 +323,7 @@ osg::ScriptEngine* SlideShowConstructor::getOrCreateScriptEngine(const std::stri
     return (itr != _scriptEngines.end()) ? itr->second.get() : 0;
 }
 
-void SlideShowConstructor::addScriptEngine(const std::string&scriptEngineName)
+void SlideShowConstructor::addScriptEngine(const std::string &scriptEngineName)
 {
     if (_scriptEngines.count(scriptEngineName) != 0)
     {
@@ -346,7 +346,7 @@ void SlideShowConstructor::addScriptEngine(const std::string&scriptEngineName)
     }
 }
 
-void SlideShowConstructor::addScriptFile(const std::string&name, const std::string&filename)
+void SlideShowConstructor::addScriptFile(const std::string &name, const std::string &filename)
 {
     OSG_NOTICE << "addScriptFile() name=" << name << ", filename = " << filename << std::endl;
     osg::ref_ptr<osg::Script> script = osgDB::readFile<osg::Script>(filename);
@@ -356,7 +356,7 @@ void SlideShowConstructor::addScriptFile(const std::string&name, const std::stri
     }
 }
 
-void SlideShowConstructor::addScript(const std::string&name, const std::string&language, const std::string&scriptContents)
+void SlideShowConstructor::addScript(const std::string &name, const std::string &language, const std::string &scriptContents)
 {
     OSG_NOTICE << "addScript() language=" << language << ", name=" << name << ", script = " << scriptContents << std::endl;
     osg::ref_ptr<osg::Script> script = new osg::Script;
@@ -660,40 +660,40 @@ void SlideShowConstructor::addEventHandler(PresentationContext presentationConte
     }
 }
 
-void SlideShowConstructor::keyToDoOperation(PresentationContext presentationContext, int key, Operation operation, const JumpData&jumpData)
+void SlideShowConstructor::keyToDoOperation(PresentationContext presentationContext, int key, Operation operation, const JumpData &jumpData)
 {
     OSG_INFO << "keyToDoOperation(key=" << key << ", operation=" << operation << ")" << std::endl;
     addEventHandler(presentationContext, new KeyEventHandler(key, operation, jumpData));
 }
 
 
-void SlideShowConstructor::keyToDoOperation(PresentationContext presentationContext, int key, const std::string&command, Operation operation, const JumpData&jumpData)
+void SlideShowConstructor::keyToDoOperation(PresentationContext presentationContext, int key, const std::string &command, Operation operation, const JumpData &jumpData)
 {
     OSG_INFO << "keyToDoOperation(key=" << key << ",command=" << command << ")" << std::endl;
     addEventHandler(presentationContext, new KeyEventHandler(key, command, operation, jumpData));
 }
 
 
-void SlideShowConstructor::keyEventOperation(PresentationContext presentationContext, int key, const KeyPosition&keyPos,  const JumpData&jumpData)
+void SlideShowConstructor::keyEventOperation(PresentationContext presentationContext, int key, const KeyPosition &keyPos,  const JumpData &jumpData)
 {
     OSG_INFO << "keyEventOperation(key=" << key << ")" << std::endl;
     addEventHandler(presentationContext, new KeyEventHandler(key, keyPos, jumpData));
 }
 
 
-void SlideShowConstructor::layerClickToDoOperation(Operation operation, const JumpData&jumpData)
+void SlideShowConstructor::layerClickToDoOperation(Operation operation, const JumpData &jumpData)
 {
     addEventHandler(CURRENT_LAYER, new PickEventHandler(operation, jumpData));
 }
 
 
-void SlideShowConstructor::layerClickToDoOperation(const std::string&command, Operation operation, const JumpData&jumpData)
+void SlideShowConstructor::layerClickToDoOperation(const std::string &command, Operation operation, const JumpData &jumpData)
 {
     addEventHandler(CURRENT_LAYER, new PickEventHandler(command, operation, jumpData));
 }
 
 
-void SlideShowConstructor::layerClickEventOperation(const KeyPosition&keyPos, const JumpData&jumpData)
+void SlideShowConstructor::layerClickEventOperation(const KeyPosition &keyPos, const JumpData &jumpData)
 {
     addEventHandler(CURRENT_LAYER, new PickEventHandler(keyPos, jumpData));
 }
@@ -738,7 +738,7 @@ void SlideShowConstructor::addPropertyAnimation(PresentationContext presentation
     }
 }
 
-void SlideShowConstructor::addScriptCallback(PresentationContext presentationContext, ScriptCallbackType scriptCallbackType, const std::string&name)
+void SlideShowConstructor::addScriptCallback(PresentationContext presentationContext, ScriptCallbackType scriptCallbackType, const std::string &name)
 {
     switch (presentationContext)
     {
@@ -776,7 +776,7 @@ void SlideShowConstructor::addScriptCallback(PresentationContext presentationCon
     }
 }
 
-void SlideShowConstructor::addScriptToNode(ScriptCallbackType scriptCallbackType, const std::string&name, osg::Node *node)
+void SlideShowConstructor::addScriptToNode(ScriptCallbackType scriptCallbackType, const std::string &name, osg::Node *node)
 {
     std::string::size_type colon_position = name.find(':');
     std::string            script_name    = (colon_position == std::string::npos) ? name : name.substr(0, colon_position);
@@ -802,7 +802,7 @@ void SlideShowConstructor::addScriptToNode(ScriptCallbackType scriptCallbackType
     }
 }
 
-void SlideShowConstructor::addScriptsToNode(const ScriptData&scriptData, osg::Node *node)
+void SlideShowConstructor::addScriptsToNode(const ScriptData &scriptData, osg::Node *node)
 {
     if (!node)
         return;
@@ -817,7 +817,7 @@ void SlideShowConstructor::addScriptsToNode(const ScriptData&scriptData, osg::No
 
 
 
-osg::Node* SlideShowConstructor::decorateSubgraphForPosition(osg::Node *node, PositionData&positionData)
+osg::Node* SlideShowConstructor::decorateSubgraphForPosition(osg::Node *node, PositionData &positionData)
 {
     osg::Node *subgraph = node;
 
@@ -850,7 +850,7 @@ osg::Node* SlideShowConstructor::decorateSubgraphForPosition(osg::Node *node, Po
     return subgraph;
 }
 
-void SlideShowConstructor::addBullet(const std::string&bullet, PositionData&positionData, FontData&fontData, const ScriptData&scriptData)
+void SlideShowConstructor::addBullet(const std::string &bullet, PositionData &positionData, FontData &fontData, const ScriptData &scriptData)
 {
     osg::Geode *geode = new osg::Geode;
 
@@ -881,7 +881,7 @@ void SlideShowConstructor::addBullet(const std::string&bullet, PositionData&posi
 
     text->setText(bullet);
 
-    const osg::BoundingBox&bb = text->getBoundingBox();
+    const osg::BoundingBox &bb = text->getBoundingBox();
 
     // note, this increment is only "correct" when text is on the plane of the slide..
     // will need to make this more general later.
@@ -901,7 +901,7 @@ void SlideShowConstructor::addBullet(const std::string&bullet, PositionData&posi
         addScriptsToNode(scriptData, geode);
 }
 
-void SlideShowConstructor::addParagraph(const std::string&paragraph, PositionData&positionData, FontData&fontData, const ScriptData&scriptData)
+void SlideShowConstructor::addParagraph(const std::string &paragraph, PositionData &positionData, FontData &fontData, const ScriptData &scriptData)
 {
     osg::Geode *geode = new osg::Geode;
 
@@ -932,7 +932,7 @@ void SlideShowConstructor::addParagraph(const std::string&paragraph, PositionDat
 
     text->setText(paragraph);
 
-    const osg::BoundingBox&bb = text->getBoundingBox();
+    const osg::BoundingBox &bb = text->getBoundingBox();
 
     // note, this increment is only "correct" when text is on the plane of the slide..
     // will need to make this more general later.
@@ -958,7 +958,7 @@ public:
 FindImageStreamsVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     if (node.getStateSet())
     {
@@ -968,7 +968,7 @@ virtual void apply(osg::Node&node)
     traverse(node);
 }
 
-virtual void apply(osg::Geode&node)
+virtual void apply(osg::Geode &node)
 {
     if (node.getStateSet())
     {
@@ -1015,7 +1015,7 @@ void SlideShowConstructor::findImageStreamsAndAddCallbacks(osg::Node *node)
 }
 
 
-osg::Geometry* SlideShowConstructor::createTexturedQuadGeometry(const osg::Vec3&pos, const osg::Vec4&rotation, float width, float height, osg::Image *image, bool&usedTextureRectangle)
+osg::Geometry* SlideShowConstructor::createTexturedQuadGeometry(const osg::Vec3 &pos, const osg::Vec4 &rotation, float width, float height, osg::Image *image, bool &usedTextureRectangle)
 {
     osg::Geometry              *pictureQuad = 0;
     osg::ref_ptr<osg::Texture> texture      = 0;
@@ -1112,7 +1112,7 @@ osg::Geometry* SlideShowConstructor::createTexturedQuadGeometry(const osg::Vec3&
 
 
 
-osg::Image* SlideShowConstructor::readImage(const std::string&filename, const ImageData&imageData)
+osg::Image* SlideShowConstructor::readImage(const std::string &filename, const ImageData &imageData)
 {
     osg::ref_ptr<osgDB::Options> options = _options;
 
@@ -1317,7 +1317,7 @@ osg::Image* SlideShowConstructor::readImage(const std::string&filename, const Im
 struct VolumeCallback : public osg::NodeCallback
 {
 public:
-    VolumeCallback(osg::ImageStream *movie, const std::string&str) :
+    VolumeCallback(osg::ImageStream *movie, const std::string &str) :
         _movie(movie),
         _source(str) {}
 
@@ -1352,7 +1352,7 @@ protected:
     std::string                    _source;
 };
 
-void SlideShowConstructor::setUpMovieVolume(osg::Node *subgraph, osg::ImageStream *imageStream, const ImageData&imageData)
+void SlideShowConstructor::setUpMovieVolume(osg::Node *subgraph, osg::ImageStream *imageStream, const ImageData &imageData)
 {
     if (containsPropertyReference(imageData.volume))
     {
@@ -1376,7 +1376,7 @@ void SlideShowConstructor::setUpMovieVolume(osg::Node *subgraph, osg::ImageStrea
     }
 }
 
-void SlideShowConstructor::addImage(const std::string&filename, const PositionData&positionData, const ImageData&imageData, const ScriptData&scriptData)
+void SlideShowConstructor::addImage(const std::string &filename, const PositionData &positionData, const ImageData &imageData, const ScriptData &scriptData)
 {
     osg::ref_ptr<osg::Image> image = readImage(filename, imageData);
 
@@ -1540,7 +1540,7 @@ void SlideShowConstructor::addImage(const std::string&filename, const PositionDa
         addScriptsToNode(scriptData, subgraph);
 }
 
-void SlideShowConstructor::addStereoImagePair(const std::string&filenameLeft, const ImageData&imageDataLeft, const std::string&filenameRight, const ImageData&imageDataRight, const PositionData&positionData, const ScriptData&scriptData)
+void SlideShowConstructor::addStereoImagePair(const std::string &filenameLeft, const ImageData &imageDataLeft, const std::string &filenameRight, const ImageData &imageDataRight, const PositionData &positionData, const ScriptData &scriptData)
 {
     osg::ref_ptr<osg::Image> imageLeft  = readImage(filenameLeft, imageDataLeft);
     osg::ref_ptr<osg::Image> imageRight = (filenameRight == filenameLeft) ? imageLeft.get() : readImage(filenameRight, imageDataRight);
@@ -1766,7 +1766,7 @@ void SlideShowConstructor::addStereoImagePair(const std::string&filenameLeft, co
         addScriptsToNode(scriptData, subgraph);
 }
 
-void SlideShowConstructor::addGraph(const std::string&contents, const PositionData&positionData, const ImageData&imageData, const ScriptData&scriptData)
+void SlideShowConstructor::addGraph(const std::string &contents, const PositionData &positionData, const ImageData &imageData, const ScriptData &scriptData)
 {
     static int s_count = 0;
 
@@ -1838,7 +1838,7 @@ void SlideShowConstructor::addGraph(const std::string&contents, const PositionDa
 }
 
 
-void SlideShowConstructor::addVNC(const std::string&hostname, const PositionData&positionData, const ImageData&imageData, const std::string&password, const ScriptData&scriptData)
+void SlideShowConstructor::addVNC(const std::string &hostname, const PositionData &positionData, const ImageData &imageData, const std::string &password, const ScriptData &scriptData)
 {
     if (!password.empty())
     {
@@ -1852,12 +1852,12 @@ void SlideShowConstructor::addVNC(const std::string&hostname, const PositionData
     addInteractiveImage(hostname + ".vnc", positionData, imageData, scriptData);
 }
 
-void SlideShowConstructor::addBrowser(const std::string&url, const PositionData&positionData, const ImageData&imageData, const ScriptData&scriptData)
+void SlideShowConstructor::addBrowser(const std::string &url, const PositionData &positionData, const ImageData &imageData, const ScriptData &scriptData)
 {
     addInteractiveImage(url + ".gecko", positionData, imageData, scriptData);
 }
 
-void SlideShowConstructor::addPDF(const std::string&filename, const PositionData&positionData, const ImageData&imageData, const ScriptData&scriptData)
+void SlideShowConstructor::addPDF(const std::string &filename, const PositionData &positionData, const ImageData &imageData, const ScriptData &scriptData)
 {
     addInteractiveImage(filename, positionData, imageData, scriptData);
 }
@@ -1885,7 +1885,7 @@ int                                    _pageNum;
 };
 
 
-osg::Image* SlideShowConstructor::addInteractiveImage(const std::string&filename, const PositionData&positionData, const ImageData&imageData, const ScriptData&scriptData)
+osg::Image* SlideShowConstructor::addInteractiveImage(const std::string &filename, const PositionData &positionData, const ImageData &imageData, const ScriptData &scriptData)
 {
     osg::ref_ptr<osgDB::Options> options = _options;
 
@@ -2034,7 +2034,7 @@ osg::Image* SlideShowConstructor::addInteractiveImage(const std::string&filename
     return image;
 }
 
-std::string SlideShowConstructor::findFileAndRecordPath(const std::string&filename)
+std::string SlideShowConstructor::findFileAndRecordPath(const std::string &filename)
 {
     std::string foundFile = osgDB::findDataFile(filename, _options.get());
 
@@ -2061,7 +2061,7 @@ std::string SlideShowConstructor::findFileAndRecordPath(const std::string&filena
 struct ClipRegionCallback : public osg::NodeCallback
 {
 public:
-    ClipRegionCallback(const osg::Matrixd&originalMatrix, const std::string&str) :
+    ClipRegionCallback(const osg::Matrixd &originalMatrix, const std::string &str) :
         _matrix(originalMatrix),
         _source(str) {}
 
@@ -2114,7 +2114,7 @@ protected:
 };
 
 
-void SlideShowConstructor::addModel(const std::string&filename, const PositionData&positionData, const ModelData&modelData, const ScriptData&scriptData)
+void SlideShowConstructor::addModel(const std::string &filename, const PositionData &positionData, const ModelData &modelData, const ScriptData &scriptData)
 {
     OSG_INFO << "SlideShowConstructor::addModel(" << filename << ")" << std::endl;
 
@@ -2209,7 +2209,7 @@ void SlideShowConstructor::addModel(const std::string&filename, const PositionDa
     OSG_INFO << "end of SlideShowConstructor::addModel(" << filename << ")" << std::endl << std::endl;
 }
 
-osg::Node* SlideShowConstructor::decorateSubgraphForPositionAndAnimation(osg::Node *node, const PositionData&positionData)
+osg::Node* SlideShowConstructor::decorateSubgraphForPositionAndAnimation(osg::Node *node, const PositionData &positionData)
 {
     osg::Node                 *subgraph                 = node;
     osg::Object::DataVariance defaultMatrixDataVariance = osg::Object::DYNAMIC; // STATIC
@@ -2220,8 +2220,8 @@ osg::Node* SlideShowConstructor::decorateSubgraphForPositionAndAnimation(osg::No
     {
         osg::Vec3 pos = convertSlideToModel(positionData.position);
 
-        const osg::BoundingSphere&bs         = subgraph->getBound();
-        float                    slide_scale = _slideHeight * (1.0f - positionData.position.z()) * 0.7f / bs.radius();
+        const osg::BoundingSphere &bs         = subgraph->getBound();
+        float                     slide_scale = _slideHeight * (1.0f - positionData.position.z()) * 0.7f / bs.radius();
 
         osg::MatrixTransform *transform = new osg::MatrixTransform;
         transform->setDataVariance(defaultMatrixDataVariance);
@@ -2289,7 +2289,7 @@ osg::Node* SlideShowConstructor::decorateSubgraphForPositionAndAnimation(osg::No
         {
             OSG_INFO << "****  Need to handle special wheel animation" << std::endl;
 
-            osg::AnimationPath::TimeControlPointMap&controlPoints = path->getTimeControlPointMap();
+            osg::AnimationPath::TimeControlPointMap &controlPoints = path->getTimeControlPointMap();
 
             osg::AnimationPath::TimeControlPointMap::iterator curr_itr = controlPoints.begin();
             osg::AnimationPath::TimeControlPointMap::iterator prev_itr = curr_itr;
@@ -2361,7 +2361,7 @@ osg::Node* SlideShowConstructor::decorateSubgraphForPositionAndAnimation(osg::No
 }
 
 
-void SlideShowConstructor::addModel(osg::Node *subgraph, const PositionData&positionData, const ModelData&modelData, const ScriptData&scriptData)
+void SlideShowConstructor::addModel(osg::Node *subgraph, const PositionData &positionData, const ModelData &modelData, const ScriptData &scriptData)
 {
     if (!modelData.effect.empty())
     {
@@ -2400,7 +2400,7 @@ DraggerVolumeTileCallback(osgVolume::VolumeTile *volume, osgVolume::Locator *loc
     _locator(locator) {}
 
 
-virtual bool receive(const osgManipulator::MotionCommand&command);
+virtual bool receive(const osgManipulator::MotionCommand &command);
 
 
 osg::observer_ptr<osgVolume::VolumeTile> _volume;
@@ -2412,7 +2412,7 @@ osg::Matrix _localToWorld;
 osg::Matrix _worldToLocal;
 };
 
-bool DraggerVolumeTileCallback::receive(const osgManipulator::MotionCommand&command)
+bool DraggerVolumeTileCallback::receive(const osgManipulator::MotionCommand &command)
 {
     if (!_locator)
         return false;
@@ -2466,7 +2466,7 @@ public:
 VolumeTileCallback()
 {}
 
-VolumeTileCallback(const VolumeTileCallback&vtc, const osg::CopyOp&copyop) :
+VolumeTileCallback(const VolumeTileCallback &vtc, const osg::CopyOp &copyop) :
     osg::NodeCallback(vtc, copyop) {}
 
 META_Object(osgPresentation, VolumeTileCallback);
@@ -2496,7 +2496,7 @@ virtual void operator()(osg::Node *node, osg::NodeVisitor *nv)
 struct VolumeRegionCallback : public osg::NodeCallback
 {
 public:
-    VolumeRegionCallback(const osg::Matrixd&originalMatrix, const std::string&str) :
+    VolumeRegionCallback(const osg::Matrixd &originalMatrix, const std::string &str) :
         _matrix(originalMatrix),
         _source(str) {}
 
@@ -2552,7 +2552,7 @@ protected:
 struct ScalarPropertyCallback : public osg::NodeCallback
 {
 public:
-    ScalarPropertyCallback(osgVolume::ScalarProperty *sp, const std::string&str) :
+    ScalarPropertyCallback(osgVolume::ScalarProperty *sp, const std::string &str) :
         _sp(sp),
         _source(str) {}
 
@@ -2591,7 +2591,7 @@ struct CollectVolumeSettingsVisitor : public osgVolume::PropertyVisitor, public 
     CollectVolumeSettingsVisitor() :
         osgVolume::PropertyVisitor(false) {}
 
-    virtual void apply(osg::Node&node)
+    virtual void apply(osg::Node &node)
     {
         osgVolume::VolumeTile *tile = dynamic_cast<osgVolume::VolumeTile*>(&node);
 
@@ -2614,7 +2614,7 @@ struct CollectVolumeSettingsVisitor : public osgVolume::PropertyVisitor, public 
         node.traverse(*this);
     }
 
-    virtual void apply(osgVolume::VolumeSettings&vs)
+    virtual void apply(osgVolume::VolumeSettings &vs)
     {
         _vsList.push_back(&vs);
     }
@@ -2638,7 +2638,7 @@ struct VolumeSettingsCallback : public osgGA::GUIEventHandler
     int _saveKey;
     int _editKey;
 
-    bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object *object, osg::NodeVisitor *nv)
+    bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object *object, osg::NodeVisitor *nv)
     {
         if (ea.getHandled())
             return false;
@@ -2705,7 +2705,7 @@ struct VolumeSettingsCallback : public osgGA::GUIEventHandler
 };
 
 
-void SlideShowConstructor::setUpVolumeScalarProperty(osgVolume::VolumeTile *tile, osgVolume::ScalarProperty *property, const std::string&source)
+void SlideShowConstructor::setUpVolumeScalarProperty(osgVolume::VolumeTile *tile, osgVolume::ScalarProperty *property, const std::string &source)
 {
     if (!source.empty())
     {
@@ -2724,7 +2724,7 @@ void SlideShowConstructor::setUpVolumeScalarProperty(osgVolume::VolumeTile *tile
 }
 
 
-void SlideShowConstructor::addVolume(const std::string&filename, const PositionData&in_positionData, const VolumeData&volumeData, const ScriptData&scriptData)
+void SlideShowConstructor::addVolume(const std::string &filename, const PositionData &in_positionData, const VolumeData &volumeData, const ScriptData &scriptData)
 {
     // osg::Object::DataVariance defaultMatrixDataVariance = osg::Object::DYNAMIC; // STATIC
 
@@ -3249,8 +3249,8 @@ void SlideShowConstructor::addVolume(const std::string&filename, const PositionD
 
         osg::Vec3 pos = convertSlideToModel(osg::Vec3(0.0f, 0.0f, 0.0f));
 
-        const osg::BoundingBox&bb         = widget->getExtents();
-        float                 slide_scale = 0.5f * _slideWidth / (bb.xMax() - bb.xMin());
+        const osg::BoundingBox &bb         = widget->getExtents();
+        float                  slide_scale = 0.5f * _slideWidth / (bb.xMax() - bb.xMin());
 
         osg::MatrixTransform *transform = new osg::MatrixTransform;
         transform->setDataVariance(osg::Object::DYNAMIC);
@@ -3275,7 +3275,7 @@ void SlideShowConstructor::addVolume(const std::string&filename, const PositionD
     addModel(model.get(), positionData, modelData, scriptData);
 }
 
-bool SlideShowConstructor::attachTexMat(osg::StateSet *stateset, const ImageData&imageData, float s, float t, bool textureRectangle)
+bool SlideShowConstructor::attachTexMat(osg::StateSet *stateset, const ImageData &imageData, float s, float t, bool textureRectangle)
 {
     float xScale = textureRectangle ? s : 1.0f;
     float yScale = textureRectangle ? t : 1.0f;
@@ -3307,7 +3307,7 @@ bool SlideShowConstructor::attachTexMat(osg::StateSet *stateset, const ImageData
     return false;
 }
 
-osg::Node* SlideShowConstructor::attachMaterialAnimation(osg::Node *model, const PositionData&positionData)
+osg::Node* SlideShowConstructor::attachMaterialAnimation(osg::Node *model, const PositionData &positionData)
 {
     AnimationMaterial *animationMaterial = 0;
 
@@ -3375,7 +3375,7 @@ osg::Node* SlideShowConstructor::attachMaterialAnimation(osg::Node *model, const
     return model;
 }
 
-osg::AnimationPathCallback* SlideShowConstructor::getAnimationPathCallback(const PositionData&positionData)
+osg::AnimationPathCallback* SlideShowConstructor::getAnimationPathCallback(const PositionData &positionData)
 {
     if (!positionData.path.empty())
     {
@@ -3389,13 +3389,13 @@ osg::AnimationPathCallback* SlideShowConstructor::getAnimationPathCallback(const
         {
             if (positionData.frame == SlideShowConstructor::SLIDE)
             {
-                osg::AnimationPath::TimeControlPointMap&controlPoints = animation->getTimeControlPointMap();
+                osg::AnimationPath::TimeControlPointMap &controlPoints = animation->getTimeControlPointMap();
 
                 for (osg::AnimationPath::TimeControlPointMap::iterator itr = controlPoints.begin();
                      itr != controlPoints.end();
                      ++itr)
                 {
-                    osg::AnimationPath::ControlPoint&cp = itr->second;
+                    osg::AnimationPath::ControlPoint &cp = itr->second;
                     cp.setPosition(convertSlideToModel(cp.getPosition() + positionData.position));
                 }
             }
@@ -3416,7 +3416,7 @@ osg::AnimationPathCallback* SlideShowConstructor::getAnimationPathCallback(const
     return 0;
 }
 
-osg::Vec3 SlideShowConstructor::computePositionInModelCoords(const PositionData&positionData) const
+osg::Vec3 SlideShowConstructor::computePositionInModelCoords(const PositionData &positionData) const
 {
     if (positionData.frame == SLIDE)
     {
@@ -3430,19 +3430,19 @@ osg::Vec3 SlideShowConstructor::computePositionInModelCoords(const PositionData&
     }
 }
 
-osg::Vec3 SlideShowConstructor::convertSlideToModel(const osg::Vec3&position) const
+osg::Vec3 SlideShowConstructor::convertSlideToModel(const osg::Vec3 &position) const
 {
     return osg::Vec3(_slideOrigin + osg::Vec3(_slideWidth * position.x(), 0.0f, _slideHeight * position.y())) * (1.0f - position.z());
 }
 
-osg::Vec3 SlideShowConstructor::convertModelToSlide(const osg::Vec3&position) const
+osg::Vec3 SlideShowConstructor::convertModelToSlide(const osg::Vec3 &position) const
 {
     return osg::Vec3((position.x() * (_slideOrigin.y() / position.y()) - _slideOrigin.x()) / _slideWidth,
                      (position.z() * (_slideOrigin.y() / position.y()) - _slideOrigin.z()) / _slideHeight,
                      1.0f - position.y() / _slideOrigin.y());
 }
 
-void SlideShowConstructor::updatePositionFromInModelCoords(const osg::Vec3&vertex, PositionData&positionData) const
+void SlideShowConstructor::updatePositionFromInModelCoords(const osg::Vec3 &vertex, PositionData &positionData) const
 {
     if (positionData.frame == SLIDE)
     {

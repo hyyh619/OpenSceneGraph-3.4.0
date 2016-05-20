@@ -36,12 +36,12 @@ typedef std::vector<std::string> Filenames;
 Filenames    _filenames;
 unsigned int _position;
 
-void add(const std::string&filename)
+void add(const std::string &filename)
 {
     _filenames.push_back(filename);
 }
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     osgViewer::Viewer *viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 
@@ -81,7 +81,7 @@ bool _done;
 };
 
 
-void singleWindowMultipleCameras(osgViewer::Viewer&viewer)
+void singleWindowMultipleCameras(osgViewer::Viewer &viewer)
 {
     osg::GraphicsContext::WindowingSystemInterface *wsi = osg::GraphicsContext::getWindowingSystemInterface();
 
@@ -134,7 +134,7 @@ void singleWindowMultipleCameras(osgViewer::Viewer&viewer)
     }
 }
 
-void multipleWindowMultipleCameras(osgViewer::Viewer&viewer, bool multipleScreens)
+void multipleWindowMultipleCameras(osgViewer::Viewer &viewer, bool multipleScreens)
 {
     osg::GraphicsContext::WindowingSystemInterface *wsi = osg::GraphicsContext::getWindowingSystemInterface();
 
@@ -191,7 +191,7 @@ public:
 EnableVBOVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-void apply(osg::Geode&geode)
+void apply(osg::Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {

@@ -50,12 +50,12 @@ ConvertToVertexAttibArrays() :
     _texCoordAlias[7]    = AttributeAlias(15, "osg_MultiTexCoord7");
 }
 
-void bindAttribute(osg::Program&program, const AttributeAlias&alias)
+void bindAttribute(osg::Program &program, const AttributeAlias &alias)
 {
     program.addBindAttribLocation(alias.second, alias.first);
 }
 
-void replaceAndBindAttrib(osg::Program&program, std::string&source, const std::string&originalStr, const AttributeAlias&alias, const std::string&declarationPrefix)
+void replaceAndBindAttrib(osg::Program &program, std::string &source, const std::string &originalStr, const AttributeAlias &alias, const std::string &declarationPrefix)
 {
     if (replace(source, originalStr, alias.second))
     {
@@ -65,7 +65,7 @@ void replaceAndBindAttrib(osg::Program&program, std::string&source, const std::s
     }
 }
 
-void replaceBuiltInUniform(std::string&source, const std::string&originalStr, const std::string&newStr, const std::string&declarationPrefix)
+void replaceBuiltInUniform(std::string &source, const std::string &originalStr, const std::string &newStr, const std::string &declarationPrefix)
 {
     if (replace(source, originalStr, newStr))
     {
@@ -73,7 +73,7 @@ void replaceBuiltInUniform(std::string&source, const std::string&originalStr, co
     }
 }
 
-void convertVertexShader(osg::Program&program, osg::Shader&shader)
+void convertVertexShader(osg::Program &program, osg::Shader &shader)
 {
     std::string source = shader.getShaderSource();
 
@@ -106,7 +106,7 @@ void convertVertexShader(osg::Program&program, osg::Shader&shader)
     shader.setShaderSource(source);
 }
 
-void convertFragmentShader(osg::Program&program, osg::Shader&shader)
+void convertFragmentShader(osg::Program &program, osg::Shader &shader)
 {}
 
 virtual void reset()
@@ -114,7 +114,7 @@ virtual void reset()
     _visited.clear();
 }
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     if (_visited.count(&node) != 0)
         return;
@@ -127,7 +127,7 @@ void apply(osg::Node&node)
     traverse(node);
 }
 
-void apply(osg::Geode&geode)
+void apply(osg::Geode &geode)
 {
     if (_visited.count(&geode) != 0)
         return;
@@ -148,7 +148,7 @@ void apply(osg::Geode&geode)
     }
 }
 
-bool replace(std::string&str, const std::string&original_phrase, const std::string&new_phrase)
+bool replace(std::string &str, const std::string &original_phrase, const std::string &new_phrase)
 {
     bool                   replacedStr = false;
     std::string::size_type pos         = 0;
@@ -175,7 +175,7 @@ bool replace(std::string&str, const std::string&original_phrase, const std::stri
     return replacedStr;
 }
 
-void apply(osg::Program&program, osg::Shader&shader)
+void apply(osg::Program &program, osg::Shader &shader)
 {
     if (_visited.count(&shader) != 0)
         return;
@@ -195,7 +195,7 @@ void apply(osg::Program&program, osg::Shader&shader)
     osg::notify(osg::NOTICE) << "---------------------" << std::endl;
 }
 
-void apply(osg::StateSet&stateset)
+void apply(osg::StateSet &stateset)
 {
     if (_visited.count(&stateset) != 0)
         return;
@@ -217,7 +217,7 @@ void apply(osg::StateSet&stateset)
     }
 }
 
-void apply(osg::Geometry&geom)
+void apply(osg::Geometry &geom)
 {
     geom.setUseDisplayList(false);
 
@@ -277,10 +277,10 @@ void apply(osg::Geometry&geom)
     }
 }
 
-void setVertexAttrib(osg::Geometry&geom, const AttributeAlias&alias, osg::Array *array, bool normalize, osg::Array::Binding binding = osg::Array::BIND_UNDEFINED)
+void setVertexAttrib(osg::Geometry &geom, const AttributeAlias &alias, osg::Array *array, bool normalize, osg::Array::Binding binding = osg::Array::BIND_UNDEFINED)
 {
-    unsigned int     index = alias.first;
-    const std::string&name = alias.second;
+    unsigned int      index = alias.first;
+    const std::string &name = alias.second;
 
     array->setName(name);
     if (binding != osg::Array::BIND_UNDEFINED)

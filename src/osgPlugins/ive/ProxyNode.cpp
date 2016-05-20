@@ -170,7 +170,7 @@ void ProxyNode::read(DataInputStream *in)
 
         if (in->getOptions() && !in->getOptions()->getDatabasePathList().empty())
         {
-            const std::string&path = in->getOptions()->getDatabasePathList().front();
+            const std::string &path = in->getOptions()->getDatabasePathList().front();
             if (!path.empty())
             {
                 setDatabasePath(path);
@@ -198,7 +198,7 @@ void ProxyNode::read(DataInputStream *in)
 
         for (i = 0; i < numChildren; i++)
         {
-            osgDB::FilePathList&fpl = ((osgDB::ReaderWriter::Options*)in->getOptions())->getDatabasePathList();
+            osgDB::FilePathList &fpl = ((osgDB::ReaderWriter::Options*)in->getOptions())->getDatabasePathList();
             fpl.push_front(fpl.empty() ? osgDB::getFilePath(getFileName(i)) : fpl.front() + '/' + osgDB::getFilePath(getFileName(i)));
             addChild(in->readNode());
             fpl.pop_front();
@@ -210,7 +210,7 @@ void ProxyNode::read(DataInputStream *in)
             {
                 if (i >= numChildren && !getFileName(i).empty())
                 {
-                    osgDB::FilePathList&fpl = ((osgDB::ReaderWriter::Options*)in->getOptions())->getDatabasePathList();
+                    osgDB::FilePathList &fpl = ((osgDB::ReaderWriter::Options*)in->getOptions())->getDatabasePathList();
                     fpl.push_front(fpl.empty() ? osgDB::getFilePath(getFileName(i)) : fpl.front() + '/' + osgDB::getFilePath(getFileName(i)));
                     osg::Node *node = osgDB::readNodeFile(getFileName(i), in->getOptions());
                     fpl.pop_front();

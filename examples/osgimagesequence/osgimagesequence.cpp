@@ -39,7 +39,7 @@
 #include <iostream>
 
 
-static osgDB::DirectoryContents getSuitableFiles(osg::ArgumentParser&arguments)
+static osgDB::DirectoryContents getSuitableFiles(osg::ArgumentParser &arguments)
 {
     osgDB::DirectoryContents files;
 
@@ -74,7 +74,7 @@ static osgDB::DirectoryContents getSuitableFiles(osg::ArgumentParser&arguments)
 // A simple demo demonstrating how to set on an animated texture using an osg::ImageSequence
 //
 
-osg::StateSet* createState(osg::ArgumentParser&arguments)
+osg::StateSet* createState(osg::ArgumentParser &arguments)
 {
     osg::ref_ptr<osg::ImageSequence> imageSequence = new osg::ImageSequence;
 
@@ -115,7 +115,7 @@ osg::StateSet* createState(osg::ArgumentParser&arguments)
              itr != files.end();
              ++itr)
         {
-            const std::string&filename = *itr;
+            const std::string &filename = *itr;
             if (preLoad)
             {
                 osg::ref_ptr<osg::Image> image = osgDB::readImageFile(filename);
@@ -187,7 +187,7 @@ osg::StateSet* createState(osg::ArgumentParser&arguments)
     return stateset;
 }
 
-osg::Node* createModel(osg::ArgumentParser&arguments)
+osg::Node* createModel(osg::ArgumentParser &arguments)
 {
     // create the geometry of the model, just a simple 2d quad right now.
     osg::Geode *geode = new osg::Geode;
@@ -247,9 +247,9 @@ bool getTrackMouse() const
     return _trackMouse;
 }
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor *nv);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor *nv);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 typedef std::vector<osg::observer_ptr<osg::ImageStream> > ImageStreamList;
 
@@ -271,10 +271,10 @@ virtual ~MovieEventHandler() {}
 class FindImageStreamsVisitor : public osg::NodeVisitor
 {
 public:
-FindImageStreamsVisitor(ImageStreamList&imageStreamList) :
+FindImageStreamsVisitor(ImageStreamList &imageStreamList) :
     _imageStreamList(imageStreamList) {}
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     apply(geode.getStateSet());
 
@@ -286,7 +286,7 @@ virtual void apply(osg::Geode&geode)
     traverse(geode);
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     apply(node.getStateSet());
     traverse(node);
@@ -319,7 +319,7 @@ inline void apply(osg::ImageStream *imagestream)
     }
 }
 
-ImageStreamList&_imageStreamList;
+ImageStreamList &_imageStreamList;
 
 protected:
 
@@ -351,7 +351,7 @@ void MovieEventHandler::set(osg::Node *node)
 }
 
 
-bool MovieEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor *nv)
+bool MovieEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor *nv)
 {
     switch (ea.getEventType())
     {
@@ -476,7 +476,7 @@ bool MovieEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAction
     return false;
 }
 
-void MovieEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void MovieEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("i", "toggle interactive mode, scrub via mouse-move");
     usage.addKeyboardMouseBinding("p", "Play/Pause movie");

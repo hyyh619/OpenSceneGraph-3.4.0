@@ -28,13 +28,13 @@ using namespace osgDB;
 
 #define OSG_REVERSE(value) (((value& 0x000000ff) << 24) | ((value& 0x0000ff00) << 8) | ((value& 0x00ff0000) >> 8) | ((value& 0xff000000) >> 24))
 
-InputIterator* readInputIterator(std::istream&fin, const Options *options)
+InputIterator* readInputIterator(std::istream &fin, const Options *options)
 {
     bool extensionIsAscii = false, extensionIsXML = false;
 
     if (options)
     {
-        const std::string&optionString = options->getPluginStringData("fileType");
+        const std::string &optionString = options->getPluginStringData("fileType");
         if (optionString == "Ascii")
             extensionIsAscii = true;
         else if (optionString == "XML")
@@ -85,7 +85,7 @@ InputIterator* readInputIterator(std::istream&fin, const Options *options)
     return NULL;
 }
 
-OutputIterator* writeOutputIterator(std::ostream&fout, const Options *options)
+OutputIterator* writeOutputIterator(std::ostream &fout, const Options *options)
 {
     // Read precision parameter, for text & XML formats
     int precision(-1);
@@ -153,7 +153,7 @@ virtual const char* className() const
 }
 
 
-Options* prepareReading(ReadResult&result, std::string&fileName, std::ios::openmode&mode, const Options *options) const
+Options* prepareReading(ReadResult &result, std::string &fileName, std::ios::openmode &mode, const Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 
@@ -190,7 +190,7 @@ Options* prepareReading(ReadResult&result, std::string&fileName, std::ios::openm
     return local_opt.release();
 }
 
-virtual ReadResult readObject(const std::string&file, const Options *options) const
+virtual ReadResult readObject(const std::string &file, const Options *options) const
 {
     ReadResult         result     = ReadResult::FILE_LOADED;
     std::string        fileName   = file;
@@ -204,7 +204,7 @@ virtual ReadResult readObject(const std::string&file, const Options *options) co
     return readObject(istream, local_opt);
 }
 
-virtual ReadResult readObject(std::istream&fin, const Options *options) const
+virtual ReadResult readObject(std::istream &fin, const Options *options) const
 {
     osg::ref_ptr<InputIterator> ii = readInputIterator(fin, options);
 
@@ -226,7 +226,7 @@ virtual ReadResult readObject(std::istream&fin, const Options *options) const
     return obj;
 }
 
-virtual ReadResult readImage(const std::string&file, const Options *options) const
+virtual ReadResult readImage(const std::string &file, const Options *options) const
 {
     ReadResult         result     = ReadResult::FILE_LOADED;
     std::string        fileName   = file;
@@ -240,7 +240,7 @@ virtual ReadResult readImage(const std::string&file, const Options *options) con
     return readImage(istream, local_opt);
 }
 
-virtual ReadResult readImage(std::istream&fin, const Options *options) const
+virtual ReadResult readImage(std::istream &fin, const Options *options) const
 {
     osg::ref_ptr<InputIterator> ii = readInputIterator(fin, options);
 
@@ -261,7 +261,7 @@ virtual ReadResult readImage(std::istream&fin, const Options *options) const
     return image;
 }
 
-virtual ReadResult readNode(const std::string&file, const Options *options) const
+virtual ReadResult readNode(const std::string &file, const Options *options) const
 {
     ReadResult         result     = ReadResult::FILE_LOADED;
     std::string        fileName   = file;
@@ -275,7 +275,7 @@ virtual ReadResult readNode(const std::string&file, const Options *options) cons
     return readNode(istream, local_opt);
 }
 
-virtual ReadResult readNode(std::istream&fin, const Options *options) const
+virtual ReadResult readNode(std::istream &fin, const Options *options) const
 {
     osg::ref_ptr<InputIterator> ii = readInputIterator(fin, options);
 
@@ -298,7 +298,7 @@ virtual ReadResult readNode(std::istream&fin, const Options *options) const
     return node;
 }
 
-Options* prepareWriting(WriteResult&result, const std::string&fileName, std::ios::openmode&mode, const Options *options) const
+Options* prepareWriting(WriteResult &result, const std::string &fileName, std::ios::openmode &mode, const Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 
@@ -325,7 +325,7 @@ Options* prepareWriting(WriteResult&result, const std::string&fileName, std::ios
     return local_opt.release();
 }
 
-virtual WriteResult writeObject(const osg::Object&object, const std::string&fileName, const Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, const std::string &fileName, const Options *options) const
 {
     WriteResult           result    = WriteResult::FILE_SAVED;
     std::ios::openmode    mode      = std::ios::out;
@@ -343,7 +343,7 @@ virtual WriteResult writeObject(const osg::Object&object, const std::string&file
     return result;
 }
 
-virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, const Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, std::ostream &fout, const Options *options) const
 {
     osg::ref_ptr<OutputIterator> oi = writeOutputIterator(fout, options);
 
@@ -369,7 +369,7 @@ virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, con
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeImage(const osg::Image&image, const std::string&fileName, const Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, const std::string &fileName, const Options *options) const
 {
     WriteResult           result    = WriteResult::FILE_SAVED;
     std::ios::openmode    mode      = std::ios::out;
@@ -387,7 +387,7 @@ virtual WriteResult writeImage(const osg::Image&image, const std::string&fileNam
     return result;
 }
 
-virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, std::ostream &fout, const Options *options) const
 {
     osg::ref_ptr<OutputIterator> oi = writeOutputIterator(fout, options);
 
@@ -413,7 +413,7 @@ virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const 
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options *options) const
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options *options) const
 {
     WriteResult           result    = WriteResult::FILE_SAVED;
     std::ios::openmode    mode      = std::ios::out;
@@ -431,7 +431,7 @@ virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, 
     return result;
 }
 
-virtual WriteResult writeNode(const osg::Node&node, std::ostream&fout, const Options *options) const
+virtual WriteResult writeNode(const osg::Node &node, std::ostream &fout, const Options *options) const
 {
     osg::ref_ptr<OutputIterator> oi = writeOutputIterator(fout, options);
 

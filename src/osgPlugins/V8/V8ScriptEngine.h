@@ -24,14 +24,14 @@ class V8ScriptEngine : public osg::ScriptEngine
 {
 public:
 V8ScriptEngine();
-V8ScriptEngine(const V8ScriptEngine&rhs, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+V8ScriptEngine(const V8ScriptEngine &rhs, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(v8, V8ScriptEngine)
 
 virtual const std::string & getLanguage() const { return _language; }
 
 /** run a Script.*/
-virtual bool run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters);
+virtual bool run(osg::Script *script, const std::string &entryPoint, osg::Parameters &inputParameters, osg::Parameters &outputParameters);
 
 v8::Isolate* getIsolate()
 {

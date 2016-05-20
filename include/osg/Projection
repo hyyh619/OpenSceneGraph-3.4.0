@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_PROJECTION
 #define OSG_PROJECTION 1
@@ -18,44 +18,53 @@
 #include <osg/Matrix>
 
 namespace osg {
-
 /** Projection nodes set up the frustum/orthographic projection used when rendering the scene.
-*/
-class OSG_EXPORT Projection : public Group
-{
-    public :
+ */
+    class OSG_EXPORT Projection: public Group
+    {
+public:
 
 
         Projection();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        Projection(const Projection&,const CopyOp& copyop=CopyOp::SHALLOW_COPY);
+        Projection(const Projection &, const CopyOp &copyop = CopyOp::SHALLOW_COPY);
 
-        Projection(const Matrix& matix);
+        Projection(const Matrix &matix);
 
         META_Node(osg, Projection);
 
         /** Set the transform's matrix.*/
-        void setMatrix(const Matrix& mat) { _matrix = mat; }
+        void setMatrix(const Matrix &mat)
+        {
+            _matrix = mat;
+        }
 
         /** Get the transform's matrix. */
-        inline const Matrix& getMatrix() const { return _matrix; }
+        inline const Matrix&getMatrix() const
+        {
+            return _matrix;
+        }
 
         /** preMult transform.*/
-        void preMult(const Matrix& mat) { _matrix.preMult(mat); }
+        void preMult(const Matrix &mat)
+        {
+            _matrix.preMult(mat);
+        }
 
         /** postMult transform.*/
-        void postMult(const Matrix& mat)  { _matrix.postMult(mat); }
+        void postMult(const Matrix &mat)
+        {
+            _matrix.postMult(mat);
+        }
 
 
-    protected :
+protected:
 
         virtual ~Projection();
 
-        Matrix  _matrix;
-
-};
-
+        Matrix _matrix;
+    };
 }
 
 #endif

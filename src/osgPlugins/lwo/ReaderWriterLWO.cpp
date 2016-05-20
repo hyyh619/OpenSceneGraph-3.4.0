@@ -60,7 +60,7 @@ virtual const char* className() const
     return "Lightwave Object Reader";
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -91,9 +91,9 @@ virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::O
 
 lwosg::Converter::Options parse_options(const Options *options) const;
 
-virtual ReadResult readNode_LWO2(const std::string&fileName, const osgDB::ReaderWriter::Options*) const;
-virtual ReadResult readNode_old_LWO2(const std::string&fileName, const osgDB::ReaderWriter::Options*) const;
-virtual ReadResult readNode_LWO1(const std::string&fileName, const osgDB::ReaderWriter::Options*) const;
+virtual ReadResult readNode_LWO2(const std::string &fileName, const osgDB::ReaderWriter::Options*) const;
+virtual ReadResult readNode_old_LWO2(const std::string &fileName, const osgDB::ReaderWriter::Options*) const;
+virtual ReadResult readNode_LWO1(const std::string &fileName, const osgDB::ReaderWriter::Options*) const;
 
 protected:
 };
@@ -149,7 +149,7 @@ lwosg::Converter::Options ReaderWriterLWO::parse_options(const Options *options)
 // register with Registry to instantiate the above reader/writer.
 REGISTER_OSGPLUGIN(lwo, ReaderWriterLWO)
 
-osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO2(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO2(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     lwosg::Converter::Options conv_options = parse_options(options);
 
@@ -165,7 +165,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO2(const std::string
 }
 
 
-osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_old_LWO2(const std::string&fileName, const osgDB::ReaderWriter::Options*) const
+osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_old_LWO2(const std::string &fileName, const osgDB::ReaderWriter::Options*) const
 {
     std::auto_ptr<Lwo2> lwo2(new Lwo2());
 
@@ -209,7 +209,7 @@ struct GeometryCollection
 
 
 // read file and convert to OSG.
-osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO1(const std::string&fileName, const osgDB::ReaderWriter::Options*) const
+osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO1(const std::string &fileName, const osgDB::ReaderWriter::Options*) const
 {
     lwObject *lw = lw_object_read(fileName.c_str(), osg::notify(osg::INFO));
 
@@ -228,10 +228,10 @@ osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO1(const std::string
 
     for (i = 0; i < lw->face_cnt; ++i)
     {
-        lwFace&face = lw->face[i];
+        lwFace &face = lw->face[i];
         if (face.index_cnt >= 3)
         {
-            GeometryCollection&gc = mtgcm[face.material];
+            GeometryCollection &gc = mtgcm[face.material];
             gc._numPoints     += face.index_cnt;
             gc._numPrimitives += 1;
             if (face.texcoord)
@@ -243,11 +243,11 @@ osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO1(const std::string
 
     for (itr = mtgcm.begin(); itr != mtgcm.end(); ++itr)
     {
-        GeometryCollection&gc = itr->second;
+        GeometryCollection &gc = itr->second;
 
         if (gc._numPrimitives)
         {
-            lwMaterial&lw_material = lw->material[itr->first];
+            lwMaterial &lw_material = lw->material[itr->first];
 
             gc._geom = new osg::Geometry;
 
@@ -310,10 +310,10 @@ osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO1(const std::string
 
     for (i = 0; i < lw->face_cnt; ++i)
     {
-        lwFace&face = lw->face[i];
+        lwFace &face = lw->face[i];
         if (face.index_cnt >= 3)
         {
-            GeometryCollection&gc = mtgcm[face.material];
+            GeometryCollection &gc = mtgcm[face.material];
 
             osg::PrimitiveSet::Mode mode;
 
@@ -383,7 +383,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterLWO::readNode_LWO1(const std::string
          itr != mtgcm.end();
          ++itr)
     {
-        GeometryCollection&gc = itr->second;
+        GeometryCollection &gc = itr->second;
         if (gc._geom)
         {
             tessellator.retessellatePolygons(*gc._geom);

@@ -33,7 +33,7 @@ void push_cache_hits(bool Enabled = true);
 size_t size() const;
 
 void push(index i, bool CountCacheHit = false);
-void merge(const cache_simulator&Backward, size_t PossibleOverlap);
+void merge(const cache_simulator &Backward, size_t PossibleOverlap);
 
 void reset_hitcount();
 size_t hitcount() const;
@@ -115,7 +115,7 @@ inline void cache_simulator::push(const index i, const bool CountCacheHit)
 }
 
 
-inline void cache_simulator::merge(const cache_simulator&Backward, const size_t PossibleOverlap)
+inline void cache_simulator::merge(const cache_simulator &Backward, const size_t PossibleOverlap)
 {
     const size_t Overlap = (std::min)(PossibleOverlap, size());
 

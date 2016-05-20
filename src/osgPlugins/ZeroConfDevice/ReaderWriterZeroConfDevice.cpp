@@ -32,7 +32,7 @@ ZeroConfRegisterDevice()
     setCapabilities(RECEIVE_EVENTS);
 }
 
-void advertise(const std::string&type, unsigned int port)
+void advertise(const std::string &type, unsigned int port)
 {
     OSG_NOTICE << "ZeroConfDevice :: advertise: " << type << ":" << port << std::endl;
     _autoDiscovery->registerService(type, port);
@@ -44,7 +44,7 @@ virtual bool checkEvents()
     return !(getEventQueue()->empty());
 }
 
-virtual void sendEvent(const osgGA::Event&event)
+virtual void sendEvent(const osgGA::Event &event)
 {
     if (event.getName() == "/zeroconf/advertise")
     {
@@ -72,7 +72,7 @@ osg::ref_ptr<AutoDiscovery> _autoDiscovery;
 class ZeroConfDiscoverDevice : public osgGA::Device
 {
 public:
-ZeroConfDiscoverDevice(const std::string&type);
+ZeroConfDiscoverDevice(const std::string &type);
 
 virtual bool checkEvents()
 {
@@ -88,7 +88,7 @@ osg::ref_ptr<AutoDiscovery> _autoDiscovery;
 class MyDiscoveredServicesCallback : public DiscoveredServicesCallback
 {
 public:
-MyDiscoveredServicesCallback(ZeroConfDiscoverDevice *device, const std::string&type)
+MyDiscoveredServicesCallback(ZeroConfDiscoverDevice *device, const std::string &type)
     :   DiscoveredServicesCallback()
     ,   _device(device)
     ,   _type(type)
@@ -98,7 +98,7 @@ virtual bool ignoreIP6Addresses()
 {
     return true;
 }
-virtual void serviceAdded(const std::string&host, unsigned int port)
+virtual void serviceAdded(const std::string &host, unsigned int port)
 {
     osg::ref_ptr<osgGA::Event> event = new osgGA::Event();
 
@@ -113,7 +113,7 @@ virtual void serviceAdded(const std::string&host, unsigned int port)
     _device->getEventQueue()->addEvent(event);
 }
 
-virtual void serviceRemoved(const std::string&host, unsigned int port)
+virtual void serviceRemoved(const std::string &host, unsigned int port)
 {
     osg::ref_ptr<osgGA::Event> event = new osgGA::Event();
 
@@ -133,7 +133,7 @@ std::string                               _type;
 
 
 
-ZeroConfDiscoverDevice::ZeroConfDiscoverDevice(const std::string&type)
+ZeroConfDiscoverDevice::ZeroConfDiscoverDevice(const std::string &type)
     : osgGA::Device()
     , _autoDiscovery(new AutoDiscovery())
 {
@@ -157,7 +157,7 @@ virtual const char* className() const
     return "ZeroConf Virtual Device Integration plugin";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     if (osgDB::getFileExtension(file) == "zeroconf")
     {

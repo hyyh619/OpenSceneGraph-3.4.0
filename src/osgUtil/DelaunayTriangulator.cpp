@@ -36,9 +36,9 @@ namespace osgUtil
 // Compute the circumcircle of a triangle (only x and y coordinates are used),
 // return (Cx, Cy, r^2)
 inline osg::Vec3 compute_circumcircle(
-    const osg::Vec3&a,
-    const osg::Vec3&b,
-    const osg::Vec3&c)
+    const osg::Vec3 &a,
+    const osg::Vec3 &b,
+    const osg::Vec3 &c)
 {
     float D =
         (a.x() - c.x()) * (b.y() - c.y()) -
@@ -82,7 +82,7 @@ inline osg::Vec3 compute_circumcircle(
 // Test whether a point (only the x and y coordinates are used) lies inside
 // a circle; the circle is passed as a vector: (Cx, Cy, r).
 
-inline bool point_in_circle(const osg::Vec3&point, const osg::Vec3&circle)
+inline bool point_in_circle(const osg::Vec3 &point, const osg::Vec3 &circle)
 {
     float r2 =
         (point.x() - circle.x()) * (point.x() - circle.x()) +
@@ -112,7 +112,7 @@ public:
 // Comparison object (for sorting)
 struct Less
 {
-    inline bool operator()(const Edge&e1, const Edge&e2) const
+    inline bool operator()(const Edge &e1, const Edge &e2) const
     {
         if (e1.ibs() < e2.ibs())
             return true;
@@ -196,7 +196,7 @@ Triangle(Vertex_index a, Vertex_index b, Vertex_index c, osg::Vec3Array *points)
     edge_[2] = Edge(c_, a_);
 }
 
-Triangle&operator =(const Triangle&rhs)
+Triangle&operator =(const Triangle &rhs)
 {
     if (&rhs == this)
         return *this;
@@ -422,7 +422,7 @@ Edge         edge_[3];
 typedef std::list<Triangle> Triangle_list;
 
 // comparison function for sorting sample points by the X coordinate
-bool Sample_point_compare(const osg::Vec3&p1, const osg::Vec3&p2)
+bool Sample_point_compare(const osg::Vec3 &p1, const osg::Vec3 &p2)
 {
     // replace pure sort by X coordinate with X then Y.
     // errors can occur if the delaunay triangulation specifies 2 points at same XY and different Z
@@ -451,7 +451,7 @@ DelaunayTriangulator::DelaunayTriangulator(osg::Vec3Array *points, osg::Vec3Arra
     normals_(normals)
 {}
 
-DelaunayTriangulator::DelaunayTriangulator(const DelaunayTriangulator&copy, const osg::CopyOp&copyop) :
+DelaunayTriangulator::DelaunayTriangulator(const DelaunayTriangulator &copy, const osg::CopyOp &copyop) :
     osg::Referenced(copy),
     points_(static_cast<osg::Vec3Array*>(copyop(copy.points_.get()))),
     normals_(static_cast<osg::Vec3Array*>(copyop(copy.normals_.get()))),
@@ -481,7 +481,7 @@ const Triangle* getTriangleWithEdge(const unsigned int ip1, const unsigned int i
     return NULL; // -1;
 }
 
-int DelaunayTriangulator::getindex(const osg::Vec3&pt, const osg::Vec3Array *points)
+int DelaunayTriangulator::getindex(const osg::Vec3 &pt, const osg::Vec3Array *points)
 {
     // return index of pt in points (or -1)
     for (unsigned int i = 0; i < points->size(); i++)
@@ -680,7 +680,7 @@ Triangle_list fillHole(osg::Vec3Array *points,    std::vector<unsigned int> vind
 }
 
 template<typename TVector>
-void removeIndices(TVector&elements, unsigned int index)
+void removeIndices(TVector &elements, unsigned int index)
 {
     typename TVector::iterator itr = elements.begin();
 
@@ -1032,7 +1032,7 @@ bool DelaunayTriangulator::triangulate()
                             // cast away constness of a set element, which is
                             // safe in this case since the set_duplicate is
                             // not used as part of the Less operator.
-                            Edge&edge = const_cast<Edge&>(*(result.first));
+                            Edge &edge = const_cast<Edge&>(*(result.first));
                             // not clear why this change is needed? But prevents removal of twice referenced edges??
                             //      edge.set_duplicate(true);
                             edge.set_duplicate(!edge.get_duplicate());
@@ -1392,7 +1392,7 @@ void DelaunayTriangulator::removeInternalTriangles(DelaunayConstraint *dc)
 }
 // === DelaunayConstraint functions
 
-float DelaunayConstraint::windingNumber(const osg::Vec3&testpoint) const
+float DelaunayConstraint::windingNumber(const osg::Vec3 &testpoint) const
 {
     // return winding number of loop around testpoint. Only in 2D, x-y coordinates assumed!
     float                theta     = 0; // sum of angles subtended by the line array - the winding number
@@ -1470,14 +1470,14 @@ osg::DrawElementsUInt* DelaunayConstraint::makeDrawable()
 
     return prim_tris_.get();
 }
-bool DelaunayConstraint::contains(const osg::Vec3&testpoint) const
+bool DelaunayConstraint::contains(const osg::Vec3 &testpoint) const
 {
     // true if point is internal to the loop.
     float theta = windingNumber(testpoint); // sum of angles subtended by the line array - the winding number
 
     return fabs(theta) > 0.9; // should be 0 or 1 (or 2,3,4 for very complex not permitted loops).
 }
-bool DelaunayConstraint::outside(const osg::Vec3&testpoint) const
+bool DelaunayConstraint::outside(const osg::Vec3 &testpoint) const
 {
     // true if point is outside the loop.
     float theta = windingNumber(testpoint); // sum of angles subtended by the line array - the winding number

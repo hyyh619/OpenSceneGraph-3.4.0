@@ -20,17 +20,17 @@ namespace p3d
 {
 typedef std::vector<std::string> FileNameList;
 
-bool getFileNames(osg::ArgumentParser&arguments, FileNameList&xmlFiles, FileNameList&normalFiles);
+bool getFileNames(osg::ArgumentParser &arguments, FileNameList &xmlFiles, FileNameList &normalFiles);
 
-bool readEnvVars(osg::ArgumentParser&arguments);
+bool readEnvVars(osg::ArgumentParser &arguments);
 
-bool readEnvVars(const std::string&filename);
+bool readEnvVars(const std::string &filename);
 
-osg::ref_ptr<osg::Node> readHoldingSlide(const std::string&filename);
+osg::ref_ptr<osg::Node> readHoldingSlide(const std::string &filename);
 
-osg::ref_ptr<osg::Node> readPresentation(const std::string&filename, const osgDB::ReaderWriter::Options *options);
+osg::ref_ptr<osg::Node> readPresentation(const std::string &filename, const osgDB::ReaderWriter::Options *options);
 
-osg::ref_ptr<osg::Node> readShowFiles(osg::ArgumentParser&arguments, const osgDB::ReaderWriter::Options *options);
+osg::ref_ptr<osg::Node> readShowFiles(osg::ArgumentParser &arguments, const osgDB::ReaderWriter::Options *options);
 }
 
 #endif

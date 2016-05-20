@@ -32,7 +32,7 @@ public:
 ShaderGenReadFileCallback()
 {}
 
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&filename, const osgDB::ReaderWriter::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &filename, const osgDB::ReaderWriter::Options *options)
 {
     osgDB::ReaderWriter::ReadResult result = osgDB::Registry::ReadFileCallback::readNode(filename, options);
 

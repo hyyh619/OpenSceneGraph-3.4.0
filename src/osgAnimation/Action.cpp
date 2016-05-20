@@ -66,7 +66,7 @@ Action::Callback* Action::getFrameCallback(double time)
     return getFrameCallback(frame);
 }
 
-bool osgAnimation::Action::evaluateFrame(unsigned int frame, unsigned int&resultframe, unsigned int&nbloop)
+bool osgAnimation::Action::evaluateFrame(unsigned int frame, unsigned int &resultframe, unsigned int &nbloop)
 {
     unsigned int nbFrames = getNumFrames();
 

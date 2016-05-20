@@ -62,8 +62,8 @@ int main(int argc, char **argv)
         }
 
         // occluder offset
-        const osg::BoundingSphere&bsphere       = outlineModel->getBound();
-        const osg::Vec3          occluderOffset = osg::Vec3(0, 1, 0) * bsphere.radius() * 1.2f;
+        const osg::BoundingSphere &bsphere       = outlineModel->getBound();
+        const osg::Vec3           occluderOffset = osg::Vec3(0, 1, 0) * bsphere.radius() * 1.2f;
 
         // occluder behind outlined model
         osg::ref_ptr<osg::PositionAttitudeTransform> modelTransform0 = new osg::PositionAttitudeTransform;

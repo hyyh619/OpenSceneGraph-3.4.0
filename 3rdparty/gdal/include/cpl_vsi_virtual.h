@@ -123,9 +123,9 @@ public:
 ~VSIFileManager();
 
 static VSIFilesystemHandler* GetHandler(const char*);
-static void InstallHandler(const std::string&osPrefix,
+static void InstallHandler(const std::string &osPrefix,
                            VSIFilesystemHandler*);
-static void RemoveHandler(const std::string&osPrefix);
+static void RemoveHandler(const std::string &osPrefix);
 };
 
 
@@ -195,7 +195,7 @@ virtual int      Rmdir(const char *pszDirname);
 virtual char** ReadDir(const char *pszDirname);
 
 virtual const VSIArchiveContent* GetContentOfArchive(const char *archiveFilename, VSIArchiveReader *poReader = NULL);
-virtual char* SplitFilename(const char *pszFilename, CPLString&osFileInArchive, int bCheckMainFileExists);
+virtual char* SplitFilename(const char *pszFilename, CPLString &osFileInArchive, int bCheckMainFileExists);
 virtual VSIArchiveReader* OpenArchiveFile(const char *archiveFilename, const char *fileInArchiveName);
 virtual int FindFileInArchive(const char *archiveFilename, const char *fileInArchiveName, const VSIArchiveEntry **archiveEntry);
 };

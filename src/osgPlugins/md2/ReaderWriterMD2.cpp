@@ -54,13 +54,13 @@ virtual const char* className() const
     return "Quake MD2 Reader";
 }
 
-virtual ReadResult readNode(const std::string&filename, const osgDB::ReaderWriter::Options *options) const;
+virtual ReadResult readNode(const std::string &filename, const osgDB::ReaderWriter::Options *options) const;
 };
 
 REGISTER_OSGPLUGIN(md2, ReaderWriterMD2)
 
 osgDB::ReaderWriter::ReadResult
-ReaderWriterMD2::readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+ReaderWriterMD2::readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

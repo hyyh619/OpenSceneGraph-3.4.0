@@ -11,8 +11,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  FluidProgram_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  FluidProgram_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  FluidProgram_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  FluidProgram_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(FluidProgram_Proxy)
 (
@@ -23,10 +23,10 @@ REGISTER_DOTOSGWRAPPER(FluidProgram_Proxy)
     FluidProgram_writeLocalData
 );
 
-bool FluidProgram_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool FluidProgram_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::FluidProgram&myobj     = static_cast<osgParticle::FluidProgram&>(obj);
-    bool                     itAdvanced = false;
+    osgParticle::FluidProgram &myobj     = static_cast<osgParticle::FluidProgram&>(obj);
+    bool                      itAdvanced = false;
 
     osg::Vec3 vec;
     float     f;
@@ -74,9 +74,9 @@ bool FluidProgram_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool FluidProgram_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool FluidProgram_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::FluidProgram&myobj = static_cast<const osgParticle::FluidProgram&>(obj);
+    const osgParticle::FluidProgram &myobj = static_cast<const osgParticle::FluidProgram&>(obj);
 
     osg::Vec3 vec;
     float     f;

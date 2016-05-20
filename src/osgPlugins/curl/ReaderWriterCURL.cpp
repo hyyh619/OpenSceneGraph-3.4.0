@@ -40,7 +40,7 @@ using namespace osg_curl;
 //
 //  StreamObject
 //
-EasyCurl::StreamObject::StreamObject(std::ostream *outputStream, std::istream *inputStream, const std::string&cacheFileName) :
+EasyCurl::StreamObject::StreamObject(std::ostream *outputStream, std::istream *inputStream, const std::string &cacheFileName) :
     _outputStream(outputStream),
     _inputStream(inputStream),
     _cacheFileName(cacheFileName)
@@ -79,12 +79,12 @@ size_t EasyCurl::StreamObject::read(char *ptr, size_t maxsize)
     return realsize;
 }
 
-std::string EasyCurl::getResultMimeType(const StreamObject&sp) const
+std::string EasyCurl::getResultMimeType(const StreamObject &sp) const
 {
     return sp._resultMimeType;
 }
 
-std::string EasyCurl::getMimeTypeForExtension(const std::string&ext) const
+std::string EasyCurl::getMimeTypeForExtension(const std::string &ext) const
 {
     const osgDB::Registry::MimeTypeExtensionMap           &mimeMap = osgDB::Registry::instance()->getMimeTypeExtensionMap();
     osgDB::Registry::MimeTypeExtensionMap::const_iterator i;
@@ -98,7 +98,7 @@ std::string EasyCurl::getMimeTypeForExtension(const std::string&ext) const
     return "application/octet-stream"; // unknown mime type
 }
 
-std::string EasyCurl::getFileNameFromURL(const std::string&url)
+std::string EasyCurl::getFileNameFromURL(const std::string &url)
 {
     // If the URL has query parameter "filename", return its value,
     // otherwise just return url assuming it has a filename at the end.
@@ -171,7 +171,7 @@ EasyCurl::~EasyCurl()
     _curl = 0;
 }
 
-osgDB::ReaderWriter::ReadResult EasyCurl::read(const std::string&proxyAddress, const std::string&fileName, StreamObject&sp, const osgDB::ReaderWriter::Options *options)
+osgDB::ReaderWriter::ReadResult EasyCurl::read(const std::string &proxyAddress, const std::string &fileName, StreamObject &sp, const osgDB::ReaderWriter::Options *options)
 {
     setOptions(proxyAddress, fileName, sp, options);
 
@@ -181,7 +181,7 @@ osgDB::ReaderWriter::ReadResult EasyCurl::read(const std::string&proxyAddress, c
     return processResponse(responseCode, proxyAddress, fileName, sp);
 }
 
-osgDB::ReaderWriter::WriteResult EasyCurl::write(const std::string&proxyAddress, const std::string&fileName, StreamObject&sp, const osgDB::ReaderWriter::Options *options)
+osgDB::ReaderWriter::WriteResult EasyCurl::write(const std::string &proxyAddress, const std::string &fileName, StreamObject &sp, const osgDB::ReaderWriter::Options *options)
 {
     setOptions(proxyAddress, fileName, sp, options);
 
@@ -253,7 +253,7 @@ osgDB::ReaderWriter::WriteResult EasyCurl::write(const std::string&proxyAddress,
     }
 }
 
-void EasyCurl::setOptions(const std::string&proxyAddress, const std::string&fileName, StreamObject&sp, const osgDB::ReaderWriter::Options *options)
+void EasyCurl::setOptions(const std::string &proxyAddress, const std::string &fileName, StreamObject &sp, const osgDB::ReaderWriter::Options *options)
 {
     const osgDB::AuthenticationMap *authenticationMap = (options && options->getAuthenticationMap()) ?
                                                         options->getAuthenticationMap() :
@@ -320,7 +320,7 @@ void EasyCurl::setOptions(const std::string&proxyAddress, const std::string&file
     curl_easy_setopt(_curl, CURLOPT_WRITEDATA, (void*)&sp);
 }
 
-osgDB::ReaderWriter::ReadResult EasyCurl::processResponse(CURLcode res, const std::string&proxyAddress, const std::string&fileName, StreamObject&sp)
+osgDB::ReaderWriter::ReadResult EasyCurl::processResponse(CURLcode res, const std::string &proxyAddress, const std::string &fileName, StreamObject &sp)
 {
     if (res == 0)
     {
@@ -411,7 +411,7 @@ ReaderWriterCURL::~ReaderWriterCURL()
     // OSG_NOTICE<<"ReaderWriterCURL::~ReaderWriterCURL()"<<std::endl;
 }
 
-osgDB::ReaderWriter::WriteResult ReaderWriterCURL::writeFile(const osg::Object&obj, osgDB::ReaderWriter *rw, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::WriteResult ReaderWriterCURL::writeFile(const osg::Object &obj, osgDB::ReaderWriter *rw, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     const osg::HeightField *heightField = dynamic_cast<const osg::HeightField*>(&obj);
 
@@ -429,7 +429,7 @@ osgDB::ReaderWriter::WriteResult ReaderWriterCURL::writeFile(const osg::Object&o
     return rw->writeObject(obj, fout, options);
 }
 
-osgDB::ReaderWriter::WriteResult ReaderWriterCURL::writeFile(const osg::Object&obj, const std::string&fullFileName, const Options *options) const
+osgDB::ReaderWriter::WriteResult ReaderWriterCURL::writeFile(const osg::Object &obj, const std::string &fullFileName, const Options *options) const
 {
     if (!osgDB::containsServerAddress(fullFileName))
     {
@@ -464,7 +464,7 @@ osgDB::ReaderWriter::WriteResult ReaderWriterCURL::writeFile(const osg::Object&o
     return easyCurl.write(proxyAddress, fullFileName, sp, options);
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterCURL::readFile(ObjectType objectType, osgDB::ReaderWriter *rw, std::istream&fin, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterCURL::readFile(ObjectType objectType, osgDB::ReaderWriter *rw, std::istream &fin, const osgDB::ReaderWriter::Options *options) const
 {
     switch (objectType)
     {
@@ -484,7 +484,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterCURL::readFile(ObjectType objectType
     return ReadResult::FILE_NOT_HANDLED;
 }
 
-void ReaderWriterCURL::getConnectionOptions(const osgDB::ReaderWriter::Options *options, std::string&proxyAddress, long&connectTimeout, long&timeout) const
+void ReaderWriterCURL::getConnectionOptions(const osgDB::ReaderWriter::Options *options, std::string &proxyAddress, long &connectTimeout, long &timeout) const
 {
     if (options)
     {
@@ -526,7 +526,7 @@ void ReaderWriterCURL::getConnectionOptions(const osgDB::ReaderWriter::Options *
     }
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterCURL::readFile(ObjectType objectType, const std::string&fullFileName, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterCURL::readFile(ObjectType objectType, const std::string &fullFileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string fileName(fullFileName);
     std::string ext      = osgDB::getFileExtension(fullFileName);
@@ -671,7 +671,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterCURL::readFile(ObjectType objectType
 
 #include <zlib.h>
 
-bool ReaderWriterCURL::read(std::istream&fin, std::string&destination) const
+bool ReaderWriterCURL::read(std::istream &fin, std::string &destination) const
 {
     #define CHUNK 16384
 
@@ -740,7 +740,7 @@ bool ReaderWriterCURL::read(std::istream&fin, std::string&destination) const
     return ret == Z_STREAM_END ? true : false;
 }
 #else
-bool ReaderWriterCURL::read(std::istream&fin, std::string&destination) const
+bool ReaderWriterCURL::read(std::istream &fin, std::string &destination) const
 {
     return false;
 }
@@ -752,7 +752,7 @@ size_t empty_write_data(const char *buffer, size_t size, size_t nmemb, char
     return size * nmemb;
 }
 
-bool ReaderWriterCURL::fileExists(const std::string&filename, const osgDB::Options *options) const
+bool ReaderWriterCURL::fileExists(const std::string &filename, const osgDB::Options *options) const
 {
     if (osgDB::containsServerAddress(filename))
     {

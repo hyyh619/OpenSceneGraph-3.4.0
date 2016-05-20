@@ -17,9 +17,9 @@
 using namespace osg;
 using namespace osgUtil;
 
-void RenderLeaf::render(osg::RenderInfo&renderInfo, RenderLeaf *previous)
+void RenderLeaf::render(osg::RenderInfo &renderInfo, RenderLeaf *previous)
 {
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     // don't draw this leaf if the abort rendering flag has been set.
     if (state.getAbortRendering())

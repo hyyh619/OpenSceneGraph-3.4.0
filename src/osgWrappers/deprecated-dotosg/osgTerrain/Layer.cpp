@@ -15,9 +15,9 @@
 
 #include <string.h>
 
-bool Layer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Layer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
-bool Layer_matchFilterStr(const char *str, osg::Texture::FilterMode&filter);
+bool Layer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Layer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
+bool Layer_matchFilterStr(const char *str, osg::Texture::FilterMode &filter);
 const char* Layer_getFilterStr(osg::Texture::FilterMode filter);
 
 REGISTER_DOTOSGWRAPPER(Layer_Proxy)
@@ -29,9 +29,9 @@ REGISTER_DOTOSGWRAPPER(Layer_Proxy)
     Layer_writeLocalData
 );
 
-bool Layer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Layer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgTerrain::Layer&layer = static_cast<osgTerrain::Layer&>(obj);
+    osgTerrain::Layer &layer = static_cast<osgTerrain::Layer&>(obj);
 
     bool itrAdvanced = false;
 
@@ -75,9 +75,9 @@ bool Layer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool Layer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Layer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgTerrain::Layer&layer = static_cast<const osgTerrain::Layer&>(obj);
+    const osgTerrain::Layer &layer = static_cast<const osgTerrain::Layer&>(obj);
 
     if (layer.getLocator() && !(layer.getLocator()->getDefinedInFile()))
     {
@@ -100,7 +100,7 @@ bool Layer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
     return true;
 }
 
-bool Layer_matchFilterStr(const char *str, osg::Texture::FilterMode&filter)
+bool Layer_matchFilterStr(const char *str, osg::Texture::FilterMode &filter)
 {
     if (strcmp(str, "NEAREST") == 0)
         filter = osg::Texture::NEAREST;

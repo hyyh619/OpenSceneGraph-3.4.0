@@ -24,7 +24,7 @@ BlendEquationi::BlendEquationi() :
 BlendEquationi::~BlendEquationi()
 {}
 
-void BlendEquationi::apply(State&state) const
+void BlendEquationi::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

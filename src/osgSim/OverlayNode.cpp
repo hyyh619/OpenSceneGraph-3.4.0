@@ -65,7 +65,7 @@ void setToUnitFrustum(bool withNear = true, bool withFar = true)
     _faces.clear();
 
     {           // left plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "left";
         face.plane.set(1.0, 0.0, 0.0, 1.0);
         face.vertices.reserve(4);
@@ -76,7 +76,7 @@ void setToUnitFrustum(bool withNear = true, bool withFar = true)
     }
 
     {           // right plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "right";
         face.plane.set(-1.0, 0.0, 0.0, 1.0);
         face.vertices.reserve(4);
@@ -87,7 +87,7 @@ void setToUnitFrustum(bool withNear = true, bool withFar = true)
     }
 
     {           // bottom plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "bottom";
         face.plane.set(0.0, 1.0, 0.0, 1.0);
         face.vertices.reserve(4);
@@ -98,7 +98,7 @@ void setToUnitFrustum(bool withNear = true, bool withFar = true)
     }
 
     {           // top plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "top";
         face.plane.set(0.0, -1.0, 0.0, 1.0);
         face.vertices.reserve(4);
@@ -110,7 +110,7 @@ void setToUnitFrustum(bool withNear = true, bool withFar = true)
 
     if (withNear)
     {           // near plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "near";
         face.plane.set(0.0, 0.0, 1.0, 1.0);
         face.vertices.reserve(4);
@@ -122,7 +122,7 @@ void setToUnitFrustum(bool withNear = true, bool withFar = true)
 
     if (withFar)
     {           // far plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "far";
         face.plane.set(0.0, 0.0, -1.0, 1.0);
         face.vertices.reserve(4);
@@ -133,7 +133,7 @@ void setToUnitFrustum(bool withNear = true, bool withFar = true)
     }
 }
 
-void setToBoundingBox(const osg::BoundingBox&bb)
+void setToBoundingBox(const osg::BoundingBox &bb)
 {
 #if 0
     OSG_NOTICE << "setToBoundingBox xrange " << bb.xMin() << " " << bb.xMax() << std::endl;
@@ -152,7 +152,7 @@ void setToBoundingBox(const osg::BoundingBox&bb)
     _faces.clear();
 
     {           // x min plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "xMin";
         face.plane.set(1.0, 0.0, 0.0, -bb.xMin());
         face.vertices.reserve(4);
@@ -163,7 +163,7 @@ void setToBoundingBox(const osg::BoundingBox&bb)
     }
 
     {           // x max plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "xMax";
         face.plane.set(-1.0, 0.0, 0.0, bb.xMax());
         face.vertices.reserve(4);
@@ -174,7 +174,7 @@ void setToBoundingBox(const osg::BoundingBox&bb)
     }
 
     {           // y min plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "yMin";
         face.plane.set(0.0, 1.0, 0.0, -bb.yMin());
         face.vertices.reserve(4);
@@ -185,7 +185,7 @@ void setToBoundingBox(const osg::BoundingBox&bb)
     }
 
     {           // y max plane.
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "yMax";
         face.plane.set(0.0, -1.0, 0.0, bb.yMax());
         face.vertices.reserve(4);
@@ -195,7 +195,7 @@ void setToBoundingBox(const osg::BoundingBox&bb)
         face.vertices.push_back(v110);
     }
     {           // z min plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "zMin";
         face.plane.set(0.0, 0.0, 1.0, -bb.zMin());
         face.vertices.reserve(4);
@@ -206,7 +206,7 @@ void setToBoundingBox(const osg::BoundingBox&bb)
     }
 
     {           // z max plane
-        Face&face = createFace();
+        Face &face = createFace();
         face.name = "zMax";
         face.plane.set(0.0, 0.0, -1.0, bb.zMax());
         face.vertices.reserve(4);
@@ -217,13 +217,13 @@ void setToBoundingBox(const osg::BoundingBox&bb)
     }
 }
 
-void transform(const osg::Matrix&matrix, const osg::Matrix&inverse)
+void transform(const osg::Matrix &matrix, const osg::Matrix &inverse)
 {
     for (Faces::iterator itr = _faces.begin();
          itr != _faces.end();
          ++itr)
     {
-        Face&face = *itr;
+        Face &face = *itr;
         face.plane.transformProvidingInverse(inverse);
 
         for (Vertices::iterator vitr = face.vertices.begin();
@@ -236,7 +236,7 @@ void transform(const osg::Matrix&matrix, const osg::Matrix&inverse)
 }
 
 
-void insertVertex(const osg::Vec3d&vertex, osg::EllipsoidModel *em = 0, double minHeight = 0.0)
+void insertVertex(const osg::Vec3d &vertex, osg::EllipsoidModel *em = 0, double minHeight = 0.0)
 {
     // OSG_NOTICE<<"Inserting vertex "<<vertex<<std::endl;
 
@@ -248,7 +248,7 @@ void insertVertex(const osg::Vec3d&vertex, osg::EllipsoidModel *em = 0, double m
          itr != _faces.end();
          )
     {
-        Face&face = *itr;
+        Face &face = *itr;
         if (face.plane.distance(vertex) < 0.0)
         {
             removedFaces.push_back(face);
@@ -274,13 +274,13 @@ void insertVertex(const osg::Vec3d&vertex, osg::EllipsoidModel *em = 0, double m
          itr != removedFaces.end();
          ++itr)
     {
-        Face    &face     = *itr;
-        Vertices&vertices = face.vertices;
+        Face     &face     = *itr;
+        Vertices &vertices = face.vertices;
 
         for (unsigned int i = 0; i < vertices.size(); ++i)
         {
-            osg::Vec3d&a = vertices[i];
-            osg::Vec3d&b = vertices[(i + 1) % vertices.size()];
+            osg::Vec3d &a = vertices[i];
+            osg::Vec3d &b = vertices[(i + 1) % vertices.size()];
             if (a < b)
                 ++edges[Edge(a, b)];
             else
@@ -306,8 +306,8 @@ void insertVertex(const osg::Vec3d&vertex, osg::EllipsoidModel *em = 0, double m
         if (eitr->second == 1)
         {
             // OSG_NOTICE<<"     edge Ok"<<std::endl;
-            const Edge&edge = eitr->first;
-            Face      face;
+            const Edge &edge = eitr->first;
+            Face       face;
             face.name = "baseSide";
             face.plane.set(vertex, edge.first, edge.second);
             face.vertices.push_back(vertex);
@@ -333,8 +333,8 @@ void insertVertex(const osg::Vec3d&vertex, osg::EllipsoidModel *em = 0, double m
              itr != uniqueVertices.end();
              ++itr)
         {
-            const osg::Vec3d&point = *itr;
-            double          latitude, longitude, height;
+            const osg::Vec3d &point = *itr;
+            double           latitude, longitude, height;
             em->convertXYZToLatLongHeight(point.x(), point.y(), point.z(), latitude, longitude, height);
             osg::Vec3d normal(point);
             normal.normalize();
@@ -347,11 +347,11 @@ void insertVertex(const osg::Vec3d&vertex, osg::EllipsoidModel *em = 0, double m
 
         for (unsigned int i = 0; i < baseVertices.size() - 1; ++i)
         {
-            const osg::Vec3d&a          = baseVertices[i];
-            const osg::Vec3d&b          = baseVertices[i + 1];
-            const osg::Vec3d&c          = baseVertices[(i + 2) % baseVertices.size()];
-            double          area        = ((a - b) ^ (b - c)).length() * 0.5;
-            osg::Vec3d      localCenter = (a + b + c) / 3.0;
+            const osg::Vec3d &a          = baseVertices[i];
+            const osg::Vec3d &b          = baseVertices[i + 1];
+            const osg::Vec3d &c          = baseVertices[(i + 2) % baseVertices.size()];
+            double           area        = ((a - b) ^ (b - c)).length() * 0.5;
+            osg::Vec3d       localCenter = (a + b + c) / 3.0;
             center    += localCenter * area;
             totalArea += area;
         }
@@ -370,7 +370,7 @@ void insertVertex(const osg::Vec3d&vertex, osg::EllipsoidModel *em = 0, double m
 }
 
 
-void projectDowntoBase(const osg::Vec3d&control, const osg::Vec3d&normal)
+void projectDowntoBase(const osg::Vec3d &control, const osg::Vec3d &normal)
 {
     // OSG_NOTICE<<"CustomPolytope::projectDowntoBase not implementated yet."<<std::endl;
 
@@ -382,7 +382,7 @@ void projectDowntoBase(const osg::Vec3d&control, const osg::Vec3d&normal)
          itr != _faces.end();
          )
     {
-        Face&face = *itr;
+        Face &face = *itr;
         if ((face.plane.getNormal() * normal) >= 0.0)
         {
             removedFaces.push_back(face);
@@ -408,13 +408,13 @@ void projectDowntoBase(const osg::Vec3d&control, const osg::Vec3d&normal)
          itr != removedFaces.end();
          ++itr)
     {
-        Face    &face     = *itr;
-        Vertices&vertices = face.vertices;
+        Face     &face     = *itr;
+        Vertices &vertices = face.vertices;
 
         for (unsigned int i = 0; i < vertices.size(); ++i)
         {
-            osg::Vec3d&a = vertices[i];
-            osg::Vec3d&b = vertices[(i + 1) % vertices.size()];
+            osg::Vec3d &a = vertices[i];
+            osg::Vec3d &b = vertices[(i + 1) % vertices.size()];
             if (a < b)
                 ++edges[Edge(a, b)];
             else
@@ -440,7 +440,7 @@ void projectDowntoBase(const osg::Vec3d&control, const osg::Vec3d&normal)
         if (eitr->second == 1)
         {
             // OSG_NOTICE<<"     edge Ok"<<std::endl;
-            const Edge&edge = eitr->first;
+            const Edge &edge = eitr->first;
 
             double     h_first         = (edge.first - control) * normal;
             osg::Vec3d projected_first = edge.first - normal * h_first;
@@ -505,7 +505,7 @@ void projectDowntoBase(const osg::Vec3d&control, const osg::Vec3d&normal)
     _faces.push_back(newFace);
 }
 
-void computeSilhoette(const osg::Vec3d&normal, Vertices&vertices)
+void computeSilhoette(const osg::Vec3d &normal, Vertices &vertices)
 {
     typedef std::pair<osg::Vec3d, osg::Vec3d> EdgePair;
     typedef std::vector<Face*> EdgeFaces;
@@ -518,12 +518,12 @@ void computeSilhoette(const osg::Vec3d&normal, Vertices&vertices)
          itr != _faces.end();
          ++itr)
     {
-        Face&face = *itr;
+        Face &face = *itr;
 
         for (unsigned int i = 0; i < face.vertices.size(); ++i)
         {
-            osg::Vec3d&va = face.vertices[i];
-            osg::Vec3d&vb = face.vertices[(i + 1) % face.vertices.size()];
+            osg::Vec3d &va = face.vertices[i];
+            osg::Vec3d &vb = face.vertices[(i + 1) % face.vertices.size()];
             if (va < vb)
                 edgeMap[EdgePair(va, vb)].push_back(&face);
             else
@@ -538,8 +538,8 @@ void computeSilhoette(const osg::Vec3d&normal, Vertices&vertices)
          eitr != edgeMap.end();
          ++eitr)
     {
-        const EdgePair &edge      = eitr->first;
-        const EdgeFaces&edgeFaces = eitr->second;
+        const EdgePair  &edge      = eitr->first;
+        const EdgeFaces &edgeFaces = eitr->second;
         if (edgeFaces.size() == 1)
         {
             // OSG_NOTICE<<"Open edge found "<<edgeFaces.front()->name<<std::endl;
@@ -616,7 +616,7 @@ void computeSilhoette(const osg::Vec3d&normal, Vertices&vertices)
 }
 
 
-void cut(const osg::Polytope&polytope)
+void cut(const osg::Polytope &polytope)
 {
     // OSG_NOTICE<<"Cutting with polytope "<<std::endl;
     for (osg::Polytope::PlaneList::const_iterator itr = polytope.getPlaneList().begin();
@@ -627,7 +627,7 @@ void cut(const osg::Polytope&polytope)
     }
 }
 
-void cut(const CustomPolytope&polytope)
+void cut(const CustomPolytope &polytope)
 {
     // OSG_NOTICE<<"Cutting with polytope "<<std::endl;
     for (Faces::const_iterator itr = polytope._faces.begin();
@@ -638,7 +638,7 @@ void cut(const CustomPolytope&polytope)
     }
 }
 
-void cut(const osg::Plane&plane, const std::string&name = std::string())
+void cut(const osg::Plane &plane, const std::string &name = std::string())
 {
     // OSG_NOTICE<<"  Cutting plane "<<plane<<std::endl;
     Face newFace;
@@ -651,8 +651,8 @@ void cut(const osg::Plane&plane, const std::string&name = std::string())
          itr != _faces.end();
          )
     {
-        Face&face     = *itr;
-        int intersect = plane.intersect(face.vertices);
+        Face &face     = *itr;
+        int  intersect = plane.intersect(face.vertices);
         if (intersect == 1)
         {
             // OSG_NOTICE<<"    Face inside"<<std::endl;
@@ -662,7 +662,7 @@ void cut(const osg::Plane&plane, const std::string&name = std::string())
         {
             // OSG_NOTICE<<"    Face intersecting - before "<<face.vertices.size()<<std::endl;
 
-            Vertices&vertices = face.vertices;
+            Vertices &vertices = face.vertices;
             newVertices.clear();
 
             distances.clear();
@@ -677,10 +677,10 @@ void cut(const osg::Plane&plane, const std::string&name = std::string())
 
             for (unsigned int i = 0; i < vertices.size(); ++i)
             {
-                osg::Vec3d&va        = vertices[i];
-                osg::Vec3d&vb        = vertices[(i + 1) % vertices.size()];
-                double    distance_a = distances[i];
-                double    distance_b = distances[(i + 1) % vertices.size()];
+                osg::Vec3d &va        = vertices[i];
+                osg::Vec3d &vb        = vertices[(i + 1) % vertices.size()];
+                double     distance_a = distances[i];
+                double     distance_b = distances[(i + 1) % vertices.size()];
 
                 // is first edge point inside plane?
                 if (distance_a >= 0.0)
@@ -721,7 +721,7 @@ void cut(const osg::Plane&plane, const std::string&name = std::string())
         newFace.name  = name;
         newFace.plane = plane;
 
-        Vertices&vertices = newFace.vertices;
+        Vertices &vertices = newFace.vertices;
 
         osg::Vec3d side = (fabs(plane.getNormal().x()) < fabs(plane.getNormal().y())) ?
                           osg::Vec3(1.0, 0.0, 0.0) :
@@ -779,7 +779,7 @@ void cut(const osg::Plane&plane, const std::string&name = std::string())
     }
 }
 
-void getPolytope(osg::Polytope&polytope)
+void getPolytope(osg::Polytope &polytope)
 {
     for (Faces::const_iterator itr = _faces.begin();
          itr != _faces.end();
@@ -789,7 +789,7 @@ void getPolytope(osg::Polytope&polytope)
     }
 }
 
-void getPoints(Vertices&vertices)
+void getPoints(Vertices &vertices)
 {
     typedef std::set<osg::Vec3d> VerticesSet;
     VerticesSet verticesSet;
@@ -798,7 +798,7 @@ void getPoints(Vertices&vertices)
          itr != _faces.end();
          ++itr)
     {
-        Face&face = *itr;
+        Face &face = *itr;
 
         for (Vertices::iterator vitr = face.vertices.begin();
              vitr != face.vertices.end();
@@ -817,7 +817,7 @@ void getPoints(Vertices&vertices)
 }
 
 
-osg::Drawable* createDrawable(const osg::Vec4d&colour)
+osg::Drawable* createDrawable(const osg::Vec4d &colour)
 {
     osg::Geometry  *geometry = new osg::Geometry;
     osg::Vec3Array *vertices = new osg::Vec3Array;
@@ -828,7 +828,7 @@ osg::Drawable* createDrawable(const osg::Vec4d&colour)
          itr != _faces.end();
          ++itr)
     {
-        Face&face = *itr;
+        Face &face = *itr;
         geometry->addPrimitiveSet(new osg::DrawArrays(GL_LINE_LOOP, vertices->size(), face.vertices.size()));
 
         for (Vertices::iterator vitr = face.vertices.begin();
@@ -874,7 +874,7 @@ OverlayNode::OverlayNode(OverlayTechnique technique) :
     init();
 }
 
-OverlayNode::OverlayNode(const OverlayNode&copy, const osg::CopyOp&copyop) :
+OverlayNode::OverlayNode(const OverlayNode &copy, const osg::CopyOp &copyop) :
     osg::Group(copy, copyop),
     _overlayTechnique(copy._overlayTechnique),
     _overlaySubgraph(copy._overlaySubgraph),
@@ -1293,7 +1293,7 @@ void OverlayNode::init_VIEW_DEPENDENT_WITH_PERSPECTIVE_OVERLAY()
     OSG_INFO << "OverlayNode::init() - VIEW_DEPENDENT_WITH_PERSPECTIVE_OVERLAY" << std::endl;
 }
 
-void OverlayNode::traverse(osg::NodeVisitor&nv)
+void OverlayNode::traverse(osg::NodeVisitor &nv)
 {
     switch (_overlayTechnique)
     {
@@ -1311,7 +1311,7 @@ void OverlayNode::traverse(osg::NodeVisitor&nv)
     }
 }
 
-void OverlayNode::traverse_OBJECT_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY(osg::NodeVisitor&nv)
+void OverlayNode::traverse_OBJECT_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY(osg::NodeVisitor &nv)
 {
     OverlayData &overlayData = *getOverlayData(0);
     osg::Camera *camera      = overlayData._camera.get();
@@ -1453,7 +1453,7 @@ void OverlayNode::traverse_OBJECT_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY(osg::NodeV
     }
 }
 
-void OverlayNode::traverse_VIEW_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY(osg::NodeVisitor&nv)
+void OverlayNode::traverse_VIEW_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY(osg::NodeVisitor &nv)
 {
     // OSG_NOTICE<<"OverlayNode::traverse() - VIEW_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY"<<std::endl;
 
@@ -1891,7 +1891,7 @@ void OverlayNode::traverse_VIEW_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY(osg::NodeVis
     // OSG_NOTICE<<"   "<<&overlayData<<std::endl;
 }
 
-void OverlayNode::traverse_VIEW_DEPENDENT_WITH_PERSPECTIVE_OVERLAY(osg::NodeVisitor&nv)
+void OverlayNode::traverse_VIEW_DEPENDENT_WITH_PERSPECTIVE_OVERLAY(osg::NodeVisitor &nv)
 {
     traverse_VIEW_DEPENDENT_WITH_ORTHOGRAPHIC_OVERLAY(nv);
 }

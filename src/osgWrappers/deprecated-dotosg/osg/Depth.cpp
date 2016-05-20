@@ -12,10 +12,10 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Depth_readLocalData(Object&obj, Input&fr);
-bool Depth_writeLocalData(const Object&obj, Output&fw);
+bool Depth_readLocalData(Object &obj, Input &fr);
+bool Depth_writeLocalData(const Object &obj, Output &fw);
 
-bool Depth_matchFuncStr(const char *str, Depth::Function&func);
+bool Depth_matchFuncStr(const char *str, Depth::Function &func);
 const char* Depth_getFuncStr(Depth::Function func);
 
 
@@ -30,11 +30,11 @@ REGISTER_DOTOSGWRAPPER(Depth)
 );
 
 
-bool Depth_readLocalData(Object&obj, Input&fr)
+bool Depth_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Depth&depth = static_cast<Depth&>(obj);
+    Depth &depth = static_cast<Depth&>(obj);
 
     Depth::Function func;
 
@@ -73,9 +73,9 @@ bool Depth_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Depth_writeLocalData(const Object&obj, Output&fw)
+bool Depth_writeLocalData(const Object &obj, Output &fw)
 {
-    const Depth&depth = static_cast<const Depth&>(obj);
+    const Depth &depth = static_cast<const Depth&>(obj);
 
     fw.indent() << "function " << Depth_getFuncStr(depth.getFunction()) << std::endl;
 
@@ -91,7 +91,7 @@ bool Depth_writeLocalData(const Object&obj, Output&fw)
 }
 
 
-bool Depth_matchFuncStr(const char *str, Depth::Function&func)
+bool Depth_matchFuncStr(const char *str, Depth::Function &func)
 {
     if (strcmp(str, "NEVER") == 0)
         func = Depth::NEVER;

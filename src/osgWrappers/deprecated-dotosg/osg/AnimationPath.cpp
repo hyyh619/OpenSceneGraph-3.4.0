@@ -12,8 +12,8 @@ using namespace osgDB;
 
 
 // forward declare functions to use later.
-bool  AnimationPath_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  AnimationPath_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  AnimationPath_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  AnimationPath_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 
 // register the read and write functions with the osgDB::Registry.
@@ -28,7 +28,7 @@ REGISTER_DOTOSGWRAPPER(AnimationPath)
 );
 
 
-bool AnimationPath_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool AnimationPath_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
     osg::AnimationPath *ap = dynamic_cast<osg::AnimationPath*>(&obj);
 
@@ -103,7 +103,7 @@ bool AnimationPath_readLocalData(osg::Object&obj, osgDB::Input&fr)
 }
 
 
-bool AnimationPath_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool AnimationPath_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
     const osg::AnimationPath *ap = dynamic_cast<const osg::AnimationPath*>(&obj);
 
@@ -127,7 +127,7 @@ bool AnimationPath_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
         break;
     }
 
-    const AnimationPath::TimeControlPointMap&tcpm = ap->getTimeControlPointMap();
+    const AnimationPath::TimeControlPointMap &tcpm = ap->getTimeControlPointMap();
 
     fw.indent() << "ControlPoints {" << std::endl;
     fw.moveIn();
@@ -152,8 +152,8 @@ bool AnimationPath_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 
 
 // forward declare functions to use later.
-bool  AnimationPathCallback_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  AnimationPathCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  AnimationPathCallback_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  AnimationPathCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 
 // register the read and write functions with the osgDB::Registry.
@@ -167,7 +167,7 @@ REGISTER_DOTOSGWRAPPER(AnimationPathCallback_Proxy)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool AnimationPathCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool AnimationPathCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
     osg::AnimationPathCallback *apc = dynamic_cast<osg::AnimationPathCallback*>(&obj);
 
@@ -214,7 +214,7 @@ bool AnimationPathCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
 }
 
 
-bool AnimationPathCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool AnimationPathCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
     const osg::AnimationPathCallback *apc = dynamic_cast<const osg::AnimationPathCallback*>(&obj);
 

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_MATRIX
 #define OSG_MATRIX 1
@@ -19,7 +19,6 @@
 #include <osg/Matrixf>
 
 namespace osg {
-
 #ifdef OSG_USE_FLOAT_MATRIX
     typedef Matrixf Matrix;
     typedef RefMatrixf RefMatrix;
@@ -27,8 +26,7 @@ namespace osg {
     typedef Matrixd Matrix;
     typedef RefMatrixd RefMatrix;
 #endif
-
-} //namespace osg
+} // namespace osg
 
 
 #endif

@@ -57,7 +57,7 @@ virtual ~Object()
  * @param filename Filename.
  * @return false if the model could not be loaded, else true.
  */
-bool load(std::istream&fin);
+bool load(std::istream &fin);
 
 /**
  * Generate per-vertex normals for the entire model.
@@ -85,10 +85,10 @@ inline const Mesh* getMesh(unsigned int i) const
 }
 
 /// Find global material.
-Material* findMaterial(const std::string&name);
+Material* findMaterial(const std::string &name);
 
 /// Parse section until '}'; recurse as needed.
-void parseSection(std::istream&fin);
+void parseSection(std::istream &fin);
 
 private:
 // dgm - keep list of materials global to the file

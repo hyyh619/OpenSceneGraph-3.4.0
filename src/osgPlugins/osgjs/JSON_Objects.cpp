@@ -32,7 +32,7 @@ std::string JSONObjectBase::indent()
 }
 
 
-void JSONMatrix::write(json_stream&str, WriteVisitor&visitor)
+void JSONMatrix::write(json_stream &str, WriteVisitor &visitor)
 {
     str << "[ ";
 
@@ -47,7 +47,7 @@ void JSONMatrix::write(json_stream&str, WriteVisitor&visitor)
 }
 
 
-void JSONNode::write(json_stream&str, WriteVisitor&visitor)
+void JSONNode::write(json_stream &str, WriteVisitor &visitor)
 {
     std::vector<std::string> order;
 
@@ -60,7 +60,7 @@ void JSONNode::write(json_stream&str, WriteVisitor&visitor)
     writeOrder(str, order, visitor);
 }
 
-JSONObject::JSONObject(const unsigned int id, const std::string&bufferName)
+JSONObject::JSONObject(const unsigned int id, const std::string &bufferName)
 {
     _uniqueID         = id;
     _bufferName       = bufferName;
@@ -78,7 +78,7 @@ void JSONObject::addUniqueID()
     _maps["UniqueID"] = new JSONValue<unsigned int>(_uniqueID);
 }
 
-void JSONObject::addChild(const std::string&type, JSONObject *child)
+void JSONObject::addChild(const std::string &type, JSONObject *child)
 {
     if (!getMaps()["Children"])
         getMaps()["Children"] = new JSONArray;
@@ -170,7 +170,7 @@ bool JSONObject::isVarintableIntegerBuffer(osg::Array const *array) const
     return isInteger;
 }
 
-void JSONObject::encodeArrayAsVarintBuffer(osg::Array const *array, std::vector<uint8_t>&buffer) const
+void JSONObject::encodeArrayAsVarintBuffer(osg::Array const *array, std::vector<uint8_t> &buffer) const
 {
     switch (static_cast<int>(array->getType()))
     {
@@ -245,7 +245,7 @@ void JSONObject::encodeArrayAsVarintBuffer(osg::Array const *array, std::vector<
 }
 
 template<typename T>
-void JSONObject::dumpVarintVector(std::vector<uint8_t>&oss, T const *buffer, bool isUnsigned) const
+void JSONObject::dumpVarintVector(std::vector<uint8_t> &oss, T const *buffer, bool isUnsigned) const
 {
     unsigned int n = buffer->getDataSize();
 
@@ -262,7 +262,7 @@ void JSONObject::dumpVarintVector(std::vector<uint8_t>&oss, T const *buffer, boo
 }
 
 template<typename T>
-void JSONObject::dumpVarintValue(std::vector<uint8_t>&oss, T const *buffer, bool isUnsigned) const
+void JSONObject::dumpVarintValue(std::vector<uint8_t> &oss, T const *buffer, bool isUnsigned) const
 {
     for (typename T::const_iterator it = buffer->begin(); it != buffer->end(); ++it)
     {
@@ -294,7 +294,7 @@ std::vector<uint8_t> JSONObject::varintEncoding(unsigned int value) const
     return buffer;
 }
 
-static void writeEntry(json_stream&str, const std::string&key, JSONObject::JSONMap&map, WriteVisitor&visitor)
+static void writeEntry(json_stream &str, const std::string &key, JSONObject::JSONMap &map, WriteVisitor &visitor)
 {
     if (key.empty())
         return;
@@ -314,7 +314,7 @@ static void writeEntry(json_stream&str, const std::string&key, JSONObject::JSONM
     }
 }
 
-void JSONObject::writeOrder(json_stream&str, const std::vector<std::string>&order, WriteVisitor&visitor)
+void JSONObject::writeOrder(json_stream &str, const std::vector<std::string> &order, WriteVisitor &visitor)
 {
     str << "{" << std::endl;
     JSONObjectBase::level++;
@@ -334,7 +334,7 @@ void JSONObject::writeOrder(json_stream&str, const std::vector<std::string>&orde
     str << std::endl << JSONObjectBase::indent() << "}";
 }
 
-void JSONObject::write(json_stream&str, WriteVisitor&visitor)
+void JSONObject::write(json_stream &str, WriteVisitor &visitor)
 {
     OrderList defaultOrder;
 
@@ -346,12 +346,12 @@ void JSONObject::write(json_stream&str, WriteVisitor&visitor)
 
 
 std::pair<unsigned int, unsigned int> JSONVertexArray::writeMergeData(const osg::Array *array,
-                                                                      WriteVisitor&visitor,
-                                                                      const std::string&filename,
-                                                                      std::string&encoding)
+                                                                      WriteVisitor &visitor,
+                                                                      const std::string &filename,
+                                                                      std::string &encoding)
 {
-    std::ofstream&output = visitor.getBufferFile(filename);
-    unsigned int offset  = output.tellp();
+    std::ofstream &output = visitor.getBufferFile(filename);
+    unsigned int  offset  = output.tellp();
 
     if (visitor._varint && isVarintableIntegerBuffer(array))
     {
@@ -381,7 +381,7 @@ std::pair<unsigned int, unsigned int> JSONVertexArray::writeMergeData(const osg:
     return std::pair<unsigned int, unsigned int>(offset, fsize - offset);
 }
 
-void JSONVertexArray::write(json_stream&str, WriteVisitor&visitor)
+void JSONVertexArray::write(json_stream &str, WriteVisitor &visitor)
 {
     bool        _useExternalBinaryArray = visitor._useExternalBinaryArray;
     bool        _mergeAllBinaryFiles    = visitor._mergeAllBinaryFiles;
@@ -654,7 +654,7 @@ void JSONVertexArray::write(json_stream&str, WriteVisitor&visitor)
 }
 
 
-JSONVec4Array::JSONVec4Array(const osg::Vec4&v) : JSONVec3Array()
+JSONVec4Array::JSONVec4Array(const osg::Vec4 &v) : JSONVec3Array()
 {
     for (int i = 0; i < 4; ++i)
     {
@@ -662,7 +662,7 @@ JSONVec4Array::JSONVec4Array(const osg::Vec4&v) : JSONVec3Array()
     }
 }
 
-JSONVec5Array::JSONVec5Array(const Vec5&v) : JSONVec3Array()
+JSONVec5Array::JSONVec5Array(const Vec5 &v) : JSONVec3Array()
 {
     for (int i = 0; i < 5; ++i)
     {
@@ -670,7 +670,7 @@ JSONVec5Array::JSONVec5Array(const Vec5&v) : JSONVec3Array()
     }
 }
 
-JSONVec2Array::JSONVec2Array(const osg::Vec2&v) : JSONVec3Array()
+JSONVec2Array::JSONVec2Array(const osg::Vec2 &v) : JSONVec3Array()
 {
     for (int i = 0; i < 2; ++i)
     {
@@ -678,7 +678,7 @@ JSONVec2Array::JSONVec2Array(const osg::Vec2&v) : JSONVec3Array()
     }
 }
 
-JSONVec3Array::JSONVec3Array(const osg::Vec3&v)
+JSONVec3Array::JSONVec3Array(const osg::Vec3 &v)
 {
     for (int i = 0; i < 3; ++i)
     {
@@ -686,7 +686,7 @@ JSONVec3Array::JSONVec3Array(const osg::Vec3&v)
     }
 }
 
-void JSONVec3Array::write(json_stream&str, WriteVisitor&visitor)
+void JSONVec3Array::write(json_stream &str, WriteVisitor &visitor)
 {
     str << "[ ";
 
@@ -708,7 +708,7 @@ void JSONVec3Array::write(json_stream&str, WriteVisitor&visitor)
     str << "]";
 }
 
-void JSONKeyframes::write(json_stream&str, WriteVisitor&visitor)
+void JSONKeyframes::write(json_stream &str, WriteVisitor &visitor)
 {
     JSONObjectBase::level++;
 
@@ -737,7 +737,7 @@ void JSONKeyframes::write(json_stream&str, WriteVisitor&visitor)
 }
 
 
-void JSONArray::write(json_stream&str, WriteVisitor&visitor)
+void JSONArray::write(json_stream &str, WriteVisitor &visitor)
 {
     str << "[ ";
 
@@ -815,7 +815,7 @@ JSONObject* getDrawMode(GLenum mode)
     return result;
 }
 
-JSONDrawArray::JSONDrawArray(osg::DrawArrays&array)
+JSONDrawArray::JSONDrawArray(osg::DrawArrays &array)
 {
     getMaps()["First"] = new JSONValue<int>(array.getFirst());
     getMaps()["Count"] = new JSONValue<int>(array.getCount());
@@ -823,7 +823,7 @@ JSONDrawArray::JSONDrawArray(osg::DrawArrays&array)
 }
 
 
-JSONDrawArrayLengths::JSONDrawArrayLengths(osg::DrawArrayLengths&array)
+JSONDrawArrayLengths::JSONDrawArrayLengths(osg::DrawArrayLengths &array)
 {
     getMaps()["First"] = new JSONValue<int>(array.getFirst());
     getMaps()["Mode"]  = getDrawMode(array.getMode());

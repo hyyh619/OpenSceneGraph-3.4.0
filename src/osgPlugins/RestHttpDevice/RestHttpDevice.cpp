@@ -23,7 +23,7 @@ class UserEventRequestHandler : public RestHttpDevice::RequestHandler
 {
 public:
 UserEventRequestHandler() : RestHttpDevice::RequestHandler("/user-event") {}
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const Arguments&arguments, http::server::reply&reply)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const Arguments &arguments, http::server::reply &reply)
 {
     OSG_INFO << "RestHttpDevice :: handling request " << full_request_path << " as user-event" << std::endl;
 
@@ -41,7 +41,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return sendOkReply(reply);
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": fall-through request-handler, catches all requests w/o registered handler and report them to the console" << std::dec;
 }
@@ -54,7 +54,7 @@ HomeRequestHandler()
     : RestHttpDevice::RequestHandler("/home")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const Arguments&arguments, http::server::reply&reply)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const Arguments &arguments, http::server::reply &reply)
 {
     double time = getLocalTime(arguments, reply);
 
@@ -64,7 +64,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return sendOkReply(reply);
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": sets the mouse-input-range arguments: 'x_min','y_min', 'x_max' and 'y_max'" << std::dec;
 }
@@ -77,7 +77,7 @@ SetMouseInputRangeRequestHandler()
     : RestHttpDevice::RequestHandler("/mouse/set_input_range")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const Arguments&arguments, http::server::reply&reply)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const Arguments &arguments, http::server::reply &reply)
 {
     int x_min(0), y_min(0), x_max(0), y_max(0);
 
@@ -92,7 +92,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return sendOkReply(reply);
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": sets the mouse-input-range arguments: 'x_min','y_min', 'x_max' and 'y_max'" << std::dec;
 }
@@ -110,7 +110,7 @@ KeyCodeRequestHandler(bool handle_key_press)
     , _handleKeyPress(handle_key_press)
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const Arguments&arguments, http::server::reply&reply)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const Arguments &arguments, http::server::reply &reply)
 {
     int keycode(0);
 
@@ -125,7 +125,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return sendOkReply(reply);
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": send KEY_" << (_handleKeyPress ? "DOWN" : "UP") << ", using hex-argument 'code' as keycode" << std::dec;
 }
@@ -141,7 +141,7 @@ MouseMotionRequestHandler()
     : RestHttpDevice::RequestHandler("/mouse/motion")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const Arguments&arguments, http::server::reply&reply)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const Arguments &arguments, http::server::reply &reply)
 {
     int x(0), y(0);
 
@@ -159,7 +159,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return sendOkReply(reply);
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": send mouse motion using arguments 'x' and 'y' as coordinates" << std::dec;
 }
@@ -192,7 +192,7 @@ MouseButtonRequestHandler(Mode mode)
     }
 }
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const Arguments&arguments, http::server::reply&reply)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const Arguments &arguments, http::server::reply &reply)
 {
     int x(0), y(0), button(0);
 
@@ -221,7 +221,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return sendOkReply(reply);
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": send mouse ";
 
@@ -256,9 +256,9 @@ RequestHandlerDispatcherCallback(RestHttpDevice *parent)
     , _parent(parent)
 {}
 
-virtual bool operator()(const std::string&request_path, http::server::reply&rep);
+virtual bool operator()(const std::string &request_path, http::server::reply &rep);
 
-virtual std::string applyTemplateVars(const std::string&txt)
+virtual std::string applyTemplateVars(const std::string &txt)
 {
     return txt;
 }
@@ -267,13 +267,13 @@ RestHttpDevice *_parent;
 };
 
 
-bool RequestHandlerDispatcherCallback::operator()(const std::string&request_path, http::server::reply&reply)
+bool RequestHandlerDispatcherCallback::operator()(const std::string &request_path, http::server::reply &reply)
 {
     return _parent->handleRequest(request_path, reply);
 }
 }
 
-RestHttpDevice::RestHttpDevice(const std::string&listening_address, const std::string&listening_port, const std::string&doc_root)
+RestHttpDevice::RestHttpDevice(const std::string &listening_address, const std::string &listening_port, const std::string &doc_root)
     : osgGA::Device()
     , OpenThreads::Thread()
     , _server(listening_address, listening_port, osgDB::findDataFile(doc_root), std::max(OpenThreads::GetNumberOfProcessors() - 1, 1))
@@ -341,7 +341,7 @@ void RestHttpDevice::addRequestHandler(RequestHandler *handler)
 }
 
 
-void RestHttpDevice::parseArguments(const std::string request_path, RequestHandler::Arguments&arguments)
+void RestHttpDevice::parseArguments(const std::string request_path, RequestHandler::Arguments &arguments)
 {
     std::size_t pos = request_path.find('?');
 
@@ -363,7 +363,7 @@ void RestHttpDevice::parseArguments(const std::string request_path, RequestHandl
 }
 
 
-bool RestHttpDevice::handleRequest(const std::string&in_request_path,  http::server::reply&reply)
+bool RestHttpDevice::handleRequest(const std::string &in_request_path,  http::server::reply &reply)
 {
     std::string request_path = in_request_path.substr(0, in_request_path.find('?'));
 
@@ -402,7 +402,7 @@ bool RestHttpDevice::handleRequest(const std::string&in_request_path,  http::ser
 }
 
 
-void RestHttpDevice::describeTo(std::ostream&out) const
+void RestHttpDevice::describeTo(std::ostream &out) const
 {
     out << "RestHttpDevice :: Server:        " << _serverAddress << std::endl;
     out << "RestHttpDevice :: Port:          " << _serverPort << std::endl;

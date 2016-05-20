@@ -42,7 +42,7 @@ FireEffect::FireEffect(bool automaticSetup) :
         buildEffect();
 }
 
-FireEffect::FireEffect(const osg::Vec3&position, float scale, float intensity)
+FireEffect::FireEffect(const osg::Vec3 &position, float scale, float intensity)
 {
     setDefaults();
 
@@ -57,7 +57,7 @@ FireEffect::FireEffect(const osg::Vec3&position, float scale, float intensity)
         buildEffect();
 }
 
-FireEffect::FireEffect(const FireEffect&copy, const osg::CopyOp&copyop) :
+FireEffect::FireEffect(const FireEffect &copy, const osg::CopyOp &copyop) :
     ParticleEffect(copy, copyop)
 {
     if (_automaticSetup)
@@ -92,7 +92,7 @@ void FireEffect::setUpEmitterAndProgram()
     {
         _particleSystem->setDefaultAttributes(_textureFileName, false, false);
 
-        osgParticle::Particle&ptemplate = _particleSystem->getDefaultParticleTemplate();
+        osgParticle::Particle &ptemplate = _particleSystem->getDefaultParticleTemplate();
 
         float radius  = 0.25f * _scale;
         float density = 0.5f; // 0.5kg/m^3

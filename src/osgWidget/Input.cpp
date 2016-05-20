@@ -14,11 +14,11 @@ namespace osgWidget
 class BlinkCursorCallback : public osg::Drawable::DrawCallback
 {
 public:
-BlinkCursorCallback(const bool&insertMode)
+BlinkCursorCallback(const bool &insertMode)
     : _insertMode(insertMode)
 {}
 
-virtual void drawImplementation(osg::RenderInfo&ri, const osg::Drawable *drawable) const
+virtual void drawImplementation(osg::RenderInfo &ri, const osg::Drawable *drawable) const
 {
     static bool         on        = true;
     static osg::Timer_t startTime = osg::Timer::instance()->tick();
@@ -34,10 +34,10 @@ virtual void drawImplementation(osg::RenderInfo&ri, const osg::Drawable *drawabl
         drawable->drawImplementation(ri);
 }
 protected:
-const bool&_insertMode;
+const bool &_insertMode;
 };
 
-Input::Input(const std::string&name, const std::string&label, unsigned int size) :
+Input::Input(const std::string &name, const std::string &label, unsigned int size) :
     Label(name, label),
     _xoff(0.0f),
     _yoff(0.0f),
@@ -82,7 +82,7 @@ Input::Input(const std::string&name, const std::string&label, unsigned int size)
     _cursor->setDrawCallback(new BlinkCursorCallback(_insertMode));
 }
 
-void Input::_calculateSize(const XYCoord&size)
+void Input::_calculateSize(const XYCoord &size)
 {
     // An Input cannot currently set it's own size RELIABLY until the osgText implementation
     // is dratiscally improved. I'm getting wildly crazy results. :(
@@ -124,7 +124,7 @@ void Input::_calculateCursorOffsets()
 
     for (; tgqmi != tgqm.end(); tgqmi++)
     {
-        const osgText::Text::GlyphQuads&gq = tgqmi->second;
+        const osgText::Text::GlyphQuads &gq = tgqmi->second;
 
         // coords.insert(coords.end(),gq.getTransformedCoords(0).begin(),gq.getTransformedCoords(0).end());
         coords.insert(coords.end(), gq.getCoords()->begin(), gq.getCoords()->end());
@@ -173,11 +173,11 @@ void Input::_calculateCursorOffsets()
                 if (previous_g)
                 {
                     {
-                        point_type&ref = _offsets[idx];
+                        point_type &ref = _offsets[idx];
                         ref += previous_g->getHorizontalAdvance();
                     }
                     {
-                        point_type&ref = _widths[idx];
+                        point_type &ref = _widths[idx];
                         ref += previous_g->getHorizontalAdvance();
                     }
                 }
@@ -369,7 +369,7 @@ bool Input::mouseRelease(double, double, const WindowManager*)
 
 bool Input::keyDown(int key, int mask, const WindowManager*)
 {
-    osgText::String&s = _text->getText();
+    osgText::String &s = _text->getText();
 
     switch (key)
     {
@@ -686,7 +686,7 @@ bool Input::keyDown(int key, int mask, const WindowManager*)
 
 void Input::setCursor(Widget*) {}
 
-unsigned int Input::calculateBestYOffset(const std::string&s)
+unsigned int Input::calculateBestYOffset(const std::string &s)
 {
     if (!_text->getFont())
         return 0;

@@ -16,23 +16,23 @@ OrientationConverter::OrientationConverter(void)
     S.makeIdentity();
 }
 
-void OrientationConverter::setRotation(const Vec3&from, const Vec3&to)
+void OrientationConverter::setRotation(const Vec3 &from, const Vec3 &to)
 {
     R = Matrix::rotate(from, to);
 }
 
-void OrientationConverter::setRotation(float degrees, const Vec3&axis)
+void OrientationConverter::setRotation(float degrees, const Vec3 &axis)
 {
     R = Matrix::rotate(osg::DegreesToRadians(degrees), axis);
 }
 
-void OrientationConverter::setTranslation(const Vec3&trans)
+void OrientationConverter::setTranslation(const Vec3 &trans)
 {
     T          = Matrix::translate(trans);
     _trans_set = true;
 }
 
-void OrientationConverter::setScale(const Vec3&scale)
+void OrientationConverter::setScale(const Vec3 &scale)
 {
     S = Matrix::scale(scale);
 }

@@ -47,7 +47,7 @@ class dxfHeader : public dxfSection
 public:
 dxfHeader() : _inVariable(false) {}
 virtual ~dxfHeader() {}
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 VariableList&getVariable(std::string inVar)
 {
     return _variables[inVar];
@@ -64,7 +64,7 @@ class dxfTables : public dxfSection
 public:
 dxfTables() : _inLayerTable(false) {}
 virtual ~dxfTables() {}
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 dxfLayerTable*    getOrCreateLayerTable()
 {
     if (!_layerTable.get())
@@ -85,7 +85,7 @@ class dxfEntities : public dxfSection
 public:
 dxfEntities() : _currentEntity(NULL) {}
 virtual ~dxfEntities() {}
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual void drawScene(scene *sc);
 
 protected:
@@ -98,7 +98,7 @@ class dxfBlocks : public dxfSection
 public:
 dxfBlocks() : _currentBlock(NULL) {}
 virtual ~dxfBlocks() {}
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 dxfBlock* findBlock(std::string s);
 
 protected:

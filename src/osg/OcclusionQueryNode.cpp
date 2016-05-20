@@ -106,15 +106,15 @@ struct RetrieveQueriesCallback : public osg::Camera::DrawCallback
     RetrieveQueriesCallback(const RetrieveQueriesCallback&, const osg::CopyOp&) {}
     META_Object(osgOQ, RetrieveQueriesCallback)
 
-    virtual void operator()(const osg::Camera&camera) const
+    virtual void operator()(const osg::Camera &camera) const
     {
         if (_results.empty())
             return;
 
-        const osg::Timer&timer     = *osg::Timer::instance();
-        osg::Timer_t    start_tick = timer.tick();
-        double          elapsedTime(0.);
-        int             count(0);
+        const osg::Timer &timer     = *osg::Timer::instance();
+        osg::Timer_t     start_tick = timer.tick();
+        double           elapsedTime(0.);
+        int              count(0);
 
         const osg::GLExtensions *ext = 0;
         if (camera.getGraphicsContext())
@@ -242,7 +242,7 @@ static DeletedQueryObjectCache s_deletedQueryObjectCache;
 
 namespace osg
 {
-QueryGeometry::QueryGeometry(const std::string&oqnName)
+QueryGeometry::QueryGeometry(const std::string &oqnName)
     : _oqnName(oqnName)
 {
     // TBD check to see if we can have this on.
@@ -264,7 +264,7 @@ QueryGeometry::reset()
 
     while (it != _results.end())
     {
-        TestResult&tr = it->second;
+        TestResult &tr = it->second;
         if (tr._init)
             QueryGeometry::deleteQueryObject(tr._contextID, tr._id);
 
@@ -278,7 +278,7 @@ QueryGeometry::reset()
 // Warning: Version was still 1.2 on dev branch long after the 1.2 release,
 //   and finally got bumped to 1.9 in April 2007.
 void
-QueryGeometry::drawImplementation(osg::RenderInfo&renderInfo) const
+QueryGeometry::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     unsigned int      contextID = renderInfo.getState()->getContextID();
     osg::GLExtensions *ext      = renderInfo.getState()->get<GLExtensions>();
@@ -378,7 +378,7 @@ QueryGeometry::releaseGLObjects(osg::State *state) const
 
         while (it != _results.end())
         {
-            TestResult&tr = it->second;
+            TestResult &tr = it->second;
             if (tr._contextID == contextID)
             {
                 QueryGeometry::deleteQueryObject(contextID, tr._id);
@@ -404,22 +404,22 @@ QueryGeometry::deleteQueryObject(unsigned int contextID, GLuint handle)
 
 
 void
-QueryGeometry::flushDeletedQueryObjects(unsigned int contextID, double /*currentTime*/, double&availableTime)
+QueryGeometry::flushDeletedQueryObjects(unsigned int contextID, double /*currentTime*/, double &availableTime)
 {
     // if no time available don't try to flush objects.
     if (availableTime <= 0.0)
         return;
 
-    const osg::Timer&timer      = *osg::Timer::instance();
-    osg::Timer_t    start_tick  = timer.tick();
-    double          elapsedTime = 0.0;
+    const osg::Timer &timer      = *osg::Timer::instance();
+    osg::Timer_t     start_tick  = timer.tick();
+    double           elapsedTime = 0.0;
 
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedQueryObjectCache);
 
         const osg::GLExtensions *extensions = osg::GLExtensions::Get(contextID, true);
 
-        QueryObjectList&qol = s_deletedQueryObjectCache[contextID];
+        QueryObjectList &qol = s_deletedQueryObjectCache[contextID];
 
         for (QueryObjectList::iterator titr = qol.begin();
              titr != qol.end() && elapsedTime < availableTime;
@@ -464,7 +464,7 @@ OcclusionQueryNode::OcclusionQueryNode()
 OcclusionQueryNode::~OcclusionQueryNode()
 {}
 
-OcclusionQueryNode::OcclusionQueryNode(const OcclusionQueryNode&oqn, const CopyOp&copyop)
+OcclusionQueryNode::OcclusionQueryNode(const OcclusionQueryNode &oqn, const CopyOp &copyop)
     : Group(oqn, copyop),
     _passed(false)
 {
@@ -478,7 +478,7 @@ OcclusionQueryNode::OcclusionQueryNode(const OcclusionQueryNode&oqn, const CopyO
 }
 
 
-bool OcclusionQueryNode::getPassed(const Camera *camera, NodeVisitor&nv)
+bool OcclusionQueryNode::getPassed(const Camera *camera, NodeVisitor &nv)
 {
     if (!_enabled)
         // Queries are not enabled. The caller should be osgUtil::CullVisitor,
@@ -517,8 +517,8 @@ bool OcclusionQueryNode::getPassed(const Camera *camera, NodeVisitor&nv)
     // If the distance from the near plane to the bounding sphere shell is positive, retrieve
     //   the results. Otherwise (near plane inside the BS shell) we are considered
     //   to have passed and don't need to retrieve the query.
-    const osg::BoundingSphere&bs                = getBound();
-    float                    distanceToEyePoint = nv.getDistanceToEyePoint(bs._center, false);
+    const osg::BoundingSphere &bs                = getBound();
+    float                     distanceToEyePoint = nv.getDistanceToEyePoint(bs._center, false);
 
     float distance = distanceToEyePoint - nearPlane - bs._radius;
     _passed = (distance <= 0.f);
@@ -531,7 +531,7 @@ bool OcclusionQueryNode::getPassed(const Camera *camera, NodeVisitor&nv)
     return _passed;
 }
 
-void OcclusionQueryNode::traverseQuery(const Camera *camera, NodeVisitor&nv)
+void OcclusionQueryNode::traverseQuery(const Camera *camera, NodeVisitor &nv)
 {
     bool issueQuery;
     {
@@ -548,7 +548,7 @@ void OcclusionQueryNode::traverseQuery(const Camera *camera, NodeVisitor&nv)
         _queryGeode->accept(nv);
 }
 
-void OcclusionQueryNode::traverseDebug(NodeVisitor&nv)
+void OcclusionQueryNode::traverseDebug(NodeVisitor &nv)
 {
     if (_debugBB)
         // If requested, display the debug geometry
@@ -739,7 +739,7 @@ void OcclusionQueryNode::releaseGLObjects(State *state) const
     }
 }
 
-void OcclusionQueryNode::flushDeletedQueryObjects(unsigned int contextID, double currentTime, double&availableTime)
+void OcclusionQueryNode::flushDeletedQueryObjects(unsigned int contextID, double currentTime, double &availableTime)
 {
     // Query object discard and deletion is handled by QueryGeometry support class.
     QueryGeometry::flushDeletedQueryObjects(contextID, currentTime, availableTime);

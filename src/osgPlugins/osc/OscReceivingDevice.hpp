@@ -65,13 +65,13 @@ typedef OscSendingDevice::MsgIdType MsgIdType;
 class RequestHandler : public osg::Referenced
 {
 public:
-RequestHandler(const std::string&request_path)
+RequestHandler(const std::string &request_path)
     : osg::Referenced()
     , _requestPath(request_path)
     , _device(NULL)
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint) = 0;
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint) = 0;
 virtual void operator()(osgGA::EventQueue *queue) {}
 
 const std::string&getRequestPath() const
@@ -79,7 +79,7 @@ const std::string&getRequestPath() const
     return _requestPath;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": no description available";
 }
@@ -95,12 +95,12 @@ OscReceivingDevice* getDevice() const
 }
 
 /// set the request-path, works only from the constructor
-void setRequestPath(const std::string&request_path)
+void setRequestPath(const std::string &request_path)
 {
     _requestPath = request_path;
 }
 
-void handleException(const osc::Exception&e)
+void handleException(const osc::Exception &e)
 {
     OSG_WARN << "OscDevice :: error while handling " << getRequestPath() << ": " << e.what() << std::endl;
 }
@@ -117,21 +117,21 @@ friend class OscReceivingDevice;
 
 typedef std::multimap<std::string, osg::ref_ptr<RequestHandler> > RequestHandlerMap;
 
-OscReceivingDevice(const std::string&server_address, int listening_port);
+OscReceivingDevice(const std::string &server_address, int listening_port);
 ~OscReceivingDevice();
 
 
 virtual void run();
 
 
-virtual void ProcessMessage(const osc::ReceivedMessage&m, const IpEndpointName&remoteEndpoint);
-virtual void ProcessPacket(const char *data, int size, const IpEndpointName&remoteEndpoint);
-virtual void ProcessBundle(const osc::ReceivedBundle&b, const IpEndpointName&remoteEndpoint);
+virtual void ProcessMessage(const osc::ReceivedMessage &m, const IpEndpointName &remoteEndpoint);
+virtual void ProcessPacket(const char *data, int size, const IpEndpointName &remoteEndpoint);
+virtual void ProcessBundle(const osc::ReceivedBundle &b, const IpEndpointName &remoteEndpoint);
 void addRequestHandler(RequestHandler *handler);
 
-void describeTo(std::ostream&out) const;
+void describeTo(std::ostream &out) const;
 
-friend std::ostream&operator<<(std::ostream&out, const OscReceivingDevice&device)
+friend std::ostream&operator<<(std::ostream &out, const OscReceivingDevice &device)
 {
     device.describeTo(out);
     return out;
@@ -184,8 +184,8 @@ std::vector<RequestHandler*> _handleOnCheckEvents;
 class SendKeystrokeRequestHandler : public OscReceivingDevice::RequestHandler
 {
 public:
-SendKeystrokeRequestHandler(const std::string&request_path, int key) : OscReceivingDevice::RequestHandler(request_path), _key(key) {}
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&arguments, const IpEndpointName&remoteEndPoint)
+SendKeystrokeRequestHandler(const std::string &request_path, int key) : OscReceivingDevice::RequestHandler(request_path), _key(key) {}
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &arguments, const IpEndpointName &remoteEndPoint)
 {
     getDevice()->getEventQueue()->keyPress(_key);
     getDevice()->getEventQueue()->keyRelease(_key);
@@ -193,7 +193,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return true;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": send KEY_DOWN + KEY_UP, code: 0x" << std::hex << _key << std::dec;
 }

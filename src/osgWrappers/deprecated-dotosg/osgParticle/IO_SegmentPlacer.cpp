@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  SegmentPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  SegmentPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  SegmentPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  SegmentPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(SegmentPlacer_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(SegmentPlacer_Proxy)
     SegmentPlacer_writeLocalData
 );
 
-bool SegmentPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool SegmentPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::SegmentPlacer&myobj     = static_cast<osgParticle::SegmentPlacer&>(obj);
-    bool                      itAdvanced = false;
+    osgParticle::SegmentPlacer &myobj     = static_cast<osgParticle::SegmentPlacer&>(obj);
+    bool                       itAdvanced = false;
 
     osg::Vec3 v;
 
@@ -51,9 +51,9 @@ bool SegmentPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool SegmentPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool SegmentPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::SegmentPlacer&myobj = static_cast<const osgParticle::SegmentPlacer&>(obj);
+    const osgParticle::SegmentPlacer &myobj = static_cast<const osgParticle::SegmentPlacer&>(obj);
 
     osg::Vec3 v = myobj.getVertexA();
 

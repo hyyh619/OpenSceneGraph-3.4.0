@@ -23,7 +23,7 @@ osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> _gw;
 
 unsigned int _state;
 
-osgGA::EventQueue&_queue;
+osgGA::EventQueue &_queue;
 
 static OSGGTKDrawingArea* _self(gpointer self)
 {

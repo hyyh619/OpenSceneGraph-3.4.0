@@ -68,7 +68,7 @@ void DriveManipulator::setNode(osg::Node *node)
     _node = node;
     if (_node.get())
     {
-        const osg::BoundingSphere&boundingSphere = _node->getBound();
+        const osg::BoundingSphere &boundingSphere = _node->getBound();
 
         _modelScale = boundingSphere._radius;
         // _height = sqrtf(_modelScale)*0.03;
@@ -94,7 +94,7 @@ osg::Node* DriveManipulator::getNode()
     return _node.get();
 }
 
-bool DriveManipulator::intersect(const osg::Vec3d&start, const osg::Vec3d&end, osg::Vec3d&intersection, osg::Vec3d&normal) const
+bool DriveManipulator::intersect(const osg::Vec3d &start, const osg::Vec3d &end, osg::Vec3d &intersection, osg::Vec3d &normal) const
 {
     osg::ref_ptr<osgUtil::LineSegmentIntersector> lsi = new osgUtil::LineSegmentIntersector(start, end);
 
@@ -119,7 +119,7 @@ void DriveManipulator::computeHomePosition()
 {
     if (_node.get())
     {
-        const osg::BoundingSphere&boundingSphere = _node->getBound();
+        const osg::BoundingSphere &boundingSphere = _node->getBound();
 
         osg::Vec3d ep = boundingSphere._center;
         osg::Vec3d bp = ep;
@@ -183,7 +183,7 @@ void DriveManipulator::computeHomePosition()
     }
 }
 
-void DriveManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void DriveManipulator::home(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     if (getAutoComputeHomePosition())
         computeHomePosition();
@@ -202,7 +202,7 @@ void DriveManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
     flushMouseEventStack();
 }
 
-void DriveManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void DriveManipulator::init(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     flushMouseEventStack();
 
@@ -267,7 +267,7 @@ void DriveManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
 }
 
 
-bool DriveManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool DriveManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     switch (ea.getEventType())
     {
@@ -396,7 +396,7 @@ bool DriveManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
     }
 }
 
-void DriveManipulator::getUsage(osg::ApplicationUsage&usage) const
+void DriveManipulator::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("Drive: Space", "Reset the viewing position to home");
     usage.addKeyboardMouseBinding("Drive: q", "Use mouse y for controlling speed");
@@ -413,13 +413,13 @@ void DriveManipulator::flushMouseEventStack()
 }
 
 
-void DriveManipulator::addMouseEvent(const GUIEventAdapter&ea)
+void DriveManipulator::addMouseEvent(const GUIEventAdapter &ea)
 {
     _ga_t1 = _ga_t0;
     _ga_t0 = &ea;
 }
 
-void DriveManipulator::setByMatrix(const osg::Matrixd&matrix)
+void DriveManipulator::setByMatrix(const osg::Matrixd &matrix)
 {
     _eye      = matrix.getTrans();
     _rotation = matrix.getRotate();
@@ -435,7 +435,7 @@ osg::Matrixd DriveManipulator::getInverseMatrix() const
     return osg::Matrixd::translate(-_eye) * osg::Matrixd::rotate(_rotation.inverse()) * osg::Matrixd::rotate(-_pitch, 1.0, 0.0, 0.0);
 }
 
-void DriveManipulator::computePosition(const osg::Vec3d&eye, const osg::Vec3d&center, const osg::Vec3d&up)
+void DriveManipulator::computePosition(const osg::Vec3d &eye, const osg::Vec3d &center, const osg::Vec3d &up)
 {
     osg::Vec3d lv = center - eye;
 

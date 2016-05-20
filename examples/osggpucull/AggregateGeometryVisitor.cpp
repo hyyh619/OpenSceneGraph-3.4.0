@@ -41,7 +41,7 @@ AggregateGeometryVisitor::AddObjectResult AggregateGeometryVisitor::addObject(os
     return AddObjectResult(currentVertexFirst, currentVertexCount, _aggregatedGeometry->getNumPrimitiveSets() - 1);
 }
 
-void AggregateGeometryVisitor::apply(osg::Node&node)
+void AggregateGeometryVisitor::apply(osg::Node &node)
 {
     bool pushed = _ctOperator.pushNode(&node);
 
@@ -50,7 +50,7 @@ void AggregateGeometryVisitor::apply(osg::Node&node)
         _ctOperator.popNode();
 }
 
-void AggregateGeometryVisitor::apply(osg::Transform&transform)
+void AggregateGeometryVisitor::apply(osg::Transform &transform)
 {
     bool        pushed = _ctOperator.pushNode(&transform);
     osg::Matrix matrix;
@@ -68,7 +68,7 @@ void AggregateGeometryVisitor::apply(osg::Transform&transform)
         _ctOperator.popNode();
 }
 
-void AggregateGeometryVisitor::apply(osg::Geode&geode)
+void AggregateGeometryVisitor::apply(osg::Geode &geode)
 {
     bool pushed = _ctOperator.pushNode(&geode);
 

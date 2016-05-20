@@ -89,7 +89,7 @@ void endVisual(void);
 
 VisualChooser* findVisual(const char *name);
 
-bool parseFile(const std::string&file);
+bool parseFile(const std::string &file);
 
 void beginRenderSurface(const char *name);
 
@@ -103,7 +103,7 @@ void setRenderSurfaceCustomFullScreenRectangle(int x, int y, unsigned int width,
 
 void setRenderSurfaceOverrideRedirect(bool flag);
 
-void setRenderSurfaceHostName(const std::string&name);
+void setRenderSurfaceHostName(const std::string &name);
 
 void setRenderSurfaceDisplayNum(int n);
 

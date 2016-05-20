@@ -39,7 +39,7 @@ Texture3D::Texture3D(Image *image) :
     setImage(image);
 }
 
-Texture3D::Texture3D(const Texture3D&text, const CopyOp&copyop) :
+Texture3D::Texture3D(const Texture3D &text, const CopyOp &copyop) :
     Texture(text, copyop),
     _textureWidth(text._textureWidth),
     _textureHeight(text._textureHeight),
@@ -55,7 +55,7 @@ Texture3D::~Texture3D()
     setImage(NULL);
 }
 
-int Texture3D::compare(const StateAttribute&sa) const
+int Texture3D::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -142,7 +142,7 @@ void Texture3D::setImage(Image *image)
     }
 }
 
-void Texture3D::computeRequiredTextureDimensions(State&state, const osg::Image&image, GLsizei&inwidth, GLsizei&inheight, GLsizei&indepth, GLsizei&numMipmapLevels) const
+void Texture3D::computeRequiredTextureDimensions(State &state, const osg::Image &image, GLsizei &inwidth, GLsizei &inheight, GLsizei &indepth, GLsizei &numMipmapLevels) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 
@@ -207,7 +207,7 @@ void Texture3D::computeRequiredTextureDimensions(State&state, const osg::Image&i
     }
 }
 
-void Texture3D::apply(State&state) const
+void Texture3D::apply(State &state) const
 {
     // get the contextID (user defined ID of 0 upwards) for the
     // current OpenGL context.
@@ -361,7 +361,7 @@ void Texture3D::computeInternalFormat() const
         computeInternalFormatType();
 }
 
-void Texture3D::applyTexImage3D(GLenum target, Image *image, State&state, GLsizei&inwidth, GLsizei&inheight, GLsizei&indepth, GLsizei&numMipmapLevels) const
+void Texture3D::applyTexImage3D(GLenum target, Image *image, State &state, GLsizei &inwidth, GLsizei &inheight, GLsizei &indepth, GLsizei &numMipmapLevels) const
 {
     // if we don't have a valid image we can't create a texture!
     if (!image || !image->data())
@@ -488,7 +488,7 @@ void Texture3D::applyTexImage3D(GLenum target, Image *image, State&state, GLsize
     indepth  = image->r();
 }
 
-void Texture3D::copyTexSubImage3D(State&state, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height)
+void Texture3D::copyTexSubImage3D(State &state, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height)
 {
     const unsigned int contextID   = state.getContextID();
     const GLExtensions *extensions = state.get<GLExtensions>();
@@ -515,7 +515,7 @@ void Texture3D::copyTexSubImage3D(State&state, int xoffset, int yoffset, int zof
     }
 }
 
-void Texture3D::allocateMipmap(State&state) const
+void Texture3D::allocateMipmap(State &state) const
 {
     const unsigned int contextID = state.getContextID();
 

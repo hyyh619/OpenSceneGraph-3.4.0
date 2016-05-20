@@ -56,9 +56,9 @@ bool getMouseTracking() const
 
 void set(osg::Node *node);
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor *nv);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor *nv);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 typedef std::vector<osg::observer_ptr<osg::ImageStream> > ImageStreamList;
 
@@ -69,10 +69,10 @@ virtual ~MovieEventHandler() {}
 class FindImageStreamsVisitor : public osg::NodeVisitor
 {
 public:
-FindImageStreamsVisitor(ImageStreamList&imageStreamList) :
+FindImageStreamsVisitor(ImageStreamList &imageStreamList) :
     _imageStreamList(imageStreamList) {}
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     apply(geode.getStateSet());
 
@@ -84,7 +84,7 @@ virtual void apply(osg::Geode&geode)
     traverse(geode);
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     apply(node.getStateSet());
     traverse(node);
@@ -116,7 +116,7 @@ inline void apply(osg::ImageStream *imagestream)
     }
 }
 
-ImageStreamList&_imageStreamList;
+ImageStreamList &_imageStreamList;
 
 protected:
 
@@ -145,7 +145,7 @@ void MovieEventHandler::set(osg::Node *node)
 }
 
 
-bool MovieEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor *nv)
+bool MovieEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor *nv)
 {
     switch (ea.getEventType())
     {
@@ -164,15 +164,15 @@ bool MovieEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAction
             if (foundIntersection)
             {
                 // use the nearest intersection
-                const osgUtil::LineSegmentIntersector::Intersection&intersection = *(intersections.begin());
-                osg::Drawable                                      *drawable     = intersection.drawable.get();
-                osg::Geometry                                      *geometry     = drawable ? drawable->asGeometry() : 0;
-                osg::Vec3Array                                     *vertices     = geometry ? dynamic_cast<osg::Vec3Array*>(geometry->getVertexArray()) : 0;
+                const osgUtil::LineSegmentIntersector::Intersection &intersection = *(intersections.begin());
+                osg::Drawable                                       *drawable     = intersection.drawable.get();
+                osg::Geometry                                       *geometry     = drawable ? drawable->asGeometry() : 0;
+                osg::Vec3Array                                      *vertices     = geometry ? dynamic_cast<osg::Vec3Array*>(geometry->getVertexArray()) : 0;
                 if (vertices)
                 {
                     // get the vertex indices.
-                    const osgUtil::LineSegmentIntersector::Intersection::IndexList&indices = intersection.indexList;
-                    const osgUtil::LineSegmentIntersector::Intersection::RatioList&ratios  = intersection.ratioList;
+                    const osgUtil::LineSegmentIntersector::Intersection::IndexList &indices = intersection.indexList;
+                    const osgUtil::LineSegmentIntersector::Intersection::RatioList &ratios  = intersection.ratioList;
 
                     if (indices.size() == 3 && ratios.size() == 3)
                     {
@@ -339,7 +339,7 @@ bool MovieEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAction
     return false;
 }
 
-void MovieEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void MovieEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("p", "Play/Pause movie");
     usage.addKeyboardMouseBinding("r", "Restart movie");
@@ -351,7 +351,7 @@ void MovieEventHandler::getUsage(osg::ApplicationUsage&usage) const
 }
 
 
-osg::Geometry* myCreateTexturedQuadGeometry(const osg::Vec3&pos, float width, float height, osg::Image *image, bool useTextureRectangle, bool xyPlane, bool option_flip)
+osg::Geometry* myCreateTexturedQuadGeometry(const osg::Vec3 &pos, float width, float height, osg::Image *image, bool useTextureRectangle, bool xyPlane, bool option_flip)
 {
     bool flip = image->getOrigin() == osg::Image::TOP_LEFT;
 
@@ -558,7 +558,7 @@ int main(int argc, char **argv)
             osg::ImageStream *imagestream = dynamic_cast<osg::ImageStream*>(image);
             if (imagestream)
             {
-                osg::ImageStream::AudioStreams&audioStreams = imagestream->getAudioStreams();
+                osg::ImageStream::AudioStreams &audioStreams = imagestream->getAudioStreams();
                 if (useAudioSink && !audioStreams.empty())
                 {
                     osg::AudioStream *audioStream = audioStreams[0].get();

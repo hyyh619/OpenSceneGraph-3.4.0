@@ -58,11 +58,11 @@ void setVRML1Conversion(bool useVRML1)
     vrml1Conversion = useVRML1;
 };
 
-virtual void apply(osg::Node&node);
-virtual void apply(osg::Geode&node);
-virtual void apply(osg::Group&node);
+virtual void apply(osg::Node &node);
+virtual void apply(osg::Geode &node);
+virtual void apply(osg::Group &node);
 
-virtual void apply(osg::Billboard&node);
+virtual void apply(osg::Billboard &node);
 // virtual void apply(ProxyNode& node)                 { apply((Group&)node); }
 // virtual void apply(Projection& node)                { apply((Group&)node); }
 // virtual void apply(CoordinateSystemNode& node)      { apply((Group&)node); }
@@ -74,12 +74,12 @@ virtual void apply(osg::Billboard&node);
 // virtual void apply(Transform& node);
 // virtual void apply(Camera& node)                    { apply((Transform&)node); }
 // virtual void apply(CameraView& node)                { apply((Transform&)node); }
-virtual void apply(osg::MatrixTransform&node);
-virtual void apply(osg::PositionAttitudeTransform&node);
+virtual void apply(osg::MatrixTransform &node);
+virtual void apply(osg::PositionAttitudeTransform &node);
 
 // virtual void apply(Switch& node)                    { apply((Group&)node); }
 // virtual void apply(Sequence& node)                  { apply((Group&)node); }
-virtual void apply(osg::LOD&node);
+virtual void apply(osg::LOD &node);
 // virtual void apply(PagedLOD& node)                  { apply((LOD&)node); }
 // virtual void apply(ClearNode& node)                 { apply((Group&)node); }
 // virtual void apply(OccluderNode& node)              { apply((Group&)node); }
@@ -116,7 +116,7 @@ struct InventorState
         osgLighting(true), osgTwoSided(false), osgFrontFace(osg::FrontFace::COUNTER_CLOCKWISE),
         osgCullFaceEnabled(false), osgCullFace(osg::CullFace::BACK),
         osgBlendEnabled(false), osgBlendFunc(NULL)  {}
-    InventorState(const InventorState&s) : ivHead(s.ivHead), ivTexture(s.ivTexture),
+    InventorState(const InventorState &s) : ivHead(s.ivHead), ivTexture(s.ivTexture),
         ivMaterial(s.ivMaterial), osgMaterial(s.osgMaterial),
         osgTexture2Enabled(s.osgTexture2Enabled), osgTexture(s.osgTexture), osgTexEnv(s.osgTexEnv),
         osgTexGenS(s.osgTexGenS), osgTexGenT(s.osgTexGenT), osgTexGen(s.osgTexGen),

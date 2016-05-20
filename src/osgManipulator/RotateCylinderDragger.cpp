@@ -74,7 +74,7 @@ RotateCylinderDragger::RotateCylinderDragger()
 RotateCylinderDragger::~RotateCylinderDragger()
 {}
 
-bool RotateCylinderDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool RotateCylinderDragger::handle(const PointerInfo &pointer, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     // Check if the dragger node is in the nodepath.
     if (!pointer.contains(this))

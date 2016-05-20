@@ -10,7 +10,7 @@
         obj.set ## PROP(min, max); return true;                                                   \
     }                                                                                             \
     static bool write ## PROP(osgDB::OutputStream & os, const osgParticle::RadialShooter & obj) { \
-        const osgParticle::rangef&range = obj.get ## PROP();                                      \
+        const osgParticle::rangef &range = obj.get ## PROP();                                     \
         os << range.minimum << range.maximum << std::endl;                                        \
         return true;                                                                              \
     }
@@ -22,7 +22,7 @@
         obj.set ## PROP(min, max); return true;                                                   \
     }                                                                                             \
     static bool write ## PROP(osgDB::OutputStream & os, const osgParticle::RadialShooter & obj) { \
-        const osgParticle::rangev3&range = obj.get ## PROP();                                     \
+        const osgParticle::rangev3 &range = obj.get ## PROP();                                    \
         os << osg::Vec3d(range.minimum) << osg::Vec3d(range.maximum) << std::endl;                \
         return true;                                                                              \
     }

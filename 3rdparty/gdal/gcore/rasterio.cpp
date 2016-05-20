@@ -626,7 +626,7 @@ namespace
  */
 
 template<class Tin, class Tout>
-inline void GetDataLimits(Tin&tMaxValue, Tin&tMinValue)
+inline void GetDataLimits(Tin &tMaxValue, Tin &tMinValue)
 {
     tMaxValue = std::numeric_limits<Tin>::max();
     tMinValue = std::numeric_limits<Tin>::min();
@@ -692,7 +692,7 @@ inline T ClampValue(const T tValue, const T tMax, const T tMin)
  */
 
 template<class Tin, class Tout>
-inline void CopyWord(const Tin tValueIn, Tout&tValueOut)
+inline void CopyWord(const Tin tValueIn, Tout &tValueOut)
 {
     Tin tMaxVal, tMinVal;
 
@@ -701,39 +701,39 @@ inline void CopyWord(const Tin tValueIn, Tout&tValueOut)
 }
 
 template<class Tin>
-inline void CopyWord(const Tin tValueIn, float&fValueOut)
+inline void CopyWord(const Tin tValueIn, float &fValueOut)
 {
     fValueOut = (float) tValueIn;
 }
 
 template<class Tin>
-inline void CopyWord(const Tin tValueIn, double&dfValueOut)
+inline void CopyWord(const Tin tValueIn, double &dfValueOut)
 {
     dfValueOut = tValueIn;
 }
 
-inline void CopyWord(const double dfValueIn, double&dfValueOut)
+inline void CopyWord(const double dfValueIn, double &dfValueOut)
 {
     dfValueOut = dfValueIn;
 }
 
-inline void CopyWord(const float fValueIn, float&fValueOut)
+inline void CopyWord(const float fValueIn, float &fValueOut)
 {
     fValueOut = fValueIn;
 }
 
-inline void CopyWord(const float fValueIn, double&dfValueOut)
+inline void CopyWord(const float fValueIn, double &dfValueOut)
 {
     dfValueOut = fValueIn;
 }
 
-inline void CopyWord(const double dfValueIn, float&fValueOut)
+inline void CopyWord(const double dfValueIn, float &fValueOut)
 {
     fValueOut = static_cast<float>(dfValueIn);
 }
 
 template<class Tout>
-inline void CopyWord(const float fValueIn, Tout&tValueOut)
+inline void CopyWord(const float fValueIn, Tout &tValueOut)
 {
     float fMaxVal, fMinVal;
 
@@ -743,7 +743,7 @@ inline void CopyWord(const float fValueIn, Tout&tValueOut)
 }
 
 template<class Tout>
-inline void CopyWord(const double dfValueIn, Tout&tValueOut)
+inline void CopyWord(const double dfValueIn, Tout &tValueOut)
 {
     double dfMaxVal, dfMinVal;
 
@@ -752,7 +752,7 @@ inline void CopyWord(const double dfValueIn, Tout&tValueOut)
         ClampValue(dfValueIn + 0.5, dfMaxVal, dfMinVal));
 }
 
-inline void CopyWord(const double dfValueIn, int&nValueOut)
+inline void CopyWord(const double dfValueIn, int &nValueOut)
 {
     double dfMaxVal, dfMinVal;
 
@@ -763,7 +763,7 @@ inline void CopyWord(const double dfValueIn, int&nValueOut)
         ClampValue(dfValue, dfMaxVal, dfMinVal));
 }
 
-inline void CopyWord(const float fValueIn, short&nValueOut)
+inline void CopyWord(const float fValueIn, short &nValueOut)
 {
     float fMaxVal, fMinVal;
 
@@ -774,7 +774,7 @@ inline void CopyWord(const float fValueIn, short&nValueOut)
         ClampValue(fValue, fMaxVal, fMinVal));
 }
 
-inline void CopyWord(const double dfValueIn, short&nValueOut)
+inline void CopyWord(const double dfValueIn, short &nValueOut)
 {
     double dfMaxVal, dfMinVal;
 
@@ -787,7 +787,7 @@ inline void CopyWord(const double dfValueIn, short&nValueOut)
 
 // Roundoff occurs for Float32 -> int32 for max/min. Overload CopyWord
 // specifically for this case.
-inline void CopyWord(const float fValueIn, int&nValueOut)
+inline void CopyWord(const float fValueIn, int &nValueOut)
 {
     if (fValueIn >= static_cast<float>(std::numeric_limits<int>::max()))
     {
@@ -806,7 +806,7 @@ inline void CopyWord(const float fValueIn, int&nValueOut)
 
 // Roundoff occurs for Float32 -> uint32 for max. Overload CopyWord
 // specifically for this case.
-inline void CopyWord(const float fValueIn, unsigned int&nValueOut)
+inline void CopyWord(const float fValueIn, unsigned int &nValueOut)
 {
     if (fValueIn >= static_cast<float>(std::numeric_limits<unsigned int>::max()))
     {
@@ -2215,8 +2215,8 @@ void GDALCopyBits(const GByte *pabySrcData, int nSrcOffset, int nSrcStep,
 /************************************************************************/
 
 int GDALBandGetBestOverviewLevel(GDALRasterBand *poBand,
-                                 int&nXOff, int&nYOff,
-                                 int&nXSize, int&nYSize,
+                                 int &nXOff, int &nYOff,
+                                 int &nXSize, int &nYSize,
                                  int nBufXSize, int nBufYSize)
 {
     double dfDesiredResolution;
@@ -2361,8 +2361,8 @@ CPLErr GDALRasterBand::OverviewRasterIO(GDALRWFlag eRWFlag,
 
 static
 int GDALDatasetGetBestOverviewLevel(GDALDataset *poDS,
-                                    int&nXOff, int&nYOff,
-                                    int&nXSize, int&nYSize,
+                                    int &nXOff, int &nYOff,
+                                    int &nXSize, int &nYSize,
                                     int nBufXSize, int nBufYSize,
                                     int nBandCount, int *panBandMap)
 {

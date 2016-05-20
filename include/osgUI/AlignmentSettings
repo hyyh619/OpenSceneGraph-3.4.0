@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGUI_ALIGNMENTSETTINGS
 #define OSGUI_ALIGNMENTSETTINGS
@@ -21,48 +21,52 @@
 
 namespace osgUI
 {
-
-class OSGUI_EXPORT AlignmentSettings : public osg::Object
-{
+    class OSGUI_EXPORT AlignmentSettings: public osg::Object
+    {
 public:
 
-    enum Alignment
-    {
-        LEFT_TOP,
-        LEFT_CENTER,
-        LEFT_BOTTOM,
+        enum Alignment
+        {
+            LEFT_TOP,
+            LEFT_CENTER,
+            LEFT_BOTTOM,
 
-        CENTER_TOP,
-        CENTER_CENTER,
-        CENTER_BOTTOM,
+            CENTER_TOP,
+            CENTER_CENTER,
+            CENTER_BOTTOM,
 
-        RIGHT_TOP,
-        RIGHT_CENTER,
-        RIGHT_BOTTOM,
+            RIGHT_TOP,
+            RIGHT_CENTER,
+            RIGHT_BOTTOM,
 
-        LEFT_BASE_LINE,
-        CENTER_BASE_LINE,
-        RIGHT_BASE_LINE,
+            LEFT_BASE_LINE,
+            CENTER_BASE_LINE,
+            RIGHT_BASE_LINE,
 
-        LEFT_BOTTOM_BASE_LINE,
-        CENTER_BOTTOM_BASE_LINE,
-        RIGHT_BOTTOM_BASE_LINE
-    };
+            LEFT_BOTTOM_BASE_LINE,
+            CENTER_BOTTOM_BASE_LINE,
+            RIGHT_BOTTOM_BASE_LINE
+        };
 
-    AlignmentSettings(Alignment alignment=AlignmentSettings::LEFT_BOTTOM);
-    AlignmentSettings(const AlignmentSettings& as, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
-    META_Object(osgUI, AlignmentSettings);
+        AlignmentSettings(Alignment alignment = AlignmentSettings::LEFT_BOTTOM);
+        AlignmentSettings(const AlignmentSettings &as, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        META_Object(osgUI, AlignmentSettings);
 
-    void setAlignment(Alignment alignment) { _alignment = alignment; }
-    Alignment getAlignment() const { return _alignment; }
+        void setAlignment(Alignment alignment)
+        {
+            _alignment = alignment;
+        }
+        Alignment getAlignment() const
+        {
+            return _alignment;
+        }
 
 protected:
 
-    virtual ~AlignmentSettings() {}
+        virtual ~AlignmentSettings() {}
 
-    Alignment _alignment;
-};
-
+        Alignment _alignment;
+    };
 }
 
 #endif

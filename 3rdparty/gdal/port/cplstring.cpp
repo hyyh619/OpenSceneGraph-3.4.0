@@ -250,7 +250,7 @@ CPLString&CPLString::Recode(const char *pszSrcEncoding,
  * @since GDAL 1.9.0
  */
 
-size_t CPLString::ifind(const std::string&str, size_t pos) const
+size_t CPLString::ifind(const std::string &str, size_t pos) const
 
 {
     return ifind(str.c_str(), pos);

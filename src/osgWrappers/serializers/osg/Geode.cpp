@@ -5,12 +5,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkDrawables(const osg::Geode&node)
+static bool checkDrawables(const osg::Geode &node)
 {
     return node.getNumDrawables() > 0;
 }
 
-static bool readDrawables(osgDB::InputStream&is, osg::Geode&node)
+static bool readDrawables(osgDB::InputStream &is, osg::Geode &node)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -27,7 +27,7 @@ static bool readDrawables(osgDB::InputStream&is, osg::Geode&node)
     return true;
 }
 
-static bool writeDrawables(osgDB::OutputStream&os, const osg::Geode&node)
+static bool writeDrawables(osgDB::OutputStream &os, const osg::Geode &node)
 {
     unsigned int size = node.getNumDrawables();
 
@@ -44,7 +44,7 @@ static bool writeDrawables(osgDB::OutputStream&os, const osg::Geode&node)
 
 struct GeodeGetNumDrawables : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         osg::Geode *geode = reinterpret_cast<osg::Geode*>(objectPtr);
 
@@ -56,7 +56,7 @@ struct GeodeGetNumDrawables : public osgDB::MethodObject
 
 struct GeodeGetDrawable : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.empty())
             return false;
@@ -76,7 +76,7 @@ struct GeodeGetDrawable : public osgDB::MethodObject
 
 struct GeodeSetDrawable : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.size() < 2)
             return false;
@@ -108,7 +108,7 @@ struct GeodeSetDrawable : public osgDB::MethodObject
 
 struct GeodeAddDrawable : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.empty())
             return false;
@@ -127,7 +127,7 @@ struct GeodeAddDrawable : public osgDB::MethodObject
 
 struct GeodeRemoveDrawable : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.empty())
             return false;

@@ -27,7 +27,7 @@
 #include <osgViewer/Viewer>
 #include <iostream>
 
-osg::Camera* createMRTCamera(std::vector<osg::Texture*>&attachedTextures)
+osg::Camera* createMRTCamera(std::vector<osg::Texture*> &attachedTextures)
 {
     osg::ref_ptr<osg::Camera> camera = new osg::Camera;
 

@@ -181,7 +181,7 @@ void OptimizeFaces(const unsigned int *indexList, unsigned int indexCount, unsig
     {
         unsigned int index = indexList[i];
         assert(index < vertexCount);
-        OptimizeVertexData&vertexData = vertexDataList[index];
+        OptimizeVertexData &vertexData = vertexDataList[index];
         vertexData.activeFaceListSize++;
     }
 
@@ -195,7 +195,7 @@ void OptimizeFaces(const unsigned int *indexList, unsigned int indexCount, unsig
 
         for (unsigned int i = 0; i < vertexCount; ++i)
         {
-            OptimizeVertexData&vertexData = vertexDataList[i];
+            OptimizeVertexData &vertexData = vertexDataList[i];
             vertexData.cachePos0           = kEvictedCacheIndex;
             vertexData.cachePos1           = kEvictedCacheIndex;
             vertexData.activeFaceListStart = curActiveFaceListPos;
@@ -212,8 +212,8 @@ void OptimizeFaces(const unsigned int *indexList, unsigned int indexCount, unsig
     {
         for (unsigned int j = 0; j < 3; ++j)
         {
-            unsigned int      index       = indexList[i + j];
-            OptimizeVertexData&vertexData = vertexDataList[index];
+            unsigned int       index       = indexList[i + j];
+            OptimizeVertexData &vertexData = vertexDataList[index];
             activeFaceList[vertexData.activeFaceListStart + vertexData.activeFaceListSize] = i;
             vertexData.activeFaceListSize++;
         }
@@ -247,8 +247,8 @@ void OptimizeFaces(const unsigned int *indexList, unsigned int indexCount, unsig
 
                     for (unsigned int k = 0; k < 3; ++k)
                     {
-                        unsigned int      index       = indexList[face + k];
-                        OptimizeVertexData&vertexData = vertexDataList[index];
+                        unsigned int       index       = indexList[face + k];
+                        OptimizeVertexData &vertexData = vertexDataList[index];
                         assert(vertexData.activeFaceListSize > 0);
                         assert(vertexData.cachePos0 >= lruCacheSize);
                         faceScore += vertexData.score;
@@ -280,7 +280,7 @@ void OptimizeFaces(const unsigned int *indexList, unsigned int indexCount, unsig
             unsigned int index = indexList[bestFace + v];
             newIndexList[i + v] = index;
 
-            OptimizeVertexData&vertexData = vertexDataList[index];
+            OptimizeVertexData &vertexData = vertexDataList[index];
 
             if (vertexData.cachePos1 >= entriesInCache1)
             {
@@ -307,8 +307,8 @@ void OptimizeFaces(const unsigned int *indexList, unsigned int indexCount, unsig
         // move the rest of the old verts in the cache down and compute their new scores
         for (unsigned int c0 = 0; c0 < entriesInCache0; ++c0)
         {
-            unsigned int      index       = cache0[c0];
-            OptimizeVertexData&vertexData = vertexDataList[index];
+            unsigned int       index       = cache0[c0];
+            OptimizeVertexData &vertexData = vertexDataList[index];
 
             if (vertexData.cachePos1 >= entriesInCache1)
             {
@@ -323,8 +323,8 @@ void OptimizeFaces(const unsigned int *indexList, unsigned int indexCount, unsig
 
         for (unsigned int c1 = 0; c1 < entriesInCache1; ++c1)
         {
-            unsigned int      index       = cache1[c1];
-            OptimizeVertexData&vertexData = vertexDataList[index];
+            unsigned int       index       = cache1[c1];
+            OptimizeVertexData &vertexData = vertexDataList[index];
             vertexData.cachePos0 = vertexData.cachePos1;
             vertexData.cachePos1 = kEvictedCacheIndex;
 
@@ -335,8 +335,8 @@ void OptimizeFaces(const unsigned int *indexList, unsigned int indexCount, unsig
 
                 for (unsigned int v = 0; v < 3; v++)
                 {
-                    unsigned int      faceIndex       = indexList[face + v];
-                    OptimizeVertexData&faceVertexData = vertexDataList[faceIndex];
+                    unsigned int       faceIndex       = indexList[face + v];
+                    OptimizeVertexData &faceVertexData = vertexDataList[faceIndex];
                     faceScore += faceVertexData.score;
                 }
 

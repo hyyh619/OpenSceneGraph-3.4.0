@@ -19,7 +19,7 @@ using namespace osg;
 LineSegment::~LineSegment()
 {}
 
-bool LineSegment::intersectAndClip(vec_type&s, vec_type&e, const BoundingBox&bb)
+bool LineSegment::intersectAndClip(vec_type &s, vec_type &e, const BoundingBox &bb)
 {
     // compate s and e against the xMin to xMax range of bb.
     if (s.x() <= e.x())
@@ -153,7 +153,7 @@ bool LineSegment::intersectAndClip(vec_type&s, vec_type&e, const BoundingBox&bb)
     return true;
 }
 
-bool LineSegment::intersect(const BoundingBox&bb) const
+bool LineSegment::intersect(const BoundingBox &bb) const
 {
     if (!bb.valid())
         return false;
@@ -163,7 +163,7 @@ bool LineSegment::intersect(const BoundingBox&bb) const
 }
 
 
-bool LineSegment::intersectAndComputeRatios(const BoundingBox&bb, float&r1, float&r2) const
+bool LineSegment::intersectAndComputeRatios(const BoundingBox &bb, float &r1, float &r2) const
 {
     if (!bb.valid())
         return false;
@@ -189,7 +189,7 @@ bool LineSegment::intersectAndComputeRatios(const BoundingBox&bb, float&r1, floa
     return result;
 }
 
-bool LineSegment::intersectAndComputeRatios(const BoundingBox&bb, double&r1, double&r2) const
+bool LineSegment::intersectAndComputeRatios(const BoundingBox &bb, double &r1, double &r2) const
 {
     if (!bb.valid())
         return false;
@@ -218,7 +218,7 @@ bool LineSegment::intersectAndComputeRatios(const BoundingBox&bb, double&r1, dou
 }
 
 
-bool LineSegment::intersectAndComputeRatios(const BoundingSphere&bs, float&r1, float&r2) const
+bool LineSegment::intersectAndComputeRatios(const BoundingSphere &bs, float &r1, float &r2) const
 {
     vec_type   sm = _s - bs._center;
     value_type c  = sm.length2() - bs._radius * bs._radius;
@@ -268,7 +268,7 @@ bool LineSegment::intersectAndComputeRatios(const BoundingSphere&bs, float&r1, f
 
 
 
-bool LineSegment::intersectAndComputeRatios(const BoundingSphere&bs, double&r1, double&r2) const
+bool LineSegment::intersectAndComputeRatios(const BoundingSphere &bs, double &r1, double &r2) const
 {
     vec_type   sm = _s - bs._center;
     value_type c  = sm.length2() - bs._radius * bs._radius;
@@ -316,7 +316,7 @@ bool LineSegment::intersectAndComputeRatios(const BoundingSphere&bs, double&r1, 
     return true;
 }
 
-bool LineSegment::intersect(const BoundingSphere&bs) const
+bool LineSegment::intersect(const BoundingSphere &bs) const
 {
     vec_type   sm = _s - bs._center;
     value_type c  = sm.length2() - bs._radius * bs._radius;
@@ -350,7 +350,7 @@ bool LineSegment::intersect(const BoundingSphere&bs) const
     return true;
 }
 
-bool LineSegment::intersect(const Vec3f&v1, const Vec3f&v2, const Vec3f&v3, float&r)
+bool LineSegment::intersect(const Vec3f &v1, const Vec3f &v2, const Vec3f &v3, float &r)
 {
     if (v1 == v2 || v2 == v3 || v1 == v3)
         return false;
@@ -443,7 +443,7 @@ bool LineSegment::intersect(const Vec3f&v1, const Vec3f&v2, const Vec3f&v3, floa
     return true;
 }
 
-bool LineSegment::intersect(const Vec3d&v1, const Vec3d&v2, const Vec3d&v3, double&r)
+bool LineSegment::intersect(const Vec3d &v1, const Vec3d &v2, const Vec3d &v3, double &r)
 {
     if (v1 == v2 || v2 == v3 || v1 == v3)
         return false;

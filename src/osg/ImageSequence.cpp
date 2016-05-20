@@ -25,13 +25,13 @@ using namespace osg;
 ImageSequence::ImageData::ImageData()
 {}
 
-ImageSequence::ImageData::ImageData(const ImageData&id) :
+ImageSequence::ImageData::ImageData(const ImageData &id) :
     _filename(id._filename),
     _image(id._image),
     _imageRequest(id._imageRequest)
 {}
 
-ImageSequence::ImageData&ImageSequence::ImageData::operator =(const ImageSequence::ImageData&rhs)
+ImageSequence::ImageData&ImageSequence::ImageData::operator =(const ImageSequence::ImageData &rhs)
 {
     if (&rhs != this)
     {
@@ -58,7 +58,7 @@ ImageSequence::ImageSequence()
     _previousAppliedImageIndex = -1;
 }
 
-ImageSequence::ImageSequence(const ImageSequence&is, const CopyOp&copyop) :
+ImageSequence::ImageSequence(const ImageSequence &is, const CopyOp &copyop) :
     osg::ImageStream(is, copyop),
     _referenceTime(is._referenceTime),
     _timeMultiplier(is._timeMultiplier),
@@ -72,7 +72,7 @@ ImageSequence::ImageSequence(const ImageSequence&is, const CopyOp&copyop) :
     _previousAppliedImageIndex = -1;
 }
 
-int ImageSequence::compare(const Image&rhs) const
+int ImageSequence::compare(const Image &rhs) const
 {
     return ImageStream::compare(rhs);
 }
@@ -123,7 +123,7 @@ void ImageSequence::computeTimePerImage()
         _timePerImage = _length;
 }
 
-void ImageSequence::setImageFile(unsigned int pos, const std::string&fileName)
+void ImageSequence::setImageFile(unsigned int pos, const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
@@ -140,7 +140,7 @@ std::string ImageSequence::getImageFile(unsigned int pos) const
     return pos < _imageDataList.size() ? _imageDataList[pos]._filename : std::string();
 }
 
-void ImageSequence::addImageFile(const std::string&fileName)
+void ImageSequence::addImageFile(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 

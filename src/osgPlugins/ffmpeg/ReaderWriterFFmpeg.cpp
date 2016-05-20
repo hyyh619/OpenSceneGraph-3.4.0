@@ -137,7 +137,7 @@ virtual const char* className() const
     return "ReaderWriterFFmpeg";
 }
 
-virtual ReadResult readImage(const std::string&filename, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &filename, const osgDB::ReaderWriter::Options *options) const
 {
     const std::string ext = osgDB::getLowerCaseFileExtension(filename);
 
@@ -182,7 +182,7 @@ virtual ReadResult readImage(const std::string&filename, const osgDB::ReaderWrit
     return readImageStream(path, parameters.get());
 }
 
-ReadResult readImageStream(const std::string&filename, osgFFmpeg::FFmpegParameters *parameters) const
+ReadResult readImageStream(const std::string &filename, osgFFmpeg::FFmpegParameters *parameters) const
 {
     OSG_INFO << "ReaderWriterFFmpeg::readImage " << filename << std::endl;
 
@@ -200,12 +200,12 @@ void parseOptions(osgFFmpeg::FFmpegParameters *parameters, const osgDB::ReaderWr
 {
     if (options && options->getNumPluginStringData() > 0)
     {
-        const FormatDescriptionMap&supportedOptList = supportedOptions();
+        const FormatDescriptionMap &supportedOptList = supportedOptions();
 
         for (FormatDescriptionMap::const_iterator itr = supportedOptList.begin();
              itr != supportedOptList.end(); ++itr)
         {
-            const std::string&name = itr->first;
+            const std::string &name = itr->first;
             parameters->parse(name, options->getPluginStringData(name));
         }
     }

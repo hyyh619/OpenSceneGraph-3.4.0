@@ -23,16 +23,16 @@ struct SwigMovePointer
     {
         delete ptr;
     }
-    SwigMovePointer&operator=(SwigMovePointer&rhs)
+    SwigMovePointer&operator=(SwigMovePointer &rhs)
     {
         T *oldptr = ptr; ptr = 0; delete oldptr; ptr = rhs.ptr; rhs.ptr = 0; return *this;
     }
 } pointer;
-SwigValueWrapper&operator=(const SwigValueWrapper<T>&rhs);
-SwigValueWrapper(const SwigValueWrapper<T>&rhs);
+SwigValueWrapper&operator=(const SwigValueWrapper<T> &rhs);
+SwigValueWrapper(const SwigValueWrapper<T> &rhs);
 public:
 SwigValueWrapper() : pointer(0) { }
-SwigValueWrapper&operator=(const T&t)
+SwigValueWrapper&operator=(const T &t)
 {
     SwigMovePointer tmp(new T(t)); pointer = tmp; return *this;
 }

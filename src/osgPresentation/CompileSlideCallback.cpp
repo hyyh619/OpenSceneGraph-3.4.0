@@ -16,7 +16,7 @@
 
 using namespace osgPresentation;
 
-void CompileSlideCallback::operator()(const osg::Camera&camera) const
+void CompileSlideCallback::operator()(const osg::Camera &camera) const
 {
     osg::GraphicsContext *context = const_cast<osg::GraphicsContext*>(camera.getGraphicsContext());
 

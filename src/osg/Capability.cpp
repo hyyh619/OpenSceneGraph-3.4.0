@@ -32,7 +32,7 @@ Capabilityi::Capabilityi() :
 Capabilityi::~Capabilityi()
 {}
 
-void Enablei::apply(State&state) const
+void Enablei::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 
@@ -47,7 +47,7 @@ void Enablei::apply(State&state) const
     }
 }
 
-void Disablei::apply(State&state) const
+void Disablei::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

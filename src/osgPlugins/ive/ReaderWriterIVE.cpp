@@ -36,17 +36,17 @@ virtual const char* className() const
     return "IVE Reader/Writer";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return equalCaseInsensitive(extension, "ive");
 }
 
-virtual ReadResult readObject(const std::string&file, const Options *options) const
+virtual ReadResult readObject(const std::string &file, const Options *options) const
 {
     return readNode(file, options);
 }
 
-virtual ReadResult readImage(const std::string&file, const Options *options) const
+virtual ReadResult readImage(const std::string &file, const Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -65,7 +65,7 @@ virtual ReadResult readImage(const std::string&file, const Options *options) con
     return readImage(istream, local_opt.get());
 }
 
-virtual ReadResult readNode(const std::string&file, const Options *options) const
+virtual ReadResult readNode(const std::string &file, const Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -84,12 +84,12 @@ virtual ReadResult readNode(const std::string&file, const Options *options) cons
     return readNode(istream, local_opt.get());
 }
 
-virtual ReadResult readObject(std::istream&fin, const Options *options) const
+virtual ReadResult readObject(std::istream &fin, const Options *options) const
 {
     return readNode(fin, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const Options *options) const
+virtual ReadResult readImage(std::istream &fin, const Options *options) const
 {
     ive::DataInputStream in(&fin, options);
 
@@ -101,7 +101,7 @@ virtual ReadResult readImage(std::istream&fin, const Options *options) const
     return in.readImage(ive::IMAGE_INCLUDE_DATA);
 }
 
-virtual ReadResult readNode(std::istream&fin, const Options *options) const
+virtual ReadResult readNode(std::istream &fin, const Options *options) const
 {
     // Create datainputstream.
     ive::DataInputStream in(&fin, options);
@@ -114,7 +114,7 @@ virtual ReadResult readNode(std::istream&fin, const Options *options) const
     return in.readNode();
 }
 
-virtual WriteResult writeObject(const Object&object, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const Object &object, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     const Node *node = dynamic_cast<const Node*>(&object);
 
@@ -128,7 +128,7 @@ virtual WriteResult writeObject(const Object&object, const std::string&fileName,
     return WriteResult::FILE_NOT_HANDLED;
 }
 
-virtual WriteResult writeImage(const Image&image, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const Image &image, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = getFileExtension(fileName);
 
@@ -151,7 +151,7 @@ virtual WriteResult writeImage(const Image&image, const std::string&fileName, co
     return result;
 }
 
-virtual WriteResult writeNode(const Node&node, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeNode(const Node &node, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = getFileExtension(fileName);
 
@@ -174,7 +174,7 @@ virtual WriteResult writeNode(const Node&node, const std::string&fileName, const
     return result;
 }
 
-virtual WriteResult writeObject(const Object&object, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const Object &object, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     const Node *node = dynamic_cast<const Node*>(&object);
 
@@ -188,7 +188,7 @@ virtual WriteResult writeObject(const Object&object, std::ostream&fout, const os
     return WriteResult::FILE_NOT_HANDLED;
 }
 
-virtual WriteResult writeImage(const Image&image, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const Image &image, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     ive::DataOutputStream out(&fout, options);
 
@@ -205,7 +205,7 @@ virtual WriteResult writeImage(const Image&image, std::ostream&fout, const osgDB
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeNode(const Node&node, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeNode(const Node &node, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     ive::DataOutputStream out(&fout, options);
 

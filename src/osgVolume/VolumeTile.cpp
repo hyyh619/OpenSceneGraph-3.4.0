@@ -49,7 +49,7 @@ VolumeTile::VolumeTile() :
     setThreadSafeRefUnref(true);
 }
 
-VolumeTile::VolumeTile(const VolumeTile&volumeTile, const osg::CopyOp&copyop) :
+VolumeTile::VolumeTile(const VolumeTile &volumeTile, const osg::CopyOp &copyop) :
     Group(volumeTile, copyop),
     _volume(0),
     _dirty(false),
@@ -82,7 +82,7 @@ void VolumeTile::setVolume(Volume *volume)
         _volume->registerVolumeTile(this);
 }
 
-void VolumeTile::setTileID(const TileID&tileID)
+void VolumeTile::setTileID(const TileID &tileID)
 {
     if (_tileID == tileID)
         return;
@@ -97,13 +97,13 @@ void VolumeTile::setTileID(const TileID&tileID)
 }
 
 
-void VolumeTile::traverse(osg::NodeVisitor&nv)
+void VolumeTile::traverse(osg::NodeVisitor &nv)
 {
     if (!_hasBeenTraversal)
     {
         if (!_volume)
         {
-            osg::NodePath&nodePath = nv.getNodePath();
+            osg::NodePath &nodePath = nv.getNodePath();
             if (!nodePath.empty())
             {
                 for (osg::NodePath::reverse_iterator itr = nodePath.rbegin();

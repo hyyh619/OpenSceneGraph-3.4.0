@@ -11,16 +11,16 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TexEnvCombine_readLocalData(Object&obj, Input&fr);
-bool TexEnvCombine_writeLocalData(const Object&obj, Output&fw);
+bool TexEnvCombine_readLocalData(Object &obj, Input &fr);
+bool TexEnvCombine_writeLocalData(const Object &obj, Output &fw);
 
-bool TexEnvCombine_matchCombineParamStr(const char *str, GLint&value);
+bool TexEnvCombine_matchCombineParamStr(const char *str, GLint &value);
 const char* TexEnvCombine_getCombineParamStr(GLint value);
 
-bool TexEnvCombine_matchSourceParamStr(const char *str, GLint&value);
+bool TexEnvCombine_matchSourceParamStr(const char *str, GLint &value);
 const char* TexEnvCombine_getSourceParamStr(GLint value);
 
-bool TexEnvCombine_matchOperandParamStr(const char *str, GLint&value);
+bool TexEnvCombine_matchOperandParamStr(const char *str, GLint &value);
 const char* TexEnvCombine_getOperandParamStr(GLint value);
 
 // register the read and write functions with the osgDB::Registry.
@@ -34,11 +34,11 @@ REGISTER_DOTOSGWRAPPER(TexEnvCombine)
 );
 
 
-bool TexEnvCombine_readLocalData(Object&obj, Input&fr)
+bool TexEnvCombine_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    TexEnvCombine&texenv = static_cast<TexEnvCombine&>(obj);
+    TexEnvCombine &texenv = static_cast<TexEnvCombine&>(obj);
 
     GLint value;
 
@@ -175,9 +175,9 @@ bool TexEnvCombine_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool TexEnvCombine_writeLocalData(const Object&obj, Output&fw)
+bool TexEnvCombine_writeLocalData(const Object &obj, Output &fw)
 {
-    const TexEnvCombine&texenv = static_cast<const TexEnvCombine&>(obj);
+    const TexEnvCombine &texenv = static_cast<const TexEnvCombine&>(obj);
 
     fw.indent() << "combine_RGB " << TexEnvCombine_getCombineParamStr(texenv.getCombine_RGB()) << std::endl;
     fw.indent() << "combine_Alpha " << TexEnvCombine_getCombineParamStr(texenv.getCombine_Alpha()) << std::endl;
@@ -207,7 +207,7 @@ bool TexEnvCombine_writeLocalData(const Object&obj, Output&fw)
 }
 
 
-bool TexEnvCombine_matchCombineParamStr(const char *str, GLint&value)
+bool TexEnvCombine_matchCombineParamStr(const char *str, GLint &value)
 {
     if (strcmp(str, "REPLACE") == 0)
         value = TexEnvCombine::REPLACE;
@@ -255,7 +255,7 @@ const char* TexEnvCombine_getCombineParamStr(GLint value)
     return "";
 }
 
-bool TexEnvCombine_matchSourceParamStr(const char *str, GLint&value)
+bool TexEnvCombine_matchSourceParamStr(const char *str, GLint &value)
 {
     if (strcmp(str, "CONSTANT") == 0)
         value = TexEnvCombine::CONSTANT;
@@ -319,7 +319,7 @@ const char* TexEnvCombine_getSourceParamStr(GLint value)
     return "";
 }
 
-bool TexEnvCombine_matchOperandParamStr(const char *str, GLint&value)
+bool TexEnvCombine_matchOperandParamStr(const char *str, GLint &value)
 {
     if (strcmp(str, "SRC_COLOR") == 0)
         value = TexEnvCombine::SRC_COLOR;

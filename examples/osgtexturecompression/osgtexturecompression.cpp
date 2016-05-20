@@ -32,7 +32,7 @@
 
 #include <iostream>
 
-osg::Camera* createHUD(const std::string&label)
+osg::Camera* createHUD(const std::string &label)
 {
     // create a camera to set up the projection and model view matrices, and the subgraph to drawn in the HUD
     osg::Camera *camera = new osg::Camera;
@@ -79,7 +79,7 @@ osg::Camera* createHUD(const std::string&label)
     return camera;
 }
 
-osg::Node* creatQuad(const std::string&name,
+osg::Node* creatQuad(const std::string &name,
                      osg::Image *image,
                      osg::Texture::InternalFormatMode formatMode,
                      osg::Texture::FilterMode minFilter)

@@ -22,7 +22,7 @@ const char *LABEL2 =
     "culpa qui officia deserunt mollit anim id est laborum. BBBBB"
 ;
 
-osgWidget::Label* createLabel(const std::string&l, unsigned int size = 13)
+osgWidget::Label* createLabel(const std::string &l, unsigned int size = 13)
 {
     osgWidget::Label *label = new osgWidget::Label("", "");
 

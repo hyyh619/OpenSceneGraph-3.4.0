@@ -14,10 +14,10 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Camera_readLocalData(Object&obj, Input&fr);
-bool Camera_writeLocalData(const Object&obj, Output&fw);
+bool Camera_readLocalData(Object &obj, Input &fr);
+bool Camera_writeLocalData(const Object &obj, Output &fw);
 
-bool Camera_matchBufferComponentStr(const char *str, Camera::BufferComponent&buffer);
+bool Camera_matchBufferComponentStr(const char *str, Camera::BufferComponent &buffer);
 const char* Camera_getBufferComponentStr(Camera::BufferComponent buffer);
 
 
@@ -43,11 +43,11 @@ REGISTER_DOTOSGWRAPPER(CameraNode)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Camera_readLocalData(Object&obj, Input&fr)
+bool Camera_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Camera&camera = static_cast<Camera&>(obj);
+    Camera &camera = static_cast<Camera&>(obj);
 
     if (fr.matchSequence("clearColor %f %f %f %f"))
     {
@@ -180,7 +180,7 @@ bool Camera_readLocalData(Object&obj, Input&fr)
 
         fr += 3;
 
-        Camera::Attachment&attachment = camera.getBufferAttachmentMap()[buffer];
+        Camera::Attachment &attachment = camera.getBufferAttachmentMap()[buffer];
 
         // read attachment data.
         while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
@@ -254,9 +254,9 @@ bool Camera_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Camera_writeLocalData(const Object&obj, Output&fw)
+bool Camera_writeLocalData(const Object &obj, Output &fw)
 {
-    const Camera&camera = static_cast<const Camera&>(obj);
+    const Camera &camera = static_cast<const Camera&>(obj);
 
     fw.indent() << "clearColor " <<  camera.getClearColor() << std::endl;
     fw.indent() << "clearMask 0x" << std::hex << camera.getClearMask() << std::endl;
@@ -327,14 +327,14 @@ bool Camera_writeLocalData(const Object&obj, Output&fw)
     fw.indent() << "drawBuffer " << std::hex << camera.getDrawBuffer() << std::endl;
     fw.indent() << "readBuffer " << std::hex << camera.getReadBuffer() << std::endl;
 
-    const osg::Camera::BufferAttachmentMap&bam = camera.getBufferAttachmentMap();
+    const osg::Camera::BufferAttachmentMap &bam = camera.getBufferAttachmentMap();
     if (!bam.empty())
     {
         for (osg::Camera::BufferAttachmentMap::const_iterator itr = bam.begin();
              itr != bam.end();
              ++itr)
         {
-            const osg::Camera::Attachment&attachment = itr->second;
+            const osg::Camera::Attachment &attachment = itr->second;
             fw.indent() << "bufferComponent " << Camera_getBufferComponentStr(itr->first) << " {" << std::endl;
             fw.moveIn();
 
@@ -356,7 +356,7 @@ bool Camera_writeLocalData(const Object&obj, Output&fw)
     return true;
 }
 
-bool Camera_matchBufferComponentStr(const char *str, Camera::BufferComponent&buffer)
+bool Camera_matchBufferComponentStr(const char *str, Camera::BufferComponent &buffer)
 {
     if (strcmp(str, "DEPTH_BUFFER") == 0)
         buffer = osg::Camera::DEPTH_BUFFER;

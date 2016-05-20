@@ -47,11 +47,11 @@ const T&peek(size_t i) const;                  // Pre: (! removed(i))
 const T&operator [](size_t i) const;           // Pre: (! removed(i))
 
 void lock();                                // Pre: (! locked())   Post: (locked())
-size_t push(const T&Elem);                  // Pre: (! locked())
+size_t push(const T &Elem);                  // Pre: (! locked())
 
 void pop();                                    // Pre: (locked() && ! empty())
 void erase(size_t i);                        // Pre: (locked() && ! removed(i))
-void update(size_t i, const T&Elem);          // Pre: (locked() && ! removed(i))
+void update(size_t i, const T &Elem);          // Pre: (locked() && ! removed(i))
 
 protected:
 
@@ -61,7 +61,7 @@ heap_array&operator =(const heap_array&);
 class linker
 {
 public:
-linker(const T&Elem, size_t i)
+linker(const T &Elem, size_t i)
     : m_Elem(Elem), m_Index(i) { }
 
 T      m_Elem;
@@ -73,7 +73,7 @@ typedef std::vector<size_t> finder;
 
 void Adjust(size_t i);
 void Swap(size_t a, size_t b);
-bool Less(const linker&a, const linker&b) const;
+bool Less(const linker &a, const linker &b) const;
 
 linked_heap m_Heap;
 finder      m_Finder;
@@ -176,7 +176,7 @@ inline void heap_array<T, CmpT>::lock()
 
 
 template<class T, class CmpT>
-inline size_t heap_array<T, CmpT>::push(const T&Elem)
+inline size_t heap_array<T, CmpT>::push(const T &Elem)
 {
     assert(!locked());
 
@@ -230,7 +230,7 @@ inline size_t heap_array<T, CmpT>::position(const size_t i) const
 
 
 template<class T, class CmpT>
-inline void heap_array<T, CmpT>::update(const size_t i, const T&Elem)
+inline void heap_array<T, CmpT>::update(const size_t i, const T &Elem)
 {
     assert(locked());
     assert(!removed(i));
@@ -277,7 +277,7 @@ inline void heap_array<T, CmpT>::Swap(const size_t a, const size_t b)
 
 
 template<class T, class CmpT>
-inline bool heap_array<T, CmpT>::Less(const linker&a, const linker&b) const
+inline bool heap_array<T, CmpT>::Less(const linker &a, const linker &b) const
 {
     return m_Compare(a.m_Elem, b.m_Elem);
 }

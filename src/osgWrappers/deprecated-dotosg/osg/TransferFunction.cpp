@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool TransferFunction1D_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool TransferFunction1D_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool TransferFunction1D_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool TransferFunction1D_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(TransferFunction1D_Proxy)
 (
@@ -26,9 +26,9 @@ REGISTER_DOTOSGWRAPPER(TransferFunction1D_Proxy)
 );
 
 
-bool TransferFunction1D_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool TransferFunction1D_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osg::TransferFunction1D&tf = static_cast<osg::TransferFunction1D&>(obj);
+    osg::TransferFunction1D &tf = static_cast<osg::TransferFunction1D&>(obj);
 
     bool itrAdvanced = false;
 
@@ -71,10 +71,10 @@ bool TransferFunction1D_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool TransferFunction1D_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool TransferFunction1D_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osg::TransferFunction1D          &tf       = static_cast<const osg::TransferFunction1D&>(obj);
-    const osg::TransferFunction1D::ColorMap&colorMap = tf.getColorMap();
+    const osg::TransferFunction1D           &tf       = static_cast<const osg::TransferFunction1D&>(obj);
+    const osg::TransferFunction1D::ColorMap &colorMap = tf.getColorMap();
 
     fw.indent() << "NumberImageCells " << tf.getNumberImageCells() << std::endl;
     fw.indent() << "Colours {" <<         std::endl;
@@ -85,8 +85,8 @@ bool TransferFunction1D_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
          itr != colorMap.end();
          ++itr)
     {
-        const osg::Vec4&c = itr->second;
-        fw.indent() << itr->first << " " << c.r() << " " << c.g() << " " << c.b() << " " << c.a() << std::endl;
+        const osg::Vec4 &c = itr->second;
+        fw.indent() <<  itr->first << " " << c.r() << " " << c.g() << " " << c.b() << " " << c.a() << std::endl;
     }
 
     fw.moveOut();

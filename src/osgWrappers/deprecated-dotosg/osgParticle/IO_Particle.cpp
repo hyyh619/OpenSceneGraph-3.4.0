@@ -13,7 +13,7 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  read_particle(osgDB::Input&fr, osgParticle::Particle&P)
+bool  read_particle(osgDB::Input &fr, osgParticle::Particle &P)
 {
     if (fr[0].matchString("{"))
     {
@@ -247,7 +247,7 @@ bool  read_particle(osgDB::Input&fr, osgParticle::Particle&P)
     return false;
 }
 
-void  write_particle(const osgParticle::Particle&P, osgDB::Output&fw)
+void  write_particle(const osgParticle::Particle &P, osgDB::Output &fw)
 {
     fw << "{" << std::endl;
     fw.moveIn();

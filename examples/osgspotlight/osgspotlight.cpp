@@ -38,7 +38,7 @@
 #include "../osghangglide/terrain_coords.h"
 
 
-osg::Image* createSpotLightImage(const osg::Vec4&centerColour, const osg::Vec4&backgroudColour, unsigned int size, float power)
+osg::Image* createSpotLightImage(const osg::Vec4 &centerColour, const osg::Vec4 &backgroudColour, unsigned int size, float power)
 {
     osg::Image *image = new osg::Image;
 
@@ -103,7 +103,7 @@ osg::StateSet* createSpotLightDecoratorState(unsigned int lightNum, unsigned int
 }
 
 
-osg::Node* createSpotLightNode(const osg::Vec3&position, const osg::Vec3&direction, float angle, unsigned int lightNum, unsigned int textureUnit)
+osg::Node* createSpotLightNode(const osg::Vec3 &position, const osg::Vec3 &direction, float angle, unsigned int lightNum, unsigned int textureUnit)
 {
     osg::Group *group = new osg::Group;
 
@@ -139,7 +139,7 @@ osg::Node* createSpotLightNode(const osg::Vec3&position, const osg::Vec3&directi
 }
 
 
-osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, double looptime)
+osg::AnimationPath* createAnimationPath(const osg::Vec3 &center, float radius, double looptime)
 {
     // set up the animation path
     osg::AnimationPath *animationPath = new osg::AnimationPath;
@@ -168,7 +168,7 @@ osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, do
     return animationPath;
 }
 
-osg::Node* createBase(const osg::Vec3&center, float radius)
+osg::Node* createBase(const osg::Vec3 &center, float radius)
 {
     osg::Geode *geode = new osg::Geode;
 
@@ -231,7 +231,7 @@ osg::Node* createBase(const osg::Vec3&center, float radius)
     return group;
 }
 
-osg::Node* createMovingModel(const osg::Vec3&center, float radius)
+osg::Node* createMovingModel(const osg::Vec3 &center, float radius)
 {
     float animationLength = 10.0f;
 
@@ -243,7 +243,7 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius)
 
     if (cessna)
     {
-        const osg::BoundingSphere&bs = cessna->getBound();
+        const osg::BoundingSphere &bs = cessna->getBound();
 
         float                size        = radius / bs.radius() * 0.3f;
         osg::MatrixTransform *positioned = new osg::MatrixTransform;

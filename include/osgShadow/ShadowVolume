@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGSHADOW_SHADOWVOLUME
 #define OSGSHADOW_SHADOWVOLUME 1
@@ -22,62 +22,64 @@
 #include <osgShadow/OccluderGeometry>
 
 namespace osgShadow {
-
 /** ShadowedTexture provides an implementation of shadow textures.*/
-class OSGSHADOW_EXPORT ShadowVolume : public ShadowTechnique
-{
-    public :
+    class OSGSHADOW_EXPORT ShadowVolume: public ShadowTechnique
+    {
+public:
         ShadowVolume();
 
-        ShadowVolume(const ShadowVolume& es, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+        ShadowVolume(const ShadowVolume &es, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Object(osgShadow, ShadowVolume);
 
 
         void setDrawMode(osgShadow::ShadowVolumeGeometry::DrawMode drawMode);
-        osgShadow::ShadowVolumeGeometry::DrawMode getDrawMode() const { return _drawMode; }
+        osgShadow::ShadowVolumeGeometry::DrawMode getDrawMode() const
+        {
+            return _drawMode;
+        }
 
         void setDynamicShadowVolumes(bool dynamicShadowVolumes);
-        bool getDynamicShadowVolumes() const { return _dynamicShadowVolumes; }
+        bool getDynamicShadowVolumes() const
+        {
+            return _dynamicShadowVolumes;
+        }
 
         /** initialize the ShadowedScene and local cached data structures.*/
         virtual void init();
 
         /** run the update traversal of the ShadowedScene and update any loca chached data structures.*/
-        virtual void update(osg::NodeVisitor& nv);
+        virtual void update(osg::NodeVisitor &nv);
 
         /** run the cull traversal of the ShadowedScene and set up the rendering for this ShadowTechnique.*/
-        virtual void cull(osgUtil::CullVisitor& cv);
+        virtual void cull(osgUtil::CullVisitor &cv);
 
         /** Clean scene graph from any shadow technique specific nodes, state and drawables.*/
         virtual void cleanSceneGraph();
 
 
-    protected :
+protected:
 
         virtual ~ShadowVolume();
 
-        osgShadow::ShadowVolumeGeometry::DrawMode       _drawMode;
-        bool                                            _dynamicShadowVolumes;
+        osgShadow::ShadowVolumeGeometry::DrawMode _drawMode;
+        bool                                      _dynamicShadowVolumes;
 
-        osg::ref_ptr<osgShadow::OccluderGeometry> _occluder;
+        osg::ref_ptr < osgShadow::OccluderGeometry > _occluder;
 
-        OpenThreads::Mutex                              _shadowVolumeMutex;
-        osg::ref_ptr<osgShadow::ShadowVolumeGeometry>   _shadowVolume;
+        OpenThreads::Mutex _shadowVolumeMutex;
+        osg::ref_ptr < osgShadow::ShadowVolumeGeometry > _shadowVolume;
 
-        osg::Vec4                   _lightpos;
+        osg::Vec4 _lightpos;
 
-        osg::ref_ptr<osg::Light>    _ambientLight;
-        osg::ref_ptr<osg::Light>    _diffuseLight;
+        osg::ref_ptr < osg::Light > _ambientLight;
+        osg::ref_ptr < osg::Light > _diffuseLight;
 
-        osg::ref_ptr<osg::StateSet> _ss1;
-        osg::ref_ptr<osg::StateSet> _mainShadowStateSet;
-        osg::ref_ptr<osg::StateSet> _shadowVolumeStateSet;
-        osg::ref_ptr<osg::StateSet> _shadowedSceneStateSet;
-
-
-};
-
+        osg::ref_ptr < osg::StateSet > _ss1;
+        osg::ref_ptr < osg::StateSet > _mainShadowStateSet;
+        osg::ref_ptr < osg::StateSet > _shadowVolumeStateSet;
+        osg::ref_ptr < osg::StateSet > _shadowedSceneStateSet;
+    };
 }
 
 #endif

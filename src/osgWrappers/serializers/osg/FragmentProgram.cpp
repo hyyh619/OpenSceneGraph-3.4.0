@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _programLocalParameters
-static bool checkLocalParameters(const osg::FragmentProgram&fp)
+static bool checkLocalParameters(const osg::FragmentProgram &fp)
 {
     return fp.getLocalParameters().size() > 0;
 }
 
-static bool readLocalParameters(osgDB::InputStream&is, osg::FragmentProgram&fp)
+static bool readLocalParameters(osgDB::InputStream &is, osg::FragmentProgram &fp)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -24,9 +24,9 @@ static bool readLocalParameters(osgDB::InputStream&is, osg::FragmentProgram&fp)
     return true;
 }
 
-static bool writeLocalParameters(osgDB::OutputStream&os, const osg::FragmentProgram&fp)
+static bool writeLocalParameters(osgDB::OutputStream &os, const osg::FragmentProgram &fp)
 {
-    const osg::FragmentProgram::LocalParamList&params = fp.getLocalParameters();
+    const osg::FragmentProgram::LocalParamList &params = fp.getLocalParameters();
 
     os.writeSize(params.size()); os << os.BEGIN_BRACKET << std::endl;
 
@@ -41,12 +41,12 @@ static bool writeLocalParameters(osgDB::OutputStream&os, const osg::FragmentProg
 }
 
 // _matrixList
-static bool checkMatrices(const osg::FragmentProgram&fp)
+static bool checkMatrices(const osg::FragmentProgram &fp)
 {
     return fp.getMatrices().size() > 0;
 }
 
-static bool readMatrices(osgDB::InputStream&is, osg::FragmentProgram&fp)
+static bool readMatrices(osgDB::InputStream &is, osg::FragmentProgram &fp)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -61,9 +61,9 @@ static bool readMatrices(osgDB::InputStream&is, osg::FragmentProgram&fp)
     return true;
 }
 
-static bool writeMatrices(osgDB::OutputStream&os, const osg::FragmentProgram&fp)
+static bool writeMatrices(osgDB::OutputStream &os, const osg::FragmentProgram &fp)
 {
-    const osg::FragmentProgram::MatrixList&matrices = fp.getMatrices();
+    const osg::FragmentProgram::MatrixList &matrices = fp.getMatrices();
 
     os.writeSize(matrices.size()); os << os.BEGIN_BRACKET << std::endl;
 

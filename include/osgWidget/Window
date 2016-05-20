@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 // Code by: Jeremy Moles (cubicool) 2007-2008
 
@@ -25,61 +25,62 @@
 #include <osgWidget/Widget>
 
 namespace osgWidget {
-
 // These are helper callbacks you can attach to Windows that will make them moveable,
 // rotatable, and scalable respectively.
-bool OSGWIDGET_EXPORT callbackWindowMove   (Event&);
-bool OSGWIDGET_EXPORT callbackWindowRotate (Event&);
-bool OSGWIDGET_EXPORT callbackWindowScale  (Event&);
+    bool OSGWIDGET_EXPORT callbackWindowMove(Event&);
+    bool OSGWIDGET_EXPORT callbackWindowRotate(Event&);
+    bool OSGWIDGET_EXPORT callbackWindowScale(Event&);
 
 // These are helper callbacks you can attach to Windows to that will make various
 // keyboard events behave as you might imagine.
-bool OSGWIDGET_EXPORT callbackWindowTabFocus(Event&);
+    bool OSGWIDGET_EXPORT callbackWindowTabFocus(Event&);
 
-class OSGWIDGET_EXPORT Window:
+    class OSGWIDGET_EXPORT Window:
     public osg::MatrixTransform,
-    public UIObjectParent<Widget>,
+    public UIObjectParent < Widget >,
     public EventInterface,
     public StyleInterface
-{
-    public:
-        typedef std::list<osg::observer_ptr<Window> > WindowList;
+    {
+public:
+        typedef std::list < osg::observer_ptr < Window >> WindowList;
 
         struct Sizes
         {
             point_type current;
             point_type minimum;
 
-            Sizes(point_type c = -1.0f, point_type m = -1.0f):
-            current(c),
-            minimum(m) {}
+            Sizes(point_type c = -1.0f, point_type m = -1.0f) :
+                current(c),
+                minimum(m) {}
         };
 
         // TODO: This is a class that puts (embeds) the Window inside of a Widget
         // interface, to help assemble Windows with Windows, and what have you.
         class OSGWIDGET_EXPORT EmbeddedWindow: public Widget {
-            osg::ref_ptr<Window> _window;
+            osg::ref_ptr < Window > _window;
 
-        public:
+public:
             META_Object   (osgWidget::Window, EmbeddedWindow);
 
             EmbeddedWindow (const std::string& = "", point_type = 0.0f, point_type = 0.0f);
-            EmbeddedWindow (const EmbeddedWindow&, const osg::CopyOp&);
+            EmbeddedWindow (const EmbeddedWindow &, const osg::CopyOp &);
 
-            virtual void parented   (Window*);
-            virtual void unparented (Window*);
-            virtual void managed    (WindowManager*);
-            virtual void unmanaged  (WindowManager*);
-            virtual void positioned ();
+            virtual void parented(Window*);
+            virtual void unparented(Window*);
+            virtual void managed(WindowManager*);
+            virtual void unmanaged(WindowManager*);
+            virtual void positioned();
 
-            bool setWindow            (Window*);
-            void updateSizeFromWindow ();
+            bool setWindow(Window*);
+            void updateSizeFromWindow();
 
-            Window* getWindow() {
+            Window* getWindow()
+            {
                 return _window.get();
             }
 
-            const Window* getWindow() const {
+            const Window* getWindow() const
+            {
                 return _window.get();
             }
         };
@@ -87,7 +88,8 @@ class OSGWIDGET_EXPORT Window:
         // These correspond to special regions honored by the WindowManager. Most Windows
         // will want to be NONE, unless they need to exist in the foreground or background
         // for some reason.
-        enum Strata {
+        enum Strata
+        {
             STRATA_NONE,
             STRATA_BACKGROUND,
             STRATA_FOREGROUND
@@ -98,7 +100,8 @@ class OSGWIDGET_EXPORT Window:
         // Window is visible by default. The final enum, VM_ENTIRE, says that no Scissoring
         // should take place at all, and is useful in cases where you want to properly
         // scale or rotate Windows.
-        enum VisibilityMode {
+        enum VisibilityMode
+        {
             VM_FULL,
             VM_PARTIAL,
             VM_ENTIRE
@@ -108,14 +111,16 @@ class OSGWIDGET_EXPORT Window:
         // call to Window::update() that allow us to position a Window somewhere relative
         // to the WindowManger's viewable area. However, unlike the ALIGNMENT enums, these
         // are totally optional (whereas a Widget must always have some ALIGNMENT value set.
-        enum VerticalAnchor {
+        enum VerticalAnchor
+        {
             VA_NONE,
             VA_CENTER,
             VA_TOP,
             VA_BOTTOM
         };
 
-        enum HorizontalAnchor {
+        enum HorizontalAnchor
+        {
             HA_NONE,
             HA_CENTER,
             HA_LEFT,
@@ -123,313 +128,374 @@ class OSGWIDGET_EXPORT Window:
         };
 
         Window (const std::string& = "");
-        Window (const Window&, const osg::CopyOp&);
+        Window (const Window &, const osg::CopyOp &);
 
-        bool resize        (point_type = 0.0f, point_type = 0.0f);
-        bool resizeAdd     (point_type = 0.0f, point_type = 0.0f);
-        bool resizePercent (point_type = 0.0f, point_type = 0.0f);
+        bool resize(point_type = 0.0f, point_type = 0.0f);
+        bool resizeAdd(point_type = 0.0f, point_type = 0.0f);
+        bool resizePercent(point_type = 0.0f, point_type = 0.0f);
 
-        virtual void update        ();
-        virtual void managed       (WindowManager*);
-        virtual void unmanaged     (WindowManager*);
-        virtual bool addWidget     (Widget*);
-        virtual bool insertWidget  (Widget*, unsigned int);
-        virtual bool removeWidget  (Widget*);
-        virtual bool replaceWidget (Widget*, Widget*);
+        virtual void update();
+        virtual void managed(WindowManager*);
+        virtual void unmanaged(WindowManager*);
+        virtual bool addWidget(Widget*);
+        virtual bool insertWidget(Widget*, unsigned int);
+        virtual bool removeWidget(Widget*);
+        virtual bool replaceWidget(Widget*, Widget*);
 
         // This method wraps our Geode's addDrawable() method and returns the index of
         // the newly-added Drawable.
-        unsigned int addDrawableAndGetIndex (osg::Drawable*);
-        unsigned int addChildAndGetIndex    (osg::Node*);
+        unsigned int addDrawableAndGetIndex(osg::Drawable*);
+        unsigned int addChildAndGetIndex(osg::Node*);
 
-        bool isVisible         () const;
-        bool isXYWithinVisible (float, float) const;
-        void setVisibleArea    (int = 0, int = 0, int = 0, int = 0);
-        void addVisibleArea    (int = 0, int = 0, int = 0, int = 0);
-        bool setFocused        (const Widget*);
-        bool setFocused        (const std::string&);
-        bool grabFocus         ();
-        bool setFirstFocusable ();
-        bool setNextFocusable  ();
-        bool getFocusList      (WidgetList&) const;
-        bool getEmbeddedList   (WindowList&) const;
-        void getParentList     (WindowList&) const;
+        bool isVisible() const;
+        bool isXYWithinVisible(float, float) const;
+        void setVisibleArea(int = 0, int = 0, int = 0, int = 0);
+        void addVisibleArea(int = 0, int = 0, int = 0, int = 0);
+        bool setFocused(const Widget*);
+        bool setFocused(const std::string&);
+        bool grabFocus();
+        bool setFirstFocusable();
+        bool setNextFocusable();
+        bool getFocusList(WidgetList&) const;
+        bool getEmbeddedList(WindowList&) const;
+        void getParentList(WindowList&) const;
 
-        XYCoord localXY           (double, double) const;
-        XYCoord getAbsoluteOrigin () const;
+        XYCoord localXY(double, double) const;
+        XYCoord getAbsoluteOrigin() const;
 
         // This method wraps the current Window in a EmbeddedWindow object and returns it.
         EmbeddedWindow* embed(
             const std::string& = "",
-            Widget::Layer      = Widget::LAYER_MIDDLE,
-            unsigned int       = 0
-        );
+            Widget::Layer = Widget::LAYER_MIDDLE,
+            unsigned int = 0
+            );
 
-        Widget* getFocused() {
+        Widget* getFocused()
+        {
             return _focused.get();
         }
 
-        const Widget* getFocused() const {
+        const Widget* getFocused() const
+        {
             return _focused.get();
         }
 
-        bool show() {
+        bool show()
+        {
             return _setVisible(true);
         }
 
-        bool hide() {
+        bool hide()
+        {
             return _setVisible(false);
         }
 
-        bool isPointerXYWithinVisible(float x, float y) const {
+        bool isPointerXYWithinVisible(float x, float y) const
+        {
             XYCoord xy = localXY(x, y);
 
             return isXYWithinVisible(xy.x(), xy.y());
         }
 
-        osg::Geode* getGeode() {
+        osg::Geode* getGeode()
+        {
             return _geode();
         }
 
-        const osg::Geode* getGeode() const {
+        const osg::Geode* getGeode() const
+        {
             return _geode();
         }
 
-        Widget* getBackground() {
+        Widget* getBackground()
+        {
             return _bg();
         }
 
-        const Widget* getBackground() const {
+        const Widget* getBackground() const
+        {
             return _bg();
         }
 
-        WindowManager* getWindowManager() {
+        WindowManager* getWindowManager()
+        {
             return _wm;
         }
 
-        const WindowManager* getWindowManager() const {
+        const WindowManager* getWindowManager() const
+        {
             return _wm;
         }
 
-        Window* getParent() {
+        Window* getParent()
+        {
             return _parent;
         }
 
-        const Window* getParent() const {
+        const Window* getParent() const
+        {
             return _parent;
         }
 
-        Window* getTopmostParent() {
+        Window* getTopmostParent()
+        {
             return _getTopmostParent();
         }
 
-        const Window* getTopmostParent() const {
+        const Window* getTopmostParent() const
+        {
             return _getTopmostParent();
         }
 
-        unsigned int getIndex() const {
+        unsigned int getIndex() const
+        {
             return _index;
         }
 
-        matrix_type getX() const {
+        matrix_type getX() const
+        {
             return _x;
         }
 
-        matrix_type getY() const {
+        matrix_type getY() const
+        {
             return _y;
         }
 
-        matrix_type getZ() const {
+        matrix_type getZ() const
+        {
             return _z;
         }
 
-        point_type getWidth() const {
+        point_type getWidth() const
+        {
             return _width.current;
         }
 
-        point_type getHeight() const {
+        point_type getHeight() const
+        {
             return _height.current;
         }
 
-        point_type getMinWidth() const {
+        point_type getMinWidth() const
+        {
             return _width.minimum;
         }
 
-        point_type getMinHeight() const {
+        point_type getMinHeight() const
+        {
             return _height.minimum;
         }
 
-        VerticalAnchor getAnchorVertical() const {
+        VerticalAnchor getAnchorVertical() const
+        {
             return _vAnchor;
         }
 
-        HorizontalAnchor getAnchorHorizontal() const {
+        HorizontalAnchor getAnchorHorizontal() const
+        {
             return _hAnchor;
         }
 
-        XYCoord getOrigin() const {
+        XYCoord getOrigin() const
+        {
             return XYCoord(_x, _y);
         }
 
-        XYCoord getSize() const {
+        XYCoord getSize() const
+        {
             return XYCoord(_width.current, _height.current);
         }
 
-        XYCoord getMinSize() const {
+        XYCoord getMinSize() const
+        {
             return XYCoord(_width.minimum, _height.minimum);
         }
 
-        matrix_type getZRange() const {
+        matrix_type getZRange() const
+        {
             return _zRange;
         }
 
-        Strata getStrata() const {
+        Strata getStrata() const
+        {
             return _strata;
         }
 
-        const Quad& getVisibleArea() const {
+        const Quad&getVisibleArea() const
+        {
             return _visibleArea;
         }
 
-        VisibilityMode getVisibilityMode() const {
+        VisibilityMode getVisibilityMode() const
+        {
             return _vis;
         }
 
-        Point getPosition() const {
+        Point getPosition() const
+        {
             return Point(_x, _y, _z);
         }
 
-        matrix_type getRotate() const {
+        matrix_type getRotate() const
+        {
             return _r;
         }
 
-        matrix_type getScale() const {
+        matrix_type getScale() const
+        {
             return _s;
         }
 
-        matrix_type getScaleDenominator() const {
+        matrix_type getScaleDenominator() const
+        {
             return _scaleDenom;
         }
 
-        void setX(matrix_type x) {
+        void setX(matrix_type x)
+        {
             _x = x;
         }
 
-        void setY(matrix_type y) {
+        void setY(matrix_type y)
+        {
             _y = y;
         }
 
-        void setZ(matrix_type z) {
+        void setZ(matrix_type z)
+        {
             _z = z;
         }
 
-        void setZRange(matrix_type zRange) {
+        void setZRange(matrix_type zRange)
+        {
             _zRange = zRange;
         }
 
-        void setPosition(matrix_type x, matrix_type y, matrix_type z) {
+        void setPosition(matrix_type x, matrix_type y, matrix_type z)
+        {
             _x = x;
             _y = y;
             _z = z;
         }
 
-        void setPosition(const Point& p) {
+        void setPosition(const Point &p)
+        {
             setPosition(p.x(), p.y(), p.z());
         }
 
-        void setOrigin(matrix_type x, matrix_type y) {
+        void setOrigin(matrix_type x, matrix_type y)
+        {
             _x = x;
             _y = y;
         }
 
-        void setOrigin(const XYCoord& xy) {
-                setOrigin(xy.x(), xy.y());
+        void setOrigin(const XYCoord &xy)
+        {
+            setOrigin(xy.x(), xy.y());
         }
 
-        void setRotate(matrix_type r) {
+        void setRotate(matrix_type r)
+        {
             _r = r;
         }
 
-        void setScale(matrix_type s) {
+        void setScale(matrix_type s)
+        {
             _s = s;
         }
 
-        void setScaleDenominator(matrix_type sd) {
+        void setScaleDenominator(matrix_type sd)
+        {
             _scaleDenom = sd;
         }
 
-        void setAnchorVertical(VerticalAnchor va) {
+        void setAnchorVertical(VerticalAnchor va)
+        {
             _vAnchor = va;
         }
 
-        void setAnchorHorizontal(HorizontalAnchor ha) {
+        void setAnchorHorizontal(HorizontalAnchor ha)
+        {
             _hAnchor = ha;
         }
 
-        void setStrata(Strata s) {
+        void setStrata(Strata s)
+        {
             _strata = s;
         }
 
-        void setVisibilityMode(VisibilityMode v) {
+        void setVisibilityMode(VisibilityMode v)
+        {
             _vis = v;
         }
 
-        void addX(matrix_type x) {
+        void addX(matrix_type x)
+        {
             _x += x;
         }
 
-        void addY(matrix_type y) {
+        void addY(matrix_type y)
+        {
             _y += y;
         }
 
-        void addZ(matrix_type z) {
+        void addZ(matrix_type z)
+        {
             _z += z;
         }
 
-        void addRotate(matrix_type r) {
+        void addRotate(matrix_type r)
+        {
             _r += r;
         }
 
-        void addScale(matrix_type s) {
+        void addScale(matrix_type s)
+        {
             _s += s / (_scaleDenom != 0.0f ? _scaleDenom : 1.0f);
         }
 
-        void addOrigin(matrix_type x, matrix_type y) {
+        void addOrigin(matrix_type x, matrix_type y)
+        {
             _x += x;
             _y += y;
         }
 
-        void attachMoveCallback() {
+        void attachMoveCallback()
+        {
             addCallback(new Callback(&callbackWindowMove, EVENT_MOUSE_DRAG));
         }
 
-        void attachRotateCallback() {
+        void attachRotateCallback()
+        {
             addCallback(new Callback(&callbackWindowRotate, EVENT_MOUSE_DRAG));
         }
 
-        void attachScaleCallback() {
+        void attachScaleCallback()
+        {
             addCallback(new Callback(&callbackWindowScale, EVENT_MOUSE_DRAG));
         }
 
-        void attachTabFocusCallback() {
+        void attachTabFocusCallback()
+        {
             addCallback(new Callback(&callbackWindowTabFocus, EVENT_KEY_DOWN));
         }
 
         typedef point_type (Widget::*Getter)() const;
 
-    protected:
+protected:
 
-        typedef std::less<point_type>    Less;
-        typedef std::greater<point_type> Greater;
-        typedef std::plus<point_type>    Plus;
+        typedef std::less < point_type > Less;
+        typedef std::greater < point_type > Greater;
+        typedef std::plus < point_type > Plus;
 
         friend class WindowManager;
 
         // The (optional) Window that this Window is parented inside.
-        Window* _parent;
+        Window *_parent;
 
         // The WindowManger to which this window is attached.
-        WindowManager* _wm;
+        WindowManager *_wm;
 
         // The positional index this Node holds within it's parent WindowManager.
         unsigned int _index;
@@ -467,7 +533,7 @@ class OSGWIDGET_EXPORT Window:
 
         // Not all windows have widgets that can focus, but if they do this should
         // be a pointer to it.
-        osg::observer_ptr<Widget> _focused;
+        osg::observer_ptr < Widget > _focused;
 
         // The "visible" area that will define both the glScissor bounds AND will
         // be used to make sure our pick is valid. The values herein correspond to
@@ -477,14 +543,15 @@ class OSGWIDGET_EXPORT Window:
         // This helper method is used by _compare<>() and _accumulate<>(), so ignore this
         // function and go see the docs for those instead. This thing is huge and unwieldy
         // and not to be triffled with! :)
-        template<typename T>
+        template < typename T >
         point_type _forEachAssignOrApply(
             Getter get,
-            int    begin,
-            int    end,
-            int    add,
-            bool   assign
-        ) const {
+            int begin,
+            int end,
+            int add,
+            bool assign
+            ) const
+        {
             point_type   val = 0.0f;
             unsigned int c   = begin;
 
@@ -498,40 +565,47 @@ class OSGWIDGET_EXPORT Window:
             // sure if there is a cleaner remedy for this, so what we do for now is keep a
             // count variable called "c" that makes sure our iterator's opterator+()
             // method is safe to call.
-            for(
+            for (
                 ConstIterator i = _objects.begin() + begin;
                 i < e;
                 c += add
-            ) {
+                )
+            {
                 point_type v = 0.0f;
 
-                if(i->valid()) v = (i->get()->*get)();
+                if (i->valid())
+                    v = (i->get()->*get)();
 
                 // If you want to assign to val, and NOT add a sequence of them...
-                if(assign) {
-                    if(T()(v, val)) val = v;
+                if (assign)
+                {
+                    if (T()(v, val))
+                        val = v;
                 }
 
                 // If you want to accumulate a value INTO val...
-                else val = T()(v, val);
+                else
+                    val = T()(v, val);
 
                 // Make sure our iterator is safe to increment. Otherwise, set it to
                 // whatever end is.
                 // TODO: This isn't 100% accurate, as it does not YET take into account
                 // our requested end in any way other than implicitly. It should, however,
                 // work okay for now.
-                if((c + add) < _objects.size()) i += add;
+                if ((c + add) < _objects.size())
+                    i += add;
 
-                else i = e;
+                else
+                    i = e;
             }
 
             return val;
         }
 
-        void _setWidthAndHeightUnknownSizeError (const std::string&, point_type);
-        void _setWidthAndHeightNotPAError       (const std::string&, point_type);
-        void _setWidthAndHeight                 ();
-        void _removeFromGeode                   (Widget*);
+        void _setWidthAndHeightUnknownSizeError(const std::string&, point_type);
+        void _setWidthAndHeightNotPAError(const std::string&, point_type);
+        void _setWidthAndHeight();
+        void _removeFromGeode(Widget*);
 
         Widget* _getBackground() const;
         Window* _getTopmostParent() const;
@@ -543,95 +617,102 @@ class OSGWIDGET_EXPORT Window:
         // The template T can be any functor accepting two point_type values that return
         // a bool. For example, this is commonly used with std::less to find the smallest
         // width in a range of Widgets.
-        template<typename T>
+        template < typename T >
         point_type _compare(
             Getter get,
-            int    begin = 0,
-            int    end   = 0,
-            int    add   = 1
-        ) const {
-            return _forEachAssignOrApply<T>(get, begin, end, add, true);
+            int begin = 0,
+            int end = 0,
+            int add = 1
+            ) const
+        {
+            return _forEachAssignOrApply < T > (get, begin, end, add, true);
         }
 
         // This method will return the T'th value accumulated by applying the Getter member
         // function to each iterator in the range of iterators defined by offset and add (similar
         // to above). For example, this method can be used to apply std::plus to every
         // width in a range of Widgets, and return the total.
-        template<typename T>
+        template < typename T >
         point_type _accumulate(
             Getter get,
-            int    begin = 0,
-            int    end   = 0,
-            int    add   = 1
-        ) const {
-            return _forEachAssignOrApply<T>(get, begin, end, add, false);
+            int begin = 0,
+            int end = 0,
+            int add = 1
+            ) const
+        {
+            return _forEachAssignOrApply < T > (get, begin, end, add, false);
         }
 
-        osg::Geode* _geode() {
-            return dynamic_cast<osg::Geode*>(getChild(0));
+        osg::Geode* _geode()
+        {
+            return dynamic_cast < osg::Geode * > (getChild(0));
         }
 
-        const osg::Geode* _geode() const {
-            return dynamic_cast<const osg::Geode*>(getChild(0));
+        const osg::Geode* _geode() const
+        {
+            return dynamic_cast < const osg::Geode * > (getChild(0));
         }
 
-        Widget* _bg() {
+        Widget* _bg()
+        {
             return _getBackground();
         }
 
-        const Widget* _bg() const {
+        const Widget* _bg() const
+        {
             return _getBackground();
         }
 
-        osg::Scissor* _scissor() {
-            return dynamic_cast<osg::Scissor*>(
+        osg::Scissor* _scissor()
+        {
+            return dynamic_cast < osg::Scissor * > (
                 getStateSet()->getAttribute(osg::StateAttribute::SCISSOR)
-            );
+                );
         }
 
-        bool _setWidget   (Widget*, int = -1);
-        bool _setVisible  (bool);
-        void _setFocused  (Widget*);
-        void _setStyled   (Widget*);
-        void _setParented (Widget*, bool=false);
-        void _setManaged  (Widget*, bool=false);
+        bool _setWidget(Widget*, int = -1);
+        bool _setVisible(bool);
+        void _setFocused(Widget*);
+        void _setStyled(Widget*);
+        void _setParented(Widget*, bool = false);
+        void _setManaged(Widget*, bool = false);
 
         void _positionWidget(Widget*, point_type, point_type);
 
         // These return the smallest and largest width and height values for the given
         // range of Widgets.
-        point_type _getMinWidgetWidth  (int = 0, int = 0, int = 1) const;
-        point_type _getMinWidgetHeight (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetWidth  (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetHeight (int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetWidth(int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetHeight(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetWidth(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetHeight(int = 0, int = 0, int = 1) const;
 
         // These return the smallest and largest minWidth and minHeight values for
         // the given range of Widgets.
-        point_type _getMinWidgetMinWidth  (int = 0, int = 0, int = 1) const;
-        point_type _getMinWidgetMinHeight (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetMinWidth  (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetMinHeight (int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetMinWidth(int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetMinHeight(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetMinWidth(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetMinHeight(int = 0, int = 0, int = 1) const;
 
         // These return the smallest and largest width and height total (width + pad)
         // values for the given range of Widgets.
-        point_type _getMinWidgetWidthTotal  (int = 0, int = 0, int = 1) const;
-        point_type _getMinWidgetHeightTotal (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetWidthTotal  (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetHeightTotal (int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetWidthTotal(int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetHeightTotal(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetWidthTotal(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetHeightTotal(int = 0, int = 0, int = 1) const;
 
         // These return the smallest and largest minWidth and minHeight total
         // (width + pad) values for the given range of Widgets.
-        point_type _getMinWidgetMinWidthTotal  (int = 0, int = 0, int = 1) const;
-        point_type _getMinWidgetMinHeightTotal (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetMinWidthTotal  (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetMinHeightTotal (int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetMinWidthTotal(int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetMinHeightTotal(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetMinWidthTotal(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetMinHeightTotal(int = 0, int = 0, int = 1) const;
 
         // These return the smallest and largest horizontal and vertical padding
         // values for the given range of Widgets.
-        point_type _getMinWidgetPadHorizontal (int = 0, int = 0, int = 1) const;
-        point_type _getMinWidgetPadVertical   (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetPadHorizontal (int = 0, int = 0, int = 1) const;
-        point_type _getMaxWidgetPadVertical   (int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetPadHorizontal(int = 0, int = 0, int = 1) const;
+        point_type _getMinWidgetPadVertical(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetPadHorizontal(int = 0, int = 0, int = 1) const;
+        point_type _getMaxWidgetPadVertical(int = 0, int = 0, int = 1) const;
 
         point_type _getNumFill(int = 0, int = 0, int = 1) const;
 
@@ -650,13 +731,11 @@ class OSGWIDGET_EXPORT Window:
         //
         // Default versions using BoundingBox calculations are provided, but some Windows
         // override this (Table, Box).
-        virtual Sizes _getWidthImplementation  () const;
-        virtual Sizes _getHeightImplementation () const;
+        virtual Sizes _getWidthImplementation() const;
+        virtual Sizes _getHeightImplementation() const;
+    };
 
-};
-
-typedef Window::WindowList WindowList;
-
+    typedef Window::WindowList WindowList;
 }
 
 #endif

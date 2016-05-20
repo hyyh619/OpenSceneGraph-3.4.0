@@ -485,7 +485,7 @@ void ComputeNode::addDataMonitor(osg::Vec3 placement, osg::Vec3 relativePlacemen
 }
 
 // compute texture image , taken from osgspotlight
-osg::Image* createSpotLightImage(const osg::Vec4&centerColour, const osg::Vec4&backgroudColour, unsigned int size, float power)
+osg::Image* createSpotLightImage(const osg::Vec4 &centerColour, const osg::Vec4 &backgroudColour, unsigned int size, float power)
 {
     osg::Image *image = new osg::Image;
 
@@ -798,7 +798,7 @@ void ComputeNode::initComputingSetup()
 
 
 // taken from osgdistorsion example for getting it nice on screen with antialiasing
-osg::Node* createPrerenderSubgraph(osg::Node *subgraph, const osg::Vec4&clearColour)
+osg::Node* createPrerenderSubgraph(osg::Node *subgraph, const osg::Vec4 &clearColour)
 {
     osg::Group *prerenderNode = new osg::Group;
 

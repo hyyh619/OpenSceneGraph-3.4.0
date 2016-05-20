@@ -133,8 +133,8 @@ Projection getProjectionType() const
 {
     return _projection;
 }
-void getParams(double&left, double&right, double&bottom, double&top,
-               double&nearClip, double&farClip);                     // , double &xshear, double &yshear );
+void getParams(double &left, double &right, double &bottom, double &top,
+               double &nearClip, double &farClip);                     // , double &xshear, double &yshear );
 
 float getHorizontalFov() const
 {
@@ -163,12 +163,12 @@ protected:
 ~Lens(){}
 
 /* Internal convenience methods */
-bool getFrustum(double&left, double&right,
-                double&bottom, double&top,
-                double&zNear, double&zFar) const;
-bool getOrtho(double&left, double&right,
-              double&bottom, double&top,
-              double&zNear, double&zFar) const;
+bool getFrustum(double &left, double &right,
+                double &bottom, double &top,
+                double &zNear, double &zFar) const;
+bool getOrtho(double &left, double &right,
+              double &bottom, double &top,
+              double &zNear, double &zFar) const;
 
 
 private:
@@ -283,7 +283,7 @@ void setLensShear(double xshear, double yshear)
 }
 
 /** Convenience method for getting the lens shear. See Camera::Lens::getShear() */
-void getLensShear(double&xshear, double&yshear)
+void getLensShear(double &xshear, double &yshear)
 {
     xshear = _offset._xshear;
     yshear = _offset._yshear;
@@ -318,8 +318,8 @@ void applyLens()
 
 /** Convenience method for getting the Lens parameters.
     See Camera::Lens::apply() */
-void getLensParams(double&left, double&right, double&bottom, double&top,
-                   double&nearClip, double&farClip, double&xshear, double&yshear)
+void getLensParams(double &left, double &right, double &bottom, double &top,
+                   double &nearClip, double &farClip, double &xshear, double &yshear)
 {
     _lens->getParams(left, right, bottom, top, nearClip, farClip);
     xshear = _offset._xshear;
@@ -382,11 +382,11 @@ double getLensAspectRatio()
 void setProjectionRectangle(const float left, const float right,
                             const float bottom, const float top);
 
-void getProjectionRectangle(float&left, float&right,
-                            float&bottom, float&top) const;
+void getProjectionRectangle(float &left, float &right,
+                            float &bottom, float &top) const;
 
 void setProjectionRectangle(int x, int y, unsigned int width, unsigned int height);
-void getProjectionRectangle(int&x, int&y, unsigned int&width, unsigned int&height) const;
+void getProjectionRectangle(int &x, int &y, unsigned int &width, unsigned int &height) const;
 
 osg::Matrix::value_type* getProjectionMatrix()
 {
@@ -397,8 +397,8 @@ osg::Matrix::value_type* getProjectionMatrix()
 void setViewByLookat(float eyex, float eyey, float eyez,
                      float centerx, float centery, float centerz,
                      float upx, float upy, float upz);
-void setViewByLookat(const osg::Vec3&eye, const osg::Vec3&center, const osg::Vec3&up);
-void setViewByMatrix(const osg::Matrix&mat);
+void setViewByLookat(const osg::Vec3 &eye, const osg::Vec3 &center, const osg::Vec3 &up);
+void setViewByMatrix(const osg::Matrix &mat);
 void setFocalDistance(double focal_distance)
 {
     _focal_distance = focal_distance;
@@ -421,7 +421,7 @@ void setOffsetMultiplyMethod(Offset::MultiplyMethod method)
 
 
 void setClearColor(float red, float green, float blue, float alpha);
-void getClearColor(float&red, float&green, float&blue, float&alpha);
+void getClearColor(float &red, float &green, float &blue, float &alpha);
 
 void clear(void);
 

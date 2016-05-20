@@ -52,7 +52,7 @@ virtual const char* className() const
     return "Path Reader/Writer";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "material") ||
            osgDB::equalCaseInsensitive(extension, "path") ||
@@ -60,21 +60,21 @@ virtual bool acceptsExtension(const std::string&extension) const
            osgDB::equalCaseInsensitive(extension, "rotation_path");
 }
 
-virtual osgDB::ReaderWriter::ReadResult readObject(const std::string&fileName, const osgDB::Options *options) const;
+virtual osgDB::ReaderWriter::ReadResult readObject(const std::string &fileName, const osgDB::Options *options) const;
 
-virtual osgDB::ReaderWriter::ReadResult readObject(std::istream&fin, const osgDB::Options *options) const;
+virtual osgDB::ReaderWriter::ReadResult readObject(std::istream &fin, const osgDB::Options *options) const;
 
-virtual osgDB::ReaderWriter::ReadResult read_material(std::istream&fin, const osgDB::Options *options) const;
-virtual osgDB::ReaderWriter::ReadResult read_path(std::istream&fin, const osgDB::Options *options) const;
-virtual osgDB::ReaderWriter::ReadResult read_pivot_path(std::istream&fin, const osgDB::Options *options) const;
-virtual osgDB::ReaderWriter::ReadResult read_rotation_path(std::istream&fin, const osgDB::Options *options) const;
+virtual osgDB::ReaderWriter::ReadResult read_material(std::istream &fin, const osgDB::Options *options) const;
+virtual osgDB::ReaderWriter::ReadResult read_path(std::istream &fin, const osgDB::Options *options) const;
+virtual osgDB::ReaderWriter::ReadResult read_pivot_path(std::istream &fin, const osgDB::Options *options) const;
+virtual osgDB::ReaderWriter::ReadResult read_rotation_path(std::istream &fin, const osgDB::Options *options) const;
 };
 
 // now register with Registry to instantiate the above
 // reader/writer.
 REGISTER_OSGPLUGIN(paths, ReaderWriterPaths)
 
-osgDB::ReaderWriter::ReadResult ReaderWriterPaths::readObject(const std::string&file, const osgDB::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterPaths::readObject(const std::string &file, const osgDB::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -98,7 +98,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterPaths::readObject(const std::string&
     return readObject(input, local_opt.get());
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterPaths::readObject(std::istream&fin, const osgDB::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterPaths::readObject(std::istream &fin, const osgDB::Options *options) const
 {
     OSG_INFO << "ReaderWriterPaths::readObject(std::istream& fin" << std::endl;
 
@@ -132,7 +132,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterPaths::readObject(std::istream&fin, 
     return ReadResult::FILE_NOT_HANDLED;
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_material(std::istream&fin, const osgDB::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_material(std::istream &fin, const osgDB::Options *options) const
 {
     osg::ref_ptr<osgPresentation::AnimationMaterial> animationMaterial = new osgPresentation::AnimationMaterial;
 
@@ -141,7 +141,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_material(std::istream&fi
     return animationMaterial.get();
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_path(std::istream&fin, const osgDB::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_path(std::istream &fin, const osgDB::Options *options) const
 {
     osg::ref_ptr<osg::AnimationPath> animation = new osg::AnimationPath;
 
@@ -149,7 +149,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_path(std::istream&fin, c
     return animation.get();
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_pivot_path(std::istream&fin, const osgDB::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_pivot_path(std::istream &fin, const osgDB::Options *options) const
 {
     osg::ref_ptr<osg::AnimationPath> animation = new osg::AnimationPath;
 
@@ -213,7 +213,7 @@ struct RotationPathData
     }
 };
 
-osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_rotation_path(std::istream&fin, const osgDB::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterPaths::read_rotation_path(std::istream &fin, const osgDB::Options *options) const
 {
     osg::ref_ptr<osg::AnimationPath> animation = new osg::AnimationPath;
 

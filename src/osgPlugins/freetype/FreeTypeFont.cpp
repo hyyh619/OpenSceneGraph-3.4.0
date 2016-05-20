@@ -93,18 +93,18 @@ struct Char3DInfo
         }
     }
 
-    void moveTo(const osg::Vec2&pos)
+    void moveTo(const osg::Vec2 &pos)
     {
         completeCurrentPrimitiveSet();
 
         addVertex(osg::Vec3(pos.x(), pos.y(), 0));
     }
-    void lineTo(const osg::Vec2&pos)
+    void lineTo(const osg::Vec2 &pos)
     {
         addVertex(osg::Vec3(pos.x(), pos.y(), 0));
     }
 
-    void conicTo(const osg::Vec2&control, const osg::Vec2&pos)
+    void conicTo(const osg::Vec2 &control, const osg::Vec2 &pos)
     {
         osg::Vec3 p0 = _previous;
         osg::Vec3 p1 = osg::Vec3(control.x(), control.y(), 0);
@@ -124,7 +124,7 @@ struct Char3DInfo
         }
     }
 
-    void cubicTo(const osg::Vec2&control1, const osg::Vec2&control2, const osg::Vec2&pos)
+    void cubicTo(const osg::Vec2 &control1, const osg::Vec2 &control2, const osg::Vec2 &pos)
     {
         osg::Vec3 p0 = _previous;
         osg::Vec3 p1 = osg::Vec3(control1.x(), control1.y(), 0);
@@ -150,7 +150,7 @@ struct Char3DInfo
         }
     }
 
-    void setMinMax(const osg::Vec3&pos)
+    void setMinMax(const osg::Vec3 &pos)
     {
         _maxY = std::max(_maxY, (double) pos.y());
         _minY = std::min(_minY, (double) pos.y());
@@ -204,7 +204,7 @@ int cubicTo(const FT_Vector *control1, const FT_Vector *control2, const FT_Vecto
 }
 }
 
-FreeTypeFont::FreeTypeFont(const std::string&filename, FT_Face face, unsigned int flags) :
+FreeTypeFont::FreeTypeFont(const std::string &filename, FT_Face face, unsigned int flags) :
     _currentRes(osgText::FontResolution(0, 0)),
     _filename(filename),
     _buffer(0),
@@ -264,7 +264,7 @@ void FreeTypeFont::init()
     _currentRes.second = 32;
 }
 
-void FreeTypeFont::setFontResolution(const osgText::FontResolution&fontSize)
+void FreeTypeFont::setFontResolution(const osgText::FontResolution &fontSize)
 {
     if (fontSize == _currentRes)
         return;
@@ -299,7 +299,7 @@ void FreeTypeFont::setFontResolution(const osgText::FontResolution&fontSize)
     }
 }
 
-osgText::Glyph* FreeTypeFont::getGlyph(const osgText::FontResolution&fontRes, unsigned int charcode)
+osgText::Glyph* FreeTypeFont::getGlyph(const osgText::FontResolution &fontRes, unsigned int charcode)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(FreeTypeLibrary::instance()->getMutex());
 
@@ -570,7 +570,7 @@ bool FreeTypeFont::hasVertical() const
     return FT_HAS_VERTICAL(_face) != 0;
 }
 
-bool FreeTypeFont::getVerticalSize(float&ascender, float&descender) const
+bool FreeTypeFont::getVerticalSize(float &ascender, float &descender) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(FreeTypeLibrary::instance()->getMutex());
 

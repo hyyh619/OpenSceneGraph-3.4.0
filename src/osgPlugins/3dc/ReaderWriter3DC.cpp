@@ -14,14 +14,14 @@
 class Writer3DCNodeVisitor : public osg::NodeVisitor
 {
 public:
-Writer3DCNodeVisitor(std::ostream&fout) :
+Writer3DCNodeVisitor(std::ostream &fout) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _fout(fout)
 {
     // _fout << "# file written by OpenSceneGraph" << std::endl << std::endl;
 }
 
-virtual void apply(osg::Geode&node);
+virtual void apply(osg::Geode &node);
 
 protected:
 
@@ -29,10 +29,10 @@ Writer3DCNodeVisitor&operator =(const Writer3DCNodeVisitor&)
 {
     return *this;
 }
-std::ostream&_fout;
+std::ostream &_fout;
 };
 
-void Writer3DCNodeVisitor::apply(osg::Geode&node)
+void Writer3DCNodeVisitor::apply(osg::Geode &node)
 {
     osg::Matrix matrix = osg::computeLocalToWorld(getNodePath());
 
@@ -98,7 +98,7 @@ virtual const char* className() const
     return "3DC point cloud reader";
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -192,7 +192,7 @@ virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::O
     return geode;
 }
 
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options *options = NULL) const
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options *options = NULL) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 

@@ -25,8 +25,8 @@ virtual bool ignoreIP6Addresses()
 {
     return false;
 }
-virtual void serviceAdded(const std::string&host, unsigned int port)   = 0;
-virtual void serviceRemoved(const std::string&host, unsigned int port) = 0;
+virtual void serviceAdded(const std::string &host, unsigned int port)   = 0;
+virtual void serviceRemoved(const std::string &host, unsigned int port) = 0;
 };
 
 class AutoDiscovery : public osg::Referenced
@@ -34,9 +34,9 @@ class AutoDiscovery : public osg::Referenced
 public:
 AutoDiscovery() : _serverImpl(NULL), _clientImpl(NULL) {};
 
-void registerService(const std::string&type, unsigned int port);
+void registerService(const std::string &type, unsigned int port);
 void deregisterServices();
-void discoverServices(const std::string&type, DiscoveredServicesCallback *cb);
+void discoverServices(const std::string &type, DiscoveredServicesCallback *cb);
 
 ~AutoDiscovery();
 

@@ -55,21 +55,21 @@ static ref_ptr<GraphicsContext::WindowingSystemInterface>&windowingSystemInterfa
 
 void GraphicsContext::setWindowingSystemInterface(WindowingSystemInterface *callback)
 {
-    ref_ptr<GraphicsContext::WindowingSystemInterface>&wsref = windowingSystemInterfaceRef();
+    ref_ptr<GraphicsContext::WindowingSystemInterface> &wsref = windowingSystemInterfaceRef();
     wsref = callback;
     OSG_INFO << "GraphicsContext::setWindowingSystemInterface() " << wsref.get() << "\t" << &wsref << std::endl;
 }
 
 GraphicsContext::WindowingSystemInterface* GraphicsContext::getWindowingSystemInterface()
 {
-    ref_ptr<GraphicsContext::WindowingSystemInterface>&wsref = windowingSystemInterfaceRef();
+    ref_ptr<GraphicsContext::WindowingSystemInterface> &wsref = windowingSystemInterfaceRef();
     OSG_INFO << "GraphicsContext::getWindowingSystemInterface() " << wsref.get() << "\t" << &wsref << std::endl;
     return wsref.get();
 }
 
 GraphicsContext* GraphicsContext::createGraphicsContext(Traits *traits)
 {
-    ref_ptr<GraphicsContext::WindowingSystemInterface>&wsref = windowingSystemInterfaceRef();
+    ref_ptr<GraphicsContext::WindowingSystemInterface> &wsref = windowingSystemInterfaceRef();
     if (wsref.valid())
     {
         // catch any undefined values.
@@ -90,7 +90,7 @@ GraphicsContext::ScreenIdentifier::ScreenIdentifier(int in_screenNum) :
     displayNum(0),
     screenNum(in_screenNum) {}
 
-GraphicsContext::ScreenIdentifier::ScreenIdentifier(const std::string&in_hostName, int in_displayNum, int in_screenNum) :
+GraphicsContext::ScreenIdentifier::ScreenIdentifier(const std::string &in_hostName, int in_displayNum, int in_screenNum) :
     hostName(in_hostName),
     displayNum(in_displayNum),
     screenNum(in_screenNum) {}
@@ -113,7 +113,7 @@ void GraphicsContext::ScreenIdentifier::readDISPLAY()
     }
 }
 
-void GraphicsContext::ScreenIdentifier::setScreenIdentifier(const std::string&displayName)
+void GraphicsContext::ScreenIdentifier::setScreenIdentifier(const std::string &displayName)
 {
     std::string::size_type colon = displayName.find_last_of(':');
     std::string::size_type point = displayName.find_last_of('.');
@@ -230,7 +230,7 @@ GraphicsContext::Traits::Traits(DisplaySettings *ds) :
     }
 }
 
-bool GraphicsContext::Traits::getContextVersion(unsigned int&major, unsigned int&minor) const
+bool GraphicsContext::Traits::getContextVersion(unsigned int &major, unsigned int &minor) const
 {
     if (glContextVersion.empty())
         return false;
@@ -754,7 +754,7 @@ void GraphicsContext::remove(Operation *operation)
     }
 }
 
-void GraphicsContext::remove(const std::string&name)
+void GraphicsContext::remove(const std::string &name)
 {
     OSG_INFO << "Doing remove named operation" << std::endl;
 
@@ -992,7 +992,7 @@ void GraphicsContext::resizedImplementation(int x, int y, int width, int height)
                 {
                     for (unsigned int i = 0; i < view->getNumSlaves(); ++i)
                     {
-                        osg::View::Slave&child = view->getSlave(i);
+                        osg::View::Slave &child = view->getSlave(i);
                         if (child._camera.valid() && child._camera->getReferenceFrame() == osg::Transform::RELATIVE_RF)
                         {
                             // scale the slaves by the inverse of the change that has been applied to master, to avoid them be

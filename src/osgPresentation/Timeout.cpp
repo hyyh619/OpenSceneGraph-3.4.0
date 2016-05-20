@@ -31,7 +31,7 @@ enum Operation
 
 OperationVisitor(Operation op) : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN), _operation(op), _sleepTime(0.0) {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     if (node.getStateSet())
         process(node.getStateSet());
@@ -39,7 +39,7 @@ void apply(osg::Node&node)
     traverse(node);
 }
 
-void apply(osg::Geode&geode)
+void apply(osg::Geode &geode)
 {
     apply(static_cast<osg::Node&>(geode));
 
@@ -104,7 +104,7 @@ HUDSettings::HUDSettings(double slideDistance, float eyeOffset, unsigned int lef
 HUDSettings::~HUDSettings()
 {}
 
-bool HUDSettings::getModelViewMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+bool HUDSettings::getModelViewMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     matrix.makeLookAt(osg::Vec3d(0.0, 0.0, 0.0), osg::Vec3d(0.0, _slideDistance, 0.0), osg::Vec3d(0.0, 0.0, 1.0));
 
@@ -123,7 +123,7 @@ bool HUDSettings::getModelViewMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) c
     return true;
 }
 
-bool HUDSettings::getInverseModelViewMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+bool HUDSettings::getInverseModelViewMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     osg::Matrix modelView;
 
@@ -151,7 +151,7 @@ Timeout::Timeout(HUDSettings *hudSettings) :
 }
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-Timeout::Timeout(const Timeout&timeout, const osg::CopyOp&copyop) :
+Timeout::Timeout(const Timeout &timeout, const osg::CopyOp &copyop) :
     osg::Transform(timeout, copyop),
     _hudSettings(timeout._hudSettings)
 {
@@ -162,7 +162,7 @@ Timeout::Timeout(const Timeout&timeout, const osg::CopyOp&copyop) :
 Timeout::~Timeout()
 {}
 
-bool Timeout::computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+bool Timeout::computeLocalToWorldMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     if (_hudSettings.valid())
         return _hudSettings->getModelViewMatrix(matrix, nv);
@@ -170,7 +170,7 @@ bool Timeout::computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv
         return false;
 }
 
-bool Timeout::computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+bool Timeout::computeWorldToLocalMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     if (_hudSettings.valid())
         return _hudSettings->getInverseModelViewMatrix(matrix, nv);
@@ -178,7 +178,7 @@ bool Timeout::computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv
         return false;
 }
 
-void Timeout::broadcastEvent(osgViewer::Viewer *viewer, const osgPresentation::KeyPosition&keyPos)
+void Timeout::broadcastEvent(osgViewer::Viewer *viewer, const osgPresentation::KeyPosition &keyPos)
 {
     osg::ref_ptr<osgGA::GUIEventAdapter> event = new osgGA::GUIEventAdapter;
 
@@ -199,7 +199,7 @@ void Timeout::broadcastEvent(osgViewer::Viewer *viewer, const osgPresentation::K
     event->setMouseYOrientation(osgGA::GUIEventAdapter::Y_INCREASING_UPWARDS);
 
     // dispatch cloned event to devices
-    osgViewer::View::Devices&devices = viewer->getDevices();
+    osgViewer::View::Devices &devices = viewer->getDevices();
 
     for (osgViewer::View::Devices::iterator i = devices.begin(); i != devices.end(); ++i)
     {
@@ -209,7 +209,7 @@ void Timeout::broadcastEvent(osgViewer::Viewer *viewer, const osgPresentation::K
         }
     }
 }
-void Timeout::traverse(osg::NodeVisitor&nv)
+void Timeout::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR)
     {
@@ -269,7 +269,7 @@ void Timeout::traverse(osg::NodeVisitor&nv)
         osgViewer::Viewer   *viewer = ev ? dynamic_cast<osgViewer::Viewer*>(ev->getActionAdapter()) : 0;
         if (ev)
         {
-            osgGA::EventQueue::Events&events = ev->getEvents();
+            osgGA::EventQueue::Events &events = ev->getEvents();
 
             for (osgGA::EventQueue::Events::iterator itr = events.begin();
                  itr != events.end();

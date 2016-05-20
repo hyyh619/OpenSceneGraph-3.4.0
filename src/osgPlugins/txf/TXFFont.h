@@ -22,7 +22,7 @@
 class TXFFont : public osgText::Font::FontImplementation
 {
 public:
-TXFFont(const std::string&filename);
+TXFFont(const std::string &filename);
 
 virtual ~TXFFont();
 
@@ -33,7 +33,7 @@ virtual bool supportsMultipleFontResolutions() const
     return false;
 }
 
-virtual osgText::Glyph* getGlyph(const osgText::FontResolution&fontRes, unsigned int charcode);
+virtual osgText::Glyph* getGlyph(const osgText::FontResolution &fontRes, unsigned int charcode);
 
 virtual osgText::Glyph3D* getGlyph3D(unsigned int)
 {
@@ -44,7 +44,7 @@ virtual bool hasVertical() const;
 
 virtual osg::Vec2 getKerning(unsigned int leftcharcode, unsigned int rightcharcode, osgText::KerningType kerningType);
 
-bool loadFont(std::istream&stream);
+bool loadFont(std::istream &stream);
 
 protected:
 typedef std::map<unsigned int, osg::ref_ptr<osgText::Glyph> > GlyphMap;

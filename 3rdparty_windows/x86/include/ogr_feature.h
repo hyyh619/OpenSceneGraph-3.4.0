@@ -438,7 +438,7 @@ void           *pSWQExpr;
 
 char** FieldCollector(void*, char**);
 
-long* EvaluateAgainstIndices(swq_expr_node*, OGRLayer*, int&nFIDCount);
+long* EvaluateAgainstIndices(swq_expr_node*, OGRLayer*, int &nFIDCount);
 
 int         CanUseIndex(swq_expr_node*, OGRLayer*);
 

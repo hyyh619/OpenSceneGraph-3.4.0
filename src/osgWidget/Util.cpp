@@ -15,7 +15,7 @@
 
 namespace osgWidget
 {
-std::string getFilePath(const std::string&filename)
+std::string getFilePath(const std::string &filename)
 {
     osgDB::FilePathList path;
 
@@ -26,7 +26,7 @@ std::string getFilePath(const std::string&filename)
     return osgDB::findFileInPath(filename, path);
 }
 
-std::string generateRandomName(const std::string&base)
+std::string generateRandomName(const std::string &base)
 {
     static unsigned int count = 0;
 
@@ -57,7 +57,7 @@ osg::Camera* createOrthoCamera(matrix_type width, matrix_type height)
     return camera;
 }
 
-int createExample(osgViewer::Viewer&viewer, WindowManager *wm, osg::Node *node)
+int createExample(osgViewer::Viewer &viewer, WindowManager *wm, osg::Node *node)
 {
     if (!wm)
         return 1;

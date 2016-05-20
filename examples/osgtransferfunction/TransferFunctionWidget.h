@@ -25,10 +25,10 @@ class TransferFunctionWidget : public osgUI::Widget
 {
 public:
 TransferFunctionWidget(osg::TransferFunction1D *tf = 0);
-TransferFunctionWidget(const TransferFunctionWidget&tfw, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+TransferFunctionWidget(const TransferFunctionWidget &tfw, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 META_Node(osgUI, TransferFunctionWidget);
 
-virtual void traverseImplementation(osg::NodeVisitor&nv);
+virtual void traverseImplementation(osg::NodeVisitor &nv);
 
 virtual bool handleImplementation(osgGA::EventVisitor *ev, osgGA::Event *event);
 

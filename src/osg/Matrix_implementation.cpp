@@ -64,7 +64,7 @@ void Matrix_implementation::set(value_type a00, value_type a01, value_type a02, 
 #define QZ q._v[2]
 #define QW q._v[3]
 
-void Matrix_implementation::setRotate(const Quat&q)
+void Matrix_implementation::setRotate(const Quat &q)
 {
     double length2 = q.length2();
 
@@ -300,7 +300,7 @@ Quat Matrix_implementation::getRotate() const
 }
 #endif
 
-int Matrix_implementation::compare(const Matrix_implementation&m) const
+int Matrix_implementation::compare(const Matrix_implementation &m) const
 {
     const Matrix_implementation::value_type *lhs     = reinterpret_cast<const Matrix_implementation::value_type*>(_mat);
     const Matrix_implementation::value_type *end_lhs = lhs + 16;
@@ -326,13 +326,13 @@ void Matrix_implementation::setTrans(value_type tx, value_type ty, value_type tz
 }
 
 
-void Matrix_implementation::setTrans(const Vec3f&v)
+void Matrix_implementation::setTrans(const Vec3f &v)
 {
     _mat[3][0] = v[0];
     _mat[3][1] = v[1];
     _mat[3][2] = v[2];
 }
-void Matrix_implementation::setTrans(const Vec3d&v)
+void Matrix_implementation::setTrans(const Vec3d &v)
 {
     _mat[3][0] = v[0];
     _mat[3][1] = v[1];
@@ -347,12 +347,12 @@ void Matrix_implementation::makeIdentity()
     SET_ROW(3,    0, 0, 0, 1)
 }
 
-void Matrix_implementation::makeScale(const Vec3f&v)
+void Matrix_implementation::makeScale(const Vec3f &v)
 {
     makeScale(v[0], v[1], v[2]);
 }
 
-void Matrix_implementation::makeScale(const Vec3d&v)
+void Matrix_implementation::makeScale(const Vec3d &v)
 {
     makeScale(v[0], v[1], v[2]);
 }
@@ -365,12 +365,12 @@ void Matrix_implementation::makeScale(value_type x, value_type y, value_type z)
     SET_ROW(3,    0, 0, 0, 1)
 }
 
-void Matrix_implementation::makeTranslate(const Vec3f&v)
+void Matrix_implementation::makeTranslate(const Vec3f &v)
 {
     makeTranslate(v[0], v[1], v[2]);
 }
 
-void Matrix_implementation::makeTranslate(const Vec3d&v)
+void Matrix_implementation::makeTranslate(const Vec3d &v)
 {
     makeTranslate(v[0], v[1], v[2]);
 }
@@ -383,7 +383,7 @@ void Matrix_implementation::makeTranslate(value_type x, value_type y, value_type
     SET_ROW(3,    x, y, z, 1)
 }
 
-void Matrix_implementation::makeRotate(const Vec3f&from, const Vec3f&to)
+void Matrix_implementation::makeRotate(const Vec3f &from, const Vec3f &to)
 {
     makeIdentity();
 
@@ -391,7 +391,7 @@ void Matrix_implementation::makeRotate(const Vec3f&from, const Vec3f&to)
     quat.makeRotate(from, to);
     setRotate(quat);
 }
-void Matrix_implementation::makeRotate(const Vec3d&from, const Vec3d&to)
+void Matrix_implementation::makeRotate(const Vec3d &from, const Vec3d &to)
 {
     makeIdentity();
 
@@ -400,7 +400,7 @@ void Matrix_implementation::makeRotate(const Vec3d&from, const Vec3d&to)
     setRotate(quat);
 }
 
-void Matrix_implementation::makeRotate(value_type angle, const Vec3f&axis)
+void Matrix_implementation::makeRotate(value_type angle, const Vec3f &axis)
 {
     makeIdentity();
 
@@ -408,7 +408,7 @@ void Matrix_implementation::makeRotate(value_type angle, const Vec3f&axis)
     quat.makeRotate(angle, axis);
     setRotate(quat);
 }
-void Matrix_implementation::makeRotate(value_type angle, const Vec3d&axis)
+void Matrix_implementation::makeRotate(value_type angle, const Vec3d &axis)
 {
     makeIdentity();
 
@@ -426,29 +426,16 @@ void Matrix_implementation::makeRotate(value_type angle, value_type x, value_typ
     setRotate(quat);
 }
 
-void Matrix_implementation::makeRotate(const Quat&quat)
+void Matrix_implementation::makeRotate(const Quat &quat)
 {
     makeIdentity();
 
     setRotate(quat);
 }
 
-void Matrix_implementation::makeRotate(value_type angle1, const Vec3f&axis1,
-                                       value_type angle2, const Vec3f&axis2,
-                                       value_type angle3, const Vec3f&axis3)
-{
-    makeIdentity();
-
-    Quat quat;
-    quat.makeRotate(angle1, axis1,
-                    angle2, axis2,
-                    angle3, axis3);
-    setRotate(quat);
-}
-
-void Matrix_implementation::makeRotate(value_type angle1, const Vec3d&axis1,
-                                       value_type angle2, const Vec3d&axis2,
-                                       value_type angle3, const Vec3d&axis3)
+void Matrix_implementation::makeRotate(value_type angle1, const Vec3f &axis1,
+                                       value_type angle2, const Vec3f &axis2,
+                                       value_type angle3, const Vec3f &axis3)
 {
     makeIdentity();
 
@@ -459,7 +446,20 @@ void Matrix_implementation::makeRotate(value_type angle1, const Vec3d&axis1,
     setRotate(quat);
 }
 
-void Matrix_implementation::mult(const Matrix_implementation&lhs, const Matrix_implementation&rhs)
+void Matrix_implementation::makeRotate(value_type angle1, const Vec3d &axis1,
+                                       value_type angle2, const Vec3d &axis2,
+                                       value_type angle3, const Vec3d &axis3)
+{
+    makeIdentity();
+
+    Quat quat;
+    quat.makeRotate(angle1, axis1,
+                    angle2, axis2,
+                    angle3, axis3);
+    setRotate(quat);
+}
+
+void Matrix_implementation::mult(const Matrix_implementation &lhs, const Matrix_implementation &rhs)
 {
     if (&lhs == this)
     {
@@ -493,7 +493,7 @@ void Matrix_implementation::mult(const Matrix_implementation&lhs, const Matrix_i
     _mat[3][3] = INNER_PRODUCT(lhs, rhs, 3, 3);
 }
 
-void Matrix_implementation::preMult(const Matrix_implementation&other)
+void Matrix_implementation::preMult(const Matrix_implementation &other)
 {
     // brute force method requiring a copy
     // Matrix_implementation tmp(other* *this);
@@ -515,7 +515,7 @@ void Matrix_implementation::preMult(const Matrix_implementation&other)
     }
 }
 
-void Matrix_implementation::postMult(const Matrix_implementation&other)
+void Matrix_implementation::postMult(const Matrix_implementation &other)
 {
     // brute force method requiring a copy
     // Matrix_implementation tmp(*this * other);
@@ -537,7 +537,7 @@ void Matrix_implementation::postMult(const Matrix_implementation&other)
 #undef INNER_PRODUCT
 
 // orthoNormalize the 3x3 rotation matrix
-void Matrix_implementation::orthoNormalize(const Matrix_implementation&rhs)
+void Matrix_implementation::orthoNormalize(const Matrix_implementation &rhs)
 {
     value_type x_colMag = (rhs._mat[0][0] * rhs._mat[0][0]) + (rhs._mat[1][0] * rhs._mat[1][0]) + (rhs._mat[2][0] * rhs._mat[2][0]);
     value_type y_colMag = (rhs._mat[0][1] * rhs._mat[0][1]) + (rhs._mat[1][1] * rhs._mat[1][1]) + (rhs._mat[2][1] * rhs._mat[2][1]);
@@ -621,7 +621,7 @@ void Matrix_implementation::orthoNormalize(const Matrix_implementation&rhs)
    This problem is simplified if [px py pz s] = [0 0 0 1], which will happen if mat was composed only of rotations, scales, and translations (which is common).  In this case, we can ignore corr entirely which saves on a lot of computations.
 ******************************************/
 
-bool Matrix_implementation::invert_4x3(const Matrix_implementation&mat)
+bool Matrix_implementation::invert_4x3(const Matrix_implementation &mat)
 {
     if (&mat == this)
     {
@@ -750,7 +750,7 @@ inline T SGL_ABS(T a)
 #define SGL_SWAP(a, b, temp) ((temp) = (a), (a) = (b), (b) = (temp))
 #endif
 
-bool Matrix_implementation::invert_4x4(const Matrix_implementation&mat)
+bool Matrix_implementation::invert_4x4(const Matrix_implementation &mat)
 {
     if (&mat == this)
     {
@@ -846,9 +846,9 @@ void Matrix_implementation::makeOrtho(double left, double right,
     SET_ROW(3,               tx,                ty,                 tz, 1.0)
 }
 
-bool Matrix_implementation::getOrtho(Matrix_implementation::value_type&left, Matrix_implementation::value_type&right,
-                                     Matrix_implementation::value_type&bottom, Matrix_implementation::value_type&top,
-                                     Matrix_implementation::value_type&zNear, Matrix_implementation::value_type&zFar) const
+bool Matrix_implementation::getOrtho(Matrix_implementation::value_type &left, Matrix_implementation::value_type &right,
+                                     Matrix_implementation::value_type &bottom, Matrix_implementation::value_type &top,
+                                     Matrix_implementation::value_type &zNear, Matrix_implementation::value_type &zFar) const
 {
     if (_mat[0][3] != 0.0 || _mat[1][3] != 0.0 || _mat[2][3] != 0.0 || _mat[3][3] != 1.0)
         return false;
@@ -865,9 +865,9 @@ bool Matrix_implementation::getOrtho(Matrix_implementation::value_type&left, Mat
     return true;
 }
 
-bool Matrix_implementation::getOrtho(Matrix_implementation::other_value_type&left, Matrix_implementation::other_value_type&right,
-                                     Matrix_implementation::other_value_type&bottom, Matrix_implementation::other_value_type&top,
-                                     Matrix_implementation::other_value_type&zNear, Matrix_implementation::other_value_type&zFar) const
+bool Matrix_implementation::getOrtho(Matrix_implementation::other_value_type &left, Matrix_implementation::other_value_type &right,
+                                     Matrix_implementation::other_value_type &bottom, Matrix_implementation::other_value_type &top,
+                                     Matrix_implementation::other_value_type &zNear, Matrix_implementation::other_value_type &zFar) const
 {
     Matrix_implementation::value_type temp_left, temp_right, temp_bottom, temp_top, temp_zNear, temp_zFar;
 
@@ -903,9 +903,9 @@ void Matrix_implementation::makeFrustum(double left, double right,
     SET_ROW(3,                    0.0,                    0.0,   D,  0.0)
 }
 
-bool Matrix_implementation::getFrustum(Matrix_implementation::value_type&left, Matrix_implementation::value_type&right,
-                                       Matrix_implementation::value_type&bottom, Matrix_implementation::value_type&top,
-                                       Matrix_implementation::value_type&zNear, Matrix_implementation::value_type&zFar) const
+bool Matrix_implementation::getFrustum(Matrix_implementation::value_type &left, Matrix_implementation::value_type &right,
+                                       Matrix_implementation::value_type &bottom, Matrix_implementation::value_type &top,
+                                       Matrix_implementation::value_type &zNear, Matrix_implementation::value_type &zFar) const
 {
     if (_mat[0][3] != 0.0 || _mat[1][3] != 0.0 || _mat[2][3] != -1.0 || _mat[3][3] != 0.0)
         return false;
@@ -927,9 +927,9 @@ bool Matrix_implementation::getFrustum(Matrix_implementation::value_type&left, M
     return true;
 }
 
-bool Matrix_implementation::getFrustum(Matrix_implementation::other_value_type&left, Matrix_implementation::other_value_type&right,
-                                       Matrix_implementation::other_value_type&bottom, Matrix_implementation::other_value_type&top,
-                                       Matrix_implementation::other_value_type&zNear, Matrix_implementation::other_value_type&zFar) const
+bool Matrix_implementation::getFrustum(Matrix_implementation::other_value_type &left, Matrix_implementation::other_value_type &right,
+                                       Matrix_implementation::other_value_type &bottom, Matrix_implementation::other_value_type &top,
+                                       Matrix_implementation::other_value_type &zNear, Matrix_implementation::other_value_type &zFar) const
 {
     Matrix_implementation::value_type temp_left, temp_right, temp_bottom, temp_top, temp_zNear, temp_zFar;
 
@@ -962,8 +962,8 @@ void Matrix_implementation::makePerspective(double fovy, double aspectRatio,
     makeFrustum(left, right, bottom, top, zNear, zFar);
 }
 
-bool Matrix_implementation::getPerspective(Matrix_implementation::value_type&fovy, Matrix_implementation::value_type&aspectRatio,
-                                           Matrix_implementation::value_type&zNear, Matrix_implementation::value_type&zFar) const
+bool Matrix_implementation::getPerspective(Matrix_implementation::value_type &fovy, Matrix_implementation::value_type &aspectRatio,
+                                           Matrix_implementation::value_type &zNear, Matrix_implementation::value_type &zFar) const
 {
     Matrix_implementation::value_type right  = 0.0;
     Matrix_implementation::value_type left   = 0.0;
@@ -989,8 +989,8 @@ bool Matrix_implementation::getPerspective(Matrix_implementation::value_type&fov
     return r;
 }
 
-bool Matrix_implementation::getPerspective(Matrix_implementation::other_value_type&fovy, Matrix_implementation::other_value_type&aspectRatio,
-                                           Matrix_implementation::other_value_type&zNear, Matrix_implementation::other_value_type&zFar) const
+bool Matrix_implementation::getPerspective(Matrix_implementation::other_value_type &fovy, Matrix_implementation::other_value_type &aspectRatio,
+                                           Matrix_implementation::other_value_type &zNear, Matrix_implementation::other_value_type &zFar) const
 {
     Matrix_implementation::value_type temp_fovy, temp_aspectRatio, temp_zNear, temp_zFar;
 
@@ -1008,7 +1008,7 @@ bool Matrix_implementation::getPerspective(Matrix_implementation::other_value_ty
     }
 }
 
-void Matrix_implementation::makeLookAt(const Vec3d&eye, const Vec3d&center, const Vec3d&up)
+void Matrix_implementation::makeLookAt(const Vec3d &eye, const Vec3d &center, const Vec3d &up)
 {
     Vec3d f(center - eye);
 
@@ -1028,7 +1028,7 @@ void Matrix_implementation::makeLookAt(const Vec3d&eye, const Vec3d&center, cons
 }
 
 
-void Matrix_implementation::getLookAt(Vec3f&eye, Vec3f&center, Vec3f&up, value_type lookDistance) const
+void Matrix_implementation::getLookAt(Vec3f &eye, Vec3f &center, Vec3f &up, value_type lookDistance) const
 {
     Matrix_implementation inv;
 
@@ -1047,7 +1047,7 @@ void Matrix_implementation::getLookAt(Vec3f&eye, Vec3f&center, Vec3f&up, value_t
     center = c;
 }
 
-void Matrix_implementation::getLookAt(Vec3d&eye, Vec3d&center, Vec3d&up, value_type lookDistance) const
+void Matrix_implementation::getLookAt(Vec3d &eye, Vec3d &center, Vec3d &up, value_type lookDistance) const
 {
     Matrix_implementation inv;
 

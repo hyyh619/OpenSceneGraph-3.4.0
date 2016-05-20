@@ -280,7 +280,7 @@ ParallelSplitShadowMap::ParallelSplitShadowMap(osg::Geode **gr, int icountplanes
     setSplitCalculationMode(SPLIT_EXP);
 }
 
-ParallelSplitShadowMap::ParallelSplitShadowMap(const ParallelSplitShadowMap&copy, const osg::CopyOp&copyop) :
+ParallelSplitShadowMap::ParallelSplitShadowMap(const ParallelSplitShadowMap &copy, const osg::CopyOp &copyop) :
     ShadowTechnique(copy, copyop),
     _displayTexturesGroupingNode(0),
     _textureUnitOffset(copy._textureUnitOffset),
@@ -301,7 +301,7 @@ ParallelSplitShadowMap::ParallelSplitShadowMap(const ParallelSplitShadowMap&copy
     _ambientBias(copy._ambientBias)
 {}
 
-void ParallelSplitShadowMap::setAmbientBias(const osg::Vec2&ambientBias)
+void ParallelSplitShadowMap::setAmbientBias(const osg::Vec2 &ambientBias)
 {
     _ambientBias = ambientBias;
     if (_ambientBiasUniform)
@@ -596,12 +596,12 @@ void ParallelSplitShadowMap::init()
     _dirty = false;
 }
 
-void ParallelSplitShadowMap::update(osg::NodeVisitor&nv)
+void ParallelSplitShadowMap::update(osg::NodeVisitor &nv)
 {
     getShadowedScene()->osg::Group::traverse(nv);
 }
 
-void ParallelSplitShadowMap::cull(osgUtil::CullVisitor&cv)
+void ParallelSplitShadowMap::cull(osgUtil::CullVisitor &cv)
 {
     // record the traversal mask on entry so we can reapply it later.
     unsigned int         traversalMask = cv.getTraversalMask();
@@ -647,7 +647,7 @@ void ParallelSplitShadowMap::cull(osgUtil::CullVisitor&cv)
     if (!_userLight)
     {
         // try to find a light in the scene
-        osgUtil::PositionalStateContainer::AttrMatrixList&aml = orig_rs->getPositionalStateContainer()->getAttrMatrixList();
+        osgUtil::PositionalStateContainer::AttrMatrixList &aml = orig_rs->getPositionalStateContainer()->getAttrMatrixList();
 
         for (osgUtil::PositionalStateContainer::AttrMatrixList::iterator itr = aml.begin();
              itr != aml.end();
@@ -796,7 +796,7 @@ const osg::Vec3d const_pointNearBL(-1.0, -1.0, -1.0);
 //////////////////////////////////////////////////////////////////////////
 
 
-void ParallelSplitShadowMap::calculateFrustumCorners(PSSMShadowSplitTexture&pssmShadowSplitTexture, osg::Vec3d *frustumCorners)
+void ParallelSplitShadowMap::calculateFrustumCorners(PSSMShadowSplitTexture &pssmShadowSplitTexture, osg::Vec3d *frustumCorners)
 {
     // get user cameras
     double fovy, aspectRatio, camNear, camFar;
@@ -888,7 +888,7 @@ void ParallelSplitShadowMap::calculateFrustumCorners(PSSMShadowSplitTexture&pssm
 //////////////////////////////////////////////////////////////////////////
 //
 // compute directional light initial position;
-void ParallelSplitShadowMap::calculateLightInitialPosition(PSSMShadowSplitTexture&pssmShadowSplitTexture, osg::Vec3d *frustumCorners)
+void ParallelSplitShadowMap::calculateLightInitialPosition(PSSMShadowSplitTexture &pssmShadowSplitTexture, osg::Vec3d *frustumCorners)
 {
     pssmShadowSplitTexture._frustumSplitCenter = frustumCorners[0];
 
@@ -902,7 +902,7 @@ void ParallelSplitShadowMap::calculateLightInitialPosition(PSSMShadowSplitTextur
 }
 
 void ParallelSplitShadowMap::calculateLightNearFarFormFrustum(
-    PSSMShadowSplitTexture&pssmShadowSplitTexture,
+    PSSMShadowSplitTexture &pssmShadowSplitTexture,
     osg::Vec3d *frustumCorners
     )
 {
@@ -943,7 +943,7 @@ void ParallelSplitShadowMap::calculateLightNearFarFormFrustum(
 
 
 
-void ParallelSplitShadowMap::calculateLightViewProjectionFormFrustum(PSSMShadowSplitTexture&pssmShadowSplitTexture, osg::Vec3d *frustumCorners)
+void ParallelSplitShadowMap::calculateLightViewProjectionFormFrustum(PSSMShadowSplitTexture &pssmShadowSplitTexture, osg::Vec3d *frustumCorners)
 {
     // calculate the camera's coordinate system
     osg::Vec3d camEye, camCenter, camUp;

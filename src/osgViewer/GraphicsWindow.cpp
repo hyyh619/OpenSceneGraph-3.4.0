@@ -18,7 +18,7 @@
 using namespace osgViewer;
 
 
-void GraphicsWindow::getViews(Views&views)
+void GraphicsWindow::getViews(Views &views)
 {
     views.clear();
     osgViewer::View *prev = NULL;

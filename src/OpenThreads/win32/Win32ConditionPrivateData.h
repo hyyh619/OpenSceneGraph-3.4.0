@@ -89,7 +89,7 @@ inline int signal()
     return result;
 }
 
-inline int wait(Mutex&external_mutex, long timeout_ms)
+inline int wait(Mutex &external_mutex, long timeout_ms)
 {
     // Prevent race conditions on the <waiters_> count.
     InterlockedIncrement(&waiters_);

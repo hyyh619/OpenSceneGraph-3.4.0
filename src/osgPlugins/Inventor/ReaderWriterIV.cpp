@@ -108,8 +108,8 @@ static void errorCallback(const SoError *error, void *data)
  * This is a method used by readNode(string,options) and readNode(istream,options).
  */
 osgDB::ReaderWriter::ReadResult
-ReaderWriterIV::readNodeFromSoInput(SoInput&input,
-                                    std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+ReaderWriterIV::readNodeFromSoInput(SoInput &input,
+                                    std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     // Parse options and add search paths to SoInput
     const osgDB::FilePathList *searchPaths = options ? &options->getDatabasePathList() : NULL;
@@ -177,7 +177,7 @@ ReaderWriterIV::readNodeFromSoInput(SoInput&input,
 
 // Read file and convert to OSG
 osgDB::ReaderWriter::ReadResult
-ReaderWriterIV::readNode(const std::string&file,
+ReaderWriterIV::readNode(const std::string &file,
                          const osgDB::ReaderWriter::Options *options) const
 {
     // Accept extension
@@ -212,7 +212,7 @@ ReaderWriterIV::readNode(const std::string&file,
 
 
 osgDB::ReaderWriter::ReadResult
-ReaderWriterIV::readNode(std::istream&fin,
+ReaderWriterIV::readNode(std::istream &fin,
                          const osgDB::ReaderWriter::Options *options) const
 {
     // Notify
@@ -274,7 +274,7 @@ ReaderWriterIV::readNode(std::istream&fin,
 
 
 osgDB::ReaderWriter::WriteResult
-ReaderWriterIV::writeNode(const osg::Node&node, const std::string&fileName,
+ReaderWriterIV::writeNode(const osg::Node &node, const std::string &fileName,
                           const osgDB::ReaderWriter::Options *options) const
 {
     // accept extension

@@ -30,7 +30,7 @@ class DrawShapeVisitor : public ConstShapeVisitor
 {
 public:
 
-DrawShapeVisitor(State&state, const TessellationHints *hints) :
+DrawShapeVisitor(State &state, const TessellationHints *hints) :
     _state(state),
     _hints(hints)
 {
@@ -95,7 +95,7 @@ void DrawShapeVisitor::drawCylinderBody(unsigned int numSegments, float radius, 
     //  The code is mostly duplicated in order to hoist the back/front face
     //  test out of the loop for efficiency
 
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     gl.Begin(GL_QUAD_STRIP);
 
@@ -182,7 +182,7 @@ void DrawShapeVisitor::drawHalfSphere(unsigned int numSegments, unsigned int num
     unsigned int rowbegin = top ? numRows / 2 : 0;
     unsigned int rowend   = top ? numRows : numRows / 2;
 
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     for (unsigned int rowi = rowbegin; rowi < rowend; ++rowi)
     {
@@ -277,9 +277,9 @@ void DrawShapeVisitor::drawHalfSphere(unsigned int numSegments, unsigned int num
 }
 
 
-void DrawShapeVisitor::apply(const Sphere&sphere)
+void DrawShapeVisitor::apply(const Sphere &sphere)
 {
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     gl.PushMatrix();
 
@@ -439,9 +439,9 @@ void DrawShapeVisitor::apply(const Sphere&sphere)
     gl.PopMatrix();
 }
 
-void DrawShapeVisitor::apply(const Box&box)
+void DrawShapeVisitor::apply(const Box &box)
 {
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     // evaluate hints
     bool createBody   = (_hints ? _hints->getCreateBody() : true);
@@ -568,9 +568,9 @@ void DrawShapeVisitor::apply(const Box&box)
     gl.PopMatrix();
 }
 
-void DrawShapeVisitor::apply(const Cone&cone)
+void DrawShapeVisitor::apply(const Cone &cone)
 {
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     gl.PushMatrix();
 
@@ -694,9 +694,9 @@ void DrawShapeVisitor::apply(const Cone&cone)
     gl.PopMatrix();
 }
 
-void DrawShapeVisitor::apply(const Cylinder&cylinder)
+void DrawShapeVisitor::apply(const Cylinder &cylinder)
 {
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     gl.PushMatrix();
 
@@ -800,9 +800,9 @@ void DrawShapeVisitor::apply(const Cylinder&cylinder)
     gl.PopMatrix();
 }
 
-void DrawShapeVisitor::apply(const Capsule&capsule)
+void DrawShapeVisitor::apply(const Capsule &capsule)
 {
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     gl.PushMatrix();
 
@@ -858,9 +858,9 @@ void DrawShapeVisitor::apply(const InfinitePlane&)
     OSG_NOTICE << "Warning: DrawShapeVisitor::apply(const InfinitePlane& plane) not yet implemented. " << std::endl;
 }
 
-void DrawShapeVisitor::apply(const TriangleMesh&mesh)
+void DrawShapeVisitor::apply(const TriangleMesh &mesh)
 {
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     const Vec3Array  *vertices = mesh.getVertices();
     const IndexArray *indices  = mesh.getIndices();
@@ -871,10 +871,10 @@ void DrawShapeVisitor::apply(const TriangleMesh&mesh)
 
         for (unsigned int i = 0; i + 2 < indices->getNumElements(); i += 3)
         {
-            const osg::Vec3&v1    = (*vertices)[indices->index(i)];
-            const osg::Vec3&v2    = (*vertices)[indices->index(i + 1)];
-            const osg::Vec3&v3    = (*vertices)[indices->index(i + 2)];
-            Vec3           normal = (v2 - v1) ^ (v3 - v2);
+            const osg::Vec3 &v1    = (*vertices)[indices->index(i)];
+            const osg::Vec3 &v2    = (*vertices)[indices->index(i + 1)];
+            const osg::Vec3 &v3    = (*vertices)[indices->index(i + 2)];
+            Vec3            normal = (v2 - v1) ^ (v3 - v2);
             normal.normalize();
 
             gl.Normal3fv(normal.ptr());
@@ -887,17 +887,17 @@ void DrawShapeVisitor::apply(const TriangleMesh&mesh)
     }
 }
 
-void DrawShapeVisitor::apply(const ConvexHull&hull)
+void DrawShapeVisitor::apply(const ConvexHull &hull)
 {
     apply((const TriangleMesh&)hull);
 }
 
-void DrawShapeVisitor::apply(const HeightField&field)
+void DrawShapeVisitor::apply(const HeightField &field)
 {
     if (field.getNumColumns() == 0 || field.getNumRows() == 0)
         return;
 
-    GLBeginEndAdapter&gl = _state.getGLBeginEndAdapter();
+    GLBeginEndAdapter &gl = _state.getGLBeginEndAdapter();
 
     gl.PushMatrix();
 
@@ -1048,7 +1048,7 @@ void DrawShapeVisitor::apply(const HeightField&field)
     gl.PopMatrix();
 }
 
-void DrawShapeVisitor::apply(const CompositeShape&group)
+void DrawShapeVisitor::apply(const CompositeShape &group)
 {
     for (unsigned int i = 0; i < group.getNumChildren(); ++i)
     {
@@ -1068,7 +1068,7 @@ class ComputeBoundShapeVisitor : public ConstShapeVisitor
 {
 public:
 
-ComputeBoundShapeVisitor(BoundingBox&bb) : _bb(bb) {}
+ComputeBoundShapeVisitor(BoundingBox &bb) : _bb(bb) {}
 
 virtual void apply(const Sphere&);
 virtual void apply(const Box&);
@@ -1083,7 +1083,7 @@ virtual void apply(const HeightField&);
 
 virtual void apply(const CompositeShape&);
 
-BoundingBox&_bb;
+BoundingBox &_bb;
 
 protected:
 
@@ -1094,7 +1094,7 @@ ComputeBoundShapeVisitor&operator =(const ComputeBoundShapeVisitor&)
 };
 
 
-void ComputeBoundShapeVisitor::apply(const Sphere&sphere)
+void ComputeBoundShapeVisitor::apply(const Sphere &sphere)
 {
     Vec3 halfLengths(sphere.getRadius(), sphere.getRadius(), sphere.getRadius());
 
@@ -1102,7 +1102,7 @@ void ComputeBoundShapeVisitor::apply(const Sphere&sphere)
     _bb.expandBy(sphere.getCenter() + halfLengths);
 }
 
-void ComputeBoundShapeVisitor::apply(const Box&box)
+void ComputeBoundShapeVisitor::apply(const Box &box)
 {
     if (box.zeroRotation())
     {
@@ -1138,7 +1138,7 @@ void ComputeBoundShapeVisitor::apply(const Box&box)
     }
 }
 
-void ComputeBoundShapeVisitor::apply(const Cone&cone)
+void ComputeBoundShapeVisitor::apply(const Cone &cone)
 {
     if (cone.zeroRotation())
     {
@@ -1162,7 +1162,7 @@ void ComputeBoundShapeVisitor::apply(const Cone&cone)
     }
 }
 
-void ComputeBoundShapeVisitor::apply(const Cylinder&cylinder)
+void ComputeBoundShapeVisitor::apply(const Cylinder &cylinder)
 {
     if (cylinder.zeroRotation())
     {
@@ -1198,7 +1198,7 @@ void ComputeBoundShapeVisitor::apply(const Cylinder&cylinder)
     }
 }
 
-void ComputeBoundShapeVisitor::apply(const Capsule&capsule)
+void ComputeBoundShapeVisitor::apply(const Capsule &capsule)
 {
     if (capsule.zeroRotation())
     {
@@ -1239,7 +1239,7 @@ void ComputeBoundShapeVisitor::apply(const InfinitePlane&)
     // can't compute the bounding box of an infinite plane!!! :-)
 }
 
-void ComputeBoundShapeVisitor::apply(const TriangleMesh&mesh)
+void ComputeBoundShapeVisitor::apply(const TriangleMesh &mesh)
 {
     const Vec3Array  *vertices = mesh.getVertices();
     const IndexArray *indices  = mesh.getIndices();
@@ -1248,18 +1248,18 @@ void ComputeBoundShapeVisitor::apply(const TriangleMesh&mesh)
     {
         for (unsigned int i = 0; i < indices->getNumElements(); ++i)
         {
-            const osg::Vec3&v = (*vertices)[indices->index(i)];
+            const osg::Vec3 &v = (*vertices)[indices->index(i)];
             _bb.expandBy(v);
         }
     }
 }
 
-void ComputeBoundShapeVisitor::apply(const ConvexHull&hull)
+void ComputeBoundShapeVisitor::apply(const ConvexHull &hull)
 {
     apply((const TriangleMesh&)hull);
 }
 
-void ComputeBoundShapeVisitor::apply(const HeightField&field)
+void ComputeBoundShapeVisitor::apply(const HeightField &field)
 {
     float zMin = FLT_MAX;
     float zMax = -FLT_MAX;
@@ -1317,7 +1317,7 @@ void ComputeBoundShapeVisitor::apply(const HeightField&field)
     }
 }
 
-void ComputeBoundShapeVisitor::apply(const CompositeShape&group)
+void ComputeBoundShapeVisitor::apply(const CompositeShape &group)
 {
     for (unsigned int i = 0; i < group.getNumChildren(); ++i)
     {
@@ -1337,7 +1337,7 @@ class PrimitiveShapeVisitor : public ConstShapeVisitor
 {
 public:
 
-PrimitiveShapeVisitor(PrimitiveFunctor&functor, const TessellationHints *hints) :
+PrimitiveShapeVisitor(PrimitiveFunctor &functor, const TessellationHints *hints) :
     _functor(functor),
     _hints(hints) {}
 
@@ -1365,13 +1365,13 @@ PrimitiveShapeVisitor&operator =(const PrimitiveShapeVisitor&)
 }
 
 // helpers for apply( Cylinder | Sphere | Capsule )
-void createCylinderBody(unsigned int numSegments, float radius, float height, const osg::Matrix&matrix);
-void createHalfSphere(unsigned int numSegments, unsigned int numRows, float radius, int which, float zOffset, const osg::Matrix&matrix);
+void createCylinderBody(unsigned int numSegments, float radius, float height, const osg::Matrix &matrix);
+void createHalfSphere(unsigned int numSegments, unsigned int numRows, float radius, int which, float zOffset, const osg::Matrix &matrix);
 };
 
 
 
-void PrimitiveShapeVisitor::createCylinderBody(unsigned int numSegments, float radius, float height, const osg::Matrix&matrix)
+void PrimitiveShapeVisitor::createCylinderBody(unsigned int numSegments, float radius, float height, const osg::Matrix &matrix)
 {
     const float angleDelta = 2.0f * osg::PI / (float)numSegments;
 
@@ -1404,7 +1404,7 @@ void PrimitiveShapeVisitor::createCylinderBody(unsigned int numSegments, float r
 }
 
 
-void PrimitiveShapeVisitor::createHalfSphere(unsigned int numSegments, unsigned int numRows, float radius, int which, float zOffset, const osg::Matrix&matrix)
+void PrimitiveShapeVisitor::createHalfSphere(unsigned int numSegments, unsigned int numRows, float radius, int which, float zOffset, const osg::Matrix &matrix)
 {
     float lDelta = osg::PI / (float)numRows;
     float vDelta = 1.0f / (float)numRows;
@@ -1459,7 +1459,7 @@ void PrimitiveShapeVisitor::createHalfSphere(unsigned int numSegments, unsigned 
 
 
 
-void PrimitiveShapeVisitor::apply(const Sphere&sphere)
+void PrimitiveShapeVisitor::apply(const Sphere &sphere)
 {
     float tx = sphere.getCenter().x();
     float ty = sphere.getCenter().y();
@@ -1527,7 +1527,7 @@ void PrimitiveShapeVisitor::apply(const Sphere&sphere)
     }
 }
 
-void PrimitiveShapeVisitor::apply(const Box&box)
+void PrimitiveShapeVisitor::apply(const Box &box)
 {
     // evaluate hints
     bool createBody   = (_hints ? _hints->getCreateBody() : true);
@@ -1619,7 +1619,7 @@ void PrimitiveShapeVisitor::apply(const Box&box)
     _functor.end();
 }
 
-void PrimitiveShapeVisitor::apply(const Cone&cone)
+void PrimitiveShapeVisitor::apply(const Cone &cone)
 {
     // evaluate hints
     bool createBody   = (_hints ? _hints->getCreateBody() : true);
@@ -1720,7 +1720,7 @@ void PrimitiveShapeVisitor::apply(const Cone&cone)
     }
 }
 
-void PrimitiveShapeVisitor::apply(const Cylinder&cylinder)
+void PrimitiveShapeVisitor::apply(const Cylinder &cylinder)
 {
     // evaluate hints
     bool createBody   = (_hints ? _hints->getCreateBody() : true);
@@ -1802,7 +1802,7 @@ void PrimitiveShapeVisitor::apply(const Cylinder&cylinder)
     }
 }
 
-void PrimitiveShapeVisitor::apply(const Capsule&capsule)
+void PrimitiveShapeVisitor::apply(const Capsule &capsule)
 {
     // evaluate hints
     bool createBody   = (_hints ? _hints->getCreateBody() : true);
@@ -1849,7 +1849,7 @@ void PrimitiveShapeVisitor::apply(const InfinitePlane&)
     OSG_NOTICE << "Warning: PrimitiveShapeVisitor::apply(const InfinitePlane& plane) not yet implemented. " << std::endl;
 }
 
-void PrimitiveShapeVisitor::apply(const TriangleMesh&mesh)
+void PrimitiveShapeVisitor::apply(const TriangleMesh &mesh)
 {
     const Vec3Array  *vertices = mesh.getVertices();
     const IndexArray *indices  = mesh.getIndices();
@@ -1869,12 +1869,12 @@ void PrimitiveShapeVisitor::apply(const TriangleMesh&mesh)
     }
 }
 
-void PrimitiveShapeVisitor::apply(const ConvexHull&hull)
+void PrimitiveShapeVisitor::apply(const ConvexHull &hull)
 {
     apply((const TriangleMesh&)hull);
 }
 
-void PrimitiveShapeVisitor::apply(const HeightField&field)
+void PrimitiveShapeVisitor::apply(const HeightField &field)
 {
     if (field.getNumColumns() == 0 || field.getNumRows() == 0)
         return;
@@ -1902,7 +1902,7 @@ void PrimitiveShapeVisitor::apply(const HeightField&field)
     }
 }
 
-void PrimitiveShapeVisitor::apply(const CompositeShape&group)
+void PrimitiveShapeVisitor::apply(const CompositeShape &group)
 {
     for (unsigned int i = 0; i < group.getNumChildren(); ++i)
     {
@@ -1931,7 +1931,7 @@ ShapeDrawable::ShapeDrawable(Shape *shape, TessellationHints *hints) :
     // setUseDisplayList(false);
 }
 
-ShapeDrawable::ShapeDrawable(const ShapeDrawable&pg, const CopyOp&copyop) :
+ShapeDrawable::ShapeDrawable(const ShapeDrawable &pg, const CopyOp &copyop) :
     Drawable(pg, copyop),
     _color(pg._color),
     _tessellationHints(pg._tessellationHints)
@@ -1942,7 +1942,7 @@ ShapeDrawable::ShapeDrawable(const ShapeDrawable&pg, const CopyOp&copyop) :
 ShapeDrawable::~ShapeDrawable()
 {}
 
-void ShapeDrawable::setColor(const Vec4&color)
+void ShapeDrawable::setColor(const Vec4 &color)
 {
     if (_color != color)
     {
@@ -1959,10 +1959,10 @@ void ShapeDrawable::setTessellationHints(TessellationHints *hints)
     }
 }
 
-void ShapeDrawable::drawImplementation(RenderInfo&renderInfo) const
+void ShapeDrawable::drawImplementation(RenderInfo &renderInfo) const
 {
-    osg::State       &state = *renderInfo.getState();
-    GLBeginEndAdapter&gl    = state.getGLBeginEndAdapter();
+    osg::State        &state = *renderInfo.getState();
+    GLBeginEndAdapter &gl    = state.getGLBeginEndAdapter();
 
     if (_shape.valid())
     {
@@ -1977,7 +1977,7 @@ void ShapeDrawable::drawImplementation(RenderInfo&renderInfo) const
 void ShapeDrawable::accept(ConstAttributeFunctor&) const
 {}
 
-void ShapeDrawable::accept(PrimitiveFunctor&pf) const
+void ShapeDrawable::accept(PrimitiveFunctor &pf) const
 {
     if (_shape.valid())
     {

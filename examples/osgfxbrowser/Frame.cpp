@@ -29,7 +29,7 @@ Frame::Frame()
     caption_("Frame")
 {}
 
-Frame::Frame(const Frame&copy, const osg::CopyOp&copyop)
+Frame::Frame(const Frame &copy, const osg::CopyOp &copyop)
     :    osg::Geode(copy, copyop),
     bgcolor_(copy.bgcolor_),
     rect_(copy.rect_),
@@ -57,7 +57,7 @@ void Frame::rebuild()
     rebuild_client_area(Rect(rect_.x0 + 4, rect_.y0 + 4, rect_.x1 - 4, rect_.y1 - 28));
 }
 
-osg::Geometry* Frame::build_quad(const Rect&rect, const osg::Vec4&color, bool shadow, float z)
+osg::Geometry* Frame::build_quad(const Rect &rect, const osg::Vec4 &color, bool shadow, float z)
 {
     const float shadow_space = 8;
     const float shadow_size  = 10;

@@ -11,12 +11,12 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool Stencil_readLocalData(Object&obj, Input&fr);
-bool Stencil_writeLocalData(const Object&obj, Output&fw);
+bool Stencil_readLocalData(Object &obj, Input &fr);
+bool Stencil_writeLocalData(const Object &obj, Output &fw);
 
-bool Stencil_matchFuncStr(const char *str, Stencil::Function&func);
+bool Stencil_matchFuncStr(const char *str, Stencil::Function &func);
 const char* Stencil_getFuncStr(Stencil::Function func);
-bool Stencil_matchOperationStr(const char *str, Stencil::Operation&op);
+bool Stencil_matchOperationStr(const char *str, Stencil::Operation &op);
 const char* Stencil_getOperationStr(Stencil::Operation op);
 
 
@@ -31,11 +31,11 @@ REGISTER_DOTOSGWRAPPER(Stencil)
 );
 
 
-bool Stencil_readLocalData(Object&obj, Input&fr)
+bool Stencil_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Stencil&stencil = static_cast<Stencil&>(obj);
+    Stencil &stencil = static_cast<Stencil&>(obj);
 
     bool              setFunction = false;
     Stencil::Function func        = stencil.getFunction();
@@ -106,9 +106,9 @@ bool Stencil_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Stencil_writeLocalData(const Object&obj, Output&fw)
+bool Stencil_writeLocalData(const Object &obj, Output &fw)
 {
-    const Stencil&stencil = static_cast<const Stencil&>(obj);
+    const Stencil &stencil = static_cast<const Stencil&>(obj);
 
     fw.indent() << "function " << Stencil_getFuncStr(stencil.getFunction()) << std::endl;
     fw.indent() << "functionRef " <<    stencil.getFunctionRef() << std::endl;
@@ -124,7 +124,7 @@ bool Stencil_writeLocalData(const Object&obj, Output&fw)
 }
 
 
-bool Stencil_matchFuncStr(const char *str, Stencil::Function&func)
+bool Stencil_matchFuncStr(const char *str, Stencil::Function &func)
 {
     if (strcmp(str, "NEVER") == 0)
         func = Stencil::NEVER;
@@ -173,7 +173,7 @@ const char* Stencil_getFuncStr(Stencil::Function func)
     return "";
 }
 
-bool Stencil_matchOperationStr(const char *str, Stencil::Operation&op)
+bool Stencil_matchOperationStr(const char *str, Stencil::Operation &op)
 {
     if (strcmp(str, "KEEP") == 0)
         op = Stencil::KEEP;

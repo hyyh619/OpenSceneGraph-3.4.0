@@ -16,19 +16,19 @@
 
 using namespace osgAnimation;
 
-StackedQuaternionElement::StackedQuaternionElement(const std::string&name, const osg::Quat&quaternion) : _quaternion(quaternion)
+StackedQuaternionElement::StackedQuaternionElement(const std::string &name, const osg::Quat &quaternion) : _quaternion(quaternion)
 {
     setName(name);
 }
 
-StackedQuaternionElement::StackedQuaternionElement(const StackedQuaternionElement&rhs, const osg::CopyOp&) : StackedTransformElement(rhs), _quaternion(rhs._quaternion)
+StackedQuaternionElement::StackedQuaternionElement(const StackedQuaternionElement &rhs, const osg::CopyOp&) : StackedTransformElement(rhs), _quaternion(rhs._quaternion)
 {
     if (rhs._target.valid())
         _target = new QuatTarget(*rhs._target);
 }
 
 
-StackedQuaternionElement::StackedQuaternionElement(const osg::Quat&quat) : _quaternion(quat)
+StackedQuaternionElement::StackedQuaternionElement(const osg::Quat &quat) : _quaternion(quat)
 {
     setName("quaternion");
 }
@@ -39,12 +39,12 @@ const osg::Quat&StackedQuaternionElement::getQuaternion() const
 {
     return _quaternion;
 }
-void StackedQuaternionElement::setQuaternion(const osg::Quat&q)
+void StackedQuaternionElement::setQuaternion(const osg::Quat &q)
 {
     _quaternion = q;
 }
 
-void StackedQuaternionElement::applyToMatrix(osg::Matrix&matrix) const
+void StackedQuaternionElement::applyToMatrix(osg::Matrix &matrix) const
 {
     matrix.preMultRotate(_quaternion);
 }

@@ -42,9 +42,9 @@
 using namespace osgDB;
 using namespace osg;
 
-bool Bone_readLocalData(Object&obj, Input&fr)
+bool Bone_readLocalData(Object &obj, Input &fr)
 {
-    osgAnimation::Bone&bone = dynamic_cast<osgAnimation::Bone&>(obj);
+    osgAnimation::Bone &bone = dynamic_cast<osgAnimation::Bone&>(obj);
 
     osg::Quat att;
     bool      iteratorAdvanced = false;
@@ -108,10 +108,10 @@ bool Bone_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Bone_writeLocalData(const Object&obj, Output&fw)
+bool Bone_writeLocalData(const Object &obj, Output &fw)
 {
-    const osgAnimation::Bone&bone = dynamic_cast<const osgAnimation::Bone&>(obj);
-    bool                    res1  = writeMatrix(bone.getInvBindMatrixInSkeletonSpace(), fw, "InvBindMatrixInSkeletonSpace");
+    const osgAnimation::Bone &bone = dynamic_cast<const osgAnimation::Bone&>(obj);
+    bool                     res1  = writeMatrix(bone.getInvBindMatrixInSkeletonSpace(), fw, "InvBindMatrixInSkeletonSpace");
     // write this field for debug only
     // because it's recompute at each update
     bool res2 = writeMatrix(bone.getMatrixInSkeletonSpace(), fw, "MatrixInSkeletonSpace");
@@ -130,11 +130,11 @@ RegisterDotOsgWrapperProxy g_BoneProxy
 
 
 
-bool Skeleton_readLocalData(Object&obj, Input&fr)
+bool Skeleton_readLocalData(Object &obj, Input &fr)
 {
     return false;
 }
-bool Skeleton_writeLocalData(const Object&obj, Output&fr)
+bool Skeleton_writeLocalData(const Object &obj, Output &fr)
 {
     return true;
 }
@@ -149,7 +149,7 @@ RegisterDotOsgWrapperProxy g_SkeletonProxy
 );
 
 // Helper method for reading channels
-bool Animation_readChannel(osgAnimation::Channel *pChannel, Input&fr)
+bool Animation_readChannel(osgAnimation::Channel *pChannel, Input &fr)
 {
     bool        iteratorAdvanced = false;
     std::string name             = "unknown";
@@ -190,10 +190,10 @@ bool Animation_readChannel(osgAnimation::Channel *pChannel, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Animation_readLocalData(Object&obj, Input&fr)
+bool Animation_readLocalData(Object &obj, Input &fr)
 {
-    osgAnimation::Animation&anim            = dynamic_cast<osgAnimation::Animation&>(obj);
-    bool                   iteratorAdvanced = false;
+    osgAnimation::Animation &anim            = dynamic_cast<osgAnimation::Animation&>(obj);
+    bool                    iteratorAdvanced = false;
 
     if (fr.matchSequence("playmode %w"))
     {
@@ -596,7 +596,7 @@ bool Animation_readLocalData(Object&obj, Input&fr)
 
 // Helper method for writing channels
 template<typename ChannelType, typename ContainerType>
-void Animation_writeChannel(const std::string&channelString, ChannelType *pChannel, Output&fw)
+void Animation_writeChannel(const std::string &channelString, ChannelType *pChannel, Output &fw)
 {
     fw.indent() << channelString.c_str() << " {" << std::endl;
     fw.moveIn();
@@ -623,9 +623,9 @@ void Animation_writeChannel(const std::string&channelString, ChannelType *pChann
     }
 }
 
-bool Animation_writeLocalData(const Object&obj, Output&fw)
+bool Animation_writeLocalData(const Object &obj, Output &fw)
 {
-    const osgAnimation::Animation&anim = dynamic_cast<const osgAnimation::Animation&>(obj);
+    const osgAnimation::Animation &anim = dynamic_cast<const osgAnimation::Animation&>(obj);
 
     switch (anim.getPlayMode())
     {
@@ -750,7 +750,7 @@ RegisterDotOsgWrapperProxy g_atkAnimationProxy
 
 
 
-bool AnimationManagerBase_readLocalData(osgAnimation::AnimationManagerBase&manager, Input&fr)
+bool AnimationManagerBase_readLocalData(osgAnimation::AnimationManagerBase &manager, Input &fr)
 {
     int  nbAnims          = 0;
     bool iteratorAdvanced = false;
@@ -779,24 +779,24 @@ bool AnimationManagerBase_readLocalData(osgAnimation::AnimationManagerBase&manag
 }
 
 
-bool BasicAnimationManager_readLocalData(Object&obj, Input&fr)
+bool BasicAnimationManager_readLocalData(Object &obj, Input &fr)
 {
-    osgAnimation::BasicAnimationManager&manager = dynamic_cast<osgAnimation::BasicAnimationManager&>(obj);
+    osgAnimation::BasicAnimationManager &manager = dynamic_cast<osgAnimation::BasicAnimationManager&>(obj);
 
     return AnimationManagerBase_readLocalData(manager, fr);
 }
 
-bool TimelineAnimationManager_readLocalData(Object&obj, Input&fr)
+bool TimelineAnimationManager_readLocalData(Object &obj, Input &fr)
 {
-    osgAnimation::TimelineAnimationManager&manager = dynamic_cast<osgAnimation::TimelineAnimationManager&>(obj);
+    osgAnimation::TimelineAnimationManager &manager = dynamic_cast<osgAnimation::TimelineAnimationManager&>(obj);
 
     return AnimationManagerBase_readLocalData(manager, fr);
 }
 
 
-bool AnimationManagerBase_writeLocalData(const osgAnimation::AnimationManagerBase&manager, Output&fw)
+bool AnimationManagerBase_writeLocalData(const osgAnimation::AnimationManagerBase &manager, Output &fw)
 {
-    const osgAnimation::AnimationList&animList = manager.getAnimationList();
+    const osgAnimation::AnimationList &animList = manager.getAnimationList();
 
     fw.indent() << "num_animations " << animList.size() << std::endl;
 
@@ -809,16 +809,16 @@ bool AnimationManagerBase_writeLocalData(const osgAnimation::AnimationManagerBas
     return true;
 }
 
-bool BasicAnimationManager_writeLocalData(const Object&obj, Output&fw)
+bool BasicAnimationManager_writeLocalData(const Object &obj, Output &fw)
 {
-    const osgAnimation::BasicAnimationManager&manager = dynamic_cast<const osgAnimation::BasicAnimationManager&>(obj);
+    const osgAnimation::BasicAnimationManager &manager = dynamic_cast<const osgAnimation::BasicAnimationManager&>(obj);
 
     return AnimationManagerBase_writeLocalData(manager, fw);
 }
 
-bool TimelineAnimationManager_writeLocalData(const Object&obj, Output&fw)
+bool TimelineAnimationManager_writeLocalData(const Object &obj, Output &fw)
 {
-    const osgAnimation::TimelineAnimationManager&manager = dynamic_cast<const osgAnimation::TimelineAnimationManager&>(obj);
+    const osgAnimation::TimelineAnimationManager &manager = dynamic_cast<const osgAnimation::TimelineAnimationManager&>(obj);
 
     return AnimationManagerBase_writeLocalData(manager, fw);
 }
@@ -845,7 +845,7 @@ RegisterDotOsgWrapperProxy g_TimelineAnimationManagerProxy
 );
 
 
-bool RigGeometry_readLocalData(Object&obj, Input&fr)
+bool RigGeometry_readLocalData(Object &obj, Input &fr)
 {
     osgAnimation::RigGeometry                      &geom = dynamic_cast<osgAnimation::RigGeometry&>(obj);
     osg::ref_ptr<osgAnimation::VertexInfluenceMap> vmap  = new osgAnimation::VertexInfluenceMap;
@@ -912,7 +912,7 @@ bool RigGeometry_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool RigGeometry_writeLocalData(const Object&obj, Output&fw)
+bool RigGeometry_writeLocalData(const Object &obj, Output &fw)
 {
     const osgAnimation::RigGeometry        &geom = dynamic_cast<const osgAnimation::RigGeometry&>(obj);
     const osgAnimation::VertexInfluenceMap *vm   = geom.getInfluenceMap();
@@ -931,7 +931,7 @@ bool RigGeometry_writeLocalData(const Object&obj, Output&fw)
 
         fw.indent() << "osgAnimation::VertexInfluence \"" << name << "\" " << it->second.size() << " {" << std::endl;
         fw.moveIn();
-        const osgAnimation::VertexInfluence&vi = it->second;
+        const osgAnimation::VertexInfluence &vi = it->second;
 
         for (osgAnimation::VertexInfluence::const_iterator itv = vi.begin(); itv != vi.end(); itv++)
         {
@@ -959,9 +959,9 @@ RegisterDotOsgWrapperProxy g_atkRigGeometryProxy
 );
 
 
-bool MorphGeometry_readLocalData(Object&obj, Input&fr)
+bool MorphGeometry_readLocalData(Object &obj, Input &fr)
 {
-    osgAnimation::MorphGeometry&geom = dynamic_cast<osgAnimation::MorphGeometry&>(obj);
+    osgAnimation::MorphGeometry &geom = dynamic_cast<osgAnimation::MorphGeometry&>(obj);
 
     bool iteratorAdvanced = false;
 
@@ -1037,9 +1037,9 @@ bool MorphGeometry_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool MorphGeometry_writeLocalData(const Object&obj, Output&fw)
+bool MorphGeometry_writeLocalData(const Object &obj, Output &fw)
 {
-    const osgAnimation::MorphGeometry&geom = dynamic_cast<const osgAnimation::MorphGeometry&>(obj);
+    const osgAnimation::MorphGeometry &geom = dynamic_cast<const osgAnimation::MorphGeometry&>(obj);
 
     switch (geom.getMethod())
     {
@@ -1054,8 +1054,8 @@ bool MorphGeometry_writeLocalData(const Object&obj, Output&fw)
     else
         fw << "FALSE" << std::endl;
 
-    const osgAnimation::MorphGeometry::MorphTargetList&morphTargets = geom.getMorphTargetList();
-    fw.indent() << "num_morphTargets " <<             morphTargets.size() << std::endl;
+    const osgAnimation::MorphGeometry::MorphTargetList &morphTargets = geom.getMorphTargetList();
+    fw.indent() << "num_morphTargets " <<              morphTargets.size() << std::endl;
 
     for (unsigned int i = 0; i < morphTargets.size(); i++)
     {
@@ -1084,14 +1084,14 @@ RegisterDotOsgWrapperProxy g_osgAnimationMorphGeometryProxy
 
 
 
-bool UpdateBone_readLocalData(Object&obj, Input&fr)
+bool UpdateBone_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
     return iteratorAdvanced;
 }
 
-bool UpdateBone_writeLocalData(const Object&obj, Output&fw)
+bool UpdateBone_writeLocalData(const Object &obj, Output &fw)
 {
     return true;
 }
@@ -1108,14 +1108,14 @@ RegisterDotOsgWrapperProxy g_UpdateBoneProxy
 
 
 
-bool UpdateSkeleton_readLocalData(Object&obj, Input&fr)
+bool UpdateSkeleton_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
     return iteratorAdvanced;
 }
 
-bool UpdateSkeleton_writeLocalData(const Object&obj, Output&fw)
+bool UpdateSkeleton_writeLocalData(const Object &obj, Output &fw)
 {
     return true;
 }
@@ -1131,14 +1131,14 @@ RegisterDotOsgWrapperProxy g_UpdateSkeletonProxy
 );
 
 
-bool UpdateMorph_readLocalData(Object&obj, Input&fr)
+bool UpdateMorph_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
     return iteratorAdvanced;
 }
 
-bool UpdateMorph_writeLocalData(const Object&obj, Output&fw)
+bool UpdateMorph_writeLocalData(const Object &obj, Output &fw)
 {
     return true;
 }

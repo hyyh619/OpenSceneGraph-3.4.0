@@ -53,7 +53,7 @@ void ZipArchive::close()
         if (_zipLoaded)
         {
             // close the file (on one thread since it's a shared file)
-            const PerThreadData&data = getDataNoLock();
+            const PerThreadData &data = getDataNoLock();
             CloseZip(data._zipHandle);
 
             // clear out the file handles
@@ -68,7 +68,7 @@ void ZipArchive::close()
 }
 
 /** return true if file exists in archive.*/
-bool ZipArchive::fileExists(const std::string&filename) const
+bool ZipArchive::fileExists(const std::string &filename) const
 {
     return GetZipEntry(filename) != NULL;
 }
@@ -92,7 +92,7 @@ std::string ZipArchive::getArchiveFileName() const
 }
 
 /** Get the full list of file names available in the archive.*/
-bool ZipArchive::getFileNames(osgDB::Archive::FileNameList&fileNameList) const
+bool ZipArchive::getFileNames(osgDB::Archive::FileNameList &fileNameList) const
 {
     if (_zipLoaded)
     {
@@ -111,7 +111,7 @@ bool ZipArchive::getFileNames(osgDB::Archive::FileNameList&fileNameList) const
     }
 }
 
-bool ZipArchive::open(const std::string&file, ArchiveStatus status, const osgDB::ReaderWriter::Options *options)
+bool ZipArchive::open(const std::string &file, ArchiveStatus status, const osgDB::ReaderWriter::Options *options)
 {
     if (!_zipLoaded)
     {
@@ -132,7 +132,7 @@ bool ZipArchive::open(const std::string&file, ArchiveStatus status, const osgDB:
             _password = ReadPassword(options);
 
             // open the zip file in this thread:
-            const PerThreadData&data = getDataNoLock();
+            const PerThreadData &data = getDataNoLock();
 
             // establish a shared (read-only) index:
             if (data._zipHandle != NULL)
@@ -146,7 +146,7 @@ bool ZipArchive::open(const std::string&file, ArchiveStatus status, const osgDB:
     return _zipLoaded;
 }
 
-bool ZipArchive::open(std::istream&fin, const osgDB::ReaderWriter::Options *options)
+bool ZipArchive::open(std::istream &fin, const osgDB::ReaderWriter::Options *options)
 {
     if (!_zipLoaded)
     {
@@ -169,7 +169,7 @@ bool ZipArchive::open(std::istream&fin, const osgDB::ReaderWriter::Options *opti
             _password = ReadPassword(options);
 
             // open on this thread:
-            const PerThreadData&data = getDataNoLock();
+            const PerThreadData &data = getDataNoLock();
 
             if (data._zipHandle != NULL)
             {
@@ -182,7 +182,7 @@ bool ZipArchive::open(std::istream&fin, const osgDB::ReaderWriter::Options *opti
     return _zipLoaded;
 }
 
-osgDB::ReaderWriter::ReadResult ZipArchive::readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ZipArchive::readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult rresult = osgDB::ReaderWriter::ReadResult::FILE_NOT_HANDLED;
 
@@ -217,7 +217,7 @@ osgDB::ReaderWriter::ReadResult ZipArchive::readObject(const std::string&file, c
     return rresult;
 }
 
-osgDB::ReaderWriter::ReadResult ZipArchive::readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ZipArchive::readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult rresult = osgDB::ReaderWriter::ReadResult::FILE_NOT_HANDLED;
 
@@ -252,7 +252,7 @@ osgDB::ReaderWriter::ReadResult ZipArchive::readImage(const std::string&file, co
     return rresult;
 }
 
-osgDB::ReaderWriter::ReadResult ZipArchive::readHeightField(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ZipArchive::readHeightField(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult rresult = osgDB::ReaderWriter::ReadResult::FILE_NOT_HANDLED;
 
@@ -287,7 +287,7 @@ osgDB::ReaderWriter::ReadResult ZipArchive::readHeightField(const std::string&fi
     return rresult;
 }
 
-osgDB::ReaderWriter::ReadResult ZipArchive::readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ZipArchive::readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult rresult = osgDB::ReaderWriter::ReadResult::FILE_NOT_HANDLED;
 
@@ -323,7 +323,7 @@ osgDB::ReaderWriter::ReadResult ZipArchive::readNode(const std::string&file, con
 }
 
 
-osgDB::ReaderWriter::ReadResult ZipArchive::readShader(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ZipArchive::readShader(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult rresult = osgDB::ReaderWriter::ReadResult::FILE_NOT_HANDLED;
 
@@ -384,7 +384,7 @@ osgDB::ReaderWriter::WriteResult ZipArchive::writeShader(const osg::Shader& /*sh
 }
 
 
-osgDB::ReaderWriter* ZipArchive::ReadFromZipEntry(const ZIPENTRY *ze, const osgDB::ReaderWriter::Options *options, std::stringstream&buffer) const
+osgDB::ReaderWriter* ZipArchive::ReadFromZipEntry(const ZIPENTRY *ze, const osgDB::ReaderWriter::Options *options, std::stringstream &buffer) const
 {
     if (ze != 0)
     {
@@ -392,7 +392,7 @@ osgDB::ReaderWriter* ZipArchive::ReadFromZipEntry(const ZIPENTRY *ze, const osgD
         if (ibuf)
         {
             // fetch the handle for the current thread:
-            const PerThreadData&data = getData();
+            const PerThreadData &data = getData();
             if (data._zipHandle != NULL)
             {
                 ZRESULT result         = UnzipItem(data._zipHandle, ze->index, ibuf, ze->unc_size);
@@ -422,7 +422,7 @@ osgDB::ReaderWriter* ZipArchive::ReadFromZipEntry(const ZIPENTRY *ze, const osgD
     return NULL;
 }
 
-void CleanupFileString(std::string&strFileOrDir)
+void CleanupFileString(std::string &strFileOrDir)
 {
     if (strFileOrDir.empty())
     {
@@ -478,7 +478,7 @@ void ZipArchive::IndexZipFiles(HZIP hz)
     }
 }
 
-ZIPENTRY* ZipArchive::GetZipEntry(const std::string&filename)
+ZIPENTRY* ZipArchive::GetZipEntry(const std::string &filename)
 {
     ZIPENTRY    *ze        = NULL;
     std::string fileToLoad = filename;
@@ -494,7 +494,7 @@ ZIPENTRY* ZipArchive::GetZipEntry(const std::string&filename)
     return ze;
 }
 
-const ZIPENTRY* ZipArchive::GetZipEntry(const std::string&filename) const
+const ZIPENTRY* ZipArchive::GetZipEntry(const std::string &filename) const
 {
     ZIPENTRY    *ze        = NULL;
     std::string fileToLoad = filename;
@@ -510,7 +510,7 @@ const ZIPENTRY* ZipArchive::GetZipEntry(const std::string&filename) const
     return ze;
 }
 
-osgDB::FileType ZipArchive::getFileType(const std::string&filename) const
+osgDB::FileType ZipArchive::getFileType(const std::string &filename) const
 {
     const ZIPENTRY *ze = GetZipEntry(filename);
 
@@ -533,7 +533,7 @@ osgDB::FileType ZipArchive::getFileType(const std::string&filename) const
     return osgDB::FILE_NOT_FOUND;
 }
 
-osgDB::DirectoryContents ZipArchive::getDirectoryContents(const std::string&dirName) const
+osgDB::DirectoryContents ZipArchive::getDirectoryContents(const std::string &dirName) const
 {
     osgDB::DirectoryContents dirContents;
 
@@ -654,7 +654,7 @@ ZipArchive::getDataNoLock() const
         ZipArchive *ncThis = const_cast<ZipArchive*>(this);
 
         // data does not already exist, so open the ZIP with a handle exclusively for this thread:
-        PerThreadData&data = ncThis->_perThreadData[current];
+        PerThreadData &data = ncThis->_perThreadData[current];
         if (!_filename.empty())
         {
             data._zipHandle = OpenZip(_filename.c_str(), _password.c_str());

@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkElevationRange(const osgSim::ElevationSector&sector)
+static bool checkElevationRange(const osgSim::ElevationSector &sector)
 {
     return true;
 }
 
-static bool readElevationRange(osgDB::InputStream&is, osgSim::ElevationSector&sector)
+static bool readElevationRange(osgDB::InputStream &is, osgSim::ElevationSector &sector)
 {
     float minElevation, maxElevation, fadeAngle;
 
@@ -17,7 +17,7 @@ static bool readElevationRange(osgDB::InputStream&is, osgSim::ElevationSector&se
     return true;
 }
 
-static bool writeElevationRange(osgDB::OutputStream&os, const osgSim::ElevationSector&sector)
+static bool writeElevationRange(osgDB::OutputStream &os, const osgSim::ElevationSector &sector)
 {
     os << sector.getMinElevation() << sector.getMaxElevation() << sector.getFadeAngle() << std::endl;
     return true;

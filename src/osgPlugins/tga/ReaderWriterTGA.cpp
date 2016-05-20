@@ -254,7 +254,7 @@ rle_decode(unsigned char **src,
 
 
 unsigned char*
-simage_tga_load(std::istream&fin,
+simage_tga_load(std::istream &fin,
                 int *width_ret,
                 int *height_ret,
                 int *numComponents_ret)
@@ -518,7 +518,7 @@ virtual const char* className() const
     return "TGA Image Reader";
 }
 
-ReadResult readTGAStream(std::istream&fin) const
+ReadResult readTGAStream(std::istream &fin) const
 {
     unsigned char *imageData = NULL;
     int           width_ret;
@@ -555,22 +555,22 @@ ReadResult readTGAStream(std::istream&fin) const
     return pOsgImage;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const Options* = NULL) const
+virtual ReadResult readImage(std::istream &fin, const Options* = NULL) const
 {
     return readTGAStream(fin);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -592,7 +592,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-bool saveTGAStream(const osg::Image&image, std::ostream&fout) const
+bool saveTGAStream(const osg::Image &image, std::ostream &fout) const
 {
     if (!image.data())
         return false;
@@ -658,7 +658,7 @@ bool saveTGAStream(const osg::Image&image, std::ostream&fout) const
     return true;
 }
 
-virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options*) const
+virtual WriteResult writeImage(const osg::Image &image, std::ostream &fout, const Options*) const
 {
     if (saveTGAStream(image, fout))
         return WriteResult::FILE_SAVED;
@@ -666,7 +666,7 @@ virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const 
         return WriteResult::ERROR_IN_WRITING_FILE;
 }
 
-virtual WriteResult writeImage(const osg::Image&image, const std::string&fileName, const Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, const std::string &fileName, const Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 

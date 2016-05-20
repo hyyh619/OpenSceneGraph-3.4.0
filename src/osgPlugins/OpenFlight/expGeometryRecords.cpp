@@ -48,7 +48,7 @@ static unsigned int LAYER_7(0x80000000 >> 6);
 
 
 bool
-FltExportVisitor::isLit(const osg::Geometry&geom) const
+FltExportVisitor::isLit(const osg::Geometry &geom) const
 {
     const osg::StateSet *ss = getCurrentStateSet();
 
@@ -59,7 +59,7 @@ FltExportVisitor::isLit(const osg::Geometry&geom) const
 }
 
 bool
-FltExportVisitor::isTextured(int unit, const osg::Geometry&geom) const
+FltExportVisitor::isTextured(int unit, const osg::Geometry &geom) const
 {
     const osg::StateSet *ss = getCurrentStateSet();
     bool                texOn(ss->getTextureMode(unit, GL_TEXTURE_2D) & osg::StateAttribute::ON);
@@ -77,7 +77,7 @@ FltExportVisitor::isMesh(const GLenum mode) const
 }
 
 bool
-FltExportVisitor::atLeastOneFace(const osg::Geometry&geom) const
+FltExportVisitor::atLeastOneFace(const osg::Geometry &geom) const
 {
     // Return true if at least one PrimitiveSet mode will use a Face record.
     unsigned int jdx;
@@ -93,7 +93,7 @@ FltExportVisitor::atLeastOneFace(const osg::Geometry&geom) const
     return false;
 }
 bool
-FltExportVisitor::atLeastOneMesh(const osg::Geometry&geom) const
+FltExportVisitor::atLeastOneMesh(const osg::Geometry &geom) const
 {
     // Return true if at least one PrimitiveSet mode will use a Mesh record.
     unsigned int jdx;
@@ -110,7 +110,7 @@ FltExportVisitor::atLeastOneMesh(const osg::Geometry&geom) const
 }
 
 void
-FltExportVisitor::writeFace(const osg::Geode&geode, const osg::Geometry&geom, GLenum mode)
+FltExportVisitor::writeFace(const osg::Geode &geode, const osg::Geometry &geom, GLenum mode)
 {
     enum DrawMode
     {
@@ -325,7 +325,7 @@ FltExportVisitor::writeFace(const osg::Geode&geode, const osg::Geometry&geom, GL
 
 
 void
-FltExportVisitor::writeMesh(const osg::Geode&geode, const osg::Geometry&geom)
+FltExportVisitor::writeMesh(const osg::Geode &geode, const osg::Geometry &geom)
 {
     enum DrawMode
     {
@@ -518,7 +518,7 @@ FltExportVisitor::writeVertexList(int first, unsigned int count)
 }
 
 int
-FltExportVisitor::writeVertexList(const std::vector<unsigned int>&indices, unsigned int count)
+FltExportVisitor::writeVertexList(const std::vector<unsigned int> &indices, unsigned int count)
 {
     _records->writeInt16((int16) VERTEX_LIST_OP);
     _records->writeUInt16(4 + (count * 4));
@@ -534,7 +534,7 @@ FltExportVisitor::writeVertexList(const std::vector<unsigned int>&indices, unsig
 }
 
 void
-FltExportVisitor::writeMeshPrimitive(const std::vector<unsigned int>&indices, GLenum mode)
+FltExportVisitor::writeMeshPrimitive(const std::vector<unsigned int> &indices, GLenum mode)
 {
     int16 primType;
 
@@ -576,7 +576,7 @@ FltExportVisitor::writeMeshPrimitive(const std::vector<unsigned int>&indices, GL
 }
 
 void
-FltExportVisitor::writeLocalVertexPool(const osg::Geometry&geom)
+FltExportVisitor::writeLocalVertexPool(const osg::Geometry &geom)
 {
     // Attribute Mask
     static const unsigned int HAS_POSITION = 0x80000000u >> 0;
@@ -758,7 +758,7 @@ FltExportVisitor::writeLocalVertexPool(const osg::Geometry&geom)
 }
 
 void
-FltExportVisitor::writeMultitexture(const osg::Geometry&geom)
+FltExportVisitor::writeMultitexture(const osg::Geometry &geom)
 {
     unsigned int numLayers(0);
     uint32       flags(0);
@@ -812,7 +812,7 @@ FltExportVisitor::writeMultitexture(const osg::Geometry&geom)
 }
 
 void
-FltExportVisitor::writeUVList(int numVerts, const osg::Geometry&geom, const std::vector<unsigned int>&indices)
+FltExportVisitor::writeUVList(int numVerts, const osg::Geometry &geom, const std::vector<unsigned int> &indices)
 {
     unsigned int numLayers(0);
     uint32       flags(0);
@@ -871,7 +871,7 @@ FltExportVisitor::writeUVList(int numVerts, const osg::Geometry&geom, const std:
 
 
 void
-FltExportVisitor::writeUVList(int numVerts, const osg::Geometry&geom, unsigned int first)
+FltExportVisitor::writeUVList(int numVerts, const osg::Geometry &geom, unsigned int first)
 {
     unsigned int numLayers(0);
     uint32       flags(0);
@@ -937,7 +937,7 @@ FltExportVisitor::writeUVList(int numVerts, const osg::Geometry&geom, unsigned i
 
 
 void
-FltExportVisitor::handleDrawArrays(const osg::DrawArrays *da, const osg::Geometry&geom, const osg::Geode&geode)
+FltExportVisitor::handleDrawArrays(const osg::DrawArrays *da, const osg::Geometry &geom, const osg::Geode &geode)
 {
     GLint   first = da->getFirst();
     GLsizei count = da->getCount();
@@ -1013,7 +1013,7 @@ FltExportVisitor::handleDrawArrays(const osg::DrawArrays *da, const osg::Geometr
 }
 
 void
-FltExportVisitor::handleDrawArrayLengths(const osg::DrawArrayLengths *dal, const osg::Geometry&geom, const osg::Geode&geode)
+FltExportVisitor::handleDrawArrayLengths(const osg::DrawArrayLengths *dal, const osg::Geometry &geom, const osg::Geode &geode)
 {
     GLint  first = dal->getFirst();
     GLenum mode  = dal->getMode();
@@ -1110,7 +1110,7 @@ FltExportVisitor::handleDrawArrayLengths(const osg::DrawArrayLengths *dal, const
 }
 
 void
-FltExportVisitor::handleDrawElements(const osg::DrawElements *de, const osg::Geometry&geom, const osg::Geode&geode)
+FltExportVisitor::handleDrawElements(const osg::DrawElements *de, const osg::Geometry &geom, const osg::Geode &geode)
 {
     GLenum mode = de->getMode();
 

@@ -199,7 +199,7 @@ SoNode* ConvertToInventor::getIvSceneGraph() const
 }
 
 
-void ConvertToInventor::apply(osg::Node&node)
+void ConvertToInventor::apply(osg::Node &node)
 {
 #ifdef DEBUG_IV_WRITER
     OSG_INFO << "IvWriter: node traversed" << std::endl;
@@ -210,7 +210,7 @@ void ConvertToInventor::apply(osg::Node&node)
 
 
 template<typename fieldClass, typename ivType, typename osgType>
-void osgArray2ivMField_template(const osg::Array *array, fieldClass&field, int startIndex = 0, int stopIndex = 0, int numItemsUntilMinusOne = 0)
+void osgArray2ivMField_template(const osg::Array *array, fieldClass &field, int startIndex = 0, int stopIndex = 0, int numItemsUntilMinusOne = 0)
 {
     int i, num = array->getNumElements();
 
@@ -282,7 +282,7 @@ void osgArray2ivMField_composite_template_worker<SbVec3f, float, 2>(SbVec3f *des
 
 
 template<typename fieldClass, typename ivType, typename osgType, int shift>
-void osgArray2ivMField_composite_template(const osg::Array *array, fieldClass&field, int startIndex = 0, int stopIndex = 0, int numItemsUntilMinusOne = 0)
+void osgArray2ivMField_composite_template(const osg::Array *array, fieldClass &field, int startIndex = 0, int stopIndex = 0, int numItemsUntilMinusOne = 0)
 {
     int num = array->getNumElements();
 
@@ -306,7 +306,7 @@ void osgArray2ivMField_composite_template(const osg::Array *array, fieldClass&fi
 
 
 template<typename fieldClass, typename ivType, typename osgType, int numComponents>
-void osgArray2ivMField_pack_template(const osg::Array *array, fieldClass&field,
+void osgArray2ivMField_pack_template(const osg::Array *array, fieldClass &field,
                                      osgType mul, osgType max, osgType min,
                                      int startIndex = 0, int stopIndex = 0, int numItemsUntilMinusOne = 0)
 {
@@ -348,7 +348,7 @@ void osgArray2ivMField_pack_template(const osg::Array *array, fieldClass&field,
 
 
 template<typename fieldClass, typename fieldItemType>
-bool ivApplicateIntType(const osg::Array *array, fieldClass&field, int startIndex, int stopIndex, int numItemsUntilMinusOne)
+bool ivApplicateIntType(const osg::Array *array, fieldClass &field, int startIndex, int stopIndex, int numItemsUntilMinusOne)
 {
     if (field.isOfType(fieldClass::getClassTypeId()))
     {
@@ -390,7 +390,7 @@ bool ivApplicateIntType(const osg::Array *array, fieldClass&field, int startInde
 }
 
 
-static void osgArray2ivMField(const osg::Array *array, SoMField&field, int startIndex = 0, int stopIndex = 0, int numItemsUntilMinusOne = 0)
+static void osgArray2ivMField(const osg::Array *array, SoMField &field, int startIndex = 0, int stopIndex = 0, int numItemsUntilMinusOne = 0)
 {
     if (field.isOfType(SoMFFloat::getClassTypeId()))
     {
@@ -557,7 +557,7 @@ bool ivProcessArray(const osg::Array *drawElemIndices,
 
 
 static void processIndices(const osg::Array *drawElemIndices,
-                           SoMFInt32&ivIndices,
+                           SoMFInt32 &ivIndices,
                            int startIndex, int stopIndex, int numItemsUntilMinusOne)
 {
     if (drawElemIndices)
@@ -621,7 +621,7 @@ static void postProcessDrawArrayLengths(const osg::DrawArrayLengths *drawArrayLe
 }
 
 
-static void postProcessField(const SbIntList&runLengths, osg::PrimitiveSet::Mode primType,
+static void postProcessField(const SbIntList &runLengths, osg::PrimitiveSet::Mode primType,
                              SoMFInt32 *field, deprecated_osg::Geometry::AttributeBinding binding)
 {
     if (binding == deprecated_osg::Geometry::BIND_OFF || binding == deprecated_osg::Geometry::BIND_OVERALL ||
@@ -868,8 +868,8 @@ static SoTexture2::Wrap convertTextureWrap(osg::Texture::WrapMode osgWrap)
 }
 
 
-static void setSoTransform(SoTransform *tr, const osg::Vec3&translation, const osg::Quat&rotation,
-                           const osg::Vec3&scale = osg::Vec3(1., 1., 1.))
+static void setSoTransform(SoTransform *tr, const osg::Vec3 &translation, const osg::Quat &rotation,
+                           const osg::Vec3 &scale = osg::Vec3(1., 1., 1.))
 {
     tr->translation.setValue(translation.ptr());
     tr->rotation.setValue(rotation.x(), rotation.y(), rotation.z(), rotation.w());
@@ -878,7 +878,7 @@ static void setSoTransform(SoTransform *tr, const osg::Vec3&translation, const o
 }
 
 
-static bool updateMode(bool&flag, const osg::StateAttribute::GLModeValue value)
+static bool updateMode(bool &flag, const osg::StateAttribute::GLModeValue value)
 {
     if (value & osg::StateAttribute::INHERIT)
         return flag;
@@ -1012,7 +1012,7 @@ ConvertToInventor::InventorState* ConvertToInventor::createInventorState(const o
                     ivTexturesMap[ivState->osgTexture][ivState->osgTexEnv] = ivState->ivTexture;
 
                     // texture file name
-                    const std::string&textureName = ivState->osgTexture->getImage(0)->getFileName();
+                    const std::string &textureName = ivState->osgTexture->getImage(0)->getFileName();
                     ivState->ivTexture->filename.setValue(textureName.c_str()); // FIXME: handle inlined texture data in the files
 
                     // wrap
@@ -1221,10 +1221,10 @@ void ConvertToInventor::popInventorState()
 static bool processPrimitiveSet(const deprecated_osg::Geometry *g, const osg::PrimitiveSet *pset,
                                 osg::UIntArray *drawElemIndices, bool needSeparateTriangles,
                                 int elementsCount, int primSize, const int startIndex, int stopIndex,
-                                int&normalIndex, int&colorIndex,
+                                int &normalIndex, int &colorIndex,
                                 SoNode *ivCoords, SoNormal *ivNormals, SoNode *ivMaterial,
                                 SoNode *ivTexCoords, SoNode *ivTexture, SoShape *shape,
-                                SoSeparator*&indexedRoot, SoSeparator*&nonIndexedRoot)
+                                SoSeparator* &indexedRoot, SoSeparator* &nonIndexedRoot)
 {
     bool                        ok                = true;
     const osg::DrawArrayLengths *drawArrayLengths =
@@ -2040,7 +2040,7 @@ void ConvertToInventor::processShapeDrawable(const osg::ShapeDrawable *d, Invent
     class MyShapeVisitor : public osg::ConstShapeVisitor
     {
 public:
-    void processNode(SoNode *ivNode, const osg::Vec3&center, osg::Quat rotation,
+    void processNode(SoNode *ivNode, const osg::Vec3 &center, osg::Quat rotation,
                      SoGroup *root)
     {
         // convert rotation
@@ -2073,14 +2073,14 @@ public:
         }
     }
 
-    virtual void apply(const osg::Sphere&s)
+    virtual void apply(const osg::Sphere &s)
     {
         SoSphere *ivSphere = new SoSphere;
 
         ivSphere->radius.setValue(s.getRadius());
         processNode(ivSphere, s.getCenter(), osg::Quat(0., osg::Vec3(1., 0., 0.)), ivState->ivHead);
     }
-    virtual void apply(const osg::Box&b)
+    virtual void apply(const osg::Box &b)
     {
         SoCube *ivCube = new SoCube;
 
@@ -2089,7 +2089,7 @@ public:
         ivCube->depth  = 2 * b.getHalfLengths().x();
         processNode(ivCube, b.getCenter(), b.getRotation(), ivState->ivHead);
     }
-    virtual void apply(const osg::Cone&c)
+    virtual void apply(const osg::Cone &c)
     {
         SoCone *ivCone = new SoCone;
 
@@ -2099,7 +2099,7 @@ public:
         newCenter.ptr()[2] -= c.getBaseOffset();
         processNode(ivCone, newCenter, c.getRotation(), ivState->ivHead);
     }
-    virtual void apply(const osg::Cylinder&c)
+    virtual void apply(const osg::Cylinder &c)
     {
         SoCylinder *ivCylinder = new SoCylinder;
 
@@ -2174,7 +2174,7 @@ void ConvertToInventor::processDrawable(osg::Drawable *d)
 }
 
 
-void ConvertToInventor::apply(osg::Geode&node)
+void ConvertToInventor::apply(osg::Geode &node)
 {
 #ifdef DEBUG_IV_WRITER
     OSG_INFO << "IvWriter: Geode traversed" << std::endl;
@@ -2196,7 +2196,7 @@ void ConvertToInventor::apply(osg::Geode&node)
 }
 
 
-void ConvertToInventor::apply(osg::Group&node)
+void ConvertToInventor::apply(osg::Group &node)
 {
 #ifdef DEBUG_IV_WRITER
     OSG_INFO << "IvWriter: Group traversed" << std::endl;
@@ -2211,7 +2211,7 @@ void ConvertToInventor::apply(osg::Group&node)
 }
 
 
-void ConvertToInventor::apply(osg::Billboard&node)
+void ConvertToInventor::apply(osg::Billboard &node)
 {
 #ifdef DEBUG_IV_WRITER
     OSG_INFO << "IvWriter: Billboard traversed" << std::endl;
@@ -2292,7 +2292,7 @@ void ConvertToInventor::apply(osg::Billboard&node)
 }
 
 
-void ConvertToInventor::apply(osg::MatrixTransform&node)
+void ConvertToInventor::apply(osg::MatrixTransform &node)
 {
 #ifdef DEBUG_IV_WRITER
     OSG_INFO << "IvWriter: MatrixTransform traversed" << std::endl;
@@ -2319,7 +2319,7 @@ void ConvertToInventor::apply(osg::MatrixTransform&node)
 }
 
 
-void ConvertToInventor::apply(osg::PositionAttitudeTransform&node)
+void ConvertToInventor::apply(osg::PositionAttitudeTransform &node)
 {
 #ifdef DEBUG_IV_WRITER
     OSG_INFO << "IvWriter: PositionAttitudeTransform traversed" << std::endl;
@@ -2339,7 +2339,7 @@ void ConvertToInventor::apply(osg::PositionAttitudeTransform&node)
 }
 
 
-void ConvertToInventor::apply(osg::LOD&node)
+void ConvertToInventor::apply(osg::LOD &node)
 {
 #ifdef DEBUG_IV_WRITER
     OSG_INFO << "IvWriter: LOD traversed" << std::endl;

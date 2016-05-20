@@ -48,13 +48,13 @@ struct VertexIndex
     VertexIndex(unsigned int vertexIndex, unsigned int drawableIndex, unsigned int normalIndex)
         : vertexIndex(vertexIndex), drawableIndex(drawableIndex), normalIndex(normalIndex)
     {}
-    VertexIndex(const VertexIndex&v) : vertexIndex(v.vertexIndex), drawableIndex(v.drawableIndex), normalIndex(v.normalIndex) {}
+    VertexIndex(const VertexIndex &v) : vertexIndex(v.vertexIndex), drawableIndex(v.drawableIndex), normalIndex(v.normalIndex) {}
 
     unsigned int vertexIndex;        ///< Index of the vertice position in the vec3 array
     unsigned int drawableIndex;
     unsigned int normalIndex;        ///< Normal index for all bindings except BIND_PER_VERTEX and BIND_OFF.
 
-    bool operator<(const VertexIndex&v) const
+    bool operator<(const VertexIndex &v) const
     {
         if (drawableIndex != v.drawableIndex)
             return drawableIndex < v.drawableIndex;
@@ -74,9 +74,9 @@ class WriterNodeVisitor : public osg::NodeVisitor
 public:
 WriterNodeVisitor(FbxScene *pScene,
                   FbxManager *pSdkManager,
-                  const std::string&fileName,
+                  const std::string &fileName,
                   const osgDB::ReaderWriter::Options *options,
-                  const std::string&srcDirectory) :
+                  const std::string &srcDirectory) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _pSdkManager(pSdkManager),
     _succeedLastApply(true),
@@ -101,11 +101,11 @@ void failedApply()
     _succeedLastApply = false;
 }
 
-virtual void apply(osg::Geode&node);
-virtual void apply(osg::Group&node);
-virtual void apply(osg::MatrixTransform&node);
+virtual void apply(osg::Geode &node);
+virtual void apply(osg::Group &node);
+virtual void apply(osg::MatrixTransform &node);
 
-void traverse(osg::Node&node)
+void traverse(osg::Node &node)
 {
     pushStateSet(node.getStateSet());
     osg::NodeVisitor::traverse(node);
@@ -147,8 +147,8 @@ class Material
 {
 public:
 ///Create a KfbxMaterial and KfbxTexture from osg::Texture and osg::Material.
-Material(WriterNodeVisitor&writerNodeVisitor,
-         osgDB::ExternalFileWriter&externalWriter,
+Material(WriterNodeVisitor &writerNodeVisitor,
+         osgDB::ExternalFileWriter &externalWriter,
          const osg::StateSet *stateset,
          const osg::Material *mat,
          const osg::Texture *tex,
@@ -193,7 +193,7 @@ protected:
 ///\todo It may be useful to compare stack of pointers (see pushStateset()) in order to keep the same number of FBX materials when doing reading and then writing without further processing.
 struct CompareStateSet
 {
-    bool operator ()(const osg::ref_ptr<const osg::StateSet>&ss1, const osg::ref_ptr<const osg::StateSet>&ss2) const
+    bool operator ()(const osg::ref_ptr<const osg::StateSet> &ss1, const osg::ref_ptr<const osg::StateSet> &ss2) const
     {
         return *ss1 < *ss2;
     }
@@ -206,16 +206,16 @@ private:
  *  \param listTriangles contain all the mesh's faces.
  *  \param texcoords tell us if we have to handle texture coordinates.
  */
-void buildFaces(const osg::Geode&geo,
-                ListTriangle&listTriangles,
+void buildFaces(const osg::Geode &geo,
+                ListTriangle &listTriangles,
                 bool texcoords);
 
 /// Set the layer for texture and Material in layer 0.
 void setLayerTextureAndMaterial(FbxMesh *mesh);
 
 /// Set Vertices, normals, and UVs
-void setControlPointAndNormalsAndUV(const osg::Geode&geo,
-                                    MapIndices&index_vert,
+void setControlPointAndNormalsAndUV(const osg::Geode &geo,
+                                    MapIndices &index_vert,
                                     bool texcoords,
                                     FbxMesh *fbxMesh);
 
@@ -227,9 +227,9 @@ void setControlPointAndNormalsAndUV(const osg::Geode&geo,
  *  \param drawable_n tell us which drawable we are building.
  */
 void createListTriangle(const osg::Geometry *geo,
-                        ListTriangle&listTriangles,
-                        bool&texcoords,
-                        unsigned int&drawable_n);
+                        ListTriangle &listTriangles,
+                        bool &texcoords,
+                        unsigned int &drawable_n);
 
 ///Store the material of the stateset in the MaterialMap.
 int processStateSet(const osg::StateSet *stateset);

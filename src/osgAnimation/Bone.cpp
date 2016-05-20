@@ -18,17 +18,17 @@
 
 using namespace osgAnimation;
 
-Bone::Bone(const Bone&b, const osg::CopyOp&copyop) : osg::MatrixTransform(b, copyop), _invBindInSkeletonSpace(b._invBindInSkeletonSpace), _boneInSkeletonSpace(b._boneInSkeletonSpace)
+Bone::Bone(const Bone &b, const osg::CopyOp &copyop) : osg::MatrixTransform(b, copyop), _invBindInSkeletonSpace(b._invBindInSkeletonSpace), _boneInSkeletonSpace(b._boneInSkeletonSpace)
 {}
 
-Bone::Bone(const std::string&name)
+Bone::Bone(const std::string &name)
 {
     if (!name.empty())
         setName(name);
 }
 
 
-void Bone::setDefaultUpdateCallback(const std::string&name)
+void Bone::setDefaultUpdateCallback(const std::string &name)
 {
     std::string cbName = name;
 
@@ -59,7 +59,7 @@ const Bone* Bone::getBoneParent() const
     if (getParents().empty())
         return 0;
 
-    const osg::Node::ParentList&parents = getParents();
+    const osg::Node::ParentList &parents = getParents();
 
     for (osg::Node::ParentList::const_iterator it = parents.begin(); it != parents.end(); ++it)
     {

@@ -25,7 +25,7 @@ RigTransformSoftware::RigTransformSoftware()
     _needInit = true;
 }
 
-bool RigTransformSoftware::init(RigGeometry&geom)
+bool RigTransformSoftware::init(RigGeometry &geom)
 {
     if (!geom.getSkeleton())
         return false;
@@ -45,7 +45,7 @@ bool RigTransformSoftware::init(RigGeometry&geom)
     return true;
 }
 
-void RigTransformSoftware::operator()(RigGeometry&geom)
+void RigTransformSoftware::operator()(RigGeometry &geom)
 {
     if (_needInit)
         if (!init(geom))
@@ -57,8 +57,8 @@ void RigTransformSoftware::operator()(RigGeometry&geom)
         return;
     }
 
-    osg::Geometry&source      = *geom.getSourceGeometry();
-    osg::Geometry&destination = geom;
+    osg::Geometry &source      = *geom.getSourceGeometry();
+    osg::Geometry &destination = geom;
 
     osg::Vec3Array *positionSrc = dynamic_cast<osg::Vec3Array*>(source.getVertexArray());
     osg::Vec3Array *positionDst = dynamic_cast<osg::Vec3Array*>(destination.getVertexArray());
@@ -107,7 +107,7 @@ void RigTransformSoftware::operator()(RigGeometry&geom)
     }
 }
 
-void RigTransformSoftware::initVertexSetFromBones(const BoneMap&map, const VertexInfluenceSet::UniqVertexSetToBoneSetList&influence)
+void RigTransformSoftware::initVertexSetFromBones(const BoneMap &map, const VertexInfluenceSet::UniqVertexSetToBoneSetList &influence)
 {
     _boneSetVertexSet.clear();
 
@@ -116,9 +116,9 @@ void RigTransformSoftware::initVertexSetFromBones(const BoneMap&map, const Verte
 
     for (int i = 0; i < size; i++)
     {
-        const VertexInfluenceSet::UniqVertexSetToBoneSet&inf      = influence[i];
-        int                                             nbBones   = inf.getBones().size();
-        BoneWeightList                                  &boneList = _boneSetVertexSet[i].getBones();
+        const VertexInfluenceSet::UniqVertexSetToBoneSet &inf      = influence[i];
+        int                                              nbBones   = inf.getBones().size();
+        BoneWeightList                                   &boneList = _boneSetVertexSet[i].getBones();
 
         double sumOfWeight = 0;
 

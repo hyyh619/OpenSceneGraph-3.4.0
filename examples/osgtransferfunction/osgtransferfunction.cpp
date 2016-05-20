@@ -66,7 +66,7 @@ ValueMap _valueMap;
 
 struct PopulateHistogram
 {
-    PopulateHistogram(Histogram::ValueMap&valueMap) :
+    PopulateHistogram(Histogram::ValueMap &valueMap) :
         _histogram(valueMap) {}
 
     float cast(char v)
@@ -102,7 +102,7 @@ struct PopulateHistogram
         return v;
     }
 
-    Histogram::ValueMap&_histogram;
+    Histogram::ValueMap &_histogram;
 
     void update(int v)
     {
@@ -305,7 +305,7 @@ osg::Node* Histogram::createGraphicalRepresentation()
     return transform.release();
 }
 
-osg::TransferFunction1D* readTransferFunctionFile(const std::string&filename, float colorScale = 1.0f)
+osg::TransferFunction1D* readTransferFunctionFile(const std::string &filename, float colorScale = 1.0f)
 {
     std::string foundFile = osgDB::findDataFile(filename);
 
@@ -350,13 +350,13 @@ public:
 osg::ref_ptr<osgVolume::TransferFunctionProperty> _tfp;
 
 #if 0
-virtual void apply(osgVolume::SwitchProperty&sp)
+virtual void apply(osgVolume::SwitchProperty &sp)
 {
     OSG_NOTICE << "Found SwitchProperty" << std::endl;
     apply(static_cast<osgVolume::CompositeProperty&>(sp));
 }
 
-virtual void apply(osgVolume::CompositeProperty&cp)
+virtual void apply(osgVolume::CompositeProperty &cp)
 {
     OSG_NOTICE << "Found CompositeProperty" << std::endl;
 
@@ -366,7 +366,7 @@ virtual void apply(osgVolume::CompositeProperty&cp)
     }
 }
 #endif
-virtual void apply(osgVolume::TransferFunctionProperty&tfp)
+virtual void apply(osgVolume::TransferFunctionProperty &tfp)
 {
     OSG_NOTICE << "Found TransferFunctionProperty " << &tfp << std::endl;
     _tfp = &tfp;
@@ -385,7 +385,7 @@ InsertTransferFunctionPropertyVisitor(osg::TransferFunction1D *tf)
 
 osg::ref_ptr<osgVolume::TransferFunctionProperty> _tfp;
 
-virtual void apply(osgVolume::SwitchProperty&sp)
+virtual void apply(osgVolume::SwitchProperty &sp)
 {
     OSG_NOTICE << "Found SwitchProperty" << std::endl;
 
@@ -395,7 +395,7 @@ virtual void apply(osgVolume::SwitchProperty&sp)
     }
 }
 
-virtual void apply(osgVolume::CompositeProperty&cp)
+virtual void apply(osgVolume::CompositeProperty &cp)
 {
     OSG_NOTICE << "Found CompositeProperty, inserting transfer function" << std::endl;
     if (_tfp.valid())
@@ -411,7 +411,7 @@ FindVolumeTiles() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 typedef std::vector<osg::ref_ptr<osgVolume::VolumeTile> > Tiles;
 Tiles _tiles;
 
-void apply(osg::Group&group)
+void apply(osg::Group &group)
 {
     osgVolume::VolumeTile *tile = dynamic_cast<osgVolume::VolumeTile*>(&group);
 
@@ -427,12 +427,12 @@ void apply(osg::Group&group)
 class MyScriptCallback : public osg::CallbackObject
 {
 public:
-MyScriptCallback(osg::ScriptEngine *se, osg::Script *script, const std::string&entryPoint) : _scriptEngine(se), _script(script)
+MyScriptCallback(osg::ScriptEngine *se, osg::Script *script, const std::string &entryPoint) : _scriptEngine(se), _script(script)
 {
     setName(entryPoint);
 }
 
-virtual bool run(osg::Object *object, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+virtual bool run(osg::Object *object, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
 {
     inputParameters.insert(inputParameters.begin(), object);
     return _scriptEngine->run(_script.get(), getName(), inputParameters, outputParameters);
@@ -446,7 +446,7 @@ class MyClass : public osg::Object
 {
 public:
 MyClass() {}
-MyClass(const MyClass&rhs, const osg::CopyOp copyop = osg::CopyOp::SHALLOW_COPY) : osg::Object(rhs, copyop) {}
+MyClass(const MyClass &rhs, const osg::CopyOp copyop = osg::CopyOp::SHALLOW_COPY) : osg::Object(rhs, copyop) {}
 META_Object(local, MyClass)
 
 void myMethod()

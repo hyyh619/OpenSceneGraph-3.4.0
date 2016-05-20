@@ -23,6 +23,6 @@
 
 #include <osg/ArgumentParser>
 
-extern void runMultiThreadReadTests(int numThreads, osg::ArgumentParser&arguments);
+extern void runMultiThreadReadTests(int numThreads, osg::ArgumentParser &arguments);
 
 #endif

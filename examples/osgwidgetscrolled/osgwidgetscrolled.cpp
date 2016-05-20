@@ -12,7 +12,7 @@ const unsigned int MASK_2D = 0xF0000000;
 
 // NOTE: THIS IS JUST A TEMPORARY HACK! :) This functionality will all eventually be
 // encapsulate into another class in osgWidget proper.
-bool scrollWindow(osgWidget::Event&ev)
+bool scrollWindow(osgWidget::Event &ev)
 {
     // The first thing we need to do is make sure we have a Frame object...
     osgWidget::Frame *frame = dynamic_cast<osgWidget::Frame*>(ev.getWindow());
@@ -30,7 +30,7 @@ bool scrollWindow(osgWidget::Event&ev)
 
     // Lets get the visible area so that we can use it to make sure our scrolling action
     // is necessary in the first place.
-    const osgWidget::Quad&va = ew->getWindow()->getVisibleArea();
+    const osgWidget::Quad &va = ew->getWindow()->getVisibleArea();
 
     // The user wants to scroll up; make sure that the visible area's Y origin isn't already
     // at 0.0f, 0.0f.
@@ -49,7 +49,7 @@ bool scrollWindow(osgWidget::Event&ev)
     return true;
 }
 
-bool changeTheme(osgWidget::Event&ev)
+bool changeTheme(osgWidget::Event &ev)
 {
     std::string theme;
 

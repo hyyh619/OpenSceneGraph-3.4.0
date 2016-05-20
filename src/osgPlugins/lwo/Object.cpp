@@ -20,10 +20,10 @@ namespace
 #if 0
 bool triangle_is_clockwise(const osg::Vec3Array *points, int a, int b, int c)
 {
-    const osg::Vec3&A    = (*points)[a];
-    const osg::Vec3&B    = (*points)[b];
-    const osg::Vec3&C    = (*points)[c];
-    float          area2 = 0;
+    const osg::Vec3 &A    = (*points)[a];
+    const osg::Vec3 &B    = (*points)[b];
+    const osg::Vec3 &C    = (*points)[c];
+    float           area2 = 0;
 
     area2 += A.x() * B.y() - B.x() * A.y();
     area2 += B.x() * C.y() - C.x() * B.y();
@@ -60,13 +60,13 @@ Object::Object()
     :    csf_(new LwoCoordFixer)
 {}
 
-Object::Object(const iff::Chunk_list&data)
+Object::Object(const iff::Chunk_list &data)
     :    csf_(new LwoCoordFixer)
 {
     build(data);
 }
 
-void Object::build(const iff::Chunk_list&data)
+void Object::build(const iff::Chunk_list &data)
 {
     clips_.clear();
     surfaces_.clear();
@@ -86,7 +86,7 @@ void Object::build(const iff::Chunk_list&data)
     generate_auto_texture_maps();
 }
 
-void Object::scan_clips(const iff::Chunk_list&data)
+void Object::scan_clips(const iff::Chunk_list &data)
 {
     for (iff::Chunk_list::const_iterator i = data.begin(); i != data.end(); ++i)
     {
@@ -98,7 +98,7 @@ void Object::scan_clips(const iff::Chunk_list&data)
     }
 }
 
-void Object::scan_surfaces(const iff::Chunk_list&data)
+void Object::scan_surfaces(const iff::Chunk_list &data)
 {
     for (iff::Chunk_list::const_iterator i = data.begin(); i != data.end(); ++i)
     {
@@ -110,7 +110,7 @@ void Object::scan_surfaces(const iff::Chunk_list&data)
     }
 }
 
-void Object::parse(const iff::Chunk_list&data)
+void Object::parse(const iff::Chunk_list &data)
 {
     typedef std::vector<std::string> String_list;
     String_list tag_strings;
@@ -446,7 +446,7 @@ void Object::generate_auto_texture_maps()
     {
         for (Surface::Block_map::iterator j = i->second.blocks().begin(); j != i->second.blocks().end(); ++j)
         {
-            Block&block = j->second;
+            Block &block = j->second;
             if (block.get_type() == "IMAP")
             {
                 if (block.get_image_map().projection == Image_map::UV)

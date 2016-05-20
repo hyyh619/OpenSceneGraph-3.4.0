@@ -46,14 +46,14 @@ void ObjectCache::addObjectCache(ObjectCache *objectCache)
 }
 
 
-void ObjectCache::addEntryToObjectCache(const std::string&filename, osg::Object *object, double timestamp)
+void ObjectCache::addEntryToObjectCache(const std::string &filename, osg::Object *object, double timestamp)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
 
     _objectCache[filename] = ObjectTimeStampPair(object, timestamp);
 }
 
-osg::Object* ObjectCache::getFromObjectCache(const std::string&fileName)
+osg::Object* ObjectCache::getFromObjectCache(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
     ObjectCacheMap::iterator                    itr = _objectCache.find(fileName);
@@ -64,7 +64,7 @@ osg::Object* ObjectCache::getFromObjectCache(const std::string&fileName)
         return 0;
 }
 
-osg::ref_ptr<osg::Object> ObjectCache::getRefFromObjectCache(const std::string&fileName)
+osg::ref_ptr<osg::Object> ObjectCache::getRefFromObjectCache(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
     ObjectCacheMap::iterator                    itr = _objectCache.find(fileName);
@@ -116,7 +116,7 @@ void ObjectCache::removeExpiredObjectsInCache(double expiryTime)
     }
 }
 
-void ObjectCache::removeFromObjectCache(const std::string&fileName)
+void ObjectCache::removeFromObjectCache(const std::string &fileName)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_objectCacheMutex);
     ObjectCacheMap::iterator                    itr = _objectCache.find(fileName);

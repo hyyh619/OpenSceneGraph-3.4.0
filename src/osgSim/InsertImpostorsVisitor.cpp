@@ -37,12 +37,12 @@ void InsertImpostorsVisitor::reset()
     _numNestedImpostors = 0;
 }
 
-void InsertImpostorsVisitor::apply(Node&node)
+void InsertImpostorsVisitor::apply(Node &node)
 {
     traverse(node);
 }
 
-void InsertImpostorsVisitor::apply(Group&node)
+void InsertImpostorsVisitor::apply(Group &node)
 {
     _groupList.push_back(&node);
 
@@ -55,7 +55,7 @@ void InsertImpostorsVisitor::apply(Group&node)
     --_numNestedImpostors;
 }
 
-void InsertImpostorsVisitor::apply(LOD&node)
+void InsertImpostorsVisitor::apply(LOD &node)
 {
     if (dynamic_cast<osgSim::Impostor*>(&node) == 0)
     {
@@ -91,7 +91,7 @@ void InsertImpostorsVisitor::insertImpostors()
             Group *group = (*itr);
             if (group != previousGroup)
             {
-                const BoundingSphere&bs = group->getBound();
+                const BoundingSphere &bs = group->getBound();
                 if (bs.valid())
                 {
                     // take a copy of the original parent list
@@ -136,7 +136,7 @@ void InsertImpostorsVisitor::insertImpostors()
             osg::LOD *lod = (*itr);
             if (lod != previousLOD)
             {
-                const osg::BoundingSphere&bs = lod->getBound();
+                const osg::BoundingSphere &bs = lod->getBound();
                 if (bs.valid())
                 {
                     // take a copy of the original parent list

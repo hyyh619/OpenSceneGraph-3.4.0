@@ -25,7 +25,7 @@ SampleMaski::SampleMaski()
     _sampleMask[1u] = ~0u;
 }
 
-SampleMaski::SampleMaski(const SampleMaski&sampleMaski, const CopyOp&copyop) :
+SampleMaski::SampleMaski(const SampleMaski &sampleMaski, const CopyOp &copyop) :
     StateAttribute(sampleMaski, copyop)
 {
     _sampleMask[0u] = sampleMaski._sampleMask[0u];
@@ -35,7 +35,7 @@ SampleMaski::SampleMaski(const SampleMaski&sampleMaski, const CopyOp&copyop) :
 SampleMaski::~SampleMaski()
 {}
 
-int SampleMaski::compare(const StateAttribute&sa) const
+int SampleMaski::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -47,7 +47,7 @@ int SampleMaski::compare(const StateAttribute&sa) const
     return 0; // passed all the above comparison macros, must be equal.
 }
 
-void SampleMaski::apply(State&state) const
+void SampleMaski::apply(State &state) const
 {
     // get "per-context" extensions
     const GLExtensions *extensions = state.get<GLExtensions>();

@@ -54,7 +54,7 @@ void EdgeCollector::Edge::clear()
 
 
 
-bool EdgeCollector::Edge::operator <(const Edge&rhs) const
+bool EdgeCollector::Edge::operator <(const Edge &rhs) const
 {
     if (dereference_check_less(_p1, rhs._p1))
         return true;
@@ -65,7 +65,7 @@ bool EdgeCollector::Edge::operator <(const Edge&rhs) const
     return dereference_check_less(_p2, rhs._p2);
 }
 
-bool EdgeCollector::Edge::operator ==(const Edge&rhs) const
+bool EdgeCollector::Edge::operator ==(const Edge &rhs) const
 {
     if (&rhs == this)
         return true;
@@ -79,7 +79,7 @@ bool EdgeCollector::Edge::operator ==(const Edge&rhs) const
     return true;
 }
 
-bool EdgeCollector::Edge::operator !=(const Edge&rhs) const
+bool EdgeCollector::Edge::operator !=(const Edge &rhs) const
 {
     if (&rhs == this)
         return false;
@@ -122,7 +122,7 @@ void EdgeCollector::Triangle::clear()
     _e3 = 0;
 }
 
-bool EdgeCollector::Triangle::operator <(const Triangle&rhs) const
+bool EdgeCollector::Triangle::operator <(const Triangle &rhs) const
 {
     if (dereference_check_less(_p1, rhs._p1))
         return true;
@@ -285,7 +285,7 @@ EdgeCollector::Point* EdgeCollector::addPoint(Triangle *triangle, Point *point)
     return point;
 }
 
-void EdgeCollector::getBoundaryEdgeList(EdgeList&el)
+void EdgeCollector::getBoundaryEdgeList(EdgeList &el)
 {
     for (EdgeSet::iterator it = _edgeSet.begin(), end = _edgeSet.end(); it != end; ++it)
     {
@@ -294,7 +294,7 @@ void EdgeCollector::getBoundaryEdgeList(EdgeList&el)
     }
 }
 
-bool EdgeCollector::extractBoundaryEdgeloop(EdgeList&el, Edgeloop&edgeloop)
+bool EdgeCollector::extractBoundaryEdgeloop(EdgeList &el, Edgeloop &edgeloop)
 {
     if (el.empty())
         return false;
@@ -346,7 +346,7 @@ bool EdgeCollector::extractBoundaryEdgeloop(EdgeList&el, Edgeloop&edgeloop)
     return true;
 }
 
-bool EdgeCollector::extractBoundaryEdgeloopList(EdgeList&el, EdgeloopList&edgeloopList)
+bool EdgeCollector::extractBoundaryEdgeloopList(EdgeList &el, EdgeloopList &edgeloopList)
 {
     while (!el.empty())
     {
@@ -391,10 +391,10 @@ typedef osg::TriangleIndexFunctor<CollectTriangleOperator> CollectTriangleIndexF
 class CopyVertexArrayToPointsVisitor : public osg::ArrayVisitor
 {
 public:
-CopyVertexArrayToPointsVisitor(EdgeCollector::PointList&pointList) :
+CopyVertexArrayToPointsVisitor(EdgeCollector::PointList &pointList) :
     _pointList(pointList) {}
 
-virtual void apply(osg::Vec2Array&array)
+virtual void apply(osg::Vec2Array &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -408,7 +408,7 @@ virtual void apply(osg::Vec2Array&array)
     }
 }
 
-virtual void apply(osg::Vec3Array&array)
+virtual void apply(osg::Vec3Array &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -422,7 +422,7 @@ virtual void apply(osg::Vec3Array&array)
     }
 }
 
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::Vec4Array &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -436,7 +436,7 @@ virtual void apply(osg::Vec4Array&array)
     }
 }
 
-virtual void apply(osg::Vec2dArray&array)
+virtual void apply(osg::Vec2dArray &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -450,7 +450,7 @@ virtual void apply(osg::Vec2dArray&array)
     }
 }
 
-virtual void apply(osg::Vec3dArray&array)
+virtual void apply(osg::Vec3dArray &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -464,7 +464,7 @@ virtual void apply(osg::Vec3dArray&array)
     }
 }
 
-virtual void apply(osg::Vec4dArray&array)
+virtual void apply(osg::Vec4dArray &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -478,7 +478,7 @@ virtual void apply(osg::Vec4dArray&array)
     }
 }
 
-EdgeCollector::PointList&_pointList;
+EdgeCollector::PointList &_pointList;
 
 protected:
 
@@ -518,7 +518,7 @@ void EdgeCollector::setGeometry(osg::Geometry *geometry)
 
 // ** search BoundaryEdgeloop in the geometry, extrude this loop
 // **  and create primitiveSet to link original loop and extruded loop
-void EdgeCollector::getEdgeloopIndexList(IndexArrayList&ial)
+void EdgeCollector::getEdgeloopIndexList(IndexArrayList &ial)
 {
     // ** collect Boundary Edge
     EdgeList edgeList;

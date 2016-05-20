@@ -21,7 +21,7 @@ public:
 public:
 virtual void OnDraw(CDC *pDC);      // overridden to draw this view
 virtual void OnInitialUpdate();
-virtual BOOL PreCreateWindow(CREATESTRUCT&cs);
+virtual BOOL PreCreateWindow(CREATESTRUCT &cs);
 protected:
 
 // Implementation
@@ -29,7 +29,7 @@ public:
 virtual ~CMFC_OSG_MDIView();
 #ifdef _DEBUG
 virtual void AssertValid() const;
-virtual void Dump(CDumpContext&dc) const;
+virtual void Dump(CDumpContext &dc) const;
 #endif
 
 protected:

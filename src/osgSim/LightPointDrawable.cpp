@@ -41,7 +41,7 @@ LightPointDrawable::LightPointDrawable() :
     _colorMaskOff->setMask(false, false, false, false);
 }
 
-LightPointDrawable::LightPointDrawable(const LightPointDrawable&lpd, const osg::CopyOp&copyop) :
+LightPointDrawable::LightPointDrawable(const LightPointDrawable &lpd, const osg::CopyOp &copyop) :
     osg::Drawable(lpd, copyop),
     _endian(lpd._endian),
     _simulationTime(lpd._simulationTime),
@@ -81,10 +81,10 @@ void LightPointDrawable::reset()
 }
 
 
-void LightPointDrawable::drawImplementation(osg::RenderInfo&renderInfo) const
+void LightPointDrawable::drawImplementation(osg::RenderInfo &renderInfo) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     state.applyMode(GL_POINT_SMOOTH, true);
     state.applyMode(GL_BLEND, true);
@@ -106,7 +106,7 @@ void LightPointDrawable::drawImplementation(osg::RenderInfo&renderInfo) const
          sitr != _sizedOpaqueLightPointList.end();
          ++sitr, ++pointsize)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
         if (!lpl.empty())
         {
             glPointSize(pointsize);
@@ -126,7 +126,7 @@ void LightPointDrawable::drawImplementation(osg::RenderInfo&renderInfo) const
          sitr != _sizedBlendedLightPointList.end();
          ++sitr, ++pointsize)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
         if (!lpl.empty())
         {
             glPointSize(pointsize);
@@ -143,7 +143,7 @@ void LightPointDrawable::drawImplementation(osg::RenderInfo&renderInfo) const
          sitr != _sizedAdditiveLightPointList.end();
          ++sitr, ++pointsize)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
         if (!lpl.empty())
         {
             // state.applyMode(GL_POINT_SMOOTH,pointsize!=1);
@@ -180,7 +180,7 @@ osg::BoundingBox LightPointDrawable::computeBoundingBox() const
          sitr != _sizedOpaqueLightPointList.end();
          ++sitr)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
 
         for (LightPointList::const_iterator litr = lpl.begin();
              litr != lpl.end();
@@ -194,7 +194,7 @@ osg::BoundingBox LightPointDrawable::computeBoundingBox() const
          sitr != _sizedAdditiveLightPointList.end();
          ++sitr)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
 
         for (LightPointList::const_iterator litr = lpl.begin();
              litr != lpl.end();
@@ -208,7 +208,7 @@ osg::BoundingBox LightPointDrawable::computeBoundingBox() const
          sitr != _sizedBlendedLightPointList.end();
          ++sitr)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
 
         for (LightPointList::const_iterator litr = lpl.begin();
              litr != lpl.end();

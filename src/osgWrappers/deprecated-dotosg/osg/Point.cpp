@@ -13,8 +13,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Point_readLocalData(Object&obj, Input&fr);
-bool Point_writeLocalData(const Object&obj, Output&fw);
+bool Point_readLocalData(Object &obj, Input &fr);
+bool Point_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Point)
@@ -27,11 +27,11 @@ REGISTER_DOTOSGWRAPPER(Point)
 );
 
 
-bool Point_readLocalData(Object&obj, Input&fr)
+bool Point_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Point&point = static_cast<Point&>(obj);
+    Point &point = static_cast<Point&>(obj);
 
     float data;
 
@@ -62,9 +62,9 @@ bool Point_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Point_writeLocalData(const Object&obj, Output&fw)
+bool Point_writeLocalData(const Object &obj, Output &fw)
 {
-    const Point&point = static_cast<const Point&>(obj);
+    const Point &point = static_cast<const Point&>(obj);
 
     fw.indent() << "size " <<                  point.getSize() << std::endl;
     fw.indent() << "fade_threshold_size  " <<  point.getFadeThresholdSize() << std::endl;

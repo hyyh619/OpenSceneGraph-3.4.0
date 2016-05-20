@@ -133,7 +133,7 @@ bool VizGeorefSpline2D::change_point(int index, double Px, double Py, double *Pv
     return(true);
 }
 
-bool VizGeorefSpline2D::get_xy(int index, double&outX, double&outY)
+bool VizGeorefSpline2D::get_xy(int index, double &outX, double &outY)
 {
     bool ok;
 

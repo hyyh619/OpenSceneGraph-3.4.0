@@ -24,7 +24,7 @@ class FreeTypeFont : public osgText::Font::FontImplementation
 // declare the interface to a font.
 public:
 
-FreeTypeFont(const std::string&filename, FT_Face face, unsigned int flags);
+FreeTypeFont(const std::string &filename, FT_Face face, unsigned int flags);
 FreeTypeFont(FT_Byte *buffer, FT_Face face, unsigned int flags);
 
 virtual ~FreeTypeFont();
@@ -39,7 +39,7 @@ virtual bool supportsMultipleFontResolutions() const
     return true;
 }
 
-virtual osgText::Glyph* getGlyph(const osgText::FontResolution&fontRes, unsigned int charcode);
+virtual osgText::Glyph* getGlyph(const osgText::FontResolution &fontRes, unsigned int charcode);
 
 virtual osgText::Glyph3D* getGlyph3D(unsigned int charcode);
 
@@ -47,7 +47,7 @@ virtual osg::Vec2 getKerning(unsigned int leftcharcode, unsigned int rightcharco
 
 virtual bool hasVertical() const;
 
-virtual bool getVerticalSize(float&ascender, float&descender) const;
+virtual bool getVerticalSize(float &ascender, float &descender) const;
 
 float getCoordScale() const;
 
@@ -55,7 +55,7 @@ protected:
 
 void init();
 
-void setFontResolution(const osgText::FontResolution&fontSize);
+void setFontResolution(const osgText::FontResolution &fontSize);
 
 osgText::FontResolution _currentRes;
 

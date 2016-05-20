@@ -23,9 +23,9 @@ class PointsEventHandler : public osgGA::GUIEventHandler
 public:
 PointsEventHandler();
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&);
 
-void getUsage(osg::ApplicationUsage&usage) const;
+void getUsage(osg::ApplicationUsage &usage) const;
 
 void setStateSet(osg::StateSet *stateset)
 {

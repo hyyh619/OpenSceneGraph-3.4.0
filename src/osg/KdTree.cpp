@@ -28,20 +28,20 @@ using namespace osg;
 
 struct BuildKdTree
 {
-    BuildKdTree(KdTree&kdTree) :
+    BuildKdTree(KdTree &kdTree) :
         _kdTree(kdTree) {}
 
     typedef std::vector<osg::Vec3>            CenterList;
     typedef std::vector<unsigned int>           Indices;
     typedef std::vector<unsigned int>         AxisStack;
 
-    bool build(KdTree::BuildOptions&options, osg::Geometry *geometry);
+    bool build(KdTree::BuildOptions &options, osg::Geometry *geometry);
 
-    void computeDivisions(KdTree::BuildOptions&options);
+    void computeDivisions(KdTree::BuildOptions &options);
 
-    int divide(KdTree::BuildOptions&options, osg::BoundingBox&bb, int nodeIndex, unsigned int level);
+    int divide(KdTree::BuildOptions &options, osg::BoundingBox &bb, int nodeIndex, unsigned int level);
 
-    KdTree&_kdTree;
+    KdTree &_kdTree;
 
     osg::BoundingBox _bb;
     AxisStack        _axisStack;
@@ -68,9 +68,9 @@ struct TriangleIndicesCollector
 
     inline void operator ()(unsigned int p0, unsigned int p1, unsigned int p2)
     {
-        const osg::Vec3&v0 = (*(_buildKdTree->_kdTree.getVertices()))[p0];
-        const osg::Vec3&v1 = (*(_buildKdTree->_kdTree.getVertices()))[p1];
-        const osg::Vec3&v2 = (*(_buildKdTree->_kdTree.getVertices()))[p2];
+        const osg::Vec3 &v0 = (*(_buildKdTree->_kdTree.getVertices()))[p0];
+        const osg::Vec3 &v1 = (*(_buildKdTree->_kdTree.getVertices()))[p1];
+        const osg::Vec3 &v2 = (*(_buildKdTree->_kdTree.getVertices()))[p2];
 
         // discard degenerate points
         if (v0 == v1 || v1 == v2 || v2 == v0)
@@ -98,7 +98,7 @@ struct TriangleIndicesCollector
 //
 // BuildKdTree Implementation
 
-bool BuildKdTree::build(KdTree::BuildOptions&options, osg::Geometry *geometry)
+bool BuildKdTree::build(KdTree::BuildOptions &options, osg::Geometry *geometry)
 {
 #ifdef VERBOSE_OUTPUT
     OSG_NOTICE << "osg::KDTreeBuilder::createKDTree()" << std::endl; 146
@@ -169,7 +169,7 @@ bool BuildKdTree::build(KdTree::BuildOptions&options, osg::Geometry *geometry)
     return !_kdTree.getNodes().empty();
 }
 
-void BuildKdTree::computeDivisions(KdTree::BuildOptions&options)
+void BuildKdTree::computeDivisions(KdTree::BuildOptions &options)
 {
     osg::Vec3 dimensions(_bb.xMax() - _bb.xMin(),
                          _bb.yMax() - _bb.yMin(),
@@ -209,9 +209,9 @@ void BuildKdTree::computeDivisions(KdTree::BuildOptions&options)
 #endif
 }
 
-int BuildKdTree::divide(KdTree::BuildOptions&options, osg::BoundingBox&bb, int nodeIndex, unsigned int level)
+int BuildKdTree::divide(KdTree::BuildOptions &options, osg::BoundingBox &bb, int nodeIndex, unsigned int level)
 {
-    KdTree::KdNode&node = _kdTree.getNode(nodeIndex);
+    KdTree::KdNode &node = _kdTree.getNode(nodeIndex);
 
     bool needToDivide = level < _axisStack.size() &&
                         (node.first<0 && static_cast<unsigned int>(node.second)>options._targetNumTrianglesPerLeaf);
@@ -228,10 +228,10 @@ int BuildKdTree::divide(KdTree::BuildOptions&options, osg::BoundingBox&bb, int n
 
             for (int i = istart; i <= iend; ++i)
             {
-                const KdTree::Triangle&tri = _kdTree.getTriangle(_primitiveIndices[i]);
-                const osg::Vec3       &v0  = (*_kdTree.getVertices())[tri.p0];
-                const osg::Vec3       &v1  = (*_kdTree.getVertices())[tri.p1];
-                const osg::Vec3       &v2  = (*_kdTree.getVertices())[tri.p2];
+                const KdTree::Triangle &tri = _kdTree.getTriangle(_primitiveIndices[i]);
+                const osg::Vec3        &v0  = (*_kdTree.getVertices())[tri.p0];
+                const osg::Vec3        &v1  = (*_kdTree.getVertices())[tri.p1];
+                const osg::Vec3        &v2  = (*_kdTree.getVertices())[tri.p2];
                 node.bb.expandBy(v0);
                 node.bb.expandBy(v1);
                 node.bb.expandBy(v2);
@@ -395,7 +395,7 @@ int BuildKdTree::divide(KdTree::BuildOptions&options, osg::BoundingBox&bb, int n
         {
             // take a second reference to node we are working on as the std::vector<> resize could
             // have invalidate the previous node ref.
-            KdTree::KdNode&newNodeRef = _kdTree.getNode(nodeIndex);
+            KdTree::KdNode &newNodeRef = _kdTree.getNode(nodeIndex);
 
             newNodeRef.first  = leftChildIndex;
             newNodeRef.second = rightChildIndex;
@@ -446,11 +446,11 @@ int BuildKdTree::divide(KdTree::BuildOptions&options, osg::BoundingBox&bb, int n
 //
 struct IntersectKdTree
 {
-    IntersectKdTree(const osg::Vec3Array&vertices,
-                    const KdTree::KdNodeList&nodes,
-                    const KdTree::TriangleList&triangles,
-                    KdTree::LineSegmentIntersections&intersections,
-                    const osg::Vec3d&s, const osg::Vec3d&e) :
+    IntersectKdTree(const osg::Vec3Array &vertices,
+                    const KdTree::KdNodeList &nodes,
+                    const KdTree::TriangleList &triangles,
+                    KdTree::LineSegmentIntersections &intersections,
+                    const osg::Vec3d &s, const osg::Vec3d &e) :
         _vertices(vertices),
         _kdNodes(nodes),
         _triangles(triangles),
@@ -468,13 +468,13 @@ struct IntersectKdTree
         _d_invZ = _d.z() != 0.0f ? _d / _d.z() : osg::Vec3(0.0f, 0.0f, 0.0f);
     }
 
-    void intersect(const KdTree::KdNode&node, const osg::Vec3&s, const osg::Vec3&e) const;
-    bool intersectAndClip(osg::Vec3&s, osg::Vec3&e, const osg::BoundingBox&bb) const;
+    void intersect(const KdTree::KdNode &node, const osg::Vec3 &s, const osg::Vec3 &e) const;
+    bool intersectAndClip(osg::Vec3 &s, osg::Vec3 &e, const osg::BoundingBox &bb) const;
 
-    const osg::Vec3Array            &_vertices;
-    const KdTree::KdNodeList        &_kdNodes;
-    const KdTree::TriangleList      &_triangles;
-    KdTree::LineSegmentIntersections&_intersections;
+    const osg::Vec3Array             &_vertices;
+    const KdTree::KdNodeList         &_kdNodes;
+    const KdTree::TriangleList       &_triangles;
+    KdTree::LineSegmentIntersections &_intersections;
 
     osg::Vec3 _s;
     osg::Vec3 _e;
@@ -497,7 +497,7 @@ protected:
 };
 
 
-void IntersectKdTree::intersect(const KdTree::KdNode&node, const osg::Vec3&ls, const osg::Vec3&le) const
+void IntersectKdTree::intersect(const KdTree::KdNode &node, const osg::Vec3 &ls, const osg::Vec3 &le) const
 {
     if (node.first < 0)
     {
@@ -510,12 +510,12 @@ void IntersectKdTree::intersect(const KdTree::KdNode&node, const osg::Vec3&ls, c
         for (int i = istart; i < iend; ++i)
         {
             // const Triangle& tri = _triangles[_primitiveIndices[i]];
-            const KdTree::Triangle&tri = _triangles[i];
+            const KdTree::Triangle &tri = _triangles[i];
             // OSG_NOTICE<<"   tri("<<tri.p1<<","<<tri.p2<<","<<tri.p3<<")"<<std::endl;
 
-            const osg::Vec3&v0 = _vertices[tri.p0];
-            const osg::Vec3&v1 = _vertices[tri.p1];
-            const osg::Vec3&v2 = _vertices[tri.p2];
+            const osg::Vec3 &v0 = _vertices[tri.p0];
+            const osg::Vec3 &v1 = _vertices[tri.p1];
+            const osg::Vec3 &v2 = _vertices[tri.p2];
 
             osg::Vec3 T  = _s - v0;
             osg::Vec3 E2 = v2 - v0;
@@ -593,7 +593,7 @@ void IntersectKdTree::intersect(const KdTree::KdNode&node, const osg::Vec3&ls, c
 
 #if 1
             _intersections.push_back(KdTree::LineSegmentIntersection());
-            KdTree::LineSegmentIntersection&intersection = _intersections.back();
+            KdTree::LineSegmentIntersection &intersection = _intersections.back();
 
             intersection.ratio              = r;
             intersection.primitiveIndex     = i;
@@ -632,7 +632,7 @@ void IntersectKdTree::intersect(const KdTree::KdNode&node, const osg::Vec3&ls, c
     }
 }
 
-bool IntersectKdTree::intersectAndClip(osg::Vec3&s, osg::Vec3&e, const osg::BoundingBox&bb) const
+bool IntersectKdTree::intersectAndClip(osg::Vec3 &s, osg::Vec3 &e, const osg::BoundingBox &bb) const
 {
     // return true;
 
@@ -792,21 +792,21 @@ KdTree::BuildOptions::BuildOptions() :
 KdTree::KdTree()
 {}
 
-KdTree::KdTree(const KdTree&rhs, const osg::CopyOp&copyop) :
+KdTree::KdTree(const KdTree &rhs, const osg::CopyOp &copyop) :
     Shape(rhs, copyop),
     _vertices(rhs._vertices),
     _kdNodes(rhs._kdNodes),
     _triangles(rhs._triangles)
 {}
 
-bool KdTree::build(BuildOptions&options, osg::Geometry *geometry)
+bool KdTree::build(BuildOptions &options, osg::Geometry *geometry)
 {
     BuildKdTree build(*this);
 
     return build.build(options, geometry);
 }
 
-bool KdTree::intersect(const osg::Vec3d&start, const osg::Vec3d&end, LineSegmentIntersections&intersections) const
+bool KdTree::intersect(const osg::Vec3d &start, const osg::Vec3d &end, LineSegmentIntersections &intersections) const
 {
     if (_kdNodes.empty())
     {
@@ -836,13 +836,13 @@ KdTreeBuilder::KdTreeBuilder() :
     _kdTreePrototype = new osg::KdTree;
 }
 
-KdTreeBuilder::KdTreeBuilder(const KdTreeBuilder&rhs) :
+KdTreeBuilder::KdTreeBuilder(const KdTreeBuilder &rhs) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _buildOptions(rhs._buildOptions),
     _kdTreePrototype(rhs._kdTreePrototype)
 {}
 
-void KdTreeBuilder::apply(osg::Geometry&geometry)
+void KdTreeBuilder::apply(osg::Geometry &geometry)
 {
     osg::KdTree *previous = dynamic_cast<osg::KdTree*>(geometry.getShape());
 

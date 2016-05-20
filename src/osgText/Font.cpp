@@ -52,7 +52,7 @@ static OpenThreads::ReentrantMutex&getFontFileMutex()
     return s_FontFileMutex;
 }
 
-std::string osgText::findFontFile(const std::string&str)
+std::string osgText::findFontFile(const std::string &str)
 {
     // try looking in OSGFILEPATH etc first for fonts.
     std::string filename = osgDB::findDataFile(str);
@@ -115,7 +115,7 @@ std::string osgText::findFontFile(const std::string&str)
     return std::string();
 }
 
-osgText::Font* osgText::readFontFile(const std::string&filename, const osgDB::ReaderWriter::Options *userOptions)
+osgText::Font* osgText::readFontFile(const std::string &filename, const osgDB::ReaderWriter::Options *userOptions)
 {
     if (filename.empty())
         return 0;
@@ -147,7 +147,7 @@ osgText::Font* osgText::readFontFile(const std::string&filename, const osgDB::Re
     return 0;
 }
 
-osgText::Font* osgText::readFontStream(std::istream&stream, const osgDB::ReaderWriter::Options *userOptions)
+osgText::Font* osgText::readFontStream(std::istream &stream, const osgDB::ReaderWriter::Options *userOptions)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(getFontFileMutex());
 
@@ -188,7 +188,7 @@ osgText::Font* osgText::readFontStream(std::istream&stream, const osgDB::ReaderW
     return 0;
 }
 
-osg::ref_ptr<Font> osgText::readRefFontFile(const std::string&filename, const osgDB::ReaderWriter::Options *userOptions)
+osg::ref_ptr<Font> osgText::readRefFontFile(const std::string &filename, const osgDB::ReaderWriter::Options *userOptions)
 {
     if (filename.empty())
         return 0;
@@ -216,7 +216,7 @@ osg::ref_ptr<Font> osgText::readRefFontFile(const std::string&filename, const os
     return 0;
 }
 
-osg::ref_ptr<Font> osgText::readRefFontStream(std::istream&stream, const osgDB::ReaderWriter::Options *userOptions)
+osg::ref_ptr<Font> osgText::readRefFontStream(std::istream &stream, const osgDB::ReaderWriter::Options *userOptions)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(getFontFileMutex());
 
@@ -387,7 +387,7 @@ osg::Texture::FilterMode Font::getMagFilterHint() const
 }
 
 
-Glyph* Font::getGlyph(const FontResolution&fontRes, unsigned int charcode)
+Glyph* Font::getGlyph(const FontResolution &fontRes, unsigned int charcode)
 {
     if (!_implementation)
         return 0;
@@ -504,7 +504,7 @@ bool Font::hasVertical() const
 
 
 
-void Font::addGlyph(const FontResolution&fontRes, unsigned int charcode, Glyph *glyph)
+void Font::addGlyph(const FontResolution &fontRes, unsigned int charcode, Glyph *glyph)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_glyphMapMutex);
 

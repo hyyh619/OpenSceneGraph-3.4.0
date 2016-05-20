@@ -6,12 +6,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkTimeControlPointMap(const osg::AnimationPath&path)
+static bool checkTimeControlPointMap(const osg::AnimationPath &path)
 {
     return path.getTimeControlPointMap().size() > 0;
 }
 
-static bool readTimeControlPointMap(osgDB::InputStream&is, osg::AnimationPath&path)
+static bool readTimeControlPointMap(osgDB::InputStream &is, osg::AnimationPath &path)
 {
     unsigned int size = is.readSize();
 
@@ -38,9 +38,9 @@ static bool readTimeControlPointMap(osgDB::InputStream&is, osg::AnimationPath&pa
     return true;
 }
 
-static bool writeTimeControlPointMap(osgDB::OutputStream&os, const osg::AnimationPath&path)
+static bool writeTimeControlPointMap(osgDB::OutputStream &os, const osg::AnimationPath &path)
 {
-    const osg::AnimationPath::TimeControlPointMap&map = path.getTimeControlPointMap();
+    const osg::AnimationPath::TimeControlPointMap &map = path.getTimeControlPointMap();
 
     os.writeSize(map.size());
     if (map.size() > 0)
@@ -50,7 +50,7 @@ static bool writeTimeControlPointMap(osgDB::OutputStream&os, const osg::Animatio
         for (osg::AnimationPath::TimeControlPointMap::const_iterator itr = map.begin();
              itr != map.end(); ++itr)
         {
-            const osg::AnimationPath::ControlPoint&pt = itr->second;
+            const osg::AnimationPath::ControlPoint &pt = itr->second;
             os << os.PROPERTY("Time") << itr->first << os.BEGIN_BRACKET << std::endl;
             os << os.PROPERTY("Position") << pt.getPosition() << std::endl;
             os << os.PROPERTY("Rotation") << pt.getRotation() << std::endl;

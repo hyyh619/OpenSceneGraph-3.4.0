@@ -14,8 +14,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ProxyNode_readLocalData(Object&obj, Input&fr);
-bool ProxyNode_writeLocalData(const Object&obj, Output&fw);
+bool ProxyNode_readLocalData(Object &obj, Input &fr);
+bool ProxyNode_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(ProxyNode)
@@ -27,11 +27,11 @@ REGISTER_DOTOSGWRAPPER(ProxyNode)
     &ProxyNode_writeLocalData
 );
 
-bool ProxyNode_readLocalData(Object&obj, Input&fr)
+bool ProxyNode_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ProxyNode&proxyNode = static_cast<ProxyNode&>(obj);
+    ProxyNode &proxyNode = static_cast<ProxyNode&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -70,7 +70,7 @@ bool ProxyNode_readLocalData(Object&obj, Input&fr)
 
     if (fr.getOptions() && !fr.getOptions()->getDatabasePathList().empty())
     {
-        const std::string&path = fr.getOptions()->getDatabasePathList().front();
+        const std::string &path = fr.getOptions()->getDatabasePathList().front();
         if (!path.empty())
         {
             proxyNode.setDatabasePath(path);
@@ -132,7 +132,7 @@ bool ProxyNode_readLocalData(Object&obj, Input&fr)
 
     for (i = 0; i < num_children; i++)
     {
-        osgDB::FilePathList&fpl = ((osgDB::ReaderWriter::Options*)fr.getOptions())->getDatabasePathList();
+        osgDB::FilePathList &fpl = ((osgDB::ReaderWriter::Options*)fr.getOptions())->getDatabasePathList();
         fpl.push_front(fpl.empty() ? osgDB::getFilePath(proxyNode.getFileName(i)) : fpl.front() + '/' + osgDB::getFilePath(proxyNode.getFileName(i)));
         Node *node = NULL;
         if ((node = fr.readNode()) != NULL)
@@ -150,7 +150,7 @@ bool ProxyNode_readLocalData(Object&obj, Input&fr)
         {
             if (i >= proxyNode.getNumChildren() && !proxyNode.getFileName(i).empty())
             {
-                osgDB::FilePathList&fpl = ((osgDB::ReaderWriter::Options*)fr.getOptions())->getDatabasePathList();
+                osgDB::FilePathList &fpl = ((osgDB::ReaderWriter::Options*)fr.getOptions())->getDatabasePathList();
                 fpl.push_front(fpl.empty() ? osgDB::getFilePath(proxyNode.getFileName(i)) : fpl.front() + '/' + osgDB::getFilePath(proxyNode.getFileName(i)));
                 osg::Node *node = osgDB::readNodeFile(proxyNode.getFileName(i), fr.getOptions());
                 fpl.pop_front();
@@ -169,7 +169,7 @@ bool ProxyNode_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool ProxyNode_writeLocalData(const Object&obj, Output&fw)
+bool ProxyNode_writeLocalData(const Object &obj, Output &fw)
 {
     bool includeExternalReferences     = false;
     bool useOriginalExternalReferences = true;
@@ -187,7 +187,7 @@ bool ProxyNode_writeLocalData(const Object&obj, Output&fw)
         }
     }
 
-    const ProxyNode&proxyNode = static_cast<const ProxyNode&>(obj);
+    const ProxyNode &proxyNode = static_cast<const ProxyNode&>(obj);
 
     if (proxyNode.getCenterMode() == osg::ProxyNode::USER_DEFINED_CENTER)
         fw.indent() << "Center " << proxyNode.getCenter() << std::endl;

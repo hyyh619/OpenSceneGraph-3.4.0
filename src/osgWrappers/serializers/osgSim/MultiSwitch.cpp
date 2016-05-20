@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkValues(const osgSim::MultiSwitch&node)
+static bool checkValues(const osgSim::MultiSwitch &node)
 {
     return node.getSwitchSetList().size() > 0;
 }
 
-static bool readValues(osgDB::InputStream&is, osgSim::MultiSwitch&node)
+static bool readValues(osgDB::InputStream &is, osgSim::MultiSwitch &node)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -33,15 +33,15 @@ static bool readValues(osgDB::InputStream&is, osgSim::MultiSwitch&node)
     return true;
 }
 
-static bool writeValues(osgDB::OutputStream&os, const osgSim::MultiSwitch&node)
+static bool writeValues(osgDB::OutputStream &os, const osgSim::MultiSwitch &node)
 {
-    const osgSim::MultiSwitch::SwitchSetList&switches = node.getSwitchSetList();
+    const osgSim::MultiSwitch::SwitchSetList &switches = node.getSwitchSetList();
 
     os.writeSize(switches.size()); os << os.BEGIN_BRACKET << std::endl;
 
     for (unsigned int i = 0; i < switches.size(); ++i)
     {
-        const osgSim::MultiSwitch::ValueList&values = node.getValueList(i);
+        const osgSim::MultiSwitch::ValueList &values = node.getValueList(i);
         os << os.PROPERTY("SwitchSet"); os.writeSize(values.size());
         os << os.BEGIN_BRACKET << std::endl;
 

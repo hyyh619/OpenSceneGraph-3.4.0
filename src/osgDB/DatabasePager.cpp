@@ -85,8 +85,8 @@ class RefPtrAdapter
 public:
 typedef typename PointerTraits<typename FuncObj::argument_type>::PointeeType PointeeType;
 typedef osg::ref_ptr<PointeeType> RefPtrType;
-explicit RefPtrAdapter(const FuncObj&funcObj) : _func(funcObj) {}
-typename FuncObj::result_type operator()(const RefPtrType&refPtr) const
+explicit RefPtrAdapter(const FuncObj &funcObj) : _func(funcObj) {}
+typename FuncObj::result_type operator()(const RefPtrType &refPtr) const
 {
     return _func(refPtr.get());
 }
@@ -95,7 +95,7 @@ FuncObj _func;
 };
 
 template<typename FuncObj>
-RefPtrAdapter<FuncObj> refPtrAdapt(const FuncObj&func)
+RefPtrAdapter<FuncObj> refPtrAdapt(const FuncObj &func)
 {
     return RefPtrAdapter<FuncObj>(func);
 }
@@ -140,7 +140,7 @@ ExpirePagedLODsVisitor() :
 
 META_NodeVisitor("osgDB", "ExpirePagedLODsVisitor")
 
-virtual void apply(osg::PagedLOD&plod)
+virtual void apply(osg::PagedLOD &plod)
 {
     _childPagedLODs.insert(&plod);
     markRequestsExpired(&plod);
@@ -152,7 +152,7 @@ virtual void apply(osg::PagedLOD&plod)
 // PagedLOD::removeExpiredChildren, and the _childPagedLODs member
 // contains all the PagedLOD objects found in those children's
 // subgraphs.
-bool removeExpiredChildrenAndFindPagedLODs(osg::PagedLOD *plod, double expiryTime, unsigned int expiryFrame, osg::NodeList&removedChildren)
+bool removeExpiredChildrenAndFindPagedLODs(osg::PagedLOD *plod, double expiryTime, unsigned int expiryFrame, osg::NodeList &removedChildren)
 {
     size_t sizeBefore = removedChildren.size();
 
@@ -210,7 +210,7 @@ virtual unsigned int size()
 
 virtual void removeExpiredChildren(
     int numberChildrenToRemove, double expiryTime, unsigned int expiryFrame,
-    DatabasePager::ObjectList&childrenRemoved, bool visitActive)
+    DatabasePager::ObjectList &childrenRemoved, bool visitActive)
 {
     int leftToRemove = numberChildrenToRemove;
 
@@ -262,7 +262,7 @@ virtual void removeExpiredChildren(
     }
 }
 
-virtual void removeNodes(osg::NodeList&nodesToRemove)
+virtual void removeNodes(osg::NodeList &nodesToRemove)
 {
     for (osg::NodeList::iterator itr = nodesToRemove.begin();
          itr != nodesToRemove.end();
@@ -279,7 +279,7 @@ virtual void removeNodes(osg::NodeList&nodesToRemove)
     }
 }
 
-virtual void insertPagedLOD(const osg::observer_ptr<osg::PagedLOD>&plod)
+virtual void insertPagedLOD(const osg::observer_ptr<osg::PagedLOD> &plod)
 {
     if (_pagedLODs.count(plod) != 0)
     {
@@ -293,7 +293,7 @@ virtual void insertPagedLOD(const osg::observer_ptr<osg::PagedLOD>&plod)
     _pagedLODs.insert(plod);
 }
 
-virtual bool containsPagedLOD(const osg::observer_ptr<osg::PagedLOD>&plod) const
+virtual bool containsPagedLOD(const osg::observer_ptr<osg::PagedLOD> &plod) const
 {
     return (_pagedLODs.count(plod) != 0);
 }
@@ -359,7 +359,7 @@ bool requiresCompilation() const
     return !empty();
 }
 
-virtual void apply(osg::Drawable&drawable)
+virtual void apply(osg::Drawable &drawable)
 {
     if (_kdTreeBuilder.valid() && _markerObject.get() != drawable.getUserData())
     {
@@ -375,7 +375,7 @@ virtual void apply(osg::Drawable&drawable)
     }
 }
 
-void apply(osg::Texture&texture)
+void apply(osg::Texture &texture)
 {
     // apply any changes if the texture is not static.
     if (texture.getDataVariance() != osg::Object::STATIC &&
@@ -422,7 +422,7 @@ FindCompileableGLObjectsVisitor&operator =(const FindCompileableGLObjectsVisitor
 //
 struct DatabasePager::SortFileRequestFunctor
 {
-    bool operator()(const osg::ref_ptr<DatabasePager::DatabaseRequest>&lhs, const osg::ref_ptr<DatabasePager::DatabaseRequest>&rhs) const
+    bool operator()(const osg::ref_ptr<DatabasePager::DatabaseRequest> &lhs, const osg::ref_ptr<DatabasePager::DatabaseRequest> &rhs) const
     {
         if (lhs->_timestampLastRequest > rhs->_timestampLastRequest)
             return true;
@@ -585,14 +585,14 @@ void DatabasePager::RequestQueue::addNoLock(DatabasePager::DatabaseRequest *data
     updateBlock();
 }
 
-void DatabasePager::RequestQueue::swap(RequestList&requestList)
+void DatabasePager::RequestQueue::swap(RequestList &requestList)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_requestMutex);
 
     _requestList.swap(requestList);
 }
 
-void DatabasePager::RequestQueue::takeFirst(osg::ref_ptr<DatabaseRequest>&databaseRequest)
+void DatabasePager::RequestQueue::takeFirst(osg::ref_ptr<DatabaseRequest> &databaseRequest)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_requestMutex);
 
@@ -648,7 +648,7 @@ void DatabasePager::RequestQueue::takeFirst(osg::ref_ptr<DatabaseRequest>&databa
 //
 //  ReadQueue
 //
-DatabasePager::ReadQueue::ReadQueue(DatabasePager *pager, const std::string&name) :
+DatabasePager::ReadQueue::ReadQueue(DatabasePager *pager, const std::string &name) :
     RequestQueue(pager),
     _name(name)
 {
@@ -665,7 +665,7 @@ void DatabasePager::ReadQueue::updateBlock()
 //
 //  DatabaseThread
 //
-DatabasePager::DatabaseThread::DatabaseThread(DatabasePager *pager, Mode mode, const std::string&name) :
+DatabasePager::DatabaseThread::DatabaseThread(DatabasePager *pager, Mode mode, const std::string &name) :
     _done(false),
     _active(false),
     _pager(pager),
@@ -673,7 +673,7 @@ DatabasePager::DatabaseThread::DatabaseThread(DatabasePager *pager, Mode mode, c
     _name(name)
 {}
 
-DatabasePager::DatabaseThread::DatabaseThread(const DatabaseThread&dt, DatabasePager *pager) :
+DatabasePager::DatabaseThread::DatabaseThread(const DatabaseThread &dt, DatabasePager *pager) :
     _done(false),
     _active(false),
     _pager(pager),
@@ -1185,7 +1185,7 @@ DatabasePager::DatabasePager()
     _activePagedLODList = new SetBasedPagedLODList;
 }
 
-DatabasePager::DatabasePager(const DatabasePager&rhs)
+DatabasePager::DatabasePager(const DatabasePager &rhs)
 {
     // OSG_INFO<<"Constructing DatabasePager(const DatabasePager& )"<<std::endl;
 
@@ -1315,7 +1315,7 @@ void DatabasePager::setUpThreads(unsigned int totalNumThreads, unsigned int numH
     }
 }
 
-unsigned int DatabasePager::addDatabaseThread(DatabaseThread::Mode mode, const std::string&name)
+unsigned int DatabasePager::addDatabaseThread(DatabaseThread::Mode mode, const std::string &name)
 {
     OSG_INFO << "DatabasePager::addDatabaseThread() " << name << std::endl;
 
@@ -1437,9 +1437,9 @@ bool DatabasePager::getRequestsInProgress() const
 }
 
 
-void DatabasePager::requestNodeFile(const std::string&fileName, osg::NodePath&nodePath,
+void DatabasePager::requestNodeFile(const std::string &fileName, osg::NodePath &nodePath,
                                     float priority, const osg::FrameStamp *framestamp,
-                                    osg::ref_ptr<osg::Referenced>&databaseRequestRef,
+                                    osg::ref_ptr<osg::Referenced> &databaseRequestRef,
                                     const osg::Referenced *options)
 {
     osgDB::Options *loadOptions = dynamic_cast<osgDB::Options*>(const_cast<osg::Referenced*>(options));
@@ -1651,7 +1651,7 @@ bool DatabasePager::requiresUpdateSceneGraph() const
     return !(_dataToMergeList->empty());
 }
 
-void DatabasePager::updateSceneGraph(const osg::FrameStamp&frameStamp)
+void DatabasePager::updateSceneGraph(const osg::FrameStamp &frameStamp)
 {
 #define UPDATE_TIMING 0
 #if UPDATE_TIMING
@@ -1688,7 +1688,7 @@ void DatabasePager::updateSceneGraph(const osg::FrameStamp&frameStamp)
 }
 
 
-void DatabasePager::addLoadedDataToSceneGraph(const osg::FrameStamp&frameStamp)
+void DatabasePager::addLoadedDataToSceneGraph(const osg::FrameStamp &frameStamp)
 {
     double       timeStamp   = frameStamp.getReferenceTime();
     unsigned int frameNumber = frameStamp.getFrameNumber();
@@ -1790,7 +1790,7 @@ void DatabasePager::addLoadedDataToSceneGraph(const osg::FrameStamp&frameStamp)
 
 
 
-void DatabasePager::removeExpiredSubgraphs(const osg::FrameStamp&frameStamp)
+void DatabasePager::removeExpiredSubgraphs(const osg::FrameStamp &frameStamp)
 {
     static double s_total_iter_stage_a = 0.0;
     static double s_total_time_stage_a = 0.0;
@@ -1896,7 +1896,7 @@ class DatabasePager::FindPagedLODsVisitor : public osg::NodeVisitor
 {
 public:
 
-FindPagedLODsVisitor(DatabasePager::PagedLODList&pagedLODList, unsigned int frameNumber) :
+FindPagedLODsVisitor(DatabasePager::PagedLODList &pagedLODList, unsigned int frameNumber) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _activePagedLODList(pagedLODList),
     _frameNumber(frameNumber)
@@ -1904,7 +1904,7 @@ FindPagedLODsVisitor(DatabasePager::PagedLODList&pagedLODList, unsigned int fram
 
 META_NodeVisitor("osgDB", "FindPagedLODsVisitor")
 
-virtual void apply(osg::PagedLOD&plod)
+virtual void apply(osg::PagedLOD &plod)
 {
     plod.setFrameNumberOfLastTraversal(_frameNumber);
 
@@ -1914,8 +1914,8 @@ virtual void apply(osg::PagedLOD&plod)
     traverse(plod);
 }
 
-DatabasePager::PagedLODList&_activePagedLODList;
-unsigned int               _frameNumber;
+DatabasePager::PagedLODList &_activePagedLODList;
+unsigned int                _frameNumber;
 
 protected:
 

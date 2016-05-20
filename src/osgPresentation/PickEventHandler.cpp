@@ -22,7 +22,7 @@
 
 using namespace osgPresentation;
 
-PickEventHandler::PickEventHandler(osgPresentation::Operation operation, const JumpData&jumpData) :
+PickEventHandler::PickEventHandler(osgPresentation::Operation operation, const JumpData &jumpData) :
     _operation(operation),
     _jumpData(jumpData),
     _drawablesOnPush()
@@ -30,7 +30,7 @@ PickEventHandler::PickEventHandler(osgPresentation::Operation operation, const J
     OSG_INFO << "PickEventHandler::PickEventHandler(operation=" << operation << ", jumpData.relativeJump=" << jumpData.relativeJump << ", jumpData.=" << jumpData.slideNum << ", jumpData.layerNum=" << jumpData.layerNum << std::endl;
 }
 
-PickEventHandler::PickEventHandler(const std::string&str, osgPresentation::Operation operation, const JumpData&jumpData) :
+PickEventHandler::PickEventHandler(const std::string &str, osgPresentation::Operation operation, const JumpData &jumpData) :
     _command(str),
     _operation(operation),
     _jumpData(jumpData),
@@ -39,7 +39,7 @@ PickEventHandler::PickEventHandler(const std::string&str, osgPresentation::Opera
     OSG_INFO << "PickEventHandler::PickEventHandler(str=" << str << ", operation=" << operation << ", jumpData.relativeJump=" << jumpData.relativeJump << ", jumpData.=" << jumpData.slideNum << ", jumpData.layerNum=" << jumpData.layerNum << std::endl;
 }
 
-PickEventHandler::PickEventHandler(const osgPresentation::KeyPosition&keyPos, const JumpData&jumpData) :
+PickEventHandler::PickEventHandler(const osgPresentation::KeyPosition &keyPos, const JumpData &jumpData) :
     _keyPos(keyPos),
     _operation(osgPresentation::EVENT),
     _jumpData(jumpData),
@@ -49,7 +49,7 @@ PickEventHandler::PickEventHandler(const osgPresentation::KeyPosition&keyPos, co
 }
 
 
-bool PickEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor *nv)
+bool PickEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor *nv)
 {
     if (ea.getHandled())
         return false;
@@ -194,7 +194,7 @@ void PickEventHandler::doOperation()
         OSG_NOTICE << "Run " << _command << std::endl;
 
 #if 0
-        osgDB::FilePathList&paths = osgDB::getDataFilePathList();
+        osgDB::FilePathList &paths = osgDB::getDataFilePathList();
         if (!paths.empty())
         {
             #ifdef _WIN32

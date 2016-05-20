@@ -66,7 +66,7 @@ public:
     InputRectangle() : _left(-1.0), _bottom(-1.0), _width(2.0), _height(2.0) {}
     InputRectangle(float left, float right, float bottom, float top) :
         _left(left), _bottom(bottom), _width(right - left), _height(top - bottom) {}
-    InputRectangle(const InputRectangle&ir)
+    InputRectangle(const InputRectangle &ir)
     {
         _left   = ir._left;
         _bottom = ir._bottom;
@@ -124,7 +124,7 @@ RenderSurface* getReadDrawable()
     return _readDrawableRenderSurface;
 }
 
-void setInputRectangle(const InputRectangle&ir);
+void setInputRectangle(const InputRectangle &ir);
 const InputRectangle&getInputRectangle() const;
 void bindInputRectangleToWindowSize(bool);
 
@@ -161,7 +161,7 @@ int getScreenNum(void) const;
 
 /** Get the size of the screen in pixels the render surface
  * is to be created on.  */
-void getScreenSize(unsigned int&width, unsigned int&height) const;
+void getScreenSize(unsigned int &width, unsigned int &height) const;
 
 
 /** Default window name */
@@ -186,7 +186,7 @@ void  setWindowRectangle(int x, int y, unsigned int width, unsigned int height,
  * in screen space.  x and y determine the lower left hand corner
  * of the RenderSurface.  Width and height are given in screen
  * coordinates */
-void getWindowRectangle(int&x, int&y, unsigned int&width, unsigned int&height) const;
+void getWindowRectangle(int &x, int &y, unsigned int &width, unsigned int &height) const;
 /** Get the X coordinate of the origin of the RenderSurface's window */
 int getWindowOriginX() const;
 

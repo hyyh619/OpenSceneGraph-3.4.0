@@ -207,7 +207,7 @@ struct VisualAttribute
     }
 };
 
-void applyAttribute(const VisualAttribute&va, std::vector<int>&attribs);
+void applyAttribute(const VisualAttribute &va, std::vector<int> &attribs);
 void resetVisualInfo();
 
 std::vector<VisualAttribute> _visual_attributes;

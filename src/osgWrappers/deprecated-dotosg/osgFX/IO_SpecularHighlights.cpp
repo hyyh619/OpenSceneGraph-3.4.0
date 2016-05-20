@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool SpecularHighlights_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool SpecularHighlights_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool SpecularHighlights_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool SpecularHighlights_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(SpecularHighlights_Proxy)
 (
@@ -17,10 +17,10 @@ REGISTER_DOTOSGWRAPPER(SpecularHighlights_Proxy)
     SpecularHighlights_writeLocalData
 );
 
-bool SpecularHighlights_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool SpecularHighlights_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgFX::SpecularHighlights&myobj     = static_cast<osgFX::SpecularHighlights&>(obj);
-    bool                     itAdvanced = false;
+    osgFX::SpecularHighlights &myobj     = static_cast<osgFX::SpecularHighlights&>(obj);
+    bool                      itAdvanced = false;
 
     if (fr[0].matchWord("lightNumber"))
     {
@@ -71,9 +71,9 @@ bool SpecularHighlights_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool SpecularHighlights_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool SpecularHighlights_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgFX::SpecularHighlights&myobj = static_cast<const osgFX::SpecularHighlights&>(obj);
+    const osgFX::SpecularHighlights &myobj = static_cast<const osgFX::SpecularHighlights&>(obj);
 
     fw.indent() << "lightNumber " <<      myobj.getLightNumber() << "\n";
     fw.indent() << "textureUnit " <<      myobj.getTextureUnit() << "\n";

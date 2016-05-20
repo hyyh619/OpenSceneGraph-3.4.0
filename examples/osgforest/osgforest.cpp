@@ -74,7 +74,7 @@ Tree() :
     _height(1.0f),
     _type(0) {}
 
-Tree(const osg::Vec3&position, const osg::Vec4ub&color, float width, float height, unsigned int type) :
+Tree(const osg::Vec3 &position, const osg::Vec4ub &color, float width, float height, unsigned int type) :
     _position(position),
     _color(color),
     _width(width),
@@ -96,7 +96,7 @@ public:
 typedef std::vector<osg::ref_ptr<Cell> > CellList;
 
 Cell() : _parent(0) {}
-Cell(osg::BoundingBox&bb) : _parent(0), _bb(bb) {}
+Cell(osg::BoundingBox &bb) : _parent(0), _bb(bb) {}
 
 void addCell(Cell *cell)
 {
@@ -108,14 +108,14 @@ void addTree(Tree *tree)
     _trees.push_back(tree);
 }
 
-void addTrees(const TreeList&trees)
+void addTrees(const TreeList &trees)
 {
     _trees.insert(_trees.end(), trees.begin(), trees.end());
 }
 
 void computeBound();
 
-bool contains(const osg::Vec3&position) const
+bool contains(const osg::Vec3 &position) const
 {
     return _bb.contains(position);
 }
@@ -142,14 +142,14 @@ int random(int min, int max)
     return min + (int)((float)(max - min) * (float)rand() / (float)RAND_MAX);
 }
 
-osg::Geode* createTerrain(const osg::Vec3&origin, const osg::Vec3&size);
+osg::Geode* createTerrain(const osg::Vec3 &origin, const osg::Vec3 &size);
 
-void createTreeList(osg::Node *terrain, const osg::Vec3&origin, const osg::Vec3&size, unsigned int numTreesToCreate, TreeList&trees);
+void createTreeList(osg::Node *terrain, const osg::Vec3 &origin, const osg::Vec3 &size, unsigned int numTreesToCreate, TreeList &trees);
 
 osg::Geometry* createSprite(float w, float h, osg::Vec4ub color);
 
-osg::Geometry* createOrthogonalQuads(const osg::Vec3&pos, float w, float h, osg::Vec4ub color);
-osg::Geometry* createOrthogonalQuadsNoColor(const osg::Vec3&pos, float w, float h);
+osg::Geometry* createOrthogonalQuads(const osg::Vec3 &pos, float w, float h, osg::Vec4ub color);
+osg::Geometry* createOrthogonalQuadsNoColor(const osg::Vec3 &pos, float w, float h);
 
 osg::Node* createBillboardGraph(Cell *cell, osg::StateSet *stateset);
 
@@ -163,9 +163,9 @@ osg::Node* createGeometryShaderGraph(Cell *cell, osg::StateSet *stateset);
 
 osg::Node* createTextureBufferGraph(Cell *cell, osg::Geometry *templateGeometry);
 
-void CollectTreePositions(Cell *cell, std::vector<osg::Vec3>&positions);
+void CollectTreePositions(Cell *cell, std::vector<osg::Vec3> &positions);
 
-osg::Node* createHUDWithText(const std::string&text);
+osg::Node* createHUDWithText(const std::string &text);
 
 osg::Node* createScene(unsigned int numTreesToCreates, unsigned int maxNumTreesPerCell);
 
@@ -200,9 +200,9 @@ TechniqueEventHandler(ForestTechniqueManager *ttm = 0)
 
 META_Object(osgforestApp, TechniqueEventHandler);
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 protected:
 
@@ -213,7 +213,7 @@ TechniqueEventHandler(const TechniqueEventHandler&, const osg::CopyOp&) {}
 osg::ref_ptr<ForestTechniqueManager> _ForestTechniqueManager;
 };
 
-bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*)
+bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*)
 {
     switch (ea.getEventType())
     {
@@ -242,7 +242,7 @@ bool TechniqueEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAc
     }
 }
 
-void TechniqueEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void TechniqueEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("n or Left Arrow", "Advance to next technique");
     usage.addKeyboardMouseBinding("p or Right Array", "Move to previous technique");
@@ -407,7 +407,7 @@ void ForestTechniqueManager::Cell::bin()
     _cells.swap(cellsNotEmpty);
 }
 
-osg::Geode* ForestTechniqueManager::createTerrain(const osg::Vec3&origin, const osg::Vec3&size)
+osg::Geode* ForestTechniqueManager::createTerrain(const osg::Vec3 &origin, const osg::Vec3 &size)
 {
     osg::Geode *geode = new osg::Geode();
 
@@ -471,9 +471,9 @@ osg::Geode* ForestTechniqueManager::createTerrain(const osg::Vec3&origin, const 
     {
         osg::Geometry *geometry = new osg::Geometry;
 
-        osg::Vec3Array  &v     = *(new osg::Vec3Array(numColumns * numRows));
-        osg::Vec2Array  &t     = *(new osg::Vec2Array(numColumns * numRows));
-        osg::Vec4ubArray&color = *(new osg::Vec4ubArray(1));
+        osg::Vec3Array   &v     = *(new osg::Vec3Array(numColumns * numRows));
+        osg::Vec2Array   &t     = *(new osg::Vec2Array(numColumns * numRows));
+        osg::Vec4ubArray &color = *(new osg::Vec4ubArray(1));
 
         color[0].set(255, 255, 255, 255);
 
@@ -511,7 +511,7 @@ osg::Geode* ForestTechniqueManager::createTerrain(const osg::Vec3&origin, const 
 
         for (r = 0; r < numRows - 1; ++r)
         {
-            osg::DrawElementsUShort&drawElements = *(new osg::DrawElementsUShort(GL_QUAD_STRIP, 2 * numColumns));
+            osg::DrawElementsUShort &drawElements = *(new osg::DrawElementsUShort(GL_QUAD_STRIP, 2 * numColumns));
             geometry->addPrimitiveSet(&drawElements);
             int ei = 0;
 
@@ -531,7 +531,7 @@ osg::Geode* ForestTechniqueManager::createTerrain(const osg::Vec3&origin, const 
     return geode;
 }
 
-void ForestTechniqueManager::createTreeList(osg::Node *terrain, const osg::Vec3&origin, const osg::Vec3&size, unsigned int numTreesToCreate, TreeList&trees)
+void ForestTechniqueManager::createTreeList(osg::Node *terrain, const osg::Vec3 &origin, const osg::Vec3 &size, unsigned int numTreesToCreate, TreeList &trees)
 {
     float max_TreeHeight = sqrtf(size.length2() / (float)numTreesToCreate);
     float max_TreeWidth  = max_TreeHeight * 0.5f;
@@ -562,13 +562,13 @@ void ForestTechniqueManager::createTreeList(osg::Node *terrain, const osg::Vec3&
 
             if (intersector->containsIntersections())
             {
-                osgUtil::LineSegmentIntersector::Intersections&intersections = intersector->getIntersections();
+                osgUtil::LineSegmentIntersector::Intersections &intersections = intersector->getIntersections();
 
                 for (osgUtil::LineSegmentIntersector::Intersections::iterator itr = intersections.begin();
                      itr != intersections.end();
                      ++itr)
                 {
-                    const osgUtil::LineSegmentIntersector::Intersection&intersection = *itr;
+                    const osgUtil::LineSegmentIntersector::Intersection &intersection = *itr;
                     tree->_position = intersection.getWorldIntersectPoint();
                 }
             }
@@ -581,9 +581,9 @@ void ForestTechniqueManager::createTreeList(osg::Node *terrain, const osg::Vec3&
 osg::Geometry* ForestTechniqueManager::createSprite(float w, float h, osg::Vec4ub color)
 {
     // set up the coords
-    osg::Vec3Array  &v = *(new osg::Vec3Array(4));
-    osg::Vec2Array  &t = *(new osg::Vec2Array(4));
-    osg::Vec4ubArray&c = *(new osg::Vec4ubArray(1));
+    osg::Vec3Array   &v = *(new osg::Vec3Array(4));
+    osg::Vec2Array   &t = *(new osg::Vec2Array(4));
+    osg::Vec4ubArray &c = *(new osg::Vec4ubArray(1));
 
     v[0].set(-w * 0.5f, 0.0f, 0.0f);
     v[1].set(w * 0.5f, 0.0f, 0.0f);
@@ -610,12 +610,12 @@ osg::Geometry* ForestTechniqueManager::createSprite(float w, float h, osg::Vec4u
     return geom;
 }
 
-osg::Geometry* ForestTechniqueManager::createOrthogonalQuads(const osg::Vec3&pos, float w, float h, osg::Vec4ub color)
+osg::Geometry* ForestTechniqueManager::createOrthogonalQuads(const osg::Vec3 &pos, float w, float h, osg::Vec4ub color)
 {
     // set up the coords
-    osg::Vec3Array  &v = *(new osg::Vec3Array(8));
-    osg::Vec2Array  &t = *(new osg::Vec2Array(8));
-    osg::Vec4ubArray&c = *(new osg::Vec4ubArray(1));
+    osg::Vec3Array   &v = *(new osg::Vec3Array(8));
+    osg::Vec2Array   &t = *(new osg::Vec2Array(8));
+    osg::Vec4ubArray &c = *(new osg::Vec4ubArray(1));
 
     float rotation = random(0.0f, osg::PI / 2.0f);
     float sw       = sinf(rotation) * w * 0.5f;
@@ -673,7 +673,7 @@ osg::Node* ForestTechniqueManager::createBillboardGraph(Cell *cell, osg::StateSe
              itr != cell->_trees.end();
              ++itr)
         {
-            Tree&tree = **itr;
+            Tree &tree = **itr;
             billboard->addDrawable(createSprite(tree._width, tree._height, tree._color), tree._position);
         }
     }
@@ -716,7 +716,7 @@ osg::Node* ForestTechniqueManager::createXGraph(Cell *cell, osg::StateSet *state
              itr != cell->_trees.end();
              ++itr)
         {
-            Tree&tree = **itr;
+            Tree &tree = **itr;
             geode->addDrawable(createOrthogonalQuads(tree._position, tree._width, tree._height, tree._color));
         }
     }
@@ -793,11 +793,11 @@ osg::Node* ForestTechniqueManager::createTransformGraph(Cell *cell, osg::StateSe
         return transform_group;
 }
 
-osg::Geometry* ForestTechniqueManager::createOrthogonalQuadsNoColor(const osg::Vec3&pos, float w, float h)
+osg::Geometry* ForestTechniqueManager::createOrthogonalQuadsNoColor(const osg::Vec3 &pos, float w, float h)
 {
     // set up the coords
-    osg::Vec3Array&v = *(new osg::Vec3Array(8));
-    osg::Vec2Array&t = *(new osg::Vec2Array(8));
+    osg::Vec3Array &v = *(new osg::Vec3Array(8));
+    osg::Vec2Array &t = *(new osg::Vec2Array(8));
 
     float rotation = random(0.0f, osg::PI / 2.0f);
     float sw       = sinf(rotation) * w * 0.5f;
@@ -843,14 +843,14 @@ ShaderGeometry()
 }
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-ShaderGeometry(const ShaderGeometry&ShaderGeometry, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) :
+ShaderGeometry(const ShaderGeometry&ShaderGeometry, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
     osg::Drawable(ShaderGeometry, copyop) {}
 
 META_Object(osg, ShaderGeometry)
 
 typedef std::vector<osg::Vec4> PositionSizeList;
 
-virtual void drawImplementation(osg::RenderInfo&renderInfo) const
+virtual void drawImplementation(osg::RenderInfo &renderInfo) const
 {
     for (PositionSizeList::const_iterator itr = _trees.begin();
          itr != _trees.end();
@@ -884,7 +884,7 @@ void setGeometry(osg::Geometry *geometry)
     _geometry = geometry;
 }
 
-void addTree(ForestTechniqueManager::Tree&tree)
+void addTree(ForestTechniqueManager::Tree &tree)
 {
     _trees.push_back(osg::Vec4(tree._position.x(), tree._position.y(), tree._position.z(), tree._height));
 }
@@ -978,7 +978,7 @@ osg::Program* createGeometryShader()
     return pgm;
 }
 
-void ForestTechniqueManager::CollectTreePositions(Cell *cell, std::vector<osg::Vec3>&positions)
+void ForestTechniqueManager::CollectTreePositions(Cell *cell, std::vector<osg::Vec3> &positions)
 {
     bool needGroup = !(cell->_cells.empty());
     bool needTrees = !(cell->_trees.empty());
@@ -989,7 +989,7 @@ void ForestTechniqueManager::CollectTreePositions(Cell *cell, std::vector<osg::V
              itr != cell->_trees.end();
              ++itr)
         {
-            Tree&tree = **itr;
+            Tree &tree = **itr;
             positions.push_back(tree._position);
         }
     }
@@ -1027,7 +1027,7 @@ osg::Node* ForestTechniqueManager::createGeometryShaderGraph(Cell *cell, osg::St
              itr != cell->_trees.end();
              ++itr)
         {
-            Tree&tree = **itr;
+            Tree &tree = **itr;
             v->push_back(tree._position);
             v->push_back(osg::Vec3(/*tree._height*/ 30.0, (double)random(0.75f, 1.15f), (double)random(1.0f, 1.250f)));
         }
@@ -1152,7 +1152,7 @@ osg::Node* ForestTechniqueManager::createShaderGraph(Cell *cell, osg::StateSet *
              itr != cell->_trees.end();
              ++itr)
         {
-            Tree&tree = **itr;
+            Tree &tree = **itr;
             shader_geometry->addTree(tree);
         }
 
@@ -1181,7 +1181,7 @@ osg::Node* ForestTechniqueManager::createShaderGraph(Cell *cell, osg::StateSet *
         return geode;
 }
 
-osg::Node* ForestTechniqueManager::createHUDWithText(const std::string&str)
+osg::Node* ForestTechniqueManager::createHUDWithText(const std::string &str)
 {
     osg::Geode *geode = new osg::Geode();
 

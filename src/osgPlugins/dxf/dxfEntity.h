@@ -34,7 +34,7 @@ class codeValue;
 class dxfFile;
 
 static inline void
-getOCSMatrix(const osg::Vec3d&ocs, osg::Matrixd&m)
+getOCSMatrix(const osg::Vec3d &ocs, osg::Matrixd &m)
 {
     static const double one_64th = 1.0 / 64.0;
 
@@ -71,7 +71,7 @@ dxfBasicEntity() : _color(0), _useAccuracy(false), _maxError(0.01), _improveAccu
 virtual ~dxfBasicEntity() {}
 virtual dxfBasicEntity* create() = 0;
 virtual const char* name()       = 0;
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual void drawScene(scene*) {}
 const std::string getLayer() const
 {
@@ -112,7 +112,7 @@ virtual const char* name()
 {
     return "CIRCLE";
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual void drawScene(scene *sc);
 protected:
 osg::Vec3d _center;
@@ -137,7 +137,7 @@ virtual const char* name()
 {
     return "ARC";
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual void drawScene(scene *sc);
 protected:
 osg::Vec3d _center;
@@ -160,7 +160,7 @@ virtual const char* name()
 {
     return "POINT";
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual void drawScene(scene *sc);
 protected:
 osg::Vec3d _a;
@@ -181,7 +181,7 @@ virtual const char* name()
 {
     return "LINE";
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual void drawScene(scene *sc);
 protected:
 osg::Vec3d _a;
@@ -208,7 +208,7 @@ virtual const char* name()
 {
     return "3DFACE";
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual void drawScene(scene *sc);
 protected:
 osg::Vec3d _vertices[4];
@@ -227,8 +227,8 @@ virtual const char* name()
 {
     return "VERTEX";
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
-void getVertex(double&x, double&y, double&z)
+virtual void assign(dxfFile *dxf, codeValue &cv);
+void getVertex(double &x, double &y, double &z)
 {
     x = _vertex.x(); y = _vertex.y(); z = _vertex.z();
 }
@@ -282,7 +282,7 @@ virtual const char*            name()
 {
     return "POLYLINE";
 }
-virtual void                assign(dxfFile *dxf, codeValue&cv);
+virtual void                assign(dxfFile *dxf, codeValue &cv);
 virtual int                    vertexCount()
 {
     return _vertices.size();
@@ -324,7 +324,7 @@ virtual const char*            name()
 {
     return "LWPOLYLINE";
 }
-virtual void                assign(dxfFile *dxf, codeValue&cv);
+virtual void                assign(dxfFile *dxf, codeValue &cv);
 virtual int                    vertexCount()
 {
     return _vertices.size();
@@ -358,7 +358,7 @@ virtual const char* name()
 {
     return "INSERT";
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual void drawScene(scene *sc);
 
 protected:
@@ -397,7 +397,7 @@ virtual const char*            name()
 {
     return "TEXT";
 }
-virtual void                   assign(dxfFile *dxf, codeValue&cv);
+virtual void                   assign(dxfFile *dxf, codeValue &cv);
 virtual void                   drawScene(scene *sc);
 
 protected:
@@ -425,7 +425,7 @@ dxfEntity(std::string s) : _entity(NULL), _seqend(false)
         //    std::cout << "entity " << s << std::endl;
     }
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual bool done()
 {
     return !_seqend;

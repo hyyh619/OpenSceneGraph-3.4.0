@@ -29,7 +29,7 @@ using namespace osgText;
 Layout::Layout()
 {}
 
-Layout::Layout(const Layout&layout, const osg::CopyOp&copyop) :
+Layout::Layout(const Layout &layout, const osg::CopyOp &copyop) :
     osg::Object(layout, copyop)
 {}
 
@@ -43,7 +43,7 @@ osg::ref_ptr<Layout>&Layout::getDefaultLayout()
     return s_defaultLayout;
 }
 
-void Layout::layout(TextNode&text) const
+void Layout::layout(TextNode &text) const
 {
     OSG_NOTICE << "Layout::layout" << std::endl;
 
@@ -138,7 +138,7 @@ TextTechnique::TextTechnique() :
 {}
 
 
-TextTechnique::TextTechnique(const TextTechnique&technique, const osg::CopyOp&copyop) :
+TextTechnique::TextTechnique(const TextTechnique &technique, const osg::CopyOp &copyop) :
     osg::Object(technique, copyop),
     _textNode(0)
 {}
@@ -158,12 +158,12 @@ void TextTechnique::start()
     OSG_NOTICE << "TextTechnique::start()" << std::endl;
 }
 
-void TextTechnique::addCharacter(const osg::Vec3&position, const osg::Vec3&size, Glyph *glyph, Style *style)
+void TextTechnique::addCharacter(const osg::Vec3 &position, const osg::Vec3 &size, Glyph *glyph, Style *style)
 {
     OSG_NOTICE << "TextTechnique::addCharacter 2D(" << position << ", " << size << ", " << glyph << ", " << style << ")" << std::endl;
 }
 
-void TextTechnique::addCharacter(const osg::Vec3&position, const osg::Vec3&size, Glyph3D *glyph, Style *style)
+void TextTechnique::addCharacter(const osg::Vec3 &position, const osg::Vec3 &size, Glyph3D *glyph, Style *style)
 {
     OSG_NOTICE << "TextTechnique::addCharacter 3D(" << position << ", " << size << ", " << glyph << ", " << style << ")" << std::endl;
 
@@ -222,7 +222,7 @@ void TextTechnique::finish()
     OSG_NOTICE << "TextTechnique::finish()" << std::endl;
 }
 
-void TextTechnique::traverse(osg::NodeVisitor&nv)
+void TextTechnique::traverse(osg::NodeVisitor &nv)
 {
     // OSG_NOTICE<<"TextTechnique::traverse()"<<std::endl;
     if (_textNode)
@@ -238,7 +238,7 @@ TextNode::TextNode() :
 {}
 
 
-TextNode::TextNode(const TextNode&text, const osg::CopyOp&copyop) :
+TextNode::TextNode(const TextNode &text, const osg::CopyOp &copyop) :
     osg::Group(text, copyop)
 {}
 
@@ -247,7 +247,7 @@ TextNode::~TextNode()
     setTextTechnique(0);
 }
 
-void TextNode::traverse(osg::NodeVisitor&nv)
+void TextNode::traverse(osg::NodeVisitor &nv)
 {
     if (_technique.valid())
     {
@@ -285,7 +285,7 @@ void TextNode::update()
     getActiveLayout()->layout(*this);
 }
 
-void TextNode::setText(const std::string&str)
+void TextNode::setText(const std::string &str)
 {
     _string.set(str);
 }

@@ -34,7 +34,7 @@ virtual const char* className() const
     return "LAS point cloud reader";
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -71,8 +71,8 @@ virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::O
         return ReadResult::ERROR_IN_READING_FILE;
     }
 
-    liblas::Reader      reader(ifs);
-    liblas::Header const&h = reader.GetHeader();
+    liblas::Reader       reader(ifs);
+    liblas::Header const &h = reader.GetHeader();
 
     if (verbose)
     {
@@ -118,7 +118,7 @@ virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::O
 
     while (reader.ReadNextPoint())
     {
-        liblas::Point const&p = reader.GetPoint();
+        liblas::Point const &p = reader.GetPoint();
 
         mx.first  = std::min<double>(mx.first, p[0]);
         mx.second = std::max<double>(mx.second, p[0]);
@@ -152,7 +152,7 @@ virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::O
 
     while (reader.ReadNextPoint())
     {
-        liblas::Point const&p = reader.GetPoint();
+        liblas::Point const &p = reader.GetPoint();
 
         // Extract color components from LAS point
         liblas::Color c = p.GetColor();

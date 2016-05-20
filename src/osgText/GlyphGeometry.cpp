@@ -44,13 +44,13 @@ struct Segment
     Segment(unsigned int f, unsigned int s, float t) :
         first(f), second(s), thickness(t), suggestedThickness(t)  {}
 
-    Segment(const Segment&seg) :
+    Segment(const Segment &seg) :
         first(seg.first),
         second(seg.second),
         thickness(seg.thickness),
         suggestedThickness(seg.suggestedThickness) {}
 
-    Segment&operator =(const Segment&seg)
+    Segment&operator =(const Segment &seg)
     {
         first              = seg.first;
         second             = seg.second;
@@ -125,7 +125,7 @@ bool shorter(float original_thickness, float new_thickness) const
     return (original_thickness < 0.0f) ? (new_thickness > original_thickness) : (new_thickness < original_thickness);
 }
 
-bool shorten(float&original_thickness, float new_thickness)
+bool shorten(float &original_thickness, float new_thickness)
 {
     if (shorter(original_thickness, new_thickness))
     {
@@ -164,7 +164,7 @@ void applyThickness(float thickness)
     }
 }
 
-void getSuggestedThicknessRange(float&smallest, float&largest)
+void getSuggestedThicknessRange(float &smallest, float &largest)
 {
     for (Segments::iterator itr = _segments.begin();
          itr != _segments.end();
@@ -182,7 +182,7 @@ void getSuggestedThicknessRange(float&smallest, float&largest)
         std::swap(smallest, largest);
 }
 
-osg::Vec3 computeRayIntersectionPoint(const osg::Vec3&a, const osg::Vec3&an, const osg::Vec3&c, const osg::Vec3&cn)
+osg::Vec3 computeRayIntersectionPoint(const osg::Vec3 &a, const osg::Vec3 &an, const osg::Vec3 &c, const osg::Vec3 &cn)
 {
     float denominator = (cn.x() * an.y() - cn.y() * an.x());
 
@@ -197,12 +197,12 @@ osg::Vec3 computeRayIntersectionPoint(const osg::Vec3&a, const osg::Vec3&an, con
     return c + cn * t;
 }
 
-osg::Vec3 computeIntersectionPoint(const osg::Vec3&a, const osg::Vec3&b, const osg::Vec3&c, const osg::Vec3&d)
+osg::Vec3 computeIntersectionPoint(const osg::Vec3 &a, const osg::Vec3 &b, const osg::Vec3 &c, const osg::Vec3 &d)
 {
     return computeRayIntersectionPoint(a, b - a, c, d - c);
 }
 
-osg::Vec3 computeBisectorNormal(const osg::Vec3&a, const osg::Vec3&b, const osg::Vec3&c, const osg::Vec3&d)
+osg::Vec3 computeBisectorNormal(const osg::Vec3 &a, const osg::Vec3 &b, const osg::Vec3 &c, const osg::Vec3 &d)
 {
     osg::Vec2 ab(a.x() - b.x(), a.y() - b.y());
     osg::Vec2 dc(d.x() - c.x(), d.y() - c.y());
@@ -227,7 +227,7 @@ osg::Vec3 computeBisectorNormal(const osg::Vec3&a, const osg::Vec3&b, const osg:
     }
 }
 
-float computeBisectorIntersectorThickness(const osg::Vec3&a, const osg::Vec3&b, const osg::Vec3&c, const osg::Vec3&d, const osg::Vec3&e, const osg::Vec3&f)
+float computeBisectorIntersectorThickness(const osg::Vec3 &a, const osg::Vec3 &b, const osg::Vec3 &c, const osg::Vec3 &d, const osg::Vec3 &e, const osg::Vec3 &f)
 {
     osg::Vec3 intersection_abcd = computeIntersectionPoint(a, b, c, d);
     osg::Vec3 bisector_abcd     = computeBisectorNormal(a, b, c, d);
@@ -263,9 +263,9 @@ float computeBisectorIntersectorThickness(const osg::Vec3&a, const osg::Vec3&b, 
 
 float computeThickness(unsigned int i)
 {
-    Segment&seg_before = _segments[(i + _segments.size() - 1) % _segments.size()];
-    Segment&seg_target = _segments[(i) % _segments.size()];
-    Segment&seg_after  = _segments[(i + 1) % _segments.size()];
+    Segment &seg_before = _segments[(i + _segments.size() - 1) % _segments.size()];
+    Segment &seg_target = _segments[(i) % _segments.size()];
+    Segment &seg_after  = _segments[(i + 1) % _segments.size()];
 
     return computeBisectorIntersectorThickness(
         (*_vertices)[seg_before.first], (*_vertices)[seg_before.second],
@@ -274,7 +274,7 @@ float computeThickness(unsigned int i)
 }
 
 
-bool findMinThickness(unsigned int&minThickness_i, float&minThickness)
+bool findMinThickness(unsigned int &minThickness_i, float &minThickness)
 {
     minThickness_i = _segments.size();
 
@@ -306,7 +306,7 @@ void removeAllSegmentsBelowThickness(float targetThickness)
     }
 }
 
-bool findMaxThickness(unsigned int&maxThickness_i, float&maxThickness)
+bool findMaxThickness(unsigned int &maxThickness_i, float &maxThickness)
 {
     maxThickness_i = _segments.size();
 
@@ -339,17 +339,17 @@ void removeAllSegmentsAboveThickness(float targetThickness)
     }
 }
 
-float computeBisectorPoint(unsigned int i, float targetThickness, osg::Vec3&va, osg::Vec3&vb)
+float computeBisectorPoint(unsigned int i, float targetThickness, osg::Vec3 &va, osg::Vec3 &vb)
 {
-    Segment        &seg_before       = _segments[(i + _segments.size() - 1) % _segments.size()];
-    Segment        &seg_target       = _segments[(i) % _segments.size()];
-    const osg::Vec3&a                = (*_vertices)[seg_before.first];
-    const osg::Vec3&b                = (*_vertices)[seg_before.second];
-    const osg::Vec3&c                = (*_vertices)[seg_target.first];
-    const osg::Vec3&d                = (*_vertices)[seg_target.second];
-    osg::Vec3      intersection_abcd = computeIntersectionPoint(a, b, c, d);
-    osg::Vec3      bisector_abcd     = computeBisectorNormal(a, b, c, d);
-    osg::Vec3      ab_sidevector(b.y() - a.y(), a.x() - b.x(), 0.0);
+    Segment         &seg_before       = _segments[(i + _segments.size() - 1) % _segments.size()];
+    Segment         &seg_target       = _segments[(i) % _segments.size()];
+    const osg::Vec3 &a                = (*_vertices)[seg_before.first];
+    const osg::Vec3 &b                = (*_vertices)[seg_before.second];
+    const osg::Vec3 &c                = (*_vertices)[seg_target.first];
+    const osg::Vec3 &d                = (*_vertices)[seg_target.second];
+    osg::Vec3       intersection_abcd = computeIntersectionPoint(a, b, c, d);
+    osg::Vec3       bisector_abcd     = computeBisectorNormal(a, b, c, d);
+    osg::Vec3       ab_sidevector(b.y() - a.y(), a.x() - b.x(), 0.0);
 
     ab_sidevector.normalize();
     float     scale_factor  = 1.0 / (bisector_abcd * ab_sidevector);
@@ -364,7 +364,7 @@ float computeBisectorPoint(unsigned int i, float targetThickness, osg::Vec3&va, 
     return new_thickness;
 }
 
-float computeBisectorPoint(unsigned int i, osg::Vec3&va, osg::Vec3&vb)
+float computeBisectorPoint(unsigned int i, osg::Vec3 &va, osg::Vec3 &vb)
 {
     float tbefore = _segments[(i + _segments.size() - 1) % _segments.size()].thickness;
     float tafter  = _segments[(i + _segments.size()) % _segments.size()].thickness;
@@ -373,16 +373,16 @@ float computeBisectorPoint(unsigned int i, osg::Vec3&va, osg::Vec3&vb)
     return computeBisectorPoint(i, t, va, vb);
 }
 
-float computeThicknessThatBisectorAndSegmentMeet(const osg::Vec3&va, const osg::Vec3&vb, unsigned int bi, float original_thickness)
+float computeThicknessThatBisectorAndSegmentMeet(const osg::Vec3 &va, const osg::Vec3 &vb, unsigned int bi, float original_thickness)
 {
     osg::Vec3 bisector = (vb - va);
 
     bisector /= original_thickness;
 
-    Segment        &seg_opposite = _segments[(bi + _segments.size()) % _segments.size()];
-    const osg::Vec3&vc           = (*_vertices)[seg_opposite.first];
-    const osg::Vec3&vd           = (*_vertices)[seg_opposite.second];
-    osg::Vec3      cdn(vd.y() - vc.y(), vc.x() - vd.x(), 0.0);
+    Segment         &seg_opposite = _segments[(bi + _segments.size()) % _segments.size()];
+    const osg::Vec3 &vc           = (*_vertices)[seg_opposite.first];
+    const osg::Vec3 &vd           = (*_vertices)[seg_opposite.second];
+    osg::Vec3       cdn(vd.y() - vc.y(), vc.x() - vd.x(), 0.0);
 
     if (cdn.normalize() == 0.0f)
         return false;
@@ -403,7 +403,7 @@ float computeThicknessThatBisectorAndSegmentMeet(const osg::Vec3&va, const osg::
     return h;
 }
 
-int clampSegmentToEdge(osg::Vec3&va, osg::Vec3&vb, const osg::Vec3&vc, const osg::Vec3&vd)
+int clampSegmentToEdge(osg::Vec3 &va, osg::Vec3 &vb, const osg::Vec3 &vc, const osg::Vec3 &vd)
 {
     osg::Vec2 ncd(vc.y() - vd.y(), vd.x() - vc.x());
     float     na = (va.x() - vc.x()) * ncd.x() + (va.y() - vc.y()) * ncd.y();
@@ -448,7 +448,7 @@ int clampSegmentToEdge(osg::Vec3&va, osg::Vec3&vb, const osg::Vec3&vc, const osg
 }
 
 
-bool doesSegmentIntersectQuad(osg::Vec3 va, osg::Vec3 vb, const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, const osg::Vec3&v4)
+bool doesSegmentIntersectQuad(osg::Vec3 va, osg::Vec3 vb, const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, const osg::Vec3 &v4)
 {
     osg::Vec2 ncd(v1.y() - v2.y(), v2.x() - v1.x());
 
@@ -492,9 +492,9 @@ float checkBisectorAgainstBoundary(osg::Vec3 va, osg::Vec3 vb, float original_th
 
     for (unsigned int i = 0; i < _segments.size(); ++i)
     {
-        Segment&seg_before = _segments[(i + _segments.size() - 1) % _segments.size()];
-        Segment&seg_target = _segments[(i) % _segments.size()];
-        Segment&seg_after  = _segments[(i + 1) % _segments.size()];
+        Segment &seg_before = _segments[(i + _segments.size() - 1) % _segments.size()];
+        Segment &seg_target = _segments[(i) % _segments.size()];
+        Segment &seg_after  = _segments[(i + 1) % _segments.size()];
 
         computeBisectorPoint(i, before_outer, before_inner);
         computeBisectorPoint(i + 1, after_outer, after_inner);
@@ -513,7 +513,7 @@ float checkBisectorAgainstBoundary(osg::Vec3 va, osg::Vec3 vb, float original_th
     return thickness;
 }
 
-void checkBoundaries(Boundary&boundary)
+void checkBoundaries(Boundary &boundary)
 {
     osg::Vec3 va, vb;
     float     min_thickiness = FLT_MAX;
@@ -529,7 +529,7 @@ void checkBoundaries(Boundary&boundary)
     }
 }
 
-void addBoundaryToGeometry(osg::Geometry *geometry, float targetThickness, const std::string&faceName, const std::string&bevelName)
+void addBoundaryToGeometry(osg::Geometry *geometry, float targetThickness, const std::string &faceName, const std::string &bevelName)
 {
     if (_segments.empty())
         return;
@@ -654,7 +654,7 @@ struct CollectTriangleIndicesFunctor
 
 
 
-OSGTEXT_EXPORT osg::Geometry* computeGlyphGeometry(const osgText::Glyph3D *glyph, const Bevel&bevel, float shellThickness)
+OSGTEXT_EXPORT osg::Geometry* computeGlyphGeometry(const osgText::Glyph3D *glyph, const Bevel &bevel, float shellThickness)
 {
 #if REPORT_TIME
     osg::ElapsedTime timer;
@@ -664,8 +664,8 @@ OSGTEXT_EXPORT osg::Geometry* computeGlyphGeometry(const osgText::Glyph3D *glyph
     bool  roundedWebs    = bevel.getSmoothConcaveJunctions();
 
 
-    const osg::Vec3Array                 *source_vertices   = glyph->getRawVertexArray();
-    const osg::Geometry::PrimitiveSetList&source_primitives = glyph->getRawFacePrimitiveSetList();
+    const osg::Vec3Array                  *source_vertices   = glyph->getRawVertexArray();
+    const osg::Geometry::PrimitiveSetList &source_primitives = glyph->getRawFacePrimitiveSetList();
 
     if (!source_vertices)
         return NULL;
@@ -948,7 +948,7 @@ OSGTEXT_EXPORT osg::Geometry* computeGlyphGeometry(const osgText::Glyph3D *glyph
 
         osg::TriangleIndexFunctor<CollectTriangleIndicesFunctor> ctif;
         face_geometry->accept(ctif);
-        CollectTriangleIndicesFunctor::Indices&indices = ctif._indices;
+        CollectTriangleIndicesFunctor::Indices &indices = ctif._indices;
 
         // remove the previous primitive sets
         new_geometry->getPrimitiveSetList().clear();
@@ -986,8 +986,8 @@ OSGTEXT_EXPORT osg::Geometry* computeGlyphGeometry(const osgText::Glyph3D *glyph
 //
 OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(const osgText::Glyph3D *glyph, float width)
 {
-    const osg::Vec3Array                 *orig_vertices   = glyph->getRawVertexArray();
-    const osg::Geometry::PrimitiveSetList&orig_primitives = glyph->getRawFacePrimitiveSetList();
+    const osg::Vec3Array                  *orig_vertices   = glyph->getRawVertexArray();
+    const osg::Geometry::PrimitiveSetList &orig_primitives = glyph->getRawFacePrimitiveSetList();
 
     osg::ref_ptr<osg::Geometry>  text_geometry = new osg::Geometry;
     osg::ref_ptr<osg::Vec3Array> vertices      = new osg::Vec3Array((*orig_vertices));
@@ -1002,7 +1002,7 @@ OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(const osgText::Glyph3D *glyph,
 
     osg::TriangleIndexFunctor<CollectTriangleIndicesFunctor> ctif;
     text_geometry->accept(ctif);
-    CollectTriangleIndicesFunctor::Indices&indices = ctif._indices;
+    CollectTriangleIndicesFunctor::Indices &indices = ctif._indices;
 
     // remove the previous primitive sets
     text_geometry->getPrimitiveSetList().clear();
@@ -1107,7 +1107,7 @@ OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(const osgText::Glyph3D *glyph,
 //
 // computeTextGeometry
 //
-OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(osg::Geometry *glyphGeometry, const osgText::Bevel&profile, float width)
+OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(osg::Geometry *glyphGeometry, const osgText::Bevel &profile, float width)
 {
     if (!glyphGeometry)
     {
@@ -1226,8 +1226,8 @@ OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(osg::Geometry *glyphGeometry, 
 
         unsigned int no_vertices_on_boundary = bevel->size() / 2;
 
-        const osgText::Bevel::Vertices&profileVertices     = profile.getVertices();
-        unsigned int                  no_vertices_on_bevel = profileVertices.size();
+        const osgText::Bevel::Vertices &profileVertices     = profile.getVertices();
+        unsigned int                   no_vertices_on_bevel = profileVertices.size();
 
         Indices bevelIndices;
         bevelIndices.resize(no_vertices_on_boundary * no_vertices_on_bevel, NULL_VALUE);
@@ -1254,8 +1254,8 @@ OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(osg::Geometry *glyphGeometry, 
 
                 for (unsigned int j = 1; j < no_vertices_on_bevel - 1; ++j)
                 {
-                    const osg::Vec2&pv = profileVertices[j];
-                    osg::Vec3      pos(base_vertex + (forward * pv.x()) + (up * pv.y()));
+                    const osg::Vec2 &pv = profileVertices[j];
+                    osg::Vec3       pos(base_vertex + (forward * pv.x()) + (up * pv.y()));
                     bevelIndices[i * no_vertices_on_bevel + j] = vertices->size();
                     vertices->push_back(pos);
                 }
@@ -1272,8 +1272,8 @@ OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(osg::Geometry *glyphGeometry, 
             {
                 for (unsigned int j = 0; j < no_vertices_on_bevel; ++j)
                 {
-                    const osg::Vec2&pv = profileVertices[j];
-                    osg::Vec3      pos(base_vertex + (forward * pv.x()) + (up * pv.y()));
+                    const osg::Vec2 &pv = profileVertices[j];
+                    osg::Vec3       pos(base_vertex + (forward * pv.x()) + (up * pv.y()));
                     bevelIndices[i * no_vertices_on_bevel + j] = vertices->size();
                     vertices->push_back(pos);
                 }
@@ -1311,7 +1311,7 @@ OSGTEXT_EXPORT osg::Geometry* computeTextGeometry(osg::Geometry *glyphGeometry, 
 //
 // computeShellGeometry
 //
-OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry *glyphGeometry, const osgText::Bevel&profile, float width)
+OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry *glyphGeometry, const osgText::Bevel &profile, float width)
 {
     if (!glyphGeometry)
     {
@@ -1428,7 +1428,7 @@ OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry *glyphGeometry,
 
         for (unsigned int i = 0; i < front_strip->size(); ++i)
         {
-            unsigned short&pi = (*front_strip)[i];
+            unsigned short &pi = (*front_strip)[i];
             if (front_indices[pi] == NULL_VALUE)
             {
                 front_indices[pi] = vertices->size();
@@ -1440,8 +1440,8 @@ OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry *glyphGeometry,
 
         for (unsigned int i = 0; i < front_strip->size() - 1;)
         {
-            unsigned short&p1 = (*front_strip)[i++];
-            unsigned short&p2 = (*front_strip)[i++];
+            unsigned short &p1 = (*front_strip)[i++];
+            unsigned short &p2 = (*front_strip)[i++];
             std::swap(p1, p2);
         }
 
@@ -1450,7 +1450,7 @@ OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry *glyphGeometry,
 
         for (unsigned int i = 0; i < back_strip->size(); ++i)
         {
-            unsigned short&pi = (*back_strip)[i];
+            unsigned short &pi = (*back_strip)[i];
             if (back_indices[pi] == NULL_VALUE)
             {
                 back_indices[pi] = vertices->size();
@@ -1473,8 +1473,8 @@ OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry *glyphGeometry,
 
         unsigned int no_vertices_on_boundary = bevel->size() / 2;
 
-        const osgText::Bevel::Vertices&profileVertices     = profile.getVertices();
-        unsigned int                  no_vertices_on_bevel = profileVertices.size();
+        const osgText::Bevel::Vertices &profileVertices     = profile.getVertices();
+        unsigned int                   no_vertices_on_bevel = profileVertices.size();
 
         Indices bevelIndices;
         bevelIndices.resize(no_vertices_on_boundary * no_vertices_on_bevel, NULL_VALUE);
@@ -1499,8 +1499,8 @@ OSGTEXT_EXPORT osg::Geometry* computeShellGeometry(osg::Geometry *glyphGeometry,
 
             for (unsigned int j = 1; j < no_vertices_on_bevel - 1; ++j)
             {
-                const osg::Vec2&pv = profileVertices[j];
-                osg::Vec3      pos(base_vertex + (forward * pv.x()) + (up * pv.y()));
+                const osg::Vec2 &pv = profileVertices[j];
+                osg::Vec3       pos(base_vertex + (forward * pv.x()) + (up * pv.y()));
                 bevelIndices[i * no_vertices_on_bevel + j] = vertices->size();
                 vertices->push_back(pos);
             }

@@ -39,7 +39,7 @@ FindTopMostNodeOfTypeVisitor()
     _foundNode(0)
 {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     T *result = dynamic_cast<T*>(&node);
 
@@ -64,7 +64,7 @@ T* findTopMostNodeOfType(osg::Node *node)
 }
 
 /* Computing view matrix functions */
-void computeViewMatrix(osg::Camera *camera, const osg::Vec3d&eye, const osg::Vec3d&hpr)
+void computeViewMatrix(osg::Camera *camera, const osg::Vec3d &eye, const osg::Vec3d &hpr)
 {
     osg::Matrixd matrix;
 
@@ -76,7 +76,7 @@ void computeViewMatrix(osg::Camera *camera, const osg::Vec3d&eye, const osg::Vec
 }
 
 void computeViewMatrixOnEarth(osg::Camera *camera, osg::Node *scene,
-                              const osg::Vec3d&latLongHeight, const osg::Vec3d&hpr)
+                              const osg::Vec3d &latLongHeight, const osg::Vec3d &hpr)
 {
     osg::CoordinateSystemNode *csn = findTopMostNodeOfType<osg::CoordinateSystemNode>(scene);
 
@@ -164,7 +164,7 @@ public:
 PrintPosterHandler(PosterPrinter *printer)
     : _printer(printer), _started(false) {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     osgViewer::View *view = dynamic_cast<osgViewer::View*>(&aa);
 

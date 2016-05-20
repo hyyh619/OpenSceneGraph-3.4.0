@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool VolumeTile_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool VolumeTile_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool VolumeTile_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool VolumeTile_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(VolumeTile_Proxy)
 (
@@ -25,9 +25,9 @@ REGISTER_DOTOSGWRAPPER(VolumeTile_Proxy)
     VolumeTile_writeLocalData
 );
 
-bool VolumeTile_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool VolumeTile_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgVolume::VolumeTile&volumeTile = static_cast<osgVolume::VolumeTile&>(obj);
+    osgVolume::VolumeTile &volumeTile = static_cast<osgVolume::VolumeTile&>(obj);
 
     bool itrAdvanced = false;
 
@@ -60,9 +60,9 @@ bool VolumeTile_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool VolumeTile_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool VolumeTile_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgVolume::VolumeTile&volumeTile = static_cast<const osgVolume::VolumeTile&>(obj);
+    const osgVolume::VolumeTile &volumeTile = static_cast<const osgVolume::VolumeTile&>(obj);
 
     int prec = fw.precision();
 

@@ -19,7 +19,7 @@ SimpleDotVisitor::SimpleDotVisitor() {}
 
 SimpleDotVisitor::~SimpleDotVisitor() {}
 
-void SimpleDotVisitor::handle(osg::Node&node, int id)
+void SimpleDotVisitor::handle(osg::Node &node, int id)
 {
     std::stringstream label;
 
@@ -32,7 +32,7 @@ void SimpleDotVisitor::handle(osg::Node&node, int id)
     drawNode(id, "record", "solid", label.str(), "black", "white");
 }
 
-void SimpleDotVisitor::handle(osg::Geode&node, int id)
+void SimpleDotVisitor::handle(osg::Geode &node, int id)
 {
     std::stringstream label;
 
@@ -45,7 +45,7 @@ void SimpleDotVisitor::handle(osg::Geode&node, int id)
     drawNode(id, "record", "solid", label.str(), "brown", "white");
 }
 
-void SimpleDotVisitor::handle(osg::Group&node, int id)
+void SimpleDotVisitor::handle(osg::Group &node, int id)
 {
     std::stringstream label;
 
@@ -58,12 +58,12 @@ void SimpleDotVisitor::handle(osg::Group&node, int id)
     drawNode(id, "record", "solid", label.str(), "black", "white");
 }
 
-void SimpleDotVisitor::handle(osg::Group&parent, osg::Node&child, int parentID, int childID)
+void SimpleDotVisitor::handle(osg::Group &parent, osg::Node &child, int parentID, int childID)
 {
     drawEdge(parentID, childID, "setlinewidth(2)");
 }
 
-void SimpleDotVisitor::handle(osg::StateSet&stateset, int id)
+void SimpleDotVisitor::handle(osg::StateSet &stateset, int id)
 {
     std::stringstream label;
 
@@ -76,12 +76,12 @@ void SimpleDotVisitor::handle(osg::StateSet&stateset, int id)
     drawNode(id, "Mrecord", "solid", label.str(), "green", "white");
 }
 
-void SimpleDotVisitor::handle(osg::Node&node, osg::StateSet&stateset, int parentID, int childID)
+void SimpleDotVisitor::handle(osg::Node &node, osg::StateSet &stateset, int parentID, int childID)
 {
     drawEdge(parentID, childID, "dashed");
 }
 
-void SimpleDotVisitor::handle(osg::Drawable&drawable, int id)
+void SimpleDotVisitor::handle(osg::Drawable &drawable, int id)
 {
     std::stringstream label;
 
@@ -94,17 +94,17 @@ void SimpleDotVisitor::handle(osg::Drawable&drawable, int id)
     drawNode(id, "record", "solid", label.str(), "blue", "white");
 }
 
-void SimpleDotVisitor::handle(osg::Geode&geode, osg::Drawable&drawable, int parentID, int childID)
+void SimpleDotVisitor::handle(osg::Geode &geode, osg::Drawable &drawable, int parentID, int childID)
 {
     drawEdge(parentID, childID, "dashed");
 }
 
-void SimpleDotVisitor::handle(osg::Drawable&drawable, osg::StateSet&stateset, int parentID, int childID)
+void SimpleDotVisitor::handle(osg::Drawable &drawable, osg::StateSet &stateset, int parentID, int childID)
 {
     drawEdge(parentID, childID, "dashed");
 }
 
-void SimpleDotVisitor::drawNode(int id, const std::string&shape, const std::string&style, const std::string&label, const std::string&color, const std::string&fillColor)
+void SimpleDotVisitor::drawNode(int id, const std::string &shape, const std::string &style, const std::string &label, const std::string &color, const std::string &fillColor)
 {
     _nodes << id <<
         "[shape=\"" << shape <<
@@ -115,7 +115,7 @@ void SimpleDotVisitor::drawNode(int id, const std::string&shape, const std::stri
         "\"]" << std::endl;
 }
 
-void SimpleDotVisitor::drawEdge(int sourceId, int sinkId, const std::string&style)
+void SimpleDotVisitor::drawEdge(int sourceId, int sinkId, const std::string &style)
 {
     _edges
         << sourceId << ":top -> "

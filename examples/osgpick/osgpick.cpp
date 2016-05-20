@@ -61,11 +61,11 @@ PickHandler(osgText::Text *updateText) :
 
 ~PickHandler() {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa);
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
 
-virtual void pick(osgViewer::View *view, const osgGA::GUIEventAdapter&ea);
+virtual void pick(osgViewer::View *view, const osgGA::GUIEventAdapter &ea);
 
-void setLabel(const std::string&name)
+void setLabel(const std::string &name)
 {
     if (_updateText.get())
         _updateText->setText(name);
@@ -76,7 +76,7 @@ protected:
 osg::ref_ptr<osgText::Text> _updateText;
 };
 
-bool PickHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool PickHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     switch (ea.getEventType())
     {
@@ -109,7 +109,7 @@ bool PickHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapte
     }
 }
 
-void PickHandler::pick(osgViewer::View *view, const osgGA::GUIEventAdapter&ea)
+void PickHandler::pick(osgViewer::View *view, const osgGA::GUIEventAdapter &ea)
 {
     osgUtil::LineSegmentIntersector::Intersections intersections;
 
@@ -134,7 +134,7 @@ void PickHandler::pick(osgViewer::View *view, const osgGA::GUIEventAdapter&ea)
 
             os << "        local coords vertex(" << hitr->getLocalIntersectPoint() << ")" << "  normal(" << hitr->getLocalIntersectNormal() << ")" << std::endl;
             os << "        world coords vertex(" << hitr->getWorldIntersectPoint() << ")" << "  normal(" << hitr->getWorldIntersectNormal() << ")" << std::endl;
-            const osgUtil::LineSegmentIntersector::Intersection::IndexList&vil = hitr->indexList;
+            const osgUtil::LineSegmentIntersector::Intersection::IndexList &vil = hitr->indexList;
 
             for (unsigned int i = 0; i < vil.size(); ++i)
             {

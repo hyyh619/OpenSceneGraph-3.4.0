@@ -85,7 +85,7 @@ public:
 StateSetContent convert(const FbxSurfaceMaterial *pFbxMat);
 
 // dir is the directory where fbx is stored (for relative path).
-FbxMaterialToOsgStateSet(const std::string&dir, const osgDB::Options *options, bool lightmapTextures) :
+FbxMaterialToOsgStateSet(const std::string &dir, const osgDB::Options *options, bool lightmapTextures) :
     _options(options),
     _dir(dir),
     _lightmapTextures(lightmapTextures){}

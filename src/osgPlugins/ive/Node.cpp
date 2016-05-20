@@ -95,7 +95,7 @@ void Node::write(DataOutputStream *out)
 
     if (out->getVersion() >= VERSION_0010)
     {
-        const osg::BoundingSphere&bs = getInitialBound();
+        const osg::BoundingSphere &bs = getInitialBound();
         out->writeBool(bs.valid());
         if (bs.valid())
         {

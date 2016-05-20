@@ -29,7 +29,7 @@
 
 using namespace osgViewer;
 
-osg::Geometry* SphericalDisplay::create3DSphericalDisplayDistortionMesh(const osg::Vec3&origin, const osg::Vec3&widthVector, const osg::Vec3&heightVector, double sphere_radius, double collar_radius, osg::Image *intensityMap, const osg::Matrix&projectorMatrix) const
+osg::Geometry* SphericalDisplay::create3DSphericalDisplayDistortionMesh(const osg::Vec3 &origin, const osg::Vec3 &widthVector, const osg::Vec3 &heightVector, double sphere_radius, double collar_radius, osg::Image *intensityMap, const osg::Matrix &projectorMatrix) const
 {
     osg::Vec3d center(0.0, 0.0, 0.0);
     osg::Vec3d eye(0.0, 0.0, 0.0);
@@ -195,7 +195,7 @@ osg::Geometry* SphericalDisplay::create3DSphericalDisplayDistortionMesh(const os
     return geometry;
 }
 
-void SphericalDisplay::configure(osgViewer::View&view) const
+void SphericalDisplay::configure(osgViewer::View &view) const
 {
     OSG_INFO << "SphericalDisplay::configure(rad=" << _radius << ", cllr=" << _collar << ", sn=" << _screenNum << ", im=" << _intensityMap << ")" << std::endl;
     osg::GraphicsContext::WindowingSystemInterface *wsi = osg::GraphicsContext::getWindowingSystemInterface();

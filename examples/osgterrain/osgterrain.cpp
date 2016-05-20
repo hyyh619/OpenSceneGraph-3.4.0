@@ -50,7 +50,7 @@ FindTopMostNodeOfTypeVisitor() :
     _foundNode(0)
 {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     T *result = dynamic_cast<T*>(&node);
 
@@ -88,7 +88,7 @@ TerrainHandler(osgTerrain::Terrain *terrain, osgFX::MultiTextureControl *mtc) :
     _terrain(terrain),
     _mtc(mtc) {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     switch (ea.getEventType())
     {
@@ -182,7 +182,7 @@ bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
     }
 }
 
-void toggleDefine(const std::string&defineName, int expectedDefault = osg::StateAttribute::ON)
+void toggleDefine(const std::string &defineName, int expectedDefault = osg::StateAttribute::ON)
 {
     osg::StateSet::DefineList           &defineList = _terrain->getOrCreateStateSet()->getDefineList();
     osg::StateSet::DefineList::iterator itr         = defineList.find(defineName);
@@ -193,7 +193,7 @@ void toggleDefine(const std::string&defineName, int expectedDefault = osg::State
         itr                           = defineList.find(defineName);
     }
 
-    osg::StateSet::DefinePair&dp = itr->second;
+    osg::StateSet::DefinePair &dp = itr->second;
     if ((dp.second & osg::StateAttribute::ON) == 0)
         dp.second = (osg::StateAttribute::ON | osg::StateAttribute::OVERRIDE);
     else
@@ -242,7 +242,7 @@ public:
 CleanTechniqueVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     osgTerrain::TerrainTile *tile = dynamic_cast<osgTerrain::TerrainTile*>(&node);
 
@@ -262,7 +262,7 @@ void apply(osg::Node&node)
 };
 
 
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&filename, const osgDB::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &filename, const osgDB::Options *options)
 {
     osgDB::ReaderWriter::ReadResult rr = ReadFileCallback::readNode(filename, options);
 

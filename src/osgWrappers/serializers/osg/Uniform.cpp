@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkElements(const osg::Uniform&uniform)
+static bool checkElements(const osg::Uniform &uniform)
 {
     return uniform.getNumElements() > 0;
 }
 
-static bool readElements(osgDB::InputStream&is, osg::Uniform&uniform)
+static bool readElements(osgDB::InputStream &is, osg::Uniform &uniform)
 {
     bool hasArray; is >> hasArray;
 
@@ -37,7 +37,7 @@ static bool readElements(osgDB::InputStream&is, osg::Uniform&uniform)
     return true;
 }
 
-static bool writeElements(osgDB::OutputStream&os, const osg::Uniform&uniform)
+static bool writeElements(osgDB::OutputStream &os, const osg::Uniform &uniform)
 {
     if (uniform.getFloatArray() != NULL)
     {

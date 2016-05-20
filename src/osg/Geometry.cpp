@@ -27,7 +27,7 @@ Geometry::Geometry() :
     // setSupportsDisplayList(false);
 }
 
-Geometry::Geometry(const Geometry&geometry, const CopyOp&copyop) :
+Geometry::Geometry(const Geometry &geometry, const CopyOp &copyop) :
     Drawable(geometry, copyop),
     _vertexArray(copyop(geometry._vertexArray.get())),
     _normalArray(copyop(geometry._normalArray.get())),
@@ -221,7 +221,7 @@ const Array* Geometry::getTexCoordArray(unsigned int index) const
         return 0;
 }
 
-void Geometry::setTexCoordArrayList(const ArrayList&arrayList)
+void Geometry::setTexCoordArrayList(const ArrayList &arrayList)
 {
     _texCoordList = arrayList;
 
@@ -270,7 +270,7 @@ const Array* Geometry::getVertexAttribArray(unsigned int index) const
         return 0;
 }
 
-void Geometry::setVertexAttribArrayList(const ArrayList&arrayList)
+void Geometry::setVertexAttribArrayList(const ArrayList &arrayList)
 {
     _vertexAttribList = arrayList;
 
@@ -346,7 +346,7 @@ bool Geometry::insertPrimitiveSet(unsigned int i, PrimitiveSet *primitiveset)
     return false;
 }
 
-void Geometry::setPrimitiveSetList(const PrimitiveSetList&primitives)
+void Geometry::setPrimitiveSetList(const PrimitiveSetList &primitives)
 {
     _primitives = primitives;
     if (_useVertexBufferObjects)
@@ -454,7 +454,7 @@ unsigned int Geometry::getGLObjectSizeHint() const
     return totalSize;
 }
 
-bool Geometry::getArrayList(ArrayList&arrayList) const
+bool Geometry::getArrayList(ArrayList &arrayList) const
 {
     unsigned int startSize = arrayList.size();
 
@@ -490,7 +490,7 @@ bool Geometry::getArrayList(ArrayList&arrayList) const
     return arrayList.size() != startSize;
 }
 
-bool Geometry::getDrawElementsList(DrawElementsList&drawElementsList) const
+bool Geometry::getDrawElementsList(DrawElementsList &drawElementsList) const
 {
     unsigned int startSize = drawElementsList.size();
 
@@ -734,7 +734,7 @@ void Geometry::releaseGLObjects(State *state) const
     }
 }
 
-void Geometry::compileGLObjects(RenderInfo&renderInfo) const
+void Geometry::compileGLObjects(RenderInfo &renderInfo) const
 {
     bool useVertexArrays = _supportsVertexBufferObjects &&
                            _useVertexBufferObjects &&
@@ -818,7 +818,7 @@ void Geometry::compileGLObjects(RenderInfo&renderInfo) const
     }
 }
 
-void Geometry::drawImplementation(RenderInfo&renderInfo) const
+void Geometry::drawImplementation(RenderInfo &renderInfo) const
 {
     if (_containsDeprecatedData)
     {
@@ -826,7 +826,7 @@ void Geometry::drawImplementation(RenderInfo&renderInfo) const
         return;
     }
 
-    State&state = *renderInfo.getState();
+    State &state = *renderInfo.getState();
 
     bool checkForGLErrors = state.getCheckForGLErrors() == osg::State::ONCE_PER_ATTRIBUTE;
     if (checkForGLErrors)
@@ -851,13 +851,13 @@ void Geometry::drawImplementation(RenderInfo&renderInfo) const
         state.checkGLErrors("end of Geometry::drawImplementation().");
 }
 
-void Geometry::drawVertexArraysImplementation(RenderInfo&renderInfo) const
+void Geometry::drawVertexArraysImplementation(RenderInfo &renderInfo) const
 {
-    State&state = *renderInfo.getState();
+    State &state = *renderInfo.getState();
 
     bool handleVertexAttributes = !_vertexAttribList.empty();
 
-    ArrayDispatchers&arrayDispatchers = state.getArrayDispatchers();
+    ArrayDispatchers &arrayDispatchers = state.getArrayDispatchers();
 
     arrayDispatchers.reset();
     arrayDispatchers.setUseVertexAttribAlias(state.getUseVertexAttributeAliasing());
@@ -933,11 +933,11 @@ void Geometry::drawVertexArraysImplementation(RenderInfo&renderInfo) const
     state.applyDisablingOfVertexAttributes();
 }
 
-void Geometry::drawPrimitivesImplementation(RenderInfo&renderInfo) const
+void Geometry::drawPrimitivesImplementation(RenderInfo &renderInfo) const
 {
-    State           &state                   = *renderInfo.getState();
-    ArrayDispatchers&arrayDispatchers        = state.getArrayDispatchers();
-    bool            usingVertexBufferObjects = _useVertexBufferObjects && state.isVertexBufferObjectSupported();
+    State            &state                   = *renderInfo.getState();
+    ArrayDispatchers &arrayDispatchers        = state.getArrayDispatchers();
+    bool             usingVertexBufferObjects = _useVertexBufferObjects && state.isVertexBufferObjectSupported();
 
     bool bindPerPrimitiveSetActive = arrayDispatchers.active(osg::Array::BIND_PER_PRIMITIVE_SET);
 
@@ -953,7 +953,7 @@ void Geometry::drawPrimitivesImplementation(RenderInfo&renderInfo) const
     }
 }
 
-void Geometry::accept(AttributeFunctor&af)
+void Geometry::accept(AttributeFunctor &af)
 {
     AttributeFunctorArrayVisitor afav(af);
 
@@ -984,7 +984,7 @@ void Geometry::accept(AttributeFunctor&af)
 }
 
 
-void Geometry::accept(ConstAttributeFunctor&af) const
+void Geometry::accept(ConstAttributeFunctor &af) const
 {
     ConstAttributeFunctorArrayVisitor afav(af);
 
@@ -1014,7 +1014,7 @@ void Geometry::accept(ConstAttributeFunctor&af) const
     }
 }
 
-void Geometry::accept(PrimitiveFunctor&functor) const
+void Geometry::accept(PrimitiveFunctor &functor) const
 {
     const osg::Array *vertices = _vertexArray.get();
 
@@ -1072,7 +1072,7 @@ void Geometry::accept(PrimitiveFunctor&functor) const
     }
 }
 
-void Geometry::accept(PrimitiveIndexFunctor&functor) const
+void Geometry::accept(PrimitiveIndexFunctor &functor) const
 {
     const osg::Array *vertices = _vertexArray.get();
 
@@ -1130,7 +1130,7 @@ void Geometry::accept(PrimitiveIndexFunctor&functor) const
     }
 }
 
-Geometry* osg::createTexturedQuadGeometry(const Vec3&corner, const Vec3&widthVec, const Vec3&heightVec, float l, float b, float r, float t)
+Geometry* osg::createTexturedQuadGeometry(const Vec3 &corner, const Vec3 &widthVec, const Vec3 &heightVec, float l, float b, float r, float t)
 {
     Geometry *geom = new Geometry;
 
@@ -1401,7 +1401,7 @@ static osg::Array* expandIndexArray(const osg::Array *sourceArray, const osg::In
 
 typedef std::pair<osg::ref_ptr<osg::Array>, osg::ref_ptr<osg::Array> > ArrayPair;
 typedef std::vector<ArrayPair> ArrayPairs;
-static void duplicateArray(ArrayPairs&pairs, osg::ref_ptr<osg::Array>&sourceArray, unsigned int numVertices)
+static void duplicateArray(ArrayPairs &pairs, osg::ref_ptr<osg::Array> &sourceArray, unsigned int numVertices)
 {
     osg::Array *targetArray = osg::cloneType(sourceArray.get());
 
@@ -1426,12 +1426,12 @@ struct PtrData
         target(const_cast<char*>(static_cast<const char*>(t->getDataPointer()))),
         elementSize(s->getElementSize()) {}
 
-    PtrData(const PtrData&rhs) :
+    PtrData(const PtrData &rhs) :
         source(rhs.source),
         target(rhs.target),
         elementSize(rhs.elementSize) {}
 
-    PtrData&operator =(const PtrData&rhs)
+    PtrData&operator =(const PtrData &rhs)
     {
         source      = rhs.source;
         target      = rhs.target;
@@ -1744,9 +1744,9 @@ void Geometry::fixDeprecatedData()
                      itr != perVertexPtrs.end();
                      ++itr)
                 {
-                    GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                    char                          *source = ptrs.source + vindex * ptrs.elementSize;
-                    char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                    GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                    char                           *source = ptrs.source + vindex * ptrs.elementSize;
+                    char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                     for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                     {
@@ -1759,9 +1759,9 @@ void Geometry::fixDeprecatedData()
                      itr != perPrimitivePtrs.end();
                      ++itr)
                 {
-                    GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                    char                          *source = ptrs.source + source_pindex * ptrs.elementSize;
-                    char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                    GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                    char                           *source = ptrs.source + source_pindex * ptrs.elementSize;
+                    char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                     for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                     {
@@ -1802,9 +1802,9 @@ void Geometry::fixDeprecatedData()
                          itr != perVertexPtrs.end();
                          ++itr)
                     {
-                        GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                        char                          *source = ptrs.source + vindex * ptrs.elementSize;
-                        char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                        GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                        char                           *source = ptrs.source + vindex * ptrs.elementSize;
+                        char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                         for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                         {
@@ -1817,9 +1817,9 @@ void Geometry::fixDeprecatedData()
                          itr != perPrimitivePtrs.end();
                          ++itr)
                     {
-                        GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                        char                          *source = ptrs.source + source_pindex * ptrs.elementSize;
-                        char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                        GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                        char                           *source = ptrs.source + source_pindex * ptrs.elementSize;
+                        char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                         for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                         {
@@ -1855,9 +1855,9 @@ void Geometry::fixDeprecatedData()
                      itr != perVertexPtrs.end();
                      ++itr)
                 {
-                    GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                    char                          *source = ptrs.source + vindex * ptrs.elementSize;
-                    char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                    GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                    char                           *source = ptrs.source + vindex * ptrs.elementSize;
+                    char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                     for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                     {
@@ -1870,9 +1870,9 @@ void Geometry::fixDeprecatedData()
                      itr != perPrimitivePtrs.end();
                      ++itr)
                 {
-                    GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                    char                          *source = ptrs.source + source_pindex * ptrs.elementSize;
-                    char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                    GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                    char                           *source = ptrs.source + source_pindex * ptrs.elementSize;
+                    char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                     for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                     {
@@ -1907,9 +1907,9 @@ void Geometry::fixDeprecatedData()
                      itr != perVertexPtrs.end();
                      ++itr)
                 {
-                    GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                    char                          *source = ptrs.source + vindex * ptrs.elementSize;
-                    char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                    GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                    char                           *source = ptrs.source + vindex * ptrs.elementSize;
+                    char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                     for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                     {
@@ -1922,9 +1922,9 @@ void Geometry::fixDeprecatedData()
                      itr != perPrimitivePtrs.end();
                      ++itr)
                 {
-                    GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                    char                          *source = ptrs.source + source_pindex * ptrs.elementSize;
-                    char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                    GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                    char                           *source = ptrs.source + source_pindex * ptrs.elementSize;
+                    char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                     for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                     {
@@ -1959,9 +1959,9 @@ void Geometry::fixDeprecatedData()
                      itr != perVertexPtrs.end();
                      ++itr)
                 {
-                    GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                    char                          *source = ptrs.source + vindex * ptrs.elementSize;
-                    char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                    GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                    char                           *source = ptrs.source + vindex * ptrs.elementSize;
+                    char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                     for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                     {
@@ -1974,9 +1974,9 @@ void Geometry::fixDeprecatedData()
                      itr != perPrimitivePtrs.end();
                      ++itr)
                 {
-                    GeometryUtilFunctions::PtrData&ptrs   = *itr;
-                    char                          *source = ptrs.source + source_pindex * ptrs.elementSize;
-                    char                          *target = ptrs.target + target_vindex * ptrs.elementSize;
+                    GeometryUtilFunctions::PtrData &ptrs   = *itr;
+                    char                           *source = ptrs.source + source_pindex * ptrs.elementSize;
+                    char                           *target = ptrs.target + target_vindex * ptrs.elementSize;
 
                     for (unsigned int c = 0; c < ptrs.elementSize; ++c)
                     {

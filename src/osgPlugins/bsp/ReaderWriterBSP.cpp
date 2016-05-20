@@ -28,7 +28,7 @@ const char* ReaderWriterBSP::className() const
 }
 
 
-bool ReaderWriterBSP::acceptsExtension(const std::string&extension) const
+bool ReaderWriterBSP::acceptsExtension(const std::string &extension) const
 {
     // If the extension is empty or "bsp", we accept it
     return osgDB::equalCaseInsensitive(extension, "bsp") || extension.empty();
@@ -36,7 +36,7 @@ bool ReaderWriterBSP::acceptsExtension(const std::string&extension) const
 
 
 ReaderWriter::ReadResult ReaderWriterBSP::readNode(
-    const std::string&file,
+    const std::string &file,
     const ReaderWriter::Options *options) const
 {
     VBSPReader  *vbspReader;

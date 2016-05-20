@@ -7,7 +7,7 @@ osgParticle::ModularProgram::ModularProgram()
     : Program()
 {}
 
-osgParticle::ModularProgram::ModularProgram(const ModularProgram&copy, const osg::CopyOp&copyop)
+osgParticle::ModularProgram::ModularProgram(const ModularProgram &copy, const osg::CopyOp &copyop)
     : Program(copy, copyop)
 {
     Operator_vector::const_iterator ci;

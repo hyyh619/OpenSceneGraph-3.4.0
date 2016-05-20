@@ -41,7 +41,7 @@ unsigned int PrimitiveSet::getNumPrimitives() const
     return 0;
 }
 
-void DrawArrays::draw(State&state, bool) const
+void DrawArrays::draw(State &state, bool) const
 {
 #if defined(OSG_GLES1_AVAILABLE) || defined(OSG_GLES2_AVAILABLE)
     GLenum mode = _mode;
@@ -72,12 +72,12 @@ void DrawArrays::draw(State&state, bool) const
 #endif
 }
 
-void DrawArrays::accept(PrimitiveFunctor&functor) const
+void DrawArrays::accept(PrimitiveFunctor &functor) const
 {
     functor.drawArrays(_mode, _first, _count);
 }
 
-void DrawArrays::accept(PrimitiveIndexFunctor&functor) const
+void DrawArrays::accept(PrimitiveIndexFunctor &functor) const
 {
     functor.drawArrays(_mode, _first, _count);
 }
@@ -106,7 +106,7 @@ unsigned int DrawArrayLengths::getNumPrimitives() const
     return 0;
 }
 
-void DrawArrayLengths::draw(State&state, bool) const
+void DrawArrayLengths::draw(State &state, bool) const
 {
     GLenum mode = _mode;
 
@@ -144,7 +144,7 @@ void DrawArrayLengths::draw(State&state, bool) const
     }
 }
 
-void DrawArrayLengths::accept(PrimitiveFunctor&functor) const
+void DrawArrayLengths::accept(PrimitiveFunctor &functor) const
 {
     GLint first = _first;
 
@@ -157,7 +157,7 @@ void DrawArrayLengths::accept(PrimitiveFunctor&functor) const
     }
 }
 
-void DrawArrayLengths::accept(PrimitiveIndexFunctor&functor) const
+void DrawArrayLengths::accept(PrimitiveIndexFunctor &functor) const
 {
     GLint first = _first;
 
@@ -189,7 +189,7 @@ DrawElementsUByte::~DrawElementsUByte()
     releaseGLObjects();
 }
 
-void DrawElementsUByte::draw(State&state, bool useVertexBufferObjects) const
+void DrawElementsUByte::draw(State &state, bool useVertexBufferObjects) const
 {
     GLenum mode = _mode;
 
@@ -229,13 +229,13 @@ void DrawElementsUByte::draw(State&state, bool useVertexBufferObjects) const
     }
 }
 
-void DrawElementsUByte::accept(PrimitiveFunctor&functor) const
+void DrawElementsUByte::accept(PrimitiveFunctor &functor) const
 {
     if (!empty())
         functor.drawElements(_mode, size(), &front());
 }
 
-void DrawElementsUByte::accept(PrimitiveIndexFunctor&functor) const
+void DrawElementsUByte::accept(PrimitiveIndexFunctor &functor) const
 {
     if (!empty())
         functor.drawElements(_mode, size(), &front());
@@ -257,7 +257,7 @@ DrawElementsUShort::~DrawElementsUShort()
     releaseGLObjects();
 }
 
-void DrawElementsUShort::draw(State&state, bool useVertexBufferObjects) const
+void DrawElementsUShort::draw(State &state, bool useVertexBufferObjects) const
 {
     GLenum mode = _mode;
 
@@ -297,13 +297,13 @@ void DrawElementsUShort::draw(State&state, bool useVertexBufferObjects) const
     }
 }
 
-void DrawElementsUShort::accept(PrimitiveFunctor&functor) const
+void DrawElementsUShort::accept(PrimitiveFunctor &functor) const
 {
     if (!empty())
         functor.drawElements(_mode, size(), &front());
 }
 
-void DrawElementsUShort::accept(PrimitiveIndexFunctor&functor) const
+void DrawElementsUShort::accept(PrimitiveIndexFunctor &functor) const
 {
     if (!empty())
         functor.drawElements(_mode, size(), &front());
@@ -325,7 +325,7 @@ DrawElementsUInt::~DrawElementsUInt()
     releaseGLObjects();
 }
 
-void DrawElementsUInt::draw(State&state, bool useVertexBufferObjects) const
+void DrawElementsUInt::draw(State &state, bool useVertexBufferObjects) const
 {
     GLenum mode = _mode;
 
@@ -365,13 +365,13 @@ void DrawElementsUInt::draw(State&state, bool useVertexBufferObjects) const
     }
 }
 
-void DrawElementsUInt::accept(PrimitiveFunctor&functor) const
+void DrawElementsUInt::accept(PrimitiveFunctor &functor) const
 {
     if (!empty())
         functor.drawElements(_mode, size(), &front());
 }
 
-void DrawElementsUInt::accept(PrimitiveIndexFunctor&functor) const
+void DrawElementsUInt::accept(PrimitiveIndexFunctor &functor) const
 {
     if (!empty())
         functor.drawElements(_mode, size(), &front());

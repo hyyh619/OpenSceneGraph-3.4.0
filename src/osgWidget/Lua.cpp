@@ -65,7 +65,7 @@ int getWindow(lua_State *L)
 
 // A helper function for all those cases where we need to inform the user that there isn't
 // a LUA engine available.
-bool noLuaFail(const std::string&err)
+bool noLuaFail(const std::string &err)
 {
     warn() << err << "; Lua not compiled in library." << std::endl;
 
@@ -138,7 +138,7 @@ bool LuaEngine::close()
 #endif
 }
 
-bool LuaEngine::eval(const std::string&code)
+bool LuaEngine::eval(const std::string &code)
 {
 #ifdef OSGWIDGET_USELUA
     if (luaL_dostring(_data->lua, code.c_str()))
@@ -155,7 +155,7 @@ bool LuaEngine::eval(const std::string&code)
 #endif
 }
 
-bool LuaEngine::runFile(const std::string&filePath)
+bool LuaEngine::runFile(const std::string &filePath)
 {
 #ifdef OSGWIDGET_USELUA
     if (!osgDB::fileExists(filePath))

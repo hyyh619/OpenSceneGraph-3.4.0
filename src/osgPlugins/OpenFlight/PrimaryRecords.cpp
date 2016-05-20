@@ -66,7 +66,7 @@ protected:
 
 virtual ~Header() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 
@@ -137,7 +137,7 @@ virtual void readRecord(RecordInputStream&in, Document&document)
     document.setHeaderNode(_header.get());
 }
 
-virtual void dispose(Document&document)
+virtual void dispose(Document &document)
 {
     if (_header.valid())
     {
@@ -201,7 +201,7 @@ bool hasAnimation() const
 
 protected:
 
-void readRecord(RecordInputStream&in, Document&document)
+void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 
@@ -244,7 +244,7 @@ void readRecord(RecordInputStream&in, Document&document)
         _parent->addChild(*_group);
 }
 
-virtual void dispose(Document&document)
+virtual void dispose(Document &document)
 {
     if (!_group.valid())
         return;
@@ -345,7 +345,7 @@ META_dispose(_dof)
 protected:
 
 virtual ~DegreeOfFreedom() {}
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 
@@ -439,7 +439,7 @@ virtual void readRecord(RecordInputStream&in, Document&document)
         _parent->addChild(*_dof);
 }
 
-Range readRange(RecordInputStream&in) const
+Range readRange(RecordInputStream &in) const
 {
     Range range;
 
@@ -462,7 +462,7 @@ Range readRange(RecordInputStream&in) const
     return range;
 }
 
-bool valid(const osg::Vec3d&v) const
+bool valid(const osg::Vec3d &v) const
 {
     const osg::Vec3d bad(-1.0e8, -1.0e8, -1.0e8);
     const float64    epsilon = 1.0e-7;
@@ -500,7 +500,7 @@ META_dispose(_lod)
 protected:
 
 virtual ~LevelOfDetail() {}
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 
@@ -556,7 +556,7 @@ META_dispose(_lod)
 protected:
 
 virtual ~OldLevelOfDetail() {}
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id                = in.readString(8);
     uint32      switchInDistance  = in.readUInt32();
@@ -613,7 +613,7 @@ META_setComment(_multiSwitch)
 META_setMultitexture(_multiSwitch)
 META_dispose(_multiSwitch)
 
-virtual void addChild(osg::Node&child)
+virtual void addChild(osg::Node &child)
 {
     if (_multiSwitch.valid())
     {
@@ -631,7 +631,7 @@ virtual void addChild(osg::Node&child)
     }
 }
 
-virtual void setMultiSwitchValueName(unsigned int switchSet, const std::string&name)
+virtual void setMultiSwitchValueName(unsigned int switchSet, const std::string &name)
 {
     if (_multiSwitch.valid())
     {
@@ -642,7 +642,7 @@ virtual void setMultiSwitchValueName(unsigned int switchSet, const std::string&n
 protected:
 
 virtual ~Switch() {}
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     std::string id = in.readString(8);
 
@@ -709,7 +709,7 @@ META_dispose(_external)
 protected:
 
 virtual ~ExternalReference() {}
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string strFile = in.readString(200);
 
@@ -783,7 +783,7 @@ META_addChild(_instanceDefinition)
 protected:
 
 virtual ~InstanceDefinition() {}
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     in.forward(2);
     _number = (int)in.readUInt16();
@@ -791,7 +791,7 @@ virtual void readRecord(RecordInputStream&in, Document&document)
     _instanceDefinition = new osg::Group;
 }
 
-virtual void dispose(Document&document)
+virtual void dispose(Document &document)
 {
     // Insert transform(s)
     if (_matrix.valid())
@@ -825,7 +825,7 @@ META_Record(InstanceReference)
 protected:
 
 virtual ~InstanceReference() {}
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     in.forward(2);
     uint16 number = in.readUInt16();
@@ -864,7 +864,7 @@ META_dispose(_extension)
 protected:
 
 virtual ~Extension() {}
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     std::string id     = in.readString(8);
     std::string siteId = in.readString(8);
@@ -909,7 +909,7 @@ META_addChild(_object)
 
 protected:
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 
@@ -936,7 +936,7 @@ virtual void readRecord(RecordInputStream&in, Document&document)
     // Postpone add-to-parent until we know a bit more.
 }
 
-virtual void dispose(Document&document)
+virtual void dispose(Document &document)
 {
     if (!_parent.valid() || !_object.valid())
         return;
@@ -1013,7 +1013,7 @@ META_dispose(_lightSource)
 protected:
 
 virtual ~LightSource() {}
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 

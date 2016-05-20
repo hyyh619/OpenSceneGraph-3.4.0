@@ -57,7 +57,7 @@
 // we apply them.
 
 
-osg::StateSet* createMirrorTexturedState(const std::string&filename)
+osg::StateSet* createMirrorTexturedState(const std::string &filename)
 {
     osg::StateSet *dstate = new osg::StateSet;
 
@@ -115,7 +115,7 @@ osg::Node* createMirroredScene(osg::Node *model)
 {
     // calculate where to place the mirror according to the
     // loaded models bounding sphere.
-    const osg::BoundingSphere&bs = model->getBound();
+    const osg::BoundingSphere &bs = model->getBound();
 
     float width_factor  = 1.5;
     float height_factor = 0.3;

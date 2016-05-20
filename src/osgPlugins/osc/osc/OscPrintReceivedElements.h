@@ -39,10 +39,10 @@
 
 namespace osc
 {
-std::ostream&operator<<(std::ostream&os, const ReceivedPacket&p);
-std::ostream&operator<<(std::ostream&os, const ReceivedMessageArgument&arg);
-std::ostream&operator<<(std::ostream&os, const ReceivedMessage&m);
-std::ostream&operator<<(std::ostream&os, const ReceivedBundle&b);
+std::ostream&operator<<(std::ostream &os, const ReceivedPacket &p);
+std::ostream&operator<<(std::ostream &os, const ReceivedMessageArgument &arg);
+std::ostream&operator<<(std::ostream &os, const ReceivedMessage &m);
+std::ostream&operator<<(std::ostream &os, const ReceivedBundle &b);
 } // namespace osc
 
 #endif /* INCLUDED_OSCPRINTRECEIVEDELEMENTS_H */

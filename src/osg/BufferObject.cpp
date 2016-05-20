@@ -130,7 +130,7 @@ void GLBufferObject::compileBuffer()
         BufferData *bd = _bufferObject->getBufferData(i);
         if (i < _bufferEntries.size())
         {
-            BufferEntry&entry = _bufferEntries[i];
+            BufferEntry &entry = _bufferEntries[i];
             if (offsetChanged ||
                 entry.dataSource != bd ||
                 entry.dataSize != bd->getTotalDataSize())
@@ -208,7 +208,7 @@ void GLBufferObject::compileBuffer()
          itr != _bufferEntries.end();
          ++itr)
     {
-        BufferEntry&entry = *itr;
+        BufferEntry &entry = *itr;
         if (entry.dataSource && (compileAll || entry.modifiedCount != entry.dataSource->getModifiedCount()))
         {
             // OSG_NOTICE<<"GLBufferObject::compileBuffer(..) downloading BufferEntry "<<&entry<<std::endl;
@@ -261,7 +261,7 @@ bool GLBufferObject::hasAllBufferDataBeenRead() const
 
 void GLBufferObject::setBufferDataHasBeenRead(const osg::BufferData *bd)
 {
-    BufferEntry&entry = _bufferEntries[bd->getBufferIndex()];
+    BufferEntry &entry = _bufferEntries[bd->getBufferIndex()];
 
     ++entry.numRead;
 }
@@ -270,7 +270,7 @@ void GLBufferObject::setBufferDataHasBeenRead(const osg::BufferData *bd)
 //
 // GLBufferObjectSet
 //
-GLBufferObjectSet::GLBufferObjectSet(GLBufferObjectManager *parent, const BufferObjectProfile&profile) :
+GLBufferObjectSet::GLBufferObjectSet(GLBufferObjectManager *parent, const BufferObjectProfile &profile) :
     _parent(parent),
     _contextID(parent->getContextID()),
     _profile(profile),
@@ -508,7 +508,7 @@ void GLBufferObjectSet::discardAllDeletedGLBufferObjects()
     _orphanedGLBufferObjects.clear();
 }
 
-void GLBufferObjectSet::flushDeletedGLBufferObjects(double /*currentTime*/, double&availableTime)
+void GLBufferObjectSet::flushDeletedGLBufferObjects(double /*currentTime*/, double &availableTime)
 {
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
@@ -568,7 +568,7 @@ void GLBufferObjectSet::flushDeletedGLBufferObjects(double /*currentTime*/, doub
     availableTime -= timer.elapsedTime();
 }
 
-bool GLBufferObjectSet::makeSpace(unsigned int&size)
+bool GLBufferObjectSet::makeSpace(unsigned int &size)
 {
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
@@ -920,9 +920,9 @@ osg::ref_ptr<GLBufferObject> GLBufferObjectManager::generateGLBufferObject(const
     return glbos->takeOrGenerate(const_cast<BufferObject*>(bufferObject));
 }
 
-GLBufferObjectSet* GLBufferObjectManager::getGLBufferObjectSet(const BufferObjectProfile&profile)
+GLBufferObjectSet* GLBufferObjectManager::getGLBufferObjectSet(const BufferObjectProfile &profile)
 {
-    osg::ref_ptr<GLBufferObjectSet>&tos = _glBufferObjectSetMap[profile];
+    osg::ref_ptr<GLBufferObjectSet> &tos = _glBufferObjectSetMap[profile];
 
     if (!tos)
         tos = new GLBufferObjectSet(this, profile);
@@ -984,7 +984,7 @@ void GLBufferObjectManager::discardAllDeletedGLBufferObjects()
     }
 }
 
-void GLBufferObjectManager::flushDeletedGLBufferObjects(double currentTime, double&availableTime)
+void GLBufferObjectManager::flushDeletedGLBufferObjects(double currentTime, double &availableTime)
 {
     ElapsedTime elapsedTime(&(getDeleteTime()));
 
@@ -1015,7 +1015,7 @@ void GLBufferObjectManager::newFrame(osg::FrameStamp *fs)
     ++_numFrames;
 }
 
-void GLBufferObjectManager::reportStats(std::ostream&out)
+void GLBufferObjectManager::reportStats(std::ostream &out)
 {
     double numFrames(_numFrames == 0 ? 1.0 : _numFrames);
 
@@ -1042,7 +1042,7 @@ void GLBufferObjectManager::resetStats()
     _applyTime  = 0;
 }
 
-void GLBufferObjectManager::recomputeStats(std::ostream&out)
+void GLBufferObjectManager::recomputeStats(std::ostream &out)
 {
     out << "GLBufferObjectMananger::recomputeStats()" << std::endl;
     unsigned int numObjectsInLists = 0;
@@ -1109,7 +1109,7 @@ void GLBufferObject::discardAllDeletedBufferObjects(unsigned int contextID)
     GLBufferObjectManager::getGLBufferObjectManager(contextID)->discardAllDeletedGLBufferObjects();
 }
 
-void GLBufferObject::flushDeletedBufferObjects(unsigned int contextID, double currentTime, double&availbleTime)
+void GLBufferObject::flushDeletedBufferObjects(unsigned int contextID, double currentTime, double &availbleTime)
 {
     GLBufferObjectManager::getGLBufferObjectManager(contextID)->flushDeletedGLBufferObjects(currentTime, availbleTime);
 }
@@ -1129,7 +1129,7 @@ BufferObject::BufferObject() :
     _copyDataAndReleaseGLBufferObject(false)
 {}
 
-BufferObject::BufferObject(const BufferObject&bo, const CopyOp&copyop) :
+BufferObject::BufferObject(const BufferObject &bo, const CopyOp &copyop) :
     Object(bo, copyop),
     _copyDataAndReleaseGLBufferObject(bo._copyDataAndReleaseGLBufferObject)
 {}
@@ -1275,7 +1275,7 @@ void BufferObject::deleteBufferObject(unsigned int contextID, GLuint globj)
     // implement deleteBufferObject for backwards compatibility by adding
     // a GLBufferObject for the globj id to BufferObjectManager/Set for the specified context.
 
-    osg::ref_ptr<GLBufferObjectManager>&bufferObjectManager = GLBufferObjectManager::getGLBufferObjectManager(contextID);
+    osg::ref_ptr<GLBufferObjectManager> &bufferObjectManager = GLBufferObjectManager::getGLBufferObjectManager(contextID);
 
     if (!bufferObjectManager)
     {
@@ -1349,7 +1349,7 @@ VertexBufferObject::VertexBufferObject()
 //    _usage = GL_STREAM_DRAW_ARB;
 }
 
-VertexBufferObject::VertexBufferObject(const VertexBufferObject&vbo, const CopyOp&copyop) :
+VertexBufferObject::VertexBufferObject(const VertexBufferObject &vbo, const CopyOp &copyop) :
     BufferObject(vbo, copyop)
 {}
 
@@ -1391,7 +1391,7 @@ ElementBufferObject::ElementBufferObject()
     setUsage(GL_STATIC_DRAW_ARB);
 }
 
-ElementBufferObject::ElementBufferObject(const ElementBufferObject&vbo, const CopyOp&copyop) :
+ElementBufferObject::ElementBufferObject(const ElementBufferObject &vbo, const CopyOp &copyop) :
     BufferObject(vbo, copyop)
 {}
 
@@ -1440,7 +1440,7 @@ PixelBufferObject::PixelBufferObject(osg::Image *image) :
         setBufferData(0, image);
 }
 
-PixelBufferObject::PixelBufferObject(const PixelBufferObject&buffer, const CopyOp&copyop) :
+PixelBufferObject::PixelBufferObject(const PixelBufferObject &buffer, const CopyOp &copyop) :
     BufferObject(buffer, copyop)
 {}
 
@@ -1475,7 +1475,7 @@ PixelDataBufferObject::PixelDataBufferObject()
 }
 
 // --------------------------------------------------------------------------------
-PixelDataBufferObject::PixelDataBufferObject(const PixelDataBufferObject&buffer, const CopyOp&copyop) :
+PixelDataBufferObject::PixelDataBufferObject(const PixelDataBufferObject &buffer, const CopyOp &copyop) :
     BufferObject(buffer, copyop)
 {}
 
@@ -1484,7 +1484,7 @@ PixelDataBufferObject::~PixelDataBufferObject()
 {}
 
 // --------------------------------------------------------------------------------
-void PixelDataBufferObject::compileBuffer(State&state) const
+void PixelDataBufferObject::compileBuffer(State &state) const
 {
     unsigned int contextID = state.getContextID();
 
@@ -1501,7 +1501,7 @@ void PixelDataBufferObject::compileBuffer(State&state) const
 }
 
 // --------------------------------------------------------------------------------
-void PixelDataBufferObject::bindBufferInReadMode(State&state)
+void PixelDataBufferObject::bindBufferInReadMode(State &state)
 {
     unsigned int contextID = state.getContextID();
 
@@ -1519,7 +1519,7 @@ void PixelDataBufferObject::bindBufferInReadMode(State&state)
 }
 
 // --------------------------------------------------------------------------------
-void PixelDataBufferObject::bindBufferInWriteMode(State&state)
+void PixelDataBufferObject::bindBufferInWriteMode(State &state)
 {
     unsigned int contextID = state.getContextID();
 
@@ -1578,7 +1578,7 @@ UniformBufferObject::UniformBufferObject()
     setUsage(GL_STREAM_DRAW_ARB);
 }
 
-UniformBufferObject::UniformBufferObject(const UniformBufferObject&ubo, const CopyOp&copyop)
+UniformBufferObject::UniformBufferObject(const UniformBufferObject &ubo, const CopyOp &copyop)
     : BufferObject(ubo, copyop)
 {}
 
@@ -1597,7 +1597,7 @@ AtomicCounterBufferObject::AtomicCounterBufferObject()
     setUsage(GL_DYNAMIC_DRAW);
 }
 
-AtomicCounterBufferObject::AtomicCounterBufferObject(const AtomicCounterBufferObject&ubo, const CopyOp&copyop)
+AtomicCounterBufferObject::AtomicCounterBufferObject(const AtomicCounterBufferObject &ubo, const CopyOp &copyop)
     : BufferObject(ubo, copyop)
 {}
 
@@ -1615,7 +1615,7 @@ ShaderStorageBufferObject::ShaderStorageBufferObject()
     setUsage(GL_STATIC_DRAW);
 }
 
-ShaderStorageBufferObject::ShaderStorageBufferObject(const ShaderStorageBufferObject&ubo, const CopyOp&copyop)
+ShaderStorageBufferObject::ShaderStorageBufferObject(const ShaderStorageBufferObject &ubo, const CopyOp &copyop)
     : BufferObject(ubo, copyop)
 {}
 

@@ -6,12 +6,12 @@
 #include <osgTerrain/TerrainTile>
 
 
-static bool checkImage(const osgTerrain::ImageLayer&im)
+static bool checkImage(const osgTerrain::ImageLayer &im)
 {
     return im.getImage() != NULL;
 }
 
-static bool readImage(osgDB::InputStream&is, osgTerrain::ImageLayer&il)
+static bool readImage(osgDB::InputStream &is, osgTerrain::ImageLayer &il)
 {
     if (!is.isBinary())
         is >> is.BEGIN_BRACKET;
@@ -35,7 +35,7 @@ static bool readImage(osgDB::InputStream&is, osgTerrain::ImageLayer&il)
     return true;
 }
 
-static bool writeImage(osgDB::OutputStream&os, const osgTerrain::ImageLayer&il)
+static bool writeImage(osgDB::OutputStream &os, const osgTerrain::ImageLayer &il)
 {
     const osg::Image *image = il.getImage();
 

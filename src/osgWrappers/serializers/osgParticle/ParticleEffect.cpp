@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _particleSystem
-static bool checkParticleSystem(const osgParticle::ParticleEffect&effect)
+static bool checkParticleSystem(const osgParticle::ParticleEffect &effect)
 {
     return (!effect.getUseLocalParticleSystem()) && (effect.getParticleSystem() != NULL);
 }
 
-static bool readParticleSystem(osgDB::InputStream&is, osgParticle::ParticleEffect&effect)
+static bool readParticleSystem(osgDB::InputStream &is, osgParticle::ParticleEffect &effect)
 {
     is >> is.BEGIN_BRACKET;
     effect.setUseLocalParticleSystem(false);
@@ -18,7 +18,7 @@ static bool readParticleSystem(osgDB::InputStream&is, osgParticle::ParticleEffec
     return true;
 }
 
-static bool writeParticleSystem(osgDB::OutputStream&os, const osgParticle::ParticleEffect&effect)
+static bool writeParticleSystem(osgDB::OutputStream &os, const osgParticle::ParticleEffect &effect)
 {
     os << os.BEGIN_BRACKET << std::endl;
     os << effect.getParticleSystem();

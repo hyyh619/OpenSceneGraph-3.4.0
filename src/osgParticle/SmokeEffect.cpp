@@ -38,7 +38,7 @@ SmokeEffect::SmokeEffect(bool automaticSetup) :
         buildEffect();
 }
 
-SmokeEffect::SmokeEffect(const osg::Vec3&position, float scale, float intensity)
+SmokeEffect::SmokeEffect(const osg::Vec3 &position, float scale, float intensity)
 {
     setDefaults();
 
@@ -53,7 +53,7 @@ SmokeEffect::SmokeEffect(const osg::Vec3&position, float scale, float intensity)
         buildEffect();
 }
 
-SmokeEffect::SmokeEffect(const SmokeEffect&copy, const osg::CopyOp&copyop) :
+SmokeEffect::SmokeEffect(const SmokeEffect &copy, const osg::CopyOp &copyop) :
     ParticleEffect(copy, copyop)
 {
     if (_automaticSetup)
@@ -88,7 +88,7 @@ void SmokeEffect::setUpEmitterAndProgram()
     {
         _particleSystem->setDefaultAttributes(_textureFileName, false, false);
 
-        osgParticle::Particle&ptemplate = _particleSystem->getDefaultParticleTemplate();
+        osgParticle::Particle &ptemplate = _particleSystem->getDefaultParticleTemplate();
 
         float radius  = 0.5f * _scale;
         float density = 1.0f; // 1.0kg/m^3

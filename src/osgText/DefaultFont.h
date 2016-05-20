@@ -38,7 +38,7 @@ virtual bool supportsMultipleFontResolutions() const
     return false;
 }
 
-virtual osgText::Glyph* getGlyph(const FontResolution&fontRes, unsigned int charcode);
+virtual osgText::Glyph* getGlyph(const FontResolution &fontRes, unsigned int charcode);
 
 virtual osgText::Glyph3D* getGlyph3D(unsigned int /*charcode*/)
 {

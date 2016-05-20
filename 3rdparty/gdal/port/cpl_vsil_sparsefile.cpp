@@ -91,9 +91,9 @@ VSISparseFileFilesystemHandler();
 virtual ~VSISparseFileFilesystemHandler();
 
 int              DecomposePath(const char *pszPath,
-                               CPLString&osFilename,
-                               vsi_l_offset&nSparseFileOffset,
-                               vsi_l_offset&nSparseFileSize);
+                               CPLString &osFilename,
+                               vsi_l_offset &nSparseFileOffset,
+                               vsi_l_offset &nSparseFileSize);
 
 virtual VSIVirtualHandle* Open(const char *pszFilename,
                                const char *pszAccess);

@@ -256,7 +256,7 @@ int Base64encoder::encode_end(char *plaintext_out)
     return base64_encode_blockend(plaintext_out, &_state);
 }
 
-void Base64encoder::encode(std::istream&istream_in, std::ostream&ostream_in)
+void Base64encoder::encode(std::istream &istream_in, std::ostream &ostream_in)
 {
     base64_init_encodestate(&_state);
 
@@ -285,7 +285,7 @@ void Base64encoder::encode(std::istream&istream_in, std::ostream&ostream_in)
     delete[] plaintext;
 }
 
-void Base64encoder::encode(const char *chars_in, int length_in, std::string&code_out)
+void Base64encoder::encode(const char *chars_in, int length_in, std::string &code_out)
 {
     std::stringstream stream_out;
     {
@@ -311,7 +311,7 @@ int Base64decoder::decode(const char *code_in, const int length_in, char *plaint
     return base64_decode_block(code_in, length_in, plaintext_out, &_state);
 }
 
-void Base64decoder::decode(std::istream&istream_in, std::ostream&ostream_in)
+void Base64decoder::decode(std::istream &istream_in, std::ostream &ostream_in)
 {
     base64_init_decodestate(&_state);
 
@@ -336,7 +336,7 @@ void Base64decoder::decode(std::istream&istream_in, std::ostream&ostream_in)
     delete[] plaintext;
 }
 
-char* Base64decoder::decode(const std::vector<std::string>&str_in, std::vector<unsigned int>&pos_out)
+char* Base64decoder::decode(const std::vector<std::string> &str_in, std::vector<unsigned int> &pos_out)
 {
     std::stringstream stream_out;
     {

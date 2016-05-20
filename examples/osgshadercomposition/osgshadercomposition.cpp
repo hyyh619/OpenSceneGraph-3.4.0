@@ -21,9 +21,9 @@
 #include <osg/PositionAttitudeTransform>
 
 // pull in the old shader composition implementation function
-extern osg::Node* createOldShaderCompositionScene(osg::ArgumentParser&arguments);
+extern osg::Node* createOldShaderCompositionScene(osg::ArgumentParser &arguments);
 
-osg::Node* createNewShaderCompositionScene(osg::ArgumentParser&arguments)
+osg::Node* createNewShaderCompositionScene(osg::ArgumentParser &arguments)
 {
     osg::ref_ptr<osg::Node> node = osgDB::readNodeFiles(arguments);
 

@@ -18,12 +18,12 @@ VirtualProgram(unsigned int mask = 0xFFFFFFFFUL);
 virtual ~VirtualProgram(void);
 
 VirtualProgram(const VirtualProgram&VirtualProgram,
-               const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+               const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_StateAttribute(osgCandidate, VirtualProgram, Type(PROGRAM))
 
 /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.*/
-virtual int compare(const StateAttribute&sa) const
+virtual int compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -37,12 +37,12 @@ virtual int compare(const StateAttribute&sa) const
 
 /** If enabled, activate our program in the GL pipeline,
  * performing any rebuild operations that might be pending. */
-virtual void  apply(osg::State&state) const;
+virtual void  apply(osg::State &state) const;
 
-osg::Shader* getShader(const std::string&shaderSemantic,
+osg::Shader* getShader(const std::string &shaderSemantic,
                        osg::Shader::Type type);
 
-osg::Shader* setShader(const std::string&shaderSemantic,
+osg::Shader* setShader(const std::string &shaderSemantic,
                        osg::Shader *shader);
 
 protected:

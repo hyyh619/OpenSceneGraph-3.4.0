@@ -29,7 +29,7 @@ VertexAttribDivisor::VertexAttribDivisor(unsigned int index, unsigned int diviso
 VertexAttribDivisor::~VertexAttribDivisor()
 {}
 
-void VertexAttribDivisor::apply(State&state) const
+void VertexAttribDivisor::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

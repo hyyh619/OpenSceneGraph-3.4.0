@@ -91,13 +91,13 @@ Logos()
     _contextID = 0;
 }
 
-Logos(const Logos&logo, const CopyOp&copyop = CopyOp::SHALLOW_COPY) : Drawable(logo, copyop) {}
+Logos(const Logos &logo, const CopyOp &copyop = CopyOp::SHALLOW_COPY) : Drawable(logo, copyop) {}
 
 virtual Object* cloneType() const
 {
     return new Logos();
 }
-virtual Object* clone(const CopyOp&copyop) const
+virtual Object* clone(const CopyOp &copyop) const
 {
     return new Logos(*this, copyop);
 }
@@ -110,7 +110,7 @@ virtual const char* className() const
     return "Logos";
 }
 
-virtual void drawImplementation(osg::RenderInfo&renderInfo) const
+virtual void drawImplementation(osg::RenderInfo &renderInfo) const
 {
         #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
     if (renderInfo.getContextID() != _contextID)
@@ -266,7 +266,7 @@ virtual const char* className() const
     return "Logo Database Reader/Writer";
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

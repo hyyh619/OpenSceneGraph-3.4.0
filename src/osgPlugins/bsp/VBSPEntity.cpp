@@ -23,7 +23,7 @@ using namespace osgDB;
 #endif
 
 
-VBSPEntity::VBSPEntity(std::string&entityText, VBSPData *bspData)
+VBSPEntity::VBSPEntity(std::string &entityText, VBSPData *bspData)
 {
     // Save a handle to the bsp data, as we'll need this to construct the
     // entity
@@ -224,7 +224,7 @@ Vec3f VBSPEntity::getVector(std::string str)
 }
 
 
-std::string VBSPEntity::getToken(std::string str, size_t&index)
+std::string VBSPEntity::getToken(std::string str, size_t &index)
 {
     std::string::size_type end = std::string::npos;
     std::string            token;
@@ -267,7 +267,7 @@ std::string VBSPEntity::getToken(std::string str, size_t&index)
 }
 
 
-void VBSPEntity::parseParameters(std::string&entityText)
+void VBSPEntity::parseParameters(std::string &entityText)
 {
     // Create a string stream on the entity text
     std::istringstream str(entityText, std::istringstream::in);

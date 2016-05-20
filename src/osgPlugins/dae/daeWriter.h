@@ -90,9 +90,9 @@ std::string toString(T value)
     return str.str();
 }
 
-std::string toString(const osg::Vec3f&value);
-std::string toString(const osg::Vec3d&value);
-std::string toString(const osg::Matrix&value);
+std::string toString(const osg::Vec3f &value);
+std::string toString(const osg::Vec3d &value);
+std::string toString(const osg::Matrix &value);
 
 // Collects all nodes that are targeted by an animation
 class FindAnimatedNodeVisitor : public osg::NodeVisitor
@@ -102,7 +102,7 @@ FindAnimatedNodeVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN)
 {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     osg::Callback *ncb = node.getUpdateCallback();
 
@@ -126,7 +126,7 @@ virtual void apply(osg::Node&node)
     traverse(node);
 }
 
-osg::Node* getTargetNode(const std::string&targetName)
+osg::Node* getTargetNode(const std::string &targetName)
 {
     UpdateCallbackNameNodeMap::iterator it = _updateCallbackNameNodeMap.find(targetName);
 
@@ -170,10 +170,10 @@ struct Options
     bool         namesUseCodepage;
     unsigned int relativiseImagesPathNbUpDirs;
 };
-daeWriter(DAE *dae_, const std::string&fileURI, const std::string&directory, const std::string&srcDirectory, const osgDB::ReaderWriter::Options *options, TraversalMode tm = TRAVERSE_ALL_CHILDREN, const Options *pluginOptions = NULL);
+daeWriter(DAE *dae_, const std::string &fileURI, const std::string &directory, const std::string &srcDirectory, const osgDB::ReaderWriter::Options *options, TraversalMode tm = TRAVERSE_ALL_CHILDREN, const Options *pluginOptions = NULL);
 virtual ~daeWriter();
 
-void setRootNode(const osg::Node&node);
+void setRootNode(const osg::Node &node);
 
 bool isSuccess()
 {
@@ -182,57 +182,57 @@ bool isSuccess()
 
 bool writeFile();
 
-virtual void    apply(osg::Node&node);
-virtual void    apply(osg::Geode&node);
-virtual void    apply(osg::Group&node);
-virtual void    apply(osg::LightSource&node);
-virtual void    apply(osg::Camera&node);
-virtual void    apply(osg::MatrixTransform&node);
-virtual void    apply(osg::PositionAttitudeTransform&node);
-virtual void    apply(osg::Switch&node);
-virtual void    apply(osg::Sequence&node);
-virtual void    apply(osg::LOD&node);
+virtual void    apply(osg::Node &node);
+virtual void    apply(osg::Geode &node);
+virtual void    apply(osg::Group &node);
+virtual void    apply(osg::LightSource &node);
+virtual void    apply(osg::Camera &node);
+virtual void    apply(osg::MatrixTransform &node);
+virtual void    apply(osg::PositionAttitudeTransform &node);
+virtual void    apply(osg::Switch &node);
+virtual void    apply(osg::Sequence &node);
+virtual void    apply(osg::LOD &node);
 
 // virtual void    apply( osg::Billboard &node);
-virtual void    apply(osg::ProxyNode&node);
+virtual void    apply(osg::ProxyNode &node);
 // virtual void  apply( osg::Projection &node)
-virtual void    apply(osg::CoordinateSystemNode&node);
+virtual void    apply(osg::CoordinateSystemNode &node);
 // virtual void  apply( osg::ClipNode &node)
 // virtual void  apply( osg::TexGenNode &node)
-virtual void    apply(osg::Transform&node);
-virtual void    apply(osg::CameraView&node);
+virtual void    apply(osg::Transform &node);
+virtual void    apply(osg::CameraView &node);
 // virtual void  apply( osg::PagedLOD &node)
 // virtual void  apply( osg::ClearNode &node)
 // virtual void  apply( osg::OccluderNode &node)
 
-void traverse(osg::Node&node);
+void traverse(osg::Node &node);
 
 
 
 
 protected: // methods
 
-void writeAnimations(osg::Node&node);
-void writeNodeExtra(osg::Node&node);
-void writeUpdateTransformElements(const osg::Vec3&pos, const osg::Quat&q,    const osg::Vec3&s);
+void writeAnimations(osg::Node &node);
+void writeNodeExtra(osg::Node &node);
+void writeUpdateTransformElements(const osg::Vec3 &pos, const osg::Quat &q,    const osg::Vec3 &s);
 void writeRigGeometry(osgAnimation::RigGeometry *pOsgRigGeometry);
 void writeMorphGeometry(osgAnimation::MorphGeometry *pOsgMorphGeometry);
 
-void debugPrint(osg::Node&node);
+void debugPrint(osg::Node &node);
 
 domGeometry* getOrCreateDomGeometry(osg::Geometry *pOsgGeometry);
-bool processGeometry(osg::Geometry *geom, domGeometry *geo, const std::string&name);
-domSource* createSource(daeElement *parent, const std::string&baseName, int size, bool color = false, bool uv = false);
+bool processGeometry(osg::Geometry *geom, domGeometry *geo, const std::string &name);
+domSource* createSource(daeElement *parent, const std::string &baseName, int size, bool color = false, bool uv = false);
 template<typename Ty>
-Ty* createPrimGroup(daeString type, domMesh *mesh, domSource *norm, domSource *color, const std::vector<domSource*>&texcoord);
+Ty* createPrimGroup(daeString type, domMesh *mesh, domSource *norm, domSource *color, const std::vector<domSource*> &texcoord);
 
-void processMaterial(osg::StateSet *ss, domBind_material *pDomBindMaterial, const std::string&geoName);
+void processMaterial(osg::StateSet *ss, domBind_material *pDomBindMaterial, const std::string &geoName);
 
 void createAssetTag(bool isZUpAxis);
 
 // Overloaded version of createAssetTag which provides ability to
 // set user defined values for child elements
-void createAssetTag(const osg::Node&node);
+void createAssetTag(const osg::Node &node);
 
 void pushStateSet(osg::StateSet *ss);
 
@@ -258,7 +258,7 @@ unsigned int lastDepth;
 
 struct CompareStateSet
 {
-    bool operator()(const osg::ref_ptr<osg::StateSet>&ss1, const osg::ref_ptr<osg::StateSet>&ss2) const
+    bool operator()(const osg::ref_ptr<osg::StateSet> &ss1, const osg::ref_ptr<osg::StateSet> &ss2) const
     {
         // std::cout << "CompareStateSet: " << ss1->compare(*ss2, false) << " " << ss1 << " " << ss2 << std::endl;
         return ss1->compare(*ss2, true) < 0;
@@ -315,7 +315,7 @@ Mode getMode() const
 unsigned int getDAESize();
 
 /// Appends the contained OSG vector array to a domListOfFloats
-bool append(domListOfFloats&list);
+bool append(domListOfFloats &list);
 protected:
 Mode mode;
 };
@@ -328,18 +328,18 @@ void appendGeometryIndices(osg::Geometry *geom,
                            unsigned int vindex,
                            domSource *norm,
                            domSource *color,
-                           const ArrayNIndices&verts,
-                           const ArrayNIndices&normals,
-                           const ArrayNIndices&colors,
-                           const std::vector<ArrayNIndices>&texcoords,
+                           const ArrayNIndices &verts,
+                           const ArrayNIndices &normals,
+                           const ArrayNIndices &colors,
+                           const std::vector<ArrayNIndices> &texcoords,
                            unsigned int ncount,
                            unsigned int ccount);
 
 /** provide a name to node */
-std::string getNodeName(const osg::Node&node, const std::string&defaultName);
+std::string getNodeName(const osg::Node &node, const std::string &defaultName);
 
 /** provide an unique name */
-std::string uniquify(const std::string&name);
+std::string uniquify(const std::string &name);
 
 /** Current RenderingHint */
 /** This are needed because the stateSet merge code currently does not handle it */

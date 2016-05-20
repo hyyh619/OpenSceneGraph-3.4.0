@@ -52,8 +52,8 @@ class MyGeometryCallback :
 {
 public:
 
-MyGeometryCallback(const osg::Vec3&o,
-                   const osg::Vec3&x, const osg::Vec3&y, const osg::Vec3&z,
+MyGeometryCallback(const osg::Vec3 &o,
+                   const osg::Vec3 &x, const osg::Vec3 &y, const osg::Vec3 &z,
                    double period, double xphase, double amplitude) :
     _firstCall(true),
     _startTime(0.0),
@@ -323,7 +323,7 @@ osg::Node* createPreRenderSubGraph(osg::Node *subgraph,
         camera->setClearColor(osg::Vec4(0.1f, 0.1f, 0.3f, 1.0f));
         camera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        const osg::BoundingSphere&bs = subgraph->getBound();
+        const osg::BoundingSphere &bs = subgraph->getBound();
         if (!bs.valid())
         {
             return subgraph;

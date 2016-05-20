@@ -120,22 +120,22 @@ void daeReader::processAnimationClip(osgAnimation::BasicAnimationManager *pOsgAn
 
 struct KeyFrameComparator
 {
-    bool operator ()(const osgAnimation::Keyframe&a, const osgAnimation::Keyframe&b) const
+    bool operator ()(const osgAnimation::Keyframe &a, const osgAnimation::Keyframe &b) const
     {
         return a.getTime() < b.getTime();
     }
-    bool operator ()(const osgAnimation::Keyframe&a, float t) const
+    bool operator ()(const osgAnimation::Keyframe &a, float t) const
     {
         return a.getTime() < t;
     }
-    bool operator ()(float t, const osgAnimation::Keyframe&b) const
+    bool operator ()(float t, const osgAnimation::Keyframe &b) const
     {
         return t < b.getTime();
     }
 };
 
 template<typename T>
-void deCasteljau(osgAnimation::TemplateCubicBezier<T>&l, osgAnimation::TemplateCubicBezier<T>&n, osgAnimation::TemplateCubicBezier<T>&r, float t)
+void deCasteljau(osgAnimation::TemplateCubicBezier<T> &l, osgAnimation::TemplateCubicBezier<T> &n, osgAnimation::TemplateCubicBezier<T> &r, float t)
 {
     T q1 = l.getPosition() + t * (l.getControlPointOut() - l.getPosition());
     T q2 = l.getControlPointOut() + t * (r.getControlPointIn() - l.getControlPointOut());
@@ -160,7 +160,7 @@ void deCasteljau(osgAnimation::TemplateCubicBezier<T>&l, osgAnimation::TemplateC
 void mergeKeyframeContainers(osgAnimation::Vec3CubicBezierKeyframeContainer *to,
                              osgAnimation::FloatCubicBezierKeyframeContainer **from,
                              daeReader::InterpolationType interpolationType,
-                             const osg::Vec3&defaultValue)
+                             const osg::Vec3 &defaultValue)
 {
     assert(to->empty());
 
@@ -263,7 +263,7 @@ void mergeKeyframeContainers(osgAnimation::Vec3CubicBezierKeyframeContainer *to,
 }
 
 void daeReader::processAnimationChannels(
-    domAnimation *pDomAnimation, TargetChannelPartMap&tcm)
+    domAnimation *pDomAnimation, TargetChannelPartMap &tcm)
 {
     // 1..* <source>
     SourceMap       sources;
@@ -290,7 +290,7 @@ void daeReader::processAnimationChannels(
     }
 }
 
-osgAnimation::Vec3KeyframeContainer* convertKeyframeContainerToLinear(osgAnimation::Vec3CubicBezierKeyframeContainer&from)
+osgAnimation::Vec3KeyframeContainer* convertKeyframeContainerToLinear(osgAnimation::Vec3CubicBezierKeyframeContainer &from)
 {
     osgAnimation::Vec3KeyframeContainer *linearKeyframes = new osgAnimation::Vec3KeyframeContainer;
 
@@ -304,7 +304,7 @@ osgAnimation::Vec3KeyframeContainer* convertKeyframeContainerToLinear(osgAnimati
 }
 
 template<typename T>
-void convertHermiteToBezier(osgAnimation::TemplateKeyframeContainer<T>&keyframes)
+void convertHermiteToBezier(osgAnimation::TemplateKeyframeContainer<T> &keyframes)
 {
     for (size_t i = 0; i < keyframes.size(); ++i)
     {
@@ -318,7 +318,7 @@ void convertHermiteToBezier(osgAnimation::TemplateKeyframeContainer<T>&keyframes
 // osgAnimation requires control points to be in a weird order. This function
 // reorders them from the conventional order to osgAnimation order.
 template<typename T>
-void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> >&vkfCont)
+void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> > &vkfCont)
 {
     if (vkfCont.size() <= 1)
     {
@@ -362,7 +362,7 @@ void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::
 // option 3
 //        1..* <animation>
 // 0..* <extra>
-void daeReader::processAnimationMap(const TargetChannelPartMap&tcm, osgAnimation::Animation *pOsgAnimation)
+void daeReader::processAnimationMap(const TargetChannelPartMap &tcm, osgAnimation::Animation *pOsgAnimation)
 {
     for (TargetChannelPartMap::const_iterator lb = tcm.begin(), end = tcm.end(); lb != end;)
     {
@@ -484,7 +484,7 @@ void daeReader::processAnimationMap(const TargetChannelPartMap&tcm, osgAnimation
 
                 for (size_t i = 0; i < cbkfCntr->size(); ++i)
                 {
-                    const MatrixCubicBezierKeyframe&cbkf = cbkfCntr->at(i);
+                    const MatrixCubicBezierKeyframe &cbkf = cbkfCntr->at(i);
                     kfCntr->push_back(osgAnimation::MatrixKeyframe(cbkf.getTime(), cbkf.getValue().getPosition()));
                 }
 
@@ -513,7 +513,7 @@ osgAnimation::KeyframeContainer* makeKeyframes(
     TArray *pOsgPointArray,
     TArray *pOsgInTanArray,
     TArray *pOsgOutTanArray,
-    daeReader::InterpolationType&interpolationType)
+    daeReader::InterpolationType &interpolationType)
 {
     osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> > *keyframes =
         new osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> >;
@@ -559,7 +559,7 @@ osgAnimation::KeyframeContainer* makeKeyframes(
 // 1..* <input>
 //        1    semantic
 //        1    source
-daeReader::ChannelPart* daeReader::processSampler(domChannel *pDomChannel, SourceMap&sources)
+daeReader::ChannelPart* daeReader::processSampler(domChannel *pDomChannel, SourceMap &sources)
 {
     // And we finally define our channel
     // Note osg can only create time based animations
@@ -785,7 +785,7 @@ daeReader::ChannelPart* daeReader::processSampler(domChannel *pDomChannel, Sourc
     return NULL;
 }
 
-osgAnimation::Target* findChannelTarget(osg::Callback *nc, const std::string&targetName, bool&rotation)
+osgAnimation::Target* findChannelTarget(osg::Callback *nc, const std::string &targetName, bool &rotation)
 {
     if (osgAnimation::UpdateMatrixTransform *umt = dynamic_cast<osgAnimation::UpdateMatrixTransform*>(nc))
     {
@@ -815,7 +815,7 @@ void convertDegreesToRadians(osgAnimation::KeyframeContainer *pKeyframeContainer
     {
         for (size_t i = 0; i < fkc->size(); ++i)
         {
-            osgAnimation::FloatKeyframe&fk = (*fkc)[i];
+            osgAnimation::FloatKeyframe &fk = (*fkc)[i];
             fk.setValue(osg::DegreesToRadians(fk.getValue()));
         }
     }
@@ -824,8 +824,8 @@ void convertDegreesToRadians(osgAnimation::KeyframeContainer *pKeyframeContainer
     {
         for (size_t i = 0; i < fcbkc->size(); ++i)
         {
-            osgAnimation::FloatCubicBezierKeyframe&fcbk = (*fcbkc)[i];
-            osgAnimation::FloatCubicBezier        fcb   = fcbk.getValue();
+            osgAnimation::FloatCubicBezierKeyframe &fcbk = (*fcbkc)[i];
+            osgAnimation::FloatCubicBezier         fcb   = fcbk.getValue();
             fcb.setPosition(osg::DegreesToRadians(fcb.getPosition()));
             fcb.setControlPointIn(osg::DegreesToRadians(fcb.getControlPointIn()));
             fcb.setControlPointOut(osg::DegreesToRadians(fcb.getControlPointOut()));
@@ -842,7 +842,7 @@ void convertDegreesToRadians(osgAnimation::KeyframeContainer *pKeyframeContainer
 // <channel>
 // 1 source
 // 1 target
-void daeReader::processChannel(domChannel *pDomChannel, SourceMap&sources, TargetChannelPartMap&tcm)
+void daeReader::processChannel(domChannel *pDomChannel, SourceMap &sources, TargetChannelPartMap &tcm)
 {
     domSampler *pDomSampler = daeSafeCast<domSampler>(getElementFromURI(pDomChannel->getSource()));
 
@@ -891,7 +891,7 @@ void daeReader::processChannel(domChannel *pDomChannel, SourceMap&sources, Targe
     }
 }
 
-void daeReader::extractTargetName(const std::string&daeTarget, std::string&channelName, std::string&targetName, std::string&component)
+void daeReader::extractTargetName(const std::string &daeTarget, std::string &channelName, std::string &targetName, std::string &component)
 {
     size_t slash = daeTarget.find_last_of("/");
 

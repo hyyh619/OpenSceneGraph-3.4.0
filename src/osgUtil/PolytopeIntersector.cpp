@@ -35,7 +35,7 @@ class PolytopeIntersection
 public:
 enum { MaxNumIntesections = PolytopeIntersector::Intersection::MaxNumIntesectionPoints };
 
-PolytopeIntersection(unsigned int index, const CandList_t&cands, const osg::Plane&referencePlane) :
+PolytopeIntersection(unsigned int index, const CandList_t &cands, const osg::Plane &referencePlane) :
     _maxDistance(-1.0), _index(index - 1), _numPoints(0)
 {
     Vec3_type center;
@@ -59,7 +59,7 @@ PolytopeIntersection(unsigned int index, const CandList_t&cands, const osg::Plan
     center   /= value_type(_numPoints);
     _distance = referencePlane.distance(center);
 }
-bool operator<(const PolytopeIntersection&rhs) const
+bool operator<(const PolytopeIntersection &rhs) const
 {
     return _distance < rhs._distance;
 }
@@ -98,7 +98,7 @@ PolytopePrimitiveIntersector() :
     _plane_mask(0x0),
     _candidates(20) {}
 
-void addIntersection(unsigned int index, const CandList_t&cands)
+void addIntersection(unsigned int index, const CandList_t &cands)
 {
     intersections.push_back(PolytopeIntersection(index, cands, _referencePlane));
 }
@@ -119,13 +119,13 @@ unsigned int checkCandidatePoints(PlaneMask inside_mask)
          it != _planes.end() && numCands > 0;
          ++it, selector_mask <<= 1)
     {
-        const osg::Plane&plane = *it;
+        const osg::Plane &plane = *it;
         if (selector_mask & inside_mask)
             continue;
 
         for (CandList_t::iterator pointIt = _candidates.begin(); pointIt != _candidates.end(); ++pointIt)
         {
-            PlaneMask&mask = pointIt->first;
+            PlaneMask &mask = pointIt->first;
             if (mask == 0)
                 continue;
 
@@ -346,7 +346,7 @@ void operator()(const Vec3_type v1, const Vec3_type v2, const Vec3_type v3, bool
     // handle case where the polytope goes through the triangle
     // without containing any point of it
 
-    LinesList&lines = getPolytopeLines();
+    LinesList &lines = getPolytopeLines();
     _candidates.clear();
 
     // check all polytope lines against the triangle
@@ -356,7 +356,7 @@ void operator()(const Vec3_type v1, const Vec3_type v2, const Vec3_type v3, bool
 
     for (LinesList::const_iterator it = lines.begin(); it != lines.end(); ++it)
     {
-        const PlanesLine&line = *it;
+        const PlanesLine &line = *it;
 
         Vec3_type        p = line.dir ^ e2;
         const value_type a = e1 * p;
@@ -414,15 +414,15 @@ void setLimitOneIntersection(bool limit)
     _limitOneIntersection = limit;
 }
 
-void setPolytope(osg::Polytope&polytope, osg::Plane&referencePlane)
+void setPolytope(osg::Polytope &polytope, osg::Plane &referencePlane)
 {
     _referencePlane = referencePlane;
 
     const PlaneMask currentMask   = polytope.getCurrentMask();
     PlaneMask       selector_mask = 0x1;
 
-    const PlaneList&planeList      = polytope.getPlaneList();
-    unsigned int   numActivePlanes = 0;
+    const PlaneList &planeList      = polytope.getPlaneList();
+    unsigned int    numActivePlanes = 0;
 
     PlaneList::const_iterator itr;
 
@@ -466,15 +466,15 @@ LinesList&getPolytopeLines()
     for (PlaneList::const_iterator it = _planes.begin(); it != _planes.end();
          ++it, selector_mask <<= 1)
     {
-        const osg::Plane&plane1           = *it;
-        const Vec3_type normal1           = plane1.getNormal();
-        const Vec3_type point1            = normal1 * (-plane1[3]); /// canonical point on plane1
-        PlaneMask       sub_selector_mask = (selector_mask << 1);
+        const osg::Plane &plane1           = *it;
+        const Vec3_type  normal1           = plane1.getNormal();
+        const Vec3_type  point1            = normal1 * (-plane1[3]); /// canonical point on plane1
+        PlaneMask        sub_selector_mask = (selector_mask << 1);
 
         for (PlaneList::const_iterator jt = it + 1; jt != _planes.end(); ++jt, sub_selector_mask <<= 1)
         {
-            const osg::Plane&plane2 = *jt;
-            const Vec3_type normal2 = plane2.getNormal();
+            const osg::Plane &plane2 = *jt;
+            const Vec3_type  normal2 = plane2.getNormal();
             if (osg::absolute(normal1 * normal2) > (1.0 - eps()))
                 continue;
 
@@ -518,7 +518,7 @@ CandList_t   _candidates;
 //
 //  PolytopeIntersector
 //
-PolytopeIntersector::PolytopeIntersector(const osg::Polytope&polytope) :
+PolytopeIntersector::PolytopeIntersector(const osg::Polytope &polytope) :
     _parent(0),
     _polytope(polytope),
     _dimensionMask(AllDims)
@@ -529,7 +529,7 @@ PolytopeIntersector::PolytopeIntersector(const osg::Polytope&polytope) :
     }
 }
 
-PolytopeIntersector::PolytopeIntersector(CoordinateFrame cf, const osg::Polytope&polytope) :
+PolytopeIntersector::PolytopeIntersector(CoordinateFrame cf, const osg::Polytope &polytope) :
     Intersector(cf),
     _parent(0),
     _polytope(polytope),
@@ -568,7 +568,7 @@ PolytopeIntersector::PolytopeIntersector(CoordinateFrame cf, double xMin, double
     _referencePlane = _polytope.getPlaneList().back();
 }
 
-Intersector* PolytopeIntersector::clone(osgUtil::IntersectionVisitor&iv)
+Intersector* PolytopeIntersector::clone(osgUtil::IntersectionVisitor &iv)
 {
     if (_coordinateFrame == MODEL && iv.getModelMatrix() == 0)
     {
@@ -641,7 +641,7 @@ Intersector* PolytopeIntersector::clone(osgUtil::IntersectionVisitor&iv)
     return pi.release();
 }
 
-bool PolytopeIntersector::enter(const osg::Node&node)
+bool PolytopeIntersector::enter(const osg::Node &node)
 {
     if (reachedLimit())
         return false;
@@ -656,7 +656,7 @@ void PolytopeIntersector::leave()
 }
 
 
-void PolytopeIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Drawable *drawable)
+void PolytopeIntersector::intersect(osgUtil::IntersectionVisitor &iv, osg::Drawable *drawable)
 {
     if (reachedLimit())
         return;
@@ -679,7 +679,7 @@ void PolytopeIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Drawab
          it != func.intersections.end();
          ++it)
     {
-        const PolytopeIntersectorUtils::PolytopeIntersection&intersection = *it;
+        const PolytopeIntersectorUtils::PolytopeIntersection &intersection = *it;
 
         Intersection hit;
         hit.distance       = intersection._distance;

@@ -35,7 +35,7 @@ Timeline::Timeline()
     setName("Timeline");
 }
 
-Timeline::Timeline(const Timeline&nc, const osg::CopyOp&op)
+Timeline::Timeline(const Timeline &nc, const osg::CopyOp &op)
     : Action(nc, op),
     _actions(nc._actions)
 {
@@ -58,7 +58,7 @@ void Timeline::setAnimationManager(AnimationManagerBase *manager)
     _animationManager = manager;
 }
 
-void Timeline::traverse(ActionVisitor&visitor)
+void Timeline::traverse(ActionVisitor &visitor)
 {
     int layer = visitor.getCurrentLayer();
 
@@ -68,7 +68,7 @@ void Timeline::traverse(ActionVisitor&visitor)
     for (ActionLayers::reverse_iterator iterAnim = _actions.rbegin(); iterAnim != _actions.rend(); ++iterAnim)
     {
         visitor.setCurrentLayer(iterAnim->first);
-        ActionList&list = iterAnim->second;
+        ActionList &list = iterAnim->second;
 
         for (unsigned int i = 0; i < list.size(); i++)
         {
@@ -184,7 +184,7 @@ void Timeline::addActionAt(unsigned int frame, Action *action, int priority)
     // skip if this action has already been added this frame
     for (CommandList::iterator it = _addActionOperations.begin(); it != _addActionOperations.end(); ++it)
     {
-        Command&command = *it;
+        Command &command = *it;
         if (command._action.second.get() == action)
         {
             OSG_INFO << "Timeline::addActionAt command " << action->getName() << " already added this frame, declined" << std::endl;
@@ -236,7 +236,7 @@ void Timeline::internalRemoveAction(Action *action)
 {
     for (ActionLayers::iterator it = _actions.begin(); it != _actions.end(); ++it)
     {
-        ActionList&fa = it->second;
+        ActionList &fa = it->second;
 
         for (unsigned int i = 0; i < fa.size(); i++)
             if (fa[i].second.get() == action)
@@ -247,7 +247,7 @@ void Timeline::internalRemoveAction(Action *action)
     }
 }
 
-void Timeline::internalAddAction(int priority, const FrameAction&ftl)
+void Timeline::internalAddAction(int priority, const FrameAction &ftl)
 {
     _actions[priority].insert(_actions[priority].begin(), ftl);
 }
@@ -258,7 +258,7 @@ bool Timeline::isActive(Action *activeAction)
     for (ActionLayers::iterator iterAnim = _actions.begin(); iterAnim != _actions.end(); ++iterAnim)
     {
         // update all animation
-        ActionList&list = iterAnim->second;
+        ActionList &list = iterAnim->second;
 
         for (unsigned int i = 0; i < list.size(); i++)
         {

@@ -163,7 +163,7 @@ ReadExternalsVisitor(ReaderWriter::Options *options) :
 
 virtual ~ReadExternalsVisitor() {}
 
-virtual void apply(ProxyNode&node)
+virtual void apply(ProxyNode &node)
 {
     // Transfer ownership of pools.
     _options->setUserData(node.getUserData());
@@ -257,17 +257,17 @@ virtual const char* className() const
     return "FLT Reader/Writer";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return equalCaseInsensitive(extension, "flt") || extension.empty();
 }
 
-virtual ReadResult readObject(const std::string&file, const Options *options) const
+virtual ReadResult readObject(const std::string &file, const Options *options) const
 {
     return readNode(file, options);
 }
 
-virtual ReadResult readNode(const std::string&file, const Options *options) const
+virtual ReadResult readNode(const std::string &file, const Options *options) const
 {
     SERIALIZER();
 
@@ -340,12 +340,12 @@ virtual ReadResult readNode(const std::string&file, const Options *options) cons
     return rr;
 }
 
-virtual ReadResult readObject(std::istream&fin, const Options *options) const
+virtual ReadResult readObject(std::istream &fin, const Options *options) const
 {
     return readNode(fin, options);
 }
 
-virtual ReadResult readNode(std::istream&fin, const Options *options) const
+virtual ReadResult readNode(std::istream &fin, const Options *options) const
 {
     Document document;
 
@@ -539,7 +539,7 @@ virtual ReadResult readNode(std::istream&fin, const Options *options) const
     return document.getHeaderNode();
 }
 
-virtual WriteResult writeObject(const Object&object, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const Object &object, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     const Node *node = dynamic_cast<const Node*>(&object);
 
@@ -549,7 +549,7 @@ virtual WriteResult writeObject(const Object&object, const std::string&fileName,
     return WriteResult::FILE_NOT_HANDLED;
 }
 
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options *options) const
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options *options) const
 {
     if (fileName.empty())
     {
@@ -581,7 +581,7 @@ virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, 
 }
 
 
-virtual WriteResult writeObject(const Object&object, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const Object &object, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     const Node *node = dynamic_cast<const Node*>(&object);
 
@@ -591,7 +591,7 @@ virtual WriteResult writeObject(const Object&object, std::ostream&fout, const os
     return WriteResult::FILE_NOT_HANDLED;
 }
 
-virtual WriteResult writeNode(const osg::Node&node, std::ostream&fOut, const Options *options) const
+virtual WriteResult writeNode(const osg::Node &node, std::ostream &fOut, const Options *options) const
 {
     // Convert Options to FltOptions.
     ExportOptions *fltOpt = new ExportOptions(options);

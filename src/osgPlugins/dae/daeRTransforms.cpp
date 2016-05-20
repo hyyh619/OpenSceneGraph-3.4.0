@@ -63,7 +63,7 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
 
         if (domRotate *pDomRotate = daeSafeCast<domRotate>(pDaeElement))
         {
-            const domFloat4&r = pDomRotate->getValue();
+            const domFloat4 &r = pDomRotate->getValue();
             if (r.getCount() != 4)
             {
                 OSG_WARN << "Data is wrong size for rotate" << std::endl;
@@ -74,7 +74,7 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
         }
         else if (domTranslate *pDomTranslate = daeSafeCast<domTranslate>(pDaeElement))
         {
-            const domFloat3&t = pDomTranslate->getValue();
+            const domFloat3 &t = pDomTranslate->getValue();
             if (t.getCount() != 3)
             {
                 OSG_WARN << "Data is wrong size for translate" << std::endl;
@@ -85,7 +85,7 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
         }
         else if (domScale *pDomScale = daeSafeCast<domScale>(pDaeElement))
         {
-            const domFloat3&s = pDomScale->getValue();
+            const domFloat3 &s = pDomScale->getValue();
             if (s.getCount() != 3)
             {
                 OSG_WARN << "Data is wrong size for scale" << std::endl;
@@ -130,7 +130,7 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
                 continue;
             }
 
-            const domFloat7&s = pDomSkew->getValue();
+            const domFloat7 &s = pDomSkew->getValue();
 
             float shear = sin(osg::DegreesToRadians(s[0]));
             // axis of rotation

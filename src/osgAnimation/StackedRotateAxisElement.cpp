@@ -16,16 +16,16 @@
 
 using namespace osgAnimation;
 
-StackedRotateAxisElement::StackedRotateAxisElement(const std::string&name, const osg::Vec3&axis, double angle) : StackedTransformElement(), _axis(axis), _angle(angle)
+StackedRotateAxisElement::StackedRotateAxisElement(const std::string &name, const osg::Vec3 &axis, double angle) : StackedTransformElement(), _axis(axis), _angle(angle)
 {
     setName(name);
 }
-StackedRotateAxisElement::StackedRotateAxisElement(const osg::Vec3&axis, double angle) : _axis(axis), _angle(angle)
+StackedRotateAxisElement::StackedRotateAxisElement(const osg::Vec3 &axis, double angle) : _axis(axis), _angle(angle)
 {
     setName("rotateaxis");
 }
 StackedRotateAxisElement::StackedRotateAxisElement() {}
-StackedRotateAxisElement::StackedRotateAxisElement(const StackedRotateAxisElement&rhs, const osg::CopyOp&) : StackedTransformElement(rhs), _axis(rhs._axis), _angle(rhs._angle)
+StackedRotateAxisElement::StackedRotateAxisElement(const StackedRotateAxisElement &rhs, const osg::CopyOp&) : StackedTransformElement(rhs), _axis(rhs._axis), _angle(rhs._angle)
 {
     if (rhs._target.valid())
         _target = new FloatTarget(*rhs._target);
@@ -50,7 +50,7 @@ double StackedRotateAxisElement::getAngle() const
 {
     return _angle;
 }
-void StackedRotateAxisElement::setAxis(const osg::Vec3&axis)
+void StackedRotateAxisElement::setAxis(const osg::Vec3 &axis)
 {
     _axis = axis;
 }
@@ -68,7 +68,7 @@ Target* StackedRotateAxisElement::getOrCreateTarget()
     return _target.get();
 }
 
-void StackedRotateAxisElement::applyToMatrix(osg::Matrix&matrix) const
+void StackedRotateAxisElement::applyToMatrix(osg::Matrix &matrix) const
 {
     matrix.preMultRotate(osg::Quat(_angle, _axis));
 }

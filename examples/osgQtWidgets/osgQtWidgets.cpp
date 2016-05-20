@@ -93,7 +93,7 @@ bool                                _doQApplicationExit;
 class MyPushButton : public QPushButton
 {
 public:
-MyPushButton(const QString&text) : QPushButton(text) {}
+MyPushButton(const QString &text) : QPushButton(text) {}
 
 protected:
 virtual void mousePressEvent(QMouseEvent *e)

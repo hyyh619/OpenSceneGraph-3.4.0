@@ -23,7 +23,7 @@ FieldReader::FieldReader()
 }
 
 
-FieldReader::FieldReader(const FieldReader&ic)
+FieldReader::FieldReader(const FieldReader &ic)
 {
     _copy(ic);
 }
@@ -35,7 +35,7 @@ FieldReader::~FieldReader()
 }
 
 
-FieldReader&FieldReader::operator =(const FieldReader&ic)
+FieldReader&FieldReader::operator =(const FieldReader &ic)
 {
     if (this == &ic)
         return *this;
@@ -81,7 +81,7 @@ void FieldReader::_init()
 }
 
 
-void FieldReader::_copy(const FieldReader&ic)
+void FieldReader::_copy(const FieldReader &ic)
 {
     _fin = ic._fin;
     _eof = ic._eof;
@@ -150,7 +150,7 @@ bool FieldReader::findStartOfNextField()
 }
 
 
-bool FieldReader::readField(Field&fieldPtr)
+bool FieldReader::readField(Field &fieldPtr)
 {
     return _readField(&fieldPtr);
 }

@@ -19,7 +19,7 @@
 #include <osg/GLExtensions>
 #include <osg/Drawable>
 
-void DrawArraysIndirect::draw(osg::State&state, bool useVertexBufferObjects) const
+void DrawArraysIndirect::draw(osg::State &state, bool useVertexBufferObjects) const
 {
     if (!_buffer.valid())
         return;
@@ -40,7 +40,7 @@ void DrawArraysIndirect::draw(osg::State&state, bool useVertexBufferObjects) con
     _buffer->unbindBufferAs(state.getContextID(), GL_DRAW_INDIRECT_BUFFER);
 }
 
-void MultiDrawArraysIndirect::draw(osg::State&state, bool useVertexBufferObjects) const
+void MultiDrawArraysIndirect::draw(osg::State &state, bool useVertexBufferObjects) const
 {
     if (!_buffer.valid())
         return;
@@ -57,7 +57,7 @@ DrawIndirectGLExtensions::DrawIndirectGLExtensions(unsigned int contextID)
     setupGLExtensions(contextID);
 }
 
-DrawIndirectGLExtensions::DrawIndirectGLExtensions(const DrawIndirectGLExtensions&rhs)
+DrawIndirectGLExtensions::DrawIndirectGLExtensions(const DrawIndirectGLExtensions &rhs)
     : Referenced()
 {
     _glDrawArraysIndirect      = rhs._glDrawArraysIndirect;
@@ -66,7 +66,7 @@ DrawIndirectGLExtensions::DrawIndirectGLExtensions(const DrawIndirectGLExtension
 }
 
 
-void DrawIndirectGLExtensions::lowestCommonDenominator(const DrawIndirectGLExtensions&rhs)
+void DrawIndirectGLExtensions::lowestCommonDenominator(const DrawIndirectGLExtensions &rhs)
 {
     if (!rhs._glDrawArraysIndirect)
     {

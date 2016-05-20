@@ -47,7 +47,7 @@ Viewer::Viewer()
     constructorInit();
 }
 
-Viewer::Viewer(osg::ArgumentParser&arguments)
+Viewer::Viewer(osg::ArgumentParser &arguments)
 {
     _viewerBase = this;
 
@@ -259,7 +259,7 @@ Viewer::Viewer(osg::ArgumentParser&arguments)
     }
 }
 
-Viewer::Viewer(const osgViewer::Viewer&viewer, const osg::CopyOp&copyop) :
+Viewer::Viewer(const osgViewer::Viewer &viewer, const osg::CopyOp &copyop) :
     osg::Object(true),
     ViewerBase(viewer),
     View(viewer, copyop)
@@ -315,7 +315,7 @@ Viewer::~Viewer()
     OSG_INFO << "Viewer::~Viewer() end destructor getThreads = " << threads.size() << std::endl;
 }
 
-void Viewer::take(osg::View&rhs)
+void Viewer::take(osg::View &rhs)
 {
     osgViewer::View::take(rhs);
 
@@ -359,7 +359,7 @@ void Viewer::take(osg::View&rhs)
 #endif
 }
 
-bool Viewer::readConfiguration(const std::string&filename)
+bool Viewer::readConfiguration(const std::string &filename)
 {
     OSG_INFO << "Viewer::readConfiguration(" << filename << ")" << std::endl;
 
@@ -760,7 +760,7 @@ void Viewer::advance(double simulationTime)
     }
 }
 
-void Viewer::generateSlavePointerData(osg::Camera *camera, osgGA::GUIEventAdapter&event)
+void Viewer::generateSlavePointerData(osg::Camera *camera, osgGA::GUIEventAdapter &event)
 {
     osgViewer::GraphicsWindow *gw = dynamic_cast<osgViewer::GraphicsWindow*>(event.getGraphicsContext());
 
@@ -872,7 +872,7 @@ void Viewer::generateSlavePointerData(osg::Camera *camera, osgGA::GUIEventAdapte
 }
 
 
-void Viewer::generatePointerData(osgGA::GUIEventAdapter&event)
+void Viewer::generatePointerData(osgGA::GUIEventAdapter &event)
 {
     osgViewer::GraphicsWindow *gw = dynamic_cast<osgViewer::GraphicsWindow*>(event.getGraphicsContext());
 
@@ -894,8 +894,8 @@ void Viewer::generatePointerData(osgGA::GUIEventAdapter&event)
     typedef std::vector<osg::Camera*> CameraVector;
     CameraVector activeCameras;
 
-    osgViewer::View              *this_view = dynamic_cast<osgViewer::View*>(this);
-    osg::GraphicsContext::Cameras&cameras   = gw->getCameras();
+    osgViewer::View               *this_view = dynamic_cast<osgViewer::View*>(this);
+    osg::GraphicsContext::Cameras &cameras   = gw->getCameras();
 
     for (osg::GraphicsContext::Cameras::iterator citr = cameras.begin();
          citr != cameras.end();
@@ -935,7 +935,7 @@ void Viewer::generatePointerData(osgGA::GUIEventAdapter&event)
     }
 }
 
-void Viewer::reprojectPointerData(osgGA::GUIEventAdapter&source_event, osgGA::GUIEventAdapter&dest_event)
+void Viewer::reprojectPointerData(osgGA::GUIEventAdapter &source_event, osgGA::GUIEventAdapter &dest_event)
 {
     osgViewer::GraphicsWindow *gw = dynamic_cast<osgViewer::GraphicsWindow*>(dest_event.getGraphicsContext());
 
@@ -1176,8 +1176,8 @@ void Viewer::eventTraversal()
             // Do EventTraversal for slaves with their own subgraph
             for (unsigned int i = 0; i < getNumSlaves(); ++i)
             {
-                osg::View::Slave&slave  = getSlave(i);
-                osg::Camera     *camera = slave._camera.get();
+                osg::View::Slave &slave  = getSlave(i);
+                osg::Camera      *camera = slave._camera.get();
                 if (camera && !slave._useMastersSceneData)
                 {
                     camera->accept(*_eventVisitor);
@@ -1195,8 +1195,8 @@ void Viewer::eventTraversal()
 
             for (unsigned int i = 0; i < getNumSlaves(); ++i)
             {
-                osg::View::Slave&slave  = getSlave(i);
-                osg::Camera     *camera = slave._camera.get();
+                osg::View::Slave &slave  = getSlave(i);
+                osg::Camera      *camera = slave._camera.get();
                 if (camera && slave._useMastersSceneData && camera->getEventCallback())
                 {
                     camera->accept(*_eventVisitor);
@@ -1281,8 +1281,8 @@ void Viewer::updateTraversal()
         // Do UpdateTraversal for slaves with their own subgraph
         for (unsigned int i = 0; i < getNumSlaves(); ++i)
         {
-            osg::View::Slave&slave  = getSlave(i);
-            osg::Camera     *camera = slave._camera.get();
+            osg::View::Slave &slave  = getSlave(i);
+            osg::Camera      *camera = slave._camera.get();
             if (camera && !slave._useMastersSceneData)
             {
                 camera->accept(*_updateVisitor);
@@ -1301,8 +1301,8 @@ void Viewer::updateTraversal()
 
         for (unsigned int i = 0; i < getNumSlaves(); ++i)
         {
-            osg::View::Slave&slave  = getSlave(i);
-            osg::Camera     *camera = slave._camera.get();
+            osg::View::Slave &slave  = getSlave(i);
+            osg::Camera      *camera = slave._camera.get();
             if (camera && slave._useMastersSceneData && camera->getUpdateCallback())
             {
                 camera->accept(*_updateVisitor);
@@ -1333,19 +1333,19 @@ void Viewer::updateTraversal()
     }
 }
 
-void Viewer::getScenes(Scenes&scenes, bool /*onlyValid*/)
+void Viewer::getScenes(Scenes &scenes, bool /*onlyValid*/)
 {
     scenes.clear();
     scenes.push_back(_scene.get());
 }
 
-void Viewer::getViews(Views&views, bool /*onlyValid*/)
+void Viewer::getViews(Views &views, bool /*onlyValid*/)
 {
     views.clear();
     views.push_back(this);
 }
 
-void Viewer::getAllThreads(Threads&threads, bool onlyActive)
+void Viewer::getAllThreads(Threads &threads, bool onlyActive)
 {
     threads.clear();
 
@@ -1378,7 +1378,7 @@ void Viewer::getAllThreads(Threads&threads, bool onlyActive)
 }
 
 
-void Viewer::getOperationThreads(OperationThreads&threads, bool onlyActive)
+void Viewer::getOperationThreads(OperationThreads &threads, bool onlyActive)
 {
     threads.clear();
 
@@ -1413,7 +1413,7 @@ void Viewer::getOperationThreads(OperationThreads&threads, bool onlyActive)
     }
 }
 
-void Viewer::getContexts(Contexts&contexts, bool onlyValid)
+void Viewer::getContexts(Contexts &contexts, bool onlyValid)
 {
     typedef std::set<osg::GraphicsContext*> ContextSet;
     ContextSet contextSet;
@@ -1443,7 +1443,7 @@ void Viewer::getContexts(Contexts&contexts, bool onlyValid)
     }
 }
 
-void Viewer::getCameras(Cameras&cameras, bool onlyActive)
+void Viewer::getCameras(Cameras &cameras, bool onlyActive)
 {
     cameras.clear();
 
@@ -1468,7 +1468,7 @@ double Viewer::elapsedTime()
 }
 
 
-void Viewer::getUsage(osg::ApplicationUsage&usage) const
+void Viewer::getUsage(osg::ApplicationUsage &usage) const
 {
     if (_cameraManipulator.valid())
     {

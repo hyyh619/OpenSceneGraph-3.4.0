@@ -75,17 +75,17 @@ osg::Shader* processIncludes(const osg::Shader *shader, const Options *options) 
     return new osg::Shader(shader->getType(), code);
 }
 
-virtual ReadResult readObject(std::istream&fin, const Options *options) const
+virtual ReadResult readObject(std::istream &fin, const Options *options) const
 {
     return readShader(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     return readShader(file, options);
 }
 
-virtual ReadResult readShader(std::istream&fin, const Options *options) const
+virtual ReadResult readShader(std::istream &fin, const Options *options) const
 {
     // create shader
     osg::ref_ptr<osg::Shader> shader = new osg::Shader();
@@ -122,7 +122,7 @@ virtual ReadResult readShader(std::istream&fin, const Options *options) const
     return processIncludes(shader.get(), options);
 }
 
-virtual ReadResult readShader(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readShader(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -168,7 +168,7 @@ virtual ReadResult readShader(const std::string&file, const osgDB::ReaderWriter:
     return rr;
 }
 
-virtual WriteResult writeShader(const osg::Shader&shader, std::ostream&fout, const Options* = NULL) const
+virtual WriteResult writeShader(const osg::Shader &shader, std::ostream &fout, const Options* = NULL) const
 {
     // get shader source
     std::string source = shader.getShaderSource();
@@ -180,7 +180,7 @@ virtual WriteResult writeShader(const osg::Shader&shader, std::ostream&fout, con
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeShader(const osg::Shader&shader, const std::string&fileName, const osgDB::ReaderWriter::Options*) const
+virtual WriteResult writeShader(const osg::Shader &shader, const std::string &fileName, const osgDB::ReaderWriter::Options*) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 

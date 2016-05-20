@@ -29,7 +29,7 @@ MultiTouchTrackballManipulator::MultiTouchTrackballManipulator(int flags)
 
 
 /// Constructor.
-MultiTouchTrackballManipulator::MultiTouchTrackballManipulator(const MultiTouchTrackballManipulator&tm, const CopyOp&copyOp)
+MultiTouchTrackballManipulator::MultiTouchTrackballManipulator(const MultiTouchTrackballManipulator &tm, const CopyOp &copyOp)
     : osg::Callback(tm, copyOp), inherited(tm, copyOp)
 {}
 
@@ -63,7 +63,7 @@ void MultiTouchTrackballManipulator::handleMultiTouchDrag(const GUIEventAdapter 
 }
 
 
-bool MultiTouchTrackballManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool MultiTouchTrackballManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     bool handled(false);
 

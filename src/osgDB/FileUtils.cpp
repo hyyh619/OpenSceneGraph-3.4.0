@@ -143,7 +143,7 @@ FILE* osgDB::fopen(const char *filename, const char *mode)
 #endif
 }
 
-bool osgDB::makeDirectory(const std::string&path)
+bool osgDB::makeDirectory(const std::string &path)
 {
     if (path.empty())
     {
@@ -232,7 +232,7 @@ bool osgDB::makeDirectory(const std::string&path)
     return true;
 }
 
-bool osgDB::makeDirectoryForFile(const std::string&path)
+bool osgDB::makeDirectoryForFile(const std::string &path)
 {
     return makeDirectory(getFilePath(path));
 }
@@ -255,7 +255,7 @@ std::string osgDB::getCurrentWorkingDirectory(void)
 
 
 
-bool osgDB::setCurrentWorkingDirectory(const std::string&newCurrentWorkingDirectory)
+bool osgDB::setCurrentWorkingDirectory(const std::string &newCurrentWorkingDirectory)
 {
     if (newCurrentWorkingDirectory.empty())
     {
@@ -274,7 +274,7 @@ bool osgDB::setCurrentWorkingDirectory(const std::string&newCurrentWorkingDirect
 
 
 
-void osgDB::convertStringPathIntoFilePathList(const std::string&paths, FilePathList&filepath)
+void osgDB::convertStringPathIntoFilePathList(const std::string &paths, FilePathList &filepath)
 {
 #if defined(WIN32) && !defined(__CYGWIN__)
     char delimitor = ';';
@@ -299,7 +299,7 @@ void osgDB::convertStringPathIntoFilePathList(const std::string&paths, FilePathL
     }
 }
 
-bool osgDB::fileExists(const std::string&filename)
+bool osgDB::fileExists(const std::string &filename)
 {
 #ifdef OSG_USE_UTF8_FILENAME
     return _waccess(OSGDB_STRING_TO_FILENAME(filename).c_str(), F_OK) == 0;
@@ -308,7 +308,7 @@ bool osgDB::fileExists(const std::string&filename)
 #endif
 }
 
-osgDB::FileType osgDB::fileType(const std::string&filename)
+osgDB::FileType osgDB::fileType(const std::string &filename)
 {
     struct stat64 fileStat;
 
@@ -329,7 +329,7 @@ osgDB::FileType osgDB::fileType(const std::string&filename)
     return FILE_NOT_FOUND;
 }
 
-std::string osgDB::findFileInPath(const std::string&filename, const FilePathList&filepath, CaseSensitivity caseSensitivity)
+std::string osgDB::findFileInPath(const std::string &filename, const FilePathList &filepath, CaseSensitivity caseSensitivity)
 {
     if (filename.empty())
         return filename;
@@ -369,22 +369,22 @@ std::string osgDB::findFileInPath(const std::string&filename, const FilePathList
 }
 
 
-std::string osgDB::findDataFile(const std::string&filename, CaseSensitivity caseSensitivity)
+std::string osgDB::findDataFile(const std::string &filename, CaseSensitivity caseSensitivity)
 {
     return findDataFile(filename, static_cast<Options*>(0), caseSensitivity);
 }
 
-OSGDB_EXPORT std::string osgDB::findDataFile(const std::string&filename, const Options *options, CaseSensitivity caseSensitivity)
+OSGDB_EXPORT std::string osgDB::findDataFile(const std::string &filename, const Options *options, CaseSensitivity caseSensitivity)
 {
     return Registry::instance()->findDataFile(filename, options, caseSensitivity);
 }
 
-std::string osgDB::findLibraryFile(const std::string&filename, CaseSensitivity caseSensitivity)
+std::string osgDB::findLibraryFile(const std::string &filename, CaseSensitivity caseSensitivity)
 {
     return Registry::instance()->findLibraryFile(filename, osgDB::Registry::instance()->getOptions(), caseSensitivity);
 }
 
-std::string osgDB::findFileInDirectory(const std::string&fileName, const std::string&dirName, CaseSensitivity caseSensitivity)
+std::string osgDB::findFileInDirectory(const std::string &fileName, const std::string &dirName, CaseSensitivity caseSensitivity)
 {
     bool                     needFollowingBackslash = false;
     bool                     needDirectoryName      = true;
@@ -525,7 +525,7 @@ std::string osgDB::findFileInDirectory(const std::string&fileName, const std::st
     return "";
 }
 
-static void appendInstallationLibraryFilePaths(osgDB::FilePathList&filepath)
+static void appendInstallationLibraryFilePaths(osgDB::FilePathList &filepath)
 {
 #ifdef OSG_DEFAULT_LIBRARY_PATH
     // Append the install prefix path to the library search path if configured
@@ -537,7 +537,7 @@ static void appendInstallationLibraryFilePaths(osgDB::FilePathList&filepath)
     #include <io.h>
     #include <direct.h>
 
-osgDB::DirectoryContents osgDB::getDirectoryContents(const std::string&dirName)
+osgDB::DirectoryContents osgDB::getDirectoryContents(const std::string &dirName)
 {
     osgDB::DirectoryContents contents;
 
@@ -560,7 +560,7 @@ osgDB::DirectoryContents osgDB::getDirectoryContents(const std::string&dirName)
 #else
 
     #include <dirent.h>
-osgDB::DirectoryContents osgDB::getDirectoryContents(const std::string&dirName)
+osgDB::DirectoryContents osgDB::getDirectoryContents(const std::string &dirName)
 {
     osgDB::DirectoryContents contents;
 
@@ -582,7 +582,7 @@ osgDB::DirectoryContents osgDB::getDirectoryContents(const std::string&dirName)
 }
 #endif // unix getDirectoryContexts
 
-osgDB::DirectoryContents osgDB::getSortedDirectoryContents(const std::string&dirName)
+osgDB::DirectoryContents osgDB::getSortedDirectoryContents(const std::string &dirName)
 {
     osgDB::DirectoryContents filenames = osgDB::getDirectoryContents(dirName);
     std::sort(filenames.begin(), filenames.end(), osgDB::FileNameComparator());
@@ -591,7 +591,7 @@ osgDB::DirectoryContents osgDB::getSortedDirectoryContents(const std::string&dir
 }
 
 
-osgDB::DirectoryContents osgDB::expandWildcardsInFilename(const std::string&filename)
+osgDB::DirectoryContents osgDB::expandWildcardsInFilename(const std::string &filename)
 {
     osgDB::DirectoryContents contents;
 
@@ -625,7 +625,7 @@ osgDB::DirectoryContents osgDB::expandWildcardsInFilename(const std::string&file
     return contents;
 }
 
-osgDB::FileOpResult::Value osgDB::copyFile(const std::string&source, const std::string&destination)
+osgDB::FileOpResult::Value osgDB::copyFile(const std::string &source, const std::string &destination)
 {
     if (source.empty() || destination.empty())
     {
@@ -695,7 +695,7 @@ osgDB::FileOpResult::Value osgDB::copyFile(const std::string&source, const std::
 }
 
 
-bool osgDB::containsCurrentWorkingDirectoryReference(const FilePathList&paths)
+bool osgDB::containsCurrentWorkingDirectoryReference(const FilePathList &paths)
 {
     const std::string cwd(".");
 
@@ -719,7 +719,7 @@ bool osgDB::containsCurrentWorkingDirectoryReference(const FilePathList&paths)
 //
 #ifdef __sgi
 
-void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
+void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList &filepath)
 {
     convertStringPathIntoFilePathList("/usr/lib32/:/usr/local/lib32/", filepath);
 
@@ -757,7 +757,7 @@ void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
 
 #elif defined(__CYGWIN__)
 
-void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
+void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList &filepath)
 {
     char *ptr;
 
@@ -773,7 +773,7 @@ void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
 
 #elif defined(WIN32)
 
-void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
+void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList &filepath)
 {
     // See http://msdn2.microsoft.com/en-us/library/ms682586.aspx
 
@@ -1049,7 +1049,7 @@ std::string GetApplicationResourcesPath(CFBundleRef mainBundle)
 // I'm not sure how robust the current code is for this case.
 // Assuming the program doesn't crash, will OSG move on to the
 // next search directory, or just give up?
-void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
+void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList &filepath)
 {
     char *ptr;
 
@@ -1123,7 +1123,7 @@ void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
 // I'm not sure how robust the current code is for this case.
 // Assuming the program doesn't crash, will OSG move on to the
 // next search directory, or just give up?
-void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
+void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList &filepath)
 {
     char *ptr;
 
@@ -1188,7 +1188,7 @@ void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
     }
 }
     #else
-void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
+void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList &filepath)
 {
     char *ptr;
 
@@ -1203,7 +1203,7 @@ void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
 
 #else
 
-void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
+void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList &filepath)
 {
     char *ptr;
 
@@ -1226,7 +1226,7 @@ void osgDB::appendPlatformSpecificLibraryFilePaths(FilePathList&filepath)
 
 
 #ifdef __APPLE__
-void osgDB::appendPlatformSpecificResourceFilePaths(FilePathList&filepath)
+void osgDB::appendPlatformSpecificResourceFilePaths(FilePathList &filepath)
 {
     // Get the main application bundle
     CFBundleRef mainBundle = CFBundleGetMainBundle();

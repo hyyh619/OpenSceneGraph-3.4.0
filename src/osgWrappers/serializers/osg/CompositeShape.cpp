@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkChildren(const osg::CompositeShape&shape)
+static bool checkChildren(const osg::CompositeShape &shape)
 {
     return shape.getNumChildren() > 0;
 }
 
-static bool readChildren(osgDB::InputStream&is, osg::CompositeShape&shape)
+static bool readChildren(osgDB::InputStream &is, osg::CompositeShape &shape)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -23,7 +23,7 @@ static bool readChildren(osgDB::InputStream&is, osg::CompositeShape&shape)
     return true;
 }
 
-static bool writeChildren(osgDB::OutputStream&os, const osg::CompositeShape&shape)
+static bool writeChildren(osgDB::OutputStream &os, const osg::CompositeShape &shape)
 {
     unsigned int size = shape.getNumChildren();
 

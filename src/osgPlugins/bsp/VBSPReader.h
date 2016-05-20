@@ -240,26 +240,26 @@ int  *texdata_string_table;
 int  num_texdata_string_table_entries;
 
 
-void   processEntities(std::istream&str, int offset, int length);
-void   processModels(std::istream&str, int offset, int length);
-void   processPlanes(std::istream&str, int offset, int length);
-void   processVertices(std::istream&str, int offset, int length);
-void   processEdges(std::istream&str, int offset, int length);
-void   processSurfEdges(std::istream&str, int offset, int length);
-void   processFaces(std::istream&str, int offset, int length);
-void   processTexInfo(std::istream&str, int offset, int length);
-void   processTexData(std::istream&str, int offset, int length);
-void   processTexDataStringTable(std::istream&str, int offset,
+void   processEntities(std::istream &str, int offset, int length);
+void   processModels(std::istream &str, int offset, int length);
+void   processPlanes(std::istream &str, int offset, int length);
+void   processVertices(std::istream &str, int offset, int length);
+void   processEdges(std::istream &str, int offset, int length);
+void   processSurfEdges(std::istream &str, int offset, int length);
+void   processFaces(std::istream &str, int offset, int length);
+void   processTexInfo(std::istream &str, int offset, int length);
+void   processTexData(std::istream &str, int offset, int length);
+void   processTexDataStringTable(std::istream &str, int offset,
                                  int length);
-void   processTexDataStringData(std::istream&str, int offset, int length);
-void   processDispInfo(std::istream&str, int offset, int length);
-void   processDispVerts(std::istream&str, int offset, int length);
-void   processGameData(std::istream&str, int offset, int length);
-void   processStaticProps(std::istream&str, int offset, int length,
+void   processTexDataStringData(std::istream &str, int offset, int length);
+void   processDispInfo(std::istream &str, int offset, int length);
+void   processDispVerts(std::istream &str, int offset, int length);
+void   processGameData(std::istream &str, int offset, int length);
+void   processStaticProps(std::istream &str, int offset, int length,
                           int lumpVersion);
 
 std::string       getToken(std::string str, const char *delim,
-                           size_t&index);
+                           size_t &index);
 
 osg::ref_ptr<osg::StateSet>   createBlendShader(osg::Texture *tex1,
                                                 osg::Texture *tex2);
@@ -274,7 +274,7 @@ public:
 VBSPReader();
 virtual ~VBSPReader();
 
-bool   readFile(const std::string&file);
+bool   readFile(const std::string &file);
 
 osg::ref_ptr<osg::Node>   getRootNode();
 };

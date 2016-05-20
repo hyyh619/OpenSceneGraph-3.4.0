@@ -53,7 +53,7 @@ enum FramePosition
 
 struct ContextData : public osg::Referenced
 {
-    ContextData(osg::GraphicsContext *gc, Mode mode, GLenum readBuffer, const std::string&name) :
+    ContextData(osg::GraphicsContext *gc, Mode mode, GLenum readBuffer, const std::string &name) :
         _gc(gc),
         _mode(mode),
         _readBuffer(readBuffer),
@@ -124,7 +124,7 @@ struct ContextData : public osg::Referenced
         }
     }
 
-    void getSize(osg::GraphicsContext *gc, int&width, int&height)
+    void getSize(osg::GraphicsContext *gc, int &width, int &height)
     {
         if (gc->getTraits())
         {
@@ -222,7 +222,7 @@ ContextData* getContextData(osg::GraphicsContext *gc) const
     return data.get();
 }
 
-virtual void operator ()(osg::RenderInfo&renderInfo) const
+virtual void operator ()(osg::RenderInfo &renderInfo) const
 {
     glReadBuffer(_readBuffer);
 
@@ -348,7 +348,7 @@ void WindowCaptureCallback::ContextData::singlePBO(osg::GLExtensions *ext)
         _height = height;
     }
 
-    GLuint&pbo = _pboBuffer[0];
+    GLuint &pbo = _pboBuffer[0];
 
     osg::Image *image = _imageBuffer[_currentImageIndex].get();
     if (image->s() != _width ||
@@ -427,8 +427,8 @@ void WindowCaptureCallback::ContextData::multiPBO(osg::GLExtensions *ext)
         _height = height;
     }
 
-    GLuint&copy_pbo = _pboBuffer[_currentPboIndex];
-    GLuint&read_pbo = _pboBuffer[nextPboIndex];
+    GLuint &copy_pbo = _pboBuffer[_currentPboIndex];
+    GLuint &read_pbo = _pboBuffer[nextPboIndex];
 
     osg::Image *image = _imageBuffer[_currentImageIndex].get();
     if (image->s() != _width ||
@@ -512,7 +512,7 @@ void WindowCaptureCallback::ContextData::multiPBO(osg::GLExtensions *ext)
     _currentPboIndex   = nextPboIndex;
 }
 
-void addCallbackToViewer(osgViewer::ViewerBase&viewer, WindowCaptureCallback *callback)
+void addCallbackToViewer(osgViewer::ViewerBase &viewer, WindowCaptureCallback *callback)
 {
     if (callback->getFramePosition() == WindowCaptureCallback::START_FRAME)
     {
@@ -523,9 +523,9 @@ void addCallbackToViewer(osgViewer::ViewerBase&viewer, WindowCaptureCallback *ca
              itr != windows.end();
              ++itr)
         {
-            osgViewer::GraphicsWindow    *window      = *itr;
-            osg::GraphicsContext::Cameras&cameras     = window->getCameras();
-            osg::Camera                  *firstCamera = 0;
+            osgViewer::GraphicsWindow     *window      = *itr;
+            osg::GraphicsContext::Cameras &cameras     = window->getCameras();
+            osg::Camera                   *firstCamera = 0;
 
             for (osg::GraphicsContext::Cameras::iterator cam_itr = cameras.begin();
                  cam_itr != cameras.end();
@@ -571,9 +571,9 @@ void addCallbackToViewer(osgViewer::ViewerBase&viewer, WindowCaptureCallback *ca
              itr != windows.end();
              ++itr)
         {
-            osgViewer::GraphicsWindow    *window     = *itr;
-            osg::GraphicsContext::Cameras&cameras    = window->getCameras();
-            osg::Camera                  *lastCamera = 0;
+            osgViewer::GraphicsWindow     *window     = *itr;
+            osg::GraphicsContext::Cameras &cameras    = window->getCameras();
+            osg::Camera                   *lastCamera = 0;
 
             for (osg::GraphicsContext::Cameras::iterator cam_itr = cameras.begin();
                  cam_itr != cameras.end();

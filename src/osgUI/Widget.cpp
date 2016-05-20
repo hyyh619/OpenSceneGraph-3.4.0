@@ -39,7 +39,7 @@ Widget::Widget() :
     setNumChildrenRequiringEventTraversal(1);
 }
 
-Widget::Widget(const Widget&widget, const osg::CopyOp&copyop) :
+Widget::Widget(const Widget &widget, const osg::CopyOp &copyop) :
     osg::Group(),
     _focusBehaviour(widget._focusBehaviour),
     _hasEventFocus(false),
@@ -54,12 +54,12 @@ Widget::Widget(const Widget&widget, const osg::CopyOp&copyop) :
     setNumChildrenRequiringEventTraversal(1);
 }
 
-void Widget::setExtents(const osg::BoundingBoxf&bb)
+void Widget::setExtents(const osg::BoundingBoxf &bb)
 {
     _extents = bb;
 }
 
-void Widget::updateFocus(osg::NodeVisitor&nv)
+void Widget::updateFocus(osg::NodeVisitor &nv)
 {
     osgGA::EventVisitor     *ev = dynamic_cast<osgGA::EventVisitor*>(&nv);
     osgGA::GUIActionAdapter *aa = ev ? ev->getActionAdapter() : 0;
@@ -68,7 +68,7 @@ void Widget::updateFocus(osg::NodeVisitor&nv)
     {
         // OSG_NOTICE<<"updateFocus"<<std::endl;
 
-        osgGA::EventQueue::Events&events = ev->getEvents();
+        osgGA::EventQueue::Events &events = ev->getEvents();
 
         for (osgGA::EventQueue::Events::iterator itr = events.begin();
              itr != events.end();
@@ -205,7 +205,7 @@ void Widget::leaveImplementation()
     OSG_NOTICE << "Widget::leave()" << std::endl;
 }
 
-void Widget::traverse(osg::NodeVisitor&nv)
+void Widget::traverse(osg::NodeVisitor &nv)
 {
     if (nv.referenceCount() != 0)
     {
@@ -218,7 +218,7 @@ void Widget::traverse(osg::NodeVisitor&nv)
     traverseImplementation(nv);
 }
 
-void Widget::traverseImplementation(osg::NodeVisitor&nv)
+void Widget::traverseImplementation(osg::NodeVisitor &nv)
 {
     if (!_graphicsInitialized && nv.getVisitorType() != osg::NodeVisitor::CULL_VISITOR)
         createGraphics();
@@ -236,7 +236,7 @@ void Widget::traverseImplementation(osg::NodeVisitor&nv)
 
             bool widgetsWithFocusSetHandled = getHasEventFocus();
 
-            osgGA::EventQueue::Events&events = ev->getEvents();
+            osgGA::EventQueue::Events &events = ev->getEvents();
 
             for (osgGA::EventQueue::Events::iterator itr = events.begin();
                  itr != events.end();
@@ -373,7 +373,7 @@ void Widget::releaseGLObjects(osg::State *state) const
     Group::releaseGLObjects(state);
 }
 
-bool Widget::computePositionInLocalCoordinates(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, osg::Vec3d&localPosition) const
+bool Widget::computePositionInLocalCoordinates(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, osg::Vec3d &localPosition) const
 {
     osgGA::GUIActionAdapter                        *aa = ev ? ev->getActionAdapter() : 0;
     osgUtil::LineSegmentIntersector::Intersections intersections;
@@ -402,8 +402,8 @@ struct SortTraversalOrder
         if (lhs->ratio < (rhs->ratio - epsilon))
             return false;
 
-        const osg::NodePath&np_lhs = lhs->nodePath;
-        const osg::NodePath&np_rhs = rhs->nodePath;
+        const osg::NodePath &np_lhs = lhs->nodePath;
+        const osg::NodePath &np_rhs = rhs->nodePath;
 
         osg::NodePath::const_iterator itr_lhs = np_lhs.begin();
         osg::NodePath::const_iterator end_lhs = np_lhs.end();
@@ -436,7 +436,7 @@ struct SortTraversalOrder
 
                 if (widget)
                 {
-                    const osgUI::Widget::GraphicsSubgraphMap&gsm = widget->getGraphicsSubgraphMap();
+                    const osgUI::Widget::GraphicsSubgraphMap &gsm = widget->getGraphicsSubgraphMap();
 
                     for (osgUI::Widget::GraphicsSubgraphMap::const_iterator itr = gsm.begin();
                          itr != gsm.end();
@@ -462,7 +462,7 @@ struct SortTraversalOrder
     }
 };
 
-bool Widget::computeIntersections(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, Intersections&intersections, osg::Node::NodeMask traversalMask) const
+bool Widget::computeIntersections(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, Intersections &intersections, osg::Node::NodeMask traversalMask) const
 {
     osgGA::GUIActionAdapter                        *aa = ev ? ev->getActionAdapter() : 0;
     osgUtil::LineSegmentIntersector::Intersections source_intersections;
@@ -501,7 +501,7 @@ bool Widget::computeIntersections(osgGA::EventVisitor *ev, osgGA::GUIEventAdapte
 }
 
 
-bool Widget::computeExtentsPositionInLocalCoordinates(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, osg::Vec3d&localPosition, bool withinExtents) const
+bool Widget::computeExtentsPositionInLocalCoordinates(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, osg::Vec3d &localPosition, bool withinExtents) const
 {
     // OSG_NOTICE<<"Widget::computeExtentsPositionInLocalCoordinates(()"<<std::endl;
     const osg::Camera *camera = 0;
@@ -522,7 +522,7 @@ bool Widget::computeExtentsPositionInLocalCoordinates(osgGA::EventVisitor *ev, o
     if (!camera)
         return false;
 
-    const osg::NodePath&nodePath = ev->getNodePath();
+    const osg::NodePath &nodePath = ev->getNodePath();
 
     osg::Matrixd matrix;
     if (nodePath.size() > 1)

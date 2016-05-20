@@ -69,7 +69,7 @@ virtual const char* className() const
     return "GDAL Image Reader";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     if (file.empty())
         return ReadResult::FILE_NOT_FOUND;
@@ -97,7 +97,7 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
     return ReadResult::FILE_NOT_HANDLED;
 }
 
-virtual ReadResult readImage(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     if (fileName.empty())
         return ReadResult::FILE_NOT_FOUND;
@@ -111,7 +111,7 @@ virtual ReadResult readImage(const std::string&fileName, const osgDB::ReaderWrit
     return const_cast<ReaderWriterGDAL*>(this)->local_readImage(fileName, options);
 }
 
-virtual ReadResult readHeightField(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readHeightField(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     if (fileName.empty())
         return ReadResult::FILE_NOT_FOUND;
@@ -125,7 +125,7 @@ virtual ReadResult readHeightField(const std::string&fileName, const osgDB::Read
     return const_cast<ReaderWriterGDAL*>(this)->local_readHeightField(fileName, options);
 }
 
-virtual ReadResult local_readImage(const std::string&file, const osgDB::ReaderWriter::Options *options)
+virtual ReadResult local_readImage(const std::string &file, const osgDB::ReaderWriter::Options *options)
 {
     // Looks like gdal's GDALRasterBand::GetColorInterpretation()
     // is not giving proper values for ecw images. There is small
@@ -609,7 +609,7 @@ virtual ReadResult local_readImage(const std::string&file, const osgDB::ReaderWr
 }
 
 
-ReadResult local_readHeightField(const std::string&fileName, const osgDB::ReaderWriter::Options *options)
+ReadResult local_readHeightField(const std::string &fileName, const osgDB::ReaderWriter::Options *options)
 {
     // std::string ext = osgDB::getFileExtension(fileName);
     // if (!acceptsExtension(ext)) return ReadResult::FILE_NOT_HANDLED;

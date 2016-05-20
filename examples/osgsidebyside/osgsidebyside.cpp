@@ -48,11 +48,11 @@ SwitchDOFVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN)
 {}
 
-SwitchDOFVisitor(const SwitchDOFVisitor&sdfv, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) {}
+SwitchDOFVisitor(const SwitchDOFVisitor &sdfv, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) {}
 
 META_Object(osg, SwitchDOFVisitor)
 
-virtual void apply(Group&node)
+virtual void apply(Group &node)
 {
     osgSim::MultiSwitch *pMSwitch = dynamic_cast<osgSim::MultiSwitch*>(&node);
 
@@ -64,7 +64,7 @@ virtual void apply(Group&node)
     osg::NodeVisitor::apply(node);
 }
 
-virtual void apply(Transform&node)
+virtual void apply(Transform &node)
 {
     osgSim::DOFTransform *pDof = dynamic_cast<osgSim::DOFTransform*>(&node);
 
@@ -121,7 +121,7 @@ void multiplyAnimation(float scale)
     }
 }
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     osgViewer::Viewer *viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 
@@ -163,7 +163,7 @@ std::vector<osgSim::MultiSwitch*>  mSwitches;
 std::vector<osgSim::DOFTransform*> mDofs;
 };
 
-void singleWindowSideBySideCameras(osgViewer::Viewer&viewer)
+void singleWindowSideBySideCameras(osgViewer::Viewer &viewer)
 {
     osg::GraphicsContext::WindowingSystemInterface *wsi = osg::GraphicsContext::getWindowingSystemInterface();
 

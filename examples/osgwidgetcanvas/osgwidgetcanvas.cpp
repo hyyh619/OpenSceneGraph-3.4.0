@@ -7,7 +7,7 @@
 
 const unsigned int MASK_2D = 0xF0000000;
 
-bool colorWidgetEnter(osgWidget::Event&event)
+bool colorWidgetEnter(osgWidget::Event &event)
 {
     event.getWidget()->addColor(0.5f, 0.2f, 0.3f, 0.0f);
 
@@ -16,7 +16,7 @@ bool colorWidgetEnter(osgWidget::Event&event)
     return false;
 }
 
-bool colorWidgetLeave(osgWidget::Event&event)
+bool colorWidgetLeave(osgWidget::Event &event)
 {
     event.getWidget()->addColor(-0.5f, -0.2f, -0.3f, 0.0f);
 
@@ -42,7 +42,7 @@ bool widgetMouseOver(osgWidget::Event& /*event*/)
 }
 
 osgWidget::Widget* createWidget(
-    const std::string&name,
+    const std::string &name,
     osgWidget::color_type col,
     osgWidget::Widget::Layer layer
     )

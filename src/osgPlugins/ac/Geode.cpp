@@ -23,7 +23,7 @@ using namespace std;
 
 
 
-void Geode::OutputVertex(int Index, const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, ostream&fout)
+void Geode::OutputVertex(int Index, const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, ostream &fout)
 {
     int LocalTexIndex;
     int LocalVertexIndex;
@@ -50,7 +50,7 @@ void Geode::OutputVertex(int Index, const osg::IndexArray *pVertexIndices, const
 }
 
 void Geode::OutputLines(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                        const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, ostream&fout)
+                        const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, ostream &fout)
 {
     unsigned int indexEnd = drawArray->getFirst() + drawArray->getCount();
 
@@ -62,7 +62,7 @@ void Geode::OutputLines(const int iCurrentMaterial, const unsigned int surfaceFl
     }
 }
 void Geode::OutputLineStrip(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                            const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, ostream&fout)
+                            const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, ostream &fout)
 {
     unsigned int indexEnd = drawArray->getFirst() + drawArray->getCount();
 
@@ -74,7 +74,7 @@ void Geode::OutputLineStrip(const int iCurrentMaterial, const unsigned int surfa
     }
 }
 void Geode::OutputLineLoop(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                           const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, ostream&fout)
+                           const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, ostream &fout)
 {
     unsigned int indexEnd = drawArray->getFirst() + drawArray->getCount();
 
@@ -86,7 +86,7 @@ void Geode::OutputLineLoop(const int iCurrentMaterial, const unsigned int surfac
     }
 }
 void Geode::OutputTriangle(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                           const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, ostream&fout)
+                           const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, ostream &fout)
 {
     unsigned int primCount = 0;
     unsigned int indexEnd  = drawArray->getFirst() + drawArray->getCount();
@@ -102,7 +102,7 @@ void Geode::OutputTriangle(const int iCurrentMaterial, const unsigned int surfac
     }
 }
 void Geode::OutputTriangleStrip(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                                const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream&fout)
+                                const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream &fout)
 {
     unsigned int indexEnd = drawArray->getFirst() + drawArray->getCount();
     unsigned int evenodd  = 0;
@@ -125,7 +125,7 @@ void Geode::OutputTriangleStrip(const int iCurrentMaterial, const unsigned int s
     }
 }
 void Geode::OutputTriangleFan(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                              const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream&fout)
+                              const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream &fout)
 {
     unsigned int indexEnd = drawArray->getFirst() + drawArray->getCount();
 
@@ -138,7 +138,7 @@ void Geode::OutputTriangleFan(const int iCurrentMaterial, const unsigned int sur
     }
 }
 void Geode::OutputQuads(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                        const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream&fout)
+                        const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream &fout)
 {
     unsigned int primCount = 0;
     unsigned int indexEnd  = drawArray->getFirst() + drawArray->getCount();
@@ -154,7 +154,7 @@ void Geode::OutputQuads(const int iCurrentMaterial, const unsigned int surfaceFl
     }
 }
 void Geode::OutputQuadStrip(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                            const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream&fout)
+                            const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream &fout)
 {
     unsigned int indexEnd = drawArray->getFirst() + drawArray->getCount();
 
@@ -168,7 +168,7 @@ void Geode::OutputQuadStrip(const int iCurrentMaterial, const unsigned int surfa
     }
 }
 void Geode::OutputPolygon(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                          const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream&fout)
+                          const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrays *drawArray, std::ostream &fout)
 {
     unsigned int indexEnd = drawArray->getFirst() + drawArray->getCount();
 
@@ -181,7 +181,7 @@ void Geode::OutputPolygon(const int iCurrentMaterial, const unsigned int surface
 }
 // =======  draw array length cases
 void Geode::OutputLineDARR(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                           const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream&fout)
+                           const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream &fout)
 {
     unsigned int vindex = drawArrayLengths->getFirst();
 
@@ -204,7 +204,7 @@ void Geode::OutputLineDARR(const int iCurrentMaterial, const unsigned int surfac
 }
 
 void Geode::OutputTriangleDARR(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                               const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream&fout)
+                               const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream &fout)
 {
     unsigned int vindex = drawArrayLengths->getFirst();
 
@@ -227,7 +227,7 @@ void Geode::OutputTriangleDARR(const int iCurrentMaterial, const unsigned int su
 }
 
 void Geode::OutputQuadsDARR(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                            const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream&fout)
+                            const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream &fout)
 {
     unsigned int vindex = drawArrayLengths->getFirst();
 
@@ -248,7 +248,7 @@ void Geode::OutputQuadsDARR(const int iCurrentMaterial, const unsigned int surfa
     }
 }
 void Geode::OutputQuadStripDARR(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                                const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream&fout)
+                                const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream &fout)
 {
     unsigned int vindex = drawArrayLengths->getFirst();
 
@@ -269,7 +269,7 @@ void Geode::OutputQuadStripDARR(const int iCurrentMaterial, const unsigned int s
     }
 }
 void Geode::OutputPolygonDARR(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                              const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream&fout)
+                              const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream &fout)
 {
     unsigned int vindex = drawArrayLengths->getFirst();
 
@@ -291,7 +291,7 @@ void Geode::OutputPolygonDARR(const int iCurrentMaterial, const unsigned int sur
     }
 }
 void Geode::OutputTriangleStripDARR(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                                    const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream&fout)
+                                    const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream &fout)
 {
     unsigned int vindex = drawArrayLengths->getFirst();
 
@@ -323,7 +323,7 @@ void Geode::OutputTriangleStripDARR(const int iCurrentMaterial, const unsigned i
     }
 }
 void Geode::OutputTriangleFanDARR(const int iCurrentMaterial, const unsigned int surfaceFlags,
-                                  const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream&fout)
+                                  const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices, const osg::DrawArrayLengths *drawArrayLengths, ostream &fout)
 {
     unsigned int vindex = drawArrayLengths->getFirst();
 
@@ -346,7 +346,7 @@ void Geode::OutputTriangleFanDARR(const int iCurrentMaterial, const unsigned int
 // DrawElements .... Ubyte
 void Geode::OutputTriangleDelsUByte(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                     const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                    const osg::DrawElementsUByte *drawElements, ostream&fout)
+                                    const osg::DrawElementsUByte *drawElements, ostream &fout)
 {
     unsigned int primLength = 3;
 
@@ -365,7 +365,7 @@ void Geode::OutputTriangleDelsUByte(const int iCurrentMaterial, const unsigned i
 }
 void Geode::OutputTriangleStripDelsUByte(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                          const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                         const osg::DrawElementsUByte *drawElements, ostream&fout)
+                                         const osg::DrawElementsUByte *drawElements, ostream &fout)
 {
     unsigned int localPrimLength = 3;
     bool         evenodd         = true;
@@ -393,7 +393,7 @@ void Geode::OutputTriangleStripDelsUByte(const int iCurrentMaterial, const unsig
 }
 void Geode::OutputTriangleFanDelsUByte(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                        const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                       const osg::DrawElementsUByte *drawElements, ostream&fout)
+                                       const osg::DrawElementsUByte *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 3;
     unsigned int       vindex          = *(drawElements->begin());
@@ -411,7 +411,7 @@ void Geode::OutputTriangleFanDelsUByte(const int iCurrentMaterial, const unsigne
 }
 void Geode::OutputQuadStripDelsUByte(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                      const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                     const osg::DrawElementsUByte *drawElements, ostream&fout)
+                                     const osg::DrawElementsUByte *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 4;
 
@@ -432,7 +432,7 @@ void Geode::OutputQuadStripDelsUByte(const int iCurrentMaterial, const unsigned 
 }
 void Geode::OutputQuadsDelsUByte(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                  const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                 const osg::DrawElementsUByte *drawElements, ostream&fout)
+                                 const osg::DrawElementsUByte *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 4;
 
@@ -453,7 +453,7 @@ void Geode::OutputQuadsDelsUByte(const int iCurrentMaterial, const unsigned int 
 }
 void Geode::OutputPolygonDelsUByte(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                    const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                   const osg::DrawElementsUByte *drawElements, ostream&fout)
+                                   const osg::DrawElementsUByte *drawElements, ostream &fout)
 {
     unsigned int primLength = drawElements->size();
     unsigned int primCount  = 0;
@@ -469,7 +469,7 @@ void Geode::OutputPolygonDelsUByte(const int iCurrentMaterial, const unsigned in
 // DrawElements .... UShort
 void Geode::OutputTriangleDelsUShort(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                      const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                     const osg::DrawElementsUShort *drawElements, ostream&fout)
+                                     const osg::DrawElementsUShort *drawElements, ostream &fout)
 {
     unsigned int primLength = 3;
 
@@ -488,7 +488,7 @@ void Geode::OutputTriangleDelsUShort(const int iCurrentMaterial, const unsigned 
 }
 void Geode::OutputTriangleStripDelsUShort(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                           const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                          const osg::DrawElementsUShort *drawElements, ostream&fout)
+                                          const osg::DrawElementsUShort *drawElements, ostream &fout)
 {
     unsigned int localPrimLength = 3;
     bool         evenodd         = true;
@@ -516,7 +516,7 @@ void Geode::OutputTriangleStripDelsUShort(const int iCurrentMaterial, const unsi
 }
 void Geode::OutputTriangleFanDelsUShort(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                         const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                        const osg::DrawElementsUShort *drawElements, ostream&fout)
+                                        const osg::DrawElementsUShort *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 3;
     unsigned int       vindex          = *(drawElements->begin());
@@ -534,7 +534,7 @@ void Geode::OutputTriangleFanDelsUShort(const int iCurrentMaterial, const unsign
 }
 void Geode::OutputQuadStripDelsUShort(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                       const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                      const osg::DrawElementsUShort *drawElements, ostream&fout)
+                                      const osg::DrawElementsUShort *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 4;
 
@@ -555,7 +555,7 @@ void Geode::OutputQuadStripDelsUShort(const int iCurrentMaterial, const unsigned
 }
 void Geode::OutputQuadsDelsUShort(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                   const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                  const osg::DrawElementsUShort *drawElements, ostream&fout)
+                                  const osg::DrawElementsUShort *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 4;
 
@@ -576,7 +576,7 @@ void Geode::OutputQuadsDelsUShort(const int iCurrentMaterial, const unsigned int
 }
 void Geode::OutputPolygonDelsUShort(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                     const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                    const osg::DrawElementsUShort *drawElements, ostream&fout)
+                                    const osg::DrawElementsUShort *drawElements, ostream &fout)
 {
     unsigned int primLength = drawElements->size();
     unsigned int primCount  = 0;
@@ -592,7 +592,7 @@ void Geode::OutputPolygonDelsUShort(const int iCurrentMaterial, const unsigned i
 // DrawElements .... UInt
 void Geode::OutputTriangleDelsUInt(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                    const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                   const osg::DrawElementsUInt *drawElements, ostream&fout)
+                                   const osg::DrawElementsUInt *drawElements, ostream &fout)
 {
     unsigned int primLength = 3;
 
@@ -611,7 +611,7 @@ void Geode::OutputTriangleDelsUInt(const int iCurrentMaterial, const unsigned in
 }
 void Geode::OutputTriangleStripDelsUInt(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                         const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                        const osg::DrawElementsUInt *drawElements, ostream&fout)
+                                        const osg::DrawElementsUInt *drawElements, ostream &fout)
 {
     unsigned int localPrimLength = 3;
     bool         evenodd         = true;
@@ -639,7 +639,7 @@ void Geode::OutputTriangleStripDelsUInt(const int iCurrentMaterial, const unsign
 }
 void Geode::OutputTriangleFanDelsUInt(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                       const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                      const osg::DrawElementsUInt *drawElements, ostream&fout)
+                                      const osg::DrawElementsUInt *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 3;
     unsigned int       vindex          = *(drawElements->begin());
@@ -657,7 +657,7 @@ void Geode::OutputTriangleFanDelsUInt(const int iCurrentMaterial, const unsigned
 }
 void Geode::OutputQuadStripDelsUInt(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                     const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                    const osg::DrawElementsUInt *drawElements, ostream&fout)
+                                    const osg::DrawElementsUInt *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 4;
 
@@ -678,7 +678,7 @@ void Geode::OutputQuadStripDelsUInt(const int iCurrentMaterial, const unsigned i
 }
 void Geode::OutputQuadsDelsUInt(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                 const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                const osg::DrawElementsUInt *drawElements, ostream&fout)
+                                const osg::DrawElementsUInt *drawElements, ostream &fout)
 {
     const unsigned int localPrimLength = 4;
 
@@ -699,7 +699,7 @@ void Geode::OutputQuadsDelsUInt(const int iCurrentMaterial, const unsigned int s
 }
 void Geode::OutputPolygonDelsUInt(const int iCurrentMaterial, const unsigned int surfaceFlags,
                                   const osg::IndexArray *pVertexIndices, const osg::Vec2 *pTexCoords, const osg::IndexArray *pTexIndices,
-                                  const osg::DrawElementsUInt *drawElements, ostream&fout)
+                                  const osg::DrawElementsUInt *drawElements, ostream &fout)
 {
     unsigned int primLength = drawElements->size();
     unsigned int primCount  = 0;
@@ -714,7 +714,7 @@ void Geode::OutputPolygonDelsUInt(const int iCurrentMaterial, const unsigned int
 }
 
 
-const int Geode::ProcessMaterial(ostream&fout, const unsigned int igeode)
+const int Geode::ProcessMaterial(ostream &fout, const unsigned int igeode)
 {
     // outputs materials from one geode
     // extended for multiple geode models, GWM 2003.
@@ -744,10 +744,10 @@ const int Geode::ProcessMaterial(ostream&fout, const unsigned int igeode)
                     const osg::Material *pMaterial = dynamic_cast<const osg::Material*>(pRAP->first.get());
                     if (NULL != pMaterial)
                     {
-                        const osg::Vec4&Diffuse  = pMaterial->getDiffuse(osg::Material::FRONT_AND_BACK);
-                        const osg::Vec4&Ambient  = pMaterial->getAmbient(osg::Material::FRONT_AND_BACK);
-                        const osg::Vec4&Emissive = pMaterial->getEmission(osg::Material::FRONT_AND_BACK);
-                        const osg::Vec4&Specular = pMaterial->getSpecular(osg::Material::FRONT_AND_BACK);
+                        const osg::Vec4 &Diffuse  = pMaterial->getDiffuse(osg::Material::FRONT_AND_BACK);
+                        const osg::Vec4 &Ambient  = pMaterial->getAmbient(osg::Material::FRONT_AND_BACK);
+                        const osg::Vec4 &Emissive = pMaterial->getEmission(osg::Material::FRONT_AND_BACK);
+                        const osg::Vec4 &Specular = pMaterial->getSpecular(osg::Material::FRONT_AND_BACK);
                         fout << "MATERIAL "
                              << "\"osg" << igeode << "mat" << i
                              << "\" rgb " << Diffuse[0] << " " << Diffuse[1] << " " << Diffuse[2] << " "
@@ -765,7 +765,7 @@ const int Geode::ProcessMaterial(ostream&fout, const unsigned int igeode)
 
     return iNumMaterials;
 }
-void Geode::ProcessGeometry(ostream&fout, const unsigned int ioffset)
+void Geode::ProcessGeometry(ostream &fout, const unsigned int ioffset)
 {
     // outputs one geode
     // extended for multiple geode models, GWM 2003.
@@ -850,11 +850,11 @@ void Geode::ProcessGeometry(ostream&fout, const unsigned int ioffset)
                     // Check for a texture
                     if (theState)
                     {
-                        const osg::StateSet::TextureAttributeList&TextureAttributeList = theState->getTextureAttributeList();
+                        const osg::StateSet::TextureAttributeList &TextureAttributeList = theState->getTextureAttributeList();
                         if (TextureAttributeList.size() > 0)
                         {
                             // Check for a single mode of GL_TEXTURE_2D and ON
-                            const osg::StateSet::AttributeList&AttributeList = TextureAttributeList[0];
+                            const osg::StateSet::AttributeList &AttributeList = TextureAttributeList[0];
                             //                    assert(AttributeList.size() == 1);
                             const osg::Texture2D *pTexture2D = dynamic_cast<const osg::Texture2D*>(AttributeList.begin()->second.first.get());
                             //                    assert(NULL != pTexture2D);

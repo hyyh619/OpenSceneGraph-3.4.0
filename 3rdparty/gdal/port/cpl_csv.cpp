@@ -1189,11 +1189,11 @@ const char* CSVFilename(const char *pszBasename)
    {
     static char         szPath[1024];
 
- **#ifdef WIN32
+ ***#ifdef WIN32
     sprintf( szPath, "%s\\%s", CSVDirName, pszInput );
- **#else
+ ***#else
     sprintf( szPath, "%s/%s", CSVDirName, pszInput );
- **#endif
+ ***#endif
 
     return( szPath );
    }

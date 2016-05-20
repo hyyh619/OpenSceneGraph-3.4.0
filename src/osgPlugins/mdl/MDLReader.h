@@ -165,7 +165,7 @@ StringList texture_paths;
 typedef std::vector<osg::ref_ptr<osg::StateSet> >    StateSetList;
 StateSetList state_sets;
 
-std::string    getToken(std::string str, const char *delim, size_t&index);
+std::string    getToken(std::string str, const char *delim, size_t &index);
 std::string    findFileIgnoreCase(std::string filePath);
 
 osg::ref_ptr<osg::Texture>     readTextureFile(std::string textureName);
@@ -180,7 +180,7 @@ public:
 MDLReader();
 virtual ~MDLReader();
 
-bool   readFile(const std::string&file);
+bool   readFile(const std::string &file);
 
 osg::ref_ptr<osg::Node>   getRootNode();
 };

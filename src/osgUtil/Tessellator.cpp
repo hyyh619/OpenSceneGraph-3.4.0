@@ -132,7 +132,7 @@ void Tessellator::reset()
     // We need to also free the vertex list as well otherwise we are leaking...
     for (NewVertexList::iterator j = _newVertexList.begin(); j != _newVertexList.end(); ++j)
     {
-        NewVertex&newVertex = (*j);
+        NewVertex &newVertex = (*j);
         delete newVertex._vpos;
         newVertex._vpos = NULL;
     }
@@ -159,7 +159,7 @@ InsertNewVertices(float f1, unsigned int i1,
     _i1(i1), _i2(i2), _i3(i3), _i4(i4){}
 
 template<class ARRAY, class TYPE>
-void apply_imp(ARRAY&array, TYPE initialValue)
+void apply_imp(ARRAY &array, TYPE initialValue)
 {
     TYPE val = initialValue;
 
@@ -178,53 +178,53 @@ void apply_imp(ARRAY&array, TYPE initialValue)
     array.push_back(val);
 }
 
-virtual void apply(osg::ByteArray&ba)
+virtual void apply(osg::ByteArray &ba)
 {
     apply_imp(ba, GLbyte(0));
 }
-virtual void apply(osg::ShortArray&ba)
+virtual void apply(osg::ShortArray &ba)
 {
     apply_imp(ba, GLshort(0));
 }
-virtual void apply(osg::IntArray&ba)
+virtual void apply(osg::IntArray &ba)
 {
     apply_imp(ba, GLint(0));
 }
-virtual void apply(osg::UByteArray&ba)
+virtual void apply(osg::UByteArray &ba)
 {
     apply_imp(ba, GLubyte(0));
 }
-virtual void apply(osg::UShortArray&ba)
+virtual void apply(osg::UShortArray &ba)
 {
     apply_imp(ba, GLushort(0));
 }
-virtual void apply(osg::UIntArray&ba)
+virtual void apply(osg::UIntArray &ba)
 {
     apply_imp(ba, GLuint(0));
 }
-virtual void apply(osg::Vec4ubArray&ba)
+virtual void apply(osg::Vec4ubArray &ba)
 {
     apply_imp(ba, Vec4ub());
 }
-virtual void apply(osg::FloatArray&ba)
+virtual void apply(osg::FloatArray &ba)
 {
     apply_imp(ba, float(0));
 }
-virtual void apply(osg::Vec2Array&ba)
+virtual void apply(osg::Vec2Array &ba)
 {
     apply_imp(ba, Vec2());
 }
-virtual void apply(osg::Vec3Array&ba)
+virtual void apply(osg::Vec3Array &ba)
 {
     apply_imp(ba, Vec3());
 }
-virtual void apply(osg::Vec4Array&ba)
+virtual void apply(osg::Vec4Array &ba)
 {
     apply_imp(ba, Vec4());
 }
 };
 
-void Tessellator::retessellatePolygons(osg::Geometry&geom)
+void Tessellator::retessellatePolygons(osg::Geometry &geom)
 {
     // turn the contour list into primitives, a little like Tessellator does but more generally
     osg::Vec3Array *vertices = dynamic_cast<osg::Vec3Array*>(geom.getVertexArray());
@@ -518,7 +518,7 @@ void Tessellator::addContour(osg::PrimitiveSet *primitive, osg::Vec3Array *verti
     }
 }
 
-void Tessellator::handleNewVertices(osg::Geometry&geom, VertexPtrToIndexMap&vertexPtrToIndexMap)
+void Tessellator::handleNewVertices(osg::Geometry &geom, VertexPtrToIndexMap &vertexPtrToIndexMap)
 {
     if (!_newVertexList.empty())
     {
@@ -547,7 +547,7 @@ void Tessellator::handleNewVertices(osg::Geometry&geom, VertexPtrToIndexMap&vert
             arrays.push_back(geom.getFogCoordArray());
         }
 
-        osg::Geometry::ArrayList&tcal = geom.getTexCoordArrayList();
+        osg::Geometry::ArrayList &tcal = geom.getTexCoordArrayList();
 
         for (osg::Geometry::ArrayList::iterator tcalItr = tcal.begin();
              tcalItr != tcal.end();
@@ -711,7 +711,7 @@ void Tessellator::reduceArray(osg::Array *cold, const unsigned int nnu)
     }
 }
 
-void Tessellator::collectTessellation(osg::Geometry&geom, unsigned int /*originalIndex*/)
+void Tessellator::collectTessellation(osg::Geometry &geom, unsigned int /*originalIndex*/)
 {
     if (geom.containsDeprecatedData())
         geom.fixDeprecatedData();

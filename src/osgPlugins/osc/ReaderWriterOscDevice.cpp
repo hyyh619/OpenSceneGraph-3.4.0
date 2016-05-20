@@ -74,7 +74,7 @@ virtual const char* className() const
     return "OSC Virtual Device Integration plugin";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     if (osgDB::getFileExtension(file) == "osc")
     {
@@ -155,12 +155,12 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
 
                 return device.release();
             }
-            catch (const osc::Exception&e)
+            catch (const osc::Exception &e)
             {
                 OSG_WARN << "OscDevice :: could not register UDP listener : " << e.what() << std::endl;
                 return ReadResult::ERROR_IN_READING_FILE;
             }
-            catch (const std::exception&e)
+            catch (const std::exception &e)
             {
                 OSG_WARN << "OscDevice :: could not register UDP listener : " << e.what() << std::endl;
                 return ReadResult::ERROR_IN_READING_FILE;

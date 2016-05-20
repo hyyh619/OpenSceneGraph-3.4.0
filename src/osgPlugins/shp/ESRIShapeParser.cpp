@@ -250,7 +250,7 @@ void ESRIShapeParser::_combinePointToMultipoint()
     _geode->addDrawable(geometry.get());
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::Point>&pts)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::Point> &pts)
 {
     if (!_valid)
         return;
@@ -273,7 +273,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::Point>&pts)
 }
 
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPoint>&mpts)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPoint> &mpts)
 {
     if (!_valid)
         return;
@@ -295,7 +295,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPoint>&mpts)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLine>&lines)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLine> &lines)
 {
     if (!_valid)
         return;
@@ -329,7 +329,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLine>&lines)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::Polygon>&polys)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::Polygon> &polys)
 {
     if (!_valid)
         return;
@@ -370,7 +370,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::Polygon>&polys)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::PointM>&ptms)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::PointM> &ptms)
 {
     if (!_valid)
         return;
@@ -391,7 +391,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::PointM>&ptms)
         _combinePointToMultipoint();
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPointM>&mptms)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPointM> &mptms)
 {
     if (!_valid)
         return;
@@ -414,7 +414,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPointM>&mptms)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLineM>&linems)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLineM> &linems)
 {
     if (!_valid)
         return;
@@ -448,7 +448,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLineM>&linems)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::PolygonM>&polyms)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::PolygonM> &polyms)
 {
     if (!_valid)
         return;
@@ -481,7 +481,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::PolygonM>&polyms)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::PointZ>&ptzs)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::PointZ> &ptzs)
 {
     if (!_valid)
         return;
@@ -502,7 +502,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::PointZ>&ptzs)
         _combinePointToMultipoint();
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPointZ>&mptzs)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPointZ> &mptzs)
 {
     if (!_valid)
         return;
@@ -525,7 +525,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPointZ>&mptzs)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLineZ>&linezs)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLineZ> &linezs)
 {
     if (!_valid)
         return;
@@ -559,7 +559,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::PolyLineZ>&linezs)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::PolygonZ>&polyzs)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::PolygonZ> &polyzs)
 {
     if (!_valid)
         return;
@@ -593,7 +593,7 @@ void ESRIShapeParser::_process(const std::vector<ESRIShape::PolygonZ>&polyzs)
     }
 }
 
-void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPatch>&mpatches)
+void ESRIShapeParser::_process(const std::vector<ESRIShape::MultiPatch> &mpatches)
 {
     if (!_valid)
         return;

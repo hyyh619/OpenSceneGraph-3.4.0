@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  OrbitOperator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  OrbitOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  OrbitOperator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  OrbitOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(OrbitOperator_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(OrbitOperator_Proxy)
     OrbitOperator_writeLocalData
 );
 
-bool OrbitOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool OrbitOperator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::OrbitOperator&op        = static_cast<osgParticle::OrbitOperator&>(obj);
-    bool                      itAdvanced = false;
+    osgParticle::OrbitOperator &op        = static_cast<osgParticle::OrbitOperator&>(obj);
+    bool                       itAdvanced = false;
 
     osg::Vec3 a;
 
@@ -72,10 +72,10 @@ bool OrbitOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool OrbitOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool OrbitOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::OrbitOperator&op = static_cast<const osgParticle::OrbitOperator&>(obj);
-    osg::Vec3                       a   = op.getCenter();
+    const osgParticle::OrbitOperator &op = static_cast<const osgParticle::OrbitOperator&>(obj);
+    osg::Vec3                        a   = op.getCenter();
 
     fw.indent() << "center " << a.x() << " " << a.y() << " " << a.z() << std::endl;
 

@@ -30,7 +30,7 @@ struct FFmpegPacket
         packet.data = 0;
     }
 
-    explicit FFmpegPacket(const AVPacket&packet) :
+    explicit FFmpegPacket(const AVPacket &packet) :
         packet(packet),
         type(PACKET_DATA)
     {}
@@ -65,7 +65,7 @@ struct FFmpegPacket
 
 struct FFmpegPacketClear
 {
-    void operator ()(FFmpegPacket&packet) const
+    void operator ()(FFmpegPacket &packet) const
     {
         packet.clear();
     }

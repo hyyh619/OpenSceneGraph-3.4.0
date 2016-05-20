@@ -114,7 +114,7 @@ void daeReader::processSkins()
     {
         domInstance_controller *pDomInstanceController = _skinInstanceControllers[i];
 
-        const domInstance_controller::domSkeleton_Array&pDomSkeletons =
+        const domInstance_controller::domSkeleton_Array &pDomSkeletons =
             pDomInstanceController->getSkeleton_array();
 
         if (pDomSkeletons.getCount() == 0)
@@ -145,7 +145,7 @@ void daeReader::processSkins()
 
 void getJointsAndInverseObjectspaceBindMatrices(domInstance_controller *pDomInstanceController,
                                                 domNode *pDomSkeletonNode,
-                                                std::vector<std::pair<domNode*, osg::Matrix> >&jointsAndBindMatrices)
+                                                std::vector<std::pair<domNode*, osg::Matrix> > &jointsAndBindMatrices)
 {
     domController *pDomController = daeSafeCast<domController>(getElementFromURI(pDomInstanceController->getUrl()));
 
@@ -245,7 +245,7 @@ void getJointsAndInverseObjectspaceBindMatrices(domInstance_controller *pDomInst
     }
 }
 
-void daeReader::processSkeletonSkins(domNode *skeletonRoot, const domInstance_controllerList&instanceControllers)
+void daeReader::processSkeletonSkins(domNode *skeletonRoot, const domInstance_controllerList &instanceControllers)
 {
     for (size_t i = 0; i < instanceControllers.size(); ++i)
     {
@@ -272,7 +272,7 @@ void daeReader::processSkeletonSkins(domNode *skeletonRoot, const domInstance_co
 }
 
 osgAnimation::VertexInfluence&getVertexInfluence(
-    osgAnimation::VertexInfluenceMap&vim, const std::string&name)
+    osgAnimation::VertexInfluenceMap &vim, const std::string &name)
 {
     osgAnimation::VertexInfluenceMap::iterator it = vim.lower_bound(name);
 
@@ -563,7 +563,7 @@ void daeReader::processSkin(domSkin *pDomSkin, domNode *skeletonRoot, osgAnimati
             float weight = weights[weightIndex];
             if (weight > 0.0f)
             {
-                const std::string&name = jointNames[jointIndex];
+                const std::string &name = jointNames[jointIndex];
 
                 for (OldToNewIndexMap::const_iterator it = start; it != end; ++it)
                 {

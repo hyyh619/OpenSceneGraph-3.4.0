@@ -27,7 +27,7 @@ namespace osgDB
 #endif
 
 
-void open(std::fstream&fs, const char *filename, std::ios_base::openmode mode)
+void open(std::fstream &fs, const char *filename, std::ios_base::openmode mode)
 {
     fs.open(OSGDB_CONVERT_UTF8_FILENAME(filename), mode);
 }

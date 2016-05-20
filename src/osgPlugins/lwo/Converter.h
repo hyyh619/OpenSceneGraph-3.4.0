@@ -45,11 +45,11 @@ struct Options
 };
 
 Converter();
-Converter(const Options&options, const osgDB::ReaderWriter::Options *db_options);
+Converter(const Options &options, const osgDB::ReaderWriter::Options *db_options);
 
-osg::Group* convert(Object&obj);
-osg::Group* convert(const iff::Chunk_list&data);
-osg::Group* convert(const std::string&filename);
+osg::Group* convert(Object &obj);
+osg::Group* convert(const iff::Chunk_list &data);
+osg::Group* convert(const std::string &filename);
 
 inline osg::Group* get_root()
 {
@@ -68,13 +68,13 @@ inline Options&get_options()
 {
     return options_;
 }
-inline void set_options(const Options&options)
+inline void set_options(const Options &options)
 {
     options_ = options;
 }
 
 protected:
-void build_scene_graph(Object&obj);
+void build_scene_graph(Object &obj);
 
 private:
 osg::ref_ptr<osg::Group>                         root_;

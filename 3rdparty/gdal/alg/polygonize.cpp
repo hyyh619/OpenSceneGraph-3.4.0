@@ -78,8 +78,8 @@ void RPolygon::Dump()
 
     for (iString = 0; iString < aanXY.size(); iString++)
     {
-        std::vector<int>&anString = aanXY[iString];
-        size_t          iVert;
+        std::vector<int> &anString = aanXY[iString];
+        size_t           iVert;
 
         printf("  String %d:\n", (int) iString);
 
@@ -105,8 +105,8 @@ void RPolygon::Coalesce()
 /* -------------------------------------------------------------------- */
     for (iBaseString = 0; iBaseString < aanXY.size(); iBaseString++)
     {
-        std::vector<int>&anBase        = aanXY[iBaseString];
-        int             bMergeHappened = TRUE;
+        std::vector<int> &anBase        = aanXY[iBaseString];
+        int              bMergeHappened = TRUE;
 
 /* -------------------------------------------------------------------- */
 /*      Keep trying to merge the following strings into our target      */
@@ -127,7 +127,7 @@ void RPolygon::Coalesce()
                  iString < aanXY.size();
                  iString++)
             {
-                std::vector<int>&anString = aanXY[iString];
+                std::vector<int> &anString = aanXY[iString];
 
                 if (anBase[anBase.size() - 2] == anString[0]
                     && anBase[anBase.size() - 1] == anString[1])
@@ -158,9 +158,9 @@ void RPolygon::Coalesce()
 void RPolygon::Merge(int iBaseString, int iSrcString, int iDirection)
 
 {
-    std::vector<int>&anBase   = aanXY[iBaseString];
-    std::vector<int>&anString = aanXY[iSrcString];
-    int             iStart, iEnd, i;
+    std::vector<int> &anBase   = aanXY[iBaseString];
+    std::vector<int> &anString = aanXY[iSrcString];
+    int              iStart, iEnd, i;
 
     if (iDirection == 1)
     {
@@ -202,8 +202,8 @@ void RPolygon::AddSegment(int x1, int y1, int x2, int y2)
 
     for (iString = 0; iString < aanXY.size(); iString++)
     {
-        std::vector<int>&anString = aanXY[iString];
-        size_t          nSSize    = anString.size();
+        std::vector<int> &anString = aanXY[iString];
+        size_t           nSSize    = anString.size();
 
         if (anString[nSSize - 2] == x1
             && anString[nSSize - 1] == y1)
@@ -249,7 +249,7 @@ void RPolygon::AddSegment(int x1, int y1, int x2, int y2)
 /* -------------------------------------------------------------------- */
     size_t nSize = aanXY.size();
     aanXY.resize(nSize + 1);
-    std::vector<int>&anString = aanXY[nSize];
+    std::vector<int> &anString = aanXY[nSize];
 
     anString.push_back(x1);
     anString.push_back(y1);
@@ -358,8 +358,8 @@ EmitPolygonToLayer(OGRLayerH hOutLayer, int iPixValField,
 
     for (iString = 0; iString < poRPoly->aanXY.size(); iString++)
     {
-        std::vector<int>&anString = poRPoly->aanXY[iString];
-        OGRGeometryH    hRing     = OGR_G_CreateGeometry(wkbLinearRing);
+        std::vector<int> &anString = poRPoly->aanXY[iString];
+        OGRGeometryH     hRing     = OGR_G_CreateGeometry(wkbLinearRing);
 
         int iVert;
 

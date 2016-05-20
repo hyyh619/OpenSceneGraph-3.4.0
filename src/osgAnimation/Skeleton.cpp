@@ -20,11 +20,11 @@ using namespace osgAnimation;
 
 Skeleton::Skeleton() {}
 
-Skeleton::Skeleton(const Skeleton&b, const osg::CopyOp&copyop) : osg::MatrixTransform(b, copyop) {}
+Skeleton::Skeleton(const Skeleton &b, const osg::CopyOp &copyop) : osg::MatrixTransform(b, copyop) {}
 
 Skeleton::UpdateSkeleton::UpdateSkeleton() : _needValidate(true) {}
 
-Skeleton::UpdateSkeleton::UpdateSkeleton(const UpdateSkeleton&us, const osg::CopyOp&copyop) :
+Skeleton::UpdateSkeleton::UpdateSkeleton(const UpdateSkeleton &us, const osg::CopyOp &copyop) :
     osg::Object(us, copyop),
     osg::NodeCallback(us, copyop)
 {
@@ -45,7 +45,7 @@ void apply(osg::Node& /*node*/)
 {
     return;
 }
-void apply(osg::Transform&node)
+void apply(osg::Transform &node)
 {
     // the idea is to traverse the skeleton or bone but to stop if other node is found
     Bone *bone = dynamic_cast<Bone*>(&node);

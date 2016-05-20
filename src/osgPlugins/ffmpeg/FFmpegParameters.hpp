@@ -38,7 +38,7 @@ AVIOContext* getContext()
     return m_context;
 }
 
-void parse(const std::string&name, const std::string&value);
+void parse(const std::string &name, const std::string &value);
 
 protected:
 

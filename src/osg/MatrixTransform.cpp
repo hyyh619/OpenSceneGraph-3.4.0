@@ -18,14 +18,14 @@ MatrixTransform::MatrixTransform() :
     _inverseDirty(false)
 {}
 
-MatrixTransform::MatrixTransform(const MatrixTransform&transform, const CopyOp&copyop) :
+MatrixTransform::MatrixTransform(const MatrixTransform &transform, const CopyOp &copyop) :
     Transform(transform, copyop),
     _matrix(transform._matrix),
     _inverse(transform._inverse),
     _inverseDirty(transform._inverseDirty)
 {}
 
-MatrixTransform::MatrixTransform(const Matrix&mat)
+MatrixTransform::MatrixTransform(const Matrix &mat)
 {
     _referenceFrame = RELATIVE_RF;
 
@@ -37,7 +37,7 @@ MatrixTransform::MatrixTransform(const Matrix&mat)
 MatrixTransform::~MatrixTransform()
 {}
 
-bool MatrixTransform::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
+bool MatrixTransform::computeLocalToWorldMatrix(Matrix &matrix, NodeVisitor*) const
 {
     if (_referenceFrame == RELATIVE_RF)
     {
@@ -51,9 +51,9 @@ bool MatrixTransform::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) con
     return true;
 }
 
-bool MatrixTransform::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
+bool MatrixTransform::computeWorldToLocalMatrix(Matrix &matrix, NodeVisitor*) const
 {
-    const Matrix&inverse = getInverseMatrix();
+    const Matrix &inverse = getInverseMatrix();
 
     if (_referenceFrame == RELATIVE_RF)
     {

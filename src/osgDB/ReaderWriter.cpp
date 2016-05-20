@@ -115,7 +115,7 @@ osg::Script* ReaderWriter::ReadResult::takeScript()
 ReaderWriter::~ReaderWriter()
 {}
 
-bool ReaderWriter::acceptsExtension(const std::string&extension) const
+bool ReaderWriter::acceptsExtension(const std::string &extension) const
 {
     // check for an exact match
     std::string lowercase_ext = convertToLowerCase(extension);
@@ -123,26 +123,26 @@ bool ReaderWriter::acceptsExtension(const std::string&extension) const
     return (_supportedExtensions.count(lowercase_ext) != 0);
 }
 
-bool ReaderWriter::acceptsProtocol(const std::string&protocol) const
+bool ReaderWriter::acceptsProtocol(const std::string &protocol) const
 {
     std::string lowercase_protocol = convertToLowerCase(protocol);
 
     return (_supportedProtocols.count(lowercase_protocol) != 0);
 }
 
-void ReaderWriter::supportsProtocol(const std::string&fmt, const std::string&description)
+void ReaderWriter::supportsProtocol(const std::string &fmt, const std::string &description)
 {
     Registry::instance()->registerProtocol(fmt);
 
     _supportedProtocols[convertToLowerCase(fmt)] = description;
 }
 
-void ReaderWriter::supportsExtension(const std::string&fmt, const std::string&description)
+void ReaderWriter::supportsExtension(const std::string &fmt, const std::string &description)
 {
     _supportedExtensions[convertToLowerCase(fmt)] = description;
 }
 
-void ReaderWriter::supportsOption(const std::string&fmt, const std::string&description)
+void ReaderWriter::supportsOption(const std::string &fmt, const std::string &description)
 {
     _supportedOptions[fmt] = description;
 }
@@ -224,7 +224,7 @@ ReaderWriter::FeatureList ReaderWriter::featureAsString(ReaderWriter::Features f
     return result;
 }
 
-bool ReaderWriter::fileExists(const std::string&filename, const Options* /*options*/) const
+bool ReaderWriter::fileExists(const std::string &filename, const Options* /*options*/) const
 {
     return ::osgDB::fileExists(filename);
 }

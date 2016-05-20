@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkTextureWeights(const osgFX::MultiTextureControl&ctrl)
+static bool checkTextureWeights(const osgFX::MultiTextureControl &ctrl)
 {
     return ctrl.getNumTextureWeights() > 0;
 }
 
-static bool readTextureWeights(osgDB::InputStream&is, osgFX::MultiTextureControl&ctrl)
+static bool readTextureWeights(osgDB::InputStream &is, osgFX::MultiTextureControl &ctrl)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -22,7 +22,7 @@ static bool readTextureWeights(osgDB::InputStream&is, osgFX::MultiTextureControl
     return true;
 }
 
-static bool writeTextureWeights(osgDB::OutputStream&os, const osgFX::MultiTextureControl&ctrl)
+static bool writeTextureWeights(osgDB::OutputStream &os, const osgFX::MultiTextureControl &ctrl)
 {
     unsigned int size = ctrl.getNumTextureWeights();
 

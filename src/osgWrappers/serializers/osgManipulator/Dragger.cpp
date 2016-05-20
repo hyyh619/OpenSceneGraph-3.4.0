@@ -5,12 +5,12 @@
 #include <osgDB/OutputStream>
 
 // TransformUpdating
-static bool checkTransformUpdating(const osgManipulator::Dragger&dragger)
+static bool checkTransformUpdating(const osgManipulator::Dragger &dragger)
 {
     return dragger.getDraggerCallbacks().size() > 0;
 }
 
-static bool readTransformUpdating(osgDB::InputStream&is, osgManipulator::Dragger&dragger)
+static bool readTransformUpdating(osgDB::InputStream &is, osgManipulator::Dragger &dragger)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -31,9 +31,9 @@ static bool readTransformUpdating(osgDB::InputStream&is, osgManipulator::Dragger
     return true;
 }
 
-static bool writeTransformUpdating(osgDB::OutputStream&os, const osgManipulator::Dragger&dragger)
+static bool writeTransformUpdating(osgDB::OutputStream &os, const osgManipulator::Dragger &dragger)
 {
-    const osgManipulator::Dragger::DraggerCallbacks&callbacks = dragger.getDraggerCallbacks();
+    const osgManipulator::Dragger::DraggerCallbacks &callbacks = dragger.getDraggerCallbacks();
 
     os.writeSize(callbacks.size()); os << os.BEGIN_BRACKET << std::endl;
 
@@ -60,12 +60,12 @@ static bool writeTransformUpdating(osgDB::OutputStream&os, const osgManipulator:
 }
 
 // DefaultGeometry: FIXME - add a setUseDefaultGeometry(bool) here?
-static bool checkDefaultGeometry(const osgManipulator::Dragger&dragger)
+static bool checkDefaultGeometry(const osgManipulator::Dragger &dragger)
 {
     return true;
 }
 
-static bool readDefaultGeometry(osgDB::InputStream&is, osgManipulator::Dragger&dragger)
+static bool readDefaultGeometry(osgDB::InputStream &is, osgManipulator::Dragger &dragger)
 {
     bool useDefGeometry = false; is >> useDefGeometry;
 
@@ -73,7 +73,7 @@ static bool readDefaultGeometry(osgDB::InputStream&is, osgManipulator::Dragger&d
     return true;
 }
 
-static bool writeDefaultGeometry(osgDB::OutputStream&os, const osgManipulator::Dragger&dragger)
+static bool writeDefaultGeometry(osgDB::OutputStream &os, const osgManipulator::Dragger &dragger)
 {
     os << true << std::endl;
     return true;

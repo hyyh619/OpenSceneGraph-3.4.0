@@ -23,7 +23,7 @@ ProxyNode::ProxyNode() :
     _radius(-1)
 {}
 
-ProxyNode::ProxyNode(const ProxyNode&proxynode, const CopyOp&copyop) :
+ProxyNode::ProxyNode(const ProxyNode &proxynode, const CopyOp &copyop) :
     Group(proxynode, copyop),
     _filenameList(proxynode._filenameList),
     _databaseOptions(proxynode._databaseOptions),
@@ -34,7 +34,7 @@ ProxyNode::ProxyNode(const ProxyNode&proxynode, const CopyOp&copyop) :
     _radius(proxynode._radius)
 {}
 
-void ProxyNode::setDatabasePath(const std::string&path)
+void ProxyNode::setDatabasePath(const std::string &path)
 {
     _databasePath = path;
     if (!_databasePath.empty())
@@ -54,7 +54,7 @@ void ProxyNode::setDatabasePath(const std::string&path)
     }
 }
 
-void ProxyNode::traverse(NodeVisitor&nv)
+void ProxyNode::traverse(NodeVisitor &nv)
 {
     if (nv.getDatabaseRequestHandler() && _filenameList.size() > _children.size() &&
         _loadingExtReference != NO_AUTOMATIC_LOADING)
@@ -87,7 +87,7 @@ bool ProxyNode::addChild(Node *child)
     return false;
 }
 
-bool ProxyNode::addChild(Node *child, const std::string&filename)
+bool ProxyNode::addChild(Node *child, const std::string &filename)
 {
     if (Group::addChild(child))
     {

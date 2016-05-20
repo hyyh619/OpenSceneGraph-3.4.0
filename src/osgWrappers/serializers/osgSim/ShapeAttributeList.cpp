@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkAttributes(const osgSim::ShapeAttributeList&list)
+static bool checkAttributes(const osgSim::ShapeAttributeList &list)
 {
     return list.size() > 0;
 }
 
-static bool readAttributes(osgDB::InputStream&is, osgSim::ShapeAttributeList&list)
+static bool readAttributes(osgDB::InputStream &is, osgSim::ShapeAttributeList &list)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -47,7 +47,7 @@ static bool readAttributes(osgDB::InputStream&is, osgSim::ShapeAttributeList&lis
     return true;
 }
 
-static bool writeAttributes(osgDB::OutputStream&os, const osgSim::ShapeAttributeList&list)
+static bool writeAttributes(osgDB::OutputStream &os, const osgSim::ShapeAttributeList &list)
 {
     unsigned int size = list.size();
 
@@ -55,7 +55,7 @@ static bool writeAttributes(osgDB::OutputStream&os, const osgSim::ShapeAttribute
 
     for (unsigned int i = 0; i < size; ++i)
     {
-        const osgSim::ShapeAttribute&sa = list[i];
+        const osgSim::ShapeAttribute &sa = list[i];
         os << os.PROPERTY("ShapeAttribute") << sa.getName();
         os << os.PROPERTY("Type") << (int)sa.getType();
 

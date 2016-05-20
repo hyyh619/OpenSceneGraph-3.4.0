@@ -33,7 +33,7 @@ using namespace txp;
 
 int ReaderWriterTXP::_archiveId = 0;
 
-osgDB::ReaderWriter::ReadResult ReaderWriterTXP::local_readNode(const std::string&file, const osgDB::ReaderWriter::Options *options)
+osgDB::ReaderWriter::ReadResult ReaderWriterTXP::local_readNode(const std::string &file, const osgDB::ReaderWriter::Options *options)
 {
     std::string name = osgDB::getSimpleFileName(file);
 
@@ -256,7 +256,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterTXP::local_readNode(const std::strin
             {
                 std::vector<TXPArchive::TileLocationInfo> childrenChildLoc;
 
-                TXPArchive::TileLocationInfo&loc = locs[idx];
+                TXPArchive::TileLocationInfo &loc = locs[idx];
 
                 TXPArchive::TileInfo info;
                 if (!archive->getTileInfo(loc, info))
@@ -446,7 +446,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterTXP::local_readNode(const std::strin
 }
 
 // If you change this then you have to change extractChildrenLocation()
-void ReaderWriterTXP::createChildrenLocationString(const std::vector<TXPArchive::TileLocationInfo>&locs, std::string&locString) const
+void ReaderWriterTXP::createChildrenLocationString(const std::vector<TXPArchive::TileLocationInfo> &locs, std::string &locString) const
 {
     std::stringstream theLoc;
 
@@ -460,7 +460,7 @@ void ReaderWriterTXP::createChildrenLocationString(const std::vector<TXPArchive:
 
         for (unsigned int idx = 0; idx < locs.size(); ++idx)
         {
-            const TXPArchive::TileLocationInfo&loc = locs[idx];
+            const TXPArchive::TileLocationInfo &loc = locs[idx];
 
             theLoc << loc.x
                    << "_"
@@ -482,7 +482,7 @@ void ReaderWriterTXP::createChildrenLocationString(const std::vector<TXPArchive:
 
     locString = theLoc.str();
 }
-bool ReaderWriterTXP::extractChildrenLocations(const std::string&name, int parentLod, std::vector<TXPArchive::TileLocationInfo>&locs, int nbChild) const
+bool ReaderWriterTXP::extractChildrenLocations(const std::string &name, int parentLod, std::vector<TXPArchive::TileLocationInfo> &locs, int nbChild) const
 {
     locs.clear();
 
@@ -570,7 +570,7 @@ bool ReaderWriterTXP::extractChildrenLocations(const std::string&name, int paren
         return true;
 }
 
-std::string ReaderWriterTXP::getArchiveName(const std::string&dir)
+std::string ReaderWriterTXP::getArchiveName(const std::string &dir)
 {
 #ifdef _WIN32
     const char _PATHD = '\\';
@@ -583,7 +583,7 @@ std::string ReaderWriterTXP::getArchiveName(const std::string&dir)
     return dir + _PATHD + "archive.txp";
 }
 
-osg::ref_ptr<TXPArchive> ReaderWriterTXP::getArchive(int id, const std::string&dir)
+osg::ref_ptr<TXPArchive> ReaderWriterTXP::getArchive(int id, const std::string &dir)
 {
     osg::ref_ptr<TXPArchive> archive = NULL;
 
@@ -602,7 +602,7 @@ osg::ref_ptr<TXPArchive> ReaderWriterTXP::getArchive(int id, const std::string&d
     return archive;
 }
 
-osg::ref_ptr<TXPArchive> ReaderWriterTXP::createArchive(int id, const std::string&dir)
+osg::ref_ptr<TXPArchive> ReaderWriterTXP::createArchive(int id, const std::string &dir)
 {
     std::string archiveName = getArchiveName(dir);
 
@@ -665,12 +665,12 @@ bool ReaderWriterTXP::removeArchive(int id)
 class SeamFinder : public osg::NodeVisitor
 {
 public:
-SeamFinder(int x, int y, int lod, const TXPArchive::TileInfo&info, TXPArchive *archive) :
+SeamFinder(int x, int y, int lod, const TXPArchive::TileInfo &info, TXPArchive *archive) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _x(x), _y(y), _lod(lod), _info(info), _archive(archive)
 {}
 
-virtual void apply(osg::Group&group)
+virtual void apply(osg::Group &group)
 {
     for (unsigned int i = 0; i < group.getNumChildren(); i++)
     {
@@ -695,9 +695,9 @@ SeamFinder&operator =(const SeamFinder&)
     return *this;
 }
 
-int                       _x, _y, _lod;
-const TXPArchive::TileInfo&_info;
-TXPArchive                *_archive;
+int                        _x, _y, _lod;
+const TXPArchive::TileInfo &_info;
+TXPArchive                 *_archive;
 };
 
 #define equalDoubles(a, b) (fabs(a - b) < 0.001)
@@ -752,7 +752,7 @@ osg::Node* SeamFinder::seamReplacement(osg::Node *node)
 
         if (!_info.bbox.contains(lodCenter))
         {
-            const osg::LOD::RangeList&rangeList = lod->getRangeList();
+            const osg::LOD::RangeList &rangeList = lod->getRangeList();
             if (!rangeList.size())
             {
                 // TODO: Warn here
@@ -864,7 +864,7 @@ osg::Node* SeamFinder::seamReplacement(osg::Node *node)
     return node;
 }
 
-osg::Node* ReaderWriterTXP::getTileContent(const TXPArchive::TileInfo&info, int x, int y, int lod, TXPArchive *archive,  std::vector<TXPArchive::TileLocationInfo>&childrenLoc)
+osg::Node* ReaderWriterTXP::getTileContent(const TXPArchive::TileInfo &info, int x, int y, int lod, TXPArchive *archive,  std::vector<TXPArchive::TileLocationInfo> &childrenLoc)
 {
     if (archive == 0)
         return 0;
@@ -903,7 +903,7 @@ osg::Node* ReaderWriterTXP::getTileContent(const TXPArchive::TileInfo&info, int 
 }
 
 // this version only gets called if the TXP version is >= than 2.1
-osg::Node* ReaderWriterTXP::getTileContent(const TXPArchive::TileInfo&info, const TXPArchive::TileLocationInfo&loc, TXPArchive *archive,  std::vector<TXPArchive::TileLocationInfo>&childrenLoc)
+osg::Node* ReaderWriterTXP::getTileContent(const TXPArchive::TileInfo &info, const TXPArchive::TileLocationInfo &loc, TXPArchive *archive,  std::vector<TXPArchive::TileLocationInfo> &childrenLoc)
 {
     if (archive == 0)
         return 0;

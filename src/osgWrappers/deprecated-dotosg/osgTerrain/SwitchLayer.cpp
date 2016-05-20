@@ -26,8 +26,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool SwitchLayer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool SwitchLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool SwitchLayer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool SwitchLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(SwitchLayer_Proxy)
 (
@@ -38,9 +38,9 @@ REGISTER_DOTOSGWRAPPER(SwitchLayer_Proxy)
     SwitchLayer_writeLocalData
 );
 
-bool SwitchLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool SwitchLayer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgTerrain::SwitchLayer&layer = static_cast<osgTerrain::SwitchLayer&>(obj);
+    osgTerrain::SwitchLayer &layer = static_cast<osgTerrain::SwitchLayer&>(obj);
 
     bool itrAdvanced = false;
 
@@ -57,9 +57,9 @@ bool SwitchLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool SwitchLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool SwitchLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgTerrain::SwitchLayer&layer = static_cast<const osgTerrain::SwitchLayer&>(obj);
+    const osgTerrain::SwitchLayer &layer = static_cast<const osgTerrain::SwitchLayer&>(obj);
 
     fw.indent() << "ActiveLayer " << layer.getActiveLayer() << std::endl;
 

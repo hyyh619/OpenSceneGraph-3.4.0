@@ -12,8 +12,8 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool Capsule_readLocalData(Object&obj, Input&fr);
-bool Capsule_writeLocalData(const Object&obj, Output&fw);
+bool Capsule_readLocalData(Object &obj, Input &fr);
+bool Capsule_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Capsule)
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(Capsule)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Capsule_readLocalData(Object&obj, Input&fr)
+bool Capsule_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Capsule&capsule = static_cast<Capsule&>(obj);
+    Capsule &capsule = static_cast<Capsule&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -76,9 +76,9 @@ bool Capsule_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Capsule_writeLocalData(const Object&obj, Output&fw)
+bool Capsule_writeLocalData(const Object &obj, Output &fw)
 {
-    const Capsule&capsule = static_cast<const Capsule&>(obj);
+    const Capsule &capsule = static_cast<const Capsule&>(obj);
 
     fw.indent() << "Center " <<   capsule.getCenter() << std::endl;
     fw.indent() << "Radius " <<   capsule.getRadius() << std::endl;

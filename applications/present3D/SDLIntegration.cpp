@@ -84,7 +84,7 @@ SDLIntegration::SDLIntegration()
 SDLIntegration::~SDLIntegration()
 {}
 
-void SDLIntegration::capture(ValueList&axisValues, ValueList&buttonValues) const
+void SDLIntegration::capture(ValueList &axisValues, ValueList &buttonValues) const
 {
     if (_joystick)
     {
@@ -106,7 +106,7 @@ void SDLIntegration::capture(ValueList&axisValues, ValueList&buttonValues) const
     }
 }
 
-void SDLIntegration::update(osgViewer::Viewer&viewer)
+void SDLIntegration::update(osgViewer::Viewer &viewer)
 {
     if (_joystick)
     {

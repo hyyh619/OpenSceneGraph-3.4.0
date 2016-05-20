@@ -23,7 +23,7 @@ using namespace p3d;
 SpellChecker::SpellChecker()
 {}
 
-void SpellChecker::checkP3dXml(const std::string&filename) const
+void SpellChecker::checkP3dXml(const std::string &filename) const
 {
     std::string foundFileName = osgDB::findDataFile(filename);
 
@@ -62,7 +62,7 @@ void SpellChecker::checkXml(osgDB::XmlNode *node) const
     }
 }
 
-void SpellChecker::checkWords(const std::string&words) const
+void SpellChecker::checkWords(const std::string &words) const
 {
     OSG_NOTICE << "--" << std::endl << words << std::endl;
 
@@ -86,13 +86,13 @@ void SpellChecker::checkWords(const std::string&words) const
 #endif
 }
 
-bool SpellChecker::isCorrect(const std::string&word) const
+bool SpellChecker::isCorrect(const std::string &word) const
 {
     OSG_NOTICE << "SpellChecker::isCorrect(" << word << ")" << std::endl;
     return true;
 }
 
-SpellChecker::WordList SpellChecker::suggest(const std::string&word) const
+SpellChecker::WordList SpellChecker::suggest(const std::string &word) const
 {
     return WordList();
 }
@@ -101,7 +101,7 @@ SpellChecker::WordList SpellChecker::suggest(const std::string&word) const
 XmlPatcher::XmlPatcher()
 {}
 
-void XmlPatcher::stripP3dXml(const std::string&filename, std::ostream&fout) const
+void XmlPatcher::stripP3dXml(const std::string &filename, std::ostream &fout) const
 {
     std::string foundFileName = osgDB::findDataFile(filename);
 
@@ -123,7 +123,7 @@ void XmlPatcher::stripP3dXml(const std::string&filename, std::ostream&fout) cons
     stripXml(doc.get(), fout);
 }
 
-void XmlPatcher::stripXml(osgDB::XmlNode *node, std::ostream&fout) const
+void XmlPatcher::stripXml(osgDB::XmlNode *node, std::ostream &fout) const
 {
     if (node->name == "presentation" ||
         node->name == "slide" ||
@@ -161,7 +161,7 @@ void XmlPatcher::stripXml(osgDB::XmlNode *node, std::ostream&fout) const
     }
 }
 
-osgDB::XmlNode* XmlPatcher::simplifyP3dXml(const std::string&filename) const
+osgDB::XmlNode* XmlPatcher::simplifyP3dXml(const std::string &filename) const
 {
     std::string foundFileName = osgDB::findDataFile(filename);
 
@@ -214,7 +214,7 @@ osgDB::XmlNode* XmlPatcher::simplifyXml(osgDB::XmlNode *node) const
         return 0;
     }
 }
-osgDB::XmlNode* XmlPatcher::mergeP3dXml(const std::string&lhs_filename, const std::string&rhs_filename) const
+osgDB::XmlNode* XmlPatcher::mergeP3dXml(const std::string &lhs_filename, const std::string &rhs_filename) const
 {
     std::string lhs_foundFileName = osgDB::findDataFile(lhs_filename);
 

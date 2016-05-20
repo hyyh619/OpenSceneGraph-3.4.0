@@ -54,7 +54,7 @@ daeReader::daeReader(DAE *dae_, const Options *pluginOptions) :
 daeReader::~daeReader()
 {}
 
-bool daeReader::processDocument(const std::string&fileURI)
+bool daeReader::processDocument(const std::string &fileURI)
 {
     daeElement *colladaElement;
 
@@ -77,9 +77,9 @@ bool daeReader::processDocument(const std::string&fileURI)
 
     if (_document->getAsset())
     {
-        const domAsset::domContributor_Array&ContributorArray    = _document->getAsset()->getContributor_array();
-        size_t                              NumberOfContributors = ContributorArray.getCount();
-        size_t                              CurrentContributor;
+        const domAsset::domContributor_Array &ContributorArray    = _document->getAsset()->getContributor_array();
+        size_t                               NumberOfContributors = ContributorArray.getCount();
+        size_t                               CurrentContributor;
 
         for (CurrentContributor = 0; CurrentContributor < NumberOfContributors; CurrentContributor++)
         {
@@ -202,8 +202,8 @@ bool daeReader::processDocument(const std::string&fileURI)
                 continue;
             }
 
-            const domInstance_controller::domSkeleton_Array&domSkeletonURIs = pInstanceController->getSkeleton_array();
-            std::vector<daeElement*>                       searchIn;
+            const domInstance_controller::domSkeleton_Array &domSkeletonURIs = pInstanceController->getSkeleton_array();
+            std::vector<daeElement*>                        searchIn;
 
             for (size_t i = 0; i < domSkeletonURIs.getCount(); ++i)
             {
@@ -230,7 +230,7 @@ bool daeReader::processDocument(const std::string&fileURI)
             if (!pJoints)
                 continue;
 
-            const domInputLocal_Array&inputURIs = pJoints->getInput_array();
+            const domInputLocal_Array &inputURIs = pJoints->getInput_array();
 
             domSource *pDomJointsSource = NULL;
 
@@ -296,7 +296,7 @@ void daeReader::clearCaches()
     _materialMap2.clear();
 }
 
-bool daeReader::convert(std::istream&fin)
+bool daeReader::convert(std::istream &fin)
 {
     clearCaches();
 
@@ -318,7 +318,7 @@ bool daeReader::convert(std::istream&fin)
     return processDocument (fileURI);
 }
 
-bool daeReader::convert(const std::string&fileURI)
+bool daeReader::convert(const std::string &fileURI)
 {
     clearCaches();
 
@@ -394,7 +394,7 @@ osg::Group* daeReader::processVisualScene(domVisual_scene *scene)
 
         _skinInstanceControllers.clear();
 
-        const domNode_Array&node_array = scene->getNode_array();
+        const domNode_Array &node_array = scene->getNode_array();
 
         for (size_t i = 0; i < node_array.getCount(); i++)
         {
@@ -638,7 +638,7 @@ osg::Node* daeReader::processNode(domNode *node, bool skeleton)
     }
 
     // 0..* <instance_camera>
-    const domInstance_camera_Array&cameraInstanceArray = node->getInstance_camera_array();
+    const domInstance_camera_Array &cameraInstanceArray = node->getInstance_camera_array();
 
     for (size_t i = 0; i < cameraInstanceArray.getCount(); i++)
     {
@@ -652,7 +652,7 @@ osg::Node* daeReader::processNode(domNode *node, bool skeleton)
     }
 
     // 0..* <instance_controller>
-    const domInstance_controller_Array&controllerInstanceArray = node->getInstance_controller_array();
+    const domInstance_controller_Array &controllerInstanceArray = node->getInstance_controller_array();
 
     for (size_t i = 0; i < controllerInstanceArray.getCount(); i++)
     {
@@ -667,7 +667,7 @@ osg::Node* daeReader::processNode(domNode *node, bool skeleton)
     }
 
     // 0..* <instance_geometry>
-    const domInstance_geometry_Array&geometryInstanceArray = node->getInstance_geometry_array();
+    const domInstance_geometry_Array &geometryInstanceArray = node->getInstance_geometry_array();
 
     for (size_t i = 0; i < geometryInstanceArray.getCount(); i++)
     {
@@ -675,7 +675,7 @@ osg::Node* daeReader::processNode(domNode *node, bool skeleton)
     }
 
     // 0..* <instance_light>
-    const domInstance_light_Array&lightInstanceArray = node->getInstance_light_array();
+    const domInstance_light_Array &lightInstanceArray = node->getInstance_light_array();
 
     for (size_t i = 0; i < lightInstanceArray.getCount(); i++)
     {
@@ -689,7 +689,7 @@ osg::Node* daeReader::processNode(domNode *node, bool skeleton)
     }
 
     // 0..* <instance_node>
-    const domInstance_node_Array&nodeInstanceArray = node->getInstance_node_array();
+    const domInstance_node_Array &nodeInstanceArray = node->getInstance_node_array();
 
     for (size_t i = 0; i < nodeInstanceArray.getCount(); i++)
     {
@@ -704,7 +704,7 @@ osg::Node* daeReader::processNode(domNode *node, bool skeleton)
     }
 
     // 0..* <node>
-    const domNode_Array&nodeArray = node->getNode_array();
+    const domNode_Array &nodeArray = node->getNode_array();
 
     for (size_t i = 0; i < nodeArray.getCount(); i++)
     {

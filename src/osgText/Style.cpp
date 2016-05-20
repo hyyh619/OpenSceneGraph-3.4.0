@@ -28,7 +28,7 @@ Bevel::Bevel()
     flatBevel();
 }
 
-Bevel::Bevel(const Bevel&bevel, const osg::CopyOp&copyop) :
+Bevel::Bevel(const Bevel &bevel, const osg::CopyOp &copyop) :
     osg::Object(bevel, copyop),
     _smoothConcaveJunctions(bevel._smoothConcaveJunctions),
     _thickness(bevel._thickness),
@@ -133,7 +133,7 @@ Style::Style() :
     _sampleDensity(1.0f)
 {}
 
-Style::Style(const Style&style, const osg::CopyOp&copyop) :
+Style::Style(const Style &style, const osg::CopyOp &copyop) :
     osg::Object(style, copyop),
     _bevel(dynamic_cast<Bevel*>(copyop(style._bevel.get()))),
     _widthRatio(style._widthRatio),
@@ -154,7 +154,7 @@ osg::ref_ptr<Style>&Style::getDefaultStyle()
 }
 
 
-bool Style::operator ==(const Style&rhs) const
+bool Style::operator ==(const Style &rhs) const
 {
     if (&rhs == this)
         return true;

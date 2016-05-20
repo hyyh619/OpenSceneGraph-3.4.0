@@ -31,12 +31,12 @@ virtual const char* className() const
     return "Python ScriptEngine plugin";
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readScript(fin);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     if (file == "ScriptEngine.python")
         return new python::PythonScriptEngine();
@@ -44,7 +44,7 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
     return readScript(file, options);
 }
 
-virtual ReadResult readScript(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readScript(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     osg::ref_ptr<osg::Script> script = new osg::Script;
 
@@ -67,7 +67,7 @@ virtual ReadResult readScript(std::istream&fin, const osgDB::ReaderWriter::Optio
 }
 
 
-virtual ReadResult readScript(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readScript(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     if (file == "ScriptEngine.python")
         return new python::PythonScriptEngine();

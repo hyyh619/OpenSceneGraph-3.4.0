@@ -32,51 +32,51 @@ typedef std::vector<unsigned int> IndexList;
 class WriteValue : public osg::ConstValueVisitor
 {
 public:
-WriteValue(std::ostream&o) : _o(o) {}
+WriteValue(std::ostream &o) : _o(o) {}
 
-std::ostream&_o;
+std::ostream &_o;
 
-virtual void apply(const GLbyte&v)
+virtual void apply(const GLbyte &v)
 {
     _o << v;
 }
-virtual void apply(const GLshort&v)
+virtual void apply(const GLshort &v)
 {
     _o << v;
 }
-virtual void apply(const GLint&v)
+virtual void apply(const GLint &v)
 {
     _o << v;
 }
-virtual void apply(const GLushort&v)
+virtual void apply(const GLushort &v)
 {
     _o << v;
 }
-virtual void apply(const GLubyte&v)
+virtual void apply(const GLubyte &v)
 {
     _o << v;
 }
-virtual void apply(const GLuint&v)
+virtual void apply(const GLuint &v)
 {
     _o << v;
 }
-virtual void apply(const GLfloat&v)
+virtual void apply(const GLfloat &v)
 {
     _o << v;
 }
-virtual void apply(const Vec4ub&v)
+virtual void apply(const Vec4ub &v)
 {
     _o << v;
 }
-virtual void apply(const Vec2&v)
+virtual void apply(const Vec2 &v)
 {
     _o << v;
 }
-virtual void apply(const Vec3&v)
+virtual void apply(const Vec3 &v)
 {
     _o << v;
 }
-virtual void apply(const Vec4&v)
+virtual void apply(const Vec4 &v)
 {
     _o << v;
 }
@@ -92,7 +92,7 @@ WriteValue&operator =(const WriteValue&)
 
 struct VertexAttribComparitor
 {
-    VertexAttribComparitor(osg::Geometry&geometry)
+    VertexAttribComparitor(osg::Geometry &geometry)
     {
         add(geometry.getVertexArray());
         add(geometry.getNormalArray());
@@ -180,7 +180,7 @@ struct VertexAttribComparitor
         return 0;
     }
 
-    void accept(osg::ArrayVisitor&av)
+    void accept(osg::ArrayVisitor &av)
     {
         for (ArrayList::iterator itr = _arrayList.begin();
              itr != _arrayList.end();
@@ -201,12 +201,12 @@ protected:
 class RemapArray : public osg::ArrayVisitor
 {
 public:
-RemapArray(const IndexList&remapping) : _remapping(remapping) {}
+RemapArray(const IndexList &remapping) : _remapping(remapping) {}
 
-const IndexList&_remapping;
+const IndexList &_remapping;
 
 template<class T>
-inline void remap(T&array)
+inline void remap(T &array)
 {
     for (unsigned int i = 0; i < _remapping.size(); ++i)
     {
@@ -220,47 +220,47 @@ inline void remap(T&array)
 }
 
 virtual void apply(osg::Array&) {}
-virtual void apply(osg::ByteArray&array)
+virtual void apply(osg::ByteArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::ShortArray&array)
+virtual void apply(osg::ShortArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::IntArray&array)
+virtual void apply(osg::IntArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UByteArray&array)
+virtual void apply(osg::UByteArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UShortArray&array)
+virtual void apply(osg::UShortArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UIntArray&array)
+virtual void apply(osg::UIntArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::Vec4ubArray&array)
+virtual void apply(osg::Vec4ubArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::FloatArray&array)
+virtual void apply(osg::FloatArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::Vec2Array&array)
+virtual void apply(osg::Vec2Array &array)
 {
     remap(array);
 }
-virtual void apply(osg::Vec3Array&array)
+virtual void apply(osg::Vec3Array &array)
 {
     remap(array);
 }
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::Vec4Array &array)
 {
     remap(array);
 }
@@ -296,7 +296,7 @@ struct MyTriangleOperator
 };
 typedef osg::TriangleIndexFunctor<MyTriangleOperator> MyTriangleIndexFunctor;
 
-void TriStripVisitor::stripify(Geometry&geom)
+void TriStripVisitor::stripify(Geometry &geom)
 {
     if (geom.containsDeprecatedData())
         geom.fixDeprecatedData();
@@ -640,7 +640,7 @@ void TriStripVisitor::stripify(Geometry&geom)
 }
 
 
-void TriStripVisitor::mergeTriangleStrips(osg::Geometry::PrimitiveSetList&primitives)
+void TriStripVisitor::mergeTriangleStrips(osg::Geometry::PrimitiveSetList &primitives)
 {
     int nbtristrip         = 0;
     int nbtristripVertexes = 0;
@@ -724,7 +724,7 @@ void TriStripVisitor::stripify()
     }
 }
 
-void TriStripVisitor::apply(Geode&geode)
+void TriStripVisitor::apply(Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {

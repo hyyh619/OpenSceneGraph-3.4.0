@@ -47,9 +47,9 @@ public:
 
 OccluderEventHandler(osgViewer::Viewer *viewer) : _viewer(viewer) {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&);
 
-void addPoint(const osg::Vec3&pos);
+void addPoint(const osg::Vec3 &pos);
 
 void endOccluder();
 
@@ -64,7 +64,7 @@ osg::ref_ptr<osg::Group>                _occluders;
 osg::ref_ptr<osg::ConvexPlanarOccluder> _convexPlanarOccluder;
 };
 
-bool OccluderEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool OccluderEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     switch (ea.getEventType())
     {
@@ -77,7 +77,7 @@ bool OccluderEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAct
             osgUtil::LineSegmentIntersector::Intersections intersections;
             if (view && view->computeIntersections(ea, intersections))
             {
-                const osgUtil::LineSegmentIntersector::Intersection&hit = *(intersections.begin());
+                const osgUtil::LineSegmentIntersector::Intersection &hit = *(intersections.begin());
                 if (hit.matrix.valid())
                     addPoint(hit.localIntersectionPoint * (*hit.matrix));
                 else
@@ -114,14 +114,14 @@ bool OccluderEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAct
     }
 }
 
-void OccluderEventHandler::addPoint(const osg::Vec3&pos)
+void OccluderEventHandler::addPoint(const osg::Vec3 &pos)
 {
     std::cout << "add point " << pos << std::endl;
 
     if (!_convexPlanarOccluder.valid())
         _convexPlanarOccluder = new osg::ConvexPlanarOccluder;
 
-    osg::ConvexPlanarPolygon&occluder = _convexPlanarOccluder->getOccluder();
+    osg::ConvexPlanarPolygon &occluder = _convexPlanarOccluder->getOccluder();
     occluder.add(pos);
 
 //
@@ -170,7 +170,7 @@ void OccluderEventHandler::endOccluder()
 }
 
 
-osg::Node* createOccluder(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, const osg::Vec3&v4, float holeRatio = -1.0f)
+osg::Node* createOccluder(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, const osg::Vec3 &v4, float holeRatio = -1.0f)
 {
     // create an occluder which will sit alongside the loaded model.
     osg::OccluderNode *occluderNode = new osg::OccluderNode;
@@ -183,7 +183,7 @@ osg::Node* createOccluder(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec
     occluderNode->setName("occluder");
 
     // set the occluder up for the front face of the bounding box.
-    osg::ConvexPlanarPolygon&occluder = cpo->getOccluder();
+    osg::ConvexPlanarPolygon &occluder = cpo->getOccluder();
     occluder.add(v1);
     occluder.add(v2);
     occluder.add(v3);

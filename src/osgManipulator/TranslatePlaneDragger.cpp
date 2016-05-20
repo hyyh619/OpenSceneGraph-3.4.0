@@ -42,7 +42,7 @@ TranslatePlaneDragger::TranslatePlaneDragger() : _usingTranslate1DDragger(false)
 TranslatePlaneDragger::~TranslatePlaneDragger()
 {}
 
-bool TranslatePlaneDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool TranslatePlaneDragger::handle(const PointerInfo &pointer, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     // Check if the dragger node is in the nodepath.
     if (!pointer.contains(this))

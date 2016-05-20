@@ -114,7 +114,7 @@ virtual void AddVertex(trpg3dPoint&);
 virtual void FlushGeom(void);
 
 // Get the Min and Max Z values
-virtual void GetZMinMax(double&min, double&max);
+virtual void GetZMinMax(double &min, double &max);
 
 // Get statistics for whatever we built
 trpgwGeomStats* GetStats(void)
@@ -183,27 +183,27 @@ virtual void Init(trpgEndian ness, char *dir, trpgTexTable&, bool separateGeoTyp
 virtual ~trpgwImageHelper(void);
 
 // Adds an entry to the texture table for an external texture
-virtual bool AddExternal(char *name, int&texID, bool lookForExisting = true);
+virtual bool AddExternal(char *name, int &texID, bool lookForExisting = true);
 
 /* Adds an entry to the texture table for a local texture and
     writes the data for that texture out to one of our texture
     archive files.
  */
-virtual bool AddLocal(char *name, trpgTexture::ImageType type, int sizeX, int sizeY, bool isMipmap, char *data, int&texID, bool deferWrite);
+virtual bool AddLocal(char *name, trpgTexture::ImageType type, int sizeX, int sizeY, bool isMipmap, char *data, int &texID, bool deferWrite);
 
 /* Replaces texture table information for a local texture and
     writes the data for that texture out to one of our texture
     archive files.
     Up to you to ensure data is appropriate for the texture.
  */
-virtual bool ReplaceLocal(char *data, int&texID);
+virtual bool ReplaceLocal(char *data, int &texID);
 
 /* Write a Tile Local texture out to one of our texture archive files.
     Also creates a texture template, if necessary.
     Caller is responsible for creating the Tile Local material and
     placing it in the appropriate tile.
  */
-virtual bool AddTileLocal(char *name, trpgTexture::ImageType type, int sizeX, int sizeY, bool isMipmap, char *data, int&texID, trpgwAppAddress&addr);
+virtual bool AddTileLocal(char *name, trpgTexture::ImageType type, int sizeX, int sizeY, bool isMipmap, char *data, int &texID, trpgwAppAddress &addr);
 
 /* Sets the maximum advised length for a texture archive file.
     Once the length is exceeded, the image write helper will move
@@ -230,7 +230,7 @@ virtual bool Flush(void);
 virtual trpgwAppFile* GetNewWAppFile(trpgEndian inNess, const char *fileName, bool reuse = false);
 
 // Write the given texture data into one our local archives
-bool WriteToArchive(const trpgTexture&tex, char *data, trpgwAppAddress&addr, bool geotyp = false);
+bool WriteToArchive(const trpgTexture &tex, char *data, trpgwAppAddress &addr, bool geotyp = false);
 // Merge block textable into a master.
 
 protected:
@@ -260,8 +260,8 @@ enum TileMode {TileLocal, TileExternal, TileExternalSaved};
 
 // real constructor work done in Init(...) now for quasi-virtual ctor action.
 // Add data to an existing archive
-trpgwArchive(char *baseDir, char *name, trpg2dPoint&ll, trpg2dPoint&ur, int majorVer = TRPG_VERSION_MAJOR, int minorVer = TRPG_VERSION_MINOR);
-virtual void Init(char *baseDir, char *name, trpg2dPoint&ll, trpg2dPoint&ur, int majorVer = TRPG_VERSION_MAJOR, int minorVer = TRPG_VERSION_MINOR);
+trpgwArchive(char *baseDir, char *name, trpg2dPoint &ll, trpg2dPoint &ur, int majorVer = TRPG_VERSION_MAJOR, int minorVer = TRPG_VERSION_MINOR);
+virtual void Init(char *baseDir, char *name, trpg2dPoint &ll, trpg2dPoint &ur, int majorVer = TRPG_VERSION_MAJOR, int minorVer = TRPG_VERSION_MINOR);
 // Start an archive from scratch.
 trpgwArchive(trpgEndian ness = LittleEndian, TileMode tileMode = TileLocal, int majorVer = TRPG_VERSION_MAJOR, int minorVer = TRPG_VERSION_MINOR);
 virtual void Init(trpgEndian ness = LittleEndian, TileMode tileMode = TileLocal, int majorVer = TRPG_VERSION_MAJOR, int minorVer = TRPG_VERSION_MINOR);
@@ -311,7 +311,7 @@ virtual void CloseFile(void);
 virtual bool WriteHeader(void);
 virtual bool CheckpointHeader(void);
 virtual bool WriteTile(unsigned int, unsigned int, unsigned int, float zmin, float zmax,
-                       const trpgMemWriteBuffer*, const trpgMemWriteBuffer*, int32&fileId, int32&fileOffset);
+                       const trpgMemWriteBuffer*, const trpgMemWriteBuffer*, int32 &fileId, int32 &fileOffset);
 //    virtual bool WriteModel(unsigned int,trpgMemWriteBuffer &);
 
 bool isValid(void) const;

@@ -13,12 +13,12 @@ USER_READ_FUNC(Mode, readModeValue)
 USER_WRITE_FUNC(Mode, writeModeValue)
 
 // _modeFront, _modeBack
-static bool checkMode(const osg::PolygonMode&attr)
+static bool checkMode(const osg::PolygonMode &attr)
 {
     return true;
 }
 
-static bool readMode(osgDB::InputStream&is, osg::PolygonMode&attr)
+static bool readMode(osgDB::InputStream &is, osg::PolygonMode &attr)
 {
     bool frontAndBack;
 
@@ -37,7 +37,7 @@ static bool readMode(osgDB::InputStream&is, osg::PolygonMode&attr)
     return true;
 }
 
-static bool writeMode(osgDB::OutputStream&os, const osg::PolygonMode&attr)
+static bool writeMode(osgDB::OutputStream &os, const osg::PolygonMode &attr)
 {
     os << os.PROPERTY("UseFrontAndBack") << attr.getFrontAndBack() << std::endl;
 

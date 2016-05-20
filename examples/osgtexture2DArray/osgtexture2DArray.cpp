@@ -42,12 +42,12 @@ typedef std::vector<osg::ref_ptr<osg::Image> > ImageList;
 class SubloadCallback : public osg::Texture2DArray::SubloadCallback
 {
 public:
-virtual void load(const osg::Texture2DArray&texture, osg::State&state) const { }
-virtual void subload(const osg::Texture2DArray&texture, osg::State&state) const { }
+virtual void load(const osg::Texture2DArray &texture, osg::State &state) const { }
+virtual void subload(const osg::Texture2DArray &texture, osg::State &state) const { }
 };
 
 
-osg::StateSet* createState(osg::ArgumentParser&arguments)
+osg::StateSet* createState(osg::ArgumentParser &arguments)
 {
     // read 4 2d images
     osg::ref_ptr<osg::Image> image_0 = osgDB::readImageFile("Images/lz.rgb");
@@ -177,7 +177,7 @@ osg::Drawable* createSquare()
     return geom;
 }
 
-osg::Node* createModel(osg::ArgumentParser&arguments)
+osg::Node* createModel(osg::ArgumentParser &arguments)
 {
     // create the geometry of the model, just a simple 2d quad right now.
     osg::Geode *geode = new osg::Geode;

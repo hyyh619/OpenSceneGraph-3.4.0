@@ -1,6 +1,6 @@
 #include "WriterCompareTriangle.h"
 
-WriterCompareTriangle::WriterCompareTriangle(const osg::Geode&geode,
+WriterCompareTriangle::WriterCompareTriangle(const osg::Geode &geode,
                                              unsigned int nbVertices)
     :    geode(geode)
 {
@@ -8,8 +8,8 @@ WriterCompareTriangle::WriterCompareTriangle(const osg::Geode&geode,
 }
 
 bool
-WriterCompareTriangle::operator()(const std::pair<Triangle, int>&t1,
-                                  const std::pair<Triangle, int>&t2) const
+WriterCompareTriangle::operator()(const std::pair<Triangle, int> &t1,
+                                  const std::pair<Triangle, int> &t2) const
 {
     const osg::Geometry *g = geode.getDrawable(t1.second)->asGeometry();
 
@@ -34,9 +34,9 @@ WriterCompareTriangle::operator()(const std::pair<Triangle, int>&t1,
 }
 
 void
-WriterCompareTriangle::setMaxMin(unsigned int&nbVerticesX,
-                                 unsigned int&nbVerticesY,
-                                 unsigned int&nbVerticesZ) const
+WriterCompareTriangle::setMaxMin(unsigned int &nbVerticesX,
+                                 unsigned int &nbVerticesY,
+                                 unsigned int &nbVerticesZ) const
 {
     static const unsigned int min = 1;
 
@@ -63,7 +63,7 @@ WriterCompareTriangle::setMaxMin(unsigned int&nbVerticesX,
 
 void
 WriterCompareTriangle::cutscene(int nbVertices,
-                                const osg::BoundingBox&sceneBox)
+                                const osg::BoundingBox &sceneBox)
 {
     osg::BoundingBox::vec_type length = sceneBox._max - sceneBox._min;
 

@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkProperties(const osgVolume::CompositeProperty&prop)
+static bool checkProperties(const osgVolume::CompositeProperty &prop)
 {
     return prop.getNumProperties() > 0;
 }
 
-static bool readProperties(osgDB::InputStream&is, osgVolume::CompositeProperty&prop)
+static bool readProperties(osgDB::InputStream &is, osgVolume::CompositeProperty &prop)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -23,7 +23,7 @@ static bool readProperties(osgDB::InputStream&is, osgVolume::CompositeProperty&p
     return true;
 }
 
-static bool writeProperties(osgDB::OutputStream&os, const osgVolume::CompositeProperty&prop)
+static bool writeProperties(osgDB::OutputStream &os, const osgVolume::CompositeProperty &prop)
 {
     unsigned int size = prop.getNumProperties();
 

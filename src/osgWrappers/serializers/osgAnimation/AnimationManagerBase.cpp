@@ -6,12 +6,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkAnimations(const osgAnimation::AnimationManagerBase&manager)
+static bool checkAnimations(const osgAnimation::AnimationManagerBase &manager)
 {
     return manager.getAnimationList().size() > 0;
 }
 
-static bool readAnimations(osgDB::InputStream&is, osgAnimation::AnimationManagerBase&manager)
+static bool readAnimations(osgDB::InputStream &is, osgAnimation::AnimationManagerBase &manager)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -26,9 +26,9 @@ static bool readAnimations(osgDB::InputStream&is, osgAnimation::AnimationManager
     return true;
 }
 
-static bool writeAnimations(osgDB::OutputStream&os, const osgAnimation::AnimationManagerBase&manager)
+static bool writeAnimations(osgDB::OutputStream &os, const osgAnimation::AnimationManagerBase &manager)
 {
-    const osgAnimation::AnimationList&animations = manager.getAnimationList();
+    const osgAnimation::AnimationList &animations = manager.getAnimationList();
 
     os.writeSize(animations.size()); os << os.BEGIN_BRACKET << std::endl;
 

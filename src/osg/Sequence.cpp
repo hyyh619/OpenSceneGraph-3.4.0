@@ -44,7 +44,7 @@ Sequence::Sequence() :
     setNumChildrenRequiringUpdateTraversal(1);
 }
 
-Sequence::Sequence(const Sequence&seq, const CopyOp&copyop) :
+Sequence::Sequence(const Sequence &seq, const CopyOp &copyop) :
     Group(seq, copyop),
     _value(seq._value),
     _now(seq._now),
@@ -220,7 +220,7 @@ void Sequence::setMode(SequenceMode mode)
     }
 }
 
-void Sequence::traverse(NodeVisitor&nv)
+void Sequence::traverse(NodeVisitor &nv)
 {
     if (getNumChildren() == 0)
         return;

@@ -50,17 +50,17 @@ virtual const char* className() const
     return "ATTR Image Attribute Reader/Writer";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return equalCaseInsensitive(extension, "attr");
 }
 
-virtual ReadResult readObject(const std::string&fileName, const ReaderWriter::Options*) const;
-virtual ReaderWriter::WriteResult writeObject(const osg::Object&object, const std::string&fileName, const Options *options) const;
+virtual ReadResult readObject(const std::string &fileName, const ReaderWriter::Options*) const;
+virtual ReaderWriter::WriteResult writeObject(const osg::Object &object, const std::string &fileName, const Options *options) const;
 };
 
 
-ReaderWriter::ReadResult ReaderWriterATTR::readObject(const std::string&file, const ReaderWriter::Options *options) const
+ReaderWriter::ReadResult ReaderWriterATTR::readObject(const std::string &file, const ReaderWriter::Options *options) const
 {
     using std::ios;
 
@@ -192,7 +192,7 @@ ReaderWriter::ReadResult ReaderWriterATTR::readObject(const std::string&file, co
 
 
 ReaderWriter::WriteResult
-ReaderWriterATTR::writeObject(const osg::Object&object, const std::string&fileName, const Options *options) const
+ReaderWriterATTR::writeObject(const osg::Object &object, const std::string &fileName, const Options *options) const
 {
     using std::ios;
 

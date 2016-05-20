@@ -36,7 +36,7 @@ inline const std::string&getName() const
 {
     return _name;
 }
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 EntityList&getEntityList()
 {
     return _entityList;

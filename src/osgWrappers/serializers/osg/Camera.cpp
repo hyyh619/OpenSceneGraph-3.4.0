@@ -42,7 +42,7 @@ END_USER_TABLE()
 USER_READ_FUNC(BufferComponent, readBufferComponent)
 USER_WRITE_FUNC(BufferComponent, writeBufferComponent)
 
-static osg::Camera::Attachment readBufferAttachment(osgDB::InputStream&is)
+static osg::Camera::Attachment readBufferAttachment(osgDB::InputStream &is)
 {
     osg::Camera::Attachment attachment;
     char                    type = -1; is >> is.PROPERTY("Type") >> type;
@@ -73,7 +73,7 @@ static osg::Camera::Attachment readBufferAttachment(osgDB::InputStream&is)
     return attachment;
 }
 
-static void writeBufferAttachment(osgDB::OutputStream&os, const osg::Camera::Attachment&attachment)
+static void writeBufferAttachment(osgDB::OutputStream &os, const osg::Camera::Attachment &attachment)
 {
     os << os.PROPERTY("Type");
     if (attachment._internalFormat != GL_NONE)
@@ -106,12 +106,12 @@ static void writeBufferAttachment(osgDB::OutputStream&os, const osg::Camera::Att
 }
 
 // _renderOrder & _renderOrderNum
-static bool checkRenderOrder(const osg::Camera&node)
+static bool checkRenderOrder(const osg::Camera &node)
 {
     return true;
 }
 
-static bool readRenderOrder(osgDB::InputStream&is, osg::Camera&node)
+static bool readRenderOrder(osgDB::InputStream &is, osg::Camera &node)
 {
     int order       = readOrderValue(is);
     int orderNumber = 0; is >> orderNumber;
@@ -120,7 +120,7 @@ static bool readRenderOrder(osgDB::InputStream&is, osg::Camera&node)
     return true;
 }
 
-static bool writeRenderOrder(osgDB::OutputStream&os, const osg::Camera&node)
+static bool writeRenderOrder(osgDB::OutputStream &os, const osg::Camera &node)
 {
     writeOrderValue(os, (int)node.getRenderOrder());
     os << node.getRenderOrderNum() << std::endl;
@@ -128,12 +128,12 @@ static bool writeRenderOrder(osgDB::OutputStream&os, const osg::Camera&node)
 }
 
 // _bufferAttachmentMap
-static bool checkBufferAttachmentMap(const osg::Camera&node)
+static bool checkBufferAttachmentMap(const osg::Camera &node)
 {
     return node.getBufferAttachmentMap().size() > 0;
 }
 
-static bool readBufferAttachmentMap(osgDB::InputStream&is, osg::Camera&node)
+static bool readBufferAttachmentMap(osgDB::InputStream &is, osg::Camera &node)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -167,9 +167,9 @@ static bool readBufferAttachmentMap(osgDB::InputStream&is, osg::Camera&node)
     return true;
 }
 
-static bool writeBufferAttachmentMap(osgDB::OutputStream&os, const osg::Camera&node)
+static bool writeBufferAttachmentMap(osgDB::OutputStream &os, const osg::Camera &node)
 {
-    const osg::Camera::BufferAttachmentMap&map = node.getBufferAttachmentMap();
+    const osg::Camera::BufferAttachmentMap &map = node.getBufferAttachmentMap();
 
     os.writeSize(map.size()); os << os.BEGIN_BRACKET << std::endl;
 

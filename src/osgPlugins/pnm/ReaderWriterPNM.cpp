@@ -19,7 +19,7 @@
 using namespace osg;
 
 template<class T>
-unsigned char* read_bitmap_ascii(std::istream&fin, int width, int height)
+unsigned char* read_bitmap_ascii(std::istream &fin, int width, int height)
 {
     T *data = new T[width * height];
     T *end  = data + width * height;
@@ -53,7 +53,7 @@ unsigned char* read_bitmap_ascii(std::istream&fin, int width, int height)
 }
 
 template<class T>
-unsigned char* read_grayscale_ascii(std::istream&fin, int width, int height, int max_value)
+unsigned char* read_grayscale_ascii(std::istream &fin, int width, int height, int max_value)
 {
     T *data = new T[width * height];
     T *end  = data + width * height;
@@ -88,7 +88,7 @@ unsigned char* read_grayscale_ascii(std::istream&fin, int width, int height, int
 }
 
 template<class T>
-unsigned char* read_color_ascii(std::istream&fin, int width, int height, int max_value)
+unsigned char* read_color_ascii(std::istream &fin, int width, int height, int max_value)
 {
     T *data = new T[3 * width * height];
     T *end  = data + 3 * width * height;
@@ -123,7 +123,7 @@ unsigned char* read_color_ascii(std::istream&fin, int width, int height, int max
 }
 
 template<class T>
-unsigned char* read_bitmap_binary(std::istream&fin, int width, int height)
+unsigned char* read_bitmap_binary(std::istream &fin, int width, int height)
 {
     T *data = new T[width * height];
 
@@ -154,7 +154,7 @@ unsigned char* read_bitmap_binary(std::istream&fin, int width, int height)
 }
 
 template<class T>
-unsigned char* read_grayscale_binary(std::istream&fin, int width, int height)
+unsigned char* read_grayscale_binary(std::istream &fin, int width, int height)
 {
     T *data = new T[width * height];
 
@@ -185,7 +185,7 @@ unsigned char* read_grayscale_binary(std::istream&fin, int width, int height)
 }
 
 template<class T>
-unsigned char* read_color_binary(std::istream&fin, int width, int height)
+unsigned char* read_color_binary(std::istream &fin, int width, int height)
 {
     T *data = new T[3 * width * height];
 
@@ -231,7 +231,7 @@ virtual const char* className() const
     return "PNM Image Reader/Writer";
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     int ppmtype   = 0;          /* P1, P2, etc. */
     int width     = 0;
@@ -395,7 +395,7 @@ virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Option
     return pOsgImage;
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -418,7 +418,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     bool ascii = (options && options->getOptionString().find("ascii") != std::string::npos);
 
@@ -466,7 +466,7 @@ virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const 
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeImage(const osg::Image&image, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     // Only ppm format output supported
     std::string ext = osgDB::getFileExtension(fileName);

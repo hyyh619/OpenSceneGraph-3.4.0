@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_FRONTFACE
 #define OSG_FRONTFACE 1
@@ -18,33 +18,33 @@
 #include <osg/GL>
 
 namespace osg {
-
 /** Class to specify the orientation of front-facing polygons.
-*/
-class OSG_EXPORT FrontFace : public StateAttribute
-{
-    public :
+ */
+    class OSG_EXPORT FrontFace: public StateAttribute
+    {
+public:
 
-        enum Mode {
-            CLOCKWISE = GL_CW,
+        enum Mode
+        {
+            CLOCKWISE         = GL_CW,
             COUNTER_CLOCKWISE = GL_CCW
         };
 
-        FrontFace(Mode face=COUNTER_CLOCKWISE);
+        FrontFace(Mode face = COUNTER_CLOCKWISE);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        FrontFace(const FrontFace& ff,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
-            StateAttribute(ff,copyop),
+        FrontFace(const FrontFace &ff, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
+            StateAttribute(ff, copyop),
             _mode(ff._mode) {}
 
         META_StateAttribute(osg, FrontFace, FRONTFACE);
 
         /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.*/
-        virtual int compare(const StateAttribute& sa) const
+        virtual int compare(const StateAttribute &sa) const
         {
             // check the types are equal and then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(FrontFace,sa)
+            COMPARE_StateAttribute_Types(FrontFace, sa)
 
             // compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_mode)
@@ -52,19 +52,23 @@ class OSG_EXPORT FrontFace : public StateAttribute
             return 0; // passed all the above comparison macros, must be equal.
         }
 
-        inline void setMode(Mode mode) { _mode = mode; }
-        inline Mode getMode() const    { return _mode; }
+        inline void setMode(Mode mode)
+        {
+            _mode = mode;
+        }
+        inline Mode getMode() const
+        {
+            return _mode;
+        }
 
-        virtual void apply(State& state) const;
+        virtual void apply(State &state) const;
 
-    protected:
+protected:
 
         virtual ~FrontFace();
 
         Mode _mode;
-
-};
-
+    };
 }
 
 #endif

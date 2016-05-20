@@ -39,7 +39,7 @@ BrowserManager::~BrowserManager()
     OSG_INFO << "Destructing base BrowserManager" << std::endl;
 }
 
-void BrowserManager::init(const std::string&application)
+void BrowserManager::init(const std::string &application)
 {
     _application = application;
 }
@@ -50,12 +50,12 @@ BrowserImage* BrowserManager::createBrowserImage(const std::string& /*url*/, int
     return 0;
 }
 
-Browser::Browser(const std::string&url, const GeometryHints&hints)
+Browser::Browser(const std::string &url, const GeometryHints &hints)
 {
     open(url, hints);
 }
 
-bool Browser::assign(BrowserImage *browserImage, const GeometryHints&hints)
+bool Browser::assign(BrowserImage *browserImage, const GeometryHints &hints)
 {
     if (!browserImage)
         return false;
@@ -107,14 +107,14 @@ bool Browser::assign(BrowserImage *browserImage, const GeometryHints&hints)
     return true;
 }
 
-bool Browser::open(const std::string&hostname, const GeometryHints&hints)
+bool Browser::open(const std::string &hostname, const GeometryHints &hints)
 {
     osg::ref_ptr<osg::Image> image = osgDB::readImageFile(hostname + ".gecko");
 
     return assign(dynamic_cast<BrowserImage*>(image.get()), hints);
 }
 
-void Browser::navigateTo(const std::string&url)
+void Browser::navigateTo(const std::string &url)
 {
     if (_browserImage.valid())
         _browserImage->navigateTo(url);

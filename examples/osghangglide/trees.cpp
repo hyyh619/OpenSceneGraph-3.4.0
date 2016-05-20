@@ -172,9 +172,9 @@ static Geometry* makeTree(_tree *tree, StateSet *dstate)
         { -tree->w / 2.0f, 0.0f, 2.0f * tree->h },
     };
 
-    Vec3Array&v = *(new Vec3Array(4));
-    Vec2Array&t = *(new Vec2Array(4));
-    Vec4Array&l = *(new Vec4Array(1));
+    Vec3Array &v = *(new Vec3Array(4));
+    Vec2Array &t = *(new Vec2Array(4));
+    Vec4Array &l = *(new Vec4Array(1));
 
     int i;
 

@@ -30,7 +30,7 @@ using namespace ESRIShape;
 #define SAFE_DELETE_ARRAY(ptr) delete[] ptr; ptr = 0L;
 
 template<class T>
-inline void swapBytes(T&s)
+inline void swapBytes(T &s)
 {
     if (sizeof(T) == 1)
         return;
@@ -55,7 +55,7 @@ inline ByteOrder getByteOrder()
 }
 
 template<class T>
-inline bool readVal(int fd, T&val, ByteOrder bo = LittleEndian)
+inline bool readVal(int fd, T &val, ByteOrder bo = LittleEndian)
 {
     int nbytes = 0;
 
@@ -199,7 +199,7 @@ bool NullRecord::read(int fd)
 
 
 Box::Box() {}
-Box::Box(const Box&b) :
+Box::Box(const Box &b) :
     Xmin(b.Xmin),
     Ymin(b.Ymin),
     Xmax(b.Xmax),
@@ -224,7 +224,7 @@ bool Box::read(int fd)
 }
 
 Range::Range() {}
-Range::Range(const Range&r) : min(r.min), max(r.max) {}
+Range::Range(const Range &r) : min(r.min), max(r.max) {}
 
 bool Range::read(int fd)
 {
@@ -252,7 +252,7 @@ Point::Point() :
     y(0.0)
 {}
 
-Point::Point(const Point&p) :
+Point::Point(const Point &p) :
     ShapeObject(ShapeTypePoint),
     x(p.x),
     y(p.y)
@@ -299,7 +299,7 @@ MultiPoint::MultiPoint() :
     points(0L)
 {}
 
-MultiPoint::MultiPoint(const struct MultiPoint&mpoint) : ShapeObject(ShapeTypeMultiPoint),
+MultiPoint::MultiPoint(const struct MultiPoint &mpoint) : ShapeObject(ShapeTypeMultiPoint),
     bbox(mpoint.bbox),
     numPoints(mpoint.numPoints)
 {
@@ -364,7 +364,7 @@ PolyLine::PolyLine() :
     parts(0L),
     points(0L) {}
 
-PolyLine::PolyLine(const PolyLine&p) :
+PolyLine::PolyLine(const PolyLine &p) :
     ShapeObject(ShapeTypePolyLine),
     numParts(p.numParts),
     numPoints(p.numPoints)
@@ -441,7 +441,7 @@ Polygon::Polygon() :
     parts(0L),
     points(0L) {}
 
-Polygon::Polygon(const Polygon&p) :
+Polygon::Polygon(const Polygon &p) :
     ShapeObject(ShapeTypePolygon),
     numParts(p.numParts),
     numPoints(p.numPoints)
@@ -520,7 +520,7 @@ PointM::PointM() :
     m(0.0)
 {}
 
-PointM::PointM(const PointM&p) :
+PointM::PointM(const PointM &p) :
     ShapeObject(ShapeTypePointM),
     x(p.x),
     y(p.y),
@@ -573,7 +573,7 @@ MultiPointM::MultiPointM() :
     mArray(0L)
 {}
 
-MultiPointM::MultiPointM(const struct MultiPointM&mpointm) :
+MultiPointM::MultiPointM(const struct MultiPointM &mpointm) :
     ShapeObject(ShapeTypeMultiPointM),
     bbox(mpointm.bbox),
     numPoints(mpointm.numPoints),
@@ -662,7 +662,7 @@ PolyLineM::PolyLineM() :
     mArray(0L)
 {}
 
-PolyLineM::PolyLineM(const PolyLineM&p) :
+PolyLineM::PolyLineM(const PolyLineM &p) :
     ShapeObject(ShapeTypePolyLineM),
     numParts(p.numParts),
     numPoints(p.numPoints),
@@ -765,7 +765,7 @@ PolygonM::PolygonM() :
     mArray(0L)
 {}
 
-PolygonM::PolygonM(const PolygonM&p) :
+PolygonM::PolygonM(const PolygonM &p) :
     ShapeObject(ShapeTypePolygonM),
     numParts(p.numParts),
     numPoints(p.numPoints),
@@ -872,7 +872,7 @@ PointZ::PointZ() :
     m(0.0)
 {}
 
-PointZ::PointZ(const PointZ&p) :
+PointZ::PointZ(const PointZ &p) :
     ShapeObject(ShapeTypePointZ),
     x(p.x),
     y(p.y),
@@ -926,7 +926,7 @@ MultiPointZ::MultiPointZ() :
     mArray(0L)
 {}
 
-MultiPointZ::MultiPointZ(const struct MultiPointZ&mpointm) :
+MultiPointZ::MultiPointZ(const struct MultiPointZ &mpointm) :
     ShapeObject(ShapeTypeMultiPointZ),
     bbox(mpointm.bbox),
     numPoints(mpointm.numPoints),
@@ -1034,7 +1034,7 @@ PolyLineZ::PolyLineZ() :
     mArray(0L)
 {}
 
-PolyLineZ::PolyLineZ(const PolyLineZ&p) :
+PolyLineZ::PolyLineZ(const PolyLineZ &p) :
     ShapeObject(ShapeTypePolyLineZ),
     numParts(p.numParts),
     numPoints(p.numPoints),
@@ -1160,7 +1160,7 @@ PolygonZ::PolygonZ() :
     mArray(0L)
 {}
 
-PolygonZ::PolygonZ(const PolygonZ&p) :
+PolygonZ::PolygonZ(const PolygonZ &p) :
     ShapeObject(ShapeTypePolygonZ),
     numParts(p.numParts),
     numPoints(p.numPoints),
@@ -1306,7 +1306,7 @@ MultiPatch::MultiPatch() :
     mArray(0L)
 { }
 
-MultiPatch::MultiPatch(const MultiPatch&mp) :
+MultiPatch::MultiPatch(const MultiPatch &mp) :
     bbox(mp.bbox),
     numParts(mp.numParts),
     numPoints(mp.numPoints),

@@ -17,7 +17,7 @@
 using namespace osgAnimation;
 
 ActionBlendOut::ActionBlendOut() : _weight(0) {}
-ActionBlendOut::ActionBlendOut(const ActionBlendOut&a, const osg::CopyOp&c) : Action(a, c)
+ActionBlendOut::ActionBlendOut(const ActionBlendOut &a, const osg::CopyOp &c) : Action(a, c)
 {
     _weight    = a._weight;
     _animation = a._animation;

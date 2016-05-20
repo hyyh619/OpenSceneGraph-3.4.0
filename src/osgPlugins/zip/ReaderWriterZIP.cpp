@@ -23,7 +23,7 @@ virtual const char* className() const
 }
 
 
-virtual ReadResult openArchive(const std::string&file, ArchiveStatus status, unsigned int indexBlockSize = 4096, const Options *options = NULL) const
+virtual ReadResult openArchive(const std::string &file, ArchiveStatus status, unsigned int indexBlockSize = 4096, const Options *options = NULL) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -53,7 +53,7 @@ virtual ReadResult openArchive(const std::string&file, ArchiveStatus status, uns
 }
 
 /** open an archive for reading.*/
-virtual ReadResult openArchive(std::istream&fin, const Options *options) const
+virtual ReadResult openArchive(std::istream &fin, const Options *options) const
 {
     osg::ref_ptr<ZipArchive> archive = new ZipArchive;
 
@@ -65,7 +65,7 @@ virtual ReadResult openArchive(std::istream&fin, const Options *options) const
     return archive.get();
 }
 
-osgDB::ReaderWriter::ReadResult readNodeFromArchive(osgDB::Archive&archive, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult readNodeFromArchive(osgDB::Archive &archive, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult result(osgDB::ReaderWriter::ReadResult::FILE_NOT_FOUND);
 
@@ -117,7 +117,7 @@ osgDB::ReaderWriter::ReadResult readNodeFromArchive(osgDB::Archive&archive, cons
 }
 
 
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult result = openArchive(file, osgDB::Archive::READ);
 
@@ -143,7 +143,7 @@ virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&file, const o
     return readNodeFromArchive(*archive, local_options.get());
 }
 
-virtual ReadResult readNode(std::istream&fin, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(std::istream &fin, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult result = openArchive(fin, options);
 
@@ -161,7 +161,7 @@ virtual ReadResult readNode(std::istream&fin, const osgDB::ReaderWriter::Options
     return readNodeFromArchive(*archive, local_options.get());
 }
 
-osgDB::ReaderWriter::ReadResult readImageFromArchive(osgDB::Archive&archive, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult readImageFromArchive(osgDB::Archive &archive, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult result(osgDB::ReaderWriter::ReadResult::FILE_NOT_FOUND);
 
@@ -186,7 +186,7 @@ osgDB::ReaderWriter::ReadResult readImageFromArchive(osgDB::Archive&archive, con
     return result;
 }
 
-virtual ReadResult readImage(const std::string&file, const Options *options) const
+virtual ReadResult readImage(const std::string &file, const Options *options) const
 {
     osgDB::ReaderWriter::ReadResult result = openArchive(file, osgDB::Archive::READ);
 
@@ -212,7 +212,7 @@ virtual ReadResult readImage(const std::string&file, const Options *options) con
     return readImageFromArchive(*archive, local_options.get());
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult result = openArchive(fin, options);
 

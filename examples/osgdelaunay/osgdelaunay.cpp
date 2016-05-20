@@ -871,10 +871,10 @@ class KeyboardEventHandler : public osgGA::GUIEventHandler
 {   // extra event handler traps 'n' key to re-triangulate the basic terrain.
 public:
 
-KeyboardEventHandler(osgViewer::Viewer&vr) :
+KeyboardEventHandler(osgViewer::Viewer &vr) :
     viewer(vr), iview(0) {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -901,8 +901,8 @@ virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
     return false;
 }
 
-osgViewer::Viewer&viewer;
-int              iview;
+osgViewer::Viewer &viewer;
+int               iview;
 };
 
 osg::Vec3Array* WallConstraint::getWall(const float height) const

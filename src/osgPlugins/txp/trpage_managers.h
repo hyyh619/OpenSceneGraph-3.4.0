@@ -31,7 +31,7 @@ class trpgPageManager;
 struct TileLocationInfo
 {
     TileLocationInfo() : x(-1), y(-1), lod(-1) {}
-    TileLocationInfo(int gx, int gy, int glod, const trpgwAppAddress&gaddr) : x(gx), y(gy), lod(glod), addr(gaddr) {}
+    TileLocationInfo(int gx, int gy, int glod, const trpgwAppAddress &gaddr) : x(gx), y(gy), lod(glod), addr(gaddr) {}
     int             x, y, lod;
     trpgwAppAddress addr;
 };
@@ -64,12 +64,12 @@ bool IsLoaded(void);
  */
 bool SetTileLoc(int x, int y, int lod);
 // Get the tile location
-bool GetTileLoc(int&x, int&y, int&lod) const;
+bool GetTileLoc(int &x, int &y, int &lod) const;
 
 // In version 2.1 we no longer have the tile table to
 // find the tiles, only by traversing the parent can it be
 // found. So when we have this info, this is were to save it.
-void SetTileAddress(const trpgwAppAddress&gAddr);
+void SetTileAddress(const trpgwAppAddress &gAddr);
 void SetTileAddress(int32 file, int32 offset);
 const trpgwAppAddress&GetTileAddress() const;
 
@@ -138,10 +138,10 @@ unsigned int GetNbChildren() const
 {
     return (unsigned int)childLocationInfo.size();
 }
-bool SetChildLocationInfo(int childIdx, int x, int y, const trpgwAppAddress&addr);
-bool SetChildLocationInfo(int childIdx, const TileLocationInfo&info);
+bool SetChildLocationInfo(int childIdx, int x, int y, const trpgwAppAddress &addr);
+bool SetChildLocationInfo(int childIdx, const TileLocationInfo &info);
 const TileLocationInfo&GetChildLocationInfo(int childIdx) const;
-bool GetChildTileLoc(int childIdx, int&x, int&y, int&lod) const;
+bool GetChildTileLoc(int childIdx, int &x, int &y, int &lod) const;
 const trpgwAppAddress&GetChildTileAddress(int childIdx) const;
 
 
@@ -218,7 +218,7 @@ virtual trpgManagedTile* GetNextLoad(void);
     the children info. If this is not done then only lod 0 will be pageable.
  */
 
-virtual void AckLoad(std::vector<TileLocationInfo> const&children);
+virtual void AckLoad(std::vector<TileLocationInfo> const &children);
 
 // Using this call with version 2.1 and over will only page lod 0 tiles
 virtual void AckLoad();
@@ -351,19 +351,19 @@ virtual void Update(void);
 
 // Add to the load list the given tile if it is within the proper
 // bound
-bool AddToLoadList(int x, int y, const trpgwAppAddress&addr);
+bool AddToLoadList(int x, int y, const trpgwAppAddress &addr);
 
 // Add the children of the given parent list
 // to the load list if it it not already loaded
 // or if it is not already in the list
-void AddChildrenToLoadList(std::vector<trpgManagedTile*>&parentList);
+void AddChildrenToLoadList(std::vector<trpgManagedTile*> &parentList);
 
 // Check if the given tile is within the area we care about
-bool isWithin(trpgManagedTile*, trpg2iPoint&sw, trpg2iPoint&ne);
+bool isWithin(trpgManagedTile*, trpg2iPoint &sw, trpg2iPoint &ne);
 
 // Get the list of currently loaded tiles that fall within
 // the region calculated from the given paging distance.
-void GetLoadedTileWithin(double pagingDistance, std::vector<trpgManagedTile*>&tileList);
+void GetLoadedTileWithin(double pagingDistance, std::vector<trpgManagedTile*> &tileList);
 
 bool valid;
 
@@ -461,7 +461,7 @@ bool valid;
 TX_EXDECL class TX_CLDECL trpgr_ChildRefCB : public trpgr_Callback
 {
 public:
-void* Parse(trpgToken tok, trpgReadBuffer&rbuf);
+void* Parse(trpgToken tok, trpgReadBuffer &rbuf);
 // After parsing this will return the number of trpgChildRef node found.
 unsigned int GetNbChildren() const;
 // This will return the trpgChildRef node associated with the index.

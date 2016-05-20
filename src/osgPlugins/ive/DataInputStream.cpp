@@ -225,7 +225,7 @@ DataInputStream::~DataInputStream()
 
 #include <zlib.h>
 
-bool DataInputStream::uncompress(std::istream&fin, std::string&destination) const
+bool DataInputStream::uncompress(std::istream &fin, std::string &destination) const
 {
     // #define CHUNK 16384
     #define CHUNK 32768
@@ -297,7 +297,7 @@ bool DataInputStream::uncompress(std::istream&fin, std::string&destination) cons
     return ret == Z_STREAM_END ? true : false;
 }
 #else
-bool DataInputStream::uncompress(std::istream&fin, std::string&destination) const
+bool DataInputStream::uncompress(std::istream &fin, std::string &destination) const
 {
     return false;
 }

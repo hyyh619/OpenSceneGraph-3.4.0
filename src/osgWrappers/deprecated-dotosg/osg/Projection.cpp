@@ -11,8 +11,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Projection_readLocalData(Object&obj, Input&fr);
-bool Projection_writeLocalData(const Object&obj, Output&fw);
+bool Projection_readLocalData(Object &obj, Input &fr);
+bool Projection_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Projection)
@@ -24,10 +24,10 @@ REGISTER_DOTOSGWRAPPER(Projection)
     &Projection_writeLocalData
 );
 
-bool Projection_readLocalData(Object&obj, Input&fr)
+bool Projection_readLocalData(Object &obj, Input &fr)
 {
-    Projection&myobj           = static_cast<Projection&>(obj);
-    bool      iteratorAdvanced = false;
+    Projection &myobj           = static_cast<Projection&>(obj);
+    bool       iteratorAdvanced = false;
 
     Matrix matrix;
 
@@ -41,9 +41,9 @@ bool Projection_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Projection_writeLocalData(const Object&obj, Output&fw)
+bool Projection_writeLocalData(const Object &obj, Output &fw)
 {
-    const Projection&myobj = static_cast<const Projection&>(obj);
+    const Projection &myobj = static_cast<const Projection&>(obj);
 
     writeMatrix(myobj.getMatrix(), fw);
 

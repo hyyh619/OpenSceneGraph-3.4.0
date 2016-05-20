@@ -15,13 +15,13 @@
 namespace lwo2
 {
 template<class Iter>
-I1 read_I1(Iter&it)
+I1 read_I1(Iter &it)
 {
     return static_cast<I1>(*(it++));
 }
 
 template<class Iter>
-I2 read_I2(Iter&it)
+I2 read_I2(Iter &it)
 {
     I2 i2(((static_cast<I2>(*(it)) & 0xFF) << 8) |
           (static_cast<I2>(*(it + 1)) & 0xFF));
@@ -31,7 +31,7 @@ I2 read_I2(Iter&it)
 }
 
 template<class Iter>
-I4 read_I4(Iter&it)
+I4 read_I4(Iter &it)
 {
     I4 i4(((static_cast<I4>(*(it)) & 0xFF) << 24) |
           ((static_cast<I4>(*(it + 1)) & 0xFF) << 16) |
@@ -43,13 +43,13 @@ I4 read_I4(Iter&it)
 }
 
 template<class Iter>
-U1 read_U1(Iter&it)
+U1 read_U1(Iter &it)
 {
     return static_cast<U1>(*(it++));
 }
 
 template<class Iter>
-U2 read_U2(Iter&it)
+U2 read_U2(Iter &it)
 {
     U2 u2(((static_cast<U2>(*(it)) & 0xFF) << 8) |
           (static_cast<U2>(*(it + 1)) & 0xFF));
@@ -59,7 +59,7 @@ U2 read_U2(Iter&it)
 }
 
 template<class Iter>
-U4 read_U4(Iter&it)
+U4 read_U4(Iter &it)
 {
     U4 u4(((static_cast<U4>(*(it)) & 0xFF) << 24) |
           ((static_cast<U4>(*(it + 1)) & 0xFF) << 16) |
@@ -86,13 +86,13 @@ D changeType4(S src)
 }
 
 template<class Iter>
-F4 read_F4(Iter&it)
+F4 read_F4(Iter &it)
 {
     return changeType4<F4, U4>(read_U4(it));
 }
 
 template<class Iter>
-ID4 read_ID4(Iter&it)
+ID4 read_ID4(Iter &it)
 {
     ID4 value;
 
@@ -103,7 +103,7 @@ ID4 read_ID4(Iter&it)
 }
 
 template<class Iter>
-S0 read_S0(Iter&it)
+S0 read_S0(Iter &it)
 {
     S0 value;
 
@@ -120,7 +120,7 @@ S0 read_S0(Iter&it)
 }
 
 template<class Iter>
-VX read_VX(Iter&it)
+VX read_VX(Iter &it)
 {
     VX vx;
 
@@ -137,7 +137,7 @@ VX read_VX(Iter&it)
 }
 
 template<class Iter>
-COL12 read_COL12(Iter&it)
+COL12 read_COL12(Iter &it)
 {
     COL12 value;
 
@@ -148,7 +148,7 @@ COL12 read_COL12(Iter&it)
 }
 
 template<class Iter>
-VEC12 read_VEC12(Iter&it)
+VEC12 read_VEC12(Iter &it)
 {
     VEC12 value;
 
@@ -159,7 +159,7 @@ VEC12 read_VEC12(Iter&it)
 }
 
 template<class Iter>
-FP4 read_FP4(Iter&it)
+FP4 read_FP4(Iter &it)
 {
     FP4 value;
 
@@ -168,7 +168,7 @@ FP4 read_FP4(Iter&it)
 }
 
 template<class Iter>
-ANG4 read_ANG4(Iter&it)
+ANG4 read_ANG4(Iter &it)
 {
     ANG4 value;
 
@@ -177,7 +177,7 @@ ANG4 read_ANG4(Iter&it)
 }
 
 template<class Iter>
-FNAM0 read_FNAM0(Iter&it)
+FNAM0 read_FNAM0(Iter &it)
 {
     FNAM0 value;
 

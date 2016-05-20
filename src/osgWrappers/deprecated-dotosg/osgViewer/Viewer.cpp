@@ -8,8 +8,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool Viewer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Viewer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Viewer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Viewer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Viewer_Proxy)
 (

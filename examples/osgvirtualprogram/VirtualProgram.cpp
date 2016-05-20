@@ -22,7 +22,7 @@ VirtualProgram::VirtualProgram(unsigned int mask) : _mask(mask)
 {}
 ////////////////////////////////////////////////////////////////////////////////
 VirtualProgram::VirtualProgram
-    (const VirtualProgram&VirtualProgram, const osg::CopyOp&copyop) :
+    (const VirtualProgram &VirtualProgram, const osg::CopyOp &copyop) :
     osg::Program(VirtualProgram, copyop),
     _shaderMap(VirtualProgram._shaderMap),
     _mask(VirtualProgram._mask)
@@ -32,7 +32,7 @@ VirtualProgram::~VirtualProgram(void)
 {}
 ////////////////////////////////////////////////////////////////////////////////
 osg::Shader* VirtualProgram::getShader
-    (const std::string&shaderSemantic, osg::Shader::Type type)
+    (const std::string &shaderSemantic, osg::Shader::Type type)
 {
     ShaderMap::key_type key(shaderSemantic, type);
 
@@ -40,7 +40,7 @@ osg::Shader* VirtualProgram::getShader
 }
 ////////////////////////////////////////////////////////////////////////////////
 osg::Shader* VirtualProgram::setShader
-    (const std::string&shaderSemantic, osg::Shader *shader)
+    (const std::string &shaderSemantic, osg::Shader *shader)
 {
     if (shader->getType() == osg::Shader::UNDEFINED)
         return NULL;
@@ -70,7 +70,7 @@ osg::Shader* VirtualProgram::setShader
     return shaderCurrent.get();
 }
 ////////////////////////////////////////////////////////////////////////////////
-void VirtualProgram::apply(osg::State&state) const
+void VirtualProgram::apply(osg::State &state) const
 {
     if (_shaderMap.empty())  // Virtual Program works as normal Program
         return Program::apply(state);
@@ -78,7 +78,7 @@ void VirtualProgram::apply(osg::State&state) const
     State::AttributeVec *av = &state.getAttributeVec(this);
 
 #if NOTIFICATION_MESSAGES
-    std::ostream&os = osg::notify(osg::NOTICE);
+    std::ostream &os = osg::notify(osg::NOTICE);
     os << "VirtualProgram cumulate Begin" << std::endl;
 #endif
 
@@ -127,7 +127,7 @@ void VirtualProgram::apply(osg::State&state) const
         for (ShaderMap::iterator i = shaderMap.begin(); i != shaderMap.end(); ++i)
             sl.push_back(i->second);
 
-        osg::ref_ptr<osg::Program>&program = _programMap[sl];
+        osg::ref_ptr<osg::Program> &program = _programMap[sl];
 
         if (!program.valid())
         {

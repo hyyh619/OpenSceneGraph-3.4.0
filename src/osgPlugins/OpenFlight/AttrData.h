@@ -32,7 +32,7 @@ public:
 
 AttrData();
 
-AttrData(const AttrData&attr, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+AttrData(const AttrData &attr, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(flt, AttrData);
 

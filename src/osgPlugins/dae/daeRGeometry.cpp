@@ -222,7 +222,7 @@ osg::Node* daeReader::processMorph(domMorph *pDomMorph, domBind_material *pDomBi
             {
                 if (const domName_array *pDomNames = pDomSource->getName_array())
                 {
-                    const domListOfNames&names = pDomNames->getValue();
+                    const domListOfNames &names = pDomNames->getValue();
 
                     for (size_t j = 0; j < names.getCount(); j++)
                     {
@@ -479,7 +479,7 @@ osg::Geode* daeReader::processGeometry(domGeometry *pDomGeometry)
 
 template<typename T>
 void daeReader::processSinglePPrimitive(osg::Geode *geode,
-                                        const domMesh *pDomMesh, const T *group, SourceMap&sources, GLenum mode)
+                                        const domMesh *pDomMesh, const T *group, SourceMap &sources, GLenum mode)
 {
     osg::ref_ptr<osg::Geometry> geometry = new osg::Geometry();
 
@@ -503,7 +503,7 @@ void daeReader::processSinglePPrimitive(osg::Geode *geode,
 
 template<typename T>
 void daeReader::processMultiPPrimitive(osg::Geode *geode,
-                                       const domMesh *pDomMesh, const T *group, SourceMap&sources, GLenum mode)
+                                       const domMesh *pDomMesh, const T *group, SourceMap &sources, GLenum mode)
 {
     osg::Geometry *geometry = new osg::Geometry();
 
@@ -524,7 +524,7 @@ void daeReader::processMultiPPrimitive(osg::Geode *geode,
     }
 }
 
-void daeReader::processPolylist(osg::Geode *geode, const domMesh *pDomMesh, const domPolylist *group, SourceMap&sources, TessellateMode tessellateMode)
+void daeReader::processPolylist(osg::Geode *geode, const domMesh *pDomMesh, const domPolylist *group, SourceMap &sources, TessellateMode tessellateMode)
 {
     const domPolylist::domVcount *pDomVcount = group->getVcount();
 
@@ -545,7 +545,7 @@ void daeReader::processPolylist(osg::Geode *geode, const domMesh *pDomMesh, cons
     domPArray.append(group->getP());
     resolveMeshArrays(domPArray, group->getInput_array(), pDomMesh, geometry, sources, vertexLists);
 
-    const std::vector<GLuint>&vertexList = vertexLists.front();
+    const std::vector<GLuint> &vertexList = vertexLists.front();
 
     osg::DrawElementsUInt*pDrawTriangles(NULL);
     if (tessellateMode == TESSELLATE_POLYGONS_AS_TRIFAN)
@@ -554,7 +554,7 @@ void daeReader::processPolylist(osg::Geode *geode, const domMesh *pDomMesh, cons
         pDrawTriangles = new osg::DrawElementsUInt(GL_TRIANGLES);
         geometry->addPrimitiveSet(pDrawTriangles);
 
-        const domListOfUInts&vCount = pDomVcount->getValue();
+        const domListOfUInts &vCount = pDomVcount->getValue();
 
         for (size_t i = 0, j = 0; i < vCount.getCount(); ++i)
         {
@@ -578,7 +578,7 @@ void daeReader::processPolylist(osg::Geode *geode, const domMesh *pDomMesh, cons
     else
     {
         // Produce polygons or well-tessellated polygons
-        const domListOfUInts&vCount = pDomVcount->getValue();
+        const domListOfUInts &vCount = pDomVcount->getValue();
 
         for (size_t i = 0, j = 0; i < vCount.getCount(); ++i)
         {
@@ -612,7 +612,7 @@ void daeReader::processPolylist(osg::Geode *geode, const domMesh *pDomMesh, cons
 
 template<typename T>
 void daeReader::processPolygons(osg::Geode *geode,
-                                const domMesh *pDomMesh, const T *group, SourceMap&sources, GLenum mode, TessellateMode tessellateMode)
+                                const domMesh *pDomMesh, const T *group, SourceMap &sources, GLenum mode, TessellateMode tessellateMode)
 {
     osg::Geometry *geometry = new osg::Geometry();
 
@@ -635,7 +635,7 @@ void daeReader::processPolygons(osg::Geode *geode,
 
         for (size_t i = 0; i < indexLists.size(); ++i)
         {
-            const std::vector<GLuint>&indices = indexLists[i];
+            const std::vector<GLuint> &indices = indexLists[i];
 
             for (size_t j = 2; j < indices.size(); ++j)
             {
@@ -650,7 +650,7 @@ void daeReader::processPolygons(osg::Geode *geode,
         // Produce polygons or well-tessellated polygons
         for (size_t i = 0; i < indexLists.size(); ++i)
         {
-            const std::vector<GLuint>&indices = indexLists[i];
+            const std::vector<GLuint> &indices = indexLists[i];
 
             osg::DrawElementsUInt *pDrawElements = new osg::DrawElementsUInt(mode);
             geometry->addPrimitiveSet(pDrawElements);
@@ -673,12 +673,12 @@ void daeReader::processPolygons(osg::Geode *geode,
 
 void processVertices(
     domVertices *vertices,
-    daeElement*&position_source,
-    daeElement*&color_source,
-    daeElement*&normal_source,
-    daeElement*&texcoord_source)
+    daeElement* &position_source,
+    daeElement* &color_source,
+    daeElement* &normal_source,
+    daeElement* &texcoord_source)
 {
-    const domInputLocal_Array&inputs = vertices->getInput_array();
+    const domInputLocal_Array &inputs = vertices->getInput_array();
 
     // Process input elements within the vertices element. These are of the unshared type
     // and therefore cannot have set and offset attributes
@@ -714,14 +714,14 @@ void processVertices(
 const unsigned int MAX_TEXTURE_COORDINATE_SETS = 4;
 
 void resolveMeshInputs(
-    const domInputLocalOffset_Array&inputs,
-    daeElement*&position_source,
-    daeElement*&color_source,
-    daeElement*&normal_source,
+    const domInputLocalOffset_Array &inputs,
+    daeElement* &position_source,
+    daeElement* &color_source,
+    daeElement* &normal_source,
     daeElement *texcoord_sources[MAX_TEXTURE_COORDINATE_SETS],
-    int&position_offset,
-    int&color_offset,
-    int&normal_offset,
+    int &position_offset,
+    int &color_offset,
+    int &normal_offset,
     int texcoord_offsets[MAX_TEXTURE_COORDINATE_SETS])
 {
     position_source = color_source = normal_source = NULL;
@@ -806,7 +806,7 @@ struct VertexIndices
         for (unsigned int i = 0; i < MAX_TEXTURE_COORDINATE_SETS; ++i)
             texcoord_indices[i] = t[i];
     }
-    bool operator <(const VertexIndices&rhs) const
+    bool operator <(const VertexIndices &rhs) const
     {
         if (position_index != rhs.position_index)
             return position_index < rhs.position_index;
@@ -861,7 +861,7 @@ typedef std::map<VertexIndices, GLuint> VertexIndicesIndexMap;
 
 /// Creates a value array, packed in a osg::Array, corresponding to indexed values.
 template<class ArrayType, int Value>
-ArrayType* createGeometryArray(domSourceReader&sourceReader, const VertexIndicesIndexMap&vertexIndicesIndexMap, int texcoordNum = -1)
+ArrayType* createGeometryArray(domSourceReader &sourceReader, const VertexIndicesIndexMap &vertexIndicesIndexMap, int texcoordNum = -1)
 {
     const ArrayType *source = sourceReader.getArray<ArrayType>();
 
@@ -889,7 +889,7 @@ ArrayType* createGeometryArray(domSourceReader&sourceReader, const VertexIndices
 
 
 template<class ArrayTypeSingle, class ArrayTypeDouble, int Value>
-inline osg::Array* createGeometryArray(domSourceReader&sourceReader, const VertexIndicesIndexMap&vertexIndicesIndexMap, bool useDoublePrecision, int texcoordNum = -1)
+inline osg::Array* createGeometryArray(domSourceReader &sourceReader, const VertexIndicesIndexMap &vertexIndicesIndexMap, bool useDoublePrecision, int texcoordNum = -1)
 {
     if (useDoublePrecision)
         return createGeometryArray<ArrayTypeDouble, Value>(sourceReader, vertexIndicesIndexMap, texcoordNum);
@@ -898,10 +898,10 @@ inline osg::Array* createGeometryArray(domSourceReader&sourceReader, const Verte
 }
 
 
-void daeReader::resolveMeshArrays(const domP_Array&domPArray,
-                                  const domInputLocalOffset_Array&inputs, const domMesh *pDomMesh,
-                                  osg::Geometry *geometry, SourceMap&sources,
-                                  std::vector<std::vector<GLuint> >&vertexLists)
+void daeReader::resolveMeshArrays(const domP_Array &domPArray,
+                                  const domInputLocalOffset_Array &inputs, const domMesh *pDomMesh,
+                                  osg::Geometry *geometry, SourceMap &sources,
+                                  std::vector<std::vector<GLuint> > &vertexLists)
 {
     daeElement *position_source                               = NULL;
     daeElement *color_source                                  = NULL;
@@ -935,7 +935,7 @@ void daeReader::resolveMeshArrays(const domP_Array&domPArray,
 
     for (size_t j = 0; j < domPArray.getCount(); ++j)
     {
-        const domListOfUInts&p = domPArray[j]->getValue();
+        const domListOfUInts &p = domPArray[j]->getValue();
 
         for (size_t i = 0; i < p.getCount(); i += stride)
         {
@@ -968,7 +968,7 @@ void daeReader::resolveMeshArrays(const domP_Array&domPArray,
 
     for (size_t j = 0; j < domPArray.getCount(); ++j)
     {
-        const domListOfUInts&p = domPArray[j]->getValue();
+        const domListOfUInts &p = domPArray[j]->getValue();
 
         for (size_t i = 0; i < p.getCount(); i += stride)
         {

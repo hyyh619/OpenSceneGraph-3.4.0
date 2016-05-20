@@ -168,11 +168,11 @@ double    _speed;
 class FindNamedNodeVisitor : public osg::NodeVisitor
 {
 public:
-FindNamedNodeVisitor(const std::string&name) :
+FindNamedNodeVisitor(const std::string &name) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _name(name) {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     if (node.getName() == _name)
     {

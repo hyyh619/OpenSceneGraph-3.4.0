@@ -78,7 +78,7 @@ std::ostream&info() const
 }
 
 template<typename T>
-T* readData(std::istream&fin, unsigned int length, unsigned int&numComponents) const
+T* readData(std::istream &fin, unsigned int length, unsigned int &numComponents) const
 {
     numComponents = length / sizeof(T);
     T *data = new T[numComponents];
@@ -96,7 +96,7 @@ T* readData(std::istream&fin, unsigned int length, unsigned int&numComponents) c
 }
 
 template<typename T>
-void printData(std::ostream&out, T *data, unsigned int numComponents) const
+void printData(std::ostream &out, T *data, unsigned int numComponents) const
 {
     if (sizeof(T) == 1)
     {
@@ -125,7 +125,7 @@ virtual const char* className() const
     return "DICOM Image Reader/Writer";
 }
 
-bool isFileADicom(const std::string&filename) const
+bool isFileADicom(const std::string &filename) const
 {
     std::ifstream fin(filename.c_str(), std::ios::in | std::ios::binary);
 
@@ -139,7 +139,7 @@ bool isFileADicom(const std::string&filename) const
 }
 
 typedef std::vector<std::string> Files;
-bool getDicomFilesInDirectory(const std::string&path, Files&files) const
+bool getDicomFilesInDirectory(const std::string &path, Files &files) const
 {
     osgDB::DirectoryContents contents = osgDB::getSortedDirectoryContents(path);
 
@@ -167,22 +167,22 @@ bool getDicomFilesInDirectory(const std::string&path, Files&files) const
     return !files.empty();
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readNode(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readNode(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     ReadResult result = readImage(file, options);
 
@@ -280,14 +280,14 @@ virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::O
 }
 
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options*) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options*) const
 {
     return 0;
 }
 
 
 #ifdef USE_ITK
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext      = osgDB::getLowerCaseFileExtension(file);
     std::string fileName = file;
@@ -366,7 +366,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     if (orientationDistanceImageMap.empty())
         return ReadResult::ERROR_IN_READING_FILE;
 
-    DistanceImageMap&dim = orientationDistanceImageMap.begin()->second;
+    DistanceImageMap &dim = orientationDistanceImageMap.begin()->second;
 
     double totalThickness = dim.rbegin()->first - dim.begin()->first;
 
@@ -417,7 +417,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return image3D.get();
 }
 
-virtual ReadResult readSingleITKImage(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readSingleITKImage(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     typedef unsigned short PixelType;
     const unsigned int Dimension = 3;
@@ -436,7 +436,7 @@ virtual ReadResult readSingleITKImage(const std::string&fileName, const osgDB::R
     {
         reader->Update();
     }
-    catch (itk::ExceptionObject&e)
+    catch (itk::ExceptionObject &e)
     {
         std::cerr << "exception in file reader " << std::endl;
         std::cerr << e.GetDescription() << std::endl;
@@ -496,8 +496,8 @@ virtual ReadResult readSingleITKImage(const std::string&fileName, const osgDB::R
 
 #ifdef USE_DCMTK
 void convertPixelTypes(const DiPixel *pixelData,
-                       EP_Representation&pixelRep, int&numPlanes,
-                       GLenum&dataType, GLenum&pixelFormat, unsigned int&pixelSize) const
+                       EP_Representation &pixelRep, int &numPlanes,
+                       GLenum &dataType, GLenum &pixelFormat, unsigned int &pixelSize) const
 {
     dataType = GL_UNSIGNED_BYTE;
     pixelRep = pixelData->getRepresentation();
@@ -608,7 +608,7 @@ struct SeriesIdentifier
         }
     }
 
-    bool operator ==(const SeriesIdentifier&rhs) const
+    bool operator ==(const SeriesIdentifier &rhs) const
     {
         if (SeriesInstanceUID != rhs.SeriesInstanceUID)
             return false;
@@ -625,7 +625,7 @@ struct SeriesIdentifier
         return true;
     }
 
-    bool operator <(const SeriesIdentifier&rhs) const
+    bool operator <(const SeriesIdentifier &rhs) const
     {
         if (SeriesInstanceUID < rhs.SeriesInstanceUID)
             return true;
@@ -649,7 +649,7 @@ struct SeriesIdentifier
     }
 };
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext      = osgDB::getLowerCaseFileExtension(file);
     std::string fileName = file;
@@ -713,9 +713,9 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
          itr != files.end();
          ++itr)
     {
-        DcmFileFormat    fileformat;
-        const std::string&dicom_filename = *itr;
-        OFCondition      status          = fileformat.loadFile(dicom_filename.c_str());
+        DcmFileFormat     fileformat;
+        const std::string &dicom_filename = *itr;
+        OFCondition       status          = fileformat.loadFile(dicom_filename.c_str());
         if (!status.good())
         {
             errorMap[dicom_filename] = ReadResult::ERROR_IN_READING_FILE;
@@ -879,13 +879,13 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
 
         unsigned int totalNumSlices = 0;
 
-        DistanceFileInfoMap&dfim = itr->second;
+        DistanceFileInfoMap &dfim = itr->second;
 
         for (DistanceFileInfoMap::iterator ditr = dfim.begin();
              ditr != dfim.end();
              ++ditr)
         {
-            FileInfo&fileInfo = ditr->second;
+            FileInfo &fileInfo = ditr->second;
             totalNumSlices += fileInfo.numSlices;
             info() << "   d = " << fileInfo.distance << " " << fileInfo.filename << " fileInfo.numSlices=" << fileInfo.numSlices << std::endl;
         }
@@ -916,7 +916,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
              ditr != dfim.end();
              ++ditr)
         {
-            FileInfo&fileInfo = ditr->second;
+            FileInfo &fileInfo = ditr->second;
 
             std::auto_ptr<DicomImage> dcmImage(new DicomImage(fileInfo.filename.c_str()));
             if (dcmImage.get())
@@ -1119,7 +1119,7 @@ struct FileInfo
         dirY(0.0, 1.0, 0.0),
         dirZ(0.0, 0.0, 1.0) {}
 
-    FileInfo(const FileInfo&rhs) :
+    FileInfo(const FileInfo &rhs) :
         filename(rhs.filename),
         rescaleIntercept(rhs.rescaleIntercept),
         rescaleSlope(rhs.rescaleSlope),
@@ -1134,7 +1134,7 @@ struct FileInfo
         dirY(rhs.dirY),
         dirZ(rhs.dirZ) {}
 
-    FileInfo&operator =(const FileInfo&rhs)
+    FileInfo&operator =(const FileInfo &rhs)
     {
         if (&rhs == this)
             return *this;

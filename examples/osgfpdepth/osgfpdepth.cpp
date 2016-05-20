@@ -72,7 +72,7 @@ struct FboConfig
         : colorFormat(0), depthFormat(0), redbits(0), depthBits(0),
         depthSamples(0), coverageSamples(0)
     {}
-    FboConfig(const string&name_, GLenum colorFormat_, GLenum depthFormat_,
+    FboConfig(const string &name_, GLenum colorFormat_, GLenum depthFormat_,
               int redbits_, int depthBits_, int depthSamples_ = 0,
               int coverageSamples_ = 0)
         : name(name_), colorFormat(colorFormat_), depthFormat(depthFormat_),
@@ -92,7 +92,7 @@ struct FboConfig
 struct BufferConfig
 {
     BufferConfig() {}
-    BufferConfig(const string&name_, GLenum format_, int bits_)
+    BufferConfig(const string &name_, GLenum format_, int bits_)
         : name(name_), format(format_), bits(bits_)
     {}
     string name;
@@ -120,9 +120,9 @@ Texture2D* makeDepthTexture(int width, int height, GLenum internalFormat);
 
 // Assemble lists of the valid buffer configurations, along with the
 // possibilities for multisample coverage antialiasing, if any.
-void getPossibleConfigs(GraphicsContext *gc, BufferConfigList&colorConfigs,
-                        BufferConfigList&depthConfigs,
-                        vector<int>&coverageConfigs)
+void getPossibleConfigs(GraphicsContext *gc, BufferConfigList &colorConfigs,
+                        BufferConfigList &depthConfigs,
+                        vector<int> &coverageConfigs)
 {
     int      maxSamples            = 0;
     int      coverageSampleConfigs = 0;
@@ -217,7 +217,7 @@ bool checkFramebufferStatus(GraphicsContext *gc, bool silent = false)
 // is created with fewer bits in any of its parameters, the creation
 // is deemed to have failed. Even though the result is a valid FBO,
 // we're only interested in discrete, valid configurations.
-bool createFBO(GraphicsContext *gc, FboConfig&config, FboData&data)
+bool createFBO(GraphicsContext *gc, FboConfig &config, FboData &data)
 {
     bool result      = true;
     bool multisample = config.depthSamples > 0;
@@ -332,7 +332,7 @@ bool createFBO(GraphicsContext *gc, FboConfig&config, FboData&data)
     return result;
 }
 
-void destroyFBO(GraphicsContext *gc, FboData&data)
+void destroyFBO(GraphicsContext *gc, FboData &data)
 {
     data.tex       = 0;
     data.depthTex  = 0;
@@ -347,7 +347,7 @@ void destroyFBO(GraphicsContext *gc, FboData&data)
                                                       0.0, availableTime);
 }
 
-void setAttachmentsFromConfig(Camera *camera, const FboConfig&config);
+void setAttachmentsFromConfig(Camera *camera, const FboConfig &config);
 Switch* makeTexturesAndGeometry(int width, int height, Switch *sw = 0);
 
 // Application state accessed from event handlers and main function;
@@ -363,7 +363,7 @@ Switch* makeTexturesAndGeometry(int width, int height, Switch *sw = 0);
 struct AppState : public Referenced
 {
     AppState(osgViewer::Viewer *viewer_);
-    void setStateFromConfig(const FboConfig&config);
+    void setStateFromConfig(const FboConfig &config);
     void advanceConfig(int increment);
     void updateDisplayedTexture();
     void updateNear();
@@ -432,7 +432,7 @@ AppState::AppState(osgViewer::Viewer *viewer_)
     textProjection->getOrCreateStateSet()->setRenderBinDetails(11, "RenderBin");
 }
 
-void AppState::setStateFromConfig(const FboConfig&config)
+void AppState::setStateFromConfig(const FboConfig &config)
 {
     Camera *camera = viewer->getSlave(0)._camera.get();
 
@@ -500,8 +500,8 @@ ConfigHandler(AppState *appState)
     : _appState(appState)
 {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea,
-                    osgGA::GUIActionAdapter&aa,
+virtual bool handle(const osgGA::GUIEventAdapter &ea,
+                    osgGA::GUIActionAdapter &aa,
                     Object*, NodeVisitor* /*nv*/)
 {
     if (ea.getHandled())
@@ -544,7 +544,7 @@ virtual bool handle(const osgGA::GUIEventAdapter&ea,
     return false;
 }
 
-void getUsage(ApplicationUsage&usage) const
+void getUsage(ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("d", "display depth texture");
     usage.addKeyboardMouseBinding("right arrow",
@@ -568,7 +568,7 @@ DepthHandler(AppState *appState, Depth *depth)
     depth->setDataVariance(Object::DYNAMIC);
 }
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea,
+virtual bool handle(const osgGA::GUIEventAdapter &ea,
                     osgGA::GUIActionAdapter& /*aa*/,
                     Object*, NodeVisitor* /*nv*/)
 {
@@ -628,7 +628,7 @@ virtual bool handle(const osgGA::GUIEventAdapter&ea,
     return false;
 }
 
-void getUsage(ApplicationUsage&usage) const
+void getUsage(ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("i", "invert depth buffer range");
     usage.addKeyboardMouseBinding("up arrow",
@@ -725,7 +725,7 @@ GLenum depthTextureEnum = 0;
 // creation of own graphics context. This is also a good time to test
 // for valid frame buffer configurations; we have a valid graphics
 // context, but multithreading hasn't started, etc.
-GraphicsContext* setupGC(osgViewer::Viewer&viewer, ArgumentParser&arguments)
+GraphicsContext* setupGC(osgViewer::Viewer &viewer, ArgumentParser &arguments)
 {
     int x = -1, y = -1, width = -1, height = -1;
 
@@ -939,7 +939,7 @@ Camera* makeRttCamera(GraphicsContext *gc, int width, int height)
     return rttCamera;
 }
 
-void setAttachmentsFromConfig(Camera *camera, const FboConfig&config)
+void setAttachmentsFromConfig(Camera *camera, const FboConfig &config)
 {
     // XXX Detaching the old buffers may not be necessary.
     if (!camera->getBufferAttachmentMap().empty())

@@ -40,7 +40,7 @@ virtual osg::Object* cloneType() const
 {
     return new DrawArraysIndirect();
 }
-virtual osg::Object* clone(const osg::CopyOp&copyop) const
+virtual osg::Object* clone(const osg::CopyOp &copyop) const
 {
     return NULL;
 }
@@ -57,7 +57,7 @@ virtual const char* className() const
     return "DrawArraysIndirect";
 }
 
-virtual void draw(osg::State&state, bool useVertexBufferObjects) const;
+virtual void draw(osg::State &state, bool useVertexBufferObjects) const;
 protected:
 osg::ref_ptr<osg::TextureBuffer> _buffer;
 unsigned int                     _indirect;
@@ -73,7 +73,7 @@ virtual osg::Object* cloneType() const
 {
     return new MultiDrawArraysIndirect();
 }
-virtual osg::Object* clone(const osg::CopyOp&copyop) const
+virtual osg::Object* clone(const osg::CopyOp &copyop) const
 {
     return NULL;
 }
@@ -90,7 +90,7 @@ virtual const char* className() const
     return "MultiDrawArraysIndirect";
 }
 
-virtual void draw(osg::State&state, bool useVertexBufferObjects) const;
+virtual void draw(osg::State &state, bool useVertexBufferObjects) const;
 protected:
 osg::ref_ptr<osg::TextureBuffer> _buffer;
 unsigned int                     _indirect;
@@ -102,8 +102,8 @@ class DrawIndirectGLExtensions : public osg::Referenced
 {
 public:
 DrawIndirectGLExtensions(unsigned int contextID);
-DrawIndirectGLExtensions(const DrawIndirectGLExtensions&rhs);
-void lowestCommonDenominator(const DrawIndirectGLExtensions&rhs);
+DrawIndirectGLExtensions(const DrawIndirectGLExtensions &rhs);
+void lowestCommonDenominator(const DrawIndirectGLExtensions &rhs);
 void setupGLExtensions(unsigned int contextID);
 
 void glDrawArraysIndirect(GLenum mode,  const void *indirect) const;

@@ -24,7 +24,7 @@
 using namespace osg;
 using namespace osgDB;
 
-bool osgDB::writeObjectFile(const Object&object, const std::string&filename, const Options *options)
+bool osgDB::writeObjectFile(const Object &object, const std::string &filename, const Options *options)
 {
     ReaderWriter::WriteResult wr = Registry::instance()->writeObject(object, filename, options);
 
@@ -35,7 +35,7 @@ bool osgDB::writeObjectFile(const Object&object, const std::string&filename, con
 }
 
 
-bool osgDB::writeImageFile(const Image&image, const std::string&filename, const Options *options)
+bool osgDB::writeImageFile(const Image &image, const std::string &filename, const Options *options)
 {
     ReaderWriter::WriteResult wr = Registry::instance()->writeImage(image, filename, options);
 
@@ -46,7 +46,7 @@ bool osgDB::writeImageFile(const Image&image, const std::string&filename, const 
 }
 
 
-bool osgDB::writeHeightFieldFile(const HeightField&HeightField, const std::string&filename, const Options *options)
+bool osgDB::writeHeightFieldFile(const HeightField &HeightField, const std::string &filename, const Options *options)
 {
     ReaderWriter::WriteResult wr = Registry::instance()->writeHeightField(HeightField, filename, options);
 
@@ -56,7 +56,7 @@ bool osgDB::writeHeightFieldFile(const HeightField&HeightField, const std::strin
     return wr.success();
 }
 
-bool osgDB::writeNodeFile(const Node&node, const std::string&filename, const Options *options)
+bool osgDB::writeNodeFile(const Node &node, const std::string &filename, const Options *options)
 {
     ReaderWriter::WriteResult wr = Registry::instance()->writeNode(node, filename, options);
 
@@ -66,7 +66,7 @@ bool osgDB::writeNodeFile(const Node&node, const std::string&filename, const Opt
     return wr.success();
 }
 
-bool osgDB::writeShaderFile(const Shader&shader, const std::string&filename, const Options *options)
+bool osgDB::writeShaderFile(const Shader &shader, const std::string &filename, const Options *options)
 {
     ReaderWriter::WriteResult wr = Registry::instance()->writeShader(shader, filename, options);
 
@@ -76,7 +76,7 @@ bool osgDB::writeShaderFile(const Shader&shader, const std::string&filename, con
     return wr.success();
 }
 
-bool osgDB::writeScriptFile(const Script&image, const std::string&filename, const Options *options)
+bool osgDB::writeScriptFile(const Script &image, const std::string &filename, const Options *options)
 {
     ReaderWriter::WriteResult wr = Registry::instance()->writeScript(image, filename, options);
 

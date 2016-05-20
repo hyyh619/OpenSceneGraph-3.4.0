@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_TEXGEN
 #define OSG_TEXGEN 1
@@ -18,36 +18,35 @@
 #include <osg/StateAttribute>
 
 #if defined(OSG_GLES1_AVAILABLE) || defined(OSG_GLES2_AVAILABLE) || defined(OSG_GL3_AVAILABLE)
-    #define GL_OBJECT_LINEAR    0x2401
-    #define GL_EYE_LINEAR       0x2400
-    #define GL_SPHERE_MAP       0x2402
-    #define GL_TEXTURE_GEN_S    0x0C60
-    #define GL_TEXTURE_GEN_T    0x0C61
-    #define GL_TEXTURE_GEN_R    0x0C62
-    #define GL_TEXTURE_GEN_Q    0x0C63
+    #define GL_OBJECT_LINEAR 0x2401
+    #define GL_EYE_LINEAR    0x2400
+    #define GL_SPHERE_MAP    0x2402
+    #define GL_TEXTURE_GEN_S 0x0C60
+    #define GL_TEXTURE_GEN_T 0x0C61
+    #define GL_TEXTURE_GEN_R 0x0C62
+    #define GL_TEXTURE_GEN_Q 0x0C63
 #endif
 
 #ifndef GL_NORMAL_MAP_ARB
-    #define GL_NORMAL_MAP_ARB                   0x8511
+    #define GL_NORMAL_MAP_ARB 0x8511
 #endif
 
 #ifndef GL_REFLECTION_MAP_ARB
-    #define GL_REFLECTION_MAP_ARB               0x8512
+    #define GL_REFLECTION_MAP_ARB 0x8512
 #endif
 
 namespace osg {
-
 /** TexGen encapsulates the OpenGL glTexGen (texture coordinate generation)
-  * state.*/
-class OSG_EXPORT TexGen : public StateAttribute
-{
-    public :
+ * state.*/
+    class OSG_EXPORT TexGen: public StateAttribute
+    {
+public:
 
         TexGen();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        TexGen(const TexGen& texgen,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
-            StateAttribute(texgen,copyop),
+        TexGen(const TexGen &texgen, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
+            StateAttribute(texgen, copyop),
             _mode(texgen._mode),
             _plane_s(texgen._plane_s),
             _plane_t(texgen._plane_t),
@@ -56,14 +55,17 @@ class OSG_EXPORT TexGen : public StateAttribute
 
         META_StateAttribute(osg, TexGen, TEXGEN);
 
-        virtual bool isTextureAttribute() const { return true; }
+        virtual bool isTextureAttribute() const
+        {
+            return true;
+        }
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute& sa) const
+        virtual int compare(const StateAttribute &sa) const
         {
             // Check for equal types, then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(TexGen,sa)
+            COMPARE_StateAttribute_Types(TexGen, sa)
 
             // Compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_mode)
@@ -75,7 +77,7 @@ class OSG_EXPORT TexGen : public StateAttribute
             return 0; // Passed all the above comparison macros, so must be equal.
         }
 
-        virtual bool getModeUsage(StateAttribute::ModeUsage& usage) const
+        virtual bool getModeUsage(StateAttribute::ModeUsage &usage) const
         {
             usage.usesTextureMode(GL_TEXTURE_GEN_S);
             usage.usesTextureMode(GL_TEXTURE_GEN_T);
@@ -95,9 +97,10 @@ class OSG_EXPORT TexGen : public StateAttribute
             return true;
         }
 
-        virtual void apply(State& state) const;
+        virtual void apply(State &state) const;
 
-        enum Mode {
+        enum Mode
+        {
             OBJECT_LINEAR  = GL_OBJECT_LINEAR,
             EYE_LINEAR     = GL_EYE_LINEAR,
             SPHERE_MAP     = GL_SPHERE_MAP,
@@ -105,38 +108,43 @@ class OSG_EXPORT TexGen : public StateAttribute
             REFLECTION_MAP = GL_REFLECTION_MAP_ARB
         };
 
-        inline void setMode( Mode mode ) { _mode = mode; }
+        inline void setMode(Mode mode)
+        {
+            _mode = mode;
+        }
 
-        Mode getMode() const { return _mode; }
+        Mode getMode() const
+        {
+            return _mode;
+        }
 
-        enum Coord {
-          S, T, R, Q
+        enum Coord
+        {
+            S, T, R, Q
         };
 
-        void setPlane(Coord which, const Plane& plane);
+        void setPlane(Coord which, const Plane &plane);
 
-        Plane& getPlane(Coord which);
+        Plane&getPlane(Coord which);
 
-        const Plane& getPlane(Coord which) const;
+        const Plane&getPlane(Coord which) const;
 
         /** Set the tex gen planes from specified matrix.
-          * Typical usage would be to pass in a projection
-          * matrix to set up projective texturing.
-          */
-        void setPlanesFromMatrix(const Matrixd& matrix);
+         * Typical usage would be to pass in a projection
+         * matrix to set up projective texturing.
+         */
+        void setPlanesFromMatrix(const Matrixd &matrix);
 
-    protected :
+protected:
 
-        virtual ~TexGen( void );
+        virtual ~TexGen(void);
 
         Mode _mode;
 
         /** Additional texgen coefficients for GL_OBJECT_PLANE or
-          * GL_EYE_PLANE, */
+         * GL_EYE_PLANE, */
         Plane _plane_s, _plane_t, _plane_r, _plane_q;
-
-};
-
+    };
 }
 
 #endif

@@ -26,7 +26,7 @@ using namespace osgDB;
 //
 struct ImagePager::SortFileRequestFunctor
 {
-    bool operator()(const osg::ref_ptr<ImagePager::ImageRequest>&lhs, const osg::ref_ptr<ImagePager::ImageRequest>&rhs) const
+    bool operator()(const osg::ref_ptr<ImagePager::ImageRequest> &lhs, const osg::ref_ptr<ImagePager::ImageRequest> &rhs) const
     {
         return (lhs->_timeToMergeBy < rhs->_timeToMergeBy);
     }
@@ -55,7 +55,7 @@ unsigned int ImagePager::RequestQueue::size() const
 //
 //  ReadQueue
 //
-ImagePager::ReadQueue::ReadQueue(ImagePager *pager, const std::string&name) :
+ImagePager::ReadQueue::ReadQueue(ImagePager *pager, const std::string &name) :
     _pager(pager),
     _name(name)
 {
@@ -91,7 +91,7 @@ void ImagePager::ReadQueue::add(ImagePager::ImageRequest *imageRequest)
     updateBlock();
 }
 
-void ImagePager::ReadQueue::takeFirst(osg::ref_ptr<ImageRequest>&databaseRequest)
+void ImagePager::ReadQueue::takeFirst(osg::ref_ptr<ImageRequest> &databaseRequest)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_requestMutex);
 
@@ -113,14 +113,14 @@ void ImagePager::ReadQueue::takeFirst(osg::ref_ptr<ImageRequest>&databaseRequest
 //
 // ImageThread
 //
-ImagePager::ImageThread::ImageThread(ImagePager *pager, Mode mode, const std::string&name) :
+ImagePager::ImageThread::ImageThread(ImagePager *pager, Mode mode, const std::string &name) :
     _done(false),
     _mode(mode),
     _pager(pager),
     _name(name)
 {}
 
-ImagePager::ImageThread::ImageThread(const ImageThread&dt, ImagePager *pager) :
+ImagePager::ImageThread::ImageThread(const ImageThread &dt, ImagePager *pager) :
     _done(false),
     _mode(dt._mode),
     _pager(pager),
@@ -315,14 +315,14 @@ int ImagePager::cancel()
     return result;
 }
 
-osg::Image* ImagePager::readImageFile(const std::string&fileName, const osg::Referenced *options)
+osg::Image* ImagePager::readImageFile(const std::string &fileName, const osg::Referenced *options)
 {
     osgDB::Options *readOptions = dynamic_cast<osgDB::Options*>(const_cast<osg::Referenced*>(options));
 
     return osgDB::readImageFile(fileName, readOptions);
 }
 
-void ImagePager::requestImageFile(const std::string&fileName, osg::Object *attachmentPoint, int attachmentIndex, double timeToMergeBy, const osg::FrameStamp* /*framestamp*/, osg::ref_ptr<osg::Referenced>&imageRequest, const osg::Referenced *options)
+void ImagePager::requestImageFile(const std::string &fileName, osg::Object *attachmentPoint, int attachmentIndex, double timeToMergeBy, const osg::FrameStamp* /*framestamp*/, osg::ref_ptr<osg::Referenced> &imageRequest, const osg::Referenced *options)
 {
     osgDB::Options *readOptions = dynamic_cast<osgDB::Options*>(const_cast<osg::Referenced*>(options));
 

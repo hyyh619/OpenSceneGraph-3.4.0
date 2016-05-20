@@ -26,7 +26,7 @@ MultiTextureControl::MultiTextureControl() :
     _textureWeights = new TextureWeights;
 }
 
-MultiTextureControl::MultiTextureControl(const MultiTextureControl&copy, const osg::CopyOp&copyop) :
+MultiTextureControl::MultiTextureControl(const MultiTextureControl &copy, const osg::CopyOp &copyop) :
     Group(copy, copyop),
     _textureWeights(osg::clone(copy._textureWeights.get(), osg::CopyOp::DEEP_COPY_ALL)),
     _useTexEnvCombine(copy._useTexEnvCombine),

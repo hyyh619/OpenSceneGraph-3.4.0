@@ -5,13 +5,13 @@
 
 namespace osgWidget
 {
-Box::Box(const std::string&name, BoxType bt, bool uniform) :
+Box::Box(const std::string &name, BoxType bt, bool uniform) :
     Window   (name),
     _boxType (bt),
     _uniform (uniform),
     _lastAdd (0) {}
 
-Box::Box(const Box&box, const osg::CopyOp&co) :
+Box::Box(const Box &box, const osg::CopyOp &co) :
     Window   (box, co),
     _boxType (box._boxType),
     _uniform (box._uniform),

@@ -16,7 +16,7 @@
 
 using namespace osg;
 
-ScriptEngine* ScriptNodeCallback::getScriptEngine(osg::NodePath&nodePath)
+ScriptEngine* ScriptNodeCallback::getScriptEngine(osg::NodePath &nodePath)
 {
     if (!_script)
         return 0;

@@ -8,8 +8,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  ModularProgram_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ModularProgram_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ModularProgram_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ModularProgram_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ModularProgram_Proxy)
 (
@@ -20,10 +20,10 @@ REGISTER_DOTOSGWRAPPER(ModularProgram_Proxy)
     ModularProgram_writeLocalData
 );
 
-bool ModularProgram_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ModularProgram_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::ModularProgram&myobj     = static_cast<osgParticle::ModularProgram&>(obj);
-    bool                       itAdvanced = false;
+    osgParticle::ModularProgram &myobj     = static_cast<osgParticle::ModularProgram&>(obj);
+    bool                        itAdvanced = false;
 
     osgParticle::Operator *op = static_cast<osgParticle::Operator*>(fr.readObjectOfType(osgDB::type_wrapper<osgParticle::Operator>()));
 
@@ -36,9 +36,9 @@ bool ModularProgram_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool ModularProgram_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ModularProgram_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::ModularProgram&myobj = static_cast<const osgParticle::ModularProgram&>(obj);
+    const osgParticle::ModularProgram &myobj = static_cast<const osgParticle::ModularProgram&>(obj);
 
     for (int i = 0; i < myobj.numOperators(); ++i)
     {

@@ -643,7 +643,7 @@ class setTessellateVisitor : public osg::NodeVisitor
 public:
 
 setTessellateVisitor() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     if (geode.getName().compare(0, 9, "tessellate") == 0)
     {
@@ -735,7 +735,7 @@ class cxTessellateVisitor : public osg::NodeVisitor
 public:
 
 cxTessellateVisitor() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
@@ -806,7 +806,7 @@ virtual void apply(osg::Geode&geode)
         osgText::Text *txt = dynamic_cast<osgText::Text*>(geode.getDrawable(i));
         if (txt)
         {
-            const osg::Vec4&ct = txt->getColor();    // pick the text to be changed by its color
+            const osg::Vec4 &ct = txt->getColor();    // pick the text to be changed by its color
             if (ct.z() < 0.9)
             {
                 txt->setText(str.c_str());
@@ -827,7 +827,7 @@ public:
 KeyboardEventHandler(osg::Node *nd) :
     _scene(nd) {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {

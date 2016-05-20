@@ -37,7 +37,7 @@ ImageReaderWriter::DataReference::DataReference() :
     _numPointsUp(10),
     _backPage(false) {}
 
-ImageReaderWriter::DataReference::DataReference(const std::string&fileName, unsigned int res, float width, float height, bool backPage) :
+ImageReaderWriter::DataReference::DataReference(const std::string &fileName, unsigned int res, float width, float height, bool backPage) :
     _fileName(fileName),
     _resolutionX(res),
     _resolutionY(res),
@@ -48,7 +48,7 @@ ImageReaderWriter::DataReference::DataReference(const std::string&fileName, unsi
     _numPointsUp(10),
     _backPage(backPage) {}
 
-ImageReaderWriter::DataReference::DataReference(const DataReference&rhs) :
+ImageReaderWriter::DataReference::DataReference(const DataReference &rhs) :
     _fileName(rhs._fileName),
     _resolutionX(rhs._resolutionX),
     _resolutionY(rhs._resolutionY),
@@ -64,7 +64,7 @@ ImageReaderWriter::DataReference::DataReference(const DataReference&rhs) :
 ImageReaderWriter::ImageReaderWriter()
 {}
 
-std::string ImageReaderWriter::local_insertReference(const std::string&fileName, unsigned int res, float width, float height, bool backPage)
+std::string ImageReaderWriter::local_insertReference(const std::string &fileName, unsigned int res, float width, float height, bool backPage)
 {
     std::stringstream ostr;
 
@@ -75,7 +75,7 @@ std::string ImageReaderWriter::local_insertReference(const std::string&fileName,
     return myReference;
 }
 
-osg::Image* ImageReaderWriter::readImage_Archive(DataReference&dr, float&s, float&t)
+osg::Image* ImageReaderWriter::readImage_Archive(DataReference &dr, float &s, float &t)
 {
     for (PhotoArchiveList::iterator itr = _photoArchiveList.begin();
          itr != _photoArchiveList.end();
@@ -89,7 +89,7 @@ osg::Image* ImageReaderWriter::readImage_Archive(DataReference&dr, float&s, floa
     return 0;
 }
 
-osg::Image* ImageReaderWriter::readImage_DynamicSampling(DataReference&dr, float&s, float&t)
+osg::Image* ImageReaderWriter::readImage_DynamicSampling(DataReference &dr, float &s, float &t)
 {
     // record previous options.
     osg::ref_ptr<osgDB::ReaderWriter::Options> previousOptions = osgDB::Registry::instance()->getOptions();
@@ -113,14 +113,14 @@ osg::Image* ImageReaderWriter::readImage_DynamicSampling(DataReference&dr, float
 }
 
 
-osgDB::ReaderWriter::ReadResult ImageReaderWriter::local_readNode(const std::string&fileName, const Options*)
+osgDB::ReaderWriter::ReadResult ImageReaderWriter::local_readNode(const std::string &fileName, const Options*)
 {
     DataReferenceMap::iterator itr = _dataReferences.find(fileName);
 
     if (itr == _dataReferences.end())
         return osgDB::ReaderWriter::ReadResult::FILE_NOT_HANDLED;
 
-    DataReference&dr = itr->second;
+    DataReference &dr = itr->second;
 
     osg::Image *image = 0;
     float      s      = 1.0f, t = 1.0f;

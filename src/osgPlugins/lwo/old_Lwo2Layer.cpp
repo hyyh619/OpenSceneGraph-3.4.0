@@ -86,7 +86,7 @@ Lwo2Layer::notify(NotifySeverity severity)
 }
 
 void
-Lwo2Layer::GenerateGeode(Geode&geode, short tags_count, DrawableToTagMapping&tag_mapping)
+Lwo2Layer::GenerateGeode(Geode &geode, short tags_count, DrawableToTagMapping &tag_mapping)
 {
     OSG_DEBUG;
 
@@ -252,7 +252,7 @@ Lwo2Layer::GenerateGeode(Geode&geode, short tags_count, DrawableToTagMapping&tag
 }
 
 bool
-Lwo2Layer::_find_triangle_fans(PolygonsList&polygons, PolygonsList&triangle_fans)
+Lwo2Layer::_find_triangle_fans(PolygonsList &polygons, PolygonsList &triangle_fans)
 {
     bool found = false;
 
@@ -270,7 +270,7 @@ Lwo2Layer::_find_triangle_fans(PolygonsList&polygons, PolygonsList&triangle_fans
 }
 
 bool
-Lwo2Layer::_find_triangle_strips(PolygonsList&polygons, PolygonsList&triangle_strips)
+Lwo2Layer::_find_triangle_strips(PolygonsList &polygons, PolygonsList &triangle_strips)
 {
     bool found = false;
 
@@ -288,14 +288,14 @@ Lwo2Layer::_find_triangle_strips(PolygonsList&polygons, PolygonsList&triangle_st
 }
 
 bool
-Lwo2Layer::_find_triangle_fan(PolygonsList&polygons, PolygonsList&triangle_fans)
+Lwo2Layer::_find_triangle_fan(PolygonsList &polygons, PolygonsList &triangle_fans)
 {
     bool                 found            = false;
     IteratorPolygonsList polygon_iterator = polygons.begin();
 
     while (polygon_iterator != polygons.end())
     {
-        PointsList&points_list = *polygon_iterator;
+        PointsList &points_list = *polygon_iterator;
         if (points_list.size() == 3 && points_list[0].point_index != -1)
         {
             PointData a = points_list[0];
@@ -345,7 +345,7 @@ Lwo2Layer::_find_triangle_fan(PolygonsList&polygons, PolygonsList&triangle_fans)
 }
 
 bool
-Lwo2Layer::_find_triangle_strip(PolygonsList&polygons, PolygonsList&triangle_strips)
+Lwo2Layer::_find_triangle_strip(PolygonsList &polygons, PolygonsList &triangle_strips)
 {
     bool                 found            = false;
     IteratorPolygonsList polygon_iterator = polygons.begin();
@@ -353,7 +353,7 @@ Lwo2Layer::_find_triangle_strip(PolygonsList&polygons, PolygonsList&triangle_str
 
     while (polygon_iterator != polygons.end())
     {
-        PointsList&points_list = *polygon_iterator;
+        PointsList &points_list = *polygon_iterator;
         if (points_list.size() == 3 && points_list[0].point_index != -1)
         {
             PointData a = points_list[0];
@@ -415,7 +415,7 @@ Lwo2Layer::_find_triangle_strip(PolygonsList&polygons, PolygonsList&triangle_str
 }
 
 int
-Lwo2Layer::_find_triangle_begins_with(PolygonsList&polygons, PointData&a, PointData&b)
+Lwo2Layer::_find_triangle_begins_with(PolygonsList &polygons, PointData &a, PointData &b)
 {
     int result = -1;
 
@@ -423,7 +423,7 @@ Lwo2Layer::_find_triangle_begins_with(PolygonsList&polygons, PointData&a, PointD
 
     for (IteratorPolygonsList polygon_iterator = polygons.begin(); polygon_iterator != polygons.end(); polygon_iterator++, polygon_index++)
     {
-        PointsList&points_list = *polygon_iterator;
+        PointsList &points_list = *polygon_iterator;
         if (points_list.size() == 3 && points_list[0].point_index != -1)
         {
             if (points_list[0] == a && points_list[1] == b)

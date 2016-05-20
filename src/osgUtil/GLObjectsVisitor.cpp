@@ -29,7 +29,7 @@ GLObjectsVisitor::GLObjectsVisitor(Mode mode)
     _mode = mode;
 }
 
-void GLObjectsVisitor::apply(osg::Node&node)
+void GLObjectsVisitor::apply(osg::Node &node)
 {
     bool programSetBefore = _lastCompiledProgram.valid();
 
@@ -51,7 +51,7 @@ void GLObjectsVisitor::apply(osg::Node&node)
     }
 }
 
-void GLObjectsVisitor::apply(osg::Geode&node)
+void GLObjectsVisitor::apply(osg::Geode &node)
 {
     bool programSetBefore = _lastCompiledProgram.valid();
 
@@ -73,7 +73,7 @@ void GLObjectsVisitor::apply(osg::Geode&node)
     }
 }
 
-void GLObjectsVisitor::apply(osg::Drawable&drawable)
+void GLObjectsVisitor::apply(osg::Drawable &drawable)
 {
     if (_drawablesAppliedSet.count(&drawable) != 0)
         return;
@@ -117,7 +117,7 @@ void GLObjectsVisitor::apply(osg::Drawable&drawable)
     }
 }
 
-void GLObjectsVisitor::apply(osg::StateSet&stateset)
+void GLObjectsVisitor::apply(osg::StateSet &stateset)
 {
     if (_stateSetAppliedSet.count(&stateset) != 0)
         return;
@@ -146,7 +146,7 @@ void GLObjectsVisitor::apply(osg::StateSet&stateset)
 
                 _renderInfo.getState()->setLastAppliedProgramObject(pcp);
 
-                const osg::StateSet::UniformList&ul = stateset.getUniformList();
+                const osg::StateSet::UniformList &ul = stateset.getUniformList();
 
                 for (osg::StateSet::UniformList::const_iterator itr = ul.begin();
                      itr != ul.end();

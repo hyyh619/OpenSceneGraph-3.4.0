@@ -39,7 +39,7 @@ SmokeTrailEffect::SmokeTrailEffect(bool automaticSetup) :
         buildEffect();
 }
 
-SmokeTrailEffect::SmokeTrailEffect(const osg::Vec3&position, float scale, float intensity)
+SmokeTrailEffect::SmokeTrailEffect(const osg::Vec3 &position, float scale, float intensity)
 {
     setDefaults();
 
@@ -54,7 +54,7 @@ SmokeTrailEffect::SmokeTrailEffect(const osg::Vec3&position, float scale, float 
         buildEffect();
 }
 
-SmokeTrailEffect::SmokeTrailEffect(const SmokeTrailEffect&copy, const osg::CopyOp&copyop) :
+SmokeTrailEffect::SmokeTrailEffect(const SmokeTrailEffect &copy, const osg::CopyOp &copyop) :
     ParticleEffect(copy, copyop)
 {
     if (_automaticSetup)
@@ -89,7 +89,7 @@ void SmokeTrailEffect::setUpEmitterAndProgram()
     {
         _particleSystem->setDefaultAttributes(_textureFileName, false, false);
 
-        osgParticle::Particle&ptemplate = _particleSystem->getDefaultParticleTemplate();
+        osgParticle::Particle &ptemplate = _particleSystem->getDefaultParticleTemplate();
 
         float radius  = 0.5f * _scale;
         float density = 1.0f; // 1.0kg/m^3

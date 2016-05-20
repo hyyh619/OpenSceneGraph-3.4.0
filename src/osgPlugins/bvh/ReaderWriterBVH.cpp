@@ -30,7 +30,7 @@ static BvhMotionBuilder* instance()
     return s_library.get();
 }
 
-void buildHierarchy(osgDB::Input&fr, int level, osgAnimation::Bone *parent)
+void buildHierarchy(osgDB::Input &fr, int level, osgAnimation::Bone *parent)
 {
     bool isRecognized = false;
 
@@ -52,7 +52,7 @@ void buildHierarchy(osgDB::Input&fr, int level, osgAnimation::Bone *parent)
                 dynamic_cast<osgAnimation::UpdateBone*>(parent->getUpdateCallback());
             if (updateBone)
             {
-                osgAnimation::StackedTransform&stack = updateBone->getStackedTransforms();
+                osgAnimation::StackedTransform &stack = updateBone->getStackedTransforms();
                 stack.push_back(new osgAnimation::StackedTranslateElement("position", offset));
                 stack.push_back(new osgAnimation::StackedQuaternionElement("quaternion", osg::Quat()));
             }
@@ -135,7 +135,7 @@ void buildHierarchy(osgDB::Input&fr, int level, osgAnimation::Bone *parent)
     }
 }
 
-void buildMotion(osgDB::Input&fr, osgAnimation::Animation *anim)
+void buildMotion(osgDB::Input &fr, osgAnimation::Animation *anim)
 {
     int   i         = 0, frames = 0;
     float frameTime = 0.033f;
@@ -206,7 +206,7 @@ void buildMotion(osgDB::Input&fr, osgAnimation::Animation *anim)
     }
 }
 
-osg::Group* buildBVH(std::istream&stream, const osgDB::ReaderWriter::Options *options)
+osg::Group* buildBVH(std::istream &stream, const osgDB::ReaderWriter::Options *options)
 {
     if (options)
     {
@@ -279,7 +279,7 @@ osg::Group* buildBVH(std::istream&stream, const osgDB::ReaderWriter::Options *op
 }
 
 protected:
-void alterChannel(std::string name, int&value)
+void alterChannel(std::string name, int &value)
 {
     if (name == "Xposition")
         value |= 0x01;
@@ -295,7 +295,7 @@ void alterChannel(std::string name, int&value)
         value |= 0x20;
 }
 
-void setKeyframe(osgDB::Input&fr, int ch, double time,
+void setKeyframe(osgDB::Input &fr, int ch, double time,
                  osgAnimation::Vec3KeyframeContainer *posKey,
                  osgAnimation::QuatKeyframeContainer *rotKey)
 {
@@ -396,14 +396,14 @@ virtual const char* className() const
     return "BVH Motion Reader";
 }
 
-virtual ReadResult readNode(std::istream&stream, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(std::istream &stream, const osgDB::ReaderWriter::Options *options) const
 {
     ReadResult rr = BvhMotionBuilder::instance()->buildBVH(stream, options);
 
     return rr;
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

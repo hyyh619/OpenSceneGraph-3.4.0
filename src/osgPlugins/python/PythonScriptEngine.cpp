@@ -22,7 +22,7 @@ PythonScriptEngine::PythonScriptEngine() :
     initialize();
 }
 
-PythonScriptEngine::PythonScriptEngine(const PythonScriptEngine&rhs, const osg::CopyOp&) :
+PythonScriptEngine::PythonScriptEngine(const PythonScriptEngine &rhs, const osg::CopyOp&) :
     osg::ScriptEngine("python"),
     _py_main(0)
 {
@@ -41,7 +41,7 @@ void PythonScriptEngine::initialize()
     _py_main = PyModule_GetDict(PyImport_AddModule("__main__"));
 }
 
-bool PythonScriptEngine::run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters)
+bool PythonScriptEngine::run(osg::Script *script, const std::string &entryPoint, osg::Parameters &inputParameters, osg::Parameters &outputParameters)
 {
     if (!script || !_py_main)
         return false;

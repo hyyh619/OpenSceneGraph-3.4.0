@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgParticle - Copyright (C) 2002 Marco Jez
+ */
+// osgParticle - Copyright (C) 2002 Marco Jez
 
 #ifndef OSGPARTICLE_COUNTER
 #define OSGPARTICLE_COUNTER 1
@@ -20,35 +20,40 @@
 
 namespace osgParticle
 {
-
     class Counter: public osg::Object {
-    public:
+public:
         inline Counter();
-        inline Counter(const Counter& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+        inline Counter(const Counter &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
-        virtual const char* libraryName() const { return "osgParticle"; }
-        virtual const char* className() const { return "Counter"; }
-        virtual bool isSameKindAs(const osg::Object* obj) const { return dynamic_cast<const Counter* >(obj) != 0; }
+        virtual const char* libraryName() const
+        {
+            return "osgParticle";
+        }
+        virtual const char* className() const
+        {
+            return "Counter";
+        }
+        virtual bool isSameKindAs(const osg::Object *obj) const
+        {
+            return dynamic_cast < const Counter * > (obj) != 0;
+        }
 
         virtual int numParticlesToCreate(double dt) const = 0;
 
-    protected:
+protected:
         ~Counter() {}
-        Counter &operator=(const Counter &) { return *this; }
+        Counter &operator = (const Counter&) { return *this; }
     };
 
     // INLINE FUNCTIONS
 
     inline Counter::Counter()
-    : osg::Object()
-    {
-    }
+        : osg::Object()
+    {}
 
-    inline Counter::Counter(const Counter& copy, const osg::CopyOp& copyop)
-    : osg::Object(copy, copyop)
-    {
-    }
-
+    inline Counter::Counter(const Counter &copy, const osg::CopyOp &copyop)
+        : osg::Object(copy, copyop)
+    {}
 }
 
 #endif

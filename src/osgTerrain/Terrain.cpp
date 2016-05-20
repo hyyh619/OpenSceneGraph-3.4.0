@@ -31,7 +31,7 @@ Terrain::Terrain() :
     _geometryPool = new GeometryPool;
 }
 
-Terrain::Terrain(const Terrain&ts, const osg::CopyOp&copyop) :
+Terrain::Terrain(const Terrain &ts, const osg::CopyOp &copyop) :
     osg::CoordinateSystemNode(ts, copyop),
     _sampleRatio(ts._sampleRatio),
     _verticalScale(ts._verticalScale),
@@ -95,7 +95,7 @@ void Terrain::setBlendingPolicy(TerrainTile::BlendingPolicy policy)
     dirtyRegisteredTiles();
 }
 
-void Terrain::traverse(osg::NodeVisitor&nv)
+void Terrain::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
@@ -158,7 +158,7 @@ void Terrain::updateTerrainTileOnNextFrame(TerrainTile *terrainTile)
 }
 
 
-TerrainTile* Terrain::getTile(const TileID&tileID)
+TerrainTile* Terrain::getTile(const TileID &tileID)
 {
     OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_mutex);
 
@@ -172,7 +172,7 @@ TerrainTile* Terrain::getTile(const TileID&tileID)
     return itr->second;
 }
 
-const TerrainTile* Terrain::getTile(const TileID&tileID) const
+const TerrainTile* Terrain::getTile(const TileID &tileID) const
 {
     OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_mutex);
 

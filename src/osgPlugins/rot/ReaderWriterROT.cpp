@@ -29,7 +29,7 @@
 
 #define EXTENSION_NAME "rot"
 
-static bool getFilenameAndParams(const std::string&input, std::string&filename, std::string&params)
+static bool getFilenameAndParams(const std::string &input, std::string &filename, std::string &params)
 {
     // find the start of the params list, accounting for nesting of [] and () brackets,
     // note, we are working backwards.
@@ -110,7 +110,7 @@ virtual const char* className() const
     return "rotation pseudo-loader";
 }
 
-virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 

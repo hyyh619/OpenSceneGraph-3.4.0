@@ -55,7 +55,7 @@ struct SerializerScratchPad : public osg::Referenced
     }
 
     template<typename T>
-    bool set(const T&t)
+    bool set(const T &t)
     {
         if (sizeof(T) <= maxDataSize)
         {
@@ -73,7 +73,7 @@ struct SerializerScratchPad : public osg::Referenced
     }
 
     template<typename T>
-    bool get(T&t) const
+    bool get(T &t) const
     {
         if (sizeof(T) == dataSize && dataType == osgDB::getTypeEnum<T>())
         {
@@ -92,14 +92,14 @@ class LuaScriptEngine : public osg::ScriptEngine
 {
 public:
 LuaScriptEngine();
-LuaScriptEngine(const LuaScriptEngine&rhs, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+LuaScriptEngine(const LuaScriptEngine &rhs, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(lua, LuaScriptEngine)
 
 virtual const std::string & getLanguage() const { return _language; }
 
 /** run a Script.*/
-virtual bool run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters);
+virtual bool run(osg::Script *script, const std::string &entryPoint, osg::Parameters &inputParameters, osg::Parameters &outputParameters);
 
 /** get the lua_State object.*/
 lua_State* getLuaState() const
@@ -115,9 +115,9 @@ osgDB::ClassInterface&getClassInterface() const
 int pushDataToStack(SerializerScratchPad *ssp) const;
 int getDataFromStack(SerializerScratchPad *ssp, osgDB::BaseSerializer::Type type, int pos) const;
 
-int pushPropertyToStack(osg::Object *object, const std::string&propertyName) const;
-int setPropertyFromStack(osg::Object *object, const std::string&propertyName) const;
-int setPropertyFromStack(osg::Object *object, const std::string&propertyName, osgDB::BaseSerializer::Type type) const;
+int pushPropertyToStack(osg::Object *object, const std::string &propertyName) const;
+int setPropertyFromStack(osg::Object *object, const std::string &propertyName) const;
+int setPropertyFromStack(osg::Object *object, const std::string &propertyName, osgDB::BaseSerializer::Type type) const;
 
 bool loadScript(osg::Script *script);
 
@@ -141,55 +141,55 @@ bool getmatrix(int pos) const;
 bool getboundingbox(int pos) const;
 bool getboundingsphere(int pos) const;
 
-bool getValue(int pos, osg::Vec2f&value) const;
-bool getValue(int pos, osg::Vec3f&value) const;
-bool getValue(int pos, osg::Vec4f&value) const;
+bool getValue(int pos, osg::Vec2f &value) const;
+bool getValue(int pos, osg::Vec3f &value) const;
+bool getValue(int pos, osg::Vec4f &value) const;
 
-bool getValue(int pos, osg::Vec2d&value) const;
-bool getValue(int pos, osg::Vec3d&value) const;
-bool getValue(int pos, osg::Vec4d&value) const;
-bool getValue(int pos, osg::Quat&value) const;
-bool getValue(int pos, osg::Plane&value) const;
+bool getValue(int pos, osg::Vec2d &value) const;
+bool getValue(int pos, osg::Vec3d &value) const;
+bool getValue(int pos, osg::Vec4d &value) const;
+bool getValue(int pos, osg::Quat &value) const;
+bool getValue(int pos, osg::Plane &value) const;
 
-bool getValue(int pos, osg::Matrixf&value) const;
-bool getValue(int pos, osg::Matrixd&value) const;
+bool getValue(int pos, osg::Matrixf &value) const;
+bool getValue(int pos, osg::Matrixd &value) const;
 
-bool getValue(int pos, osg::BoundingBoxf&value) const;
-bool getValue(int pos, osg::BoundingBoxd&value) const;
+bool getValue(int pos, osg::BoundingBoxf &value) const;
+bool getValue(int pos, osg::BoundingBoxd &value) const;
 
-bool getValue(int pos, osg::BoundingSpheref&value) const;
-bool getValue(int pos, osg::BoundingSphered&value) const;
+bool getValue(int pos, osg::BoundingSpheref &value) const;
+bool getValue(int pos, osg::BoundingSphered &value) const;
 
 void pushValue(osgDB::BaseSerializer::Type type, const void *ptr) const;
 
-void pushValue(const osg::Vec2f&value) const;
-void pushValue(const osg::Vec3f&value) const;
-void pushValue(const osg::Vec4f&value) const;
+void pushValue(const osg::Vec2f &value) const;
+void pushValue(const osg::Vec3f &value) const;
+void pushValue(const osg::Vec4f &value) const;
 
-void pushValue(const osg::Vec2d&value) const;
-void pushValue(const osg::Vec3d&value) const;
-void pushValue(const osg::Vec4d&value) const;
-void pushValue(const osg::Quat&value) const;
-void pushValue(const osg::Plane&value) const;
+void pushValue(const osg::Vec2d &value) const;
+void pushValue(const osg::Vec3d &value) const;
+void pushValue(const osg::Vec4d &value) const;
+void pushValue(const osg::Quat &value) const;
+void pushValue(const osg::Plane &value) const;
 
-void pushValue(const osg::Matrixf&value) const;
-void pushValue(const osg::Matrixd&value) const;
+void pushValue(const osg::Matrixf &value) const;
+void pushValue(const osg::Matrixd &value) const;
 
-void pushValue(const osg::BoundingBoxf&value) const;
-void pushValue(const osg::BoundingBoxd&value) const;
+void pushValue(const osg::BoundingBoxf &value) const;
+void pushValue(const osg::BoundingBoxd &value) const;
 
-void pushValue(const osg::BoundingSpheref&value) const;
-void pushValue(const osg::BoundingSphered&value) const;
+void pushValue(const osg::BoundingSpheref &value) const;
+void pushValue(const osg::BoundingSphered &value) const;
 
 bool pushParameter(osg::Object *object) const;
 bool popParameter(osg::Object *object) const;
 osg::Object* popParameterObject() const;
 
-void pushContainer(osg::Object *object, const std::string&propertyName) const;
+void pushContainer(osg::Object *object, const std::string &propertyName) const;
 
-void createAndPushObject(const std::string&compoundName) const;
+void createAndPushObject(const std::string &compoundName) const;
 void pushObject(osg::Object *object) const;
-void pushAndCastObject(const std::string&compoundClassName, osg::Object *object) const;
+void pushAndCastObject(const std::string &compoundClassName, osg::Object *object) const;
 
 template<class T>
 T* getObjectFromTable(int pos) const
@@ -211,7 +211,7 @@ T* getObjectFromTable(int pos) const
         return 0;
 }
 
-std::string getStringFromTable(int pos, const std::string&field) const
+std::string getStringFromTable(int pos, const std::string &field) const
 {
     std::string result;
 
@@ -268,10 +268,10 @@ bool matchLuaParameters(int luaType1, int luaType2, int luaType3, int luaType4) 
 }
 
 std::string lookUpGLenumString(GLenum value) const;
-GLenum lookUpGLenumValue(const std::string&str) const;
+GLenum lookUpGLenumValue(const std::string &str) const;
 
 
-void addPaths(const osgDB::FilePathList&paths);
+void addPaths(const osgDB::FilePathList &paths);
 void addPaths(const osgDB::Options *options);
 
 protected:

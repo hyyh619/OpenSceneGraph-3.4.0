@@ -25,7 +25,7 @@ TextureBuffer::TextureBuffer(osg::Image *image) :
     setImage(image);
 }
 
-TextureBuffer::TextureBuffer(const TextureBuffer&text, const CopyOp&copyop) :
+TextureBuffer::TextureBuffer(const TextureBuffer &text, const CopyOp &copyop) :
     Texture(text, copyop),
     _textureWidth(text._textureWidth),
     _usageHint(text._usageHint)
@@ -38,7 +38,7 @@ TextureBuffer::~TextureBuffer()
     setImage(NULL);
 }
 
-int TextureBuffer::compare(const StateAttribute&sa) const
+int TextureBuffer::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -102,7 +102,7 @@ void TextureBuffer::setImage(Image *image)
     }
 }
 
-void TextureBuffer::apply(State&state) const
+void TextureBuffer::apply(State &state) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
     const unsigned int contextID = state.getContextID();

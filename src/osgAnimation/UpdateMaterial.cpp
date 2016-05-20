@@ -17,14 +17,14 @@
 
 using namespace osgAnimation;
 
-UpdateMaterial::UpdateMaterial(const UpdateMaterial&apc, const osg::CopyOp&copyop)
+UpdateMaterial::UpdateMaterial(const UpdateMaterial &apc, const osg::CopyOp &copyop)
     : osg::Object(apc, copyop),
     AnimationUpdateCallback<osg::StateAttributeCallback>(apc, copyop)
 {
     _diffuse = new osgAnimation::Vec4Target(apc._diffuse->getValue());
 }
 
-UpdateMaterial::UpdateMaterial(const std::string&name) :
+UpdateMaterial::UpdateMaterial(const std::string &name) :
     AnimationUpdateCallback<osg::StateAttributeCallback>(name)
 {
     _diffuse = new osgAnimation::Vec4Target(osg::Vec4(1, 0, 1, 1));
@@ -46,7 +46,7 @@ osgAnimation::Vec4Target* UpdateMaterial::getDiffuse()
 {
     return _diffuse.get();
 }
-void UpdateMaterial::update(osg::Material&material)
+void UpdateMaterial::update(osg::Material &material)
 {
     osg::Vec4 diffuse = _diffuse->getValue();
 

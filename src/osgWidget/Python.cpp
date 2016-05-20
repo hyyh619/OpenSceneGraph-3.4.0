@@ -63,7 +63,7 @@ static PyMethodDef methods[] =
 
 // A helper function for all those cases where we need to inform the user that there isn't
 // a LUA engine available.
-bool noPythonFail(const std::string&err)
+bool noPythonFail(const std::string &err)
 {
     warn() << err << "; Python not compiled in library." << std::endl;
 
@@ -146,7 +146,7 @@ bool PythonEngine::close()
 #endif
 }
 
-bool PythonEngine::eval(const std::string&code)
+bool PythonEngine::eval(const std::string &code)
 {
 #ifdef OSGWIDGET_USEPYTHON
     PyObject *r = PyRun_String(code.c_str(), Py_file_input, _data->main, _data->main);
@@ -171,7 +171,7 @@ bool PythonEngine::eval(const std::string&code)
 #endif
 }
 
-bool PythonEngine::runFile(const std::string&filePath)
+bool PythonEngine::runFile(const std::string &filePath)
 {
 #ifdef OSGWIDGET_USEPYTHON
     if (!osgDB::fileExists(filePath))

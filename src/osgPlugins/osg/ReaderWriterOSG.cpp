@@ -158,7 +158,7 @@ bool loadWrappers() const
 #endif
 }
 
-virtual ReadResult readObject(const std::string&file, const Options *opt) const
+virtual ReadResult readObject(const std::string &file, const Options *opt) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -191,7 +191,7 @@ virtual ReadResult readObject(const std::string&file, const Options *opt) const
     return 0L;
 }
 
-virtual ReadResult readObject(std::istream&fin, const Options *options) const
+virtual ReadResult readObject(std::istream &fin, const Options *options) const
 {
     loadWrappers();
 
@@ -228,7 +228,7 @@ virtual ReadResult readObject(std::istream&fin, const Options *options) const
     }
 }
 
-virtual ReadResult readNode(const std::string&file, const Options *opt) const
+virtual ReadResult readNode(const std::string &file, const Options *opt) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -261,7 +261,7 @@ virtual ReadResult readNode(const std::string&file, const Options *opt) const
     return 0L;
 }
 
-virtual ReadResult readNode(std::istream&fin, const Options *options) const
+virtual ReadResult readNode(std::istream &fin, const Options *options) const
 {
     loadWrappers();
 
@@ -308,7 +308,7 @@ virtual ReadResult readNode(std::istream&fin, const Options *options) const
     }
 }
 
-void setPrecision(Output&fout, const osgDB::ReaderWriter::Options *options) const
+void setPrecision(Output &fout, const osgDB::ReaderWriter::Options *options) const
 {
     if (options)
     {
@@ -337,7 +337,7 @@ void setPrecision(Output&fout, const osgDB::ReaderWriter::Options *options) cons
     }
 }
 
-virtual WriteResult writeObject(const Object&obj, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const Object &obj, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 
@@ -363,7 +363,7 @@ virtual WriteResult writeObject(const Object&obj, const std::string&fileName, co
     return WriteResult("Unable to open file for output");
 }
 
-virtual WriteResult writeObject(const Object&obj, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const Object &obj, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     if (fout)
     {
@@ -372,7 +372,7 @@ virtual WriteResult writeObject(const Object&obj, std::ostream&fout, const osgDB
         Output foutput;
         foutput.setOptions(options);
 
-        std::ios&fios = foutput;
+        std::ios &fios = foutput;
         fios.rdbuf(fout.rdbuf());
 
         fout.imbue(std::locale::classic());
@@ -387,7 +387,7 @@ virtual WriteResult writeObject(const Object&obj, std::ostream&fout, const osgDB
 }
 
 
-virtual WriteResult writeNode(const Node&node, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeNode(const Node &node, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = getFileExtension(fileName);
 
@@ -413,7 +413,7 @@ virtual WriteResult writeNode(const Node&node, const std::string&fileName, const
     return WriteResult("Unable to open file for output");
 }
 
-virtual WriteResult writeNode(const Node&node, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeNode(const Node &node, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     if (fout)
     {
@@ -422,7 +422,7 @@ virtual WriteResult writeNode(const Node&node, std::ostream&fout, const osgDB::R
         Output foutput;
         foutput.setOptions(options);
 
-        std::ios&fios = foutput;
+        std::ios &fios = foutput;
         fios.rdbuf(fout.rdbuf());
 
         foutput.imbue(std::locale::classic());

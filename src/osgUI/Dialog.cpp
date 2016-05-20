@@ -27,7 +27,7 @@ using namespace osgUI;
 Dialog::Dialog()
 {}
 
-Dialog::Dialog(const osgUI::Dialog&dialog, const osg::CopyOp&copyop) :
+Dialog::Dialog(const osgUI::Dialog &dialog, const osg::CopyOp &copyop) :
     Widget(dialog, copyop),
     _title(dialog._title)
 {}

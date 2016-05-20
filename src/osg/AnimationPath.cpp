@@ -19,12 +19,12 @@
 
 using namespace osg;
 
-void AnimationPath::insert(double time, const ControlPoint&controlPoint)
+void AnimationPath::insert(double time, const ControlPoint &controlPoint)
 {
     _timeControlPointMap[time] = controlPoint;
 }
 
-bool AnimationPath::getInterpolatedControlPoint(double time, ControlPoint&controlPoint) const
+bool AnimationPath::getInterpolatedControlPoint(double time, ControlPoint &controlPoint) const
 {
     if (_timeControlPointMap.empty())
         return false;
@@ -90,7 +90,7 @@ bool AnimationPath::getInterpolatedControlPoint(double time, ControlPoint&contro
 }
 
 
-void AnimationPath::read(std::istream&in)
+void AnimationPath::read(std::istream &in)
 {
     while (!in.eof())
     {
@@ -103,20 +103,20 @@ void AnimationPath::read(std::istream&in)
     }
 }
 
-void AnimationPath::write(TimeControlPointMap::const_iterator itr, std::ostream&fout) const
+void AnimationPath::write(TimeControlPointMap::const_iterator itr, std::ostream &fout) const
 {
-    const ControlPoint&cp = itr->second;
+    const ControlPoint &cp = itr->second;
 
     fout << itr->first << " " << cp.getPosition() << " " << cp.getRotation() << std::endl;
 }
 
-void AnimationPath::write(std::ostream&fout) const
+void AnimationPath::write(std::ostream &fout) const
 {
     int prec = fout.precision();
 
     fout.precision(15);
 
-    const TimeControlPointMap&tcpm = getTimeControlPointMap();
+    const TimeControlPointMap &tcpm = getTimeControlPointMap();
 
     for (TimeControlPointMap::const_iterator tcpmitr = tcpm.begin();
          tcpmitr != tcpm.end();
@@ -128,7 +128,7 @@ void AnimationPath::write(std::ostream&fout) const
     fout.precision(prec);
 }
 
-AnimationPathCallback::AnimationPathCallback(const osg::Vec3d&pivot, const osg::Vec3d&axis, float angularVelocity) :
+AnimationPathCallback::AnimationPathCallback(const osg::Vec3d &pivot, const osg::Vec3d &axis, float angularVelocity) :
     _pivotPoint(pivot),
     _useInverseMatrix(false),
     _timeOffset(0.0),
@@ -164,12 +164,12 @@ class AnimationPathCallbackVisitor : public NodeVisitor
 {
 public:
 
-AnimationPathCallbackVisitor(const AnimationPath::ControlPoint&cp, const osg::Vec3d&pivotPoint, bool useInverseMatrix) :
+AnimationPathCallbackVisitor(const AnimationPath::ControlPoint &cp, const osg::Vec3d &pivotPoint, bool useInverseMatrix) :
     _cp(cp),
     _pivotPoint(pivotPoint),
     _useInverseMatrix(useInverseMatrix) {}
 
-virtual void apply(Camera&camera)
+virtual void apply(Camera &camera)
 {
     Matrix matrix;
 
@@ -182,7 +182,7 @@ virtual void apply(Camera&camera)
 }
 
 
-virtual void apply(CameraView&cv)
+virtual void apply(CameraView &cv)
 {
     if (_useInverseMatrix)
     {
@@ -200,7 +200,7 @@ virtual void apply(CameraView&cv)
     }
 }
 
-virtual void apply(MatrixTransform&mt)
+virtual void apply(MatrixTransform &mt)
 {
     Matrix matrix;
 
@@ -212,7 +212,7 @@ virtual void apply(MatrixTransform&mt)
     mt.setMatrix(osg::Matrix::translate(-_pivotPoint) * matrix);
 }
 
-virtual void apply(PositionAttitudeTransform&pat)
+virtual void apply(PositionAttitudeTransform &pat)
 {
     if (_useInverseMatrix)
     {
@@ -265,7 +265,7 @@ double AnimationPathCallback::getAnimationTime() const
     return ((_latestTime - _firstTime) - _timeOffset) * _timeMultiplier;
 }
 
-void AnimationPathCallback::update(osg::Node&node)
+void AnimationPathCallback::update(osg::Node &node)
 {
     AnimationPath::ControlPoint cp;
 

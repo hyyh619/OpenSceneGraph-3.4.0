@@ -122,7 +122,7 @@ CameraPacket() : _masterKilled(false)
     _byte_order = SWAP_BYTES_COMPARE;
 }
 
-void setPacket(const osg::Matrix&matrix, const osg::FrameStamp *frameStamp)
+void setPacket(const osg::Matrix &matrix, const osg::FrameStamp *frameStamp)
 {
     _matrix = matrix;
     if (frameStamp)
@@ -131,14 +131,14 @@ void setPacket(const osg::Matrix&matrix, const osg::FrameStamp *frameStamp)
     }
 }
 
-void getModelView(osg::Matrix&matrix, float angle_offset = 0.0f)
+void getModelView(osg::Matrix &matrix, float angle_offset = 0.0f)
 {
     matrix = _matrix * osg::Matrix::rotate(osg::DegreesToRadians(angle_offset), 0.0f, 1.0f, 0.0f);
 }
 
-void readEventQueue(osgViewer::Viewer&viewer);
+void readEventQueue(osgViewer::Viewer &viewer);
 
-void writeEventQueue(osgViewer::Viewer&viewer);
+void writeEventQueue(osgViewer::Viewer &viewer);
 
 void setMasterKilled(const bool flag)
 {
@@ -376,17 +376,17 @@ inline double readDouble()
     double c = 0.0; read8((char*)&c); return c;
 }
 
-void write(const osg::FrameStamp&fs);
-void read(osg::FrameStamp&fs);
+void write(const osg::FrameStamp &fs);
+void read(osg::FrameStamp &fs);
 
-void write(const osg::Matrix&matrix);
-void read(osg::Matrix&matrix);
+void write(const osg::Matrix &matrix);
+void read(osg::Matrix &matrix);
 
-void write(const osgGA::GUIEventAdapter&event);
-void read(osgGA::GUIEventAdapter&event);
+void write(const osgGA::GUIEventAdapter &event);
+void read(osgGA::GUIEventAdapter &event);
 
-void write(CameraPacket&cameraPacket);
-void read(CameraPacket&cameraPacket);
+void write(CameraPacket &cameraPacket);
+void read(CameraPacket &cameraPacket);
 
 char* startPtr()
 {

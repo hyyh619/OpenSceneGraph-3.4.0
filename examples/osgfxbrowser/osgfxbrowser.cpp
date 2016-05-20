@@ -80,7 +80,7 @@ class KeyboardHandler : public osgGA::GUIEventHandler
 public:
 KeyboardHandler(EffectPanel *ep) : ep_(ep) {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     if (ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
     {
@@ -216,7 +216,7 @@ inline osgFX::Effect* getSelectedEffect()
 }
 
 protected:
-void rebuild_client_area(const osgfxbrowser::Rect&client_rect)
+void rebuild_client_area(const osgfxbrowser::Rect &client_rect)
 {
     float zPos = -0.1;             // note from Robert, was 0.1f, but now must be -0.1f to keep text visible??#!? due
                                    // to some other change in the OSG not tracked down yet...
@@ -328,7 +328,7 @@ EffectPanel* build_gui(osg::Group *root)
     return effect_panel.release();
 }
 
-void build_world(osg::Group *root, osg::Node *scene, osgViewer::Viewer&viewer)
+void build_world(osg::Group *root, osg::Node *scene, osgViewer::Viewer &viewer)
 {
     osg::ref_ptr<EffectPanel> effect_panel = build_gui(root);
 

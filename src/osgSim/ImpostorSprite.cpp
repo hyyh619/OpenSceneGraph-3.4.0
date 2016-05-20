@@ -67,7 +67,7 @@ ImpostorSprite::~ImpostorSprite()
     }
 }
 
-float ImpostorSprite::calcPixelError(const osg::Matrix&MVPW) const
+float ImpostorSprite::calcPixelError(const osg::Matrix &MVPW) const
 {
     // find the maximum screen space pixel error between the control coords and the quad coners.
     float max_error_sqrd = 0.0f;
@@ -88,9 +88,9 @@ float ImpostorSprite::calcPixelError(const osg::Matrix&MVPW) const
 
     return sqrtf(max_error_sqrd);
 }
-void ImpostorSprite::drawImplementation(osg::RenderInfo&renderInfo) const
+void ImpostorSprite::drawImplementation(osg::RenderInfo &renderInfo) const
 {
-    osg::GLBeginEndAdapter&gl = (renderInfo.getState()->getGLBeginEndAdapter());
+    osg::GLBeginEndAdapter &gl = (renderInfo.getState()->getGLBeginEndAdapter());
 
     // when the tex env is set to REPLACE, and the
     // texture is set up correctly the color has no effect.
@@ -138,19 +138,19 @@ void ImpostorSprite::setTexture(osg::Texture2D *tex, int s, int t)
 }
 
 
-void ImpostorSprite::accept(AttributeFunctor&af)
+void ImpostorSprite::accept(AttributeFunctor &af)
 {
     af.apply(VERTICES, 4, _coords);
     af.apply(TEXTURE_COORDS_0, 4, _texcoords);
 }
 
-void ImpostorSprite::accept(ConstAttributeFunctor&af) const
+void ImpostorSprite::accept(ConstAttributeFunctor &af) const
 {
     af.apply(VERTICES, 4, _coords);
     af.apply(TEXTURE_COORDS_0, 4, _texcoords);
 }
 
-void ImpostorSprite::accept(osg::PrimitiveFunctor&functor) const
+void ImpostorSprite::accept(osg::PrimitiveFunctor &functor) const
 {
     functor.setVertexArray(4, _coords);
     functor.drawArrays(GL_QUADS, 0, 4);

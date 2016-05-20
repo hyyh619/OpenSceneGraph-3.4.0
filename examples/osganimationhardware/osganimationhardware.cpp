@@ -44,7 +44,7 @@ osg::ref_ptr<osg::Program> program;
 // show how to override the default RigTransformHardware for customized usage
 struct MyRigTransformHardware : public osgAnimation::RigTransformHardware
 {
-    void operator()(osgAnimation::RigGeometry&geom)
+    void operator()(osgAnimation::RigGeometry &geom)
     {
         if (_needInit)
             if (!init(geom))
@@ -53,7 +53,7 @@ struct MyRigTransformHardware : public osgAnimation::RigTransformHardware
         computeMatrixPaletteUniform(geom.getMatrixFromSkeletonToGeometry(), geom.getInvMatrixFromSkeletonToGeometry());
     }
 
-    bool init(osgAnimation::RigGeometry&geom)
+    bool init(osgAnimation::RigGeometry &geom)
     {
         osg::Vec3Array *pos = dynamic_cast<osg::Vec3Array*>(geom.getVertexArray());
 
@@ -140,12 +140,12 @@ struct SetupRigGeometry : public osg::NodeVisitor
     bool                                     _hardware;
     SetupRigGeometry(bool hardware = true) : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN), _hardware(hardware) {}
 
-    void apply(osg::Geode&geode)
+    void apply(osg::Geode &geode)
     {
         for (unsigned int i = 0; i < geode.getNumDrawables(); i++)
             apply(*geode.getDrawable(i));
     }
-    void apply(osg::Drawable&geom)
+    void apply(osg::Drawable &geom)
     {
         if (_hardware)
         {

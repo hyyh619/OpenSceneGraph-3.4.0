@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  CenteredPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  CenteredPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  CenteredPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  CenteredPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(CenteredPlacer_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(CenteredPlacer_Proxy)
     CenteredPlacer_writeLocalData
 );
 
-bool CenteredPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool CenteredPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::CenteredPlacer&myobj     = static_cast<osgParticle::CenteredPlacer&>(obj);
-    bool                       itAdvanced = false;
+    osgParticle::CenteredPlacer &myobj     = static_cast<osgParticle::CenteredPlacer&>(obj);
+    bool                        itAdvanced = false;
 
     osg::Vec3 v;
 
@@ -41,9 +41,9 @@ bool CenteredPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool CenteredPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool CenteredPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::CenteredPlacer&myobj = static_cast<const osgParticle::CenteredPlacer&>(obj);
+    const osgParticle::CenteredPlacer &myobj = static_cast<const osgParticle::CenteredPlacer&>(obj);
 
     osg::Vec3 v = myobj.getCenter();
 

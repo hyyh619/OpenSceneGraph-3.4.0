@@ -43,10 +43,10 @@ virtual const char* className() const
 }
 
 /** set the position of the matrix manipulator using a 4x4 Matrix.*/
-virtual void setByMatrix(const osg::Matrixd&matrix);
+virtual void setByMatrix(const osg::Matrixd &matrix);
 
 /** set the position of the matrix manipulator using a 4x4 Matrix.*/
-virtual void setByInverseMatrix(const osg::Matrixd&matrix)
+virtual void setByInverseMatrix(const osg::Matrixd &matrix)
 {
     setByMatrix(osg::Matrixd::inverse(matrix));
 }
@@ -64,14 +64,14 @@ virtual const osg::Node* getNode() const;
 
 virtual osg::Node* getNode();
 
-virtual void home(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us);
+virtual void home(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us);
 
-virtual void init(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us);
+virtual void init(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us);
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us);
 
 /** Get the keyboard and mouse usage of this manipulator.*/
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 enum YawControlMode
 {
@@ -92,9 +92,9 @@ virtual ~GliderManipulator();
 /** Reset the internal GUIEvent stack.*/
 void flushMouseEventStack();
 /** Add the current mouse GUIEvent to internal stack.*/
-void addMouseEvent(const osgGA::GUIEventAdapter&ea);
+void addMouseEvent(const osgGA::GUIEventAdapter &ea);
 
-void computePosition(const osg::Vec3&eye, const osg::Vec3&lv, const osg::Vec3&up);
+void computePosition(const osg::Vec3 &eye, const osg::Vec3 &lv, const osg::Vec3 &up);
 
 /** For the give mouse movement calculate the movement of the camera.
     Return true is camera has moved and a redraw is required.*/

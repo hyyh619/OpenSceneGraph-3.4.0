@@ -8,7 +8,7 @@
 #include <iostream>
 
 // Search in str for all occurrences of spat and replace them with rpat.
-void searchAndReplace(std::string&str, const std::string&spat, const std::string&rpat)
+void searchAndReplace(std::string &str, const std::string &spat, const std::string &rpat)
 {
     std::string::size_type pos = 0;
 
@@ -19,7 +19,7 @@ void searchAndReplace(std::string&str, const std::string&spat, const std::string
     }
 }
 
-void writeShader(osg::Shader *shader, const std::string&cppFileName, const std::string&variableName)
+void writeShader(osg::Shader *shader, const std::string &cppFileName, const std::string &variableName)
 {
     osgDB::ofstream fout(cppFileName.c_str());
 

@@ -36,7 +36,7 @@ CollectParentPaths(const osg::Node *haltTraversalAtNode = 0) :
     setNodeMaskOverride(0xffffffff);
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     if (node.getNumParents() == 0 || &node == _haltTraversalAtNode)
     {
@@ -72,7 +72,7 @@ Node::Node()
     _numChildrenWithOccluderNodes = 0;
 }
 
-Node::Node(const Node&node, const CopyOp&copyop) :
+Node::Node(const Node &node, const CopyOp &copyop) :
     Object(node, copyop),
     _initialBound(node._initialBound),
     _boundingSphere(node._boundingSphere),
@@ -113,7 +113,7 @@ void Node::removeParent(osg::Group *parent)
         _parents.erase(pitr);
 }
 
-void Node::accept(NodeVisitor&nv)
+void Node::accept(NodeVisitor &nv)
 {
     if (nv.validNodeMask(*this))
     {
@@ -124,7 +124,7 @@ void Node::accept(NodeVisitor&nv)
 }
 
 
-void Node::ascend(NodeVisitor&nv)
+void Node::ascend(NodeVisitor &nv)
 {
     std::for_each(_parents.begin(), _parents.end(), NodeAcceptOp(nv));
 }
@@ -203,7 +203,7 @@ MatrixList Node::getWorldMatrices(const osg::Node *haltTraversalAtNode) const
          itr != cpp._nodePaths.end();
          ++itr)
     {
-        NodePath&nodePath = *itr;
+        NodePath &nodePath = *itr;
         if (nodePath.empty())
         {
             matrices.push_back(osg::Matrix::identity());
@@ -508,7 +508,7 @@ bool Node::containsOccluderNodes() const
     return _numChildrenWithOccluderNodes > 0 || dynamic_cast<const OccluderNode*>(this);
 }
 
-void Node::setDescriptions(const DescriptionList&descriptions)
+void Node::setDescriptions(const DescriptionList &descriptions)
 {
     // only assign a description list (and associated UseDataContainer) if we need to.
     if (!descriptions.empty() || getUserDataContainer())
@@ -557,7 +557,7 @@ unsigned int Node::getNumDescriptions() const
     return _userDataContainer ? _userDataContainer->getDescriptions().size() : 0;
 }
 
-void Node::addDescription(const std::string&desc)
+void Node::addDescription(const std::string &desc)
 {
     getOrCreateUserDataContainer()->getDescriptions().push_back(desc);
 }

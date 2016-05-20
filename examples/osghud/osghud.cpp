@@ -190,14 +190,14 @@ osg::Camera* createHUD()
 
 struct SnapImage : public osg::Camera::DrawCallback
 {
-    SnapImage(const std::string&filename) :
+    SnapImage(const std::string &filename) :
         _filename(filename),
         _snapImage(false)
     {
         _image = new osg::Image;
     }
 
-    virtual void operator ()(osg::RenderInfo&renderInfo) const
+    virtual void operator ()(osg::RenderInfo &renderInfo) const
     {
         if (!_snapImage)
             return;
@@ -235,7 +235,7 @@ struct SnapeImageHandler : public osgGA::GUIEventHandler
         _key(key),
         _snapImage(si) {}
 
-    bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+    bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
     {
         if (ea.getHandled())
             return false;

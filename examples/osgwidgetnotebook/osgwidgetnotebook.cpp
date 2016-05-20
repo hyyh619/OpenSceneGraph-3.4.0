@@ -23,9 +23,9 @@ osg::ref_ptr<osgWidget::Canvas> _windows;
 public:
 // NOTE: This whole thing is just a hack to demonstrate a concept. The real
 // implementation would need to be much cleaner.
-bool callbackTabPressed(osgWidget::Event&ev)
+bool callbackTabPressed(osgWidget::Event &ev)
 {
-    osgWidget::Canvas::Vector&objs = _windows->getObjects();
+    osgWidget::Canvas::Vector &objs = _windows->getObjects();
 
     for (unsigned int i = 0; i < objs.size(); i++)
         objs[i]->setLayer(
@@ -43,7 +43,7 @@ bool callbackTabPressed(osgWidget::Event&ev)
     return true;
 }
 
-Notebook(const std::string&name) :
+Notebook(const std::string &name) :
     osgWidget::Box(name, osgWidget::Box::VERTICAL)
 {
     _tabs    = new osgWidget::Box("tabs", osgWidget::Box::HORIZONTAL);

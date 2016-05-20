@@ -18,7 +18,7 @@ PositionAttitudeTransform::PositionAttitudeTransform() :
     _scale(1.0, 1.0, 1.0)
 {}
 
-bool PositionAttitudeTransform::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
+bool PositionAttitudeTransform::computeLocalToWorldMatrix(Matrix &matrix, NodeVisitor*) const
 {
     if (_referenceFrame == RELATIVE_RF)
     {
@@ -39,7 +39,7 @@ bool PositionAttitudeTransform::computeLocalToWorldMatrix(Matrix&matrix, NodeVis
 }
 
 
-bool PositionAttitudeTransform::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
+bool PositionAttitudeTransform::computeWorldToLocalMatrix(Matrix &matrix, NodeVisitor*) const
 {
     if (_scale.x() == 0.0 || _scale.y() == 0.0 || _scale.z() == 0.0)
         return false;

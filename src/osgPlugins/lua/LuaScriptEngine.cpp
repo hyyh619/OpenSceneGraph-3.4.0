@@ -25,12 +25,12 @@ using namespace lua;
 class LuaCallbackObject : public osg::CallbackObject
 {
 public:
-LuaCallbackObject(const std::string&methodName, const LuaScriptEngine *lse, int ref) : _lse(lse), _ref(ref)
+LuaCallbackObject(const std::string &methodName, const LuaScriptEngine *lse, int ref) : _lse(lse), _ref(ref)
 {
     setName(methodName);
 }
 
-virtual bool run(osg::Object *object, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+virtual bool run(osg::Object *object, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
 {
     int topBeforeCall = lua_gettop(_lse->getLuaState());
 
@@ -677,7 +677,7 @@ static int setMapIteratorElement(lua_State *_lua)
 //
 //  StateSet support
 //
-static int convertStringToStateAttributeValue(const std::string&valueString, osg::StateAttribute::OverrideValue defaultValue, bool&setOnOff)
+static int convertStringToStateAttributeValue(const std::string &valueString, osg::StateAttribute::OverrideValue defaultValue, bool &setOnOff)
 {
     osg::StateAttribute::OverrideValue value = defaultValue;
 
@@ -911,7 +911,7 @@ static int callStateSetGet(lua_State *_lua)
             {
                 if (stateset->getTextureAttributeList().size() > index)
                 {
-                    const osg::StateSet::AttributeList&al = stateset->getTextureAttributeList()[index];
+                    const osg::StateSet::AttributeList &al = stateset->getTextureAttributeList()[index];
 
                     for (osg::StateSet::AttributeList::const_iterator itr = al.begin();
                          itr != al.end();
@@ -941,7 +941,7 @@ static int callStateSetGet(lua_State *_lua)
             // need to look for attribute of mode with specified value
             if (stateset->getTextureAttributeList().size() > index)
             {
-                const osg::StateSet::AttributeList&al = stateset->getTextureAttributeList()[index];
+                const osg::StateSet::AttributeList &al = stateset->getTextureAttributeList()[index];
 
                 for (osg::StateSet::AttributeList::const_iterator itr = al.begin();
                      itr != al.end();
@@ -960,8 +960,8 @@ static int callStateSetGet(lua_State *_lua)
 
             if (stateset->getTextureModeList().size() > index)
             {
-                osg::StateAttribute::GLMode  mode = lse->lookUpGLenumValue(value);
-                const osg::StateSet::ModeList&ml  = stateset->getTextureModeList()[index];
+                osg::StateAttribute::GLMode   mode = lse->lookUpGLenumValue(value);
+                const osg::StateSet::ModeList &ml  = stateset->getTextureModeList()[index];
 
                 for (osg::StateSet::ModeList::const_iterator itr = ml.begin();
                      itr != ml.end();
@@ -988,7 +988,7 @@ static int callStateSetGet(lua_State *_lua)
 
         if (sa && sa->isTextureAttribute() && stateset->getTextureAttributeList().size() > 0)
         {
-            const osg::StateSet::AttributeList&al = stateset->getTextureAttributeList()[0];
+            const osg::StateSet::AttributeList &al = stateset->getTextureAttributeList()[0];
 
             for (osg::StateSet::AttributeList::const_iterator itr = al.begin();
                  itr != al.end();
@@ -1009,7 +1009,7 @@ static int callStateSetGet(lua_State *_lua)
         }
         else if (sa)
         {
-            const osg::StateSet::AttributeList&al = stateset->getAttributeList();
+            const osg::StateSet::AttributeList &al = stateset->getAttributeList();
 
             for (osg::StateSet::AttributeList::const_iterator itr = al.begin();
                  itr != al.end();
@@ -1030,7 +1030,7 @@ static int callStateSetGet(lua_State *_lua)
         }
         else if (uniform)
         {
-            const osg::StateSet::UniformList&ul = stateset->getUniformList();
+            const osg::StateSet::UniformList &ul = stateset->getUniformList();
 
             for (osg::StateSet::UniformList::const_iterator itr = ul.begin();
                  itr != ul.end();
@@ -1052,8 +1052,8 @@ static int callStateSetGet(lua_State *_lua)
     }
     else if (lua_type(_lua, 2) == LUA_TSTRING)
     {
-        std::string                       value = lua_tostring(_lua, 2);
-        const osg::StateSet::AttributeList&al   = stateset->getAttributeList();
+        std::string                        value = lua_tostring(_lua, 2);
+        const osg::StateSet::AttributeList &al   = stateset->getAttributeList();
 
         for (osg::StateSet::AttributeList::const_iterator itr = al.begin();
              itr != al.end();
@@ -1069,7 +1069,7 @@ static int callStateSetGet(lua_State *_lua)
             }
         }
 
-        const osg::StateSet::UniformList&ul = stateset->getUniformList();
+        const osg::StateSet::UniformList &ul = stateset->getUniformList();
 
         for (osg::StateSet::UniformList::const_iterator itr = ul.begin();
              itr != ul.end();
@@ -1085,8 +1085,8 @@ static int callStateSetGet(lua_State *_lua)
             }
         }
 
-        osg::StateAttribute::GLMode  mode = lse->lookUpGLenumValue(value);
-        const osg::StateSet::ModeList&ml  = stateset->getModeList();
+        osg::StateAttribute::GLMode   mode = lse->lookUpGLenumValue(value);
+        const osg::StateSet::ModeList &ml  = stateset->getModeList();
 
         for (osg::StateSet::ModeList::const_iterator itr = ml.begin();
              itr != ml.end();
@@ -1150,7 +1150,7 @@ static int callStateSetRemove(lua_State *_lua)
             std::string value = lua_tostring(_lua, 3);
             if (stateset->getTextureAttributeList().size() > index)
             {
-                const osg::StateSet::AttributeList&al = stateset->getTextureAttributeList()[index];
+                const osg::StateSet::AttributeList &al = stateset->getTextureAttributeList()[index];
 
                 for (osg::StateSet::AttributeList::const_iterator itr = al.begin();
                      itr != al.end();
@@ -1167,8 +1167,8 @@ static int callStateSetRemove(lua_State *_lua)
 
             if (stateset->getTextureModeList().size() > index)
             {
-                osg::StateAttribute::GLMode  mode = lse->lookUpGLenumValue(value);
-                const osg::StateSet::ModeList&ml  = stateset->getTextureModeList()[static_cast<unsigned int>(index)];
+                osg::StateAttribute::GLMode   mode = lse->lookUpGLenumValue(value);
+                const osg::StateSet::ModeList &ml  = stateset->getTextureModeList()[static_cast<unsigned int>(index)];
 
                 for (osg::StateSet::ModeList::const_iterator itr = ml.begin();
                      itr != ml.end();
@@ -1210,8 +1210,8 @@ static int callStateSetRemove(lua_State *_lua)
     }
     else if (lua_type(_lua, 2) == LUA_TSTRING)
     {
-        std::string                       value = lua_tostring(_lua, 2);
-        const osg::StateSet::AttributeList&al   = stateset->getAttributeList();
+        std::string                        value = lua_tostring(_lua, 2);
+        const osg::StateSet::AttributeList &al   = stateset->getAttributeList();
 
         for (osg::StateSet::AttributeList::const_iterator itr = al.begin();
              itr != al.end();
@@ -1225,7 +1225,7 @@ static int callStateSetRemove(lua_State *_lua)
             }
         }
 
-        const osg::StateSet::UniformList&ul = stateset->getUniformList();
+        const osg::StateSet::UniformList &ul = stateset->getUniformList();
 
         for (osg::StateSet::UniformList::const_iterator itr = ul.begin();
              itr != ul.end();
@@ -1239,8 +1239,8 @@ static int callStateSetRemove(lua_State *_lua)
             }
         }
 
-        osg::StateAttribute::GLMode  mode = lse->lookUpGLenumValue(value);
-        const osg::StateSet::ModeList&ml  = stateset->getModeList();
+        osg::StateAttribute::GLMode   mode = lse->lookUpGLenumValue(value);
+        const osg::StateSet::ModeList &ml  = stateset->getModeList();
 
         for (osg::StateSet::ModeList::const_iterator itr = ml.begin();
              itr != ml.end();
@@ -1672,7 +1672,7 @@ static int callImageGet(lua_State *_lua)
     return 0;
 }
 
-static void setImageColour(osg::Image *image, int i, int j, int k, const osg::Vec4d&colourToWrite)
+static void setImageColour(osg::Image *image, int i, int j, int k, const osg::Vec4d &colourToWrite)
 {
     if (i >= image->s() || j >= image->t() || k >= image->r())
     {
@@ -2219,7 +2219,7 @@ LuaScriptEngine::LuaScriptEngine() :
     initialize();
 }
 
-LuaScriptEngine::LuaScriptEngine(const LuaScriptEngine&rhs, const osg::CopyOp&) :
+LuaScriptEngine::LuaScriptEngine(const LuaScriptEngine &rhs, const osg::CopyOp&) :
     osg::ScriptEngine("lua"),
     _lua(0),
     _scriptCount(0)
@@ -2402,7 +2402,7 @@ bool LuaScriptEngine::loadScript(osg::Script *script)
 }
 
 
-bool LuaScriptEngine::run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters)
+bool LuaScriptEngine::run(osg::Script *script, const std::string &entryPoint, osg::Parameters &inputParameters, osg::Parameters &outputParameters)
 {
     if (!script || !_lua)
         return false;
@@ -2518,47 +2518,47 @@ virtual void apply(double value)
 {
     lua_pushnumber(_lua, value);
 }
-virtual void apply(const std::string&value)
+virtual void apply(const std::string &value)
 {
     lua_pushlstring(_lua, &value[0], value.size());
 }
-virtual void apply(const osg::Vec2f&value)
+virtual void apply(const osg::Vec2f &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Vec3f&value)
+virtual void apply(const osg::Vec3f &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Vec4f&value)
+virtual void apply(const osg::Vec4f &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Vec2d&value)
+virtual void apply(const osg::Vec2d &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Vec3d&value)
+virtual void apply(const osg::Vec3d &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Vec4d&value)
+virtual void apply(const osg::Vec4d &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Quat&value)
+virtual void apply(const osg::Quat &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Plane&value)
+virtual void apply(const osg::Plane &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Matrixf&value)
+virtual void apply(const osg::Matrixf &value)
 {
     _lse->pushValue(value);
 }
-virtual void apply(const osg::Matrixd&value)
+virtual void apply(const osg::Matrixd &value)
 {
     _lse->pushValue(value);
 }
@@ -2583,135 +2583,135 @@ GetStackValueVisitor(const LuaScriptEngine *lse, int index) : _lse(lse), _lua(0)
 }
 
 
-virtual void apply(bool&value)
+virtual void apply(bool &value)
 {
     if (lua_isboolean(_lua, _index))
     {
         value = (lua_toboolean(_lua, _index) != 0); _numberToPop = 1;
     }
 }
-virtual void apply(char&value)
+virtual void apply(char &value)
 {
     if (lua_isnumber(_lua, _index))
     {
         value = lua_tonumber(_lua, _index) != 0; _numberToPop = 1;
     }
 }
-virtual void apply(unsigned char&value)
+virtual void apply(unsigned char &value)
 {
     if (lua_isnumber(_lua, _index))
     {
         value = lua_tonumber(_lua, _index) != 0; _numberToPop = 1;
     }
 }
-virtual void apply(short&value)
+virtual void apply(short &value)
 {
     if (lua_isnumber(_lua, _index))
     {
         value = lua_tonumber(_lua, _index) != 0; _numberToPop = 1;
     }
 }
-virtual void apply(unsigned short&value)
+virtual void apply(unsigned short &value)
 {
     if (lua_isnumber(_lua, _index))
     {
         value = lua_tonumber(_lua, _index) != 0; _numberToPop = 1;
     }
 }
-virtual void apply(int&value)
+virtual void apply(int &value)
 {
     if (lua_isnumber(_lua, _index))
     {
         value = lua_tonumber(_lua, _index) != 0; _numberToPop = 1;
     }
 }
-virtual void apply(unsigned int&value)
+virtual void apply(unsigned int &value)
 {
     if (lua_isnumber(_lua, _index))
     {
         value = lua_tonumber(_lua, _index) != 0; _numberToPop = 1;
     }
 }
-virtual void apply(float&value)
+virtual void apply(float &value)
 {
     if (lua_isnumber(_lua, _index))
     {
         value = lua_tonumber(_lua, _index) != 0; _numberToPop = 1;
     }
 }
-virtual void apply(double&value)
+virtual void apply(double &value)
 {
     if (lua_isnumber(_lua, _index))
     {
         value = lua_tonumber(_lua, _index) != 0; _numberToPop = 1;
     }
 }
-virtual void apply(std::string&value)
+virtual void apply(std::string &value)
 {
     if (lua_isstring(_lua, _index))
     {
         value = std::string(lua_tostring(_lua, _index), lua_rawlen(_lua, _index)); _numberToPop = 1;
     }
 }
-virtual void apply(osg::Vec2f&value)
+virtual void apply(osg::Vec2f &value)
 {
     _lse->getValue(_index, value); _numberToPop = 2;
 }
-virtual void apply(osg::Vec3f&value)
+virtual void apply(osg::Vec3f &value)
 {
     _lse->getValue(_index, value); _numberToPop = 2;
 }
-virtual void apply(osg::Vec4f&value)
+virtual void apply(osg::Vec4f &value)
 {
     _lse->getValue(_index, value); _numberToPop = 4;
 }
-virtual void apply(osg::Vec2d&value)
+virtual void apply(osg::Vec2d &value)
 {
     _lse->getValue(_index, value); _numberToPop = 2;
 }
-virtual void apply(osg::Vec3d&value)
+virtual void apply(osg::Vec3d &value)
 {
     _lse->getValue(_index, value); _numberToPop = 3;
 }
-virtual void apply(osg::Vec4d&value)
+virtual void apply(osg::Vec4d &value)
 {
     _lse->getValue(_index, value); _numberToPop = 4;
 }
-virtual void apply(osg::Quat&value)
+virtual void apply(osg::Quat &value)
 {
     _lse->getValue(_index, value); _numberToPop = 4;
 }
-virtual void apply(osg::Plane&value)
+virtual void apply(osg::Plane &value)
 {
     _lse->getValue(_index, value); _numberToPop = 4;
 }
-virtual void apply(osg::Matrixf&value)
+virtual void apply(osg::Matrixf &value)
 {
     _lse->getValue(_index, value);
 }
-virtual void apply(osg::Matrixd&value)
+virtual void apply(osg::Matrixd &value)
 {
     _lse->getValue(_index, value);
 }
-virtual void apply(osg::BoundingBoxf&value)
+virtual void apply(osg::BoundingBoxf &value)
 {
     _lse->getValue(_index, value);
 }
-virtual void apply(osg::BoundingBoxd&value)
+virtual void apply(osg::BoundingBoxd &value)
 {
     _lse->getValue(_index, value);
 }
-virtual void apply(osg::BoundingSpheref&value)
+virtual void apply(osg::BoundingSpheref &value)
 {
     _lse->getValue(_index, value);
 }
-virtual void apply(osg::BoundingSphered&value)
+virtual void apply(osg::BoundingSphered &value)
 {
     _lse->getValue(_index, value);
 }
 };
 
-int LuaScriptEngine::pushPropertyToStack(osg::Object *object, const std::string&propertyName) const
+int LuaScriptEngine::pushPropertyToStack(osg::Object *object, const std::string &propertyName) const
 {
     osgDB::BaseSerializer::Type type;
 
@@ -3086,7 +3086,7 @@ std::string LuaScriptEngine::lookUpGLenumString(GLenum value) const
     return std::string();
 }
 
-GLenum LuaScriptEngine::lookUpGLenumValue(const std::string&str) const
+GLenum LuaScriptEngine::lookUpGLenumValue(const std::string &str) const
 {
     osgDB::ObjectWrapperManager *ow = osgDB::Registry::instance()->getObjectWrapperManager();
 
@@ -3784,7 +3784,7 @@ int LuaScriptEngine::getDataFromStack(SerializerScratchPad *ssp, osgDB::BaseSeri
 }
 
 
-int LuaScriptEngine::setPropertyFromStack(osg::Object *object, const std::string&propertyName) const
+int LuaScriptEngine::setPropertyFromStack(osg::Object *object, const std::string &propertyName) const
 {
     osgDB::BaseSerializer::Type type;
 
@@ -3815,7 +3815,7 @@ int LuaScriptEngine::setPropertyFromStack(osg::Object *object, const std::string
     return setPropertyFromStack(object, propertyName, type);
 }
 
-int LuaScriptEngine::setPropertyFromStack(osg::Object *object, const std::string&propertyName, osgDB::BaseSerializer::Type type) const
+int LuaScriptEngine::setPropertyFromStack(osg::Object *object, const std::string &propertyName, osgDB::BaseSerializer::Type type) const
 {
     switch (type)
     {
@@ -4448,7 +4448,7 @@ bool LuaScriptEngine::getboundingsphere(int pos) const
     return false;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Vec2f&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Vec2f &value) const
 {
     if (!getvec2(pos))
         return false;
@@ -4459,7 +4459,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Vec2f&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Vec3f&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Vec3f &value) const
 {
     if (!getvec3(pos))
         return false;
@@ -4469,7 +4469,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Vec3f&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Vec4f&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Vec4f &value) const
 {
     if (!getvec4(pos))
         return false;
@@ -4479,7 +4479,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Vec4f&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Matrixf&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Matrixf &value) const
 {
     if (!getmatrix(pos))
         return false;
@@ -4495,7 +4495,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Matrixf&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Vec2d&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Vec2d &value) const
 {
     if (!getvec2(pos))
         return false;
@@ -4506,7 +4506,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Vec2d&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Vec3d&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Vec3d &value) const
 {
     if (!getvec3(pos))
         return false;
@@ -4516,7 +4516,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Vec3d&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Vec4d&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Vec4d &value) const
 {
     if (!getvec4(pos))
         return false;
@@ -4526,7 +4526,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Vec4d&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Quat&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Quat &value) const
 {
     if (!getvec4(pos))
         return false;
@@ -4536,7 +4536,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Quat&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Plane&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Plane &value) const
 {
     if (!getvec4(pos))
         return false;
@@ -4546,7 +4546,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Plane&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::Matrixd&value) const
+bool LuaScriptEngine::getValue(int pos, osg::Matrixd &value) const
 {
     if (!getmatrix(pos))
         return false;
@@ -4562,7 +4562,7 @@ bool LuaScriptEngine::getValue(int pos, osg::Matrixd&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::BoundingBoxf&value) const
+bool LuaScriptEngine::getValue(int pos, osg::BoundingBoxf &value) const
 {
     if (!getboundingbox(pos))
         return false;
@@ -4572,7 +4572,7 @@ bool LuaScriptEngine::getValue(int pos, osg::BoundingBoxf&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::BoundingBoxd&value) const
+bool LuaScriptEngine::getValue(int pos, osg::BoundingBoxd &value) const
 {
     if (!getboundingbox(pos))
         return false;
@@ -4582,7 +4582,7 @@ bool LuaScriptEngine::getValue(int pos, osg::BoundingBoxd&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::BoundingSpheref&value) const
+bool LuaScriptEngine::getValue(int pos, osg::BoundingSpheref &value) const
 {
     if (!getboundingsphere(pos))
         return false;
@@ -4592,7 +4592,7 @@ bool LuaScriptEngine::getValue(int pos, osg::BoundingSpheref&value) const
     return true;
 }
 
-bool LuaScriptEngine::getValue(int pos, osg::BoundingSphered&value) const
+bool LuaScriptEngine::getValue(int pos, osg::BoundingSphered &value) const
 {
     if (!getboundingsphere(pos))
         return false;
@@ -4602,7 +4602,7 @@ bool LuaScriptEngine::getValue(int pos, osg::BoundingSphered&value) const
     return true;
 }
 
-void LuaScriptEngine::pushValue(const osg::Vec2f&value) const
+void LuaScriptEngine::pushValue(const osg::Vec2f &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4610,7 +4610,7 @@ void LuaScriptEngine::pushValue(const osg::Vec2f&value) const
     lua_pushstring(_lua, "y"); lua_pushnumber(_lua, value.y()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::Vec3f&value) const
+void LuaScriptEngine::pushValue(const osg::Vec3f &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4619,7 +4619,7 @@ void LuaScriptEngine::pushValue(const osg::Vec3f&value) const
     lua_pushstring(_lua, "z"); lua_pushnumber(_lua, value.z()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::Vec4f&value) const
+void LuaScriptEngine::pushValue(const osg::Vec4f &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4629,7 +4629,7 @@ void LuaScriptEngine::pushValue(const osg::Vec4f&value) const
     lua_pushstring(_lua, "w"); lua_pushnumber(_lua, value.w()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::Matrixf&value) const
+void LuaScriptEngine::pushValue(const osg::Matrixf &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4643,7 +4643,7 @@ void LuaScriptEngine::pushValue(const osg::Matrixf&value) const
     }
 }
 
-void LuaScriptEngine::pushValue(const osg::Vec2d&value) const
+void LuaScriptEngine::pushValue(const osg::Vec2d &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4651,26 +4651,16 @@ void LuaScriptEngine::pushValue(const osg::Vec2d&value) const
     lua_pushstring(_lua, "y"); lua_pushnumber(_lua, value.y()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::Vec3d&value) const
-{
-    lua_newtable(_lua);
-    lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
-    lua_pushstring(_lua, "x"); lua_pushnumber(_lua, value.x()); lua_settable(_lua, -3);
-    lua_pushstring(_lua, "y"); lua_pushnumber(_lua, value.y()); lua_settable(_lua, -3);
-    lua_pushstring(_lua, "z"); lua_pushnumber(_lua, value.z()); lua_settable(_lua, -3);
-}
-
-void LuaScriptEngine::pushValue(const osg::Vec4d&value) const
+void LuaScriptEngine::pushValue(const osg::Vec3d &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
     lua_pushstring(_lua, "x"); lua_pushnumber(_lua, value.x()); lua_settable(_lua, -3);
     lua_pushstring(_lua, "y"); lua_pushnumber(_lua, value.y()); lua_settable(_lua, -3);
     lua_pushstring(_lua, "z"); lua_pushnumber(_lua, value.z()); lua_settable(_lua, -3);
-    lua_pushstring(_lua, "w"); lua_pushnumber(_lua, value.w()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::Quat&value) const
+void LuaScriptEngine::pushValue(const osg::Vec4d &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4680,7 +4670,17 @@ void LuaScriptEngine::pushValue(const osg::Quat&value) const
     lua_pushstring(_lua, "w"); lua_pushnumber(_lua, value.w()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::Plane&value) const
+void LuaScriptEngine::pushValue(const osg::Quat &value) const
+{
+    lua_newtable(_lua);
+    lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
+    lua_pushstring(_lua, "x"); lua_pushnumber(_lua, value.x()); lua_settable(_lua, -3);
+    lua_pushstring(_lua, "y"); lua_pushnumber(_lua, value.y()); lua_settable(_lua, -3);
+    lua_pushstring(_lua, "z"); lua_pushnumber(_lua, value.z()); lua_settable(_lua, -3);
+    lua_pushstring(_lua, "w"); lua_pushnumber(_lua, value.w()); lua_settable(_lua, -3);
+}
+
+void LuaScriptEngine::pushValue(const osg::Plane &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4690,7 +4690,7 @@ void LuaScriptEngine::pushValue(const osg::Plane&value) const
     lua_pushstring(_lua, "w"); lua_pushnumber(_lua, value.asVec4().w()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::Matrixd&value) const
+void LuaScriptEngine::pushValue(const osg::Matrixd &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4704,7 +4704,7 @@ void LuaScriptEngine::pushValue(const osg::Matrixd&value) const
     }
 }
 
-void LuaScriptEngine::pushValue(const osg::BoundingBoxf&value) const
+void LuaScriptEngine::pushValue(const osg::BoundingBoxf &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4716,7 +4716,7 @@ void LuaScriptEngine::pushValue(const osg::BoundingBoxf&value) const
     lua_pushstring(_lua, "zMax"); lua_pushnumber(_lua, value.zMax()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::BoundingBoxd&value) const
+void LuaScriptEngine::pushValue(const osg::BoundingBoxd &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4728,7 +4728,7 @@ void LuaScriptEngine::pushValue(const osg::BoundingBoxd&value) const
     lua_pushstring(_lua, "zMax"); lua_pushnumber(_lua, value.zMax()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::BoundingSpheref&value) const
+void LuaScriptEngine::pushValue(const osg::BoundingSpheref &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -4738,7 +4738,7 @@ void LuaScriptEngine::pushValue(const osg::BoundingSpheref&value) const
     lua_pushstring(_lua, "radius"); lua_pushnumber(_lua, value.radius()); lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::pushValue(const osg::BoundingSphered&value) const
+void LuaScriptEngine::pushValue(const osg::BoundingSphered &value) const
 {
     lua_newtable(_lua);
     lua_newtable(_lua); luaL_getmetatable(_lua, "LuaScriptEngine.Table"); lua_setmetatable(_lua, -2);
@@ -5027,7 +5027,7 @@ osg::Object* LuaScriptEngine::popParameterObject() const
     return object.release();
 }
 
-void LuaScriptEngine::pushContainer(osg::Object *object, const std::string&propertyName) const
+void LuaScriptEngine::pushContainer(osg::Object *object, const std::string &propertyName) const
 {
     if (object)
     {
@@ -5090,7 +5090,7 @@ void LuaScriptEngine::pushContainer(osg::Object *object, const std::string&prope
 }
 
 
-void LuaScriptEngine::createAndPushObject(const std::string&compoundName) const
+void LuaScriptEngine::createAndPushObject(const std::string &compoundName) const
 {
     osg::ref_ptr<osg::Object> object = _ci.createObject(compoundName);
 
@@ -5195,7 +5195,7 @@ void LuaScriptEngine::pushObject(osg::Object *object) const
     }
 }
 
-void LuaScriptEngine::pushAndCastObject(const std::string&compoundClassName, osg::Object *object) const
+void LuaScriptEngine::pushAndCastObject(const std::string &compoundClassName, osg::Object *object) const
 {
     if (object && _ci.isObjectOfType(object, compoundClassName))
     {
@@ -5244,7 +5244,7 @@ void LuaScriptEngine::assignClosure(const char *name, lua_CFunction fn) const
     lua_settable(_lua, -3);
 }
 
-void LuaScriptEngine::addPaths(const osgDB::FilePathList&paths)
+void LuaScriptEngine::addPaths(const osgDB::FilePathList &paths)
 {
     lua_getglobal(_lua, "package");
 

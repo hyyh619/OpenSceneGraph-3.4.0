@@ -53,12 +53,12 @@ FileNameList osgDB::listAllAvailablePlugins()
 }
 
 
-bool osgDB::queryPlugin(const std::string&fileName, ReaderWriterInfoList&infoList)
+bool osgDB::queryPlugin(const std::string &fileName, ReaderWriterInfoList &infoList)
 {
     typedef std::set<const ReaderWriter*> ReaderWriterSet;
     ReaderWriterSet previouslyLoadedReaderWriters;
 
-    const Registry::ReaderWriterList&rwList = osgDB::Registry::instance()->getReaderWriterList();
+    const Registry::ReaderWriterList &rwList = osgDB::Registry::instance()->getReaderWriterList();
 
     for (Registry::ReaderWriterList::const_iterator itr = rwList.begin();
          itr != rwList.end();
@@ -70,7 +70,7 @@ bool osgDB::queryPlugin(const std::string&fileName, ReaderWriterInfoList&infoLis
 
     if (osgDB::Registry::instance()->loadLibrary(fileName))
     {
-        const Registry::ReaderWriterList&rwList = osgDB::Registry::instance()->getReaderWriterList();
+        const Registry::ReaderWriterList &rwList = osgDB::Registry::instance()->getReaderWriterList();
 
         for (Registry::ReaderWriterList::const_iterator itr = rwList.begin();
              itr != rwList.end();
@@ -101,7 +101,7 @@ bool osgDB::queryPlugin(const std::string&fileName, ReaderWriterInfoList&infoLis
     }
 }
 
-static std::string padwithspaces(const std::string&str, unsigned int padLength)
+static std::string padwithspaces(const std::string &str, unsigned int padLength)
 {
     std::string newStr(str);
 
@@ -111,7 +111,7 @@ static std::string padwithspaces(const std::string&str, unsigned int padLength)
     return newStr;
 }
 
-bool osgDB::outputPluginDetails(std::ostream&out, const std::string&fileName)
+bool osgDB::outputPluginDetails(std::ostream &out, const std::string &fileName)
 {
     osgDB::ReaderWriterInfoList infoList;
 
@@ -124,7 +124,7 @@ bool osgDB::outputPluginDetails(std::ostream&out, const std::string&fileName)
              rwi_itr != infoList.end();
              ++rwi_itr)
         {
-            osgDB::ReaderWriterInfo&info = *(*rwi_itr);
+            osgDB::ReaderWriterInfo &info = *(*rwi_itr);
             out << "    ReaderWriter : " << info.description << std::endl;
             out << "    {" << std::endl;
             out << "        features   : ";

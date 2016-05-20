@@ -32,7 +32,7 @@ struct GlyphData
     short          y;
 };
 
-static inline void swap(unsigned short&x, bool isSwapped)
+static inline void swap(unsigned short &x, bool isSwapped)
 {
     if (!isSwapped)
         return;
@@ -40,7 +40,7 @@ static inline void swap(unsigned short&x, bool isSwapped)
     x = ((x >> 8) & 0x00FF) | ((x << 8) & 0xFF00);
 }
 
-static inline void swap(unsigned&x, bool isSwapped)
+static inline void swap(unsigned &x, bool isSwapped)
 {
     if (!isSwapped)
         return;
@@ -48,7 +48,7 @@ static inline void swap(unsigned&x, bool isSwapped)
     x = ((x >> 24) & 0x000000FF) | ((x >> 8) & 0x0000FF00) | ((x << 8) & 0x00FF0000) | ((x << 24) & 0xFF000000);
 }
 
-static inline unsigned char readByte(std::istream&stream)
+static inline unsigned char readByte(std::istream &stream)
 {
     unsigned char x;
 
@@ -56,7 +56,7 @@ static inline unsigned char readByte(std::istream&stream)
     return x;
 }
 
-static inline unsigned short readShort(std::istream&stream, bool isSwapped)
+static inline unsigned short readShort(std::istream &stream, bool isSwapped)
 {
     unsigned short x;
 
@@ -65,7 +65,7 @@ static inline unsigned short readShort(std::istream&stream, bool isSwapped)
     return x;
 }
 
-static inline unsigned readInt(std::istream&stream, bool isSwapped)
+static inline unsigned readInt(std::istream &stream, bool isSwapped)
 {
     unsigned x;
 
@@ -74,7 +74,7 @@ static inline unsigned readInt(std::istream&stream, bool isSwapped)
     return x;
 }
 
-TXFFont::TXFFont(const std::string&filename) :
+TXFFont::TXFFont(const std::string &filename) :
     _filename(filename)
 {}
 
@@ -131,7 +131,7 @@ TXFFont::getKerning(unsigned int, unsigned int, osgText::KerningType)
 }
 
 bool
-TXFFont::loadFont(std::istream&stream)
+TXFFont::loadFont(std::istream &stream)
 {
     unsigned char magic[4];
 

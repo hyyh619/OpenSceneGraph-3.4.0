@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkLayers(const osgVolume::CompositeLayer&layer)
+static bool checkLayers(const osgVolume::CompositeLayer &layer)
 {
     return layer.getNumLayers() > 0;
 }
 
-static bool readLayers(osgDB::InputStream&is, osgVolume::CompositeLayer&layer)
+static bool readLayers(osgDB::InputStream &is, osgVolume::CompositeLayer &layer)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -23,7 +23,7 @@ static bool readLayers(osgDB::InputStream&is, osgVolume::CompositeLayer&layer)
     return true;
 }
 
-static bool writeLayers(osgDB::OutputStream&os, const osgVolume::CompositeLayer&layer)
+static bool writeLayers(osgDB::OutputStream &os, const osgVolume::CompositeLayer &layer)
 {
     unsigned int size = layer.getNumLayers();
 

@@ -25,7 +25,7 @@ TexGenNode::TexGenNode() :
     _texgen = new TexGen;
 }
 
-TexGenNode::TexGenNode(const TexGenNode&cn, const CopyOp&copyop) :
+TexGenNode::TexGenNode(const TexGenNode &cn, const CopyOp &copyop) :
     Group(cn, copyop),
     _textureUnit(cn._textureUnit),
     _texgen(static_cast<TexGen*>(copyop(cn._texgen.get()))),

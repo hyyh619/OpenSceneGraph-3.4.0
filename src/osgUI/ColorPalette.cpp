@@ -18,7 +18,7 @@ using namespace osgUI;
 ColorPalette::ColorPalette()
 {}
 
-ColorPalette::ColorPalette(const ColorPalette&cp, const osg::CopyOp&copyop) :
+ColorPalette::ColorPalette(const ColorPalette &cp, const osg::CopyOp &copyop) :
     osg::Object(cp, copyop),
     _colors(cp._colors)
 {}

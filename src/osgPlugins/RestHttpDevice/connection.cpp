@@ -18,8 +18,8 @@ namespace http
 {
 namespace server
 {
-connection::connection(asio::io_service&io_service,
-                       request_handler&handler)
+connection::connection(asio::io_service &io_service,
+                       request_handler &handler)
     : socket_(io_service),
     request_handler_(handler)
 {
@@ -45,7 +45,7 @@ void connection::start()
                                         asio::placeholders::bytes_transferred));
 }
 
-void connection::handle_read(const asio::error_code&e,
+void connection::handle_read(const asio::error_code &e,
                              std::size_t bytes_transferred)
 {
     if (!e)
@@ -83,7 +83,7 @@ void connection::handle_read(const asio::error_code&e,
     // handler returns. The connection class's destructor closes the socket.
 }
 
-void connection::handle_write(const asio::error_code&e)
+void connection::handle_write(const asio::error_code &e)
 {
     if (!e)
     {

@@ -70,7 +70,7 @@ bool HDRLoader::isHDRFile(const char *_fileName)
     return true;
 }
 
-bool HDRLoader::load(const char *_fileName, const bool _rawRGBE, HDRLoaderResult&_res)
+bool HDRLoader::load(const char *_fileName, const bool _rawRGBE, HDRLoaderResult &_res)
 {
     int  i;
     char str[200];

@@ -16,12 +16,12 @@
 
 using namespace osgDB;
 
-void AuthenticationMap::addAuthenticationDetails(const std::string&path, AuthenticationDetails *details)
+void AuthenticationMap::addAuthenticationDetails(const std::string &path, AuthenticationDetails *details)
 {
     _authenticationMap[path] = details;
 }
 
-const AuthenticationDetails* AuthenticationMap::getAuthenticationDetails(const std::string&path) const
+const AuthenticationDetails* AuthenticationMap::getAuthenticationDetails(const std::string &path) const
 {
     // see if the full filename has its own authentication details
     AuthenticationDetailsMap::const_iterator itr = _authenticationMap.find(path);

@@ -15,8 +15,8 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool VertexProgram_readLocalData(Object&obj, Input&fr);
-bool VertexProgram_writeLocalData(const Object&obj, Output&fw);
+bool VertexProgram_readLocalData(Object &obj, Input &fr);
+bool VertexProgram_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(VertexProgram)
@@ -29,11 +29,11 @@ REGISTER_DOTOSGWRAPPER(VertexProgram)
 );
 
 
-bool VertexProgram_readLocalData(Object&obj, Input&fr)
+bool VertexProgram_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    VertexProgram&vertexProgram = static_cast<VertexProgram&>(obj);
+    VertexProgram &vertexProgram = static_cast<VertexProgram&>(obj);
 
     if (fr[0].matchWord("ProgramLocalParameter"))
     {
@@ -110,9 +110,9 @@ bool VertexProgram_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool VertexProgram_writeLocalData(const Object&obj, Output&fw)
+bool VertexProgram_writeLocalData(const Object &obj, Output &fw)
 {
-    const VertexProgram&vertexProgram = static_cast<const VertexProgram&>(obj);
+    const VertexProgram &vertexProgram = static_cast<const VertexProgram&>(obj);
 
     const VertexProgram::LocalParamList           &lpl = vertexProgram.getLocalParameters();
     VertexProgram::LocalParamList::const_iterator i;

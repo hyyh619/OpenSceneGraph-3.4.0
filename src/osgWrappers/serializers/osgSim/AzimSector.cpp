@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkAzimRange(const osgSim::AzimSector&sector)
+static bool checkAzimRange(const osgSim::AzimSector &sector)
 {
     return true;
 }
 
-static bool readAzimRange(osgDB::InputStream&is, osgSim::AzimSector&sector)
+static bool readAzimRange(osgDB::InputStream &is, osgSim::AzimSector &sector)
 {
     float minAzimuth, maxAzimuth, fadeAngle;
 
@@ -17,7 +17,7 @@ static bool readAzimRange(osgDB::InputStream&is, osgSim::AzimSector&sector)
     return true;
 }
 
-static bool writeAzimRange(osgDB::OutputStream&os, const osgSim::AzimSector&sector)
+static bool writeAzimRange(osgDB::OutputStream &os, const osgSim::AzimSector &sector)
 {
     float minAzimuth, maxAzimuth, fadeAngle;
 

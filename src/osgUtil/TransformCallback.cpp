@@ -16,7 +16,7 @@
 
 using namespace osgUtil;
 
-TransformCallback::TransformCallback(const osg::Vec3&pivot, const osg::Vec3&axis, float angularVelocity)
+TransformCallback::TransformCallback(const osg::Vec3 &pivot, const osg::Vec3 &axis, float angularVelocity)
 {
     _pivot            = pivot;
     _axis             = axis;

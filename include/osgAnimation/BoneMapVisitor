@@ -24,17 +24,17 @@
 
 namespace osgAnimation
 {
-    class OSGANIMATION_EXPORT BoneMapVisitor : public osg::NodeVisitor
+    class OSGANIMATION_EXPORT BoneMapVisitor: public osg::NodeVisitor
     {
-    public:
+public:
         META_NodeVisitor(osgAnimation, BoneMapVisitor)
         BoneMapVisitor();
 
         void apply(osg::Node&);
-        void apply(osg::Transform& node);
-        const BoneMap& getBoneMap() const;
+        void apply(osg::Transform &node);
+        const BoneMap&getBoneMap() const;
 
-    protected:
+protected:
         BoneMap _map;
     };
 }

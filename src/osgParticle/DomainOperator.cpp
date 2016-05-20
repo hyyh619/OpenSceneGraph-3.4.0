@@ -69,7 +69,7 @@ void DomainOperator::beginOperate(Program *prg)
 
         for (std::vector<Domain>::iterator itr = _domains.begin(); itr != _domains.end(); ++itr)
         {
-            Domain&domain = *itr;
+            Domain &domain = *itr;
 
             switch (domain.type)
             {

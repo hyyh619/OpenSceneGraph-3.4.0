@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  LinearInterpolator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  LinearInterpolator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  LinearInterpolator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  LinearInterpolator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(LinearInterpolator_Proxy)
 (

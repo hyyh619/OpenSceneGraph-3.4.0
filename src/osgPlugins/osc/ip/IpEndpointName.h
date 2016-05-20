@@ -67,12 +67,12 @@ enum { ADDRESS_AND_PORT_STRING_LENGTH = 23};
 void AddressAndPortAsString(char *s) const;
 };
 
-inline bool operator==(const IpEndpointName&lhs, const IpEndpointName&rhs)
+inline bool operator==(const IpEndpointName &lhs, const IpEndpointName &rhs)
 {
     return (lhs.address == rhs.address && lhs.port == rhs.port);
 }
 
-inline bool operator!=(const IpEndpointName&lhs, const IpEndpointName&rhs)
+inline bool operator!=(const IpEndpointName &lhs, const IpEndpointName &rhs)
 {
     return !(lhs == rhs);
 }

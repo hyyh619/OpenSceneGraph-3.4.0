@@ -54,7 +54,7 @@ class tri_stripper
 {
 public:
 
-explicit tri_stripper(const indices&TriIndices);
+explicit tri_stripper(const indices &TriIndices);
 
 void Strip(primitive_vector *out_pPrimitivesVector);
 
@@ -101,20 +101,20 @@ void ResetStripIDs();
 detail::strip FindBestStrip();
 detail::strip ExtendToStrip(size_t Start, detail::triangle_order Order);
 detail::strip BackExtendToStrip(size_t Start, detail::triangle_order Order, bool ClockWise);
-const_link_iterator LinkToNeighbour(const_tri_iterator Node, bool ClockWise, detail::triangle_order&Order, bool NotSimulation);
-const_link_iterator BackLinkToNeighbour(const_tri_iterator Node, bool ClockWise, detail::triangle_order&Order);
+const_link_iterator LinkToNeighbour(const_tri_iterator Node, bool ClockWise, detail::triangle_order &Order, bool NotSimulation);
+const_link_iterator BackLinkToNeighbour(const_tri_iterator Node, bool ClockWise, detail::triangle_order &Order);
 void BuildStrip(const detail::strip Strip);
 void MarkTriAsTaken(size_t i);
 void AddIndex(index i, bool NotSimulation);
 void BackAddIndex(index i);
-void AddTriangle(const detail::triangle&Tri, detail::triangle_order Order, bool NotSimulation);
-void BackAddTriangle(const detail::triangle&Tri, detail::triangle_order Order);
+void AddTriangle(const detail::triangle &Tri, detail::triangle_order Order, bool NotSimulation);
+void BackAddTriangle(const detail::triangle &Tri, detail::triangle_order Order);
 
 bool Cache() const;
 size_t CacheSize() const;
 
-static detail::triangle_edge FirstEdge(const detail::triangle&Triangle, detail::triangle_order Order);
-static detail::triangle_edge LastEdge(const detail::triangle&Triangle, detail::triangle_order Order);
+static detail::triangle_edge FirstEdge(const detail::triangle &Triangle, detail::triangle_order Order);
+static detail::triangle_edge LastEdge(const detail::triangle &Triangle, detail::triangle_order Order);
 
 primitive_vector        m_PrimitivesVector;
 triangle_graph          m_Triangles;

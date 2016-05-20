@@ -41,7 +41,7 @@ BlendFunc::BlendFunc(GLenum source, GLenum destination, GLenum source_alpha, GLe
 BlendFunc::~BlendFunc()
 {}
 
-void BlendFunc::apply(State&state) const
+void BlendFunc::apply(State &state) const
 {
     if (_source_factor != _source_factor_alpha ||
         _destination_factor != _destination_factor_alpha)

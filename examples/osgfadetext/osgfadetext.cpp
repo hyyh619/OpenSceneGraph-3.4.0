@@ -61,7 +61,7 @@ osg::Node* createEarth()
     return csn;
 }
 
-osgText::Text* createText(osg::EllipsoidModel *ellipsoid, double latitude, double longitude, double height, const std::string&str)
+osgText::Text* createText(osg::EllipsoidModel *ellipsoid, double latitude, double longitude, double height, const std::string &str)
 {
     double X, Y, Z;
 

@@ -32,7 +32,7 @@ RecordInputStream::RecordInputStream(std::streambuf *sb) :
     _recordSize(0)
 {}
 
-bool RecordInputStream::readRecord(Document&document)
+bool RecordInputStream::readRecord(Document &document)
 {
     opcode_type opcode = (opcode_type)readUInt16();
     size_type   size   = (size_type)readUInt16();
@@ -40,7 +40,7 @@ bool RecordInputStream::readRecord(Document&document)
     return readRecordBody(opcode, size, document);
 }
 
-bool RecordInputStream::readRecordBody(opcode_type opcode, size_type size, Document&document)
+bool RecordInputStream::readRecordBody(opcode_type opcode, size_type size, Document &document)
 {
     // Correct endian error in Creator v2.5 gallery models.
     // Last pop level record in little-endian.

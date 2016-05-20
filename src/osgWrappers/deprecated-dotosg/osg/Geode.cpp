@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Geode_readLocalData(Object&obj, Input&fr);
-bool Geode_writeLocalData(const Object&obj, Output&fw);
+bool Geode_readLocalData(Object &obj, Input &fr);
+bool Geode_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Geode)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(Geode)
     &Geode_writeLocalData
 );
 
-bool Geode_readLocalData(Object&obj, Input&fr)
+bool Geode_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Geode&geode = static_cast<Geode&>(obj);
+    Geode &geode = static_cast<Geode&>(obj);
 
     int num_drawables;
 
@@ -49,9 +49,9 @@ bool Geode_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Geode_writeLocalData(const osg::Object&obj, Output&fw)
+bool Geode_writeLocalData(const osg::Object &obj, Output &fw)
 {
-    const Geode&geode = static_cast<const Geode&>(obj);
+    const Geode &geode = static_cast<const Geode&>(obj);
 
     fw.indent() << "num_drawables " << geode.getNumDrawables() << std::endl;
 

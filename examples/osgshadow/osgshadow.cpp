@@ -73,7 +73,7 @@ ChangeFOVHandler(osg::Camera *camera)
 }
 
 /** Deprecated, Handle events, return true if handled, false otherwise. */
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (ea.getEventType() == osgGA::GUIEventAdapter::KEYUP)
     {
@@ -129,7 +129,7 @@ void set(bool value)
 }
 
 /** Deprecated, Handle events, return true if handled, false otherwise. */
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (ea.getEventType() == osgGA::GUIEventAdapter::KEYUP)
     {
@@ -162,7 +162,7 @@ bool getAnimating() const
 }
 
 /** Deprecated, Handle events, return true if handled, false otherwise. */
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (ea.getEventType() == osgGA::GUIEventAdapter::KEYUP)
     {
@@ -316,7 +316,7 @@ public:
 SwitchHandler() :
     _childNum(0) {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object *object, osg::NodeVisitor* /*nv*/)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object *object, osg::NodeVisitor* /*nv*/)
 {
     osg::Switch *sw = dynamic_cast<osg::Switch*>(object);
 
@@ -376,7 +376,7 @@ osg::Node* createModel(osg::ArgumentParser& /*arguments*/)
 
 namespace ModelTwo
 {
-osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, double looptime)
+osg::AnimationPath* createAnimationPath(const osg::Vec3 &center, float radius, double looptime)
 {
     // set up the animation path
     osg::AnimationPath *animationPath = new osg::AnimationPath;
@@ -405,7 +405,7 @@ osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, do
     return animationPath;
 }
 
-osg::Node* createBase(const osg::Vec3&center, float radius)
+osg::Node* createBase(const osg::Vec3 &center, float radius)
 {
     osg::Geode *geode = new osg::Geode;
 
@@ -468,7 +468,7 @@ osg::Node* createBase(const osg::Vec3&center, float radius)
     return group;
 }
 
-osg::Node* createMovingModel(const osg::Vec3&center, float radius)
+osg::Node* createMovingModel(const osg::Vec3 &center, float radius)
 {
     float animationLength = 10.0f;
 
@@ -480,7 +480,7 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius)
 
     if (cessna)
     {
-        const osg::BoundingSphere&bs = cessna->getBound();
+        const osg::BoundingSphere &bs = cessna->getBound();
 
         float                size        = radius / bs.radius() * 0.3f;
         osg::MatrixTransform *positioned = new osg::MatrixTransform;
@@ -525,7 +525,7 @@ osg::Node* createModel(osg::ArgumentParser& /*arguments*/)
 
 namespace ModelThree
 {
-osg::Group* createModel(osg::ArgumentParser&arguments)
+osg::Group* createModel(osg::ArgumentParser &arguments)
 {
     osg::Group *scene = new osg::Group;
 
@@ -622,7 +622,7 @@ struct UseVBOVisitor : public osg::NodeVisitor
     UseVBOVisitor() :
         osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-    virtual void apply(osg::Geode&geode)
+    virtual void apply(osg::Geode &geode)
     {
         for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
         {
@@ -659,7 +659,7 @@ osg::AnimationPathCallback* createAnimationPathCallback(float radius, float time
     return apcb.release();
 }
 
-osg::Group* createModel(osg::ArgumentParser&arguments)
+osg::Group* createModel(osg::ArgumentParser &arguments)
 {
     // Set the ground (only receives shadow)
     osg::ref_ptr<osg::MatrixTransform> groundNode = new osg::MatrixTransform;
@@ -703,7 +703,7 @@ osg::Group* createModel(osg::ArgumentParser&arguments)
 }
 }
 
-osg::Node* createTestModel(osg::ArgumentParser&arguments)
+osg::Node* createTestModel(osg::ArgumentParser &arguments)
 {
     if (arguments.read("-1"))
     {

@@ -257,7 +257,7 @@ int main(int argc, char **argv)
         // manually insert an impostor above the model.
         if (dynamic_cast<osg::Group*>(model.get()) == 0)
         {
-            const osg::BoundingSphere&bs = model->getBound();
+            const osg::BoundingSphere &bs = model->getBound();
             if (bs.valid())
             {
                 osgSim::Impostor *impostor = new osgSim::Impostor;

@@ -6,7 +6,7 @@ osgParticle::FluidProgram::FluidProgram() :
     setFluidToAir();
 }
 
-osgParticle::FluidProgram::FluidProgram(const FluidProgram&copy, const osg::CopyOp&copyop) :
+osgParticle::FluidProgram::FluidProgram(const FluidProgram &copy, const osg::CopyOp &copyop) :
     Program(copy, copyop),
     _acceleration(copy._acceleration),
     _viscosity(copy._viscosity),

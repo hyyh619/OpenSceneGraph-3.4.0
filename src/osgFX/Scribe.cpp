@@ -84,7 +84,7 @@ Scribe::Scribe()
     _wf_mat->setEmission(osg::Material::FRONT_AND_BACK, osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
-Scribe::Scribe(const Scribe&copy, const osg::CopyOp&copyop)
+Scribe::Scribe(const Scribe &copy, const osg::CopyOp &copyop)
     :    Effect(copy, copyop),
     _wf_mat(static_cast<osg::Material*>(copyop(copy._wf_mat.get()))),
     _wf_lw(static_cast<osg::LineWidth*>(copyop(copy._wf_lw.get())))

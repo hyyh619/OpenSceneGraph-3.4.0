@@ -34,7 +34,7 @@ OSXCoreVideoTexture::OSXCoreVideoTexture(osg::Image *image) :
 }
 
 
-OSXCoreVideoTexture::OSXCoreVideoTexture(const OSXCoreVideoTexture&text, const osg::CopyOp&copyop) :
+OSXCoreVideoTexture::OSXCoreVideoTexture(const OSXCoreVideoTexture &text, const osg::CopyOp &copyop) :
     osg::Texture(text, copyop),
     _textureTarget(text._textureTarget),
     _inited(text._inited),
@@ -46,7 +46,7 @@ OSXCoreVideoTexture::OSXCoreVideoTexture(const OSXCoreVideoTexture&text, const o
 OSXCoreVideoTexture::~OSXCoreVideoTexture() {}
 
 
-int OSXCoreVideoTexture::compare(const osg::StateAttribute&sa) const
+int OSXCoreVideoTexture::compare(const osg::StateAttribute &sa) const
 {
     COMPARE_StateAttribute_Types(OSXCoreVideoTexture, sa)
 
@@ -131,7 +131,7 @@ void OSXCoreVideoTexture::setImage(osg::Image *image)
 
 
 
-void OSXCoreVideoTexture::apply(osg::State&state) const
+void OSXCoreVideoTexture::apply(osg::State &state) const
 {
     if (!_image.valid())
         return;

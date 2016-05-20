@@ -15,11 +15,11 @@ class GStreamerImageStream : public osg::ImageStream, public OpenThreads::Thread
 public:
 
 GStreamerImageStream();
-GStreamerImageStream(const GStreamerImageStream&image, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+GStreamerImageStream(const GStreamerImageStream &image, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(osgGStreamer, GStreamerImageStream);
 
-bool open(const std::string&filename);
+bool open(const std::string &filename);
 
 virtual void play();
 virtual void pause();

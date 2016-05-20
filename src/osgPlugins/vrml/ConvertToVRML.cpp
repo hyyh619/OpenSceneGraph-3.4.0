@@ -33,7 +33,7 @@ using namespace std;
 // transformNode
 //
 /////////////////////////////////////////////////////////////////////////
-osg::Node* transformNode(const osg::Node&root)
+osg::Node* transformNode(const osg::Node &root)
 {
     // create a zup to yup OSG Matrix
     osg::MatrixTransform *ret = new osg::MatrixTransform();
@@ -44,26 +44,26 @@ osg::Node* transformNode(const osg::Node&root)
 
     if (strcmp(root.className(), "MatrixTransform") == 0)
     {
-        const osg::MatrixTransform&aMat = static_cast<const osg::MatrixTransform&> (root);
-        osg::MatrixTransform      *node = new osg::MatrixTransform(aMat);
+        const osg::MatrixTransform &aMat = static_cast<const osg::MatrixTransform&> (root);
+        osg::MatrixTransform       *node = new osg::MatrixTransform(aMat);
         ret->addChild(node);
     }
     else if (strcmp(root.className(), "Group") == 0)
     {
-        const osg::Group&aGroup = static_cast<const osg::Group&> (root);
-        osg::Group      *node   = new osg::Group(aGroup);
+        const osg::Group &aGroup = static_cast<const osg::Group&> (root);
+        osg::Group       *node   = new osg::Group(aGroup);
         ret->addChild(node);
     }
     else if (strcmp(root.className(), "PositionAttitudeTransform") == 0)
     {
-        const osg::PositionAttitudeTransform&aPAT = static_cast<const osg::PositionAttitudeTransform&> (root);
-        osg::PositionAttitudeTransform      *node = new osg::PositionAttitudeTransform(aPAT);
+        const osg::PositionAttitudeTransform &aPAT = static_cast<const osg::PositionAttitudeTransform&> (root);
+        osg::PositionAttitudeTransform       *node = new osg::PositionAttitudeTransform(aPAT);
         ret->addChild(node);
     }
     else if (strcmp(root.className(), "Geode") == 0)
     {
-        const osg::Geode&aGeode = static_cast<const osg::Geode&> (root);
-        osg::Geode      *node   = new osg::Geode(aGeode);
+        const osg::Geode &aGeode = static_cast<const osg::Geode&> (root);
+        osg::Geode       *node   = new osg::Geode(aGeode);
         ret->addChild(node);
     }
     else
@@ -84,7 +84,7 @@ osg::Node* transformNode(const osg::Node&root)
 // convertToVRML
 //
 /////////////////////////////////////////////////////////////////////////
-osgDB::ReaderWriter::WriteResult convertToVRML(const osg::Node&root, const std::string&filename, const osgDB::ReaderWriter::Options *options)
+osgDB::ReaderWriter::WriteResult convertToVRML(const osg::Node &root, const std::string &filename, const osgDB::ReaderWriter::Options *options)
 {
     ToVRML toVrml(filename, options);
 
@@ -106,7 +106,7 @@ osgDB::ReaderWriter::WriteResult convertToVRML(const osg::Node&root, const std::
 // ToVRML
 //
 /////////////////////////////////////////////////////////////////////////
-ToVRML::ToVRML(const std::string&fileName, const osgDB::ReaderWriter::Options *options) :
+ToVRML::ToVRML(const std::string &fileName, const osgDB::ReaderWriter::Options *options) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN)
 {
     _fout.open(fileName.c_str(), ios::out);
@@ -269,7 +269,7 @@ char* ToVRML::indentL()
 // apply(osg::Geode)
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::apply(osg::Geode&node)
+void ToVRML::apply(osg::Geode &node)
 {
     // cout << "Geode" << endl;
 
@@ -622,7 +622,7 @@ void ToVRML::writeAppearance(osg::StateSet *stateset)
 // apply(osg::Group)
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::apply(osg::Group&node)
+void ToVRML::apply(osg::Group &node)
 {
     // cout << "Group" << endl;
     _fout << indent() << "Group {\n";
@@ -645,7 +645,7 @@ void ToVRML::apply(osg::Group&node)
 // apply(osg::MatrixTransform)
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::apply(osg::MatrixTransform&node)
+void ToVRML::apply(osg::MatrixTransform &node)
 {
     // cout << "MatrixTransform" << endl;
     osg::Matrixf mat = node.getMatrix();
@@ -689,7 +689,7 @@ void ToVRML::apply(osg::MatrixTransform&node)
 // apply(osg::PositionAttitudeTransform)
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::apply(osg::PositionAttitudeTransform&node)
+void ToVRML::apply(osg::PositionAttitudeTransform &node)
 {
     osg::Vec3 trans = node.getPosition();
     osg::Vec3 scale = node.getScale();
@@ -724,7 +724,7 @@ void ToVRML::apply(osg::PositionAttitudeTransform&node)
 // apply(osg::Billboard)
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::apply(osg::Billboard&node)
+void ToVRML::apply(osg::Billboard &node)
 {
     osg::notify(osg::ALWAYS) << "WARNING : Billboard is changed to Group" << endl;
 
@@ -771,7 +771,7 @@ void ToVRML::apply(osg::Billboard&node)
 // apply(osg::LOD)
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::apply(osg::LOD&node)
+void ToVRML::apply(osg::LOD &node)
 {
     // std::cout << "LOD" << endl;
     _fout << indent() << "LOD {\n";
@@ -848,7 +848,7 @@ void ToVRML::apply(osg::LOD&node)
 // apply(osg::Node)
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::apply(osg::Node&node)
+void ToVRML::apply(osg::Node &node)
 {
     osg::notify(osg::ALWAYS) << node.className() << " not supported" << endl;
 
@@ -915,7 +915,7 @@ osg::StateSet* ToVRML::getCurrentStateSet()
 // findMaterialName
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::findMaterialName(osg::Material *mat, std::string&name, bool&alreadyLoaded)
+void ToVRML::findMaterialName(osg::Material *mat, std::string &name, bool &alreadyLoaded)
 {
     osg::Vec4 ambient, diffuse, specular, emission;
     // float shininess;
@@ -954,7 +954,7 @@ void ToVRML::findMaterialName(osg::Material *mat, std::string&name, bool&already
 // findTextureName
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::findTextureName(osg::Texture2D *tex, std::string&name, bool&alreadyLoaded)
+void ToVRML::findTextureName(osg::Texture2D *tex, std::string &name, bool &alreadyLoaded)
 {
     // std::cout << "ORI -" << tex->getImage() << "- " << std::endl;
     if (tex->getImage() == NULL)
@@ -1102,7 +1102,7 @@ void ToVRML::findTextureName(osg::Texture2D *tex, std::string&name, bool&already
 // writeCoordIndex
 //
 /////////////////////////////////////////////////////////////////////////
-template<typename T> void ToVRML::writeCoordIndex(GLenum mode, T *indices, unsigned int number, std::vector<int>&primitiveSetFaces, int&primitiveFaces)
+template<typename T> void ToVRML::writeCoordIndex(GLenum mode, T *indices, unsigned int number, std::vector<int> &primitiveSetFaces, int &primitiveFaces)
 {
     int currentFaces = 0;
 
@@ -1292,7 +1292,7 @@ void ToVRML::writeTexCoord(osg::Vec2Array *array, osg::Vec3Array *array2)
 // writeNormal
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::writeNormal(osg::Geometry *geom, std::vector<int>&primitiveSetFaces, int nbFaces)
+void ToVRML::writeNormal(osg::Geometry *geom, std::vector<int> &primitiveSetFaces, int nbFaces)
 {
     osg::ref_ptr<osg::Vec3Array> nArray = (osg::Vec3Array*) (geom->getNormalArray());
 
@@ -1474,7 +1474,7 @@ osg::Vec2Array* ToVRML::buildUVArray(osg::TexEnv *tEnv, osg::Vec3Array *array)
 // writeColor
 //
 /////////////////////////////////////////////////////////////////////////
-void ToVRML::writeColor(osg::Geometry *geom, std::vector<int>&primitiveSetFaces, int nbFaces)
+void ToVRML::writeColor(osg::Geometry *geom, std::vector<int> &primitiveSetFaces, int nbFaces)
 {
     osg::ref_ptr<osg::Vec4Array> cArray = (osg::Vec4Array*) (geom->getColorArray());
 

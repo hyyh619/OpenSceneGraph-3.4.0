@@ -31,8 +31,8 @@ class server
 public:
 /// Construct the server to listen on the specified TCP address and port, and
 /// serve up files from the given directory.
-explicit server(const std::string&address, const std::string&port,
-                const std::string&doc_root, std::size_t io_service_pool_size);
+explicit server(const std::string &address, const std::string &port,
+                const std::string &doc_root, std::size_t io_service_pool_size);
 
 /// Run the server's io_service loop.
 void run();
@@ -47,7 +47,7 @@ void setCallback(request_handler::Callback *cb)
 
 private:
 /// Handle completion of an asynchronous accept operation.
-void handle_accept(const asio::error_code&e);
+void handle_accept(const asio::error_code &e);
 
 /// The pool of io_service objects used to perform asynchronous operations.
 io_service_pool io_service_pool_;

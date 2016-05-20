@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGANIMATION_VERTEX_INFLUENCE
 #define OSGANIMATION_VERTEX_INFLUENCE 1
@@ -23,28 +23,33 @@
 
 namespace osgAnimation
 {
-
     // first is vertex index, and second the weight, the
-    typedef std::pair<int, float> VertexIndexWeight;
-    typedef std::vector<VertexIndexWeight> VertexList;
-    class OSGANIMATION_EXPORT VertexInfluence : public VertexList
+    typedef std::pair < int, float > VertexIndexWeight;
+    typedef std::vector < VertexIndexWeight > VertexList;
+    class OSGANIMATION_EXPORT VertexInfluence: public VertexList
     {
-    public:
-        const std::string& getName() const { return _name;}
-        void setName(const std::string& name) { _name = name;}
+public:
+        const std::string&getName() const
+        {
+            return _name;
+        }
+        void setName(const std::string &name)
+        {
+            _name = name;
+        }
 
-    protected:
+protected:
         // the name is the bone to link to
         std::string _name;
     };
 
-    class VertexInfluenceMap : public std::map<std::string, VertexInfluence> , public osg::Object
+    class VertexInfluenceMap: public std::map < std::string, VertexInfluence >, public osg::Object
     {
-    public:
+public:
         META_Object(osgAnimation, VertexInfluenceMap);
 
         VertexInfluenceMap() {}
-        VertexInfluenceMap(const osgAnimation::VertexInfluenceMap&, const osg::CopyOp&) {}
+        VertexInfluenceMap(const osgAnimation::VertexInfluenceMap &, const osg::CopyOp &) {}
     };
 
 
@@ -52,52 +57,72 @@ namespace osgAnimation
     // reference bones per vertex ...
     class OSGANIMATION_EXPORT VertexInfluenceSet
     {
-    public:
-        typedef std::vector<VertexInfluence> BoneToVertexList;
+public:
+        typedef std::vector < VertexInfluence > BoneToVertexList;
 
         class BoneWeight
         {
-        public:
-            BoneWeight(const std::string& name, float weight) : _boneName(name), _weight(weight) {}
-            const std::string& getBoneName() const { return _boneName; }
-            float getWeight() const { return _weight; }
-            void setWeight(float weight) { _weight = weight; }
-            bool operator==(const BoneWeight& b) const { return (_boneName == b.getBoneName() && _weight == b.getWeight()); }
-        protected:
+public:
+            BoneWeight(const std::string & name, float weight) : _boneName(name), _weight(weight) {}
+            const std::string&getBoneName() const
+            {
+                return _boneName;
+            }
+            float getWeight() const
+            {
+                return _weight;
+            }
+            void setWeight(float weight)
+            {
+                _weight = weight;
+            }
+            bool operator == (const BoneWeight &b) const { return (_boneName == b.getBoneName() && _weight == b.getWeight()); }
+protected:
             std::string _boneName;
-            float _weight;
+            float       _weight;
         };
 
-        typedef std::vector<BoneWeight> BoneWeightList;
-        typedef std::map<int,BoneWeightList> VertexIndexToBoneWeightMap;
+        typedef std::vector < BoneWeight > BoneWeightList;
+        typedef std::map < int, BoneWeightList > VertexIndexToBoneWeightMap;
 
         class UniqVertexSetToBoneSet
         {
-        public:
-            void setBones(BoneWeightList& bones) { _bones = bones;}
-            const BoneWeightList& getBones() const { return _bones;}
-            std::vector<int>& getVertexes() { return _vertexes;}
-            const std::vector<int>& getVertexes() const { return _vertexes;}
-        protected:
-            std::vector<int> _vertexes;
+public:
+            void setBones(BoneWeightList &bones)
+            {
+                _bones = bones;
+            }
+            const BoneWeightList&getBones() const
+            {
+                return _bones;
+            }
+            std::vector < int > &getVertexes()
+            {
+                return _vertexes;
+            }
+            const std::vector < int >&getVertexes() const { return _vertexes; }
+protected:
+            std::vector < int > _vertexes;
             BoneWeightList _bones; // here we could limit matrix operation by caching (weight * matrix)
         };
 
-        typedef std::vector<UniqVertexSetToBoneSet> UniqVertexSetToBoneSetList;
+        typedef std::vector < UniqVertexSetToBoneSet > UniqVertexSetToBoneSetList;
 
-        const UniqVertexSetToBoneSetList& getUniqVertexSetToBoneSetList() const { return _uniqVertexSetToBoneSet;}
-        void addVertexInfluence(const VertexInfluence& v);
+        const UniqVertexSetToBoneSetList&getUniqVertexSetToBoneSetList() const
+        {
+            return _uniqVertexSetToBoneSet;
+        }
+        void addVertexInfluence(const VertexInfluence &v);
         void buildVertex2BoneList();
         void buildUniqVertexSetToBoneSetList();
         void clear();
 
-        const VertexIndexToBoneWeightMap& getVertexToBoneList() const;
-    protected:
-        BoneToVertexList _bone2Vertexes;
+        const VertexIndexToBoneWeightMap&getVertexToBoneList() const;
+protected:
+        BoneToVertexList           _bone2Vertexes;
         VertexIndexToBoneWeightMap _vertex2Bones;
         UniqVertexSetToBoneSetList _uniqVertexSetToBoneSet;
     };
-
 }
 
 #endif

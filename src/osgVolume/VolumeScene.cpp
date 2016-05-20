@@ -77,7 +77,7 @@ void VolumeScene::ViewData::visitTile(VolumeTile *tile)
 VolumeScene::VolumeScene()
 {}
 
-VolumeScene::VolumeScene(const VolumeScene&vs, const osg::CopyOp&copyop) :
+VolumeScene::VolumeScene(const VolumeScene &vs, const osg::CopyOp &copyop) :
     osg::Group(vs, copyop)
 {}
 
@@ -99,7 +99,7 @@ TileData* VolumeScene::tileVisited(osgUtil::CullVisitor *cv, osgVolume::VolumeTi
 
     if (viewData.valid())
     {
-        osg::ref_ptr<TileData>&tileData = viewData->_tiles[tile];
+        osg::ref_ptr<TileData> &tileData = viewData->_tiles[tile];
         if (!tileData)
         {
             tileData = tile->getVolumeTechnique() ? tile->getVolumeTechnique()->createTileData(cv) : 0;
@@ -131,7 +131,7 @@ TileData* VolumeScene::getTileData(osgUtil::CullVisitor *cv, osgVolume::VolumeTi
     return (itr != viewData->_tiles.end()) ? itr->second.get() : 0;
 }
 
-void VolumeScene::traverse(osg::NodeVisitor&nv)
+void VolumeScene::traverse(osg::NodeVisitor &nv)
 {
     osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
 
@@ -399,7 +399,7 @@ void VolumeScene::traverse(osg::NodeVisitor&nv)
     cv->setUserValue("VolumeSceneTraversal", std::string("Post"));
 
     // for each tile that needs post rendering we need to add it into current RenderStage.
-    Tiles&tiles = viewData->_tiles;
+    Tiles &tiles = viewData->_tiles;
 
     for (Tiles::iterator itr = tiles.begin();
          itr != tiles.end();
@@ -417,7 +417,7 @@ void VolumeScene::traverse(osg::NodeVisitor&nv)
         // OSG_NOTICE<<"VolumeTile to add "<<tileData->projectionMatrix.get()<<", "<<tileData->modelviewMatrix.get()<<std::endl;
 
 
-        osg::NodePath&nodePath = tileData->nodePath;
+        osg::NodePath &nodePath = tileData->nodePath;
 
         cv->getNodePath() = nodePath;
         cv->pushProjectionMatrix(tileData->projectionMatrix.get());

@@ -19,9 +19,9 @@
 class ExportHTML
 {
 public:
-static bool write(osgPresentation::SlideEventHandler *seh, osgViewer::Viewer&viewer, const std::string&filename);
+static bool write(osgPresentation::SlideEventHandler *seh, osgViewer::Viewer &viewer, const std::string &filename);
 
-static std::string createFileName(const std::string&basename, unsigned int page, const std::string&ext);
+static std::string createFileName(const std::string &basename, unsigned int page, const std::string &ext);
 };
 
 #endif

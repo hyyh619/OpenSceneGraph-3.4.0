@@ -12,8 +12,8 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool Cone_readLocalData(Object&obj, Input&fr);
-bool Cone_writeLocalData(const Object&obj, Output&fw);
+bool Cone_readLocalData(Object &obj, Input &fr);
+bool Cone_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Cone)
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(Cone)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Cone_readLocalData(Object&obj, Input&fr)
+bool Cone_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Cone&cone = static_cast<Cone&>(obj);
+    Cone &cone = static_cast<Cone&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -76,9 +76,9 @@ bool Cone_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Cone_writeLocalData(const Object&obj, Output&fw)
+bool Cone_writeLocalData(const Object &obj, Output &fw)
 {
-    const Cone&cone = static_cast<const Cone&>(obj);
+    const Cone &cone = static_cast<const Cone&>(obj);
 
     fw.indent() << "Center " <<   cone.getCenter() << std::endl;
     fw.indent() << "Radius " <<   cone.getRadius() << std::endl;

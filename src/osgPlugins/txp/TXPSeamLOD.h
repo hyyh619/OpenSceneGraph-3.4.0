@@ -53,13 +53,13 @@ TXPSeamLOD();
 TXPSeamLOD(int x, int y, int lod, int dx, int dy);
 
 TXPSeamLOD(const TXPSeamLOD&,
-           const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+           const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Node(txp, TXPSeamLOD);
 
-virtual void traverse(osg::NodeVisitor&nv);
+virtual void traverse(osg::NodeVisitor &nv);
 
-void setCenter(const osg::Vec3&center)
+void setCenter(const osg::Vec3 &center)
 {
     _center = center;
 }

@@ -27,7 +27,7 @@ class PhotoArchive : public osg::Referenced
 {
 public:
 
-static PhotoArchive* open(const std::string&filename)
+static PhotoArchive* open(const std::string &filename)
 {
     osg::ref_ptr<PhotoArchive> archive = new PhotoArchive(filename);
 
@@ -44,23 +44,23 @@ bool empty()
     return _photoIndex.empty();
 }
 
-void getImageFileNameList(FileNameList&filenameList);
+void getImageFileNameList(FileNameList &filenameList);
 
-static void buildArchive(const std::string&filename, const FileNameList&imageList, unsigned int thumbnailSize = 256, unsigned int maximumSize = 1024, bool compressed = true);
+static void buildArchive(const std::string &filename, const FileNameList &imageList, unsigned int thumbnailSize = 256, unsigned int maximumSize = 1024, bool compressed = true);
 
-osg::Image* readImage(const std::string&filename,
+osg::Image* readImage(const std::string &filename,
                       unsigned int target_s, unsigned target_t,
-                      float&original_s, float&original_t);
+                      float &original_s, float &original_t);
 
 
 
 protected:
 
-PhotoArchive(const std::string&filename);
+PhotoArchive(const std::string &filename);
 
 virtual ~PhotoArchive() {}
 
-bool readPhotoIndex(const std::string&filename);
+bool readPhotoIndex(const std::string &filename);
 
 struct PhotoHeader
 {

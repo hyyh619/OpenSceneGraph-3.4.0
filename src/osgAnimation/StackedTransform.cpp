@@ -18,7 +18,7 @@ using namespace osgAnimation;
 
 StackedTransform::StackedTransform() {}
 
-StackedTransform::StackedTransform(const StackedTransform&rhs, const osg::CopyOp&co)
+StackedTransform::StackedTransform(const StackedTransform &rhs, const osg::CopyOp &co)
 {
     reserve(rhs.size());
 

@@ -158,7 +158,7 @@ struct ActiveQuery
     ActiveQuery(GLuint start_, GLuint end_, int frameNumber_)
         : queries(start_, end_), frameNumber(frameNumber_)
     {}
-    ActiveQuery(const QueryPair&queries_, unsigned int frameNumber_)
+    ActiveQuery(const QueryPair &queries_, unsigned int frameNumber_)
         : queries(queries_), frameNumber(frameNumber_)
     {}
     QueryPair    queries;
@@ -599,8 +599,8 @@ static void collectSceneViewStats(unsigned int frameNumber, osgUtil::SceneView *
     stats->setAttribute(frameNumber, "Visible number of impostors", static_cast<double>(sceneStats.nimpostor));
     stats->setAttribute(frameNumber, "Number of ordered leaves", static_cast<double>(sceneStats.numOrderedLeaves));
 
-    unsigned int                                totalNumPrimitiveSets = 0;
-    const osgUtil::Statistics::PrimitiveValueMap&pvm                  = sceneStats.getPrimitiveValueMap();
+    unsigned int                                 totalNumPrimitiveSets = 0;
+    const osgUtil::Statistics::PrimitiveValueMap &pvm                  = sceneStats.getPrimitiveValueMap();
 
     for (osgUtil::Statistics::PrimitiveValueMap::const_iterator pvm_itr = pvm.begin();
          pvm_itr != pvm.end();
@@ -611,7 +611,7 @@ static void collectSceneViewStats(unsigned int frameNumber, osgUtil::SceneView *
 
     stats->setAttribute(frameNumber, "Visible number of PrimitiveSets", static_cast<double>(totalNumPrimitiveSets));
 
-    osgUtil::Statistics::PrimitiveCountMap&pcm = sceneStats.getPrimitiveCountMap();
+    osgUtil::Statistics::PrimitiveCountMap &pcm = sceneStats.getPrimitiveCountMap();
     stats->setAttribute(frameNumber, "Visible number of GL_POINTS", static_cast<double>(pcm[GL_POINTS]));
     stats->setAttribute(frameNumber, "Visible number of GL_LINES", static_cast<double>(pcm[GL_LINES]));
     stats->setAttribute(frameNumber, "Visible number of GL_LINE_STRIP", static_cast<double>(pcm[GL_LINE_STRIP]));

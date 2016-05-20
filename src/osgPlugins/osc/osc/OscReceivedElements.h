@@ -157,8 +157,8 @@ const ReceivedBundleElement* operator->() const
     return &value_;
 }
 
-friend bool operator==(const ReceivedBundleElementIterator&lhs,
-                       const ReceivedBundleElementIterator&rhs);
+friend bool operator==(const ReceivedBundleElementIterator &lhs,
+                       const ReceivedBundleElementIterator &rhs);
 
 private:
 ReceivedBundleElement value_;
@@ -168,20 +168,20 @@ void Advance()
     value_.size_ = value_.Contents() + value_.Size();
 }
 
-bool IsEqualTo(const ReceivedBundleElementIterator&rhs) const
+bool IsEqualTo(const ReceivedBundleElementIterator &rhs) const
 {
     return value_.size_ == rhs.value_.size_;
 }
 };
 
-inline bool operator==(const ReceivedBundleElementIterator&lhs,
-                       const ReceivedBundleElementIterator&rhs)
+inline bool operator==(const ReceivedBundleElementIterator &lhs,
+                       const ReceivedBundleElementIterator &rhs)
 {
     return lhs.IsEqualTo(rhs);
 }
 
-inline bool operator!=(const ReceivedBundleElementIterator&lhs,
-                       const ReceivedBundleElementIterator&rhs)
+inline bool operator!=(const ReceivedBundleElementIterator &lhs,
+                       const ReceivedBundleElementIterator &rhs)
 {
     return !(lhs == rhs);
 }
@@ -301,8 +301,8 @@ bool IsBlob() const
 {
     return *typeTag_ == BLOB_TYPE_TAG;
 }
-void AsBlob(const void*&data, unsigned long&size) const;
-void AsBlobUnchecked(const void*&data, unsigned long&size) const;
+void AsBlob(const void* &data, unsigned long &size) const;
+void AsBlobUnchecked(const void* &data, unsigned long &size) const;
 
 private:
 const char *typeTag_;
@@ -340,28 +340,28 @@ const ReceivedMessageArgument* operator->() const
     return &value_;
 }
 
-friend bool operator==(const ReceivedMessageArgumentIterator&lhs,
-                       const ReceivedMessageArgumentIterator&rhs);
+friend bool operator==(const ReceivedMessageArgumentIterator &lhs,
+                       const ReceivedMessageArgumentIterator &rhs);
 
 private:
 ReceivedMessageArgument value_;
 
 void Advance();
 
-bool IsEqualTo(const ReceivedMessageArgumentIterator&rhs) const
+bool IsEqualTo(const ReceivedMessageArgumentIterator &rhs) const
 {
     return value_.typeTag_ == rhs.value_.typeTag_;
 }
 };
 
-inline bool operator==(const ReceivedMessageArgumentIterator&lhs,
-                       const ReceivedMessageArgumentIterator&rhs)
+inline bool operator==(const ReceivedMessageArgumentIterator &lhs,
+                       const ReceivedMessageArgumentIterator &rhs)
 {
     return lhs.IsEqualTo(rhs);
 }
 
-inline bool operator!=(const ReceivedMessageArgumentIterator&lhs,
-                       const ReceivedMessageArgumentIterator&rhs)
+inline bool operator!=(const ReceivedMessageArgumentIterator &lhs,
+                       const ReceivedMessageArgumentIterator &rhs)
 {
     return !(lhs == rhs);
 }
@@ -370,8 +370,8 @@ inline bool operator!=(const ReceivedMessageArgumentIterator&lhs,
 class ReceivedMessageArgumentStream
 {
 friend class ReceivedMessage;
-ReceivedMessageArgumentStream(const ReceivedMessageArgumentIterator&begin,
-                              const ReceivedMessageArgumentIterator&end)
+ReceivedMessageArgumentStream(const ReceivedMessageArgumentIterator &begin,
+                              const ReceivedMessageArgumentIterator &end)
     : p_(begin)
     , end_(end) {}
 
@@ -385,7 +385,7 @@ bool Eos() const
     return p_ == end_;
 }
 
-ReceivedMessageArgumentStream&operator>>(bool&rhs)
+ReceivedMessageArgumentStream&operator>>(bool &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -397,7 +397,7 @@ ReceivedMessageArgumentStream&operator>>(bool&rhs)
 // not sure if it would be useful to stream Nil and Infinitum
 // for now it's not possible
 
-ReceivedMessageArgumentStream&operator>>(int32&rhs)
+ReceivedMessageArgumentStream&operator>>(int32 &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -406,7 +406,7 @@ ReceivedMessageArgumentStream&operator>>(int32&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(float&rhs)
+ReceivedMessageArgumentStream&operator>>(float &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -415,7 +415,7 @@ ReceivedMessageArgumentStream&operator>>(float&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(char&rhs)
+ReceivedMessageArgumentStream&operator>>(char &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -424,7 +424,7 @@ ReceivedMessageArgumentStream&operator>>(char&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(RgbaColor&rhs)
+ReceivedMessageArgumentStream&operator>>(RgbaColor &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -433,7 +433,7 @@ ReceivedMessageArgumentStream&operator>>(RgbaColor&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(MidiMessage&rhs)
+ReceivedMessageArgumentStream&operator>>(MidiMessage &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -442,7 +442,7 @@ ReceivedMessageArgumentStream&operator>>(MidiMessage&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(int64&rhs)
+ReceivedMessageArgumentStream&operator>>(int64 &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -451,7 +451,7 @@ ReceivedMessageArgumentStream&operator>>(int64&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(TimeTag&rhs)
+ReceivedMessageArgumentStream&operator>>(TimeTag &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -460,7 +460,7 @@ ReceivedMessageArgumentStream&operator>>(TimeTag&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(double&rhs)
+ReceivedMessageArgumentStream&operator>>(double &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -469,7 +469,7 @@ ReceivedMessageArgumentStream&operator>>(double&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(Blob&rhs)
+ReceivedMessageArgumentStream&operator>>(Blob &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -478,7 +478,7 @@ ReceivedMessageArgumentStream&operator>>(Blob&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(const char*&rhs)
+ReceivedMessageArgumentStream&operator>>(const char* &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -487,7 +487,7 @@ ReceivedMessageArgumentStream&operator>>(const char*&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(Symbol&rhs)
+ReceivedMessageArgumentStream&operator>>(Symbol &rhs)
 {
     if (Eos())
         throw MissingArgumentException();
@@ -496,7 +496,7 @@ ReceivedMessageArgumentStream&operator>>(Symbol&rhs)
     return *this;
 }
 
-ReceivedMessageArgumentStream&operator>>(MessageTerminator&rhs)
+ReceivedMessageArgumentStream&operator>>(MessageTerminator &rhs)
 {
     if (!Eos())
         throw ExcessArgumentException();
@@ -510,8 +510,8 @@ class ReceivedMessage
 {
 void Init(const char *bundle, unsigned long size);
 public:
-explicit ReceivedMessage(const ReceivedPacket&packet);
-explicit ReceivedMessage(const ReceivedBundleElement&bundleElement);
+explicit ReceivedMessage(const ReceivedPacket &packet);
+explicit ReceivedMessage(const ReceivedBundleElement &bundleElement);
 
 const char* AddressPattern() const
 {
@@ -562,8 +562,8 @@ class ReceivedBundle
 {
 void Init(const char *message, unsigned long size);
 public:
-explicit ReceivedBundle(const ReceivedPacket&packet);
-explicit ReceivedBundle(const ReceivedBundleElement&bundleElement);
+explicit ReceivedBundle(const ReceivedPacket &packet);
+explicit ReceivedBundle(const ReceivedBundleElement &bundleElement);
 
 uint64 TimeTag() const;
 

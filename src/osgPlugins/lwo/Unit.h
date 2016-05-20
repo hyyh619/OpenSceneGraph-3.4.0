@@ -130,12 +130,12 @@ inline VertexMap_map* spot_maps()
 void flatten_maps();
 void generate_normals();
 
-void compute_vertex_remapping(const Surface *surf, Index_list&remap) const;
+void compute_vertex_remapping(const Surface *surf, Index_list &remap) const;
 
 protected:
-float angle_between_polygons(const Polygon&p1, const Polygon&p2) const;
-void find_shared_polygons(int vertex_index, std::vector<int>&poly_indices);
-void flatten_map(Polygon&poly, const VertexMap *local_map, VertexMap *global_map);
+float angle_between_polygons(const Polygon &p1, const Polygon &p2) const;
+void find_shared_polygons(int vertex_index, std::vector<int> &poly_indices);
+void flatten_map(Polygon &poly, const VertexMap *local_map, VertexMap *global_map);
 
 private:
 osg::ref_ptr<osg::Vec3Array> points_;

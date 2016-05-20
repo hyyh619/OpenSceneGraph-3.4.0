@@ -60,7 +60,7 @@ TextureRectangle::TextureRectangle(Image *image) :
     setImage(image);
 }
 
-TextureRectangle::TextureRectangle(const TextureRectangle&text, const CopyOp&copyop) :
+TextureRectangle::TextureRectangle(const TextureRectangle &text, const CopyOp &copyop) :
     Texture(text, copyop),
     _textureWidth(text._textureWidth),
     _textureHeight(text._textureHeight),
@@ -74,7 +74,7 @@ TextureRectangle::~TextureRectangle()
     setImage(NULL);
 }
 
-int TextureRectangle::compare(const StateAttribute&sa) const
+int TextureRectangle::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -159,7 +159,7 @@ void TextureRectangle::setImage(Image *image)
 }
 
 
-void TextureRectangle::apply(State&state) const
+void TextureRectangle::apply(State &state) const
 {
     if (!state.get<GLExtensions>()->isRectangleSupported)
     {
@@ -300,7 +300,7 @@ void TextureRectangle::apply(State&state) const
     }
 }
 
-void TextureRectangle::applyTexImage_load(GLenum target, Image *image, State&state, GLsizei&inwidth, GLsizei&inheight) const
+void TextureRectangle::applyTexImage_load(GLenum target, Image *image, State &state, GLsizei &inwidth, GLsizei &inheight) const
 {
     // if we don't have a valid image we can't create a texture!
     if (!image || !image->data())
@@ -375,7 +375,7 @@ void TextureRectangle::applyTexImage_load(GLenum target, Image *image, State&sta
     }
 }
 
-void TextureRectangle::applyTexImage_subload(GLenum target, Image *image, State&state, GLsizei&inwidth, GLsizei&inheight, GLint&inInternalFormat) const
+void TextureRectangle::applyTexImage_subload(GLenum target, Image *image, State &state, GLsizei &inwidth, GLsizei &inheight, GLint &inInternalFormat) const
 {
     // if we don't have a valid image we can't create a texture!
     if (!image || !image->data())
@@ -460,7 +460,7 @@ void TextureRectangle::computeInternalFormat() const
         computeInternalFormatType();
 }
 
-void TextureRectangle::copyTexImage2D(State&state, int x, int y, int width, int height)
+void TextureRectangle::copyTexImage2D(State &state, int x, int y, int width, int height)
 {
     const unsigned int contextID = state.getContextID();
 
@@ -522,7 +522,7 @@ void TextureRectangle::copyTexImage2D(State&state, int x, int y, int width, int 
     state.haveAppliedTextureAttribute(state.getActiveTextureUnit(), this);
 }
 
-void TextureRectangle::copyTexSubImage2D(State&state, int xoffset, int yoffset, int x, int y, int width, int height)
+void TextureRectangle::copyTexSubImage2D(State &state, int xoffset, int yoffset, int x, int y, int width, int height)
 {
     const unsigned int contextID = state.getContextID();
 

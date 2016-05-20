@@ -10,10 +10,10 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool BlendFunc_readLocalData(Object&obj, Input&fr);
-bool BlendFunc_writeLocalData(const Object&obj, Output&fw);
+bool BlendFunc_readLocalData(Object &obj, Input &fr);
+bool BlendFunc_writeLocalData(const Object &obj, Output &fw);
 
-bool BlendFunc_matchModeStr(const char *str, int&mode);
+bool BlendFunc_matchModeStr(const char *str, int &mode);
 const char* BlendFunc_getModeStr(int value);
 
 // register the read and write functions with the osgDB::Registry.
@@ -36,11 +36,11 @@ REGISTER_DOTOSGWRAPPER(BlendFunc)
     &BlendFunc_writeLocalData
 );
 
-bool BlendFunc_readLocalData(Object&obj, Input&fr)
+bool BlendFunc_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    BlendFunc&transparency = static_cast<BlendFunc&>(obj);
+    BlendFunc &transparency = static_cast<BlendFunc&>(obj);
 
     int mode;
 
@@ -75,9 +75,9 @@ bool BlendFunc_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool BlendFunc_writeLocalData(const Object&obj, Output&fw)
+bool BlendFunc_writeLocalData(const Object &obj, Output &fw)
 {
-    const BlendFunc&transparency = static_cast<const BlendFunc&>(obj);
+    const BlendFunc &transparency = static_cast<const BlendFunc&>(obj);
 
     fw.indent() << "source " << BlendFunc_getModeStr(transparency.getSource()) << std::endl;
     fw.indent() << "destination " << BlendFunc_getModeStr(transparency.getDestination()) << std::endl;
@@ -97,7 +97,7 @@ bool BlendFunc_writeLocalData(const Object&obj, Output&fw)
 
 
 
-bool BlendFunc_matchModeStr(const char *str, int&mode)
+bool BlendFunc_matchModeStr(const char *str, int &mode)
 {
     if (strcmp(str, "DST_ALPHA") == 0)
         mode = BlendFunc::DST_ALPHA;

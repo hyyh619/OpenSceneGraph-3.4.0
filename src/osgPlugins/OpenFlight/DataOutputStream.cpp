@@ -117,7 +117,7 @@ DataOutputStream::writeFloat64(const float64 val)
 
 
 void
-DataOutputStream::writeString(const std::string&val, bool nullTerminate)
+DataOutputStream::writeString(const std::string &val, bool nullTerminate)
 {
     vwrite(const_cast<char*>(val.c_str()), val.size());
     if (nullTerminate)
@@ -125,7 +125,7 @@ DataOutputStream::writeString(const std::string&val, bool nullTerminate)
 }
 
 void
-DataOutputStream::writeString(const std::string&val, int size, char fill)
+DataOutputStream::writeString(const std::string &val, int size, char fill)
 {
     if (val.size() > ((unsigned int)size) - 1)
     {
@@ -140,7 +140,7 @@ DataOutputStream::writeString(const std::string&val, int size, char fill)
 }
 
 void
-DataOutputStream::writeID(const std::string&val)
+DataOutputStream::writeID(const std::string &val)
 {
     unsigned int len = val.size();
 
@@ -152,14 +152,14 @@ DataOutputStream::writeID(const std::string&val)
 
 
 void
-DataOutputStream::writeVec2f(const osg::Vec2f&val)
+DataOutputStream::writeVec2f(const osg::Vec2f &val)
 {
     writeFloat32(val.x());
     writeFloat32(val.y());
 }
 
 void
-DataOutputStream::writeVec3f(const osg::Vec3f&val)
+DataOutputStream::writeVec3f(const osg::Vec3f &val)
 {
     writeFloat32(val.x());
     writeFloat32(val.y());
@@ -167,7 +167,7 @@ DataOutputStream::writeVec3f(const osg::Vec3f&val)
 }
 
 void
-DataOutputStream::writeVec4f(const osg::Vec4f&val)
+DataOutputStream::writeVec4f(const osg::Vec4f &val)
 {
     writeFloat32(val.x());
     writeFloat32(val.y());
@@ -176,7 +176,7 @@ DataOutputStream::writeVec4f(const osg::Vec4f&val)
 }
 
 void
-DataOutputStream::writeVec3d(const osg::Vec3d&val)
+DataOutputStream::writeVec3d(const osg::Vec3d &val)
 {
     writeFloat64(val.x());
     writeFloat64(val.y());

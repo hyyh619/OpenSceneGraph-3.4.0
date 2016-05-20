@@ -28,7 +28,7 @@
 
 using namespace osgViewer;
 
-void WoWVxDisplay::configure(osgViewer::View&view) const
+void WoWVxDisplay::configure(osgViewer::View &view) const
 {
     OSG_INFO << "WoWVxDisplay::configure(...)" << std::endl;
 

@@ -54,7 +54,7 @@ void Drawable::write(DataOutputStream *out)
 
     if (out->getVersion() >= VERSION_0010)
     {
-        const osg::BoundingBox&bb = getInitialBound();
+        const osg::BoundingBox &bb = getInitialBound();
         out->writeBool(bb.valid());
         if (bb.valid())
         {

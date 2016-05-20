@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGUI_LABEL
 #define OSGUI_LABEL
@@ -19,29 +19,36 @@
 
 namespace osgUI
 {
-
-class OSGUI_EXPORT Label : public osgUI::Widget
-{
+    class OSGUI_EXPORT Label: public osgUI::Widget
+    {
 public:
-    Label();
-    Label(const Label& label, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
-    META_Node(osgUI, Label);
+        Label();
+        Label(const Label &label, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        META_Node(osgUI, Label);
 
-    void setText(const std::string& text) { _text = text; dirty(); }
-    std::string& getText() { return _text; }
-    const std::string& getText() const { return _text; }
+        void setText(const std::string &text)
+        {
+            _text = text; dirty();
+        }
+        std::string&getText()
+        {
+            return _text;
+        }
+        const std::string&getText() const
+        {
+            return _text;
+        }
 
-    virtual void createGraphicsImplementation();
+        virtual void createGraphicsImplementation();
 
 protected:
-    virtual ~Label() {}
+        virtual ~Label() {}
 
-    std::string                         _text;
+        std::string _text;
 
-    // implementation detail
-    osg::ref_ptr<osgText::Text>         _textDrawable;
-};
-
+        // implementation detail
+        osg::ref_ptr < osgText::Text > _textDrawable;
+    };
 }
 
 #endif

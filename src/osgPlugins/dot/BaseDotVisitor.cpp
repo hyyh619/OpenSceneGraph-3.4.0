@@ -60,7 +60,7 @@ void BaseDotVisitor::setOptions(const osgDB::Options *options)
     }
 }
 
-bool BaseDotVisitor::run(osg::Node&root, std::ostream *fout)
+bool BaseDotVisitor::run(osg::Node &root, std::ostream *fout)
 {
     setTraversalMode(TRAVERSE_ALL_CHILDREN);
     if (fout && *fout)
@@ -83,7 +83,7 @@ bool BaseDotVisitor::run(osg::Node&root, std::ostream *fout)
     return false;
 }
 
-void BaseDotVisitor::apply(Node&node)
+void BaseDotVisitor::apply(Node &node)
 {
     int id;
 
@@ -94,7 +94,7 @@ void BaseDotVisitor::apply(Node&node)
     }
 }
 
-void BaseDotVisitor::apply(Geode&node)
+void BaseDotVisitor::apply(Geode &node)
 {
     int id;
 
@@ -130,7 +130,7 @@ void BaseDotVisitor::apply(Geode&node)
     }
 }
 
-void BaseDotVisitor::apply(Group&node)
+void BaseDotVisitor::apply(Group &node)
 {
     int id;
 
@@ -152,15 +152,15 @@ void BaseDotVisitor::apply(Group&node)
     }
 }
 
-void BaseDotVisitor::handle(osg::Node&node, int id) {}
+void BaseDotVisitor::handle(osg::Node &node, int id) {}
 
-void BaseDotVisitor::handle(osg::Geode&node, int id) {}
+void BaseDotVisitor::handle(osg::Geode &node, int id) {}
 
-void BaseDotVisitor::handle(osg::Group&node, int id) {}
+void BaseDotVisitor::handle(osg::Group &node, int id) {}
 
-void BaseDotVisitor::handle(osg::Group&parent, osg::Node&child, int parentID, int childID) {}
+void BaseDotVisitor::handle(osg::Group &parent, osg::Node &child, int parentID, int childID) {}
 
-void BaseDotVisitor::handleNodeAndTraverse(osg::Node&node, int id)
+void BaseDotVisitor::handleNodeAndTraverse(osg::Node &node, int id)
 {
     osg::StateSet *ss = node.getStateSet();
 
@@ -178,17 +178,17 @@ void BaseDotVisitor::handleNodeAndTraverse(osg::Node&node, int id)
     traverse(node);
 }
 
-void BaseDotVisitor::handle(osg::StateSet&stateset, int id) {}
+void BaseDotVisitor::handle(osg::StateSet &stateset, int id) {}
 
-void BaseDotVisitor::handle(osg::Node&node, osg::StateSet&stateset, int parentID, int childID) {}
+void BaseDotVisitor::handle(osg::Node &node, osg::StateSet &stateset, int parentID, int childID) {}
 
-void BaseDotVisitor::handle(osg::Drawable&drawable, int id) {}
+void BaseDotVisitor::handle(osg::Drawable &drawable, int id) {}
 
-void BaseDotVisitor::handle(osg::Drawable&drawable, osg::StateSet&stateset, int parentID, int childID) {}
+void BaseDotVisitor::handle(osg::Drawable &drawable, osg::StateSet &stateset, int parentID, int childID) {}
 
-void BaseDotVisitor::handle(osg::Geode&geode, osg::Drawable&drawable, int parentID, int childID) {}
+void BaseDotVisitor::handle(osg::Geode &geode, osg::Drawable &drawable, int parentID, int childID) {}
 
-bool BaseDotVisitor::getOrCreateId(osg::Object *object, int&id)
+bool BaseDotVisitor::getOrCreateId(osg::Object *object, int &id)
 {
     assert(object);
     ObjectMap::iterator it = _objectMap.find(object);

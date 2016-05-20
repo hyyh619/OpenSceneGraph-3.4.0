@@ -26,7 +26,7 @@ TabWidget::TabWidget() :
     _currentIndex(0)
 {}
 
-TabWidget::TabWidget(const osgUI::TabWidget&tabwidget, const osg::CopyOp&copyop) :
+TabWidget::TabWidget(const osgUI::TabWidget &tabwidget, const osg::CopyOp &copyop) :
     Widget(tabwidget, copyop),
     _tabs(tabwidget._tabs)
 {}
@@ -67,7 +67,7 @@ bool TabWidget::handleImplementation(osgGA::EventVisitor *ev, osgGA::Event *even
         osgUtil::LineSegmentIntersector::Intersections intersections;
         if (aa->computeIntersections(*ea, nodePath, intersections))
         {
-            const osgUtil::LineSegmentIntersector::Intersection&Intersection = *intersections.begin();
+            const osgUtil::LineSegmentIntersector::Intersection &Intersection = *intersections.begin();
 
             for (osg::NodePath::const_iterator itr = Intersection.nodePath.begin();
                  itr != Intersection.nodePath.end();
@@ -292,7 +292,7 @@ void TabWidget::_activateWidgets()
     }
 }
 
-osg::Node* TabWidget::_createTabFrame(const osg::BoundingBox&extents, osgUI::FrameSettings *fs, const osg::Vec4&color)
+osg::Node* TabWidget::_createTabFrame(const osg::BoundingBox &extents, osgUI::FrameSettings *fs, const osg::Vec4 &color)
 {
     Style                    *style = (getStyle() != 0) ? getStyle() : Style::instance().get();
     osg::ref_ptr<osg::Group> group  = new osg::Group;
@@ -303,7 +303,7 @@ osg::Node* TabWidget::_createTabFrame(const osg::BoundingBox&extents, osgUI::Fra
     return group.release();
 }
 
-osg::Node* TabWidget::_createTabHeader(const osg::BoundingBox&extents, osgUI::FrameSettings *frameSettings, const osg::Vec4&color)
+osg::Node* TabWidget::_createTabHeader(const osg::BoundingBox &extents, osgUI::FrameSettings *frameSettings, const osg::Vec4 &color)
 {
     osg::ref_ptr<osg::Geometry> geometry = new osg::Geometry;
 

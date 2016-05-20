@@ -27,7 +27,7 @@ PatchParameter::PatchParameter(GLint vertices) :
 PatchParameter::~PatchParameter()
 {}
 
-void PatchParameter::apply(State&state) const
+void PatchParameter::apply(State &state) const
 {
     GLExtensions *extensions = state.get<GLExtensions>();
 

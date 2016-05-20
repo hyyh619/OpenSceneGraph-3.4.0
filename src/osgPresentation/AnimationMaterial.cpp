@@ -24,7 +24,7 @@ void AnimationMaterial::insert(double time, osg::Material *material)
     _timeControlPointMap[time] = material;
 }
 
-bool AnimationMaterial::getMaterial(double time, osg::Material&material) const
+bool AnimationMaterial::getMaterial(double time, osg::Material &material) const
 {
     if (_timeControlPointMap.empty())
         return false;
@@ -88,13 +88,13 @@ bool AnimationMaterial::getMaterial(double time, osg::Material&material) const
 }
 
 template<class T>
-T interp(float r, const T&lhs, const T&rhs)
+T interp(float r, const T &lhs, const T &rhs)
 {
     return lhs * (1.0f - r) + rhs * r;
 }
 
 
-void AnimationMaterial::interpolate(osg::Material&material, float r, const osg::Material&lhs, const osg::Material&rhs) const
+void AnimationMaterial::interpolate(osg::Material &material, float r, const osg::Material &lhs, const osg::Material &rhs) const
 {
     material.setColorMode(lhs.getColorMode());
 
@@ -119,7 +119,7 @@ void AnimationMaterial::interpolate(osg::Material&material, float r, const osg::
         material.setShininess(osg::Material::BACK, interp(r, lhs.getShininess(osg::Material::BACK), rhs.getShininess(osg::Material::BACK)));
 }
 
-void AnimationMaterial::read(std::istream&in)
+void AnimationMaterial::read(std::istream &in)
 {
     while (!in.eof())
     {
@@ -136,9 +136,9 @@ void AnimationMaterial::read(std::istream&in)
     }
 }
 
-void AnimationMaterial::write(std::ostream&fout) const
+void AnimationMaterial::write(std::ostream &fout) const
 {
-    const TimeControlPointMap&tcpm = getTimeControlPointMap();
+    const TimeControlPointMap &tcpm = getTimeControlPointMap();
 
     for (TimeControlPointMap::const_iterator tcpmitr = tcpm.begin();
          tcpmitr != tcpm.end();
@@ -150,7 +150,7 @@ void AnimationMaterial::write(std::ostream&fout) const
 
 bool AnimationMaterial::requiresBlending() const
 {
-    const TimeControlPointMap&tcpm = getTimeControlPointMap();
+    const TimeControlPointMap &tcpm = getTimeControlPointMap();
 
     for (TimeControlPointMap::const_iterator tcpmitr = tcpm.begin();
          tcpmitr != tcpm.end();
@@ -198,7 +198,7 @@ double AnimationMaterialCallback::getAnimationTime() const
         return ((_latestTime - _firstTime) - _timeOffset) * _timeMultiplier;
 }
 
-void AnimationMaterialCallback::update(osg::Node&node)
+void AnimationMaterialCallback::update(osg::Node &node)
 {
     osg::StateSet *stateset = node.getOrCreateStateSet();
     osg::Material *material =

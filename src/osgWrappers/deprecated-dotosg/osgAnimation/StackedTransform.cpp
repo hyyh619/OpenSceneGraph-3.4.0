@@ -28,10 +28,10 @@
 using namespace osgDB;
 using namespace osg;
 
-bool readStackedTranslateElement(Object&obj, Input&fr)
+bool readStackedTranslateElement(Object &obj, Input &fr)
 {
-    osgAnimation::StackedTranslateElement&element         = dynamic_cast<osgAnimation::StackedTranslateElement&>(obj);
-    bool                                 iteratorAdvanced = false;
+    osgAnimation::StackedTranslateElement &element         = dynamic_cast<osgAnimation::StackedTranslateElement&>(obj);
+    bool                                  iteratorAdvanced = false;
 
     if (fr.matchSequence("translate %f %f %f"))
     {
@@ -48,9 +48,9 @@ bool readStackedTranslateElement(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool writeStackedTranslateElement(const Object&obj, Output&fw)
+bool writeStackedTranslateElement(const Object &obj, Output &fw)
 {
-    const osgAnimation::StackedTranslateElement&element = dynamic_cast<const osgAnimation::StackedTranslateElement&>(obj);
+    const osgAnimation::StackedTranslateElement &element = dynamic_cast<const osgAnimation::StackedTranslateElement&>(obj);
 
     fw.indent() << "translate " << element.getTranslate() << std::endl;
     return true;
@@ -67,10 +67,10 @@ RegisterDotOsgWrapperProxy g_StackedTranslateElementProxy
 );
 
 
-bool readStackedScaleElement(Object&obj, Input&fr)
+bool readStackedScaleElement(Object &obj, Input &fr)
 {
-    osgAnimation::StackedScaleElement&element         = dynamic_cast<osgAnimation::StackedScaleElement&>(obj);
-    bool                             iteratorAdvanced = false;
+    osgAnimation::StackedScaleElement &element         = dynamic_cast<osgAnimation::StackedScaleElement&>(obj);
+    bool                              iteratorAdvanced = false;
 
     if (fr.matchSequence("scale %f %f %f"))
     {
@@ -87,9 +87,9 @@ bool readStackedScaleElement(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool writeStackedScaleElement(const Object&obj, Output&fw)
+bool writeStackedScaleElement(const Object &obj, Output &fw)
 {
-    const osgAnimation::StackedScaleElement&element = dynamic_cast<const osgAnimation::StackedScaleElement&>(obj);
+    const osgAnimation::StackedScaleElement &element = dynamic_cast<const osgAnimation::StackedScaleElement&>(obj);
 
     fw.indent() << "scale " << element.getScale() << std::endl;
     return true;
@@ -112,10 +112,10 @@ RegisterDotOsgWrapperProxy g_StackedScaleElementProxy
 
 
 
-bool readStackedMatrixElement(Object&obj, Input&fr)
+bool readStackedMatrixElement(Object &obj, Input &fr)
 {
-    osgAnimation::StackedMatrixElement&element         = dynamic_cast<osgAnimation::StackedMatrixElement&>(obj);
-    bool                              iteratorAdvanced = false;
+    osgAnimation::StackedMatrixElement &element         = dynamic_cast<osgAnimation::StackedMatrixElement&>(obj);
+    bool                               iteratorAdvanced = false;
 
     if (fr[0].matchWord("Matrix"))
     {
@@ -128,9 +128,9 @@ bool readStackedMatrixElement(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool writeStackedMatrixElement(const Object&obj, Output&fw)
+bool writeStackedMatrixElement(const Object &obj, Output &fw)
 {
-    const osgAnimation::StackedMatrixElement&element = dynamic_cast<const osgAnimation::StackedMatrixElement&>(obj);
+    const osgAnimation::StackedMatrixElement &element = dynamic_cast<const osgAnimation::StackedMatrixElement&>(obj);
 
     writeMatrix(element.getMatrix(), fw);
     return true;
@@ -149,19 +149,19 @@ RegisterDotOsgWrapperProxy g_StackedMatrixElementProxy
 
 
 
-bool writeStackedRotateAxisElement(const Object&obj, Output&fw)
+bool writeStackedRotateAxisElement(const Object &obj, Output &fw)
 {
-    const osgAnimation::StackedRotateAxisElement&element = dynamic_cast<const osgAnimation::StackedRotateAxisElement&>(obj);
+    const osgAnimation::StackedRotateAxisElement &element = dynamic_cast<const osgAnimation::StackedRotateAxisElement&>(obj);
 
     fw.indent() << "axis " <<  element.getAxis() << std::endl;
     fw.indent() << "angle " << element.getAngle() << std::endl;
     return true;
 }
 
-bool readStackedRotateAxisElement(Object&obj, Input&fr)
+bool readStackedRotateAxisElement(Object &obj, Input &fr)
 {
-    osgAnimation::StackedRotateAxisElement&element         = dynamic_cast<osgAnimation::StackedRotateAxisElement&>(obj);
-    bool                                  iteratorAdvanced = false;
+    osgAnimation::StackedRotateAxisElement &element         = dynamic_cast<osgAnimation::StackedRotateAxisElement&>(obj);
+    bool                                   iteratorAdvanced = false;
 
     if (fr.matchSequence("axis %f %f %f"))
     {
@@ -202,10 +202,10 @@ RegisterDotOsgWrapperProxy g_StackedRotateAxisElementProxy
 
 
 
-bool readStackedQuaternionElement(Object&obj, Input&fr)
+bool readStackedQuaternionElement(Object &obj, Input &fr)
 {
-    osgAnimation::StackedQuaternionElement&element         = dynamic_cast<osgAnimation::StackedQuaternionElement&>(obj);
-    bool                                  iteratorAdvanced = false;
+    osgAnimation::StackedQuaternionElement &element         = dynamic_cast<osgAnimation::StackedQuaternionElement&>(obj);
+    bool                                   iteratorAdvanced = false;
 
     if (fr.matchSequence("quaternion %f %f %f %f"))
     {
@@ -223,9 +223,9 @@ bool readStackedQuaternionElement(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool writeStackedQuaternionElement(const Object&obj, Output&fw)
+bool writeStackedQuaternionElement(const Object &obj, Output &fw)
 {
-    const osgAnimation::StackedQuaternionElement&element = dynamic_cast<const osgAnimation::StackedQuaternionElement&>(obj);
+    const osgAnimation::StackedQuaternionElement &element = dynamic_cast<const osgAnimation::StackedQuaternionElement&>(obj);
 
     fw.indent() << "quaternion " << element.getQuaternion() << std::endl;
     return true;

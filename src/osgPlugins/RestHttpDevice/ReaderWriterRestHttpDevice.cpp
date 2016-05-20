@@ -59,7 +59,7 @@ virtual const char* className() const
     return "Rest/HTTP Virtual Device Integration plugin";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     if (osgDB::getFileExtension(file) == "resthttp")
     {
@@ -107,7 +107,7 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
 
             return device.release();
         }
-        catch (std::exception&e)
+        catch (std::exception &e)
         {
             OSG_WARN << "ReaderWriterRestHttpDevice : could not create http-server! Reason: " << e.what() << std::endl;
             return ReadResult::ERROR_IN_READING_FILE;

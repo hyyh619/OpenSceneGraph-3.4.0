@@ -37,11 +37,11 @@ enum AuthoringTool
 } authoringTool;
 
 OsgFbxReader(
-    FbxManager&pSdkManager1,
-    FbxScene&fbxScene1,
-    FbxMaterialToOsgStateSet&fbxMaterialToOsgStateSet1,
-    const std::set<const FbxNode*>&fbxSkeletons1,
-    const osgDB::Options&options1,
+    FbxManager &pSdkManager1,
+    FbxScene &fbxScene1,
+    FbxMaterialToOsgStateSet &fbxMaterialToOsgStateSet1,
+    const std::set<const FbxNode*> &fbxSkeletons1,
+    const osgDB::Options &options1,
     AuthoringTool authoringTool1,
     bool lightmapTextures1,
     bool tessellatePolygons1)
@@ -56,7 +56,7 @@ OsgFbxReader(
 {}
 
 osgDB::ReaderWriter::ReadResult readFbxNode(
-    FbxNode*, bool&bIsBone, int&nLightCount);
+    FbxNode*, bool &bIsBone, int &nLightCount);
 
 std::string readFbxAnimation(
     FbxNode*, const char *targetName);
@@ -65,11 +65,11 @@ osgDB::ReaderWriter::ReadResult readFbxCamera(
     FbxNode *pNode);
 
 osgDB::ReaderWriter::ReadResult readFbxLight(
-    FbxNode *pNode, int&nLightCount);
+    FbxNode *pNode, int &nLightCount);
 
 osgDB::ReaderWriter::ReadResult readMesh(
     FbxNode *pNode, FbxMesh *fbxMesh,
-    std::vector<StateSetContent>&stateSetList,
+    std::vector<StateSetContent> &stateSetList,
     const char *szName);
 
 osgDB::ReaderWriter::ReadResult readFbxMesh(
@@ -78,7 +78,7 @@ osgDB::ReaderWriter::ReadResult readFbxMesh(
 };
 
 osgAnimation::Skeleton* getSkeleton(FbxNode*,
-                                    const std::set<const FbxNode*>&fbxSkeletons,
+                                    const std::set<const FbxNode*> &fbxSkeletons,
                                     std::map<FbxNode*, osgAnimation::Skeleton*>&);
 
 #endif

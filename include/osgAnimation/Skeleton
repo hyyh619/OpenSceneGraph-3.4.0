@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGANIMATION_SKELETON
 #define OSGANIMATION_SKELETON 1
@@ -21,30 +21,27 @@
 
 namespace osgAnimation
 {
-
-    class OSGANIMATION_EXPORT Skeleton : public osg::MatrixTransform
+    class OSGANIMATION_EXPORT Skeleton: public osg::MatrixTransform
     {
-    public:
+public:
         META_Node(osgAnimation, Skeleton);
 
-        class OSGANIMATION_EXPORT UpdateSkeleton : public osg::NodeCallback
+        class OSGANIMATION_EXPORT UpdateSkeleton: public osg::NodeCallback
         {
-        public:
+public:
             META_Object(osgAnimation, UpdateSkeleton);
             UpdateSkeleton();
-            UpdateSkeleton(const UpdateSkeleton&, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
-            virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+            UpdateSkeleton(const UpdateSkeleton &, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+            virtual void operator()(osg::Node * node, osg::NodeVisitor * nv);
             bool needToValidate() const;
-        protected:
+protected:
             bool _needValidate;
         };
 
         Skeleton();
-        Skeleton(const Skeleton&, const osg::CopyOp&);
+        Skeleton(const Skeleton &, const osg::CopyOp &);
         void setDefaultUpdateCallback();
-
     };
-
 }
 
 #endif

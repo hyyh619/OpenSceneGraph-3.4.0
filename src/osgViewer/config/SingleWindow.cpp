@@ -27,7 +27,7 @@
 
 using namespace osgViewer;
 
-void SingleWindow::configure(osgViewer::View&view) const
+void SingleWindow::configure(osgViewer::View &view) const
 {
     osg::GraphicsContext::WindowingSystemInterface *wsi = osg::GraphicsContext::getWindowingSystemInterface();
 

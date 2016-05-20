@@ -8,8 +8,8 @@
 using namespace osg;
 using namespace osgDB;
 
-bool  ClusterCullingCallback_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ClusterCullingCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw);   // register the read and write functions with the osgDB::Registry.
+bool  ClusterCullingCallback_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ClusterCullingCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw);   // register the read and write functions with the osgDB::Registry.
 
 REGISTER_DOTOSGWRAPPER(ClusterCullingCallback)
 (
@@ -20,7 +20,7 @@ REGISTER_DOTOSGWRAPPER(ClusterCullingCallback)
     &ClusterCullingCallback_writeLocalData
 );
 
-bool ClusterCullingCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ClusterCullingCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
     ClusterCullingCallback *ccc = dynamic_cast<ClusterCullingCallback*>(&obj);
 
@@ -64,7 +64,7 @@ bool ClusterCullingCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return iteratorAdvanced;
 }
 
-bool ClusterCullingCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ClusterCullingCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
     const ClusterCullingCallback *ccc = dynamic_cast<const ClusterCullingCallback*>(&obj);
 

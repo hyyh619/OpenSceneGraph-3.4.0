@@ -33,13 +33,13 @@ StatsActionVisitor::StatsActionVisitor(osg::Stats *stats, unsigned int frame)
     _stats = stats;
 }
 
-void StatsActionVisitor::apply(Timeline&tm)
+void StatsActionVisitor::apply(Timeline &tm)
 {
     _stats->setAttribute(_frame, "Timeline", tm.getCurrentTime());
     tm.traverse(*this);
 }
 
-void StatsActionVisitor::apply(Action&action)
+void StatsActionVisitor::apply(Action &action)
 {
     if (isActive(action))
     {
@@ -48,7 +48,7 @@ void StatsActionVisitor::apply(Action&action)
     }
 }
 
-void StatsActionVisitor::apply(ActionBlendIn&action)
+void StatsActionVisitor::apply(ActionBlendIn &action)
 {
     if (isActive(action))
     {
@@ -57,7 +57,7 @@ void StatsActionVisitor::apply(ActionBlendIn&action)
     }
 }
 
-void StatsActionVisitor::apply(ActionBlendOut&action)
+void StatsActionVisitor::apply(ActionBlendOut &action)
 {
     if (isActive(action))
     {
@@ -66,7 +66,7 @@ void StatsActionVisitor::apply(ActionBlendOut&action)
     }
 }
 
-void StatsActionVisitor::apply(ActionAnimation&action)
+void StatsActionVisitor::apply(ActionAnimation &action)
 {
     if (isActive(action))
     {
@@ -75,7 +75,7 @@ void StatsActionVisitor::apply(ActionAnimation&action)
     }
 }
 
-void StatsActionVisitor::apply(ActionStripAnimation&action)
+void StatsActionVisitor::apply(ActionStripAnimation &action)
 {
     if (isActive(action))
     {

@@ -268,7 +268,7 @@ osg::Node* VertexData::readPlyFile(const char *filename, const bool ignoreColors
                                     &fileType, &version);
     }
     // Catch the if any exception thrown
-    catch (exception&e)
+    catch (exception &e)
     {
         MESHERROR << "Unable to read PLY file, an exception occurred:  "
                   << e.what() << endl;
@@ -312,7 +312,7 @@ osg::Node* VertexData::readPlyFile(const char *filename, const bool ignoreColors
             props = ply_get_element_description(file, elemNames[i],
                                                 &nElems, &nProps);
         }
-        catch (exception&e)
+        catch (exception &e)
         {
             MESHERROR << "Unable to get PLY file description, an exception occurred:  "
                       << e.what() << endl;
@@ -402,7 +402,7 @@ osg::Node* VertexData::readPlyFile(const char *filename, const bool ignoreColors
 
                 result = true;
             }
-            catch (exception&e)
+            catch (exception &e)
             {
                 MESHERROR << "Unable to read vertex in PLY file, an exception occurred:  "
                           << e.what() << endl;
@@ -426,7 +426,7 @@ osg::Node* VertexData::readPlyFile(const char *filename, const bool ignoreColors
 #endif
                 result = true;
             }
-            catch (exception&e)
+            catch (exception &e)
             {
                 MESHERROR << "Unable to read PLY file, an exception occurred:  "
                           << e.what() << endl;

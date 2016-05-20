@@ -54,7 +54,7 @@ Record();
 
 virtual Record* cloneType() const                  = 0;
 virtual bool isSameKindAs(const Record *rec) const = 0;
-virtual void read(RecordInputStream&in, Document&document);
+virtual void read(RecordInputStream &in, Document &document);
 
 void setParent(PrimaryRecord *parent);
 
@@ -62,7 +62,7 @@ protected:
 
 virtual ~Record();
 
-virtual void readRecord(RecordInputStream&in, Document&document);
+virtual void readRecord(RecordInputStream &in, Document &document);
 
 osg::ref_ptr<PrimaryRecord> _parent;
 };
@@ -74,7 +74,7 @@ public:
 
 PrimaryRecord();
 
-virtual void read(RecordInputStream&in, Document&document);
+virtual void read(RecordInputStream &in, Document &document);
 virtual void dispose(Document& /*document*/) {}
 
 // Ancillary operations
@@ -91,7 +91,7 @@ void setNumberOfReplications(int num)
 {
     _numberOfReplications = num;
 }
-void setMatrix(const osg::Matrix&matrix)
+void setMatrix(const osg::Matrix &matrix)
 {
     _matrix = new osg::RefMatrix(matrix);
 }
@@ -131,12 +131,12 @@ virtual ~DummyRecord() {}
 };
 
 
-void insertMatrixTransform(osg::Node&node, const osg::Matrix&matrix, int numberOfReplications);
+void insertMatrixTransform(osg::Node &node, const osg::Matrix &matrix, int numberOfReplications);
 
-osg::Vec3Array* getOrCreateVertexArray(osg::Geometry&geometry);
-osg::Vec3Array* getOrCreateNormalArray(osg::Geometry&geometry);
-osg::Vec4Array* getOrCreateColorArray(osg::Geometry&geometry);
-osg::Vec2Array* getOrCreateTextureArray(osg::Geometry&geometry, int unit);
+osg::Vec3Array* getOrCreateVertexArray(osg::Geometry &geometry);
+osg::Vec3Array* getOrCreateNormalArray(osg::Geometry &geometry);
+osg::Vec4Array* getOrCreateColorArray(osg::Geometry &geometry);
+osg::Vec2Array* getOrCreateTextureArray(osg::Geometry &geometry, int unit);
 } // end namespace
 
 #endif

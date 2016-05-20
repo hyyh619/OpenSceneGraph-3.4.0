@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool Locator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Locator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Locator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Locator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Locator_Proxy)
 (
@@ -26,9 +26,9 @@ REGISTER_DOTOSGWRAPPER(Locator_Proxy)
 );
 
 
-bool Locator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Locator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgTerrain::Locator&locator = static_cast<osgTerrain::Locator&>(obj);
+    osgTerrain::Locator &locator = static_cast<osgTerrain::Locator&>(obj);
 
     bool itrAdvanced = false;
 
@@ -121,9 +121,9 @@ bool Locator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool Locator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Locator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgTerrain::Locator&locator = static_cast<const osgTerrain::Locator&>(obj);
+    const osgTerrain::Locator &locator = static_cast<const osgTerrain::Locator&>(obj);
 
     if (!locator.getFormat().empty())
         fw.indent() << "Format " << fw.wrapString(locator.getFormat()) << std::endl;

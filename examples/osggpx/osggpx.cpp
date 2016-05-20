@@ -42,7 +42,7 @@ class TrackSegment : public osg::Object
 public:
 TrackSegment() {}
 
-TrackSegment(const TrackSegment&ts, const osg::CopyOp = osg::CopyOp::SHALLOW_COPY) {}
+TrackSegment(const TrackSegment &ts, const osg::CopyOp = osg::CopyOp::SHALLOW_COPY) {}
 
 META_Object(osg, TrackSegment)
 
@@ -62,7 +62,7 @@ struct TrackPoint
 
 typedef std::vector<TrackPoint> TrackPoints;
 
-void addTrackPoint(const TrackPoint&trackPoint)
+void addTrackPoint(const TrackPoint &trackPoint)
 {
     _trackPoints.push_back(trackPoint);
 }
@@ -87,7 +87,7 @@ class Track : public osg::Object
 public:
 Track() {}
 
-Track(const Track&track, const osg::CopyOp = osg::CopyOp::SHALLOW_COPY) {}
+Track(const Track &track, const osg::CopyOp = osg::CopyOp::SHALLOW_COPY) {}
 
 META_Object(osg, Track)
 
@@ -114,14 +114,14 @@ virtual ~Track() {}
 TrackSegments _trackSegments;
 };
 
-double convertTime(const std::string&timestr)
+double convertTime(const std::string &timestr)
 {
     osg::notify(osg::NOTICE) << "       time = " << timestr << std::endl;
 
     return 0;
 }
 
-Track* readTrack(const std::string&filename)
+Track* readTrack(const std::string &filename)
 {
     std::string foundFilename = osgDB::findDataFile(filename);
 
@@ -283,14 +283,14 @@ TrackSegment* computeSmoothedTrackSegment(TrackSegment *ts)
     if (!ts)
         return 0;
 
-    const TrackSegment::TrackPoints&orig_points = ts->getTrackPoints();
+    const TrackSegment::TrackPoints &orig_points = ts->getTrackPoints();
 
     if (orig_points.size() > 2)
     {
         // only do smoothing if we have more than two points.
         osg::ref_ptr<TrackSegment> new_ts = new TrackSegment;
 
-        TrackSegment::TrackPoints&new_points = new_ts->getTrackPoints();
+        TrackSegment::TrackPoints &new_points = new_ts->getTrackPoints();
         new_points.resize(orig_points.size());
 
         new_points[0]                      = orig_points[0];
@@ -347,7 +347,7 @@ TrackSegment* computeAveragedSpeedTrackSegment(TrackSegment *ts)
         OSG_NOTICE << "total_distance = " << total_distance << std::endl;
         OSG_NOTICE << "average_speed = " << average_speed << std::endl;
 
-        TrackSegment::TrackPoints&new_points = new_ts->getTrackPoints();
+        TrackSegment::TrackPoints &new_points = new_ts->getTrackPoints();
         new_points.resize(orig_points.size());
         new_points[0] = orig_points[0];
 
@@ -405,7 +405,7 @@ Track* computeSmoothedTrack(Track *track)
     return new_track.release();
 }
 
-osg::Node* createTrackModel(Track *track, const osg::Vec4&colour)
+osg::Node* createTrackModel(Track *track, const osg::Vec4 &colour)
 {
     osg::ref_ptr<osg::EllipsoidModel> em = new osg::EllipsoidModel;
 
@@ -415,7 +415,7 @@ osg::Node* createTrackModel(Track *track, const osg::Vec4&colour)
          itr != track->getTrackSegments().end();
          ++itr)
     {
-        const TrackSegment::TrackPoints&points = (*itr)->getTrackPoints();
+        const TrackSegment::TrackPoints &points = (*itr)->getTrackPoints();
         if (points.size() < 2)
             continue;
 
@@ -549,7 +549,7 @@ int main(int argv, char **argc)
         {
             TrackSegment *ts = itr->get();
 
-            const TrackSegment::TrackPoints&points = ts->getTrackPoints();
+            const TrackSegment::TrackPoints &points = ts->getTrackPoints();
             if (points.size() > 1)
             {
                 TrackSegment::TrackPoints::iterator pitr = ts->getTrackPoints().begin();

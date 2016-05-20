@@ -168,7 +168,7 @@ SoftShadowMap::SoftShadowMap() :
     _jitterTextureUnit(_shadowTextureUnit + 1)
 {}
 
-SoftShadowMap::SoftShadowMap(const SoftShadowMap&copy, const osg::CopyOp&copyop) :
+SoftShadowMap::SoftShadowMap(const SoftShadowMap &copy, const osg::CopyOp &copyop) :
     ShadowMap(copy, copyop),
     _softnessWidth(copy._softnessWidth),
     _jitteringScale(copy._jitteringScale),

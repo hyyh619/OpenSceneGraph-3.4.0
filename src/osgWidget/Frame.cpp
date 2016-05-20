@@ -43,7 +43,7 @@ Frame::Corner::Corner(CornerType corner, point_type width, point_type height) :
     _corner (corner)
 {}
 
-Frame::Corner::Corner(const Corner&corner, const osg::CopyOp&co) :
+Frame::Corner::Corner(const Corner &corner, const osg::CopyOp &co) :
     Widget  (corner, co),
     _corner (corner._corner)
 {}
@@ -99,7 +99,7 @@ Frame::Border::Border(BorderType border, point_type width, point_type height) :
     setCanFill(true);
 }
 
-Frame::Border::Border(const Border&border, const osg::CopyOp&co) :
+Frame::Border::Border(const Border &border, const osg::CopyOp &co) :
     Widget  (border, co),
     _border (border._border)
 {}
@@ -198,12 +198,12 @@ bool Frame::Border::mouseDrag(double x, double y, const WindowManager* /*wm*/)
     return true;
 }
 
-Frame::Frame(const std::string&name, unsigned int flags) :
+Frame::Frame(const std::string &name, unsigned int flags) :
     Table  (name, 3, 3),
     _flags (flags)
 {}
 
-Frame::Frame(const Frame&frame, const osg::CopyOp&co) :
+Frame::Frame(const Frame &frame, const osg::CopyOp &co) :
     Table(frame, co),
     _flags(frame._flags)
 {}
@@ -235,7 +235,7 @@ bool Frame::setWindow(Window *window)
 }
 
 Frame* Frame::createSimpleFrame(
-    const std::string&name,
+    const std::string &name,
     point_type cw,
     point_type ch,
     point_type w,
@@ -310,7 +310,7 @@ Frame* Frame::createSimpleFrame(
 
 // Inspired by: http://www.wowwiki.com/EdgeFiles
 Frame* Frame::createSimpleFrameWithSingleTexture(
-    const std::string&name,
+    const std::string &name,
     osg::Image *image,
     point_type width,
     point_type height,
@@ -389,7 +389,7 @@ bool Frame::resizeFrame(point_type w, point_type h)
 osg::Image* createNatifEdgeImageFromTheme(osg::Image *theme);
 
 Frame* Frame::createSimpleFrameFromTheme(
-    const std::string&name,
+    const std::string &name,
     osg::Image *image,
     point_type width,
     point_type height,

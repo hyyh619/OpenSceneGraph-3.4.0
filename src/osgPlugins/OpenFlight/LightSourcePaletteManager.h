@@ -41,7 +41,7 @@ LightSourcePaletteManager();
 int add(osg::Light const *light);
 
 // Write the light palette records out to a DataOutputStream
-void write(DataOutputStream&dos) const;
+void write(DataOutputStream &dos) const;
 
 
 private:

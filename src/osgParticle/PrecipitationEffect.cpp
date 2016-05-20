@@ -49,7 +49,7 @@ PrecipitationEffect::PrecipitationEffect() :
 }
 
 
-PrecipitationEffect::PrecipitationEffect(const PrecipitationEffect&copy, const osg::CopyOp&copyop) :
+PrecipitationEffect::PrecipitationEffect(const PrecipitationEffect &copy, const osg::CopyOp &copyop) :
     osg::Node(copy, copyop),
     _previousFrameTime(FLT_MAX)
 {
@@ -124,7 +124,7 @@ void PrecipitationEffect::snow(float intensity)
     update();
 }
 
-void PrecipitationEffect::compileGLObjects(osg::RenderInfo&renderInfo) const
+void PrecipitationEffect::compileGLObjects(osg::RenderInfo &renderInfo) const
 {
     if (_quadGeometry.valid())
     {
@@ -149,7 +149,7 @@ void PrecipitationEffect::compileGLObjects(osg::RenderInfo&renderInfo) const
 }
 
 
-void PrecipitationEffect::traverse(osg::NodeVisitor&nv)
+void PrecipitationEffect::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
@@ -681,7 +681,7 @@ void PrecipitationEffect::setUpGeometries(unsigned int numParticles)
     }
 }
 
-void PrecipitationEffect::cull(PrecipitationDrawableSet&pds, osgUtil::CullVisitor *cv) const
+void PrecipitationEffect::cull(PrecipitationDrawableSet &pds, osgUtil::CullVisitor *cv) const
 {
 #ifdef DO_TIMING
     osg::Timer_t startTick = osg::Timer::instance()->tick();
@@ -766,7 +766,7 @@ void PrecipitationEffect::cull(PrecipitationDrawableSet&pds, osgUtil::CullVisito
 #endif
 }
 
-bool PrecipitationEffect::build(const osg::Vec3 eyeLocal, int i, int j, int k, float startTime, PrecipitationDrawableSet&pds, osg::Polytope&frustum, osgUtil::CullVisitor *cv) const
+bool PrecipitationEffect::build(const osg::Vec3 eyeLocal, int i, int j, int k, float startTime, PrecipitationDrawableSet &pds, osg::Polytope &frustum, osgUtil::CullVisitor *cv) const
 {
     osg::Vec3 position = _origin + osg::Vec3(float(i) * _du.x(), float(j) * _dv.y(), float(k + 1) * _dw.z());
     osg::Vec3 scale(_du.x(), _dv.y(), -_dw.z());
@@ -783,7 +783,7 @@ bool PrecipitationEffect::build(const osg::Vec3 eyeLocal, int i, int j, int k, f
     osg::Matrix *mymodelview = 0;
     if (distance < _nearTransition)
     {
-        PrecipitationDrawable::DepthMatrixStartTime&mstp = pds._quadPrecipitationDrawable->getCurrentCellMatrixMap()[PrecipitationDrawable::Cell(i, k, j)];
+        PrecipitationDrawable::DepthMatrixStartTime &mstp = pds._quadPrecipitationDrawable->getCurrentCellMatrixMap()[PrecipitationDrawable::Cell(i, k, j)];
         mstp.depth     = distance;
         mstp.startTime = startTime;
         mymodelview    = &mstp.modelview;
@@ -792,14 +792,14 @@ bool PrecipitationEffect::build(const osg::Vec3 eyeLocal, int i, int j, int k, f
     {
         if (_useFarLineSegments)
         {
-            PrecipitationDrawable::DepthMatrixStartTime&mstp = pds._linePrecipitationDrawable->getCurrentCellMatrixMap()[PrecipitationDrawable::Cell(i, k, j)];
+            PrecipitationDrawable::DepthMatrixStartTime &mstp = pds._linePrecipitationDrawable->getCurrentCellMatrixMap()[PrecipitationDrawable::Cell(i, k, j)];
             mstp.depth     = distance;
             mstp.startTime = startTime;
             mymodelview    = &mstp.modelview;
         }
         else
         {
-            PrecipitationDrawable::DepthMatrixStartTime&mstp = pds._pointPrecipitationDrawable->getCurrentCellMatrixMap()[PrecipitationDrawable::Cell(i, k, j)];
+            PrecipitationDrawable::DepthMatrixStartTime &mstp = pds._pointPrecipitationDrawable->getCurrentCellMatrixMap()[PrecipitationDrawable::Cell(i, k, j)];
             mstp.depth     = distance;
             mstp.startTime = startTime;
             mymodelview    = &mstp.modelview;
@@ -834,7 +834,7 @@ PrecipitationEffect::PrecipitationDrawable::PrecipitationDrawable() :
     setSupportsDisplayList(false);
 }
 
-PrecipitationEffect::PrecipitationDrawable::PrecipitationDrawable(const PrecipitationDrawable&copy, const osg::CopyOp&copyop) :
+PrecipitationEffect::PrecipitationDrawable::PrecipitationDrawable(const PrecipitationDrawable &copy, const osg::CopyOp &copyop) :
     osg::Drawable(copy, copyop),
     _requiresPreviousMatrix(copy._requiresPreviousMatrix),
     _geometry(copy._geometry),
@@ -844,7 +844,7 @@ PrecipitationEffect::PrecipitationDrawable::PrecipitationDrawable(const Precipit
 
 
 
-void PrecipitationEffect::PrecipitationDrawable::drawImplementation(osg::RenderInfo&renderInfo) const
+void PrecipitationEffect::PrecipitationDrawable::drawImplementation(osg::RenderInfo &renderInfo) const
 {
 #if defined(OSG_GL_MATRICES_AVAILABLE)
     if (!_geometry)

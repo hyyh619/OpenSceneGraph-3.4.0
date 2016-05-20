@@ -25,7 +25,7 @@ using namespace lwosg;
 
 namespace
 {
-int str_to_int(const std::string&s)
+int str_to_int(const std::string &s)
 {
     std::istringstream iss(s);
     int                n;
@@ -34,7 +34,7 @@ int str_to_int(const std::string&s)
     return n;
 }
 
-int hex_to_int(const std::string&s)
+int hex_to_int(const std::string &s)
 {
     std::istringstream iss(s);
     int                n;
@@ -43,7 +43,7 @@ int hex_to_int(const std::string&s)
     return n;
 }
 
-osg::Quat rotate_ypr(const osg::Vec3&ypr, const osg::Vec3 pivot_rot = osg::Vec3(0, 0, 0))
+osg::Quat rotate_ypr(const osg::Vec3 &ypr, const osg::Vec3 pivot_rot = osg::Vec3(0, 0, 0))
 {
     osg::Quat Q1(ypr.z(), osg::Vec3(0, -1, 0));
     osg::Quat Q2(ypr.y(), osg::Vec3(-1, 0, 0));
@@ -55,7 +55,7 @@ osg::Quat rotate_ypr(const osg::Vec3&ypr, const osg::Vec3 pivot_rot = osg::Vec3(
     return Q1 * Q2 * Q3 * Q4 * Q5 * Q6;
 }
 
-void trim(std::string&str)
+void trim(std::string &str)
 {
     // trim any trailing control characters.
     // std::cout<<"trim string "<<str<<std::endl;
@@ -74,13 +74,13 @@ SceneLoader::SceneLoader()
     capture_cam_motion_(false)
 {}
 
-SceneLoader::SceneLoader(const Options&options)
+SceneLoader::SceneLoader(const Options &options)
     :    capture_obj_motion_(false),
     capture_cam_motion_(false),
     options_(options)
 {}
 
-osg::Group* SceneLoader::load(const std::string&filename, const osgDB::ReaderWriter::Options *options, bool search)
+osg::Group* SceneLoader::load(const std::string &filename, const osgDB::ReaderWriter::Options *options, bool search)
 {
     std::string fname;
 
@@ -250,7 +250,7 @@ osg::Group* SceneLoader::load(const std::string&filename, const osgDB::ReaderWri
     return root_.get();
 }
 
-bool SceneLoader::parse_block(const std::string&name, const std::string&data)
+bool SceneLoader::parse_block(const std::string &name, const std::string &data)
 {
     std::istringstream iss(data);
 
@@ -390,7 +390,7 @@ bool SceneLoader::parse_block(const std::string&name, const std::string&data)
     return true;
 }
 
-bool SceneLoader::parse_block(const std::string&name, const std::vector<std::string>&data)
+bool SceneLoader::parse_block(const std::string &name, const std::vector<std::string> &data)
 {
     if (name == "Envelope")
     {
@@ -398,7 +398,7 @@ bool SceneLoader::parse_block(const std::string&name, const std::vector<std::str
              (capture_cam_motion_ && !scene_cameras_.empty())) &&
             (data.size() >= 2))
         {
-            Motion_envelope::Key_map&keys = capture_obj_motion_ ? scene_objects_.back().motion.keys : scene_cameras_.back().motion.keys;
+            Motion_envelope::Key_map &keys = capture_obj_motion_ ? scene_objects_.back().motion.keys : scene_cameras_.back().motion.keys;
 
             if (current_channel_ >= (channel_count_ - 1))
             {

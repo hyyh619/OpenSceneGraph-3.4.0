@@ -30,7 +30,7 @@ SDLIntegration();
 typedef std::vector<int> ValueList;
 typedef std::map<int, int> ButtonMap;
 
-void update(osgViewer::Viewer&viewer);
+void update(osgViewer::Viewer &viewer);
 
 void addMouseButtonMapping(int joystickButton, int mouseButton)
 {
@@ -64,7 +64,7 @@ int getKeyMapping(int joystickButton)
 
 protected:
 
-void capture(ValueList&axisValues, ValueList&buttonValues) const;
+void capture(ValueList &axisValues, ValueList &buttonValues) const;
 
 SDL_Joystick *_joystick;
 int          _numAxes;

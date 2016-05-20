@@ -2,7 +2,7 @@
 #include "TriangleStripVisitor"
 
 
-void TriangleStripVisitor::apply(osg::Geometry&geometry)
+void TriangleStripVisitor::apply(osg::Geometry &geometry)
 {
     osgUtil::TriStripVisitor tristrip;
 
@@ -18,7 +18,7 @@ void TriangleStripVisitor::apply(osg::Geometry&geometry)
 }
 
 
-void TriangleStripVisitor::mergeTrianglesStrip(osg::Geometry&geometry)
+void TriangleStripVisitor::mergeTrianglesStrip(osg::Geometry &geometry)
 {
     int nbtristrip         = 0;
     int nbtristripVertexes = 0;

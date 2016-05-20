@@ -41,13 +41,13 @@ Converter::Converter()
     :    root_(new osg::Group)
 {}
 
-Converter::Converter(const Options&options, const osgDB::ReaderWriter::Options *db_options)
+Converter::Converter(const Options &options, const osgDB::ReaderWriter::Options *db_options)
     :    root_(new osg::Group),
     options_(options),
     db_options_(db_options)
 {}
 
-osg::Group* Converter::convert(Object&obj)
+osg::Group* Converter::convert(Object &obj)
 {
     if (root_->getNumChildren() > 0)
     {
@@ -70,7 +70,7 @@ osg::Group* Converter::convert(Object&obj)
     return root_.get();
 }
 
-void Converter::build_scene_graph(Object&obj)
+void Converter::build_scene_graph(Object &obj)
 {
     // generate layer structure
     typedef std::map<int, osg::ref_ptr<osg::Group> > Layer_group_map;
@@ -102,7 +102,7 @@ void Converter::build_scene_graph(Object&obj)
 
     for (Object::Layer_map::iterator li = obj.layers().begin(); li != obj.layers().end(); ++li)
     {
-        Layer&layer = li->second;
+        Layer &layer = li->second;
 
         osg::Group *layer_group = lymap[layer.number()].get();
 
@@ -133,9 +133,9 @@ void Converter::build_scene_graph(Object&obj)
             // create primitive sets, taking into account remapping maps
             for (unsigned k = 0; k < j->polygons().size(); ++k)
             {
-                const Polygon         &poly      = j->polygons()[k];
-                GeometryBin           &bin       = bins[poly.get_surface()];
-                const Unit::Index_list&remapping = remappings[poly.get_surface()];
+                const Polygon          &poly      = j->polygons()[k];
+                GeometryBin            &bin       = bins[poly.get_surface()];
+                const Unit::Index_list &remapping = remappings[poly.get_surface()];
 
                 if (poly.indices().size() == 1)
                 {
@@ -190,7 +190,7 @@ void Converter::build_scene_graph(Object&obj)
                 const Surface *surface = i->first;
                 GeometryBin   &bin     = i->second;
 
-                const Unit::Index_list&remapping = remappings[surface];
+                const Unit::Index_list &remapping = remappings[surface];
 
                 // clean up points and normals according to remapping map
                 OSG_DEBUG << "DEBUG INFO: lwosg::Converter: \tcleaning up redundant vertices and vertex attributes for surface '" << (surface ? surface->get_name() : std::string("anonymous")) << "'\n";
@@ -287,7 +287,7 @@ void Converter::build_scene_graph(Object&obj)
     }
 }
 
-osg::Group* Converter::convert(const iff::Chunk_list&data)
+osg::Group* Converter::convert(const iff::Chunk_list &data)
 {
     Object obj(data);
 
@@ -295,7 +295,7 @@ osg::Group* Converter::convert(const iff::Chunk_list&data)
     return convert(obj);
 }
 
-osg::Group* Converter::convert(const std::string&filename)
+osg::Group* Converter::convert(const std::string &filename)
 {
     std::string file = osgDB::findDataFile(filename, db_options_.get());
 
@@ -318,7 +318,7 @@ osg::Group* Converter::convert(const std::string&filename)
     {
         parser.parse(buffer.begin(), buffer.end());
     }
-    catch (lwo2::parser_error&e)
+    catch (lwo2::parser_error &e)
     {
         std::cerr << e.what() << std::endl;
         return 0;

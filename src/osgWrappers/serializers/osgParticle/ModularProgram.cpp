@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkOperators(const osgParticle::ModularProgram&prog)
+static bool checkOperators(const osgParticle::ModularProgram &prog)
 {
     return prog.numOperators() > 0;
 }
 
-static bool readOperators(osgDB::InputStream&is, osgParticle::ModularProgram&prog)
+static bool readOperators(osgDB::InputStream &is, osgParticle::ModularProgram &prog)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -23,7 +23,7 @@ static bool readOperators(osgDB::InputStream&is, osgParticle::ModularProgram&pro
     return true;
 }
 
-static bool writeOperators(osgDB::OutputStream&os, const osgParticle::ModularProgram&prog)
+static bool writeOperators(osgDB::OutputStream &os, const osgParticle::ModularProgram &prog)
 {
     unsigned int size = prog.numOperators();
 

@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkMask(const osg::PolygonStipple&attr)
+static bool checkMask(const osg::PolygonStipple &attr)
 {
     return true;
 }
 
-static bool readMask(osgDB::InputStream&is, osg::PolygonStipple&attr)
+static bool readMask(osgDB::InputStream &is, osg::PolygonStipple &attr)
 {
     char mask[128] = {0};
 
@@ -33,7 +33,7 @@ static bool readMask(osgDB::InputStream&is, osg::PolygonStipple&attr)
     return true;
 }
 
-static bool writeMask(osgDB::OutputStream&os, const osg::PolygonStipple&attr)
+static bool writeMask(osgDB::OutputStream &os, const osg::PolygonStipple &attr)
 {
     if (os.isBinary())
     {

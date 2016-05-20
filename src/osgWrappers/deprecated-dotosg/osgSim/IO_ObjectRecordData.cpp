@@ -11,8 +11,8 @@
 
 // #include <map>
 
-bool ObjectRecordData_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool ObjectRecordData_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool ObjectRecordData_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool ObjectRecordData_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ObjectRecordData_Proxy)
 (
@@ -24,10 +24,10 @@ REGISTER_DOTOSGWRAPPER(ObjectRecordData_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool ObjectRecordData_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ObjectRecordData_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    bool                    iteratorAdvanced = false;
-    osgSim::ObjectRecordData&ord             = static_cast<osgSim::ObjectRecordData&>(obj);
+    bool                     iteratorAdvanced = false;
+    osgSim::ObjectRecordData &ord             = static_cast<osgSim::ObjectRecordData&>(obj);
 
     if (fr.matchSequence("flags %i"))
     {
@@ -86,9 +86,9 @@ bool ObjectRecordData_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return iteratorAdvanced;
 }
 
-bool ObjectRecordData_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ObjectRecordData_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgSim::ObjectRecordData&ord = static_cast<const osgSim::ObjectRecordData&>(obj);
+    const osgSim::ObjectRecordData &ord = static_cast<const osgSim::ObjectRecordData&>(obj);
 
     fw.indent() << "flags " <<            ord._flags << std::endl;
     fw.indent() << "relativePriority " << ord._relativePriority << std::endl;

@@ -22,7 +22,7 @@ ClipControl::ClipControl(Origin origin, DepthMode depthMode) :
     _depthMode(depthMode)
 {}
 
-ClipControl::ClipControl(const ClipControl&clipControl, const CopyOp&copyop) :
+ClipControl::ClipControl(const ClipControl &clipControl, const CopyOp &copyop) :
     StateAttribute(clipControl, copyop),
     _origin(clipControl._origin),
     _depthMode(clipControl._depthMode)
@@ -31,7 +31,7 @@ ClipControl::ClipControl(const ClipControl&clipControl, const CopyOp&copyop) :
 ClipControl::~ClipControl()
 {}
 
-void ClipControl::apply(State&state) const
+void ClipControl::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

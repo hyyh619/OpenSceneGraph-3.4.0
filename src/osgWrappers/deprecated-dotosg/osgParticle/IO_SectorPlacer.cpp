@@ -7,8 +7,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  SectorPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  SectorPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  SectorPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  SectorPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(SectorPlacer_Proxy)
 (
@@ -19,10 +19,10 @@ REGISTER_DOTOSGWRAPPER(SectorPlacer_Proxy)
     SectorPlacer_writeLocalData
 );
 
-bool SectorPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool SectorPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::SectorPlacer&myobj     = static_cast<osgParticle::SectorPlacer&>(obj);
-    bool                     itAdvanced = false;
+    osgParticle::SectorPlacer &myobj     = static_cast<osgParticle::SectorPlacer&>(obj);
+    bool                      itAdvanced = false;
 
     osgParticle::rangef r;
 
@@ -49,9 +49,9 @@ bool SectorPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool SectorPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool SectorPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::SectorPlacer&myobj = static_cast<const osgParticle::SectorPlacer&>(obj);
+    const osgParticle::SectorPlacer &myobj = static_cast<const osgParticle::SectorPlacer&>(obj);
 
     osgParticle::rangef r;
 

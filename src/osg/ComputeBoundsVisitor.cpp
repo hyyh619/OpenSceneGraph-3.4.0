@@ -28,7 +28,7 @@ void ComputeBoundsVisitor::reset()
     _bb.init();
 }
 
-void ComputeBoundsVisitor::getPolytope(osg::Polytope&polytope, float margin) const
+void ComputeBoundsVisitor::getPolytope(osg::Polytope &polytope, float margin) const
 {
     float delta = _bb.radius() * margin;
 
@@ -42,14 +42,14 @@ void ComputeBoundsVisitor::getPolytope(osg::Polytope&polytope, float margin) con
     polytope.add(osg::Plane(0.0, -1.0, 0.0, (_bb.yMax() + delta)));
 }
 
-void ComputeBoundsVisitor::getBase(osg::Polytope&polytope, float margin) const
+void ComputeBoundsVisitor::getBase(osg::Polytope &polytope, float margin) const
 {
     float delta = _bb.radius() * margin;
 
     polytope.add(osg::Plane(0.0, 0.0, 1.0, -(_bb.zMin() - delta)));
 }
 
-void ComputeBoundsVisitor::apply(osg::Transform&transform)
+void ComputeBoundsVisitor::apply(osg::Transform &transform)
 {
     osg::Matrix matrix;
 
@@ -65,18 +65,18 @@ void ComputeBoundsVisitor::apply(osg::Transform&transform)
     popMatrix();
 }
 
-void ComputeBoundsVisitor::apply(osg::Drawable&drawable)
+void ComputeBoundsVisitor::apply(osg::Drawable &drawable)
 {
     applyBoundingBox(drawable.getBoundingBox());
 }
 
-void ComputeBoundsVisitor::applyBoundingBox(const osg::BoundingBox&bbox)
+void ComputeBoundsVisitor::applyBoundingBox(const osg::BoundingBox &bbox)
 {
     if (_matrixStack.empty())
         _bb.expandBy(bbox);
     else if (bbox.valid())
     {
-        const osg::Matrix&matrix = _matrixStack.back();
+        const osg::Matrix &matrix = _matrixStack.back();
         _bb.expandBy(bbox.corner(0) * matrix);
         _bb.expandBy(bbox.corner(1) * matrix);
         _bb.expandBy(bbox.corner(2) * matrix);

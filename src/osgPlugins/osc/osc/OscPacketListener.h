@@ -39,8 +39,8 @@ namespace osc
 class OscPacketListener : public PacketListener
 {
 protected:
-virtual void ProcessBundle(const osc::ReceivedBundle&b,
-                           const IpEndpointName&remoteEndpoint)
+virtual void ProcessBundle(const osc::ReceivedBundle &b,
+                           const IpEndpointName &remoteEndpoint)
 {
     // ignore bundle time tag for now
 
@@ -54,12 +54,12 @@ virtual void ProcessBundle(const osc::ReceivedBundle&b,
     }
 }
 
-virtual void ProcessMessage(const osc::ReceivedMessage&m,
-                            const IpEndpointName&remoteEndpoint) = 0;
+virtual void ProcessMessage(const osc::ReceivedMessage &m,
+                            const IpEndpointName &remoteEndpoint) = 0;
 
 public:
 virtual void ProcessPacket(const char *data, int size,
-                           const IpEndpointName&remoteEndpoint)
+                           const IpEndpointName &remoteEndpoint)
 {
     osc::ReceivedPacket p(data, size);
 

@@ -101,7 +101,7 @@ osg::Material* MaterialPool::get(int index)
 
 namespace
 {
-osg::Vec4 finalColor(const osg::Vec4&materialColor, const osg::Vec4&faceColor)
+osg::Vec4 finalColor(const osg::Vec4 &materialColor, const osg::Vec4 &faceColor)
 {
     return osg::Vec4(
         materialColor.r() * faceColor.r(),
@@ -111,7 +111,7 @@ osg::Vec4 finalColor(const osg::Vec4&materialColor, const osg::Vec4&faceColor)
 }
 } // end namespace
 
-osg::Material* MaterialPool::getOrCreateMaterial(int index, const osg::Vec4&faceColor)
+osg::Material* MaterialPool::getOrCreateMaterial(int index, const osg::Vec4 &faceColor)
 {
     MaterialParameters materialParam(index, faceColor);
 

@@ -150,9 +150,9 @@ int          _byteswap;
 
 bool _owns_istream;
 
-bool uncompress(std::istream&fin, std::string&destination) const;
+bool uncompress(std::istream &fin, std::string &destination) const;
 
-void throwException(const std::string&message)
+void throwException(const std::string &message)
 {
     _exception = new Exception(message);
 }

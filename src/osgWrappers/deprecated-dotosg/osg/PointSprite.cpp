@@ -12,8 +12,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool PointSprite_readLocalData(Object&obj, Input&fr);
-bool PointSprite_writeLocalData(const Object&obj, Output&fw);
+bool PointSprite_readLocalData(Object &obj, Input &fr);
+bool PointSprite_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(PointSprite)
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(PointSprite)
 );
 
 
-bool PointSprite_readLocalData(Object&obj, Input&fr)
+bool PointSprite_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    PointSprite&ps = static_cast<PointSprite&>(obj);
+    PointSprite &ps = static_cast<PointSprite&>(obj);
 
     if (fr[0].matchWord("coordOriginMode"))
     {
@@ -52,9 +52,9 @@ bool PointSprite_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool PointSprite_writeLocalData(const Object&obj, Output&fw)
+bool PointSprite_writeLocalData(const Object &obj, Output &fw)
 {
-    const PointSprite&ps = static_cast<const PointSprite&>(obj);
+    const PointSprite &ps = static_cast<const PointSprite&>(obj);
 
     switch (ps.getCoordOriginMode())
     {

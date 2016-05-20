@@ -16,8 +16,8 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool Shader_readLocalData(Object&obj, Input&fr);
-bool Shader_writeLocalData(const Object&obj, Output&fw);
+bool Shader_readLocalData(Object &obj, Input &fr);
+bool Shader_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Shader)
@@ -30,11 +30,11 @@ REGISTER_DOTOSGWRAPPER(Shader)
 );
 
 
-bool Shader_readLocalData(Object&obj, Input&fr)
+bool Shader_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Shader&shader = static_cast<Shader&>(obj);
+    Shader &shader = static_cast<Shader&>(obj);
 
     if (fr.matchSequence("type %w"))
     {
@@ -80,9 +80,9 @@ bool Shader_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Shader_writeLocalData(const Object&obj, Output&fw)
+bool Shader_writeLocalData(const Object &obj, Output &fw)
 {
-    const Shader&shader = static_cast<const Shader&>(obj);
+    const Shader &shader = static_cast<const Shader&>(obj);
 
     fw.indent() << "type " << shader.getTypename() << std::endl;
 

@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkValidDataOperator(const osgTerrain::Layer&layer)
+static bool checkValidDataOperator(const osgTerrain::Layer &layer)
 {
     return layer.getValidDataOperator() != NULL;
 }
 
-static bool readValidDataOperator(osgDB::InputStream&is, osgTerrain::Layer&layer)
+static bool readValidDataOperator(osgDB::InputStream &is, osgTerrain::Layer &layer)
 {
     unsigned int type; is >> type;
 
@@ -35,7 +35,7 @@ static bool readValidDataOperator(osgDB::InputStream&is, osgTerrain::Layer&layer
     return true;
 }
 
-static bool writeValidDataOperator(osgDB::OutputStream&os, const osgTerrain::Layer&layer)
+static bool writeValidDataOperator(osgDB::OutputStream &os, const osgTerrain::Layer &layer)
 {
     const osgTerrain::NoDataValue *ndv = dynamic_cast<const osgTerrain::NoDataValue*>(layer.getValidDataOperator());
 

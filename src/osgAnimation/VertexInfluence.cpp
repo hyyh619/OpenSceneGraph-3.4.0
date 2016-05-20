@@ -19,7 +19,7 @@
 
 using namespace osgAnimation;
 
-void VertexInfluenceSet::addVertexInfluence(const VertexInfluence&v)
+void VertexInfluenceSet::addVertexInfluence(const VertexInfluence &v)
 {
     _bone2Vertexes.push_back(v);
 }
@@ -35,8 +35,8 @@ void VertexInfluenceSet::buildVertex2BoneList()
 
     for (BoneToVertexList::const_iterator it = _bone2Vertexes.begin(); it != _bone2Vertexes.end(); ++it)
     {
-        const VertexInfluence&vi  = (*it);
-        int                  size = vi.size();
+        const VertexInfluence &vi  = (*it);
+        int                   size = vi.size();
 
         for (int i = 0; i < size; i++)
         {
@@ -53,9 +53,9 @@ void VertexInfluenceSet::buildVertex2BoneList()
     // normalize weight per vertex
     for (VertexIndexToBoneWeightMap::iterator it = _vertex2Bones.begin(); it != _vertex2Bones.end(); ++it)
     {
-        BoneWeightList&bones = it->second;
-        int           size   = bones.size();
-        float         sum    = 0;
+        BoneWeightList &bones = it->second;
+        int            size   = bones.size();
+        float          sum    = 0;
 
         for (int i = 0; i < size; i++)
             sum += bones[i].getWeight();
@@ -79,8 +79,8 @@ void VertexInfluenceSet::buildVertex2BoneList()
 // sort by name and weight
 struct SortByNameAndWeight : public std::less<VertexInfluenceSet::BoneWeight>
 {
-    bool operator()(const VertexInfluenceSet::BoneWeight&b0,
-                    const VertexInfluenceSet::BoneWeight&b1) const
+    bool operator()(const VertexInfluenceSet::BoneWeight &b0,
+                    const VertexInfluenceSet::BoneWeight &b1) const
     {
         if (b0.getBoneName() < b1.getBoneName())
             return true;
@@ -96,8 +96,8 @@ struct SortByNameAndWeight : public std::less<VertexInfluenceSet::BoneWeight>
 
 struct SortByBoneWeightList : public std::less<VertexInfluenceSet::BoneWeightList>
 {
-    bool operator()(const VertexInfluenceSet::BoneWeightList&b0,
-                    const VertexInfluenceSet::BoneWeightList&b1) const
+    bool operator()(const VertexInfluenceSet::BoneWeightList &b0,
+                    const VertexInfluenceSet::BoneWeightList &b1) const
     {
         if (b0.size() < b1.size())
             return true;

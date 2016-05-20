@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool FrontFace_readLocalData(Object&obj, Input&fr);
-bool FrontFace_writeLocalData(const Object&obj, Output&fw);
+bool FrontFace_readLocalData(Object &obj, Input &fr);
+bool FrontFace_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(FrontFace)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(FrontFace)
     &FrontFace_writeLocalData
 );
 
-bool FrontFace_readLocalData(Object&obj, Input&fr)
+bool FrontFace_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    FrontFace&frontface = static_cast<FrontFace&>(obj);
+    FrontFace &frontface = static_cast<FrontFace&>(obj);
 
     if (fr[0].matchWord("mode"))
     {
@@ -47,9 +47,9 @@ bool FrontFace_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool FrontFace_writeLocalData(const Object&obj, Output&fw)
+bool FrontFace_writeLocalData(const Object &obj, Output &fw)
 {
-    const FrontFace&frontface = static_cast<const FrontFace&>(obj);
+    const FrontFace &frontface = static_cast<const FrontFace&>(obj);
 
     switch (frontface.getMode())
     {

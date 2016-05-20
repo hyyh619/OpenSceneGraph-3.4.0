@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGUTIL_RENDERBIN
 #define OSGUTIL_RENDERBIN 1
@@ -21,22 +21,21 @@
 #include <string>
 
 namespace osgUtil {
-
-class RenderStage;
-class Statistics;
+    class RenderStage;
+    class Statistics;
 /**
  * RenderBin base class. Renderbin contains geometries to be rendered as a group,
  * renderbins are rendered once each.  They can improve efficiency or
  * use different rendering algorithms.
  * A renderBin can contain further renderBins producing a tree hierarchy of renderBins.
  */
-class OSGUTIL_EXPORT RenderBin : public osg::Object
-{
-    public:
+    class OSGUTIL_EXPORT RenderBin: public osg::Object
+    {
+public:
 
-        typedef std::vector<RenderLeaf*>                    RenderLeafList;
-        typedef std::vector<StateGraph*>                    StateGraphList;
-        typedef std::map< int, osg::ref_ptr<RenderBin> >    RenderBinList;
+        typedef std::vector < RenderLeaf* > RenderLeafList;
+        typedef std::vector < StateGraph* > StateGraphList;
+        typedef std::map < int, osg::ref_ptr < RenderBin >> RenderBinList;
 
         enum SortMode
         {
@@ -48,10 +47,10 @@ class OSGUTIL_EXPORT RenderBin : public osg::Object
         };
 
         // static methods.
-        static RenderBin* createRenderBin(const std::string& binName);
-        static RenderBin* getRenderBinPrototype(const std::string& binName);
-        static void addRenderBinPrototype(const std::string& binName,RenderBin* proto);
-        static void removeRenderBinPrototype(RenderBin* proto);
+        static RenderBin* createRenderBin(const std::string &binName);
+        static RenderBin* getRenderBinPrototype(const std::string &binName);
+        static void addRenderBinPrototype(const std::string &binName, RenderBin *proto);
+        static void removeRenderBinPrototype(RenderBin *proto);
 
         static void setDefaultRenderBinSortMode(SortMode mode);
         static SortMode getDefaultRenderBinSortMode();
@@ -63,42 +62,99 @@ class OSGUTIL_EXPORT RenderBin : public osg::Object
         RenderBin(SortMode mode);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        RenderBin(const RenderBin& rhs,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+        RenderBin(const RenderBin &rhs, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
-        virtual osg::Object* cloneType() const { return new RenderBin(); }
-        virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new RenderBin(*this,copyop); } // note only implements a clone of type.
-        virtual bool isSameKindAs(const osg::Object* obj) const { return dynamic_cast<const RenderBin*>(obj)!=0L; }
-        virtual const char* libraryName() const { return "osgUtil"; }
-        virtual const char* className() const { return "RenderBin"; }
+        virtual osg::Object* cloneType() const
+        {
+            return new RenderBin();
+        }
+        virtual osg::Object* clone(const osg::CopyOp &copyop) const
+        {
+            return new RenderBin(*this, copyop);
+        }                                                                                                   // note only implements a clone of type.
+        virtual bool isSameKindAs(const osg::Object *obj) const
+        {
+            return dynamic_cast < const RenderBin * > (obj) != 0L;
+        }
+        virtual const char* libraryName() const
+        {
+            return "osgUtil";
+        }
+        virtual const char* className() const
+        {
+            return "RenderBin";
+        }
 
         virtual void reset();
 
-        void setStateSet(osg::StateSet* stateset) { _stateset = stateset; }
-        osg::StateSet* getStateSet() { return _stateset.get(); }
-        const osg::StateSet* getStateSet() const { return _stateset.get(); }
+        void setStateSet(osg::StateSet *stateset)
+        {
+            _stateset = stateset;
+        }
+        osg::StateSet* getStateSet()
+        {
+            return _stateset.get();
+        }
+        const osg::StateSet* getStateSet() const
+        {
+            return _stateset.get();
+        }
 
 
-        RenderBin* getParent() { return _parent; }
-        const RenderBin* getParent() const { return _parent; }
+        RenderBin* getParent()
+        {
+            return _parent;
+        }
+        const RenderBin* getParent() const
+        {
+            return _parent;
+        }
 
-        RenderStage* getStage() { return _stage; }
-        const RenderStage* getStage() const { return _stage; }
+        RenderStage* getStage()
+        {
+            return _stage;
+        }
+        const RenderStage* getStage() const
+        {
+            return _stage;
+        }
 
-        int getBinNum() const { return _binNum; }
+        int getBinNum() const
+        {
+            return _binNum;
+        }
 
-        StateGraphList& getStateGraphList() { return _stateGraphList; }
-        const StateGraphList& getStateGraphList() const { return _stateGraphList; }
+        StateGraphList&getStateGraphList()
+        {
+            return _stateGraphList;
+        }
+        const StateGraphList&getStateGraphList() const
+        {
+            return _stateGraphList;
+        }
 
-        RenderBinList& getRenderBinList() { return _bins; }
-        const RenderBinList& getRenderBinList() const { return _bins; }
+        RenderBinList&getRenderBinList()
+        {
+            return _bins;
+        }
+        const RenderBinList&getRenderBinList() const
+        {
+            return _bins;
+        }
 
-        RenderLeafList& getRenderLeafList() { return _renderLeafList; }
-        const RenderLeafList& getRenderLeafList() const { return _renderLeafList; }
+        RenderLeafList&getRenderLeafList()
+        {
+            return _renderLeafList;
+        }
+        const RenderLeafList&getRenderLeafList() const
+        {
+            return _renderLeafList;
+        }
 
 
-        RenderBin* find_or_insert(int binNum,const std::string& binName);
+        RenderBin* find_or_insert(int binNum, const std::string &binName);
 
-        void addStateGraph(StateGraph* rg)
+        void addStateGraph(StateGraph *rg)
         {
             _stateGraphList.push_back(rg);
         }
@@ -108,7 +164,10 @@ class OSGUTIL_EXPORT RenderBin : public osg::Object
         virtual void sortImplementation();
 
         void setSortMode(SortMode mode);
-        SortMode getSortMode() const { return _sortMode; }
+        SortMode getSortMode() const
+        {
+            return _sortMode;
+        }
 
         virtual void sortByState();
         virtual void sortByStateThenFrontToBack();
@@ -121,27 +180,45 @@ class OSGUTIL_EXPORT RenderBin : public osg::Object
             virtual void sortImplementation(RenderBin*) = 0;
         };
 
-        void setSortCallback(SortCallback* sortCallback) { _sortCallback = sortCallback; }
-        SortCallback* getSortCallback() { return _sortCallback.get(); }
-        const SortCallback* getSortCallback() const { return _sortCallback.get(); }
+        void setSortCallback(SortCallback *sortCallback)
+        {
+            _sortCallback = sortCallback;
+        }
+        SortCallback* getSortCallback()
+        {
+            return _sortCallback.get();
+        }
+        const SortCallback* getSortCallback() const
+        {
+            return _sortCallback.get();
+        }
 
 
 
-        virtual void draw(osg::RenderInfo& renderInfo,RenderLeaf*& previous);
+        virtual void draw(osg::RenderInfo &renderInfo, RenderLeaf* &previous);
 
-        virtual void drawImplementation(osg::RenderInfo& renderInfo,RenderLeaf*& previous);
+        virtual void drawImplementation(osg::RenderInfo &renderInfo, RenderLeaf* &previous);
 
         struct DrawCallback : public osg::Referenced
         {
-            virtual void drawImplementation(RenderBin* bin,osg::RenderInfo& renderInfo,RenderLeaf*& previous) = 0;
+            virtual void drawImplementation(RenderBin *bin, osg::RenderInfo &renderInfo, RenderLeaf* &previous) = 0;
         };
 
-        void setDrawCallback(DrawCallback* drawCallback) { _drawCallback = drawCallback; }
-        DrawCallback* getDrawCallback() { return _drawCallback.get(); }
-        const DrawCallback* getDrawCallback() const { return _drawCallback.get(); }
+        void setDrawCallback(DrawCallback *drawCallback)
+        {
+            _drawCallback = drawCallback;
+        }
+        DrawCallback* getDrawCallback()
+        {
+            return _drawCallback.get();
+        }
+        const DrawCallback* getDrawCallback() const
+        {
+            return _drawCallback.get();
+        }
 
         /** Extract stats for current draw list. */
-        bool getStats(Statistics& primStats) const;
+        bool getStats(Statistics &primStats) const;
 
         /** Compute the number of dynamic RenderLeaves.*/
         virtual unsigned int computeNumberOfDynamicRenderLeaves() const;
@@ -149,33 +226,29 @@ class OSGUTIL_EXPORT RenderBin : public osg::Object
         void copyLeavesFromStateGraphListToRenderLeafList();
 
         /** If State is non-zero, this function releases any associated OpenGL objects for
-           * the specified graphics context. Otherwise, releases OpenGL objexts
-           * for all graphics contexts. */
-        virtual void releaseGLObjects(osg::State* state= 0) const;
+         * the specified graphics context. Otherwise, releases OpenGL objexts
+         * for all graphics contexts. */
+        virtual void releaseGLObjects(osg::State *state = 0) const;
 
-    protected:
+protected:
 
         virtual ~RenderBin();
 
-        int                             _binNum;
-        RenderBin*                      _parent;
-        RenderStage*                    _stage;
-        RenderBinList                   _bins;
-        StateGraphList                  _stateGraphList;
-        RenderLeafList                  _renderLeafList;
+        int            _binNum;
+        RenderBin      *_parent;
+        RenderStage    *_stage;
+        RenderBinList  _bins;
+        StateGraphList _stateGraphList;
+        RenderLeafList _renderLeafList;
 
-        bool                            _sorted;
-        SortMode                        _sortMode;
-        osg::ref_ptr<SortCallback>      _sortCallback;
+        bool     _sorted;
+        SortMode _sortMode;
+        osg::ref_ptr < SortCallback > _sortCallback;
 
-        osg::ref_ptr<DrawCallback>      _drawCallback;
+        osg::ref_ptr < DrawCallback > _drawCallback;
 
-        osg::ref_ptr<osg::StateSet>     _stateset;
-
-};
-
+        osg::ref_ptr < osg::StateSet > _stateset;
+    };
 }
 
 #endif
-
-

@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool TextBase_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool TextBase_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool TextBase_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool TextBase_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(TextBase_Proxy)
 (
@@ -25,10 +25,10 @@ REGISTER_DOTOSGWRAPPER(TextBase_Proxy)
     TextBase_writeLocalData
 );
 
-bool TextBase_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool TextBase_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgText::Text&text      = static_cast<osgText::Text&>(obj);
-    bool         itAdvanced = false;
+    osgText::Text &text      = static_cast<osgText::Text&>(obj);
+    bool          itAdvanced = false;
 
     // color
     if (fr[0].matchWord("color"))
@@ -331,9 +331,9 @@ bool TextBase_readLocalData(osg::Object&obj, osgDB::Input&fr)
 //    }
 // }
 
-bool TextBase_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool TextBase_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgText::Text&text = static_cast<const osgText::Text&>(obj);
+    const osgText::Text &text = static_cast<const osgText::Text&>(obj);
 
     // color
     osg::Vec4 c = text.getColor();

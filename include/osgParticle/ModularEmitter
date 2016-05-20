@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgParticle - Copyright (C) 2002 Marco Jez
+ */
+// osgParticle - Copyright (C) 2002 Marco Jez
 
 #ifndef OSGPARTICLE_MODULAREMITTER
 #define OSGPARTICLE_MODULAREMITTER 1
@@ -33,20 +33,19 @@
 
 namespace osgParticle
 {
-
     /**    An emitter class that holds three objects to control the creation of particles.
         These objects are a <I>counter</I>, a <I>placer</I> and a <I>shooter</I>.
         The counter controls the number of particles to be emitted at each frame;
         the placer must initialize the particle's position vector, while the shooter initializes
         its velocity vector.
         You can use the predefined counter/placer/shooter classes, or you can create your own.
-    */
+     */
     class OSGPARTICLE_EXPORT ModularEmitter: public Emitter {
-    public:
+public:
         ModularEmitter();
-        ModularEmitter(const ModularEmitter& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+        ModularEmitter(const ModularEmitter &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
-        META_Node(osgParticle,ModularEmitter);
+        META_Node(osgParticle, ModularEmitter);
 
         /// Get the counter object.
         inline Counter* getCounter();
@@ -55,7 +54,7 @@ namespace osgParticle
         inline const Counter* getCounter() const;
 
         /// Set the Counter object.
-        inline void setCounter(Counter* c);
+        inline void setCounter(Counter *c);
 
         /// Get the ratio between number of particle to create in compensation for movement of the emitter
         inline float getNumParticlesToCreateMovementCompensationRatio() const;
@@ -71,29 +70,29 @@ namespace osgParticle
         inline const Placer* getPlacer() const;
 
         /// Set the Placer object.
-        inline void setPlacer(Placer* p);
+        inline void setPlacer(Placer *p);
 
         /// Get the Shooter object.
-        inline Shooter *getShooter();
+        inline Shooter* getShooter();
 
         /// Get the const Shooter object.
-        inline const Shooter *getShooter() const;
+        inline const Shooter* getShooter() const;
 
         /// Set the Shooter object.
         inline void setShooter(Shooter *s);
 
-    protected:
+protected:
         virtual ~ModularEmitter() {}
-        ModularEmitter &operator=(const ModularEmitter &) { return *this; }
+        ModularEmitter &operator = (const ModularEmitter&) { return *this; }
 
         virtual void emitParticles(double dt);
 
-    private:
+private:
 
         float _numParticleToCreateMovementCompensationRatio;
-        osg::ref_ptr<Counter> _counter;
-        osg::ref_ptr<Placer> _placer;
-        osg::ref_ptr<Shooter> _shooter;
+        osg::ref_ptr < Counter > _counter;
+        osg::ref_ptr < Placer > _placer;
+        osg::ref_ptr < Shooter > _shooter;
     };
 
     // INLINE FUNCTIONS
@@ -108,7 +107,7 @@ namespace osgParticle
         return _counter.get();
     }
 
-    inline void ModularEmitter::setCounter(Counter* c)
+    inline void ModularEmitter::setCounter(Counter *c)
     {
         _counter = c;
     }
@@ -133,17 +132,17 @@ namespace osgParticle
         return _placer.get();
     }
 
-    inline void ModularEmitter::setPlacer(Placer* p)
+    inline void ModularEmitter::setPlacer(Placer *p)
     {
         _placer = p;
     }
 
-    inline Shooter *ModularEmitter::getShooter()
+    inline Shooter* ModularEmitter::getShooter()
     {
         return _shooter.get();
     }
 
-    inline const Shooter *ModularEmitter::getShooter() const
+    inline const Shooter* ModularEmitter::getShooter() const
     {
         return _shooter.get();
     }
@@ -152,7 +151,6 @@ namespace osgParticle
     {
         _shooter = s;
     }
-
 }
 
 #endif

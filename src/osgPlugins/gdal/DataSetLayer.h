@@ -27,10 +27,10 @@ public:
 
 DataSetLayer();
 
-DataSetLayer(const std::string&fileName);
+DataSetLayer(const std::string &fileName);
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-DataSetLayer(const DataSetLayer&dataSetLayer, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+DataSetLayer(const DataSetLayer &dataSetLayer, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(GDALPlugin, DataSetLayer);
 

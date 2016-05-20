@@ -19,7 +19,7 @@
 class QTImportExportException : public std::exception
 {
 public:
-QTImportExportException(int err, const std::string&msg) : std::exception(), _err(err), _msg(msg) {}
+QTImportExportException(int err, const std::string &msg) : std::exception(), _err(err), _msg(msg) {}
 
 virtual const char* what()
 {
@@ -197,7 +197,7 @@ unsigned char* QuicktimeImportExport::prepareBufferForQuicktime(unsigned char *b
 // readFromStream
 // ----------------------------------------------------------------------------------------------------------
 
-osg::Image* QuicktimeImportExport::readFromStream(std::istream&inStream, const std::string&fileTypeHint, long sizeHint)
+osg::Image* QuicktimeImportExport::readFromStream(std::istream &inStream, const std::string &fileTypeHint, long sizeHint)
 {
     char *content = NULL;
     long length   = 0;
@@ -246,7 +246,7 @@ osg::Image* QuicktimeImportExport::readFromStream(std::istream&inStream, const s
 }
 
 
-Handle getPtrDataRef(unsigned char *data, unsigned int size, const std::string&filename)
+Handle getPtrDataRef(unsigned char *data, unsigned int size, const std::string &filename)
 {
     // Load Data Reference
     Handle               dataRef;
@@ -292,7 +292,7 @@ Handle getPtrDataRef(unsigned char *data, unsigned int size, const std::string&f
 }
 
 
-osg::Image* QuicktimeImportExport::doImport(unsigned char *data, unsigned int sizeData, const std::string&fileTypeHint)
+osg::Image* QuicktimeImportExport::doImport(unsigned char *data, unsigned int sizeData, const std::string &fileTypeHint)
 {
     GWorldPtr               gworld = 0;
     OSType                  pixelFormat;
@@ -388,7 +388,7 @@ osg::Image* QuicktimeImportExport::doImport(unsigned char *data, unsigned int si
         DisposeHandle(reinterpret_cast<char**>(desc));
         DisposeHandle(dataRef);
     }
-    catch (QTImportExportException&e)
+    catch (QTImportExportException &e)
     {
         setError(e.what());
 
@@ -454,7 +454,7 @@ osg::Image* QuicktimeImportExport::doImport(unsigned char *data, unsigned int si
 }
 
 
-void QuicktimeImportExport::writeToStream(std::ostream&outStream, osg::Image *image, const std::string&fileTypeHint)
+void QuicktimeImportExport::writeToStream(std::ostream &outStream, osg::Image *image, const std::string &fileTypeHint)
 {
     std::string ext = osgDB::getFileExtension(fileTypeHint);
     // Build map  of extension <-> osFileTypes
@@ -559,7 +559,7 @@ void QuicktimeImportExport::writeToStream(std::ostream&outStream, osg::Image *im
     }
 
 
-    catch (QTImportExportException&e)
+    catch (QTImportExportException &e)
     {
         setError(e.what());
 

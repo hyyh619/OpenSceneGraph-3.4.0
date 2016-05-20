@@ -26,7 +26,7 @@ ShaderComposer::ShaderComposer()
     OSG_INFO << "ShaderComposer::ShaderComposer() " << this << std::endl;
 }
 
-ShaderComposer::ShaderComposer(const ShaderComposer&sa, const CopyOp&copyop) :
+ShaderComposer::ShaderComposer(const ShaderComposer &sa, const CopyOp &copyop) :
     Object(sa, copyop)
 {
     OSG_INFO << "ShaderComposer::ShaderComposer(const ShaderComposer&, const CopyOp& copyop) " << this << std::endl;
@@ -43,7 +43,7 @@ void ShaderComposer::releaseGLObjects(osg::State *state)
     _shaderMainMap.clear();
 }
 
-osg::Program* ShaderComposer::getOrCreateProgram(const ShaderComponents&shaderComponents)
+osg::Program* ShaderComposer::getOrCreateProgram(const ShaderComponents &shaderComponents)
 {
     ProgramMap::iterator itr = _programMap.find(shaderComponents);
 
@@ -136,7 +136,7 @@ osg::Program* ShaderComposer::getOrCreateProgram(const ShaderComponents&shaderCo
     return program.get();
 }
 
-void ShaderComposer::addShaderToProgram(Program *program, const Shaders&shaders)
+void ShaderComposer::addShaderToProgram(Program *program, const Shaders &shaders)
 {
     ShaderMainMap::iterator itr = _shaderMainMap.find(shaders);
 
@@ -164,7 +164,7 @@ void ShaderComposer::addShaderToProgram(Program *program, const Shaders&shaders)
     }
 }
 
-osg::Shader* ShaderComposer::composeMain(const Shaders&shaders)
+osg::Shader* ShaderComposer::composeMain(const Shaders &shaders)
 {
     OSG_NOTICE << "ShaderComposer::composeMain(Shaders) shaders.size()==" << shaders.size() << std::endl;
 
@@ -188,7 +188,7 @@ osg::Shader* ShaderComposer::composeMain(const Shaders&shaders)
             continue;
         }
 
-        const Shader::CodeInjectionMap&cim = shader->getCodeInjectionMap();
+        const Shader::CodeInjectionMap &cim = shader->getCodeInjectionMap();
 
         for (Shader::CodeInjectionMap::const_iterator citr = cim.begin();
              citr != cim.end();

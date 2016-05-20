@@ -12,7 +12,7 @@ const unsigned int MASK_2D = 0xF0000000;
 class ABCWidget : public osgWidget::Label
 {
 public:
-ABCWidget(const std::string&label) :
+ABCWidget(const std::string &label) :
     osgWidget::Label("", label)
 {
     setFont("fonts/Vera.ttf");
@@ -26,7 +26,7 @@ ABCWidget(const std::string&label) :
 class Button : public osgWidget::Label
 {
 public:
-Button(const std::string&label) :
+Button(const std::string &label) :
     osgWidget::Label("", label)
 {
     setFont("fonts/Vera.ttf");
@@ -95,7 +95,7 @@ virtual void managed(osgWidget::WindowManager *wm)
     wm->addChild(_win1.get());
 }
 
-bool handlePressAdd(osgWidget::Event&ev)
+bool handlePressAdd(osgWidget::Event &ev)
 {
     static unsigned int num = 0;
 
@@ -110,10 +110,10 @@ bool handlePressAdd(osgWidget::Event&ev)
     return true;
 }
 
-bool handlePressRemove(osgWidget::Event&ev)
+bool handlePressRemove(osgWidget::Event &ev)
 {
     // TODO: Temporary hack!
-    const osgWidget::Box::Vector&v = _win1->getObjects();
+    const osgWidget::Box::Vector &v = _win1->getObjects();
 
     if (!v.size())
         return false;

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGGA_EVENTHANDLER
 #define OSGGA_EVENTHANDLER 1
@@ -24,18 +24,17 @@
 #include <osgGA/GUIActionAdapter>
 
 
-namespace osgGA{
-
+namespace osgGA {
 /**
-EventHandler is base class for adding handling of events, either as node event callback, drawable event callback or an event handler attached directly to the view(er)
-*/
+   EventHandler is base class for adding handling of events, either as node event callback, drawable event callback or an event handler attached directly to the view(er)
+ */
 
-class OSGGA_EXPORT EventHandler : public osg::NodeCallback, public osg::Drawable::EventCallback
-{
+    class OSGGA_EXPORT EventHandler: public osg::NodeCallback, public osg::Drawable::EventCallback
+    {
 public:
 
         EventHandler() {}
-        EventHandler(const EventHandler& eh,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY):
+        EventHandler(const EventHandler &eh, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
             osg::Object(eh, copyop),
             osg::Callback(eh, copyop),
             osg::NodeCallback(eh, copyop),
@@ -43,30 +42,29 @@ public:
 
         META_Object(osgGA, EventHandler);
 
-        virtual bool run(osg::Object* object, osg::Object* data)
+        virtual bool run(osg::Object *object, osg::Object *data)
         {
-            osg::Node* node = dynamic_cast<osg::Node*>(object);
-            osg::NodeVisitor* nv = dynamic_cast<osg::NodeVisitor*>(data);
+            osg::Node        *node = dynamic_cast < osg::Node * > (object);
+            osg::NodeVisitor *nv   = dynamic_cast < osg::NodeVisitor * > (data);
+
             operator()(node, nv);
             return true;
         }
 
         /** Event traversal node callback method. There is no need to override this method in subclasses of EventHandler as this implementation calls handle(..) for you. */
-        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+        virtual void operator()(osg::Node * node, osg::NodeVisitor * nv);
 
         /** Event traversal drawable callback method. There is no need to override this method in subclasses of EventHandler as this implementation calls handle(..) for you. */
-        virtual void event(osg::NodeVisitor* nv, osg::Drawable* drawable);
+        virtual void event(osg::NodeVisitor *nv, osg::Drawable *drawable);
 
         /** Handle event. Override the handle(..) method in your event handlers to respond to events. */
-        virtual bool handle(osgGA::Event* event, osg::Object* object, osg::NodeVisitor* nv);
+        virtual bool handle(osgGA::Event *event, osg::Object *object, osg::NodeVisitor *nv);
 
         /** Get the user interface usage of this event handler, i.e. keyboard and mouse bindings.*/
         virtual void getUsage(osg::ApplicationUsage&) const {}
 
 protected:
-
-};
-
+    };
 }
 
 #endif

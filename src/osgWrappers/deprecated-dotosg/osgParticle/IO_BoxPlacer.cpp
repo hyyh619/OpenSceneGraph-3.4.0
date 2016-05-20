@@ -7,8 +7,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  BoxPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  BoxPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  BoxPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  BoxPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(BoxPlacer_Proxy)
 (
@@ -19,10 +19,10 @@ REGISTER_DOTOSGWRAPPER(BoxPlacer_Proxy)
     BoxPlacer_writeLocalData
 );
 
-bool BoxPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool BoxPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::BoxPlacer&myobj     = static_cast<osgParticle::BoxPlacer&>(obj);
-    bool                  itAdvanced = false;
+    osgParticle::BoxPlacer &myobj     = static_cast<osgParticle::BoxPlacer&>(obj);
+    bool                   itAdvanced = false;
 
     osgParticle::rangef r;
 
@@ -59,9 +59,9 @@ bool BoxPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool BoxPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool BoxPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::BoxPlacer&myobj = static_cast<const osgParticle::BoxPlacer&>(obj);
+    const osgParticle::BoxPlacer &myobj = static_cast<const osgParticle::BoxPlacer&>(obj);
 
     osgParticle::rangef r;
 

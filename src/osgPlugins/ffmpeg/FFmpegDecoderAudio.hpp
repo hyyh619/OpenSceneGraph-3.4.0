@@ -22,9 +22,9 @@ class FFmpegDecoderAudio : public OpenThreads::Thread
 public:
 
 typedef BoundedMessageQueue<FFmpegPacket> PacketQueue;
-typedef void (*PublishFunc) (const FFmpegDecoderAudio&decoder, void *user_data);
+typedef void (*PublishFunc) (const FFmpegDecoderAudio &decoder, void *user_data);
 
-FFmpegDecoderAudio(PacketQueue&packets, FFmpegClocks&clocks);
+FFmpegDecoderAudio(PacketQueue &packets, FFmpegClocks &clocks);
 ~FFmpegDecoderAudio();
 
 void open(AVStream *stream, FFmpegParameters *parameters);

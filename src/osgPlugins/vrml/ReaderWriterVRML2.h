@@ -49,7 +49,7 @@ QuadricKey(float height, float radius, unsigned bottom, unsigned side, unsigned 
     , m_flags(bottom | (side << 1) | (top << 2))
 {}
 
-bool operator<(const QuadricKey&rhs) const
+bool operator<(const QuadricKey &rhs) const
 {
     return m_height < rhs.m_height ||
            (m_height == rhs.m_height && (m_radius < rhs.m_radius ||
@@ -92,7 +92,7 @@ virtual const char* className() const
 virtual ReadResult readNode(const std::string&, const osgDB::Options *options) const;
 // virtual ReadResult readNode(std::istream& fin, const osgDB::Options* options) const;
 
-virtual WriteResult writeNode(const osg::Node&, const std::string&filename, const osgDB::ReaderWriter::Options *options) const;
+virtual WriteResult writeNode(const osg::Node&, const std::string &filename, const osgDB::ReaderWriter::Options *options) const;
 
 private:
 typedef std::map<float, osg::ref_ptr<osg::Geometry> > SphereLibrary;

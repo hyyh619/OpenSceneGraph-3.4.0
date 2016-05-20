@@ -21,11 +21,11 @@ namespace http
 {
 namespace server
 {
-request_handler::request_handler(const std::string&doc_root)
+request_handler::request_handler(const std::string &doc_root)
     : doc_root_(doc_root)
 {}
 
-void request_handler::handle_request(const request&req, reply&rep)
+void request_handler::handle_request(const request &req, reply &rep)
 {
     // Decode url to path.
     std::string request_path;
@@ -93,7 +93,7 @@ void request_handler::handle_request(const request&req, reply&rep)
     rep.headers[1].value = mime_types::extension_to_type(extension);
 }
 
-bool request_handler::url_decode(const std::string&in, std::string&out)
+bool request_handler::url_decode(const std::string &in, std::string &out)
 {
     out.clear();
     out.reserve(in.size());

@@ -27,7 +27,7 @@
 
 using namespace osgViewer;
 
-osg::Geometry* PanoramicSphericalDisplay::createParoramicSphericalDisplayDistortionMesh(const osg::Vec3&origin, const osg::Vec3&widthVector, const osg::Vec3&heightVector, double sphere_radius, double collar_radius, osg::Image *intensityMap, const osg::Matrix&projectorMatrix) const
+osg::Geometry* PanoramicSphericalDisplay::createParoramicSphericalDisplayDistortionMesh(const osg::Vec3 &origin, const osg::Vec3 &widthVector, const osg::Vec3 &heightVector, double sphere_radius, double collar_radius, osg::Image *intensityMap, const osg::Matrix &projectorMatrix) const
 {
     osg::Vec3d center(0.0, 0.0, 0.0);
     osg::Vec3d eye(0.0, 0.0, 0.0);
@@ -141,10 +141,10 @@ osg::Geometry* PanoramicSphericalDisplay::createParoramicSphericalDisplayDistort
             int i3 = j + 1 + (i) * noSteps;
             int i4 = j + 1 + (i + 1) * noSteps;
 
-            osg::Vec3&v1 = (*vertices)[i1];
-            osg::Vec3&v2 = (*vertices)[i2];
-            osg::Vec3&v3 = (*vertices)[i3];
-            osg::Vec3&v4 = (*vertices)[i4];
+            osg::Vec3 &v1 = (*vertices)[i1];
+            osg::Vec3 &v2 = (*vertices)[i2];
+            osg::Vec3 &v3 = (*vertices)[i3];
+            osg::Vec3 &v4 = (*vertices)[i4];
 
             if ((v1 - screenCenter).length() > screenRadius)
                 continue;
@@ -171,7 +171,7 @@ osg::Geometry* PanoramicSphericalDisplay::createParoramicSphericalDisplayDistort
     return geometry;
 }
 
-void PanoramicSphericalDisplay::configure(osgViewer::View&view) const
+void PanoramicSphericalDisplay::configure(osgViewer::View &view) const
 {
     OSG_INFO << "PanoramicSphericalDisplay::configure(rad=" << _radius << ", cllr=" << _collar << ", sn=" << _screenNum << ", im=" << _intensityMap << ")" << std::endl;
 

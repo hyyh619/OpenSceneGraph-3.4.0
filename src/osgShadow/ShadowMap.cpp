@@ -78,7 +78,7 @@ ShadowMap::ShadowMap() :
     _textureSize(1024, 1024)
 {}
 
-ShadowMap::ShadowMap(const ShadowMap&copy, const osg::CopyOp&copyop) :
+ShadowMap::ShadowMap(const ShadowMap &copy, const osg::CopyOp &copyop) :
     ShadowTechnique(copy, copyop),
     _baseTextureUnit(copy._baseTextureUnit),
     _shadowTextureUnit(copy._shadowTextureUnit),
@@ -92,19 +92,19 @@ void ShadowMap::setTextureUnit(unsigned int unit)
     _shadowTextureUnit = unit;
 }
 
-void ShadowMap::setPolygonOffset(const osg::Vec2&polyOffset)
+void ShadowMap::setPolygonOffset(const osg::Vec2 &polyOffset)
 {
     _polyOffset = polyOffset;
 }
 
-void ShadowMap::setAmbientBias(const osg::Vec2&ambientBias)
+void ShadowMap::setAmbientBias(const osg::Vec2 &ambientBias)
 {
     _ambientBias = ambientBias;
     if (_ambientBiasUniform.valid())
         _ambientBiasUniform->set(_ambientBias);
 }
 
-void ShadowMap::setTextureSize(const osg::Vec2s&textureSize)
+void ShadowMap::setTextureSize(const osg::Vec2s &textureSize)
 {
     _textureSize = textureSize;
     dirty();
@@ -313,12 +313,12 @@ void ShadowMap::init()
 }
 
 
-void ShadowMap::update(osg::NodeVisitor&nv)
+void ShadowMap::update(osg::NodeVisitor &nv)
 {
     _shadowedScene->osg::Group::traverse(nv);
 }
 
-void ShadowMap::cull(osgUtil::CullVisitor&cv)
+void ShadowMap::cull(osgUtil::CullVisitor &cv)
 {
     // record the traversal mask on entry so we can reapply it later.
     unsigned int traversalMask = cv.getTraversalMask();
@@ -343,7 +343,7 @@ void ShadowMap::cull(osgUtil::CullVisitor&cv)
     osg::Vec3        lightDir;
 
     // MR testing giving a specific light
-    osgUtil::PositionalStateContainer::AttrMatrixList&aml = orig_rs->getPositionalStateContainer()->getAttrMatrixList();
+    osgUtil::PositionalStateContainer::AttrMatrixList &aml = orig_rs->getPositionalStateContainer()->getAttrMatrixList();
 
     for (osgUtil::PositionalStateContainer::AttrMatrixList::iterator itr = aml.begin();
          itr != aml.end();
@@ -512,7 +512,7 @@ DrawableDrawWithDepthShadowComparisonOffCallback
 {}
 
 virtual void drawImplementation
-    (osg::RenderInfo&ri, const osg::Drawable *drawable) const
+    (osg::RenderInfo &ri, const osg::Drawable *drawable) const
 {
     if (_texture.valid())
     {

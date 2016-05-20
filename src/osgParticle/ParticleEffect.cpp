@@ -17,7 +17,7 @@
 
 using namespace osgParticle;
 
-ParticleEffect::ParticleEffect(const ParticleEffect&copy, const osg::CopyOp&copyop) :
+ParticleEffect::ParticleEffect(const ParticleEffect &copy, const osg::CopyOp &copyop) :
     osg::Group(copy, copyop),
     _automaticSetup(copy._automaticSetup),
     _useLocalParticleSystem(copy._useLocalParticleSystem),
@@ -42,7 +42,7 @@ void ParticleEffect::setUseLocalParticleSystem(bool local)
         buildEffect();
 }
 
-void ParticleEffect::setTextureFileName(const std::string&filename)
+void ParticleEffect::setTextureFileName(const std::string &filename)
 {
     _textureFileName = filename;
 
@@ -50,7 +50,7 @@ void ParticleEffect::setTextureFileName(const std::string&filename)
         setUpEmitterAndProgram();
 }
 
-void ParticleEffect::setDefaultParticleTemplate(const Particle&p)
+void ParticleEffect::setDefaultParticleTemplate(const Particle &p)
 {
     _defaultParticleTemplate = p;
 
@@ -58,7 +58,7 @@ void ParticleEffect::setDefaultParticleTemplate(const Particle&p)
         setUpEmitterAndProgram();
 }
 
-void ParticleEffect::setPosition(const osg::Vec3&position)
+void ParticleEffect::setPosition(const osg::Vec3 &position)
 {
     if (_position == position)
         return;
@@ -124,7 +124,7 @@ void ParticleEffect::setParticleDuration(double duration)
         setUpEmitterAndProgram();
 }
 
-void ParticleEffect::setWind(const osg::Vec3&wind)
+void ParticleEffect::setWind(const osg::Vec3 &wind)
 {
     if (_wind == wind)
         return;

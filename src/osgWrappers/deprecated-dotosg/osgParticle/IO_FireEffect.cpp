@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  FireEffect_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  FireEffect_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  FireEffect_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  FireEffect_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(FireEffect_Proxy)
 (

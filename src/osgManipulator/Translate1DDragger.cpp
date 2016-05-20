@@ -29,7 +29,7 @@ Translate1DDragger::Translate1DDragger() : Dragger(), _checkForNodeInNodePath(tr
     setPickColor(osg::Vec4(1.0f, 1.0f, 0.0f, 1.0f));
 }
 
-Translate1DDragger::Translate1DDragger(const osg::Vec3d&s, const osg::Vec3d&e) : Dragger(), _checkForNodeInNodePath(true)
+Translate1DDragger::Translate1DDragger(const osg::Vec3d &s, const osg::Vec3d &e) : Dragger(), _checkForNodeInNodePath(true)
 {
     _projector = new LineProjector(s, e);
     setColor(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
@@ -39,7 +39,7 @@ Translate1DDragger::Translate1DDragger(const osg::Vec3d&s, const osg::Vec3d&e) :
 Translate1DDragger::~Translate1DDragger()
 {}
 
-bool Translate1DDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool Translate1DDragger::handle(const PointerInfo &pointer, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     // Check if the dragger node is in the nodepath.
     if (_checkForNodeInNodePath)

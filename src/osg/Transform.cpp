@@ -32,14 +32,14 @@ CoordMode _coordMode;
 Matrix    &_matrix;
 bool      _ignoreCameras;
 
-TransformVisitor(Matrix&matrix, CoordMode coordMode, bool ignoreCameras) :
+TransformVisitor(Matrix &matrix, CoordMode coordMode, bool ignoreCameras) :
     NodeVisitor(),
     _coordMode(coordMode),
     _matrix(matrix),
     _ignoreCameras(ignoreCameras)
 {}
 
-virtual void apply(Transform&transform)
+virtual void apply(Transform &transform)
 {
     if (_coordMode == LOCAL_TO_WORLD)
     {
@@ -51,7 +51,7 @@ virtual void apply(Transform&transform)
     }
 }
 
-void accumulate(const NodePath&nodePath)
+void accumulate(const NodePath &nodePath)
 {
     if (nodePath.empty())
         return;
@@ -94,7 +94,7 @@ TransformVisitor&operator =(const TransformVisitor&)
 }
 };
 
-Matrix osg::computeLocalToWorld(const NodePath&nodePath, bool ignoreCameras)
+Matrix osg::computeLocalToWorld(const NodePath &nodePath, bool ignoreCameras)
 {
     Matrix           matrix;
     TransformVisitor tv(matrix, TransformVisitor::LOCAL_TO_WORLD, ignoreCameras);
@@ -103,7 +103,7 @@ Matrix osg::computeLocalToWorld(const NodePath&nodePath, bool ignoreCameras)
     return matrix;
 }
 
-Matrix osg::computeWorldToLocal(const NodePath&nodePath, bool ignoreCameras)
+Matrix osg::computeWorldToLocal(const NodePath &nodePath, bool ignoreCameras)
 {
     osg::Matrix      matrix;
     TransformVisitor tv(matrix, TransformVisitor::WORLD_TO_LOCAL, ignoreCameras);
@@ -112,7 +112,7 @@ Matrix osg::computeWorldToLocal(const NodePath&nodePath, bool ignoreCameras)
     return matrix;
 }
 
-Matrix osg::computeLocalToEye(const Matrix&modelview, const NodePath&nodePath, bool ignoreCameras)
+Matrix osg::computeLocalToEye(const Matrix &modelview, const NodePath &nodePath, bool ignoreCameras)
 {
     Matrix           matrix(modelview);
     TransformVisitor tv(matrix, TransformVisitor::LOCAL_TO_WORLD, ignoreCameras);
@@ -121,7 +121,7 @@ Matrix osg::computeLocalToEye(const Matrix&modelview, const NodePath&nodePath, b
     return matrix;
 }
 
-Matrix osg::computeEyeToLocal(const Matrix&modelview, const NodePath&nodePath, bool ignoreCameras)
+Matrix osg::computeEyeToLocal(const Matrix &modelview, const NodePath &nodePath, bool ignoreCameras)
 {
     Matrix matrix;
 
@@ -140,7 +140,7 @@ Transform::Transform()
     _referenceFrame = RELATIVE_RF;
 }
 
-Transform::Transform(const Transform&transform, const CopyOp&copyop) :
+Transform::Transform(const Transform &transform, const CopyOp &copyop) :
     Group(transform, copyop),
     _referenceFrame(transform._referenceFrame)
 {}

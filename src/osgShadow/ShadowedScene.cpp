@@ -31,7 +31,7 @@ ShadowedScene::ShadowedScene(ShadowTechnique *st)
         setShadowTechnique(st);
 }
 
-ShadowedScene::ShadowedScene(const ShadowedScene&ss, const osg::CopyOp&copyop) :
+ShadowedScene::ShadowedScene(const ShadowedScene &ss, const osg::CopyOp &copyop) :
     osg::Group(ss, copyop)
 {
     setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal() + 1);
@@ -56,7 +56,7 @@ ShadowedScene::~ShadowedScene()
     setShadowTechnique(0);
 }
 
-void ShadowedScene::traverse(osg::NodeVisitor&nv)
+void ShadowedScene::traverse(osg::NodeVisitor &nv)
 {
     if (_shadowTechnique.valid())
     {

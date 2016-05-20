@@ -63,7 +63,7 @@ struct ColorWidget : public osgWidget::Widget
     }
 };
 
-osgWidget::Box* createBox(const std::string&name, osgWidget::Box::BoxType bt)
+osgWidget::Box* createBox(const std::string &name, osgWidget::Box::BoxType bt)
 {
     osgWidget::Box    *box     = new osgWidget::Box(name, bt, true);
     osgWidget::Widget *widget1 = new osgWidget::Widget(name + "_widget1", 100.0f, 100.0f);

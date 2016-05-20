@@ -34,7 +34,7 @@ public:
 
 struct StreamObject
 {
-    StreamObject(std::ostream *outputStream, std::istream *inputStream, const std::string&cacheFileName);
+    StreamObject(std::ostream *outputStream, std::istream *inputStream, const std::string &cacheFileName);
 
     void   write(const char *ptr, size_t realsize);
     size_t read(char *ptr, size_t maxsize);
@@ -67,31 +67,31 @@ inline void setTimeout(long val)
 }
 
 // Perform HTTP GET to download data from web server.
-osgDB::ReaderWriter::ReadResult read(const std::string&proxyAddress, const std::string&fileName, StreamObject&sp, const osgDB::ReaderWriter::Options *options);
+osgDB::ReaderWriter::ReadResult read(const std::string &proxyAddress, const std::string &fileName, StreamObject &sp, const osgDB::ReaderWriter::Options *options);
 
 // Perform HTTP POST to upload data using "multipart/form-data" encoding to web server.
-osgDB::ReaderWriter::WriteResult write(const std::string&proxyAddress, const std::string&fileName, StreamObject&sp, const osgDB::ReaderWriter::Options *options);
+osgDB::ReaderWriter::WriteResult write(const std::string &proxyAddress, const std::string &fileName, StreamObject &sp, const osgDB::ReaderWriter::Options *options);
 
 /** Returns the mime type of the data retrieved with the provided stream object on a
  * previous call to EasyCurl::read(). */
-std::string getResultMimeType(const StreamObject&sp) const;
+std::string getResultMimeType(const StreamObject &sp) const;
 
-std::string getMimeTypeForExtension(const std::string&ext) const;
-static std::string getFileNameFromURL(const std::string&url);
+std::string getMimeTypeForExtension(const std::string &ext) const;
+static std::string getFileNameFromURL(const std::string &url);
 
 protected:
 
 virtual ~EasyCurl();
 
 // disallow copying
-EasyCurl(const EasyCurl&rhs) : _curl(rhs._curl) {}
+EasyCurl(const EasyCurl &rhs) : _curl(rhs._curl) {}
 EasyCurl&operator =(const EasyCurl&)
 {
     return *this;
 }
 
-void setOptions(const std::string&proxyAddress, const std::string&fileName, StreamObject&sp, const osgDB::ReaderWriter::Options *options);
-osgDB::ReaderWriter::ReadResult processResponse(CURLcode responseCode, const std::string&proxyAddress, const std::string&fileName, StreamObject&sp);
+void setOptions(const std::string &proxyAddress, const std::string &fileName, StreamObject &sp, const osgDB::ReaderWriter::Options *options);
+osgDB::ReaderWriter::ReadResult processResponse(CURLcode responseCode, const std::string &proxyAddress, const std::string &fileName, StreamObject &sp);
 
 CURL *_curl;
 
@@ -115,9 +115,9 @@ virtual const char* className() const
     return "HTTP Protocol Model Reader";
 }
 
-virtual bool fileExists(const std::string&filename, const osgDB::Options *options) const;
+virtual bool fileExists(const std::string &filename, const osgDB::Options *options) const;
 
-virtual ReadResult openArchive(const std::string&fileName, ArchiveStatus status, unsigned int, const Options *options) const
+virtual ReadResult openArchive(const std::string &fileName, ArchiveStatus status, unsigned int, const Options *options) const
 {
     if (status != READ)
         return ReadResult(ReadResult::FILE_NOT_HANDLED);
@@ -125,57 +125,57 @@ virtual ReadResult openArchive(const std::string&fileName, ArchiveStatus status,
         return readFile(ARCHIVE, fileName, options);
 }
 
-virtual ReadResult readObject(const std::string&fileName, const Options *options) const
+virtual ReadResult readObject(const std::string &fileName, const Options *options) const
 {
     return readFile(OBJECT, fileName, options);
 }
 
-virtual ReadResult readImage(const std::string&fileName, const Options *options) const
+virtual ReadResult readImage(const std::string &fileName, const Options *options) const
 {
     return readFile(IMAGE, fileName, options);
 }
 
-virtual ReadResult readHeightField(const std::string&fileName, const Options *options) const
+virtual ReadResult readHeightField(const std::string &fileName, const Options *options) const
 {
     return readFile(HEIGHTFIELD, fileName, options);
 }
 
-virtual ReadResult readNode(const std::string&fileName, const Options *options) const
+virtual ReadResult readNode(const std::string &fileName, const Options *options) const
 {
     return readFile(NODE, fileName, options);
 }
 
-virtual WriteResult writeObject(const osg::Object&obj, const std::string&fileName, const Options *options) const
+virtual WriteResult writeObject(const osg::Object &obj, const std::string &fileName, const Options *options) const
 {
     return writeFile(obj, fileName, options);
 }
 
-virtual WriteResult writeImage(const osg::Image&image, const std::string&fileName, const Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, const std::string &fileName, const Options *options) const
 {
     return writeFile(image, fileName, options);
 }
 
-virtual WriteResult writeHeightField(const osg::HeightField&heightField, const std::string&fileName, const Options *options) const
+virtual WriteResult writeHeightField(const osg::HeightField &heightField, const std::string &fileName, const Options *options) const
 {
     return writeFile(heightField, fileName, options);
 }
 
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options *options) const
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options *options) const
 {
     return writeFile(node, fileName, options);
 }
 
-ReadResult readFile(ObjectType objectType, osgDB::ReaderWriter *rw, std::istream&fin, const Options *options) const;
-WriteResult writeFile(const osg::Object&obj, osgDB::ReaderWriter *rw, std::ostream&fout, const Options *options) const;
+ReadResult readFile(ObjectType objectType, osgDB::ReaderWriter *rw, std::istream &fin, const Options *options) const;
+WriteResult writeFile(const osg::Object &obj, osgDB::ReaderWriter *rw, std::ostream &fout, const Options *options) const;
 
-virtual ReadResult readFile(ObjectType objectType, const std::string&fullFileName, const Options *options) const;
-virtual WriteResult writeFile(const osg::Object&obj, const std::string&fullFileName, const Options *options) const;
+virtual ReadResult readFile(ObjectType objectType, const std::string &fullFileName, const Options *options) const;
+virtual WriteResult writeFile(const osg::Object &obj, const std::string &fullFileName, const Options *options) const;
 
 EasyCurl&getEasyCurl() const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadCurlMapMutex);
 
-    osg::ref_ptr<EasyCurl>&ec = _threadCurlMap[OpenThreads::Thread::CurrentThread()];
+    osg::ref_ptr<EasyCurl> &ec = _threadCurlMap[OpenThreads::Thread::CurrentThread()];
 
     if (!ec)
         ec = new EasyCurl;
@@ -183,10 +183,10 @@ EasyCurl&getEasyCurl() const
     return *ec;
 }
 
-bool read(std::istream&fin, std::string&destination) const;
+bool read(std::istream &fin, std::string &destination) const;
 
 protected:
-void getConnectionOptions(const osgDB::ReaderWriter::Options *options, std::string&proxyAddress, long&connectTimeout, long&timeout) const;
+void getConnectionOptions(const osgDB::ReaderWriter::Options *options, std::string &proxyAddress, long &connectTimeout, long &timeout) const;
 
 typedef std::map<OpenThreads::Thread*, osg::ref_ptr<EasyCurl> >    ThreadCurlMap;
 

@@ -13,22 +13,22 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Texture_readLocalData(Object&obj, Input&fr);
-bool Texture_writeLocalData(const Object&obj, Output&fw);
+bool Texture_readLocalData(Object &obj, Input &fr);
+bool Texture_writeLocalData(const Object &obj, Output &fw);
 
-bool Texture_matchWrapStr(const char *str, Texture::WrapMode&wrap);
+bool Texture_matchWrapStr(const char *str, Texture::WrapMode &wrap);
 const char* Texture_getWrapStr(Texture::WrapMode wrap);
-bool Texture_matchFilterStr(const char *str, Texture::FilterMode&filter);
+bool Texture_matchFilterStr(const char *str, Texture::FilterMode &filter);
 const char* Texture_getFilterStr(Texture::FilterMode filter);
-bool Texture_matchInternalFormatModeStr(const char *str, Texture::InternalFormatMode&mode);
+bool Texture_matchInternalFormatModeStr(const char *str, Texture::InternalFormatMode &mode);
 const char* Texture_getInternalFormatModeStr(Texture::InternalFormatMode mode);
-bool Texture_matchInternalFormatStr(const char *str, int&value);
+bool Texture_matchInternalFormatStr(const char *str, int &value);
 const char* Texture_getInternalFormatStr(int value);
-bool Texture_matchSourceTypeStr(const char *str, int&value);
+bool Texture_matchSourceTypeStr(const char *str, int &value);
 const char* Texture_getSourceTypeStr(int value);
-bool Texture_matchShadowCompareFuncStr(const char *str, Texture::ShadowCompareFunc&value);
+bool Texture_matchShadowCompareFuncStr(const char *str, Texture::ShadowCompareFunc &value);
 const char* Texture_getShadowCompareFuncStr(Texture::ShadowCompareFunc value);
-bool Texture_matchShadowTextureModeStr(const char *str, Texture::ShadowTextureMode&value);
+bool Texture_matchShadowTextureModeStr(const char *str, Texture::ShadowTextureMode &value);
 const char* Texture_getShadowTextureModeStr(Texture::ShadowTextureMode value);
 
 // register the read and write functions with the osgDB::Registry.
@@ -42,11 +42,11 @@ REGISTER_DOTOSGWRAPPER(Texture)
 );
 
 
-bool Texture_readLocalData(Object&obj, Input&fr)
+bool Texture_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Texture&texture = static_cast<Texture&>(obj);
+    Texture &texture = static_cast<Texture&>(obj);
 
     Texture::WrapMode wrap;
 
@@ -248,9 +248,9 @@ bool Texture_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Texture_writeLocalData(const Object&obj, Output&fw)
+bool Texture_writeLocalData(const Object &obj, Output &fw)
 {
-    const Texture&texture = static_cast<const Texture&>(obj);
+    const Texture &texture = static_cast<const Texture&>(obj);
 
     fw.indent() << "wrap_s " << Texture_getWrapStr(texture.getWrap(Texture::WRAP_S)) << std::endl;
     fw.indent() << "wrap_t " << Texture_getWrapStr(texture.getWrap(Texture::WRAP_T)) << std::endl;
@@ -309,7 +309,7 @@ bool Texture_writeLocalData(const Object&obj, Output&fw)
 }
 
 
-bool Texture_matchWrapStr(const char *str, Texture::WrapMode&wrap)
+bool Texture_matchWrapStr(const char *str, Texture::WrapMode &wrap)
 {
     if (strcmp(str, "CLAMP") == 0)
         wrap = Texture::CLAMP;
@@ -347,7 +347,7 @@ const char* Texture_getWrapStr(Texture::WrapMode wrap)
 }
 
 
-bool Texture_matchFilterStr(const char *str, Texture::FilterMode&filter)
+bool Texture_matchFilterStr(const char *str, Texture::FilterMode &filter)
 {
     if (strcmp(str, "NEAREST") == 0)
         filter = Texture::NEAREST;
@@ -390,7 +390,7 @@ const char* Texture_getFilterStr(Texture::FilterMode filter)
     return "";
 }
 
-bool Texture_matchInternalFormatModeStr(const char *str, Texture::InternalFormatMode&mode)
+bool Texture_matchInternalFormatModeStr(const char *str, Texture::InternalFormatMode &mode)
 {
     if (strcmp(str, "USE_IMAGE_DATA_FORMAT") == 0)
         mode = Texture::USE_IMAGE_DATA_FORMAT;
@@ -464,7 +464,7 @@ const char* Texture_getInternalFormatModeStr(Texture::InternalFormatMode mode)
 }
 
 
-bool Texture_matchInternalFormatStr(const char *str, int&value)
+bool Texture_matchInternalFormatStr(const char *str, int &value)
 {
     if (strcmp(str, "GL_INTENSITY") == 0)
         value = GL_INTENSITY;
@@ -556,7 +556,7 @@ const char* Texture_getInternalFormatStr(int value)
     return NULL;
 }
 
-bool Texture_matchSourceTypeStr(const char *str, int&value)
+bool Texture_matchSourceTypeStr(const char *str, int &value)
 {
     if (strcmp(str, "GL_BYTE") == 0)
         value = GL_BYTE;
@@ -611,7 +611,7 @@ const char* Texture_getSourceTypeStr(int value)
     return NULL;
 }
 
-bool Texture_matchShadowCompareFuncStr(const char *str, Texture::ShadowCompareFunc&value)
+bool Texture_matchShadowCompareFuncStr(const char *str, Texture::ShadowCompareFunc &value)
 {
     if (strcmp(str, "GL_NEVER") == 0)
         value = Texture::NEVER;
@@ -659,7 +659,7 @@ const char* Texture_getShadowCompareFuncStr(Texture::ShadowCompareFunc value)
     return NULL;
 }
 
-bool Texture_matchShadowTextureModeStr(const char *str, Texture::ShadowTextureMode&value)
+bool Texture_matchShadowTextureModeStr(const char *str, Texture::ShadowTextureMode &value)
 {
     if (strcmp(str, "GL_LUMINANCE") == 0)
         value = Texture::LUMINANCE;

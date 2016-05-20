@@ -90,7 +90,7 @@ public:
 DefaultNormalsGeometryVisitor()
     : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     for (unsigned int ii = 0; ii < geode.getNumDrawables(); ++ii)
     {
@@ -104,7 +104,7 @@ virtual void apply(osg::Geode&geode)
     }
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     traverse(node);
 }
@@ -118,7 +118,7 @@ CompressTexturesVisitor(osg::Texture::InternalFormatMode internalFormatMode) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _internalFormatMode(internalFormatMode) {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     if (node.getStateSet())
         apply(*node.getStateSet());
@@ -126,7 +126,7 @@ virtual void apply(osg::Node&node)
     traverse(node);
 }
 
-virtual void apply(osg::Geode&node)
+virtual void apply(osg::Geode &node)
 {
     if (node.getStateSet())
         apply(*node.getStateSet());
@@ -141,7 +141,7 @@ virtual void apply(osg::Geode&node)
     traverse(node);
 }
 
-virtual void apply(osg::StateSet&stateset)
+virtual void apply(osg::StateSet &stateset)
 {
     // search for the existence of any texture object attributes
     for (unsigned int i = 0; i < stateset.getTextureAttributeList().size(); ++i)
@@ -199,7 +199,7 @@ void compress()
     }
 }
 
-void write(const std::string&dir)
+void write(const std::string &dir)
 {
     for (TextureSet::iterator itr = _textureSet.begin();
          itr != _textureSet.end();
@@ -257,7 +257,7 @@ FixTransparencyVisitor(FixTransparencyMode mode = MAKE_OPAQUE_TEXTURE_STATESET_O
     std::cout << "  Number of Transparent State made Opaque " << _numTransparentMadeOpaque << std::endl;
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     if (node.getStateSet())
         isTransparent(*node.getStateSet());
@@ -265,7 +265,7 @@ virtual void apply(osg::Node&node)
     traverse(node);
 }
 
-virtual void apply(osg::Geode&node)
+virtual void apply(osg::Geode &node)
 {
     if (node.getStateSet())
         isTransparent(*node.getStateSet());
@@ -280,7 +280,7 @@ virtual void apply(osg::Geode&node)
     traverse(node);
 }
 
-virtual bool isTransparent(osg::StateSet&stateset)
+virtual bool isTransparent(osg::StateSet &stateset)
 {
     bool hasTranslucentTexture       = false;
     bool hasBlendFunc                = dynamic_cast<osg::BlendFunc*>(stateset.getAttribute(osg::StateAttribute::BLENDFUNC)) != 0;
@@ -371,7 +371,7 @@ PruneStateSetVisitor() :
     std::cout << "  Number of StateState removed " << _numStateSetRemoved << std::endl;
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     if (node.getStateSet())
     {
@@ -382,7 +382,7 @@ virtual void apply(osg::Node&node)
     traverse(node);
 }
 
-virtual void apply(osg::Geode&node)
+virtual void apply(osg::Geode &node)
 {
     if (node.getStateSet())
     {
@@ -403,7 +403,7 @@ public:
 
 AddMissingColoursToGeometryVisitor() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
@@ -420,7 +420,7 @@ virtual void apply(osg::Geode&geode)
     }
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     traverse(node);
 }

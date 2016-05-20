@@ -72,9 +72,9 @@ VSISubFileFilesystemHandler();
 virtual ~VSISubFileFilesystemHandler();
 
 int              DecomposePath(const char *pszPath,
-                               CPLString&osFilename,
-                               vsi_l_offset&nSubFileOffset,
-                               vsi_l_offset&nSubFileSize);
+                               CPLString &osFilename,
+                               vsi_l_offset &nSubFileOffset,
+                               vsi_l_offset &nSubFileSize);
 
 virtual VSIVirtualHandle* Open(const char *pszFilename,
                                const char *pszAccess);
@@ -242,9 +242,9 @@ VSISubFileFilesystemHandler::~VSISubFileFilesystemHandler()
 
 int
 VSISubFileFilesystemHandler::DecomposePath(const char *pszPath,
-                                           CPLString&osFilename,
-                                           vsi_l_offset&nSubFileOffset,
-                                           vsi_l_offset&nSubFileSize)
+                                           CPLString &osFilename,
+                                           vsi_l_offset &nSubFileOffset,
+                                           vsi_l_offset &nSubFileSize)
 
 {
     int i;

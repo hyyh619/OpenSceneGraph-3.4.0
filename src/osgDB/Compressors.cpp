@@ -26,7 +26,7 @@ class NullCompressor : public BaseCompressor
 public:
 NullCompressor() {}
 
-virtual bool compress(std::ostream&fout, const std::string&src)
+virtual bool compress(std::ostream &fout, const std::string &src)
 {
     int size = src.size();
 
@@ -35,7 +35,7 @@ virtual bool compress(std::ostream&fout, const std::string&src)
     return true;
 }
 
-virtual bool decompress(std::istream&fin, std::string&target)
+virtual bool decompress(std::istream &fin, std::string &target)
 {
     int size = 0; fin.read((char*)&size, INT_SIZE);
 
@@ -63,7 +63,7 @@ class ZLibCompressor : public BaseCompressor
 public:
 ZLibCompressor() {}
 
-virtual bool compress(std::ostream&fout, const std::string&src)
+virtual bool compress(std::ostream &fout, const std::string &src)
 {
     int           ret, flush = Z_FINISH;
     unsigned      have;
@@ -118,7 +118,7 @@ virtual bool compress(std::ostream&fout, const std::string&src)
     return true;
 }
 
-virtual bool decompress(std::istream&fin, std::string&target)
+virtual bool decompress(std::istream &fin, std::string &target)
 {
     int           ret;
     unsigned      have;

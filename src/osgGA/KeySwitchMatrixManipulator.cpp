@@ -71,7 +71,7 @@ void KeySwitchMatrixManipulator::setNode(osg::Node *node)
     }
 }
 
-void KeySwitchMatrixManipulator::setHomePosition(const osg::Vec3d&eye, const osg::Vec3d&center, const osg::Vec3d&up, bool autoComputeHomePosition)
+void KeySwitchMatrixManipulator::setHomePosition(const osg::Vec3d &eye, const osg::Vec3d &center, const osg::Vec3d &up, bool autoComputeHomePosition)
 {
     CameraManipulator::setHomePosition(eye, center, up, autoComputeHomePosition);
 
@@ -116,7 +116,7 @@ void KeySwitchMatrixManipulator::finishAnimation()
 }
 
 
-void KeySwitchMatrixManipulator::home(const GUIEventAdapter&ee, GUIActionAdapter&aa)
+void KeySwitchMatrixManipulator::home(const GUIEventAdapter &ee, GUIActionAdapter &aa)
 {
     // call home for all child manipulators
     // (this can not be done just for current manipulator,
@@ -195,7 +195,7 @@ const CameraManipulator* KeySwitchMatrixManipulator::getMatrixManipulatorWithKey
         return 0;
 }
 
-bool KeySwitchMatrixManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&aa)
+bool KeySwitchMatrixManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter &aa)
 {
     if (!_current)
         return false;
@@ -229,7 +229,7 @@ bool KeySwitchMatrixManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapt
     return _current->handle(ea, aa) || handled;
 }
 
-void KeySwitchMatrixManipulator::getUsage(osg::ApplicationUsage&usage) const
+void KeySwitchMatrixManipulator::getUsage(osg::ApplicationUsage &usage) const
 {
     for (KeyManipMap::const_iterator itr = _manips.begin();
          itr != _manips.end();

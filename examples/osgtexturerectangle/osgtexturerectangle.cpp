@@ -107,8 +107,8 @@ double _prevTime;
 };
 
 
-osg::Node* createRectangle(osg::BoundingBox&bb,
-                           const std::string&filename)
+osg::Node* createRectangle(osg::BoundingBox &bb,
+                           const std::string &filename)
 {
     osg::Vec3 top_left(bb.xMin(), bb.yMax(), bb.zMax());
     osg::Vec3 bottom_left(bb.xMin(), bb.yMax(), bb.zMin());
@@ -172,8 +172,8 @@ osg::Node* createRectangle(osg::BoundingBox&bb,
 }
 
 
-osg::Geode* createText(const std::string&str,
-                       const osg::Vec3&pos)
+osg::Geode* createText(const std::string &str,
+                       const osg::Vec3 &pos)
 {
     static std::string font("fonts/arial.ttf");
 
@@ -238,7 +238,7 @@ osg::Node* createHUD()
 }
 
 
-osg::Node* createModel(const std::string&filename)
+osg::Node* createModel(const std::string &filename)
 {
     osg::Group *root = new osg::Group;
 

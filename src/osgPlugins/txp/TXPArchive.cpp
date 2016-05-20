@@ -79,7 +79,7 @@ TXPArchive::~TXPArchive()
 }
 
 
-void TXPArchive::getExtents(osg::BoundingBox&extents)
+void TXPArchive::getExtents(osg::BoundingBox &extents)
 {
     TileInfo    sw, ne;
     trpg2iPoint tileExtents;
@@ -92,7 +92,7 @@ void TXPArchive::getExtents(osg::BoundingBox&extents)
 }
 
 
-bool TXPArchive::openFile(const std::string&archiveName)
+bool TXPArchive::openFile(const std::string &archiveName)
 {
     std::string path = osgDB::getFilePath(archiveName);
     std::string name = osgDB::getSimpleFileName(archiveName);
@@ -604,7 +604,7 @@ bool TXPArchive::loadLightAttributes()
     return true;
 }
 
-void trim(std::string&str)
+void trim(std::string &str)
 {
     while (!str.empty() && isspace(str[str.length() - 1]))
         str.erase(str.length() - 1);
@@ -699,7 +699,7 @@ bool TXPArchive::loadTextStyles()
     return true;
 }
 
-void TXPArchive::addLightAttribute(osgSim::LightPointNode *lpn, osg::StateSet *fallback, const osg::Vec3&att, int handle)
+void TXPArchive::addLightAttribute(osgSim::LightPointNode *lpn, osg::StateSet *fallback, const osg::Vec3 &att, int handle)
 {
     DeferredLightAttribute la;
 
@@ -709,7 +709,7 @@ void TXPArchive::addLightAttribute(osgSim::LightPointNode *lpn, osg::StateSet *f
     _lights[handle] = la;
 }
 
-bool TXPArchive::getTileInfo(const TileLocationInfo&loc, TileInfo&info)
+bool TXPArchive::getTileInfo(const TileLocationInfo &loc, TileInfo &info)
 {
     info.minRange = 0.0;
     info.maxRange = 0.0;
@@ -755,7 +755,7 @@ bool TXPArchive::getTileInfo(const TileLocationInfo&loc, TileInfo&info)
     return true;
 }
 
-bool TXPArchive::getTileInfo(int x, int y, int lod, TileInfo&info)
+bool TXPArchive::getTileInfo(int x, int y, int lod, TileInfo &info)
 {
     trpgwAppAddress addr;
     float           minz = 0.f;
@@ -773,8 +773,8 @@ osg::Group* TXPArchive::getTileContent(
     double realMinRange,
     double realMaxRange,
     double usedMaxRange,
-    osg::Vec3&tileCenter,
-    std::vector<TileLocationInfo>&childInfoList)
+    osg::Vec3 &tileCenter,
+    std::vector<TileLocationInfo> &childInfoList)
 {
     if (_majorVersion == 2 && _minorVersion >= 1)
     {
@@ -802,12 +802,12 @@ TXPArchive::TileLocationInfo _tileInfo;
 //     int _lod;
 
 public:
-ModelVisitor(TXPArchive *archive, const TXPArchive::TileLocationInfo&loc) :
+ModelVisitor(TXPArchive *archive, const TXPArchive::TileLocationInfo &loc) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _archive(archive), _tileInfo(loc)
 {}
 
-virtual void apply(osg::MatrixTransform&xform)
+virtual void apply(osg::MatrixTransform &xform)
 {
     const trpgHeader         *header = _archive->GetHeader();
     trpgHeader::trpgTileType tileType;
@@ -846,12 +846,12 @@ virtual void apply(osg::MatrixTransform&xform)
 
 
 osg::Group* TXPArchive::getTileContent(
-    const TileLocationInfo&loc,
+    const TileLocationInfo &loc,
     double realMinRange,
     double realMaxRange,
     double usedMaxRange,
-    osg::Vec3&tileCenter,
-    std::vector<TileLocationInfo>&childInfoList)
+    osg::Vec3 &tileCenter,
+    std::vector<TileLocationInfo> &childInfoList)
 {
     if (_parser.get() == 0)
     {
@@ -961,7 +961,7 @@ osg::Group* TXPArchive::getTileContent(
     return tileGroup;
 }
 
-bool TXPArchive::getLODSize(int lod, int&x, int&y)
+bool TXPArchive::getLODSize(int lod, int &x, int &y)
 {
     x = y = 0;
 

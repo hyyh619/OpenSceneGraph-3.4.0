@@ -122,7 +122,7 @@ USE_GRAPHICSWINDOW()
 
 static const char *s_version = "1.4 beta";
 
-void setViewer(osgViewer::Viewer&viewer, float width, float height, float distance)
+void setViewer(osgViewer::Viewer &viewer, float width, float height, float distance)
 {
     double vfov = osg::RadiansToDegrees(atan2(height / 2.0f, distance) * 2.0);
 
@@ -138,7 +138,7 @@ class ForwardToDeviceEventHandler : public osgGA::GUIEventHandler
 public:
 ForwardToDeviceEventHandler(osgGA::Device *device, bool format_mouse_events) : osgGA::GUIEventHandler(), _device(device), _forwardMouseEvents(format_mouse_events) {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor*)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor*)
 {
     switch (ea.getEventType())
     {
@@ -184,7 +184,7 @@ class DumpEventHandler : public osgGA::GUIEventHandler
 public:
 DumpEventHandler() : osgGA::GUIEventHandler() {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor*)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor*)
 {
     switch (ea.getEventType())
     {
@@ -247,7 +247,7 @@ enum P3DApplicationType
 };
 
 
-void processLoadedModel(osg::ref_ptr<osg::Node>&loadedModel, int optimizer_options, const std::string&cursorFileName)
+void processLoadedModel(osg::ref_ptr<osg::Node> &loadedModel, int optimizer_options, const std::string &cursorFileName)
 {
     if (!loadedModel)
         return;
@@ -274,7 +274,7 @@ void processLoadedModel(osg::ref_ptr<osg::Node>&loadedModel, int optimizer_optio
     }
 }
 
-void addDeviceTo(osgViewer::Viewer&viewer, const std::string&device_name, bool forward_mouse_events)
+void addDeviceTo(osgViewer::Viewer &viewer, const std::string &device_name, bool forward_mouse_events)
 {
     osg::ref_ptr<osgGA::Device> dev = osgDB::readFile<osgGA::Device>(device_name);
 
@@ -873,7 +873,7 @@ int main(int argc, char **argv)
     {
         for (unsigned int i = 0; i < loadedModel->getNumDescriptions(); ++i)
         {
-            const std::string&desc = loadedModel->getDescription(i);
+            const std::string &desc = loadedModel->getDescription(i);
             if (desc == "loop")
             {
                 osg::notify(osg::NOTICE) << "Enabling looping" << std::endl;

@@ -41,7 +41,7 @@ protected:
 
 virtual ~Comment() {}
 
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     std::streamsize size         = in.getRecordSize();
     std::string     commentfield = in.readString(size - 4);
@@ -104,7 +104,7 @@ protected:
 
 virtual ~LongID() {}
 
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     std::streamsize size = in.getRecordSize();
     std::string     id   = in.readString(size - 4);
@@ -132,7 +132,7 @@ protected:
 
 virtual ~Matrix() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     osg::Matrix matrix;
 
@@ -180,7 +180,7 @@ protected:
 
 virtual ~Multitexture() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     osg::ref_ptr<osg::StateSet> stateset = new osg::StateSet;
 
@@ -271,7 +271,7 @@ int bitCount(uint32 mask)
     return count;
 }
 
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     uint32 mask = in.readUInt32(0);
 
@@ -314,7 +314,7 @@ protected:
 
 virtual ~Replicate() {}
 
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     int16 replicate = in.readInt16();
 
@@ -340,7 +340,7 @@ protected:
 
 virtual ~IndexedString() {}
 
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     std::streamsize size  = in.getRecordSize();
     uint32          index = in.readUInt32();

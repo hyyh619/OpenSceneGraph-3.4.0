@@ -21,15 +21,15 @@ using namespace osgManipulator;
 AntiSquish::AntiSquish() : _usePivot(true), _usePosition(false), _cacheDirty(true)
 {}
 
-AntiSquish::AntiSquish(const osg::Vec3d&pivot) : _pivot(pivot), _usePivot(true), _usePosition(false), _cacheDirty(true)
+AntiSquish::AntiSquish(const osg::Vec3d &pivot) : _pivot(pivot), _usePivot(true), _usePosition(false), _cacheDirty(true)
 {}
 
-AntiSquish::AntiSquish(const osg::Vec3d&pivot, const osg::Vec3d&pos)
+AntiSquish::AntiSquish(const osg::Vec3d &pivot, const osg::Vec3d &pos)
     : _pivot(pivot), _usePivot(true), _position(pos), _usePosition(true), _cacheDirty(true)
 {}
 
 
-AntiSquish::AntiSquish(const AntiSquish&pat, const osg::CopyOp&copyop) :
+AntiSquish::AntiSquish(const AntiSquish &pat, const osg::CopyOp &copyop) :
     Transform(pat, copyop),
     _pivot(pat._pivot),
     _usePivot(pat._usePivot),
@@ -44,7 +44,7 @@ AntiSquish::~AntiSquish()
 {}
 
 
-bool AntiSquish::computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+bool AntiSquish::computeLocalToWorldMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     osg::Matrix unsquishedMatrix;
 
@@ -66,7 +66,7 @@ bool AntiSquish::computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor 
 }
 
 
-bool AntiSquish::computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor*) const
+bool AntiSquish::computeWorldToLocalMatrix(osg::Matrix &matrix, osg::NodeVisitor*) const
 {
     osg::Matrix unsquishedMatrix;
 
@@ -91,7 +91,7 @@ bool AntiSquish::computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor*
 }
 
 
-bool AntiSquish::computeUnSquishedMatrix(osg::Matrix&unsquished) const
+bool AntiSquish::computeUnSquishedMatrix(osg::Matrix &unsquished) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_cacheLock);
 

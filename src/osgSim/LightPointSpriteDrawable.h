@@ -29,7 +29,7 @@ public:
 LightPointSpriteDrawable();
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-LightPointSpriteDrawable(const LightPointSpriteDrawable&, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+LightPointSpriteDrawable(const LightPointSpriteDrawable&, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 virtual osg::Object* cloneType() const
 {
@@ -50,7 +50,7 @@ virtual const char* className() const
 
 
 /** draw LightPoints. */
-virtual void drawImplementation(osg::RenderInfo&renderInfo) const;
+virtual void drawImplementation(osg::RenderInfo &renderInfo) const;
 
 
 protected:

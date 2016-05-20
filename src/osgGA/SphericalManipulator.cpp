@@ -33,7 +33,7 @@ void SphericalManipulator::setNode(osg::Node *node)
     _node = node;
     if (_node.get())
     {
-        const osg::BoundingSphere&boundingSphere = _node->getBound();
+        const osg::BoundingSphere &boundingSphere = _node->getBound();
         _modelScale = boundingSphere._radius;
     }
 
@@ -86,7 +86,7 @@ void SphericalManipulator::home(double /*currentTime*/)
     _thrown = false;
 }
 // --------------------------------------------------------------------------------------------------
-void SphericalManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void SphericalManipulator::home(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     home(ea.getTime());
     us.requestRedraw();
@@ -98,20 +98,20 @@ void SphericalManipulator::init(const GUIEventAdapter&, GUIActionAdapter&)
     flushMouseEventStack();
 }
 // --------------------------------------------------------------------------------------------------
-void SphericalManipulator::getUsage(osg::ApplicationUsage&usage) const
+void SphericalManipulator::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("Spherical: Space", "Reset the viewing position to home");
     usage.addKeyboardMouseBinding("Spherical: SHIFT", "Rotates vertically only");
     usage.addKeyboardMouseBinding("Spherical: ALT", "Rotates horizontally only");
 }
 // --------------------------------------------------------------------------------------------------
-void SphericalManipulator::zoomOn(const osg::BoundingSphere&bound)
+void SphericalManipulator::zoomOn(const osg::BoundingSphere &bound)
 {
     computeViewPosition(bound, _modelScale, _distance, _center);
     _thrown = false;
 }
 // --------------------------------------------------------------------------------------------------
-bool SphericalManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool SphericalManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     switch (ea.getEventType())
     {
@@ -256,13 +256,13 @@ void SphericalManipulator::flushMouseEventStack()
     _ga_t0 = NULL;
 }
 // --------------------------------------------------------------------------------------------------
-void SphericalManipulator::addMouseEvent(const GUIEventAdapter&ea)
+void SphericalManipulator::addMouseEvent(const GUIEventAdapter &ea)
 {
     _ga_t1 = _ga_t0;
     _ga_t0 = &ea;
 }
 // --------------------------------------------------------------------------------------------------
-void SphericalManipulator::setByMatrix(const osg::Matrixd&matrix)
+void SphericalManipulator::setByMatrix(const osg::Matrixd &matrix)
 {
     _center = osg::Vec3d(0, 0, -_distance) * matrix;
 
@@ -433,8 +433,8 @@ void SphericalManipulator::computeHomePosition()
         computeViewPosition(getNode()->getBound(), _modelScale, _homeDistance, _homeCenter);
 }
 // --------------------------------------------------------------------------------------------------
-void SphericalManipulator::computeViewPosition(const osg::BoundingSphere&bound,
-                                               double&scale, double&distance, osg::Vec3d&center)
+void SphericalManipulator::computeViewPosition(const osg::BoundingSphere &bound,
+                                               double &scale, double &distance, osg::Vec3d &center)
 {
     scale    = bound._radius;
     distance = 3.5 * bound._radius;

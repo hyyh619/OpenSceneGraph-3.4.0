@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkLightPointList(const osgSim::LightPointNode&node)
+static bool checkLightPointList(const osgSim::LightPointNode &node)
 {
     return node.getNumLightPoints() > 0;
 }
 
-static bool readLightPointList(osgDB::InputStream&is, osgSim::LightPointNode&node)
+static bool readLightPointList(osgDB::InputStream &is, osgSim::LightPointNode &node)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -47,7 +47,7 @@ static bool readLightPointList(osgDB::InputStream&is, osgSim::LightPointNode&nod
     return true;
 }
 
-static bool writeLightPointList(osgDB::OutputStream&os, const osgSim::LightPointNode&node)
+static bool writeLightPointList(osgDB::OutputStream &os, const osgSim::LightPointNode &node)
 {
     unsigned int size = node.getNumLightPoints();
 
@@ -55,7 +55,7 @@ static bool writeLightPointList(osgDB::OutputStream&os, const osgSim::LightPoint
 
     for (unsigned int i = 0; i < size; ++i)
     {
-        const osgSim::LightPoint&pt = node.getLightPoint(i);
+        const osgSim::LightPoint &pt = node.getLightPoint(i);
         os << os.PROPERTY("LightPoint") << os.BEGIN_BRACKET << std::endl;
         os << os.PROPERTY("Position") << pt._position << std::endl;
         os << os.PROPERTY("Color") << pt._color << std::endl;

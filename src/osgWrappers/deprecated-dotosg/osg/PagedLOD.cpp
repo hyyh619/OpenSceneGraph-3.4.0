@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool PagedLOD_readLocalData(Object&obj, Input&fr);
-bool PagedLOD_writeLocalData(const Object&obj, Output&fw);
+bool PagedLOD_readLocalData(Object &obj, Input &fr);
+bool PagedLOD_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(PagedLOD)
@@ -22,11 +22,11 @@ REGISTER_DOTOSGWRAPPER(PagedLOD)
     &PagedLOD_writeLocalData
 );
 
-bool PagedLOD_readLocalData(Object&obj, Input&fr)
+bool PagedLOD_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    PagedLOD&lod = static_cast<PagedLOD&>(obj);
+    PagedLOD &lod = static_cast<PagedLOD&>(obj);
 
     std::string path;
 
@@ -38,7 +38,7 @@ bool PagedLOD_readLocalData(Object&obj, Input&fr)
     {
         if (lod.getDatabasePath().empty() && fr.getOptions() && !fr.getOptions()->getDatabasePathList().empty())
         {
-            const std::string&path = fr.getOptions()->getDatabasePathList().front();
+            const std::string &path = fr.getOptions()->getDatabasePathList().front();
             if (!path.empty())
             {
                 lod.setDatabasePath(path);
@@ -120,9 +120,9 @@ bool PagedLOD_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool PagedLOD_writeLocalData(const Object&obj, Output&fw)
+bool PagedLOD_writeLocalData(const Object &obj, Output &fw)
 {
-    const PagedLOD&lod = static_cast<const PagedLOD&>(obj);
+    const PagedLOD &lod = static_cast<const PagedLOD&>(obj);
 
 
     if (!lod.getDatabasePath().empty())

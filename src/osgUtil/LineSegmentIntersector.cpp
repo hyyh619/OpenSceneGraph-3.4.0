@@ -28,7 +28,7 @@ namespace LineSegmentIntersectorUtils
 {
 struct TriangleIntersection
 {
-    TriangleIntersection(unsigned int index, const osg::Vec3&normal, float r1, const osg::Vec3 *v1, float r2, const osg::Vec3 *v2, float r3, const osg::Vec3 *v3) :
+    TriangleIntersection(unsigned int index, const osg::Vec3 &normal, float r1, const osg::Vec3 *v1, float r2, const osg::Vec3 *v2, float r3, const osg::Vec3 *v3) :
         _index(index),
         _normal(normal),
         _r1(r1),
@@ -86,7 +86,7 @@ struct TriangleIntersector
         _intersections = intersections;
     }
 
-    void set(const osg::Vec3d&start, const osg::Vec3d&end, value_type ratio = FLT_MAX)
+    void set(const osg::Vec3d &start, const osg::Vec3d &end, value_type ratio = FLT_MAX)
     {
         _hit   = false;
         _index = 0;
@@ -98,7 +98,7 @@ struct TriangleIntersector
         _d     /= _length;
     }
 
-    inline void operator ()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, bool treatVertexDataAsTemporary)
+    inline void operator ()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, bool treatVertexDataAsTemporary)
     {
         ++_index;
 
@@ -250,13 +250,13 @@ struct TriangleIntersector
 //  LineSegmentIntersector
 //
 
-LineSegmentIntersector::LineSegmentIntersector(const osg::Vec3d&start, const osg::Vec3d&end) :
+LineSegmentIntersector::LineSegmentIntersector(const osg::Vec3d &start, const osg::Vec3d &end) :
     _parent(0),
     _start(start),
     _end(end)
 {}
 
-LineSegmentIntersector::LineSegmentIntersector(CoordinateFrame cf, const osg::Vec3d&start, const osg::Vec3d&end,
+LineSegmentIntersector::LineSegmentIntersector(CoordinateFrame cf, const osg::Vec3d &start, const osg::Vec3d &end,
                                                LineSegmentIntersector *parent, osgUtil::Intersector::IntersectionLimit intersectionLimit) :
     Intersector(cf, intersectionLimit),
     _parent(0),
@@ -280,7 +280,7 @@ LineSegmentIntersector::LineSegmentIntersector(CoordinateFrame cf, double x, dou
     }
 }
 
-Intersector* LineSegmentIntersector::clone(osgUtil::IntersectionVisitor&iv)
+Intersector* LineSegmentIntersector::clone(osgUtil::IntersectionVisitor &iv)
 {
     if (_coordinateFrame == MODEL && iv.getModelMatrix() == 0)
     {
@@ -302,7 +302,7 @@ Intersector* LineSegmentIntersector::clone(osgUtil::IntersectionVisitor&iv)
     return lsi.release();
 }
 
-osg::Matrix LineSegmentIntersector::getTransformation(IntersectionVisitor&iv, CoordinateFrame cf)
+osg::Matrix LineSegmentIntersector::getTransformation(IntersectionVisitor &iv, CoordinateFrame cf)
 {
     osg::Matrix matrix;
 
@@ -356,7 +356,7 @@ osg::Matrix LineSegmentIntersector::getTransformation(IntersectionVisitor&iv, Co
     return inverse;
 }
 
-bool LineSegmentIntersector::enter(const osg::Node&node)
+bool LineSegmentIntersector::enter(const osg::Node &node)
 {
     if (reachedLimit())
         return false;
@@ -369,7 +369,7 @@ void LineSegmentIntersector::leave()
     // do nothing
 }
 
-void LineSegmentIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Drawable *drawable)
+void LineSegmentIntersector::intersect(osgUtil::IntersectionVisitor &iv, osg::Drawable *drawable)
 {
     if (reachedLimit())
         return;
@@ -384,8 +384,8 @@ void LineSegmentIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Dra
     intersect(iv, drawable, s, e);
 }
 
-void LineSegmentIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Drawable *drawable,
-                                       const osg::Vec3d&s, const osg::Vec3d&e)
+void LineSegmentIntersector::intersect(osgUtil::IntersectionVisitor &iv, osg::Drawable *drawable,
+                                       const osg::Vec3d &s, const osg::Vec3d &e)
 {
     osg::KdTree *kdTree = iv.getUseKdTreeWhenAvailable() ? dynamic_cast<osg::KdTree*>(drawable->getShape()) : 0;
 
@@ -400,7 +400,7 @@ void LineSegmentIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Dra
                  itr != intersections.end();
                  ++itr)
             {
-                osg::KdTree::LineSegmentIntersection&lsi = *(itr);
+                osg::KdTree::LineSegmentIntersection &lsi = *(itr);
 
                 // get ratio in s,e range
                 double ratio = lsi.ratio;
@@ -496,7 +496,7 @@ void LineSegmentIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Dra
                     getIntersections().clear();
             }
 
-            LineSegmentIntersectorUtils::TriangleIntersection&triHit = thitr->second;
+            LineSegmentIntersectorUtils::TriangleIntersection &triHit = thitr->second;
 
             Intersection hit;
             hit.ratio          = remap_ratio;
@@ -549,7 +549,7 @@ void LineSegmentIntersector::reset()
     _intersections.clear();
 }
 
-bool LineSegmentIntersector::intersects(const osg::BoundingSphere&bs)
+bool LineSegmentIntersector::intersects(const osg::BoundingSphere &bs)
 {
     // if bs not valid then return true based on the assumption that an invalid sphere is yet to be defined.
     if (!bs.valid())
@@ -592,7 +592,7 @@ bool LineSegmentIntersector::intersects(const osg::BoundingSphere&bs)
     return true;
 }
 
-bool LineSegmentIntersector::intersectAndClip(osg::Vec3d&s, osg::Vec3d&e, const osg::BoundingBox&bbInput)
+bool LineSegmentIntersector::intersectAndClip(osg::Vec3d &s, osg::Vec3d &e, const osg::BoundingBox &bbInput)
 {
     osg::Vec3d bb_min(bbInput._min);
     osg::Vec3d bb_max(bbInput._max);
@@ -759,7 +759,7 @@ bool LineSegmentIntersector::intersectAndClip(osg::Vec3d&s, osg::Vec3d&e, const 
     return true;
 }
 
-osg::Texture* LineSegmentIntersector::Intersection::getTextureLookUp(osg::Vec3&tc) const
+osg::Texture* LineSegmentIntersector::Intersection::getTextureLookUp(osg::Vec3 &tc) const
 {
     osg::Geometry  *geometry = drawable.valid() ? drawable->asGeometry() : 0;
     osg::Vec3Array *vertices = geometry ? dynamic_cast<osg::Vec3Array*>(geometry->getVertexArray()) : 0;
@@ -791,18 +791,18 @@ osg::Texture* LineSegmentIntersector::Intersection::getTextureLookUp(osg::Vec3&t
             else if (texcoords_Vec2Array)
             {
                 // we have tex coord array so now we can compute the final tex coord at the point of intersection.
-                const osg::Vec2&tc1 = (*texcoords_Vec2Array)[i1];
-                const osg::Vec2&tc2 = (*texcoords_Vec2Array)[i2];
-                const osg::Vec2&tc3 = (*texcoords_Vec2Array)[i3];
+                const osg::Vec2 &tc1 = (*texcoords_Vec2Array)[i1];
+                const osg::Vec2 &tc2 = (*texcoords_Vec2Array)[i2];
+                const osg::Vec2 &tc3 = (*texcoords_Vec2Array)[i3];
                 tc.x() = tc1.x() * r1 + tc2.x() * r2 + tc3.x() * r3;
                 tc.y() = tc1.y() * r1 + tc2.y() * r2 + tc3.y() * r3;
             }
             else if (texcoords_Vec3Array)
             {
                 // we have tex coord array so now we can compute the final tex coord at the point of intersection.
-                const osg::Vec3&tc1 = (*texcoords_Vec3Array)[i1];
-                const osg::Vec3&tc2 = (*texcoords_Vec3Array)[i2];
-                const osg::Vec3&tc3 = (*texcoords_Vec3Array)[i3];
+                const osg::Vec3 &tc1 = (*texcoords_Vec3Array)[i1];
+                const osg::Vec3 &tc2 = (*texcoords_Vec3Array)[i2];
+                const osg::Vec3 &tc3 = (*texcoords_Vec3Array)[i3];
                 tc.x() = tc1.x() * r1 + tc2.x() * r2 + tc3.x() * r3;
                 tc.y() = tc1.y() * r1 + tc2.y() * r2 + tc3.y() * r3;
                 tc.z() = tc1.z() * r1 + tc2.z() * r2 + tc3.z() * r3;

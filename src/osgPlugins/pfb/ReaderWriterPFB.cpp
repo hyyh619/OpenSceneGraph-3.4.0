@@ -34,7 +34,7 @@ virtual const char* className() const
     return "Performer Reader/Writer";
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string fileName = osgDB::findDataFile(file, options);
 
@@ -91,7 +91,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return ReadResult::FILE_NOT_HANDLED;
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -231,8 +231,8 @@ void ReaderWriterPFB::initPerformer()
     /*
      * Tell Performer to look in OSG search path
      */
-    const osgDB::FilePathList&filePath = osgDB::Registry::instance()->getDataFilePathList();
-    std::string              path      = "";
+    const osgDB::FilePathList &filePath = osgDB::Registry::instance()->getDataFilePathList();
+    std::string               path      = "";
 
     for (unsigned int i = 0; i < filePath.size(); i++)
     {

@@ -78,7 +78,7 @@ virtual void rewind()
 virtual double     getCurrentTime() const;
 
 
-void open(const std::string&filename);
+void open(const std::string &filename);
 
 /** @return the current volume as float */
 virtual float getVolume() const;
@@ -120,8 +120,8 @@ bool isCoreVideoUsed() const
 {
     return _useCoreVideo;
 }
-void lazyInitCoreVideoTextureCache(osg::State&state);
-bool getCurrentCoreVideoTexture(GLenum&target, GLint&name, int&width, int&height) const;
+void lazyInitCoreVideoTextureCache(osg::State &state);
+bool getCurrentCoreVideoTexture(GLenum &target, GLint &name, int &width, int &height) const;
 
 virtual osg::Texture* createSuitableTexture();
 

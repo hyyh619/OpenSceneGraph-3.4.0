@@ -3,21 +3,21 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkRateRange(const osgParticle::VariableRateCounter&obj)
+static bool checkRateRange(const osgParticle::VariableRateCounter &obj)
 {
     return true;
 }
 
-static bool readRateRange(osgDB::InputStream&is, osgParticle::VariableRateCounter&obj)
+static bool readRateRange(osgDB::InputStream &is, osgParticle::VariableRateCounter &obj)
 {
     float min, max; is >> min >> max;
 
     obj.setRateRange(min, max); return true;
 }
 
-static bool writeRateRange(osgDB::OutputStream&os, const osgParticle::VariableRateCounter&obj)
+static bool writeRateRange(osgDB::OutputStream &os, const osgParticle::VariableRateCounter &obj)
 {
-    const osgParticle::rangef&range = obj.getRateRange();
+    const osgParticle::rangef &range = obj.getRateRange();
 
     os << range.minimum << range.maximum << std::endl;
     return true;

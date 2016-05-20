@@ -62,15 +62,15 @@ void Camera::write(DataOutputStream *out)
     out->writeUInt(getDrawBuffer());
     out->writeUInt(getReadBuffer());
 
-    const BufferAttachmentMap&baf = getBufferAttachmentMap();
+    const BufferAttachmentMap &baf = getBufferAttachmentMap();
     out->writeUInt(baf.size());
 
     for (BufferAttachmentMap::const_iterator itr = baf.begin();
          itr != baf.end();
          ++itr)
     {
-        BufferComponent buffer      = itr->first;
-        const Attachment&attachment = itr->second;
+        BufferComponent  buffer      = itr->first;
+        const Attachment &attachment = itr->second;
 
         out->writeInt(buffer);
         out->writeUInt(attachment._internalFormat);
@@ -160,7 +160,7 @@ void Camera::read(DataInputStream *in)
                 }
             }
 
-            Attachment&attachment = _bufferAttachmentMap[BufferComponent(buffer_component)];
+            Attachment &attachment = _bufferAttachmentMap[BufferComponent(buffer_component)];
             attachment._internalFormat = (GLenum)in->readUInt();
 
             if (in->readBool())

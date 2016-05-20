@@ -22,7 +22,7 @@
 class OSXCoreVideoAdapter : public osg::Referenced
 {
 public:
-OSXCoreVideoAdapter(osg::State&state, osg::Image *image);
+OSXCoreVideoAdapter(osg::State &state, osg::Image *image);
 
 void setVideo(osg::Image *image);
 

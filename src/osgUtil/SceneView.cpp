@@ -147,7 +147,7 @@ SceneView::SceneView(DisplaySettings *ds)
     _resetColorMaskToAllEnabled = true;
 }
 
-SceneView::SceneView(const SceneView&rhs, const osg::CopyOp&copyop) :
+SceneView::SceneView(const SceneView &rhs, const osg::CopyOp &copyop) :
     osg::Object(rhs, copyop),
     osg::CullSettings(rhs)
 {
@@ -419,12 +419,12 @@ void SceneView::updateUniforms()
     }
 }
 
-osg::Matrixd SceneView::computeLeftEyeProjectionImplementation(const osg::Matrixd&projection) const
+osg::Matrixd SceneView::computeLeftEyeProjectionImplementation(const osg::Matrixd &projection) const
 {
     return _displaySettings.valid() ? _displaySettings->computeLeftEyeProjectionImplementation(projection) : projection;
 }
 
-osg::Matrixd SceneView::computeLeftEyeViewImplementation(const osg::Matrixd&view) const
+osg::Matrixd SceneView::computeLeftEyeViewImplementation(const osg::Matrixd &view) const
 {
     if (!_displaySettings)
         return view;
@@ -448,12 +448,12 @@ osg::Matrixd SceneView::computeLeftEyeViewImplementation(const osg::Matrixd&view
     return _displaySettings->computeLeftEyeViewImplementation(view, eyeScale);
 }
 
-osg::Matrixd SceneView::computeRightEyeProjectionImplementation(const osg::Matrixd&projection) const
+osg::Matrixd SceneView::computeRightEyeProjectionImplementation(const osg::Matrixd &projection) const
 {
     return _displaySettings.valid() ? _displaySettings->computeRightEyeProjectionImplementation(projection) : projection;
 }
 
-osg::Matrixd SceneView::computeRightEyeViewImplementation(const osg::Matrixd&view) const
+osg::Matrixd SceneView::computeRightEyeViewImplementation(const osg::Matrixd &view) const
 {
     if (!_displaySettings)
         return view;
@@ -626,7 +626,7 @@ void SceneView::setLightingMode(LightingMode mode)
     }
 }
 
-void SceneView::inheritCullSettings(const osg::CullSettings&settings, unsigned int inheritanceMask)
+void SceneView::inheritCullSettings(const osg::CullSettings &settings, unsigned int inheritanceMask)
 {
     if (_camera.valid() && _camera->getView())
     {
@@ -790,7 +790,7 @@ void SceneView::cull()
     }
 }
 
-bool SceneView::cullStage(const osg::Matrixd&projection, const osg::Matrixd&modelview, osgUtil::CullVisitor *cullVisitor, osgUtil::StateGraph *rendergraph, osgUtil::RenderStage *renderStage, osg::Viewport *viewport)
+bool SceneView::cullStage(const osg::Matrixd &projection, const osg::Matrixd &modelview, osgUtil::CullVisitor *cullVisitor, osgUtil::StateGraph *rendergraph, osgUtil::RenderStage *renderStage, osg::Viewport *viewport)
 {
     if (!_camera || !viewport)
         return false;
@@ -977,7 +977,7 @@ void SceneView::flushAllDeletedGLObjects()
     osg::flushAllDeletedGLObjects(getState()->getContextID());
 }
 
-void SceneView::flushDeletedGLObjects(double&availableTime)
+void SceneView::flushDeletedGLObjects(double &availableTime)
 {
     // OSG_NOTICE<<"SceneView::flushDeletedGLObjects(availableTime="<<availableTime<<")"<<std::endl;
 
@@ -1454,7 +1454,7 @@ void SceneView::draw()
     Note, current implementation requires that SceneView::draw() has been previously called
     for projectWindowIntoObject to produce valid values.  As per OpenGL
     windows coordinates are calculated relative to the bottom left of the window.*/
-bool SceneView::projectWindowIntoObject(const osg::Vec3&window, osg::Vec3&object) const
+bool SceneView::projectWindowIntoObject(const osg::Vec3 &window, osg::Vec3 &object) const
 {
     osg::Matrix inverseMVPW;
 
@@ -1471,7 +1471,7 @@ bool SceneView::projectWindowIntoObject(const osg::Vec3&window, osg::Vec3&object
     Note, current implementation requires that SceneView::draw() has been previously called
     for projectWindowIntoObject to produce valid values.  As per OpenGL
     windows coordinates are calculated relative to the bottom left of the window.*/
-bool SceneView::projectWindowXYIntoObject(int x, int y, osg::Vec3&near_point, osg::Vec3&far_point) const
+bool SceneView::projectWindowXYIntoObject(int x, int y, osg::Vec3 &near_point, osg::Vec3 &far_point) const
 {
     osg::Matrix inverseMVPW;
 
@@ -1488,7 +1488,7 @@ bool SceneView::projectWindowXYIntoObject(int x, int y, osg::Vec3&near_point, os
     Note, current implementation requires that SceneView::draw() has been previously called
     for projectWindowIntoObject to produce valid values.  As per OpenGL
     windows coordinates are calculated relative to the bottom left of the window.*/
-bool SceneView::projectObjectIntoWindow(const osg::Vec3&object, osg::Vec3&window) const
+bool SceneView::projectObjectIntoWindow(const osg::Vec3 &object, osg::Vec3 &window) const
 {
     window = object * computeMVPW();
     return true;
@@ -1506,7 +1506,7 @@ const osg::Matrix SceneView::computeMVPW() const
     return matrix;
 }
 
-void SceneView::clearArea(int x, int y, int width, int height, const osg::Vec4&color)
+void SceneView::clearArea(int x, int y, int width, int height, const osg::Vec4 &color)
 {
     osg::ref_ptr<osg::Viewport> viewport = new osg::Viewport;
 
@@ -1554,41 +1554,41 @@ void SceneView::setProjectionMatrixAsPerspective(double fovy, double aspectRatio
                                                   zNear, zFar));
 }
 
-bool SceneView::getProjectionMatrixAsOrtho(double&left, double&right,
-                                           double&bottom, double&top,
-                                           double&zNear, double&zFar) const
+bool SceneView::getProjectionMatrixAsOrtho(double &left, double &right,
+                                           double &bottom, double &top,
+                                           double &zNear, double &zFar) const
 {
     return getProjectionMatrix().getOrtho(left, right,
                                           bottom, top,
                                           zNear, zFar);
 }
 
-bool SceneView::getProjectionMatrixAsFrustum(double&left, double&right,
-                                             double&bottom, double&top,
-                                             double&zNear, double&zFar) const
+bool SceneView::getProjectionMatrixAsFrustum(double &left, double &right,
+                                             double &bottom, double &top,
+                                             double &zNear, double &zFar) const
 {
     return getProjectionMatrix().getFrustum(left, right,
                                             bottom, top,
                                             zNear, zFar);
 }
 
-bool SceneView::getProjectionMatrixAsPerspective(double&fovy, double&aspectRatio,
-                                                 double&zNear, double&zFar) const
+bool SceneView::getProjectionMatrixAsPerspective(double &fovy, double &aspectRatio,
+                                                 double &zNear, double &zFar) const
 {
     return getProjectionMatrix().getPerspective(fovy, aspectRatio, zNear, zFar);
 }
 
-void SceneView::setViewMatrixAsLookAt(const Vec3&eye, const Vec3&center, const Vec3&up)
+void SceneView::setViewMatrixAsLookAt(const Vec3 &eye, const Vec3 &center, const Vec3 &up)
 {
     setViewMatrix(osg::Matrixd::lookAt(eye, center, up));
 }
 
-void SceneView::getViewMatrixAsLookAt(Vec3&eye, Vec3&center, Vec3&up, float lookDistance) const
+void SceneView::getViewMatrixAsLookAt(Vec3 &eye, Vec3 &center, Vec3 &up, float lookDistance) const
 {
     getViewMatrix().getLookAt(eye, center, up, lookDistance);
 }
 
-bool SceneView::getStats(Statistics&stats)
+bool SceneView::getStats(Statistics &stats)
 {
     if (_displaySettings.valid() && _displaySettings->getStereo())
     {

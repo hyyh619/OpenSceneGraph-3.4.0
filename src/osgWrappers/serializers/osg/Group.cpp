@@ -4,12 +4,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkChildren(const osg::Group&node)
+static bool checkChildren(const osg::Group &node)
 {
     return node.getNumChildren() > 0;
 }
 
-static bool readChildren(osgDB::InputStream&is, osg::Group&node)
+static bool readChildren(osgDB::InputStream &is, osg::Group &node)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -25,7 +25,7 @@ static bool readChildren(osgDB::InputStream&is, osg::Group&node)
     return true;
 }
 
-static bool writeChildren(osgDB::OutputStream&os, const osg::Group&node)
+static bool writeChildren(osgDB::OutputStream &os, const osg::Group &node)
 {
     unsigned int size = node.getNumChildren();
 
@@ -42,7 +42,7 @@ static bool writeChildren(osgDB::OutputStream&os, const osg::Group&node)
 
 struct GroupGetNumChildren : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         osg::Group *group = reinterpret_cast<osg::Group*>(objectPtr);
 
@@ -53,7 +53,7 @@ struct GroupGetNumChildren : public osgDB::MethodObject
 
 struct GroupGetChild : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.empty())
             return false;
@@ -80,7 +80,7 @@ struct GroupGetChild : public osgDB::MethodObject
 
 struct GroupSetChild : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.size() < 2)
             return false;
@@ -112,7 +112,7 @@ struct GroupSetChild : public osgDB::MethodObject
 
 struct GroupAddChild : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.empty())
             return false;
@@ -131,7 +131,7 @@ struct GroupAddChild : public osgDB::MethodObject
 
 struct GroupRemoveChild : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.empty())
             return false;

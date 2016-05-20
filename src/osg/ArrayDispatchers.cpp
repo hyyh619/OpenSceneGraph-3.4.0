@@ -322,7 +322,7 @@ void ArrayDispatchers::assignTexCoordDispatchers(unsigned int unit)
     for (unsigned int i = _texCoordDispatchers.size(); i <= unit; ++i)
     {
         _texCoordDispatchers.push_back(new AttributeDispatchMap());
-        AttributeDispatchMap&texCoordDispatcher = *_texCoordDispatchers[i];
+        AttributeDispatchMap &texCoordDispatcher = *_texCoordDispatchers[i];
         if (i == 0)
         {
             #if defined(OSG_GL_VERTEX_FUNCS_AVAILABLE) && !defined(OSG_GLES1_AVAILABLE)
@@ -351,7 +351,7 @@ void ArrayDispatchers::assignVertexAttribDispatchers(unsigned int unit)
     for (unsigned int i = _vertexAttribDispatchers.size(); i <= unit; ++i)
     {
         _vertexAttribDispatchers.push_back(new AttributeDispatchMap());
-        AttributeDispatchMap&vertexAttribDispatcher = *_vertexAttribDispatchers[i];
+        AttributeDispatchMap &vertexAttribDispatcher = *_vertexAttribDispatchers[i];
         vertexAttribDispatcher.targetAssign<GLuint, GLfloat>(i, Array::FloatArrayType, extensions->glVertexAttrib1fv, 1);
         vertexAttribDispatcher.targetAssign<GLuint, GLfloat>(i, Array::Vec2ArrayType, extensions->glVertexAttrib2fv, 2);
         vertexAttribDispatcher.targetAssign<GLuint, GLfloat>(i, Array::Vec3ArrayType, extensions->glVertexAttrib3fv, 3);

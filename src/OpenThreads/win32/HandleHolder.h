@@ -43,10 +43,10 @@ inline void close()
 };
 
 // copy constructor - disallow
-HandleHolder(const HandleHolder&rhs);
+HandleHolder(const HandleHolder &rhs);
 
 // assignment operator - disallow
-HandleHolder&operator=(const HandleHolder&rhs);
+HandleHolder&operator=(const HandleHolder &rhs);
 
 public:
 // constructor

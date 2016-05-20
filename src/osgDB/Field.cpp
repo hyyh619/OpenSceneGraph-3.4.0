@@ -29,7 +29,7 @@ Field::Field()
 }
 
 
-Field::Field(const Field&ic)
+Field::Field(const Field &ic)
 {
     _copy(ic);
 }
@@ -41,7 +41,7 @@ Field::~Field()
 }
 
 
-Field&Field::operator =(const Field&ic)
+Field&Field::operator =(const Field &ic)
 {
     if (this == &ic)
         return *this;
@@ -76,7 +76,7 @@ void Field::_init()
 }
 
 
-void Field::_copy(const Field&ic)
+void Field::_copy(const Field &ic)
 {
     // copy string cache.
     if (ic._fieldCache)
@@ -298,7 +298,7 @@ bool Field::matchInt(int i) const
 }
 
 
-bool Field::getInt(int&i) const
+bool Field::getInt(int &i) const
 {
     getFieldType();
     if (_fieldType == INTEGER)
@@ -333,7 +333,7 @@ bool Field::matchUInt(unsigned int i) const
 }
 
 
-bool Field::getUInt(unsigned int&i) const
+bool Field::getUInt(unsigned int &i) const
 {
     getFieldType();
     if (_fieldType == INTEGER)
@@ -368,7 +368,7 @@ bool Field::matchFloat(float f) const
 }
 
 
-bool Field::getFloat(float&f) const
+bool Field::getFloat(float &f) const
 {
     getFieldType();
     if (_fieldType == REAL || _fieldType == INTEGER)
@@ -382,7 +382,7 @@ bool Field::getFloat(float&f) const
     }
 }
 
-bool Field::getFloat(double&f) const
+bool Field::getFloat(double &f) const
 {
     getFieldType();
     if (_fieldType == REAL || _fieldType == INTEGER)

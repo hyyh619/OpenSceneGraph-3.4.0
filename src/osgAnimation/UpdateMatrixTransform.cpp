@@ -18,12 +18,12 @@
 
 using namespace osgAnimation;
 
-UpdateMatrixTransform::UpdateMatrixTransform(const UpdateMatrixTransform&apc, const osg::CopyOp&copyop) : osg::Object(apc, copyop), AnimationUpdateCallback<osg::NodeCallback>(apc, copyop)
+UpdateMatrixTransform::UpdateMatrixTransform(const UpdateMatrixTransform &apc, const osg::CopyOp &copyop) : osg::Object(apc, copyop), AnimationUpdateCallback<osg::NodeCallback>(apc, copyop)
 {
     _transforms = StackedTransform(apc.getStackedTransforms(), copyop);
 }
 
-UpdateMatrixTransform::UpdateMatrixTransform(const std::string&name) : AnimationUpdateCallback<osg::NodeCallback>(name)
+UpdateMatrixTransform::UpdateMatrixTransform(const std::string &name) : AnimationUpdateCallback<osg::NodeCallback>(name)
 {}
 
 /** Callback method called by the NodeVisitor when visiting a node.*/
@@ -36,7 +36,7 @@ void UpdateMatrixTransform::operator()(osg::Node *node, osg::NodeVisitor *nv)
         {
             // here we would prefer to have a flag inside transform stack in order to avoid update and a dirty state in matrixTransform if it's not require.
             _transforms.update();
-            const osg::Matrix&matrix = _transforms.getMatrix();
+            const osg::Matrix &matrix = _transforms.getMatrix();
             matrixTransform->setMatrix(matrix);
         }
     }
@@ -47,7 +47,7 @@ void UpdateMatrixTransform::operator()(osg::Node *node, osg::NodeVisitor *nv)
 
 bool UpdateMatrixTransform::link(osgAnimation::Channel *channel)
 {
-    const std::string&channelName = channel->getName();
+    const std::string &channelName = channel->getName();
 
     // check if we can link a StackedTransformElement to the current Channel
     for (StackedTransform::iterator it = _transforms.begin(); it != _transforms.end(); ++it)

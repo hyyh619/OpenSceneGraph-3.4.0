@@ -227,13 +227,13 @@ CollectCompileCosts(const GraphicsCostEstimator *gce) :
     _costs(0.0, 0.0)
 {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     apply(node.getStateSet());
     traverse(node);
 }
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     apply(geode.getStateSet());
 
@@ -311,13 +311,13 @@ CollectDrawCosts(const GraphicsCostEstimator *gce) :
     _costs(0.0, 0.0)
 {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     apply(node.getStateSet());
     traverse(node);
 }
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     apply(geode.getStateSet());
 

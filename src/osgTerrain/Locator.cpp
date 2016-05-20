@@ -29,7 +29,7 @@ Locator::Locator() :
     _transformScaledByResolution(false)
 {}
 
-Locator::Locator(const Locator&locator, const osg::CopyOp&copyop) :
+Locator::Locator(const Locator &locator, const osg::CopyOp &copyop) :
     osg::Object(locator, copyop),
     _coordinateSystemType(locator._coordinateSystemType),
     _format(locator._format),
@@ -53,7 +53,7 @@ void Locator::setTransformAsExtents(double minX, double minY, double maxX, doubl
     _inverse.invert(_transform);
 }
 
-bool Locator::computeLocalBounds(Locator&source, osg::Vec3d&bottomLeft, osg::Vec3d&topRight) const
+bool Locator::computeLocalBounds(Locator &source, osg::Vec3d &bottomLeft, osg::Vec3d &topRight) const
 {
     typedef std::list<osg::Vec3d> Corners;
     Corners corners;
@@ -108,7 +108,7 @@ bool Locator::orientationOpenGL() const
     return _transform(0, 0) * _transform(1, 1) >= 0.0;
 }
 
-bool Locator::convertLocalToModel(const osg::Vec3d&local, osg::Vec3d&world) const
+bool Locator::convertLocalToModel(const osg::Vec3d &local, osg::Vec3d &world) const
 {
     switch (_coordinateSystemType)
     {
@@ -137,7 +137,7 @@ bool Locator::convertLocalToModel(const osg::Vec3d&local, osg::Vec3d&world) cons
     return false;
 }
 
-bool Locator::convertModelToLocal(const osg::Vec3d&world, osg::Vec3d&local) const
+bool Locator::convertModelToLocal(const osg::Vec3d &world, osg::Vec3d &local) const
 {
     switch (_coordinateSystemType)
     {

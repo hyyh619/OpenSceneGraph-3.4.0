@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 // Code by: Jeremy Moles (cubicool) 2007-2008
 
@@ -24,54 +24,58 @@
 #include <osgWidget/Canvas>
 
 namespace osgWidget {
+    typedef osgDB::FieldReaderIterator&Reader;
 
-typedef osgDB::FieldReaderIterator& Reader;
-
-class OSGWIDGET_EXPORT Style: public osg::Object
-{
-    public:
+    class OSGWIDGET_EXPORT Style: public osg::Object
+    {
+public:
         META_Object(osgWidget, Style);
 
         // Class and contents...
         Style (const std::string& = "", const std::string& = "");
-        Style (const Style&, const osg::CopyOp&);
+        Style (const Style &, const osg::CopyOp &);
 
-        virtual bool applyStyle (Widget*, Reader);
-        virtual bool applyStyle (Label*, Reader);
-        virtual bool applyStyle (Input*, Reader);
-        virtual bool applyStyle (Window*, Reader);
-        virtual bool applyStyle (Window::EmbeddedWindow*, Reader);
-        virtual bool applyStyle (Box*, Reader);
-        virtual bool applyStyle (Frame::Corner*, Reader);
-        virtual bool applyStyle (Frame::Border*, Reader);
-        virtual bool applyStyle (Canvas*, Reader);
+        virtual bool applyStyle(Widget*, Reader);
+        virtual bool applyStyle(Label*, Reader);
+        virtual bool applyStyle(Input*, Reader);
+        virtual bool applyStyle(Window*, Reader);
+        virtual bool applyStyle(Window::EmbeddedWindow*, Reader);
+        virtual bool applyStyle(Box*, Reader);
+        virtual bool applyStyle(Frame::Corner*, Reader);
+        virtual bool applyStyle(Frame::Border*, Reader);
+        virtual bool applyStyle(Canvas*, Reader);
 
 
 
-        void setStyle(const std::string& style) {
+        void setStyle(const std::string &style)
+        {
             _style = style;
         }
 
-        std::string& getStyle() {
+        std::string&getStyle()
+        {
             return _style;
         }
 
-        const std::string& getStyle() const {
+        const std::string&getStyle() const
+        {
             return _style;
         }
 
-        static Widget::Layer                strToLayer     (const std::string&);
-        static Widget::VerticalAlignment    strToVAlign    (const std::string&);
-        static Widget::HorizontalAlignment  strToHAlign    (const std::string&);
-        static Widget::CoordinateMode       strToCoordMode (const std::string&);
-        static bool                         strToFill      (const std::string&);
+        static Widget::Layer                strToLayer(const std::string&);
+        static Widget::VerticalAlignment    strToVAlign(const std::string&);
+        static Widget::HorizontalAlignment  strToHAlign(const std::string&);
+        static Widget::CoordinateMode       strToCoordMode(const std::string&);
+        static bool                         strToFill(const std::string&);
 
-    protected:
+protected:
 
         std::string _style;
 
-        bool _match(const char* seq, Reader r) {
-            if(r.matchSequence(seq)) {
+        bool _match(const char *seq, Reader r)
+        {
+            if (r.matchSequence(seq))
+            {
                 ++r;
 
                 return true;
@@ -79,35 +83,37 @@ class OSGWIDGET_EXPORT Style: public osg::Object
 
             return false;
         }
-};
+    };
 
-class OSGWIDGET_EXPORT StyleManager: public osg::Object
-{
-    public:
-        typedef std::map<std::string, osg::ref_ptr<Style> > Styles;
-        typedef Styles::iterator                            Iterator;
-        typedef Styles::const_iterator                      ConstIterator;
+    class OSGWIDGET_EXPORT StyleManager: public osg::Object
+    {
+public:
+        typedef std::map < std::string, osg::ref_ptr < Style >> Styles;
+        typedef Styles::iterator Iterator;
+        typedef Styles::const_iterator ConstIterator;
 
         META_Object(osgWidget, StyleManager);
 
         StyleManager ();
-        StyleManager (const StyleManager&, const osg::CopyOp&);
+        StyleManager (const StyleManager &, const osg::CopyOp &);
 
         bool addStyle(Style*);
 
-        bool applyStyles(Widget* widget) {
+        bool applyStyles(Widget *widget)
+        {
             return _applyStyles(widget);
         }
 
-        bool applyStyles(Window* window) {
+        bool applyStyles(Window *window)
+        {
             return _applyStyles(window);
         }
 
-    private:
+private:
         Styles _styles;
 
-        template<typename T>
-        bool _applySpecificStyle(T* t, const std::string& style)
+        template < typename T >
+        bool _applySpecificStyle(T *t, const std::string &style)
         {
             osgDB::FieldReaderIterator r;
 
@@ -117,9 +123,9 @@ class OSGWIDGET_EXPORT StyleManager: public osg::Object
 
             bool inc = false;
 
-            while(!r.eof())
+            while (!r.eof())
             {
-                if(_styles[style]->applyStyle(t, r))
+                if (_styles[style]->applyStyle(t, r))
                     inc = true;
                 else
                     r.advanceOverCurrentFieldOrBlock();
@@ -130,15 +136,17 @@ class OSGWIDGET_EXPORT StyleManager: public osg::Object
             return inc;
         }
 
-        template<typename T>
+        template < typename T >
         bool _coerceAndApply(
-            osg::Object*       obj,
-            const std::string& style,
-            const std::string& className
-        ) {
-            T* t = dynamic_cast<T*>(obj);
+            osg::Object *obj,
+            const std::string &style,
+            const std::string &className
+            )
+        {
+            T *t = dynamic_cast < T * > (obj);
 
-            if(!t) {
+            if (!t)
+            {
                 warn()
                     << "An attempt was made to coerce Object [" << obj->getName()
                     << "] into a " << className << " but failed." << std::endl
@@ -156,10 +164,10 @@ class OSGWIDGET_EXPORT StyleManager: public osg::Object
         // 1. Check and see if the explicit FULL path is available.
         // 2. Check and see if each component working backward--minus the last--is available.
         // 3. Check to see if just the className() is available.
-        template<typename T>
-        bool _applyStyles(T* t)
+        template < typename T >
+        bool _applyStyles(T *t)
         {
-            if(!t)
+            if (!t)
             {
                 warn()
                     << "Cannot call StyleManager::applyStyle with a NULL object."
@@ -169,9 +177,9 @@ class OSGWIDGET_EXPORT StyleManager: public osg::Object
                 return false;
             }
 
-            osg::Object* obj = dynamic_cast<osg::Object*>(t);
+            osg::Object *obj = dynamic_cast < osg::Object * > (t);
 
-            if(!obj)
+            if (!obj)
             {
                 warn()
                     << "Cannot coerce object into osg::Object in StyleManager:::applyStyle"
@@ -184,25 +192,25 @@ class OSGWIDGET_EXPORT StyleManager: public osg::Object
             std::string c = obj->className();
 
             // Case 3; there's no explicit Style set, so see if there's one for the class.
-            if(t->getStyle().empty())
+            if (t->getStyle().empty())
             {
                 // Couldn't find the className, so we exit.
-                if(_styles.find(c) == _styles.end()) return false;
+                if (_styles.find(c) == _styles.end())
+                    return false;
 
                 return _applyStyleToObject(obj, c);
             }
 
             // Case 1...
-            if(_styles.find(t->getStyle()) != _styles.end()) return _applyStyleToObject(
-                obj,
-                t->getStyle()
-            );
+            if (_styles.find(t->getStyle()) != _styles.end())
+                return _applyStyleToObject(
+                    obj,
+                    t->getStyle()
+                    );
 
             return false;
         }
-
-};
-
+    };
 }
 
 #endif

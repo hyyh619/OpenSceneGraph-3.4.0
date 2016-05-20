@@ -192,7 +192,7 @@ Producer::Window RenderSurface::getParentWindow(void) const
 }
 #endif
 
-void RenderSurface::setWindowName(const std::string&name)
+void RenderSurface::setWindowName(const std::string &name)
 {
     //    _setWindowName( name );
     _windowName = name;
@@ -203,7 +203,7 @@ const std::string&RenderSurface::getWindowName(void) const
     return _windowName;
 }
 
-void RenderSurface::setHostName(const std::string&name)
+void RenderSurface::setHostName(const std::string &name)
 {
     _hostname = name;
 }
@@ -287,7 +287,7 @@ void RenderSurface::setWindowRectangle(int x, int y, unsigned int width, unsigne
         _inputRectangle.set(0.0, _windowWidth, 0.0, _windowHeight);
 }
 
-void RenderSurface::getWindowRectangle(int&x, int&y, unsigned int&width, unsigned int&height) const
+void RenderSurface::getWindowRectangle(int &x, int &y, unsigned int &width, unsigned int &height) const
 {
     if (_isFullScreen)
     {
@@ -382,7 +382,7 @@ unsigned int RenderSurface::getWindowHeight() const
     return _windowHeight;
 }
 
-void RenderSurface::setInputRectangle(const InputRectangle&inputRectangle)
+void RenderSurface::setInputRectangle(const InputRectangle &inputRectangle)
 {
     _inputRectangle = inputRectangle;
 }
@@ -524,7 +524,7 @@ const VisualChooser* RenderSurface::getVisualChooser(void) const
 
 
 #if 0
-void RenderSurface::getScreenSize(unsigned int&width, unsigned int&height)  const
+void RenderSurface::getScreenSize(unsigned int &width, unsigned int &height)  const
 {
     if (_realized)
     {

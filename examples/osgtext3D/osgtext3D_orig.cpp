@@ -37,7 +37,7 @@
 
 
 // create text which sits in 3D space such as would be inserted into a normal model
-osg::Group* create3DText(const osg::Vec3&center, float radius)
+osg::Group* create3DText(const osg::Vec3 &center, float radius)
 {
     osg::Geode *geode = new osg::Geode;
 

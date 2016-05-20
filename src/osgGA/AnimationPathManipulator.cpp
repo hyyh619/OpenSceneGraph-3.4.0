@@ -18,7 +18,7 @@ AnimationPathManipulator::AnimationPathManipulator(osg::AnimationPath *animation
     _numOfFramesSinceStartOfTimedPeriod = -1; // need to init.
 }
 
-AnimationPathManipulator::AnimationPathManipulator(const std::string&filename)
+AnimationPathManipulator::AnimationPathManipulator(const std::string &filename)
 {
     _printOutTimingInfo = true;
 
@@ -54,17 +54,17 @@ void AnimationPathManipulator::home(double currentTime)
     _numOfFramesSinceStartOfTimedPeriod = -1;
 }
 
-void AnimationPathManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&)
+void AnimationPathManipulator::home(const GUIEventAdapter &ea, GUIActionAdapter&)
 {
     home(ea.getTime());
 }
 
-void AnimationPathManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&aa)
+void AnimationPathManipulator::init(const GUIEventAdapter &ea, GUIActionAdapter &aa)
 {
     home(ea, aa);
 }
 
-bool AnimationPathManipulator::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us)
+bool AnimationPathManipulator::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us)
 {
     if (!valid())
         return false;
@@ -149,7 +149,7 @@ bool AnimationPathManipulator::handle(const osgGA::GUIEventAdapter&ea, osgGA::GU
     return false;
 }
 
-void AnimationPathManipulator::getUsage(osg::ApplicationUsage&usage) const
+void AnimationPathManipulator::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("AnimationPath: Space", "Reset the viewing position to start of animation");
     usage.addKeyboardMouseBinding("AnimationPath: p", "Pause/resume animation.");

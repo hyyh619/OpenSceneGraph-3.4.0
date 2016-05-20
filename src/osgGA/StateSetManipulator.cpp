@@ -79,7 +79,7 @@ void StateSetManipulator::clone()
     _stateset = newStateSet;
 }
 
-bool StateSetManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&aa)
+bool StateSetManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter &aa)
 {
     if (!_stateset.valid())
         return false;
@@ -139,7 +139,7 @@ bool StateSetManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&aa)
     return false;
 }
 
-void StateSetManipulator::getUsage(osg::ApplicationUsage&usage) const
+void StateSetManipulator::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventToggleBackfaceCulling), "Toggle backface culling");
     usage.addKeyboardMouseBinding(reinterpret_cast<const char*>(&_keyEventToggleLighting), "Toggle lighting");

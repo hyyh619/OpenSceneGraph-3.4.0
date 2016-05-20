@@ -18,8 +18,8 @@ class MessageBox
 {
 protected:
 
-osgWidget::Frame* createButtonOk(const std::string&theme, const std::string&text, const std::string&font, int fontSize);
-osgWidget::Label* createLabel(const std::string&string, const std::string&font, int size, const osgWidget::Color&color);
+osgWidget::Frame* createButtonOk(const std::string &theme, const std::string &text, const std::string &font, int fontSize);
+osgWidget::Label* createLabel(const std::string &string, const std::string &font, int size, const osgWidget::Color &color);
 
 osg::ref_ptr<osgWidget::Frame> _window;
 osg::ref_ptr<osgWidget::Frame> _button;
@@ -29,12 +29,12 @@ public:
 osgWidget::Frame* getButton();
 osgWidget::Frame* getWindow();
 
-bool create(const std::string&themeMessage,
-            const std::string&themeButton,
-            const std::string&titleText,
-            const std::string&messageText,
-            const std::string&buttonText,
-            const std::string&font,
+bool create(const std::string &themeMessage,
+            const std::string &themeButton,
+            const std::string &titleText,
+            const std::string &messageText,
+            const std::string &buttonText,
+            const std::string &font,
             int fontSize);
 };
 osgWidget::Frame* MessageBox::getButton()
@@ -54,7 +54,7 @@ struct AlphaSetterVisitor : public osg::NodeVisitor
         _alpha = alpha;
     }
 
-    void apply(osg::MatrixTransform&node)
+    void apply(osg::MatrixTransform &node)
     {
         osgWidget::Window *win = dynamic_cast<osgWidget::Window*>(&node);
 
@@ -85,13 +85,13 @@ struct AlphaSetterVisitor : public osg::NodeVisitor
 
 struct ColorSetterVisitor : public osg::NodeVisitor
 {
-    osgWidget::Color                                   _color;
-    ColorSetterVisitor(const osgWidget::Color&color) : osg::NodeVisitor(TRAVERSE_ALL_CHILDREN)
+    osgWidget::Color                                    _color;
+    ColorSetterVisitor(const osgWidget::Color &color) : osg::NodeVisitor(TRAVERSE_ALL_CHILDREN)
     {
         _color = color;
     }
 
-    void apply(osg::MatrixTransform&node)
+    void apply(osg::MatrixTransform &node)
     {
         osgWidget::Window *win = dynamic_cast<osgWidget::Window*>(&node);
 
@@ -148,7 +148,7 @@ struct EventOK : public osgWidget::Callback, osg::NodeCallback
         _over = false;
     }
 
-    bool operator()(osgWidget::Event&ev)
+    bool operator()(osgWidget::Event &ev)
     {
         if (ev.type == osgWidget::EVENT_MOUSE_ENTER)
         {
@@ -211,7 +211,7 @@ struct EventOK : public osgWidget::Callback, osg::NodeCallback
 
 
 
-osgWidget::Label* MessageBox::createLabel(const std::string&string, const std::string&font, int size, const osgWidget::Color&color)
+osgWidget::Label* MessageBox::createLabel(const std::string &string, const std::string &font, int size, const osgWidget::Color &color)
 {
     osgWidget::Label *label = new osgWidget::Label("", "");
 
@@ -224,9 +224,9 @@ osgWidget::Label* MessageBox::createLabel(const std::string&string, const std::s
     return label;
 }
 
-osgWidget::Frame* MessageBox::createButtonOk(const std::string&theme,
-                                             const std::string&text,
-                                             const std::string&font,
+osgWidget::Frame* MessageBox::createButtonOk(const std::string &theme,
+                                             const std::string &text,
+                                             const std::string &font,
                                              int fontSize)
 {
     osg::ref_ptr<osgWidget::Frame> frame = osgWidget::Frame::createSimpleFrameFromTheme(
@@ -261,12 +261,12 @@ osgWidget::Frame* MessageBox::createButtonOk(const std::string&theme,
     return frame.release();
 }
 
-bool MessageBox::create(const std::string&themeMessage,
-                        const std::string&themeButton,
-                        const std::string&titleText,
-                        const std::string&messageText,
-                        const std::string&buttonText,
-                        const std::string&font,
+bool MessageBox::create(const std::string &themeMessage,
+                        const std::string &themeButton,
+                        const std::string &titleText,
+                        const std::string &messageText,
+                        const std::string &buttonText,
+                        const std::string &font,
                         int fontSize)
 {
     osg::ref_ptr<osgWidget::Frame> frame = osgWidget::Frame::createSimpleFrameFromTheme(
@@ -435,7 +435,7 @@ struct AlphaSetterVisitor : public osg::NodeVisitor
         _alpha = alpha;
     }
 
-    void apply(osg::MatrixTransform&node)
+    void apply(osg::MatrixTransform &node)
     {
         osgWidget::Window *win = dynamic_cast<osgWidget::Window*>(&node);
 
@@ -466,13 +466,13 @@ struct AlphaSetterVisitor : public osg::NodeVisitor
 
 struct ColorSetterVisitor : public osg::NodeVisitor
 {
-    osgWidget::Color                                   _color;
-    ColorSetterVisitor(const osgWidget::Color&color) : osg::NodeVisitor(TRAVERSE_ALL_CHILDREN)
+    osgWidget::Color                                    _color;
+    ColorSetterVisitor(const osgWidget::Color &color) : osg::NodeVisitor(TRAVERSE_ALL_CHILDREN)
     {
         _color = color;
     }
 
-    void apply(osg::MatrixTransform&node)
+    void apply(osg::MatrixTransform &node)
     {
         osgWidget::Window *win = dynamic_cast<osgWidget::Window*>(&node);
 
@@ -526,7 +526,7 @@ struct EventOK : public osgWidget::Callback, osg::NodeCallback
         _over = false;
     }
 
-    bool operator()(osgWidget::Event&ev)
+    bool operator()(osgWidget::Event &ev)
     {
         if (ev.type == osgWidget::EVENT_MOUSE_ENTER)
         {
@@ -585,7 +585,7 @@ struct EventOK : public osgWidget::Callback, osg::NodeCallback
 
 
 
-osgWidget::Label* createLabel(const std::string&string, const std::string&font, int size, const osgWidget::Color&color)
+osgWidget::Label* createLabel(const std::string &string, const std::string &font, int size, const osgWidget::Color &color)
 {
     osgWidget::Label *label = new osgWidget::Label("", "");
 
@@ -598,7 +598,7 @@ osgWidget::Label* createLabel(const std::string&string, const std::string&font, 
     return label;
 }
 
-osgWidget::Window* createButtonOk(const std::string&theme, const std::string&text, int fontSize)
+osgWidget::Window* createButtonOk(const std::string &theme, const std::string &text, int fontSize)
 {
     osg::ref_ptr<osgWidget::Frame> frame = osgWidget::Frame::createSimpleFrameFromTheme(
         "ButtonOK",
@@ -632,12 +632,12 @@ osgWidget::Window* createButtonOk(const std::string&theme, const std::string&tex
     return frame.release();
 }
 
-osgWidget::Frame* createErrorMessage(const std::string&themeMessage,
-                                     const std::string&themeButton,
-                                     const std::string&titleText,
-                                     const std::string&messageText,
-                                     const std::string&buttonText,
-                                     const std::string&font,
+osgWidget::Frame* createErrorMessage(const std::string &themeMessage,
+                                     const std::string &themeButton,
+                                     const std::string &titleText,
+                                     const std::string &messageText,
+                                     const std::string &buttonText,
+                                     const std::string &font,
                                      int fontSize)
 {
     osg::ref_ptr<osgWidget::Frame> frame = osgWidget::Frame::createSimpleFrameFromTheme(

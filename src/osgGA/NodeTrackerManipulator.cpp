@@ -29,7 +29,7 @@ NodeTrackerManipulator::NodeTrackerManipulator(int flags)
 }
 
 
-NodeTrackerManipulator::NodeTrackerManipulator(const NodeTrackerManipulator&m, const CopyOp&copyOp)
+NodeTrackerManipulator::NodeTrackerManipulator(const NodeTrackerManipulator &m, const CopyOp &copyOp)
     : osg::Callback(m, copyOp),
     inherited(m, copyOp),
     _trackNodePath(m._trackNodePath),
@@ -37,7 +37,7 @@ NodeTrackerManipulator::NodeTrackerManipulator(const NodeTrackerManipulator&m, c
 {}
 
 
-void NodeTrackerManipulator::setTrackNodePath(const osg::NodePath&nodePath)
+void NodeTrackerManipulator::setTrackNodePath(const osg::NodePath &nodePath)
 {
     _trackNodePath.setNodePath(nodePath);
 }
@@ -124,7 +124,7 @@ void NodeTrackerManipulator::computeHomePosition()
 
     if (node)
     {
-        const osg::BoundingSphere&boundingSphere = node->getBound();
+        const osg::BoundingSphere &boundingSphere = node->getBound();
 
         setHomePosition(boundingSphere._center + osg::Vec3d(0.0, -3.5f * boundingSphere._radius, 0.0f),
                         boundingSphere._center,
@@ -134,7 +134,7 @@ void NodeTrackerManipulator::computeHomePosition()
 }
 
 
-void NodeTrackerManipulator::setByMatrix(const osg::Matrixd&matrix)
+void NodeTrackerManipulator::setByMatrix(const osg::Matrixd &matrix)
 {
     osg::Vec3d eye, center, up;
 
@@ -142,7 +142,7 @@ void NodeTrackerManipulator::setByMatrix(const osg::Matrixd&matrix)
     computePosition(eye, center, up);
 }
 
-void NodeTrackerManipulator::computeNodeWorldToLocal(osg::Matrixd&worldToLocal) const
+void NodeTrackerManipulator::computeNodeWorldToLocal(osg::Matrixd &worldToLocal) const
 {
     osg::NodePath nodePath;
 
@@ -152,7 +152,7 @@ void NodeTrackerManipulator::computeNodeWorldToLocal(osg::Matrixd&worldToLocal) 
     }
 }
 
-void NodeTrackerManipulator::computeNodeLocalToWorld(osg::Matrixd&localToWorld) const
+void NodeTrackerManipulator::computeNodeLocalToWorld(osg::Matrixd &localToWorld) const
 {
     osg::NodePath nodePath;
 
@@ -162,7 +162,7 @@ void NodeTrackerManipulator::computeNodeLocalToWorld(osg::Matrixd&localToWorld) 
     }
 }
 
-void NodeTrackerManipulator::computeNodeCenterAndRotation(osg::Vec3d&nodeCenter, osg::Quat&nodeRotation) const
+void NodeTrackerManipulator::computeNodeCenterAndRotation(osg::Vec3d &nodeCenter, osg::Quat &nodeRotation) const
 {
     osg::Matrixd localToWorld, worldToLocal;
 
@@ -232,7 +232,7 @@ osg::Matrixd NodeTrackerManipulator::getInverseMatrix() const
     return osg::Matrixd::translate(-nodeCenter) * osg::Matrixd::rotate(nodeRotation.inverse()) * osg::Matrixd::rotate(_rotation.inverse()) * osg::Matrixd::translate(0.0, 0.0, -_distance);
 }
 
-void NodeTrackerManipulator::computePosition(const osg::Vec3d&eye, const osg::Vec3d&center, const osg::Vec3d&up)
+void NodeTrackerManipulator::computePosition(const osg::Vec3d &eye, const osg::Vec3d &center, const osg::Vec3d &up)
 {
     if (!_node)
         return;

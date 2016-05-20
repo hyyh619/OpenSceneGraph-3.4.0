@@ -159,7 +159,7 @@ ReadHelper *childRefCB;
 #define TRPGPRN_ALL    -1
 #define TRPGPRN_HEADER (1 << 0)
 #define TRPGPRN_BODY   (1 << 1)
-TX_CPPDECL bool trpgPrintArchive(char *filename, trpgPrintBuffer&pBuf, int flags = TRPGPRN_ALL);
-TX_CPPDECL bool trpgPrintArchive(trpgr_Archive*, trpgPrintBuffer&pBuf, int flags = TRPGPRN_ALL);
+TX_CPPDECL bool trpgPrintArchive(char *filename, trpgPrintBuffer &pBuf, int flags = TRPGPRN_ALL);
+TX_CPPDECL bool trpgPrintArchive(trpgr_Archive*, trpgPrintBuffer &pBuf, int flags = TRPGPRN_ALL);
 
 #endif

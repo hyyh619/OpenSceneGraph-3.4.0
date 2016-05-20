@@ -116,7 +116,7 @@ void Scene::setImagePager(osgDB::ImagePager *ip)
     _imagePager = ip;
 }
 
-void Scene::updateSceneGraph(osg::NodeVisitor&updateVisitor)
+void Scene::updateSceneGraph(osg::NodeVisitor &updateVisitor)
 {
     if (!_sceneData)
         return;

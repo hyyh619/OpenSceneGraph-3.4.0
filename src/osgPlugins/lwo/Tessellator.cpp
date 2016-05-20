@@ -41,7 +41,7 @@ void CALLBACK cb_error_data(GLenum error, void *data)
 }
 }
 
-bool Tessellator::tessellate(const Polygon&poly, const osg::Vec3Array *points, osg::DrawElementsUInt *out, const std::vector<int> *remap)
+bool Tessellator::tessellate(const Polygon &poly, const osg::Vec3Array *points, osg::DrawElementsUInt *out, const std::vector<int> *remap)
 {
     out_        = out;
     last_error_ = 0;
@@ -64,7 +64,7 @@ bool Tessellator::tessellate(const Polygon&poly, const osg::Vec3Array *points, o
 
     for (Polygon::Index_list::const_iterator i = poly.indices().begin(); i != poly.indices().end(); ++i, v += 3, ++x)
     {
-        const osg::Vec3&P = (*points)[*i];
+        const osg::Vec3 &P = (*points)[*i];
         v[0] = P.x();
         v[1] = P.y();
         v[2] = P.z();

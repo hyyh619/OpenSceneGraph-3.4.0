@@ -24,7 +24,7 @@ using namespace detail;
 
 
 
-tri_stripper::tri_stripper(const indices&TriIndices)
+tri_stripper::tri_stripper(const indices &TriIndices)
     : m_Triangles(TriIndices.size() / 3), // Silently ignore extra indices if (Indices.size() % 3 != 0)
     m_StripID(0),
     m_FirstRun(true)
@@ -288,14 +288,14 @@ void tri_stripper::BuildStrip(const strip Strip)
 
 
 
-inline tri_stripper::const_link_iterator tri_stripper::LinkToNeighbour(const const_tri_iterator Node, const bool ClockWise, triangle_order&Order, const bool NotSimulation)
+inline tri_stripper::const_link_iterator tri_stripper::LinkToNeighbour(const const_tri_iterator Node, const bool ClockWise, triangle_order &Order, const bool NotSimulation)
 {
     const triangle_edge Edge = LastEdge(**Node, Order);
 
     for (const_link_iterator Link = Node->out_begin(); Link != Node->out_end(); ++Link)
     {
         // Get the reference to the possible next triangle
-        const triangle&Tri = **Link->terminal();
+        const triangle &Tri = **Link->terminal();
 
         // Check whether it's already been used
         if (NotSimulation || (Tri.StripID() != m_StripID))
@@ -333,14 +333,14 @@ inline tri_stripper::const_link_iterator tri_stripper::LinkToNeighbour(const con
 
 
 
-inline tri_stripper::const_link_iterator tri_stripper::BackLinkToNeighbour(const_tri_iterator Node, bool ClockWise, triangle_order&Order)
+inline tri_stripper::const_link_iterator tri_stripper::BackLinkToNeighbour(const_tri_iterator Node, bool ClockWise, triangle_order &Order)
 {
     const triangle_edge Edge = FirstEdge(**Node, Order);
 
     for (const_link_iterator Link = Node->out_begin(); Link != Node->out_end(); ++Link)
     {
         // Get the reference to the possible previous triangle
-        const triangle&Tri = **Link->terminal();
+        const triangle &Tri = **Link->terminal();
 
         // Check whether it's already been used
         if ((Tri.StripID() != m_StripID) && !Link->terminal()->marked())
@@ -406,7 +406,7 @@ void tri_stripper::MarkTriAsTaken(const size_t i)
 
 
 
-inline triangle_edge tri_stripper::FirstEdge(const triangle&Triangle, const triangle_order Order)
+inline triangle_edge tri_stripper::FirstEdge(const triangle &Triangle, const triangle_order Order)
 {
     switch (Order)
     {
@@ -427,7 +427,7 @@ inline triangle_edge tri_stripper::FirstEdge(const triangle&Triangle, const tria
 
 
 
-inline triangle_edge tri_stripper::LastEdge(const triangle&Triangle, const triangle_order Order)
+inline triangle_edge tri_stripper::LastEdge(const triangle &Triangle, const triangle_order Order)
 {
     switch (Order)
     {
@@ -467,7 +467,7 @@ inline void tri_stripper::BackAddIndex(const index i)
 
 
 
-inline void tri_stripper::AddTriangle(const triangle&Tri, const triangle_order Order, const bool NotSimulation)
+inline void tri_stripper::AddTriangle(const triangle &Tri, const triangle_order Order, const bool NotSimulation)
 {
     switch (Order)
     {
@@ -493,7 +493,7 @@ inline void tri_stripper::AddTriangle(const triangle&Tri, const triangle_order O
 
 
 
-inline void tri_stripper::BackAddTriangle(const triangle&Tri, const triangle_order Order)
+inline void tri_stripper::BackAddTriangle(const triangle &Tri, const triangle_order Order)
 {
     switch (Order)
     {
@@ -526,7 +526,7 @@ void tri_stripper::AddLeftTriangles()
 
     Primitives.Type = TRIANGLES;
     m_PrimitivesVector.push_back(Primitives);
-    indices&Indices = m_PrimitivesVector.back().Indices;
+    indices &Indices = m_PrimitivesVector.back().Indices;
 
     for (size_t i = 0; i < m_Triangles.size(); ++i)
         if (!m_Triangles[i].marked())

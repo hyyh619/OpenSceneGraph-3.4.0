@@ -14,9 +14,9 @@ class OSGCanvas : public wxGLCanvas
 {
 public:
 OSGCanvas(wxWindow *parent, wxWindowID id = wxID_ANY,
-          const wxPoint&pos = wxDefaultPosition,
-          const wxSize&size = wxDefaultSize, long style = 0,
-          const wxString&name = wxT("TestGLCanvas"),
+          const wxPoint &pos = wxDefaultPosition,
+          const wxSize &size = wxDefaultSize, long style = 0,
+          const wxString &name = wxT("TestGLCanvas"),
           int *attributes = 0);
 
 virtual ~OSGCanvas();
@@ -26,18 +26,18 @@ void SetGraphicsWindow(osgViewer::GraphicsWindow *gw)
     _graphics_window = gw;
 }
 
-void OnPaint(wxPaintEvent&event);
-void OnSize(wxSizeEvent&event);
-void OnEraseBackground(wxEraseEvent&event);
+void OnPaint(wxPaintEvent &event);
+void OnSize(wxSizeEvent &event);
+void OnEraseBackground(wxEraseEvent &event);
 
-void OnChar(wxKeyEvent&event);
-void OnKeyUp(wxKeyEvent&event);
+void OnChar(wxKeyEvent &event);
+void OnKeyUp(wxKeyEvent &event);
 
-void OnMouseEnter(wxMouseEvent&event);
-void OnMouseDown(wxMouseEvent&event);
-void OnMouseUp(wxMouseEvent&event);
-void OnMouseMotion(wxMouseEvent&event);
-void OnMouseWheel(wxMouseEvent&event);
+void OnMouseEnter(wxMouseEvent &event);
+void OnMouseDown(wxMouseEvent &event);
+void OnMouseUp(wxMouseEvent &event);
+void OnMouseMotion(wxMouseEvent &event);
+void OnMouseWheel(wxMouseEvent &event);
 
 void UseCursor(bool value);
 
@@ -95,11 +95,11 @@ OSGCanvas *_canvas;
 class MainFrame : public wxFrame
 {
 public:
-MainFrame(wxFrame *frame, const wxString&title, const wxPoint&pos,
-          const wxSize&size, long style = wxDEFAULT_FRAME_STYLE);
+MainFrame(wxFrame *frame, const wxString &title, const wxPoint &pos,
+          const wxSize &size, long style = wxDEFAULT_FRAME_STYLE);
 
 void SetViewer(osgViewer::Viewer *viewer);
-void OnIdle(wxIdleEvent&event);
+void OnIdle(wxIdleEvent &event);
 
 private:
 osg::ref_ptr<osgViewer::Viewer> _viewer;

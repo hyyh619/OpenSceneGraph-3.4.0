@@ -6,12 +6,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkKeyManipMap(const osgGA::KeySwitchMatrixManipulator&kwmm)
+static bool checkKeyManipMap(const osgGA::KeySwitchMatrixManipulator &kwmm)
 {
     return !kwmm.getKeyManipMap().empty();
 }
 
-static bool readKeyManipMap(osgDB::InputStream&is, osgGA::KeySwitchMatrixManipulator&kwmm)
+static bool readKeyManipMap(osgDB::InputStream &is, osgGA::KeySwitchMatrixManipulator &kwmm)
 {
     int          activeCameraManipulatorIndex = -1; is >> activeCameraManipulatorIndex;
     unsigned int size                         = 0; is >> size >> is.BEGIN_BRACKET;
@@ -33,10 +33,10 @@ static bool readKeyManipMap(osgDB::InputStream&is, osgGA::KeySwitchMatrixManipul
     return true;
 }
 
-static bool writeKeyManipMap(osgDB::OutputStream&os, const osgGA::KeySwitchMatrixManipulator&kwmm)
+static bool writeKeyManipMap(osgDB::OutputStream &os, const osgGA::KeySwitchMatrixManipulator &kwmm)
 {
-    const osgGA::KeySwitchMatrixManipulator::KeyManipMap&kmm = kwmm.getKeyManipMap();
-    unsigned int                                        size = kmm.size();
+    const osgGA::KeySwitchMatrixManipulator::KeyManipMap &kmm = kwmm.getKeyManipMap();
+    unsigned int                                         size = kmm.size();
 
     // find out what num the acive camera manipulator is
     const osgGA::CameraManipulator *cm                          = kwmm.getCurrentMatrixManipulator();

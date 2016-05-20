@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _programLocalParameters
-static bool checkLocalParameters(const osg::VertexProgram&vp)
+static bool checkLocalParameters(const osg::VertexProgram &vp)
 {
     return vp.getLocalParameters().size() > 0;
 }
 
-static bool readLocalParameters(osgDB::InputStream&is, osg::VertexProgram&vp)
+static bool readLocalParameters(osgDB::InputStream &is, osg::VertexProgram &vp)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -24,9 +24,9 @@ static bool readLocalParameters(osgDB::InputStream&is, osg::VertexProgram&vp)
     return true;
 }
 
-static bool writeLocalParameters(osgDB::OutputStream&os, const osg::VertexProgram&vp)
+static bool writeLocalParameters(osgDB::OutputStream &os, const osg::VertexProgram &vp)
 {
-    const osg::VertexProgram::LocalParamList&params = vp.getLocalParameters();
+    const osg::VertexProgram::LocalParamList &params = vp.getLocalParameters();
 
     os.writeSize(params.size()); os << os.BEGIN_BRACKET << std::endl;
 
@@ -41,12 +41,12 @@ static bool writeLocalParameters(osgDB::OutputStream&os, const osg::VertexProgra
 }
 
 // _matrixList
-static bool checkMatrices(const osg::VertexProgram&vp)
+static bool checkMatrices(const osg::VertexProgram &vp)
 {
     return vp.getMatrices().size() > 0;
 }
 
-static bool readMatrices(osgDB::InputStream&is, osg::VertexProgram&vp)
+static bool readMatrices(osgDB::InputStream &is, osg::VertexProgram &vp)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -61,9 +61,9 @@ static bool readMatrices(osgDB::InputStream&is, osg::VertexProgram&vp)
     return true;
 }
 
-static bool writeMatrices(osgDB::OutputStream&os, const osg::VertexProgram&vp)
+static bool writeMatrices(osgDB::OutputStream &os, const osg::VertexProgram &vp)
 {
-    const osg::VertexProgram::MatrixList&matrices = vp.getMatrices();
+    const osg::VertexProgram::MatrixList &matrices = vp.getMatrices();
 
     os.writeSize(matrices.size()); os << os.BEGIN_BRACKET << std::endl;
 

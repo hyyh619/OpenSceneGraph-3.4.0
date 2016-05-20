@@ -66,44 +66,44 @@ public:
 FltExportVisitor(DataOutputStream *dos, ExportOptions *fltOpt);
 ~FltExportVisitor();
 
-bool complete(const osg::Node&node);
+bool complete(const osg::Node &node);
 
-virtual void apply(osg::Group&node);
-virtual void apply(osg::Sequence&node);
-virtual void apply(osg::Switch&node);
-virtual void apply(osg::LOD&node);
-virtual void apply(osg::MatrixTransform&node);
-virtual void apply(osg::PositionAttitudeTransform&node);
-virtual void apply(osg::Transform&node);
-virtual void apply(osg::LightSource&node);
-virtual void apply(osg::Geode&node);
-virtual void apply(osg::Node&node);
-virtual void apply(osg::ProxyNode&node);
+virtual void apply(osg::Group &node);
+virtual void apply(osg::Sequence &node);
+virtual void apply(osg::Switch &node);
+virtual void apply(osg::LOD &node);
+virtual void apply(osg::MatrixTransform &node);
+virtual void apply(osg::PositionAttitudeTransform &node);
+virtual void apply(osg::Transform &node);
+virtual void apply(osg::LightSource &node);
+virtual void apply(osg::Geode &node);
+virtual void apply(osg::Node &node);
+virtual void apply(osg::ProxyNode &node);
 
 
 
 // Primary records
-void writeHeader(const std::string&headerName);
-void writeGroup(const osg::Group&node);
-void writeGroup(const osg::Group&group,
+void writeHeader(const std::string &headerName);
+void writeGroup(const osg::Group &node);
+void writeGroup(const osg::Group &group,
                 int32 flags,
                 int32 loopCount,
                 float32 loopDuration,
                 float32 lastFrameDuration);
-void writeSequence(const osg::Sequence&node);
-void writeObject(const osg::Group&node, osgSim::ObjectRecordData *ord);
+void writeSequence(const osg::Sequence &node);
+void writeObject(const osg::Group &node, osgSim::ObjectRecordData *ord);
 void writeDegreeOfFreedom(const osgSim::DOFTransform *dof);
-void writeExternalReference(const osg::ProxyNode&node);
-void writeLevelOfDetail(const osg::LOD&lod, const osg::Vec3d&center,
+void writeExternalReference(const osg::ProxyNode &node);
+void writeLevelOfDetail(const osg::LOD &lod, const osg::Vec3d &center,
                         double switchInDist, double switchOutDist);
-void writeLightSource(const osg::LightSource&ls);
+void writeLightSource(const osg::LightSource &ls);
 void writeSwitch(const osgSim::MultiSwitch *ms);
 void writeSwitch(const osg::Switch *ms);
 void writeLightPoint(const osgSim::LightPointNode *lpn);
 
 // Ancillary records
-void writeComment(const osg::Node&node, DataOutputStream *dos = NULL);
-void writeLongID(const std::string&id, DataOutputStream *dos = NULL);
+void writeComment(const osg::Node &node, DataOutputStream *dos = NULL);
+void writeLongID(const std::string &id, DataOutputStream *dos = NULL);
 void writeMatrix(const osg::Referenced *ref);
 void writeContinuationRecord(const unsigned short length);
 
@@ -114,14 +114,14 @@ void writePushSubface();
 void writePopSubface();
 
 // Helper routine for traversing a pushed subtree
-void writePushTraverseWritePop(osg::Node&node)
+void writePushTraverseWritePop(osg::Node &node)
 {
     writePush();
     traverse(node);
     writePop();
 }
 
-void writePushTraverseChildWritePop(osg::Node&node)
+void writePushTraverseChildWritePop(osg::Node &node)
 {
     writePush();
     node.accept(*this);
@@ -129,15 +129,15 @@ void writePushTraverseChildWritePop(osg::Node&node)
 }
 
 // Geometry records
-void writeFace(const osg::Geode&geode, const osg::Geometry&geom, GLenum mode);
-void writeMesh(const osg::Geode&geode, const osg::Geometry&geom);
+void writeFace(const osg::Geode &geode, const osg::Geometry &geom, GLenum mode);
+void writeMesh(const osg::Geode &geode, const osg::Geometry &geom);
 int writeVertexList(int first, unsigned int count);
-int writeVertexList(const std::vector<unsigned int>&indices, unsigned int count);
-void writeMeshPrimitive(const std::vector<unsigned int>&indices, GLenum mode);
-void writeLocalVertexPool(const osg::Geometry&geom);
-void writeMultitexture(const osg::Geometry&geom);
-void writeUVList(int numVerts, const osg::Geometry&geom, const std::vector<unsigned int>&indices);
-void writeUVList(int numVerts, const osg::Geometry&geom, unsigned int first = 0);
+int writeVertexList(const std::vector<unsigned int> &indices, unsigned int count);
+void writeMeshPrimitive(const std::vector<unsigned int> &indices, GLenum mode);
+void writeLocalVertexPool(const osg::Geometry &geom);
+void writeMultitexture(const osg::Geometry &geom);
+void writeUVList(int numVerts, const osg::Geometry &geom, const std::vector<unsigned int> &indices);
+void writeUVList(int numVerts, const osg::Geometry &geom, unsigned int first = 0);
 
 // Light Point records
 void writeLightPoint();
@@ -159,20 +159,20 @@ void writeATTRFile(int unit, const osg::Texture2D *texture) const;
 private:
 // Methods for handling different primitive set types.
 //   These are defined in expGeometryRecords.cpp.
-void handleDrawArrays(const osg::DrawArrays *da, const osg::Geometry&geom, const osg::Geode&geode);
-void handleDrawArrayLengths(const osg::DrawArrayLengths *dal, const osg::Geometry&geom, const osg::Geode&geode);
-void handleDrawElements(const osg::DrawElements *de, const osg::Geometry&geom, const osg::Geode&geode);
+void handleDrawArrays(const osg::DrawArrays *da, const osg::Geometry &geom, const osg::Geode &geode);
+void handleDrawArrayLengths(const osg::DrawArrayLengths *dal, const osg::Geometry &geom, const osg::Geode &geode);
+void handleDrawElements(const osg::DrawElements *de, const osg::Geometry &geom, const osg::Geode &geode);
 
-bool isLit(const osg::Geometry&geom) const;
-bool isTextured(int unit, const osg::Geometry&geom) const;
+bool isLit(const osg::Geometry &geom) const;
+bool isTextured(int unit, const osg::Geometry &geom) const;
 bool isMesh(const GLenum mode) const;
-bool atLeastOneFace(const osg::Geometry&geom) const;
-bool atLeastOneMesh(const osg::Geometry&geom) const;
+bool atLeastOneFace(const osg::Geometry &geom) const;
+bool atLeastOneMesh(const osg::Geometry &geom) const;
 
 osg::ref_ptr<ExportOptions> _fltOpt;
 
 // _dos is the primary output stream, produces the actual .flt file.
-DataOutputStream&_dos;
+DataOutputStream &_dos;
 
 // _records is a temp file for most records. After the Header and palette
 // records are written to _dos, _records is copied onto _dos.
@@ -219,7 +219,7 @@ FltExportVisitor *fnv_;
  */
 struct IdHelper
 {
-    IdHelper(flt::FltExportVisitor&v, const std::string&id)
+    IdHelper(flt::FltExportVisitor &v, const std::string &id)
         : v_(v), id_(id), dos_(NULL)
     { }
 
@@ -236,9 +236,9 @@ struct IdHelper
         return((id_.length() > 8) ? id_.substr(0, 8) : id_);
     }
 
-    flt::FltExportVisitor&v_;
-    const std::string    id_;
-    DataOutputStream     *dos_;
+    flt::FltExportVisitor &v_;
+    const std::string     id_;
+    DataOutputStream      *dos_;
 
 protected:
 
@@ -254,7 +254,7 @@ protected:
  */
 struct SubfaceHelper
 {
-    SubfaceHelper(flt::FltExportVisitor&v, const osg::StateSet *ss)
+    SubfaceHelper(flt::FltExportVisitor &v, const osg::StateSet *ss)
         : v_(v)
     {
         _polygonOffsetOn = (ss->getMode(GL_POLYGON_OFFSET_FILL) == osg::StateAttribute::ON);
@@ -268,8 +268,8 @@ struct SubfaceHelper
             v_.writePopSubface();
     }
 
-    flt::FltExportVisitor&v_;
-    bool                 _polygonOffsetOn;
+    flt::FltExportVisitor &v_;
+    bool                  _polygonOffsetOn;
 
 protected:
 

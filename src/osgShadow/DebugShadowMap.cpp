@@ -102,7 +102,7 @@ DebugShadowMap::DebugShadowMap() :
 }
 
 DebugShadowMap::DebugShadowMap
-    (const DebugShadowMap&copy, const osg::CopyOp&copyop) :
+    (const DebugShadowMap &copy, const osg::CopyOp &copyop) :
     BaseClass(copy, copyop),
     _hudSize(copy._hudSize),
     _hudOrigin(copy._hudOrigin),
@@ -132,7 +132,7 @@ void DebugShadowMap::ViewData::cull(void)
 }
 
 bool DebugShadowMap::ViewData::DebugBoundingBox
-    (const osg::BoundingBox&bb, const char *name)
+    (const osg::BoundingBox &bb, const char *name)
 {
     bool result = false;
 
@@ -140,7 +140,7 @@ bool DebugShadowMap::ViewData::DebugBoundingBox
     if (!name)
         name = "";
 
-    osg::BoundingBox&bb_prev = _boundingBoxMap[std::string(name)];
+    osg::BoundingBox &bb_prev = _boundingBoxMap[std::string(name)];
 
     result = bb.center() != bb_prev.center() || bb.radius() != bb_prev.radius();
     if (result)
@@ -159,7 +159,7 @@ bool DebugShadowMap::ViewData::DebugBoundingBox
 }
 
 bool DebugShadowMap::ViewData::DebugPolytope
-    (const osg::Polytope&p, const char *name)
+    (const osg::Polytope &p, const char *name)
 {
     bool result = false;
 
@@ -167,7 +167,7 @@ bool DebugShadowMap::ViewData::DebugPolytope
     if (!name)
         name = "";
 
-    osg::Polytope&p_prev = _polytopeMap[std::string(name)];
+    osg::Polytope &p_prev = _polytopeMap[std::string(name)];
 
     result = (p.getPlaneList() != p_prev.getPlaneList());
 
@@ -201,7 +201,7 @@ bool DebugShadowMap::ViewData::DebugPolytope
 }
 
 bool DebugShadowMap::ViewData::DebugMatrix
-    (const osg::Matrix&m, const char *name)
+    (const osg::Matrix &m, const char *name)
 {
     bool result = false;
 
@@ -209,7 +209,7 @@ bool DebugShadowMap::ViewData::DebugMatrix
     if (!name)
         name = "";
 
-    osg::Matrix&m_prev = _matrixMap[std::string(name)];
+    osg::Matrix &m_prev = _matrixMap[std::string(name)];
 
     result = (m != m_prev);
 
@@ -226,7 +226,7 @@ bool DebugShadowMap::ViewData::DebugMatrix
 }
 
 void DebugShadowMap::ViewData::setDebugPolytope
-    (const char *name, const ConvexPolyhedron&polytope,
+    (const char *name, const ConvexPolyhedron &polytope,
     osg::Vec4 colorOutline, osg::Vec4 colorInside)
 {
     if (!getDebugDraw())
@@ -235,7 +235,7 @@ void DebugShadowMap::ViewData::setDebugPolytope
     const ConvexPolyhedron *polytope_ptr = &polytope;
     if (polytope_ptr == NULL)    // delete
     {
-        PolytopeGeometry&pg = _polytopeGeometryMap[std::string(name)];
+        PolytopeGeometry &pg = _polytopeGeometryMap[std::string(name)];
 
         for (unsigned int i = 0; i < VECTOR_LENGTH(pg._geometry); i++)
         {
@@ -253,7 +253,7 @@ void DebugShadowMap::ViewData::setDebugPolytope
     }
     else     // update
     {
-        PolytopeGeometry&pg = _polytopeGeometryMap[std::string(name)];
+        PolytopeGeometry &pg = _polytopeGeometryMap[std::string(name)];
 
         pg._polytope = polytope;
         if (colorOutline.a() > 0)
@@ -337,7 +337,7 @@ void DebugShadowMap::ViewData::updateDebugGeometry
          itr != _polytopeGeometryMap.end();
          ++itr)
     {
-        PolytopeGeometry&pg = itr->second;
+        PolytopeGeometry &pg = itr->second;
 
         for (int i = 0; i < num; i++)
         {
@@ -396,7 +396,7 @@ void DebugShadowMap::ViewData::cullDebugGeometry()
          itr != _polytopeGeometryMap.end();
          ++itr)
     {
-        PolytopeGeometry&pg = itr->second;
+        PolytopeGeometry &pg = itr->second;
         _cv->pushStateSet(_geode[0]->getStateSet());
         _cv->addDrawableAndDepth(pg._geometry[0].get(), NULL, FLT_MAX);
         _cv->popStateSet();
@@ -463,7 +463,7 @@ DrawableDrawWithDepthShadowComparisonOffCallback(osg::Texture *pTex)
 {}
 
 virtual void drawImplementation
-    (osg::RenderInfo&ri, const osg::Drawable *drawable) const
+    (osg::RenderInfo &ri, const osg::Drawable *drawable) const
 {
     ri.getState()->applyTextureAttribute(0, _pTexture.get());
 
@@ -480,7 +480,7 @@ virtual void drawImplementation
 osg::ref_ptr<osg::Texture> _pTexture;
 };
 
-void DebugShadowMap::ViewData::dump(const std::string&filename)
+void DebugShadowMap::ViewData::dump(const std::string &filename)
 {
     osg::ref_ptr<osg::Group> root = new osg::Group;
     osgUtil::CullVisitor     *cv  = _cv.get();
@@ -505,8 +505,8 @@ void DebugShadowMap::ViewData::dump(const std::string&filename)
          itr != _polytopeGeometryMap.end();
          ++itr)
     {
-        PolytopeGeometry&pg = itr->second;
-        int             i   = 0;
+        PolytopeGeometry &pg = itr->second;
+        int              i   = 0;
         {
             ConvexPolyhedron cp(pg._polytope);
 
@@ -627,10 +627,10 @@ void DebugShadowMap::ViewData::createDebugHUD()
 }
 
 osg::Vec3d DebugShadowMap::ViewData::computeShadowTexelToPixelError
-    (const osg::Matrix&mvpwView,
-    const osg::Matrix&mvpwShadow,
-    const osg::Vec3d&vWorld,
-    const osg::Vec3d&vDelta)
+    (const osg::Matrix &mvpwView,
+    const osg::Matrix &mvpwShadow,
+    const osg::Vec3d &vWorld,
+    const osg::Vec3d &vDelta)
 {
     osg::Vec3d vS0 = mvpwShadow * vWorld;
     osg::Vec3d vS1 = mvpwShadow * (vWorld + vDelta);

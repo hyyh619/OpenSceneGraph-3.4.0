@@ -51,7 +51,7 @@ virtual const char* className() const
     return "ReaderWriterGStreamer";
 }
 
-virtual ReadResult readImage(const std::string&filename, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &filename, const osgDB::ReaderWriter::Options *options) const
 {
     const std::string ext = osgDB::getLowerCaseFileExtension(filename);
 

@@ -20,7 +20,7 @@ CameraView::CameraView() :
     _focalLength(0.0)
 {}
 
-bool CameraView::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
+bool CameraView::computeLocalToWorldMatrix(Matrix &matrix, NodeVisitor*) const
 {
     if (_referenceFrame == RELATIVE_RF)
     {
@@ -37,7 +37,7 @@ bool CameraView::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
 }
 
 
-bool CameraView::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
+bool CameraView::computeWorldToLocalMatrix(Matrix &matrix, NodeVisitor*) const
 {
     if (_referenceFrame == RELATIVE_RF)
     {

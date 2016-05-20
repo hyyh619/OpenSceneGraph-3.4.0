@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef _OPENTHREAD_EXPORTS_H_
 #define _OPENTHREAD_EXPORTS_H_
@@ -19,9 +19,9 @@
 #ifndef WIN32
     #define OPENTHREAD_EXPORT_DIRECTIVE
 #else
-    #if defined( OT_LIBRARY_STATIC )
+    #if defined(OT_LIBRARY_STATIC)
         #define OPENTHREAD_EXPORT_DIRECTIVE
-    #elif defined( OPENTHREADS_EXPORTS )
+    #elif defined(OPENTHREADS_EXPORTS)
         #define OPENTHREAD_EXPORT_DIRECTIVE __declspec(dllexport)
     #else
         #define OPENTHREAD_EXPORT_DIRECTIVE __declspec(dllimport)
@@ -29,5 +29,3 @@
 #endif
 
 #endif
-
-

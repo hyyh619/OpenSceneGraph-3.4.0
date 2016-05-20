@@ -36,7 +36,7 @@ public:
 AddVolumeEditingCallbackVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-void apply(osg::Group&group)
+void apply(osg::Group &group)
 {
     osgVolume::VolumeTile *volumeTile = dynamic_cast<osgVolume::VolumeTile*>(&group);
 
@@ -54,7 +54,7 @@ void apply(osg::Group&group)
 }
 };
 
-bool p3d::getFileNames(osg::ArgumentParser&arguments, FileNameList&xmlFiles, FileNameList&normalFiles)
+bool p3d::getFileNames(osg::ArgumentParser &arguments, FileNameList &xmlFiles, FileNameList &normalFiles)
 {
     // note currently doesn't delete the loaded file entries from the command line yet...
     for (int pos = 1; pos < arguments.argc(); ++pos)
@@ -76,7 +76,7 @@ bool p3d::getFileNames(osg::ArgumentParser&arguments, FileNameList&xmlFiles, Fil
     return (!xmlFiles.empty() || !normalFiles.empty());
 }
 
-bool p3d::readEnvVars(osg::ArgumentParser&arguments)
+bool p3d::readEnvVars(osg::ArgumentParser &arguments)
 {
     bool readVars = false;
 
@@ -106,7 +106,7 @@ bool p3d::readEnvVars(osg::ArgumentParser&arguments)
     return readVars;
 }
 
-bool p3d::readEnvVars(const std::string&fileName)
+bool p3d::readEnvVars(const std::string &fileName)
 {
     std::string ext = osgDB::getFileExtension(fileName);
 
@@ -185,7 +185,7 @@ osgDB::Options* createOptions(const osgDB::ReaderWriter::Options *options)
     return local_options.release();
 }
 
-osg::ref_ptr<osg::Node> p3d::readHoldingSlide(const std::string&filename)
+osg::ref_ptr<osg::Node> p3d::readHoldingSlide(const std::string &filename)
 {
     std::string ext = osgDB::getFileExtension(filename);
 
@@ -200,7 +200,7 @@ osg::ref_ptr<osg::Node> p3d::readHoldingSlide(const std::string&filename)
     return osgDB::readRefNodeFile(filename, options.get());
 }
 
-osg::ref_ptr<osg::Node> p3d::readPresentation(const std::string&filename, const osgDB::ReaderWriter::Options *options)
+osg::ref_ptr<osg::Node> p3d::readPresentation(const std::string &filename, const osgDB::ReaderWriter::Options *options)
 {
     std::string ext = osgDB::getFileExtension(filename);
 
@@ -214,7 +214,7 @@ osg::ref_ptr<osg::Node> p3d::readPresentation(const std::string&filename, const 
     return osgDB::readRefNodeFile(filename, local_options.get());
 }
 
-osg::ref_ptr<osg::Node> p3d::readShowFiles(osg::ArgumentParser&arguments, const osgDB::ReaderWriter::Options *options)
+osg::ref_ptr<osg::Node> p3d::readShowFiles(osg::ArgumentParser &arguments, const osgDB::ReaderWriter::Options *options)
 {
     osg::ref_ptr<osgDB::Options> local_options = createOptions(options);
 

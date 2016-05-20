@@ -32,7 +32,7 @@ Record::Record()
 Record::~Record()
 {}
 
-void Record::read(RecordInputStream&in, Document&document)
+void Record::read(RecordInputStream &in, Document &document)
 {
     _parent = document.getCurrentPrimaryRecord();
 
@@ -47,7 +47,7 @@ PrimaryRecord::PrimaryRecord() :
     _numberOfReplications(0)
 {}
 
-void PrimaryRecord::read(RecordInputStream&in, Document&document)
+void PrimaryRecord::read(RecordInputStream &in, Document &document)
 {
     PrimaryRecord *parentPrimary  = document.getTopOfLevelStack();
     PrimaryRecord *currentPrimary = document.getCurrentPrimaryRecord();
@@ -75,7 +75,7 @@ void PrimaryRecord::read(RecordInputStream&in, Document&document)
 // node: node to apply transform
 // matrix: transformation matrix
 // numberOfReplications: zero for regular transform, number of copies if replication is used.
-void flt::insertMatrixTransform(osg::Node&node, const osg::Matrix&matrix, int numberOfReplications)
+void flt::insertMatrixTransform(osg::Node &node, const osg::Matrix &matrix, int numberOfReplications)
 {
     osg::ref_ptr<osg::Node> ref     = &node;
     osg::Node::ParentList   parents = node.getParents();
@@ -117,7 +117,7 @@ void flt::insertMatrixTransform(osg::Node&node, const osg::Matrix&matrix, int nu
 ///////////////////////////////////////////////////////////////////////////////////
 
 
-osg::Vec3Array* flt::getOrCreateVertexArray(osg::Geometry&geometry)
+osg::Vec3Array* flt::getOrCreateVertexArray(osg::Geometry &geometry)
 {
     osg::Vec3Array *vertices = dynamic_cast<osg::Vec3Array*>(geometry.getVertexArray());
 
@@ -130,7 +130,7 @@ osg::Vec3Array* flt::getOrCreateVertexArray(osg::Geometry&geometry)
     return vertices;
 }
 
-osg::Vec3Array* flt::getOrCreateNormalArray(osg::Geometry&geometry)
+osg::Vec3Array* flt::getOrCreateNormalArray(osg::Geometry &geometry)
 {
     osg::Vec3Array *normals = dynamic_cast<osg::Vec3Array*>(geometry.getNormalArray());
 
@@ -143,7 +143,7 @@ osg::Vec3Array* flt::getOrCreateNormalArray(osg::Geometry&geometry)
     return normals;
 }
 
-osg::Vec4Array* flt::getOrCreateColorArray(osg::Geometry&geometry)
+osg::Vec4Array* flt::getOrCreateColorArray(osg::Geometry &geometry)
 {
     osg::Vec4Array *colors = dynamic_cast<osg::Vec4Array*>(geometry.getColorArray());
 
@@ -157,7 +157,7 @@ osg::Vec4Array* flt::getOrCreateColorArray(osg::Geometry&geometry)
 }
 
 
-osg::Vec2Array* flt::getOrCreateTextureArray(osg::Geometry&geometry, int unit)
+osg::Vec2Array* flt::getOrCreateTextureArray(osg::Geometry &geometry, int unit)
 {
     osg::Vec2Array *UVs = dynamic_cast<osg::Vec2Array*>(geometry.getTexCoordArray(unit));
 

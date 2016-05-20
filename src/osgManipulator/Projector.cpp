@@ -23,8 +23,8 @@ using namespace osgManipulator;
 
 namespace
 {
-bool computeClosestPoints(const osg::LineSegment&l1, const osg::LineSegment&l2,
-                          osg::Vec3d&p1, osg::Vec3d&p2)
+bool computeClosestPoints(const osg::LineSegment &l1, const osg::LineSegment &l2,
+                          osg::Vec3d &p1, osg::Vec3d &p2)
 {
     // Computes the closest points (p1 and p2 on line l1 and l2 respectively) between the two lines
     // An explanation of the algorithm can be found at
@@ -56,8 +56,8 @@ bool computeClosestPoints(const osg::LineSegment&l1, const osg::LineSegment&l2,
     return true;
 }
 
-bool computeClosestPointOnLine(const osg::Vec3d&lineStart, const osg::Vec3d&lineEnd,
-                               const osg::Vec3d&fromPoint, osg::Vec3d&closestPoint)
+bool computeClosestPointOnLine(const osg::Vec3d &lineStart, const osg::Vec3d &lineEnd,
+                               const osg::Vec3d &fromPoint, osg::Vec3d &closestPoint)
 {
     osg::Vec3d v = lineEnd - lineStart;
     osg::Vec3d w = fromPoint - lineStart;
@@ -76,9 +76,9 @@ bool computeClosestPointOnLine(const osg::Vec3d&lineStart, const osg::Vec3d&line
     return true;
 }
 
-bool getPlaneLineIntersection(const osg::Vec4d&plane,
-                              const osg::Vec3d&lineStart, const osg::Vec3d&lineEnd,
-                              osg::Vec3d&isect)
+bool getPlaneLineIntersection(const osg::Vec4d &plane,
+                              const osg::Vec3d &lineStart, const osg::Vec3d &lineEnd,
+                              osg::Vec3d &isect)
 {
     const double deltaX = lineEnd.x() - lineStart.x();
     const double deltaY = lineEnd.y() - lineStart.y();
@@ -98,9 +98,9 @@ bool getPlaneLineIntersection(const osg::Vec4d&plane,
     return true;
 }
 
-bool getSphereLineIntersection(const osg::Sphere&sphere,
-                               const osg::Vec3d&lineStart, const osg::Vec3d&lineEnd,
-                               osg::Vec3d&frontISect, osg::Vec3d&backISect)
+bool getSphereLineIntersection(const osg::Sphere &sphere,
+                               const osg::Vec3d &lineStart, const osg::Vec3d &lineEnd,
+                               osg::Vec3d &frontISect, osg::Vec3d &backISect)
 {
     osg::Vec3d lineDirection = lineEnd - lineStart;
 
@@ -125,8 +125,8 @@ bool getSphereLineIntersection(const osg::Sphere&sphere,
     return true;
 }
 
-bool getUnitCylinderLineIntersection(const osg::Vec3d&lineStart, const osg::Vec3d&lineEnd,
-                                     osg::Vec3d&isectFront, osg::Vec3d&isectBack)
+bool getUnitCylinderLineIntersection(const osg::Vec3d &lineStart, const osg::Vec3d &lineEnd,
+                                     osg::Vec3d &isectFront, osg::Vec3d &isectBack)
 {
     osg::Vec3d dir = lineEnd - lineStart;
 
@@ -158,9 +158,9 @@ bool getUnitCylinderLineIntersection(const osg::Vec3d&lineStart, const osg::Vec3
     return true;
 }
 
-bool getCylinderLineIntersection(const osg::Cylinder&cylinder,
-                                 const osg::Vec3d&lineStart, const osg::Vec3d&lineEnd,
-                                 osg::Vec3d&isectFront, osg::Vec3d&isectBack)
+bool getCylinderLineIntersection(const osg::Cylinder &cylinder,
+                                 const osg::Vec3d &lineStart, const osg::Vec3d &lineEnd,
+                                 osg::Vec3d &isectFront, osg::Vec3d &isectBack)
 {
     // Compute matrix transformation that takes the cylinder to a unit cylinder with Z-axis as it's axis and
     // (0,0,0) as it's center.
@@ -187,7 +187,7 @@ bool getCylinderLineIntersection(const osg::Cylinder&cylinder,
     return true;
 }
 
-osg::Vec3d getLocalEyeDirection(const osg::Vec3d&eyeDir, const osg::Matrix&localToWorld)
+osg::Vec3d getLocalEyeDirection(const osg::Vec3d &eyeDir, const osg::Matrix &localToWorld)
 {
     // To take a normal from world to local you need to transform it by the transpose of the inverse of the
     // world to local matrix. Pre-multiplying is equivalent to doing a post-multiplication of the transpose.
@@ -197,8 +197,8 @@ osg::Vec3d getLocalEyeDirection(const osg::Vec3d&eyeDir, const osg::Matrix&local
     return localEyeDir;
 }
 
-osg::Plane computePlaneThruPointAndOrientedToEye(const osg::Vec3d&eyeDir, const osg::Matrix&localToWorld,
-                                                 const osg::Vec3d&point, bool front)
+osg::Plane computePlaneThruPointAndOrientedToEye(const osg::Vec3d &eyeDir, const osg::Matrix &localToWorld,
+                                                 const osg::Vec3d &point, bool front)
 {
     osg::Vec3d planeNormal = getLocalEyeDirection(eyeDir, localToWorld);
 
@@ -213,10 +213,10 @@ osg::Plane computePlaneThruPointAndOrientedToEye(const osg::Vec3d&eyeDir, const 
 // Computes a plane to be used as a basis for determining a displacement.  When eyeDir is close
 // to the cylinder axis, then the plane will be set to be perpendicular to the cylinder axis.
 // Otherwise it will be set to be parallel to the cylinder axis and oriented towards eyeDir.
-osg::Plane computeIntersectionPlane(const osg::Vec3d&eyeDir, const osg::Matrix&localToWorld,
-                                    const osg::Vec3d&axisDir, const osg::Cylinder&cylinder,
-                                    osg::Vec3d&planeLineStart, osg::Vec3d&planeLineEnd,
-                                    bool&parallelPlane, bool front)
+osg::Plane computeIntersectionPlane(const osg::Vec3d &eyeDir, const osg::Matrix &localToWorld,
+                                    const osg::Vec3d &axisDir, const osg::Cylinder &cylinder,
+                                    osg::Vec3d &planeLineStart, osg::Vec3d &planeLineEnd,
+                                    bool &parallelPlane, bool front)
 {
     osg::Plane plane;
 
@@ -262,7 +262,7 @@ LineProjector::LineProjector()
     _line = new osg::LineSegment(osg::LineSegment::vec_type(0.0, 0.0, 0.0), osg::LineSegment::vec_type(1.0, 0.0, 0.0));
 }
 
-LineProjector::LineProjector(const osg::LineSegment::vec_type&s, const osg::LineSegment::vec_type&e)
+LineProjector::LineProjector(const osg::LineSegment::vec_type &s, const osg::LineSegment::vec_type &e)
 {
     _line = new osg::LineSegment(s, e);
 }
@@ -270,7 +270,7 @@ LineProjector::LineProjector(const osg::LineSegment::vec_type&s, const osg::Line
 LineProjector::~LineProjector()
 {}
 
-bool LineProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint) const
+bool LineProjector::project(const PointerInfo &pi, osg::Vec3d &projectedPoint) const
 {
     if (!_line->valid())
     {
@@ -301,7 +301,7 @@ bool LineProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint) con
 PlaneProjector::PlaneProjector()
 {}
 
-PlaneProjector::PlaneProjector(const osg::Plane&plane)
+PlaneProjector::PlaneProjector(const osg::Plane &plane)
 {
     _plane = plane;
 }
@@ -310,7 +310,7 @@ PlaneProjector::PlaneProjector(const osg::Plane&plane)
 PlaneProjector::~PlaneProjector()
 {}
 
-bool PlaneProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint) const
+bool PlaneProjector::project(const PointerInfo &pi, osg::Vec3d &projectedPoint) const
 {
     if (!_plane.valid())
     {
@@ -342,7 +342,7 @@ SphereProjector::SphereProjector(osg::Sphere *sphere) : _sphere(sphere), _front(
 SphereProjector::~SphereProjector()
 {}
 
-bool SphereProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint) const
+bool SphereProjector::project(const PointerInfo &pi, osg::Vec3d &projectedPoint) const
 {
     if (!_sphere->valid())
     {
@@ -367,7 +367,7 @@ bool SphereProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint) c
     return getSphereLineIntersection(*_sphere, objectNearPoint, objectFarPoint, dontCare, projectedPoint);
 }
 
-bool SphereProjector::isPointInFront(const PointerInfo&pi, const osg::Matrix&localToWorld) const
+bool SphereProjector::isPointInFront(const PointerInfo &pi, const osg::Matrix &localToWorld) const
 {
     osg::Vec3d centerToPoint = getSphere()->getCenter() - pi.getLocalIntersectPoint();
 
@@ -388,7 +388,7 @@ SpherePlaneProjector::SpherePlaneProjector(osg::Sphere *sphere) : SphereProjecto
 SpherePlaneProjector::~SpherePlaneProjector()
 {}
 
-osg::Quat SpherePlaneProjector::getRotation(const osg::Vec3d&p1, bool p1OnSphere, const osg::Vec3d&p2, bool p2OnSphere,
+osg::Quat SpherePlaneProjector::getRotation(const osg::Vec3d &p1, bool p1OnSphere, const osg::Vec3d &p2, bool p2OnSphere,
                                             float radialFactor) const
 {
     if (p1OnSphere && p2OnSphere)
@@ -435,7 +435,7 @@ osg::Quat SpherePlaneProjector::getRotation(const osg::Vec3d&p1, bool p1OnSphere
     }
     else
     {
-        const osg::Vec3d&planePoint = getSphere()->getCenter();
+        const osg::Vec3d &planePoint = getSphere()->getCenter();
 
         osg::Vec3d intersection, dontCare;
         if (p1OnSphere)
@@ -453,7 +453,7 @@ osg::Quat SpherePlaneProjector::getRotation(const osg::Vec3d&p1, bool p1OnSphere
     }
 }
 
-bool SpherePlaneProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint) const
+bool SpherePlaneProjector::project(const PointerInfo &pi, osg::Vec3d &projectedPoint) const
 {
     if (!_sphere->valid())
     {
@@ -527,7 +527,7 @@ CylinderProjector::CylinderProjector(osg::Cylinder *cylinder) : _front(true)
 CylinderProjector::~CylinderProjector()
 {}
 
-bool CylinderProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint) const
+bool CylinderProjector::project(const PointerInfo &pi, osg::Vec3d &projectedPoint) const
 {
     if (!_cylinder.valid())
     {
@@ -550,7 +550,7 @@ bool CylinderProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint)
     return getCylinderLineIntersection(*_cylinder, objectNearPoint, objectFarPoint, projectedPoint, dontCare);
 }
 
-bool CylinderProjector::isPointInFront(const PointerInfo&pi, const osg::Matrix&localToWorld) const
+bool CylinderProjector::isPointInFront(const PointerInfo &pi, const osg::Matrix &localToWorld) const
 {
     osg::Vec3d closestPointOnAxis;
 
@@ -573,7 +573,7 @@ CylinderPlaneProjector::CylinderPlaneProjector(osg::Cylinder *cylinder) : Cylind
 CylinderPlaneProjector::~CylinderPlaneProjector()
 {}
 
-bool CylinderPlaneProjector::project(const PointerInfo&pi, osg::Vec3d&projectedPoint) const
+bool CylinderPlaneProjector::project(const PointerInfo &pi, osg::Vec3d &projectedPoint) const
 {
     if (!_cylinder.valid())
     {
@@ -602,7 +602,7 @@ bool CylinderPlaneProjector::project(const PointerInfo&pi, osg::Vec3d&projectedP
     return true;
 }
 
-osg::Quat CylinderPlaneProjector::getRotation(const osg::Vec3d&p1, const osg::Vec3d&p2) const
+osg::Quat CylinderPlaneProjector::getRotation(const osg::Vec3d &p1, const osg::Vec3d &p2) const
 {
     if (_parallelPlane)
     {

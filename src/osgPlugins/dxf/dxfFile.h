@@ -38,7 +38,7 @@ VariableList    getVariable(std::string var);
 
 protected:
 
-short assign(codeValue&cv);
+short assign(codeValue &cv);
 std::string               _fileName;
 bool                      _isNewSection;
 osg::ref_ptr<dxfReader>   _reader;

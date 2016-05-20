@@ -28,14 +28,14 @@ ImageStream::ImageStream() :
 // #endif
 }
 
-ImageStream::ImageStream(const ImageStream&image, const CopyOp&copyop) :
+ImageStream::ImageStream(const ImageStream &image, const CopyOp &copyop) :
     Image(image, copyop),
     _status(image._status),
     _loopingMode(image._loopingMode),
     _audioStreams(image._audioStreams)
 {}
 
-int ImageStream::compare(const Image&rhs) const
+int ImageStream::compare(const Image &rhs) const
 {
     return Image::compare(rhs);
 }

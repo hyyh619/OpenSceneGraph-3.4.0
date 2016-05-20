@@ -15,8 +15,8 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool FragmentProgram_readLocalData(Object&obj, Input&fr);
-bool FragmentProgram_writeLocalData(const Object&obj, Output&fw);
+bool FragmentProgram_readLocalData(Object &obj, Input &fr);
+bool FragmentProgram_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(FragmentProgram)
@@ -29,11 +29,11 @@ REGISTER_DOTOSGWRAPPER(FragmentProgram)
 );
 
 
-bool FragmentProgram_readLocalData(Object&obj, Input&fr)
+bool FragmentProgram_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    FragmentProgram&fragmentProgram = static_cast<FragmentProgram&>(obj);
+    FragmentProgram &fragmentProgram = static_cast<FragmentProgram&>(obj);
 
     if (fr[0].matchWord("ProgramLocalParameter"))
     {
@@ -109,9 +109,9 @@ bool FragmentProgram_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool FragmentProgram_writeLocalData(const Object&obj, Output&fw)
+bool FragmentProgram_writeLocalData(const Object &obj, Output &fw)
 {
-    const FragmentProgram&fragmentProgram = static_cast<const FragmentProgram&>(obj);
+    const FragmentProgram &fragmentProgram = static_cast<const FragmentProgram&>(obj);
 
     const FragmentProgram::LocalParamList           &lpl = fragmentProgram.getLocalParameters();
     FragmentProgram::LocalParamList::const_iterator i;

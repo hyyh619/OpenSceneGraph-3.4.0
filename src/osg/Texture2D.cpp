@@ -35,7 +35,7 @@ Texture2D::Texture2D(Image *image) :
     setImage(image);
 }
 
-Texture2D::Texture2D(const Texture2D&text, const CopyOp&copyop) :
+Texture2D::Texture2D(const Texture2D &text, const CopyOp &copyop) :
     Texture(text, copyop),
     _textureWidth(text._textureWidth),
     _textureHeight(text._textureHeight),
@@ -50,7 +50,7 @@ Texture2D::~Texture2D()
     setImage(NULL);
 }
 
-int Texture2D::compare(const StateAttribute&sa) const
+int Texture2D::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -141,7 +141,7 @@ void Texture2D::setImage(Image *image)
     }
 }
 
-bool Texture2D::textureObjectValid(State&state) const
+bool Texture2D::textureObjectValid(State &state) const
 {
     TextureObject *textureObject = getTextureObject(state.getContextID());
 
@@ -164,7 +164,7 @@ bool Texture2D::textureObjectValid(State&state) const
 }
 
 
-void Texture2D::apply(State&state) const
+void Texture2D::apply(State &state) const
 {
     // state.setReportGLErrors(true);
 
@@ -334,7 +334,7 @@ void Texture2D::computeInternalFormat() const
         computeInternalFormatType();
 }
 
-void Texture2D::copyTexImage2D(State&state, int x, int y, int width, int height)
+void Texture2D::copyTexImage2D(State &state, int x, int y, int width, int height)
 {
     const unsigned int contextID = state.getContextID();
 
@@ -416,7 +416,7 @@ void Texture2D::copyTexImage2D(State&state, int x, int y, int width, int height)
     state.haveAppliedTextureAttribute(state.getActiveTextureUnit(), this);
 }
 
-void Texture2D::copyTexSubImage2D(State&state, int xoffset, int yoffset, int x, int y, int width, int height)
+void Texture2D::copyTexSubImage2D(State &state, int xoffset, int yoffset, int x, int y, int width, int height)
 {
     const unsigned int contextID = state.getContextID();
 
@@ -464,7 +464,7 @@ void Texture2D::copyTexSubImage2D(State&state, int xoffset, int yoffset, int x, 
     }
 }
 
-void Texture2D::allocateMipmap(State&state) const
+void Texture2D::allocateMipmap(State &state) const
 {
     const unsigned int contextID = state.getContextID();
 

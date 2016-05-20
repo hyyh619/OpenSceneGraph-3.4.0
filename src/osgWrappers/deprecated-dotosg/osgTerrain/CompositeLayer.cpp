@@ -26,8 +26,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool CompositeLayer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool CompositeLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool CompositeLayer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool CompositeLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(CompositeLayer_Proxy)
 (
@@ -38,9 +38,9 @@ REGISTER_DOTOSGWRAPPER(CompositeLayer_Proxy)
     CompositeLayer_writeLocalData
 );
 
-bool CompositeLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool CompositeLayer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgTerrain::CompositeLayer&layer = static_cast<osgTerrain::CompositeLayer&>(obj);
+    osgTerrain::CompositeLayer &layer = static_cast<osgTerrain::CompositeLayer&>(obj);
 
     bool itrAdvanced = false;
 
@@ -135,9 +135,9 @@ bool CompositeLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool CompositeLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool CompositeLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgTerrain::CompositeLayer&layer = static_cast<const osgTerrain::CompositeLayer&>(obj);
+    const osgTerrain::CompositeLayer &layer = static_cast<const osgTerrain::CompositeLayer&>(obj);
 
     for (unsigned int i = 0; i < layer.getNumLayers(); ++i)
     {

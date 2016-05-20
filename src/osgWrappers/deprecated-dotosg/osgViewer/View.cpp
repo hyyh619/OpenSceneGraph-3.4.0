@@ -9,8 +9,8 @@
 #include <osgDB/ReadFile>
 #include <osgDB/ParameterOutput>
 
-bool View_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool View_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool View_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool View_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(View_Proxy)
 (
@@ -22,7 +22,7 @@ REGISTER_DOTOSGWRAPPER(View_Proxy)
 );
 
 
-static bool readMatrix(osg::Matrix&matrix, osgDB::Input&fr, const char *keyword)
+static bool readMatrix(osg::Matrix &matrix, osgDB::Input &fr, const char *keyword)
 {
     bool iteratorAdvanced = false;
 
@@ -61,7 +61,7 @@ static bool readMatrix(osg::Matrix&matrix, osgDB::Input&fr, const char *keyword)
 }
 
 #if 0
-static bool writeMatrix(const osg::Matrix&matrix, osgDB::Output&fw, const char *keyword)
+static bool writeMatrix(const osg::Matrix &matrix, osgDB::Output &fw, const char *keyword)
 {
     fw.indent() << keyword << " {" << std::endl;
     fw.moveIn();
@@ -75,7 +75,7 @@ static bool writeMatrix(const osg::Matrix&matrix, osgDB::Output&fw, const char *
 }
 #endif
 
-osg::Image* readIntensityImage(osgDB::Input&fr, bool&itrAdvanced)
+osg::Image* readIntensityImage(osgDB::Input &fr, bool &itrAdvanced)
 {
     if (fr.matchSequence("intensityMap {"))
     {
@@ -150,10 +150,10 @@ osg::Image* readIntensityImage(osgDB::Input&fr, bool&itrAdvanced)
     return 0;
 }
 
-bool View_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool View_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgViewer::View&view            = dynamic_cast<osgViewer::View&>(obj);
-    bool           iteratorAdvanced = false;
+    osgViewer::View &view            = dynamic_cast<osgViewer::View&>(obj);
+    bool            iteratorAdvanced = false;
 
     bool matchedFirst = false;
 
@@ -287,9 +287,9 @@ bool View_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return iteratorAdvanced;
 }
 
-bool View_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool View_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgViewer::View&view = dynamic_cast<const osgViewer::View&>(obj);
+    const osgViewer::View &view = dynamic_cast<const osgViewer::View&>(obj);
 
     osg::notify(osg::NOTICE) << "View_writeLocalData" << std::endl;
 

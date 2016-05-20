@@ -40,7 +40,7 @@
  */
 
 // Basic get functions
-bool trpgReadBuffer::Get(int32&ret)
+bool trpgReadBuffer::Get(int32 &ret)
 {
     int32 val;
 
@@ -54,7 +54,7 @@ bool trpgReadBuffer::Get(int32&ret)
 
     return true;
 }
-bool trpgReadBuffer::Get(int64&ret)
+bool trpgReadBuffer::Get(int64 &ret)
 {
     int64 val;
 
@@ -90,7 +90,7 @@ bool trpgReadBuffer::Get(char *ret, int retLen)
 
     return true;
 }
-bool trpgReadBuffer::Get(std::string&str)
+bool trpgReadBuffer::Get(std::string &str)
 {
     int32 len;
 
@@ -114,7 +114,7 @@ bool trpgReadBuffer::Get(std::string&str)
 
     return true;
 }
-bool trpgReadBuffer::Get(float32&ret)
+bool trpgReadBuffer::Get(float32 &ret)
 {
     char cval[4];
 
@@ -133,7 +133,7 @@ bool trpgReadBuffer::Get(float32&ret)
 
     return true;
 }
-bool trpgReadBuffer::Get(float64&ret)
+bool trpgReadBuffer::Get(float64 &ret)
 {
     char cval[8];
 
@@ -152,7 +152,7 @@ bool trpgReadBuffer::Get(float64&ret)
 
     return true;
 }
-bool trpgReadBuffer::Get(uint8&ret)
+bool trpgReadBuffer::Get(uint8 &ret)
 {
     uint8 val;
 
@@ -166,7 +166,7 @@ bool trpgReadBuffer::Get(uint8&ret)
 }
 
 // #if (bool != int32)
-bool trpgReadBuffer::Get(bool&ret)
+bool trpgReadBuffer::Get(bool &ret)
 {
     uint8 val;
 
@@ -181,7 +181,7 @@ bool trpgReadBuffer::Get(bool&ret)
 // #endif
 
 #if (trpgDiskRef != int64)
-bool trpgReadBuffer::Get(trpgDiskRef&ret)
+bool trpgReadBuffer::Get(trpgDiskRef &ret)
 {
     trpgDiskRef val;
 
@@ -197,7 +197,7 @@ bool trpgReadBuffer::Get(trpgDiskRef&ret)
 }
 #endif
 
-bool trpgReadBuffer::Get(trpgToken&ret)
+bool trpgReadBuffer::Get(trpgToken &ret)
 {
     trpgToken val;
 
@@ -287,28 +287,28 @@ bool trpgReadBuffer::GetArray(int len, char **arr)
 }
 
 // Utility Get functions - Just call the others
-bool trpgReadBuffer::Get(trpg2iPoint&pt)
+bool trpgReadBuffer::Get(trpg2iPoint &pt)
 {
     if (!Get(pt.x) || !Get(pt.y))
         return false;
 
     return true;
 }
-bool trpgReadBuffer::Get(trpg2dPoint&pt)
+bool trpgReadBuffer::Get(trpg2dPoint &pt)
 {
     if (!Get(pt.x) || !Get(pt.y))
         return false;
 
     return true;
 }
-bool trpgReadBuffer::Get(trpg3dPoint&pt)
+bool trpgReadBuffer::Get(trpg3dPoint &pt)
 {
     if (!Get(pt.x) || !Get(pt.y) || !Get(pt.z))
         return false;
 
     return true;
 }
-bool trpgReadBuffer::Get(trpgColor&color)
+bool trpgReadBuffer::Get(trpgColor &color)
 {
     if (!Get(color.red) || !Get(color.green) || !Get(color.blue))
         return false;
@@ -317,7 +317,7 @@ bool trpgReadBuffer::Get(trpgColor&color)
 }
 
 // Get both a token and it's length, since that's fairly common
-bool trpgReadBuffer::GetToken(trpgToken&tok, int32&len)
+bool trpgReadBuffer::GetToken(trpgToken &tok, int32 &len)
 {
     if (!Get(tok) || !Get(len))
         return false;
@@ -716,7 +716,7 @@ trpgrAppFile* trpgrAppFileCache::GetFile(trpgEndian ness, int id, int col, int r
     // Found it in cache, just return
     if (foundID != -1)
     {
-        OpenFile&of = files[foundID];
+        OpenFile &of = files[foundID];
 
         if (of.afile->isValid())
         {
@@ -738,7 +738,7 @@ trpgrAppFile* trpgrAppFileCache::GetFile(trpgEndian ness, int id, int col, int r
 
     for (i = 0; i < files.size(); i++)
     {
-        OpenFile&of = files[i];
+        OpenFile &of = files[i];
         if (!of.afile || (oldTime == -1) || (of.lastUsed < oldTime))
         {
             oldID   = i;
@@ -750,7 +750,7 @@ trpgrAppFile* trpgrAppFileCache::GetFile(trpgEndian ness, int id, int col, int r
 
 
     // Reclaim this one
-    OpenFile&of = files[oldID];
+    OpenFile &of = files[oldID];
     if (of.afile)
         delete of.afile;
 

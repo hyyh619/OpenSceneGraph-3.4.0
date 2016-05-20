@@ -60,7 +60,7 @@ VBSPReader::~VBSPReader()
 }
 
 
-void VBSPReader::processEntities(std::istream&str, int offset,
+void VBSPReader::processEntities(std::istream &str, int offset,
                                  int length)
 {
     char        *entities;
@@ -121,7 +121,7 @@ void VBSPReader::processEntities(std::istream&str, int offset,
 }
 
 
-void VBSPReader::processModels(std::istream&str, int offset, int length)
+void VBSPReader::processModels(std::istream &str, int offset, int length)
 {
     int   numModels;
     int   i;
@@ -146,7 +146,7 @@ void VBSPReader::processModels(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processPlanes(std::istream&str, int offset, int length)
+void VBSPReader::processPlanes(std::istream &str, int offset, int length)
 {
     int   numPlanes;
     int   i;
@@ -171,7 +171,7 @@ void VBSPReader::processPlanes(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processVertices(std::istream&str, int offset, int length)
+void VBSPReader::processVertices(std::istream &str, int offset, int length)
 {
     int   numVertices;
     int   i;
@@ -196,7 +196,7 @@ void VBSPReader::processVertices(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processEdges(std::istream&str, int offset, int length)
+void VBSPReader::processEdges(std::istream &str, int offset, int length)
 {
     int  numEdges;
     int  i;
@@ -221,7 +221,7 @@ void VBSPReader::processEdges(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processSurfEdges(std::istream&str, int offset, int length)
+void VBSPReader::processSurfEdges(std::istream &str, int offset, int length)
 {
     int numSurfEdges;
     int i;
@@ -246,7 +246,7 @@ void VBSPReader::processSurfEdges(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processFaces(std::istream&str, int offset, int length)
+void VBSPReader::processFaces(std::istream &str, int offset, int length)
 {
     int  numFaces;
     int  i;
@@ -271,7 +271,7 @@ void VBSPReader::processFaces(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processTexInfo(std::istream&str, int offset, int length)
+void VBSPReader::processTexInfo(std::istream &str, int offset, int length)
 {
     int     numTexInfos;
     int     i;
@@ -296,7 +296,7 @@ void VBSPReader::processTexInfo(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processTexData(std::istream&str, int offset, int length)
+void VBSPReader::processTexData(std::istream &str, int offset, int length)
 {
     int     numTexDatas;
     int     i;
@@ -321,7 +321,7 @@ void VBSPReader::processTexData(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processTexDataStringTable(std::istream&str, int offset,
+void VBSPReader::processTexDataStringTable(std::istream &str, int offset,
                                            int length)
 {
     int         i;
@@ -356,7 +356,7 @@ void VBSPReader::processTexDataStringTable(std::istream&str, int offset,
 }
 
 
-void VBSPReader::processTexDataStringData(std::istream&str, int offset,
+void VBSPReader::processTexDataStringData(std::istream &str, int offset,
                                           int length)
 {
     int         i;
@@ -388,7 +388,7 @@ void VBSPReader::processTexDataStringData(std::istream&str, int offset,
 }
 
 
-void VBSPReader::processDispInfo(std::istream&str, int offset, int length)
+void VBSPReader::processDispInfo(std::istream &str, int offset, int length)
 {
     int          numDispInfos;
     int          i;
@@ -413,7 +413,7 @@ void VBSPReader::processDispInfo(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processDispVerts(std::istream&str, int offset, int length)
+void VBSPReader::processDispVerts(std::istream &str, int offset, int length)
 {
     int             numDispVerts;
     int             i;
@@ -438,7 +438,7 @@ void VBSPReader::processDispVerts(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processGameData(std::istream&str, int offset, int length)
+void VBSPReader::processGameData(std::istream &str, int offset, int length)
 {
     GameHeader gameHeader;
     GameLump   *gameLumps;
@@ -469,7 +469,7 @@ void VBSPReader::processGameData(std::istream&str, int offset, int length)
 }
 
 
-void VBSPReader::processStaticProps(std::istream&str, int offset, int length,
+void VBSPReader::processStaticProps(std::istream &str, int offset, int length,
                                     int lumpVersion)
 {
     StaticPropModelNames sprpModelNames;
@@ -521,7 +521,7 @@ void VBSPReader::processStaticProps(std::istream&str, int offset, int length,
 
 
 std::string VBSPReader::getToken(std::string str, const char *delim,
-                                 size_t&index)
+                                 size_t &index)
 {
     std::string token;
     size_t      end = std::string::npos;
@@ -1131,7 +1131,7 @@ void VBSPReader::createScene()
 }
 
 
-bool VBSPReader::readFile(const std::string&file)
+bool VBSPReader::readFile(const std::string &file)
 {
     osgDB::ifstream *mapFile = 0;
     Header          header;

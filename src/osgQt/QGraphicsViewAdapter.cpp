@@ -275,7 +275,7 @@ void QGraphicsViewAdapter::setUpKeyMap()
     _keyMap[osgGA::GUIEventAdapter::KEY_F35] = Qt::Key_F35;
 }
 
-QWidget* QGraphicsViewAdapter::getWidgetAt(const QPoint&pos)
+QWidget* QGraphicsViewAdapter::getWidgetAt(const QPoint &pos)
 {
     QWidget *childAt = _graphicsView->childAt(pos);
 
@@ -512,7 +512,7 @@ void QGraphicsViewAdapter::setFrameLastRendered(const osg::FrameStamp *frameStam
 
 void QGraphicsViewAdapter::clearWriteBuffer()
 {
-    QImage&image = _qimages[_currentWrite];
+    QImage &image = _qimages[_currentWrite];
 
     image.fill(_backgroundColor.rgba ());
     image = QGLWidget::convertToGLFormat(image);
@@ -526,7 +526,7 @@ void QGraphicsViewAdapter::clearWriteBuffer()
 void QGraphicsViewAdapter::render()
 {
     OSG_INFO << "Current write = " << _currentWrite << std::endl;
-    QImage&image = _qimages[_currentWrite];
+    QImage &image = _qimages[_currentWrite];
     _requiresRendering = false;
 
     // If we got a resize, act on it, first by resizing the view, then the current image

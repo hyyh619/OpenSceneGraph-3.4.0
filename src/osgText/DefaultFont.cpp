@@ -32,7 +32,7 @@ DefaultFont::DefaultFont()
 DefaultFont::~DefaultFont()
 {}
 
-osgText::Glyph* DefaultFont::getGlyph(const FontResolution&fontRes, unsigned int charcode)
+osgText::Glyph* DefaultFont::getGlyph(const FontResolution &fontRes, unsigned int charcode)
 {
     if (_sizeGlyphMap.empty())
         return 0;

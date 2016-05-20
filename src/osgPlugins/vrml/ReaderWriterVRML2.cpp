@@ -65,7 +65,7 @@
 class resource_fetcher : public openvrml::resource_fetcher
 {
 private:
-virtual std::auto_ptr<openvrml::resource_istream> do_get_resource(const std::string&uri)
+virtual std::auto_ptr<openvrml::resource_istream> do_get_resource(const std::string &uri)
 {
     using std::auto_ptr;
     using std::invalid_argument;
@@ -78,7 +78,7 @@ virtual std::auto_ptr<openvrml::resource_istream> do_get_resource(const std::str
     std::filebuf buf_;
 
 public:
-    explicit file_resource_istream(const std::string&path) :
+    explicit file_resource_istream(const std::string &path) :
         resource_istream(&this->buf_)
     {
         //
@@ -93,7 +93,7 @@ public:
         }
     }
 
-    void url(const std::string&str) throw (std::bad_alloc)
+    void url(const std::string &str) throw (std::bad_alloc)
     {
         this->url_ = str;
     }
@@ -174,7 +174,7 @@ private:
 // Register with Registry to instantiate the above reader/writer.
 REGISTER_OSGPLUGIN(vrml, ReaderWriterVRML2)
 
-osgDB::ReaderWriter::ReadResult ReaderWriterVRML2::readNode(const std::string&fname, const osgDB::Options *opt) const
+osgDB::ReaderWriter::ReadResult ReaderWriterVRML2::readNode(const std::string &fname, const osgDB::Options *opt) const
 {
     std::string fileName = osgDB::findDataFile(fname, opt);
 
@@ -194,7 +194,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterVRML2::readNode(const std::string&fn
 
     try
     {
-        const std::vector<boost::intrusive_ptr<openvrml::node> >&mfn = b->create_vrml_from_stream(vrml_stream);
+        const std::vector<boost::intrusive_ptr<openvrml::node> > &mfn = b->create_vrml_from_stream(vrml_stream);
 
         if (mfn.empty())
         {
@@ -221,19 +221,19 @@ osgDB::ReaderWriter::ReadResult ReaderWriterVRML2::readNode(const std::string&fn
         }
     }
 
-    catch (const openvrml::invalid_vrml&e)
+    catch (const openvrml::invalid_vrml &e)
     {
         OSG_INFO << "ReaderWriterVRML2: Invalid VRML in line " << e.line << " at column " << e.column << ": \"" << e.what() << "\"" << std::endl;
         return ReadResult::FILE_NOT_HANDLED;
     }
-    catch (const std::invalid_argument&e)
+    catch (const std::invalid_argument &e)
     {
         OSG_INFO << "ReaderWriterVRML2: Invalid argument: \"" << e.what() << "\"" << std::endl;
         return ReadResult::FILE_NOT_HANDLED;
     }
 }
 
-osgDB::ReaderWriter::WriteResult ReaderWriterVRML2::writeNode(const osg::Node&root, const std::string&filename, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::WriteResult ReaderWriterVRML2::writeNode(const osg::Node &root, const std::string &filename, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(filename);
 
@@ -465,7 +465,7 @@ osg::Node* ReaderWriterVRML2::convertFromVRML(openvrml::node *obj) const
                     {
                         // If we cannot read the image try the openvrml builtin mechanisms to read the image.
                         // This includes PixelTexture fields.
-                        const openvrml::image&vrml_image = vrml_texture_node->image();
+                        const openvrml::image &vrml_image = vrml_texture_node->image();
 
                         // Convert to an osg image
                         image = new osg::Image;

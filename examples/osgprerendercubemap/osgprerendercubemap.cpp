@@ -135,7 +135,7 @@ public:
 
 typedef std::vector<osg::ref_ptr<osg::Camera> >  CameraList;
 
-UpdateCameraAndTexGenCallback(osg::NodePath&reflectorNodePath, CameraList&Cameras) :
+UpdateCameraAndTexGenCallback(osg::NodePath &reflectorNodePath, CameraList &Cameras) :
     _reflectorNodePath(reflectorNodePath),
     _Cameras(Cameras)
 {}
@@ -211,7 +211,7 @@ osg::ref_ptr<TexMat> _texmat;
 };
 
 
-osg::Group* createShadowedScene(osg::Node *reflectedSubgraph, osg::NodePath reflectorNodePath, unsigned int unit, const osg::Vec4&clearColor, unsigned tex_width, unsigned tex_height, osg::Camera::RenderTargetImplementation renderImplementation)
+osg::Group* createShadowedScene(osg::Node *reflectedSubgraph, osg::NodePath reflectorNodePath, unsigned int unit, const osg::Vec4 &clearColor, unsigned tex_width, unsigned tex_height, osg::Camera::RenderTargetImplementation renderImplementation)
 {
     osg::Group *group = new osg::Group;
 

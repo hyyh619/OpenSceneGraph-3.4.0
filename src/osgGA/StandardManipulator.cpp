@@ -46,7 +46,7 @@ StandardManipulator::StandardManipulator(int flags)
 
 
 /// Constructor.
-StandardManipulator::StandardManipulator(const StandardManipulator&uim, const CopyOp&copyOp)
+StandardManipulator::StandardManipulator(const StandardManipulator &uim, const CopyOp &copyOp)
     : osg::Callback(uim, copyOp),
     inherited(uim, copyOp),
     _thrown(uim._thrown),
@@ -73,7 +73,7 @@ void StandardManipulator::setNode(Node *node)
     // update model size
     if (_node.get())
     {
-        const BoundingSphere&boundingSphere = _node->getBound();
+        const BoundingSphere &boundingSphere = _node->getBound();
         _modelSize = boundingSphere.radius();
     }
     else
@@ -190,7 +190,7 @@ void StandardManipulator::home(double /*currentTime*/)
     StandardManipulator implementation only updates its internal data.
     If home position is expected to be supported by the descendant manipulator,
     it has to reimplement the method to update manipulator transformation.*/
-void StandardManipulator::home(const GUIEventAdapter& /*ea*/, GUIActionAdapter&us)
+void StandardManipulator::home(const GUIEventAdapter& /*ea*/, GUIActionAdapter &us)
 {
     if (getAutoComputeHomePosition())
     {
@@ -208,7 +208,7 @@ void StandardManipulator::home(const GUIEventAdapter& /*ea*/, GUIActionAdapter&u
 
 
 /** Start/restart the manipulator.*/
-void StandardManipulator::init(const GUIEventAdapter& /*ea*/, GUIActionAdapter&us)
+void StandardManipulator::init(const GUIEventAdapter& /*ea*/, GUIActionAdapter &us)
 {
     flushMouseEventStack();
 
@@ -219,7 +219,7 @@ void StandardManipulator::init(const GUIEventAdapter& /*ea*/, GUIActionAdapter&u
 
 
 /** Handles events. Returns true if handled, false otherwise.*/
-bool StandardManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::handle(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     switch (ea.getEventType())
     {
@@ -269,7 +269,7 @@ bool StandardManipulator::handle(const GUIEventAdapter&ea, GUIActionAdapter&us)
 
 
 /// Handles GUIEventAdapter::FRAME event.
-bool StandardManipulator::handleFrame(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::handleFrame(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     double current_frame_time = ea.getTime();
 
@@ -290,7 +290,7 @@ bool StandardManipulator::handleFrame(const GUIEventAdapter&ea, GUIActionAdapter
 }
 
 /// Handles GUIEventAdapter::RESIZE event.
-bool StandardManipulator::handleResize(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::handleResize(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     init(ea, us);
     us.requestRedraw();
@@ -307,7 +307,7 @@ bool StandardManipulator::handleMouseMove(const GUIEventAdapter& /*ea*/, GUIActi
 
 
 /// Handles GUIEventAdapter::DRAG event.
-bool StandardManipulator::handleMouseDrag(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::handleMouseDrag(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     addMouseEvent(ea);
 
@@ -322,7 +322,7 @@ bool StandardManipulator::handleMouseDrag(const GUIEventAdapter&ea, GUIActionAda
 
 
 /// Handles GUIEventAdapter::PUSH event.
-bool StandardManipulator::handleMousePush(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::handleMousePush(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     flushMouseEventStack();
     addMouseEvent(ea);
@@ -338,7 +338,7 @@ bool StandardManipulator::handleMousePush(const GUIEventAdapter&ea, GUIActionAda
 
 
 /// Handles GUIEventAdapter::RELEASE event.
-bool StandardManipulator::handleMouseRelease(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::handleMouseRelease(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     if (ea.getButtonMask() == 0)
     {
@@ -372,7 +372,7 @@ bool StandardManipulator::handleMouseRelease(const GUIEventAdapter&ea, GUIAction
 
 
 /// Handles GUIEventAdapter::KEYDOWN event.
-bool StandardManipulator::handleKeyDown(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::handleKeyDown(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     if (ea.getKey() == GUIEventAdapter::KEY_Space)
     {
@@ -401,7 +401,7 @@ bool StandardManipulator::handleMouseWheel(const GUIEventAdapter& /*ea*/, GUIAct
 
 
 /** Get the keyboard and mouse usage of the manipulator.*/
-void StandardManipulator::getUsage(ApplicationUsage&usage) const
+void StandardManipulator::getUsage(ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding(getManipulatorName() + ": Space", "Reset the viewing position to home");
 }
@@ -477,7 +477,7 @@ bool StandardManipulator::performMovementRightMouseButton(const double /*eventTi
 
 
 /// The method processes events for manipulation based on relative mouse movement (mouse delta).
-bool StandardManipulator::handleMouseDeltaMovement(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::handleMouseDeltaMovement(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     float dx = ea.getX() - _mouseCenterX;
     float dy = ea.getY() - _mouseCenterY;
@@ -500,7 +500,7 @@ bool StandardManipulator::performMouseDeltaMovement(const float /*dx*/, const fl
 
 
 /// Makes the manipulator progress in its current animation.
-bool StandardManipulator::performAnimationMovement(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::performAnimationMovement(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     double f = (ea.getTime() - _animationData->_startTime) / _animationData->_animationTime;
 
@@ -527,7 +527,7 @@ void StandardManipulator::applyAnimationStep(const double /*currentProgress*/, c
 
 
 /// Centers mouse pointer
-void StandardManipulator::centerMousePointer(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void StandardManipulator::centerMousePointer(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     _mouseCenterX = (ea.getXmin() + ea.getXmax()) / 2.0f;
     _mouseCenterY = (ea.getYmin() + ea.getYmax()) / 2.0f;
@@ -536,7 +536,7 @@ void StandardManipulator::centerMousePointer(const GUIEventAdapter&ea, GUIAction
 
 
 /** Add the current mouse GUIEvent to internal stack.*/
-void StandardManipulator::addMouseEvent(const GUIEventAdapter&ea)
+void StandardManipulator::addMouseEvent(const GUIEventAdapter &ea)
 {
     _ga_t1 = _ga_t0;
     _ga_t0 = &ea;
@@ -602,8 +602,8 @@ float StandardManipulator::getThrowScale(const double eventTimeDelta) const
  *  localUp parameter defines either camera's "UP" vector
  *  that will be preserved during rotation, or it can be zero (0,0,0) to specify
  *  that camera's "UP" vector will be not preserved and free rotation will be made.*/
-void StandardManipulator::rotateYawPitch(Quat&rotation, const double yaw, const double pitch,
-                                         const Vec3d&localUp)
+void StandardManipulator::rotateYawPitch(Quat &rotation, const double yaw, const double pitch,
+                                         const Vec3d &localUp)
 {
     bool verticalAxisFixed = (localUp != Vec3d(0., 0., 0.));
 
@@ -661,7 +661,7 @@ void StandardManipulator::rotateYawPitch(Quat&rotation, const double yaw, const 
  *  over +/- 90 degrees. If this happens and disallowFlipOver is true,
  *  manipulator is rotated by 180 degrees. More precisely, roll rotation component is changed by 180 degrees,
  *  making pitch once again between -90..+90 degrees limits.*/
-void StandardManipulator::fixVerticalAxis(Vec3d&eye, Quat&rotation, bool disallowFlipOver)
+void StandardManipulator::fixVerticalAxis(Vec3d &eye, Quat &rotation, bool disallowFlipOver)
 {
     CoordinateFrame coordinateFrame = getCoordinateFrame(eye);
     Vec3d           localUp         = getUpVector(coordinateFrame);
@@ -679,7 +679,7 @@ void StandardManipulator::fixVerticalAxis(Vec3d&eye, Quat&rotation, bool disallo
  *  over +/- 90 degrees. If this happens and disallowFlipOver is true,
  *  manipulator is rotated by 180 degrees. More precisely, roll rotation component is changed by 180 degrees,
  *  making pitch once again between -90..+90 degrees limits.*/
-void StandardManipulator::fixVerticalAxis(Quat&rotation, const Vec3d&localUp, bool disallowFlipOver)
+void StandardManipulator::fixVerticalAxis(Quat &rotation, const Vec3d &localUp, bool disallowFlipOver)
 {
     // camera direction vectors
     Vec3d cameraUp      = rotation * Vec3d(0., 1., 0.);
@@ -722,8 +722,8 @@ void StandardManipulator::fixVerticalAxis(Quat&rotation, const Vec3d&localUp, bo
  *  over +/- 90 degrees. If this happens and disallowFlipOver is true,
  *  right and up camera vectors are negated (changing roll by 180 degrees),
  *  making pitch once again between -90..+90 degrees limits.*/
-void StandardManipulator::fixVerticalAxis(const osg::Vec3d&forward, const osg::Vec3d&up, osg::Vec3d&newUp,
-                                          const osg::Vec3d&localUp, bool /*disallowFlipOver*/)
+void StandardManipulator::fixVerticalAxis(const osg::Vec3d &forward, const osg::Vec3d &up, osg::Vec3d &newUp,
+                                          const osg::Vec3d &localUp, bool /*disallowFlipOver*/)
 {
     // right direction
     osg::Vec3d right1 = forward ^ localUp;
@@ -751,7 +751,7 @@ void StandardManipulator::fixVerticalAxis(const osg::Vec3d&forward, const osg::V
     is used to set a new center for the manipulator. For Orbit-style manipulators,
     the orbiting center is set. For FirstPerson-style manipulators, view is pointed
     towards the center.*/
-bool StandardManipulator::setCenterByMousePointerIntersection(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool StandardManipulator::setCenterByMousePointerIntersection(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     osg::View *view = us.asView();
 
@@ -786,7 +786,7 @@ bool StandardManipulator::setCenterByMousePointerIntersection(const GUIEventAdap
         return false;
 
     // get all intersections
-    LineSegmentIntersector::Intersections&intersections = picker->getIntersections();
+    LineSegmentIntersector::Intersections &intersections = picker->getIntersections();
 
     // get current transformation
     osg::Vec3d eye, oldCenter, up;

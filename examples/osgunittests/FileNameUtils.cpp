@@ -52,7 +52,7 @@ void runFileNameUtilsTest(osg::ArgumentParser&)
          itr != strings.end();
          ++itr)
     {
-        std::string&str = *itr;
+        std::string &str = *itr;
         OSG_NOTICE << "string=" << str;
         OSG_NOTICE << "\n\tosgDB::getFilePath(str)=" << osgDB::getFilePath(str);
         OSG_NOTICE << "\n\tosgDB::getSimpleFileName(str)=" << osgDB::getSimpleFileName(str);

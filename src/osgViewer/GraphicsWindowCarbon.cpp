@@ -222,7 +222,7 @@ virtual bool valid()
 {
     return (_win.valid() && _win->valid());
 }
-virtual void getWindowBounds(CGRect&rect)
+virtual void getWindowBounds(CGRect &rect)
 {
     Rect  windowBounds;
     OSErr error = GetWindowBounds(_win->getNativeWindowRef(), kWindowStructureRgn, &windowBounds);
@@ -1092,7 +1092,7 @@ void GraphicsWindowCarbon::setSyncToVBlank(bool on)
     }
 }
 
-void GraphicsWindowCarbon::setWindowName(const std::string&name)
+void GraphicsWindowCarbon::setWindowName(const std::string &name)
 {
     _traits->windowName = name;
     if (!_traits->windowName.empty())
@@ -1129,7 +1129,7 @@ void GraphicsWindowCarbon::requestWarpPointer(float x, float y)
 }
 
 
-void GraphicsWindowCarbon::transformMouseXY(float&x, float&y)
+void GraphicsWindowCarbon::transformMouseXY(float &x, float &y)
 {
     if (getEventQueue()->getUseFixedMouseInputRange())
     {

@@ -61,7 +61,7 @@ Image::DataIterator::DataIterator(const Image *image) :
     assign();
 }
 
-Image::DataIterator::DataIterator(const DataIterator&ri) :
+Image::DataIterator::DataIterator(const DataIterator &ri) :
     _image(ri._image),
     _rowNum(ri._rowNum),
     _imageNum(ri._imageNum),
@@ -223,7 +223,7 @@ Image::Image()
     setDataVariance(STATIC);
 }
 
-Image::Image(const Image&image, const CopyOp&copyop) :
+Image::Image(const Image &image, const CopyOp &copyop) :
     BufferData(image, copyop),
     _fileName(image._fileName),
     _writeHint(image._writeHint),
@@ -272,7 +272,7 @@ void Image::deallocateData()
     }
 }
 
-int Image::compare(const Image&rhs) const
+int Image::compare(const Image &rhs) const
 {
     // if at least one filename is empty, then need to test buffer
     // pointers because images could have been created on the fly
@@ -307,7 +307,7 @@ int Image::compare(const Image&rhs) const
     return 0;
 }
 
-void Image::setFileName(const std::string&fileName)
+void Image::setFileName(const std::string &fileName)
 {
     _fileName = fileName;
 }
@@ -1483,7 +1483,7 @@ void Image::readImageFromCurrentTexture(unsigned int contextID, bool copyMipMaps
 #endif
 }
 
-void Image::swap(osg::Image&rhs)
+void Image::swap(osg::Image &rhs)
 {
     std::swap(_fileName, rhs._fileName);
     std::swap(_writeHint, rhs._writeHint);
@@ -2207,7 +2207,7 @@ Vec4 Image::getColor(unsigned int s, unsigned t, unsigned r) const
     return Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-Vec4 Image::getColor(const Vec3&texcoord) const
+Vec4 Image::getColor(const Vec3 &texcoord) const
 {
     unsigned int s = osg::clampTo(int(texcoord.x() * float(_s - 1)), 0, _s - 1);
     unsigned int t = osg::clampTo(int(texcoord.y() * float(_t - 1)), 0, _t - 1);
@@ -2219,7 +2219,7 @@ Vec4 Image::getColor(const Vec3&texcoord) const
 
 
 template<typename T>
-void _writeColor(GLenum pixelFormat, T *data, float scale, const Vec4&c)
+void _writeColor(GLenum pixelFormat, T *data, float scale, const Vec4 &c)
 {
     switch (pixelFormat)
     {
@@ -2241,7 +2241,7 @@ void _writeColor(GLenum pixelFormat, T *data, float scale, const Vec4&c)
 }
 
 
-void Image::setColor(const Vec4&color, unsigned int s, unsigned int t /*=0*/, unsigned int r /*=0*/)
+void Image::setColor(const Vec4 &color, unsigned int s, unsigned int t /*=0*/, unsigned int r /*=0*/)
 {
     unsigned char *ptr = data(s, t, r);
 
@@ -2265,7 +2265,7 @@ void Image::setColor(const Vec4&color, unsigned int s, unsigned int t /*=0*/, un
     }
 }
 
-void Image::setColor(const Vec4&color, const Vec3&texcoord)
+void Image::setColor(const Vec4 &color, const Vec3 &texcoord)
 {
     unsigned int s = osg::clampTo(int(texcoord.x() * float(_s - 1)), 0, _s - 1);
     unsigned int t = osg::clampTo(int(texcoord.y() * float(_t - 1)), 0, _t - 1);

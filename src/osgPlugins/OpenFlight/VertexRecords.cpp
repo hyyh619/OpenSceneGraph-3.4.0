@@ -56,7 +56,7 @@ META_Record(VertexC)
 
 virtual ~VertexC() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     /*int colorNameIndex =*/ in.readInt16();
     uint16     flags       = in.readUInt16();
@@ -99,7 +99,7 @@ protected:
 
 virtual ~VertexCN() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     /*int colorNameIndex =*/ in.readInt16();
     uint16     flags       = in.readUInt16();
@@ -144,7 +144,7 @@ protected:
 
 virtual ~VertexCT() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     /*int colorNameIndex =*/ in.readInt16();
     uint16     flags       = in.readUInt16();
@@ -189,7 +189,7 @@ protected:
 
 virtual ~VertexCNT() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     /*int colorNameIndex =*/ in.readInt16();
     uint16     flags       = in.readUInt16();
@@ -255,7 +255,7 @@ protected:
 
 virtual ~AbsoluteVertex() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     int32 x = in.readInt32();
     int32 y = in.readInt32();
@@ -297,7 +297,7 @@ protected:
 
 virtual ~ShadedVertex() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     int32 x = in.readInt32();
     int32 y = in.readInt32();
@@ -347,7 +347,7 @@ protected:
 
 virtual ~NormalVertex() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     int32 x = in.readInt32();
     int32 y = in.readInt32();

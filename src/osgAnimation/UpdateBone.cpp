@@ -19,10 +19,10 @@
 using namespace osgAnimation;
 
 
-UpdateBone::UpdateBone(const std::string&name) : UpdateMatrixTransform(name)
+UpdateBone::UpdateBone(const std::string &name) : UpdateMatrixTransform(name)
 {}
 
-UpdateBone::UpdateBone(const UpdateBone&apc, const osg::CopyOp&copyop) : osg::Object(apc, copyop), UpdateMatrixTransform(apc, copyop)
+UpdateBone::UpdateBone(const UpdateBone &apc, const osg::CopyOp &copyop) : osg::Object(apc, copyop), UpdateMatrixTransform(apc, copyop)
 {}
 
 /** Callback method called by the NodeVisitor when visiting a node.*/
@@ -39,7 +39,7 @@ void UpdateBone::operator()(osg::Node *node, osg::NodeVisitor *nv)
 
         // here we would prefer to have a flag inside transform stack in order to avoid update and a dirty state in matrixTransform if it's not require.
         _transforms.update();
-        const osg::Matrix&matrix = _transforms.getMatrix();
+        const osg::Matrix &matrix = _transforms.getMatrix();
         b->setMatrix(matrix);
 
         Bone *parent = b->getBoneParent();

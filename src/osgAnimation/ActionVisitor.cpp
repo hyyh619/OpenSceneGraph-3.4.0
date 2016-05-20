@@ -26,7 +26,7 @@ ActionVisitor::ActionVisitor()
 {
     _currentLayer = 0;
 }
-void ActionVisitor::pushFrameActionOnStack(const FrameAction&fa)
+void ActionVisitor::pushFrameActionOnStack(const FrameAction &fa)
 {
     _stackFrameAction.push_back(fa);
 }
@@ -42,31 +42,31 @@ void ActionVisitor::popTimeline()
 {
     _stackTimeline.pop_back();
 }
-void ActionVisitor::apply(Action&action)
+void ActionVisitor::apply(Action &action)
 {
     traverse(action);
 }
-void ActionVisitor::apply(Timeline&tm)
+void ActionVisitor::apply(Timeline &tm)
 {
     tm.traverse(*this);
 }
-void ActionVisitor::apply(ActionBlendIn&action)
+void ActionVisitor::apply(ActionBlendIn &action)
 {
     apply(static_cast<Action&>(action));
 }
-void ActionVisitor::apply(ActionBlendOut&action)
+void ActionVisitor::apply(ActionBlendOut &action)
 {
     apply(static_cast<Action&>(action));
 }
-void ActionVisitor::apply(ActionAnimation&action)
+void ActionVisitor::apply(ActionAnimation &action)
 {
     apply(static_cast<Action&>(action));
 }
-void ActionVisitor::apply(ActionStripAnimation&action)
+void ActionVisitor::apply(ActionStripAnimation &action)
 {
     apply(static_cast<Action&>(action));
 }
-void ActionVisitor::traverse(Action&action)
+void ActionVisitor::traverse(Action &action)
 {
     action.traverse(*this);
 }
@@ -86,7 +86,7 @@ UpdateActionVisitor::UpdateActionVisitor()
 }
 
 
-void UpdateActionVisitor::apply(Timeline&tm)
+void UpdateActionVisitor::apply(Timeline &tm)
 {
     _currentAnimationPriority = 0;
 
@@ -99,7 +99,7 @@ void UpdateActionVisitor::apply(Timeline&tm)
     tm.setLastFrameEvaluated(_frame);
 }
 
-bool UpdateActionVisitor::isActive(Action&action) const
+bool UpdateActionVisitor::isActive(Action &action) const
 {
     FrameAction fa = _stackFrameAction.back();
 
@@ -120,7 +120,7 @@ unsigned int UpdateActionVisitor::getLocalFrame() const
     return _frame - _stackFrameAction.back().first;
 }
 
-void UpdateActionVisitor::apply(Action&action)
+void UpdateActionVisitor::apply(Action &action)
 {
     if (isActive(action))
     {
@@ -149,7 +149,7 @@ void UpdateActionVisitor::apply(Action&action)
     }
 }
 
-void UpdateActionVisitor::apply(ActionBlendIn&action)
+void UpdateActionVisitor::apply(ActionBlendIn &action)
 {
     if (isActive(action))
     {
@@ -159,7 +159,7 @@ void UpdateActionVisitor::apply(ActionBlendIn&action)
     }
 }
 
-void UpdateActionVisitor::apply(ActionBlendOut&action)
+void UpdateActionVisitor::apply(ActionBlendOut &action)
 {
     if (isActive(action))
     {
@@ -169,7 +169,7 @@ void UpdateActionVisitor::apply(ActionBlendOut&action)
     }
 }
 
-void UpdateActionVisitor::apply(ActionAnimation&action)
+void UpdateActionVisitor::apply(ActionAnimation &action)
 {
     if (isActive(action))
     {
@@ -181,7 +181,7 @@ void UpdateActionVisitor::apply(ActionAnimation&action)
     }
 }
 
-void UpdateActionVisitor::apply(ActionStripAnimation&action)
+void UpdateActionVisitor::apply(ActionStripAnimation &action)
 {
     if (isActive(action))
     {
@@ -195,7 +195,7 @@ void UpdateActionVisitor::apply(ActionStripAnimation&action)
 ClearActionVisitor::ClearActionVisitor(ClearType type) : _clearType(type)
 {}
 
-void ClearActionVisitor::apply(Timeline&tm)
+void ClearActionVisitor::apply(Timeline &tm)
 {
     _remove.clear();
     tm.traverse(*this);
@@ -203,7 +203,7 @@ void ClearActionVisitor::apply(Timeline&tm)
     for (int i = 0; i < (int)_remove.size(); i++)
         tm.removeAction(_remove[i].get());
 }
-void ClearActionVisitor::apply(Action&action)
+void ClearActionVisitor::apply(Action &action)
 {
     FrameAction fa = _stackFrameAction.back();
 

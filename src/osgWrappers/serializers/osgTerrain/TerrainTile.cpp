@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _tileID
-static bool checkTileID(const osgTerrain::TerrainTile&tile)
+static bool checkTileID(const osgTerrain::TerrainTile &tile)
 {
     return tile.getTileID().valid();
 }
 
-static bool readTileID(osgDB::InputStream&is, osgTerrain::TerrainTile&tile)
+static bool readTileID(osgDB::InputStream &is, osgTerrain::TerrainTile &tile)
 {
     osgTerrain::TileID id;
 
@@ -18,21 +18,21 @@ static bool readTileID(osgDB::InputStream&is, osgTerrain::TerrainTile&tile)
     return true;
 }
 
-static bool writeTileID(osgDB::OutputStream&os, const osgTerrain::TerrainTile&tile)
+static bool writeTileID(osgDB::OutputStream &os, const osgTerrain::TerrainTile &tile)
 {
-    const osgTerrain::TileID&id = tile.getTileID();
+    const osgTerrain::TileID &id = tile.getTileID();
 
     os << id.level << id.x << id.y << std::endl;
     return true;
 }
 
 // _colorLayers
-static bool checkColorLayers(const osgTerrain::TerrainTile&tile)
+static bool checkColorLayers(const osgTerrain::TerrainTile &tile)
 {
     return tile.getNumColorLayers() > 0;
 }
 
-static bool readColorLayers(osgDB::InputStream&is, osgTerrain::TerrainTile&tile)
+static bool readColorLayers(osgDB::InputStream &is, osgTerrain::TerrainTile &tile)
 {
     unsigned int numValidLayers = 0; is >> numValidLayers >> is.BEGIN_BRACKET;
 
@@ -48,7 +48,7 @@ static bool readColorLayers(osgDB::InputStream&is, osgTerrain::TerrainTile&tile)
     return true;
 }
 
-static bool writeColorLayers(osgDB::OutputStream&os, const osgTerrain::TerrainTile&tile)
+static bool writeColorLayers(osgDB::OutputStream &os, const osgTerrain::TerrainTile &tile)
 {
     unsigned int numValidLayers = 0;
 
@@ -72,9 +72,9 @@ static bool writeColorLayers(osgDB::OutputStream&os, const osgTerrain::TerrainTi
 
 struct TerrainTileFinishedObjectReadCallback : public osgDB::FinishedObjectReadCallback
 {
-    virtual void objectRead(osgDB::InputStream&is, osg::Object&obj)
+    virtual void objectRead(osgDB::InputStream &is, osg::Object &obj)
     {
-        osgTerrain::TerrainTile&tile = static_cast<osgTerrain::TerrainTile&>(obj);
+        osgTerrain::TerrainTile &tile = static_cast<osgTerrain::TerrainTile&>(obj);
 
         if (is.getOptions())
         {

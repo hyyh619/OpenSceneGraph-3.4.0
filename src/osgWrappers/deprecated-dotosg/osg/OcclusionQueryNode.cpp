@@ -25,8 +25,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool OQN_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool OQN_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool OQN_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool OQN_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(OcclusionQueryNode)
 (
@@ -37,11 +37,11 @@ REGISTER_DOTOSGWRAPPER(OcclusionQueryNode)
     OQN_writeLocalData
 );
 
-bool OQN_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool OQN_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osg::OcclusionQueryNode&oqn = static_cast<osg::OcclusionQueryNode&>(obj);
-    bool                   advanced(false);
-    int                    param;
+    osg::OcclusionQueryNode &oqn = static_cast<osg::OcclusionQueryNode&>(obj);
+    bool                    advanced(false);
+    int                     param;
 
     if (fr[0].matchWord("QueriesEnabled"))
     {
@@ -78,9 +78,9 @@ bool OQN_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return advanced;
 }
 
-bool OQN_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool OQN_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osg::OcclusionQueryNode&oqn = static_cast<const osg::OcclusionQueryNode&>(obj);
+    const osg::OcclusionQueryNode &oqn = static_cast<const osg::OcclusionQueryNode&>(obj);
 
     // fw.writeObject( oqn.getOQN(i));
 

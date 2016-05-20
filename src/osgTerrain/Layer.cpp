@@ -16,7 +16,7 @@
 
 using namespace osgTerrain;
 
-void osgTerrain::extractSetNameAndFileName(const std::string&compoundstring, std::string&setname, std::string&filename)
+void osgTerrain::extractSetNameAndFileName(const std::string &compoundstring, std::string &setname, std::string &filename)
 {
     std::string::size_type setcolonpos = compoundstring.find("set:");
 
@@ -46,7 +46,7 @@ void osgTerrain::extractSetNameAndFileName(const std::string&compoundstring, std
     filename = compoundstring.substr(secondcolonpos + 1, std::string::npos);
 }
 
-std::string osgTerrain::createCompoundSetNameAndFileName(const std::string&setname, const std::string&filename)
+std::string osgTerrain::createCompoundSetNameAndFileName(const std::string &setname, const std::string &filename)
 {
     if (setname.empty())
         return filename;
@@ -62,7 +62,7 @@ Layer::Layer() :
     _magFilter(osg::Texture::LINEAR)
 {}
 
-Layer::Layer(const Layer&layer, const osg::CopyOp&copyop) :
+Layer::Layer(const Layer &layer, const osg::CopyOp &copyop) :
     osg::Object(layer, copyop),
     _filename(layer._filename),
     _minLevel(layer._minLevel),
@@ -136,7 +136,7 @@ ImageLayer::ImageLayer(osg::Image *image) :
     _image(image)
 {}
 
-ImageLayer::ImageLayer(const ImageLayer&imageLayer, const osg::CopyOp&copyop) :
+ImageLayer::ImageLayer(const ImageLayer &imageLayer, const osg::CopyOp &copyop) :
     Layer(imageLayer, copyop),
     _image(imageLayer._image)
 {}
@@ -147,7 +147,7 @@ void ImageLayer::setImage(osg::Image *image)
 }
 
 template<typename T, class O>
-void _processRow(unsigned int num, GLenum pixelFormat, T *data, const O&operation)
+void _processRow(unsigned int num, GLenum pixelFormat, T *data, const O &operation)
 {
     switch (pixelFormat)
     {
@@ -196,7 +196,7 @@ void _processRow(unsigned int num, GLenum pixelFormat, T *data, const O&operatio
 }
 
 template<class O>
-void processRow(unsigned int num, GLenum pixelFormat, GLenum dataType, unsigned char *data, const O&operation)
+void processRow(unsigned int num, GLenum pixelFormat, GLenum dataType, unsigned char *data, const O &operation)
 {
     switch (dataType)
     {
@@ -217,7 +217,7 @@ void processRow(unsigned int num, GLenum pixelFormat, GLenum dataType, unsigned 
 }
 
 template<class O>
-void processImage(osg::Image *image, const O&operation)
+void processImage(osg::Image *image, const O &operation)
 {
     if (!image)
         return;
@@ -237,31 +237,31 @@ struct TransformOperator
         _offset(offset),
         _scale(scale) {}
 
-    inline void operator()(unsigned char&v) const
+    inline void operator()(unsigned char &v) const
     {
         v = (unsigned char)(_offset + (float)v * _scale);
     }
-    inline void operator()(unsigned short&v) const
+    inline void operator()(unsigned short &v) const
     {
         v = (unsigned short)(_offset + (float)v * _scale);
     }
-    inline void operator()(unsigned int&v) const
+    inline void operator()(unsigned int &v) const
     {
         v = (unsigned int)(_offset + (float)v * _scale);
     }
-    inline void operator()(char&v) const
+    inline void operator()(char &v) const
     {
         v = (char)(_offset + (float)v * _scale);
     }
-    inline void operator()(short&v) const
+    inline void operator()(short &v) const
     {
         v = (short)(_offset + (float)v * _scale);
     }
-    inline void operator()(int&v) const
+    inline void operator()(int &v) const
     {
         v = (int)(_offset + (float)v * _scale);
     }
-    inline void operator()(float&v) const
+    inline void operator()(float &v) const
     {
         v = _offset + v * _scale;
     }
@@ -284,7 +284,7 @@ bool ImageLayer::transform(float offset, float scale)
     return true;
 }
 
-bool ImageLayer::getValue(unsigned int i, unsigned int j, float&value) const
+bool ImageLayer::getValue(unsigned int i, unsigned int j, float &value) const
 {
     const unsigned char *data = _image->data(i, j);
 
@@ -385,7 +385,7 @@ ContourLayer::ContourLayer(osg::TransferFunction1D *tf) :
     _magFilter = osg::Texture::NEAREST;
 }
 
-ContourLayer::ContourLayer(const ContourLayer&contourLayer, const osg::CopyOp&copyop) :
+ContourLayer::ContourLayer(const ContourLayer &contourLayer, const osg::CopyOp &copyop) :
     Layer(contourLayer, copyop),
     _tf(contourLayer._tf)
 {}
@@ -408,7 +408,7 @@ bool ContourLayer::transform(float offset, float scale)
          itr != newColorMap.end();
          ++itr)
     {
-        osg::Vec4&value = itr->second;
+        osg::Vec4 &value = itr->second;
         value.r() = offset + value.r() * scale;
         value.g() = offset + value.g() * scale;
         value.b() = offset + value.b() * scale;
@@ -422,35 +422,35 @@ bool ContourLayer::transform(float offset, float scale)
     return true;
 }
 
-bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, float&value) const
+bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, float &value) const
 {
     if (!_tf)
         return false;
 
-    const osg::Vec4&v = _tf->getPixelValue(i);
+    const osg::Vec4 &v = _tf->getPixelValue(i);
     value = v[0];
 
     return true;
 }
 
-bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, osg::Vec2&value) const
+bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, osg::Vec2 &value) const
 {
     if (!_tf)
         return false;
 
-    const osg::Vec4&v = _tf->getPixelValue(i);
+    const osg::Vec4 &v = _tf->getPixelValue(i);
     value.x() = v.x();
     value.y() = v.y();
 
     return true;
 }
 
-bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, osg::Vec3&value) const
+bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, osg::Vec3 &value) const
 {
     if (!_tf)
         return false;
 
-    const osg::Vec4&v = _tf->getPixelValue(i);
+    const osg::Vec4 &v = _tf->getPixelValue(i);
     value.x() = v.x();
     value.y() = v.y();
     value.z() = v.z();
@@ -458,7 +458,7 @@ bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, osg::Vec3&value)
     return true;
 }
 
-bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, osg::Vec4&value) const
+bool ContourLayer::getValue(unsigned int i, unsigned int /*j*/, osg::Vec4 &value) const
 {
     if (!_tf)
         return false;
@@ -498,7 +498,7 @@ HeightFieldLayer::HeightFieldLayer(osg::HeightField *hf) :
     _heightField(hf)
 {}
 
-HeightFieldLayer::HeightFieldLayer(const HeightFieldLayer&hfLayer, const osg::CopyOp&copyop) :
+HeightFieldLayer::HeightFieldLayer(const HeightFieldLayer &hfLayer, const osg::CopyOp &copyop) :
     Layer(hfLayer, copyop),
     _modifiedCount(0),
     _heightField(hfLayer._heightField)
@@ -539,20 +539,20 @@ bool HeightFieldLayer::transform(float offset, float scale)
     return true;
 }
 
-bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, float&value) const
+bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, float &value) const
 {
     value = _heightField->getHeight(i, j);
     return true;
 }
 
-bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, osg::Vec2&value) const
+bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, osg::Vec2 &value) const
 {
     value.x() = _heightField->getHeight(i, j);
     value.y() = _defaultValue.y();
     return true;
 }
 
-bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, osg::Vec3&value) const
+bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, osg::Vec3 &value) const
 {
     value.x() = _heightField->getHeight(i, j);
     value.y() = _defaultValue.y();
@@ -560,7 +560,7 @@ bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, osg::Vec3&value)
     return true;
 }
 
-bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, osg::Vec4&value) const
+bool HeightFieldLayer::getValue(unsigned int i, unsigned int j, osg::Vec4 &value) const
 {
     value.x() = _heightField->getHeight(i, j);
     value.y() = _defaultValue.y();
@@ -591,14 +591,14 @@ unsigned int HeightFieldLayer::getModifiedCount() const
 ProxyLayer::ProxyLayer()
 {}
 
-ProxyLayer::ProxyLayer(const ProxyLayer&proxyLayer, const osg::CopyOp&copyop) :
+ProxyLayer::ProxyLayer(const ProxyLayer &proxyLayer, const osg::CopyOp &copyop) :
     Layer(proxyLayer, copyop)
 {}
 
 ProxyLayer::~ProxyLayer()
 {}
 
-void ProxyLayer::setFileName(const std::string&filename)
+void ProxyLayer::setFileName(const std::string &filename)
 {
     _filename = filename;
     if (_implementation.valid())
@@ -631,7 +631,7 @@ bool ProxyLayer::transform(float offset, float scale)
         return false;
 }
 
-bool ProxyLayer::getValue(unsigned int i, unsigned int j, float&value) const
+bool ProxyLayer::getValue(unsigned int i, unsigned int j, float &value) const
 {
     if (_implementation.valid())
         return _implementation->getValue(i, j, value);
@@ -639,7 +639,7 @@ bool ProxyLayer::getValue(unsigned int i, unsigned int j, float&value) const
         return false;
 }
 
-bool ProxyLayer::getValue(unsigned int i, unsigned int j, osg::Vec2&value) const
+bool ProxyLayer::getValue(unsigned int i, unsigned int j, osg::Vec2 &value) const
 {
     if (_implementation.valid())
         return _implementation->getValue(i, j, value);
@@ -647,7 +647,7 @@ bool ProxyLayer::getValue(unsigned int i, unsigned int j, osg::Vec2&value) const
         return false;
 }
 
-bool ProxyLayer::getValue(unsigned int i, unsigned int j, osg::Vec3&value) const
+bool ProxyLayer::getValue(unsigned int i, unsigned int j, osg::Vec3 &value) const
 {
     if (_implementation.valid())
         return _implementation->getValue(i, j, value);
@@ -655,7 +655,7 @@ bool ProxyLayer::getValue(unsigned int i, unsigned int j, osg::Vec3&value) const
         return false;
 }
 
-bool ProxyLayer::getValue(unsigned int i, unsigned int j, osg::Vec4&value) const
+bool ProxyLayer::getValue(unsigned int i, unsigned int j, osg::Vec4 &value) const
 {
     if (_implementation.valid())
         return _implementation->getValue(i, j, value);
@@ -698,7 +698,7 @@ osg::BoundingSphere ProxyLayer::computeBound(bool treatAsElevationLayer) const
 CompositeLayer::CompositeLayer()
 {}
 
-CompositeLayer::CompositeLayer(const CompositeLayer&compositeLayer, const osg::CopyOp&copyop) :
+CompositeLayer::CompositeLayer(const CompositeLayer &compositeLayer, const osg::CopyOp &copyop) :
     Layer(compositeLayer, copyop)
 {}
 
@@ -708,7 +708,7 @@ void CompositeLayer::clear()
     _layers.clear();
 }
 
-void CompositeLayer::setCompoundName(unsigned int i, const std::string&compoundname)
+void CompositeLayer::setCompoundName(unsigned int i, const std::string &compoundname)
 {
     std::string setname;
     std::string filename;
@@ -724,7 +724,7 @@ std::string CompositeLayer::getCompoundName(unsigned int i) const
     return createCompoundSetNameAndFileName(_layers[i].setname, _layers[i].filename);
 }
 
-void CompositeLayer::addLayer(const std::string&compoundname)
+void CompositeLayer::addLayer(const std::string &compoundname)
 {
     std::string setname;
     std::string filename;
@@ -734,7 +734,7 @@ void CompositeLayer::addLayer(const std::string&compoundname)
     _layers.push_back(CompoundNameLayer(setname, filename, 0));
 }
 
-void CompositeLayer::addLayer(const std::string&setname, const std::string&filename)
+void CompositeLayer::addLayer(const std::string &setname, const std::string &filename)
 {
     _layers.push_back(CompoundNameLayer(setname, filename, 0));
 }
@@ -747,7 +747,7 @@ SwitchLayer::SwitchLayer() :
     _activeLayer(-1)
 {}
 
-SwitchLayer::SwitchLayer(const SwitchLayer&switchLayer, const osg::CopyOp&copyop) :
+SwitchLayer::SwitchLayer(const SwitchLayer &switchLayer, const osg::CopyOp &copyop) :
     CompositeLayer(switchLayer, copyop),
     _activeLayer(switchLayer._activeLayer)
 {}

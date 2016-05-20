@@ -14,7 +14,7 @@
 
 osg::Quat makeQuat(const FbxDouble3 &, EFbxRotationOrder);
 
-osg::Quat makeQuat(const osg::Vec3&radians, EFbxRotationOrder fbxRotOrder)
+osg::Quat makeQuat(const osg::Vec3 &radians, EFbxRotationOrder fbxRotOrder)
 {
     FbxDouble3 degrees(
         osg::RadiansToDegrees(radians.x()),
@@ -25,8 +25,8 @@ osg::Quat makeQuat(const osg::Vec3&radians, EFbxRotationOrder fbxRotOrder)
 }
 
 void readKeys(FbxAnimCurve *curveX, FbxAnimCurve *curveY, FbxAnimCurve *curveZ,
-              const FbxDouble3&defaultValue,
-              std::vector<osgAnimation::TemplateKeyframe<osg::Vec3> >&keyFrameCntr, float scalar = 1.0f)
+              const FbxDouble3 &defaultValue,
+              std::vector<osgAnimation::TemplateKeyframe<osg::Vec3> > &keyFrameCntr, float scalar = 1.0f)
 {
     FbxAnimCurve *curves[3] = {curveX, curveY, curveZ};
 
@@ -78,8 +78,8 @@ void readKeys(FbxAnimCurve *curveX, FbxAnimCurve *curveY, FbxAnimCurve *curveZ,
 }
 
 void readKeys(FbxAnimCurve *curveX, FbxAnimCurve *curveY, FbxAnimCurve *curveZ,
-              const FbxDouble3&defaultValue,
-              std::vector<osgAnimation::Vec3CubicBezierKeyframe>&keyFrameCntr, float scalar = 1.0f)
+              const FbxDouble3 &defaultValue,
+              std::vector<osgAnimation::Vec3CubicBezierKeyframe> &keyFrameCntr, float scalar = 1.0f)
 {
     FbxAnimCurve *curves[3] = {curveX, curveY, curveZ};
 
@@ -154,7 +154,7 @@ void readKeys(FbxAnimCurve *curveX, FbxAnimCurve *curveY, FbxAnimCurve *curveZ,
 // osgAnimation requires control points to be in a weird order. This function
 // reorders them from the conventional order to osgAnimation order.
 template<typename T>
-void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> >&vkfCont)
+void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> > &vkfCont)
 {
     if (vkfCont.size() <= 1)
     {
@@ -188,7 +188,7 @@ void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::
 
 osgAnimation::Channel* readFbxChannels(FbxAnimCurve *curveX, FbxAnimCurve *curveY,
                                        FbxAnimCurve *curveZ,
-                                       const FbxDouble3&defaultValue,
+                                       const FbxDouble3 &defaultValue,
                                        const char *targetName, const char *channelName)
 {
     if (!(curveX && curveX->KeyGetCount()) &&
@@ -244,7 +244,7 @@ osgAnimation::Channel* readFbxChannels(FbxAnimCurve *curveX, FbxAnimCurve *curve
 }
 
 osgAnimation::Channel* readFbxChannels(
-    FbxPropertyT<FbxDouble3>&fbxProp, FbxAnimLayer *pAnimLayer,
+    FbxPropertyT<FbxDouble3> &fbxProp, FbxAnimLayer *pAnimLayer,
     const char *targetName, const char *channelName)
 {
     if (!fbxProp.IsValid())
@@ -260,7 +260,7 @@ osgAnimation::Channel* readFbxChannels(
 
 osgAnimation::Channel* readFbxChannelsQuat(
     FbxAnimCurve *curveX, FbxAnimCurve *curveY, FbxAnimCurve *curveZ,
-    const FbxDouble3&defaultValue,
+    const FbxDouble3 &defaultValue,
     const char *targetName, EFbxRotationOrder rotOrder)
 {
     if (!(curveX && curveX->KeyGetCount()) &&
@@ -277,14 +277,14 @@ osgAnimation::Channel* readFbxChannelsQuat(
     KeyFrameCntr eulerFrameCntr;
     readKeys(curveX, curveY, curveZ, defaultValue, eulerFrameCntr, static_cast<float>(osg::PI / 180.0));
 
-    osgAnimation::QuatSphericalLinearSampler::KeyframeContainerType&quatFrameCntr =
+    osgAnimation::QuatSphericalLinearSampler::KeyframeContainerType &quatFrameCntr =
         *pChannel->getOrCreateSampler()->getOrCreateKeyframeContainer();
     quatFrameCntr.reserve(eulerFrameCntr.size());
 
     for (KeyFrameCntr::iterator it = eulerFrameCntr.begin(), end = eulerFrameCntr.end();
          it != end; ++it)
     {
-        const osg::Vec3&euler = it->getValue();
+        const osg::Vec3 &euler = it->getValue();
         quatFrameCntr.push_back(osgAnimation::QuatKeyframe(
                                     it->getTime(), makeQuat(euler, rotOrder)));
     }
@@ -296,7 +296,7 @@ osgAnimation::Animation* addChannels(
     osgAnimation::Channel *pTranslationChannel,
     osgAnimation::Channel *pRotationChannels[],
     osgAnimation::Channel *pScaleChannel,
-    osg::ref_ptr<osgAnimation::AnimationManagerBase>&pAnimManager,
+    osg::ref_ptr<osgAnimation::AnimationManagerBase> &pAnimManager,
     const char *pTakeName)
 {
     if (pTranslationChannel ||
@@ -308,8 +308,8 @@ osgAnimation::Animation* addChannels(
         if (!pAnimManager)
             pAnimManager = new osgAnimation::BasicAnimationManager;
 
-        osgAnimation::Animation          *pAnimation = 0;
-        const osgAnimation::AnimationList&anims      = pAnimManager->getAnimationList();
+        osgAnimation::Animation           *pAnimation = 0;
+        const osgAnimation::AnimationList &anims      = pAnimManager->getAnimationList();
 
         for (size_t i = 0; i < anims.size(); ++i)
         {
@@ -461,7 +461,7 @@ void readFbxRotationAnimation(osgAnimation::Channel *channels[3],
 
 osgAnimation::Animation* readFbxAnimation(FbxNode *pNode,
                                           FbxAnimLayer *pAnimLayer, const char *pTakeName, const char *targetName,
-                                          osg::ref_ptr<osgAnimation::AnimationManagerBase>&pAnimManager)
+                                          osg::ref_ptr<osgAnimation::AnimationManagerBase> &pAnimManager)
 {
     osgAnimation::Channel *pTranslationChannel  = 0;
     osgAnimation::Channel *pRotationChannels[3] = {0};

@@ -372,7 +372,7 @@ ref_ptr<PrimitiveSet> VTXReader::processStrip(unsigned short *indexArray,
 }
 
 
-bool VTXReader::readFile(const std::string&file)
+bool VTXReader::readFile(const std::string &file)
 {
     osgDB::ifstream *vtxFile;
     VTXHeader       header;

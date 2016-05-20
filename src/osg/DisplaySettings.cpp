@@ -49,7 +49,7 @@ ref_ptr<DisplaySettings>&DisplaySettings::instance()
 
 OSG_INIT_SINGLETON_PROXY(ProxyInitDisplaySettings, DisplaySettings::instance())
 
-DisplaySettings::DisplaySettings(const DisplaySettings&vs) : Referenced(true)
+DisplaySettings::DisplaySettings(const DisplaySettings &vs) : Referenced(true)
 {
     setDisplaySettings(vs);
 }
@@ -58,7 +58,7 @@ DisplaySettings::~DisplaySettings()
 {}
 
 
-DisplaySettings&DisplaySettings::operator =(const DisplaySettings&vs)
+DisplaySettings&DisplaySettings::operator =(const DisplaySettings &vs)
 {
     if (this == &vs)
         return *this;
@@ -67,7 +67,7 @@ DisplaySettings&DisplaySettings::operator =(const DisplaySettings&vs)
     return *this;
 }
 
-void DisplaySettings::setDisplaySettings(const DisplaySettings&vs)
+void DisplaySettings::setDisplaySettings(const DisplaySettings &vs)
 {
     _displayType    = vs._displayType;
     _stereo         = vs._stereo;
@@ -125,7 +125,7 @@ void DisplaySettings::setDisplaySettings(const DisplaySettings&vs)
     _OSXMenubarBehavior = vs._OSXMenubarBehavior;
 }
 
-void DisplaySettings::merge(const DisplaySettings&vs)
+void DisplaySettings::merge(const DisplaySettings &vs)
 {
     if (_stereo || vs._stereo)
         _stereo = true;
@@ -755,7 +755,7 @@ void DisplaySettings::readEnvironmentalVariables()
     }
 }
 
-void DisplaySettings::readCommandLine(ArgumentParser&arguments)
+void DisplaySettings::readCommandLine(ArgumentParser &arguments)
 {
     if (_application.empty())
         _application = arguments[0];
@@ -1014,7 +1014,7 @@ void DisplaySettings::readCommandLine(ArgumentParser&arguments)
 //
 // Helper funciotns for computing projection and view matrices of left and right eyes
 //
-osg::Matrixd DisplaySettings::computeLeftEyeProjectionImplementation(const osg::Matrixd&projection) const
+osg::Matrixd DisplaySettings::computeLeftEyeProjectionImplementation(const osg::Matrixd &projection) const
 {
     double iod     = getEyeSeparation();
     double sd      = getScreenDistance();
@@ -1057,7 +1057,7 @@ osg::Matrixd DisplaySettings::computeLeftEyeProjectionImplementation(const osg::
     }
 }
 
-osg::Matrixd DisplaySettings::computeLeftEyeViewImplementation(const osg::Matrixd&view, double eyeSeperationScale) const
+osg::Matrixd DisplaySettings::computeLeftEyeViewImplementation(const osg::Matrixd &view, double eyeSeperationScale) const
 {
     double iod = getEyeSeparation();
     double es  = 0.5f * iod * eyeSeperationScale;
@@ -1069,7 +1069,7 @@ osg::Matrixd DisplaySettings::computeLeftEyeViewImplementation(const osg::Matrix
                         es, 0.0, 0.0, 1.0);
 }
 
-osg::Matrixd DisplaySettings::computeRightEyeProjectionImplementation(const osg::Matrixd&projection) const
+osg::Matrixd DisplaySettings::computeRightEyeProjectionImplementation(const osg::Matrixd &projection) const
 {
     double iod     = getEyeSeparation();
     double sd      = getScreenDistance();
@@ -1112,7 +1112,7 @@ osg::Matrixd DisplaySettings::computeRightEyeProjectionImplementation(const osg:
     }
 }
 
-osg::Matrixd DisplaySettings::computeRightEyeViewImplementation(const osg::Matrixd&view, double eyeSeperationScale) const
+osg::Matrixd DisplaySettings::computeRightEyeViewImplementation(const osg::Matrixd &view, double eyeSeperationScale) const
 {
     double iod = getEyeSeparation();
     double es  = 0.5 * iod * eyeSeperationScale;

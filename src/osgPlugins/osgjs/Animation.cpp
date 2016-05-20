@@ -11,7 +11,7 @@
 #include <osgAnimation/StackedRotateAxisElement>
 #include "JSON_Objects"
 
-static bool addJSONChannelVec3(osgAnimation::Vec3LinearChannel *channel, JSONObject&anim)
+static bool addJSONChannelVec3(osgAnimation::Vec3LinearChannel *channel, JSONObject &anim)
 {
     if (channel && channel->getSampler())
     {
@@ -46,7 +46,7 @@ static bool addJSONChannelVec3(osgAnimation::Vec3LinearChannel *channel, JSONObj
 
 
 
-static bool addJSONChannelFloat(osgAnimation::FloatLinearChannel *channel, JSONObject&anim)
+static bool addJSONChannelFloat(osgAnimation::FloatLinearChannel *channel, JSONObject &anim)
 {
     if (channel->getSampler())
     {
@@ -78,7 +78,7 @@ static bool addJSONChannelFloat(osgAnimation::FloatLinearChannel *channel, JSONO
 }
 
 
-static bool addJSONChannelQuaternion(osgAnimation::QuatSphericalLinearChannel *channel, JSONObject&anim)
+static bool addJSONChannelQuaternion(osgAnimation::QuatSphericalLinearChannel *channel, JSONObject &anim)
 {
     if (channel->getSampler())
     {
@@ -109,7 +109,7 @@ static bool addJSONChannelQuaternion(osgAnimation::QuatSphericalLinearChannel *c
     return false;
 }
 
-static void addJSONChannel(osgAnimation::Channel *channel, JSONObject&anim)
+static void addJSONChannel(osgAnimation::Channel *channel, JSONObject &anim)
 {
     {
         osgAnimation::Vec3LinearChannel *c = dynamic_cast<osgAnimation::Vec3LinearChannel*>(channel);
@@ -156,7 +156,7 @@ JSONObject* createJSONAnimation(osgAnimation::Animation *anim)
 
 
 
-JSONObject* createJSONUpdateMatrixTransform(osgAnimation::UpdateMatrixTransform&acb)
+JSONObject* createJSONUpdateMatrixTransform(osgAnimation::UpdateMatrixTransform &acb)
 {
     std::string              name = acb.getName();
     osg::ref_ptr<JSONObject> json = new JSONObject;
@@ -166,7 +166,7 @@ JSONObject* createJSONUpdateMatrixTransform(osgAnimation::UpdateMatrixTransform&
     osg::ref_ptr<JSONArray> jsonStackedArray = new JSONArray();
     json->getMaps()["StackedTransforms"] = jsonStackedArray;
 
-    osgAnimation::StackedTransform&st = acb.getStackedTransforms();
+    osgAnimation::StackedTransform &st = acb.getStackedTransforms();
 
     for (unsigned int i = 0; i < st.size(); i++)
     {

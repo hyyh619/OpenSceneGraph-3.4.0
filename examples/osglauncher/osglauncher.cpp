@@ -62,11 +62,11 @@ PickHandler(osgViewer::Viewer *viewer, osgText::Text *updateText) :
 
 ~PickHandler() {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us);
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us);
 
-std::string pick(const osgGA::GUIEventAdapter&event);
+std::string pick(const osgGA::GUIEventAdapter &event);
 
-void highlight(const std::string&name)
+void highlight(const std::string &name)
 {
     if (_updateText.get())
         _updateText->setText(name);
@@ -78,7 +78,7 @@ osgViewer::Viewer           *_viewer;
 osg::ref_ptr<osgText::Text> _updateText;
 };
 
-bool PickHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool PickHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -112,7 +112,7 @@ bool PickHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapte
 }
 
 
-std::string PickHandler::pick(const osgGA::GUIEventAdapter&event)
+std::string PickHandler::pick(const osgGA::GUIEventAdapter &event)
 {
     osgUtil::LineSegmentIntersector::Intersections intersections;
 
@@ -215,7 +215,7 @@ void printList()
 
     for (OP i = Xamplelist.begin(); i != Xamplelist.end(); ++i)
     {
-        Xample&x = *i;
+        Xample &x = *i;
         osg::notify(osg::INFO) << "current x.texture = " << x.getTexture() << std::endl;
         osg::notify(osg::INFO) << "current x.app = " << x.getApp() << std::endl;
     }
@@ -230,7 +230,7 @@ int runApp(std::string xapp)
 
     for (OP i = Xamplelist.begin(); i != Xamplelist.end(); ++i)
     {
-        Xample&x = *i;
+        Xample &x = *i;
         if (!xapp.compare(x.getApp()))
         {
             osg::notify(osg::INFO) << "app found!" << std::endl;
@@ -362,7 +362,7 @@ osg::PositionAttitudeTransform* getPATransformation(osg::Node *object, osg::Vec3
 
 void printBoundings(osg::Node *current, std::string name)
 {
-    const osg::BoundingSphere&currentBound = current->getBound();
+    const osg::BoundingSphere &currentBound = current->getBound();
     osg::notify(osg::INFO) << name << std::endl;
     osg::notify(osg::INFO) << "center = " << currentBound.center() << std::endl;
     osg::notify(osg::INFO) << "radius = " << currentBound.radius() << std::endl;
@@ -396,7 +396,7 @@ osg::Group* setupGraph()                                                        
 
     for (OP i = Xamplelist.begin(); i != Xamplelist.end(); ++i, ++z)
     {
-        Xample&x = *i;
+        Xample &x = *i;
 
         osg::Node *tmpCube = createTexturedCube(defaultRadius, defaultPos, x.getTexture(), x.getApp());
         printBoundings(tmpCube, x.getApp());

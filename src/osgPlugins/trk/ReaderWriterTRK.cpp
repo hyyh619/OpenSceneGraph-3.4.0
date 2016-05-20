@@ -112,8 +112,8 @@ struct AssignDirectionColour
                     dv.normalize();
 
                     // assign colours
-                    osg::Vec4&c0 = (*colours)[vi_0];
-                    osg::Vec4&c1 = (*colours)[vi_1];
+                    osg::Vec4 &c0 = (*colours)[vi_0];
+                    osg::Vec4 &c1 = (*colours)[vi_1];
 
                     osg::Vec4 colour((dv.x() + 1.0f / 2.0f), (dv.y() + 1.0f / 2.0f), (dv.z() + 1.0f / 2.0f), 1.0f);
 
@@ -128,8 +128,8 @@ struct AssignDirectionColour
                         c1 += colour;
 
                     // assign normals
-                    osg::Vec3&n0 = (*normals)[vi_0];
-                    osg::Vec3&n1 = (*normals)[vi_1];
+                    osg::Vec3 &n0 = (*normals)[vi_0];
+                    osg::Vec3 &n1 = (*normals)[vi_1];
 
 #if 1
                     if (divisors[vi_0] == 0.0f)
@@ -215,17 +215,17 @@ virtual const char* className() const
 }
 
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readNode(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readNode(file, options);
 }
 
-virtual ReadResult readNode(std::istream&fin, const osgDB::ReaderWriter::Options* = NULL) const
+virtual ReadResult readNode(std::istream &fin, const osgDB::ReaderWriter::Options* = NULL) const
 {
     TrkHeader header;
 
@@ -357,7 +357,7 @@ virtual ReadResult readNode(std::istream&fin, const osgDB::ReaderWriter::Options
     return geode.release();
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

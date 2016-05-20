@@ -23,7 +23,7 @@
 
 namespace osgQt
 {
-QFontImplementation::QFontImplementation(const QFont&font) :
+QFontImplementation::QFontImplementation(const QFont &font) :
     _filename(font.toString().toStdString() + ".qfont"),
     _font(font)
 {}
@@ -38,7 +38,7 @@ QFontImplementation::getFileName() const
 }
 
 osgText::Glyph*
-QFontImplementation::getGlyph(const osgText::FontResolution&fontRes, unsigned int charcode)
+QFontImplementation::getGlyph(const osgText::FontResolution &fontRes, unsigned int charcode)
 {
     unsigned int fontSize = fontRes.second;
 

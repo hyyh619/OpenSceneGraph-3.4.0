@@ -237,7 +237,7 @@ public:
 Teapot() {}
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-Teapot(const Teapot&teapot, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) :
+Teapot(const Teapot &teapot, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
     osg::Drawable(teapot, copyop) {}
 
 META_Object(myTeapotApp, Teapot)

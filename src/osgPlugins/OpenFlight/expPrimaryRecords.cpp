@@ -43,7 +43,7 @@
 namespace flt
 {
 void
-FltExportVisitor::writeHeader(const std::string&headerName)
+FltExportVisitor::writeHeader(const std::string &headerName)
 {
     int16     length;
     int32     version;
@@ -177,7 +177,7 @@ static const unsigned int SWING_ANIM   = 0x80000000u >> 2;
 //  Convenience routine for writing Group nodes that aren't animated
 //
 void
-FltExportVisitor::writeGroup(const osg::Group&group)
+FltExportVisitor::writeGroup(const osg::Group &group)
 {
     int32   flags        = 0, loopCount = 0;
     float32 loopDuration = 0.0f, lastFrameDuration = 0.0f;
@@ -188,7 +188,7 @@ FltExportVisitor::writeGroup(const osg::Group&group)
 
 
 void
-FltExportVisitor::writeGroup(const osg::Group&group,
+FltExportVisitor::writeGroup(const osg::Group &group,
                              int32 flags,
                              int32 loopCount,
                              float32 loopDuration,
@@ -221,7 +221,7 @@ FltExportVisitor::writeGroup(const osg::Group&group,
 //  parameters for a Group record and simply forwards to writeGroup()
 //
 void
-FltExportVisitor::writeSequence(const osg::Sequence&sequence)
+FltExportVisitor::writeSequence(const osg::Sequence &sequence)
 {
     int32   flags        = 0, loopCount = 0;
     float32 loopDuration = 0.0f, lastFrameDuration = 0.0f;
@@ -279,7 +279,7 @@ FltExportVisitor::writeSequence(const osg::Sequence&sequence)
 
 
 void
-FltExportVisitor::writeObject(const osg::Group&group, osgSim::ObjectRecordData *ord)
+FltExportVisitor::writeObject(const osg::Group &group, osgSim::ObjectRecordData *ord)
 {
     uint16   length(28);
     IdHelper id(*this, group.getName());
@@ -307,7 +307,7 @@ FltExportVisitor::writeObject(const osg::Group&group, osgSim::ObjectRecordData *
 void
 FltExportVisitor::writeDegreeOfFreedom(const osgSim::DOFTransform *dof)
 {
-    const osg::Matrix&invPut = dof->getInversePutMatrix();
+    const osg::Matrix &invPut = dof->getInversePutMatrix();
 
     // Origin of DOF coord sys
     osg::Vec3d origin(invPut.getTrans());
@@ -412,7 +412,7 @@ static const unsigned long LIGHT_POINT_PALETTE_OVERRIDE  = 0x80000000u >> 6;
 static const unsigned long SHADER_PALETTE_OVERRIDE       = 0x80000000u >> 7;
 
 void
-FltExportVisitor::writeExternalReference(const osg::ProxyNode&proxy)
+FltExportVisitor::writeExternalReference(const osg::ProxyNode &proxy)
 {
     uint16 length(216);
 
@@ -454,8 +454,8 @@ FltExportVisitor::writeExternalReference(const osg::ProxyNode&proxy)
 }
 
 void
-FltExportVisitor::writeLevelOfDetail(const osg::LOD&lod,
-                                     osg::Vec3d const&center,
+FltExportVisitor::writeLevelOfDetail(const osg::LOD &lod,
+                                     osg::Vec3d const &center,
                                      double switchInDist,
                                      double switchOutDist)
 {
@@ -479,7 +479,7 @@ FltExportVisitor::writeLevelOfDetail(const osg::LOD&lod,
 }
 
 void
-FltExportVisitor::writeLightSource(const osg::LightSource&node)
+FltExportVisitor::writeLightSource(const osg::LightSource &node)
 {
     static const unsigned int ENABLED = 0x80000000u >> 0;
     static const unsigned int GLOBAL  = 0x80000000u >> 1;
@@ -487,8 +487,8 @@ FltExportVisitor::writeLightSource(const osg::LightSource&node)
     osg::Light const *light = node.getLight();
     int              index  = _lightSourcePalette->add(light);
 
-    osg::Vec4d const&lightPos = light->getPosition();
-    osg::Vec3f const&lightDir = light->getDirection();
+    osg::Vec4d const &lightPos = light->getPosition();
+    osg::Vec3f const &lightDir = light->getDirection();
 
     uint32              flags = 0;
     osg::StateSet const *ss   = getCurrentStateSet();
@@ -552,8 +552,8 @@ FltExportVisitor::writeSwitch(const osgSim::MultiSwitch *ms)
     for (int i = 0; i < numMasks; ++i)
     {
         // ... write out the set of 32-bit words comprising the mask
-        uint32                              maskWord  = 0;
-        const osgSim::MultiSwitch::ValueList&maskBits = ms->getValueList(i);
+        uint32                               maskWord  = 0;
+        const osgSim::MultiSwitch::ValueList &maskBits = ms->getValueList(i);
 
         for (size_t j = 0; j < maskBits.size(); ++j)
         {
@@ -604,8 +604,8 @@ FltExportVisitor::writeSwitch(const osg::Switch *sw)
     _records->writeInt32(numWordsPerMask);
 
     // Bust the mask up into as many 32-bit words as are necessary to hold it
-    uint32                      maskWord  = 0;
-    const osg::Switch::ValueList&maskBits = sw->getValueList();
+    uint32                       maskWord  = 0;
+    const osg::Switch::ValueList &maskBits = sw->getValueList();
 
     for (size_t i = 0; i < maskBits.size(); ++i)
     {
@@ -674,7 +674,7 @@ FltExportVisitor::writeLightPoint(const osgSim::LightPointNode *lpn)
     // and spew out multiple FLT records for each group that shared common appearance
     // parameters. Instead, we cheat: We take the first LightPoint and use its appearance
     // parameters for all LightPoints in the LightPointNode.
-    const osgSim::LightPoint&lp0 = lpn->getLightPoint(0);
+    const osgSim::LightPoint &lp0 = lpn->getLightPoint(0);
 
     // No really good mapping between OSG and FLT light point animations.
     float32 animPeriod(0.f);
@@ -760,7 +760,7 @@ FltExportVisitor::writeLightPoint(const osgSim::LightPointNode *lpn)
 
         for (idx = 0; idx < lpn->getNumLightPoints(); idx++)
         {
-            const osgSim::LightPoint&lp = lpn->getLightPoint(idx);
+            const osgSim::LightPoint &lp = lpn->getLightPoint(idx);
             (*v)[idx] = lp._position;
             (*c)[idx] = lp._color;
 

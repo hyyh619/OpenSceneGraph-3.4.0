@@ -69,7 +69,7 @@ void TabBoxDragger::setupDefaultGeometry()
         _planeDraggers[i]->setupDefaultGeometry(false);
 }
 
-void TabBoxDragger::setPlaneColor(const osg::Vec4&color)
+void TabBoxDragger::setPlaneColor(const osg::Vec4 &color)
 {
     for (unsigned int i = 0; i < _planeDraggers.size(); ++i)
         _planeDraggers[i]->setPlaneColor(color);

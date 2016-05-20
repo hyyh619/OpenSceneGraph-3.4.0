@@ -29,14 +29,14 @@ using namespace osgUtil;
 struct dereference_less
 {
     template<class T, class U>
-    inline bool operator()(const T&lhs, const U&rhs) const
+    inline bool operator()(const T &lhs, const U &rhs) const
     {
         return *lhs < *rhs;
     }
 };
 
 template<class T>
-bool dereference_check_less(const T&lhs, const T&rhs)
+bool dereference_check_less(const T &lhs, const T &rhs)
 {
     if (lhs == rhs)
         return false;
@@ -53,9 +53,9 @@ bool dereference_check_less(const T&lhs, const T&rhs)
 struct dereference_clear
 {
     template<class T>
-    inline void operator()(const T&t)
+    inline void operator()(const T &t)
     {
-        T&non_const_t = const_cast<T&>(t);
+        T &non_const_t = const_cast<T&>(t);
 
         non_const_t->clear();
     }
@@ -83,7 +83,7 @@ EdgeCollapse() :
 
 ~EdgeCollapse();
 
-void setGeometry(osg::Geometry *geometry, const Simplifier::IndexList&protectedPoints);
+void setGeometry(osg::Geometry *geometry, const Simplifier::IndexList &protectedPoints);
 osg::Geometry* getGeometry()
 {
     return _geometry;
@@ -149,8 +149,8 @@ error_type computeErrorMetric(Edge *edge, Point *point) const
         std::copy(edge->_p1->_triangles.begin(), edge->_p1->_triangles.end(), std::inserter(triangles, triangles.begin()));
         std::copy(edge->_p2->_triangles.begin(), edge->_p2->_triangles.end(), std::inserter(triangles, triangles.begin()));
 
-        const osg::Vec3&vertex = point->_vertex;
-        error_type     error   = 0.0;
+        const osg::Vec3 &vertex = point->_vertex;
+        error_type      error   = 0.0;
 
         if (triangles.empty())
             return 0.0;
@@ -310,7 +310,7 @@ struct Point : public osg::Referenced
         _triangles.clear();
     }
 
-    bool operator <(const Point&rhs) const
+    bool operator <(const Point &rhs) const
     {
         if (_vertex < rhs._vertex)
             return true;
@@ -377,7 +377,7 @@ struct Edge : public osg::Referenced
         return _errorMetric;
     }
 
-    bool operator <(const Edge&rhs) const
+    bool operator <(const Edge &rhs) const
     {
         // both error metrics are computed
         if (getErrorMetric() < rhs.getErrorMetric())
@@ -394,7 +394,7 @@ struct Edge : public osg::Referenced
         return dereference_check_less(_p2, rhs._p2);
     }
 
-    bool operator ==(const Edge&rhs) const
+    bool operator ==(const Edge &rhs) const
     {
         if (&rhs == this)
             return true;
@@ -408,7 +408,7 @@ struct Edge : public osg::Referenced
         return true;
     }
 
-    bool operator !=(const Edge&rhs) const
+    bool operator !=(const Edge &rhs) const
     {
         if (&rhs == this)
             return false;
@@ -486,7 +486,7 @@ struct Triangle : public osg::Referenced
         _e3 = 0;
     }
 
-    inline bool operator <(const Triangle&rhs) const
+    inline bool operator <(const Triangle &rhs) const
     {
         if (dereference_check_less(_p1, rhs._p1))
             return true;
@@ -561,7 +561,7 @@ struct Triangle : public osg::Referenced
         return result;
     }
 
-    error_type distance(const osg::Vec3&vertex) const
+    error_type distance(const osg::Vec3 &vertex) const
     {
         return error_type(_plane[0]) * error_type(vertex.x()) +
                error_type(_plane[1]) * error_type(vertex.y()) +
@@ -1397,11 +1397,11 @@ typedef osg::TriangleIndexFunctor<CollectTriangleOperator> CollectTriangleIndexF
 class CopyArrayToPointsVisitor : public osg::ArrayVisitor
 {
 public:
-CopyArrayToPointsVisitor(EdgeCollapse::PointList&pointList) :
+CopyArrayToPointsVisitor(EdgeCollapse::PointList &pointList) :
     _pointList(pointList) {}
 
 template<class T>
-void copy(T&array)
+void copy(T &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -1411,44 +1411,44 @@ void copy(T&array)
 }
 
 virtual void apply(osg::Array&) {}
-virtual void apply(osg::ByteArray&array)
+virtual void apply(osg::ByteArray &array)
 {
     copy(array);
 }
-virtual void apply(osg::ShortArray&array)
+virtual void apply(osg::ShortArray &array)
 {
     copy(array);
 }
-virtual void apply(osg::IntArray&array)
+virtual void apply(osg::IntArray &array)
 {
     copy(array);
 }
-virtual void apply(osg::UByteArray&array)
+virtual void apply(osg::UByteArray &array)
 {
     copy(array);
 }
-virtual void apply(osg::UShortArray&array)
+virtual void apply(osg::UShortArray &array)
 {
     copy(array);
 }
-virtual void apply(osg::UIntArray&array)
+virtual void apply(osg::UIntArray &array)
 {
     copy(array);
 }
-virtual void apply(osg::FloatArray&array)
+virtual void apply(osg::FloatArray &array)
 {
     copy(array);
 }
 
-virtual void apply(osg::Vec4ubArray&array)
+virtual void apply(osg::Vec4ubArray &array)
 {
     if (_pointList.size() != array.size())
         return;
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
-        osg::Vec4ub            &value      = array[i];
-        EdgeCollapse::FloatList&attributes = _pointList[i]->_attributes;
+        osg::Vec4ub             &value      = array[i];
+        EdgeCollapse::FloatList &attributes = _pointList[i]->_attributes;
         attributes.push_back((float)value.r());
         attributes.push_back((float)value.g());
         attributes.push_back((float)value.b());
@@ -1456,44 +1456,44 @@ virtual void apply(osg::Vec4ubArray&array)
     }
 }
 
-virtual void apply(osg::Vec2Array&array)
+virtual void apply(osg::Vec2Array &array)
 {
     if (_pointList.size() != array.size())
         return;
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
-        osg::Vec2              &value      = array[i];
-        EdgeCollapse::FloatList&attributes = _pointList[i]->_attributes;
+        osg::Vec2               &value      = array[i];
+        EdgeCollapse::FloatList &attributes = _pointList[i]->_attributes;
         attributes.push_back(value.x());
         attributes.push_back(value.y());
     }
 }
 
-virtual void apply(osg::Vec3Array&array)
+virtual void apply(osg::Vec3Array &array)
 {
     if (_pointList.size() != array.size())
         return;
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
-        osg::Vec3              &value      = array[i];
-        EdgeCollapse::FloatList&attributes = _pointList[i]->_attributes;
+        osg::Vec3               &value      = array[i];
+        EdgeCollapse::FloatList &attributes = _pointList[i]->_attributes;
         attributes.push_back(value.x());
         attributes.push_back(value.y());
         attributes.push_back(value.z());
     }
 }
 
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::Vec4Array &array)
 {
     if (_pointList.size() != array.size())
         return;
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
-        osg::Vec4              &value      = array[i];
-        EdgeCollapse::FloatList&attributes = _pointList[i]->_attributes;
+        osg::Vec4               &value      = array[i];
+        EdgeCollapse::FloatList &attributes = _pointList[i]->_attributes;
         attributes.push_back(value.x());
         attributes.push_back(value.y());
         attributes.push_back(value.z());
@@ -1501,7 +1501,7 @@ virtual void apply(osg::Vec4Array&array)
     }
 }
 
-EdgeCollapse::PointList&_pointList;
+EdgeCollapse::PointList &_pointList;
 
 
 protected:
@@ -1515,10 +1515,10 @@ CopyArrayToPointsVisitor&operator =(const CopyArrayToPointsVisitor&)
 class CopyVertexArrayToPointsVisitor : public osg::ArrayVisitor
 {
 public:
-CopyVertexArrayToPointsVisitor(EdgeCollapse::PointList&pointList) :
+CopyVertexArrayToPointsVisitor(EdgeCollapse::PointList &pointList) :
     _pointList(pointList) {}
 
-virtual void apply(osg::Vec2Array&array)
+virtual void apply(osg::Vec2Array &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -1528,13 +1528,13 @@ virtual void apply(osg::Vec2Array&array)
         _pointList[i]         = new EdgeCollapse::Point;
         _pointList[i]->_index = i;
 
-        osg::Vec2&value  = array[i];
-        osg::Vec3&vertex = _pointList[i]->_vertex;
+        osg::Vec2 &value  = array[i];
+        osg::Vec3 &vertex = _pointList[i]->_vertex;
         vertex.set(value.x(), value.y(), 0.0f);
     }
 }
 
-virtual void apply(osg::Vec3Array&array)
+virtual void apply(osg::Vec3Array &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -1548,7 +1548,7 @@ virtual void apply(osg::Vec3Array&array)
     }
 }
 
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::Vec4Array &array)
 {
     if (_pointList.size() != array.size())
         return;
@@ -1558,13 +1558,13 @@ virtual void apply(osg::Vec4Array&array)
         _pointList[i]         = new EdgeCollapse::Point;
         _pointList[i]->_index = i;
 
-        osg::Vec4&value  = array[i];
-        osg::Vec3&vertex = _pointList[i]->_vertex;
+        osg::Vec4 &value  = array[i];
+        osg::Vec3 &vertex = _pointList[i]->_vertex;
         vertex.set(value.x() / value.w(), value.y() / value.w(), value.z() / value.w());
     }
 }
 
-EdgeCollapse::PointList&_pointList;
+EdgeCollapse::PointList &_pointList;
 
 protected:
 
@@ -1574,7 +1574,7 @@ CopyVertexArrayToPointsVisitor&operator =(const CopyVertexArrayToPointsVisitor&)
 }
 };
 
-void EdgeCollapse::setGeometry(osg::Geometry *geometry, const Simplifier::IndexList&protectedPoints)
+void EdgeCollapse::setGeometry(osg::Geometry *geometry, const Simplifier::IndexList &protectedPoints)
 {
     _geometry = geometry;
 
@@ -1641,13 +1641,13 @@ void EdgeCollapse::setGeometry(osg::Geometry *geometry, const Simplifier::IndexL
 class CopyPointsToArrayVisitor : public osg::ArrayVisitor
 {
 public:
-CopyPointsToArrayVisitor(EdgeCollapse::PointList&pointList) :
+CopyPointsToArrayVisitor(EdgeCollapse::PointList &pointList) :
     _pointList(pointList),
     _index(0) {}
 
 
 template<typename T, typename R>
-void copy(T&array, R /*dummy*/)
+void copy(T &array, R /*dummy*/)
 {
     array.resize(_pointList.size());
 
@@ -1669,42 +1669,42 @@ typedef unsigned short dummy_ushort;
 typedef unsigned int dummy_uint;
 
 virtual void apply(osg::Array&) {}
-virtual void apply(osg::ByteArray&array)
+virtual void apply(osg::ByteArray &array)
 {
     copy(array, char());
 }
-virtual void apply(osg::ShortArray&array)
+virtual void apply(osg::ShortArray &array)
 {
     copy(array, short());
 }
-virtual void apply(osg::IntArray&array)
+virtual void apply(osg::IntArray &array)
 {
     copy(array, int());
 }
-virtual void apply(osg::UByteArray&array)
+virtual void apply(osg::UByteArray &array)
 {
     copy(array, dummy_uchar());
 }
-virtual void apply(osg::UShortArray&array)
+virtual void apply(osg::UShortArray &array)
 {
     copy(array, dummy_ushort());
 }
-virtual void apply(osg::UIntArray&array)
+virtual void apply(osg::UIntArray &array)
 {
     copy(array, dummy_uint());
 }
-virtual void apply(osg::FloatArray&array)
+virtual void apply(osg::FloatArray &array)
 {
     copy(array, float());
 }
 
-virtual void apply(osg::Vec4ubArray&array)
+virtual void apply(osg::Vec4ubArray &array)
 {
     array.resize(_pointList.size());
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
-        EdgeCollapse::FloatList&attributes = _pointList[i]->_attributes;
+        EdgeCollapse::FloatList &attributes = _pointList[i]->_attributes;
         array[i].set((unsigned char)attributes[_index],
                      (unsigned char)attributes[_index + 1],
                      (unsigned char)attributes[_index + 2],
@@ -1714,13 +1714,13 @@ virtual void apply(osg::Vec4ubArray&array)
     _index += 4;
 }
 
-virtual void apply(osg::Vec2Array&array)
+virtual void apply(osg::Vec2Array &array)
 {
     array.resize(_pointList.size());
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
-        EdgeCollapse::FloatList&attributes = _pointList[i]->_attributes;
+        EdgeCollapse::FloatList &attributes = _pointList[i]->_attributes;
         if (_index + 1 < attributes.size())
             array[i].set(attributes[_index], attributes[_index + 1]);
     }
@@ -1728,13 +1728,13 @@ virtual void apply(osg::Vec2Array&array)
     _index += 2;
 }
 
-virtual void apply(osg::Vec3Array&array)
+virtual void apply(osg::Vec3Array &array)
 {
     array.resize(_pointList.size());
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
-        EdgeCollapse::FloatList&attributes = _pointList[i]->_attributes;
+        EdgeCollapse::FloatList &attributes = _pointList[i]->_attributes;
         if (_index + 2 < attributes.size())
             array[i].set(attributes[_index], attributes[_index + 1], attributes[_index + 2]);
     }
@@ -1742,13 +1742,13 @@ virtual void apply(osg::Vec3Array&array)
     _index += 3;
 }
 
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::Vec4Array &array)
 {
     array.resize(_pointList.size());
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
-        EdgeCollapse::FloatList&attributes = _pointList[i]->_attributes;
+        EdgeCollapse::FloatList &attributes = _pointList[i]->_attributes;
         if (_index + 3 < attributes.size())
             array[i].set(attributes[_index], attributes[_index + 1], attributes[_index + 2], attributes[_index + 3]);
     }
@@ -1756,8 +1756,8 @@ virtual void apply(osg::Vec4Array&array)
     _index += 4;
 }
 
-EdgeCollapse::PointList&_pointList;
-unsigned int           _index;
+EdgeCollapse::PointList &_pointList;
+unsigned int            _index;
 
 protected:
 
@@ -1783,15 +1783,15 @@ void normalize(Itr begin, Itr end)
     }
 }
 
-virtual void apply(osg::Vec2Array&array)
+virtual void apply(osg::Vec2Array &array)
 {
     normalize(array.begin(), array.end());
 }
-virtual void apply(osg::Vec3Array&array)
+virtual void apply(osg::Vec3Array &array)
 {
     normalize(array.begin(), array.end());
 }
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::Vec4Array &array)
 {
     normalize(array.begin(), array.end());
 }
@@ -1800,22 +1800,22 @@ virtual void apply(osg::Vec4Array&array)
 class CopyPointsToVertexArrayVisitor : public osg::ArrayVisitor
 {
 public:
-CopyPointsToVertexArrayVisitor(EdgeCollapse::PointList&pointList) :
+CopyPointsToVertexArrayVisitor(EdgeCollapse::PointList &pointList) :
     _pointList(pointList) {}
 
-virtual void apply(osg::Vec2Array&array)
+virtual void apply(osg::Vec2Array &array)
 {
     array.resize(_pointList.size());
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
         _pointList[i]->_index = i;
-        osg::Vec3&vertex = _pointList[i]->_vertex;
+        osg::Vec3 &vertex = _pointList[i]->_vertex;
         array[i].set(vertex.x(), vertex.y());
     }
 }
 
-virtual void apply(osg::Vec3Array&array)
+virtual void apply(osg::Vec3Array &array)
 {
     array.resize(_pointList.size());
 
@@ -1826,19 +1826,19 @@ virtual void apply(osg::Vec3Array&array)
     }
 }
 
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::Vec4Array &array)
 {
     array.resize(_pointList.size());
 
     for (unsigned int i = 0; i < _pointList.size(); ++i)
     {
         _pointList[i]->_index = i;
-        osg::Vec3&vertex = _pointList[i]->_vertex;
+        osg::Vec3 &vertex = _pointList[i]->_vertex;
         array[i].set(vertex.x(), vertex.y(), vertex.z(), 1.0f);
     }
 }
 
-EdgeCollapse::PointList&_pointList;
+EdgeCollapse::PointList &_pointList;
 
 protected:
 
@@ -1930,7 +1930,7 @@ Simplifier::Simplifier(double sampleRatio, double maximumError, double maximumLe
 
 {}
 
-void Simplifier::simplify(osg::Geometry&geometry)
+void Simplifier::simplify(osg::Geometry &geometry)
 {
     // pass an empty list of indices to simply(Geometry,IndexList)
     // so that this one method handle both cases of non protected indices
@@ -1940,7 +1940,7 @@ void Simplifier::simplify(osg::Geometry&geometry)
     simplify(geometry, emptyList);
 }
 
-void Simplifier::simplify(osg::Geometry&geometry, const IndexList&protectedPoints)
+void Simplifier::simplify(osg::Geometry &geometry, const IndexList &protectedPoints)
 {
     OSG_INFO << "++++++++++++++simplifier************" << std::endl;
 

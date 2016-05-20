@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkInitialBound(const osg::Drawable&drawable)
+static bool checkInitialBound(const osg::Drawable &drawable)
 {
     return drawable.getInitialBound().valid();
 }
 
-static bool readInitialBound(osgDB::InputStream&is, osg::Drawable&drawable)
+static bool readInitialBound(osgDB::InputStream &is, osg::Drawable &drawable)
 {
     osg::Vec3d min, max;
 
@@ -20,9 +20,9 @@ static bool readInitialBound(osgDB::InputStream&is, osg::Drawable&drawable)
     return true;
 }
 
-static bool writeInitialBound(osgDB::OutputStream&os, const osg::Drawable&drawable)
+static bool writeInitialBound(osgDB::OutputStream &os, const osg::Drawable &drawable)
 {
-    const osg::BoundingBox&bb = drawable.getInitialBound();
+    const osg::BoundingBox &bb = drawable.getInitialBound();
 
     os << os.BEGIN_BRACKET << std::endl;
     os << os.PROPERTY("Minimum") << osg::Vec3d(bb._min) << std::endl;

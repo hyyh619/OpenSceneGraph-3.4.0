@@ -10,16 +10,16 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TextureRectangle_readLocalData(Object&obj, Input&fr);
-bool TextureRectangle_writeLocalData(const Object&obj, Output&fw);
+bool TextureRectangle_readLocalData(Object &obj, Input &fr);
+bool TextureRectangle_writeLocalData(const Object &obj, Output &fw);
 
-bool TextureRectangle_matchWrapStr(const char *str, TextureRectangle::WrapMode&wrap);
+bool TextureRectangle_matchWrapStr(const char *str, TextureRectangle::WrapMode &wrap);
 const char* TextureRectangle_getWrapStr(TextureRectangle::WrapMode wrap);
-bool TextureRectangle_matchFilterStr(const char *str, TextureRectangle::FilterMode&filter);
+bool TextureRectangle_matchFilterStr(const char *str, TextureRectangle::FilterMode &filter);
 const char* TextureRectangle_getFilterStr(TextureRectangle::FilterMode filter);
-bool TextureRectangle_matchInternalFormatModeStr(const char *str, TextureRectangle::InternalFormatMode&mode);
+bool TextureRectangle_matchInternalFormatModeStr(const char *str, TextureRectangle::InternalFormatMode &mode);
 const char* TextureRectangle_getInternalFormatModeStr(TextureRectangle::InternalFormatMode mode);
-bool TextureRectangle_matchInternalFormatStr(const char *str, int&value);
+bool TextureRectangle_matchInternalFormatStr(const char *str, int &value);
 const char* TextureRectangle_getInternalFormatStr(int value);
 
 // register the read and write functions with the osgDB::Registry.
@@ -32,11 +32,11 @@ REGISTER_DOTOSGWRAPPER(TextureRectangle)
     &TextureRectangle_writeLocalData
 );
 
-bool TextureRectangle_readLocalData(Object&obj, Input&fr)
+bool TextureRectangle_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    TextureRectangle&texture = static_cast<TextureRectangle&>(obj);
+    TextureRectangle &texture = static_cast<TextureRectangle&>(obj);
 
     if (fr[0].matchWord("file") && fr[1].isString())
     {
@@ -66,9 +66,9 @@ bool TextureRectangle_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool TextureRectangle_writeLocalData(const Object&obj, Output&fw)
+bool TextureRectangle_writeLocalData(const Object &obj, Output &fw)
 {
-    const TextureRectangle&texture = static_cast<const TextureRectangle&>(obj);
+    const TextureRectangle &texture = static_cast<const TextureRectangle&>(obj);
 
     if (texture.getImage())
     {

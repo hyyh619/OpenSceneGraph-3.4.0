@@ -24,7 +24,7 @@ CullingSet::CullingSet()
 CullingSet::~CullingSet()
 {}
 
-void CullingSet::disableAndPushOccludersCurrentMask(NodePath&nodePath)
+void CullingSet::disableAndPushOccludersCurrentMask(NodePath &nodePath)
 {
     for (OccluderList::iterator itr = _occluderList.begin();
          itr != _occluderList.end();
@@ -44,7 +44,7 @@ void CullingSet::disableAndPushOccludersCurrentMask(NodePath&nodePath)
 }
 
 
-void CullingSet::popOccludersCurrentMask(NodePath&nodePath)
+void CullingSet::popOccludersCurrentMask(NodePath &nodePath)
 {
     // std::cout<<"  trying to pop occluder ";PrintNodePath(nodePath);std::cout<<std::endl;
     for (OccluderList::iterator itr = _occluderList.begin();
@@ -63,7 +63,7 @@ void CullingSet::popOccludersCurrentMask(NodePath&nodePath)
     }
 }
 
-osg::Vec4 CullingSet::computePixelSizeVector(const Viewport&W, const Matrix&P, const Matrix&M)
+osg::Vec4 CullingSet::computePixelSizeVector(const Viewport &W, const Matrix &P, const Matrix &M)
 {
     // pre adjust P00,P20,P23,P33 by multiplying them by the viewport window matrix.
     // here we do it in short hand with the knowledge of how the window matrix is formed

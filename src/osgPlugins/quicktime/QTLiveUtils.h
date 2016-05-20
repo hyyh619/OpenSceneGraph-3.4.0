@@ -95,5 +95,5 @@ void probe_video_digitizer_components();
 OSG_SGDeviceList              print_sequence_grabber_device_list(SGDeviceList deviceList);
 std::vector<OSG_SGDeviceList> probe_sequence_grabber_components();
 //
-void get_video_device_bounds_idstr(short videoDeviceID, short videoDeviceInputID, short&out_width, short&out_height, Str63&out_videoDeviceIDStr);
-void get_sound_device_idstr(short soundDeviceID, short soundDeviceInputID, Str63&out_soundDeviceIDStr);
+void get_video_device_bounds_idstr(short videoDeviceID, short videoDeviceInputID, short &out_width, short &out_height, Str63 &out_videoDeviceIDStr);
+void get_sound_device_idstr(short soundDeviceID, short soundDeviceInputID, Str63 &out_soundDeviceIDStr);

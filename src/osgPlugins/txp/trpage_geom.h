@@ -60,11 +60,11 @@ void    SetDbVersion(int major, int minor);
    You must set the number of LODs with SetNumLods first.
    You should use the AddLod method if you can, which handles all of this.
  */
-void    SetTileSize(int lod, const trpg2dPoint&size);
+void    SetTileSize(int lod, const trpg2dPoint &size);
 // Origin defaults to 0,0,0
 void    SetOrigin(const trpg3dPoint&);
 // 2D archive extents.  Must be set.
-void    SetExtents(const trpg2dPoint&sw, const trpg2dPoint&ne);
+void    SetExtents(const trpg2dPoint &sw, const trpg2dPoint &ne);
 
 typedef enum {DatabaseLocal, Absolute, TileLocal} trpgTileType;
 // How the coordinates are treated with respect to real world values.
@@ -86,10 +86,10 @@ void    SetLodSize(const trpg2iPoint*);
 void SetLodRange(int, float64);
 void    SetLodRange(const float64*);
 // Increase the number of terrain LODs, adding a new one with the given size and range
-void    AddLod(const trpg2iPoint&size, const trpg2dPoint&ext, float64 range);
+void    AddLod(const trpg2iPoint &size, const trpg2dPoint &ext, float64 range);
 
 // Set details for an LOD, resizing if necessary
-void    SetLod(const trpg2iPoint&size, const trpg2dPoint&ext, float64 range, unsigned int lod);
+void    SetLod(const trpg2iPoint &size, const trpg2dPoint &ext, float64 range, unsigned int lod);
 
 // Keep track of the maximum assigned group IDs (for tile paging)
 void    SetMaxGroupID(int);
@@ -124,7 +124,7 @@ bool    GetOrigin(trpg3dPoint&) const;
 /* These are the 2D extents that the database covers.  You can use this
    information to determine where the middle is, for example.
  */
-bool    GetExtents(trpg2dPoint&sw, trpg2dPoint&ne) const;
+bool    GetExtents(trpg2dPoint &sw, trpg2dPoint &ne) const;
 /* The tile origin type tells you the coordinate system of each database
    tile.  There are three type:
  * Absolute - All coordinate values are absolute.  No translation is required.
@@ -212,7 +212,7 @@ void    SetBlocks(int rows, int cols)
     this->rows = rows;
     this->cols = cols;
 }
-void    GetBlocks(int&rows, int&cols)
+void    GetBlocks(int &rows, int &cols)
 {
     rows = this->rows;
     cols = this->cols;
@@ -473,13 +473,13 @@ bool    GetNumTexture(int&) const;
    Multiple materials can also appear per trpgGeometry, so be aware that there are
    two ways to have multiple textures per polygon.
  */
-bool    GetTexture(int no, int&id, trpgTextureEnv&) const;
+bool    GetTexture(int no, int &id, trpgTextureEnv&) const;
 
 // Return whether or not this material is a bump map
 bool    GetIsBumpMap(bool&) const;
 
 // Get an attribute (e.g. fid/smc)
-bool    GetAttr(int attrCode, int&val) const;
+bool    GetAttr(int attrCode, int &val) const;
 
 // Validity check
 bool    isValid(void) const;
@@ -985,7 +985,7 @@ void    SetLodInfo(double in, double out);
 
 // Get the lod info (this will be duplicated in the trpgLod node)
 // However, you may want to change these values yourself during a run
-void    GetLodInfo(double&in, double&out) const;
+void    GetLodInfo(double &in, double &out) const;
 
 // Set the priority
 void    SetPriority(int);
@@ -1315,7 +1315,7 @@ bool    GetImageSize(trpg2iPoint&) const;
 bool    GetImageAddr(trpgwAppAddress&) const;
 
 // Figure out the image depth from the type
-bool    GetImageDepth(int32&depth) const;
+bool    GetImageDepth(int32 &depth) const;
 
 // Determine whether this image (must be Local or Template) has all its mipmaps
 bool    GetIsMipmap(bool&) const;
@@ -1491,7 +1491,7 @@ bool    Print(trpgPrintBuffer&) const;
 
 
 trpgTexTable&operator =(const trpgTexTable&);
-const trpgTexture* FindByName(const char *name, int&texid) const;
+const trpgTexture* FindByName(const char *name, int &texid) const;
 void    SetCurrentBlock(int row, int col)
 {
     currentRow = row;
@@ -1661,7 +1661,7 @@ bool    Read(trpgReadBuffer&);
 // Prints this class to a print buffer
 bool    Print(trpgPrintBuffer&) const;
 
-bool FindByName(const char *name, unsigned int&mId);
+bool FindByName(const char *name, unsigned int &mId);
 typedef std::map<int, trpgModel> ModelMapType;
 ModelMapType* GetModelMap()
 {
@@ -1706,7 +1706,7 @@ void    SetTile(int x, int y, int lod, trpgwAppAddress&, float32 min, float32 ma
 // Local or external tiles
 bool    GetMode(TileMode&) const;
 // Get the disk reference (local)
-bool    GetTile(int x, int y, int lod, trpgwAppAddress&, float32&min, float32&max) const;
+bool    GetTile(int x, int y, int lod, trpgwAppAddress&, float32 &min, float32 &max) const;
 
 // Validity check
 bool    isValid(void) const;
@@ -1786,7 +1786,7 @@ void    SetBaseMaterial(int32 matSubTable, int32 matID);
    textures per polygon makes my head hurt in general).
    // 2003-06-17.  Your prophecy (my headache) has come true.  MD
  */
-bool    GetBaseMaterial(int32&matSubTable, int32&matID) const;
+bool    GetBaseMaterial(int32 &matSubTable, int32 &matID) const;
 
 class SubImageInfo
 {
@@ -1931,12 +1931,12 @@ void    SetModel(int no, int id);
 bool    GetNumMaterial(int32&) const;
 /* Return the material ID of the Nth material reference.
    The ID returned points into a trpgMatTable. */
-bool    GetMaterial(int32 nth, int32&matID) const;
+bool    GetMaterial(int32 nth, int32 &matID) const;
 // This is the number of models used in this tile
 bool    GetNumModel(int32&) const;
 /* Gets the model ID of the Nth model reference.
    The ID returned points into a trpgModelTable. */
-bool    GetModel(int32 nth, int32&modID) const;
+bool    GetModel(int32 nth, int32 &modID) const;
 // Returns the number of local materials in this tile
 bool    GetNumLocalMaterial(int32&) const;
 /* Return the given local material.  Local materials are used
@@ -1945,7 +1945,7 @@ bool    GetNumLocalMaterial(int32&) const;
    a tile.  Local materials will be referenced by trpgGeometry nodes within
    a given tile.
  */
-bool    GetLocalMaterial(int32 nth, trpgLocalMaterial&locMat) const;
+bool    GetLocalMaterial(int32 nth, trpgLocalMaterial &locMat) const;
 /* Return a pointer to the list of locally defined materials.
    See GetLocalMaterial for an explantion of local materials.
  */
@@ -1969,7 +1969,7 @@ void    SetBlockNo(int row, int col)
     this->row = row;
     this->col = col;
 }
-void    GetBlockNo(int&row, int&col)
+void    GetBlockNo(int &row, int &col)
 {
     row = this->row;
     col = this->col;
@@ -2192,7 +2192,7 @@ void    AddTexCoord(DataType type, trpg2dPoint&, int n = 0);
 /* This method adds a texture coordinate to each trpgTexData.  You would use
    this if you were adding vertices one at a time with multiple materials.
  */
-void    AddTexCoord(DataType type, std::vector<trpg2dPoint>&pts);
+void    AddTexCoord(DataType type, std::vector<trpg2dPoint> &pts);
 /* Edge flags are used by some primitives in OpenGL.  We don't typically
    use them, but they can be read and written with TerraPage.
  */
@@ -2200,12 +2200,12 @@ void    SetEdgeFlags(int num, const char*);
 
 /* Returns the primitive type for this trpgGeometry structure.
  */
-bool    GetPrimType(PrimType&type) const;
+bool    GetPrimType(PrimType &type) const;
 /* Number of primitives in this structure.  Primitives are things
    like a single triangle, a triangle strip or fan.  Some primitives
    require a primitive length array.
  */
-bool    GetNumPrims(int&num) const;
+bool    GetNumPrims(int &num) const;
 /* This returns the primitive length array.  Some primitive types, like
    TriStrips or TriFans (but not Triangles) require a primitive length
    array to tell you how to break up the vertex/normal/texture/color
@@ -2218,18 +2218,18 @@ bool    GetPrimLengths(int *lenArray) const;
    tells you how many are applied to this structure.  There will always
    be at least one.
  */
-bool    GetNumMaterial(int&num) const;
+bool    GetNumMaterial(int &num) const;
 /* Returns the material ID for a material instance.  num is the
    nth material instance.  matId is an index into a trpgMatTable.
    isLocal is true if the given material is local to this tile.
    Local materials are only used to page small pieces of a larger image.
  */
-bool    GetMaterial(int num, int32&matID, bool&isLocal) const;
+bool    GetMaterial(int num, int32 &matID, bool &isLocal) const;
 /* This returns num_vertex.  The function returns the length
    of the vertex array dived by 3, which is the total number of
    vertices.
  */
-bool    GetNumVertex(int&num) const;
+bool    GetNumVertex(int &num) const;
 /* The GetVertices() methods return a list of vertices in the given
    form (32 or 64 bit floating point).  These functions will convert to
    the appropriate format, just ask for the one you need.
@@ -2245,7 +2245,7 @@ bool    GetVertex(int id, trpg3dPoint&) const;
 /* GetNumNormal() returns the number of normals.  See GetNumVertex()
    for an explanation of why.
  */
-bool    GetNumNormal(int&num) const;
+bool    GetNumNormal(int &num) const;
 /* Much, like GetVertices(), these methods will copy the contents of
    the normal array into the array passed in.  They will convert the
    contents to the appropriate format (32 or 64 bit floating point).
@@ -2258,7 +2258,7 @@ bool    GetNormals(float64*) const;
    per vertex, per primitive, or per geometry unit (i.e. only one)
    arrays of color data.
  */
-bool    GetNumColorSets(int&num) const;
+bool    GetNumColorSets(int &num) const;
 /* This method fills out the trpgColorInfo class that you pass in.
    The number of color sets is determined by GetNumColorSets and
    the structure you passed can be reused (to save memory).
@@ -2282,7 +2282,7 @@ const trpgTexData* GetTexCoordSet(int id) const;
 /* Returns the number of edge flags in this geometry node.
    Edge flags are used on certain primitive types, but are rather rare.
  */
-bool    GetNumEdgeFlag(int&num) const;
+bool    GetNumEdgeFlag(int &num) const;
 /* This returns the edge flags for the current set of primitives.
  */
 bool    GetEdgeFlags(char*) const;
@@ -2489,15 +2489,15 @@ void    Reset();
 void SetTileLoc(int gx, int gy, int glod);
 
 // Get the tile grid location
-bool GetTileLoc(int&gx, int&gy, int&glod) const;
+bool GetTileLoc(int &gx, int &gy, int &glod) const;
 
 
-void SetTileAddress(const trpgwAppAddress&gAddr);
+void SetTileAddress(const trpgwAppAddress &gAddr);
 void SetTileAddress(int32 file, int32 offset);
 void SetTileZValue(float gZmin, float gZmax);
-bool GetTileAddress(int32&file, int32&offset) const;
-bool GetTileAddress(trpgwAppAddress&gAddr) const;
-bool GetTileZValue(float&gZmin, float&gZmax) const;
+bool GetTileAddress(int32 &file, int32 &offset) const;
+bool GetTileAddress(trpgwAppAddress &gAddr) const;
+bool GetTileZValue(float &gZmin, float &gZmax) const;
 
 
 // Validity check
@@ -2644,7 +2644,7 @@ bool    GetCenter(trpg3dPoint&) const;
 bool    GetNumChild(int&) const;
 // LOD specific information.  in and out can be switched.  width is
 // the transition range for doing fading.
-bool    GetLOD(double&in, double&out, double&width) const;
+bool    GetLOD(double &in, double &out, double &width) const;
 
 // Set the group ID
 void    SetID(int);
@@ -2660,7 +2660,7 @@ const char* GetName(void) const;
 // Set the range Index
 void    SetRangeIndex(int ri);
 // Get the range index
-bool    GetRangeIndex(int&ri) const;
+bool    GetRangeIndex(int &ri) const;
 
 // Resets the contents back to empty
 void    Reset(void);
@@ -3058,7 +3058,7 @@ trpgLabelPropertyTable(void);
 int        AddProperty(const trpgLabelProperty&);
 
 // Find or Add a single label property
-int FindAddProperty(const trpgLabelProperty&property);
+int FindAddProperty(const trpgLabelProperty &property);
 
 // Figure out how many properties there are
 int        GetNumProperty(void) const;

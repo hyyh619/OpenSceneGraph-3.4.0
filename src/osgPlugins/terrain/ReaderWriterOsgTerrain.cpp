@@ -28,7 +28,7 @@ virtual const char* className() const
     return "Terrain ReaderWriter";
 }
 
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *opt) const
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *opt) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -73,7 +73,7 @@ virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&file, const o
     return 0L;
 }
 
-virtual osgDB::ReaderWriter::ReadResult readNode(std::istream&fin, const Options *options) const
+virtual osgDB::ReaderWriter::ReadResult readNode(std::istream &fin, const Options *options) const
 {
     fin.imbue(std::locale::classic());
 
@@ -123,7 +123,7 @@ virtual osgDB::ReaderWriter::ReadResult readNode(std::istream&fin, const Options
 }
 
 typedef std::map<std::string, std::string> KeywordValueMap;
-bool parseTerrainString(const std::string&str, KeywordValueMap&keywordValueMap) const
+bool parseTerrainString(const std::string &str, KeywordValueMap &keywordValueMap) const
 {
     bool success = false;
 

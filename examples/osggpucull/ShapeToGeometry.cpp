@@ -69,8 +69,8 @@ void FakeGLBeginEndAdapter::End()
 
     if (!_matrixStack.empty())
     {
-        const osg::Matrixd&matrix = _matrixStack.back();
-        osg::Matrixd      inverse;
+        const osg::Matrixd &matrix = _matrixStack.back();
+        osg::Matrixd       inverse;
         inverse.invert(matrix);
 
         for (osg::Vec3Array::iterator itr = _vertices->begin();
@@ -372,7 +372,7 @@ void ShapeToGeometryVisitor::drawHalfSphere(unsigned int numSegments, unsigned i
 }
 
 
-void ShapeToGeometryVisitor::apply(const osg::Sphere&sphere)
+void ShapeToGeometryVisitor::apply(const osg::Sphere &sphere)
 {
     gl.PushMatrix();
 
@@ -532,7 +532,7 @@ void ShapeToGeometryVisitor::apply(const osg::Sphere&sphere)
     gl.PopMatrix();
 }
 
-void ShapeToGeometryVisitor::apply(const osg::Box&box)
+void ShapeToGeometryVisitor::apply(const osg::Box &box)
 {
     // evaluate hints
     bool createBody   = (_hints ? _hints->getCreateBody() : true);
@@ -659,7 +659,7 @@ void ShapeToGeometryVisitor::apply(const osg::Box&box)
     gl.PopMatrix();
 }
 
-void ShapeToGeometryVisitor::apply(const osg::Cone&cone)
+void ShapeToGeometryVisitor::apply(const osg::Cone &cone)
 {
     gl.PushMatrix();
 
@@ -783,7 +783,7 @@ void ShapeToGeometryVisitor::apply(const osg::Cone&cone)
     gl.PopMatrix();
 }
 
-void ShapeToGeometryVisitor::apply(const osg::Cylinder&cylinder)
+void ShapeToGeometryVisitor::apply(const osg::Cylinder &cylinder)
 {
     gl.PushMatrix();
 
@@ -887,7 +887,7 @@ void ShapeToGeometryVisitor::apply(const osg::Cylinder&cylinder)
     gl.PopMatrix();
 }
 
-void ShapeToGeometryVisitor::apply(const osg::Capsule&capsule)
+void ShapeToGeometryVisitor::apply(const osg::Capsule &capsule)
 {
     gl.PushMatrix();
 
@@ -943,7 +943,7 @@ void ShapeToGeometryVisitor::apply(const osg::InfinitePlane&)
     OSG_NOTICE << "Warning: ShapeToGeometryVisitor::apply(const InfinitePlane& plane) not yet implemented. " << std::endl;
 }
 
-void ShapeToGeometryVisitor::apply(const osg::TriangleMesh&mesh)
+void ShapeToGeometryVisitor::apply(const osg::TriangleMesh &mesh)
 {
     const osg::Vec3Array  *vertices = mesh.getVertices();
     const osg::IndexArray *indices  = mesh.getIndices();
@@ -954,10 +954,10 @@ void ShapeToGeometryVisitor::apply(const osg::TriangleMesh&mesh)
 
         for (unsigned int i = 0; i + 2 < indices->getNumElements(); i += 3)
         {
-            const osg::Vec3&v1    = (*vertices)[indices->index(i)];
-            const osg::Vec3&v2    = (*vertices)[indices->index(i + 1)];
-            const osg::Vec3&v3    = (*vertices)[indices->index(i + 2)];
-            osg::Vec3      normal = (v2 - v1) ^ (v3 - v2);
+            const osg::Vec3 &v1    = (*vertices)[indices->index(i)];
+            const osg::Vec3 &v2    = (*vertices)[indices->index(i + 1)];
+            const osg::Vec3 &v3    = (*vertices)[indices->index(i + 2)];
+            osg::Vec3       normal = (v2 - v1) ^ (v3 - v2);
             normal.normalize();
 
             gl.Normal3fv(normal.ptr());
@@ -970,12 +970,12 @@ void ShapeToGeometryVisitor::apply(const osg::TriangleMesh&mesh)
     }
 }
 
-void ShapeToGeometryVisitor::apply(const osg::ConvexHull&hull)
+void ShapeToGeometryVisitor::apply(const osg::ConvexHull &hull)
 {
     apply((const osg::TriangleMesh&)hull);
 }
 
-void ShapeToGeometryVisitor::apply(const osg::HeightField&field)
+void ShapeToGeometryVisitor::apply(const osg::HeightField &field)
 {
     if (field.getNumColumns() == 0 || field.getNumRows() == 0)
         return;
@@ -1129,7 +1129,7 @@ void ShapeToGeometryVisitor::apply(const osg::HeightField&field)
     gl.PopMatrix();
 }
 
-void ShapeToGeometryVisitor::apply(const osg::CompositeShape&group)
+void ShapeToGeometryVisitor::apply(const osg::CompositeShape &group)
 {
     for (unsigned int i = 0; i < group.getNumChildren(); ++i)
     {
@@ -1137,7 +1137,7 @@ void ShapeToGeometryVisitor::apply(const osg::CompositeShape&group)
     }
 }
 
-osg::Geometry* convertShapeToGeometry(const osg::Shape&shape, const osg::TessellationHints *hints)
+osg::Geometry* convertShapeToGeometry(const osg::Shape &shape, const osg::TessellationHints *hints)
 {
     osg::ref_ptr<osg::Geometry> geometry;
     {
@@ -1149,7 +1149,7 @@ osg::Geometry* convertShapeToGeometry(const osg::Shape&shape, const osg::Tessell
     return geometry.release();
 }
 
-osg::Geometry* convertShapeToGeometry(const osg::Shape&shape, const osg::TessellationHints *hints, const osg::Vec4&color)
+osg::Geometry* convertShapeToGeometry(const osg::Shape &shape, const osg::TessellationHints *hints, const osg::Vec4 &color)
 {
     osg::ref_ptr<osg::Geometry> geometry    = convertShapeToGeometry(shape, hints);
     osg::Vec4Array              *colorArray = new osg::Vec4Array;
@@ -1160,7 +1160,7 @@ osg::Geometry* convertShapeToGeometry(const osg::Shape&shape, const osg::Tessell
 }
 
 
-osg::Geode* convertShapeToGeode(const osg::Shape&shape, const osg::TessellationHints *hints)
+osg::Geode* convertShapeToGeode(const osg::Shape &shape, const osg::TessellationHints *hints)
 {
     osg::Geode *geode = new osg::Geode;
 
@@ -1168,7 +1168,7 @@ osg::Geode* convertShapeToGeode(const osg::Shape&shape, const osg::TessellationH
     return geode;
 }
 
-osg::Geode* convertShapeToGeode(const osg::Shape&shape, const osg::TessellationHints *hints, const osg::Vec4&color)
+osg::Geode* convertShapeToGeode(const osg::Shape &shape, const osg::TessellationHints *hints, const osg::Vec4 &color)
 {
     osg::Geode *geode = new osg::Geode;
 

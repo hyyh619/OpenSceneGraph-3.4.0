@@ -22,7 +22,7 @@ Device::Device()
     setEventQueue(new EventQueue);
 }
 
-Device::Device(const Device&es, const osg::CopyOp&copyop) :
+Device::Device(const Device &es, const osg::CopyOp &copyop) :
     osg::Object(es, copyop)
 {
     setEventQueue(new EventQueue);
@@ -34,7 +34,7 @@ void Device::sendEvent(const Event& /*event*/)
 }
 
 
-void Device::sendEvents(const EventQueue::Events&events)
+void Device::sendEvents(const EventQueue::Events &events)
 {
     for (EventQueue::Events::const_iterator i = events.begin(); i != events.end(); i++)
     {

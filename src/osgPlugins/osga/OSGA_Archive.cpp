@@ -68,7 +68,7 @@ inline std::streampos STREAM_POS(const OSGA_Archive::pos_type pos)
     return std::streampos(std::mbstate_t(), pos);
 }
 
-inline OSGA_Archive::pos_type ARCHIVE_POS(const std::streampos&pos)
+inline OSGA_Archive::pos_type ARCHIVE_POS(const std::streampos &pos)
 {
 #if defined(_CPPLIB_VER)// newer Dinkumware(eg: one included with VC++ 2003,2005)
     fpos_t position = pos.seekpos();
@@ -86,7 +86,7 @@ inline std::streampos STREAM_POS(const OSGA_Archive::pos_type pos)
     return std::streampos(pos);
 }
 
-inline OSGA_Archive::pos_type ARCHIVE_POS(const std::streampos&pos)
+inline OSGA_Archive::pos_type ARCHIVE_POS(const std::streampos &pos)
 {
     return OSGA_Archive::pos_type(pos);
 }
@@ -130,7 +130,7 @@ void OSGA_Archive::IndexBlock::allocateData(unsigned int blockSize)
     }
 }
 
-OSGA_Archive::IndexBlock* OSGA_Archive::IndexBlock::read(std::istream&in, bool doEndianSwap)
+OSGA_Archive::IndexBlock* OSGA_Archive::IndexBlock::read(std::istream &in, bool doEndianSwap)
 {
     if (!in)
         return 0;
@@ -213,7 +213,7 @@ std::string OSGA_Archive::IndexBlock::getFirstFileName() const
     }
 }
 
-bool OSGA_Archive::IndexBlock::getFileReferences(FileNamePositionMap&indexMap) const
+bool OSGA_Archive::IndexBlock::getFileReferences(FileNamePositionMap &indexMap) const
 {
     if (!_data || _offsetOfNextAvailableSpace == 0)
         return false;
@@ -251,7 +251,7 @@ bool OSGA_Archive::IndexBlock::getFileReferences(FileNamePositionMap&indexMap) c
     return valuesAdded;
 }
 
-void OSGA_Archive::IndexBlock::write(std::ostream&out)
+void OSGA_Archive::IndexBlock::write(std::ostream &out)
 {
     pos_type currentPos = ARCHIVE_POS(out.tellp());
 
@@ -280,7 +280,7 @@ void OSGA_Archive::IndexBlock::write(std::ostream&out)
 }
 
 
-bool OSGA_Archive::IndexBlock::addFileReference(pos_type position, size_type size, const std::string&filename)
+bool OSGA_Archive::IndexBlock::addFileReference(pos_type position, size_type size, const std::string &filename)
 {
     if (spaceAvailable(position, size, filename))
     {
@@ -332,7 +332,7 @@ OSGA_Archive::~OSGA_Archive()
 }
 
 
-bool OSGA_Archive::open(const std::string&filename, ArchiveStatus status, unsigned int indexBlockSize)
+bool OSGA_Archive::open(const std::string &filename, ArchiveStatus status, unsigned int indexBlockSize)
 {
     SERIALIZER();
 
@@ -419,7 +419,7 @@ bool OSGA_Archive::open(const std::string&filename, ArchiveStatus status, unsign
     }
 }
 
-bool OSGA_Archive::open(std::istream&fin)
+bool OSGA_Archive::open(std::istream &fin)
 {
     SERIALIZER();
 
@@ -430,7 +430,7 @@ bool OSGA_Archive::open(std::istream&fin)
     return _open(_input);
 }
 
-bool OSGA_Archive::_open(std::istream&input)
+bool OSGA_Archive::_open(std::istream &input)
 {
     if (input)
     {
@@ -512,7 +512,7 @@ std::string OSGA_Archive::getMasterFileName() const
     return _masterFileName;
 }
 
-osgDB::FileType OSGA_Archive::getFileType(const std::string&filename) const
+osgDB::FileType OSGA_Archive::getFileType(const std::string &filename) const
 {
     if (_indexMap.count(filename) != 0)
         return osgDB::REGULAR_FILE;
@@ -520,7 +520,7 @@ osgDB::FileType OSGA_Archive::getFileType(const std::string&filename) const
     return osgDB::FILE_NOT_FOUND;
 }
 
-bool OSGA_Archive::getFileNames(FileNameList&fileNameList) const
+bool OSGA_Archive::getFileNames(FileNameList &fileNameList) const
 {
     SERIALIZER();
 
@@ -555,12 +555,12 @@ void OSGA_Archive::writeIndexBlocks()
     }
 }
 
-bool OSGA_Archive::fileExists(const std::string&filename) const
+bool OSGA_Archive::fileExists(const std::string &filename) const
 {
     return (_indexMap.count(filename) != 0);
 }
 
-bool OSGA_Archive::addFileReference(pos_type position, size_type size, const std::string&fileName)
+bool OSGA_Archive::addFileReference(pos_type position, size_type size, const std::string &fileName)
 {
     SERIALIZER();
 
@@ -716,8 +716,8 @@ virtual int_type underflow()
 
 struct OSGA_Archive::ReadObjectFunctor : public OSGA_Archive::ReadFunctor
 {
-    ReadObjectFunctor(const std::string&filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw, std::istream&input) const
+    ReadObjectFunctor(const std::string &filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw, std::istream &input) const
     {
         return rw.readObject(input, _options);
     }
@@ -725,8 +725,8 @@ struct OSGA_Archive::ReadObjectFunctor : public OSGA_Archive::ReadFunctor
 
 struct OSGA_Archive::ReadImageFunctor : public OSGA_Archive::ReadFunctor
 {
-    ReadImageFunctor(const std::string&filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw, std::istream&input) const
+    ReadImageFunctor(const std::string &filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw, std::istream &input) const
     {
         return rw.readImage(input, _options);
     }
@@ -734,8 +734,8 @@ struct OSGA_Archive::ReadImageFunctor : public OSGA_Archive::ReadFunctor
 
 struct OSGA_Archive::ReadHeightFieldFunctor : public OSGA_Archive::ReadFunctor
 {
-    ReadHeightFieldFunctor(const std::string&filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw, std::istream&input) const
+    ReadHeightFieldFunctor(const std::string &filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw, std::istream &input) const
     {
         return rw.readHeightField(input, _options);
     }
@@ -743,8 +743,8 @@ struct OSGA_Archive::ReadHeightFieldFunctor : public OSGA_Archive::ReadFunctor
 
 struct OSGA_Archive::ReadNodeFunctor : public OSGA_Archive::ReadFunctor
 {
-    ReadNodeFunctor(const std::string&filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw, std::istream&input) const
+    ReadNodeFunctor(const std::string &filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw, std::istream &input) const
     {
         return rw.readNode(input, _options);
     }
@@ -752,14 +752,14 @@ struct OSGA_Archive::ReadNodeFunctor : public OSGA_Archive::ReadFunctor
 
 struct OSGA_Archive::ReadShaderFunctor : public OSGA_Archive::ReadFunctor
 {
-    ReadShaderFunctor(const std::string&filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
-    virtual ReaderWriter::ReadResult doRead(ReaderWriter&rw, std::istream&input) const
+    ReadShaderFunctor(const std::string &filename, const ReaderWriter::Options *options) : ReadFunctor(filename, options) {}
+    virtual ReaderWriter::ReadResult doRead(ReaderWriter &rw, std::istream &input) const
     {
         return rw.readShader(input, _options);
     }
 };
 
-ReaderWriter::ReadResult OSGA_Archive::read(const ReadFunctor&readFunctor)
+ReaderWriter::ReadResult OSGA_Archive::read(const ReadFunctor &readFunctor)
 {
     SERIALIZER();
 
@@ -799,27 +799,27 @@ ReaderWriter::ReadResult OSGA_Archive::read(const ReadFunctor&readFunctor)
     return result;
 }
 
-ReaderWriter::ReadResult OSGA_Archive::readObject(const std::string&fileName, const Options *options) const
+ReaderWriter::ReadResult OSGA_Archive::readObject(const std::string &fileName, const Options *options) const
 {
     return const_cast<OSGA_Archive*>(this)->read(ReadObjectFunctor(fileName, options));
 }
 
-ReaderWriter::ReadResult OSGA_Archive::readImage(const std::string&fileName, const Options *options) const
+ReaderWriter::ReadResult OSGA_Archive::readImage(const std::string &fileName, const Options *options) const
 {
     return const_cast<OSGA_Archive*>(this)->read(ReadImageFunctor(fileName, options));
 }
 
-ReaderWriter::ReadResult OSGA_Archive::readHeightField(const std::string&fileName, const Options *options) const
+ReaderWriter::ReadResult OSGA_Archive::readHeightField(const std::string &fileName, const Options *options) const
 {
     return const_cast<OSGA_Archive*>(this)->read(ReadHeightFieldFunctor(fileName, options));
 }
 
-ReaderWriter::ReadResult OSGA_Archive::readNode(const std::string&fileName, const Options *options) const
+ReaderWriter::ReadResult OSGA_Archive::readNode(const std::string &fileName, const Options *options) const
 {
     return const_cast<OSGA_Archive*>(this)->read(ReadNodeFunctor(fileName, options));
 }
 
-ReaderWriter::ReadResult OSGA_Archive::readShader(const std::string&fileName, const Options *options) const
+ReaderWriter::ReadResult OSGA_Archive::readShader(const std::string &fileName, const Options *options) const
 {
     return const_cast<OSGA_Archive*>(this)->read(ReadShaderFunctor(fileName, options));
 }
@@ -827,12 +827,12 @@ ReaderWriter::ReadResult OSGA_Archive::readShader(const std::string&fileName, co
 
 struct OSGA_Archive::WriteObjectFunctor : public OSGA_Archive::WriteFunctor
 {
-    WriteObjectFunctor(const osg::Object&object, const std::string&filename, const ReaderWriter::Options *options) :
+    WriteObjectFunctor(const osg::Object &object, const std::string &filename, const ReaderWriter::Options *options) :
         WriteFunctor(filename, options),
         _object(object) {}
-    const osg::Object&_object;
+    const osg::Object &_object;
 
-    virtual ReaderWriter::WriteResult doWrite(ReaderWriter&rw, std::ostream&output) const
+    virtual ReaderWriter::WriteResult doWrite(ReaderWriter &rw, std::ostream &output) const
     {
         return rw.writeObject(_object, output, _options);
     }
@@ -840,12 +840,12 @@ struct OSGA_Archive::WriteObjectFunctor : public OSGA_Archive::WriteFunctor
 
 struct OSGA_Archive::WriteImageFunctor : public OSGA_Archive::WriteFunctor
 {
-    WriteImageFunctor(const osg::Image&object, const std::string&filename, const ReaderWriter::Options *options) :
+    WriteImageFunctor(const osg::Image &object, const std::string &filename, const ReaderWriter::Options *options) :
         WriteFunctor(filename, options),
         _object(object) {}
-    const osg::Image&_object;
+    const osg::Image &_object;
 
-    virtual ReaderWriter::WriteResult doWrite(ReaderWriter&rw, std::ostream&output) const
+    virtual ReaderWriter::WriteResult doWrite(ReaderWriter &rw, std::ostream &output) const
     {
         OSG_NOTICE << "doWrite() rw.writeImage(), " << std::endl; return rw.writeImage(_object, output, _options);
     }
@@ -853,12 +853,12 @@ struct OSGA_Archive::WriteImageFunctor : public OSGA_Archive::WriteFunctor
 
 struct OSGA_Archive::WriteHeightFieldFunctor : public OSGA_Archive::WriteFunctor
 {
-    WriteHeightFieldFunctor(const osg::HeightField&object, const std::string&filename, const ReaderWriter::Options *options) :
+    WriteHeightFieldFunctor(const osg::HeightField &object, const std::string &filename, const ReaderWriter::Options *options) :
         WriteFunctor(filename, options),
         _object(object) {}
-    const osg::HeightField&_object;
+    const osg::HeightField &_object;
 
-    virtual ReaderWriter::WriteResult doWrite(ReaderWriter&rw, std::ostream&output) const
+    virtual ReaderWriter::WriteResult doWrite(ReaderWriter &rw, std::ostream &output) const
     {
         return rw.writeHeightField(_object, output, _options);
     }
@@ -866,12 +866,12 @@ struct OSGA_Archive::WriteHeightFieldFunctor : public OSGA_Archive::WriteFunctor
 
 struct OSGA_Archive::WriteNodeFunctor : public OSGA_Archive::WriteFunctor
 {
-    WriteNodeFunctor(const osg::Node&object, const std::string&filename, const ReaderWriter::Options *options) :
+    WriteNodeFunctor(const osg::Node &object, const std::string &filename, const ReaderWriter::Options *options) :
         WriteFunctor(filename, options),
         _object(object) {}
-    const osg::Node&_object;
+    const osg::Node &_object;
 
-    virtual ReaderWriter::WriteResult doWrite(ReaderWriter&rw, std::ostream&output) const
+    virtual ReaderWriter::WriteResult doWrite(ReaderWriter &rw, std::ostream &output) const
     {
         return rw.writeNode(_object, output, _options);
     }
@@ -879,18 +879,18 @@ struct OSGA_Archive::WriteNodeFunctor : public OSGA_Archive::WriteFunctor
 
 struct OSGA_Archive::WriteShaderFunctor : public OSGA_Archive::WriteFunctor
 {
-    WriteShaderFunctor(const osg::Shader&object, const std::string&filename, const ReaderWriter::Options *options) :
+    WriteShaderFunctor(const osg::Shader &object, const std::string &filename, const ReaderWriter::Options *options) :
         WriteFunctor(filename, options),
         _object(object) {}
-    const osg::Shader&_object;
+    const osg::Shader &_object;
 
-    virtual ReaderWriter::WriteResult doWrite(ReaderWriter&rw, std::ostream&output) const
+    virtual ReaderWriter::WriteResult doWrite(ReaderWriter &rw, std::ostream &output) const
     {
         return rw.writeShader(_object, output, _options);
     }
 };
 
-ReaderWriter::WriteResult OSGA_Archive::write(const WriteFunctor&writeFunctor)
+ReaderWriter::WriteResult OSGA_Archive::write(const WriteFunctor &writeFunctor)
 {
     SERIALIZER();
 
@@ -930,31 +930,31 @@ ReaderWriter::WriteResult OSGA_Archive::write(const WriteFunctor&writeFunctor)
 }
 
 
-ReaderWriter::WriteResult OSGA_Archive::writeObject(const osg::Object&obj, const std::string&fileName, const Options *options) const
+ReaderWriter::WriteResult OSGA_Archive::writeObject(const osg::Object &obj, const std::string &fileName, const Options *options) const
 {
     OSG_INFO << "OSGA_Archive::writeObject(obj, " << fileName << ")" << std::endl;
     return const_cast<OSGA_Archive*>(this)->write(WriteObjectFunctor(obj, fileName, options));
 }
 
-ReaderWriter::WriteResult OSGA_Archive::writeImage(const osg::Image&image, const std::string&fileName, const Options *options) const
+ReaderWriter::WriteResult OSGA_Archive::writeImage(const osg::Image &image, const std::string &fileName, const Options *options) const
 {
     OSG_INFO << "OSGA_Archive::writeImage(obj, " << fileName << ")" << std::endl;
     return const_cast<OSGA_Archive*>(this)->write(WriteImageFunctor(image, fileName, options));
 }
 
-ReaderWriter::WriteResult OSGA_Archive::writeHeightField(const osg::HeightField&heightField, const std::string&fileName, const Options *options) const
+ReaderWriter::WriteResult OSGA_Archive::writeHeightField(const osg::HeightField &heightField, const std::string &fileName, const Options *options) const
 {
     OSG_INFO << "OSGA_Archive::writeHeightField(obj, " << fileName << ")" << std::endl;
     return const_cast<OSGA_Archive*>(this)->write(WriteHeightFieldFunctor(heightField, fileName, options));
 }
 
-ReaderWriter::WriteResult OSGA_Archive::writeNode(const osg::Node&node, const std::string&fileName, const Options *options) const
+ReaderWriter::WriteResult OSGA_Archive::writeNode(const osg::Node &node, const std::string &fileName, const Options *options) const
 {
     OSG_INFO << "OSGA_Archive::writeNode(obj, " << fileName << ")" << std::endl;
     return const_cast<OSGA_Archive*>(this)->write(WriteNodeFunctor(node, fileName, options));
 }
 
-ReaderWriter::WriteResult OSGA_Archive::writeShader(const osg::Shader&shader, const std::string&fileName, const Options *options) const
+ReaderWriter::WriteResult OSGA_Archive::writeShader(const osg::Shader &shader, const std::string &fileName, const Options *options) const
 {
     OSG_INFO << "OSGA_Archive::writeShader(obj, " << fileName << ")" << std::endl;
     return const_cast<OSGA_Archive*>(this)->write(WriteShaderFunctor(shader, fileName, options));

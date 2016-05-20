@@ -29,7 +29,7 @@ using namespace osgShadow;
 OccluderGeometry::OccluderGeometry()
 {}
 
-OccluderGeometry::OccluderGeometry(const OccluderGeometry&oc, const osg::CopyOp&copyop) :
+OccluderGeometry::OccluderGeometry(const OccluderGeometry &oc, const osg::CopyOp &copyop) :
     osg::Drawable(oc, copyop)
 {}
 
@@ -48,7 +48,7 @@ CollectOccludersVisitor(OccluderGeometry *oc, osg::Matrix *matrix, float ratio) 
 
 META_NodeVisitor("osgShadow", "CollectOccludersVisitor")
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     if (node.getStateSet())
         pushState(node.getStateSet());
@@ -59,7 +59,7 @@ void apply(osg::Node&node)
         popState();
 }
 
-void apply(osg::Transform&transform)
+void apply(osg::Transform &transform)
 {
     if (transform.getStateSet())
         pushState(transform.getStateSet());
@@ -80,7 +80,7 @@ void apply(osg::Transform&transform)
         popState();
 }
 
-void apply(osg::Geode&geode)
+void apply(osg::Geode &geode)
 {
     if (geode.getStateSet())
         pushState(geode.getStateSet());
@@ -121,7 +121,7 @@ void popState()
     _blendModeStack.pop_back();
 }
 
-void pushMatrix(osg::Matrix&matrix)
+void pushMatrix(osg::Matrix &matrix)
 {
     _matrixStack.push_back(matrix);
 }
@@ -201,7 +201,7 @@ struct TriangleCollector
 
 
     //   bool intersect(const Vec3& v1,const Vec3& v2,const Vec3& v3,float& r)
-    inline void operator ()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, bool treatVertexDataAsTemporary)
+    inline void operator ()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, bool treatVertexDataAsTemporary)
     {
         if (treatVertexDataAsTemporary)
         {
@@ -352,12 +352,12 @@ struct IndexVec3PtrPair
         vec(v),
         index(i) {}
 
-    inline bool operator <(const IndexVec3PtrPair&rhs) const
+    inline bool operator <(const IndexVec3PtrPair &rhs) const
     {
         return *vec < *rhs.vec;
     }
 
-    inline bool operator ==(const IndexVec3PtrPair&rhs) const
+    inline bool operator ==(const IndexVec3PtrPair &rhs) const
     {
         return *vec == *rhs.vec;
 
@@ -713,7 +713,7 @@ void OccluderGeometry::buildEdgeMaps()
 }
 
 
-void OccluderGeometry::computeLightDirectionSilhouetteEdges(const osg::Vec3&lightdirection, UIntList&silhouetteIndices) const
+void OccluderGeometry::computeLightDirectionSilhouetteEdges(const osg::Vec3 &lightdirection, UIntList &silhouetteIndices) const
 {
     silhouetteIndices.clear();
 
@@ -721,12 +721,12 @@ void OccluderGeometry::computeLightDirectionSilhouetteEdges(const osg::Vec3&ligh
          eitr != _edges.end();
          ++eitr)
     {
-        const Edge&edge = *eitr;
+        const Edge &edge = *eitr;
         if (isLightDirectionSilhouetteEdge(lightdirection, edge))
         {
-            const osg::Vec3&v1    = _vertices[edge._p1];
-            const osg::Vec3&v2    = _vertices[edge._p2];
-            osg::Vec3      normal = (v2 - v1) ^ lightdirection;
+            const osg::Vec3 &v1    = _vertices[edge._p1];
+            const osg::Vec3 &v2    = _vertices[edge._p2];
+            osg::Vec3       normal = (v2 - v1) ^ lightdirection;
             if (normal * edge._normal > 0.0)
             {
                 silhouetteIndices.push_back(edge._p1);
@@ -741,7 +741,7 @@ void OccluderGeometry::computeLightDirectionSilhouetteEdges(const osg::Vec3&ligh
     }
 }
 
-void OccluderGeometry::computeLightPositionSilhouetteEdges(const osg::Vec3&lightpos, UIntList&silhouetteIndices) const
+void OccluderGeometry::computeLightPositionSilhouetteEdges(const osg::Vec3 &lightpos, UIntList &silhouetteIndices) const
 {
     silhouetteIndices.clear();
 
@@ -749,12 +749,12 @@ void OccluderGeometry::computeLightPositionSilhouetteEdges(const osg::Vec3&light
          eitr != _edges.end();
          ++eitr)
     {
-        const Edge&edge = *eitr;
+        const Edge &edge = *eitr;
         if (isLightPointSilhouetteEdge(lightpos, edge))
         {
-            const osg::Vec3&v1    = _vertices[edge._p1];
-            const osg::Vec3&v2    = _vertices[edge._p2];
-            osg::Vec3      normal = (v2 - v1) ^ (v1 - lightpos);
+            const osg::Vec3 &v1    = _vertices[edge._p1];
+            const osg::Vec3 &v2    = _vertices[edge._p2];
+            osg::Vec3       normal = (v2 - v1) ^ (v1 - lightpos);
             if (normal * edge._normal > 0.0)
             {
                 silhouetteIndices.push_back(edge._p1);
@@ -770,15 +770,15 @@ void OccluderGeometry::computeLightPositionSilhouetteEdges(const osg::Vec3&light
 }
 
 
-void OccluderGeometry::computeShadowVolumeGeometry(const osg::Vec4&lightpos, ShadowVolumeGeometry&svg) const
+void OccluderGeometry::computeShadowVolumeGeometry(const osg::Vec4 &lightpos, ShadowVolumeGeometry &svg) const
 {
     // osg::Timer_t t0 = osg::Timer::instance()->tick();
 
-    ShadowVolumeGeometry::Vec3List&shadowVertices = svg.getVertices();
+    ShadowVolumeGeometry::Vec3List &shadowVertices = svg.getVertices();
 
     shadowVertices.clear();
 
-    ShadowVolumeGeometry::Vec3List&shadowNormals = svg.getNormals();
+    ShadowVolumeGeometry::Vec3List &shadowNormals = svg.getNormals();
     shadowNormals.clear();
 
 
@@ -823,8 +823,8 @@ void OccluderGeometry::computeShadowVolumeGeometry(const osg::Vec4&lightpos, Sha
              itr != silhouetteIndices.end();
              )
         {
-            const osg::Vec3&v1 = _vertices[*itr++];
-            const osg::Vec3&v2 = _vertices[*itr++];
+            const osg::Vec3 &v1 = _vertices[*itr++];
+            const osg::Vec3 &v2 = _vertices[*itr++];
 
             float r1 = basePlane.distance(v1) * directionScale;
             float r2 = basePlane.distance(v2) * directionScale;
@@ -858,14 +858,14 @@ void OccluderGeometry::computeShadowVolumeGeometry(const osg::Vec4&lightpos, Sha
 
         // OSG_NOTICE<<"basePlane "<<basePlane[0]<<" "<<basePlane[1]<<" "<<basePlane[2]<<" "<<basePlane[3]<<std::endl;
         // OSG_NOTICE<<"lightpos  = "<<std::endl;
-        const osg::Polytope::PlaneList&planes = _boundingPolytope.getPlaneList();
+        const osg::Polytope::PlaneList &planes = _boundingPolytope.getPlaneList();
 
         for (UIntList::iterator itr = silhouetteIndices.begin();
              itr != silhouetteIndices.end();
              )
         {
-            const osg::Vec3&v1 = _vertices[*itr++];
-            const osg::Vec3&v2 = _vertices[*itr++];
+            const osg::Vec3 &v1 = _vertices[*itr++];
+            const osg::Vec3 &v2 = _vertices[*itr++];
 
             osg::Vec3 d1 = v1 - lightposition;
             osg::Vec3 d2 = v2 - lightposition;
@@ -913,7 +913,7 @@ void OccluderGeometry::computeShadowVolumeGeometry(const osg::Vec4&lightpos, Sha
     // OSG_NOTICE<<"computeShadowVolumeGeometry "<<osg::Timer::instance()->delta_m(t0,t1)<<" ms"<<std::endl;
 }
 
-void OccluderGeometry::drawImplementation(osg::RenderInfo&renderInfo) const
+void OccluderGeometry::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     renderInfo.getState()->disableAllVertexArrays();
 
@@ -952,11 +952,11 @@ ShadowVolumeGeometry::ShadowVolumeGeometry() :
     _drawMode(GEOMETRY)
 {}
 
-ShadowVolumeGeometry::ShadowVolumeGeometry(const ShadowVolumeGeometry&oc, const osg::CopyOp&copyop) :
+ShadowVolumeGeometry::ShadowVolumeGeometry(const ShadowVolumeGeometry &oc, const osg::CopyOp &copyop) :
     osg::Drawable(oc, copyop)
 {}
 
-void ShadowVolumeGeometry::drawImplementation(osg::RenderInfo&renderInfo) const
+void ShadowVolumeGeometry::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     if (_drawMode == GEOMETRY)
     {

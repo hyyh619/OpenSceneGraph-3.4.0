@@ -30,7 +30,7 @@ Translate2DDragger::Translate2DDragger()
     setPickColor(osg::Vec4(1.0f, 1.0f, 0.0f, 1.0f));
 }
 
-Translate2DDragger::Translate2DDragger(const osg::Plane&plane)
+Translate2DDragger::Translate2DDragger(const osg::Plane &plane)
 {
     _projector     = new PlaneProjector(plane);
     _polygonOffset = new osg::PolygonOffset(-1.0f, -1.0f);
@@ -41,7 +41,7 @@ Translate2DDragger::Translate2DDragger(const osg::Plane&plane)
 Translate2DDragger::~Translate2DDragger()
 {}
 
-bool Translate2DDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool Translate2DDragger::handle(const PointerInfo &pointer, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     // Check if the dragger node is in the nodepath.
     if (!pointer.contains(this))

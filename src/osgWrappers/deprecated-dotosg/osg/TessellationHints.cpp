@@ -9,8 +9,8 @@ using namespace osgDB;
 
 
 // forward declare functions to use later.
-bool TessellationHints_readLocalData(Object&obj, Input&fr);
-bool TessellationHints_writeLocalData(const Object&obj, Output&fw);
+bool TessellationHints_readLocalData(Object &obj, Input &fr);
+bool TessellationHints_writeLocalData(const Object &obj, Output &fw);
 
 REGISTER_DOTOSGWRAPPER(TessellationHints)
 (
@@ -22,11 +22,11 @@ REGISTER_DOTOSGWRAPPER(TessellationHints)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool TessellationHints_readLocalData(Object&obj, Input&fr)
+bool TessellationHints_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    TessellationHints&hints = static_cast<TessellationHints&>(obj);
+    TessellationHints &hints = static_cast<TessellationHints&>(obj);
 
     if (fr.matchSequence("detailRatio %f"))
     {
@@ -71,9 +71,9 @@ bool TessellationHints_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool TessellationHints_writeLocalData(const Object&obj, Output&fw)
+bool TessellationHints_writeLocalData(const Object &obj, Output &fw)
 {
-    const TessellationHints&hints = static_cast<const TessellationHints&>(obj);
+    const TessellationHints &hints = static_cast<const TessellationHints&>(obj);
 
     fw.indent() << "detailRatio " << hints.getDetailRatio() << std::endl;
 

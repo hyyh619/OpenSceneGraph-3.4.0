@@ -37,7 +37,7 @@ class VertexPool : public osg::Referenced, public std::istringstream
 {
 public:
 
-explicit VertexPool(const std::string&str) :
+explicit VertexPool(const std::string &str) :
     std::istringstream(str, std::istringstream::in | std::istringstream::binary) {}
 
 protected:
@@ -98,7 +98,7 @@ osg::Material* get(int index);
 // Get or create material based on
 // index: face material index
 // color: face color with alpha set to 1-face transparency.
-osg::Material* getOrCreateMaterial(int index, const osg::Vec4&faceColor);
+osg::Material* getOrCreateMaterial(int index, const osg::Vec4 &faceColor);
 
 protected:
 
@@ -114,11 +114,11 @@ struct MaterialParameters
     MaterialParameters() :
         index(-1) {}
 
-    MaterialParameters(int i, const osg::Vec4&c) :
+    MaterialParameters(int i, const osg::Vec4 &c) :
         index(i),
         color(c) {}
 
-    bool operator <(const MaterialParameters&rhs) const
+    bool operator <(const MaterialParameters &rhs) const
     {
         if (index < rhs.index)
             return true;

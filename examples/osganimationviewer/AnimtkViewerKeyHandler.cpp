@@ -42,10 +42,10 @@ void AnimtkKeyEventHandler::printUsage() const
 }
 
 
-bool AnimtkKeyEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&,
+bool AnimtkKeyEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&,
                                    osg::Object*, osg::NodeVisitor*)
 {
-    AnimtkViewerModelController&mc = AnimtkViewerModelController::instance();
+    AnimtkViewerModelController &mc = AnimtkViewerModelController::instance();
 
     if (ea.getEventType() == osgGA::GUIEventAdapter::KEYDOWN)
     {

@@ -126,7 +126,7 @@ typedef int gint;
 
 
 gint      lw_is_lwobject(const char     *lw_file);
-lwObject* lw_object_read(const char     *lw_file, std::ostream&output);
+lwObject* lw_object_read(const char     *lw_file, std::ostream &output);
 void      lw_object_free(lwObject *lw_object);
 
 GLfloat   lw_object_radius(const lwObject *lw_object);

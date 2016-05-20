@@ -98,6 +98,6 @@ AttrData::AttrData() :
     of_mips[0] = of_mips[1] = of_mips[2] = of_mips[3] = of_mips[4] = of_mips[5] = of_mips[6] = of_mips[7] = 0.0f;
 }
 
-AttrData::AttrData(const AttrData&attr, const osg::CopyOp&copyop) :
+AttrData::AttrData(const AttrData &attr, const osg::CopyOp &copyop) :
     osg::Object(attr, copyop)
 {}

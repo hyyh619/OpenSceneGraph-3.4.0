@@ -41,13 +41,13 @@ class POVWriterNodeVisitor : public osg::NodeVisitor
 {
 public:
 
-POVWriterNodeVisitor(std::ostream&fout, const osg::BoundingSphere&bound);
+POVWriterNodeVisitor(std::ostream &fout, const osg::BoundingSphere &bound);
 virtual ~POVWriterNodeVisitor();
 
-void traverse(osg::Node&node);
+void traverse(osg::Node &node);
 
-virtual void apply(osg::Node&node);
-virtual void apply(osg::Geode&node);
+virtual void apply(osg::Node &node);
+virtual void apply(osg::Geode &node);
 // virtual void apply(osg::Group &node);
 
 // virtual void apply(osg::Billboard& node);
@@ -59,7 +59,7 @@ virtual void apply(osg::Geode&node);
 // virtual void apply(TexGenNode& node)                { apply((Group&)node); }
 // virtual void apply(LightSource& node)               { apply((Group&)node); }
 
-virtual void apply(osg::Transform&node);
+virtual void apply(osg::Transform &node);
 // virtual void apply(Camera& node)                    { apply((Transform&)node); }
 // virtual void apply(CameraView& node)                { apply((Transform&)node); }
 // virtual void apply(osg::MatrixTransform& node);
@@ -89,8 +89,8 @@ void pushStateSet(const osg::StateSet *ss);
 void popStateSet(const osg::StateSet *ss);
 
 virtual void processGeometry(const osg::Geometry *g,
-                             const osg::StateSet *ss, const osg::Matrix&m);
-virtual void processLights(const osg::StateSet *ss, const osg::Matrix&m);
+                             const osg::StateSet *ss, const osg::Matrix &m);
+virtual void processLights(const osg::StateSet *ss, const osg::Matrix &m);
 };
 
 

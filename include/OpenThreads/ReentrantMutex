@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef _OPENTHREADS_REENTRANTMUTEX_
 #define _OPENTHREADS_REENTRANTMUTEX_
@@ -19,16 +19,13 @@
 #include <OpenThreads/ScopedLock>
 
 namespace OpenThreads {
+    class ReentrantMutex: public OpenThreads::Mutex
+    {
+public:
 
-class ReentrantMutex : public OpenThreads::Mutex
-{
-    public:
-
-        ReentrantMutex():
+        ReentrantMutex() :
             Mutex(MUTEX_RECURSIVE) {}
-
-};
-
+    };
 }
 
 #endif

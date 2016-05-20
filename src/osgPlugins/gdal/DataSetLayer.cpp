@@ -28,14 +28,14 @@ DataSetLayer::DataSetLayer() :
     _dataset(0), _gdalReader(0)
 {}
 
-DataSetLayer::DataSetLayer(const std::string&fileName) :
+DataSetLayer::DataSetLayer(const std::string &fileName) :
     _dataset(0), _gdalReader(0)
 {
     setFileName(fileName);
     open();
 }
 
-DataSetLayer::DataSetLayer(const DataSetLayer&dataSetLayer, const osg::CopyOp&copyop) :
+DataSetLayer::DataSetLayer(const DataSetLayer &dataSetLayer, const osg::CopyOp &copyop) :
     Layer(dataSetLayer), _gdalReader(dataSetLayer._gdalReader)
 {
     if (dataSetLayer._dataset)

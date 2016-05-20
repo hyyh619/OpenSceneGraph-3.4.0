@@ -78,7 +78,7 @@
 const unsigned int CameraPacket::MAX_NUM_EVENTS     = 10;
 const unsigned int CameraPacket::SWAP_BYTES_COMPARE = 0x12345678;
 
-void DataConverter::write(const osg::FrameStamp&fs)
+void DataConverter::write(const osg::FrameStamp &fs)
 {
     osg::notify(osg::NOTICE) << "writeFramestamp = " << fs.getFrameNumber() << " " << fs.getReferenceTime() << std::endl;
 
@@ -86,7 +86,7 @@ void DataConverter::write(const osg::FrameStamp&fs)
     writeDouble(fs.getReferenceTime());
 }
 
-void DataConverter::read(osg::FrameStamp&fs)
+void DataConverter::read(osg::FrameStamp &fs)
 {
     fs.setFrameNumber(readUInt());
     fs.setReferenceTime(readDouble());
@@ -94,7 +94,7 @@ void DataConverter::read(osg::FrameStamp&fs)
     osg::notify(osg::NOTICE) << "readFramestamp = " << fs.getFrameNumber() << " " << fs.getReferenceTime() << std::endl;
 }
 
-void DataConverter::write(const osg::Matrix&matrix)
+void DataConverter::write(const osg::Matrix &matrix)
 {
     writeDouble(matrix(0, 0));
     writeDouble(matrix(0, 1));
@@ -119,7 +119,7 @@ void DataConverter::write(const osg::Matrix&matrix)
     osg::notify(osg::NOTICE) << "writeMatrix = " << matrix << std::endl;
 }
 
-void DataConverter::read(osg::Matrix&matrix)
+void DataConverter::read(osg::Matrix &matrix)
 {
     matrix(0, 0) = readDouble();
     matrix(0, 1) = readDouble();
@@ -144,7 +144,7 @@ void DataConverter::read(osg::Matrix&matrix)
     osg::notify(osg::NOTICE) << "readMatrix = " << matrix << std::endl;
 }
 
-void DataConverter::write(const osgGA::GUIEventAdapter&event)
+void DataConverter::write(const osgGA::GUIEventAdapter &event)
 {
     writeUInt(event.getEventType());
     writeUInt(event.getKey());
@@ -164,7 +164,7 @@ void DataConverter::write(const osgGA::GUIEventAdapter&event)
     writeDouble(event.getTime());
 }
 
-void DataConverter::read(osgGA::GUIEventAdapter&event)
+void DataConverter::read(osgGA::GUIEventAdapter &event)
 {
     event.setEventType((osgGA::GUIEventAdapter::EventType)readUInt());
     event.setKey(readUInt());
@@ -186,7 +186,7 @@ void DataConverter::read(osgGA::GUIEventAdapter&event)
     event.setTime(readDouble());
 }
 
-void DataConverter::write(CameraPacket&cameraPacket)
+void DataConverter::write(CameraPacket &cameraPacket)
 {
     writeUInt(cameraPacket._byte_order);
 
@@ -207,7 +207,7 @@ void DataConverter::write(CameraPacket&cameraPacket)
     }
 }
 
-void DataConverter::read(CameraPacket&cameraPacket)
+void DataConverter::read(CameraPacket &cameraPacket)
 {
     cameraPacket._byte_order = readUInt();
     if (cameraPacket._byte_order != CameraPacket::SWAP_BYTES_COMPARE)
@@ -231,7 +231,7 @@ void DataConverter::read(CameraPacket&cameraPacket)
     }
 }
 
-void CameraPacket::readEventQueue(osgViewer::Viewer&viewer)
+void CameraPacket::readEventQueue(osgViewer::Viewer &viewer)
 {
     _events.clear();
 
@@ -240,7 +240,7 @@ void CameraPacket::readEventQueue(osgViewer::Viewer&viewer)
     osg::notify(osg::INFO) << "written events = " << _events.size() << std::endl;
 }
 
-void CameraPacket::writeEventQueue(osgViewer::Viewer&viewer)
+void CameraPacket::writeEventQueue(osgViewer::Viewer &viewer)
 {
     osg::notify(osg::INFO) << "received events = " << _events.size() << std::endl;
 

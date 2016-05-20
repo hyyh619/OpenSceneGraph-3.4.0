@@ -51,8 +51,8 @@ void RegisterMessageFunction(const char *addressPattern, function_type f)
     functions_.insert(std::make_pair(addressPattern, f));
 }
 
-virtual void ProcessMessage(const osc::ReceivedMessage&m,
-                            const IpEndpointName&remoteEndpoint)
+virtual void ProcessMessage(const osc::ReceivedMessage &m,
+                            const IpEndpointName &remoteEndpoint)
 {
     typename function_map_type::iterator i = functions_.find(m.AddressPattern());
     if (i != functions_.end())

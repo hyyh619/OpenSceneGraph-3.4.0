@@ -73,7 +73,7 @@ struct TriangulizeFunctor
     osg::Vec3Array *_vertexes;
 
     // do nothing
-    void operator ()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, bool treatVertexDataAsTemporary)
+    void operator ()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, bool treatVertexDataAsTemporary)
     {
         _vertexes->push_back(v1);
         _vertexes->push_back(v2);
@@ -118,7 +118,7 @@ virtual const char* className() const
     return "OGR file reader";
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     OSG_INFO << "OGR::readNode(" << file << ")" << std::endl;
 
@@ -139,7 +139,7 @@ virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::O
     return readFile(fileName, options);
 }
 
-virtual ReadResult readFile(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readFile(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
 #if GDAL_VERSION_MAJOR < 2
     if (OGRSFDriverRegistrar::GetRegistrar()->GetDriverCount() == 0)
@@ -197,7 +197,7 @@ virtual ReadResult readFile(const std::string&fileName, const osgDB::ReaderWrite
     return group;
 }
 
-osg::Group* readLayer(OGRLayer *ogrLayer, const std::string&name, bool useRandomColorByFeature, bool addGroupPerFeature) const
+osg::Group* readLayer(OGRLayer *ogrLayer, const std::string &name, bool useRandomColorByFeature, bool addGroupPerFeature) const
 {
     if (!ogrLayer)
         return 0;

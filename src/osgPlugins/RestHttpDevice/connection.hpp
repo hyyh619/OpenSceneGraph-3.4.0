@@ -32,8 +32,8 @@ class connection
 {
 public:
 /// Construct a connection with the given io_service.
-explicit connection(asio::io_service&io_service,
-                    request_handler&handler);
+explicit connection(asio::io_service &io_service,
+                    request_handler &handler);
 
 /// Get the socket associated with the connection.
 asio::ip::tcp::socket&socket();
@@ -43,17 +43,17 @@ void start();
 ~connection();
 private:
 /// Handle completion of a read operation.
-void handle_read(const asio::error_code&e,
+void handle_read(const asio::error_code &e,
                  std::size_t bytes_transferred);
 
 /// Handle completion of a write operation.
-void handle_write(const asio::error_code&e);
+void handle_write(const asio::error_code &e);
 
 /// Socket for the connection.
 asio::ip::tcp::socket socket_;
 
 /// The handler used to process the incoming request.
-request_handler&request_handler_;
+request_handler &request_handler_;
 
 /// Buffer for incoming data.
 boost::array<char, 8192> buffer_;

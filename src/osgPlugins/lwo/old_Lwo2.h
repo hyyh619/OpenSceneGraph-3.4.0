@@ -56,7 +56,7 @@ class Lwo2
 public:
 Lwo2();
 ~Lwo2();
-bool ReadFile(const string&filename);
+bool ReadFile(const string &filename);
 bool GenerateGroup(Group&);
 
 private:

@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool GeometryTechnique_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool GeometryTechnique_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool GeometryTechnique_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool GeometryTechnique_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(GeometryTechnique_Proxy)
 (
@@ -26,7 +26,7 @@ REGISTER_DOTOSGWRAPPER(GeometryTechnique_Proxy)
 );
 
 
-bool GeometryTechnique_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool GeometryTechnique_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
     // osgTerrain::GeometryTechnique& gt = static_cast<osgTerrain::GeometryTechnique&>(obj);
     bool itrAdvanced = false;
@@ -34,7 +34,7 @@ bool GeometryTechnique_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool GeometryTechnique_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool GeometryTechnique_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
     // const osgTerrain::GeometryTechnique& gt = static_cast<const osgTerrain::GeometryTechnique&>(obj);
     return true;

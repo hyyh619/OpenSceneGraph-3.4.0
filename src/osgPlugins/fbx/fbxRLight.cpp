@@ -10,7 +10,7 @@
 
 #include "fbxReader.h"
 
-osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxLight(FbxNode *pNode, int&nLightCount)
+osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxLight(FbxNode *pNode, int &nLightCount)
 {
     const FbxLight *fbxLight = FbxCast<FbxLight>(pNode->GetNodeAttribute());
 

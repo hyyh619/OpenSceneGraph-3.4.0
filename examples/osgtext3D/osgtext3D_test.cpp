@@ -18,7 +18,7 @@
 
 
 
-osg::Group* test_create3DText(const osg::Vec3&center, float radius)
+osg::Group* test_create3DText(const osg::Vec3 &center, float radius)
 {
     osg::Geode *geode = new osg::Geode;
 
@@ -87,7 +87,7 @@ CInputHandler(osg::PositionAttitudeTransform *pPatSphere)
 {
     m_rPatSphere = pPatSphere;
 }
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object *pObject, osg::NodeVisitor *pNodeVisitor)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object *pObject, osg::NodeVisitor *pNodeVisitor)
 {
     osgViewer::Viewer *pViewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 

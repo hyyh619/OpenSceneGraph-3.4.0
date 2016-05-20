@@ -38,12 +38,12 @@ virtual const char* className() const
     return "GTA Image Reader";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "gta");
 }
 
-ReadResult local_readImage(std::istream&fin, const osgDB::ReaderWriter::Options* /* options */) const
+ReadResult local_readImage(std::istream &fin, const osgDB::ReaderWriter::Options* /* options */) const
 {
     int           s, t, r;
     int           internalFormat;
@@ -159,7 +159,7 @@ ReadResult local_readImage(std::istream&fin, const osgDB::ReaderWriter::Options*
         imageData = new unsigned char[hdr.data_size()];
         hdr.read_data(fin, imageData);
     }
-    catch (std::exception&e)
+    catch (std::exception &e)
     {
         delete[] imageData;
         if (!(my_errmsg.empty()))
@@ -186,7 +186,7 @@ ReadResult local_readImage(std::istream&fin, const osgDB::ReaderWriter::Options*
     return pOsgImage;
 }
 
-WriteResult local_writeImage(std::ostream&fout, const osg::Image&img, const osgDB::ReaderWriter::Options *options) const
+WriteResult local_writeImage(std::ostream &fout, const osg::Image &img, const osgDB::ReaderWriter::Options *options) const
 {
     std::string my_errmsg;
 
@@ -355,7 +355,7 @@ WriteResult local_writeImage(std::ostream&fout, const osg::Image&img, const osgD
 #endif
         hdr.write_data(fout, img.getDataPointer());
     }
-    catch (std::exception&e)
+    catch (std::exception &e)
     {
         if (!(my_errmsg.empty()))
         {
@@ -372,22 +372,22 @@ WriteResult local_writeImage(std::ostream&fout, const osg::Image&img, const osgD
     return WriteResult::FILE_SAVED;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return local_readImage(fin, options);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -409,12 +409,12 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     return local_writeImage(fout, img, options);
 }
 
-virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 

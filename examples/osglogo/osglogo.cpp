@@ -49,7 +49,7 @@ MyBillboardTransform() :
     _normal(0.0f, -1.0f, 0.0f)
 {}
 
-bool computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
+bool computeLocalToWorldMatrix(osg::Matrix &matrix, osg::NodeVisitor *nv) const
 {
     osg::Quat            billboardRotation;
     osgUtil::CullVisitor *cullvisitor = dynamic_cast<osgUtil::CullVisitor*>(nv);
@@ -75,12 +75,12 @@ bool computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor *nv) const
 
 
 
-void setAxis(const osg::Vec3&axis)
+void setAxis(const osg::Vec3 &axis)
 {
     _axis = axis;
 }
 
-void setNormal(const osg::Vec3&normal)
+void setNormal(const osg::Vec3 &normal)
 {
     _normal = normal;
 }
@@ -94,7 +94,7 @@ osg::Vec3 _normal;
 };
 
 
-osg::Geometry* createWing(const osg::Vec3&left, const osg::Vec3&nose, const osg::Vec3&right, float chordRatio, const osg::Vec4&color)
+osg::Geometry* createWing(const osg::Vec3 &left, const osg::Vec3 &nose, const osg::Vec3 &right, float chordRatio, const osg::Vec4 &color)
 {
     osg::Geometry *geom = new osg::Geometry;
 
@@ -142,7 +142,7 @@ osg::Geometry* createWing(const osg::Vec3&left, const osg::Vec3&nose, const osg:
     return geom;
 }
 
-osg:: Node* createTextBelow(const osg::BoundingBox&bb, const std::string&label, const std::string&)
+osg:: Node* createTextBelow(const osg::BoundingBox &bb, const std::string &label, const std::string&)
 {
     osg::Geode *geode = new osg::Geode();
 
@@ -163,7 +163,7 @@ osg:: Node* createTextBelow(const osg::BoundingBox&bb, const std::string&label, 
     return geode;
 }
 
-osg:: Node* createTextLeft(const osg::BoundingBox&bb, const std::string&label, const std::string&subscript)
+osg:: Node* createTextLeft(const osg::BoundingBox &bb, const std::string &label, const std::string &subscript)
 {
     osg::Geode *geode = new osg::Geode();
 
@@ -236,7 +236,7 @@ osg:: Node* createTextLeft(const osg::BoundingBox&bb, const std::string&label, c
     return geode;
 }
 
-osg:: Node* createGlobe(const osg::BoundingBox&bb, float ratio, const std::string&filename)
+osg:: Node* createGlobe(const osg::BoundingBox &bb, float ratio, const std::string &filename)
 {
     osg::MatrixTransform *xform = new osg::MatrixTransform;
 
@@ -245,9 +245,9 @@ osg:: Node* createGlobe(const osg::BoundingBox&bb, float ratio, const std::strin
     osg::Node *bluemarble = filename.empty() ? 0 : osgDB::readNodeFile(filename.c_str());
     if (bluemarble)
     {
-        const osg::BoundingSphere&bs         = bluemarble->getBound();
-        float                    s           = 1.2 * bb.radius() / bs.radius();
-        osg::MatrixTransform     *positioner = new osg::MatrixTransform;
+        const osg::BoundingSphere &bs         = bluemarble->getBound();
+        float                     s           = 1.2 * bb.radius() / bs.radius();
+        osg::MatrixTransform      *positioner = new osg::MatrixTransform;
         positioner->setMatrix(osg::Matrix::translate(-bs.center()) * osg::Matrix::scale(s, s, s) * osg::Matrix::translate(bb.center()));
         positioner->addChild(bluemarble);
 
@@ -280,7 +280,7 @@ osg:: Node* createGlobe(const osg::BoundingBox&bb, float ratio, const std::strin
     return xform;
 }
 
-osg:: Node* createBox(const osg::BoundingBox&bb, float chordRatio)
+osg:: Node* createBox(const osg::BoundingBox &bb, float chordRatio)
 {
     osg::Geode *geode = new osg::Geode();
 
@@ -309,7 +309,7 @@ osg:: Node* createBox(const osg::BoundingBox&bb, float chordRatio)
     return geode;
 }
 
-osg:: Node* createBoxNo5(const osg::BoundingBox&bb, float chordRatio)
+osg:: Node* createBoxNo5(const osg::BoundingBox &bb, float chordRatio)
 {
     osg::Geode *geode = new osg::Geode();
 
@@ -335,7 +335,7 @@ osg:: Node* createBoxNo5(const osg::BoundingBox&bb, float chordRatio)
     return geode;
 }
 
-osg:: Node* createBoxNo5No2(const osg::BoundingBox&bb, float chordRatio)
+osg:: Node* createBoxNo5No2(const osg::BoundingBox &bb, float chordRatio)
 {
     osg::Geode *geode = new osg::Geode();
 
@@ -357,7 +357,7 @@ osg:: Node* createBoxNo5No2(const osg::BoundingBox&bb, float chordRatio)
     return geode;
 }
 
-osg:: Node* createBackdrop(const osg::Vec3&corner, const osg::Vec3&top, const osg::Vec3&right)
+osg:: Node* createBackdrop(const osg::Vec3 &corner, const osg::Vec3 &top, const osg::Vec3 &right)
 {
     osg::Geometry *geom = new osg::Geometry;
 
@@ -390,7 +390,7 @@ osg:: Node* createBackdrop(const osg::Vec3&corner, const osg::Vec3&top, const os
     return geode;
 }
 
-osg::Node* createLogo(const std::string&filename, const std::string&label, const std::string&subscript)
+osg::Node* createLogo(const std::string &filename, const std::string &label, const std::string &subscript)
 {
     osg::BoundingBox bb(osg::Vec3(0.0f, 0.0f, 0.0f), osg::Vec3(100.0f, 100.0f, 100.0f));
     float            chordRatio  = 0.5f;

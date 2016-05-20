@@ -41,7 +41,7 @@ AdaptNumPixelUniform()
     _atomicCounterArray->push_back(0);
 }
 
-virtual void operator ()(osg::RenderInfo&renderInfo) const
+virtual void operator ()(osg::RenderInfo &renderInfo) const
 {
     _acbb->readData(*renderInfo.getState(), *_atomicCounterArray);
     unsigned int numPixel = osg::maximum(1u, _atomicCounterArray->front());

@@ -10,8 +10,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool CameraView_readLocalData(Object&obj, Input&fr);
-bool CameraView_writeLocalData(const Object&obj, Output&fw);
+bool CameraView_readLocalData(Object &obj, Input &fr);
+bool CameraView_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(CameraView)
@@ -24,11 +24,11 @@ REGISTER_DOTOSGWRAPPER(CameraView)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool CameraView_readLocalData(Object&obj, Input&fr)
+bool CameraView_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    CameraView&cameraview = static_cast<CameraView&>(obj);
+    CameraView &cameraview = static_cast<CameraView&>(obj);
 
     if (fr.matchSequence("position %f %f %f"))
     {
@@ -96,9 +96,9 @@ bool CameraView_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool CameraView_writeLocalData(const Object&obj, Output&fw)
+bool CameraView_writeLocalData(const Object &obj, Output &fw)
 {
-    const CameraView&cameraview = static_cast<const CameraView&>(obj);
+    const CameraView &cameraview = static_cast<const CameraView&>(obj);
 
     fw.indent() << "position " << cameraview.getPosition() << std::endl;
     fw.indent() << "attitude " << cameraview.getAttitude() << std::endl;

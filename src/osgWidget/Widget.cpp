@@ -18,7 +18,7 @@ namespace osgWidget
 {
 osg::ref_ptr<PointArray> Widget::_norms;
 
-Widget::Widget(const std::string&name, point_type w, point_type h) :
+Widget::Widget(const std::string &name, point_type w, point_type h) :
     _parent    (0),
     _index     (0),
     _layer     (LAYER_LOW),
@@ -64,7 +64,7 @@ Widget::Widget(const std::string&name, point_type w, point_type h) :
     setColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-Widget::Widget(const Widget&widget, const osg::CopyOp&co) :
+Widget::Widget(const Widget &widget, const osg::CopyOp &co) :
     osg::Geometry  (widget, co),
     EventInterface (widget),
     StyleInterface (widget),
@@ -385,7 +385,7 @@ bool Widget::setImage(osg::Image *image, bool setTexCoords, bool useTextRect)
     return setTexture(texture, setTexCoords, useTextRect);
 }
 
-bool Widget::setImage(const std::string&filePath, bool setTexCoords, bool useTextRect)
+bool Widget::setImage(const std::string &filePath, bool setTexCoords, bool useTextRect)
 {
     if (!osgDB::findDataFile(filePath).size())
     {

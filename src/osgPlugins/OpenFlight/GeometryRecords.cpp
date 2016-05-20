@@ -279,14 +279,14 @@ inline bool isTransparent() const
     return _transparency > 0;
 }
 
-virtual void addChild(osg::Node&child)
+virtual void addChild(osg::Node &child)
 {
     // Add subface to parent.
     if (_parent.valid())
         _parent->addChild(child);
 }
 
-virtual void addVertex(Vertex&vertex)
+virtual void addVertex(Vertex &vertex)
 {
     osg::Vec3Array *vertices = getOrCreateVertexArray(*_geometry);
 
@@ -349,14 +349,14 @@ virtual void addVertex(Vertex&vertex)
     }
 }
 
-virtual void addVertexUV(int unit, const osg::Vec2&uv)
+virtual void addVertexUV(int unit, const osg::Vec2 &uv)
 {
     osg::Vec2Array *UVs = getOrCreateTextureArray(*_geometry, unit);
 
     UVs->push_back(uv);
 }
 
-virtual void addMorphVertex(Vertex&vertex0, Vertex& /*vertex100*/)
+virtual void addMorphVertex(Vertex &vertex0, Vertex& /*vertex100*/)
 {
     osg::Vec3Array *vertices = getOrCreateVertexArray(*_geometry);
 
@@ -395,7 +395,7 @@ virtual void addMorphVertex(Vertex&vertex0, Vertex& /*vertex100*/)
 
 protected:
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id      = in.readString(8);
     int32       IRColor = in.readInt32();
@@ -613,7 +613,7 @@ osg::PrimitiveSet::Mode getPrimitiveSetMode(int numVertices)
     return osg::PrimitiveSet::POLYGON;
 }
 
-virtual void dispose(Document&document)
+virtual void dispose(Document &document)
 {
     if (_geode.valid())
     {
@@ -717,7 +717,7 @@ virtual void dispose(Document&document)
             {
                 for (unsigned int i = 0; i < billboard->getNumDrawables(); ++i)
                 {
-                    const osg::BoundingBox&bb = billboard->getDrawable(i)->getBoundingBox();
+                    const osg::BoundingBox &bb = billboard->getDrawable(i)->getBoundingBox();
                     billboard->setPosition(i, bb.center());
 
                     osgUtil::TransformAttributeFunctor tf(osg::Matrix::translate(-bb.center()));
@@ -749,14 +749,14 @@ VertexListRecord() {}
 
 META_Record(VertexListRecord)
 
-virtual void addVertex(Vertex&vertex)
+virtual void addVertex(Vertex &vertex)
 {
     // forward vertex to parent.
     if (_parent.valid())
         _parent->addVertex(vertex);
 }
 
-virtual void addVertexUV(int layer, const osg::Vec2&uv)
+virtual void addVertexUV(int layer, const osg::Vec2 &uv)
 {
     // forward uv to parent.
     if (_parent.valid())
@@ -767,7 +767,7 @@ protected:
 
 virtual ~VertexListRecord() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     VertexPool *vp = document.getVertexPool();
 
@@ -820,7 +820,7 @@ MorphVertexList() :
 
 META_Record(MorphVertexList)
 
-virtual void addVertex(Vertex&vertex)
+virtual void addVertex(Vertex &vertex)
 {
     switch (_mode)
     {
@@ -853,7 +853,7 @@ protected:
 
 virtual ~MorphVertexList() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     VertexPool *vp = document.getVertexPool();
 
@@ -1030,21 +1030,21 @@ inline bool isTransparent() const
     return _transparency > 0;
 }
 
-virtual void addChild(osg::Node&child)
+virtual void addChild(osg::Node &child)
 {
     // Add subface to parent.
     if (_parent.valid())
         _parent->addChild(child);
 }
 
-virtual void addGeometry(osg::Geometry&geometry)
+virtual void addGeometry(osg::Geometry &geometry)
 {
     _geode->addDrawable(&geometry);
 }
 
 protected:
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     std::string id = in.readString(8);
 
@@ -1225,7 +1225,7 @@ virtual void readRecord(RecordInputStream&in, Document&document)
         _parent->addChild(*_geode);
 }
 
-virtual void dispose(Document&document)
+virtual void dispose(Document &document)
 {
     if (_geode.valid())
     {
@@ -1283,7 +1283,7 @@ virtual void dispose(Document&document)
             {
                 for (unsigned int i = 0; i < billboard->getNumDrawables(); ++i)
                 {
-                    const osg::BoundingBox&bb = billboard->getDrawable(i)->getBoundingBox();
+                    const osg::BoundingBox &bb = billboard->getDrawable(i)->getBoundingBox();
                     billboard->setPosition(i, bb.center());
 
                     osgUtil::TransformAttributeFunctor tf(osg::Matrix::translate(-bb.center()));
@@ -1332,7 +1332,7 @@ protected:
 
 virtual ~LocalVertexPool() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     uint32 vertices = in.readUInt32();
     uint32 mask     = in.readUInt32();
@@ -1441,7 +1441,7 @@ protected:
 
 virtual ~MeshPrimitive() {}
 
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     Mesh *mesh = dynamic_cast<Mesh*>(_parent.get());
 
@@ -1501,7 +1501,7 @@ virtual void readRecord(RecordInputStream&in, Document& /*document*/)
 
         if (index < vertexList->size())
         {
-            Vertex&vertex = (*vertexList)[index];
+            Vertex &vertex = (*vertexList)[index];
 
             osg::Vec3Array *vertices = getOrCreateVertexArray(*geometry);
             vertices->push_back(vertex._coord);

@@ -41,7 +41,7 @@ void add(double x, double y, double z)
         _vec3darray->push_back(osg::Vec3d(x, y, z));
 }
 
-void add(const osg::Vec3&v)
+void add(const osg::Vec3 &v)
 {
     if (_vec3farray.valid())
         _vec3farray->push_back(v);
@@ -49,7 +49,7 @@ void add(const osg::Vec3&v)
         _vec3darray->push_back(osg::Vec3d(v.x(), v.y(), v.z()));
 }
 
-void add(const osg::Vec3d&v)
+void add(const osg::Vec3d &v)
 {
     if (_vec3farray.valid())
         _vec3farray->push_back(osg::Vec3(v.x(), v.y(), v.z()));

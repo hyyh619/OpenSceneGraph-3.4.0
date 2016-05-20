@@ -26,7 +26,7 @@ namespace lwosg
 class Tessellator
 {
 public:
-bool tessellate(const Polygon&poly, const osg::Vec3Array *points, osg::DrawElementsUInt *out, const std::vector<int> *remap = 0);
+bool tessellate(const Polygon &poly, const osg::Vec3Array *points, osg::DrawElementsUInt *out, const std::vector<int> *remap = 0);
 
 ~Tessellator();
 

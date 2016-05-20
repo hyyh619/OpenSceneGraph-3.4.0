@@ -32,7 +32,7 @@ Vertex::Vertex() :
         _validUV[layer] = false;
 }
 
-Vertex::Vertex(const Vertex&vertex) :
+Vertex::Vertex(const Vertex &vertex) :
     _coord(vertex._coord),
     _color(vertex._color),
     _normal(vertex._normal),
@@ -46,24 +46,24 @@ Vertex::Vertex(const Vertex&vertex) :
     }
 }
 
-void Vertex::setCoord(const osg::Vec3&coord)
+void Vertex::setCoord(const osg::Vec3 &coord)
 {
     _coord = coord;
 }
 
-void Vertex::setColor(const osg::Vec4&color)
+void Vertex::setColor(const osg::Vec4 &color)
 {
     _color      = color;
     _validColor = true;
 }
 
-void Vertex::setNormal(const osg::Vec3&normal)
+void Vertex::setNormal(const osg::Vec3 &normal)
 {
     _normal      = normal;
     _validNormal = true;
 }
 
-void Vertex::setUV(int layer, const osg::Vec2&uv)
+void Vertex::setUV(int layer, const osg::Vec2 &uv)
 {
     if (layer >= 0 && layer < MAX_LAYERS)
     {

@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  BounceOperator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  BounceOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  BounceOperator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  BounceOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(BounceOperator_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(BounceOperator_Proxy)
     BounceOperator_writeLocalData
 );
 
-bool BounceOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool BounceOperator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::BounceOperator&bp        = static_cast<osgParticle::BounceOperator&>(obj);
-    bool                       itAdvanced = false;
+    osgParticle::BounceOperator &bp        = static_cast<osgParticle::BounceOperator&>(obj);
+    bool                        itAdvanced = false;
 
     float value = 0.0f;
 
@@ -61,9 +61,9 @@ bool BounceOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool BounceOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool BounceOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::BounceOperator&bp = static_cast<const osgParticle::BounceOperator&>(obj);
+    const osgParticle::BounceOperator &bp = static_cast<const osgParticle::BounceOperator&>(obj);
 
     fw.indent() << "friction " <<   bp.getFriction() << std::endl;
     fw.indent() << "resilience " << bp.getResilience() << std::endl;

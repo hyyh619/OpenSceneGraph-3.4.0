@@ -21,7 +21,7 @@
 #include <osg/Drawable>
 #include <osg/OcclusionQueryNode>
 
-void osg::flushDeletedGLObjects(unsigned int contextID, double currentTime, double&availableTime)
+void osg::flushDeletedGLObjects(unsigned int contextID, double currentTime, double &availableTime)
 {
 #ifdef OSG_GL_DISPLAYLISTS_AVAILABLE
     osg::Drawable::flushDeletedDisplayLists(contextID, availableTime);

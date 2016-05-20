@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_MATRIXTRANSFORM
 #define OSG_MATRIXTRANSFORM 1
@@ -17,68 +17,83 @@
 #include <osg/Transform>
 
 namespace osg {
-
 /** MatrixTransform - is a subclass of Transform which has an osg::Matrix
-  * which represents a 4x4 transformation of its children from local coordinates
-  * into the Transform's parent coordinates.
-*/
-class OSG_EXPORT MatrixTransform : public Transform
-{
-    public :
+ * which represents a 4x4 transformation of its children from local coordinates
+ * into the Transform's parent coordinates.
+ */
+    class OSG_EXPORT MatrixTransform: public Transform
+    {
+public:
 
 
         MatrixTransform();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        MatrixTransform(const MatrixTransform&,const CopyOp& copyop=CopyOp::SHALLOW_COPY);
+        MatrixTransform(const MatrixTransform &, const CopyOp &copyop = CopyOp::SHALLOW_COPY);
 
-        MatrixTransform(const Matrix& matix);
+        MatrixTransform(const Matrix &matix);
 
         META_Node(osg, MatrixTransform);
 
-        virtual MatrixTransform* asMatrixTransform() { return this; }
-        virtual const MatrixTransform* asMatrixTransform() const { return this; }
+        virtual MatrixTransform* asMatrixTransform()
+        {
+            return this;
+        }
+        virtual const MatrixTransform* asMatrixTransform() const
+        {
+            return this;
+        }
 
 
         /** Set the transform's matrix.*/
-        void setMatrix(const Matrix& mat) { _matrix = mat; _inverseDirty=true; dirtyBound(); }
+        void setMatrix(const Matrix &mat)
+        {
+            _matrix = mat; _inverseDirty = true; dirtyBound();
+        }
 
         /** Get the matrix. */
-        inline const Matrix& getMatrix() const { return _matrix; }
+        inline const Matrix&getMatrix() const
+        {
+            return _matrix;
+        }
 
         /** pre multiply the transform's matrix.*/
-        void preMult(const Matrix& mat) { _matrix.preMult(mat); _inverseDirty=true; dirtyBound(); }
+        void preMult(const Matrix &mat)
+        {
+            _matrix.preMult(mat); _inverseDirty = true; dirtyBound();
+        }
 
         /** post multiply the transform's matrix.*/
-        void postMult(const Matrix& mat)  { _matrix.postMult(mat); _inverseDirty=true; dirtyBound(); }
+        void postMult(const Matrix &mat)
+        {
+            _matrix.postMult(mat); _inverseDirty = true; dirtyBound();
+        }
 
         /** Get the inverse matrix. */
-        inline const Matrix& getInverseMatrix() const
+        inline const Matrix&getInverseMatrix() const
         {
             if (_inverseDirty)
             {
                 _inverse.invert(_matrix);
                 _inverseDirty = false;
             }
+
             return _inverse;
         }
 
-        virtual bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor*) const;
+        virtual bool computeLocalToWorldMatrix(Matrix &matrix, NodeVisitor*) const;
 
-        virtual bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor*) const;
+        virtual bool computeWorldToLocalMatrix(Matrix &matrix, NodeVisitor*) const;
 
 
-    protected :
+protected:
 
         virtual ~MatrixTransform();
 
-        Matrix                              _matrix;
-        mutable Matrix                      _inverse;
-        mutable bool                        _inverseDirty;
-
-
-};
-
+        Matrix         _matrix;
+        mutable Matrix _inverse;
+        mutable bool   _inverseDirty;
+    };
 }
 
 #endif

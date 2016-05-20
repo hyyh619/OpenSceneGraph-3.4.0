@@ -35,9 +35,9 @@
 #include <osg/io_utils>
 
 using namespace osgProducer;
-static osg::GraphicsContext::Traits* buildTrait(RenderSurface&rs)
+static osg::GraphicsContext::Traits* buildTrait(RenderSurface &rs)
 {
-    VisualChooser&vc = *rs.getVisualChooser();
+    VisualChooser &vc = *rs.getVisualChooser();
 
     osg::GraphicsContext::Traits *traits = new osg::GraphicsContext::Traits;
 
@@ -109,7 +109,7 @@ static osg::GraphicsContext::Traits* buildTrait(RenderSurface&rs)
     return traits;
 }
 
-static osgViewer::View* load(const std::string&file, const osgDB::ReaderWriter::Options *option)
+static osgViewer::View* load(const std::string &file, const osgDB::ReaderWriter::Options *option)
 {
     osg::ref_ptr<CameraConfig> config = new CameraConfig;
 
@@ -297,7 +297,7 @@ virtual const char* className()
 }
 
 
-virtual ReadResult readObject(const std::string&fileName, const Options *options = NULL) const
+virtual ReadResult readObject(const std::string &fileName, const Options *options = NULL) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 

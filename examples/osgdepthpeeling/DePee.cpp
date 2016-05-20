@@ -459,7 +459,7 @@ bool DePee::createEdgeMap(bool first)
     _dePeePasses.back()->Cameras[EDGE_MAP]->setClearColor(osg::Vec4(0.3, 0.3f, 0.3f, 1.0f));
     _dePeePasses.back()->Cameras[EDGE_MAP]->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    const osg::BoundingSphere&bs = _quadGeode->getBound();
+    const osg::BoundingSphere &bs = _quadGeode->getBound();
     if (!bs.valid())
     {
         return false;
@@ -549,7 +549,7 @@ bool DePee::createNormalDepthColorMap(MapMode mapMode, bool first)
     pass->Cameras[mapMode]->setClearColor(osg::Vec4(0.f, 0.f, 1.f, 1.f));
     pass->Cameras[mapMode]->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    const osg::BoundingSphere&bs = _subgraph->getBound();
+    const osg::BoundingSphere &bs = _subgraph->getBound();
     if (!bs.valid())
     {
         return false;

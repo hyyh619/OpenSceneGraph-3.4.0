@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool Locator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Locator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Locator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Locator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Locator_Proxy)
 (
@@ -26,9 +26,9 @@ REGISTER_DOTOSGWRAPPER(Locator_Proxy)
 );
 
 
-bool Locator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Locator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgVolume::Locator&locator = static_cast<osgVolume::Locator&>(obj);
+    osgVolume::Locator &locator = static_cast<osgVolume::Locator&>(obj);
 
     bool itrAdvanced = false;
 
@@ -70,11 +70,11 @@ bool Locator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool Locator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Locator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgVolume::Locator&locator = static_cast<const osgVolume::Locator&>(obj);
+    const osgVolume::Locator &locator = static_cast<const osgVolume::Locator&>(obj);
 
-    const osg::Matrixd&matrix = locator.getTransform();
+    const osg::Matrixd &matrix = locator.getTransform();
 
     fw.indent() << "Transform {" << std::endl;
     fw.moveIn();

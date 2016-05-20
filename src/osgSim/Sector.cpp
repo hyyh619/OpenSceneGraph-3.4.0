@@ -46,7 +46,7 @@ void AzimRange::setAzimuthRange(float minAzimuth, float maxAzimuth, float fadeAn
         _cosFadeAngle = cos(angle + fadeAngle);
 }
 
-void AzimRange::getAzimuthRange(float&minAzimuth, float&maxAzimuth, float&fadeAngle) const
+void AzimRange::getAzimuthRange(float &minAzimuth, float &maxAzimuth, float &fadeAngle) const
 {
     float centerAzim = atan2(_sinAzim, _cosAzim);
     float angle      = acos(_cosAngle);
@@ -138,7 +138,7 @@ AzimSector::AzimSector(float minAzimuth, float maxAzimuth, float fadeAngle) :
     setAzimuthRange(minAzimuth, maxAzimuth, fadeAngle);
 }
 
-float AzimSector::operator()(const osg::Vec3&eyeLocal) const
+float AzimSector::operator()(const osg::Vec3 &eyeLocal) const
 {
     return azimSector(eyeLocal);
 }
@@ -153,7 +153,7 @@ ElevationSector::ElevationSector(float minElevation, float maxElevation, float f
     setElevationRange(minElevation, maxElevation, fadeAngle);
 }
 
-float ElevationSector::operator()(const osg::Vec3&eyeLocal) const
+float ElevationSector::operator()(const osg::Vec3 &eyeLocal) const
 {
     return elevationSector(eyeLocal);
 }
@@ -171,7 +171,7 @@ AzimElevationSector::AzimElevationSector(float minAzimuth, float maxAzimuth, flo
 }
 
 
-float AzimElevationSector::operator()(const osg::Vec3&eyeLocal) const
+float AzimElevationSector::operator()(const osg::Vec3 &eyeLocal) const
 {
     float azimIntensity = azimSector(eyeLocal);
 
@@ -191,14 +191,14 @@ float AzimElevationSector::operator()(const osg::Vec3&eyeLocal) const
 //
 // ConeSector
 //
-ConeSector::ConeSector(const osg::Vec3&axis, float angle, float fadeangle) :
+ConeSector::ConeSector(const osg::Vec3 &axis, float angle, float fadeangle) :
     Sector()
 {
     setAxis(axis);
     setAngle(angle, fadeangle);
 }
 
-void ConeSector::setAxis(const osg::Vec3&axis)
+void ConeSector::setAxis(const osg::Vec3 &axis)
 {
     _axis = axis;
     _axis.normalize();
@@ -225,7 +225,7 @@ float ConeSector::getFadeAngle() const
     return acos(_cosAngleFade) - acos(_cosAngle);
 }
 
-float ConeSector::operator()(const osg::Vec3&eyeLocal) const
+float ConeSector::operator()(const osg::Vec3 &eyeLocal) const
 {
     float dotproduct = eyeLocal * _axis;
     float length     = eyeLocal.length();
@@ -242,7 +242,7 @@ float ConeSector::operator()(const osg::Vec3&eyeLocal) const
 //
 // DirectionalSector
 //
-DirectionalSector::DirectionalSector(const osg::Vec3&direction, float horizLobeAngle, float vertLobeAngle, float lobeRollAngle, float fadeAngle) :
+DirectionalSector::DirectionalSector(const osg::Vec3 &direction, float horizLobeAngle, float vertLobeAngle, float lobeRollAngle, float fadeAngle) :
     Sector()
 {
     setDirection(direction);
@@ -263,7 +263,7 @@ void DirectionalSector::computeMatrix()
     _local_to_LP.preMultRotate(osg::Quat(roll, osg::Vec3d(0.0, 1.0, 0.0)));
 }
 
-void DirectionalSector::setDirection(const osg::Vec3&direction)
+void DirectionalSector::setDirection(const osg::Vec3 &direction)
 {
     _direction = direction;
     computeMatrix();
@@ -326,7 +326,7 @@ float DirectionalSector::getFadeAngle() const
     return acos(_cosHorizFadeAngle) - acos(_cosHorizAngle);
 }
 
-float DirectionalSector::operator()(const osg::Vec3&eyeLocal) const
+float DirectionalSector::operator()(const osg::Vec3 &eyeLocal) const
 {
     float elev_intensity, azim_intensity;
 

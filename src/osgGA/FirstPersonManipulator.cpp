@@ -43,7 +43,7 @@ FirstPersonManipulator::FirstPersonManipulator(int flags)
 
 
 /// Constructor.
-FirstPersonManipulator::FirstPersonManipulator(const FirstPersonManipulator&fpm, const CopyOp&copyOp)
+FirstPersonManipulator::FirstPersonManipulator(const FirstPersonManipulator &fpm, const CopyOp &copyOp)
     : osg::Callback(fpm, copyOp),
     inherited(fpm, copyOp),
     _eye(fpm._eye),
@@ -56,7 +56,7 @@ FirstPersonManipulator::FirstPersonManipulator(const FirstPersonManipulator&fpm,
 
 
 /** Set the position of the manipulator using a 4x4 matrix.*/
-void FirstPersonManipulator::setByMatrix(const Matrixd&matrix)
+void FirstPersonManipulator::setByMatrix(const Matrixd &matrix)
 {
     // set variables
     _eye      = matrix.getTrans();
@@ -69,7 +69,7 @@ void FirstPersonManipulator::setByMatrix(const Matrixd&matrix)
 
 
 /** Set the position of the manipulator using a 4x4 matrix.*/
-void FirstPersonManipulator::setByInverseMatrix(const Matrixd&matrix)
+void FirstPersonManipulator::setByInverseMatrix(const Matrixd &matrix)
 {
     setByMatrix(Matrixd::inverse(matrix));
 }
@@ -91,7 +91,7 @@ Matrixd FirstPersonManipulator::getInverseMatrix() const
 
 
 // doc in parent
-void FirstPersonManipulator::setTransformation(const osg::Vec3d&eye, const osg::Quat&rotation)
+void FirstPersonManipulator::setTransformation(const osg::Vec3d &eye, const osg::Quat &rotation)
 {
     // set variables
     _eye      = eye;
@@ -104,7 +104,7 @@ void FirstPersonManipulator::setTransformation(const osg::Vec3d&eye, const osg::
 
 
 // doc in parent
-void FirstPersonManipulator::getTransformation(osg::Vec3d&eye, osg::Quat&rotation) const
+void FirstPersonManipulator::getTransformation(osg::Vec3d &eye, osg::Quat &rotation) const
 {
     eye      = _eye;
     rotation = _rotation;
@@ -112,7 +112,7 @@ void FirstPersonManipulator::getTransformation(osg::Vec3d&eye, osg::Quat&rotatio
 
 
 // doc in parent
-void FirstPersonManipulator::setTransformation(const osg::Vec3d&eye, const osg::Vec3d&center, const osg::Vec3d&up)
+void FirstPersonManipulator::setTransformation(const osg::Vec3d &eye, const osg::Vec3d &center, const osg::Vec3d &up)
 {
     // set variables
     osg::Matrixd m(osg::Matrixd::lookAt(eye, center, up));
@@ -127,7 +127,7 @@ void FirstPersonManipulator::setTransformation(const osg::Vec3d&eye, const osg::
 
 
 // doc in parent
-void FirstPersonManipulator::getTransformation(osg::Vec3d&eye, osg::Vec3d&center, osg::Vec3d&up) const
+void FirstPersonManipulator::getTransformation(osg::Vec3d &eye, osg::Vec3d &center, osg::Vec3d &up) const
 {
     center = _eye + _rotation * osg::Vec3d(0., 0., -1.);
     eye    = _eye;
@@ -139,7 +139,7 @@ void FirstPersonManipulator::getTransformation(osg::Vec3d&eye, osg::Vec3d&center
  *
  *  There are no checks for maximum velocity applied.
  */
-void FirstPersonManipulator::setVelocity(const double&velocity)
+void FirstPersonManipulator::setVelocity(const double &velocity)
 {
     _velocity = velocity;
 }
@@ -151,7 +151,7 @@ void FirstPersonManipulator::setVelocity(const double&velocity)
  *  Then, there will be no acceleration and object will reach its
  *  maximum velocity immediately.
  */
-void FirstPersonManipulator::setAcceleration(const double&acceleration, bool relativeToModelSize)
+void FirstPersonManipulator::setAcceleration(const double &acceleration, bool relativeToModelSize)
 {
     _acceleration = acceleration;
     setRelativeFlag(_accelerationFlagIndex, relativeToModelSize);
@@ -173,7 +173,7 @@ double FirstPersonManipulator::getAcceleration(bool *relativeToModelSize) const
  *  If acceleration is set to DBL_MAX, there is no speeding up.
  *  Instead, maximum velocity is used for velocity at once without acceleration.
  */
-void FirstPersonManipulator::setMaxVelocity(const double&maxVelocity, bool relativeToModelSize)
+void FirstPersonManipulator::setMaxVelocity(const double &maxVelocity, bool relativeToModelSize)
 {
     _maxVelocity = maxVelocity;
     setRelativeFlag(_maxVelocityFlagIndex, relativeToModelSize);
@@ -191,7 +191,7 @@ double FirstPersonManipulator::getMaxVelocity(bool *relativeToModelSize) const
 
 
 /// Sets movement size on single wheel step.
-void FirstPersonManipulator::setWheelMovement(const double&wheelMovement, bool relativeToModelSize)
+void FirstPersonManipulator::setWheelMovement(const double &wheelMovement, bool relativeToModelSize)
 {
     _wheelMovement = wheelMovement;
     setRelativeFlag(_wheelMovementFlagIndex, relativeToModelSize);
@@ -216,7 +216,7 @@ void FirstPersonManipulator::home(double currentTime)
 }
 
 
-void FirstPersonManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void FirstPersonManipulator::home(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     inherited::home(ea, us);
 
@@ -224,7 +224,7 @@ void FirstPersonManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
 }
 
 
-void FirstPersonManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void FirstPersonManipulator::init(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     inherited::init(ea, us);
 
@@ -234,7 +234,7 @@ void FirstPersonManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
 
 
 // doc in parent
-bool FirstPersonManipulator::handleMouseWheel(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool FirstPersonManipulator::handleMouseWheel(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     osgGA::GUIEventAdapter::ScrollingMotion sm = ea.getScrollingMotion();
 
@@ -332,7 +332,7 @@ void FirstPersonManipulator::moveForward(const double distance)
 
 
 /// Move camera forward by distance parameter.
-void FirstPersonManipulator::moveForward(const Quat&rotation, const double distance)
+void FirstPersonManipulator::moveForward(const Quat &rotation, const double distance)
 {
     _eye += rotation * Vec3d(0., 0., -distance);
 }
@@ -369,7 +369,7 @@ void FirstPersonManipulator::applyAnimationStep(const double currentProgress, co
 
 // doc in parent
 bool FirstPersonManipulator::startAnimationByMousePointerIntersection(
-    const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us)
+    const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us)
 {
     // get current transformation
     osg::Vec3d prevEye;
@@ -392,7 +392,7 @@ bool FirstPersonManipulator::startAnimationByMousePointerIntersection(
 }
 
 
-void FirstPersonManipulator::FirstPersonAnimationData::start(const Quat&startRotation, const Quat&targetRotation,
+void FirstPersonManipulator::FirstPersonAnimationData::start(const Quat &startRotation, const Quat &targetRotation,
                                                              const double startTime)
 {
     AnimationData::start(startTime);

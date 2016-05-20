@@ -6,8 +6,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  ConstantRateCounter_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ConstantRateCounter_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ConstantRateCounter_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ConstantRateCounter_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ConstantRateCounter_Proxy)
 (
@@ -18,10 +18,10 @@ REGISTER_DOTOSGWRAPPER(ConstantRateCounter_Proxy)
     ConstantRateCounter_writeLocalData
 );
 
-bool ConstantRateCounter_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ConstantRateCounter_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::ConstantRateCounter&myobj     = static_cast<osgParticle::ConstantRateCounter&>(obj);
-    bool                            itAdvanced = false;
+    osgParticle::ConstantRateCounter &myobj     = static_cast<osgParticle::ConstantRateCounter&>(obj);
+    bool                             itAdvanced = false;
 
     if (fr[0].matchWord("minimumNumberOfParticlesToCreate"))
     {
@@ -48,9 +48,9 @@ bool ConstantRateCounter_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool ConstantRateCounter_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ConstantRateCounter_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::ConstantRateCounter&myobj = static_cast<const osgParticle::ConstantRateCounter&>(obj);
+    const osgParticle::ConstantRateCounter &myobj = static_cast<const osgParticle::ConstantRateCounter&>(obj);
 
     fw.indent() << "minimumNumberOfParticlesToCreate " <<   myobj.getMinimumNumberOfParticlesToCreate() << std::endl;
     fw.indent() << "numberOfParticlesPerSecondToCreate " << myobj.getNumberOfParticlesPerSecondToCreate() << std::endl;

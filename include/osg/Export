@@ -9,12 +9,12 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_EXPORT_
 #define OSG_EXPORT_ 1
 
-#include<osg/Config>
+#include <osg/Config>
 // define USE_DEPRECATED_API is used to include in API which is being fazed out
 // if you can compile your apps with this turned off you are
 // well placed for compatibility with future versions.
@@ -31,13 +31,13 @@
     #pragma warning( disable : 4511 )
 #endif
 
-#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__)  || defined( __MWERKS__)
-    #  if defined( OSG_LIBRARY_STATIC )
+#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BCPLUSPLUS__) || defined(__MWERKS__)
+    #  if defined(OSG_LIBRARY_STATIC)
     #    define OSG_EXPORT
-    #  elif defined( OSG_LIBRARY )
-    #    define OSG_EXPORT   __declspec(dllexport)
+    #  elif defined(OSG_LIBRARY)
+    #    define OSG_EXPORT __declspec(dllexport)
     #  else
-    #    define OSG_EXPORT   __declspec(dllimport)
+    #    define OSG_EXPORT __declspec(dllimport)
     #  endif
 #else
     #  define OSG_EXPORT
@@ -54,19 +54,18 @@
 
 #ifndef NULL
     #ifdef  __cplusplus
-        #define NULL    0
+        #define NULL 0
     #else
-        #define NULL    ((void *)0)
+        #define NULL ((void*)0)
     #endif
 #endif
 
 /**
 
-\namespace osg
+   \namespace osg
 
-The core osg library provides the basic scene graph classes such as Nodes,
-State and Drawables, and maths and general helper classes.
-*/
+   The core osg library provides the basic scene graph classes such as Nodes,
+   State and Drawables, and maths and general helper classes.
+ */
 
 #endif
-

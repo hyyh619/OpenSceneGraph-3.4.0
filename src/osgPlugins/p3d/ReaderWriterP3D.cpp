@@ -105,7 +105,7 @@ ReaderWriterP3DXML()
     _notifyLevel = osg::INFO;
 }
 
-bool match(const std::string&lhs, const std::string&rhs) const
+bool match(const std::string &lhs, const std::string &rhs) const
 {
     // check for perfect match
     // if (lhs==rhs) return true;
@@ -161,7 +161,7 @@ virtual const char* className() const
     return "present3D XML Reader/Writer";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "p3d") ||
            osgDB::equalCaseInsensitive(extension, "xml");
@@ -169,46 +169,46 @@ virtual bool acceptsExtension(const std::string&extension) const
 
 osgDB::XmlNode::Properties::const_iterator findProperty(osgDB::XmlNode *cur, const char *token) const;
 
-virtual ReadResult readNode(const std::string&fileName,
+virtual ReadResult readNode(const std::string &fileName,
                             const osgDB::ReaderWriter::Options *options) const;
 
-virtual ReadResult readNode(std::istream&fin, const Options *options) const;
+virtual ReadResult readNode(std::istream &fin, const Options *options) const;
 
-ReadResult readNode(osgDB::XmlNode::Input&input, osgDB::ReaderWriter::Options *options) const;
+ReadResult readNode(osgDB::XmlNode::Input &input, osgDB::ReaderWriter::Options *options) const;
 
 osg::Node* parseXmlGraph(osgDB::XmlNode *root, bool readOnlyHoldingPage, osgDB::Options *options) const;
 
-bool parseProperties(osgDB::XmlNode *root, osg::UserDataContainer&udc) const;
-bool parsePropertyAnimation(osgDB::XmlNode *root, osgPresentation::PropertyAnimation&pa) const;
+bool parseProperties(osgDB::XmlNode *root, osg::UserDataContainer &udc) const;
+bool parsePropertyAnimation(osgDB::XmlNode *root, osgPresentation::PropertyAnimation &pa) const;
 
-void parseModel(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
-void parseModelScript(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parseModel(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
+void parseModelScript(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-void parseVolume(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parseVolume(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-void parseStereoPair(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parseStereoPair(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-void parseTimeout(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parseTimeout(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-void parseSwitch(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parseSwitch(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-bool parseLayerChild(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur, float&totalIndent) const;
+bool parseLayerChild(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur, float &totalIndent) const;
 
-void parseLayer(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parseLayer(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-void parseBullets(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur, bool inheritPreviousLayers, bool defineAsBaseLayer) const;
-void parseText(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur, bool inheritPreviousLayers, bool defineAsBaseLayer) const;
+void parseBullets(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur, bool inheritPreviousLayers, bool defineAsBaseLayer) const;
+void parseText(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur, bool inheritPreviousLayers, bool defineAsBaseLayer) const;
 
-void parsePage(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parsePage(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-void parseRunScriptFile(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
-void parseRunScript(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parseRunScriptFile(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
+void parseRunScript(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-void parseSlide(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur, bool parseTitles = true, bool parseLayers = true) const;
+void parseSlide(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur, bool parseTitles = true, bool parseLayers = true) const;
 
-void parsePdfDocument(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const;
+void parsePdfDocument(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const;
 
-osg::Vec4 mapStringToColor(const std::string&str) const
+osg::Vec4 mapStringToColor(const std::string &str) const
 {
     ColorMap::const_iterator itr = find(_colorMap, str);
 
@@ -222,7 +222,7 @@ osg::Vec4 mapStringToColor(const std::string&str) const
         return osg::Vec4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-inline osg::Vec4 accumulateRotation(const osg::Vec4&lhs, const osg::Vec4&rhs) const
+inline osg::Vec4 accumulateRotation(const osg::Vec4 &lhs, const osg::Vec4 &rhs) const
 {
     osg::Quat qlhs, qrhs;
 
@@ -235,49 +235,49 @@ inline osg::Vec4 accumulateRotation(const osg::Vec4&lhs, const osg::Vec4&rhs) co
     return result;
 }
 
-inline bool read(const char *str, int&value) const;
-inline bool read(const char *str, float&value) const;
-inline bool read(const char *str, double&value) const;
+inline bool read(const char *str, int &value) const;
+inline bool read(const char *str, float &value) const;
+inline bool read(const char *str, double &value) const;
 inline bool read(const char *str, int numberValues, float *values) const;
-inline bool read(const char *str, osg::Vec2&value) const;
-inline bool read(const char *str, osg::Vec3&value) const;
-inline bool read(const char *str, osg::Vec4&value) const;
+inline bool read(const char *str, osg::Vec2 &value) const;
+inline bool read(const char *str, osg::Vec3 &value) const;
+inline bool read(const char *str, osg::Vec4 &value) const;
 
-inline bool read(const std::string&str, bool&value) const;
-inline bool read(const std::string&str, int&value) const;
-inline bool read(const std::string&str, float&value) const;
-inline bool read(const std::string&str, double&value) const;
-inline bool read(const std::string&str, int numberValues, float *values) const;
-inline bool read(const std::string&str, osg::Vec2&value) const;
-inline bool read(const std::string&str, osg::Vec3&value) const;
-inline bool read(const std::string&str, osg::Vec4&value) const;
+inline bool read(const std::string &str, bool &value) const;
+inline bool read(const std::string &str, int &value) const;
+inline bool read(const std::string &str, float &value) const;
+inline bool read(const std::string &str, double &value) const;
+inline bool read(const std::string &str, int numberValues, float *values) const;
+inline bool read(const std::string &str, osg::Vec2 &value) const;
+inline bool read(const std::string &str, osg::Vec3 &value) const;
+inline bool read(const std::string &str, osg::Vec4 &value) const;
 
 bool getProperty(osgDB::XmlNode *cur, const char *token) const;
-bool getKeyProperty(osgDB::XmlNode *cur, const char *token, int&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, bool&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, int&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, float&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, double&value) const;
+bool getKeyProperty(osgDB::XmlNode *cur, const char *token, int &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, bool &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, int &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, float &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, double &value) const;
 bool getProperty(osgDB::XmlNode *cur, const char *token, int numberValues, float *values) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec2&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec3&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec4&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, std::string&value) const;
-bool getTrimmedProperty(osgDB::XmlNode *cur, const char *token, std::string&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::Layout&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::AlignmentType&value) const;
-bool getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::CharacterSizeMode&value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec2 &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec3 &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec4 &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, std::string &value) const;
+bool getTrimmedProperty(osgDB::XmlNode *cur, const char *token, std::string &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::Layout &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::AlignmentType &value) const;
+bool getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::CharacterSizeMode &value) const;
 
-bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::PositionData&value) const;
-bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::FontData&value) const;
-bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ModelData&value) const;
-bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ImageData&value) const;
-bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ScriptData&value) const;
+bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::PositionData &value) const;
+bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::FontData &value) const;
+bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ModelData &value) const;
+bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ImageData &value) const;
+bool getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ScriptData &value) const;
 
-bool getJumpProperties(osgDB::XmlNode *cur, osgPresentation::JumpData&jumpData) const;
+bool getJumpProperties(osgDB::XmlNode *cur, osgPresentation::JumpData &jumpData) const;
 
-bool getKeyPositionInner(osgDB::XmlNode *cur, osgPresentation::KeyPosition&keyPosition) const;
-bool getKeyPosition(osgDB::XmlNode *cur, osgPresentation::KeyPosition&keyPosition) const;
+bool getKeyPositionInner(osgDB::XmlNode *cur, osgPresentation::KeyPosition &keyPosition) const;
+bool getKeyPosition(osgDB::XmlNode *cur, osgPresentation::KeyPosition &keyPosition) const;
 
 typedef std::map<std::string, osg::Vec4> ColorMap;
 typedef std::map<std::string, osgText::Text::Layout> LayoutMap;
@@ -286,7 +286,7 @@ typedef std::map<std::string, osgText::Text::CharacterSizeMode> CharacterSizeMod
 typedef std::map<std::string, unsigned int> StringKeyMap;
 
 template<typename T>
-typename T::const_iterator find(const T&container, const std::string&rhs) const
+typename T::const_iterator find(const T &container, const std::string &rhs) const
 {
     for (typename T::const_iterator itr = container.begin();
          itr != container.end();
@@ -302,7 +302,7 @@ typename T::const_iterator find(const T&container, const std::string&rhs) const
     return container.end();
 }
 
-std::string expandEnvVarsInFileName(const std::string&filename) const;
+std::string expandEnvVarsInFileName(const std::string &filename) const;
 
 
 ColorMap             _colorMap;
@@ -321,7 +321,7 @@ osg::NotifySeverity _notifyLevel;
 // reader/writer.
 REGISTER_OSGPLUGIN(p3d, ReaderWriterP3DXML)
 
-std::string ReaderWriterP3DXML::expandEnvVarsInFileName(const std::string&filename) const
+std::string ReaderWriterP3DXML::expandEnvVarsInFileName(const std::string &filename) const
 {
     std::string            argument(filename);
     std::string::size_type start_pos = argument.find("${");
@@ -350,7 +350,7 @@ std::string ReaderWriterP3DXML::expandEnvVarsInFileName(const std::string&filena
     return argument;
 }
 
-bool ReaderWriterP3DXML::read(const char *str, int&value) const
+bool ReaderWriterP3DXML::read(const char *str, int &value) const
 {
     if (!str)
         return false;
@@ -360,7 +360,7 @@ bool ReaderWriterP3DXML::read(const char *str, int&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const char *str, float&value) const
+bool ReaderWriterP3DXML::read(const char *str, float &value) const
 {
     if (!str)
         return false;
@@ -370,7 +370,7 @@ bool ReaderWriterP3DXML::read(const char *str, float&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const char *str, double&value) const
+bool ReaderWriterP3DXML::read(const char *str, double &value) const
 {
     if (!str)
         return false;
@@ -396,7 +396,7 @@ bool ReaderWriterP3DXML::read(const char *str, int numberValues, float *values) 
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const char *str, osg::Vec2&value) const
+bool ReaderWriterP3DXML::read(const char *str, osg::Vec2 &value) const
 {
     if (!str)
         return false;
@@ -406,7 +406,7 @@ bool ReaderWriterP3DXML::read(const char *str, osg::Vec2&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const char *str, osg::Vec3&value) const
+bool ReaderWriterP3DXML::read(const char *str, osg::Vec3 &value) const
 {
     if (!str)
         return false;
@@ -416,7 +416,7 @@ bool ReaderWriterP3DXML::read(const char *str, osg::Vec3&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const char *str, osg::Vec4&value) const
+bool ReaderWriterP3DXML::read(const char *str, osg::Vec4 &value) const
 {
     if (!str)
         return false;
@@ -426,7 +426,7 @@ bool ReaderWriterP3DXML::read(const char *str, osg::Vec4&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const std::string&str, bool&value) const
+bool ReaderWriterP3DXML::read(const std::string &str, bool &value) const
 {
     if ((str == "1") || (str == "0"))
     {
@@ -439,7 +439,7 @@ bool ReaderWriterP3DXML::read(const std::string&str, bool&value) const
     return true;
 }
 
-bool ReaderWriterP3DXML::read(const std::string&str, int&value) const
+bool ReaderWriterP3DXML::read(const std::string &str, int &value) const
 {
     std::istringstream iss(str);
 
@@ -447,7 +447,7 @@ bool ReaderWriterP3DXML::read(const std::string&str, int&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const std::string&str, float&value) const
+bool ReaderWriterP3DXML::read(const std::string &str, float &value) const
 {
     std::istringstream iss(str);
 
@@ -455,7 +455,7 @@ bool ReaderWriterP3DXML::read(const std::string&str, float&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const std::string&str, double&value) const
+bool ReaderWriterP3DXML::read(const std::string &str, double &value) const
 {
     std::istringstream iss(str);
 
@@ -464,7 +464,7 @@ bool ReaderWriterP3DXML::read(const std::string&str, double&value) const
 }
 
 
-bool ReaderWriterP3DXML::read(const std::string&str, int numberValues, float *values) const
+bool ReaderWriterP3DXML::read(const std::string &str, int numberValues, float *values) const
 {
     std::istringstream iss(str);
 
@@ -477,7 +477,7 @@ bool ReaderWriterP3DXML::read(const std::string&str, int numberValues, float *va
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const std::string&str, osg::Vec2&value) const
+bool ReaderWriterP3DXML::read(const std::string &str, osg::Vec2 &value) const
 {
     std::istringstream iss(str);
 
@@ -485,7 +485,7 @@ bool ReaderWriterP3DXML::read(const std::string&str, osg::Vec2&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const std::string&str, osg::Vec3&value) const
+bool ReaderWriterP3DXML::read(const std::string &str, osg::Vec3 &value) const
 {
     std::istringstream iss(str);
 
@@ -493,7 +493,7 @@ bool ReaderWriterP3DXML::read(const std::string&str, osg::Vec3&value) const
     return !iss.fail();
 }
 
-bool ReaderWriterP3DXML::read(const std::string&str, osg::Vec4&value) const
+bool ReaderWriterP3DXML::read(const std::string &str, osg::Vec4 &value) const
 {
     std::istringstream iss(str);
 
@@ -513,7 +513,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token) con
     return find(cur->properties, token) != cur->properties.end();
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, bool&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, bool &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -523,7 +523,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, boo
     return read(itr->second, value);
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, int&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, int &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -533,7 +533,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, int
     return read(itr->second, value);
 }
 
-bool ReaderWriterP3DXML::getKeyProperty(osgDB::XmlNode *cur, const char *token, int&value) const
+bool ReaderWriterP3DXML::getKeyProperty(osgDB::XmlNode *cur, const char *token, int &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -570,7 +570,7 @@ bool ReaderWriterP3DXML::getKeyProperty(osgDB::XmlNode *cur, const char *token, 
     }
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, float&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, float &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -580,7 +580,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, flo
     return read(itr->second, value);
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, double&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, double &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -600,7 +600,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, int
     return read(itr->second, numberValues, values);
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec2&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec2 &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -610,7 +610,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg
     return read(itr->second, value);
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec3&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec3 &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -620,7 +620,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg
     return read(itr->second, value);
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec4&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg::Vec4 &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -630,7 +630,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg
     return read(itr->second, value);
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, std::string&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, std::string &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -641,7 +641,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, std
     return true;
 }
 
-bool ReaderWriterP3DXML::getTrimmedProperty(osgDB::XmlNode *cur, const char *token, std::string&value) const
+bool ReaderWriterP3DXML::getTrimmedProperty(osgDB::XmlNode *cur, const char *token, std::string &value) const
 {
     osgDB::XmlNode::Properties::const_iterator itr = findProperty(cur, token);
 
@@ -652,7 +652,7 @@ bool ReaderWriterP3DXML::getTrimmedProperty(osgDB::XmlNode *cur, const char *tok
     return true;
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::Layout&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::Layout &value) const
 {
     osgDB::XmlNode::Properties::const_iterator pitr = findProperty(cur, token);
 
@@ -669,7 +669,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg
     return true;
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::AlignmentType&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::AlignmentType &value) const
 {
     osgDB::XmlNode::Properties::const_iterator pitr = findProperty(cur, token);
 
@@ -686,7 +686,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg
     return true;
 }
 
-bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::CharacterSizeMode&value) const
+bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osgText::Text::CharacterSizeMode &value) const
 {
     osgDB::XmlNode::Properties::const_iterator pitr = findProperty(cur, token);
 
@@ -703,7 +703,7 @@ bool ReaderWriterP3DXML::getProperty(osgDB::XmlNode *cur, const char *token, osg
     return true;
 }
 
-bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::PositionData&value) const
+bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::PositionData &value) const
 {
     bool propertiesRead = false;
 
@@ -995,7 +995,7 @@ bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::Sli
     return propertiesRead;
 }
 
-bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::FontData&value) const
+bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::FontData &value) const
 {
     bool propertiesRead = false;
 
@@ -1047,7 +1047,7 @@ bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::Sli
     return propertiesRead;
 }
 
-bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ModelData&value) const
+bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ModelData &value) const
 {
     bool propertiesRead = false;
 
@@ -1074,7 +1074,7 @@ bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::Sli
     return propertiesRead;
 }
 
-bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ImageData&value) const
+bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ImageData &value) const
 {
     bool propertiesRead = false;
 
@@ -1238,7 +1238,7 @@ bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::Sli
     return propertiesRead;
 }
 
-bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ScriptData&value) const
+bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::SlideShowConstructor::ScriptData &value) const
 {
     bool propertiesRead = false;
 
@@ -1259,7 +1259,7 @@ bool ReaderWriterP3DXML::getProperties(osgDB::XmlNode *cur, osgPresentation::Sli
     return propertiesRead;
 }
 
-bool ReaderWriterP3DXML::parseProperties(osgDB::XmlNode *root, osg::UserDataContainer&udc) const
+bool ReaderWriterP3DXML::parseProperties(osgDB::XmlNode *root, osg::UserDataContainer &udc) const
 {
     bool readProperties = false;
 
@@ -1317,7 +1317,7 @@ bool ReaderWriterP3DXML::parseProperties(osgDB::XmlNode *root, osg::UserDataCont
     return readProperties;
 }
 
-bool ReaderWriterP3DXML::parsePropertyAnimation(osgDB::XmlNode *root, osgPresentation::PropertyAnimation&pa) const
+bool ReaderWriterP3DXML::parsePropertyAnimation(osgDB::XmlNode *root, osgPresentation::PropertyAnimation &pa) const
 {
     bool readKeyframes = false;
 
@@ -1357,7 +1357,7 @@ bool ReaderWriterP3DXML::parsePropertyAnimation(osgDB::XmlNode *root, osgPresent
 }
 
 
-bool ReaderWriterP3DXML::getJumpProperties(osgDB::XmlNode *cur, osgPresentation::JumpData&jumpData) const
+bool ReaderWriterP3DXML::getJumpProperties(osgDB::XmlNode *cur, osgPresentation::JumpData &jumpData) const
 {
     bool propertyRead = false;
 
@@ -1396,7 +1396,7 @@ bool ReaderWriterP3DXML::getJumpProperties(osgDB::XmlNode *cur, osgPresentation:
     return propertyRead;
 }
 
-void ReaderWriterP3DXML::parseModel(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parseModel(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     osgPresentation::SlideShowConstructor::PositionData positionData = constructor.getModelPositionData();
     bool                                                positionRead = getProperties(cur, positionData);
@@ -1421,7 +1421,7 @@ void ReaderWriterP3DXML::parseModel(osgPresentation::SlideShowConstructor&constr
 }
 
 
-void ReaderWriterP3DXML::parseModelScript(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parseModelScript(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     osgPresentation::SlideShowConstructor::PositionData positionData = constructor.getModelPositionData();
     bool                                                positionRead = getProperties(cur, positionData);
@@ -1473,7 +1473,7 @@ void ReaderWriterP3DXML::parseModelScript(osgPresentation::SlideShowConstructor&
     }
 }
 
-void ReaderWriterP3DXML::parseVolume(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parseVolume(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     osgPresentation::SlideShowConstructor::PositionData positionData = constructor.getModelPositionData();
     bool                                                positionRead = getProperties(cur, positionData);
@@ -1641,7 +1641,7 @@ void ReaderWriterP3DXML::parseVolume(osgPresentation::SlideShowConstructor&const
     }
 }
 
-void ReaderWriterP3DXML::parseStereoPair(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parseStereoPair(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     OSG_INFO << "ReaderWriterP3DXML::parseStereoPair()" << std::endl;
 
@@ -1703,7 +1703,7 @@ void ReaderWriterP3DXML::parseStereoPair(osgPresentation::SlideShowConstructor&c
                                        scriptData);
 }
 
-bool ReaderWriterP3DXML::getKeyPosition(osgDB::XmlNode *cur, osgPresentation::KeyPosition&keyPosition) const
+bool ReaderWriterP3DXML::getKeyPosition(osgDB::XmlNode *cur, osgPresentation::KeyPosition &keyPosition) const
 {
     if (match(cur->name, "key"))
     {
@@ -1721,7 +1721,7 @@ bool ReaderWriterP3DXML::getKeyPosition(osgDB::XmlNode *cur, osgPresentation::Ke
     return false;
 }
 
-bool ReaderWriterP3DXML::getKeyPositionInner(osgDB::XmlNode *cur, osgPresentation::KeyPosition&keyPosition) const
+bool ReaderWriterP3DXML::getKeyPositionInner(osgDB::XmlNode *cur, osgPresentation::KeyPosition &keyPosition) const
 {
     // x in range -1 to 1, from left to right
     float x = FLT_MAX;
@@ -1791,7 +1791,7 @@ bool ReaderWriterP3DXML::getKeyPositionInner(osgDB::XmlNode *cur, osgPresentatio
 }
 
 
-void ReaderWriterP3DXML::parseTimeout(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *root) const
+void ReaderWriterP3DXML::parseTimeout(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *root) const
 {
     osg::ref_ptr<osgPresentation::Timeout> timeout = new osgPresentation::Timeout(constructor.getHUDSettings());
 
@@ -1911,7 +1911,7 @@ void ReaderWriterP3DXML::parseTimeout(osgPresentation::SlideShowConstructor&cons
 }
 
 
-bool ReaderWriterP3DXML::parseLayerChild(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur, float&totalIndent) const
+bool ReaderWriterP3DXML::parseLayerChild(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur, float &totalIndent) const
 {
     if (match(cur->name, "newline"))
     {
@@ -2140,7 +2140,7 @@ bool ReaderWriterP3DXML::parseLayerChild(osgPresentation::SlideShowConstructor&c
 }
 
 
-void ReaderWriterP3DXML::parseSwitch(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parseSwitch(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     osg::ref_ptr<osg::Switch> switchNode = new osg::Switch;;
 
@@ -2156,7 +2156,7 @@ void ReaderWriterP3DXML::parseSwitch(osgPresentation::SlideShowConstructor&const
     constructor.popCurrentLayer(); // return the parent level
 }
 
-void ReaderWriterP3DXML::parseLayer(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *root) const
+void ReaderWriterP3DXML::parseLayer(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *root) const
 {
     OSG_INFO << std::endl << "parseLayer" << std::endl;
 
@@ -2370,7 +2370,7 @@ void ReaderWriterP3DXML::parseLayer(osgPresentation::SlideShowConstructor&constr
     }
 }
 
-void ReaderWriterP3DXML::parseBullets(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur, bool inheritPreviousLayers, bool defineAsBaseLayer) const
+void ReaderWriterP3DXML::parseBullets(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur, bool inheritPreviousLayers, bool defineAsBaseLayer) const
 {
     constructor.addLayer(inheritPreviousLayers, defineAsBaseLayer);
 
@@ -2392,7 +2392,7 @@ void ReaderWriterP3DXML::parseBullets(osgPresentation::SlideShowConstructor&cons
 }
 
 
-void ReaderWriterP3DXML::parseText(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur, bool inheritPreviousLayers, bool defineAsBaseLayer) const
+void ReaderWriterP3DXML::parseText(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur, bool inheritPreviousLayers, bool defineAsBaseLayer) const
 {
     constructor.addLayer(inheritPreviousLayers, defineAsBaseLayer);
 
@@ -2413,7 +2413,7 @@ void ReaderWriterP3DXML::parseText(osgPresentation::SlideShowConstructor&constru
                              );
 }
 
-void ReaderWriterP3DXML::parsePage(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parsePage(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     constructor.addSlide();
 
@@ -2458,7 +2458,7 @@ void ReaderWriterP3DXML::parsePage(osgPresentation::SlideShowConstructor&constru
                              );
 }
 
-void ReaderWriterP3DXML::parsePdfDocument(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parsePdfDocument(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     std::string title;
 
@@ -2538,7 +2538,7 @@ void ReaderWriterP3DXML::parsePdfDocument(osgPresentation::SlideShowConstructor&
     }
 }
 
-void ReaderWriterP3DXML::parseSlide(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *root, bool parseTitles, bool parseLayers) const
+void ReaderWriterP3DXML::parseSlide(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *root, bool parseTitles, bool parseLayers) const
 {
     osg::Vec4 previous_bgcolor   = constructor.getBackgroundColor();
     osg::Vec4 previous_textcolor = constructor.getTextColor();
@@ -2728,7 +2728,7 @@ void ReaderWriterP3DXML::parseSlide(osgPresentation::SlideShowConstructor&constr
     return;
 }
 
-void ReaderWriterP3DXML::parseRunScriptFile(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parseRunScriptFile(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     std::string function = "";
 
@@ -2746,7 +2746,7 @@ void ReaderWriterP3DXML::parseRunScriptFile(osgPresentation::SlideShowConstructo
     }
 }
 
-void ReaderWriterP3DXML::parseRunScript(osgPresentation::SlideShowConstructor&constructor, osgDB::XmlNode *cur) const
+void ReaderWriterP3DXML::parseRunScript(osgPresentation::SlideShowConstructor &constructor, osgDB::XmlNode *cur) const
 {
     std::string language = "lua";
 
@@ -2774,18 +2774,18 @@ void ReaderWriterP3DXML::parseRunScript(osgPresentation::SlideShowConstructor&co
 
 struct MyFindFileCallback : public osgDB::FindFileCallback
 {
-    virtual std::string findDataFile(const std::string&filename, const osgDB::Options *options, osgDB::CaseSensitivity caseSensitivity)
+    virtual std::string findDataFile(const std::string &filename, const osgDB::Options *options, osgDB::CaseSensitivity caseSensitivity)
     {
         OSG_INFO << std::endl << std::endl << "find file " << filename << std::endl;
 
-        const osgDB::FilePathList&paths = options ? options->getDatabasePathList() : osgDB::getDataFilePathList();
+        const osgDB::FilePathList &paths = options ? options->getDatabasePathList() : osgDB::getDataFilePathList();
 
         for (osgDB::FilePathList::const_iterator itr = paths.begin();
              itr != paths.end();
              ++itr)
         {
-            const std::string&path   = *itr;
-            std::string      newpath = osgDB::concatPaths(path, filename);
+            const std::string &path   = *itr;
+            std::string       newpath = osgDB::concatPaths(path, filename);
             if (osgDB::containsServerAddress(path))
             {
                 osgDB::ReaderWriter *rw = osgDB::Registry::instance()->getReaderWriterForExtension("curl");
@@ -2828,7 +2828,7 @@ enum ObjectType
     SHADER
 };
 
-osgDB::ReaderWriter::ReadResult readLocal(ObjectType type, const std::string&filename, const osgDB::Options *options)
+osgDB::ReaderWriter::ReadResult readLocal(ObjectType type, const std::string &filename, const osgDB::Options *options)
 {
     OSG_INFO << "Trying local file " << filename << std::endl;
 
@@ -2849,7 +2849,7 @@ osgDB::ReaderWriter::ReadResult readLocal(ObjectType type, const std::string&fil
 }
 
 
-osgDB::ReaderWriter::ReadResult readFileCache(ObjectType type, const std::string&filename, const osgDB::Options *options)
+osgDB::ReaderWriter::ReadResult readFileCache(ObjectType type, const std::string &filename, const osgDB::Options *options)
 {
     osgDB::FileCache *fileCache = options ? options->getFileCache() : 0;
 
@@ -2906,7 +2906,7 @@ osgDB::ReaderWriter::ReadResult readFileCache(ObjectType type, const std::string
     return osgDB::ReaderWriter::ReadResult::FILE_NOT_FOUND;
 }
 
-osgDB::ReaderWriter::ReadResult readServer(ObjectType type, const std::string&filename, const osgDB::Options *options)
+osgDB::ReaderWriter::ReadResult readServer(ObjectType type, const std::string &filename, const osgDB::Options *options)
 {
     OSG_INFO << "Trying server file " << filename << std::endl;
 
@@ -2983,7 +2983,7 @@ osgDB::ReaderWriter::ReadResult readServer(ObjectType type, const std::string&fi
 }
 
 
-osgDB::ReaderWriter::ReadResult read(const osgDB::FilePathList&filePathList, ObjectType type, const std::string&filename, const osgDB::Options *options, bool checkLocalFiles)
+osgDB::ReaderWriter::ReadResult read(const osgDB::FilePathList &filePathList, ObjectType type, const std::string &filename, const osgDB::Options *options, bool checkLocalFiles)
 {
     // go look in http paths
     for (osgDB::FilePathList::const_iterator itr = filePathList.begin();
@@ -3018,7 +3018,7 @@ osgDB::ReaderWriter::ReadResult read(const osgDB::FilePathList&filePathList, Obj
     return osgDB::ReaderWriter::ReadResult::FILE_NOT_FOUND;
 }
 
-osgDB::ReaderWriter::ReadResult read(ObjectType type, const std::string&filename, const osgDB::Options *options)
+osgDB::ReaderWriter::ReadResult read(ObjectType type, const std::string &filename, const osgDB::Options *options)
 {
     osgDB::FileCache *fileCache = options ? options->getFileCache() : 0;
 
@@ -3100,27 +3100,27 @@ osgDB::ReaderWriter::ReadResult read(ObjectType type, const std::string&filename
     return osgDB::ReaderWriter::ReadResult::FILE_NOT_FOUND;
 }
 
-virtual osgDB::ReaderWriter::ReadResult readObject(const std::string&filename, const osgDB::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readObject(const std::string &filename, const osgDB::Options *options)
 {
     return read(OBJECT, filename, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readImage(const std::string&filename, const osgDB::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readImage(const std::string &filename, const osgDB::Options *options)
 {
     return read(IMAGE, filename, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readHeightField(const std::string&filename, const osgDB::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readHeightField(const std::string &filename, const osgDB::Options *options)
 {
     return read(HEIGHT_FIELD, filename, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&filename, const osgDB::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &filename, const osgDB::Options *options)
 {
     return read(NODE, filename, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readShader(const std::string&filename, const osgDB::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readShader(const std::string &filename, const osgDB::Options *options)
 {
     return read(SHADER, filename, options);
 }
@@ -3131,7 +3131,7 @@ virtual ~MyReadFileCallback() {}
 ObjectCache _objectCache;
 };
 
-osgDB::ReaderWriter::ReadResult ReaderWriterP3DXML::readNode(const std::string&file,
+osgDB::ReaderWriter::ReadResult ReaderWriterP3DXML::readNode(const std::string &file,
                                                              const osgDB::ReaderWriter::Options *options) const
 {
     OSG_INFO << "readNode(" << file << ")" << std::endl;
@@ -3170,7 +3170,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterP3DXML::readNode(const std::string&f
     return readNode(input, local_opt.get());
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterP3DXML::readNode(std::istream&fin, const Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterP3DXML::readNode(std::istream &fin, const Options *options) const
 {
     osgDB::XmlNode::Input input;
 
@@ -3184,7 +3184,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterP3DXML::readNode(std::istream&fin, c
     return readNode(input, local_opt.get());
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterP3DXML::readNode(osgDB::XmlNode::Input&input, osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterP3DXML::readNode(osgDB::XmlNode::Input &input, osgDB::ReaderWriter::Options *options) const
 {
     std::string fileName                    = options ? options->getPluginStringData("filename") : std::string();
     std::string extension                   = osgDB::getFileExtension(fileName);

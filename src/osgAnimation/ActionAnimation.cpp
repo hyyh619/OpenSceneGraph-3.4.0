@@ -18,7 +18,7 @@ using namespace osgAnimation;
 
 ActionAnimation::ActionAnimation() {}
 
-ActionAnimation::ActionAnimation(const ActionAnimation&a, const osg::CopyOp&c) : Action(a, c)
+ActionAnimation::ActionAnimation(const ActionAnimation &a, const osg::CopyOp &c) : Action(a, c)
 {
     _animation = a._animation;
 }

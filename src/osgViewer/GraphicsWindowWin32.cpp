@@ -213,15 +213,15 @@ void begin()
 {
     m_parameters.clear();
 }
-void set(const T&id, const T&value)
+void set(const T &id, const T &value)
 {
     add(id); add(value);
 }
-void enable(const T&id)
+void enable(const T &id)
 {
     add(id); add(true);
 }
-void disable(const T&id)
+void disable(const T &id)
 {
     add(id); add(false);
 }
@@ -237,7 +237,7 @@ const T* get() const
 
 protected:
 
-void add(const T&t)
+void add(const T &t)
 {
     m_parameters.push_back(t);
 }
@@ -352,25 +352,25 @@ static Win32WindowingSystem* getInterface()
 }
 
 // Return the number of screens present in the system
-virtual unsigned int getNumScreens(const osg::GraphicsContext::ScreenIdentifier&si);
+virtual unsigned int getNumScreens(const osg::GraphicsContext::ScreenIdentifier &si);
 
 // Return the resolution of specified screen
 // (0,0) is returned if screen is unknown
-virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, osg::GraphicsContext::ScreenSettings&resolution);
+virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, osg::GraphicsContext::ScreenSettings &resolution);
 
 // Return the bits per pixel of specified screen
 // (0) is returned if screen is unknown
-virtual void getScreenColorDepth(const osg::GraphicsContext::ScreenIdentifier&si, unsigned int&dmBitsPerPel);
+virtual void getScreenColorDepth(const osg::GraphicsContext::ScreenIdentifier &si, unsigned int &dmBitsPerPel);
 
 // Set the resolution for given screen
-virtual bool setScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, const osg::GraphicsContext::ScreenSettings&resolution);
+virtual bool setScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, const osg::GraphicsContext::ScreenSettings &resolution);
 
 // Enumerates available resolutions
-virtual void enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier&screenIdentifier, osg::GraphicsContext::ScreenSettingsList&resolution);
+virtual void enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier &screenIdentifier, osg::GraphicsContext::ScreenSettingsList &resolution);
 
 // Return the screen position and width/height.
 // all zeros returned if screen is unknown
-virtual void getScreenPosition(const osg::GraphicsContext::ScreenIdentifier&si, int&originX, int&originY, unsigned int&width, unsigned int&height);
+virtual void getScreenPosition(const osg::GraphicsContext::ScreenIdentifier &si, int &originX, int &originY, unsigned int &width, unsigned int &height);
 
 // Create a graphics context with given traits
 virtual osg::GraphicsContext* createGraphicsContext(osg::GraphicsContext::Traits *traits);
@@ -388,7 +388,7 @@ virtual void unregisterWindow(HWND hwnd);
 virtual osgViewer::GraphicsWindowWin32* getGraphicsWindowFor(HWND hwnd);
 
 // Return a valid sample OpenGL Device Context and current rendering context that can be used with wglXYZ extensions
-virtual bool getSampleOpenGLContext(OpenGLContext&context, HDC windowHDC, int windowOriginX, int windowOriginY);
+virtual bool getSampleOpenGLContext(OpenGLContext &context, HDC windowHDC, int windowOriginX, int windowOriginY);
 
 protected:
 
@@ -400,13 +400,13 @@ typedef std::pair<HWND, osgViewer::GraphicsWindowWin32*>  WindowHandleEntry;
 typedef std::map<HWND, osgViewer::GraphicsWindowWin32*>  WindowHandles;
 
 // Enumerate all display devices and return in passed container
-void enumerateDisplayDevices(DisplayDevices&displayDevices) const;
+void enumerateDisplayDevices(DisplayDevices &displayDevices) const;
 
 // Get the screen device current mode information
-bool getScreenInformation(const osg::GraphicsContext::ScreenIdentifier&si, DISPLAY_DEVICE&displayDevice, DEVMODE&deviceMode);
+bool getScreenInformation(const osg::GraphicsContext::ScreenIdentifier &si, DISPLAY_DEVICE &displayDevice, DEVMODE &deviceMode);
 
 // Change the screen settings (resolution, refresh rate, etc.)
-bool changeScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, DISPLAY_DEVICE&displayDevice, DEVMODE&deviceMode);
+bool changeScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, DISPLAY_DEVICE &displayDevice, DEVMODE &deviceMode);
 
 // Register the window classes used by OSG graphics window instances
 void registerWindowClasses();
@@ -428,7 +428,7 @@ Win32WindowingSystem&operator=(const Win32WindowingSystem&);
 ///////////////////////////////////////////////////////////////////////////////
 //  Check if window dimensions have changed w.r.t stored values
 //////////////////////////////////////////////////////////////////////////////
-static bool areWindowDimensionsChanged(HWND hwnd, int screenOriginX, int screenOriginY, int&windowX, int&windowY, int&windowWidth, int&windowHeight)
+static bool areWindowDimensionsChanged(HWND hwnd, int screenOriginX, int screenOriginY, int &windowX, int &windowY, int &windowWidth, int &windowHeight)
 {
     POINT origin;
 
@@ -465,12 +465,12 @@ static bool areWindowDimensionsChanged(HWND hwnd, int screenOriginX, int screenO
 //                             Error reporting
 //////////////////////////////////////////////////////////////////////////////
 
-static void reportError(const std::string&msg)
+static void reportError(const std::string &msg)
 {
     OSG_WARN << "Error: " << msg.c_str() << std::endl;
 }
 
-static void reportError(const std::string&msg, unsigned int errorCode)
+static void reportError(const std::string &msg, unsigned int errorCode)
 {
     //
     // Some APIs are documented as returning the error in ::GetLastError but apparently do not
@@ -504,7 +504,7 @@ static void reportError(const std::string&msg, unsigned int errorCode)
     }
 }
 
-static void reportErrorForScreen(const std::string&msg, const osg::GraphicsContext::ScreenIdentifier&si, unsigned int errorCode)
+static void reportErrorForScreen(const std::string &msg, const osg::GraphicsContext::ScreenIdentifier &si, unsigned int errorCode)
 {
     std::ostringstream str;
 
@@ -758,7 +758,7 @@ Win32WindowingSystem::~Win32WindowingSystem()
     unregisterWindowClasses();
 }
 
-void Win32WindowingSystem::enumerateDisplayDevices(DisplayDevices&displayDevices) const
+void Win32WindowingSystem::enumerateDisplayDevices(DisplayDevices &displayDevices) const
 {
     for (unsigned int deviceNum = 0;; ++deviceNum)
     {
@@ -856,7 +856,7 @@ void Win32WindowingSystem::unregisterWindowClasses()
     }
 }
 
-bool Win32WindowingSystem::getSampleOpenGLContext(OpenGLContext&context, HDC windowHDC, int windowOriginX, int windowOriginY)
+bool Win32WindowingSystem::getSampleOpenGLContext(OpenGLContext &context, HDC windowHDC, int windowOriginX, int windowOriginY)
 {
     context.set(0, 0, 0);
 
@@ -943,12 +943,12 @@ bool Win32WindowingSystem::getSampleOpenGLContext(OpenGLContext&context, HDC win
     return true;
 }
 
-unsigned int Win32WindowingSystem::getNumScreens(const osg::GraphicsContext::ScreenIdentifier&si)
+unsigned int Win32WindowingSystem::getNumScreens(const osg::GraphicsContext::ScreenIdentifier &si)
 {
     return si.displayNum == 0 ? ::GetSystemMetrics(SM_CMONITORS) : 0;
 }
 
-bool Win32WindowingSystem::getScreenInformation(const osg::GraphicsContext::ScreenIdentifier&si, DISPLAY_DEVICE&displayDevice, DEVMODE&deviceMode)
+bool Win32WindowingSystem::getScreenInformation(const osg::GraphicsContext::ScreenIdentifier &si, DISPLAY_DEVICE &displayDevice, DEVMODE &deviceMode)
 {
     if (si.displayNum > 0)
     {
@@ -981,7 +981,7 @@ bool Win32WindowingSystem::getScreenInformation(const osg::GraphicsContext::Scre
     return true;
 }
 
-void Win32WindowingSystem::getScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, osg::GraphicsContext::ScreenSettings&resolution)
+void Win32WindowingSystem::getScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, osg::GraphicsContext::ScreenSettings &resolution)
 {
     DISPLAY_DEVICE displayDevice;
     DEVMODE        deviceMode;
@@ -1023,7 +1023,7 @@ void Win32WindowingSystem::getScreenSettings(const osg::GraphicsContext::ScreenI
         resolution.colorDepth = 0;
 }
 
-void Win32WindowingSystem::getScreenColorDepth(const osg::GraphicsContext::ScreenIdentifier&si, unsigned int&dmBitsPerPel)
+void Win32WindowingSystem::getScreenColorDepth(const osg::GraphicsContext::ScreenIdentifier &si, unsigned int &dmBitsPerPel)
 {
     DISPLAY_DEVICE displayDevice;
     DEVMODE        deviceMode;
@@ -1038,7 +1038,7 @@ void Win32WindowingSystem::getScreenColorDepth(const osg::GraphicsContext::Scree
     }
 }
 
-bool Win32WindowingSystem::changeScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, DISPLAY_DEVICE&displayDevice, DEVMODE&deviceMode)
+bool Win32WindowingSystem::changeScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, DISPLAY_DEVICE &displayDevice, DEVMODE &deviceMode)
 {
     //
     // Start by testing if the change would be successful (without applying it)
@@ -1070,7 +1070,7 @@ bool Win32WindowingSystem::changeScreenSettings(const osg::GraphicsContext::Scre
     return false;
 }
 
-bool Win32WindowingSystem::setScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, const osg::GraphicsContext::ScreenSettings&resolution)
+bool Win32WindowingSystem::setScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, const osg::GraphicsContext::ScreenSettings &resolution)
 {
     DISPLAY_DEVICE displayDevice;
     DEVMODE        deviceMode;
@@ -1104,7 +1104,7 @@ bool Win32WindowingSystem::setScreenSettings(const osg::GraphicsContext::ScreenI
     return changeScreenSettings(si, displayDevice, deviceMode);
 }
 
-void Win32WindowingSystem::enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, osg::GraphicsContext::ScreenSettingsList&resolutionList)
+void Win32WindowingSystem::enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, osg::GraphicsContext::ScreenSettingsList &resolutionList)
 {
     resolutionList.clear();
 
@@ -1140,7 +1140,7 @@ void Win32WindowingSystem::enumerateScreenSettings(const osg::GraphicsContext::S
     }
 }
 
-void Win32WindowingSystem::getScreenPosition(const osg::GraphicsContext::ScreenIdentifier&si, int&originX, int&originY, unsigned int&width, unsigned int&height)
+void Win32WindowingSystem::getScreenPosition(const osg::GraphicsContext::ScreenIdentifier &si, int &originX, int &originY, unsigned int &width, unsigned int &height)
 {
     DISPLAY_DEVICE displayDevice;
     DEVMODE        deviceMode;
@@ -1600,12 +1600,12 @@ bool GraphicsWindowWin32::determineWindowPositionAndStyle(unsigned int screenNum
                                                           unsigned int clientAreaWidth,
                                                           unsigned int clientAreaHeight,
                                                           bool decorated,
-                                                          int&x,
-                                                          int&y,
-                                                          unsigned int&w,
-                                                          unsigned int&h,
-                                                          unsigned int&style,
-                                                          unsigned int&extendedStyle)
+                                                          int &x,
+                                                          int &y,
+                                                          unsigned int &w,
+                                                          unsigned int &h,
+                                                          unsigned int &style,
+                                                          unsigned int &extendedStyle)
 {
     if (_traits == 0)
         return false;
@@ -1672,8 +1672,8 @@ bool GraphicsWindowWin32::determineWindowPositionAndStyle(unsigned int screenNum
     return true;
 }
 
-static void PreparePixelFormatSpecifications(const osg::GraphicsContext::Traits&traits,
-                                             WGLIntegerAttributes&attributes,
+static void PreparePixelFormatSpecifications(const osg::GraphicsContext::Traits &traits,
+                                             WGLIntegerAttributes &attributes,
                                              bool allowSwapExchangeARB)
 {
     attributes.begin();
@@ -1741,7 +1741,7 @@ static void PreparePixelFormatSpecifications(const osg::GraphicsContext::Traits&
     attributes.end();
 }
 
-static int ChooseMatchingPixelFormat(HDC hdc, int screenNum, const WGLIntegerAttributes&formatSpecifications, osg::GraphicsContext::Traits *_traits)
+static int ChooseMatchingPixelFormat(HDC hdc, int screenNum, const WGLIntegerAttributes &formatSpecifications, osg::GraphicsContext::Traits *_traits)
 {
     //
     // Access the entry point for the wglChoosePixelFormatARB function
@@ -2346,7 +2346,7 @@ bool GraphicsWindowWin32::setWindowRectangleImplementation(int x, int y, int wid
     return true;
 }
 
-void GraphicsWindowWin32::setWindowName(const std::string&name)
+void GraphicsWindowWin32::setWindowName(const std::string &name)
 {
     _traits->windowName = name;
     SetWindowText(_hwnd, name.c_str());
@@ -2549,7 +2549,7 @@ void GraphicsWindowWin32::setSyncToVBlank(bool on)
 // #endif
 }
 
-void GraphicsWindowWin32::adaptKey(WPARAM wParam, LPARAM lParam, int&keySymbol, unsigned int&modifierMask, int&unmodifiedKeySymbol)
+void GraphicsWindowWin32::adaptKey(WPARAM wParam, LPARAM lParam, int &keySymbol, unsigned int &modifierMask, int &unmodifiedKeySymbol)
 {
     modifierMask = 0;
 
@@ -2630,7 +2630,7 @@ void GraphicsWindowWin32::adaptKey(WPARAM wParam, LPARAM lParam, int&keySymbol, 
     }
 }
 
-void GraphicsWindowWin32::transformMouseXY(float&x, float&y)
+void GraphicsWindowWin32::transformMouseXY(float &x, float &y)
 {
     if (getEventQueue()->getUseFixedMouseInputRange())
     {

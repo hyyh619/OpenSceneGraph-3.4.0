@@ -58,7 +58,7 @@ typedef ssize_t socklen_t;
 #endif
 
 
-static void SockaddrFromIpEndpointName(struct sockaddr_in&sockAddr, const IpEndpointName&endpoint)
+static void SockaddrFromIpEndpointName(struct sockaddr_in &sockAddr, const IpEndpointName &endpoint)
 {
     memset((char*)&sockAddr, 0, sizeof(sockAddr));
     sockAddr.sin_family = AF_INET;
@@ -75,7 +75,7 @@ static void SockaddrFromIpEndpointName(struct sockaddr_in&sockAddr, const IpEndp
 }
 
 
-static IpEndpointName IpEndpointNameFromSockaddr(const struct sockaddr_in&sockAddr)
+static IpEndpointName IpEndpointNameFromSockaddr(const struct sockaddr_in &sockAddr)
 {
     return IpEndpointName(
         (sockAddr.sin_addr.s_addr == INADDR_ANY)
@@ -119,7 +119,7 @@ Implementation()
         close(socket_);
 }
 
-IpEndpointName LocalEndpointFor(const IpEndpointName&remoteEndpoint) const
+IpEndpointName LocalEndpointFor(const IpEndpointName &remoteEndpoint) const
 {
     assert(isBound_);
 
@@ -170,7 +170,7 @@ IpEndpointName LocalEndpointFor(const IpEndpointName&remoteEndpoint) const
     return IpEndpointNameFromSockaddr(sockAddr);
 }
 
-void Connect(const IpEndpointName&remoteEndpoint)
+void Connect(const IpEndpointName &remoteEndpoint)
 {
     SockaddrFromIpEndpointName(connectedAddr_, remoteEndpoint);
 
@@ -189,7 +189,7 @@ void Send(const char *data, int size)
     send(socket_, data, size, 0);
 }
 
-void SendTo(const IpEndpointName&remoteEndpoint, const char *data, int size)
+void SendTo(const IpEndpointName &remoteEndpoint, const char *data, int size)
 {
     sendToAddr_.sin_addr.s_addr = htonl(remoteEndpoint.address);
     sendToAddr_.sin_port        = htons(remoteEndpoint.port);
@@ -197,7 +197,7 @@ void SendTo(const IpEndpointName&remoteEndpoint, const char *data, int size)
     sendto(socket_, data, size, 0, (sockaddr*)&sendToAddr_, sizeof(sendToAddr_));
 }
 
-void Bind(const IpEndpointName&localEndpoint)
+void Bind(const IpEndpointName &localEndpoint)
 {
     struct sockaddr_in bindSockAddr;
 
@@ -220,7 +220,7 @@ bool IsBound() const
     return isBound_;
 }
 
-int ReceiveFrom(IpEndpointName&remoteEndpoint, char *data, int size)
+int ReceiveFrom(IpEndpointName &remoteEndpoint, char *data, int size)
 {
     assert(isBound_);
 
@@ -254,12 +254,12 @@ UdpSocket::~UdpSocket()
     delete impl_;
 }
 
-IpEndpointName UdpSocket::LocalEndpointFor(const IpEndpointName&remoteEndpoint) const
+IpEndpointName UdpSocket::LocalEndpointFor(const IpEndpointName &remoteEndpoint) const
 {
     return impl_->LocalEndpointFor(remoteEndpoint);
 }
 
-void UdpSocket::Connect(const IpEndpointName&remoteEndpoint)
+void UdpSocket::Connect(const IpEndpointName &remoteEndpoint)
 {
     impl_->Connect(remoteEndpoint);
 }
@@ -269,12 +269,12 @@ void UdpSocket::Send(const char *data, int size)
     impl_->Send(data, size);
 }
 
-void UdpSocket::SendTo(const IpEndpointName&remoteEndpoint, const char *data, int size)
+void UdpSocket::SendTo(const IpEndpointName &remoteEndpoint, const char *data, int size)
 {
     impl_->SendTo(remoteEndpoint, data, size);
 }
 
-void UdpSocket::Bind(const IpEndpointName&localEndpoint)
+void UdpSocket::Bind(const IpEndpointName &localEndpoint)
 {
     impl_->Bind(localEndpoint);
 }
@@ -284,7 +284,7 @@ bool UdpSocket::IsBound() const
     return impl_->IsBound();
 }
 
-int UdpSocket::ReceiveFrom(IpEndpointName&remoteEndpoint, char *data, int size)
+int UdpSocket::ReceiveFrom(IpEndpointName &remoteEndpoint, char *data, int size)
 {
     return impl_->ReceiveFrom(remoteEndpoint, data, size);
 }
@@ -303,7 +303,7 @@ struct AttachedTimerListener
 
 
 static bool CompareScheduledTimerCalls(
-    const std::pair<double, AttachedTimerListener>&lhs, const std::pair<double, AttachedTimerListener>&rhs)
+    const std::pair<double, AttachedTimerListener> &lhs, const std::pair<double, AttachedTimerListener> &rhs)
 {
     return lhs.first < rhs.first;
 }

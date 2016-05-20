@@ -95,21 +95,21 @@ virtual ~UdpSocket();
 // using Bind().
 
 // retrieve the local endpoint name when sending to 'to'
-IpEndpointName LocalEndpointFor(const IpEndpointName&remoteEndpoint) const;
+IpEndpointName LocalEndpointFor(const IpEndpointName &remoteEndpoint) const;
 
 // Connect to a remote endpoint which is used as the target
 // for calls to Send()
-void Connect(const IpEndpointName&remoteEndpoint);
+void Connect(const IpEndpointName &remoteEndpoint);
 void Send(const char *data, int size);
-void SendTo(const IpEndpointName&remoteEndpoint, const char *data, int size);
+void SendTo(const IpEndpointName &remoteEndpoint, const char *data, int size);
 
 
 // Bind a local endpoint to receive incoming data. Endpoint
 // can be 'any' for the system to choose an endpoint
-void Bind(const IpEndpointName&localEndpoint);
+void Bind(const IpEndpointName &localEndpoint);
 bool IsBound() const;
 
-int ReceiveFrom(IpEndpointName&remoteEndpoint, char *data, int size);
+int ReceiveFrom(IpEndpointName &remoteEndpoint, char *data, int size);
 };
 
 
@@ -121,7 +121,7 @@ int ReceiveFrom(IpEndpointName&remoteEndpoint, char *data, int size);
 class UdpTransmitSocket : public UdpSocket
 {
 public:
-UdpTransmitSocket(const IpEndpointName&remoteEndpoint)
+UdpTransmitSocket(const IpEndpointName &remoteEndpoint)
 {
     Connect(remoteEndpoint);
 }
@@ -131,7 +131,7 @@ UdpTransmitSocket(const IpEndpointName&remoteEndpoint)
 class UdpReceiveSocket : public UdpSocket
 {
 public:
-UdpReceiveSocket(const IpEndpointName&localEndpoint)
+UdpReceiveSocket(const IpEndpointName &localEndpoint)
 {
     Bind(localEndpoint);
 }
@@ -146,7 +146,7 @@ class UdpListeningReceiveSocket : public UdpSocket
 SocketReceiveMultiplexer mux_;
 PacketListener           *listener_;
 public:
-UdpListeningReceiveSocket(const IpEndpointName&localEndpoint, PacketListener *listener)
+UdpListeningReceiveSocket(const IpEndpointName &localEndpoint, PacketListener *listener)
     : listener_(listener)
 {
     Bind(localEndpoint);

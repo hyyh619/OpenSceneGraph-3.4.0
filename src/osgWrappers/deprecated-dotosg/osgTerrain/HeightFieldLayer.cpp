@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool HeightFieldLayer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool HeightFieldLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool HeightFieldLayer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool HeightFieldLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(HeightFieldLayer_Proxy)
 (
@@ -25,9 +25,9 @@ REGISTER_DOTOSGWRAPPER(HeightFieldLayer_Proxy)
     HeightFieldLayer_writeLocalData
 );
 
-bool HeightFieldLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool HeightFieldLayer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgTerrain::HeightFieldLayer&layer = static_cast<osgTerrain::HeightFieldLayer&>(obj);
+    osgTerrain::HeightFieldLayer &layer = static_cast<osgTerrain::HeightFieldLayer&>(obj);
 
     bool itrAdvanced = false;
 
@@ -64,9 +64,9 @@ bool HeightFieldLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool HeightFieldLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool HeightFieldLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgTerrain::HeightFieldLayer&layer = static_cast<const osgTerrain::HeightFieldLayer&>(obj);
+    const osgTerrain::HeightFieldLayer &layer = static_cast<const osgTerrain::HeightFieldLayer&>(obj);
 
     if (!layer.getFileName().empty())
     {

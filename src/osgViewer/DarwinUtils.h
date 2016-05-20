@@ -39,7 +39,7 @@ public:
 WindowAdapter() : osg::Referenced() {}
 
 virtual bool valid()                           = 0;
-virtual void getWindowBounds(CGRect&rect)      = 0;
+virtual void getWindowBounds(CGRect &rect)     = 0;
 virtual osgViewer::GraphicsWindow* getWindow() = 0;
 
 protected:
@@ -80,19 +80,19 @@ public:
     ~DarwinWindowingSystemInterface();
 
     /** @return a CGDirectDisplayID for a ScreenIdentifier */
-    CGDirectDisplayID getDisplayID(const osg::GraphicsContext::ScreenIdentifier&si);
+    CGDirectDisplayID getDisplayID(const osg::GraphicsContext::ScreenIdentifier &si);
 
     /** @return count of attached screens */
-    virtual unsigned int getNumScreens(const osg::GraphicsContext::ScreenIdentifier&si);
+    virtual unsigned int getNumScreens(const osg::GraphicsContext::ScreenIdentifier &si);
 
-    virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, osg::GraphicsContext::ScreenSettings&resolution);
+    virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, osg::GraphicsContext::ScreenSettings &resolution);
 
-    virtual void enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier&screenIdentifier, osg::GraphicsContext::ScreenSettingsList&resolutionList);
+    virtual void enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier &screenIdentifier, osg::GraphicsContext::ScreenSettingsList &resolutionList);
 
-    virtual bool setScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, const osg::GraphicsContext::ScreenSettings&settings);
+    virtual bool setScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, const osg::GraphicsContext::ScreenSettings &settings);
 
     /** return the top left coord of a specific screen in global screen space */
-    void getScreenTopLeft(const osg::GraphicsContext::ScreenIdentifier&si, int&x, int&y);
+    void getScreenTopLeft(const osg::GraphicsContext::ScreenIdentifier &si, int &x, int &y);
 
 
 

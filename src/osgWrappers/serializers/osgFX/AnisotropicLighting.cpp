@@ -4,7 +4,7 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkLightingMap(const osgFX::AnisotropicLighting&effect)
+static bool checkLightingMap(const osgFX::AnisotropicLighting &effect)
 {
     if (!effect.getLightingMap())
         return false;
@@ -12,7 +12,7 @@ static bool checkLightingMap(const osgFX::AnisotropicLighting&effect)
     return !effect.getLightingMap()->getFileName().empty();
 }
 
-static bool readLightingMap(osgDB::InputStream&is, osgFX::AnisotropicLighting&effect)
+static bool readLightingMap(osgDB::InputStream &is, osgFX::AnisotropicLighting &effect)
 {
     std::string fileName; is.readWrappedString(fileName);
 
@@ -20,7 +20,7 @@ static bool readLightingMap(osgDB::InputStream&is, osgFX::AnisotropicLighting&ef
     return true;
 }
 
-static bool writeLightingMap(osgDB::OutputStream&os, const osgFX::AnisotropicLighting&effect)
+static bool writeLightingMap(osgDB::OutputStream &os, const osgFX::AnisotropicLighting &effect)
 {
     os.writeWrappedString(effect.getLightingMap()->getFileName());
     os << std::endl; return true;

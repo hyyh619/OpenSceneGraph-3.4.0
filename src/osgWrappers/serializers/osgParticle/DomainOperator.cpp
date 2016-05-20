@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkDomains(const osgParticle::DomainOperator&dp)
+static bool checkDomains(const osgParticle::DomainOperator &dp)
 {
     return dp.getNumDomains() > 0;
 }
 
-static bool readDomains(osgDB::InputStream&is, osgParticle::DomainOperator&dp)
+static bool readDomains(osgDB::InputStream &is, osgParticle::DomainOperator &dp)
 {
     osgParticle::DomainOperator::Domain::Type type = osgParticle::DomainOperator::Domain::UNDEFINED_DOMAIN;
     unsigned int                              size = 0; is >> size >> is.BEGIN_BRACKET;
@@ -51,7 +51,7 @@ static bool readDomains(osgDB::InputStream&is, osgParticle::DomainOperator&dp)
     return true;
 }
 
-static bool writeDomains(osgDB::OutputStream&os, const osgParticle::DomainOperator&dp)
+static bool writeDomains(osgDB::OutputStream &os, const osgParticle::DomainOperator &dp)
 {
     unsigned int size = dp.getNumDomains();
 
@@ -59,7 +59,7 @@ static bool writeDomains(osgDB::OutputStream&os, const osgParticle::DomainOperat
 
     for (unsigned int i = 0; i < size; ++i)
     {
-        const osgParticle::DomainOperator::Domain&domain = dp.getDomain(i);
+        const osgParticle::DomainOperator::Domain &domain = dp.getDomain(i);
 
         os << os.PROPERTY("Domain");
 

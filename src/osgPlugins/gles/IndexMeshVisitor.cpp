@@ -14,7 +14,7 @@
 
 using namespace glesUtil;
 
-void IndexMeshVisitor::apply(osg::Geometry&geom)
+void IndexMeshVisitor::apply(osg::Geometry &geom)
 {
     // TODO: this is deprecated
     if (geom.getNormalBinding() == osg::Geometry::BIND_PER_PRIMITIVE_SET)
@@ -199,9 +199,9 @@ void IndexMeshVisitor::apply(osg::Geometry&geom)
 }
 
 
-void IndexMeshVisitor::addDrawElements(IndexList&data,
+void IndexMeshVisitor::addDrawElements(IndexList &data,
                                        osg::PrimitiveSet::Mode mode,
-                                       osg::Geometry::PrimitiveSetList&primitives,
+                                       osg::Geometry::PrimitiveSetList &primitives,
                                        std::string userValue)
 {
     if (!data.empty())

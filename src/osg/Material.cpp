@@ -45,7 +45,7 @@ Material::Material()
 Material::~Material()
 {}
 
-Material&Material:: operator =(const Material&rhs)
+Material&Material:: operator =(const Material &rhs)
 {
     if (&rhs == this)
         return *this;
@@ -71,7 +71,7 @@ Material&Material:: operator =(const Material&rhs)
 }
 
 
-void Material::setAmbient(Face face, const Vec4&ambient)
+void Material::setAmbient(Face face, const Vec4 &ambient)
 {
     switch (face)
     {
@@ -125,7 +125,7 @@ const Vec4&Material::getAmbient(Face face) const
 }
 
 
-void Material::setDiffuse(Face face, const Vec4&diffuse)
+void Material::setDiffuse(Face face, const Vec4 &diffuse)
 {
     switch (face)
     {
@@ -180,7 +180,7 @@ const Vec4&Material::getDiffuse(Face face) const
 }
 
 
-void Material::setSpecular(Face face, const Vec4&specular)
+void Material::setSpecular(Face face, const Vec4 &specular)
 {
     switch (face)
     {
@@ -235,7 +235,7 @@ const Vec4&Material::getSpecular(Face face) const
 }
 
 
-void Material::setEmission(Face face, const Vec4&emission)
+void Material::setEmission(Face face, const Vec4 &emission)
 {
     switch (face)
     {

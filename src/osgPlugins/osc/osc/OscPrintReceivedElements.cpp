@@ -37,8 +37,8 @@
 
 namespace osc
 {
-std::ostream&operator<<(std::ostream&os,
-                        const ReceivedMessageArgument&arg)
+std::ostream&operator<<(std::ostream &os,
+                        const ReceivedMessageArgument &arg)
 {
     switch (arg.TypeTag())
     {
@@ -166,7 +166,7 @@ std::ostream&operator<<(std::ostream&os,
 }
 
 
-std::ostream&operator<<(std::ostream&os, const ReceivedMessage&m)
+std::ostream&operator<<(std::ostream &os, const ReceivedMessage &m)
 {
     os << "[";
     if (m.AddressPatternIsUInt32())
@@ -198,7 +198,7 @@ std::ostream&operator<<(std::ostream&os, const ReceivedMessage&m)
 }
 
 
-std::ostream&operator<<(std::ostream&os, const ReceivedBundle&b)
+std::ostream&operator<<(std::ostream &os, const ReceivedBundle &b)
 {
     static int indent = 0;
 
@@ -245,7 +245,7 @@ std::ostream&operator<<(std::ostream&os, const ReceivedBundle&b)
 }
 
 
-std::ostream&operator<<(std::ostream&os, const ReceivedPacket&p)
+std::ostream&operator<<(std::ostream &os, const ReceivedPacket &p)
 {
     if (p.IsBundle())
     {

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 #ifndef QFontImplementation_H
 #define QFontImplementation_H
 
@@ -22,31 +22,35 @@
 #include <string>
 
 namespace osgQt {
-
-class OSGQT_EXPORT QFontImplementation : public osgText::Font::FontImplementation
-{
+    class OSGQT_EXPORT QFontImplementation: public osgText::Font::FontImplementation
+    {
 public:
-    QFontImplementation(const QFont& font);
-    virtual ~QFontImplementation();
+        QFontImplementation(const QFont &font);
+        virtual ~QFontImplementation();
 
-    virtual std::string getFileName() const;
+        virtual std::string getFileName() const;
 
-    virtual bool supportsMultipleFontResolutions() const { return true; }
+        virtual bool supportsMultipleFontResolutions() const
+        {
+            return true;
+        }
 
-    virtual osgText::Glyph* getGlyph(const osgText::FontResolution& fontRes, unsigned int charcode);
+        virtual osgText::Glyph* getGlyph(const osgText::FontResolution &fontRes, unsigned int charcode);
 
-    virtual osgText::Glyph3D* getGlyph3D(unsigned int /*charcode*/) { return 0; }
+        virtual osgText::Glyph3D* getGlyph3D(unsigned int /*charcode*/)
+        {
+            return 0;
+        }
 
-    virtual osg::Vec2 getKerning(unsigned int leftcharcode, unsigned int rightcharcode, osgText::KerningType kerningType);
+        virtual osg::Vec2 getKerning(unsigned int leftcharcode, unsigned int rightcharcode, osgText::KerningType kerningType);
 
-    virtual bool hasVertical() const;
+        virtual bool hasVertical() const;
 
 protected:
 
-    std::string             _filename;
-    QFont                   _font;
-};
-
+        std::string _filename;
+        QFont       _font;
+    };
 }
 
 #endif

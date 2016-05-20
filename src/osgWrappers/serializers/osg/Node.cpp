@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _initialBound
-static bool checkInitialBound(const osg::Node&node)
+static bool checkInitialBound(const osg::Node &node)
 {
     return node.getInitialBound().valid();
 }
 
-static bool readInitialBound(osgDB::InputStream&is, osg::Node&node)
+static bool readInitialBound(osgDB::InputStream &is, osg::Node &node)
 {
     osg::Vec3d center;
     double     radius;
@@ -22,9 +22,9 @@ static bool readInitialBound(osgDB::InputStream&is, osg::Node&node)
     return true;
 }
 
-static bool writeInitialBound(osgDB::OutputStream&os, const osg::Node&node)
+static bool writeInitialBound(osgDB::OutputStream &os, const osg::Node &node)
 {
-    const osg::BoundingSphere&bs = node.getInitialBound();
+    const osg::BoundingSphere &bs = node.getInitialBound();
 
     os << os.BEGIN_BRACKET << std::endl;
     os << os.PROPERTY("Center") << osg::Vec3d(bs.center()) << std::endl;
@@ -34,12 +34,12 @@ static bool writeInitialBound(osgDB::OutputStream&os, const osg::Node&node)
 }
 
 // _descriptions
-static bool checkDescriptions(const osg::Node&node)
+static bool checkDescriptions(const osg::Node &node)
 {
     return node.getDescriptions().size() > 0;
 }
 
-static bool readDescriptions(osgDB::InputStream&is, osg::Node&node)
+static bool readDescriptions(osgDB::InputStream &is, osg::Node &node)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -54,9 +54,9 @@ static bool readDescriptions(osgDB::InputStream&is, osg::Node&node)
     return true;
 }
 
-static bool writeDescriptions(osgDB::OutputStream&os, const osg::Node&node)
+static bool writeDescriptions(osgDB::OutputStream &os, const osg::Node &node)
 {
-    const osg::Node::DescriptionList&slist = node.getDescriptions();
+    const osg::Node::DescriptionList &slist = node.getDescriptions();
 
     os.writeSize(slist.size()); os << os.BEGIN_BRACKET << std::endl;
 

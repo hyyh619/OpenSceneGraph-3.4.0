@@ -8,7 +8,7 @@ osgParticle::MultiSegmentPlacer::MultiSegmentPlacer()
     : Placer(), _total_length(0)
 {}
 
-osgParticle::MultiSegmentPlacer::MultiSegmentPlacer(const MultiSegmentPlacer&copy, const osg::CopyOp&copyop)
+osgParticle::MultiSegmentPlacer::MultiSegmentPlacer(const MultiSegmentPlacer &copy, const osg::CopyOp &copyop)
     : Placer(copy, copyop), _vx(copy._vx), _total_length(copy._total_length)
 {}
 

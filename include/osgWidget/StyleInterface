@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 // Code by: Jeremy Moles (cubicool) 2007-2008
 
@@ -19,24 +19,30 @@
 #include <osgWidget/Export>
 
 namespace osgWidget {
+    class OSGWIDGET_EXPORT StyleInterface
+    {
+public:
+        StyleInterface() : _style("") {}
 
-class OSGWIDGET_EXPORT StyleInterface
-{
-    public:
-        StyleInterface(): _style("") {}
+        StyleInterface(const StyleInterface &si) : _style(si._style) {}
 
-        StyleInterface(const StyleInterface& si): _style(si._style) {}
+        void setStyle(const std::string &style)
+        {
+            _style = style;
+        }
 
-        void setStyle(const std::string& style) { _style = style; }
+        std::string&getStyle()
+        {
+            return _style;
+        }
 
-        std::string& getStyle() { return _style; }
-
-        const std::string& getStyle() const { return _style; }
-    private:
+        const std::string&getStyle() const
+        {
+            return _style;
+        }
+private:
         std::string _style;
-
-};
-
+    };
 }
 
 #endif

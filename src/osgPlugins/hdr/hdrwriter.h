@@ -33,19 +33,19 @@ class HDRWriter
 {
 public:
 // all return "true" for success, "false" for failure.
-static bool writeRLE(const osg::Image *img, std::ostream&fout);
-static bool writeRAW(const osg::Image *img, std::ostream&fout);
-static bool writeHeader(const osg::Image *img, std::ostream&fout);
+static bool writeRLE(const osg::Image *img, std::ostream &fout);
+static bool writeRAW(const osg::Image *img, std::ostream &fout);
+static bool writeHeader(const osg::Image *img, std::ostream &fout);
 
 protected:
 
 // can read or write pixels in chunks of any size including single pixels
-static bool writeNoRLE(std::ostream&fout, const osg::Image *image);
-static bool writePixelsRAW(std::ostream&fout, unsigned char *data, int numpixels);
+static bool writeNoRLE(std::ostream &fout, const osg::Image *image);
+static bool writePixelsRAW(std::ostream &fout, unsigned char *data, int numpixels);
 
 // read or write run length encoded files
 // must be called to read or write whole scanlines
-static bool writeBytesRLE(std::ostream&fout, unsigned char *data, int numbytes);
+static bool writeBytesRLE(std::ostream &fout, unsigned char *data, int numbytes);
 
 // inline conversions
 inline static void float2rgbe(unsigned char rgbe[4], float red, float green, float blue);

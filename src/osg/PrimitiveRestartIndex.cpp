@@ -28,7 +28,7 @@ PrimitiveRestartIndex::PrimitiveRestartIndex(unsigned int restartIndex)
     _restartIndex = restartIndex;
 }
 
-PrimitiveRestartIndex::PrimitiveRestartIndex(const PrimitiveRestartIndex&primitiveRestartIndex, const CopyOp&copyop) :
+PrimitiveRestartIndex::PrimitiveRestartIndex(const PrimitiveRestartIndex &primitiveRestartIndex, const CopyOp &copyop) :
     StateAttribute(primitiveRestartIndex, copyop)
 {
     _restartIndex = primitiveRestartIndex._restartIndex;
@@ -37,7 +37,7 @@ PrimitiveRestartIndex::PrimitiveRestartIndex(const PrimitiveRestartIndex&primiti
 PrimitiveRestartIndex::~PrimitiveRestartIndex()
 {}
 
-int PrimitiveRestartIndex::compare(const StateAttribute&sa) const
+int PrimitiveRestartIndex::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -48,7 +48,7 @@ int PrimitiveRestartIndex::compare(const StateAttribute&sa) const
     return 0; // passed all the above comparison macros, must be equal.
 }
 
-void PrimitiveRestartIndex::apply(State&state) const
+void PrimitiveRestartIndex::apply(State &state) const
 {
     // get "per-context" extensions
     const GLExtensions *extensions = state.get<GLExtensions>();

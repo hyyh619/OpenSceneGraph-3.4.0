@@ -215,60 +215,60 @@ public:
 
 VBSPData();
 
-void                      addEntity(std::string&newEntity);
+void                      addEntity(std::string &newEntity);
 const int                 getNumEntities() const;
 const std::string&getEntity(int index) const;
 
-void                      addModel(Model&newModel);
+void                      addModel(Model &newModel);
 const int                 getNumModels() const;
 const Model&getModel(int index) const;
 
-void                      addPlane(Plane&newPlane);
+void                      addPlane(Plane &newPlane);
 const int                 getNumPlanes() const;
 const Plane&getPlane(int index) const;
 
-void                      addVertex(osg::Vec3f&newVertex);
+void                      addVertex(osg::Vec3f &newVertex);
 const int                 getNumVertices() const;
 const osg::Vec3f&getVertex(int index) const;
 
-void                      addEdge(Edge&newEdge);
+void                      addEdge(Edge &newEdge);
 const int                 getNumEdges() const;
 const Edge&getEdge(int index) const;
 
-void                      addSurfaceEdge(int&newSurfEdge);
+void                      addSurfaceEdge(int &newSurfEdge);
 const int                 getNumSurfaceEdges() const;
 const int                 getSurfaceEdge(int index) const;
 
-void                      addFace(Face&newFace);
+void                      addFace(Face &newFace);
 const int                 getNumFaces() const;
 const Face&getFace(int index) const;
 
-void                      addTexInfo(TexInfo&newTexInfo);
+void                      addTexInfo(TexInfo &newTexInfo);
 const int                 getNumTexInfos() const;
 const TexInfo&getTexInfo(int index) const;
 
-void                      addTexData(TexData&newTexData);
+void                      addTexData(TexData &newTexData);
 const int                 getNumTexDatas() const;
 const TexData&getTexData(int index) const;
 
-void                      addTexDataString(std::string&newTexDataString);
+void                      addTexDataString(std::string &newTexDataString);
 const int                 getNumTexDataStrings() const;
 const std::string&getTexDataString(int index) const;
 
-void                      addDispInfo(DisplaceInfo&newDispInfo);
+void                      addDispInfo(DisplaceInfo &newDispInfo);
 const int                 getNumDispInfos() const;
 const DisplaceInfo&getDispInfo(int index) const;
 
-void                      addDispVertex(DisplacedVertex&newDispVert);
+void                      addDispVertex(DisplacedVertex &newDispVert);
 const int                 getNumDispVertices() const;
 const DisplacedVertex&getDispVertex(int index) const;
 
-void                      addStaticPropModel(std::string&newModel);
+void                      addStaticPropModel(std::string &newModel);
 const int                 getNumStaticPropModels() const;
 const std::string&getStaticPropModel(int index) const;
 
-void                      addStaticProp(StaticPropV4&newProp);
-void                      addStaticProp(StaticProp&newProp);
+void                      addStaticProp(StaticPropV4 &newProp);
+void                      addStaticProp(StaticProp &newProp);
 const int                 getNumStaticProps() const;
 const StaticProp&getStaticProp(int index) const;
 

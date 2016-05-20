@@ -33,7 +33,7 @@ TsgVisitor(BumpMapping *bm) : NodeVisitor(NodeVisitor::TRAVERSE_ALL_CHILDREN), _
 
 META_NodeVisitor("osgFX", "TsgVisitor")
 
-void apply(osg::Geode&geode)
+void apply(osg::Geode &geode)
 {
     for (unsigned i = 0; i < geode.getNumDrawables(); ++i)
     {
@@ -60,10 +60,10 @@ TexCoordGenerator(int du, int nu) : NodeVisitor(NodeVisitor::TRAVERSE_ALL_CHILDR
 
 META_NodeVisitor("osgFX", "TexCoordGenerator")
 
-void apply(osg::Geode&geode)
+void apply(osg::Geode &geode)
 {
-    const osg::BoundingSphere&bsphere = geode.getBound();
-    float                    scale    = 10;
+    const osg::BoundingSphere &bsphere = geode.getBound();
+    float                     scale    = 10;
 
     if (bsphere.radius() != 0)
     {
@@ -178,7 +178,7 @@ ViewMatrixExtractor()
     _first_context(NO_VALID_CONTEXT)
 {}
 
-ViewMatrixExtractor(const ViewMatrixExtractor&copy, const osg::CopyOp&copyop)
+ViewMatrixExtractor(const ViewMatrixExtractor &copy, const osg::CopyOp &copyop)
     : osg::StateAttribute(copy, copyop),
     _vp(static_cast<osg::VertexProgram*>(copyop(copy._vp.get()))),
     _param(copy._param),
@@ -194,7 +194,7 @@ ViewMatrixExtractor(osg::VertexProgram *vp, int param)
 
 META_StateAttribute(osgFX, ViewMatrixExtractor, VIEWMATRIXEXTRACTOR);
 
-int compare(const osg::StateAttribute&sa) const
+int compare(const osg::StateAttribute &sa) const
 {
     COMPARE_StateAttribute_Types(ViewMatrixExtractor, sa);
     if (_vp.get() != rhs._vp.get())
@@ -209,7 +209,7 @@ int compare(const osg::StateAttribute&sa) const
     return 0;
 }
 
-void apply(osg::State&state) const
+void apply(osg::State &state) const
 {
     if (_first_context == NO_VALID_CONTEXT)
     {
@@ -268,7 +268,7 @@ META_Technique(
     "Single-pass technique, requires ARB_vertex_program and ARB_fragment_program."
     );
 
-void getRequiredExtensions(std::vector<std::string>&extensions) const
+void getRequiredExtensions(std::vector<std::string> &extensions) const
 {
     extensions.push_back("GL_ARB_vertex_program");
     extensions.push_back("GL_ARB_fragment_program");
@@ -472,7 +472,7 @@ META_Technique(
     "Only diffuse lighting, no ambient, no specularity."
     );
 
-void getRequiredExtensions(std::vector<std::string>&extensions) const
+void getRequiredExtensions(std::vector<std::string> &extensions) const
 {
     extensions.push_back("GL_ARB_vertex_program");
     extensions.push_back("GL_ARB_texture_env_dot3");
@@ -616,7 +616,7 @@ BumpMapping::BumpMapping()
     _normal_unit(0)
 {}
 
-BumpMapping::BumpMapping(const BumpMapping&copy, const osg::CopyOp&copyop)
+BumpMapping::BumpMapping(const BumpMapping &copy, const osg::CopyOp &copyop)
     :   Effect(copy, copyop),
     _lightnum(copy._lightnum),
     _diffuse_unit(copy._diffuse_unit),

@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _columns, _rows
-static bool checkArea(const osg::HeightField&shape)
+static bool checkArea(const osg::HeightField &shape)
 {
     return true;
 }
 
-static bool readArea(osgDB::InputStream&is, osg::HeightField&shape)
+static bool readArea(osgDB::InputStream &is, osg::HeightField &shape)
 {
     unsigned int numCols, numRows;
 
@@ -18,19 +18,19 @@ static bool readArea(osgDB::InputStream&is, osg::HeightField&shape)
     return true;
 }
 
-static bool writeArea(osgDB::OutputStream&os, const osg::HeightField&shape)
+static bool writeArea(osgDB::OutputStream &os, const osg::HeightField &shape)
 {
     os << shape.getNumColumns() << shape.getNumRows() << std::endl;
     return true;
 }
 
 // _heights
-static bool checkHeights(const osg::HeightField&shape)
+static bool checkHeights(const osg::HeightField &shape)
 {
     return shape.getFloatArray() != NULL;
 }
 
-static bool readHeights(osgDB::InputStream&is, osg::HeightField&shape)
+static bool readHeights(osgDB::InputStream &is, osg::HeightField &shape)
 {
     osg::FloatArray *array = dynamic_cast<osg::FloatArray*>(is.readArray());
 
@@ -52,7 +52,7 @@ static bool readHeights(osgDB::InputStream&is, osg::HeightField&shape)
     return true;
 }
 
-static bool writeHeights(osgDB::OutputStream&os, const osg::HeightField&shape)
+static bool writeHeights(osgDB::OutputStream &os, const osg::HeightField &shape)
 {
     os.writeArray(shape.getFloatArray());
     return true;

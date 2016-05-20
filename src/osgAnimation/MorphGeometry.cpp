@@ -30,7 +30,7 @@ MorphGeometry::MorphGeometry() :
     setUseVertexBufferObjects(true);
 }
 
-MorphGeometry::MorphGeometry(const osg::Geometry&b) :
+MorphGeometry::MorphGeometry(const osg::Geometry &b) :
     osg::Geometry(b, osg::CopyOp::DEEP_COPY_ARRAYS),
     _dirty(false),
     _method(NORMALIZED),
@@ -42,7 +42,7 @@ MorphGeometry::MorphGeometry(const osg::Geometry&b) :
     setUseVertexBufferObjects(true);
 }
 
-MorphGeometry::MorphGeometry(const MorphGeometry&b, const osg::CopyOp&copyop) :
+MorphGeometry::MorphGeometry(const MorphGeometry &b, const osg::CopyOp &copyop) :
     osg::Geometry(b, copyop),
     _dirty(b._dirty),
     _method(b._method),
@@ -193,12 +193,12 @@ void MorphGeometry::transformSoftwareMethod()
     }
 }
 
-UpdateMorph::UpdateMorph(const UpdateMorph&apc, const osg::CopyOp&copyop) :
+UpdateMorph::UpdateMorph(const UpdateMorph &apc, const osg::CopyOp &copyop) :
     osg::Object(apc, copyop),
     AnimationUpdateCallback<osg::NodeCallback>(apc, copyop)
 {}
 
-UpdateMorph::UpdateMorph(const std::string&name) : AnimationUpdateCallback<osg::NodeCallback>(name)
+UpdateMorph::UpdateMorph(const std::string &name) : AnimationUpdateCallback<osg::NodeCallback>(name)
 {}
 
 /** Callback method called by the NodeVisitor when visiting a node.*/

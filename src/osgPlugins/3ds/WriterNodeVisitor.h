@@ -43,7 +43,7 @@
 #include "WriterCompareTriangle.h"
 #include <set>
 
-void copyOsgMatrixToLib3dsMatrix(Lib3dsMatrix lib3ds_matrix, const osg::Matrix&osg_matrix);
+void copyOsgMatrixToLib3dsMatrix(Lib3dsMatrix lib3ds_matrix, const osg::Matrix &osg_matrix);
 
 typedef std::map<std::pair<unsigned int, unsigned int>, unsigned int> MapIndices;
 typedef std::vector<std::pair<Triangle, int> > ListTriangle; // the int is the drawable of the triangle
@@ -56,21 +56,21 @@ public:
 static const unsigned int MAX_VERTICES = 65000;
 static const unsigned int MAX_FACES    = MAX_VERTICES;
 
-WriterNodeVisitor(Lib3dsFile *file3ds, const std::string&fileName,
+WriterNodeVisitor(Lib3dsFile *file3ds, const std::string &fileName,
                   const osgDB::ReaderWriter::Options *options,
-                  const std::string&srcDirectory);
+                  const std::string &srcDirectory);
 
 bool succeeded() const
 {
     return _succeeded;
 }
-virtual void apply(osg::Geode&node);
-virtual void apply(osg::Billboard&node);
+virtual void apply(osg::Geode &node);
+virtual void apply(osg::Billboard &node);
 
-virtual void apply(osg::Group&node);
-virtual void apply(osg::MatrixTransform&node);
+virtual void apply(osg::Group &node);
+virtual void apply(osg::MatrixTransform &node);
 
-void traverse(osg::Node&node)
+void traverse(osg::Node &node)
 {
     pushStateSet(node.getStateSet());
     osg::NodeVisitor::traverse(node);
@@ -110,7 +110,7 @@ void writeMaterials();
 class Material
 {
 public:
-Material(WriterNodeVisitor&writerNodeVisitor, osg::StateSet *stateset, osg::Material *mat, osg::Texture *tex, bool preserveName, int index = -1);
+Material(WriterNodeVisitor &writerNodeVisitor, osg::StateSet *stateset, osg::Material *mat, osg::Texture *tex, bool preserveName, int index = -1);
 
 int                      index;       ///< Index in the 3DS file
 osg::Vec4                diffuse, ambient, specular;
@@ -128,7 +128,7 @@ Material() : index(-1) {}
 protected:
 struct CompareStateSet
 {
-    bool operator()(const osg::ref_ptr<osg::StateSet>&ss1, const osg::ref_ptr<osg::StateSet>&ss2) const
+    bool operator()(const osg::ref_ptr<osg::StateSet> &ss1, const osg::ref_ptr<osg::StateSet> &ss2) const
     {
         return *ss1 < *ss2;
     }
@@ -148,13 +148,13 @@ WriterNodeVisitor&operator =(const WriterNodeVisitor&)
  *  \param listTriangles contain all the meshs faces.
  *  \param texcoords tell us if we have to treat texture coord.
  */
-void buildFaces(osg::Geode&geo, const osg::Matrix&mat, ListTriangle&listTriangles, bool texcoords);
+void buildFaces(osg::Geode &geo, const osg::Matrix &mat, ListTriangle &listTriangles, bool texcoords);
 
 /**
  *  Calculate the number of vertices in the geode.
  *  \return the number of vertices in the geode.
  */
-unsigned int calcVertices(osg::Geode&geo);
+unsigned int calcVertices(osg::Geode &geo);
 
 /**
  *  Build a mesh
@@ -166,9 +166,9 @@ unsigned int calcVertices(osg::Geode&geo);
  *  \sa See cutScene() about the definition of the boxes for faces sorting.
  */
 void
-buildMesh(osg::Geode&geo,
-          const osg::Matrix&mat,
-          MapIndices&index_vert,
+buildMesh(osg::Geode &geo,
+          const osg::Matrix &mat,
+          MapIndices &index_vert,
           bool texcoords,
           Lib3dsMesh             *mesh);
 
@@ -180,7 +180,7 @@ buildMesh(osg::Geode&geo,
  *  \return the position of the vertice in the final mesh.
  */
 unsigned int
-getMeshIndexForGeometryIndex(MapIndices&index_vert,
+getMeshIndexForGeometryIndex(MapIndices &index_vert,
                              unsigned int index,
                              unsigned int drawable_n);
 /**
@@ -191,20 +191,20 @@ getMeshIndexForGeometryIndex(MapIndices&index_vert,
  *  \param drawable_n tell us which drawable we are building.
  */
 void createListTriangle(osg::Geometry       *geo,
-                        ListTriangle&listTriangles,
-                        bool&texcoords,
-                        unsigned int&drawable_n);
+                        ListTriangle &listTriangles,
+                        bool &texcoords,
+                        unsigned int &drawable_n);
 
 int processStateSet(osg::StateSet *stateset);
 
-std::string getUniqueName(const std::string&defaultvalue, bool isNodeName, const std::string&defaultPrefix = "", int currentPrefixLen = -1);
-std::string getMaterialName(const std::string&inputMaterialName);
-std::string export3DSTexture(const osg::Image *image, const std::string&fileName);
+std::string getUniqueName(const std::string &defaultvalue, bool isNodeName, const std::string &defaultPrefix = "", int currentPrefixLen = -1);
+std::string getMaterialName(const std::string &inputMaterialName);
+std::string export3DSTexture(const osg::Image *image, const std::string &fileName);
 
 typedef std::stack<osg::ref_ptr<osg::StateSet> > StateSetStack;
 typedef std::map<osg::ref_ptr<osg::StateSet>, Material, CompareStateSet> MaterialMap;
 
-void apply3DSMatrixNode(osg::Node&node, const osg::Matrix *m, const char* const prefix);
+void apply3DSMatrixNode(osg::Node &node, const osg::Matrix *m, const char* const prefix);
 
 bool                        _succeeded;
 std::string                 _directory;

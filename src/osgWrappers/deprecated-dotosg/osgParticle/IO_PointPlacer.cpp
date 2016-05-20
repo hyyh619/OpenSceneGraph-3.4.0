@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  PointPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  PointPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  PointPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  PointPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(PointPlacer_Proxy)
 (

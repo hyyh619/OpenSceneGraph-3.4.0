@@ -59,7 +59,7 @@ class JoystickHandler : public osgGA::GUIEventHandler
 public:
 JoystickHandler() {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     switch (ea.getEventType())
     {
@@ -77,7 +77,7 @@ bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
         if (!event)
             break;
 
-        const DIJOYSTATE2&js = event->_js;
+        const DIJOYSTATE2 &js = event->_js;
 
         for (unsigned int i = 0; i < 128; ++i)
         {

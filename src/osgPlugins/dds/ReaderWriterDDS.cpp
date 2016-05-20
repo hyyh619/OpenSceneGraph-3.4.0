@@ -417,7 +417,7 @@ static unsigned int ComputeImageSizeInBytes(int width, int height, int depth,
     return osg::Image::computeImageSizeInBytes(width, height, depth, pixelFormat, pixelType, packing, slice_packing, image_packing);
 }
 
-osg::Image* ReadDDSFile(std::istream&_istream, bool flipDDSRead)
+osg::Image* ReadDDSFile(std::istream &_istream, bool flipDDSRead)
 {
     DDSURFACEDESC2 ddsd;
 
@@ -548,7 +548,7 @@ osg::Image* ReadDDSFile(std::istream&_istream, bool flipDDSRead)
 
         for (unsigned int i = 0; i < sizeof(rgbFormats) / sizeof(RGBFormat); i++)
         {
-            const RGBFormat&f = rgbFormats[i];
+            const RGBFormat &f = rgbFormats[i];
             if (ddsd.ddpfPixelFormat.dwRGBBitCount == f.bitCount &&
                 ddsd.ddpfPixelFormat.dwRBitMask == f.rBitMask &&
                 ddsd.ddpfPixelFormat.dwGBitMask == f.gBitMask &&
@@ -1061,7 +1061,7 @@ osg::Image* ReadDDSFile(std::istream&_istream, bool flipDDSRead)
     return osgImage.release();
 }
 
-bool WriteDDSFile(const osg::Image *img, std::ostream&fout, bool autoFlipDDSWrite)
+bool WriteDDSFile(const osg::Image *img, std::ostream &fout, bool autoFlipDDSWrite)
 {
     bool isDXTC(false);
 
@@ -1381,17 +1381,17 @@ virtual const char* className() const
     return "DDS Image Reader/Writer";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readObject(std::istream&fin, const Options *options) const
+virtual ReadResult readObject(std::istream &fin, const Options *options) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -1414,7 +1414,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-virtual ReadResult readImage(std::istream&fin, const Options *options) const
+virtual ReadResult readImage(std::istream &fin, const Options *options) const
 {
     bool dds_flip(false);
     bool dds_dxt1_rgba(false);
@@ -1487,7 +1487,7 @@ virtual ReadResult readImage(std::istream&fin, const Options *options) const
     return osgImage;
 }
 
-virtual WriteResult writeObject(const osg::Object&object, const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     const osg::Image *image = dynamic_cast<const osg::Image*>(&object);
 
@@ -1497,7 +1497,7 @@ virtual WriteResult writeObject(const osg::Object&object, const std::string&file
     return writeImage(*image, file, options);
 }
 
-virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, const Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, std::ostream &fout, const Options *options) const
 {
     const osg::Image *image = dynamic_cast<const osg::Image*>(&object);
 
@@ -1508,7 +1508,7 @@ virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, con
 }
 
 
-virtual WriteResult writeImage(const osg::Image&image, const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(file);
 
@@ -1530,7 +1530,7 @@ virtual WriteResult writeImage(const osg::Image&image, const std::string&file, c
     return res;
 }
 
-virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, std::ostream &fout, const Options *options) const
 {
     bool noAutoFlipDDSWrite = options && options->getOptionString().find("ddsNoAutoFlipWrite") != std::string::npos;
     bool success            = WriteDDSFile(&image, fout, !noAutoFlipDDSWrite);

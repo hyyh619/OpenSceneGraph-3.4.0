@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  SinkOperator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  SinkOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  SinkOperator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  SinkOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(SinkOperator_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(SinkOperator_Proxy)
     SinkOperator_writeLocalData
 );
 
-bool SinkOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool SinkOperator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::SinkOperator&sp        = static_cast<osgParticle::SinkOperator&>(obj);
-    bool                     itAdvanced = false;
+    osgParticle::SinkOperator &sp        = static_cast<osgParticle::SinkOperator&>(obj);
+    bool                      itAdvanced = false;
 
     if (fr[0].matchWord("sinkTarget"))
     {
@@ -63,9 +63,9 @@ bool SinkOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool SinkOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool SinkOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::SinkOperator&sp = static_cast<const osgParticle::SinkOperator&>(obj);
+    const osgParticle::SinkOperator &sp = static_cast<const osgParticle::SinkOperator&>(obj);
 
     fw.indent() << "sinkTarget ";
 

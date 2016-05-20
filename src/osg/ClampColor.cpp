@@ -34,7 +34,7 @@ ClampColor::ClampColor(GLenum vertexMode, GLenum fragmentMode, GLenum readMode) 
 ClampColor::~ClampColor()
 {}
 
-void ClampColor::apply(State&state) const
+void ClampColor::apply(State &state) const
 {
     // get the contextID (user defined ID of 0 upwards) for the
     // current OpenGL context.

@@ -22,7 +22,7 @@ VolumeTechnique::VolumeTechnique() :
     setThreadSafeRefUnref(true);
 }
 
-VolumeTechnique::VolumeTechnique(const VolumeTechnique&rhs, const osg::CopyOp&copyop) :
+VolumeTechnique::VolumeTechnique(const VolumeTechnique &rhs, const osg::CopyOp &copyop) :
     osg::Object(rhs, copyop),
     _volumeTile(0)
 {}
@@ -54,7 +54,7 @@ void VolumeTechnique::cleanSceneGraph()
     OSG_NOTICE << className() << "::cleanSceneGraph(..) not implementated yet" << std::endl;
 }
 
-void VolumeTechnique::traverse(osg::NodeVisitor&nv)
+void VolumeTechnique::traverse(osg::NodeVisitor &nv)
 {
     if (!_volumeTile)
         return;

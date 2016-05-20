@@ -43,7 +43,7 @@ NameVistor() :
     _count(0)
 {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     std::ostringstream os;
 
@@ -64,7 +64,7 @@ CheckVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN)
 {}
 
-virtual void apply(osg::PagedLOD&plod)
+virtual void apply(osg::PagedLOD &plod)
 {
     std::cout << "PagedLOD " << plod.getName() << "  numRanges = " << plod.getNumRanges() << "  numFiles = " << plod.getNumFileNames() << std::endl;
 
@@ -83,7 +83,7 @@ WriteOutPagedLODSubgraphsVistor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN)
 {}
 
-virtual void apply(osg::PagedLOD&plod)
+virtual void apply(osg::PagedLOD &plod)
 {
     // go through all the named children and write them out to disk.
     for (unsigned int i = 0; i < plod.getNumChildren(); ++i)
@@ -104,7 +104,7 @@ virtual void apply(osg::PagedLOD&plod)
 class ConvertToPageLODVistor : public osg::NodeVisitor
 {
 public:
-ConvertToPageLODVistor(const std::string&basename, const std::string&extension, bool makeAllChildrenPaged) :
+ConvertToPageLODVistor(const std::string &basename, const std::string &extension, bool makeAllChildrenPaged) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _basename(basename),
     _extension(extension),
@@ -114,14 +114,14 @@ ConvertToPageLODVistor(const std::string&basename, const std::string&extension, 
 virtual ~ConvertToPageLODVistor()
 {}
 
-virtual void apply(osg::LOD&lod)
+virtual void apply(osg::LOD &lod)
 {
     _lodSet.insert(&lod);
 
     traverse(lod);
 }
 
-virtual void apply(osg::PagedLOD&plod)
+virtual void apply(osg::PagedLOD &plod)
 {
     // do thing, but want to avoid call LOD.
     traverse(plod);
@@ -153,7 +153,7 @@ void convert()
 
         osg::PagedLOD *plod = new osg::PagedLOD;
 
-        const osg::LOD::RangeList&originalRangeList = lod->getRangeList();
+        const osg::LOD::RangeList &originalRangeList = lod->getRangeList();
         typedef std::multimap<osg::LOD::MinMaxPair, unsigned int> MinMaxPairMap;
         MinMaxPairMap rangeMap;
         unsigned int  pos = 0;

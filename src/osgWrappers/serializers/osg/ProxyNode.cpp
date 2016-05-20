@@ -6,12 +6,12 @@
 #include <osgDB/ReadFile>
 
 // _filenameList
-static bool checkFileNames(const osg::ProxyNode&node)
+static bool checkFileNames(const osg::ProxyNode &node)
 {
     return node.getNumFileNames() > 0;
 }
 
-static bool readFileNames(osgDB::InputStream&is, osg::ProxyNode&node)
+static bool readFileNames(osgDB::InputStream &is, osg::ProxyNode &node)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -26,7 +26,7 @@ static bool readFileNames(osgDB::InputStream&is, osg::ProxyNode&node)
     return true;
 }
 
-static bool writeFileNames(osgDB::OutputStream&os, const osg::ProxyNode&node)
+static bool writeFileNames(osgDB::OutputStream &os, const osg::ProxyNode &node)
 {
     os << node.getNumFileNames() << os.BEGIN_BRACKET << std::endl;
 
@@ -41,12 +41,12 @@ static bool writeFileNames(osgDB::OutputStream&os, const osg::ProxyNode&node)
 }
 
 // _children
-static bool checkChildren(const osg::ProxyNode&node)
+static bool checkChildren(const osg::ProxyNode &node)
 {
     return node.getNumChildren() > 0;
 }
 
-static bool readChildren(osgDB::InputStream&is, osg::ProxyNode&node)
+static bool readChildren(osgDB::InputStream &is, osg::ProxyNode &node)
 {
     unsigned int size = 0; is >> size;
 
@@ -67,7 +67,7 @@ static bool readChildren(osgDB::InputStream&is, osg::ProxyNode&node)
     return true;
 }
 
-static bool writeChildren(osgDB::OutputStream&os, const osg::ProxyNode&node)
+static bool writeChildren(osgDB::OutputStream &os, const osg::ProxyNode &node)
 {
     unsigned int size = node.getNumFileNames(), dynamicLoadedSize = 0;
 
@@ -99,12 +99,12 @@ static bool writeChildren(osgDB::OutputStream&os, const osg::ProxyNode&node)
 }
 
 // _userDefinedCenter, _radius
-static bool checkUserCenter(const osg::ProxyNode&node)
+static bool checkUserCenter(const osg::ProxyNode &node)
 {
     return (node.getCenterMode() == osg::ProxyNode::USER_DEFINED_CENTER) || (node.getCenterMode() == osg::ProxyNode::UNION_OF_BOUNDING_SPHERE_AND_USER_DEFINED);
 }
 
-static bool readUserCenter(osgDB::InputStream&is, osg::ProxyNode&node)
+static bool readUserCenter(osgDB::InputStream &is, osg::ProxyNode &node)
 {
     osg::Vec3d center; double radius;
 
@@ -113,7 +113,7 @@ static bool readUserCenter(osgDB::InputStream&is, osg::ProxyNode&node)
     return true;
 }
 
-static bool writeUserCenter(osgDB::OutputStream&os, const osg::ProxyNode&node)
+static bool writeUserCenter(osgDB::OutputStream &os, const osg::ProxyNode &node)
 {
     os << osg::Vec3d(node.getCenter()) << (double)node.getRadius() << std::endl;
     return true;
@@ -121,9 +121,9 @@ static bool writeUserCenter(osgDB::OutputStream&os, const osg::ProxyNode&node)
 
 struct ProxyNodeFinishedObjectReadCallback : public osgDB::FinishedObjectReadCallback
 {
-    virtual void objectRead(osgDB::InputStream&is, osg::Object&obj)
+    virtual void objectRead(osgDB::InputStream &is, osg::Object &obj)
     {
-        osg::ProxyNode&proxyNode = static_cast<osg::ProxyNode&>(obj);
+        osg::ProxyNode &proxyNode = static_cast<osg::ProxyNode&>(obj);
 
         if (proxyNode.getLoadingExternalReferenceMode() == osg::ProxyNode::LOAD_IMMEDIATELY)
         {
@@ -131,7 +131,7 @@ struct ProxyNodeFinishedObjectReadCallback : public osgDB::FinishedObjectReadCal
             {
                 if (i >= proxyNode.getNumChildren() && !proxyNode.getFileName(i).empty())
                 {
-                    osgDB::FilePathList&fpl = ((osgDB::ReaderWriter::Options*)is.getOptions())->getDatabasePathList();
+                    osgDB::FilePathList &fpl = ((osgDB::ReaderWriter::Options*)is.getOptions())->getDatabasePathList();
                     fpl.push_front(fpl.empty() ? osgDB::getFilePath(proxyNode.getFileName(i)) : fpl.front() + '/' + osgDB::getFilePath(proxyNode.getFileName(i)));
                     osg::Node *node = osgDB::readNodeFile(proxyNode.getFileName(i), is.getOptions());
                     fpl.pop_front();

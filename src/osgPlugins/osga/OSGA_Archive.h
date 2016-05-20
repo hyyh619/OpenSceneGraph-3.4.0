@@ -36,16 +36,16 @@ virtual const char* className() const
     return "Archive";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "osga");
 }
 
 /** open the archive.*/
-virtual bool open(const std::string&filename, ArchiveStatus status, unsigned int indexBlockSizeHint = 4096);
+virtual bool open(const std::string &filename, ArchiveStatus status, unsigned int indexBlockSizeHint = 4096);
 
 /** open the archive for reading.*/
-virtual bool open(std::istream&fin);
+virtual bool open(std::istream &fin);
 
 /** close the archive.*/
 virtual void close();
@@ -60,44 +60,44 @@ virtual std::string getArchiveFileName() const
 virtual std::string getMasterFileName() const;
 
 /** return true if file exists in archive.*/
-virtual bool fileExists(const std::string&filename) const;
+virtual bool fileExists(const std::string &filename) const;
 
 /** return type of file. */
-virtual osgDB::FileType getFileType(const std::string&filename) const;
+virtual osgDB::FileType getFileType(const std::string &filename) const;
 
 /** Get the full list of file names available in the archive.*/
-virtual bool getFileNames(FileNameList&fileNameList) const;
+virtual bool getFileNames(FileNameList &fileNameList) const;
 
 
 /** Read an osg::Object of specified file name from the Archive.*/
-virtual ReadResult readObject(const std::string&fileName, const Options *options = NULL) const;
+virtual ReadResult readObject(const std::string &fileName, const Options *options = NULL) const;
 
 /** Read an osg::Image of specified file name from the Archive.*/
-virtual ReadResult readImage(const std::string&fileName, const Options *options = NULL) const;
+virtual ReadResult readImage(const std::string &fileName, const Options *options = NULL) const;
 
 /** Read an osg::HeightField of specified file name from the Archive.*/
-virtual ReadResult readHeightField(const std::string&fileName, const Options *options = NULL) const;
+virtual ReadResult readHeightField(const std::string &fileName, const Options *options = NULL) const;
 
 /** Read an osg::Node of specified file name from the Archive.*/
-virtual ReadResult readNode(const std::string&fileName, const Options *options = NULL) const;
+virtual ReadResult readNode(const std::string &fileName, const Options *options = NULL) const;
 
 /** Read an osg::Shader of specified file name from the Archive.*/
-virtual ReadResult readShader(const std::string&fileName, const Options *options = NULL) const;
+virtual ReadResult readShader(const std::string &fileName, const Options *options = NULL) const;
 
 /** Write an osg::Object with specified file name to the Archive.*/
-virtual WriteResult writeObject(const osg::Object&obj, const std::string&fileName, const Options *options = NULL) const;
+virtual WriteResult writeObject(const osg::Object &obj, const std::string &fileName, const Options *options = NULL) const;
 
 /** Write an osg::Image with specified file name to the Archive.*/
-virtual WriteResult writeImage(const osg::Image&image, const std::string&fileName, const Options *options = NULL) const;
+virtual WriteResult writeImage(const osg::Image &image, const std::string &fileName, const Options *options = NULL) const;
 
 /** Write an osg::HeightField with specified file name to the Archive.*/
-virtual WriteResult writeHeightField(const osg::HeightField&heightField, const std::string&fileName, const Options *options = NULL) const;
+virtual WriteResult writeHeightField(const osg::HeightField &heightField, const std::string &fileName, const Options *options = NULL) const;
 
 /** Write an osg::Node with specified file name to the Archive.*/
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options *options = NULL) const;
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options *options = NULL) const;
 
 /** Write an osg::Shader with specified file name to the Archive.*/
-virtual WriteResult writeShader(const osg::Shader&shader, const std::string&fileName, const Options *options = NULL) const;
+virtual WriteResult writeShader(const osg::Shader &shader, const std::string &fileName, const Options *options = NULL) const;
 
         #if defined(_MSC_VER)
 typedef __int64 pos_type;
@@ -141,11 +141,11 @@ inline pos_type getPositionNextIndexBlock() const
 }
 
 
-static IndexBlock* read(std::istream&in, bool doEndianSwap);
+static IndexBlock* read(std::istream &in, bool doEndianSwap);
 
 std::string getFirstFileName() const;
 
-bool getFileReferences(FileNamePositionMap&indexMap) const;
+bool getFileReferences(FileNamePositionMap &indexMap) const;
 
 
 inline bool requiresWrite() const
@@ -153,16 +153,16 @@ inline bool requiresWrite() const
     return _requiresWrite;
 }
 
-void write(std::ostream&out);
+void write(std::ostream &out);
 
-inline bool spaceAvailable(pos_type, size_type, const std::string&filename) const
+inline bool spaceAvailable(pos_type, size_type, const std::string &filename) const
 {
     unsigned requiredSize = sizeof(pos_type) + sizeof(size_type) + sizeof(unsigned int) + filename.size();
 
     return (_offsetOfNextAvailableSpace + requiredSize) < _blockSize;
 }
 
-bool addFileReference(pos_type position, size_type size, const std::string&filename);
+bool addFileReference(pos_type position, size_type size, const std::string &filename);
 
 
 
@@ -184,12 +184,12 @@ public:
 /** Functor used in internal implementations.*/
 struct ReadFunctor
 {
-    ReadFunctor(const std::string&filename, const osgDB::ReaderWriter::Options *options) :
+    ReadFunctor(const std::string &filename, const osgDB::ReaderWriter::Options *options) :
         _filename(filename),
         _options(options) {}
 
     virtual ~ReadFunctor() {}
-    virtual osgDB::ReaderWriter::ReadResult doRead(osgDB::ReaderWriter&rw, std::istream&input) const = 0;
+    virtual osgDB::ReaderWriter::ReadResult doRead(osgDB::ReaderWriter &rw, std::istream &input) const = 0;
 
     std::string                        _filename;
     const osgDB::ReaderWriter::Options *_options;
@@ -198,12 +198,12 @@ struct ReadFunctor
 /** Functor used in internal implementations.*/
 struct WriteFunctor
 {
-    WriteFunctor(const std::string&filename, const osgDB::ReaderWriter::Options *options) :
+    WriteFunctor(const std::string &filename, const osgDB::ReaderWriter::Options *options) :
         _filename(filename),
         _options(options) {}
 
     virtual ~WriteFunctor() {}
-    virtual osgDB::ReaderWriter::WriteResult doWrite(osgDB::ReaderWriter&rw, std::ostream&output) const = 0;
+    virtual osgDB::ReaderWriter::WriteResult doWrite(osgDB::ReaderWriter &rw, std::ostream &output) const = 0;
 
     std::string                        _filename;
     const osgDB::ReaderWriter::Options *_options;
@@ -224,16 +224,16 @@ struct WriteNodeFunctor;
 struct WriteShaderFunctor;
 
 
-osgDB::ReaderWriter::ReadResult read(const ReadFunctor&readFunctor);
-osgDB::ReaderWriter::WriteResult write(const WriteFunctor&writeFunctor);
+osgDB::ReaderWriter::ReadResult read(const ReadFunctor &readFunctor);
+osgDB::ReaderWriter::WriteResult write(const WriteFunctor &writeFunctor);
 
 typedef std::list<osg::ref_ptr<IndexBlock> >   IndexBlockList;
 
-bool _open(std::istream&fin);
+bool _open(std::istream &fin);
 
 void writeIndexBlocks();
 
-bool addFileReference(pos_type position, size_type size, const std::string&fileName);
+bool addFileReference(pos_type position, size_type size, const std::string &fileName);
 
 static float    s_currentSupportedVersion;
 float           _version;
@@ -248,13 +248,13 @@ FileNamePositionMap _indexMap;
 
 
 template<typename T>
-static inline void _write(char *ptr, const T&value)
+static inline void _write(char *ptr, const T &value)
 {
     std::copy(reinterpret_cast<const char*>(&value), reinterpret_cast<const char*>(&value) + sizeof(value), ptr);
 }
 
 template<typename T>
-static inline void _read(char *ptr, T&value)
+static inline void _read(char *ptr, T &value)
 {
     std::copy(ptr, ptr + sizeof(value), reinterpret_cast<char*>(&value));
 }

@@ -39,7 +39,7 @@ using namespace ColladaDOM141;
 using namespace osgDAE;
 
 
-void daeWriter::processMaterial(osg::StateSet *ss, domBind_material *pDomBindMaterial, const std::string&geoName)
+void daeWriter::processMaterial(osg::StateSet *ss, domBind_material *pDomBindMaterial, const std::string &geoName)
 {
     osg::ref_ptr<osg::StateSet>           ssClean               = CleanStateSet(ss); // Need to hold a ref to this or the materialMap.find() will delete it
     domBind_material::domTechnique_common *tc                   = daeSafeCast<domBind_material::domTechnique_common>(pDomBindMaterial->add(COLLADA_ELEMENT_TECHNIQUE_COMMON));
@@ -300,11 +300,11 @@ void daeWriter::processMaterial(osg::StateSet *ss, domBind_material *pDomBindMat
     osg::Material *osgmat = static_cast<osg::Material*>(ssClean->getAttribute(osg::StateAttribute::MATERIAL));
     if (osgmat != NULL)
     {
-        const osg::Vec4&eCol     = osgmat->getEmissionFrontAndBack() ? osgmat->getEmission(osg::Material::FRONT_AND_BACK) : osgmat->getEmission(osg::Material::FRONT);
-        const osg::Vec4&aCol     = osgmat->getAmbientFrontAndBack() ? osgmat->getAmbient(osg::Material::FRONT_AND_BACK) : osgmat->getAmbient(osg::Material::FRONT);
-        const osg::Vec4&dCol     = osgmat->getDiffuseFrontAndBack() ? osgmat->getDiffuse(osg::Material::FRONT_AND_BACK) : osgmat->getDiffuse(osg::Material::FRONT);
-        const osg::Vec4&sCol     = osgmat->getSpecularFrontAndBack() ? osgmat->getSpecular(osg::Material::FRONT_AND_BACK) : osgmat->getSpecular(osg::Material::FRONT);
-        float          shininess = osgmat->getShininessFrontAndBack() ? osgmat->getShininess(osg::Material::FRONT_AND_BACK) : osgmat->getShininess(osg::Material::FRONT);
+        const osg::Vec4 &eCol     = osgmat->getEmissionFrontAndBack() ? osgmat->getEmission(osg::Material::FRONT_AND_BACK) : osgmat->getEmission(osg::Material::FRONT);
+        const osg::Vec4 &aCol     = osgmat->getAmbientFrontAndBack() ? osgmat->getAmbient(osg::Material::FRONT_AND_BACK) : osgmat->getAmbient(osg::Material::FRONT);
+        const osg::Vec4 &dCol     = osgmat->getDiffuseFrontAndBack() ? osgmat->getDiffuse(osg::Material::FRONT_AND_BACK) : osgmat->getDiffuse(osg::Material::FRONT);
+        const osg::Vec4 &sCol     = osgmat->getSpecularFrontAndBack() ? osgmat->getSpecular(osg::Material::FRONT_AND_BACK) : osgmat->getSpecular(osg::Material::FRONT);
+        float           shininess = osgmat->getShininessFrontAndBack() ? osgmat->getShininess(osg::Material::FRONT_AND_BACK) : osgmat->getShininess(osg::Material::FRONT);
 
         domCommon_color_or_texture_type                       *cot = daeSafeCast<domCommon_color_or_texture_type>(phong->add(COLLADA_ELEMENT_EMISSION));
         domCommon_color_or_texture_type_complexType::domColor *col = daeSafeCast<domCommon_color_or_texture_type_complexType::domColor>(cot->add(COLLADA_ELEMENT_COLOR));

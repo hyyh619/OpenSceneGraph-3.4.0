@@ -121,7 +121,7 @@ void Document::setSubSurfacePolygonOffset(int level, osg::PolygonOffset *po)
 osg::PolygonOffset* Document::getSubSurfacePolygonOffset(int level)
 {
     OSG_DEBUG << "Document::getSubSurfacePolygonOffset(" << level << ")" << std::endl;
-    osg::ref_ptr<osg::PolygonOffset>&po = _subsurfacePolygonOffsets[level];
+    osg::ref_ptr<osg::PolygonOffset> &po = _subsurfacePolygonOffsets[level];
     if (!po)
     {
         po = new osg::PolygonOffset(-1.0f * float(level), -1.0f);

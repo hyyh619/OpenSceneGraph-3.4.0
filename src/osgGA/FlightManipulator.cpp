@@ -26,14 +26,14 @@ FlightManipulator::FlightManipulator(int flags)
 
 
 /// Constructor.
-FlightManipulator::FlightManipulator(const FlightManipulator&fm, const CopyOp&copyOp)
+FlightManipulator::FlightManipulator(const FlightManipulator &fm, const CopyOp &copyOp)
     : osg::Callback(fm, copyOp),
     inherited(fm, copyOp),
     _yawMode(fm._yawMode)
 {}
 
 
-void FlightManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void FlightManipulator::init(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     inherited::init(ea, us);
 
@@ -42,7 +42,7 @@ void FlightManipulator::init(const GUIEventAdapter&ea, GUIActionAdapter&us)
 }
 
 
-void FlightManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
+void FlightManipulator::home(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     inherited::home(ea, us);
 
@@ -52,7 +52,7 @@ void FlightManipulator::home(const GUIEventAdapter&ea, GUIActionAdapter&us)
 
 
 // doc in parent
-bool FlightManipulator::handleFrame(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool FlightManipulator::handleFrame(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     addMouseEvent(ea);
     if (performMovement())
@@ -63,34 +63,34 @@ bool FlightManipulator::handleFrame(const GUIEventAdapter&ea, GUIActionAdapter&u
 
 
 // doc in parent
-bool FlightManipulator::handleMouseMove(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool FlightManipulator::handleMouseMove(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     return flightHandleEvent(ea, us);
 }
 
 
 // doc in parent
-bool FlightManipulator::handleMouseDrag(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool FlightManipulator::handleMouseDrag(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     return flightHandleEvent(ea, us);
 }
 
 
 // doc in parent
-bool FlightManipulator::handleMousePush(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool FlightManipulator::handleMousePush(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     return flightHandleEvent(ea, us);
 }
 
 
 // doc in parent
-bool FlightManipulator::handleMouseRelease(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool FlightManipulator::handleMouseRelease(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     return flightHandleEvent(ea, us);
 }
 
 
-bool FlightManipulator::handleKeyDown(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool FlightManipulator::handleKeyDown(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     if (inherited::handleKeyDown(ea, us))
         return true;
@@ -111,7 +111,7 @@ bool FlightManipulator::handleKeyDown(const GUIEventAdapter&ea, GUIActionAdapter
 
 
 /// General flight-style event handler
-bool FlightManipulator::flightHandleEvent(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool FlightManipulator::flightHandleEvent(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     addMouseEvent(ea);
     us.requestContinuousUpdate(true);
@@ -122,7 +122,7 @@ bool FlightManipulator::flightHandleEvent(const GUIEventAdapter&ea, GUIActionAda
 }
 
 
-void FlightManipulator::getUsage(ApplicationUsage&usage) const
+void FlightManipulator::getUsage(ApplicationUsage &usage) const
 {
     inherited::getUsage(usage);
 

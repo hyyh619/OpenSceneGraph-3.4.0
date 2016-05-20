@@ -16,7 +16,7 @@ TangentSpaceGenerator::TangentSpaceGenerator()
     N_->setBinding(osg::Array::BIND_PER_VERTEX); T_->setNormalize(false);
 }
 
-TangentSpaceGenerator::TangentSpaceGenerator(const TangentSpaceGenerator&copy, const osg::CopyOp&copyop)
+TangentSpaceGenerator::TangentSpaceGenerator(const TangentSpaceGenerator &copy, const osg::CopyOp &copyop)
     :    osg::Referenced(copy),
     T_(static_cast<osg::Vec4Array*>(copyop(copy.T_.get()))),
     B_(static_cast<osg::Vec4Array*>(copyop(copy.B_.get()))),
@@ -198,9 +198,9 @@ void TangentSpaceGenerator::generate(osg::Geometry *geo, int normal_map_tex_unit
 
     for (i = 0; i < attrib_count; ++i)
     {
-        osg::Vec4&vT = (*T_)[i];
-        osg::Vec4&vB = (*B_)[i];
-        osg::Vec4&vN = (*N_)[i];
+        osg::Vec4 &vT = (*T_)[i];
+        osg::Vec4 &vB = (*B_)[i];
+        osg::Vec4 &vN = (*N_)[i];
 
         osg::Vec3 txN     = osg::Vec3(vT.x(), vT.y(), vT.z()) ^ osg::Vec3(vB.x(), vB.y(), vB.z());
         bool      flipped = txN * osg::Vec3(vN.x(), vN.y(), vN.z()) < 0;

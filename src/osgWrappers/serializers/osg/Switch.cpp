@@ -6,7 +6,7 @@
 
 struct SwitchGetValue : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.empty())
             return false;
@@ -34,7 +34,7 @@ struct SwitchGetValue : public osgDB::MethodObject
 
 struct SwitchSetValue : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.size() < 2)
             return false;

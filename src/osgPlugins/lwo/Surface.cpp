@@ -55,7 +55,7 @@ Surface::Surface()
     max_smoothing_angle_(0)
 {}
 
-Surface::Surface(const lwo2::FORM::SURF *surf, const Clip_map&clips)
+Surface::Surface(const lwo2::FORM::SURF *surf, const Clip_map &clips)
     :    base_color_(0.784f, 0.784f, 0.784f),
     diffuse_(1.0f),
     luminosity_(0),
@@ -70,7 +70,7 @@ Surface::Surface(const lwo2::FORM::SURF *surf, const Clip_map&clips)
     compile(surf, clips);
 }
 
-void Surface::compile(const lwo2::FORM::SURF *surf, const Clip_map&clips)
+void Surface::compile(const lwo2::FORM::SURF *surf, const Clip_map &clips)
 {
     // invalidate the stateset so it will be rebuilt
     stateset_ = 0;
@@ -205,7 +205,7 @@ void Surface::generate_stateset(unsigned int max_tex_units, bool force_arb_compr
 
         for (Block_map::const_iterator i = blocks_.begin(); i != blocks_.end(); ++i)
         {
-            const Block&block = i->second;
+            const Block &block = i->second;
             if (!block.enabled())
             {
                 continue;
@@ -315,7 +315,7 @@ void Surface::generate_stateset(unsigned int max_tex_units, bool force_arb_compr
     }
 }
 
-osg::Group* Surface::apply(osg::Geometry *geo, const VertexMap_map *texture_maps, const VertexMap_map *rgb_maps, const VertexMap_map *rgba_maps, int max_tex_units, bool use_osgfx, bool force_arb_compression, const VertexMap_binding_map&texmap_bindings, const osgDB::ReaderWriter::Options *db_options) const
+osg::Group* Surface::apply(osg::Geometry *geo, const VertexMap_map *texture_maps, const VertexMap_map *rgb_maps, const VertexMap_map *rgba_maps, int max_tex_units, bool use_osgfx, bool force_arb_compression, const VertexMap_binding_map &texmap_bindings, const osgDB::ReaderWriter::Options *db_options) const
 {
     int num_points = 0;
 
@@ -331,7 +331,7 @@ osg::Group* Surface::apply(osg::Geometry *geo, const VertexMap_map *texture_maps
 
     for (Block_map::const_iterator i = blocks_.begin(); i != blocks_.end(); ++i)
     {
-        const Block&block = i->second;
+        const Block &block = i->second;
         if (block.get_type() == "IMAP" && block.get_channel() == "COLR" && block.get_image_map().clip)
         {
             std::string image_file = block.get_image_map().clip->get_still_filename();

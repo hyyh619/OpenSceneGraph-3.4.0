@@ -42,7 +42,7 @@ ExplosionEffect::ExplosionEffect(bool automaticSetup) :
         buildEffect();
 }
 
-ExplosionEffect::ExplosionEffect(const osg::Vec3&position, float scale, float intensity)
+ExplosionEffect::ExplosionEffect(const osg::Vec3 &position, float scale, float intensity)
 {
     setDefaults();
 
@@ -56,7 +56,7 @@ ExplosionEffect::ExplosionEffect(const osg::Vec3&position, float scale, float in
         buildEffect();
 }
 
-ExplosionEffect::ExplosionEffect(const ExplosionEffect&copy, const osg::CopyOp&copyop) :
+ExplosionEffect::ExplosionEffect(const ExplosionEffect &copy, const osg::CopyOp &copyop) :
     ParticleEffect(copy, copyop)
 {
     if (_automaticSetup)
@@ -92,7 +92,7 @@ void ExplosionEffect::setUpEmitterAndProgram()
     {
         _particleSystem->setDefaultAttributes(_textureFileName, false, false);
 
-        osgParticle::Particle&ptemplate = _particleSystem->getDefaultParticleTemplate();
+        osgParticle::Particle &ptemplate = _particleSystem->getDefaultParticleTemplate();
 
         float radius  = 0.4f * _scale;
         float density = 1.2f; // 1.0kg/m^3

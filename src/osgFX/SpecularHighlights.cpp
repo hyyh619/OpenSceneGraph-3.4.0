@@ -21,7 +21,7 @@ AutoTextureMatrix()
     _active(false)
 {}
 
-AutoTextureMatrix(const AutoTextureMatrix&copy, const osg::CopyOp&copyop)
+AutoTextureMatrix(const AutoTextureMatrix &copy, const osg::CopyOp &copyop)
     : osg::StateAttribute(copy, copyop),
     _lightnum(copy._lightnum),
     _active(copy._active)
@@ -40,7 +40,7 @@ virtual bool isTextureAttribute() const
     return true;
 }
 
-int compare(const osg::StateAttribute&sa) const
+int compare(const osg::StateAttribute &sa) const
 {
     COMPARE_StateAttribute_Types(AutoTextureMatrix, sa);
     if (_lightnum < rhs._lightnum)
@@ -52,7 +52,7 @@ int compare(const osg::StateAttribute&sa) const
     return 0;
 }
 
-void apply(osg::State&state) const
+void apply(osg::State &state) const
 {
         #ifdef OSG_GL_MATRICES_AVAILABLE
     glMatrixMode(GL_TEXTURE);
@@ -100,7 +100,7 @@ class DefaultTechnique : public Technique
 {
 public:
 
-DefaultTechnique(int lightnum, int unit, const osg::Vec4&color, float sexp)
+DefaultTechnique(int lightnum, int unit, const osg::Vec4 &color, float sexp)
     :    Technique(),
     _lightnum(lightnum),
     _unit(unit),
@@ -108,12 +108,12 @@ DefaultTechnique(int lightnum, int unit, const osg::Vec4&color, float sexp)
     _sexp(sexp)
 {}
 
-virtual void getRequiredExtensions(std::vector<std::string>&extensions)
+virtual void getRequiredExtensions(std::vector<std::string> &extensions)
 {
     extensions.push_back("GL_ARB_texture_env_add");
 }
 
-bool validate(osg::State&state) const
+bool validate(osg::State &state) const
 {
     if (!Technique::validate(state))
         return false;
@@ -173,7 +173,7 @@ SpecularHighlights::SpecularHighlights()
     _sexp(16)
 {}
 
-SpecularHighlights::SpecularHighlights(const SpecularHighlights&copy, const osg::CopyOp&copyop)
+SpecularHighlights::SpecularHighlights(const SpecularHighlights &copy, const osg::CopyOp &copyop)
     :    Effect(copy, copyop),
     _lightnum(copy._lightnum),
     _unit(copy._unit),

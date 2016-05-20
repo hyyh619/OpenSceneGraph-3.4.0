@@ -55,7 +55,7 @@ PickHandler() :
 
 ~PickHandler() {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     osgViewer::View *view = dynamic_cast<osgViewer::View*>(&aa);
 
@@ -88,7 +88,7 @@ bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
     return false;
 }
 
-void pick(osgViewer::View *view, const osgGA::GUIEventAdapter&event)
+void pick(osgViewer::View *view, const osgGA::GUIEventAdapter &event)
 {
     osg::Node  *node   = 0;
     osg::Group *parent = 0;

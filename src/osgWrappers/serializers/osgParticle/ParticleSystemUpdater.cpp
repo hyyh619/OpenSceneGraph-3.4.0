@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkParticleSystems(const osgParticle::ParticleSystemUpdater&updater)
+static bool checkParticleSystems(const osgParticle::ParticleSystemUpdater &updater)
 {
     return updater.getNumParticleSystems() > 0;
 }
 
-static bool readParticleSystems(osgDB::InputStream&is, osgParticle::ParticleSystemUpdater&updater)
+static bool readParticleSystems(osgDB::InputStream &is, osgParticle::ParticleSystemUpdater &updater)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -23,7 +23,7 @@ static bool readParticleSystems(osgDB::InputStream&is, osgParticle::ParticleSyst
     return true;
 }
 
-static bool writeParticleSystems(osgDB::OutputStream&os, const osgParticle::ParticleSystemUpdater&updater)
+static bool writeParticleSystems(osgDB::OutputStream &os, const osgParticle::ParticleSystemUpdater &updater)
 {
     unsigned int size = updater.getNumParticleSystems();
 

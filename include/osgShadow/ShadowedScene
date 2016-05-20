@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGSHADOW_SHADOWEDSCENE
 #define OSGSHADOW_SHADOWEDSCENE 1
@@ -23,27 +23,38 @@
 #include <osgShadow/ShadowSettings>
 
 namespace osgShadow {
-
 /** ShadowedScene provides a mechansim for decorating a scene that the needs to have shadows cast upon it.*/
-class OSGSHADOW_EXPORT ShadowedScene : public osg::Group
-{
-    public:
+    class OSGSHADOW_EXPORT ShadowedScene: public osg::Group
+    {
+public:
 
-        ShadowedScene(ShadowTechnique* st=0);
+        ShadowedScene(ShadowTechnique * st = 0);
 
-        ShadowedScene(const ShadowedScene& es, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+        ShadowedScene(const ShadowedScene &es, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Node(osgShadow, ShadowedScene);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        virtual void traverse(osg::NodeVisitor &nv);
 
-        void setShadowSettings(ShadowSettings* ss);
-        ShadowSettings* getShadowSettings() { return _shadowSettings.get(); }
-        const ShadowSettings* getShadowSettings() const { return _shadowSettings.get(); }
+        void setShadowSettings(ShadowSettings *ss);
+        ShadowSettings* getShadowSettings()
+        {
+            return _shadowSettings.get();
+        }
+        const ShadowSettings* getShadowSettings() const
+        {
+            return _shadowSettings.get();
+        }
 
-        void setShadowTechnique(ShadowTechnique* technique);
-        ShadowTechnique* getShadowTechnique() { return _shadowTechnique.get(); }
-        const ShadowTechnique* getShadowTechnique() const { return _shadowTechnique.get(); }
+        void setShadowTechnique(ShadowTechnique *technique);
+        ShadowTechnique* getShadowTechnique()
+        {
+            return _shadowTechnique.get();
+        }
+        const ShadowTechnique* getShadowTechnique() const
+        {
+            return _shadowTechnique.get();
+        }
 
         /** Clean scene graph from any shadow technique specific nodes, state and drawables.*/
         void cleanSceneGraph();
@@ -55,31 +66,43 @@ class OSGSHADOW_EXPORT ShadowedScene : public osg::Group
         virtual void resizeGLObjectBuffers(unsigned int maxSize);
 
         /** If State is non-zero, this function releases any associated OpenGL objects for
-           * the specified graphics context. Otherwise, releases OpenGL objects
-           * for all graphics contexts. */
+         * the specified graphics context. Otherwise, releases OpenGL objects
+         * for all graphics contexts. */
         virtual void releaseGLObjects(osg::State* = 0) const;
 
-    public:
+public:
 
         /** deprecated, moved to ShadowSettings.*/
-        void setReceivesShadowTraversalMask(unsigned int mask) { if (_shadowSettings.valid()) _shadowSettings->setReceivesShadowTraversalMask(mask); }
+        void setReceivesShadowTraversalMask(unsigned int mask)
+        {
+            if (_shadowSettings.valid())
+                _shadowSettings->setReceivesShadowTraversalMask(mask);
+        }
         /** deprecated, moved to ShadowSettings.*/
-        unsigned int getReceivesShadowTraversalMask() const { return _shadowSettings.valid() ? _shadowSettings->getReceivesShadowTraversalMask() : 0xffffffff; }
+        unsigned int getReceivesShadowTraversalMask() const
+        {
+            return _shadowSettings.valid() ? _shadowSettings->getReceivesShadowTraversalMask() : 0xffffffff;
+        }
 
         /** deprecated, moved to ShadowSettings.*/
-        void setCastsShadowTraversalMask(unsigned int mask) { if (_shadowSettings.valid()) _shadowSettings->setCastsShadowTraversalMask(mask);  }
+        void setCastsShadowTraversalMask(unsigned int mask)
+        {
+            if (_shadowSettings.valid())
+                _shadowSettings->setCastsShadowTraversalMask(mask);
+        }
         /** deprecated, moved to ShadowSettings.*/
-        unsigned int getCastsShadowTraversalMask() const { return _shadowSettings.valid() ? _shadowSettings->getCastsShadowTraversalMask() : 0xffffffff; }
+        unsigned int getCastsShadowTraversalMask() const
+        {
+            return _shadowSettings.valid() ? _shadowSettings->getCastsShadowTraversalMask() : 0xffffffff;
+        }
 
 protected:
 
         virtual ~ShadowedScene();
 
-        osg::ref_ptr<ShadowSettings>    _shadowSettings;
-        osg::ref_ptr<ShadowTechnique>   _shadowTechnique;
-
-};
-
+        osg::ref_ptr < ShadowSettings > _shadowSettings;
+        osg::ref_ptr < ShadowTechnique > _shadowTechnique;
+    };
 }
 
 #endif

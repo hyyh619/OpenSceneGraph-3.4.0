@@ -9,7 +9,7 @@ class ShuttleCallback : public osg::NodeCallback
 {
 public:
 
-ShuttleCallback(const osg::Vec3&startPos, const osg::Vec3&endPos,
+ShuttleCallback(const osg::Vec3 &startPos, const osg::Vec3 &endPos,
                 float frequency);
 
 virtual void operator()(osg::Node *node, osg::NodeVisitor *nv);

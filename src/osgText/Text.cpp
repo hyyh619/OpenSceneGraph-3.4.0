@@ -45,7 +45,7 @@ Text::Text() :
     _supportsVertexBufferObjects = true;
 }
 
-Text::Text(const Text&text, const osg::CopyOp&copyop) :
+Text::Text(const Text &text, const osg::CopyOp &copyop) :
     osgText::TextBase(text, copyop),
     _enableDepthWrites(text._enableDepthWrites),
     _backdropType(text._backdropType),
@@ -92,7 +92,7 @@ const Font* Text::getActiveFont() const
     return _font.valid() ? _font.get() : Font::getDefaultFont().get();
 }
 
-String::iterator Text::computeLastCharacterOnLine(osg::Vec2&cursor, String::iterator first, String::iterator last)
+String::iterator Text::computeLastCharacterOnLine(osg::Vec2 &cursor, String::iterator first, String::iterator last)
 {
     Font *activefont = getActiveFont();
 
@@ -453,7 +453,7 @@ void Text::computeGlyphRepresentation()
                     local.x() += bearing.x() * wr;
                     local.y() += bearing.y() * hr;
 
-                    GlyphQuads&glyphquad = _textureGlyphQuadMap[glyph->getTexture()];
+                    GlyphQuads &glyphquad = _textureGlyphQuadMap[glyph->getTexture()];
 
                     glyphquad._glyphs.push_back(glyph);
                     glyphquad._lineNumbers.push_back(lineNumber);
@@ -585,7 +585,7 @@ void Text::computeGlyphRepresentation()
 // Also sets avg_width and avg_height to 0.0f if the value is invalid.
 // This method is used several times in a loop for the same object which will produce the same values.
 // Further optimization may try saving these values instead of recomputing them.
-bool Text::computeAverageGlyphWidthAndHeight(float&avg_width, float&avg_height) const
+bool Text::computeAverageGlyphWidthAndHeight(float &avg_width, float &avg_height) const
 {
     float width          = 0.0f;
     float height         = 0.0f;
@@ -611,8 +611,8 @@ bool Text::computeAverageGlyphWidthAndHeight(float&avg_width, float&avg_height) 
          const_titr != _textureGlyphQuadMap.end();
          ++const_titr)
     {
-        const GlyphQuads         &glyphquad = const_titr->second;
-        const GlyphQuads::Coords2&coords2   = glyphquad._coords;
+        const GlyphQuads          &glyphquad = const_titr->second;
+        const GlyphQuads::Coords2 &coords2   = glyphquad._coords;
 
         for (i = 0; i < coords2->size(); i += 4)
         {
@@ -674,8 +674,8 @@ void Text::computePositions(unsigned int contextID) const
     case RIGHT_BOTTOM_BASE_LINE:  _offset.set(_textBB.xMax(), -_characterHeight * (1.0 + _lineSpacing) * (_lineCount - 1), 0.0f); break;
     }
 
-    AutoTransformCache&atc    = _autoTransformCache[contextID];
-    osg::Matrix       &matrix = atc._matrix;
+    AutoTransformCache &atc    = _autoTransformCache[contextID];
+    osg::Matrix        &matrix = atc._matrix;
 
     if (_characterSizeMode != OBJECT_COORDS || _autoRotateToScreen)
     {
@@ -699,7 +699,7 @@ void Text::computePositions(unsigned int contextID) const
             osg::Matrix M(rotate_matrix);
             M.postMultTranslate(_position);
             M.postMult(atc._modelview);
-            osg::Matrix&P = atc._projection;
+            osg::Matrix &P = atc._projection;
 
             // compute the pixel size vector.
 
@@ -777,9 +777,9 @@ void Text::computePositions(unsigned int contextID) const
          titr != _textureGlyphQuadMap.end();
          ++titr)
     {
-        GlyphQuads&glyphquad = titr->second;
+        GlyphQuads &glyphquad = titr->second;
         // OSG_NOTICE<<"Text::computePositions("<<contextID<<") glyphquad= "<<&glyphquad<<std::endl;
-        GlyphQuads::Coords2&coords2 = glyphquad._coords;
+        GlyphQuads::Coords2 &coords2 = glyphquad._coords;
 
         if (contextID >= glyphquad._transformedCoords.size())
         {
@@ -787,7 +787,7 @@ void Text::computePositions(unsigned int contextID) const
             continue;
         }
 
-        GlyphQuads::Coords3&transformedCoords = glyphquad._transformedCoords[contextID];
+        GlyphQuads::Coords3 &transformedCoords = glyphquad._transformedCoords[contextID];
         if (!transformedCoords)
             transformedCoords = new osg::Vec3Array;
 
@@ -826,8 +826,8 @@ void Text::computeBackdropPositions(unsigned int contextID) const
     unsigned int i;
     bool         is_valid_size;
 
-    AutoTransformCache&atc    = _autoTransformCache[contextID];
-    osg::Matrix       &matrix = atc._matrix;
+    AutoTransformCache &atc    = _autoTransformCache[contextID];
+    osg::Matrix        &matrix = atc._matrix;
 
     // FIXME: OPTIMIZE: This function produces the same value regardless of contextID.
     // Since we tend to loop over contextID, we should cache this value some how
@@ -842,8 +842,8 @@ void Text::computeBackdropPositions(unsigned int contextID) const
          titr != _textureGlyphQuadMap.end();
          ++titr)
     {
-        GlyphQuads         &glyphquad = titr->second;
-        GlyphQuads::Coords2&coords2   = glyphquad._coords;
+        GlyphQuads          &glyphquad = titr->second;
+        GlyphQuads::Coords2 &coords2   = glyphquad._coords;
 
         unsigned int backdrop_index;
         unsigned int max_backdrop_index;
@@ -877,7 +877,7 @@ void Text::computeBackdropPositions(unsigned int contextID) const
                 continue;
             }
 
-            GlyphQuads::Coords3&transformedCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
+            GlyphQuads::Coords3 &transformedCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
             if (!transformedCoords)
                 transformedCoords = new osg::Vec3Array();
 
@@ -1167,8 +1167,8 @@ void Text::computeColorGradientsOverall() const
          const_titr != _textureGlyphQuadMap.end();
          ++const_titr)
     {
-        const GlyphQuads         &glyphquad = const_titr->second;
-        const GlyphQuads::Coords2&coords2   = glyphquad._coords;
+        const GlyphQuads          &glyphquad = const_titr->second;
+        const GlyphQuads::Coords2 &coords2   = glyphquad._coords;
 
         for (i = 0; i < coords2->size(); ++i)
         {
@@ -1199,9 +1199,9 @@ void Text::computeColorGradientsOverall() const
          titr != _textureGlyphQuadMap.end();
          ++titr)
     {
-        GlyphQuads             &glyphquad   = titr->second;
-        GlyphQuads::Coords2    &coords2     = glyphquad._coords;
-        GlyphQuads::ColorCoords&colorCoords = glyphquad._colorCoords;
+        GlyphQuads              &glyphquad   = titr->second;
+        GlyphQuads::Coords2     &coords2     = glyphquad._coords;
+        GlyphQuads::ColorCoords &colorCoords = glyphquad._colorCoords;
 
         unsigned int numCoords = coords2->size();
         if (numCoords != colorCoords->size())
@@ -1274,9 +1274,9 @@ void Text::computeColorGradientsPerCharacter() const
          titr != _textureGlyphQuadMap.end();
          ++titr)
     {
-        GlyphQuads             &glyphquad   = titr->second;
-        GlyphQuads::Coords2    &coords2     = glyphquad._coords;
-        GlyphQuads::ColorCoords&colorCoords = glyphquad._colorCoords;
+        GlyphQuads              &glyphquad   = titr->second;
+        GlyphQuads::Coords2     &coords2     = glyphquad._coords;
+        GlyphQuads::ColorCoords &colorCoords = glyphquad._colorCoords;
 
         unsigned int numCoords = coords2->size();
         if (numCoords != colorCoords->size())
@@ -1321,12 +1321,12 @@ void Text::computeColorGradientsPerCharacter() const
     }
 }
 
-void Text::drawImplementation(osg::RenderInfo&renderInfo) const
+void Text::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     drawImplementation(*renderInfo.getState(), osg::Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
-void Text::drawImplementation(osg::State&state, const osg::Vec4&colorMultiplier) const
+void Text::drawImplementation(osg::State &state, const osg::Vec4 &colorMultiplier) const
 {
     unsigned int contextID = state.getContextID();
 
@@ -1337,10 +1337,10 @@ void Text::drawImplementation(osg::State&state, const osg::Vec4&colorMultiplier)
 #endif
     if (_characterSizeMode != OBJECT_COORDS || _autoRotateToScreen)
     {
-        unsigned int      frameNumber = state.getFrameStamp() ? state.getFrameStamp()->getFrameNumber() : 0;
-        AutoTransformCache&atc        = _autoTransformCache[contextID];
-        const osg::Matrix &modelview  = state.getModelViewMatrix();
-        const osg::Matrix &projection = state.getProjectionMatrix();
+        unsigned int       frameNumber = state.getFrameStamp() ? state.getFrameStamp()->getFrameNumber() : 0;
+        AutoTransformCache &atc        = _autoTransformCache[contextID];
+        const osg::Matrix  &modelview  = state.getModelViewMatrix();
+        const osg::Matrix  &projection = state.getProjectionMatrix();
 
         osg::Vec3 newTransformedPosition = _position * modelview;
 
@@ -1391,14 +1391,14 @@ void Text::drawImplementation(osg::State&state, const osg::Vec4&colorMultiplier)
 
     if (!_textureGlyphQuadMap.empty())
     {
-        const GlyphQuads&glyphquad = (_textureGlyphQuadMap.begin())->second;
+        const GlyphQuads &glyphquad = (_textureGlyphQuadMap.begin())->second;
         if (!glyphquad._transformedCoords[contextID].valid() || glyphquad._transformedCoords[contextID]->empty())
         {
             computePositions(contextID);
         }
     }
 
-    osg::GLBeginEndAdapter&gl = (state.getGLBeginEndAdapter());
+    osg::GLBeginEndAdapter &gl = (state.getGLBeginEndAdapter());
 
     state.Normal(_normal.x(), _normal.y(), _normal.z());
 
@@ -1409,7 +1409,7 @@ void Text::drawImplementation(osg::State&state, const osg::Vec4&colorMultiplier)
         #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
             state.applyTextureMode(0, GL_TEXTURE_2D, osg::StateAttribute::OFF);
 
-            const osg::Matrix&matrix = _autoTransformCache[contextID]._matrix;
+            const osg::Matrix &matrix = _autoTransformCache[contextID]._matrix;
 
             osg::Vec3 c00(osg::Vec3(_textBB.xMin(), _textBB.yMin(), _textBB.zMin()) * matrix);
             osg::Vec3 c10(osg::Vec3(_textBB.xMax(), _textBB.yMin(), _textBB.zMin()) * matrix);
@@ -1524,7 +1524,7 @@ void Text::drawImplementation(osg::State&state, const osg::Vec4&colorMultiplier)
         {
             state.applyTextureMode(0, GL_TEXTURE_2D, osg::StateAttribute::OFF);
 
-            const osg::Matrix&matrix = _autoTransformCache[contextID]._matrix;
+            const osg::Matrix &matrix = _autoTransformCache[contextID]._matrix;
 
             osg::Vec3 c00(osg::Vec3(_textBB.xMin(), _textBB.yMin(), _textBB.zMin()) * matrix);
             osg::Vec3 c10(osg::Vec3(_textBB.xMax(), _textBB.yMin(), _textBB.zMin()) * matrix);
@@ -1548,7 +1548,7 @@ void Text::drawImplementation(osg::State&state, const osg::Vec4&colorMultiplier)
 
         float cursorsize = _characterHeight * 0.5f;
 
-        const osg::Matrix&matrix = _autoTransformCache[contextID]._matrix;
+        const osg::Matrix &matrix = _autoTransformCache[contextID]._matrix;
 
         osg::Vec3 hl(osg::Vec3(_offset.x() - cursorsize, _offset.y(), _offset.z()) * matrix);
         osg::Vec3 hr(osg::Vec3(_offset.x() + cursorsize, _offset.y(), _offset.z()) * matrix);
@@ -1566,13 +1566,13 @@ void Text::drawImplementation(osg::State&state, const osg::Vec4&colorMultiplier)
     }
 }
 
-void Text::accept(osg::Drawable::ConstAttributeFunctor&af) const
+void Text::accept(osg::Drawable::ConstAttributeFunctor &af) const
 {
     for (TextureGlyphQuadMap::const_iterator titr = _textureGlyphQuadMap.begin();
          titr != _textureGlyphQuadMap.end();
          ++titr)
     {
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
         if (!glyphquad._transformedCoords.empty() && glyphquad._transformedCoords[0].valid())
         {
             af.apply(osg::Drawable::VERTICES, glyphquad._transformedCoords[0]->size(), &(glyphquad._transformedCoords[0]->front()));
@@ -1581,13 +1581,13 @@ void Text::accept(osg::Drawable::ConstAttributeFunctor&af) const
     }
 }
 
-void Text::accept(osg::PrimitiveFunctor&pf) const
+void Text::accept(osg::PrimitiveFunctor &pf) const
 {
     for (TextureGlyphQuadMap::const_iterator titr = _textureGlyphQuadMap.begin();
          titr != _textureGlyphQuadMap.end();
          ++titr)
     {
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
         if (!glyphquad._transformedCoords.empty() && glyphquad._transformedCoords[0].valid())
         {
             pf.setVertexArray(glyphquad._transformedCoords[0]->size(), &(glyphquad._transformedCoords[0]->front()));
@@ -1667,7 +1667,7 @@ void Text::setBackdropOffset(float horizontal, float vertical)
     computeGlyphRepresentation();
 }
 
-void Text::setBackdropColor(const osg::Vec4&color)
+void Text::setBackdropColor(const osg::Vec4 &color)
 {
     _backdropColor = color;
 }
@@ -1681,7 +1681,7 @@ void Text::setColorGradientMode(ColorGradientMode mode)
     computeGlyphRepresentation();
 }
 
-void Text::setColorGradientCorners(const osg::Vec4&topLeft, const osg::Vec4&bottomLeft, const osg::Vec4&bottomRight, const osg::Vec4&topRight)
+void Text::setColorGradientCorners(const osg::Vec4 &topLeft, const osg::Vec4 &bottomLeft, const osg::Vec4 &bottomRight, const osg::Vec4 &topRight)
 {
     _colorGradientTopLeft     = topLeft;
     _colorGradientBottomLeft  = bottomLeft;
@@ -1701,11 +1701,11 @@ float Text::bilinearInterpolate(float x1, float x2, float y1, float y2, float x,
         );
 }
 
-void Text::drawForegroundText(osg::State&state, const GlyphQuads&glyphquad, const osg::Vec4&colorMultiplier) const
+void Text::drawForegroundText(osg::State &state, const GlyphQuads &glyphquad, const osg::Vec4 &colorMultiplier) const
 {
     unsigned int contextID = state.getContextID();
 
-    const GlyphQuads::Coords3&transformedCoords = glyphquad._transformedCoords[contextID];
+    const GlyphQuads::Coords3 &transformedCoords = glyphquad._transformedCoords[contextID];
 
     if (transformedCoords.valid() && !transformedCoords->empty())
     {
@@ -1726,7 +1726,7 @@ void Text::drawForegroundText(osg::State&state, const GlyphQuads&glyphquad, cons
     }
 }
 
-void Text::renderOnlyForegroundText(osg::State&state, const osg::Vec4&colorMultiplier) const
+void Text::renderOnlyForegroundText(osg::State &state, const osg::Vec4 &colorMultiplier) const
 {
     for (TextureGlyphQuadMap::iterator titr = _textureGlyphQuadMap.begin();
          titr != _textureGlyphQuadMap.end();
@@ -1735,13 +1735,13 @@ void Text::renderOnlyForegroundText(osg::State&state, const osg::Vec4&colorMulti
         // need to set the texture here...
         state.applyTextureAttribute(0, titr->first.get());
 
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
 
         drawForegroundText(state, glyphquad, colorMultiplier);
     }
 }
 
-void Text::renderWithDelayedDepthWrites(osg::State&state, const osg::Vec4&colorMultiplier) const
+void Text::renderWithDelayedDepthWrites(osg::State &state, const osg::Vec4 &colorMultiplier) const
 {
     // If depth testing is disabled, then just render text as normal
     if (!state.getLastAppliedMode(GL_DEPTH_TEST))
@@ -1770,7 +1770,7 @@ void Text::renderWithDelayedDepthWrites(osg::State&state, const osg::Vec4&colorM
     // glPopAttrib();
 }
 
-void Text::drawTextWithBackdrop(osg::State&state, const osg::Vec4&colorMultiplier) const
+void Text::drawTextWithBackdrop(osg::State &state, const osg::Vec4 &colorMultiplier) const
 {
     unsigned int contextID = state.getContextID();
 
@@ -1781,7 +1781,7 @@ void Text::drawTextWithBackdrop(osg::State&state, const osg::Vec4&colorMultiplie
         // need to set the texture here...
         state.applyTextureAttribute(0, titr->first.get());
 
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
 
         if (_backdropType != NONE)
         {
@@ -1804,7 +1804,7 @@ void Text::drawTextWithBackdrop(osg::State&state, const osg::Vec4&colorMultiplie
 
             for (; backdrop_index < max_backdrop_index; backdrop_index++)
             {
-                const GlyphQuads::Coords3&transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
+                const GlyphQuads::Coords3 &transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
                 if (transformedBackdropCoords.valid() && !transformedBackdropCoords->empty())
                 {
                     state.setVertexPointer(transformedBackdropCoords.get());
@@ -1818,7 +1818,7 @@ void Text::drawTextWithBackdrop(osg::State&state, const osg::Vec4&colorMultiplie
 }
 
 
-void Text::renderWithPolygonOffset(osg::State&state, const osg::Vec4&colorMultiplier) const
+void Text::renderWithPolygonOffset(osg::State &state, const osg::Vec4 &colorMultiplier) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
     unsigned int contextID = state.getContextID();
@@ -1839,7 +1839,7 @@ void Text::renderWithPolygonOffset(osg::State&state, const osg::Vec4&colorMultip
         // need to set the texture here...
         state.applyTextureAttribute(0, titr->first.get());
 
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
 
         unsigned int backdrop_index;
         unsigned int max_backdrop_index;
@@ -1860,7 +1860,7 @@ void Text::renderWithPolygonOffset(osg::State&state, const osg::Vec4&colorMultip
 
         for (; backdrop_index < max_backdrop_index; backdrop_index++)
         {
-            const GlyphQuads::Coords3&transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
+            const GlyphQuads::Coords3 &transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
             if (transformedBackdropCoords.valid() && !transformedBackdropCoords->empty())
             {
                 state.setVertexPointer(3, GL_FLOAT, 0, &(transformedBackdropCoords->front()));
@@ -1883,7 +1883,7 @@ void Text::renderWithPolygonOffset(osg::State&state, const osg::Vec4&colorMultip
 }
 
 
-void Text::renderWithNoDepthBuffer(osg::State&state, const osg::Vec4&colorMultiplier) const
+void Text::renderWithNoDepthBuffer(osg::State &state, const osg::Vec4 &colorMultiplier) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
     unsigned int contextID = state.getContextID();
@@ -1898,7 +1898,7 @@ void Text::renderWithNoDepthBuffer(osg::State&state, const osg::Vec4&colorMultip
         // need to set the texture here...
         state.applyTextureAttribute(0, titr->first.get());
 
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
 
         unsigned int backdrop_index;
         unsigned int max_backdrop_index;
@@ -1919,7 +1919,7 @@ void Text::renderWithNoDepthBuffer(osg::State&state, const osg::Vec4&colorMultip
 
         for (; backdrop_index < max_backdrop_index; backdrop_index++)
         {
-            const GlyphQuads::Coords3&transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
+            const GlyphQuads::Coords3 &transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
             if (transformedBackdropCoords.valid() && !transformedBackdropCoords->empty())
             {
                 state.setVertexPointer(3, GL_FLOAT, 0, &(transformedBackdropCoords->front()));
@@ -1937,7 +1937,7 @@ void Text::renderWithNoDepthBuffer(osg::State&state, const osg::Vec4&colorMultip
 }
 
 // This idea comes from Paul Martz's OpenGL FAQ: 13.050
-void Text::renderWithDepthRange(osg::State&state, const osg::Vec4&colorMultiplier) const
+void Text::renderWithDepthRange(osg::State &state, const osg::Vec4 &colorMultiplier) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
     unsigned int contextID = state.getContextID();
@@ -1954,7 +1954,7 @@ void Text::renderWithDepthRange(osg::State&state, const osg::Vec4&colorMultiplie
         // need to set the texture here...
         state.applyTextureAttribute(0, titr->first.get());
 
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
 
         unsigned int backdrop_index;
         unsigned int max_backdrop_index;
@@ -1975,7 +1975,7 @@ void Text::renderWithDepthRange(osg::State&state, const osg::Vec4&colorMultiplie
 
         for (; backdrop_index < max_backdrop_index; backdrop_index++)
         {
-            const GlyphQuads::Coords3&transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
+            const GlyphQuads::Coords3 &transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
             if (transformedBackdropCoords.valid() && !transformedBackdropCoords->empty())
             {
                 state.setVertexPointer(3, GL_FLOAT, 0, &(transformedBackdropCoords->front()));
@@ -1997,7 +1997,7 @@ void Text::renderWithDepthRange(osg::State&state, const osg::Vec4&colorMultiplie
 #endif
 }
 
-void Text::renderWithStencilBuffer(osg::State&state, const osg::Vec4&colorMultiplier) const
+void Text::renderWithStencilBuffer(osg::State &state, const osg::Vec4 &colorMultiplier) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
     /* Here are the steps:
@@ -2053,7 +2053,7 @@ void Text::renderWithStencilBuffer(osg::State&state, const osg::Vec4&colorMultip
         // need to set the texture here...
         state.applyTextureAttribute(0, titr->first.get());
 
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
 
         unsigned int backdrop_index;
         unsigned int max_backdrop_index;
@@ -2073,7 +2073,7 @@ void Text::renderWithStencilBuffer(osg::State&state, const osg::Vec4&colorMultip
 
         for (; backdrop_index < max_backdrop_index; backdrop_index++)
         {
-            const GlyphQuads::Coords3&transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
+            const GlyphQuads::Coords3 &transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
             if (transformedBackdropCoords.valid() && !transformedBackdropCoords->empty())
             {
                 state.setVertexPointer(3, GL_FLOAT, 0, &(transformedBackdropCoords->front()));
@@ -2082,7 +2082,7 @@ void Text::renderWithStencilBuffer(osg::State&state, const osg::Vec4&colorMultip
         }
 
         // Draw the foreground text
-        const GlyphQuads::Coords3&transformedCoords = glyphquad._transformedCoords[contextID];
+        const GlyphQuads::Coords3 &transformedCoords = glyphquad._transformedCoords[contextID];
         if (transformedCoords.valid() && !transformedCoords->empty())
         {
             state.setVertexPointer(3, GL_FLOAT, 0, &(transformedCoords->front()));
@@ -2120,7 +2120,7 @@ void Text::renderWithStencilBuffer(osg::State&state, const osg::Vec4&colorMultip
         // need to set the texture here...
         state.applyTextureAttribute(0, titr->first.get());
 
-        const GlyphQuads&glyphquad = titr->second;
+        const GlyphQuads &glyphquad = titr->second;
 
         unsigned int backdrop_index;
         unsigned int max_backdrop_index;
@@ -2141,7 +2141,7 @@ void Text::renderWithStencilBuffer(osg::State&state, const osg::Vec4&colorMultip
 
         for (; backdrop_index < max_backdrop_index; backdrop_index++)
         {
-            const GlyphQuads::Coords3&transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
+            const GlyphQuads::Coords3 &transformedBackdropCoords = glyphquad._transformedBackdropCoords[backdrop_index][contextID];
             if (transformedBackdropCoords.valid() && !transformedBackdropCoords->empty())
             {
                 state.setVertexPointer(3, GL_FLOAT, 0, &(transformedBackdropCoords->front()));

@@ -66,9 +66,9 @@ class FFmpegDecoderVideo : public OpenThreads::Thread
 public:
 
 typedef BoundedMessageQueue<FFmpegPacket> PacketQueue;
-typedef void (*PublishFunc) (const FFmpegDecoderVideo&decoder, void *user_data);
+typedef void (*PublishFunc) (const FFmpegDecoderVideo &decoder, void *user_data);
 
-FFmpegDecoderVideo(PacketQueue&packets, FFmpegClocks&clocks);
+FFmpegDecoderVideo(PacketQueue &packets, FFmpegClocks &clocks);
 ~FFmpegDecoderVideo();
 
 void open(AVStream *stream);

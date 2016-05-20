@@ -3,7 +3,7 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static void readConvexPlanarPolygon(osgDB::InputStream&is, osg::ConvexPlanarPolygon&polygon)
+static void readConvexPlanarPolygon(osgDB::InputStream &is, osg::ConvexPlanarPolygon &polygon)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -16,9 +16,9 @@ static void readConvexPlanarPolygon(osgDB::InputStream&is, osg::ConvexPlanarPoly
     is >> is.END_BRACKET;
 }
 
-static void writeConvexPlanarPolygon(osgDB::OutputStream&os, const osg::ConvexPlanarPolygon&polygon)
+static void writeConvexPlanarPolygon(osgDB::OutputStream &os, const osg::ConvexPlanarPolygon &polygon)
 {
-    const osg::ConvexPlanarPolygon::VertexList&vertices = polygon.getVertexList();
+    const osg::ConvexPlanarPolygon::VertexList &vertices = polygon.getVertexList();
 
     os.writeSize(vertices.size()); os << os.BEGIN_BRACKET << std::endl;
 
@@ -32,12 +32,12 @@ static void writeConvexPlanarPolygon(osgDB::OutputStream&os, const osg::ConvexPl
 }
 
 // _occluder
-static bool checkOccluder(const osg::ConvexPlanarOccluder&obj)
+static bool checkOccluder(const osg::ConvexPlanarOccluder &obj)
 {
     return obj.getOccluder().getVertexList().size() > 0;
 }
 
-static bool readOccluder(osgDB::InputStream&is, osg::ConvexPlanarOccluder&obj)
+static bool readOccluder(osgDB::InputStream &is, osg::ConvexPlanarOccluder &obj)
 {
     osg::ConvexPlanarPolygon polygon;
 
@@ -46,19 +46,19 @@ static bool readOccluder(osgDB::InputStream&is, osg::ConvexPlanarOccluder&obj)
     return true;
 }
 
-static bool writeOccluder(osgDB::OutputStream&os, const osg::ConvexPlanarOccluder&obj)
+static bool writeOccluder(osgDB::OutputStream &os, const osg::ConvexPlanarOccluder &obj)
 {
     writeConvexPlanarPolygon(os, obj.getOccluder());
     return true;
 }
 
 // _holeList
-static bool checkHoles(const osg::ConvexPlanarOccluder&obj)
+static bool checkHoles(const osg::ConvexPlanarOccluder &obj)
 {
     return obj.getHoleList().size() > 0;
 }
 
-static bool readHoles(osgDB::InputStream&is, osg::ConvexPlanarOccluder&obj)
+static bool readHoles(osgDB::InputStream &is, osg::ConvexPlanarOccluder &obj)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -74,9 +74,9 @@ static bool readHoles(osgDB::InputStream&is, osg::ConvexPlanarOccluder&obj)
     return true;
 }
 
-static bool writeHoles(osgDB::OutputStream&os, const osg::ConvexPlanarOccluder&obj)
+static bool writeHoles(osgDB::OutputStream &os, const osg::ConvexPlanarOccluder &obj)
 {
-    const osg::ConvexPlanarOccluder::HoleList&holes = obj.getHoleList();
+    const osg::ConvexPlanarOccluder::HoleList &holes = obj.getHoleList();
 
     os.writeSize(holes.size()); os << os.BEGIN_BRACKET << std::endl;
 

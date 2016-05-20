@@ -74,7 +74,7 @@ void initUserStats(osgViewer::StatsHandler *statsHandler)
 }
 
 
-void updateUserStats(osgViewer::Viewer&viewer)
+void updateUserStats(osgViewer::Viewer &viewer)
 {
     // Test the custom stats line by just adding up the update and cull
     // times for the viewer main camera for the previous frame.
@@ -127,7 +127,7 @@ void updateUserStats(osgViewer::Viewer&viewer)
 
 /// Utility function you call before something you want to time, so that the
 /// recorded times will all be consistent using the viewer's time.
-void startTiming(osgViewer::Viewer&viewer, const std::string&name)
+void startTiming(osgViewer::Viewer &viewer, const std::string &name)
 {
     osg::Timer_t tick        = osg::Timer::instance()->tick();
     double       currentTime = osg::Timer::instance()->delta_s(viewer.getStartTick(), tick);
@@ -138,7 +138,7 @@ void startTiming(osgViewer::Viewer&viewer, const std::string&name)
 
 /// Utility function you call after something you want to time, so that the
 /// recorded times will all be consistent using the viewer's time.
-void endTiming(osgViewer::Viewer&viewer, const std::string&name)
+void endTiming(osgViewer::Viewer &viewer, const std::string &name)
 {
     osg::Timer_t tick        = osg::Timer::instance()->tick();
     double       currentTime = osg::Timer::instance()->delta_s(viewer.getStartTick(), tick);
@@ -159,7 +159,7 @@ void endTiming(osgViewer::Viewer&viewer, const std::string&name)
 
 /// Will just sleep for the given number of milliseconds in the same thread
 /// as the caller, recording the time taken in the viewer's stats.
-void doSomethingAndTimeIt(osgViewer::Viewer&viewer, const std::string&name, double milliseconds)
+void doSomethingAndTimeIt(osgViewer::Viewer &viewer, const std::string &name, double milliseconds)
 {
     startTiming(viewer, name);
 
@@ -187,7 +187,7 @@ void doSomethingAndTimeIt(osgViewer::Viewer&viewer, const std::string&name, doub
 class UselessThread : public OpenThreads::Thread
 {
 public:
-UselessThread(osgViewer::Viewer&viewer, double timeToRun)
+UselessThread(osgViewer::Viewer &viewer, double timeToRun)
     : _viewer(viewer)
     , _timeToRun(timeToRun)
     , _done(false)
@@ -239,10 +239,10 @@ void process()
 }
 
 protected:
-osgViewer::Viewer&_viewer;
-double           _timeToRun;
-bool             _done;
-bool             _process;
+osgViewer::Viewer &_viewer;
+double            _timeToRun;
+bool              _done;
+bool              _process;
 };
 
 

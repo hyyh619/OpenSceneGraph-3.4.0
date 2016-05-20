@@ -13,8 +13,8 @@ using namespace osgDB;
 //////////////////////////////////////////////////////////////////////////////
 
 // forward declare functions to use later.
-bool Sphere_readLocalData(Object&obj, Input&fr);
-bool Sphere_writeLocalData(const Object&obj, Output&fw);
+bool Sphere_readLocalData(Object &obj, Input &fr);
+bool Sphere_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Sphere)
@@ -27,11 +27,11 @@ REGISTER_DOTOSGWRAPPER(Sphere)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Sphere_readLocalData(Object&obj, Input&fr)
+bool Sphere_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Sphere&sphere = static_cast<Sphere&>(obj);
+    Sphere &sphere = static_cast<Sphere&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -57,9 +57,9 @@ bool Sphere_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Sphere_writeLocalData(const Object&obj, Output&fw)
+bool Sphere_writeLocalData(const Object &obj, Output &fw)
 {
-    const Sphere&sphere = static_cast<const Sphere&>(obj);
+    const Sphere &sphere = static_cast<const Sphere&>(obj);
 
     fw.indent() << "Center " << sphere.getCenter() << std::endl;
     fw.indent() << "Radius " << sphere.getRadius() << std::endl;

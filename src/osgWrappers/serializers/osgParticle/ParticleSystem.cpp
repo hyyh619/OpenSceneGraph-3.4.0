@@ -3,16 +3,16 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-extern bool readParticle(osgDB::InputStream&is, osgParticle::Particle&p);
-extern bool writeParticle(osgDB::OutputStream&os, const osgParticle::Particle&p);
+extern bool readParticle(osgDB::InputStream &is, osgParticle::Particle &p);
+extern bool writeParticle(osgDB::OutputStream &os, const osgParticle::Particle &p);
 
 // _def_bbox
-static bool checkDefaultBoundingBox(const osgParticle::ParticleSystem&ps)
+static bool checkDefaultBoundingBox(const osgParticle::ParticleSystem &ps)
 {
     return ps.getDefaultBoundingBox().valid();
 }
 
-static bool readDefaultBoundingBox(osgDB::InputStream&is, osgParticle::ParticleSystem&ps)
+static bool readDefaultBoundingBox(osgDB::InputStream &is, osgParticle::ParticleSystem &ps)
 {
     osg::Vec3d min, max;
 
@@ -24,9 +24,9 @@ static bool readDefaultBoundingBox(osgDB::InputStream&is, osgParticle::ParticleS
     return true;
 }
 
-static bool writeDefaultBoundingBox(osgDB::OutputStream&os, const osgParticle::ParticleSystem&ps)
+static bool writeDefaultBoundingBox(osgDB::OutputStream &os, const osgParticle::ParticleSystem &ps)
 {
-    const osg::BoundingBox&bb = ps.getDefaultBoundingBox();
+    const osg::BoundingBox &bb = ps.getDefaultBoundingBox();
 
     os << os.BEGIN_BRACKET << std::endl;
     os << os.PROPERTY("Minimum") << osg::Vec3d(bb._min) << std::endl;
@@ -37,12 +37,12 @@ static bool writeDefaultBoundingBox(osgDB::OutputStream&os, const osgParticle::P
 }
 
 // _defaultParticleTemplate
-static bool checkDefaultParticleTemplate(const osgParticle::ParticleSystem&ps)
+static bool checkDefaultParticleTemplate(const osgParticle::ParticleSystem &ps)
 {
     return true;
 }
 
-static bool readDefaultParticleTemplate(osgDB::InputStream&is, osgParticle::ParticleSystem&ps)
+static bool readDefaultParticleTemplate(osgDB::InputStream &is, osgParticle::ParticleSystem &ps)
 {
     osgParticle::Particle p;
 
@@ -51,9 +51,9 @@ static bool readDefaultParticleTemplate(osgDB::InputStream&is, osgParticle::Part
     return true;
 }
 
-static bool writeDefaultParticleTemplate(osgDB::OutputStream&os, const osgParticle::ParticleSystem&ps)
+static bool writeDefaultParticleTemplate(osgDB::OutputStream &os, const osgParticle::ParticleSystem &ps)
 {
-    const osgParticle::Particle&p = ps.getDefaultParticleTemplate();
+    const osgParticle::Particle &p = ps.getDefaultParticleTemplate();
 
     writeParticle(os, p);
     return true;

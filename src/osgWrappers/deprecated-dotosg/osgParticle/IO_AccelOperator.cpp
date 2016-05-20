@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  AccelOperator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  AccelOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  AccelOperator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  AccelOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(AccelOperator_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(AccelOperator_Proxy)
     AccelOperator_writeLocalData
 );
 
-bool AccelOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool AccelOperator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::AccelOperator&aop       = static_cast<osgParticle::AccelOperator&>(obj);
-    bool                      itAdvanced = false;
+    osgParticle::AccelOperator &aop       = static_cast<osgParticle::AccelOperator&>(obj);
+    bool                       itAdvanced = false;
 
     osg::Vec3 a;
 
@@ -41,10 +41,10 @@ bool AccelOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool AccelOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool AccelOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::AccelOperator&aop = static_cast<const osgParticle::AccelOperator&>(obj);
-    osg::Vec3                       a    = aop.getAcceleration();
+    const osgParticle::AccelOperator &aop = static_cast<const osgParticle::AccelOperator&>(obj);
+    osg::Vec3                        a    = aop.getAcceleration();
 
     fw.indent() << "acceleration " << a.x() << " " << a.y() << " " << a.z() << std::endl;
     return true;

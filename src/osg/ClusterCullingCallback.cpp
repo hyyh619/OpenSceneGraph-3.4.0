@@ -27,7 +27,7 @@ ClusterCullingCallback::ClusterCullingCallback() :
     _deviation(-1.0f)
 {}
 
-ClusterCullingCallback::ClusterCullingCallback(const ClusterCullingCallback&ccc, const CopyOp&copyop) :
+ClusterCullingCallback::ClusterCullingCallback(const ClusterCullingCallback &ccc, const CopyOp &copyop) :
     Drawable::CullCallback(ccc, copyop),
     _controlPoint(ccc._controlPoint),
     _normal(ccc._normal),
@@ -35,7 +35,7 @@ ClusterCullingCallback::ClusterCullingCallback(const ClusterCullingCallback&ccc,
     _deviation(ccc._deviation)
 {}
 
-ClusterCullingCallback::ClusterCullingCallback(const osg::Vec3&controlPoint, const osg::Vec3&normal, float deviation) :
+ClusterCullingCallback::ClusterCullingCallback(const osg::Vec3 &controlPoint, const osg::Vec3 &normal, float deviation) :
     _controlPoint(controlPoint),
     _normal(normal),
     _radius(-1.0f),
@@ -52,7 +52,7 @@ struct ComputeAveragesFunctor
     ComputeAveragesFunctor() :
         _num(0) {}
 
-    inline void operator()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, bool)
+    inline void operator()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, bool)
     {
         // calc orientation of triangle.
         osg::Vec3d normal = (v2 - v1) ^ (v3 - v1);
@@ -89,13 +89,13 @@ struct ComputeDeviationFunctor
         _deviation(1.0),
         _radius2(0.0) {}
 
-    void set(const osg::Vec3&center, const osg::Vec3&normal)
+    void set(const osg::Vec3 &center, const osg::Vec3 &normal)
     {
         _center = center;
         _normal = normal;
     }
 
-    inline void operator()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, bool)
+    inline void operator()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, bool)
     {
         // calc orientation of triangle.
         osg::Vec3 normal = (v2 - v1) ^ (v3 - v1);
@@ -147,7 +147,7 @@ void ClusterCullingCallback::computeFrom(const osg::Drawable *drawable)
     _radius = sqrtf(cdf._radius2);
 }
 
-void ClusterCullingCallback::set(const osg::Vec3&controlPoint, const osg::Vec3&normal, float deviation, float radius)
+void ClusterCullingCallback::set(const osg::Vec3 &controlPoint, const osg::Vec3 &normal, float deviation, float radius)
 {
     _controlPoint = controlPoint;
     _normal       = normal;
@@ -155,7 +155,7 @@ void ClusterCullingCallback::set(const osg::Vec3&controlPoint, const osg::Vec3&n
     _radius       = radius;
 }
 
-void ClusterCullingCallback::transform(const osg::Matrixd&matrix)
+void ClusterCullingCallback::transform(const osg::Matrixd &matrix)
 {
     _controlPoint = Vec3d(_controlPoint) * matrix;
     _normal       = Matrixd::transform3x3(Matrixd::inverse(matrix), Vec3d(_normal));

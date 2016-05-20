@@ -32,10 +32,10 @@ TestManipulator();
 virtual ~TestManipulator();
 
 /** set the position of the matrix manipulator using a 4x4 Matrix.*/
-virtual void setByMatrix(const osg::Matrixd&matrix);
+virtual void setByMatrix(const osg::Matrixd &matrix);
 
 /** set the position of the matrix manipulator using a 4x4 Matrix.*/
-virtual void setByInverseMatrix(const osg::Matrixd&matrix)
+virtual void setByInverseMatrix(const osg::Matrixd &matrix)
 {
     setByMatrix(osg::Matrixd::inverse(matrix));
 }
@@ -60,23 +60,23 @@ virtual osg::Node* getNode();
 
 /** Move the camera to the default position.
     May be ignored by manipulators if home functionality is not appropriate.*/
-virtual void home(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us);
+virtual void home(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us);
 
 /** Start/restart the manipulator.*/
-virtual void init(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us);
+virtual void init(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us);
 
 
 /** handle events, return true if handled, false otherwise.*/
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us);
 
 private:
 
 /** Reset the internal GUIEvent stack.*/
 void flushMouseEventStack();
 /** Add the current mouse GUIEvent to internal stack.*/
-void addMouseEvent(const osgGA::GUIEventAdapter&ea);
+void addMouseEvent(const osgGA::GUIEventAdapter &ea);
 
-void computePosition(const osg::Vec3&eye, const osg::Vec3&lv, const osg::Vec3&up);
+void computePosition(const osg::Vec3 &eye, const osg::Vec3 &lv, const osg::Vec3 &up);
 
 /** For the give mouse movement calculate the movement of the camera.
     Return true is camera has moved and a redraw is required.*/

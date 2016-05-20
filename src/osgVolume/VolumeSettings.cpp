@@ -25,7 +25,7 @@ VolumeSettings::VolumeSettings() :
     _isoSurfaceProperty(new IsoSurfaceProperty(0.0f))
 {}
 
-VolumeSettings::VolumeSettings(const VolumeSettings&vs, const osg::CopyOp&copyop) :
+VolumeSettings::VolumeSettings(const VolumeSettings &vs, const osg::CopyOp &copyop) :
     Property(vs, copyop),
     _filename(vs._filename),
     _technique(vs._technique),
@@ -37,12 +37,12 @@ VolumeSettings::VolumeSettings(const VolumeSettings&vs, const osg::CopyOp&copyop
     _isoSurfaceProperty(osg::clone(vs._isoSurfaceProperty.get(), copyop))
 {}
 
-void VolumeSettings::accept(PropertyVisitor&pv)
+void VolumeSettings::accept(PropertyVisitor &pv)
 {
     pv.apply(*this);
 }
 
-void VolumeSettings::traverse(PropertyVisitor&pv)
+void VolumeSettings::traverse(PropertyVisitor &pv)
 {
     if (_sampleRatioProperty.valid())
         _sampleRatioProperty->accept(pv);

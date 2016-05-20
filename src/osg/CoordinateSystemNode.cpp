@@ -20,26 +20,26 @@ using namespace osg;
 CoordinateSystemNode::CoordinateSystemNode()
 {}
 
-CoordinateSystemNode::CoordinateSystemNode(const std::string&format, const std::string&cs) :
+CoordinateSystemNode::CoordinateSystemNode(const std::string &format, const std::string &cs) :
     _format(format),
     _cs(cs)
 {}
 
-CoordinateSystemNode::CoordinateSystemNode(const CoordinateSystemNode&csn, const osg::CopyOp&copyop) :
+CoordinateSystemNode::CoordinateSystemNode(const CoordinateSystemNode &csn, const osg::CopyOp &copyop) :
     Group(csn, copyop),
     _format(csn._format),
     _cs(csn._cs),
     _ellipsoidModel(csn._ellipsoidModel)
 {}
 
-void CoordinateSystemNode::set(const CoordinateSystemNode&csn)
+void CoordinateSystemNode::set(const CoordinateSystemNode &csn)
 {
     _format         = csn._format;
     _cs             = csn._cs;
     _ellipsoidModel = csn._ellipsoidModel;
 }
 
-CoordinateFrame CoordinateSystemNode::computeLocalCoordinateFrame(const Vec3d&position) const
+CoordinateFrame CoordinateSystemNode::computeLocalCoordinateFrame(const Vec3d &position) const
 {
     if (_ellipsoidModel.valid())
     {
@@ -57,7 +57,7 @@ CoordinateFrame CoordinateSystemNode::computeLocalCoordinateFrame(const Vec3d&po
     }
 }
 
-osg::Vec3d CoordinateSystemNode::computeLocalUpVector(const Vec3d&position) const
+osg::Vec3d CoordinateSystemNode::computeLocalUpVector(const Vec3d &position) const
 {
     if (_ellipsoidModel.valid())
     {

@@ -37,7 +37,7 @@ Keystone::Keystone() :
     top_left(-1.0, 1.0),
     top_right(1.0, 1.0) {}
 
-Keystone::Keystone(const Keystone&rhs, const osg::CopyOp&copyop) :
+Keystone::Keystone(const Keystone &rhs, const osg::CopyOp &copyop) :
     osg::Object(rhs, copyop),
     keystoneEditingEnabled(rhs.keystoneEditingEnabled),
     gridColour(rhs.gridColour),
@@ -55,7 +55,7 @@ void Keystone::reset()
     top_right.set(1.0, 1.0);
 }
 
-Keystone&Keystone::operator =(const Keystone&rhs)
+Keystone&Keystone::operator =(const Keystone &rhs)
 {
     if (&rhs == this)
         return *this;
@@ -69,7 +69,7 @@ Keystone&Keystone::operator =(const Keystone&rhs)
     return *this;
 }
 
-void Keystone::compute3DPositions(osg::DisplaySettings *ds, osg::Vec3&tl, osg::Vec3&tr, osg::Vec3&br, osg::Vec3&bl) const
+void Keystone::compute3DPositions(osg::DisplaySettings *ds, osg::Vec3 &tl, osg::Vec3 &tr, osg::Vec3 &br, osg::Vec3 &bl) const
 {
     double tr_x    = ((top_right - bottom_right).length()) / ((top_left - bottom_left).length());
     double r_left  = sqrt(tr_x);
@@ -142,8 +142,8 @@ struct KeystoneUpdateCallback : public osg::Drawable::UpdateCallback
 
         for (unsigned int i = 0; i < vertices->size(); ++i)
         {
-            osg::Vec3&v = (*vertices)[i];
-            osg::Vec2&t = (*texcoords)[i];
+            osg::Vec3 &v = (*vertices)[i];
+            osg::Vec2 &t = (*texcoords)[i];
             v = bl * ((1.0f - t.x()) * (1.0f - t.y())) +
                 br * ((t.x()) * (1.0f - t.y())) +
                 tl * ((1.0f - t.x()) * (t.y())) +
@@ -191,7 +191,7 @@ osg::Geode* Keystone::createKeystoneDistortionMesh()
     {
         for (unsigned i = 0; i < numColumns; i++)
         {
-            osg::Vec2&t = (*texcoords)[j * numColumns + i];
+            osg::Vec2 &t = (*texcoords)[j * numColumns + i];
             t.set(static_cast<float>(i) / static_cast<float>(numColumns - 1), static_cast<float>(j) / static_cast<float>(numRows - 1));
         }
     }
@@ -355,7 +355,7 @@ KeystoneHandler::KeystoneHandler(Keystone *keystone) :
     _currentControlPoints = keystone; // new Keystone;
 }
 
-KeystoneHandler::Region KeystoneHandler::computeRegion(const osgGA::GUIEventAdapter&ea) const
+KeystoneHandler::Region KeystoneHandler::computeRegion(const osgGA::GUIEventAdapter &ea) const
 {
     float x = ea.getXnormalized();
     float y = ea.getYnormalized();
@@ -394,7 +394,7 @@ KeystoneHandler::Region KeystoneHandler::computeRegion(const osgGA::GUIEventAdap
     return NONE_SELECTED;
 }
 
-void KeystoneHandler::move(Region region, const osg::Vec2d&delta)
+void KeystoneHandler::move(Region region, const osg::Vec2d &delta)
 {
     switch (region)
     {
@@ -446,7 +446,7 @@ void KeystoneHandler::move(Region region, const osg::Vec2d&delta)
     }
 }
 
-osg::Vec2d KeystoneHandler::incrementScale(const osgGA::GUIEventAdapter&ea) const
+osg::Vec2d KeystoneHandler::incrementScale(const osgGA::GUIEventAdapter &ea) const
 {
     if (_ctrlIncrement != osg::Vec2d(0.0, 0.0) && (ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_LEFT_CTRL || ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_RIGHT_CTRL))
         return _ctrlIncrement;
@@ -457,7 +457,7 @@ osg::Vec2d KeystoneHandler::incrementScale(const osgGA::GUIEventAdapter&ea) cons
     return _defaultIncrement;
 }
 
-bool KeystoneHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object *obj, osg::NodeVisitor* /*nv*/)
+bool KeystoneHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object *obj, osg::NodeVisitor* /*nv*/)
 {
     osg::Camera   *camera   = dynamic_cast<osg::Camera*>(obj);
     osg::Viewport *viewport = camera ?  camera->getViewport() : 0;

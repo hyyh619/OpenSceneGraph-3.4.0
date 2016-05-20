@@ -83,7 +83,7 @@ std::ostream *_outStream;
 };
 
 
-unsigned char* exr_load(std::istream&fin,
+unsigned char* exr_load(std::istream &fin,
                         int *width_ret,
                         int *height_ret,
                         int *numComponents_ret,
@@ -180,7 +180,7 @@ public:
 ReaderWriterEXR()
 {}
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "exr");
 }
@@ -190,22 +190,22 @@ virtual const char* className() const
     return "EXR Image Reader";
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const Options* = NULL) const
+virtual ReadResult readImage(std::istream &fin, const Options* = NULL) const
 {
     return readEXRStream(fin);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -229,7 +229,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options*) const
+virtual WriteResult writeImage(const osg::Image &image, std::ostream &fout, const Options*) const
 {
     bool success = writeEXRStream(image, fout, "<output stream>");
 
@@ -239,7 +239,7 @@ virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const 
         return WriteResult::ERROR_IN_WRITING_FILE;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName, const osgDB::ReaderWriter::Options*) const
+virtual WriteResult writeImage(const osg::Image &img, const std::string &fileName, const osgDB::ReaderWriter::Options*) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 
@@ -260,7 +260,7 @@ virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName,
         return WriteResult::ERROR_IN_WRITING_FILE;
 }
 protected:
-bool writeEXRStream(const osg::Image&img, std::ostream&fout, const std::string&fileName) const
+bool writeEXRStream(const osg::Image &img, std::ostream &fout, const std::string &fileName) const
 {
     bool writeOK = true;
 
@@ -369,7 +369,7 @@ bool writeEXRStream(const osg::Image&img, std::ostream&fout, const std::string&f
     return writeOK;
 }
 
-ReadResult readEXRStream(std::istream&fin) const
+ReadResult readEXRStream(std::istream &fin) const
 {
     unsigned char *imageData            = NULL;
     int           width_ret             = 0;

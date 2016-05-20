@@ -56,7 +56,7 @@ public:
 EventHandler(DepthPeeling *depthPeeling);
 
 /** Handle events, return true if handled, false otherwise. */
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&, osg::Object*, osg::NodeVisitor*);
 
 protected:
 osg::ref_ptr<DepthPeeling> _depthPeeling;

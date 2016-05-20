@@ -22,7 +22,7 @@
 
 using namespace osgViewer;
 
-void SingleScreen::configure(osgViewer::View&view) const
+void SingleScreen::configure(osgViewer::View &view) const
 {
     osg::ref_ptr<osgViewer::SingleWindow> singleWindow = new SingleWindow(0, 0, -1, -1, _screenNum);
 

@@ -26,7 +26,7 @@ ViewDependentShadowTechnique::ViewDependentShadowTechnique()
 }
 
 ViewDependentShadowTechnique::ViewDependentShadowTechnique
-    (const ViewDependentShadowTechnique&copy, const osg::CopyOp&copyop) :
+    (const ViewDependentShadowTechnique &copy, const osg::CopyOp &copyop) :
     ShadowTechnique(copy, copyop)
 {
     dirty();
@@ -35,7 +35,7 @@ ViewDependentShadowTechnique::ViewDependentShadowTechnique
 ViewDependentShadowTechnique::~ViewDependentShadowTechnique(void)
 {}
 
-void ViewDependentShadowTechnique::traverse(osg::NodeVisitor&nv)
+void ViewDependentShadowTechnique::traverse(osg::NodeVisitor &nv)
 {
     osgShadow::ShadowTechnique::traverse(nv);
 }
@@ -60,13 +60,13 @@ void ViewDependentShadowTechnique::init()
     osgShadow::ShadowTechnique::_dirty = false;
 }
 
-void ViewDependentShadowTechnique::update(osg::NodeVisitor&nv)
+void ViewDependentShadowTechnique::update(osg::NodeVisitor &nv)
 {
     // osgShadow::ShadowTechnique::update( nv );
     osgShadow::ShadowTechnique::_shadowedScene->osg::Group::traverse(nv);
 }
 
-void ViewDependentShadowTechnique::cull(osgUtil::CullVisitor&cv)
+void ViewDependentShadowTechnique::cull(osgUtil::CullVisitor &cv)
 {
     // osgShadow::ShadowTechnique::cull( cv );
 

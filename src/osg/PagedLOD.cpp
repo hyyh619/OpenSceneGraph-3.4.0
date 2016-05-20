@@ -28,7 +28,7 @@ PagedLOD::PerRangeData::PerRangeData() :
     _frameNumber(0),
     _frameNumberOfLastReleaseGLObjects(0) {}
 
-PagedLOD::PerRangeData::PerRangeData(const PerRangeData&prd) :
+PagedLOD::PerRangeData::PerRangeData(const PerRangeData &prd) :
     _filename(prd._filename),
     _priorityOffset(prd._priorityOffset),
     _priorityScale(prd._priorityScale),
@@ -39,7 +39,7 @@ PagedLOD::PerRangeData::PerRangeData(const PerRangeData&prd) :
     _frameNumberOfLastReleaseGLObjects(prd._frameNumberOfLastReleaseGLObjects),
     _databaseRequest(prd._databaseRequest) {}
 
-PagedLOD::PerRangeData&PagedLOD::PerRangeData::operator =(const PerRangeData&prd)
+PagedLOD::PerRangeData&PagedLOD::PerRangeData::operator =(const PerRangeData &prd)
 {
     if (this == &prd)
         return *this;
@@ -65,7 +65,7 @@ PagedLOD::PagedLOD()
     _disableExternalChildrenPaging  = false;
 }
 
-PagedLOD::PagedLOD(const PagedLOD&plod, const CopyOp&copyop) :
+PagedLOD::PagedLOD(const PagedLOD &plod, const CopyOp &copyop) :
     LOD(plod, copyop),
     _databaseOptions(plod._databaseOptions),
     _databasePath(plod._databasePath),
@@ -78,7 +78,7 @@ PagedLOD::PagedLOD(const PagedLOD&plod, const CopyOp&copyop) :
 PagedLOD::~PagedLOD()
 {}
 
-void PagedLOD::setDatabasePath(const std::string&path)
+void PagedLOD::setDatabasePath(const std::string &path)
 {
     _databasePath = path;
     if (!_databasePath.empty())
@@ -122,7 +122,7 @@ void PagedLOD::setDatabasePath(const std::string&path)
 }
 
 
-void PagedLOD::traverse(NodeVisitor&nv)
+void PagedLOD::traverse(NodeVisitor &nv)
 {
     // set the frame number of the traversal so that external nodes can find out how active this
     // node is.
@@ -276,7 +276,7 @@ bool PagedLOD::addChild(Node *child, float min, float max)
 }
 
 
-bool PagedLOD::addChild(Node *child, float min, float max, const std::string&filename, float priorityOffset, float priorityScale)
+bool PagedLOD::addChild(Node *child, float min, float max, const std::string &filename, float priorityOffset, float priorityScale)
 {
     if (LOD::addChild(child, min, max))
     {
@@ -300,7 +300,7 @@ bool PagedLOD::removeChildren(unsigned int pos, unsigned int numChildrenToRemove
     return Group::removeChildren(pos, numChildrenToRemove);
 }
 
-bool PagedLOD::removeExpiredChildren(double expiryTime, unsigned int expiryFrame, NodeList&removedChildren)
+bool PagedLOD::removeExpiredChildren(double expiryTime, unsigned int expiryFrame, NodeList &removedChildren)
 {
     if (_children.size() > _numChildrenThatCannotBeExpired)
     {

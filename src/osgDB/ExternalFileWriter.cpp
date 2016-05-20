@@ -26,7 +26,7 @@ namespace osgDB
 ///    - "../../a/b/c/d/e" goes 2
 ///    - "../a/../b/../.." goes 2
 ///    - "a/b/../c" goes 0
-static unsigned int countNbDirsUp(const std::string&path)
+static unsigned int countNbDirsUp(const std::string &path)
 {
     // Algorithm:
     //    - For each path component, count +1 for "..", 0 for ".", and -1 for anything else
@@ -56,7 +56,7 @@ static unsigned int countNbDirsUp(const std::string&path)
 
 /// Local hash function for a path.
 /// Does not canonize the given path, but is not confused with mixed separators.
-static unsigned int pathHash(const std::string&s)
+static unsigned int pathHash(const std::string &s)
 {
     // This is based on the DJB hash algorithm
     // Note: SDBM Hash initializes at 0 and is
@@ -116,7 +116,7 @@ static const char* const FILE_EXTENSION[] /*MAX_WRITE_TYPE*/ =
 // .frag
 // .vert
 
-inline WriteType getType(const osg::Object&obj)
+inline WriteType getType(const osg::Object &obj)
 {
     // Is there something faster than a dynamic_cast<>?
     if (dynamic_cast<const osg::Image*>(&obj))
@@ -135,7 +135,7 @@ inline WriteType getType(const osg::Object&obj)
 }
 
 /// Returns the object filename if available, or its name otherwise.
-inline const std::string&getFileName(const osg::Object&obj, WriteType type)
+inline const std::string&getFileName(const osg::Object &obj, WriteType type)
 {
     switch (type)
     {
@@ -149,7 +149,7 @@ inline const std::string&getFileName(const osg::Object&obj, WriteType type)
 }
 
 
-inline bool doWrite(const osg::Object&obj, WriteType type, const std::string&fileName, const Options *options)
+inline bool doWrite(const osg::Object &obj, WriteType type, const std::string &fileName, const Options *options)
 {
     switch (type)
     {
@@ -171,16 +171,16 @@ inline bool doWrite(const osg::Object&obj, WriteType type, const std::string&fil
 // --------------------------------------------------------------------------------
 
 
-ExternalFileWriter::ExternalFileWriter(const std::string&srcDirectory, const std::string&destDirectory, bool keepRelativePaths, unsigned int allowUpDirs)
+ExternalFileWriter::ExternalFileWriter(const std::string &srcDirectory, const std::string &destDirectory, bool keepRelativePaths, unsigned int allowUpDirs)
     : _lastGeneratedObjectIndex(0), _srcDirectory(srcDirectory), _destDirectory(destDirectory), _keepRelativePaths(keepRelativePaths), _allowUpDirs(allowUpDirs)
 {}
 
-ExternalFileWriter::ExternalFileWriter(const std::string&destDirectory)
+ExternalFileWriter::ExternalFileWriter(const std::string &destDirectory)
     : _lastGeneratedObjectIndex(0), _destDirectory(destDirectory), _keepRelativePaths(false), _allowUpDirs(0)
 {}
 
 
-bool ExternalFileWriter::write(const osg::Object&obj, const Options *options, std::string *out_absolutePath, std::string *out_relativePath)
+bool ExternalFileWriter::write(const osg::Object &obj, const Options *options, std::string *out_absolutePath, std::string *out_relativePath)
 {
     ObjectsSet::iterator it(_objects.find(&obj));
 
@@ -271,7 +271,7 @@ bool ExternalFileWriter::write(const osg::Object&obj, const Options *options, st
 }
 
 
-bool ExternalFileWriter::absoluteObjectPathExists(const std::string&path)
+bool ExternalFileWriter::absoluteObjectPathExists(const std::string &path)
 {
     // For all paths in the search map having the same hash as 'path', check if paths correspond
     std::pair<SearchMap::iterator, SearchMap::iterator> bounds(_searchMap.equal_range(pathHash(path)));
@@ -286,7 +286,7 @@ bool ExternalFileWriter::absoluteObjectPathExists(const std::string&path)
     return false;
 }
 
-void ExternalFileWriter::generateObjectName(std::string&out_relativePath, std::string&out_absolutePath, int type)
+void ExternalFileWriter::generateObjectName(std::string &out_relativePath, std::string &out_absolutePath, int type)
 {
     static const ObjectIndex MAX_NUMBER = UINT_MAX - 1;        // -1 to allow doing +1 without an overflow
 

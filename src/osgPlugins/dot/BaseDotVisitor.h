@@ -42,29 +42,29 @@ virtual ~BaseDotVisitor();
 
 void setOptions(const osgDB::Options *options);
 
-bool run(osg::Node&root, std::ostream *ostream);
+bool run(osg::Node &root, std::ostream *ostream);
 
-virtual void apply(osg::Node&node);
+virtual void apply(osg::Node &node);
 
-virtual void apply(osg::Geode&node);
+virtual void apply(osg::Geode &node);
 
-virtual void apply(osg::Group&node);
+virtual void apply(osg::Group &node);
 
 
 protected:
 
-void handleNodeAndTraverse(osg::Node&node, int id);
+void handleNodeAndTraverse(osg::Node &node, int id);
 
-virtual void handle(osg::Node&node, int id);
-virtual void handle(osg::Geode&node, int id);
-virtual void handle(osg::Group&node, int id);
-virtual void handle(osg::StateSet&stateset, int id);
-virtual void handle(osg::Drawable&drawable, int id);
+virtual void handle(osg::Node &node, int id);
+virtual void handle(osg::Geode &node, int id);
+virtual void handle(osg::Group &node, int id);
+virtual void handle(osg::StateSet &stateset, int id);
+virtual void handle(osg::Drawable &drawable, int id);
 
-virtual void handle(osg::Node&node, osg::StateSet&stateset, int parentID, int childID);
-virtual void handle(osg::Group&parent, osg::Node&child, int parentID, int childID);
-virtual void handle(osg::Geode&geode, osg::Drawable&drawable, int parentID, int childID);
-virtual void handle(osg::Drawable&drawable, osg::StateSet&stateset, int parentID, int childID);
+virtual void handle(osg::Node &node, osg::StateSet &stateset, int parentID, int childID);
+virtual void handle(osg::Group &parent, osg::Node &child, int parentID, int childID);
+virtual void handle(osg::Geode &geode, osg::Drawable &drawable, int parentID, int childID);
+virtual void handle(osg::Drawable &drawable, osg::StateSet &stateset, int parentID, int childID);
 
 osg::ref_ptr<osgDB::Options> _options;
 
@@ -74,7 +74,7 @@ std::stringstream _nodes;
 std::stringstream _edges;
 
 private:
-bool getOrCreateId(osg::Object *object, int&id);
+bool getOrCreateId(osg::Object *object, int &id);
 
 ObjectMap _objectMap;
 };

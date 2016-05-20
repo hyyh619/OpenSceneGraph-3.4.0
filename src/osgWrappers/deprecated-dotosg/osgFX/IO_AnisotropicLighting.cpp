@@ -4,8 +4,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool AnisotropicLighting_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool AnisotropicLighting_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool AnisotropicLighting_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool AnisotropicLighting_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(AnisotropicLighting_Proxy)
 (
@@ -16,10 +16,10 @@ REGISTER_DOTOSGWRAPPER(AnisotropicLighting_Proxy)
     AnisotropicLighting_writeLocalData
 );
 
-bool AnisotropicLighting_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool AnisotropicLighting_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgFX::AnisotropicLighting&myobj     = static_cast<osgFX::AnisotropicLighting&>(obj);
-    bool                      itAdvanced = false;
+    osgFX::AnisotropicLighting &myobj     = static_cast<osgFX::AnisotropicLighting&>(obj);
+    bool                       itAdvanced = false;
 
     if (fr[0].matchWord("lightNumber"))
     {
@@ -47,9 +47,9 @@ bool AnisotropicLighting_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool AnisotropicLighting_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool AnisotropicLighting_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgFX::AnisotropicLighting&myobj = static_cast<const osgFX::AnisotropicLighting&>(obj);
+    const osgFX::AnisotropicLighting &myobj = static_cast<const osgFX::AnisotropicLighting&>(obj);
 
     fw.indent() << "lightNumber " << myobj.getLightNumber() << "\n";
 

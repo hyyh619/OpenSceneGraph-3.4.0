@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool TerrainTile_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool TerrainTile_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool TerrainTile_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool TerrainTile_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(TerrainTile_Proxy)
 (
@@ -25,9 +25,9 @@ REGISTER_DOTOSGWRAPPER(TerrainTile_Proxy)
     TerrainTile_writeLocalData
 );
 
-bool TerrainTile_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool TerrainTile_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgTerrain::TerrainTile&terrainTile = static_cast<osgTerrain::TerrainTile&>(obj);
+    osgTerrain::TerrainTile &terrainTile = static_cast<osgTerrain::TerrainTile&>(obj);
 
     bool itrAdvanced = false;
 
@@ -236,9 +236,9 @@ bool TerrainTile_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool TerrainTile_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool TerrainTile_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgTerrain::TerrainTile&terrainTile = static_cast<const osgTerrain::TerrainTile&>(obj);
+    const osgTerrain::TerrainTile &terrainTile = static_cast<const osgTerrain::TerrainTile&>(obj);
 
     int prec = fw.precision();
 

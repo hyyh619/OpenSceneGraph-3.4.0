@@ -15,11 +15,11 @@ class CaptureSettings : public osg::Object
 {
 public:
 CaptureSettings();
-CaptureSettings(const CaptureSettings&cs, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+CaptureSettings(const CaptureSettings &cs, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(gsc, CaptureSettings);
 
-void setInputFileName(const std::string&filename)
+void setInputFileName(const std::string &filename)
 {
     _inputFileName = filename;
 }
@@ -28,7 +28,7 @@ const std::string&getInputFileName() const
     return _inputFileName;
 }
 
-void setOutputFileName(const std::string&filename);
+void setOutputFileName(const std::string &filename);
 const std::string&getOutputFileName() const;
 
 std::string getOutputFileName(unsigned int frameNumber) const;
@@ -166,7 +166,7 @@ unsigned int getNumberOfFrames() const
 }
 
 typedef std::vector<osg::ref_ptr<osgGA::GUIEventHandler> > EventHandlers;
-void setEventHandlers(const EventHandlers&eh);
+void setEventHandlers(const EventHandlers &eh);
 EventHandlers&getEventHandlers()
 {
     return _eventHandlers;
@@ -183,7 +183,7 @@ void addUpdateProperty(UpdateProperty *up)
     _properties.push_back(up);
 }
 
-void setProperties(const Properties&pl)
+void setProperties(const Properties &pl)
 {
     _properties = pl;
 }

@@ -16,15 +16,15 @@ struct Triangle
 class WriterCompareTriangle
 {
 public:
-WriterCompareTriangle(const osg::Geode&geode, unsigned int nbVertices);
+WriterCompareTriangle(const osg::Geode &geode, unsigned int nbVertices);
 
-bool operator()(const std::pair<Triangle, int>&t1,
-                const std::pair<Triangle, int>&t2) const;
+bool operator()(const std::pair<Triangle, int> &t1,
+                const std::pair<Triangle, int> &t2) const;
 private:
 void     // This function prevent from cut scene in too many blocs
-setMaxMin(int&nbVerticesX,
-          int&nbVerticesY,
-          int&nbVerticesZ) const;
+setMaxMin(int &nbVerticesX,
+          int &nbVerticesY,
+          int &nbVerticesZ) const;
 
 /**
  *  Cut the scene in different bloc to sort.
@@ -33,7 +33,7 @@ setMaxMin(int&nbVerticesX,
  */
 void
 cutscene(int nbVertices,
-         const osg::BoundingBox&sceneBox);
+         const osg::BoundingBox &sceneBox);
 
 /**
  *  Find in which box those points are.
@@ -43,7 +43,7 @@ cutscene(int nbVertices,
 int inWhichBox(const osg::BoundingBox::value_type x,
                const osg::BoundingBox::value_type y,
                const osg::BoundingBox::value_type z) const;
-int inWhichBox(const osg::BoundingBox::vec_type&point) const;
+int inWhichBox(const osg::BoundingBox::vec_type &point) const;
 
 const osg::Geode              &geode;
 std::vector<osg::BoundingBox> boxList;

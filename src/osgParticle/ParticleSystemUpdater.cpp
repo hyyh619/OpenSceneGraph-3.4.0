@@ -11,7 +11,7 @@ osgParticle::ParticleSystemUpdater::ParticleSystemUpdater()
     setCullingActive(false);
 }
 
-osgParticle::ParticleSystemUpdater::ParticleSystemUpdater(const ParticleSystemUpdater&copy, const osg::CopyOp&copyop)
+osgParticle::ParticleSystemUpdater::ParticleSystemUpdater(const ParticleSystemUpdater &copy, const osg::CopyOp &copyop)
     : osg::Node(copy, copyop), _t0(copy._t0), _frameNumber(0)
 {
     ParticleSystem_Vector::const_iterator i;
@@ -22,7 +22,7 @@ osgParticle::ParticleSystemUpdater::ParticleSystemUpdater(const ParticleSystemUp
     }
 }
 
-void osgParticle::ParticleSystemUpdater::traverse(osg::NodeVisitor&nv)
+void osgParticle::ParticleSystemUpdater::traverse(osg::NodeVisitor &nv)
 {
     osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);
 

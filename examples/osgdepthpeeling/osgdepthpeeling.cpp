@@ -42,7 +42,7 @@ KeyboardEventHandler(DePee *dePee)
     _dePee->setColored(_colored);
 }
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -146,7 +146,7 @@ MouseEventHandler(DePee *dePee)
     _dePee = dePee;
 }
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {

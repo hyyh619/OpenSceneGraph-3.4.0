@@ -35,7 +35,7 @@ Texture2DMultisample::Texture2DMultisample(GLsizei numSamples, GLboolean fixedsa
     _fixedsamplelocations(fixedsamplelocations)
 {}
 
-Texture2DMultisample::Texture2DMultisample(const Texture2DMultisample&text, const CopyOp&copyop) :
+Texture2DMultisample::Texture2DMultisample(const Texture2DMultisample &text, const CopyOp &copyop) :
     Texture(text, copyop),
     _textureWidth(text._textureWidth),
     _textureHeight(text._textureHeight),
@@ -46,7 +46,7 @@ Texture2DMultisample::Texture2DMultisample(const Texture2DMultisample&text, cons
 Texture2DMultisample::~Texture2DMultisample()
 {}
 
-int Texture2DMultisample::compare(const StateAttribute&sa) const
+int Texture2DMultisample::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -82,7 +82,7 @@ int Texture2DMultisample::compare(const StateAttribute&sa) const
     return 0; // passed all the above comparison macros, must be equal.
 }
 
-void Texture2DMultisample::apply(State&state) const
+void Texture2DMultisample::apply(State &state) const
 {
     // current OpenGL context.
     const unsigned int contextID   = state.getContextID();

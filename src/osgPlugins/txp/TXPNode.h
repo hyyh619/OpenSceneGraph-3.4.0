@@ -51,14 +51,14 @@ public:
 TXPNode();
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-TXPNode(const TXPNode&, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+TXPNode(const TXPNode&, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Node(txp, TXPNode);
 
-virtual void traverse(osg::NodeVisitor&nv);
+virtual void traverse(osg::NodeVisitor &nv);
 
-void setArchiveName(const std::string&archiveName);
-void setOptions(const std::string&options);
+void setArchiveName(const std::string &archiveName);
+void setOptions(const std::string &options);
 
 const std::string&getOptions() const;
 const std::string&getArchiveName() const;
@@ -85,7 +85,7 @@ protected:
 
 virtual ~TXPNode();
 
-void updateEye(osg::NodeVisitor&nv);
+void updateEye(osg::NodeVisitor &nv);
 void updateSceneGraph();
 
 // Create a page lod for lod 0 with givin grid location (x,y)

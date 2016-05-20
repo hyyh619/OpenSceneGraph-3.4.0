@@ -86,17 +86,17 @@ value_type* operator ->();
 const value_type&operator *() const;
 const value_type* operator ->() const;
 
-value_type&operator =(const value_type&Elem);
+value_type&operator =(const value_type &Elem);
 
 protected:
 friend class graph_array<nodetype>;
 friend class std::vector<node>;
 
-node(arc_list&Arcs);
+node(arc_list &Arcs);
 
-arc_list&m_Arcs;
-size_t  m_Begin;
-size_t  m_End;
+arc_list &m_Arcs;
+size_t   m_Begin;
+size_t   m_End;
 
 value_type m_Elem;
 bool       m_Marker;
@@ -133,8 +133,8 @@ out_arc_iterator insert_arc(nodeid Initial, nodeid Terminal);
 out_arc_iterator insert_arc(node_iterator Initial, node_iterator Terminal);
 
 // Optimized (overloaded) functions
-void swap(graph_type&Right);
-friend void swap(graph_type&Left, graph_type&Right)
+void swap(graph_type &Right);
+friend void swap(graph_type &Left, graph_type &Right)
 {
     Left.swap(Right);
 }
@@ -151,7 +151,7 @@ arc_list    m_Arcs;
 
 // Additional "low level", graph related, functions
 template<class nodetype>
-void unmark_nodes(graph_array<nodetype>&G);
+void unmark_nodes(graph_array<nodetype> &G);
 
 
 
@@ -179,7 +179,7 @@ inline typename graph_array<N>::node_iterator graph_array<N>::arc::terminal() co
 //////////////////////////////////////////////////////////////////////////
 
 template<class N>
-inline graph_array<N>::node::node(arc_list&Arcs)
+inline graph_array<N>::node::node(arc_list &Arcs)
     : m_Arcs(Arcs),
     m_Begin((std::numeric_limits<size_t>::max)()),
     m_End((std::numeric_limits<size_t>::max)()),
@@ -279,7 +279,7 @@ inline const N*graph_array<N>::node::operator ->() const
 
 
 template<class N>
-inline N&graph_array<N>::node::operator =(const N&Elem)
+inline N&graph_array<N>::node::operator =(const N &Elem)
 {
     return (m_Elem = Elem);
 }
@@ -408,7 +408,7 @@ inline typename graph_array<N>::out_arc_iterator graph_array<N>::insert_arc(cons
     assert((Initial >= begin()) && (Initial < end()));
     assert((Terminal >= begin()) && (Terminal < end()));
 
-    node&Node = *Initial;
+    node &Node = *Initial;
 
     if (Node.out_empty())
     {
@@ -432,7 +432,7 @@ inline typename graph_array<N>::out_arc_iterator graph_array<N>::insert_arc(cons
 
 
 template<class N>
-inline void graph_array<N>::swap(graph_type&Right)
+inline void graph_array<N>::swap(graph_type &Right)
 {
     std::swap(m_Nodes, Right.m_Nodes);
     std::swap(m_Arcs, Right.m_Arcs);
@@ -445,7 +445,7 @@ inline void graph_array<N>::swap(graph_type&Right)
 //////////////////////////////////////////////////////////////////////////
 
 template<class N>
-inline void unmark_nodes(graph_array<N>&G)
+inline void unmark_nodes(graph_array<N> &G)
 {
     std::for_each(G.begin(), G.end(), std::mem_fun_ref(&graph_array<N>::node::unmark));
 }

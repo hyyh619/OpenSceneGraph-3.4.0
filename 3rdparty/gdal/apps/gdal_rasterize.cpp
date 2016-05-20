@@ -86,7 +86,7 @@ static void Usage()
 /************************************************************************/
 
 static void InvertGeometries(GDALDatasetH hDstDS,
-                             std::vector<OGRGeometryH>&ahGeometries)
+                             std::vector<OGRGeometryH> &ahGeometries)
 
 {
     OGRGeometryH hCollection =
@@ -156,7 +156,7 @@ static void InvertGeometries(GDALDatasetH hDstDS,
 static void ProcessLayer(
     OGRLayerH hSrcLayer, int bSRSIsSet,
     GDALDatasetH hDstDS, std::vector<int> anBandList,
-    std::vector<double>&adfBurnValues, int b3D, int bInverse,
+    std::vector<double> &adfBurnValues, int b3D, int bInverse,
     const char *pszBurnAttribute, char **papszRasterizeOptions,
     GDALProgressFunc pfnProgress, void *pProgressData)
 

@@ -57,17 +57,17 @@ void writeFloat(float f);
 void writeLong(long l);
 void writeULong(unsigned long l);
 void writeDouble(double d);
-void writeString(const std::string&s);
+void writeString(const std::string &s);
 void writeCharArray(const char *data, int size);
-void writeVec2(const osg::Vec2&v);
-void writeVec3(const osg::Vec3&v);
-void writeVec4(const osg::Vec4&v);
-void writeVec2d(const osg::Vec2d&v);
-void writeVec3d(const osg::Vec3d&v);
-void writeVec4d(const osg::Vec4d&v);
-void writePlane(const osg::Plane&v);
-void writeVec4ub(const osg::Vec4ub&v);
-void writeQuat(const osg::Quat&q);
+void writeVec2(const osg::Vec2 &v);
+void writeVec3(const osg::Vec3 &v);
+void writeVec4(const osg::Vec4 &v);
+void writeVec2d(const osg::Vec2d &v);
+void writeVec3d(const osg::Vec3d &v);
+void writeVec4d(const osg::Vec4d &v);
+void writePlane(const osg::Plane &v);
+void writeVec4ub(const osg::Vec4ub &v);
+void writeQuat(const osg::Quat &q);
 void writeBinding(deprecated_osg::Geometry::AttributeBinding b);
 void writeArray(const osg::Array *a);
 void writeIntArray(const osg::IntArray *a);
@@ -75,9 +75,9 @@ void writeUByteArray(const osg::UByteArray *a);
 void writeUShortArray(const osg::UShortArray *a);
 void writeUIntArray(const osg::UIntArray *a);
 void writeVec4ubArray(const osg::Vec4ubArray *a);
-void writeVec2b(const osg::Vec2b&v);
-void writeVec3b(const osg::Vec3b&v);
-void writeVec4b(const osg::Vec4b&v);
+void writeVec2b(const osg::Vec2b &v);
+void writeVec3b(const osg::Vec3b &v);
+void writeVec4b(const osg::Vec4b &v);
 
 void writePackedFloatArray(const osg::FloatArray *a, float maxError);
 
@@ -94,8 +94,8 @@ void writeVec4bArray(const osg::Vec4bArray *a);
 void writeVec2dArray(const osg::Vec2dArray *a);
 void writeVec3dArray(const osg::Vec3dArray *a);
 void writeVec4dArray(const osg::Vec4dArray *a);
-void writeMatrixf(const osg::Matrixf&mat);
-void writeMatrixd(const osg::Matrixd&mat);
+void writeMatrixf(const osg::Matrixf &mat);
+void writeMatrixd(const osg::Matrixd &mat);
 
 void writeStateSet(const osg::StateSet *stateset);
 void writeStateAttribute(const osg::StateAttribute *sa);
@@ -116,7 +116,7 @@ void writeVolumeProperty(const osgVolume::Property *propety);
 
 void writeObject(const osg::Object *object);
 
-void setWriteDirectory(const std::string&directoryName)
+void setWriteDirectory(const std::string &directoryName)
 {
     _writeDirectory = directoryName;
 }
@@ -199,13 +199,13 @@ double getTerrainMaximumErrorToSizeRatio() const
 
 bool _verboseOutput;
 
-bool compress(std::ostream&fout, const std::string&source) const;
+bool compress(std::ostream &fout, const std::string &source) const;
 
 
-void setExternalFileWritten(const std::string&filename, bool hasBeenWritten = true);
-bool getExternalFileWritten(const std::string&filename) const;
+void setExternalFileWritten(const std::string &filename, bool hasBeenWritten = true);
+bool getExternalFileWritten(const std::string &filename) const;
 
-void throwException(const std::string&message)
+void throwException(const std::string &message)
 {
     _exception = new Exception(message);
 }

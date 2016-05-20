@@ -59,7 +59,7 @@ GDALFeaturePoint();
  * Copy constructor
  * @param fp Copied instance of GDALFeaturePoint class
  */
-GDALFeaturePoint(const GDALFeaturePoint&fp);
+GDALFeaturePoint(const GDALFeaturePoint &fp);
 
 /**
  * Create instance of GDALFeaturePoint class
@@ -76,7 +76,7 @@ GDALFeaturePoint(const GDALFeaturePoint&fp);
 GDALFeaturePoint(int nX, int nY, int nScale, int nRadius, int nSign);
 virtual ~GDALFeaturePoint();
 
-GDALFeaturePoint&operator=(const GDALFeaturePoint&point);
+GDALFeaturePoint&operator=(const GDALFeaturePoint &point);
 
 /**
  * Provide access to point's descriptor.
@@ -526,7 +526,7 @@ private:
  * @return Euclidean distance between descriptors.
  */
 static double GetEuclideanDistance(
-    GDALFeaturePoint&firstPoint, GDALFeaturePoint&secondPoint);
+    GDALFeaturePoint &firstPoint, GDALFeaturePoint &secondPoint);
 
 /**
  * Set provided distance values to range from 0 to 1.

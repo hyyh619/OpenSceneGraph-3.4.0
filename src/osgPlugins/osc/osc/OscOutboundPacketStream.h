@@ -90,15 +90,15 @@ bool IsReady() const;
 bool IsMessageInProgress() const;
 bool IsBundleInProgress() const;
 
-OutboundPacketStream&operator<<(const BundleInitiator&rhs);
-OutboundPacketStream&operator<<(const BundleTerminator&rhs);
+OutboundPacketStream&operator<<(const BundleInitiator &rhs);
+OutboundPacketStream&operator<<(const BundleTerminator &rhs);
 
-OutboundPacketStream&operator<<(const BeginMessage&rhs);
-OutboundPacketStream&operator<<(const MessageTerminator&rhs);
+OutboundPacketStream&operator<<(const BeginMessage &rhs);
+OutboundPacketStream&operator<<(const MessageTerminator &rhs);
 
 OutboundPacketStream&operator<<(bool rhs);
-OutboundPacketStream&operator<<(const NilType&rhs);
-OutboundPacketStream&operator<<(const InfinitumType&rhs);
+OutboundPacketStream&operator<<(const NilType &rhs);
+OutboundPacketStream&operator<<(const InfinitumType &rhs);
 OutboundPacketStream&operator<<(int32 rhs);
 
 #if !(defined(__x86_64__) || defined(_M_X64))
@@ -110,14 +110,14 @@ OutboundPacketStream&operator<<(int rhs)
 
 OutboundPacketStream&operator<<(float rhs);
 OutboundPacketStream&operator<<(char rhs);
-OutboundPacketStream&operator<<(const RgbaColor&rhs);
-OutboundPacketStream&operator<<(const MidiMessage&rhs);
+OutboundPacketStream&operator<<(const RgbaColor &rhs);
+OutboundPacketStream&operator<<(const MidiMessage &rhs);
 OutboundPacketStream&operator<<(int64 rhs);
-OutboundPacketStream&operator<<(const TimeTag&rhs);
+OutboundPacketStream&operator<<(const TimeTag &rhs);
 OutboundPacketStream&operator<<(double rhs);
 OutboundPacketStream&operator<<(const char *rhs);
-OutboundPacketStream&operator<<(const Symbol&rhs);
-OutboundPacketStream&operator<<(const Blob&rhs);
+OutboundPacketStream&operator<<(const Symbol &rhs);
+OutboundPacketStream&operator<<(const Blob &rhs);
 
 private:
 

@@ -83,7 +83,7 @@ InputStream::~InputStream()
         delete _dataDecompress;
 }
 
-int InputStream::getFileVersion(const std::string&d) const
+int InputStream::getFileVersion(const std::string &d) const
 {
     if (d.empty())
         return _fileVersion;
@@ -92,7 +92,7 @@ int InputStream::getFileVersion(const std::string&d) const
     return itr == _domainVersionMap.end() ? 0 : itr->second;
 }
 
-InputStream&InputStream::operator>>(osg::Vec2b&v)
+InputStream&InputStream::operator>>(osg::Vec2b &v)
 {
     char x, y; *this >> x >> y;
 
@@ -100,7 +100,7 @@ InputStream&InputStream::operator>>(osg::Vec2b&v)
     return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec3b&v)
+InputStream&InputStream::operator>>(osg::Vec3b &v)
 {
     char x, y, z; *this >> x >> y >> z;
 
@@ -108,7 +108,7 @@ InputStream&InputStream::operator>>(osg::Vec3b&v)
     return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec4b&v)
+InputStream&InputStream::operator>>(osg::Vec4b &v)
 {
     char x, y, z, w; *this >> x >> y >> z >> w;
 
@@ -116,7 +116,7 @@ InputStream&InputStream::operator>>(osg::Vec4b&v)
     return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec2ub&v)
+InputStream&InputStream::operator>>(osg::Vec2ub &v)
 {
     unsigned char x, y; *this >> x >> y;
 
@@ -124,7 +124,7 @@ InputStream&InputStream::operator>>(osg::Vec2ub&v)
     return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec3ub&v)
+InputStream&InputStream::operator>>(osg::Vec3ub &v)
 {
     unsigned char x, y, z; *this >> x >> y >> z;
 
@@ -132,7 +132,7 @@ InputStream&InputStream::operator>>(osg::Vec3ub&v)
     return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec4ub&v)
+InputStream&InputStream::operator>>(osg::Vec4ub &v)
 {
     unsigned char r, g, b, a; *this >> r >> g >> b >> a;
 
@@ -140,107 +140,107 @@ InputStream&InputStream::operator>>(osg::Vec4ub&v)
     return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec2s&v)
+InputStream&InputStream::operator>>(osg::Vec2s &v)
 {
     *this >> v.x() >> v.y(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec3s&v)
+InputStream&InputStream::operator>>(osg::Vec3s &v)
 {
     *this >> v.x() >> v.y() >> v.z(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec4s&v)
+InputStream&InputStream::operator>>(osg::Vec4s &v)
 {
     *this >> v.x() >> v.y() >> v.z() >> v.w(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec2us&v)
+InputStream&InputStream::operator>>(osg::Vec2us &v)
 {
     *this >> v.x() >> v.y(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec3us&v)
+InputStream&InputStream::operator>>(osg::Vec3us &v)
 {
     *this >> v.x() >> v.y() >> v.z(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec4us&v)
-{
-    *this >> v.x() >> v.y() >> v.z() >> v.w(); return *this;
-}
-
-
-InputStream&InputStream::operator>>(osg::Vec2i&v)
-{
-    *this >> v.x() >> v.y(); return *this;
-}
-
-InputStream&InputStream::operator>>(osg::Vec3i&v)
-{
-    *this >> v.x() >> v.y() >> v.z(); return *this;
-}
-
-InputStream&InputStream::operator>>(osg::Vec4i&v)
+InputStream&InputStream::operator>>(osg::Vec4us &v)
 {
     *this >> v.x() >> v.y() >> v.z() >> v.w(); return *this;
 }
 
 
-InputStream&InputStream::operator>>(osg::Vec2ui&v)
+InputStream&InputStream::operator>>(osg::Vec2i &v)
 {
     *this >> v.x() >> v.y(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec3ui&v)
+InputStream&InputStream::operator>>(osg::Vec3i &v)
 {
     *this >> v.x() >> v.y() >> v.z(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec4ui&v)
+InputStream&InputStream::operator>>(osg::Vec4i &v)
 {
     *this >> v.x() >> v.y() >> v.z() >> v.w(); return *this;
 }
 
 
-InputStream&InputStream::operator>>(osg::Vec2f&v)
+InputStream&InputStream::operator>>(osg::Vec2ui &v)
 {
     *this >> v.x() >> v.y(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec3f&v)
+InputStream&InputStream::operator>>(osg::Vec3ui &v)
 {
     *this >> v.x() >> v.y() >> v.z(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec4f&v)
+InputStream&InputStream::operator>>(osg::Vec4ui &v)
 {
     *this >> v.x() >> v.y() >> v.z() >> v.w(); return *this;
 }
 
 
-InputStream&InputStream::operator>>(osg::Vec2d&v)
+InputStream&InputStream::operator>>(osg::Vec2f &v)
 {
     *this >> v.x() >> v.y(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec3d&v)
+InputStream&InputStream::operator>>(osg::Vec3f &v)
 {
     *this >> v.x() >> v.y() >> v.z(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Vec4d&v)
+InputStream&InputStream::operator>>(osg::Vec4f &v)
 {
     *this >> v.x() >> v.y() >> v.z() >> v.w(); return *this;
 }
 
 
-InputStream&InputStream::operator>>(osg::Quat&q)
+InputStream&InputStream::operator>>(osg::Vec2d &v)
+{
+    *this >> v.x() >> v.y(); return *this;
+}
+
+InputStream&InputStream::operator>>(osg::Vec3d &v)
+{
+    *this >> v.x() >> v.y() >> v.z(); return *this;
+}
+
+InputStream&InputStream::operator>>(osg::Vec4d &v)
+{
+    *this >> v.x() >> v.y() >> v.z() >> v.w(); return *this;
+}
+
+
+InputStream&InputStream::operator>>(osg::Quat &q)
 {
     *this >> q.x() >> q.y() >> q.z() >> q.w(); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Plane&p)
+InputStream&InputStream::operator>>(osg::Plane &p)
 {
     double p0, p1, p2, p3; *this >> p0 >> p1 >> p2 >> p3;
 
@@ -248,7 +248,7 @@ InputStream&InputStream::operator>>(osg::Plane&p)
 }
 
 #if 0
-InputStream&InputStream::operator>>(osg::Matrixf&mat)
+InputStream&InputStream::operator>>(osg::Matrixf &mat)
 {
     ObjectProperty property("");
 
@@ -282,7 +282,7 @@ InputStream&InputStream::operator>>(osg::Matrixf&mat)
     return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Matrixd&mat)
+InputStream&InputStream::operator>>(osg::Matrixd &mat)
 {
     ObjectProperty property("");
 
@@ -316,7 +316,7 @@ InputStream&InputStream::operator>>(osg::Matrixd&mat)
     return *this;
 }
 #else
-InputStream&InputStream::operator>>(osg::Matrixf&mat)
+InputStream&InputStream::operator>>(osg::Matrixf &mat)
 {
     *this >> BEGIN_BRACKET;
 
@@ -337,7 +337,7 @@ InputStream&InputStream::operator>>(osg::Matrixf&mat)
     return *this;
 }
 
-InputStream&InputStream::operator>>(osg::Matrixd&mat)
+InputStream&InputStream::operator>>(osg::Matrixd &mat)
 {
     *this >> BEGIN_BRACKET;
 
@@ -351,28 +351,28 @@ InputStream&InputStream::operator>>(osg::Matrixd&mat)
 }
 #endif
 
-InputStream&InputStream::operator>>(osg::BoundingBoxf&bb)
+InputStream&InputStream::operator>>(osg::BoundingBoxf &bb)
 {
     float p0, p1, p2, p3, p4, p5; *this >> p0 >> p1 >> p2 >> p3 >> p4 >> p5;
 
     bb.set(p0, p1, p2, p3, p4, p5); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::BoundingBoxd&bb)
+InputStream&InputStream::operator>>(osg::BoundingBoxd &bb)
 {
     double p0, p1, p2, p3, p4, p5; *this >> p0 >> p1 >> p2 >> p3 >> p4 >> p5;
 
     bb.set(p0, p1, p2, p3, p4, p5); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::BoundingSpheref&bs)
+InputStream&InputStream::operator>>(osg::BoundingSpheref &bs)
 {
     float p0, p1, p2, p3; *this >> p0 >> p1 >> p2 >> p3;
 
     bs.set(osg::Vec3f(p0, p1, p2), p3); return *this;
 }
 
-InputStream&InputStream::operator>>(osg::BoundingSphered&bs)
+InputStream&InputStream::operator>>(osg::BoundingSphered &bs)
 {
     double p0, p1, p2, p3; *this >> p0 >> p1 >> p2 >> p3;
 
@@ -1033,7 +1033,7 @@ osg::Object* InputStream::readObject(osg::Object *existingObj)
     return obj.release();
 }
 
-osg::Object* InputStream::readObjectFields(const std::string&className, unsigned int id, osg::Object *existingObj)
+osg::Object* InputStream::readObjectFields(const std::string &className, unsigned int id, osg::Object *existingObj)
 {
     ObjectWrapper *wrapper = Registry::instance()->getObjectWrapperManager()->findWrapper(className);
 
@@ -1048,7 +1048,7 @@ osg::Object* InputStream::readObjectFields(const std::string&className, unsigned
     _identifierMap[id] = obj;
     if (obj.valid())
     {
-        const StringList&associates = wrapper->getAssociates();
+        const StringList &associates = wrapper->getAssociates();
 
         for (StringList::const_iterator itr = associates.begin(); itr != associates.end(); ++itr)
         {
@@ -1072,7 +1072,7 @@ osg::Object* InputStream::readObjectFields(const std::string&className, unsigned
     return obj.release();
 }
 
-void InputStream::readSchema(std::istream&fin)
+void InputStream::readSchema(std::istream &fin)
 {
     // Read from external ascii stream
     std::string line;
@@ -1207,7 +1207,7 @@ void InputStream::decompress()
 
 // PROTECTED METHODS
 
-void InputStream::setWrapperSchema(const std::string&name, const std::string&properties)
+void InputStream::setWrapperSchema(const std::string &name, const std::string &properties)
 {
     ObjectWrapper *wrapper = Registry::instance()->getObjectWrapperManager()->findWrapper(name);
 
@@ -1244,7 +1244,7 @@ void InputStream::setWrapperSchema(const std::string&name, const std::string&pro
 
 void InputStream::resetSchema()
 {
-    const ObjectWrapperManager::WrapperMap&wrappers = Registry::instance()->getObjectWrapperManager()->getWrapperMap();
+    const ObjectWrapperManager::WrapperMap &wrappers = Registry::instance()->getObjectWrapperManager()->getWrapperMap();
 
     for (ObjectWrapperManager::WrapperMap::const_iterator itr = wrappers.begin();
          itr != wrappers.end(); ++itr)

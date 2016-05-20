@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_LINEWIDTH
 #define OSG_LINEWIDTH 1
@@ -17,27 +17,26 @@
 #include <osg/StateAttribute>
 
 namespace osg {
-
 /** LineWidth - encapsulates the OpenGL glLineWidth for setting the width of lines in pixels. */
-class OSG_EXPORT LineWidth : public StateAttribute
-{
-    public :
+    class OSG_EXPORT LineWidth: public StateAttribute
+    {
+public:
 
-        LineWidth(float width=1.0f);
+        LineWidth(float width = 1.0f);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        LineWidth(const LineWidth& lw,const CopyOp& copyop=CopyOp::SHALLOW_COPY) :
-            StateAttribute(lw,copyop),
+        LineWidth(const LineWidth &lw, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
+            StateAttribute(lw, copyop),
             _width(lw._width) {}
 
         META_StateAttribute(osg, LineWidth, LINEWIDTH);
 
         /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute& sa) const
+        virtual int compare(const StateAttribute &sa) const
         {
             // check if the types are equal and then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(LineWidth,sa)
+            COMPARE_StateAttribute_Types(LineWidth, sa)
 
             // compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_width)
@@ -47,18 +46,19 @@ class OSG_EXPORT LineWidth : public StateAttribute
 
         void setWidth(float width);
 
-        inline float getWidth() const { return _width; }
+        inline float getWidth() const
+        {
+            return _width;
+        }
 
-        virtual void apply(State& state) const;
+        virtual void apply(State &state) const;
 
-    protected :
+protected:
 
         virtual ~LineWidth();
 
-        float       _width;
-
-};
-
+        float _width;
+    };
 }
 
 #endif

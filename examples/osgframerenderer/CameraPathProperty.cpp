@@ -35,12 +35,12 @@ void CameraPathProperty::loadAnimationPath()
     _animationPath->read(in);
 }
 
-bool CameraPathProperty::getTimeRange(double&startTime, double&endTime) const
+bool CameraPathProperty::getTimeRange(double &startTime, double &endTime) const
 {
     if (!_animationPath)
         return false;
 
-    const osg::AnimationPath::TimeControlPointMap&tcpm = _animationPath->getTimeControlPointMap();
+    const osg::AnimationPath::TimeControlPointMap &tcpm = _animationPath->getTimeControlPointMap();
     if (tcpm.empty())
         return false;
 
@@ -55,7 +55,7 @@ void CameraPathProperty::resetTimeRange(double startTime, double endTime)
     if (!_animationPath)
         return;
 
-    osg::AnimationPath::TimeControlPointMap&tcpm = _animationPath->getTimeControlPointMap();
+    osg::AnimationPath::TimeControlPointMap &tcpm = _animationPath->getTimeControlPointMap();
     if (tcpm.empty())
         return;
 

@@ -127,8 +127,8 @@ struct BITMAPCOREHEADER
     unsigned short bitsPerPixel;
 };
 
-static unsigned char* bmp_load(std::istream&fin,
-                               int&width_ret, int&height_ret, int&numComponents_ret)
+static unsigned char* bmp_load(std::istream &fin,
+                               int &width_ret, int &height_ret, int &numComponents_ret)
 {
     // actual file size
     fin.seekg(0, std::ios::end);
@@ -460,7 +460,7 @@ static unsigned char* bmp_load(std::istream&fin,
     return imageBuffer;
 }
 
-static bool bmp_save(const osg::Image&img, std::ostream&fout)
+static bool bmp_save(const osg::Image &img, std::ostream &fout)
 {
     BMPHeader          bmp;
     const unsigned int bmpHdrSize = 14;
@@ -582,23 +582,23 @@ const char* className() const
 }
 
 
-ReadResult readObject(std::istream&fin, const Options *options = 0) const
+ReadResult readObject(std::istream &fin, const Options *options = 0) const
 {
     return readImage(fin, options);
 }
 
-ReadResult readObject(const std::string&file, const Options *options = 0) const
+ReadResult readObject(const std::string &file, const Options *options = 0) const
 {
     return readImage(file, options);
 }
 
 
-ReadResult readImage(std::istream&fin, const Options* = 0) const
+ReadResult readImage(std::istream &fin, const Options* = 0) const
 {
     return readBMPStream(fin);
 }
 
-ReadResult readImage(const std::string&file, const Options *options = 0) const
+ReadResult readImage(const std::string &file, const Options *options = 0) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -621,7 +621,7 @@ ReadResult readImage(const std::string&file, const Options *options = 0) const
 }
 
 
-WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options* = 0) const
+WriteResult writeImage(const osg::Image &image, std::ostream &fout, const Options* = 0) const
 {
     if (bmp_save(image, fout))
         return WriteResult::FILE_SAVED;
@@ -629,7 +629,7 @@ WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options*
         return WriteResult::ERROR_IN_WRITING_FILE;
 }
 
-WriteResult writeImage(const osg::Image&img, const std::string&fileName, const Options *options = 0) const
+WriteResult writeImage(const osg::Image &img, const std::string &fileName, const Options *options = 0) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 
@@ -644,7 +644,7 @@ WriteResult writeImage(const osg::Image&img, const std::string&fileName, const O
 }
 
 private:
-static ReadResult readBMPStream(std::istream&fin)
+static ReadResult readBMPStream(std::istream &fin)
 {
     int s, t;
     int internalFormat;

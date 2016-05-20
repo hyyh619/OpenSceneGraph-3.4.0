@@ -22,11 +22,11 @@ class FFmpegImageStream : public osg::ImageStream, public OpenThreads::Thread
 public:
 
 FFmpegImageStream();
-FFmpegImageStream(const FFmpegImageStream&image, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+FFmpegImageStream(const FFmpegImageStream &image, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(osgFFmpeg, FFmpegImageStream);
 
-bool open(const std::string&filename, FFmpegParameters *parameters);
+bool open(const std::string &filename, FFmpegParameters *parameters);
 
 virtual void play();
 virtual void pause();

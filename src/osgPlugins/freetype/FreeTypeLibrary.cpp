@@ -60,7 +60,7 @@ FreeTypeLibrary* FreeTypeLibrary::instance()
     return s_library.get();
 }
 
-bool FreeTypeLibrary::getFace(const std::string&fontfile, unsigned int index, FT_Face&face)
+bool FreeTypeLibrary::getFace(const std::string &fontfile, unsigned int index, FT_Face &face)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(getMutex());
 
@@ -104,7 +104,7 @@ bool FreeTypeLibrary::getFace(const std::string&fontfile, unsigned int index, FT
     return true;
 }
 
-FT_Byte* FreeTypeLibrary::getFace(std::istream&fontstream, unsigned int index, FT_Face&face)
+FT_Byte* FreeTypeLibrary::getFace(std::istream &fontstream, unsigned int index, FT_Face &face)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(getMutex());
 
@@ -157,7 +157,7 @@ FT_Byte* FreeTypeLibrary::getFace(std::istream&fontstream, unsigned int index, F
 }
 
 
-osgText::Font* FreeTypeLibrary::getFont(const std::string&fontfile, unsigned int index, unsigned int flags)
+osgText::Font* FreeTypeLibrary::getFont(const std::string &fontfile, unsigned int index, unsigned int flags)
 {
     FT_Face face;
 
@@ -173,7 +173,7 @@ osgText::Font* FreeTypeLibrary::getFont(const std::string&fontfile, unsigned int
 
     return font;
 }
-osgText::Font* FreeTypeLibrary::getFont(std::istream&fontstream, unsigned int index, unsigned int flags)
+osgText::Font* FreeTypeLibrary::getFont(std::istream &fontstream, unsigned int index, unsigned int flags)
 {
     FT_Face face    = 0;
     FT_Byte *buffer = getFace(fontstream, index, face);

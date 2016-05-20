@@ -38,7 +38,7 @@ class dxfLayer : public osg::Referenced
 public:
 dxfLayer(std::string name = "0") : _name(name), _color(7), _frozen(false) {}
 virtual ~dxfLayer() {}
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 virtual const std::string&getName() const
 {
     return _name;
@@ -47,7 +47,7 @@ virtual const unsigned short&getColor() const
 {
     return _color;
 }
-virtual void setName(const std::string&name)
+virtual void setName(const std::string &name)
 {
     _name = name;
 }
@@ -66,7 +66,7 @@ class dxfLayerTable : public dxfTable
 public:
 dxfLayerTable() {}
 virtual ~dxfLayerTable() {}
-virtual void assign(dxfFile *dxf, codeValue&cv);
+virtual void assign(dxfFile *dxf, codeValue &cv);
 
 dxfLayer* findOrCreateLayer(std::string name)
 {

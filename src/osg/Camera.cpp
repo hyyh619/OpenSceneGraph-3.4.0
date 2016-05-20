@@ -47,7 +47,7 @@ Camera::Camera() :
     setStateSet(new StateSet);
 }
 
-Camera::Camera(const Camera&camera, const CopyOp&copyop) :
+Camera::Camera(const Camera &camera, const CopyOp &copyop) :
     Transform(camera, copyop),
     CullSettings(camera),
     _view(camera._view),
@@ -91,7 +91,7 @@ Camera::~Camera()
         _graphicsContext->removeCamera(this);
 }
 
-void Camera::DrawCallback::operator ()(osg::RenderInfo&renderInfo) const
+void Camera::DrawCallback::operator ()(osg::RenderInfo &renderInfo) const
 {
     if (renderInfo.getCurrentCamera())
     {
@@ -242,41 +242,41 @@ void Camera::setProjectionMatrixAsPerspective(double fovy, double aspectRatio,
                                                   zNear, zFar));
 }
 
-bool Camera::getProjectionMatrixAsOrtho(double&left, double&right,
-                                        double&bottom, double&top,
-                                        double&zNear, double&zFar) const
+bool Camera::getProjectionMatrixAsOrtho(double &left, double &right,
+                                        double &bottom, double &top,
+                                        double &zNear, double &zFar) const
 {
     return _projectionMatrix.getOrtho(left, right,
                                       bottom, top,
                                       zNear, zFar);
 }
 
-bool Camera::getProjectionMatrixAsFrustum(double&left, double&right,
-                                          double&bottom, double&top,
-                                          double&zNear, double&zFar) const
+bool Camera::getProjectionMatrixAsFrustum(double &left, double &right,
+                                          double &bottom, double &top,
+                                          double &zNear, double &zFar) const
 {
     return _projectionMatrix.getFrustum(left, right,
                                         bottom, top,
                                         zNear, zFar);
 }
 
-bool Camera::getProjectionMatrixAsPerspective(double&fovy, double&aspectRatio,
-                                              double&zNear, double&zFar) const
+bool Camera::getProjectionMatrixAsPerspective(double &fovy, double &aspectRatio,
+                                              double &zNear, double &zFar) const
 {
     return _projectionMatrix.getPerspective(fovy, aspectRatio, zNear, zFar);
 }
 
-void Camera::setViewMatrixAsLookAt(const Vec3d&eye, const Vec3d&center, const Vec3d&up)
+void Camera::setViewMatrixAsLookAt(const Vec3d &eye, const Vec3d &center, const Vec3d &up)
 {
     setViewMatrix(osg::Matrixd::lookAt(eye, center, up));
 }
 
-void Camera::getViewMatrixAsLookAt(Vec3d&eye, Vec3d&center, Vec3d&up, double lookDistance) const
+void Camera::getViewMatrixAsLookAt(Vec3d &eye, Vec3d &center, Vec3d &up, double lookDistance) const
 {
     _viewMatrix.getLookAt(eye, center, up, lookDistance);
 }
 
-void Camera::getViewMatrixAsLookAt(Vec3f&eye, Vec3f&center, Vec3f&up, float lookDistance) const
+void Camera::getViewMatrixAsLookAt(Vec3f &eye, Vec3f &center, Vec3f &up, float lookDistance) const
 {
     _viewMatrix.getLookAt(eye, center, up, lookDistance);
 }
@@ -369,7 +369,7 @@ void Camera::releaseGLObjects(osg::State *state) const
 }
 
 
-bool Camera::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
+bool Camera::computeLocalToWorldMatrix(Matrix &matrix, NodeVisitor*) const
 {
     if (_referenceFrame == RELATIVE_RF)
     {
@@ -390,9 +390,9 @@ bool Camera::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
     return true;
 }
 
-bool Camera::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
+bool Camera::computeWorldToLocalMatrix(Matrix &matrix, NodeVisitor*) const
 {
-    const Matrixd&inverse = getInverseViewMatrix();
+    const Matrixd &inverse = getInverseViewMatrix();
 
     if (_referenceFrame == RELATIVE_RF)
     {
@@ -415,7 +415,7 @@ bool Camera::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
     return true;
 }
 
-void Camera::inheritCullSettings(const CullSettings&settings, unsigned int inheritanceMask)
+void Camera::inheritCullSettings(const CullSettings &settings, unsigned int inheritanceMask)
 {
     CullSettings::inheritCullSettings(settings, inheritanceMask);
 
@@ -446,7 +446,7 @@ void Camera::resizeAttachments(int width, int height)
          itr != _bufferAttachmentMap.end();
          ++itr)
     {
-        Attachment&attachment = itr->second;
+        Attachment &attachment = itr->second;
         if (attachment._texture.valid())
         {
             {

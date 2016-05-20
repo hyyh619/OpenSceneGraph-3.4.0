@@ -31,8 +31,8 @@ const char* className() const
     return "FBX reader/writer";
 }
 
-virtual ReadResult readNode(const std::string&filename, const Options*) const;
-virtual WriteResult writeNode(const osg::Node&, const std::string&filename, const Options*) const;
+virtual ReadResult readNode(const std::string &filename, const Options*) const;
+virtual WriteResult writeNode(const osg::Node&, const std::string &filename, const Options*) const;
 };
 
 ///////////////////////////////////////////////////////////////////////////

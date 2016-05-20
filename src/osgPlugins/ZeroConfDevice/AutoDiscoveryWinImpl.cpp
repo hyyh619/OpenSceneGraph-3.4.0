@@ -70,7 +70,7 @@ static DNSServiceErrorType RegisterService(DNSServiceRef *sdref,
 }
 
 
-AutoDiscoveryServerImpl::AutoDiscoveryServerImpl(const std::string&type, unsigned int port)
+AutoDiscoveryServerImpl::AutoDiscoveryServerImpl(const std::string &type, unsigned int port)
 {
     HeapSetInformation(NULL, HeapEnableTerminationOnCorruption, NULL, 0);
     std::ostringstream ss;
@@ -245,7 +245,7 @@ AutoDiscoveryServerImpl::~AutoDiscoveryServerImpl()
 }
 
 
-AutoDiscoveryClientImpl::AutoDiscoveryClientImpl(const std::string&type, DiscoveredServicesCallback *cb)
+AutoDiscoveryClientImpl::AutoDiscoveryClientImpl(const std::string &type, DiscoveredServicesCallback *cb)
 {
     _cb = cb;
     DNSServiceErrorType err = DNSServiceBrowse(&client, 0, kDNSServiceInterfaceIndexAny, type.c_str(), "", browse_reply, this);
@@ -271,7 +271,7 @@ void AutoDiscoveryClientImpl::update()
     resolveRefsToDelete.clear();
 }
 
-void AutoDiscoveryClientImpl::updateRef(DNSServiceRef&ref)
+void AutoDiscoveryClientImpl::updateRef(DNSServiceRef &ref)
 {
     int            dns_sd_fd = ref    ? DNSServiceRefSockFD(ref) : -1;
     int            nfds      = dns_sd_fd + 1;
@@ -315,7 +315,7 @@ AutoDiscoveryClientImpl::~AutoDiscoveryClientImpl()
 }
 
 
-void AutoDiscoveryClientImpl::serviceRemoved(const std::string&replyName, const std::string&replyType, const std::string&replyDomain)
+void AutoDiscoveryClientImpl::serviceRemoved(const std::string &replyName, const std::string &replyType, const std::string &replyDomain)
 {
     // TODO
     std::string full_name = replyName + "." + replyType + "." + replyDomain;
@@ -340,7 +340,7 @@ void AutoDiscoveryClientImpl::serviceRemoved(const std::string&replyName, const 
 }
 
 
-void AutoDiscoveryClientImpl::serviceAdded(const std::string&fullname, const std::string&host, unsigned int port)
+void AutoDiscoveryClientImpl::serviceAdded(const std::string &fullname, const std::string &host, unsigned int port)
 {
     if (_cb.valid())
     {

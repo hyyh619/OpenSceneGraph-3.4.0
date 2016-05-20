@@ -27,10 +27,10 @@ namespace lwosg
 class CoordinateSystemFixer : public osg::Referenced
 {
 public:
-virtual osg::Vec3 fix_point(const osg::Vec3&P) const  = 0;
-virtual osg::Vec4 fix_point(const osg::Vec4&P) const  = 0;
-virtual osg::Vec3 fix_vector(const osg::Vec3&V) const = 0;
-virtual osg::Vec4 fix_vector(const osg::Vec4&V) const = 0;
+virtual osg::Vec3 fix_point(const osg::Vec3 &P) const  = 0;
+virtual osg::Vec4 fix_point(const osg::Vec4 &P) const  = 0;
+virtual osg::Vec3 fix_vector(const osg::Vec3 &V) const = 0;
+virtual osg::Vec4 fix_vector(const osg::Vec4 &V) const = 0;
 virtual inline bool invert_winding() const
 {
     return false;
@@ -47,10 +47,10 @@ CoordinateSystemFixer&operator=(const CoordinateSystemFixer&)
 class LwoCoordFixer : public CoordinateSystemFixer
 {
 public:
-inline osg::Vec3 fix_point(const osg::Vec3&P) const;
-inline osg::Vec4 fix_point(const osg::Vec4&P) const;
-inline osg::Vec3 fix_vector(const osg::Vec3&V) const;
-inline osg::Vec4 fix_vector(const osg::Vec4&V) const;
+inline osg::Vec3 fix_point(const osg::Vec3 &P) const;
+inline osg::Vec4 fix_point(const osg::Vec4 &P) const;
+inline osg::Vec3 fix_vector(const osg::Vec3 &V) const;
+inline osg::Vec4 fix_vector(const osg::Vec4 &V) const;
 inline bool invert_winding() const
 {
     return true;
@@ -74,7 +74,7 @@ typedef std::map<int, Layer> Layer_map;
 typedef std::map<std::string, Surface> Surface_map;
 
 Object();
-Object(const iff::Chunk_list&data);
+Object(const iff::Chunk_list &data);
 
 inline CoordinateSystemFixer* get_coordinate_system_fixer()
 {
@@ -89,7 +89,7 @@ inline void set_coordinate_system_fixer(CoordinateSystemFixer *csf)
     csf_ = csf;
 }
 
-void build(const iff::Chunk_list&data);
+void build(const iff::Chunk_list &data);
 
 inline Layer_map&layers()
 {
@@ -119,9 +119,9 @@ inline const std::string&get_description() const
 }
 
 protected:
-void scan_clips(const iff::Chunk_list&data);
-void scan_surfaces(const iff::Chunk_list&data);
-void parse(const iff::Chunk_list&data);
+void scan_clips(const iff::Chunk_list &data);
+void scan_surfaces(const iff::Chunk_list &data);
+void parse(const iff::Chunk_list &data);
 
 void generate_normals();
 void generate_auto_texture_maps();
@@ -142,22 +142,22 @@ osg::ref_ptr<CoordinateSystemFixer> csf_;
 
 // INLINE METHODS
 
-inline osg::Vec3 LwoCoordFixer::fix_point(const osg::Vec3&P) const
+inline osg::Vec3 LwoCoordFixer::fix_point(const osg::Vec3 &P) const
 {
     return osg::Vec3(P.x(), P.z(), P.y());
 }
 
-inline osg::Vec4 LwoCoordFixer::fix_point(const osg::Vec4&P) const
+inline osg::Vec4 LwoCoordFixer::fix_point(const osg::Vec4 &P) const
 {
     return osg::Vec4(fix_point(osg::Vec3(P.x(), P.y(), P.z())), P.w());
 }
 
-inline osg::Vec3 LwoCoordFixer::fix_vector(const osg::Vec3&V) const
+inline osg::Vec3 LwoCoordFixer::fix_vector(const osg::Vec3 &V) const
 {
     return fix_point(V);
 }
 
-inline osg::Vec4 LwoCoordFixer::fix_vector(const osg::Vec4&V) const
+inline osg::Vec4 LwoCoordFixer::fix_vector(const osg::Vec4 &V) const
 {
     return fix_point(V);
 }

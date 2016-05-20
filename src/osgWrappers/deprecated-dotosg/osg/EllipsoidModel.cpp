@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool EllipsoidModel_readLocalData(Object&obj, Input&fr);
-bool EllipsoidModel_writeLocalData(const Object&obj, Output&fw);
+bool EllipsoidModel_readLocalData(Object &obj, Input &fr);
+bool EllipsoidModel_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(EllipsoidModel)
@@ -23,11 +23,11 @@ REGISTER_DOTOSGWRAPPER(EllipsoidModel)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool EllipsoidModel_readLocalData(Object&obj, Input&fr)
+bool EllipsoidModel_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    EllipsoidModel&em = static_cast<EllipsoidModel&>(obj);
+    EllipsoidModel &em = static_cast<EllipsoidModel&>(obj);
 
     if (fr.matchSequence("RadiusEquator %f"))
     {
@@ -51,9 +51,9 @@ bool EllipsoidModel_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool EllipsoidModel_writeLocalData(const Object&obj, Output&fw)
+bool EllipsoidModel_writeLocalData(const Object &obj, Output &fw)
 {
-    const EllipsoidModel&em = static_cast<const EllipsoidModel&>(obj);
+    const EllipsoidModel &em = static_cast<const EllipsoidModel&>(obj);
 
     int prec = fw.precision();
 

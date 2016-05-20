@@ -166,7 +166,7 @@ virtual const char* className() const
     return "Default Quicktime Image Reader/Writer";
 }
 
-virtual bool acceptsMovieExtension(const std::string&extension) const
+virtual bool acceptsMovieExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "mov") ||
            osgDB::equalCaseInsensitive(extension, "mpg") ||
@@ -181,12 +181,12 @@ virtual bool acceptsMovieExtension(const std::string&extension) const
            osgDB::equalCaseInsensitive(extension, "3gp");
 }
 
-virtual bool acceptsLiveExtension(const std::string&extension) const
+virtual bool acceptsLiveExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "live");
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     // this should be the only image importer required on the Mac
     // dont know what else it supports, but these will do
@@ -209,7 +209,7 @@ virtual bool acceptsExtension(const std::string&extension) const
         acceptsLiveExtension(extension);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -250,7 +250,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
                 if (devices_list.size())
                 {
                     // Video
-                    OSG_SGDeviceList&video_device_list = devices_list[0];
+                    OSG_SGDeviceList &video_device_list = devices_list[0];
                     // Print
                     OSG_ALWAYS << std::endl;
                     OSG_ALWAYS << "Video Component/Input IDs follow: " << std::endl;
@@ -266,7 +266,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
                 if (devices_list.size() > 1)
                 {
                     // Audio
-                    OSG_SGDeviceList&audio_device_list = devices_list[1];
+                    OSG_SGDeviceList &audio_device_list = devices_list[1];
                     // Print
                     OSG_ALWAYS << std::endl;
                     OSG_ALWAYS << "Audio Component/Input IDs follow: " << std::endl;
@@ -374,7 +374,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return image.release();
 }
 
-virtual ReadResult readImage(std::istream&is, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readImage(std::istream &is, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     std::string filename = "";
     long        sizeHint(0);
@@ -417,7 +417,7 @@ virtual ReadResult readImage(std::istream&is, const osgDB::ReaderWriter::Options
     return image.release();
 }
 
-virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName, const osgDB::ReaderWriter::Options*) const
+virtual WriteResult writeImage(const osg::Image &img, const std::string &fileName, const osgDB::ReaderWriter::Options*) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 
@@ -458,7 +458,7 @@ virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName,
     return WriteResult::ERROR_IN_WRITING_FILE;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, std::ostream&os, const Options *options = NULL) const
+virtual WriteResult writeImage(const osg::Image &img, std::ostream &os, const Options *options = NULL) const
 {
     std::string filename = "file.jpg";     // use jpeg if not otherwise specified
 

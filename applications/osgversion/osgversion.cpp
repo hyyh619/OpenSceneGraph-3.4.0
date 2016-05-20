@@ -19,7 +19,7 @@
 #include <osg/BoundingSphere>
 
 #ifdef BUILD_CONTRIBUTORS
-extern void printContributors(const std::string&changeLog, bool printNumEntries);
+extern void printContributors(const std::string &changeLog, bool printNumEntries);
 #endif
 
 using namespace std;

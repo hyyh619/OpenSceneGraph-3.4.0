@@ -27,7 +27,7 @@ MinimalCullBoundsShadowMap::MinimalCullBoundsShadowMap() : BaseClass()
 {}
 
 MinimalCullBoundsShadowMap::MinimalCullBoundsShadowMap
-    (const MinimalCullBoundsShadowMap&copy, const osg::CopyOp&copyop) :
+    (const MinimalCullBoundsShadowMap &copy, const osg::CopyOp &copyop) :
     BaseClass(copy, copyop)
 {}
 
@@ -44,9 +44,9 @@ void MinimalCullBoundsShadowMap::ViewData::init
 
 void MinimalCullBoundsShadowMap::ViewData::aimShadowCastingCamera
     (const osg::Light *light,
-    const osg::Vec4&lightPos,
-    const osg::Vec3&lightDir,
-    const osg::Vec3&lightUp)
+    const osg::Vec4 &lightPos,
+    const osg::Vec3 &lightDir,
+    const osg::Vec3 &lightUp)
 {
     MinimalShadowMap::ViewData::aimShadowCastingCamera
         (light, lightPos, lightDir, lightUp);
@@ -96,7 +96,7 @@ void MinimalCullBoundsShadowMap::ViewData::cullShadowReceivingScene()
 }
 
 void MinimalCullBoundsShadowMap::ViewData::GetRenderLeaves
-    (osgUtil::RenderBin *rb, RenderLeafList&rll)
+    (osgUtil::RenderBin *rb, RenderLeafList &rll)
 {
     osgUtil::RenderBin::RenderBinList                 &bins = rb->getRenderBinList();
     osgUtil::RenderBin::RenderBinList::const_iterator rbitr;
@@ -147,7 +147,7 @@ bool operator()(const osgUtil::RenderLeaf *a, const osgUtil::RenderLeaf *b)
 };
 
 inline bool CheckAndMultiplyBoxIfWithinPolytope
-    (osg::BoundingBox&bb, osg::Matrix&m, osg::Polytope&p)
+    (osg::BoundingBox &bb, osg::Matrix &m, osg::Polytope &p)
 {
     if (!bb.valid())
         return false;
@@ -204,7 +204,7 @@ inline bool CheckAndMultiplyBoxIfWithinPolytope
 }
 
 unsigned MinimalCullBoundsShadowMap::ViewData::RemoveOldRenderLeaves
-    (RenderLeafList&rllNew, RenderLeafList&rllOld)
+    (RenderLeafList &rllNew, RenderLeafList &rllOld)
 {
     unsigned count = 0;
 
@@ -228,7 +228,7 @@ unsigned MinimalCullBoundsShadowMap::ViewData::RemoveOldRenderLeaves
 }
 
 unsigned MinimalCullBoundsShadowMap::ViewData::RemoveIgnoredRenderLeaves
-    (RenderLeafList&rll)
+    (RenderLeafList &rll)
 {
     unsigned count = 0;
 
@@ -255,7 +255,7 @@ unsigned MinimalCullBoundsShadowMap::ViewData::RemoveIgnoredRenderLeaves
 }
 
 osg::BoundingBox MinimalCullBoundsShadowMap::ViewData::ComputeRenderLeavesBounds
-    (RenderLeafList&rll, osg::Matrix&projectionToWorld)
+    (RenderLeafList &rll, osg::Matrix &projectionToWorld)
 {
     osg::BoundingBox bbResult;
 
@@ -337,7 +337,7 @@ osg::BoundingBox MinimalCullBoundsShadowMap::ViewData::ComputeRenderLeavesBounds
 }
 
 osg::BoundingBox MinimalCullBoundsShadowMap::ViewData::ComputeRenderLeavesBounds
-    (RenderLeafList&rll, osg::Matrix&projectionToWorld, osg::Polytope&p)
+    (RenderLeafList &rll, osg::Matrix &projectionToWorld, osg::Polytope &p)
 {
     osg::BoundingBox bbResult, bb;
 

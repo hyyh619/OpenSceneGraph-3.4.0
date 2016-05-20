@@ -33,7 +33,7 @@ Cursor::Cursor() :
     setNumChildrenRequiringUpdateTraversal(1);
 }
 
-Cursor::Cursor(const std::string&filename, float size) :
+Cursor::Cursor(const std::string &filename, float size) :
     _cursorDirty(true)
 {
     setDataVariance(osg::Object::DYNAMIC);
@@ -45,7 +45,7 @@ Cursor::Cursor(const std::string&filename, float size) :
     setSize(size);
 }
 
-Cursor::Cursor(const Cursor&rhs, const osg::CopyOp&copyop) :
+Cursor::Cursor(const Cursor &rhs, const osg::CopyOp &copyop) :
     osg::Group(rhs, copyop),
     _filename(rhs._filename),
     _size(rhs._size),
@@ -172,7 +172,7 @@ void Cursor::updatePosition()
 }
 
 
-void Cursor::traverse(osg::NodeVisitor&nv)
+void Cursor::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
@@ -190,7 +190,7 @@ void Cursor::traverse(osg::NodeVisitor&nv)
         if (!ev)
             return;
 
-        osgGA::EventQueue::Events&events = ev->getEvents();
+        osgGA::EventQueue::Events &events = ev->getEvents();
 
         for (osgGA::EventQueue::Events::iterator itr = events.begin();
              itr != events.end();

@@ -6,8 +6,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  RadialShooter_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  RadialShooter_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  RadialShooter_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  RadialShooter_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(RadialShooter_Proxy)
 (
@@ -18,10 +18,10 @@ REGISTER_DOTOSGWRAPPER(RadialShooter_Proxy)
     RadialShooter_writeLocalData
 );
 
-bool RadialShooter_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool RadialShooter_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::RadialShooter&myobj     = static_cast<osgParticle::RadialShooter&>(obj);
-    bool                      itAdvanced = false;
+    osgParticle::RadialShooter &myobj     = static_cast<osgParticle::RadialShooter&>(obj);
+    bool                       itAdvanced = false;
 
     osgParticle::rangef r;
 
@@ -71,10 +71,10 @@ bool RadialShooter_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool RadialShooter_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool RadialShooter_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::RadialShooter&myobj = static_cast<const osgParticle::RadialShooter&>(obj);
-    osgParticle::rangef             r;
+    const osgParticle::RadialShooter &myobj = static_cast<const osgParticle::RadialShooter&>(obj);
+    osgParticle::rangef              r;
 
     r = myobj.getThetaRange();
     fw.indent() << "thetaRange " << r.minimum << " " << r.maximum << std::endl;

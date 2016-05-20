@@ -33,9 +33,9 @@ struct ConvertTrianglesOperator : public osg::Referenced
     {
         return false;
     }
-    virtual void popNode()                                                                                                                             = 0;
-    virtual void setGeometryData(const osg::Matrix&matrix, osg::Geometry *inputGeometry, osg::Geometry *outputGeometry, float typeID, float lodNumber) = 0;
-    virtual void operator()(unsigned int i1, unsigned int i2, unsigned int i3)                                                                         = 0;
+    virtual void popNode()                                                                                                                              = 0;
+    virtual void setGeometryData(const osg::Matrix &matrix, osg::Geometry *inputGeometry, osg::Geometry *outputGeometry, float typeID, float lodNumber) = 0;
+    virtual void operator()(unsigned int i1, unsigned int i2, unsigned int i3)                                                                          = 0;
 };
 
 class GetVec2FromArrayVisitor : public osg::ValueVisitor
@@ -43,31 +43,31 @@ class GetVec2FromArrayVisitor : public osg::ValueVisitor
 public:
 GetVec2FromArrayVisitor()
 {}
-void apply(GLfloat&value)
+void apply(GLfloat &value)
 {
     out = osg::Vec2(value, 0.0);
 }
-void apply(osg::Vec2&value)
+void apply(osg::Vec2 &value)
 {
     out = osg::Vec2(value.x(), value.y());
 }
-virtual void apply(osg::Vec2d&value)
+virtual void apply(osg::Vec2d &value)
 {
     out = osg::Vec2(value.x(), value.y());
 }
-void apply(osg::Vec3&value)
+void apply(osg::Vec3 &value)
 {
     out = osg::Vec2(value.x(), value.y());
 }
-void apply(osg::Vec4&value)
+void apply(osg::Vec4 &value)
 {
     out = osg::Vec2(value.x(), value.y());
 }
-void apply(osg::Vec3d&value)
+void apply(osg::Vec3d &value)
 {
     out = osg::Vec2(value.x(), value.y());
 }
-void apply(osg::Vec4d&value)
+void apply(osg::Vec4d &value)
 {
     out = osg::Vec2(value.x(), value.y());
 }
@@ -111,7 +111,7 @@ struct ConvertTrianglesOperatorClassic : public ConvertTrianglesOperator
     {
         _boneIndices.pop_back();
     }
-    virtual void setGeometryData(const osg::Matrix&matrix, osg::Geometry *inputGeometry, osg::Geometry *outputGeometry, float typeID, float lodNumber)
+    virtual void setGeometryData(const osg::Matrix &matrix, osg::Geometry *inputGeometry, osg::Geometry *outputGeometry, float typeID, float lodNumber)
     {
         _matrix = matrix;
 
@@ -194,7 +194,7 @@ struct ConvertTrianglesOperatorClassic : public ConvertTrianglesOperator
         for (unsigned int i = 0; i < 3; ++i)
             _outputTexCoord1->push_back(osg::Vec3(_typeID, _lodNumber, _boneIndices.back()));
     }
-    void registerBoneByName(const std::string&boneName, int boneIndex)
+    void registerBoneByName(const std::string &boneName, int boneIndex)
     {
         _boneNames[boneName] = float(boneIndex);
     }
@@ -248,7 +248,7 @@ struct ConvertTrianglesBridge
     {
         _converter->popNode();
     }
-    inline void setGeometryData(const osg::Matrix&matrix, osg::Geometry *inputGeometry, osg::Geometry *outputGeometry, float typeID, float lodNumber)
+    inline void setGeometryData(const osg::Matrix &matrix, osg::Geometry *inputGeometry, osg::Geometry *outputGeometry, float typeID, float lodNumber)
     {
         _converter->setGeometryData(matrix, inputGeometry, outputGeometry, typeID, lodNumber);
     }
@@ -274,9 +274,9 @@ struct AddObjectResult
 };
 AddObjectResult addObject(osg::Node *object, unsigned int typeID, unsigned int lodNumber);
 
-void apply(osg::Node&node);
-void apply(osg::Transform&transform);
-void apply(osg::Geode&geode);
+void apply(osg::Node &node);
+void apply(osg::Transform &transform);
+void apply(osg::Geode &geode);
 
 inline osg::Geometry* getAggregatedGeometry()
 {

@@ -14,7 +14,7 @@ class FOX_OSG_MDIView : public FXMDIChild
 FXDECLARE(FOX_OSG_MDIView)
 
 public:
-FOX_OSG_MDIView(FXMDIClient *p, const FXString&name,
+FOX_OSG_MDIView(FXMDIClient *p, const FXString &name,
                 FXIcon *ic = NULL, FXPopup *pup = NULL, FXuint opts = 0,
                 FXint x = 0, FXint y = 0, FXint w = 0, FXint h = 0);
 

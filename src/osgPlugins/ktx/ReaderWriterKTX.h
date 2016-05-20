@@ -43,10 +43,10 @@ static const uint32_t      NotMyEndian = 0x01020304;
 ReaderWriterKTX();
 
 virtual const char* className() const;
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options* = NULL) const;
-virtual ReadResult readKTXStream(std::istream&fin) const;
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const;
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options* = NULL) const;
+virtual ReadResult readKTXStream(std::istream &fin) const;
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const;
 
 private:
-bool correctByteOrder(KTXTexHeader&header) const;
+bool correctByteOrder(KTXTexHeader &header) const;
 };

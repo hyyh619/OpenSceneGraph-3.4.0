@@ -67,7 +67,7 @@ protected:
 
 virtual ~JoystickDevice();
 
-void capture(ValueList&axisValues, ValueList&buttonValues) const;
+void capture(ValueList &axisValues, ValueList &buttonValues) const;
 
 SDL_Joystick *_joystick;
 int          _numAxes;

@@ -52,15 +52,15 @@ void    processInfoDecal();
 void    processItem();
 
 osg::Vec3f     getVector(std::string str);
-std::string    getToken(std::string str, size_t&index);
-void           parseParameters(std::string&entityText);
+std::string    getToken(std::string str, size_t &index);
+void           parseParameters(std::string &entityText);
 
 osg::ref_ptr<osg::Group>    createBrushGeometry();
 osg::ref_ptr<osg::Group>    createModelGeometry();
 
 public:
 
-VBSPEntity(std::string&entityText, VBSPData *bspData);
+VBSPEntity(std::string &entityText, VBSPData *bspData);
 ~VBSPEntity();
 
 EntityClass                 getClass();

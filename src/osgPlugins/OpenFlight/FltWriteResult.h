@@ -51,12 +51,12 @@ int getNumWarnings() const;
 typedef std::pair<osg::NotifySeverity, std::string> MessagePair;
 typedef std::vector<MessagePair> MessageVector;
 
-void warn(const std::string&ss)
+void warn(const std::string &ss)
 {
     messages_.push_back(std::make_pair(osg::WARN, ss));
 }
 
-void error(const std::string&ss)
+void error(const std::string &ss)
 {
     messages_.push_back(std::make_pair(osg::FATAL, ss));
 }

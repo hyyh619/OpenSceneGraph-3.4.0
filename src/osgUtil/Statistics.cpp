@@ -59,7 +59,7 @@ void Statistics::reset()
 
 void Statistics::drawArrays(GLenum mode, GLint, GLsizei count)
 {
-    PrimitivePair&prim = _primitiveCount[mode];
+    PrimitivePair &prim = _primitiveCount[mode];
 
     ++prim.first;
     prim.second             += count;
@@ -68,7 +68,7 @@ void Statistics::drawArrays(GLenum mode, GLint, GLsizei count)
 
 void Statistics::drawElements(GLenum mode, GLsizei count, const GLubyte*)
 {
-    PrimitivePair&prim = _primitiveCount[mode];
+    PrimitivePair &prim = _primitiveCount[mode];
 
     ++prim.first;
     prim.second             += count;
@@ -77,7 +77,7 @@ void Statistics::drawElements(GLenum mode, GLsizei count, const GLubyte*)
 
 void Statistics::drawElements(GLenum mode, GLsizei count, const GLushort*)
 {
-    PrimitivePair&prim = _primitiveCount[mode];
+    PrimitivePair &prim = _primitiveCount[mode];
 
     ++prim.first;
     prim.second             += count;
@@ -86,7 +86,7 @@ void Statistics::drawElements(GLenum mode, GLsizei count, const GLushort*)
 
 void Statistics::drawElements(GLenum mode, GLsizei count, const GLuint*)
 {
-    PrimitivePair&prim = _primitiveCount[mode];
+    PrimitivePair &prim = _primitiveCount[mode];
 
     ++prim.first;
     prim.second             += count;
@@ -97,7 +97,7 @@ void Statistics::drawElements(GLenum mode, GLsizei count, const GLuint*)
 void Statistics::begin(GLenum mode)
 {
     _currentPrimitiveFunctorMode = mode;
-    PrimitivePair&prim = _primitiveCount[mode];
+    PrimitivePair &prim = _primitiveCount[mode];
     ++prim.first;
     _number_of_vertexes = 0;
 }
@@ -110,7 +110,7 @@ void Statistics::end()
     _vertexCount += _number_of_vertexes;
 }
 
-void Statistics::add(const Statistics&stats)
+void Statistics::add(const Statistics &stats)
 {
     numDrawables     += stats.numDrawables;
     numFastDrawables += stats.numFastDrawables;
@@ -184,7 +184,7 @@ void StatsVisitor::reset()
     _instancedStats.reset();
 }
 
-void StatsVisitor::apply(osg::Node&node)
+void StatsVisitor::apply(osg::Node &node)
 {
     if (node.getStateSet())
     {
@@ -194,7 +194,7 @@ void StatsVisitor::apply(osg::Node&node)
     traverse(node);
 }
 
-void StatsVisitor::apply(osg::Group&node)
+void StatsVisitor::apply(osg::Group &node)
 {
     if (node.getStateSet())
     {
@@ -207,7 +207,7 @@ void StatsVisitor::apply(osg::Group&node)
     traverse(node);
 }
 
-void StatsVisitor::apply(osg::Transform&node)
+void StatsVisitor::apply(osg::Transform &node)
 {
     if (node.getStateSet())
     {
@@ -220,7 +220,7 @@ void StatsVisitor::apply(osg::Transform&node)
     traverse(node);
 }
 
-void StatsVisitor::apply(osg::LOD&node)
+void StatsVisitor::apply(osg::LOD &node)
 {
     if (node.getStateSet())
     {
@@ -233,7 +233,7 @@ void StatsVisitor::apply(osg::LOD&node)
     traverse(node);
 }
 
-void StatsVisitor::apply(osg::Switch&node)
+void StatsVisitor::apply(osg::Switch &node)
 {
     if (node.getStateSet())
     {
@@ -246,7 +246,7 @@ void StatsVisitor::apply(osg::Switch&node)
     traverse(node);
 }
 
-void StatsVisitor::apply(osg::Geode&node)
+void StatsVisitor::apply(osg::Geode &node)
 {
     if (node.getStateSet())
     {
@@ -259,7 +259,7 @@ void StatsVisitor::apply(osg::Geode&node)
     traverse(node);
 }
 
-void StatsVisitor::apply(osg::Drawable&drawable)
+void StatsVisitor::apply(osg::Drawable &drawable)
 {
     if (drawable.getStateSet())
     {
@@ -283,7 +283,7 @@ void StatsVisitor::apply(osg::Drawable&drawable)
     }
 }
 
-void StatsVisitor::apply(osg::StateSet&stateSet)
+void StatsVisitor::apply(osg::StateSet &stateSet)
 {
     ++_numInstancedStateSet;
     _statesetSet.insert(&stateSet);
@@ -301,7 +301,7 @@ void StatsVisitor::totalUpStats()
     }
 }
 
-void StatsVisitor::print(std::ostream&out)
+void StatsVisitor::print(std::ostream &out)
 {
     unsigned int                                     unique_primitives = 0;
     osgUtil::Statistics::PrimitiveCountMap::iterator pcmitr;

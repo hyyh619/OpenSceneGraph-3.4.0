@@ -2304,7 +2304,7 @@ static void yyerror(const char *errmsg)
             flexer->YYText());
 }
 
-bool CameraConfig::parseFile(const std::string&file)
+bool CameraConfig::parseFile(const std::string &file)
 {
     fileName.clear();
 

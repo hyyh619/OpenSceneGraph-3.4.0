@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ClearNode_readLocalData(Object&obj, Input&fr);
-bool ClearNode_writeLocalData(const Object&obj, Output&fw);
+bool ClearNode_readLocalData(Object &obj, Input &fr);
+bool ClearNode_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 
@@ -32,11 +32,11 @@ REGISTER_DOTOSGWRAPPER(ClearNode)
     &ClearNode_writeLocalData
 );
 
-bool ClearNode_readLocalData(Object&obj, Input&fr)
+bool ClearNode_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ClearNode&es = static_cast<ClearNode&>(obj);
+    ClearNode &es = static_cast<ClearNode&>(obj);
 
     if (fr.matchSequence("requiresClear"))
     {
@@ -83,9 +83,9 @@ bool ClearNode_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool ClearNode_writeLocalData(const Object&obj, Output&fw)
+bool ClearNode_writeLocalData(const Object &obj, Output &fw)
 {
-    const ClearNode&es = static_cast<const ClearNode&>(obj);
+    const ClearNode &es = static_cast<const ClearNode&>(obj);
 
     fw.indent() << "requiresClear ";
     if (es.getRequiresClear())

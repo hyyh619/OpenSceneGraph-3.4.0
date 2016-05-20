@@ -42,7 +42,7 @@ void LightSource::setLight(Light *light)
 }
 
 // Set the GLModes on StateSet associated with the LightSource.
-void LightSource::setStateSetModes(StateSet&stateset, StateAttribute::GLModeValue value) const
+void LightSource::setStateSetModes(StateSet &stateset, StateAttribute::GLModeValue value) const
 {
     if (_light.valid())
     {
@@ -65,7 +65,7 @@ BoundingSphere LightSource::computeBound() const
 
     if (_light.valid() && _referenceFrame == RELATIVE_RF)
     {
-        const Vec4&pos = _light->getPosition();
+        const Vec4 &pos = _light->getPosition();
         if (pos[3] != 0.0f)
         {
             float div = 1.0f / pos[3];

@@ -26,7 +26,7 @@ DisplacementMappingTechnique::DisplacementMappingTechnique()
     // OSG_NOTICE<<"DisplacementMappingTechnique::DisplacementMappingTechnique()"<<std::endl;
 }
 
-DisplacementMappingTechnique::DisplacementMappingTechnique(const DisplacementMappingTechnique&st, const osg::CopyOp&copyop) :
+DisplacementMappingTechnique::DisplacementMappingTechnique(const DisplacementMappingTechnique &st, const osg::CopyOp &copyop) :
     osgTerrain::TerrainTechnique(st, copyop)
 {}
 
@@ -67,7 +67,7 @@ void DisplacementMappingTechnique::cull(osgUtil::CullVisitor *cv)
 }
 
 
-void DisplacementMappingTechnique::traverse(osg::NodeVisitor&nv)
+void DisplacementMappingTechnique::traverse(osg::NodeVisitor &nv)
 {
     if (!_terrainTile)
         return;

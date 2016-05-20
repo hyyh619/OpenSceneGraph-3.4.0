@@ -40,7 +40,7 @@ View::View() :
     stateset->setGlobalDefaults();
 }
 
-View::View(const osg::View&view, const osg::CopyOp&copyop) :
+View::View(const osg::View &view, const osg::CopyOp &copyop) :
     Object(view, copyop),
     _lightingMode(view._lightingMode),
     _light(view._light),
@@ -64,7 +64,7 @@ View::~View()
          itr != _slaves.end();
          ++itr)
     {
-        Slave&cd = *itr;
+        Slave &cd = *itr;
         cd._camera->setView(0);
         cd._camera->setCullCallback(0);
     }
@@ -84,7 +84,7 @@ View::~View()
     OSG_INFO << "Done destructing osg::View" << std::endl;
 }
 
-void View::take(osg::View&rhs)
+void View::take(osg::View &rhs)
 {
     // copy across the contents first
     _lightingMode = rhs._lightingMode;
@@ -142,12 +142,12 @@ void View::updateSlaves()
 {
     for (unsigned int i = 0; i < _slaves.size(); ++i)
     {
-        Slave&slave = _slaves[i];
+        Slave &slave = _slaves[i];
         slave.updateSlave(*this);
     }
 }
 
-void View::Slave::updateSlaveImplementation(View&view)
+void View::Slave::updateSlaveImplementation(View &view)
 {
     if (!view.getCamera())
         return;
@@ -161,7 +161,7 @@ void View::Slave::updateSlaveImplementation(View&view)
     _camera->inheritCullSettings(*(view.getCamera()), _camera->getInheritanceMask());
 }
 
-bool View::addSlave(osg::Camera *camera, const osg::Matrix&projectionOffset, const osg::Matrix&viewOffset, bool useMastersSceneData)
+bool View::addSlave(osg::Camera *camera, const osg::Matrix &projectionOffset, const osg::Matrix &viewOffset, bool useMastersSceneData)
 {
     if (!camera)
         return false;

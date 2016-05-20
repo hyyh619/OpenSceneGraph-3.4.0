@@ -23,7 +23,7 @@ using namespace osgUI;
 Popup::Popup()
 {}
 
-Popup::Popup(const osgUI::Popup&dialog, const osg::CopyOp&copyop) :
+Popup::Popup(const osgUI::Popup &dialog, const osg::CopyOp &copyop) :
     Widget(dialog, copyop),
     _title(dialog._title)
 {}

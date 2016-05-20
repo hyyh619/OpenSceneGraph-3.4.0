@@ -25,22 +25,22 @@
 using namespace osg;
 
 
-void Quat::set(const Matrixf&matrix)
+void Quat::set(const Matrixf &matrix)
 {
     *this = matrix.getRotate();
 }
 
-void Quat::set(const Matrixd&matrix)
+void Quat::set(const Matrixd &matrix)
 {
     *this = matrix.getRotate();
 }
 
-void Quat::get(Matrixf&matrix) const
+void Quat::get(Matrixf &matrix) const
 {
     matrix.makeRotate(*this);
 }
 
-void Quat::get(Matrixd&matrix) const
+void Quat::get(Matrixd &matrix) const
 {
     matrix.makeRotate(*this);
 }
@@ -72,28 +72,28 @@ void Quat::makeRotate(value_type angle, value_type x, value_type y, value_type z
 }
 
 
-void Quat::makeRotate(value_type angle, const Vec3f&vec)
+void Quat::makeRotate(value_type angle, const Vec3f &vec)
 {
     makeRotate(angle, vec[0], vec[1], vec[2]);
 }
-void Quat::makeRotate(value_type angle, const Vec3d&vec)
+void Quat::makeRotate(value_type angle, const Vec3d &vec)
 {
     makeRotate(angle, vec[0], vec[1], vec[2]);
 }
 
 
-void Quat::makeRotate(value_type angle1, const Vec3f&axis1,
-                      value_type angle2, const Vec3f&axis2,
-                      value_type angle3, const Vec3f&axis3)
+void Quat::makeRotate(value_type angle1, const Vec3f &axis1,
+                      value_type angle2, const Vec3f &axis2,
+                      value_type angle3, const Vec3f &axis3)
 {
     makeRotate(angle1, Vec3d(axis1),
                angle2, Vec3d(axis2),
                angle3, Vec3d(axis3));
 }
 
-void Quat::makeRotate(value_type angle1, const Vec3d&axis1,
-                      value_type angle2, const Vec3d&axis2,
-                      value_type angle3, const Vec3d&axis3)
+void Quat::makeRotate(value_type angle1, const Vec3d &axis1,
+                      value_type angle2, const Vec3d &axis2,
+                      value_type angle3, const Vec3d &axis3)
 {
     Quat q1; q1.makeRotate(angle1, axis1);
     Quat q2; q2.makeRotate(angle2, axis2);
@@ -103,7 +103,7 @@ void Quat::makeRotate(value_type angle1, const Vec3d&axis1,
 }
 
 
-void Quat::makeRotate(const Vec3f&from, const Vec3f&to)
+void Quat::makeRotate(const Vec3f &from, const Vec3f &to)
 {
     makeRotate(Vec3d(from), Vec3d(to));
 }
@@ -122,7 +122,7 @@ void Quat::makeRotate(const Vec3f&from, const Vec3f&to)
 
    @author Nicolas Brodu
  */
-void Quat::makeRotate(const Vec3d&from, const Vec3d&to)
+void Quat::makeRotate(const Vec3d &from, const Vec3d &to)
 {
     // This routine takes any vector as argument but normalized
     // vectors are necessary, if only for computing the dot product.
@@ -219,7 +219,7 @@ void Quat::makeRotate(const Vec3d&from, const Vec3d&to)
 // and then use a cross product to get the rotation axis
 // Watch out for the two special cases of when the vectors
 // are co-incident or opposite in direction.
-void Quat::makeRotate_original(const Vec3d&from, const Vec3d&to)
+void Quat::makeRotate_original(const Vec3d &from, const Vec3d &to)
 {
     const value_type epsilon = 0.0000001;
 
@@ -275,7 +275,7 @@ void Quat::makeRotate_original(const Vec3d&from, const Vec3d&to)
     }
 }
 
-void Quat::getRotate(value_type&angle, Vec3f&vec) const
+void Quat::getRotate(value_type &angle, Vec3f &vec) const
 {
     value_type x, y, z;
 
@@ -284,7 +284,7 @@ void Quat::getRotate(value_type&angle, Vec3f&vec) const
     vec[1] = y;
     vec[2] = z;
 }
-void Quat::getRotate(value_type&angle, Vec3d&vec) const
+void Quat::getRotate(value_type &angle, Vec3d &vec) const
 {
     value_type x, y, z;
 
@@ -298,7 +298,7 @@ void Quat::getRotate(value_type&angle, Vec3d&vec) const
 // Get the angle of rotation and axis of this Quat object.
 // Won't give very meaningful results if the Quat is not associated
 // with a rotation!
-void Quat::getRotate(value_type&angle, value_type&x, value_type&y, value_type&z) const
+void Quat::getRotate(value_type &angle, value_type &x, value_type &y, value_type &z) const
 {
     value_type sinhalfangle = sqrt(_v[0] * _v[0] + _v[1] * _v[1] + _v[2] * _v[2]);
 
@@ -323,7 +323,7 @@ void Quat::getRotate(value_type&angle, value_type&x, value_type&y, value_type&z)
 /// Reference: Shoemake at SIGGRAPH 89
 /// See also
 /// http://www.gamasutra.com/features/programming/19980703/quaternions_01.htm
-void Quat::slerp(value_type t, const Quat&from, const Quat&to)
+void Quat::slerp(value_type t, const Quat &from, const Quat &to)
 {
     const double epsilon = 0.00001;
     double       omega, cosomega, sinomega, scale_from, scale_to;

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_VEC3
 #define OSG_VEC3 1
@@ -17,9 +17,7 @@
 #include <osg/Vec3f>
 
 namespace osg {
-
     typedef Vec3f Vec3;
-
 }
 
 #endif

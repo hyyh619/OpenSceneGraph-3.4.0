@@ -9,7 +9,7 @@
 using namespace osg;
 using namespace osgDB;
 
-static bool ClipControl_matchOriginStr(const char *str, ClipControl::Origin&origin)
+static bool ClipControl_matchOriginStr(const char *str, ClipControl::Origin &origin)
 {
     if (strcmp(str, "LOWER_LEFT") == 0)
         origin = ClipControl::LOWER_LEFT;
@@ -33,7 +33,7 @@ static const char* ClipControl_getOriginStr(ClipControl::Origin origin)
     return "";
 }
 
-static bool ClipControl_matchDepthModeStr(const char *str, ClipControl::DepthMode&depthMode)
+static bool ClipControl_matchDepthModeStr(const char *str, ClipControl::DepthMode &depthMode)
 {
     if (strcmp(str, "NEGATIVE_ONE_TO_ONE") == 0)
         depthMode = ClipControl::NEGATIVE_ONE_TO_ONE;
@@ -57,11 +57,11 @@ static const char* ClipControl_getDepthModeStr(ClipControl::DepthMode depthMode)
     return "";
 }
 
-static bool ClipControl_readLocalData(Object&obj, Input&fr)
+static bool ClipControl_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ClipControl&clipControl = static_cast<ClipControl&>(obj);
+    ClipControl &clipControl = static_cast<ClipControl&>(obj);
 
     ClipControl::Origin origin;
 
@@ -84,9 +84,9 @@ static bool ClipControl_readLocalData(Object&obj, Input&fr)
 }
 
 
-static bool ClipControl_writeLocalData(const Object&obj, Output&fw)
+static bool ClipControl_writeLocalData(const Object &obj, Output &fw)
 {
-    const ClipControl&clipControl = static_cast<const ClipControl&>(obj);
+    const ClipControl &clipControl = static_cast<const ClipControl&>(obj);
 
     fw.indent() << "origin " << ClipControl_getOriginStr(clipControl.getOrigin()) << std::endl;
     fw.indent() << "depthMode " << ClipControl_getDepthModeStr(clipControl.getDepthMode()) << std::endl;

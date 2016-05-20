@@ -24,7 +24,7 @@ using namespace osgUI;
 LineEdit::LineEdit()
 {}
 
-LineEdit::LineEdit(const osgUI::LineEdit&label, const osg::CopyOp&copyop) :
+LineEdit::LineEdit(const osgUI::LineEdit &label, const osg::CopyOp &copyop) :
     Widget(label, copyop),
     _text(label._text)
 {}
@@ -85,7 +85,7 @@ bool LineEdit::handleImplementation(osgGA::EventVisitor *ev, osgGA::Event *event
     return false;
 }
 
-void LineEdit::setText(const std::string&text)
+void LineEdit::setText(const std::string &text)
 {
     if (_text == text)
         return;
@@ -123,7 +123,7 @@ void LineEdit::leaveImplementation()
 }
 
 
-void LineEdit::textChanged(const std::string&text)
+void LineEdit::textChanged(const std::string &text)
 {
     osg::CallbackObject *co = getCallbackObject(this, "textChanged");
 
@@ -140,7 +140,7 @@ void LineEdit::textChanged(const std::string&text)
     textChangedImplementation(text);
 }
 
-void LineEdit::textChangedImplementation(const std::string&text)
+void LineEdit::textChangedImplementation(const std::string &text)
 {
     OSG_NOTICE << "textChangedImplementation(" << text << ")" << std::endl;
 }

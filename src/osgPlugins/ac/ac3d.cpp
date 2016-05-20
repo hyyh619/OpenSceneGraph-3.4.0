@@ -43,7 +43,7 @@
 namespace ac3d
 {
 osg::Node*
-readFile(std::istream&stream, const osgDB::ReaderWriter::Options *options);
+readFile(std::istream &stream, const osgDB::ReaderWriter::Options *options);
 }
 
 class geodeVisitor : public osg::NodeVisitor   // collects geodes from scene sub-graph attached to 'this'
@@ -58,11 +58,11 @@ geodeVisitor() :
 }
 
 // one apply for each type of Node that might be a user transform
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     _geodelist.push_back(&geode);
 }
-virtual void apply(osg::Group&gp)
+virtual void apply(osg::Group &gp)
 {
     traverse(gp);                // must continue subgraph traversal.
 }
@@ -90,7 +90,7 @@ virtual const char* className() const
     return "AC3D Database Reader";
 }
 
-virtual ReadResult readNode(const std::string&file, const Options *options) const
+virtual ReadResult readNode(const std::string &file, const Options *options) const
 {
     std::string ext = osgDB::getFileExtension(file);
 
@@ -127,7 +127,7 @@ virtual ReadResult readNode(const std::string&file, const Options *options) cons
 
     return result;
 }
-virtual ReadResult readNode(std::istream&fin, const Options *options) const
+virtual ReadResult readNode(std::istream &fin, const Options *options) const
 {
     std::string header;
 
@@ -137,7 +137,7 @@ virtual ReadResult readNode(std::istream&fin, const Options *options) const
 
     return ac3d::readFile(fin, options);
 }
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options* /*options*/) const
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options* /*options*/) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 
@@ -192,7 +192,7 @@ virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, 
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeNode(const osg::Node&node, std::ostream&fout, const Options *opts) const
+virtual WriteResult writeNode(const osg::Node &node, std::ostream &fout, const Options *opts) const
 {
     // write ac file.
     if (dynamic_cast<const osg::Group*>(&node))
@@ -238,7 +238,7 @@ enum
 /// Returns a possibly quoted string given in the end of the current line in the stream
 static
 std::string
-readString(std::istream&stream)
+readString(std::istream &stream)
 {
     std::string s;
 
@@ -296,7 +296,7 @@ MaterialData() :
     mColorArray->setDataVariance(osg::Object::STATIC);
 }
 
-void readMaterial(std::istream&stream)
+void readMaterial(std::istream &stream)
 {
     // note that this might be quoted
     std::string name = readString(stream);
@@ -361,7 +361,7 @@ TextureData() :
     mRepeat(true)
 {}
 
-bool setTexture(const std::string&name, const osgDB::ReaderWriter::Options *options, osg::TexEnv *modulateTexEnv)
+bool setTexture(const std::string &name, const osgDB::ReaderWriter::Options *options, osg::TexEnv *modulateTexEnv)
 {
     mTexture2DRepeat = new osg::Texture2D;
     mTexture2DRepeat->setDataVariance(osg::Object::STATIC);
@@ -447,7 +447,7 @@ FileData(const osgDB::ReaderWriter::Options *options) :
     mModulateTexEnv->setMode(osg::TexEnv::MODULATE);
 }
 
-TextureData toTextureData(const std::string&texName)
+TextureData toTextureData(const std::string &texName)
 {
     // If it is already there, use this
     TextureDataMap::iterator i = mTextureStates.find(texName);
@@ -483,7 +483,7 @@ osg::Light* getNextLight()
     return light;
 }
 
-void addMaterial(const MaterialData&material)
+void addMaterial(const MaterialData &material)
 {
     mMaterials.push_back(material);
 }
@@ -516,7 +516,7 @@ unsigned mLightIndex;
 
 struct RefData
 {
-    RefData(const osg::Vec3&_weightedNormal, const osg::Vec2&_texCoord, bool _smooth) :
+    RefData(const osg::Vec3 &_weightedNormal, const osg::Vec2 &_texCoord, bool _smooth) :
         weightedFlatNormal(_weightedNormal),
         weightedFlatNormalLength(_weightedNormal.length()),
         texCoord(_texCoord),
@@ -534,8 +534,8 @@ struct RefData
 
 struct VertexData
 {
-    VertexData(const osg::Vec3&vertex) : _vertex(vertex) {}
-    unsigned addRefData(const RefData&refData)
+    VertexData(const osg::Vec3 &vertex) : _vertex(vertex) {}
+    unsigned addRefData(const RefData &refData)
     {
         unsigned index = _refs.size();
 
@@ -543,7 +543,7 @@ struct VertexData
         return index;
     }
 
-    void collect(float cosCreaseAngle, const RefData&ref)
+    void collect(float cosCreaseAngle, const RefData &ref)
     {
         unsigned size = _refs.size();
 
@@ -659,7 +659,7 @@ void setCreaseAngle(float crease)
     else
         _cosCreaseAngle = cosf(osg::DegreesToRadians(crease));
 }
-void addVertex(const osg::Vec3&vertex)
+void addVertex(const osg::Vec3 &vertex)
 {
     _dirty = true;
     _vertices.push_back(vertex);
@@ -668,23 +668,23 @@ const osg::Vec3&getVertex(unsigned index)
 {
     return _vertices[index]._vertex;
 }
-const osg::Vec3&getVertex(const VertexIndex&vertexIndex)
+const osg::Vec3&getVertex(const VertexIndex &vertexIndex)
 {
     return _vertices[vertexIndex.vertexIndex]._vertex;
 }
-const osg::Vec3&getNormal(const VertexIndex&vertexIndex)
+const osg::Vec3&getNormal(const VertexIndex &vertexIndex)
 {
     if (_dirty)
         smoothNormals();
 
     return _vertices[vertexIndex.vertexIndex]._refs[vertexIndex.refIndex].finalNormal;
 }
-const osg::Vec2&getTexCoord(const VertexIndex&vertexIndex)
+const osg::Vec2&getTexCoord(const VertexIndex &vertexIndex)
 {
     return _vertices[vertexIndex.vertexIndex]._refs[vertexIndex.refIndex].texCoord;
 }
 
-VertexIndex addRefData(unsigned i, const RefData&refData)
+VertexIndex addRefData(unsigned i, const RefData &refData)
 {
     if (_vertices.size() <= i)
     {
@@ -726,11 +726,11 @@ PrimitiveBin(unsigned flags, VertexSet *vertexSet) :
     _geode->setDataVariance(osg::Object::STATIC);
 }
 
-virtual bool beginPrimitive(unsigned nRefs)                         = 0;
-virtual bool vertex(unsigned vertexIndex, const osg::Vec2&texCoord) = 0;
-virtual bool endPrimitive()                                         = 0;
+virtual bool beginPrimitive(unsigned nRefs)                          = 0;
+virtual bool vertex(unsigned vertexIndex, const osg::Vec2 &texCoord) = 0;
+virtual bool endPrimitive()                                          = 0;
 
-virtual osg::Geode* finalize(const MaterialData&material, const TextureData&textureData) = 0;
+virtual osg::Geode* finalize(const MaterialData &material, const TextureData &textureData) = 0;
 
 protected:
 bool isLineLoop() const
@@ -799,7 +799,7 @@ virtual bool beginPrimitive(unsigned nRefs)
     _refs.resize(0);
     return true;
 }
-virtual bool vertex(unsigned vertexIndex, const osg::Vec2&texCoord)
+virtual bool vertex(unsigned vertexIndex, const osg::Vec2 &texCoord)
 {
     Ref ref;
 
@@ -837,7 +837,7 @@ virtual bool endPrimitive()
     return true;
 }
 
-virtual osg::Geode* finalize(const MaterialData&material, const TextureData&textureData)
+virtual osg::Geode* finalize(const MaterialData &material, const TextureData &textureData)
 {
     _geode->addDrawable(_geometry.get());
     material.toStateSet(_geode->getOrCreateStateSet());
@@ -902,7 +902,7 @@ virtual bool beginPrimitive(unsigned nRefs)
 
     return true;
 }
-virtual bool vertex(unsigned vertexIndex, const osg::Vec2&texCoord)
+virtual bool vertex(unsigned vertexIndex, const osg::Vec2 &texCoord)
 {
     Ref ref;
 
@@ -1007,7 +1007,7 @@ virtual bool endPrimitive()
     return true;
 }
 
-unsigned pushVertex(const VertexIndex&vertexIndex, osg::Vec3Array *vertexArray,
+unsigned pushVertex(const VertexIndex &vertexIndex, osg::Vec3Array *vertexArray,
                     osg::Vec3Array *normalArray, osg::Vec2Array *texcoordArray)
 {
     VertexNormalTexTuple vertexNormalTexTuple;
@@ -1074,7 +1074,7 @@ osg::DrawElements* createOptimalDrawElements(osg::DrawElementsUInt *drawElements
     }
 }
 
-virtual osg::Geode* finalize(const MaterialData&material, const TextureData&textureData)
+virtual osg::Geode* finalize(const MaterialData &material, const TextureData &textureData)
 {
     osg::StateSet *stateSet = _geode->getOrCreateStateSet();
 
@@ -1253,7 +1253,7 @@ struct Bins
             }
         }
     }
-    void finalize(osg::Group *group, const MaterialData&material, const TextureData&textureData)
+    void finalize(osg::Group *group, const MaterialData &material, const TextureData &textureData)
     {
         if (lineBin.valid())
         {
@@ -1290,7 +1290,7 @@ private:
 };
 
 osg::Node*
-readObject(std::istream&stream, FileData&fileData, const osg::Matrix&parentTransform, TextureData textureData)
+readObject(std::istream &stream, FileData &fileData, const osg::Matrix &parentTransform, TextureData textureData)
 {
     // most of this logic came from Andy Colebourne (developer of the AC3D editor) so it had better be right!
 
@@ -1578,7 +1578,7 @@ readObject(std::istream&stream, FileData&fileData, const osg::Matrix&parentTrans
 }
 
 osg::Node*
-readFile(std::istream&stream, const osgDB::ReaderWriter::Options *options)
+readFile(std::istream &stream, const osgDB::ReaderWriter::Options *options)
 {
     FileData    fileData(options);
     osg::Matrix identityTransform;

@@ -181,7 +181,7 @@ int main(int argc, char **argv)
     osgDB::ObjectWrapperManager *owm = osgDB::Registry::instance()->getObjectWrapperManager();
     if (owm)
     {
-        const osgDB::ObjectWrapperManager::WrapperMap&wrapperMap = owm->getWrapperMap();
+        const osgDB::ObjectWrapperManager::WrapperMap &wrapperMap = owm->getWrapperMap();
 
         for (osgDB::ObjectWrapperManager::WrapperMap::const_iterator itr = wrapperMap.begin();
              itr != wrapperMap.end();
@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 
             OSG_NOTICE << std::endl << "Wrapper : " << itr->first << ", Domain=" << ow->getDomain() << ", Name=" << ow->getName() << std::endl;
 
-            const osgDB::StringList&associates = ow->getAssociates();
+            const osgDB::StringList &associates = ow->getAssociates();
 
             for (osgDB::StringList::const_iterator aitr = associates.begin();
                  aitr != associates.end();
@@ -214,14 +214,14 @@ int main(int argc, char **argv)
         }
 
 #if 1
-        osgDB::ObjectWrapperManager::IntLookupMap&intLookupMap = owm->getLookupMap();
+        osgDB::ObjectWrapperManager::IntLookupMap &intLookupMap = owm->getLookupMap();
 
         for (osgDB::ObjectWrapperManager::IntLookupMap::iterator itr = intLookupMap.begin();
              itr != intLookupMap.end();
              ++itr)
         {
             OSG_NOTICE << std::endl << "IntLookMap[" << itr->first << "]" << std::endl;
-            osgDB::IntLookup::StringToValue&stv = itr->second.getStringToValue();
+            osgDB::IntLookup::StringToValue &stv = itr->second.getStringToValue();
 
             for (osgDB::IntLookup::StringToValue::iterator sitr = stv.begin();
                  sitr != stv.end();

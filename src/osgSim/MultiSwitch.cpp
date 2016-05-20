@@ -22,14 +22,14 @@ MultiSwitch::MultiSwitch() :
     _activeSwitchSet(0)
 {}
 
-MultiSwitch::MultiSwitch(const MultiSwitch&sw, const osg::CopyOp&copyop) :
+MultiSwitch::MultiSwitch(const MultiSwitch &sw, const osg::CopyOp &copyop) :
     osg::Group(sw, copyop),
     _newChildDefaultValue(sw._newChildDefaultValue),
     _activeSwitchSet(sw._activeSwitchSet),
     _values(sw._values)
 {}
 
-void MultiSwitch::traverse(osg::NodeVisitor&nv)
+void MultiSwitch::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getTraversalMode() == osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN)
     {
@@ -58,7 +58,7 @@ bool MultiSwitch::addChild(osg::Node *child)
              itr != _values.end();
              ++itr)
         {
-            ValueList&values = *itr;
+            ValueList &values = *itr;
             if (_children.size() > values.size())
             {
                 values.resize(_children.size(), _newChildDefaultValue);
@@ -80,7 +80,7 @@ bool MultiSwitch::insertChild(unsigned int index, osg::Node *child)
              itr != _values.end();
              ++itr)
         {
-            ValueList&values = *itr;
+            ValueList &values = *itr;
             if (index >= values.size())
             {
                 values.push_back(_newChildDefaultValue);
@@ -110,7 +110,7 @@ bool MultiSwitch::removeChild(osg::Node *child)
          itr != _values.end();
          ++itr)
     {
-        ValueList&values = *itr;
+        ValueList &values = *itr;
         values.erase(values.begin() + pos);
     }
 
@@ -121,7 +121,7 @@ void MultiSwitch::setValue(unsigned int switchSet, unsigned int pos, bool value)
 {
     expandToEncompassSwitchSet(switchSet);
 
-    ValueList&values = _values[switchSet];
+    ValueList &values = _values[switchSet];
     if (pos >= values.size())
         values.resize(pos + 1, _newChildDefaultValue);
 
@@ -137,7 +137,7 @@ void MultiSwitch::setChildValue(const osg::Node *child, unsigned int switchSet, 
     if (pos == _children.size())
         return;
 
-    ValueList&values = _values[switchSet];
+    ValueList &values = _values[switchSet];
     values[pos] = value;
 }
 
@@ -146,7 +146,7 @@ bool MultiSwitch::getValue(unsigned int switchSet, unsigned int pos) const
     if (switchSet >= _values.size())
         return false;
 
-    const ValueList&values = _values[switchSet];
+    const ValueList &values = _values[switchSet];
     if (pos >= values.size())
         return false;
 
@@ -163,7 +163,7 @@ bool MultiSwitch::getChildValue(const osg::Node *child, unsigned int switchSet) 
     if (pos == _children.size())
         return false;
 
-    const ValueList&values = _values[switchSet];
+    const ValueList &values = _values[switchSet];
     return values[pos];
 }
 
@@ -178,7 +178,7 @@ void MultiSwitch::expandToEncompassSwitchSet(unsigned int switchSet)
 
         for (unsigned int i = originalSize; i <= switchSet; ++i)
         {
-            ValueList&values = _values[i];
+            ValueList &values = _values[i];
             values.resize(_children.size(), _newChildDefaultValue);
         }
     }
@@ -190,7 +190,7 @@ bool MultiSwitch::setAllChildrenOff(unsigned int switchSet)
 
     expandToEncompassSwitchSet(switchSet);
 
-    ValueList&values = _values[switchSet];
+    ValueList &values = _values[switchSet];
 
     for (ValueList::iterator itr = values.begin();
          itr != values.end();
@@ -208,7 +208,7 @@ bool MultiSwitch::setAllChildrenOn(unsigned int switchSet)
 
     expandToEncompassSwitchSet(switchSet);
 
-    ValueList&values = _values[switchSet];
+    ValueList &values = _values[switchSet];
 
     for (ValueList::iterator itr = values.begin();
          itr != values.end();
@@ -224,7 +224,7 @@ bool MultiSwitch::setSingleChildOn(unsigned int switchSet, unsigned int pos)
 {
     expandToEncompassSwitchSet(switchSet);
 
-    ValueList&values = _values[switchSet];
+    ValueList &values = _values[switchSet];
 
     for (ValueList::iterator itr = values.begin();
          itr != values.end();
@@ -238,21 +238,21 @@ bool MultiSwitch::setSingleChildOn(unsigned int switchSet, unsigned int pos)
 }
 
 
-void MultiSwitch::setSwitchSetList(const SwitchSetList&switchSetList)
+void MultiSwitch::setSwitchSetList(const SwitchSetList &switchSetList)
 {
     expandToEncompassSwitchSet(switchSetList.size());
 
     _values = switchSetList;
 }
 
-void MultiSwitch::setValueList(unsigned int switchSet, const ValueList&values)
+void MultiSwitch::setValueList(unsigned int switchSet, const ValueList &values)
 {
     expandToEncompassSwitchSet(switchSet);
 
     _values[switchSet] = values;
 }
 
-void MultiSwitch::setValueName(unsigned int switchSet, const std::string&name)
+void MultiSwitch::setValueName(unsigned int switchSet, const std::string &name)
 {
     expandToEncompassSwitchSet(switchSet);
 

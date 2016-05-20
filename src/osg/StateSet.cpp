@@ -116,7 +116,7 @@ StateSet::StateSet() :
     setRenderBinToInherit();
 }
 
-StateSet::StateSet(const StateSet&rhs, const CopyOp&copyop) : Object(rhs, copyop),
+StateSet::StateSet(const StateSet &rhs, const CopyOp &copyop) : Object(rhs, copyop),
     _nestRenderBins(rhs._nestRenderBins)
 {
     _modeList = rhs._modeList;
@@ -125,9 +125,9 @@ StateSet::StateSet(const StateSet&rhs, const CopyOp&copyop) : Object(rhs, copyop
          itr != rhs._attributeList.end();
          ++itr)
     {
-        const StateAttribute::TypeMemberPair&typemember = itr->first;
-        const RefAttributePair              &rap        = itr->second;
-        StateAttribute                      *attr       = copyop(rap.first.get());
+        const StateAttribute::TypeMemberPair &typemember = itr->first;
+        const RefAttributePair               &rap        = itr->second;
+        StateAttribute                       *attr       = copyop(rap.first.get());
         if (attr)
         {
             _attributeList[typemember] = RefAttributePair(attr, rap.second);
@@ -144,16 +144,16 @@ StateSet::StateSet(const StateSet&rhs, const CopyOp&copyop) : Object(rhs, copyop
     // copy the contents across.
     for (unsigned int i = 0; i < rhs._textureAttributeList.size(); ++i)
     {
-        AttributeList      &lhs_attributeList = _textureAttributeList[i];
-        const AttributeList&rhs_attributeList = rhs._textureAttributeList[i];
+        AttributeList       &lhs_attributeList = _textureAttributeList[i];
+        const AttributeList &rhs_attributeList = rhs._textureAttributeList[i];
 
         for (AttributeList::const_iterator itr = rhs_attributeList.begin();
              itr != rhs_attributeList.end();
              ++itr)
         {
-            const StateAttribute::TypeMemberPair&typemember = itr->first;
-            const RefAttributePair              &rap        = itr->second;
-            StateAttribute                      *attr       = copyop(rap.first.get());
+            const StateAttribute::TypeMemberPair &typemember = itr->first;
+            const RefAttributePair               &rap        = itr->second;
+            StateAttribute                       *attr       = copyop(rap.first.get());
             if (attr)
             {
                 lhs_attributeList[typemember] = RefAttributePair(attr, rap.second);
@@ -167,9 +167,9 @@ StateSet::StateSet(const StateSet&rhs, const CopyOp&copyop) : Object(rhs, copyop
          rhs_uitr != rhs._uniformList.end();
          ++rhs_uitr)
     {
-        const std::string   &name = rhs_uitr->first;
-        const RefUniformPair&rup  = rhs_uitr->second;
-        Uniform             *uni  = copyop(rup.first.get());
+        const std::string    &name = rhs_uitr->first;
+        const RefUniformPair &rup  = rhs_uitr->second;
+        Uniform              *uni  = copyop(rup.first.get());
         if (uni)
         {
             _uniformList[name] = RefUniformPair(uni, rup.second);
@@ -226,7 +226,7 @@ void StateSet::computeDataVariance()
     // run texture attribute callbacks.
     for (unsigned int i = 0; i < _textureAttributeList.size(); ++i)
     {
-        AttributeList&attributeList = _textureAttributeList[i];
+        AttributeList &attributeList = _textureAttributeList[i];
 
         for (AttributeList::iterator itr = attributeList.begin();
              itr != attributeList.end();
@@ -295,7 +295,7 @@ void StateSet::removeParent(osg::Node *node)
         _parents.erase(pitr);
 }
 
-int StateSet::compare(const StateSet&rhs, bool compareAttributeContents) const
+int StateSet::compare(const StateSet &rhs, bool compareAttributeContents) const
 {
     if (_textureAttributeList.size() < rhs._textureAttributeList.size())
         return -1;
@@ -356,8 +356,8 @@ int StateSet::compare(const StateSet&rhs, bool compareAttributeContents) const
 
     for (unsigned int ai = 0; ai < _textureAttributeList.size(); ++ai)
     {
-        const AttributeList&rhs_attributeList = _textureAttributeList[ai];
-        const AttributeList&lhs_attributeList = rhs._textureAttributeList[ai];
+        const AttributeList &rhs_attributeList = _textureAttributeList[ai];
+        const AttributeList &lhs_attributeList = rhs._textureAttributeList[ai];
         if (compareAttributeContents)
         {
             // now check to see how the attributes compare.
@@ -509,8 +509,8 @@ int StateSet::compare(const StateSet&rhs, bool compareAttributeContents) const
     // first check the rest of the texture modes
     for (unsigned int ti = 0; ti < _textureModeList.size(); ++ti)
     {
-        const ModeList&lhs_modeList = _textureModeList[ti];
-        const ModeList&rhs_modeList = rhs._textureModeList[ti];
+        const ModeList &lhs_modeList = _textureModeList[ti];
+        const ModeList &rhs_modeList = rhs._textureModeList[ti];
 
         ModeList::const_iterator lhs_mode_itr = lhs_modeList.begin();
         ModeList::const_iterator rhs_mode_itr = rhs_modeList.begin();
@@ -640,7 +640,7 @@ int StateSet::compare(const StateSet&rhs, bool compareAttributeContents) const
     return 0;
 }
 
-int StateSet::compareModes(const ModeList&lhs, const ModeList&rhs)
+int StateSet::compareModes(const ModeList &lhs, const ModeList &rhs)
 {
     ModeList::const_iterator lhs_mode_itr = lhs.begin();
     ModeList::const_iterator rhs_mode_itr = rhs.begin();
@@ -672,7 +672,7 @@ int StateSet::compareModes(const ModeList&lhs, const ModeList&rhs)
     return 0;
 }
 
-int StateSet::compareAttributePtrs(const AttributeList&lhs, const AttributeList&rhs)
+int StateSet::compareAttributePtrs(const AttributeList &lhs, const AttributeList &rhs)
 {
     AttributeList::const_iterator lhs_attr_itr = lhs.begin();
     AttributeList::const_iterator rhs_attr_itr = rhs.begin();
@@ -709,7 +709,7 @@ int StateSet::compareAttributePtrs(const AttributeList&lhs, const AttributeList&
     return 0;
 }
 
-int StateSet::compareAttributeContents(const AttributeList&lhs, const AttributeList&rhs)
+int StateSet::compareAttributeContents(const AttributeList &lhs, const AttributeList &rhs)
 {
     AttributeList::const_iterator lhs_attr_itr = lhs.begin();
     AttributeList::const_iterator rhs_attr_itr = rhs.begin();
@@ -788,7 +788,7 @@ void StateSet::clear()
     // remove self from as texture attributes parent
     for (unsigned int i = 0; i < _textureAttributeList.size(); ++i)
     {
-        AttributeList&attributeList = _textureAttributeList[i];
+        AttributeList &attributeList = _textureAttributeList[i];
 
         for (AttributeList::iterator itr = attributeList.begin();
              itr != attributeList.end();
@@ -813,7 +813,7 @@ void StateSet::clear()
     _uniformList.clear();
 }
 
-void StateSet::merge(const StateSet&rhs)
+void StateSet::merge(const StateSet &rhs)
 {
     // merge the modes of rhs into this,
     // this overrides rhs if OVERRIDE defined in this.
@@ -885,8 +885,8 @@ void StateSet::merge(const StateSet&rhs)
 
     for (unsigned int mi = 0; mi < rhs._textureModeList.size(); ++mi)
     {
-        ModeList      &lhs_modeList = _textureModeList[mi];
-        const ModeList&rhs_modeList = rhs._textureModeList[mi];
+        ModeList       &lhs_modeList = _textureModeList[mi];
+        const ModeList &rhs_modeList = rhs._textureModeList[mi];
 
         // merge the modes of rhs into this,
         // this overrides rhs if OVERRIDE defined in this.
@@ -919,8 +919,8 @@ void StateSet::merge(const StateSet&rhs)
 
     for (unsigned int ai = 0; ai < rhs._textureAttributeList.size(); ++ai)
     {
-        AttributeList      &lhs_attributeList = _textureAttributeList[ai];
-        const AttributeList&rhs_attributeList = rhs._textureAttributeList[ai];
+        AttributeList       &lhs_attributeList = _textureAttributeList[ai];
+        const AttributeList &rhs_attributeList = rhs._textureAttributeList[ai];
 
         // merge the attributes of rhs into this,
         // this overrides rhs if OVERRIDE defined in this.
@@ -1213,7 +1213,7 @@ void StateSet::addUniform(Uniform *uniform, StateAttribute::OverrideValue value)
         if (itr == _uniformList.end())
         {
             // new entry.
-            RefUniformPair&up = _uniformList[uniform->getName()];
+            RefUniformPair &up = _uniformList[uniform->getName()];
             up.first  = uniform;
             up.second = value & (StateAttribute::OVERRIDE | StateAttribute::PROTECTED);
 
@@ -1269,7 +1269,7 @@ void StateSet::addUniform(Uniform *uniform, StateAttribute::OverrideValue value)
     }
 }
 
-void StateSet::removeUniform(const std::string&name)
+void StateSet::removeUniform(const std::string &name)
 {
     UniformList::iterator itr = _uniformList.find(name);
 
@@ -1317,7 +1317,7 @@ void StateSet::removeUniform(Uniform *uniform)
     }
 }
 
-Uniform* StateSet::getUniform(const std::string&name)
+Uniform* StateSet::getUniform(const std::string &name)
 {
     UniformList::iterator itr = _uniformList.find(name);
 
@@ -1327,7 +1327,7 @@ Uniform* StateSet::getUniform(const std::string&name)
         return 0;
 }
 
-Uniform* StateSet::getOrCreateUniform(const std::string&name, Uniform::Type type, unsigned int numElements)
+Uniform* StateSet::getOrCreateUniform(const std::string &name, Uniform::Type type, unsigned int numElements)
 {
     // for look for an appropriate uniform.
     UniformList::iterator itr = _uniformList.find(name);
@@ -1347,7 +1347,7 @@ Uniform* StateSet::getOrCreateUniform(const std::string&name, Uniform::Type type
 }
 
 
-const Uniform* StateSet::getUniform(const std::string&name) const
+const Uniform* StateSet::getUniform(const std::string &name) const
 {
     UniformList::const_iterator itr = _uniformList.find(name);
 
@@ -1357,7 +1357,7 @@ const Uniform* StateSet::getUniform(const std::string&name) const
         return 0;
 }
 
-const StateSet::RefUniformPair* StateSet::getUniformPair(const std::string&name) const
+const StateSet::RefUniformPair* StateSet::getUniformPair(const std::string &name) const
 {
     UniformList::const_iterator itr = _uniformList.find(name);
 
@@ -1367,23 +1367,23 @@ const StateSet::RefUniformPair* StateSet::getUniformPair(const std::string&name)
         return 0;
 }
 
-void StateSet::setDefine(const std::string&defineName, StateAttribute::OverrideValue value)
+void StateSet::setDefine(const std::string &defineName, StateAttribute::OverrideValue value)
 {
-    DefinePair&dp = _defineList[defineName];
+    DefinePair &dp = _defineList[defineName];
 
     dp.first  = "";
     dp.second = value;
 }
 
-void StateSet::setDefine(const std::string&defineName, const std::string&defineValue, StateAttribute::OverrideValue value)
+void StateSet::setDefine(const std::string &defineName, const std::string &defineValue, StateAttribute::OverrideValue value)
 {
-    DefinePair&dp = _defineList[defineName];
+    DefinePair &dp = _defineList[defineName];
 
     dp.first  = defineValue;
     dp.second = value;
 }
 
-void StateSet::removeDefine(const std::string&defineName)
+void StateSet::removeDefine(const std::string &defineName)
 {
     DefineList::iterator itr = _defineList.find(defineName);
 
@@ -1581,7 +1581,7 @@ const StateSet::RefAttributePair* StateSet::getTextureAttributePair(unsigned int
     return getAttributePair(_textureAttributeList[unit], type, 0);
 }
 
-bool StateSet::checkValidityOfAssociatedModes(osg::State&state) const
+bool StateSet::checkValidityOfAssociatedModes(osg::State &state) const
 {
     bool modesValid = true;
 
@@ -1633,7 +1633,7 @@ void StateSet::setThreadSafeRefUnref(bool threadSafe)
     }
 }
 
-void StateSet::compileGLObjects(State&state) const
+void StateSet::compileGLObjects(State &state) const
 {
     bool checkForGLErrors = state.getCheckForGLErrors() == osg::State::ONCE_PER_ATTRIBUTE;
 
@@ -1740,7 +1740,7 @@ void StateSet::setRenderingHint(int hint)
     }
 }
 
-void StateSet::setRenderBinDetails(int binNum, const std::string&binName, RenderBinMode mode)
+void StateSet::setRenderBinDetails(int binNum, const std::string &binName, RenderBinMode mode)
 {
     _binMode = mode;
     _binNum  = binNum;
@@ -1754,7 +1754,7 @@ void StateSet::setRenderBinToInherit()
     _binName = "";
 }
 
-void StateSet::setMode(ModeList&modeList, StateAttribute::GLMode mode, StateAttribute::GLModeValue value)
+void StateSet::setMode(ModeList &modeList, StateAttribute::GLMode mode, StateAttribute::GLModeValue value)
 {
     if ((value & StateAttribute::INHERIT))
         setModeToInherit(modeList, mode);
@@ -1762,7 +1762,7 @@ void StateSet::setMode(ModeList&modeList, StateAttribute::GLMode mode, StateAttr
         modeList[mode] = value;
 }
 
-void StateSet::setModeToInherit(ModeList&modeList, StateAttribute::GLMode mode)
+void StateSet::setModeToInherit(ModeList &modeList, StateAttribute::GLMode mode)
 {
     ModeList::iterator itr = modeList.find(mode);
 
@@ -1772,7 +1772,7 @@ void StateSet::setModeToInherit(ModeList&modeList, StateAttribute::GLMode mode)
     }
 }
 
-StateAttribute::GLModeValue StateSet::getMode(const ModeList&modeList, StateAttribute::GLMode mode) const
+StateAttribute::GLModeValue StateSet::getMode(const ModeList &modeList, StateAttribute::GLMode mode) const
 {
     ModeList::const_iterator itr = modeList.find(mode);
 
@@ -1864,7 +1864,7 @@ void StateSet::removeAssociatedTextureModes(unsigned int unit, const StateAttrib
     attribute->getModeUsage(helper);
 }
 
-void StateSet::setAttribute(AttributeList&attributeList, StateAttribute *attribute, const StateAttribute::OverrideValue value)
+void StateSet::setAttribute(AttributeList &attributeList, StateAttribute *attribute, const StateAttribute::OverrideValue value)
 {
     if (attribute)
     {
@@ -1929,7 +1929,7 @@ void StateSet::setAttribute(AttributeList&attributeList, StateAttribute *attribu
 }
 
 
-StateAttribute* StateSet::getAttribute(AttributeList&attributeList, StateAttribute::Type type, unsigned int member)
+StateAttribute* StateSet::getAttribute(AttributeList &attributeList, StateAttribute::Type type, unsigned int member)
 {
     AttributeList::iterator itr = attributeList.find(StateAttribute::TypeMemberPair(type, member));
 
@@ -1941,7 +1941,7 @@ StateAttribute* StateSet::getAttribute(AttributeList&attributeList, StateAttribu
         return NULL;
 }
 
-const StateAttribute* StateSet::getAttribute(const AttributeList&attributeList, StateAttribute::Type type, unsigned int member) const
+const StateAttribute* StateSet::getAttribute(const AttributeList &attributeList, StateAttribute::Type type, unsigned int member) const
 {
     AttributeList::const_iterator itr = attributeList.find(StateAttribute::TypeMemberPair(type, member));
 
@@ -1953,7 +1953,7 @@ const StateAttribute* StateSet::getAttribute(const AttributeList&attributeList, 
         return NULL;
 }
 
-const StateSet::RefAttributePair* StateSet::getAttributePair(const AttributeList&attributeList, StateAttribute::Type type, unsigned int member) const
+const StateSet::RefAttributePair* StateSet::getAttributePair(const AttributeList &attributeList, StateAttribute::Type type, unsigned int member) const
 {
     AttributeList::const_iterator itr = attributeList.find(StateAttribute::TypeMemberPair(type, member));
 
@@ -2021,7 +2021,7 @@ void StateSet::runUpdateCallbacks(osg::NodeVisitor *nv)
         // run texture attribute callbacks.
         for (unsigned int i = 0; i < _textureAttributeList.size(); ++i)
         {
-            AttributeList&attributeList = _textureAttributeList[i];
+            AttributeList &attributeList = _textureAttributeList[i];
 
             for (AttributeList::iterator itr = attributeList.begin();
                  itr != attributeList.end();
@@ -2093,7 +2093,7 @@ void StateSet::runEventCallbacks(osg::NodeVisitor *nv)
         // run texture attribute callbacks.
         for (unsigned int i = 0; i < _textureAttributeList.size(); ++i)
         {
-            AttributeList&attributeList = _textureAttributeList[i];
+            AttributeList &attributeList = _textureAttributeList[i];
 
             for (AttributeList::iterator itr = attributeList.begin();
                  itr != attributeList.end();

@@ -48,13 +48,13 @@ void addPhotoArchive(PhotoArchive *archive)
     _photoArchiveList.push_back(archive);
 }
 
-std::string insertReference(const std::string&fileName, unsigned int res, float width, float height, bool backPage)
+std::string insertReference(const std::string &fileName, unsigned int res, float width, float height, bool backPage)
 {
     SERIALIZER();
     return const_cast<ImageReaderWriter*>(this)->local_insertReference(fileName, res, width, height, backPage);
 }
 
-virtual ReadResult readNode(const std::string&fileName, const Options *options) const
+virtual ReadResult readNode(const std::string &fileName, const Options *options) const
 {
     SERIALIZER();
     return const_cast<ImageReaderWriter*>(this)->local_readNode(fileName, options);
@@ -63,17 +63,17 @@ virtual ReadResult readNode(const std::string&fileName, const Options *options) 
 
 protected:
 
-std::string local_insertReference(const std::string&fileName, unsigned int res, float width, float height, bool backPage);
+std::string local_insertReference(const std::string &fileName, unsigned int res, float width, float height, bool backPage);
 
-ReadResult local_readNode(const std::string&fileName, const Options*);
+ReadResult local_readNode(const std::string &fileName, const Options*);
 
 mutable OpenThreads::ReentrantMutex _serializerMutex;
 
 struct DataReference
 {
     DataReference();
-    DataReference(const std::string&fileName, unsigned int res, float width, float height, bool backPage);
-    DataReference(const DataReference&rhs);
+    DataReference(const std::string &fileName, unsigned int res, float width, float height, bool backPage);
+    DataReference(const DataReference &rhs);
 
     std::string  _fileName;
     unsigned int _resolutionX;
@@ -86,9 +86,9 @@ struct DataReference
     bool         _backPage;
 };
 
-osg::Image* readImage_Archive(DataReference&dr, float&s, float&t);
+osg::Image* readImage_Archive(DataReference &dr, float &s, float &t);
 
-osg::Image* readImage_DynamicSampling(DataReference&dr, float&s, float&t);
+osg::Image* readImage_DynamicSampling(DataReference &dr, float &s, float &t);
 
 typedef std::map<std::string, DataReference> DataReferenceMap;
 typedef std::vector<osg::ref_ptr<PhotoArchive> > PhotoArchiveList;

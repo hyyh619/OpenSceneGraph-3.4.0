@@ -36,7 +36,7 @@ Uniform::Uniform() :
 {}
 
 
-Uniform::Uniform(Type type, const std::string&name, int numElements) :
+Uniform::Uniform(Type type, const std::string &name, int numElements) :
     _type(type), _numElements(0), _nameID(UINT_MAX), _modifiedCount(0)
 {
     setName(name);
@@ -44,7 +44,7 @@ Uniform::Uniform(Type type, const std::string&name, int numElements) :
     allocateDataArray();
 }
 
-Uniform::Uniform(const Uniform&uniform, const CopyOp&copyop) :
+Uniform::Uniform(const Uniform &uniform, const CopyOp &copyop) :
     Object(uniform, copyop),
     _type(uniform._type),
     _updateCallback(copyop(uniform._updateCallback.get())),
@@ -91,7 +91,7 @@ bool Uniform::setType(Type t)
     return true;
 }
 
-void Uniform::setName(const std::string&name)
+void Uniform::setName(const std::string &name)
 {
     if (_name != "")
     {
@@ -240,7 +240,7 @@ bool Uniform::setArray(UIntArray *array)
 
 ///////////////////////////////////////////////////////////////////////////
 
-int Uniform::compare(const Uniform&rhs) const
+int Uniform::compare(const Uniform &rhs) const
 {
     if (this == &rhs)
         return 0;
@@ -266,7 +266,7 @@ int Uniform::compare(const Uniform&rhs) const
     return compareData(rhs);
 }
 
-int Uniform::compareData(const Uniform&rhs) const
+int Uniform::compareData(const Uniform &rhs) const
 {
     // caller must ensure that _type==rhs._type
 
@@ -321,7 +321,7 @@ int Uniform::compareData(const Uniform&rhs) const
     return -1;  // how got here?
 }
 
-void Uniform::copyData(const Uniform&rhs)
+void Uniform::copyData(const Uniform &rhs)
 {
     // caller must ensure that _type==rhs._type
     _numElements = rhs._numElements;
@@ -765,7 +765,7 @@ int Uniform::getTypeNumComponents(Type t)
     }
 }
 
-Uniform::Type Uniform::getTypeId(const std::string&tname)
+Uniform::Type Uniform::getTypeId(const std::string &tname)
 {
     if (tname == "float")
         return FLOAT;
@@ -1337,7 +1337,7 @@ GLenum Uniform::getInternalArrayType(Type t)
 }
 
 
-unsigned int Uniform::getNameID(const std::string&name)
+unsigned int Uniform::getNameID(const std::string &name)
 {
     typedef std::map<std::string, unsigned int> UniformNameIDMap;
     static OpenThreads::Mutex s_mutex_uniformNameIDMap;
@@ -1370,7 +1370,7 @@ Uniform::Uniform(const char *name, float f) :
     set(f);
 }
 
-Uniform::Uniform(const char *name, const osg::Vec2&v2) :
+Uniform::Uniform(const char *name, const osg::Vec2 &v2) :
     _type(FLOAT_VEC2), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1378,7 +1378,7 @@ Uniform::Uniform(const char *name, const osg::Vec2&v2) :
     set(v2);
 }
 
-Uniform::Uniform(const char *name, const osg::Vec3&v3) :
+Uniform::Uniform(const char *name, const osg::Vec3 &v3) :
     _type(FLOAT_VEC3), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1386,7 +1386,7 @@ Uniform::Uniform(const char *name, const osg::Vec3&v3) :
     set(v3);
 }
 
-Uniform::Uniform(const char *name, const osg::Vec4&v4) :
+Uniform::Uniform(const char *name, const osg::Vec4 &v4) :
     _type(FLOAT_VEC4), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1394,7 +1394,7 @@ Uniform::Uniform(const char *name, const osg::Vec4&v4) :
     set(v4);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix2&m2) :
+Uniform::Uniform(const char *name, const osg::Matrix2 &m2) :
     _type(FLOAT_MAT2), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1402,7 +1402,7 @@ Uniform::Uniform(const char *name, const osg::Matrix2&m2) :
     set(m2);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix3&m3) :
+Uniform::Uniform(const char *name, const osg::Matrix3 &m3) :
     _type(FLOAT_MAT3), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1410,7 +1410,7 @@ Uniform::Uniform(const char *name, const osg::Matrix3&m3) :
     set(m3);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrixf&m4) :
+Uniform::Uniform(const char *name, const osg::Matrixf &m4) :
     _type(FLOAT_MAT4), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1418,7 +1418,7 @@ Uniform::Uniform(const char *name, const osg::Matrixf&m4) :
     set(m4);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix2x3&m2x3) :
+Uniform::Uniform(const char *name, const osg::Matrix2x3 &m2x3) :
     _type(FLOAT_MAT2x3), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1426,7 +1426,7 @@ Uniform::Uniform(const char *name, const osg::Matrix2x3&m2x3) :
     set(m2x3);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix2x4&m2x4) :
+Uniform::Uniform(const char *name, const osg::Matrix2x4 &m2x4) :
     _type(FLOAT_MAT2x4), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1434,7 +1434,7 @@ Uniform::Uniform(const char *name, const osg::Matrix2x4&m2x4) :
     set(m2x4);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix3x2&m3x2) :
+Uniform::Uniform(const char *name, const osg::Matrix3x2 &m3x2) :
     _type(FLOAT_MAT3x2), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1442,7 +1442,7 @@ Uniform::Uniform(const char *name, const osg::Matrix3x2&m3x2) :
     set(m3x2);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix3x4&m3x4) :
+Uniform::Uniform(const char *name, const osg::Matrix3x4 &m3x4) :
     _type(FLOAT_MAT3x4), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1450,7 +1450,7 @@ Uniform::Uniform(const char *name, const osg::Matrix3x4&m3x4) :
     set(m3x4);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix4x2&m4x2) :
+Uniform::Uniform(const char *name, const osg::Matrix4x2 &m4x2) :
     _type(FLOAT_MAT4x2), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1458,7 +1458,7 @@ Uniform::Uniform(const char *name, const osg::Matrix4x2&m4x2) :
     set(m4x2);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix4x3&m4x3) :
+Uniform::Uniform(const char *name, const osg::Matrix4x3 &m4x3) :
     _type(FLOAT_MAT4x3), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1474,7 +1474,7 @@ Uniform::Uniform(const char *name, double d) :
     set(d);
 }
 
-Uniform::Uniform(const char *name, const osg::Vec2d&v2) :
+Uniform::Uniform(const char *name, const osg::Vec2d &v2) :
     _type(DOUBLE_VEC2), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1482,7 +1482,7 @@ Uniform::Uniform(const char *name, const osg::Vec2d&v2) :
     set(v2);
 }
 
-Uniform::Uniform(const char *name, const osg::Vec3d&v3) :
+Uniform::Uniform(const char *name, const osg::Vec3d &v3) :
     _type(DOUBLE_VEC3), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1490,7 +1490,7 @@ Uniform::Uniform(const char *name, const osg::Vec3d&v3) :
     set(v3);
 }
 
-Uniform::Uniform(const char *name, const osg::Vec4d&v4) :
+Uniform::Uniform(const char *name, const osg::Vec4d &v4) :
     _type(DOUBLE_VEC4), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1498,7 +1498,7 @@ Uniform::Uniform(const char *name, const osg::Vec4d&v4) :
     set(v4);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix2d&m2) :
+Uniform::Uniform(const char *name, const osg::Matrix2d &m2) :
     _type(DOUBLE_MAT2), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1506,7 +1506,7 @@ Uniform::Uniform(const char *name, const osg::Matrix2d&m2) :
     set(m2);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix3d&m3) :
+Uniform::Uniform(const char *name, const osg::Matrix3d &m3) :
     _type(DOUBLE_MAT3), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1514,7 +1514,7 @@ Uniform::Uniform(const char *name, const osg::Matrix3d&m3) :
     set(m3);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrixd&m4) :
+Uniform::Uniform(const char *name, const osg::Matrixd &m4) :
     _type(DOUBLE_MAT4), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1522,7 +1522,7 @@ Uniform::Uniform(const char *name, const osg::Matrixd&m4) :
     set(m4);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix2x3d&m2x3) :
+Uniform::Uniform(const char *name, const osg::Matrix2x3d &m2x3) :
     _type(DOUBLE_MAT2x3), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1530,7 +1530,7 @@ Uniform::Uniform(const char *name, const osg::Matrix2x3d&m2x3) :
     set(m2x3);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix2x4d&m2x4) :
+Uniform::Uniform(const char *name, const osg::Matrix2x4d &m2x4) :
     _type(DOUBLE_MAT2x4), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1538,7 +1538,7 @@ Uniform::Uniform(const char *name, const osg::Matrix2x4d&m2x4) :
     set(m2x4);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix3x2d&m3x2) :
+Uniform::Uniform(const char *name, const osg::Matrix3x2d &m3x2) :
     _type(DOUBLE_MAT3x2), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1546,7 +1546,7 @@ Uniform::Uniform(const char *name, const osg::Matrix3x2d&m3x2) :
     set(m3x2);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix3x4d&m3x4) :
+Uniform::Uniform(const char *name, const osg::Matrix3x4d &m3x4) :
     _type(DOUBLE_MAT3x4), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1554,7 +1554,7 @@ Uniform::Uniform(const char *name, const osg::Matrix3x4d&m3x4) :
     set(m3x4);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix4x2d&m4x2) :
+Uniform::Uniform(const char *name, const osg::Matrix4x2d &m4x2) :
     _type(DOUBLE_MAT4x2), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1562,7 +1562,7 @@ Uniform::Uniform(const char *name, const osg::Matrix4x2d&m4x2) :
     set(m4x2);
 }
 
-Uniform::Uniform(const char *name, const osg::Matrix4x3d&m4x3) :
+Uniform::Uniform(const char *name, const osg::Matrix4x3d &m4x3) :
     _type(DOUBLE_MAT4x3), _numElements(1), _modifiedCount(0)
 {
     setName(name);
@@ -1679,7 +1679,7 @@ bool Uniform::set(float f)
     return isScalar() ? setElement(0, f) : false;
 }
 
-bool Uniform::set(const osg::Vec2&v2)
+bool Uniform::set(const osg::Vec2 &v2)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1687,7 +1687,7 @@ bool Uniform::set(const osg::Vec2&v2)
     return isScalar() ? setElement(0, v2) : false;
 }
 
-bool Uniform::set(const osg::Vec3&v3)
+bool Uniform::set(const osg::Vec3 &v3)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1695,7 +1695,7 @@ bool Uniform::set(const osg::Vec3&v3)
     return isScalar() ? setElement(0, v3) : false;
 }
 
-bool Uniform::set(const osg::Vec4&v4)
+bool Uniform::set(const osg::Vec4 &v4)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1703,7 +1703,7 @@ bool Uniform::set(const osg::Vec4&v4)
     return isScalar() ? setElement(0, v4) : false;
 }
 
-bool Uniform::set(const osg::Matrix2&m2)
+bool Uniform::set(const osg::Matrix2 &m2)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1711,7 +1711,7 @@ bool Uniform::set(const osg::Matrix2&m2)
     return isScalar() ? setElement(0, m2) : false;
 }
 
-bool Uniform::set(const osg::Matrix3&m3)
+bool Uniform::set(const osg::Matrix3 &m3)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1719,7 +1719,7 @@ bool Uniform::set(const osg::Matrix3&m3)
     return isScalar() ? setElement(0, m3) : false;
 }
 
-bool Uniform::set(const osg::Matrixf&m4)
+bool Uniform::set(const osg::Matrixf &m4)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1727,7 +1727,7 @@ bool Uniform::set(const osg::Matrixf&m4)
     return isScalar() ? setElement(0, m4) : false;
 }
 
-bool Uniform::set(const osg::Matrix2x3&m2x3)
+bool Uniform::set(const osg::Matrix2x3 &m2x3)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1735,7 +1735,7 @@ bool Uniform::set(const osg::Matrix2x3&m2x3)
     return isScalar() ? setElement(0, m2x3) : false;
 }
 
-bool Uniform::set(const osg::Matrix2x4&m2x4)
+bool Uniform::set(const osg::Matrix2x4 &m2x4)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1743,7 +1743,7 @@ bool Uniform::set(const osg::Matrix2x4&m2x4)
     return isScalar() ? setElement(0, m2x4) : false;
 }
 
-bool Uniform::set(const osg::Matrix3x2&m3x2)
+bool Uniform::set(const osg::Matrix3x2 &m3x2)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1751,7 +1751,7 @@ bool Uniform::set(const osg::Matrix3x2&m3x2)
     return isScalar() ? setElement(0, m3x2) : false;
 }
 
-bool Uniform::set(const osg::Matrix3x4&m3x4)
+bool Uniform::set(const osg::Matrix3x4 &m3x4)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1759,7 +1759,7 @@ bool Uniform::set(const osg::Matrix3x4&m3x4)
     return isScalar() ? setElement(0, m3x4) : false;
 }
 
-bool Uniform::set(const osg::Matrix4x2&m4x2)
+bool Uniform::set(const osg::Matrix4x2 &m4x2)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1767,7 +1767,7 @@ bool Uniform::set(const osg::Matrix4x2&m4x2)
     return isScalar() ? setElement(0, m4x2) : false;
 }
 
-bool Uniform::set(const osg::Matrix4x3&m4x3)
+bool Uniform::set(const osg::Matrix4x3 &m4x3)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1783,7 +1783,7 @@ bool Uniform::set(double d)
     return isScalar() ? setElement(0, d) : false;
 }
 
-bool Uniform::set(const osg::Vec2d&v2)
+bool Uniform::set(const osg::Vec2d &v2)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1791,7 +1791,7 @@ bool Uniform::set(const osg::Vec2d&v2)
     return isScalar() ? setElement(0, v2) : false;
 }
 
-bool Uniform::set(const osg::Vec3d&v3)
+bool Uniform::set(const osg::Vec3d &v3)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1799,7 +1799,7 @@ bool Uniform::set(const osg::Vec3d&v3)
     return isScalar() ? setElement(0, v3) : false;
 }
 
-bool Uniform::set(const osg::Vec4d&v4)
+bool Uniform::set(const osg::Vec4d &v4)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1807,7 +1807,7 @@ bool Uniform::set(const osg::Vec4d&v4)
     return isScalar() ? setElement(0, v4) : false;
 }
 
-bool Uniform::set(const osg::Matrix2d&m2)
+bool Uniform::set(const osg::Matrix2d &m2)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1815,7 +1815,7 @@ bool Uniform::set(const osg::Matrix2d&m2)
     return isScalar() ? setElement(0, m2) : false;
 }
 
-bool Uniform::set(const osg::Matrix3d&m3)
+bool Uniform::set(const osg::Matrix3d &m3)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1823,7 +1823,7 @@ bool Uniform::set(const osg::Matrix3d&m3)
     return isScalar() ? setElement(0, m3) : false;
 }
 
-bool Uniform::set(const osg::Matrixd&m4)
+bool Uniform::set(const osg::Matrixd &m4)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1831,7 +1831,7 @@ bool Uniform::set(const osg::Matrixd&m4)
     return isScalar() ? setElement(0, m4) : false;
 }
 
-bool Uniform::set(const osg::Matrix2x3d&m2x3)
+bool Uniform::set(const osg::Matrix2x3d &m2x3)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1839,7 +1839,7 @@ bool Uniform::set(const osg::Matrix2x3d&m2x3)
     return isScalar() ? setElement(0, m2x3) : false;
 }
 
-bool Uniform::set(const osg::Matrix2x4d&m2x4)
+bool Uniform::set(const osg::Matrix2x4d &m2x4)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1847,7 +1847,7 @@ bool Uniform::set(const osg::Matrix2x4d&m2x4)
     return isScalar() ? setElement(0, m2x4) : false;
 }
 
-bool Uniform::set(const osg::Matrix3x2d&m3x2)
+bool Uniform::set(const osg::Matrix3x2d &m3x2)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1855,7 +1855,7 @@ bool Uniform::set(const osg::Matrix3x2d&m3x2)
     return isScalar() ? setElement(0, m3x2) : false;
 }
 
-bool Uniform::set(const osg::Matrix3x4d&m3x4)
+bool Uniform::set(const osg::Matrix3x4d &m3x4)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1863,7 +1863,7 @@ bool Uniform::set(const osg::Matrix3x4d&m3x4)
     return isScalar() ? setElement(0, m3x4) : false;
 }
 
-bool Uniform::set(const osg::Matrix4x2d&m4x2)
+bool Uniform::set(const osg::Matrix4x2d &m4x2)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1871,7 +1871,7 @@ bool Uniform::set(const osg::Matrix4x2d&m4x2)
     return isScalar() ? setElement(0, m4x2) : false;
 }
 
-bool Uniform::set(const osg::Matrix4x3d&m4x3)
+bool Uniform::set(const osg::Matrix4x3d &m4x3)
 {
     if (getNumElements() == 0)
         setNumElements(1);
@@ -1978,192 +1978,192 @@ bool Uniform::set(bool b0, bool b1, bool b2, bool b3)
 ///////////////////////////////////////////////////////////////////////////
 // Value query for single-element (ie: non-array) uniforms.
 
-bool Uniform::get(float&f) const
+bool Uniform::get(float &f) const
 {
     return isScalar() ? getElement(0, f) : false;
 }
 
-bool Uniform::get(osg::Vec2&v2) const
+bool Uniform::get(osg::Vec2 &v2) const
 {
     return isScalar() ? getElement(0, v2) : false;
 }
 
-bool Uniform::get(osg::Vec3&v3) const
+bool Uniform::get(osg::Vec3 &v3) const
 {
     return isScalar() ? getElement(0, v3) : false;
 }
 
-bool Uniform::get(osg::Vec4&v4) const
+bool Uniform::get(osg::Vec4 &v4) const
 {
     return isScalar() ? getElement(0, v4) : false;
 }
 
-bool Uniform::get(osg::Matrix2&m2) const
+bool Uniform::get(osg::Matrix2 &m2) const
 {
     return isScalar() ? getElement(0, m2) : false;
 }
 
-bool Uniform::get(osg::Matrix3&m3) const
+bool Uniform::get(osg::Matrix3 &m3) const
 {
     return isScalar() ? getElement(0, m3) : false;
 }
 
-bool Uniform::get(osg::Matrixf&m4) const
+bool Uniform::get(osg::Matrixf &m4) const
 {
     return isScalar() ? getElement(0, m4) : false;
 }
 
-bool Uniform::get(osg::Matrix2x3&m2x3) const
+bool Uniform::get(osg::Matrix2x3 &m2x3) const
 {
     return isScalar() ? getElement(0, m2x3) : false;
 }
 
-bool Uniform::get(osg::Matrix2x4&m2x4) const
+bool Uniform::get(osg::Matrix2x4 &m2x4) const
 {
     return isScalar() ? getElement(0, m2x4) : false;
 }
 
-bool Uniform::get(osg::Matrix3x2&m3x2) const
+bool Uniform::get(osg::Matrix3x2 &m3x2) const
 {
     return isScalar() ? getElement(0, m3x2) : false;
 }
 
-bool Uniform::get(osg::Matrix3x4&m3x4) const
+bool Uniform::get(osg::Matrix3x4 &m3x4) const
 {
     return isScalar() ? getElement(0, m3x4) : false;
 }
 
-bool Uniform::get(osg::Matrix4x2&m4x2) const
+bool Uniform::get(osg::Matrix4x2 &m4x2) const
 {
     return isScalar() ? getElement(0, m4x2) : false;
 }
 
-bool Uniform::get(osg::Matrix4x3&m4x3) const
+bool Uniform::get(osg::Matrix4x3 &m4x3) const
 {
     return isScalar() ? getElement(0, m4x3) : false;
 }
 
-bool Uniform::get(double&d) const
+bool Uniform::get(double &d) const
 {
     return isScalar() ? getElement(0, d) : false;
 }
 
-bool Uniform::get(osg::Vec2d&v2) const
+bool Uniform::get(osg::Vec2d &v2) const
 {
     return isScalar() ? getElement(0, v2) : false;
 }
 
-bool Uniform::get(osg::Vec3d&v3) const
+bool Uniform::get(osg::Vec3d &v3) const
 {
     return isScalar() ? getElement(0, v3) : false;
 }
 
-bool Uniform::get(osg::Vec4d&v4) const
+bool Uniform::get(osg::Vec4d &v4) const
 {
     return isScalar() ? getElement(0, v4) : false;
 }
 
-bool Uniform::get(osg::Matrix2d&m2) const
+bool Uniform::get(osg::Matrix2d &m2) const
 {
     return isScalar() ? getElement(0, m2) : false;
 }
 
-bool Uniform::get(osg::Matrix3d&m3) const
+bool Uniform::get(osg::Matrix3d &m3) const
 {
     return isScalar() ? getElement(0, m3) : false;
 }
 
-bool Uniform::get(osg::Matrixd&m4) const
+bool Uniform::get(osg::Matrixd &m4) const
 {
     return isScalar() ? getElement(0, m4) : false;
 }
 
-bool Uniform::get(osg::Matrix2x3d&m2x3) const
+bool Uniform::get(osg::Matrix2x3d &m2x3) const
 {
     return isScalar() ? getElement(0, m2x3) : false;
 }
 
-bool Uniform::get(osg::Matrix2x4d&m2x4) const
+bool Uniform::get(osg::Matrix2x4d &m2x4) const
 {
     return isScalar() ? getElement(0, m2x4) : false;
 }
 
-bool Uniform::get(osg::Matrix3x2d&m3x2) const
+bool Uniform::get(osg::Matrix3x2d &m3x2) const
 {
     return isScalar() ? getElement(0, m3x2) : false;
 }
 
-bool Uniform::get(osg::Matrix3x4d&m3x4) const
+bool Uniform::get(osg::Matrix3x4d &m3x4) const
 {
     return isScalar() ? getElement(0, m3x4) : false;
 }
 
-bool Uniform::get(osg::Matrix4x2d&m4x2) const
+bool Uniform::get(osg::Matrix4x2d &m4x2) const
 {
     return isScalar() ? getElement(0, m4x2) : false;
 }
 
-bool Uniform::get(osg::Matrix4x3d&m4x3) const
+bool Uniform::get(osg::Matrix4x3d &m4x3) const
 {
     return isScalar() ? getElement(0, m4x3) : false;
 }
 
-bool Uniform::get(int&i) const
+bool Uniform::get(int &i) const
 {
     return isScalar() ? getElement(0, i) : false;
 }
 
-bool Uniform::get(int&i0, int&i1) const
+bool Uniform::get(int &i0, int &i1) const
 {
     return isScalar() ? getElement(0, i0, i1) : false;
 }
 
-bool Uniform::get(int&i0, int&i1, int&i2) const
+bool Uniform::get(int &i0, int &i1, int &i2) const
 {
     return isScalar() ? getElement(0, i0, i1, i2) : false;
 }
 
-bool Uniform::get(int&i0, int&i1, int&i2, int&i3) const
+bool Uniform::get(int &i0, int &i1, int &i2, int &i3) const
 {
     return isScalar() ? getElement(0, i0, i1, i2, i3) : false;
 }
 
-bool Uniform::get(unsigned int&ui) const
+bool Uniform::get(unsigned int &ui) const
 {
     return isScalar() ? getElement(0, ui) : false;
 }
 
-bool Uniform::get(unsigned int&ui0, unsigned int&ui1) const
+bool Uniform::get(unsigned int &ui0, unsigned int &ui1) const
 {
     return isScalar() ? getElement(0, ui0, ui1) : false;
 }
 
-bool Uniform::get(unsigned int&ui0, unsigned int&ui1, unsigned int&ui2) const
+bool Uniform::get(unsigned int &ui0, unsigned int &ui1, unsigned int &ui2) const
 {
     return isScalar() ? getElement(0, ui0, ui1, ui2) : false;
 }
 
-bool Uniform::get(unsigned int&ui0, unsigned int&ui1, unsigned int&ui2, unsigned int&ui3) const
+bool Uniform::get(unsigned int &ui0, unsigned int &ui1, unsigned int &ui2, unsigned int &ui3) const
 {
     return isScalar() ? getElement(0, ui0, ui1, ui2, ui3) : false;
 }
 
-bool Uniform::get(bool&b) const
+bool Uniform::get(bool &b) const
 {
     return isScalar() ? getElement(0, b) : false;
 }
 
-bool Uniform::get(bool&b0, bool&b1) const
+bool Uniform::get(bool &b0, bool &b1) const
 {
     return isScalar() ? getElement(0, b0, b1) : false;
 }
 
-bool Uniform::get(bool&b0, bool&b1, bool&b2) const
+bool Uniform::get(bool &b0, bool &b1, bool &b2) const
 {
     return isScalar() ? getElement(0, b0, b1, b2) : false;
 }
 
-bool Uniform::get(bool&b0, bool&b1, bool&b2, bool&b3) const
+bool Uniform::get(bool &b0, bool &b1, bool &b2, bool &b3) const
 {
     return isScalar() ? getElement(0, b0, b1, b2, b3) : false;
 }
@@ -2182,7 +2182,7 @@ bool Uniform::setElement(unsigned int index, float f)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Vec2&v2)
+bool Uniform::setElement(unsigned int index, const osg::Vec2 &v2)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_VEC2))
         return false;
@@ -2194,7 +2194,7 @@ bool Uniform::setElement(unsigned int index, const osg::Vec2&v2)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Vec3&v3)
+bool Uniform::setElement(unsigned int index, const osg::Vec3 &v3)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_VEC3))
         return false;
@@ -2207,7 +2207,7 @@ bool Uniform::setElement(unsigned int index, const osg::Vec3&v3)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Vec4&v4)
+bool Uniform::setElement(unsigned int index, const osg::Vec4 &v4)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_VEC4))
         return false;
@@ -2221,7 +2221,7 @@ bool Uniform::setElement(unsigned int index, const osg::Vec4&v4)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix2&m2)
+bool Uniform::setElement(unsigned int index, const osg::Matrix2 &m2)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT2))
         return false;
@@ -2235,7 +2235,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix2&m2)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix3&m3)
+bool Uniform::setElement(unsigned int index, const osg::Matrix3 &m3)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT3))
         return false;
@@ -2249,7 +2249,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix3&m3)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrixf&m4)
+bool Uniform::setElement(unsigned int index, const osg::Matrixf &m4)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT4))
         return false;
@@ -2264,7 +2264,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrixf&m4)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix2x3&m2x3)
+bool Uniform::setElement(unsigned int index, const osg::Matrix2x3 &m2x3)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT2x3))
         return false;
@@ -2278,7 +2278,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix2x3&m2x3)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix2x4&m2x4)
+bool Uniform::setElement(unsigned int index, const osg::Matrix2x4 &m2x4)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT2x4))
         return false;
@@ -2292,7 +2292,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix2x4&m2x4)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix3x2&m3x2)
+bool Uniform::setElement(unsigned int index, const osg::Matrix3x2 &m3x2)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT3x2))
         return false;
@@ -2306,7 +2306,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix3x2&m3x2)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix3x4&m3x4)
+bool Uniform::setElement(unsigned int index, const osg::Matrix3x4 &m3x4)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT3x4))
         return false;
@@ -2320,7 +2320,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix3x4&m3x4)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix4x2&m4x2)
+bool Uniform::setElement(unsigned int index, const osg::Matrix4x2 &m4x2)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT4x2))
         return false;
@@ -2334,7 +2334,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix4x2&m4x2)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix4x3&m4x3)
+bool Uniform::setElement(unsigned int index, const osg::Matrix4x3 &m4x3)
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT4x3))
         return false;
@@ -2359,7 +2359,7 @@ bool Uniform::setElement(unsigned int index, double d)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Vec2d&v2)
+bool Uniform::setElement(unsigned int index, const osg::Vec2d &v2)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_VEC2))
         return false;
@@ -2371,7 +2371,7 @@ bool Uniform::setElement(unsigned int index, const osg::Vec2d&v2)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Vec3d&v3)
+bool Uniform::setElement(unsigned int index, const osg::Vec3d &v3)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_VEC3))
         return false;
@@ -2384,7 +2384,7 @@ bool Uniform::setElement(unsigned int index, const osg::Vec3d&v3)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Vec4d&v4)
+bool Uniform::setElement(unsigned int index, const osg::Vec4d &v4)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_VEC4))
         return false;
@@ -2398,7 +2398,7 @@ bool Uniform::setElement(unsigned int index, const osg::Vec4d&v4)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix2d&m2)
+bool Uniform::setElement(unsigned int index, const osg::Matrix2d &m2)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT2))
         return false;
@@ -2412,7 +2412,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix2d&m2)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix3d&m3)
+bool Uniform::setElement(unsigned int index, const osg::Matrix3d &m3)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT3))
         return false;
@@ -2426,7 +2426,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix3d&m3)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrixd&m4)
+bool Uniform::setElement(unsigned int index, const osg::Matrixd &m4)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT4, FLOAT_MAT4))
         return false;
@@ -2452,7 +2452,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrixd&m4)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix2x3d&m2x3)
+bool Uniform::setElement(unsigned int index, const osg::Matrix2x3d &m2x3)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT2x3))
         return false;
@@ -2466,7 +2466,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix2x3d&m2x3)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix2x4d&m2x4)
+bool Uniform::setElement(unsigned int index, const osg::Matrix2x4d &m2x4)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT2x4))
         return false;
@@ -2480,7 +2480,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix2x4d&m2x4)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix3x2d&m3x2)
+bool Uniform::setElement(unsigned int index, const osg::Matrix3x2d &m3x2)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT3x2))
         return false;
@@ -2494,7 +2494,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix3x2d&m3x2)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix3x4d&m3x4)
+bool Uniform::setElement(unsigned int index, const osg::Matrix3x4d &m3x4)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT3x4))
         return false;
@@ -2508,7 +2508,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix3x4d&m3x4)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix4x2d&m4x2)
+bool Uniform::setElement(unsigned int index, const osg::Matrix4x2d &m4x2)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT4x2))
         return false;
@@ -2522,7 +2522,7 @@ bool Uniform::setElement(unsigned int index, const osg::Matrix4x2d&m4x2)
     return true;
 }
 
-bool Uniform::setElement(unsigned int index, const osg::Matrix4x3d&m4x3)
+bool Uniform::setElement(unsigned int index, const osg::Matrix4x3d &m4x3)
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT4x3))
         return false;
@@ -2689,7 +2689,7 @@ bool Uniform::setElement(unsigned int index, bool b0, bool b1, bool b2, bool b3)
 ///////////////////////////////////////////////////////////////////////////
 // Value query for array uniforms.
 
-bool Uniform::getElement(unsigned int index, float&f) const
+bool Uniform::getElement(unsigned int index, float &f) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT))
         return false;
@@ -2699,7 +2699,7 @@ bool Uniform::getElement(unsigned int index, float&f) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Vec2&v2) const
+bool Uniform::getElement(unsigned int index, osg::Vec2 &v2) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_VEC2))
         return false;
@@ -2710,7 +2710,7 @@ bool Uniform::getElement(unsigned int index, osg::Vec2&v2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Vec3&v3) const
+bool Uniform::getElement(unsigned int index, osg::Vec3 &v3) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_VEC3))
         return false;
@@ -2722,7 +2722,7 @@ bool Uniform::getElement(unsigned int index, osg::Vec3&v3) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Vec4&v4) const
+bool Uniform::getElement(unsigned int index, osg::Vec4 &v4) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_VEC4))
         return false;
@@ -2735,7 +2735,7 @@ bool Uniform::getElement(unsigned int index, osg::Vec4&v4) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix2&m2) const
+bool Uniform::getElement(unsigned int index, osg::Matrix2 &m2) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT2))
         return false;
@@ -2745,7 +2745,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix2&m2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix3&m3) const
+bool Uniform::getElement(unsigned int index, osg::Matrix3 &m3) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT3))
         return false;
@@ -2755,7 +2755,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix3&m3) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrixf&m4) const
+bool Uniform::getElement(unsigned int index, osg::Matrixf &m4) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT4))
         return false;
@@ -2765,7 +2765,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrixf&m4) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix2x3&m2x3) const
+bool Uniform::getElement(unsigned int index, osg::Matrix2x3 &m2x3) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT2x3))
         return false;
@@ -2775,7 +2775,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix2x3&m2x3) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix2x4&m2x4) const
+bool Uniform::getElement(unsigned int index, osg::Matrix2x4 &m2x4) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT2x4))
         return false;
@@ -2785,7 +2785,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix2x4&m2x4) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix3x2&m3x2) const
+bool Uniform::getElement(unsigned int index, osg::Matrix3x2 &m3x2) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT3x2))
         return false;
@@ -2795,7 +2795,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix3x2&m3x2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix3x4&m3x4) const
+bool Uniform::getElement(unsigned int index, osg::Matrix3x4 &m3x4) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT3x4))
         return false;
@@ -2805,7 +2805,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix3x4&m3x4) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix4x2&m4x2) const
+bool Uniform::getElement(unsigned int index, osg::Matrix4x2 &m4x2) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT4x2))
         return false;
@@ -2815,7 +2815,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix4x2&m4x2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix4x3&m4x3) const
+bool Uniform::getElement(unsigned int index, osg::Matrix4x3 &m4x3) const
 {
     if (index >= getNumElements() || !isCompatibleType(FLOAT_MAT4x3))
         return false;
@@ -2825,7 +2825,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix4x3&m4x3) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, double&d) const
+bool Uniform::getElement(unsigned int index, double &d) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE))
         return false;
@@ -2835,7 +2835,7 @@ bool Uniform::getElement(unsigned int index, double&d) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Vec2d&v2) const
+bool Uniform::getElement(unsigned int index, osg::Vec2d &v2) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_VEC2))
         return false;
@@ -2846,7 +2846,7 @@ bool Uniform::getElement(unsigned int index, osg::Vec2d&v2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Vec3d&v3) const
+bool Uniform::getElement(unsigned int index, osg::Vec3d &v3) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_VEC3))
         return false;
@@ -2858,7 +2858,7 @@ bool Uniform::getElement(unsigned int index, osg::Vec3d&v3) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Vec4d&v4) const
+bool Uniform::getElement(unsigned int index, osg::Vec4d &v4) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_VEC4))
         return false;
@@ -2871,7 +2871,7 @@ bool Uniform::getElement(unsigned int index, osg::Vec4d&v4) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix2d&m2) const
+bool Uniform::getElement(unsigned int index, osg::Matrix2d &m2) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT2))
         return false;
@@ -2881,7 +2881,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix2d&m2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix3d&m3) const
+bool Uniform::getElement(unsigned int index, osg::Matrix3d &m3) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT3))
         return false;
@@ -2891,7 +2891,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix3d&m3) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrixd&m4) const
+bool Uniform::getElement(unsigned int index, osg::Matrixd &m4) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT4, FLOAT_MAT4))
         return false;
@@ -2906,7 +2906,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrixd&m4) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix2x3d&m2x3) const
+bool Uniform::getElement(unsigned int index, osg::Matrix2x3d &m2x3) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT2x3))
         return false;
@@ -2916,7 +2916,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix2x3d&m2x3) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix2x4d&m2x4) const
+bool Uniform::getElement(unsigned int index, osg::Matrix2x4d &m2x4) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT2x4))
         return false;
@@ -2926,7 +2926,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix2x4d&m2x4) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix3x2d&m3x2) const
+bool Uniform::getElement(unsigned int index, osg::Matrix3x2d &m3x2) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT3x2))
         return false;
@@ -2936,7 +2936,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix3x2d&m3x2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix3x4d&m3x4) const
+bool Uniform::getElement(unsigned int index, osg::Matrix3x4d &m3x4) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT3x4))
         return false;
@@ -2946,7 +2946,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix3x4d&m3x4) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix4x2d&m4x2) const
+bool Uniform::getElement(unsigned int index, osg::Matrix4x2d &m4x2) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT4x2))
         return false;
@@ -2956,7 +2956,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix4x2d&m4x2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, osg::Matrix4x3d&m4x3) const
+bool Uniform::getElement(unsigned int index, osg::Matrix4x3d &m4x3) const
 {
     if (index >= getNumElements() || !isCompatibleType(DOUBLE_MAT4x3))
         return false;
@@ -2966,7 +2966,7 @@ bool Uniform::getElement(unsigned int index, osg::Matrix4x3d&m4x3) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, int&i) const
+bool Uniform::getElement(unsigned int index, int &i) const
 {
     if (index >= getNumElements() || !isCompatibleType(INT))
         return false;
@@ -2976,7 +2976,7 @@ bool Uniform::getElement(unsigned int index, int&i) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, int&i0, int&i1) const
+bool Uniform::getElement(unsigned int index, int &i0, int &i1) const
 {
     if (index >= getNumElements() || !isCompatibleType(INT_VEC2))
         return false;
@@ -2987,7 +2987,7 @@ bool Uniform::getElement(unsigned int index, int&i0, int&i1) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, int&i0, int&i1, int&i2) const
+bool Uniform::getElement(unsigned int index, int &i0, int &i1, int &i2) const
 {
     if (index >= getNumElements() || !isCompatibleType(INT_VEC3))
         return false;
@@ -2999,7 +2999,7 @@ bool Uniform::getElement(unsigned int index, int&i0, int&i1, int&i2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, int&i0, int&i1, int&i2, int&i3) const
+bool Uniform::getElement(unsigned int index, int &i0, int &i1, int &i2, int &i3) const
 {
     if (index >= getNumElements() || !isCompatibleType(INT_VEC4))
         return false;
@@ -3012,7 +3012,7 @@ bool Uniform::getElement(unsigned int index, int&i0, int&i1, int&i2, int&i3) con
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, unsigned int&ui) const
+bool Uniform::getElement(unsigned int index, unsigned int &ui) const
 {
     if (index >= getNumElements() || !isCompatibleType(UNSIGNED_INT))
         return false;
@@ -3022,7 +3022,7 @@ bool Uniform::getElement(unsigned int index, unsigned int&ui) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, unsigned int&ui0, unsigned int&ui1) const
+bool Uniform::getElement(unsigned int index, unsigned int &ui0, unsigned int &ui1) const
 {
     if (index >= getNumElements() || !isCompatibleType(UNSIGNED_INT_VEC2))
         return false;
@@ -3033,7 +3033,7 @@ bool Uniform::getElement(unsigned int index, unsigned int&ui0, unsigned int&ui1)
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, unsigned int&ui0, unsigned int&ui1, unsigned int&ui2) const
+bool Uniform::getElement(unsigned int index, unsigned int &ui0, unsigned int &ui1, unsigned int &ui2) const
 {
     if (index >= getNumElements() || !isCompatibleType(UNSIGNED_INT_VEC3))
         return false;
@@ -3045,7 +3045,7 @@ bool Uniform::getElement(unsigned int index, unsigned int&ui0, unsigned int&ui1,
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, unsigned int&ui0, unsigned int&ui1, unsigned int&ui2, unsigned int&ui3) const
+bool Uniform::getElement(unsigned int index, unsigned int &ui0, unsigned int &ui1, unsigned int &ui2, unsigned int &ui3) const
 {
     if (index >= getNumElements() || !isCompatibleType(UNSIGNED_INT_VEC4))
         return false;
@@ -3058,7 +3058,7 @@ bool Uniform::getElement(unsigned int index, unsigned int&ui0, unsigned int&ui1,
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, bool&b) const
+bool Uniform::getElement(unsigned int index, bool &b) const
 {
     if (index >= getNumElements() || !isCompatibleType(BOOL))
         return false;
@@ -3068,7 +3068,7 @@ bool Uniform::getElement(unsigned int index, bool&b) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, bool&b0, bool&b1) const
+bool Uniform::getElement(unsigned int index, bool &b0, bool &b1) const
 {
     if (index >= getNumElements() || !isCompatibleType(BOOL_VEC2))
         return false;
@@ -3079,7 +3079,7 @@ bool Uniform::getElement(unsigned int index, bool&b0, bool&b1) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, bool&b0, bool&b1, bool&b2) const
+bool Uniform::getElement(unsigned int index, bool &b0, bool &b1, bool &b2) const
 {
     if (index >= getNumElements() || !isCompatibleType(BOOL_VEC3))
         return false;
@@ -3091,7 +3091,7 @@ bool Uniform::getElement(unsigned int index, bool&b0, bool&b1, bool&b2) const
     return true;
 }
 
-bool Uniform::getElement(unsigned int index, bool&b0, bool&b1, bool&b2, bool&b3) const
+bool Uniform::getElement(unsigned int index, bool &b0, bool &b1, bool &b2, bool &b3) const
 {
     if (index >= getNumElements() || !isCompatibleType(BOOL_VEC4))
         return false;

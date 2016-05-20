@@ -53,7 +53,7 @@ public:
 DefaultTechnique(osg::Material *wf_mat, osg::LineWidth *wf_lw, int lightnum)
     : Technique(), _wf_mat(wf_mat), _wf_lw(wf_lw), _lightnum(lightnum) {}
 
-void getRequiredExtensions(std::vector<std::string>&extensions) const
+void getRequiredExtensions(std::vector<std::string> &extensions) const
 {
     extensions.push_back("GL_ARB_vertex_program");
 }
@@ -167,7 +167,7 @@ public:
 OGLSL_Technique(osg::Material *wf_mat, osg::LineWidth *wf_lw, int lightnum)
     : Technique(), _wf_mat(wf_mat), _wf_lw(wf_lw), _lightnum(lightnum) {}
 
-void getRequiredExtensions(std::vector<std::string>&extensions) const
+void getRequiredExtensions(std::vector<std::string> &extensions) const
 {
     extensions.push_back("GL_ARB_shader_objects");
     extensions.push_back("GL_ARB_vertex_shader");
@@ -285,7 +285,7 @@ Cartoon::Cartoon()
     setOutlineColor(osg::Vec4(0, 0, 0, 1));
 }
 
-Cartoon::Cartoon(const Cartoon&copy, const osg::CopyOp&copyop)
+Cartoon::Cartoon(const Cartoon &copy, const osg::CopyOp &copyop)
     :    Effect(copy, copyop),
     _wf_mat(static_cast<osg::Material*>(copyop(copy._wf_mat.get()))),
     _wf_lw(static_cast<osg::LineWidth*>(copyop(copy._wf_lw.get()))),

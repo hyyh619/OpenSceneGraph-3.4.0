@@ -2,12 +2,12 @@
 #include <osgDB/ObjectWrapper>
 #include <osgDB/Serializer>
 
-static bool checkData(const osg::ShaderBinary&sb)
+static bool checkData(const osg::ShaderBinary &sb)
 {
     return sb.getSize() > 0;
 }
 
-static bool readData(osgDB::InputStream&is, osg::ShaderBinary&sb)
+static bool readData(osgDB::InputStream &is, osg::ShaderBinary &sb)
 {
     unsigned int size; is >> size;
     char         *data = new char[size];
@@ -33,7 +33,7 @@ static bool readData(osgDB::InputStream&is, osg::ShaderBinary&sb)
     return true;
 }
 
-static bool writeData(osgDB::OutputStream&os, const osg::ShaderBinary&sb)
+static bool writeData(osgDB::OutputStream &os, const osg::ShaderBinary &sb)
 {
     if (os.isBinary())
     {

@@ -23,14 +23,14 @@ public:
 
 SpellChecker();
 
-void checkP3dXml(const std::string&filename) const;
+void checkP3dXml(const std::string &filename) const;
 void checkXml(osgDB::XmlNode *xmlNode) const;
-void checkWords(const std::string&words) const;
+void checkWords(const std::string &words) const;
 
-bool isCorrect(const std::string&word) const;
+bool isCorrect(const std::string &word) const;
 
 typedef std::list<std::string> WordList;
-WordList suggest(const std::string&word) const;
+WordList suggest(const std::string &word) const;
 };
 
 
@@ -39,13 +39,13 @@ class XmlPatcher
 public:
 XmlPatcher();
 
-void stripP3dXml(const std::string&filename, std::ostream&fout) const;
-void stripXml(osgDB::XmlNode *xmlNode, std::ostream&fout) const;
+void stripP3dXml(const std::string &filename, std::ostream &fout) const;
+void stripXml(osgDB::XmlNode *xmlNode, std::ostream &fout) const;
 
-osgDB::XmlNode* simplifyP3dXml(const std::string&filename) const;
+osgDB::XmlNode* simplifyP3dXml(const std::string &filename) const;
 osgDB::XmlNode* simplifyXml(osgDB::XmlNode *xmlNode) const;
 
-osgDB::XmlNode* mergeP3dXml(const std::string&lhs_filename, const std::string&rhs_filename) const;
+osgDB::XmlNode* mergeP3dXml(const std::string &lhs_filename, const std::string &rhs_filename) const;
 osgDB::XmlNode* mergeXml(osgDB::XmlNode *lhs_node, osgDB::XmlNode *rhs_node) const;
 };
 }

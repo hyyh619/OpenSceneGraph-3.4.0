@@ -37,7 +37,7 @@ Hit::Hit() :
 {}
 
 
-Hit::Hit(const Hit&hit)
+Hit::Hit(const Hit &hit)
 {
     // copy data across.
     _ratio               = hit._ratio;
@@ -60,7 +60,7 @@ Hit::~Hit()
 {}
 
 
-Hit&Hit::operator =(const Hit&hit)
+Hit&Hit::operator =(const Hit &hit)
 {
     if (&hit == this)
         return *this;
@@ -108,7 +108,7 @@ IntersectVisitor::IntersectState::~IntersectState()
 {}
 
 
-bool IntersectVisitor::IntersectState::isCulled(const BoundingSphere&bs, LineSegmentMask&segMaskOut)
+bool IntersectVisitor::IntersectState::isCulled(const BoundingSphere &bs, LineSegmentMask &segMaskOut)
 {
     bool            hit  = false;
     LineSegmentMask mask = 0x00000001;
@@ -132,7 +132,7 @@ bool IntersectVisitor::IntersectState::isCulled(const BoundingSphere&bs, LineSeg
     return !hit;
 }
 
-bool IntersectVisitor::IntersectState::isCulled(const BoundingBox&bb, LineSegmentMask&segMaskOut)
+bool IntersectVisitor::IntersectState::isCulled(const BoundingBox &bb, LineSegmentMask &segMaskOut)
 {
     bool            hit  = false;
     LineSegmentMask mask = 0x00000001;
@@ -216,7 +216,7 @@ void IntersectVisitor::reset()
     _segHitList.clear();
 }
 
-float IntersectVisitor::getDistanceToEyePoint(const Vec3&pos, bool /*withLODScale*/) const
+float IntersectVisitor::getDistanceToEyePoint(const Vec3 &pos, bool /*withLODScale*/) const
 {
     if (_lodSelectionMode == USE_SEGMENT_START_POINT_AS_EYE_POINT_FOR_LOD_LEVEL_SELECTION)
     {
@@ -371,9 +371,9 @@ void IntersectVisitor::popMatrix()
 }
 
 
-bool IntersectVisitor::enterNode(Node&node)
+bool IntersectVisitor::enterNode(Node &node)
 {
-    const BoundingSphere&bs = node.getBound();
+    const BoundingSphere &bs = node.getBound();
 
     if (bs.valid() && node.isCullingActive())
     {
@@ -407,7 +407,7 @@ void IntersectVisitor::leaveNode()
 
 
 
-void IntersectVisitor::apply(Node&node)
+void IntersectVisitor::apply(Node &node)
 {
     if (!enterNode(node))
         return;
@@ -419,7 +419,7 @@ void IntersectVisitor::apply(Node&node)
 
 struct TriangleHit
 {
-    TriangleHit(unsigned int index, const osg::Vec3&normal, float r1, const osg::Vec3 *v1, float r2, const osg::Vec3 *v2, float r3, const osg::Vec3 *v3) :
+    TriangleHit(unsigned int index, const osg::Vec3 &normal, float r1, const osg::Vec3 *v1, float r2, const osg::Vec3 *v2, float r3, const osg::Vec3 *v3) :
         _index(index),
         _normal(normal),
         _r1(r1),
@@ -472,12 +472,12 @@ struct TriangleIntersect
         _hit(false)
     {}
 
-    TriangleIntersect(const LineSegment&seg, float ratio = FLT_MAX)
+    TriangleIntersect(const LineSegment &seg, float ratio = FLT_MAX)
     {
         set(seg, ratio);
     }
 
-    void set(const LineSegment&seg, float ratio = FLT_MAX)
+    void set(const LineSegment &seg, float ratio = FLT_MAX)
     {
         _seg   = new LineSegment(seg);
         _hit   = false;
@@ -491,7 +491,7 @@ struct TriangleIntersect
     }
 
     //   bool intersect(const Vec3& v1,const Vec3& v2,const Vec3& v3,float& r)
-    inline void operator ()(const Vec3&v1, const Vec3&v2, const Vec3&v3, bool treatVertexDataAsTemporary)
+    inline void operator ()(const Vec3 &v1, const Vec3 &v2, const Vec3 &v3, bool treatVertexDataAsTemporary)
     {
         ++_index;
 
@@ -634,13 +634,13 @@ struct TriangleIntersect
     }
 };
 
-bool IntersectVisitor::intersect(Drawable&drawable)
+bool IntersectVisitor::intersect(Drawable &drawable)
 {
     bool hitFlag = false;
 
     IntersectState *cis = _intersectStateStack.back().get();
 
-    const BoundingBox&bb = drawable.getBoundingBox();
+    const BoundingBox &bb = drawable.getBoundingBox();
 
     for (IntersectState::LineSegmentList::iterator sitr = cis->_segList.begin();
          sitr != cis->_segList.end();
@@ -670,7 +670,7 @@ bool IntersectVisitor::intersect(Drawable&drawable)
                     else
                         hit._geode = dynamic_cast<Geode*>(_nodePath.back());
 
-                    TriangleHit&triHit = thitr->second;
+                    TriangleHit &triHit = thitr->second;
 
                     hit._ratio               = thitr->first;
                     hit._primitiveIndex      = triHit._index;
@@ -714,12 +714,12 @@ bool IntersectVisitor::intersect(Drawable&drawable)
 }
 
 
-void IntersectVisitor::apply(Drawable&drawable)
+void IntersectVisitor::apply(Drawable &drawable)
 {
     intersect(drawable);
 }
 
-void IntersectVisitor::apply(Geode&geode)
+void IntersectVisitor::apply(Geode &geode)
 {
     if (!enterNode(geode))
         return;
@@ -733,13 +733,13 @@ void IntersectVisitor::apply(Geode&geode)
 }
 
 
-void IntersectVisitor::apply(Billboard&node)
+void IntersectVisitor::apply(Billboard &node)
 {
     if (!enterNode(node))
         return;
 
     // IntersectVisitor doesn't have getEyeLocal(), can we use NodeVisitor::getEyePoint()?
-    const Vec3&eye_local = getEyePoint();
+    const Vec3 &eye_local = getEyePoint();
 
     for (unsigned int i = 0; i < node.getNumDrawables(); i++)
     {
@@ -758,7 +758,7 @@ void IntersectVisitor::apply(Billboard&node)
 }
 
 
-void IntersectVisitor::apply(Group&node)
+void IntersectVisitor::apply(Group &node)
 {
     if (!enterNode(node))
         return;
@@ -769,7 +769,7 @@ void IntersectVisitor::apply(Group&node)
 }
 
 
-void IntersectVisitor::apply(Transform&node)
+void IntersectVisitor::apply(Transform &node)
 {
     if (!enterNode(node))
         return;
@@ -787,18 +787,18 @@ void IntersectVisitor::apply(Transform&node)
 }
 
 
-void IntersectVisitor::apply(Switch&node)
+void IntersectVisitor::apply(Switch &node)
 {
     apply((Group&)node);
 }
 
 
-void IntersectVisitor::apply(LOD&node)
+void IntersectVisitor::apply(LOD &node)
 {
     apply((Group&)node);
 }
 
-PickVisitor::PickVisitor(const osg::Viewport *viewport, const osg::Matrixd&proj, const osg::Matrixd&view, float mx, float my) :
+PickVisitor::PickVisitor(const osg::Viewport *viewport, const osg::Matrixd &proj, const osg::Matrixd &view, float mx, float my) :
     _mx(mx),
     _my(my),
     _lastViewport(viewport),
@@ -843,7 +843,7 @@ PickVisitor::PickVisitor(const osg::Viewport *viewport, const osg::Matrixd&proj,
     }
 }
 
-void PickVisitor::runNestedPickVisitor(osg::Node&node, const osg::Viewport *viewport, const osg::Matrix&proj, const osg::Matrix&view, float mx, float my)
+void PickVisitor::runNestedPickVisitor(osg::Node &node, const osg::Viewport *viewport, const osg::Matrix &proj, const osg::Matrix &view, float mx, float my)
 {
     PickVisitor newPickVisitor(viewport, proj, view, mx, my);
 
@@ -862,7 +862,7 @@ void PickVisitor::runNestedPickVisitor(osg::Node&node, const osg::Viewport *view
     }
 }
 
-void PickVisitor::apply(osg::Projection&projection)
+void PickVisitor::apply(osg::Projection &projection)
 {
     runNestedPickVisitor(projection,
                          _lastViewport.get(),
@@ -871,7 +871,7 @@ void PickVisitor::apply(osg::Projection&projection)
                          _mx, _my);
 }
 
-void PickVisitor::apply(osg::Camera&camera)
+void PickVisitor::apply(osg::Camera &camera)
 {
     if (!camera.isRenderToTextureCamera())
     {

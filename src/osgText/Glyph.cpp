@@ -43,7 +43,7 @@ GlyphTexture::~GlyphTexture()
 {}
 
 // return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.
-int GlyphTexture::compare(const osg::StateAttribute&rhs) const
+int GlyphTexture::compare(const osg::StateAttribute &rhs) const
 {
     if (this < &rhs)
         return -1;
@@ -54,7 +54,7 @@ int GlyphTexture::compare(const osg::StateAttribute&rhs) const
 }
 
 
-bool GlyphTexture::getSpaceForGlyph(Glyph *glyph, int&posX, int&posY)
+bool GlyphTexture::getSpaceForGlyph(Glyph *glyph, int &posX, int &posY)
 {
     int maxAxis = osg::maximum(glyph->s(), glyph->t());
     int margin  = _margin + (int)((float)maxAxis * _marginRatio);
@@ -124,7 +124,7 @@ void GlyphTexture::addGlyph(Glyph *glyph, int posX, int posY)
                                     static_cast<float>(posY + glyph->t()) / static_cast<float>(getTextureHeight())));
 }
 
-void GlyphTexture::apply(osg::State&state) const
+void GlyphTexture::apply(osg::State &state) const
 {
     // get the contextID (user defined ID of 0 upwards) for the
     // current OpenGL context.
@@ -141,7 +141,7 @@ void GlyphTexture::apply(osg::State&state) const
         // graphics contexts should be set before create text.
         for (unsigned int i = _glyphsToSubload.size(); i <= contextID; ++i)
         {
-            GlyphPtrList&glyphPtrs = _glyphsToSubload[i];
+            GlyphPtrList &glyphPtrs = _glyphsToSubload[i];
 
             for (GlyphRefList::const_iterator itr = _glyphs.begin();
                  itr != _glyphs.end();
@@ -299,7 +299,7 @@ void GlyphTexture::apply(osg::State&state) const
 
 
     // now subload the glyphs that are outstanding for this graphics context.
-    GlyphPtrList&glyphsWereSubloading = _glyphsToSubload[contextID];
+    GlyphPtrList &glyphsWereSubloading = _glyphsToSubload[contextID];
 
     if (!glyphsWereSubloading.empty() || newTextureObject)
     {
@@ -477,7 +477,7 @@ Glyph::Glyph(Font *font, unsigned int glyphCode) :
 Glyph::~Glyph()
 {}
 
-void Glyph::setHorizontalBearing(const osg::Vec2&bearing)
+void Glyph::setHorizontalBearing(const osg::Vec2 &bearing)
 {
     _horizontalBearing = bearing;
 }
@@ -495,7 +495,7 @@ float Glyph::getHorizontalAdvance() const
     return _horizontalAdvance;
 }
 
-void Glyph::setVerticalBearing(const osg::Vec2&bearing)
+void Glyph::setVerticalBearing(const osg::Vec2 &bearing)
 {
     _verticalBearing = bearing;
 }
@@ -539,7 +539,7 @@ int Glyph::getTexturePositionY() const
     return _texturePosY;
 }
 
-void Glyph::setMinTexCoord(const osg::Vec2&coord)
+void Glyph::setMinTexCoord(const osg::Vec2 &coord)
 {
     _minTexCoord = coord;
 }
@@ -548,7 +548,7 @@ const osg::Vec2&Glyph::getMinTexCoord() const
     return _minTexCoord;
 }
 
-void Glyph::setMaxTexCoord(const osg::Vec2&coord)
+void Glyph::setMaxTexCoord(const osg::Vec2 &coord)
 {
     _maxTexCoord = coord;
 }

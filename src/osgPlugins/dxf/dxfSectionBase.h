@@ -24,7 +24,7 @@ class dxfSectionBase : public osg::Referenced
 public:
 dxfSectionBase() {}
 virtual ~dxfSectionBase() {}
-virtual void assign(dxfFile *dxf, codeValue&cv) = 0;
+virtual void assign(dxfFile *dxf, codeValue &cv) = 0;
 };
 
 #endif

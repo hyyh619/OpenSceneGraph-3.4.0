@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Drawable_readLocalData(Object&obj, Input&fr);
-bool Drawable_writeLocalData(const Object&obj, Output&fw);
+bool Drawable_readLocalData(Object &obj, Input &fr);
+bool Drawable_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Drawable)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(Drawable)
     &Drawable_writeLocalData
     );
 
-bool Drawable_readLocalData(Object&obj, Input&fr)
+bool Drawable_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Drawable&drawable = static_cast<Drawable&>(obj);
+    Drawable &drawable = static_cast<Drawable&>(obj);
 
     osg::StateSet *readState = fr.readObjectOfType<osg::StateSet>();
 
@@ -136,9 +136,9 @@ bool Drawable_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Drawable_writeLocalData(const Object&obj, Output&fw)
+bool Drawable_writeLocalData(const Object &obj, Output &fw)
 {
-    const Drawable&drawable = static_cast<const Drawable&>(obj);
+    const Drawable &drawable = static_cast<const Drawable&>(obj);
 
     if (drawable.getStateSet())
     {

@@ -222,9 +222,9 @@ static void PrintAlgorithmAndOptions(GDALGridAlgorithm eAlgorithm,
 
 static void ProcessGeometry(OGRPoint *poGeom, OGRGeometry *poClipSrc,
                             int iBurnField, double dfBurnValue,
-                            std::vector<double>&adfX,
-                            std::vector<double>&adfY,
-                            std::vector<double>&adfZ)
+                            std::vector<double> &adfX,
+                            std::vector<double> &adfY,
+                            std::vector<double> &adfZ)
 
 {
     if (poClipSrc && !poGeom->Within(poClipSrc))
@@ -248,9 +248,9 @@ static void ProcessGeometry(OGRPoint *poGeom, OGRGeometry *poClipSrc,
 static void ProcessLayer(OGRLayerH hSrcLayer, GDALDatasetH hDstDS,
                          OGRGeometry *poClipSrc,
                          GUInt32 nXSize, GUInt32 nYSize, int nBand,
-                         int&bIsXExtentSet, int&bIsYExtentSet,
-                         double&dfXMin, double&dfXMax,
-                         double&dfYMin, double&dfYMax,
+                         int &bIsXExtentSet, int &bIsYExtentSet,
+                         double &dfXMin, double &dfXMax,
+                         double &dfYMin, double &dfYMax,
                          const char *pszBurnAttribute,
                          GDALDataType eType,
                          GDALGridAlgorithm eAlgorithm, void *pOptions,

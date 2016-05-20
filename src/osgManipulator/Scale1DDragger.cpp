@@ -24,8 +24,8 @@ using namespace osgManipulator;
 
 namespace
 {
-double computeScale(const osg::Vec3d&startProjectedPoint,
-                    const osg::Vec3d&projectedPoint, double scaleCenter)
+double computeScale(const osg::Vec3d &startProjectedPoint,
+                    const osg::Vec3d &projectedPoint, double scaleCenter)
 {
     double denom = startProjectedPoint[0] - scaleCenter;
     double scale = denom ? (projectedPoint[0] - scaleCenter) / denom : 1.0;
@@ -44,7 +44,7 @@ Scale1DDragger::Scale1DDragger(ScaleMode scaleMode) : Dragger(), _minScale(0.001
 Scale1DDragger::~Scale1DDragger()
 {}
 
-bool Scale1DDragger::handle(const PointerInfo&pointer, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool Scale1DDragger::handle(const PointerInfo &pointer, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     // Check if the dragger node is in the nodepath.
     if (!pointer.contains(this))

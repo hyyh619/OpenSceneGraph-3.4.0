@@ -26,8 +26,8 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedLineSet(openv
         std::auto_ptr<openvrml::field_value> fv   = vrml_ifs->field("coord");
         const openvrml::sfnode               *sfn = dynamic_cast<const openvrml::sfnode*>(fv.get());
 
-        openvrml::coordinate_node         *vrml_coord_node = dynamic_cast<openvrml::coordinate_node*>((sfn->value()).get());
-        const std::vector<openvrml::vec3f>&vrml_coord      = vrml_coord_node->point();
+        openvrml::coordinate_node          *vrml_coord_node = dynamic_cast<openvrml::coordinate_node*>((sfn->value()).get());
+        const std::vector<openvrml::vec3f> &vrml_coord      = vrml_coord_node->point();
 
         osg::ref_ptr<osg::Vec3Array> osg_vertices = new osg::Vec3Array();
 
@@ -81,7 +81,7 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedLineSet(openv
 
         if (vrml_color_node != 0) // if no colors, node is NULL pointer
         {
-            const std::vector<openvrml::color>&vrml_colors = vrml_color_node->color();
+            const std::vector<openvrml::color> &vrml_colors = vrml_color_node->color();
 
             osg::ref_ptr<osg::Vec3Array> osg_colors = new osg::Vec3Array();
 

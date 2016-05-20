@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TexMat_readLocalData(Object&obj, Input&fr);
-bool TexMat_writeLocalData(const Object&obj, Output&fw);
+bool TexMat_readLocalData(Object &obj, Input &fr);
+bool TexMat_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(TexMat)
@@ -22,11 +22,11 @@ REGISTER_DOTOSGWRAPPER(TexMat)
 );
 
 
-bool TexMat_readLocalData(Object&obj, Input&fr)
+bool TexMat_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    TexMat&texmat = static_cast<TexMat&>(obj);
+    TexMat &texmat = static_cast<TexMat&>(obj);
 
     bool matched = true;
 
@@ -37,7 +37,7 @@ bool TexMat_readLocalData(Object&obj, Input&fr)
 
     if (matched)
     {
-        Matrix&matrix = texmat.getMatrix();
+        Matrix &matrix = texmat.getMatrix();
 
         int    k = 0;
         double v;
@@ -76,10 +76,10 @@ bool TexMat_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool TexMat_writeLocalData(const Object&obj, Output&fw)
+bool TexMat_writeLocalData(const Object &obj, Output &fw)
 {
-    const TexMat&texmat = static_cast<const TexMat&>(obj);
-    const Matrix&matrix = texmat.getMatrix();
+    const TexMat &texmat = static_cast<const TexMat&>(obj);
+    const Matrix &matrix = texmat.getMatrix();
 
     fw.indent() << matrix(0, 0) << " " << matrix(0, 1) << " " << matrix(0, 2) << " " << matrix(0, 3) << std::endl;
     fw.indent() << matrix(1, 0) << " " << matrix(1, 1) << " " << matrix(1, 2) << " " << matrix(1, 3) << std::endl;

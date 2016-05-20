@@ -50,7 +50,7 @@ GLuint Drawable::generateDisplayList(unsigned int contextID, unsigned int sizeHi
 #ifdef OSG_GL_DISPLAYLISTS_AVAILABLE
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedDisplayListCache);
 
-    DisplayListMap&dll = s_deletedDisplayListCache[contextID];
+    DisplayListMap &dll = s_deletedDisplayListCache[contextID];
     if (dll.empty())
     {
         ++s_numberNewDrawablesInLastFrame;
@@ -116,7 +116,7 @@ void Drawable::flushAllDeletedDisplayLists(unsigned int contextID)
 #ifdef OSG_GL_DISPLAYLISTS_AVAILABLE
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedDisplayListCache);
 
-    DisplayListMap&dll = s_deletedDisplayListCache[contextID];
+    DisplayListMap &dll = s_deletedDisplayListCache[contextID];
 
     for (DisplayListMap::iterator ditr = dll.begin();
          ditr != dll.end();
@@ -135,28 +135,28 @@ void Drawable::discardAllDeletedDisplayLists(unsigned int contextID)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedDisplayListCache);
 
-    DisplayListMap&dll = s_deletedDisplayListCache[contextID];
+    DisplayListMap &dll = s_deletedDisplayListCache[contextID];
 
     dll.clear();
 }
 
-void Drawable::flushDeletedDisplayLists(unsigned int contextID, double&availableTime)
+void Drawable::flushDeletedDisplayLists(unsigned int contextID, double &availableTime)
 {
 #ifdef OSG_GL_DISPLAYLISTS_AVAILABLE
     // if no time available don't try to flush objects.
     if (availableTime <= 0.0)
         return;
 
-    const osg::Timer&timer      = *osg::Timer::instance();
-    osg::Timer_t    start_tick  = timer.tick();
-    double          elapsedTime = 0.0;
+    const osg::Timer &timer      = *osg::Timer::instance();
+    osg::Timer_t     start_tick  = timer.tick();
+    double           elapsedTime = 0.0;
 
     unsigned int noDeleted = 0;
 
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedDisplayListCache);
 
-        DisplayListMap&dll = s_deletedDisplayListCache[contextID];
+        DisplayListMap &dll = s_deletedDisplayListCache[contextID];
 
         bool trimFromFront = true;
         if (trimFromFront)
@@ -279,7 +279,7 @@ Drawable::Drawable()
     // _useVertexBufferObjects = true;
 }
 
-Drawable::Drawable(const Drawable&drawable, const CopyOp&copyop) :
+Drawable::Drawable(const Drawable &drawable, const CopyOp &copyop) :
     Node(drawable, copyop),
     _initialBound(drawable._initialBound),
     _computeBoundCallback(drawable._computeBoundCallback),
@@ -335,7 +335,7 @@ void Drawable::computeDataVariance()
     setDataVariance(dynamic ? DYNAMIC : STATIC);
 }
 
-void Drawable::compileGLObjects(RenderInfo&renderInfo) const
+void Drawable::compileGLObjects(RenderInfo &renderInfo) const
 {
     if (!_useDisplayList)
         return;
@@ -346,7 +346,7 @@ void Drawable::compileGLObjects(RenderInfo&renderInfo) const
     unsigned int contextID = renderInfo.getContextID();
 
     // get the globj for the current contextID.
-    GLuint&globj = _globjList[contextID];
+    GLuint &globj = _globjList[contextID];
 
     // call the globj if already set otherwise compile and execute.
     if (globj != 0)
@@ -417,7 +417,7 @@ void Drawable::releaseGLObjects(State *state) const
         unsigned int contextID = state->getContextID();
 
         // get the globj for the current contextID.
-        GLuint&globj = _globjList[contextID];
+        GLuint &globj = _globjList[contextID];
 
         // call the globj if already set otherwise compile and execute.
         if (globj != 0)
@@ -653,28 +653,28 @@ struct ComputeBound : public PrimitiveFunctor
     }
 
     virtual void begin(GLenum) {}
-    virtual void vertex(const Vec2&vert)
+    virtual void vertex(const Vec2 &vert)
     {
         _bb.expandBy(osg::Vec3(vert[0], vert[1], 0.0f));
     }
-    virtual void vertex(const Vec3&vert)
+    virtual void vertex(const Vec3 &vert)
     {
         _bb.expandBy(vert);
     }
-    virtual void vertex(const Vec4&vert)
+    virtual void vertex(const Vec4 &vert)
     {
         if (vert[3] != 0.0f)
             _bb.expandBy(osg::Vec3(vert[0], vert[1], vert[2]) / vert[3]);
     }
-    virtual void vertex(const Vec2d&vert)
+    virtual void vertex(const Vec2d &vert)
     {
         _bb.expandBy(osg::Vec3(vert[0], vert[1], 0.0f));
     }
-    virtual void vertex(const Vec3d&vert)
+    virtual void vertex(const Vec3d &vert)
     {
         _bb.expandBy(vert);
     }
-    virtual void vertex(const Vec4d&vert)
+    virtual void vertex(const Vec4d &vert)
     {
         if (vert[3] != 0.0f)
             _bb.expandBy(osg::Vec3(vert[0], vert[1], vert[2]) / vert[3]);
@@ -738,7 +738,7 @@ BoundingBox Drawable::computeBoundingBox() const
     return cb._bb;
 }
 
-void Drawable::setBound(const BoundingBox&bb) const
+void Drawable::setBound(const BoundingBox &bb) const
 {
     _boundingBox         = bb;
     _boundingBoxComputed = true;

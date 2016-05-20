@@ -6,7 +6,7 @@
 
 using namespace osgSim;
 
-bool readLightPoint(LightPoint&lp, osgDB::Input&fr)
+bool readLightPoint(LightPoint &lp, osgDB::Input &fr)
 {
     if (fr.matchSequence("lightPoint {"))
     {
@@ -125,7 +125,7 @@ bool readLightPoint(LightPoint&lp, osgDB::Input&fr)
     return false;
 }
 
-bool writeLightPoint(const LightPoint&lp, osgDB::Output&fw)
+bool writeLightPoint(const LightPoint &lp, osgDB::Output &fw)
 {
     fw.indent() << "lightPoint {" << std::endl;
     fw.moveIn();

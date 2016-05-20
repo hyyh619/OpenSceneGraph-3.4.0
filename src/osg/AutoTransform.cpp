@@ -37,7 +37,7 @@ AutoTransform::AutoTransform() :
 //    setNumChildrenRequiringUpdateTraversal(1);
 }
 
-AutoTransform::AutoTransform(const AutoTransform&pat, const CopyOp&copyop) :
+AutoTransform::AutoTransform(const AutoTransform &pat, const CopyOp &copyop) :
     Transform(pat, copyop),
     _position(pat._position),
     _pivotPoint(pat._pivotPoint),
@@ -69,14 +69,14 @@ void AutoTransform::setAutoRotateMode(AutoRotateMode mode)
     updateCache();
 }
 
-void AutoTransform::setAxis(const Vec3&axis)
+void AutoTransform::setAxis(const Vec3 &axis)
 {
     _axis = axis;
     _axis.normalize();
     updateCache();
 }
 
-void AutoTransform::setNormal(const Vec3&normal)
+void AutoTransform::setNormal(const Vec3 &normal)
 {
     _normal = normal;
     _normal.normalize();
@@ -103,7 +103,7 @@ void AutoTransform::updateCache()
     _side.normalize();
 }
 
-void AutoTransform::setScale(const Vec3d&scale)
+void AutoTransform::setScale(const Vec3d &scale)
 {
     _scale = scale;
     if (_scale.x() < _minimumScale)
@@ -129,7 +129,7 @@ void AutoTransform::setScale(const Vec3d&scale)
 }
 
 
-bool AutoTransform::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
+bool AutoTransform::computeLocalToWorldMatrix(Matrix &matrix, NodeVisitor*) const
 {
     if (_matrixDirty)
         computeMatrix();
@@ -147,7 +147,7 @@ bool AutoTransform::computeLocalToWorldMatrix(Matrix&matrix, NodeVisitor*) const
 }
 
 
-bool AutoTransform::computeWorldToLocalMatrix(Matrix&matrix, NodeVisitor*) const
+bool AutoTransform::computeWorldToLocalMatrix(Matrix &matrix, NodeVisitor*) const
 {
     if (_scale.x() == 0.0 || _scale.y() == 0.0 || _scale.z() == 0.0)
         return false;
@@ -183,7 +183,7 @@ void AutoTransform::computeMatrix() const
     _matrixDirty = false;
 }
 
-void AutoTransform::accept(NodeVisitor&nv)
+void AutoTransform::accept(NodeVisitor &nv)
 {
     if (nv.validNodeMask(*this))
     {
@@ -209,7 +209,7 @@ void AutoTransform::accept(NodeVisitor&nv)
                 osg::Vec3d localUp  = cs->getUpLocal();
                 osg::Vec3d position = getPosition();
 
-                const osg::Matrix&projection = *(cs->getProjectionMatrix());
+                const osg::Matrix &projection = *(cs->getProjectionMatrix());
 
                 bool doUpdate = _firstTimeToInitEyePoint;
                 if (!_firstTimeToInitEyePoint)

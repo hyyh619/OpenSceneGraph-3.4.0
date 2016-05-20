@@ -37,7 +37,7 @@ BlendEquation::BlendEquation(Equation equationRGB, Equation equationAlpha) :
 BlendEquation::~BlendEquation()
 {}
 
-void BlendEquation::apply(State&state) const
+void BlendEquation::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

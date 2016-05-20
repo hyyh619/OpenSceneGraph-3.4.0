@@ -335,7 +335,7 @@ StandardShadowMap::StandardShadowMap() :
 #endif
 }
 
-StandardShadowMap::StandardShadowMap(const StandardShadowMap&copy, const osg::CopyOp&copyop) :
+StandardShadowMap::StandardShadowMap(const StandardShadowMap &copy, const osg::CopyOp &copyop) :
     BaseClass(copy, copyop),
     _polygonOffsetFactor(copy._polygonOffsetFactor),
     _polygonOffsetUnits(copy._polygonOffsetUnits),
@@ -408,8 +408,8 @@ void StandardShadowMap::searchAndReplaceShaderSource
     if (!shader || fromString == toString)
         return;
 
-    const std::string&srceString = shader->getShaderSource();
-    std::string      destString;
+    const std::string &srceString = shader->getShaderSource();
+    std::string       destString;
 
     std::string::size_type fromLength = fromString.length();
     std::string::size_type srceLength = srceString.length();
@@ -641,14 +641,14 @@ void StandardShadowMap::ViewData::init(ThisClass *st, osgUtil::CullVisitor *cv)
 }
 
 const osg::Light* StandardShadowMap::ViewData::selectLight
-    (osg::Vec4&lightPos, osg::Vec3&lightDir)
+    (osg::Vec4 &lightPos, osg::Vec3 &lightDir)
 {
     const osg::Light *light = 0;
 
     // MR testing giving a specific light
     osgUtil::RenderStage *rs = _cv->getRenderStage();
 
-    osgUtil::PositionalStateContainer::AttrMatrixList&aml =
+    osgUtil::PositionalStateContainer::AttrMatrixList &aml =
         rs->getPositionalStateContainer()->getAttrMatrixList();
 
     osg::RefMatrix *matrix = 0;
@@ -691,9 +691,9 @@ const osg::Light* StandardShadowMap::ViewData::selectLight
 }
 
 void StandardShadowMap::ViewData::aimShadowCastingCamera(const osg::Light *light,
-                                                         const osg::Vec4&lightPos,
-                                                         const osg::Vec3&lightDir,
-                                                         const osg::Vec3&lightUp
+                                                         const osg::Vec4 &lightPos,
+                                                         const osg::Vec3 &lightDir,
+                                                         const osg::Vec3 &lightUp
                                                          /* by default = osg::Vec3( 0, 1 0 )*/)
 {
 #if 0 // less precise but faster
@@ -711,15 +711,15 @@ void StandardShadowMap::ViewData::aimShadowCastingCamera(const osg::Light *light
 }
 
 void StandardShadowMap::ViewData::aimShadowCastingCamera(
-    const osg::BoundingSphere&bs,
+    const osg::BoundingSphere &bs,
     const osg::Light *light,
-    const osg::Vec4&lightPos,
-    const osg::Vec3&lightDir,
-    const osg::Vec3&lightUpVector
+    const osg::Vec4 &lightPos,
+    const osg::Vec3 &lightDir,
+    const osg::Vec3 &lightUpVector
     /* by default = osg::Vec3( 0, 1 0 )*/)
 {
-    osg::Matrixd&view       = _camera->getViewMatrix();
-    osg::Matrixd&projection = _camera->getProjectionMatrix();
+    osg::Matrixd &view       = _camera->getViewMatrix();
+    osg::Matrixd &projection = _camera->getProjectionMatrix();
 
     osg::Vec3 up = lightUpVector;
 

@@ -41,7 +41,7 @@ GtkWidget *_menu;
 unsigned int _tid;
 
 // A helper function to easily setup our menu entries.
-void _menuAdd(const std::string&title)
+void _menuAdd(const std::string &title)
 {
     GtkWidget *item = gtk_menu_item_new_with_label(title.c_str());
 

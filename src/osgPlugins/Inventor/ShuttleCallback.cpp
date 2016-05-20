@@ -2,8 +2,8 @@
 
 #include "ShuttleCallback.h"
 
-ShuttleCallback::ShuttleCallback(const osg::Vec3&startPos,
-                                 const osg::Vec3&endPos,
+ShuttleCallback::ShuttleCallback(const osg::Vec3 &startPos,
+                                 const osg::Vec3 &endPos,
                                  float frequency)
 {
     _startPos  = startPos;

@@ -30,13 +30,13 @@ void clear();
 template<class Destructor>
 void flush(const Destructor destructor);
 
-void push(const value_type&value);
-bool tryPush(const value_type&value);
-bool timedPush(const value_type&value, unsigned long ms);
+void push(const value_type &value);
+bool tryPush(const value_type &value);
+bool timedPush(const value_type &value, unsigned long ms);
 
 value_type pop();
-value_type tryPop(bool&is_empty);
-value_type timedPop(bool&is_empty, unsigned long ms);
+value_type tryPop(bool &is_empty);
+value_type timedPop(bool &is_empty, unsigned long ms);
 
 private:
 
@@ -51,7 +51,7 @@ typedef OpenThreads::ScopedLock<Mutex> ScopedLock;
 bool isFull() const;
 bool isEmpty() const;
 
-void unsafePush(const value_type&value);
+void unsafePush(const value_type &value);
 value_type unsafePop();
 
 Buffer    m_buffer;
@@ -125,7 +125,7 @@ void BoundedMessageQueue<T>::flush(const Destructor destructor)
 
 
 template<class T>
-void BoundedMessageQueue<T>::push(const value_type&value)
+void BoundedMessageQueue<T>::push(const value_type &value)
 {
     {
         ScopedLock lock(m_mutex);
@@ -142,7 +142,7 @@ void BoundedMessageQueue<T>::push(const value_type&value)
 
 
 template<class T>
-bool BoundedMessageQueue<T>::tryPush(const value_type&value)
+bool BoundedMessageQueue<T>::tryPush(const value_type &value)
 {
     {
         ScopedLock lock(m_mutex);
@@ -161,7 +161,7 @@ bool BoundedMessageQueue<T>::tryPush(const value_type&value)
 
 
 template<class T>
-bool BoundedMessageQueue<T>::timedPush(const value_type&value, const unsigned long ms)
+bool BoundedMessageQueue<T>::timedPush(const value_type &value, const unsigned long ms)
 {
     // We don't wait in a loop to avoid an infinite loop (as the ms timeout would not be decremented).
     // This means that timedPush() could return false before the timeout has been hit.
@@ -207,7 +207,7 @@ typename BoundedMessageQueue<T>::value_type BoundedMessageQueue<T>::pop()
 
 
 template<class T>
-typename BoundedMessageQueue<T>::value_type BoundedMessageQueue<T>::tryPop(bool&is_empty)
+typename BoundedMessageQueue<T>::value_type BoundedMessageQueue<T>::tryPop(bool &is_empty)
 {
     value_type value;
 
@@ -230,7 +230,7 @@ typename BoundedMessageQueue<T>::value_type BoundedMessageQueue<T>::tryPop(bool&
 
 
 template<class T>
-typename BoundedMessageQueue<T>::value_type BoundedMessageQueue<T>::timedPop(bool&is_empty, const unsigned long ms)
+typename BoundedMessageQueue<T>::value_type BoundedMessageQueue<T>::timedPop(bool &is_empty, const unsigned long ms)
 {
     value_type value;
 
@@ -275,7 +275,7 @@ inline bool BoundedMessageQueue<T>::isEmpty() const
 
 
 template<class T>
-inline void BoundedMessageQueue<T>::unsafePush(const value_type&value)
+inline void BoundedMessageQueue<T>::unsafePush(const value_type &value)
 {
     // Note: this shall never be called if the queue is full.
     assert(!isFull());

@@ -68,12 +68,12 @@ void trpgwArchive::Init(trpgEndian inNess, trpgwArchive::TileMode inTileMode, in
 }
 
 // Constructor for regenerate
-trpgwArchive::trpgwArchive(char *inDir, char *inFile, trpg2dPoint&sw, trpg2dPoint&ne, int majorVer, int minorVer)
+trpgwArchive::trpgwArchive(char *inDir, char *inFile, trpg2dPoint &sw, trpg2dPoint &ne, int majorVer, int minorVer)
 {
     Init(inDir, inFile, sw, ne, majorVer, minorVer);
 }
 
-void trpgwArchive::Init(char *inDir, char *inFile, trpg2dPoint&sw, trpg2dPoint&ne, int majorVer, int minorVer)
+void trpgwArchive::Init(char *inDir, char *inFile, trpg2dPoint &sw, trpg2dPoint &ne, int majorVer, int minorVer)
 {
     maxTileFileLen = -1;
     majorVersion   = majorVer;
@@ -333,49 +333,49 @@ void trpgwArchive::SetMaxTileFileLength(int max)
    These just copy tables and the header from the input.
    If these aren't set, then empty ones are written.
  */
-bool trpgwArchive::SetHeader(const trpgHeader&head)
+bool trpgwArchive::SetHeader(const trpgHeader &head)
 {
     header = head;
     return true;
 }
-bool trpgwArchive::SetMaterialTable(const trpgMatTable&mat)
+bool trpgwArchive::SetMaterialTable(const trpgMatTable &mat)
 {
     matTable = mat;
     return true;
 }
-bool trpgwArchive::SetTextureTable(const trpgTexTable&tex)
+bool trpgwArchive::SetTextureTable(const trpgTexTable &tex)
 {
     texTable = tex;
     return true;
 }
-bool trpgwArchive::SetModelTable(const trpgModelTable&models)
+bool trpgwArchive::SetModelTable(const trpgModelTable &models)
 {
     modelTable = models;
     return true;
 }
-bool trpgwArchive::SetLightTable(const trpgLightTable&lights)
+bool trpgwArchive::SetLightTable(const trpgLightTable &lights)
 {
     lightTable = lights;
     return true;
 }
-bool trpgwArchive::SetRangeTable(const trpgRangeTable&ranges)
+bool trpgwArchive::SetRangeTable(const trpgRangeTable &ranges)
 {
     rangeTable = ranges;
     return true;
 }
 
-bool trpgwArchive::SetTextStyleTable(const trpgTextStyleTable&styles)
+bool trpgwArchive::SetTextStyleTable(const trpgTextStyleTable &styles)
 {
     textStyleTable = styles;
     return true;
 }
 
-bool trpgwArchive::SetLabelPropertyTable(const trpgLabelPropertyTable&properties)
+bool trpgwArchive::SetLabelPropertyTable(const trpgLabelPropertyTable &properties)
 {
     labelPropertyTable = properties;
     return true;
 }
-bool trpgwArchive::SetSupportStyleTable(const trpgSupportStyleTable&styles)
+bool trpgwArchive::SetSupportStyleTable(const trpgSupportStyleTable &styles)
 {
     supportStyleTable = styles;
     return true;
@@ -576,7 +576,7 @@ bool trpgwArchive::CheckpointHeader()
         // only tile with lod 0 will be found in the tileFiles container
         for (unsigned int i = 0; i < tileFiles.size(); i++)
         {
-            TileFile&tf = tileFiles[i];
+            TileFile &tf = tileFiles[i];
 
             for (unsigned int j = 0; j < tf.tiles.size(); j++)
             {
@@ -786,7 +786,7 @@ trpgwAppFile* trpgwArchive::GetNewWAppFile(trpgEndian inNess, const char *fileNa
 
 /* Get a new write image helper
  */
-trpgwImageHelper* trpgwArchive::GetNewWImageHelper(trpgEndian ness, char *dir, trpgTexTable&inTexTable)
+trpgwImageHelper* trpgwArchive::GetNewWImageHelper(trpgEndian ness, char *dir, trpgTexTable &inTexTable)
 {
     bool separateGeo = false;
     int  majorVer, minorVer;
@@ -867,7 +867,7 @@ bool trpgwArchive::DesignateTileFile(int id)
    appended together to the file.
  */
 bool trpgwArchive::WriteTile(unsigned int x, unsigned int y, unsigned int lod, float zmin, float zmax,
-                             const trpgMemWriteBuffer *head, const trpgMemWriteBuffer *buf, int32&fileId, int32&fileOffset)
+                             const trpgMemWriteBuffer *head, const trpgMemWriteBuffer *buf, int32 &fileId, int32 &fileOffset)
 {
     FILE *tfp = NULL;
 
@@ -917,7 +917,7 @@ bool trpgwArchive::WriteTile(unsigned int x, unsigned int y, unsigned int lod, f
         if (tileMode == TileExternalSaved && lod == 0)
         {
             externalTiles.push_back(TileFileEntry());
-            TileFileEntry&tf = externalTiles.back();
+            TileFileEntry &tf = externalTiles.back();
             tf.x      = x;
             tf.y      = y;
             tf.lod    = lod;
@@ -1155,20 +1155,20 @@ void trpgwGeomHelper::SetColor(trpgColor& /*col*/)
 
 // Set the current texture coord
 // Note: Required
-void trpgwGeomHelper::SetTexCoord(trpg2dPoint&pt)
+void trpgwGeomHelper::SetTexCoord(trpg2dPoint &pt)
 {
     tmpTex.resize(0);
     tmpTex.push_back(pt);
 }
 
-void trpgwGeomHelper::AddTexCoord(trpg2dPoint&pt)
+void trpgwGeomHelper::AddTexCoord(trpg2dPoint &pt)
 {
     tmpTex.push_back(pt);
 }
 
 // Set the current normal
 // Note: required
-void trpgwGeomHelper::SetNormal(trpg3dPoint&pt)
+void trpgwGeomHelper::SetNormal(trpg3dPoint &pt)
 {
     tmpNorm = pt;
 }
@@ -1187,7 +1187,7 @@ void trpgwGeomHelper::AddMaterial(int32 imat)
 }
 
 // Get the Z min/max we've collected so far
-void trpgwGeomHelper::GetZMinMax(double&outZmin, double&outZmax)
+void trpgwGeomHelper::GetZMinMax(double &outZmin, double &outZmax)
 {
     outZmin = zmin;
     outZmax = zmax;
@@ -1195,7 +1195,7 @@ void trpgwGeomHelper::GetZMinMax(double&outZmin, double&outZmax)
 
 // Collect the current vertex data and add a new whole vertex
 // Note: Deal with color
-void trpgwGeomHelper::AddVertex(trpg3dPoint&pt)
+void trpgwGeomHelper::AddVertex(trpg3dPoint &pt)
 {
     polyTex.insert(polyTex.end(), tmpTex.begin(), tmpTex.end());
     polyNorm.push_back(tmpNorm);
@@ -1317,25 +1317,25 @@ optVert()
 {
     valid = false;
 }
-optVert(trpg3dPoint&iv, trpg3dPoint&in, trpg2dPoint&itex)
+optVert(trpg3dPoint &iv, trpg3dPoint &in, trpg2dPoint &itex)
 {
     v = iv; n = in; tex.resize(0); tex.push_back(itex); valid = true;
 }
-optVert(trpg3dPoint&iv, trpg3dPoint&in, std::vector<trpg2dPoint>&itex)
+optVert(trpg3dPoint &iv, trpg3dPoint &in, std::vector<trpg2dPoint> &itex)
 {
     v = iv; n = in; tex = itex; valid = true;
 }
-optVert(int numMat, int vid, std::vector<trpg3dPoint>&iv, std::vector<trpg3dPoint>&in, std::vector<trpg2dPoint>&itex);
+optVert(int numMat, int vid, std::vector<trpg3dPoint> &iv, std::vector<trpg3dPoint> &in, std::vector<trpg2dPoint> &itex);
 trpg3dPoint              v;
 trpg3dPoint              n;
 std::vector<trpg2dPoint> tex;
 bool                     valid;
-int operator ==(const optVert&in) const
+int operator ==(const optVert &in) const
 {
     return (v == in.v && n == in.n && tex == in.tex);
 }
 };
-optVert::optVert(int numMat, int vid, std::vector<trpg3dPoint>&iv, std::vector<trpg3dPoint>&in, std::vector<trpg2dPoint>&itex)
+optVert::optVert(int numMat, int vid, std::vector<trpg3dPoint> &iv, std::vector<trpg3dPoint> &in, std::vector<trpg2dPoint> &itex)
 {
     v = iv[vid];
     n = in[vid];
@@ -1500,12 +1500,12 @@ void trpgwGeomHelper::Optimize()
  *************************
  */
 
-trpgwImageHelper::trpgwImageHelper(trpgEndian inNess, char *inDir, trpgTexTable&inTable, bool separateGeoTypical)
+trpgwImageHelper::trpgwImageHelper(trpgEndian inNess, char *inDir, trpgTexTable &inTable, bool separateGeoTypical)
 {
     Init(inNess, inDir, inTable, separateGeoTypical);
 }
 
-void trpgwImageHelper::Init(trpgEndian inNess, char *inDir, trpgTexTable&inTable, bool separateGeoTypical)
+void trpgwImageHelper::Init(trpgEndian inNess, char *inDir, trpgTexTable &inTable, bool separateGeoTypical)
 {
     ness = inNess;
     strcpy(dir, inDir);
@@ -1525,7 +1525,7 @@ trpgwImageHelper::~trpgwImageHelper()
         delete geotypFile;
 }
 
-bool trpgwImageHelper::AddExternal(char *name, int&texID, bool lookForExisting)
+bool trpgwImageHelper::AddExternal(char *name, int &texID, bool lookForExisting)
 {
     trpgTexture tex;
 
@@ -1545,7 +1545,7 @@ void trpgwImageHelper::SetMaxTexFileLength(int len)
 }
 
 bool trpgwImageHelper::AddLocal(char *name, trpgTexture::ImageType type, int sizeX, int sizeY,
-                                bool isMipmap, char *data, int&texID, bool deferWrite)
+                                bool isMipmap, char *data, int &texID, bool deferWrite)
 {
     // Set up the basic texture
     trpgTexture tex;
@@ -1575,7 +1575,7 @@ bool trpgwImageHelper::AddLocal(char *name, trpgTexture::ImageType type, int siz
     return true;
 }
 
-bool trpgwImageHelper::ReplaceLocal(char *data, int&texID)
+bool trpgwImageHelper::ReplaceLocal(char *data, int &texID)
 {
     const trpgTexture *texRef = texTable->GetTextureRef(texID);
 
@@ -1594,7 +1594,7 @@ bool trpgwImageHelper::ReplaceLocal(char *data, int&texID)
 }
 
 bool trpgwImageHelper::AddTileLocal(char *name, trpgTexture::ImageType type, int sizeX, int sizeY,
-                                    bool isMipmap, char *data, int&texID, trpgwAppAddress&addr)
+                                    bool isMipmap, char *data, int &texID, trpgwAppAddress &addr)
 {
     // Set up the texture template and add to the table
     trpgTexture tex;
@@ -1718,7 +1718,7 @@ bool trpgwImageHelper::DesignateTextureFile(int id)
    Write the given image data out to an appropriate archive and
    return the address.  This is used for Local and Tile Local textures.
  */
-bool trpgwImageHelper::WriteToArchive(const trpgTexture&tex, char *data, trpgwAppAddress&addr, bool geotyp)
+bool trpgwImageHelper::WriteToArchive(const trpgTexture &tex, char *data, trpgwAppAddress &addr, bool geotyp)
 {
     trpg2iPoint size;
 

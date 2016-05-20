@@ -37,7 +37,7 @@ void GeometryCollector::reset()
     _geometryList.clear();
 }
 
-void GeometryCollector::apply(Geode&geode)
+void GeometryCollector::apply(Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
@@ -58,7 +58,7 @@ struct GeometryArrayGatherer
 {
     typedef std::vector<osg::Array*> ArrayList;
 
-    GeometryArrayGatherer(osg::Geometry&geometry)
+    GeometryArrayGatherer(osg::Geometry &geometry)
     {
         add(geometry.getVertexArray());
         add(geometry.getNormalArray());
@@ -86,7 +86,7 @@ struct GeometryArrayGatherer
         }
     }
 
-    void accept(osg::ArrayVisitor&av)
+    void accept(osg::ArrayVisitor &av)
     {
         for (ArrayList::iterator itr = _arrayList.begin();
              itr != _arrayList.end();
@@ -103,7 +103,7 @@ struct GeometryArrayGatherer
 // are identified by their index. Extracted from TriStripVisitor.cpp
 struct VertexAttribComparitor : public GeometryArrayGatherer
 {
-    VertexAttribComparitor(osg::Geometry&geometry)
+    VertexAttribComparitor(osg::Geometry &geometry)
         : GeometryArrayGatherer(geometry)
     {}
 
@@ -152,12 +152,12 @@ protected:
 class RemapArray : public osg::ArrayVisitor
 {
 public:
-RemapArray(const IndexList&remapping) : _remapping(remapping) {}
+RemapArray(const IndexList &remapping) : _remapping(remapping) {}
 
-const IndexList&_remapping;
+const IndexList &_remapping;
 
 template<class T>
-inline void remap(T&array)
+inline void remap(T &array)
 {
     for (unsigned int i = 0; i < _remapping.size(); ++i)
     {
@@ -171,97 +171,97 @@ inline void remap(T&array)
 }
 
 virtual void apply(osg::Array&) {}
-virtual void apply(osg::ByteArray&array)
+virtual void apply(osg::ByteArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::ShortArray&array)
+virtual void apply(osg::ShortArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::IntArray&array)
+virtual void apply(osg::IntArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UByteArray&array)
+virtual void apply(osg::UByteArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UShortArray&array)
+virtual void apply(osg::UShortArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UIntArray&array)
+virtual void apply(osg::UIntArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::FloatArray&array)
+virtual void apply(osg::FloatArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::DoubleArray&array)
-{
-    remap(array);
-}
-
-virtual void apply(osg::Vec2Array&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec3Array&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::DoubleArray &array)
 {
     remap(array);
 }
 
-virtual void apply(osg::Vec4ubArray&array)
+virtual void apply(osg::Vec2Array &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3Array &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4Array &array)
 {
     remap(array);
 }
 
-virtual void apply(osg::Vec2bArray&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec3bArray&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec4bArray&array)
+virtual void apply(osg::Vec4ubArray &array)
 {
     remap(array);
 }
 
-virtual void apply(osg::Vec2sArray&array)
+virtual void apply(osg::Vec2bArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::Vec3sArray&array)
+virtual void apply(osg::Vec3bArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::Vec4sArray&array)
-{
-    remap(array);
-}
-
-virtual void apply(osg::Vec2dArray&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec3dArray&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec4dArray&array)
+virtual void apply(osg::Vec4bArray &array)
 {
     remap(array);
 }
 
-virtual void apply(osg::MatrixfArray&array)
+virtual void apply(osg::Vec2sArray &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3sArray &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4sArray &array)
+{
+    remap(array);
+}
+
+virtual void apply(osg::Vec2dArray &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3dArray &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4dArray &array)
+{
+    remap(array);
+}
+
+virtual void apply(osg::MatrixfArray &array)
 {
     remap(array);
 }
@@ -300,7 +300,7 @@ struct MyTriangleOperator
 typedef osg::TriangleIndexFunctor<MyTriangleOperator> MyTriangleIndexFunctor;
 }
 
-void IndexMeshVisitor::makeMesh(Geometry&geom)
+void IndexMeshVisitor::makeMesh(Geometry &geom)
 {
     if (geom.containsDeprecatedData())
         geom.fixDeprecatedData();
@@ -592,7 +592,7 @@ const float valenceBoostPower = 0.5f;
 
 const int maxCacheSize = 32;
 
-float findVertexScore(Vertex&vert)
+float findVertexScore(Vertex &vert)
 {
     if (vert.numActiveTris == 0)
     {
@@ -646,7 +646,7 @@ struct Triangle
 
 typedef std::vector<Triangle> TriangleList;
 
-inline float findTriangleScore(Triangle&tri, const VertexList&vertices)
+inline float findTriangleScore(Triangle &tri, const VertexList &vertices)
 {
     float result = 0.0f;
 
@@ -658,8 +658,8 @@ inline float findTriangleScore(Triangle&tri, const VertexList&vertices)
 
 typedef std::pair<unsigned, float> TriangleScore;
 
-TriangleScore computeTriScores(Vertex&vert, const VertexList&vertices,
-                               TriangleList&triangles, std::vector<unsigned>&triStore)
+TriangleScore computeTriScores(Vertex &vert, const VertexList &vertices,
+                               TriangleList &triangles, std::vector<unsigned> &triStore)
 {
     float    bestScore = 0.0;
     unsigned bestTri   = 0;
@@ -760,14 +760,14 @@ struct TriangleAdder : public TriangleIndexFunctor<TriangleAddOperator>
 
 struct CompareTriangle
 {
-    bool operator()(const Triangle&lhs, const Triangle&rhs)
+    bool operator()(const Triangle &lhs, const Triangle &rhs)
     {
         return lhs.score < rhs.score;
     }
 };
 }
 
-void VertexCacheVisitor::optimizeVertices(Geometry&geom)
+void VertexCacheVisitor::optimizeVertices(Geometry &geom)
 {
     Array *vertArray = geom.getVertexArray();
 
@@ -780,7 +780,7 @@ void VertexCacheVisitor::optimizeVertices(Geometry&geom)
     if (vertArraySize <= 16)
         return;
 
-    Geometry::PrimitiveSetList&primSets = geom.getPrimitiveSetList();
+    Geometry::PrimitiveSetList &primSets = geom.getPrimitiveSetList();
 
     for (Geometry::PrimitiveSetList::iterator itr = primSets.begin(),
          end = primSets.end();
@@ -868,10 +868,10 @@ void VertexCacheVisitor::optimizeVertices(Geometry&geom)
 }
 
 // The main optimization loop
-void VertexCacheVisitor::doVertexOptimization(Geometry&geom,
-                                              std::vector<unsigned>&vertDrawList)
+void VertexCacheVisitor::doVertexOptimization(Geometry &geom,
+                                              std::vector<unsigned> &vertDrawList)
 {
-    Geometry::PrimitiveSetList&primSets = geom.getPrimitiveSetList();
+    Geometry::PrimitiveSetList &primSets = geom.getPrimitiveSetList();
     // lists for all the vertices and triangles
     VertexList      vertices;
     TriangleList    triangles;
@@ -1032,7 +1032,7 @@ void VertexCacheMissVisitor::reset()
     triangles = 0;
 }
 
-void VertexCacheMissVisitor::apply(Geode&geode)
+void VertexCacheMissVisitor::apply(Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); ++i)
     {
@@ -1117,15 +1117,15 @@ struct CacheRecorder : public TriangleIndexFunctor<CacheRecordOperator>
 };
 }
 
-void VertexCacheMissVisitor::doGeometry(Geometry&geom)
+void VertexCacheMissVisitor::doGeometry(Geometry &geom)
 {
     Array *vertArray = geom.getVertexArray();
 
     if (!vertArray || vertArray->getNumElements() == 0)
         return;
 
-    Geometry::PrimitiveSetList&primSets = geom.getPrimitiveSetList();
-    CacheRecorder             recorder(_cacheSize);
+    Geometry::PrimitiveSetList &primSets = geom.getPrimitiveSetList();
+    CacheRecorder              recorder(_cacheSize);
 
     for (Geometry::PrimitiveSetList::iterator itr = primSets.begin(),
          end = primSets.end();
@@ -1149,7 +1149,7 @@ class Remapper : public osg::ArrayVisitor
 {
 public:
 static const unsigned invalidIndex;
-Remapper(const std::vector<unsigned>&remapping)
+Remapper(const std::vector<unsigned> &remapping)
     : _remapping(remapping), _newsize(0)
 {
     for (std::vector<unsigned>::const_iterator itr = _remapping.begin(),
@@ -1160,11 +1160,11 @@ Remapper(const std::vector<unsigned>&remapping)
             ++_newsize;
 }
 
-const std::vector<unsigned>&_remapping;
-size_t                     _newsize;
+const std::vector<unsigned> &_remapping;
+size_t                      _newsize;
 
 template<class T>
-inline void remap(T&array)
+inline void remap(T &array)
 {
     ref_ptr<T> newarray = new T(_newsize);
     T          *newptr  = newarray.get();
@@ -1177,97 +1177,97 @@ inline void remap(T&array)
 }
 
 virtual void apply(osg::Array&) {}
-virtual void apply(osg::ByteArray&array)
+virtual void apply(osg::ByteArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::ShortArray&array)
+virtual void apply(osg::ShortArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::IntArray&array)
+virtual void apply(osg::IntArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UByteArray&array)
+virtual void apply(osg::UByteArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UShortArray&array)
+virtual void apply(osg::UShortArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::UIntArray&array)
+virtual void apply(osg::UIntArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::FloatArray&array)
+virtual void apply(osg::FloatArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::DoubleArray&array)
-{
-    remap(array);
-}
-
-virtual void apply(osg::Vec2Array&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec3Array&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec4Array&array)
+virtual void apply(osg::DoubleArray &array)
 {
     remap(array);
 }
 
-virtual void apply(osg::Vec4ubArray&array)
+virtual void apply(osg::Vec2Array &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3Array &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4Array &array)
 {
     remap(array);
 }
 
-virtual void apply(osg::Vec2bArray&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec3bArray&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec4bArray&array)
+virtual void apply(osg::Vec4ubArray &array)
 {
     remap(array);
 }
 
-virtual void apply(osg::Vec2sArray&array)
+virtual void apply(osg::Vec2bArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::Vec3sArray&array)
+virtual void apply(osg::Vec3bArray &array)
 {
     remap(array);
 }
-virtual void apply(osg::Vec4sArray&array)
-{
-    remap(array);
-}
-
-virtual void apply(osg::Vec2dArray&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec3dArray&array)
-{
-    remap(array);
-}
-virtual void apply(osg::Vec4dArray&array)
+virtual void apply(osg::Vec4bArray &array)
 {
     remap(array);
 }
 
-virtual void apply(osg::MatrixfArray&array)
+virtual void apply(osg::Vec2sArray &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3sArray &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4sArray &array)
+{
+    remap(array);
+}
+
+virtual void apply(osg::Vec2dArray &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec3dArray &array)
+{
+    remap(array);
+}
+virtual void apply(osg::Vec4dArray &array)
+{
+    remap(array);
+}
+
+virtual void apply(osg::MatrixfArray &array)
 {
     remap(array);
 }
@@ -1331,8 +1331,8 @@ void VertexAccessOrderVisitor::optimizeOrder()
 }
 
 template<typename DE>
-inline void reorderDrawElements(DE&drawElements,
-                                const std::vector<unsigned>&reorder)
+inline void reorderDrawElements(DE &drawElements,
+                                const std::vector<unsigned> &reorder)
 {
     for (typename DE::iterator itr = drawElements.begin(), end = drawElements.end();
          itr != end;
@@ -1342,14 +1342,14 @@ inline void reorderDrawElements(DE&drawElements,
     }
 }
 
-void VertexAccessOrderVisitor::optimizeOrder(Geometry&geom)
+void VertexAccessOrderVisitor::optimizeOrder(Geometry &geom)
 {
     Array *vertArray = geom.getVertexArray();
 
     if (!vertArray || vertArray->getNumElements() == 0)
         return;
 
-    Geometry::PrimitiveSetList&primSets = geom.getPrimitiveSetList();
+    Geometry::PrimitiveSetList &primSets = geom.getPrimitiveSetList();
 
     // sort primitives: first triangles, then lines and finally points
     std::sort(primSets.begin(), primSets.end(), order_by_primitive_mode);
@@ -1416,7 +1416,7 @@ void VertexAccessOrderVisitor::optimizeOrder(Geometry&geom)
     geom.dirtyDisplayList();
 }
 
-void SharedArrayOptimizer::findDuplicatedUVs(const osg::Geometry&geometry)
+void SharedArrayOptimizer::findDuplicatedUVs(const osg::Geometry &geometry)
 {
     _deduplicateUvs.clear();
 
@@ -1460,7 +1460,7 @@ void SharedArrayOptimizer::findDuplicatedUVs(const osg::Geometry&geometry)
     }
 }
 
-void SharedArrayOptimizer::deduplicateUVs(osg::Geometry&geometry)
+void SharedArrayOptimizer::deduplicateUVs(osg::Geometry &geometry)
 {
     for (std::map<unsigned int, unsigned int>::const_iterator it_duplicate = _deduplicateUvs.begin();
          it_duplicate != _deduplicateUvs.end(); ++it_duplicate)

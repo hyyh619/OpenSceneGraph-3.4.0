@@ -69,7 +69,7 @@ public:
 TXPArchive();
 
 // Opens the archive file and reads the header
-bool openFile(const std::string&archiveName);
+bool openFile(const std::string &archiveName);
 // Load the materials from the archve
 bool loadMaterials();
 bool loadMaterial(int ix);
@@ -94,7 +94,7 @@ inline std::map<int, osg::Vec4>&getTextColors()
 }
 
 // Add light attrib
-void addLightAttribute(osgSim::LightPointNode *lpn, osg::StateSet *fallback, const osg::Vec3&attitude, int handle);
+void addLightAttribute(osgSim::LightPointNode *lpn, osg::StateSet *fallback, const osg::Vec3 &attitude, int handle);
 
 int getNumLightAttributes()
 {
@@ -122,7 +122,7 @@ struct TileLocationInfo
 {
     TileLocationInfo() : x(-1), y(-1), lod(-1)
     {}
-    TileLocationInfo(int gx, int gy, int glod, const trpgwAppAddress&gaddr, float gzmin = 0.0f, float gzmax = 0.0f) :
+    TileLocationInfo(int gx, int gy, int glod, const trpgwAppAddress &gaddr, float gzmin = 0.0f, float gzmax = 0.0f) :
         x(gx), y(gy), lod(glod), addr(gaddr), zmin(gzmin), zmax(gzmax)
     {}
     int             x, y, lod;
@@ -130,8 +130,8 @@ struct TileLocationInfo
     float           zmin, zmax;
 };
 
-bool getTileInfo(int x, int y, int lod, TileInfo&info);
-bool getTileInfo(const TileLocationInfo&loc, TileInfo&info);
+bool getTileInfo(int x, int y, int lod, TileInfo &info);
+bool getTileInfo(const TileLocationInfo &loc, TileInfo &info);
 
 // Set/Get the archive id
 inline void setId(int id)
@@ -151,13 +151,13 @@ inline const int&getNumLODs() const
 
 // Returns the extents of the archive
 // FIXME - Needs to change for databases that aren't flat-earth
-void getExtents(osg::BoundingBox&extents);
+void getExtents(osg::BoundingBox &extents);
 //     {
 //         extents.set(_swExtents.x,_swExtents.y,0.0f,_neExtents.x,_neExtents.y,0.0f);
 //     }
 
 // Returns the origin of the archive
-inline void getOrigin(double&x, double&y)
+inline void getOrigin(double &x, double &y)
 {
     x = _swExtents.x;
     y = _swExtents.y;
@@ -180,22 +180,22 @@ osg::Group* getTileContent(
     double realMinRange,
     double realMaxRange,
     double usedMaxRange,
-    osg::Vec3&tileCenter,
-    std::vector<TileLocationInfo>&childInfoList);
+    osg::Vec3 &tileCenter,
+    std::vector<TileLocationInfo> &childInfoList);
 
 //  To be used for Version 2.1 with lod > 0
 osg::Group* getTileContent(
-    const TileLocationInfo&loc,
+    const TileLocationInfo &loc,
     double realMinRange,
     double realMaxRange,
     double usedMaxRange,
-    osg::Vec3&tileCenter,
-    std::vector<TileLocationInfo>&childInfoList);
+    osg::Vec3 &tileCenter,
+    std::vector<TileLocationInfo> &childInfoList);
 
 // Get the number of tiles for given LOD
-bool getLODSize(int lod, int&x, int&y);
+bool getLODSize(int lod, int &x, int &y);
 
-void GetVersion(int&majorVer, int&minorVer) const
+void GetVersion(int &majorVer, int &minorVer) const
 {
     majorVer = _majorVersion;
     minorVer = _minorVersion;
@@ -208,7 +208,7 @@ void GetVersion(int&majorVer, int&minorVer) const
 // This will allow you to have smc / fid / swc / stp values and
 // places them on the userdata of the state set. this way your own
 // terrain loader / parser can know these values
-void SetUserDataToMaterialAttributes(osg::StateSet&osg_state_set, const trpgMaterial&mat)
+void SetUserDataToMaterialAttributes(osg::StateSet &osg_state_set, const trpgMaterial &mat)
 {
     if (!_loadMaterialsToStateSet)
         return;

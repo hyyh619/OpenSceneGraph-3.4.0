@@ -26,7 +26,7 @@ ReaderWriterPOV::ReaderWriterPOV()
 
 
 static osgDB::ReaderWriter::WriteResult
-writeNodeImplementation(const Node&node, ostream&fout,
+writeNodeImplementation(const Node &node, ostream &fout,
                         const osgDB::ReaderWriter::Options *options)
 {
     // get camera on the top of scene graph
@@ -94,7 +94,7 @@ writeNodeImplementation(const Node&node, ostream&fout,
 
 
 osgDB::ReaderWriter::WriteResult
-ReaderWriterPOV::writeNode(const Node&node, const string&fileName,
+ReaderWriterPOV::writeNode(const Node &node, const string &fileName,
                            const osgDB::ReaderWriter::Options *options) const
 {
     // accept extension
@@ -114,7 +114,7 @@ ReaderWriterPOV::writeNode(const Node&node, const string&fileName,
 
 
 osgDB::ReaderWriter::WriteResult
-ReaderWriterPOV::writeNode(const Node&node, ostream&fout,
+ReaderWriterPOV::writeNode(const Node &node, ostream &fout,
                            const osgDB::ReaderWriter::Options *options) const
 {
     notify(osg::NOTICE) << "ReaderWriterPOV::writeNode() Writing to "

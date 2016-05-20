@@ -42,10 +42,10 @@ virtual const char* className()
 {
     return "Autodesk DXF Reader/Writer";
 }
-virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options*) const;
+virtual ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options*) const;
 
 
-virtual WriteResult writeObject(const osg::Object&obj, const std::string&fileName, const Options *options = NULL) const
+virtual WriteResult writeObject(const osg::Object &obj, const std::string &fileName, const Options *options = NULL) const
 {
     const osg::Node *node = dynamic_cast<const osg::Node*>(&obj);
 
@@ -56,7 +56,7 @@ virtual WriteResult writeObject(const osg::Object&obj, const std::string&fileNam
 }
 
 
-virtual WriteResult writeObject(const osg::Object&obj, std::ostream&fout, const Options *options = NULL) const
+virtual WriteResult writeObject(const osg::Object &obj, std::ostream &fout, const Options *options = NULL) const
 {
     const osg::Node *node = dynamic_cast<const osg::Node*>(&obj);
 
@@ -66,7 +66,7 @@ virtual WriteResult writeObject(const osg::Object&obj, std::ostream&fout, const 
         return WriteResult(WriteResult::FILE_NOT_HANDLED);
 }
 
-virtual WriteResult writeNode(const osg::Node&node, std::ostream&fout, const Options* = NULL) const
+virtual WriteResult writeNode(const osg::Node &node, std::ostream &fout, const Options* = NULL) const
 {
     DXFWriterNodeVisitor nv(fout);
 
@@ -81,7 +81,7 @@ virtual WriteResult writeNode(const osg::Node&node, std::ostream&fout, const Opt
     return WriteResult(WriteResult::FILE_SAVED);
 }
 
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options *options = NULL) const
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options *options = NULL) const
 {
     if (!acceptsExtension(osgDB::getFileExtension(fileName)))
         return WriteResult(WriteResult::FILE_NOT_HANDLED);
@@ -115,7 +115,7 @@ REGISTER_OSGPLUGIN(dxf, ReaderWriterdxf)
 
 // read file and convert to OSG.
 osgDB::ReaderWriter::ReadResult
-ReaderWriterdxf::readNode(const std::string&filename, const osgDB::ReaderWriter::Options *options) const
+ReaderWriterdxf::readNode(const std::string &filename, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(filename);
 

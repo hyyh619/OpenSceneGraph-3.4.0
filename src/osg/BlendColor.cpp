@@ -23,14 +23,14 @@ BlendColor::BlendColor() :
     _constantColor(1.0f, 1.0f, 1.0f, 1.0f)
 {}
 
-BlendColor::BlendColor(const osg::Vec4&constantColor) :
+BlendColor::BlendColor(const osg::Vec4 &constantColor) :
     _constantColor(constantColor)
 {}
 
 BlendColor::~BlendColor()
 {}
 
-void BlendColor::apply(State&state) const
+void BlendColor::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

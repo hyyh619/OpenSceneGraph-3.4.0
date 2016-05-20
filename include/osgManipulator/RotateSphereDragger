@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #ifndef OSGMANIPULATOR_ROTATESPHEREDRAGGER
 #define OSGMANIPULATOR_ROTATESPHEREDRAGGER 1
@@ -19,43 +19,54 @@
 #include <osgManipulator/Projector>
 
 namespace osgManipulator {
-
 /**
  * Dragger for performing 3D rotation on a sphere.
  */
-class OSGMANIPULATOR_EXPORT RotateSphereDragger : public Dragger
-{
-    public:
+    class OSGMANIPULATOR_EXPORT RotateSphereDragger: public Dragger
+    {
+public:
 
         RotateSphereDragger();
 
-        META_OSGMANIPULATOR_Object(osgManipulator,RotateSphereDragger)
+        META_OSGMANIPULATOR_Object(osgManipulator, RotateSphereDragger)
 
         /**
          * Handle pick events on dragger and generate TranslateInLine commands.
          */
-        virtual bool handle(const PointerInfo&, const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us);
+        virtual bool handle(const PointerInfo&, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us);
 
         /** Setup default geometry for dragger. */
         void setupDefaultGeometry();
 
         /** Set/Get color for dragger. */
-        inline void setColor(const osg::Vec4& color) { _color = color; setMaterialColor(_color,*this); }
-        inline const osg::Vec4& getColor() const { return _color; }
+        inline void setColor(const osg::Vec4 &color)
+        {
+            _color = color; setMaterialColor(_color, *this);
+        }
+        inline const osg::Vec4&getColor() const
+        {
+            return _color;
+        }
 
         /**
          * Set/Get pick color for dragger. Pick color is color of the dragger
          * when picked. It gives a visual feedback to show that the dragger has
          * been picked.
          */
-        inline void setPickColor(const osg::Vec4& color) { _pickColor = color; }
-        inline const osg::Vec4& getPickColor() const { return _pickColor; }
+        inline void setPickColor(const osg::Vec4 &color)
+        {
+            _pickColor = color;
+        }
+        inline const osg::Vec4&getPickColor() const
+        {
+            return _pickColor;
+        }
 
-    protected:
+protected:
 
         virtual ~RotateSphereDragger();
 
-        osg::ref_ptr<SpherePlaneProjector> _projector;
+        osg::ref_ptr < SpherePlaneProjector > _projector;
 
         osg::Vec3d  _prevWorldProjPt;
         bool        _prevPtOnSphere;
@@ -64,9 +75,7 @@ class OSGMANIPULATOR_EXPORT RotateSphereDragger : public Dragger
 
         osg::Vec4 _color;
         osg::Vec4 _pickColor;
-};
-
-
+    };
 }
 
 #endif

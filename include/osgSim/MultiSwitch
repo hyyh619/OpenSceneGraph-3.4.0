@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_MULTISWITCH
 #define OSG_MULTISWITCH 1
@@ -18,41 +18,46 @@
 #include <osgSim/Export>
 
 namespace osgSim {
-
 /** MultiSwitch is a Group node which allows switching between sets of selected children.
     MultiSwitch is based on the OpenFlight switch behaviour.
-*/
-class OSGSIM_EXPORT MultiSwitch : public osg::Group
-{
-    public :
+ */
+    class OSGSIM_EXPORT MultiSwitch: public osg::Group
+    {
+public:
 
 
         MultiSwitch();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        MultiSwitch(const MultiSwitch&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+        MultiSwitch(const MultiSwitch &, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Node(osgSim, MultiSwitch);
 
-        virtual void traverse(osg::NodeVisitor& nv);
+        virtual void traverse(osg::NodeVisitor &nv);
 
-        void setNewChildDefaultValue(bool value) { _newChildDefaultValue = value; }
+        void setNewChildDefaultValue(bool value)
+        {
+            _newChildDefaultValue = value;
+        }
 
-        bool getNewChildDefaultValue() const { return _newChildDefaultValue; }
+        bool getNewChildDefaultValue() const
+        {
+            return _newChildDefaultValue;
+        }
 
-        virtual bool addChild( osg::Node *child );
+        virtual bool addChild(osg::Node *child);
 
-        virtual bool insertChild( unsigned int index, osg::Node *child );
+        virtual bool insertChild(unsigned int index, osg::Node *child);
 
-        virtual bool removeChild( osg::Node *child );
+        virtual bool removeChild(osg::Node *child);
 
-        void setValue(unsigned int switchSet, unsigned int pos,bool value);
+        void setValue(unsigned int switchSet, unsigned int pos, bool value);
 
         bool getValue(unsigned int switchSet, unsigned int pos) const;
 
-        void setChildValue(const osg::Node* child,unsigned int switchSet, bool value);
+        void setChildValue(const osg::Node *child, unsigned int switchSet, bool value);
 
-        bool getChildValue(const osg::Node* child,unsigned int switchSet) const;
+        bool getChildValue(const osg::Node *child, unsigned int switchSet) const;
 
         /** Set all the children off (false), and set the new default child value to off (false).*/
         bool setAllChildrenOff(unsigned int switchSet);
@@ -64,32 +69,47 @@ class OSGSIM_EXPORT MultiSwitch : public osg::Group
         bool setSingleChildOn(unsigned int switchSet, unsigned int pos);
 
         /** Set which of the available switch set lists to use.*/
-        void setActiveSwitchSet(unsigned int switchSet) { _activeSwitchSet = switchSet; }
+        void setActiveSwitchSet(unsigned int switchSet)
+        {
+            _activeSwitchSet = switchSet;
+        }
 
         /** Get which of the available switch set lists to use.*/
-        unsigned int getActiveSwitchSet() const { return _activeSwitchSet; }
+        unsigned int getActiveSwitchSet() const
+        {
+            return _activeSwitchSet;
+        }
 
-        typedef std::vector<bool>        ValueList;
-        typedef std::vector<ValueList>   SwitchSetList;
-        typedef std::vector<std::string> SwitchSetNameList;
+        typedef std::vector < bool > ValueList;
+        typedef std::vector < ValueList > SwitchSetList;
+        typedef std::vector < std::string > SwitchSetNameList;
 
         /** Set the compile set of different values.*/
-        void setSwitchSetList(const SwitchSetList& switchSetList);
+        void setSwitchSetList(const SwitchSetList &switchSetList);
 
         /** Get the compile set of different values.*/
-        const SwitchSetList& getSwitchSetList() const { return _values; }
+        const SwitchSetList&getSwitchSetList() const
+        {
+            return _values;
+        }
 
         /** Set the a single set of different values for a particular switch set.*/
-        void setValueList(unsigned int switchSet, const ValueList& values);
+        void setValueList(unsigned int switchSet, const ValueList &values);
 
         /** Get the a single set of different values for a particular switch set.*/
-        const ValueList& getValueList(unsigned int switchSet) const { return _values[switchSet]; }
+        const ValueList&getValueList(unsigned int switchSet) const
+        {
+            return _values[switchSet];
+        }
 
-        void setValueName(unsigned int switchSet, const std::string& name);
+        void setValueName(unsigned int switchSet, const std::string &name);
 
-        const std::string& getValueName(unsigned int switchSet) const { return _valueNames[switchSet]; }
+        const std::string&getValueName(unsigned int switchSet) const
+        {
+            return _valueNames[switchSet];
+        }
 
-    protected :
+protected:
 
         virtual ~MultiSwitch() {}
 
@@ -100,8 +120,7 @@ class OSGSIM_EXPORT MultiSwitch : public osg::Group
         unsigned int      _activeSwitchSet;
         SwitchSetList     _values;
         SwitchSetNameList _valueNames;
-};
-
+    };
 }
 
 #endif

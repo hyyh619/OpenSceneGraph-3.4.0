@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkPutMatrix(const osgSim::DOFTransform&dof)
+static bool checkPutMatrix(const osgSim::DOFTransform &dof)
 {
     return !dof.getPutMatrix().isIdentity();
 }
 
-static bool readPutMatrix(osgDB::InputStream&is, osgSim::DOFTransform&dof)
+static bool readPutMatrix(osgDB::InputStream &is, osgSim::DOFTransform &dof)
 {
     osg::Matrixf put; is >> put;
 
@@ -17,7 +17,7 @@ static bool readPutMatrix(osgDB::InputStream&is, osgSim::DOFTransform&dof)
     return true;
 }
 
-static bool writePutMatrix(osgDB::OutputStream&os, const osgSim::DOFTransform&dof)
+static bool writePutMatrix(osgDB::OutputStream &os, const osgSim::DOFTransform &dof)
 {
     osg::Matrixf put = dof.getPutMatrix();
 
@@ -25,12 +25,12 @@ static bool writePutMatrix(osgDB::OutputStream&os, const osgSim::DOFTransform&do
     return true;
 }
 
-static bool checkLimitationFlags(const osgSim::DOFTransform&dof)
+static bool checkLimitationFlags(const osgSim::DOFTransform &dof)
 {
     return dof.getLimitationFlags() > 0;
 }
 
-static bool readLimitationFlags(osgDB::InputStream&is, osgSim::DOFTransform&dof)
+static bool readLimitationFlags(osgDB::InputStream &is, osgSim::DOFTransform &dof)
 {
     unsigned long flags; is >> flags;
 
@@ -38,7 +38,7 @@ static bool readLimitationFlags(osgDB::InputStream&is, osgSim::DOFTransform&dof)
     return true;
 }
 
-static bool writeLimitationFlags(osgDB::OutputStream&os, const osgSim::DOFTransform&dof)
+static bool writeLimitationFlags(osgDB::OutputStream &os, const osgSim::DOFTransform &dof)
 {
     os << dof.getLimitationFlags() << std::endl;
     return true;

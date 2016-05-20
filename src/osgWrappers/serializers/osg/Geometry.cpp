@@ -48,7 +48,7 @@ static osg::Array * readArray(osgDB::InputStream & is)
     return array.release();
 }
 
-static void writeArray(osgDB::OutputStream&os, const osg::Array *array)
+static void writeArray(osgDB::OutputStream &os, const osg::Array *array)
 {
     os << os.PROPERTY("Array") << (array != 0);
     if (array != 0)
@@ -104,7 +104,7 @@ ADD_ARRAYDATA_FUNCTIONS(FogCoordData, FogCoordArray)
         return true;                                                                           \
     }                                                                                          \
     static bool write ## ORIGINAL_PROP(osgDB::OutputStream & os, const osg::Geometry & geom) { \
-        const osg::Geometry::ArrayList&LISTNAME = geom.get ## LISTNAME();                      \
+        const osg::Geometry::ArrayList &LISTNAME = geom.get ## LISTNAME();                     \
         os.writeSize(LISTNAME.size()); os << os.BEGIN_BRACKET << std::endl;                    \
         for (osg::Geometry::ArrayList::const_iterator itr = LISTNAME.begin();                  \
              itr != LISTNAME.end(); ++itr) {                                                   \
@@ -120,9 +120,9 @@ ADD_ARRAYLIST_FUNCTIONS(VertexAttribData, VertexAttribArray, VertexAttribArrayLi
 
 struct GeometryFinishedObjectReadCallback : public osgDB::FinishedObjectReadCallback
 {
-    virtual void objectRead(osgDB::InputStream&, osg::Object&obj)
+    virtual void objectRead(osgDB::InputStream&, osg::Object &obj)
     {
-        osg::Geometry&geometry = static_cast<osg::Geometry&>(obj);
+        osg::Geometry &geometry = static_cast<osg::Geometry&>(obj);
 
         if (geometry.getUseVertexBufferObjects())
         {
@@ -133,11 +133,11 @@ struct GeometryFinishedObjectReadCallback : public osgDB::FinishedObjectReadCall
 };
 
 // implement backwards compatibility with reading/writing the FastPathHint
-static bool checkFastPathHint(const osg::Geometry&geom)
+static bool checkFastPathHint(const osg::Geometry &geom)
 {
     return false;
 }
-static bool readFastPathHint(osgDB::InputStream&is, osg::Geometry&geom)
+static bool readFastPathHint(osgDB::InputStream &is, osg::Geometry &geom)
 {
     // Compatibility info:
     //   Previous Geometry wrapper (before 3.1.8) require a bool fast-path serializer.
@@ -152,7 +152,7 @@ static bool readFastPathHint(osgDB::InputStream&is, osg::Geometry&geom)
 
     return true;
 }
-static bool writeFastPathHint(osgDB::OutputStream&os, const osg::Geometry&geom)
+static bool writeFastPathHint(osgDB::OutputStream &os, const osg::Geometry &geom)
 {
     return true;
 }

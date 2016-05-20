@@ -46,7 +46,7 @@ using namespace osg;
 ShaderComponent::ShaderComponent()
 {}
 
-ShaderComponent::ShaderComponent(const ShaderComponent&sc, const CopyOp&copyop) :
+ShaderComponent::ShaderComponent(const ShaderComponent &sc, const CopyOp &copyop) :
     osg::Object(sc, copyop),
     _shaders(sc._shaders)
 {}
@@ -68,7 +68,7 @@ void ShaderComponent::removeShader(unsigned int i)
     _shaders.erase(_shaders.begin() + i);
 }
 
-void ShaderComponent::compileGLObjects(State&state) const
+void ShaderComponent::compileGLObjects(State &state) const
 {
     for (Shaders::const_iterator itr = _shaders.begin();
          itr != _shaders.end();
@@ -107,7 +107,7 @@ void ShaderComponent::releaseGLObjects(State *state) const
 ShaderBinary::ShaderBinary()
 {}
 
-ShaderBinary::ShaderBinary(const ShaderBinary&rhs, const osg::CopyOp&copyop) :
+ShaderBinary::ShaderBinary(const ShaderBinary &rhs, const osg::CopyOp &copyop) :
     osg::Object(rhs, copyop),
     _data(rhs._data)
 {}
@@ -130,7 +130,7 @@ void ShaderBinary::assign(unsigned int size, const unsigned char *data)
     }
 }
 
-ShaderBinary* ShaderBinary::readShaderBinaryFile(const std::string&fileName)
+ShaderBinary* ShaderBinary::readShaderBinaryFile(const std::string &fileName)
 {
     std::ifstream fin;
 
@@ -173,7 +173,7 @@ void Shader::deleteGlShader(unsigned int contextID, GLuint shader)
     }
 }
 
-void Shader::flushDeletedGlShaders(unsigned int contextID, double /*currentTime*/, double&availableTime)
+void Shader::flushDeletedGlShaders(unsigned int contextID, double /*currentTime*/, double &availableTime)
 {
     // if no time available don't try to flush objects.
     if (availableTime <= 0.0)
@@ -183,14 +183,14 @@ void Shader::flushDeletedGlShaders(unsigned int contextID, double /*currentTime*
     if (!extensions->isGlslSupported)
         return;
 
-    const osg::Timer&timer      = *osg::Timer::instance();
-    osg::Timer_t    start_tick  = timer.tick();
-    double          elapsedTime = 0.0;
+    const osg::Timer &timer      = *osg::Timer::instance();
+    osg::Timer_t     start_tick  = timer.tick();
+    double           elapsedTime = 0.0;
 
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedGlShaderCache);
 
-        GlShaderHandleList&pList = s_deletedGlShaderCache[contextID];
+        GlShaderHandleList &pList = s_deletedGlShaderCache[contextID];
 
         for (GlShaderHandleList::iterator titr = pList.begin();
              titr != pList.end() && elapsedTime < availableTime;
@@ -209,7 +209,7 @@ void Shader::discardDeletedGlShaders(unsigned int contextID)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedGlShaderCache);
 
-    GlShaderHandleList&pList = s_deletedGlShaderCache[contextID];
+    GlShaderHandleList &pList = s_deletedGlShaderCache[contextID];
 
     pList.clear();
 }
@@ -223,7 +223,7 @@ Shader::Shader(Type type) :
     _shaderDefinesMode(USE_SHADER_PRAGMA)
 {}
 
-Shader::Shader(Type type, const std::string&source) :
+Shader::Shader(Type type, const std::string &source) :
     _type(type),
     _shaderDefinesMode(USE_SHADER_PRAGMA)
 {
@@ -237,7 +237,7 @@ Shader::Shader(Type type, ShaderBinary *shaderBinary) :
 {}
 
 
-Shader::Shader(const Shader&rhs, const osg::CopyOp&copyop) :
+Shader::Shader(const Shader &rhs, const osg::CopyOp &copyop) :
     osg::Object(rhs, copyop),
     _type(rhs._type),
     _shaderFileName(rhs._shaderFileName),
@@ -265,7 +265,7 @@ bool Shader::setType(Type t)
     return true;
 }
 
-int Shader::compare(const Shader&rhs) const
+int Shader::compare(const Shader &rhs) const
 {
     if (this == &rhs)
         return 0;
@@ -303,7 +303,7 @@ int Shader::compare(const Shader&rhs) const
     return 0;
 }
 
-void Shader::setShaderSource(const std::string&sourceText)
+void Shader::setShaderSource(const std::string &sourceText)
 {
     _shaderSource = sourceText;
 
@@ -313,7 +313,7 @@ void Shader::setShaderSource(const std::string&sourceText)
 }
 
 
-Shader* Shader::readShaderFile(Type type, const std::string&fileName)
+Shader* Shader::readShaderFile(Type type, const std::string &fileName)
 {
     ref_ptr<Shader> shader = new Shader(type);
     if (shader->loadShaderSourceFromFile(fileName))
@@ -322,7 +322,7 @@ Shader* Shader::readShaderFile(Type type, const std::string&fileName)
     return 0;
 }
 
-bool Shader::loadShaderSourceFromFile(const std::string&fileName)
+bool Shader::loadShaderSourceFromFile(const std::string &fileName)
 {
     std::ifstream sourceFile;
 
@@ -371,7 +371,7 @@ const char* Shader::getTypename() const
 }
 
 
-Shader::Type Shader::getTypeId(const std::string&tname)
+Shader::Type Shader::getTypeId(const std::string &tname)
 {
     if (tname == "VERTEX")
         return VERTEX;
@@ -410,7 +410,7 @@ void Shader::releaseGLObjects(osg::State *state) const
     }
 }
 
-void Shader::compileShader(osg::State&state) const
+void Shader::compileShader(osg::State &state) const
 {
     PerContextShader *pcs = getPCS(state);
 
@@ -425,7 +425,7 @@ Shader::ShaderObjects::ShaderObjects(const osg::Shader *shader, unsigned int con
 {}
 
 
-Shader::PerContextShader* Shader::ShaderObjects::getPCS(const std::string&defineStr) const
+Shader::PerContextShader* Shader::ShaderObjects::getPCS(const std::string &defineStr) const
 {
     for (PerContextShaders::const_iterator itr = _perContextShaders.begin();
          itr != _perContextShaders.end();
@@ -442,7 +442,7 @@ Shader::PerContextShader* Shader::ShaderObjects::getPCS(const std::string&define
     return 0;
 }
 
-Shader::PerContextShader* Shader::ShaderObjects::createPerContextShader(const std::string&defineStr)
+Shader::PerContextShader* Shader::ShaderObjects::createPerContextShader(const std::string &defineStr)
 {
     Shader::PerContextShader *pcs = new PerContextShader(_shader, _contextID);
 
@@ -463,7 +463,7 @@ void Shader::ShaderObjects::requestCompile()
 }
 
 
-Shader::PerContextShader* Shader::getPCS(osg::State&state) const
+Shader::PerContextShader* Shader::getPCS(osg::State &state) const
 {
     if (getType() == UNDEFINED)
     {
@@ -574,7 +574,7 @@ void Shader::PerContextShader::requestCompile()
 
 namespace
 {
-std::string insertLineNumbers(const std::string&source)
+std::string insertLineNumbers(const std::string &source)
 {
     if (source.empty())
         return source;
@@ -606,7 +606,7 @@ std::string insertLineNumbers(const std::string&source)
 }
 }
 
-void Shader::PerContextShader::compileShader(osg::State&state)
+void Shader::PerContextShader::compileShader(osg::State &state)
 {
     if (!_needsCompile)
         return;
@@ -769,7 +769,7 @@ void Shader::PerContextShader::compileShader(osg::State&state)
     }
 }
 
-bool Shader::PerContextShader::getInfoLog(std::string&infoLog) const
+bool Shader::PerContextShader::getInfoLog(std::string &infoLog) const
 {
     return _extensions->getShaderInfoLog(_glShaderHandle, infoLog);
 }
@@ -784,7 +784,7 @@ void Shader::PerContextShader::detachShader(GLuint program) const
     _extensions->glDetachShader(program, _glShaderHandle);
 }
 
-void Shader::_parseShaderDefines(const std::string&str, ShaderDefines&defines)
+void Shader::_parseShaderDefines(const std::string &str, ShaderDefines &defines)
 {
     OSG_INFO << "Shader::_parseShaderDefines(" << str << ")" << std::endl;
     std::string::size_type start_of_parameter = 0;

@@ -15,7 +15,7 @@
 
 using namespace osgUtil;
 
-TransformAttributeFunctor::TransformAttributeFunctor(const osg::Matrix&m)
+TransformAttributeFunctor::TransformAttributeFunctor(const osg::Matrix &m)
 {
     _m = m;
     _im.invert(_m);

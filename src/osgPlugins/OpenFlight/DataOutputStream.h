@@ -47,17 +47,17 @@ void writeFloat64(const float64 val);
 
 // Write the entire string. If nullTerminate is true, write an additional NULL.
 // Always writes either 'val.size()' bytes or 'val.size()+1' bytes.
-void writeString(const std::string&val, bool nullTerminate = true);
+void writeString(const std::string &val, bool nullTerminate = true);
 
 // Never write more than 'size-1' bytes from 'val', and write 'fill' so that 'size' bytes total are written.
 // Always writes 'size' bytes..
-void writeString(const std::string&val, int size, char fill = '\0');
+void writeString(const std::string &val, int size, char fill = '\0');
 
-void writeID(const std::string&val);
-void writeVec2f(const osg::Vec2f&val);
-void writeVec3f(const osg::Vec3f&val);
-void writeVec4f(const osg::Vec4f&val);
-void writeVec3d(const osg::Vec3d&val);
+void writeID(const std::string &val);
+void writeVec2f(const osg::Vec2f &val);
+void writeVec3f(const osg::Vec3f &val);
+void writeVec4f(const osg::Vec4f &val);
+void writeVec3d(const osg::Vec3d &val);
 
 void writeFill(int sizeBytes, const char val = '\0');
 

@@ -53,7 +53,7 @@ struct PointData
     Vec3  coord;
     Vec2  texcoord;
 
-    inline bool operator ==(const PointData&p) const
+    inline bool operator ==(const PointData &p) const
     {
         return coord == p.coord && texcoord == p.texcoord;
     }

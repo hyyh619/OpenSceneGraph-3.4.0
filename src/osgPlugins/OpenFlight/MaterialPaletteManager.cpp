@@ -25,7 +25,7 @@
 
 namespace flt
 {
-MaterialPaletteManager::MaterialPaletteManager(ExportOptions&fltOpt)
+MaterialPaletteManager::MaterialPaletteManager(ExportOptions &fltOpt)
     : _currIndex(-1),
     _fltOpt(fltOpt)
 {
@@ -60,7 +60,7 @@ int MaterialPaletteManager::add(osg::Material const *material)
 }
 
 void
-MaterialPaletteManager::write(DataOutputStream&dos) const
+MaterialPaletteManager::write(DataOutputStream &dos) const
 {
     using osg::Vec4f;
 

@@ -23,7 +23,7 @@ ShadowTexture::ShadowTexture() :
     _textureUnit(1)
 {}
 
-ShadowTexture::ShadowTexture(const ShadowTexture&copy, const osg::CopyOp&copyop) :
+ShadowTexture::ShadowTexture(const ShadowTexture &copy, const osg::CopyOp &copyop) :
     ShadowTechnique(copy, copyop),
     _textureUnit(copy._textureUnit)
 {}
@@ -97,12 +97,12 @@ void ShadowTexture::init()
 }
 
 
-void ShadowTexture::update(osg::NodeVisitor&nv)
+void ShadowTexture::update(osg::NodeVisitor &nv)
 {
     _shadowedScene->osg::Group::traverse(nv);
 }
 
-void ShadowTexture::cull(osgUtil::CullVisitor&cv)
+void ShadowTexture::cull(osgUtil::CullVisitor &cv)
 {
     // record the traversal mask on entry so we can reapply it later.
     unsigned int traversalMask = cv.getTraversalMask();
@@ -136,7 +136,7 @@ void ShadowTexture::cull(osgUtil::CullVisitor&cv)
     const osg::Light *selectLight = 0;
     osg::Vec4        lightpos;
 
-    osgUtil::PositionalStateContainer::AttrMatrixList&aml = orig_rs->getPositionalStateContainer()->getAttrMatrixList();
+    osgUtil::PositionalStateContainer::AttrMatrixList &aml = orig_rs->getPositionalStateContainer()->getAttrMatrixList();
 
     for (osgUtil::PositionalStateContainer::AttrMatrixList::iterator itr = aml.begin();
          itr != aml.end();

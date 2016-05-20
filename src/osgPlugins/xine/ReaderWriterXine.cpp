@@ -36,7 +36,7 @@ XineImageStream() :
 }
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-XineImageStream(const XineImageStream&image, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) :
+XineImageStream(const XineImageStream &image, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
     ImageStream(image, copyop) {}
 
 META_Object(osgXine, XineImageStream);
@@ -56,7 +56,7 @@ float getVolume() const
     return _volume;
 }
 
-bool open(xine_t *xine, const std::string&filename)
+bool open(xine_t *xine, const std::string &filename)
 {
     if (filename == getFileName())
         return true;
@@ -333,7 +333,7 @@ virtual const char* className() const
     return "Xine ImageStream Reader";
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

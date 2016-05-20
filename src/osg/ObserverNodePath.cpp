@@ -19,14 +19,14 @@ using namespace osg;
 ObserverNodePath::ObserverNodePath()
 {}
 
-ObserverNodePath::ObserverNodePath(const ObserverNodePath&rhs)
+ObserverNodePath::ObserverNodePath(const ObserverNodePath &rhs)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock_rhs(_mutex);
 
     _nodePath = rhs._nodePath;
 }
 
-ObserverNodePath::ObserverNodePath(const osg::NodePath&nodePath)
+ObserverNodePath::ObserverNodePath(const osg::NodePath &nodePath)
 {
     setNodePath(nodePath);
 }
@@ -36,7 +36,7 @@ ObserverNodePath::~ObserverNodePath()
     clearNodePath();
 }
 
-ObserverNodePath&ObserverNodePath::operator =(const ObserverNodePath&rhs)
+ObserverNodePath&ObserverNodePath::operator =(const ObserverNodePath &rhs)
 {
     if (&rhs == this)
         return *this;
@@ -74,14 +74,14 @@ void ObserverNodePath::setNodePathTo(osg::Node *node)
     }
 }
 
-void ObserverNodePath::setNodePath(const osg::NodePath&nodePath)
+void ObserverNodePath::setNodePath(const osg::NodePath &nodePath)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
     _setNodePath(nodePath);
 }
 
-void ObserverNodePath::setNodePath(const osg::RefNodePath&refNodePath)
+void ObserverNodePath::setNodePath(const osg::RefNodePath &refNodePath)
 {
     osg::NodePath nodePath;
 
@@ -100,7 +100,7 @@ void ObserverNodePath::clearNodePath()
     _clearNodePath();
 }
 
-bool ObserverNodePath::getRefNodePath(RefNodePath&refNodePath) const
+bool ObserverNodePath::getRefNodePath(RefNodePath &refNodePath) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
@@ -119,7 +119,7 @@ bool ObserverNodePath::getRefNodePath(RefNodePath&refNodePath) const
     return true;
 }
 
-bool ObserverNodePath::getNodePath(NodePath&nodePath) const
+bool ObserverNodePath::getNodePath(NodePath &nodePath) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
@@ -142,7 +142,7 @@ bool ObserverNodePath::getNodePath(NodePath&nodePath) const
     return true;
 }
 
-void ObserverNodePath::_setNodePath(const osg::NodePath&nodePath)
+void ObserverNodePath::_setNodePath(const osg::NodePath &nodePath)
 {
     _clearNodePath();
 

@@ -7,7 +7,7 @@
 
 namespace osgWidget
 {
-bool callbackWindowMove(Event&ev)
+bool callbackWindowMove(Event &ev)
 {
     if (!ev.getWindow() || !ev.getWindowManager()->isLeftMouseButtonDown())
         return false;
@@ -18,7 +18,7 @@ bool callbackWindowMove(Event&ev)
     return true;
 }
 
-bool callbackWindowRotate(Event&ev)
+bool callbackWindowRotate(Event &ev)
 {
     if (!ev.getWindow() || !ev.getWindowManager()->isRightMouseButtonDown())
         return false;
@@ -29,7 +29,7 @@ bool callbackWindowRotate(Event&ev)
     return true;
 }
 
-bool callbackWindowScale(Event&ev)
+bool callbackWindowScale(Event &ev)
 {
     if (!ev.getWindow() || !ev.getWindowManager()->isMiddleMouseButtonDown())
         return false;
@@ -40,7 +40,7 @@ bool callbackWindowScale(Event&ev)
     return true;
 }
 
-bool callbackWindowTabFocus(Event&ev)
+bool callbackWindowTabFocus(Event &ev)
 {
     if (!ev.getWindow() || ev.key != osgGA::GUIEventAdapter::KEY_Tab)
         return false;
@@ -48,10 +48,10 @@ bool callbackWindowTabFocus(Event&ev)
     return ev.getWindow()->setNextFocusable();
 }
 
-Window::EmbeddedWindow::EmbeddedWindow(const std::string&name, point_type w, point_type h) :
+Window::EmbeddedWindow::EmbeddedWindow(const std::string &name, point_type w, point_type h) :
     Widget(name, w, h) {}
 
-Window::EmbeddedWindow::EmbeddedWindow(const EmbeddedWindow&wiw, const osg::CopyOp&co) :
+Window::EmbeddedWindow::EmbeddedWindow(const EmbeddedWindow &wiw, const osg::CopyOp &co) :
     Widget(wiw, co)
 {
     // TODO: Get this!
@@ -164,7 +164,7 @@ void Window::EmbeddedWindow::updateSizeFromWindow()
         _parent->resize();
 }
 
-Window::Window(const std::string&name) :
+Window::Window(const std::string &name) :
     _parent     (0),
     _wm         (0),
     _index      (0),
@@ -203,7 +203,7 @@ Window::Window(const std::string&name) :
         );
 }
 
-Window::Window(const Window&window, const osg::CopyOp&co) :
+Window::Window(const Window &window, const osg::CopyOp &co) :
     MatrixTransform (window, co),
     EventInterface  (window),
     StyleInterface  (window),
@@ -434,7 +434,7 @@ void Window::update()
     setMatrix(r * s * t);
 }
 
-void Window::_setWidthAndHeightUnknownSizeError(const std::string&size, point_type val)
+void Window::_setWidthAndHeightUnknownSizeError(const std::string &size, point_type val)
 {
     warn()
         << "Window [" << _name << "] doesn't know its " << size
@@ -442,7 +442,7 @@ void Window::_setWidthAndHeightUnknownSizeError(const std::string&size, point_ty
     ;
 }
 
-void Window::_setWidthAndHeightNotPAError(const std::string&size, point_type val)
+void Window::_setWidthAndHeightNotPAError(const std::string &size, point_type val)
 {
     warn()
         << "Window [" << _name
@@ -816,7 +816,7 @@ bool Window::setFocused(const Widget *widget)
     return true;
 }
 
-bool Window::setFocused(const std::string&name)
+bool Window::setFocused(const std::string &name)
 {
     Widget *w1 = getByName(name);
 
@@ -944,7 +944,7 @@ XYCoord Window::getAbsoluteOrigin() const
 }
 
 Window::EmbeddedWindow* Window::embed(
-    const std::string&newName,
+    const std::string &newName,
     Widget::Layer layer,
     unsigned int layerOffset
     )
@@ -963,7 +963,7 @@ Window::EmbeddedWindow* Window::embed(
     return ew;
 }
 
-bool Window::getFocusList(WidgetList&wl) const
+bool Window::getFocusList(WidgetList &wl) const
 {
     for (ConstIterator i = begin(); i != end(); i++)
         if (i->valid())
@@ -986,7 +986,7 @@ bool Window::getFocusList(WidgetList&wl) const
     return wl.size() != 0;
 }
 
-bool Window::getEmbeddedList(WindowList&wl) const
+bool Window::getEmbeddedList(WindowList &wl) const
 {
     for (ConstIterator i = begin(); i != end(); i++)
         if (i->valid())
@@ -1007,7 +1007,7 @@ bool Window::getEmbeddedList(WindowList&wl) const
     return wl.size() != 0;
 }
 
-void Window::getParentList(WindowList&wl) const
+void Window::getParentList(WindowList &wl) const
 {
     const Window *current = this;
 

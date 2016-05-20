@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Switch_readLocalData(Object&obj, Input&fr);
-bool Switch_writeLocalData(const Object&obj, Output&fw);
+bool Switch_readLocalData(Object &obj, Input &fr);
+bool Switch_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Switch)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(Switch)
     &Switch_writeLocalData
 );
 
-bool Switch_readLocalData(Object&obj, Input&fr)
+bool Switch_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Switch&sw = static_cast<Switch&>(obj);
+    Switch &sw = static_cast<Switch&>(obj);
 
     if (fr.matchSequence("value"))
     {
@@ -105,16 +105,16 @@ bool Switch_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Switch_writeLocalData(const Object&obj, Output&fw)
+bool Switch_writeLocalData(const Object &obj, Output &fw)
 {
-    const Switch&sw = static_cast<const Switch&>(obj);
+    const Switch &sw = static_cast<const Switch&>(obj);
 
 
     fw.indent() << "NewChildDefaultValue " << sw.getNewChildDefaultValue() << std::endl;
 
     fw.indent() << "ValueList {" << std::endl;
     fw.moveIn();
-    const Switch::ValueList&values = sw.getValueList();
+    const Switch::ValueList &values = sw.getValueList();
 
     for (Switch::ValueList::const_iterator itr = values.begin();
          itr != values.end();

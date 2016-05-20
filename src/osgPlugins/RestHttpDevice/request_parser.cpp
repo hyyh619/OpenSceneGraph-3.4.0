@@ -24,7 +24,7 @@ void request_parser::reset()
     state_ = method_start;
 }
 
-boost::tribool request_parser::consume(request&req, char input)
+boost::tribool request_parser::consume(request &req, char input)
 {
     switch (state_)
     {

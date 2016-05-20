@@ -12,7 +12,7 @@ public:
 
 EventProperty() {}
 EventProperty(osgGA::GUIEventAdapter *event) : _event(event) {}
-EventProperty(const EventProperty&cpp, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) {}
+EventProperty(const EventProperty &cpp, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) {}
 
 META_Object(gsc, EventProperty);
 

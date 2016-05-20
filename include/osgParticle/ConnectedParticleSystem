@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGPARTICLE_CONNECTEDPARTICLESYSTEM
 #define OSGPARTICLE_CONNECTEDPARTICLESYSTEM 1
@@ -18,28 +18,27 @@
 
 namespace osgParticle
 {
-
     /** ConnectConnectedParticleSystem is a specialise ConnectedParticleSystem for effects
-      * like missile trails, where the individual particles are rendered as
-      * single ribbon.
-    */
+     * like missile trails, where the individual particles are rendered as
+     * single ribbon.
+     */
     class OSGPARTICLE_EXPORT ConnectedParticleSystem: public osgParticle::ParticleSystem
     {
-    public:
+public:
 
         ConnectedParticleSystem();
-        ConnectedParticleSystem(const ConnectedParticleSystem& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+        ConnectedParticleSystem(const ConnectedParticleSystem &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Object(osgParticle, ConnectedParticleSystem);
 
         /// Create a new particle from the specified template (or the default one if <CODE>ptemplate</CODE> is null).
-        virtual Particle* createParticle(const Particle* ptemplate);
+        virtual Particle* createParticle(const Particle *ptemplate);
 
         /// Reuse the i-th particle.
         virtual void reuseParticle(int i);
 
         /// Draw the connected particles as either a line or a quad strip, depending upon viewing distance. .
-        virtual void drawImplementation(osg::RenderInfo& renderInfo) const;
+        virtual void drawImplementation(osg::RenderInfo &renderInfo) const;
 
         ///Get the (const) particle from where the line or quadstrip starts to be drawn
         const osgParticle::Particle* getStartParticle() const
@@ -54,26 +53,28 @@ namespace osgParticle
         }
 
         ///Set the maximum numbers of particles to be skipped during the predraw filtering
-        void setMaxNumberOfParticlesToSkip(unsigned int maxNumberofParticlesToSkip){_maxNumberOfParticlesToSkip = maxNumberofParticlesToSkip;}
+        void setMaxNumberOfParticlesToSkip(unsigned int maxNumberofParticlesToSkip)
+        {
+            _maxNumberOfParticlesToSkip = maxNumberofParticlesToSkip;
+        }
 
         ///Get the maximum numbers of particles to be skipped during the predraw filtering
-        unsigned int getMaxNumberOfParticlesToSkip(){ return _maxNumberOfParticlesToSkip;}
+        unsigned int getMaxNumberOfParticlesToSkip()
+        {
+            return _maxNumberOfParticlesToSkip;
+        }
 
-    protected:
+protected:
 
         virtual ~ConnectedParticleSystem();
 
-        ConnectedParticleSystem& operator=(const ConnectedParticleSystem&) { return *this; }
+        ConnectedParticleSystem &operator = (const ConnectedParticleSystem&) { return *this; }
 
-        int _lastParticleCreated;
+        int          _lastParticleCreated;
         unsigned int _maxNumberOfParticlesToSkip;
 
         int _startParticle;
-
-      };
-
-
-
+    };
 }
 
 #endif

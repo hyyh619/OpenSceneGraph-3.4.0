@@ -40,11 +40,11 @@ const char *what_;
 
 public:
 Exception() throw() {}
-Exception(const Exception&src) throw()
+Exception(const Exception &src) throw()
     : what_(src.what_) {}
 Exception(const char *w) throw()
     : what_(w) {}
-Exception&operator=(const Exception&src) throw()
+Exception&operator=(const Exception &src) throw()
 {
     what_ = src.what_; return *this;
 }

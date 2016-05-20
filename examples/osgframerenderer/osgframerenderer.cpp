@@ -21,7 +21,7 @@ struct ScreenShot : public osg::Camera::DrawCallback
         _pixelFormat(pixelFormat),
         _flip(flip) {}
 
-    virtual void operator ()(osg::RenderInfo&renderInfo) const
+    virtual void operator ()(osg::RenderInfo &renderInfo) const
     {
         if (!_frameCapture)
         {
@@ -608,7 +608,7 @@ int main(int argc, char **argv)
 
             viewer.advance(simulationTime);
 
-            gsc::CaptureSettings::Properties&pl = fc->getProperties();
+            gsc::CaptureSettings::Properties &pl = fc->getProperties();
 
             for (gsc::CaptureSettings::Properties::iterator plitr = pl.begin();
                  plitr != pl.end();

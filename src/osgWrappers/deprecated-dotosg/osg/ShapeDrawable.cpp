@@ -10,8 +10,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ShapeDrawable_readLocalData(Object&obj, Input&fr);
-bool ShapeDrawable_writeLocalData(const Object&obj, Output&fw);
+bool ShapeDrawable_readLocalData(Object &obj, Input &fr);
+bool ShapeDrawable_writeLocalData(const Object &obj, Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ShapeDrawable)
 (
@@ -23,11 +23,11 @@ REGISTER_DOTOSGWRAPPER(ShapeDrawable)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool ShapeDrawable_readLocalData(Object&obj, Input&fr)
+bool ShapeDrawable_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ShapeDrawable&geom = static_cast<ShapeDrawable&>(obj);
+    ShapeDrawable &geom = static_cast<ShapeDrawable&>(obj);
 
     if (fr.matchSequence("color %f %f %f %f"))
     {
@@ -54,9 +54,9 @@ bool ShapeDrawable_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool ShapeDrawable_writeLocalData(const Object&obj, Output&fw)
+bool ShapeDrawable_writeLocalData(const Object &obj, Output &fw)
 {
-    const ShapeDrawable&geom = static_cast<const ShapeDrawable&>(obj);
+    const ShapeDrawable &geom = static_cast<const ShapeDrawable&>(obj);
 
     fw.indent() << "color " << geom.getColor() << std::endl;
 

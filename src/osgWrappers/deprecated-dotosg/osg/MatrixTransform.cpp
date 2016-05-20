@@ -10,8 +10,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool MatrixTransform_readLocalData(Object&obj, Input&fr);
-bool MatrixTransform_writeLocalData(const Object&obj, Output&fw);
+bool MatrixTransform_readLocalData(Object &obj, Input &fr);
+bool MatrixTransform_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(MatrixTransform)
@@ -35,11 +35,11 @@ REGISTER_DOTOSGWRAPPER(DCS)
     DotOsgWrapper::READ_ONLY
 );
 
-bool MatrixTransform_readLocalData(Object&obj, Input&fr)
+bool MatrixTransform_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    MatrixTransform&transform = static_cast<MatrixTransform&>(obj);
+    MatrixTransform &transform = static_cast<MatrixTransform&>(obj);
 
     if (fr[0].matchWord("Type"))
     {
@@ -68,9 +68,9 @@ bool MatrixTransform_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool MatrixTransform_writeLocalData(const Object&obj, Output&fw)
+bool MatrixTransform_writeLocalData(const Object &obj, Output &fw)
 {
-    const MatrixTransform&transform = static_cast<const MatrixTransform&>(obj);
+    const MatrixTransform &transform = static_cast<const MatrixTransform&>(obj);
 
     writeMatrix(transform.getMatrix(), fw);
 

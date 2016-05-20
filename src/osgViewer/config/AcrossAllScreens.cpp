@@ -21,7 +21,7 @@
 
 using namespace osgViewer;
 
-void AcrossAllScreens::configure(osgViewer::View&view) const
+void AcrossAllScreens::configure(osgViewer::View &view) const
 {
     osg::GraphicsContext::WindowingSystemInterface *wsi = osg::GraphicsContext::getWindowingSystemInterface();
 

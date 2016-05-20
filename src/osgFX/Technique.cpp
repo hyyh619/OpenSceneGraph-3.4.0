@@ -20,7 +20,7 @@ void Technique::addPass(osg::StateSet *ss)
     }
 }
 
-bool Technique::validate(osg::State&state) const
+bool Technique::validate(osg::State &state) const
 {
     typedef std::vector<std::string> String_list;
     String_list extensions;
@@ -36,7 +36,7 @@ bool Technique::validate(osg::State&state) const
     return true;
 }
 
-void Technique::traverse_implementation(osg::NodeVisitor&nv, Effect *fx)
+void Technique::traverse_implementation(osg::NodeVisitor &nv, Effect *fx)
 {
     // define passes if necessary
     if (_passes.empty())

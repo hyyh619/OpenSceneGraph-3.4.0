@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkPulseData(const osgSim::BlinkSequence&bs)
+static bool checkPulseData(const osgSim::BlinkSequence &bs)
 {
     return bs.getNumPulses() > 0;
 }
 
-static bool readPulseData(osgDB::InputStream&is, osgSim::BlinkSequence&bs)
+static bool readPulseData(osgDB::InputStream &is, osgSim::BlinkSequence &bs)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -24,7 +24,7 @@ static bool readPulseData(osgDB::InputStream&is, osgSim::BlinkSequence&bs)
     return true;
 }
 
-static bool writePulseData(osgDB::OutputStream&os, const osgSim::BlinkSequence&bs)
+static bool writePulseData(osgDB::OutputStream &os, const osgSim::BlinkSequence &bs)
 {
     unsigned int size = bs.getNumPulses();
 

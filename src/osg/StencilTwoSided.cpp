@@ -34,7 +34,7 @@ StencilTwoSided::StencilTwoSided()
     _writeMask[FRONT] = _writeMask[BACK] = ~0u;
 }
 
-StencilTwoSided::StencilTwoSided(const StencilTwoSided&stencil, const CopyOp&copyop) :
+StencilTwoSided::StencilTwoSided(const StencilTwoSided &stencil, const CopyOp &copyop) :
     StateAttribute(stencil, copyop)
 {
     _func[FRONT]      = stencil._func[FRONT];
@@ -57,7 +57,7 @@ StencilTwoSided::StencilTwoSided(const StencilTwoSided&stencil, const CopyOp&cop
 StencilTwoSided::~StencilTwoSided()
 {}
 
-int StencilTwoSided::compare(const StateAttribute&sa) const
+int StencilTwoSided::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -83,7 +83,7 @@ int StencilTwoSided::compare(const StateAttribute&sa) const
     return 0; // passed all the above comparison macros, must be equal.
 }
 
-void StencilTwoSided::apply(State&state) const
+void StencilTwoSided::apply(State &state) const
 {
     // get "per-context" extensions
     const unsigned int contextID   = state.getContextID();

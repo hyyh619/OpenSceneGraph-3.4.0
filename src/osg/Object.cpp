@@ -19,7 +19,7 @@ namespace osg
 //
 // Object
 //
-Object::Object(const Object&obj, const CopyOp&copyop) :
+Object::Object(const Object &obj, const CopyOp &copyop) :
     Referenced(),
     _name(obj._name),
     _dataVariance(obj._dataVariance),

@@ -56,7 +56,7 @@ LightPointNode::LightPointNode() :
 }
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-LightPointNode::LightPointNode(const LightPointNode&lpn, const osg::CopyOp&copyop) :
+LightPointNode::LightPointNode(const LightPointNode &lpn, const osg::CopyOp &copyop) :
     osg::Node(lpn, copyop),
     _bbox(lpn._bbox),
     _lightPointList(lpn._lightPointList),
@@ -67,7 +67,7 @@ LightPointNode::LightPointNode(const LightPointNode&lpn, const osg::CopyOp&copyo
     _pointSprites(lpn._pointSprites)
 {}
 
-unsigned int LightPointNode::addLightPoint(const LightPoint&lp)
+unsigned int LightPointNode::addLightPoint(const LightPoint &lp)
 {
     unsigned int num = _lightPointList.size();
 
@@ -127,7 +127,7 @@ osg::BoundingSphere LightPointNode::computeBound() const
 }
 
 
-void LightPointNode::traverse(osg::NodeVisitor&nv)
+void LightPointNode::traverse(osg::NodeVisitor &nv)
 {
     if (_lightPointList.empty())
     {
@@ -257,12 +257,12 @@ void LightPointNode::traverse(osg::NodeVisitor&nv)
              itr != _lightPointList.end();
              ++itr)
         {
-            const LightPoint&lp = *itr;
+            const LightPoint &lp = *itr;
 
             if (!lp._on)
                 continue;
 
-            const osg::Vec3&position = lp._position;
+            const osg::Vec3 &position = lp._position;
 
             // skip light point if it is not contianed in the view frustum.
             if (computeClipping && !clipvol.contains(position))

@@ -22,11 +22,11 @@ using namespace osgUI;
 Validator::Validator()
 {}
 
-Validator::Validator(const osgUI::Validator&validator, const osg::CopyOp&copyop) :
+Validator::Validator(const osgUI::Validator &validator, const osg::CopyOp &copyop) :
     osg::Object(validator, copyop)
 {}
 
-Validator::State Validator::validate(std::string&text, int&cursorpos) const
+Validator::State Validator::validate(std::string &text, int &cursorpos) const
 {
     const osg::CallbackObject *co = getCallbackObject(this, "validate");
 
@@ -77,13 +77,13 @@ Validator::State Validator::validate(std::string&text, int&cursorpos) const
     return validateImplementation(text, cursorpos);
 }
 
-Validator::State Validator::validateImplementation(std::string&text, int&cursorpos) const
+Validator::State Validator::validateImplementation(std::string &text, int &cursorpos) const
 {
     OSG_NOTICE << "Validator::validateImplemetation(" << text << ", " << cursorpos << ")" << std::endl;
     return ACCEPTABLE;
 }
 
-void Validator::fixup(std::string&text) const
+void Validator::fixup(std::string &text) const
 {
     const osg::CallbackObject *co = getCallbackObject(this, "fixup");
 
@@ -106,7 +106,7 @@ void Validator::fixup(std::string&text) const
     return fixupImplementation(text);
 }
 
-void Validator::fixupImplementation(std::string&text) const
+void Validator::fixupImplementation(std::string &text) const
 {
     OSG_NOTICE << "Validator::fixupImplemetation(" << text << ")" << std::endl;
 }
@@ -120,13 +120,13 @@ IntValidator::IntValidator() :
     _top(-INT_MAX)
 {}
 
-IntValidator::IntValidator(const IntValidator&validator, const osg::CopyOp&copyop) :
+IntValidator::IntValidator(const IntValidator &validator, const osg::CopyOp &copyop) :
     Validator(validator, copyop),
     _bottom(validator._bottom),
     _top(validator._top)
 {}
 
-IntValidator::State IntValidator::validateImplementation(std::string&str, int&cursorpos) const
+IntValidator::State IntValidator::validateImplementation(std::string &str, int &cursorpos) const
 {
     std::string newstring;
     bool        canBeNegative = _bottom < 0.0;
@@ -177,7 +177,7 @@ IntValidator::State IntValidator::validateImplementation(std::string&str, int&cu
     return ACCEPTABLE;
 }
 
-void IntValidator::fixupImplementation(std::string&str) const
+void IntValidator::fixupImplementation(std::string &str) const
 {
     if (str.empty())
         return;
@@ -209,14 +209,14 @@ DoubleValidator::DoubleValidator() :
     _top(DBL_MAX)
 {}
 
-DoubleValidator::DoubleValidator(const DoubleValidator&validator, const osg::CopyOp&copyop) :
+DoubleValidator::DoubleValidator(const DoubleValidator &validator, const osg::CopyOp &copyop) :
     Validator(validator, copyop),
     _decimals(validator._decimals),
     _bottom(validator._bottom),
     _top(validator._top)
 {}
 
-DoubleValidator::State DoubleValidator::validateImplementation(std::string&str, int&cursorpos) const
+DoubleValidator::State DoubleValidator::validateImplementation(std::string &str, int &cursorpos) const
 {
     std::string newstring;
     bool        canBeNegative       = _bottom < 0.0;
@@ -287,7 +287,7 @@ DoubleValidator::State DoubleValidator::validateImplementation(std::string&str, 
     return ACCEPTABLE;
 }
 
-void DoubleValidator::fixupImplementation(std::string&str) const
+void DoubleValidator::fixupImplementation(std::string &str) const
 {
     if (str.empty())
         return;

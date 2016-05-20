@@ -15,9 +15,9 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool TexGen_readLocalData(Object&obj, Input&fr);
-bool TexGen_writeLocalData(const Object&obj, Output&fw);
-bool TexGen_matchModeStr(const char *str, TexGen::Mode&mode);
+bool TexGen_readLocalData(Object &obj, Input &fr);
+bool TexGen_writeLocalData(const Object &obj, Output &fw);
+bool TexGen_matchModeStr(const char *str, TexGen::Mode &mode);
 const char* TexGen_getModeStr(TexGen::Mode mode);
 
 // register the read and write functions with the osgDB::Registry.
@@ -31,11 +31,11 @@ REGISTER_DOTOSGWRAPPER(TexGen)
 );
 
 
-bool TexGen_readLocalData(Object&obj, Input&fr)
+bool TexGen_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    TexGen&texgen = static_cast<TexGen&>(obj);
+    TexGen &texgen = static_cast<TexGen&>(obj);
 
     TexGen::Mode mode;
 
@@ -95,7 +95,7 @@ bool TexGen_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool TexGen_matchModeStr(const char *str, TexGen::Mode&mode)
+bool TexGen_matchModeStr(const char *str, TexGen::Mode &mode)
 {
     if (strcmp(str, "EYE_LINEAR") == 0)
         mode = TexGen::EYE_LINEAR;
@@ -133,9 +133,9 @@ const char* TexGen_getModeStr(TexGen::Mode mode)
 }
 
 
-bool TexGen_writeLocalData(const Object&obj, Output&fw)
+bool TexGen_writeLocalData(const Object &obj, Output &fw)
 {
-    const TexGen&texgen = static_cast<const TexGen&>(obj);
+    const TexGen &texgen = static_cast<const TexGen&>(obj);
 
     fw.indent() << "mode " << TexGen_getModeStr(texgen.getMode()) << std::endl;
     if (texgen.getMode() == TexGen::OBJECT_LINEAR || texgen.getMode() == TexGen::EYE_LINEAR)

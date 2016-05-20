@@ -25,11 +25,11 @@ OSXAVFoundationCoreVideoTexture();
 
 OSXAVFoundationCoreVideoTexture(osg::Image *image);
 
-OSXAVFoundationCoreVideoTexture(const OSXAVFoundationCoreVideoTexture&text, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+OSXAVFoundationCoreVideoTexture(const OSXAVFoundationCoreVideoTexture &text, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_StateAttribute(, OSXAVFoundationCoreVideoTexture, TEXTURE);
 
-virtual int compare(const osg::StateAttribute&rhs) const;
+virtual int compare(const osg::StateAttribute &rhs) const;
 
 virtual GLenum getTextureTarget() const
 {
@@ -82,9 +82,9 @@ virtual int getTextureDepth() const
 }
 
 
-virtual void apply(osg::State&state) const;
+virtual void apply(osg::State &state) const;
 
-virtual void allocateMipmap(osg::State&state) const {}
+virtual void allocateMipmap(osg::State &state) const {}
 
 inline unsigned int&getModifiedCount(unsigned int contextID) const
 {

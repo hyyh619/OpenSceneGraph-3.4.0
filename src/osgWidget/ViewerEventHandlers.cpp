@@ -8,7 +8,7 @@ MouseHandler::MouseHandler(WindowManager *wm) :
     _wm(wm) {}
 
 bool MouseHandler::handle(
-    const osgGA::GUIEventAdapter&gea,
+    const osgGA::GUIEventAdapter &gea,
     osgGA::GUIActionAdapter& /*gaa*/,
     osg::Object*                  /*obj*/,
     osg::NodeVisitor*             /*nv*/
@@ -162,7 +162,7 @@ KeyboardHandler::KeyboardHandler(WindowManager *wm) :
     _wm(wm) {}
 
 bool KeyboardHandler::handle(
-    const osgGA::GUIEventAdapter&gea,
+    const osgGA::GUIEventAdapter &gea,
     osgGA::GUIActionAdapter& /*gaa*/,
     osg::Object*                  /*obj*/,
     osg::NodeVisitor*             /*nv*/
@@ -197,7 +197,7 @@ ResizeHandler::ResizeHandler(WindowManager *wm, osg::Camera *camera) :
     _camera (camera) {}
 
 bool ResizeHandler::handle(
-    const osgGA::GUIEventAdapter&gea,
+    const osgGA::GUIEventAdapter &gea,
     osgGA::GUIActionAdapter& /*gaa*/,
     osg::Object*                  /*obj*/,
     osg::NodeVisitor*             /*nv*/
@@ -229,8 +229,8 @@ CameraSwitchHandler::CameraSwitchHandler(WindowManager *wm, osg::Camera *camera)
     _camera (camera) {}
 
 bool CameraSwitchHandler::handle(
-    const osgGA::GUIEventAdapter&gea,
-    osgGA::GUIActionAdapter&gaa,
+    const osgGA::GUIEventAdapter &gea,
+    osgGA::GUIActionAdapter &gaa,
     osg::Object*                  /*obj*/,
     osg::NodeVisitor*             /*nv*/
     )

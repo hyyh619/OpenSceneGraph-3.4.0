@@ -33,7 +33,7 @@ enum GeometryType
     GEOMETRY_MORPH
 };
 
-osg::Vec3d convertVec3(const FbxVector4&v)
+osg::Vec3d convertVec3(const FbxVector4 &v)
 {
     return osg::Vec3d(
         v[0],
@@ -159,8 +159,8 @@ osg::Array* createVec4Array(bool doublePrecision)
         return new osg::Vec4Array;
 }
 
-osg::Geometry* getGeometry(osg::Geode *pGeode, GeometryMap&geometryMap,
-                           std::vector<StateSetContent>&stateSetList,
+osg::Geometry* getGeometry(osg::Geode *pGeode, GeometryMap &geometryMap,
+                           std::vector<StateSetContent> &stateSetList,
                            GeometryType gt,
                            unsigned int mti,
                            bool bNormal,
@@ -170,7 +170,7 @@ osg::Geometry* getGeometry(osg::Geode *pGeode, GeometryMap&geometryMap,
                            bool useAmbientMap,
                            // more here...
                            bool bColor,
-                           const osgDB::Options&options,
+                           const osgDB::Options &options,
                            bool lightmapTextures)
 {
     GeometryMap::iterator it = geometryMap.find(mti);
@@ -218,8 +218,8 @@ osg::Geometry* getGeometry(osg::Geode *pGeode, GeometryMap&geometryMap,
     {
         osg::StateSet *stateSet = pGeometry->getOrCreateStateSet();
 
-        bool                 transparent = false;
-        const StateSetContent&ssc        = stateSetList[mti];
+        bool                  transparent = false;
+        const StateSetContent &ssc        = stateSetList[mti];
 
         // set material...
         if (osg::Material *pMaterial = ssc.material.get())
@@ -355,7 +355,7 @@ osg::Geometry* getGeometry(osg::Geode *pGeode, GeometryMap&geometryMap,
 }
 
 osgAnimation::VertexInfluence&getVertexInfluence(
-    osgAnimation::VertexInfluenceMap&vim, const std::string&name)
+    osgAnimation::VertexInfluenceMap &vim, const std::string &name)
 {
     osgAnimation::VertexInfluenceMap::iterator it = vim.lower_bound(name);
 
@@ -371,7 +371,7 @@ osgAnimation::VertexInfluence&getVertexInfluence(
 
 void addChannel(
     osgAnimation::Channel *pChannel,
-    osg::ref_ptr<osgAnimation::AnimationManagerBase>&pAnimManager,
+    osg::ref_ptr<osgAnimation::AnimationManagerBase> &pAnimManager,
     const char *pTakeName)
 {
     if (!pChannel)
@@ -382,8 +382,8 @@ void addChannel(
     if (!pAnimManager)
         pAnimManager = new osgAnimation::BasicAnimationManager;
 
-    osgAnimation::Animation          *pAnimation = 0;
-    const osgAnimation::AnimationList&anims      = pAnimManager->getAnimationList();
+    osgAnimation::Animation           *pAnimation = 0;
+    const osgAnimation::AnimationList &anims      = pAnimManager->getAnimationList();
 
     for (size_t i = 0; i < anims.size(); ++i)
     {
@@ -403,8 +403,8 @@ void addChannel(
     pAnimation->addChannel(pChannel);
 }
 
-void readAnimation(FbxNode *pNode, FbxScene&fbxScene, const std::string&targetName,
-                   osg::ref_ptr<osgAnimation::AnimationManagerBase>&pAnimationManager,
+void readAnimation(FbxNode *pNode, FbxScene &fbxScene, const std::string &targetName,
+                   osg::ref_ptr<osgAnimation::AnimationManagerBase> &pAnimationManager,
                    FbxMesh *pMesh, int nBlendShape, int nBlendShapeChannel, int nShape)
 {
     for (int i = 0; i < fbxScene.GetSrcObjectCount<FbxAnimStack>(); ++i)
@@ -435,8 +435,8 @@ void readAnimation(FbxNode *pNode, FbxScene&fbxScene, const std::string&targetNa
                 continue;
             }
 
-            osgAnimation::FloatLinearChannel                   *pChannel     = new osgAnimation::FloatLinearChannel;
-            std::vector<osgAnimation::TemplateKeyframe<float> >&keyFrameCntr = *pChannel->getOrCreateSampler()->getOrCreateKeyframeContainer();
+            osgAnimation::FloatLinearChannel                    *pChannel     = new osgAnimation::FloatLinearChannel;
+            std::vector<osgAnimation::TemplateKeyframe<float> > &keyFrameCntr = *pChannel->getOrCreateSampler()->getOrCreateKeyframeContainer();
 
             for (int k = 0; k < nKeys; ++k)
             {
@@ -456,16 +456,16 @@ void readAnimation(FbxNode *pNode, FbxScene&fbxScene, const std::string&targetNa
 }
 
 void addBindMatrix(
-    BindMatrixMap&boneBindMatrices,
+    BindMatrixMap &boneBindMatrices,
     FbxNode *pBone,
-    const osg::Matrix&bindMatrix,
+    const osg::Matrix &bindMatrix,
     osgAnimation::RigGeometry *pRigGeometry)
 {
     boneBindMatrices.insert(BindMatrixMap::value_type(
                                 BindMatrixMap::key_type(pBone, pRigGeometry), bindMatrix));
 }
 
-void addVec2ArrayElement(osg::Array&a, const FbxVector2&v)
+void addVec2ArrayElement(osg::Array &a, const FbxVector2 &v)
 {
     if (a.getType() == osg::Array::Vec2dArrayType)
     {
@@ -479,7 +479,7 @@ void addVec2ArrayElement(osg::Array&a, const FbxVector2&v)
     }
 }
 
-void addVec3ArrayElement(osg::Array&a, const FbxVector4&v)
+void addVec3ArrayElement(osg::Array &a, const FbxVector4 &v)
 {
     if (a.getType() == osg::Array::Vec3dArrayType)
     {
@@ -494,7 +494,7 @@ void addVec3ArrayElement(osg::Array&a, const FbxVector4&v)
     }
 }
 
-void addColorArrayElement(osg::Array&a, const FbxColor&c)
+void addColorArrayElement(osg::Array &a, const FbxColor &c)
 {
     if (a.getType() == osg::Array::Vec4dArrayType)
     {
@@ -511,7 +511,7 @@ void addColorArrayElement(osg::Array&a, const FbxColor&c)
 }
 
 // scans StateSetList looking for the (first) channel name for the specified map type...
-std::string getUVChannelForTextureMap(std::vector<StateSetContent>&stateSetList, const char *pName)
+std::string getUVChannelForTextureMap(std::vector<StateSetContent> &stateSetList, const char *pName)
 {
     // will return the first occurrence in the state set list...
     // TODO: what if more than one channel for the same map type?
@@ -578,8 +578,8 @@ typedef std::map<GIPair, int> OsgToFbxNormalMap;
 void readMeshTriangle(const FbxMesh *fbxMesh, int i /*polygonIndex*/,
                       int posInPoly0, int posInPoly1, int posInPoly2,
                       int meshVertex0, int meshVertex1, int meshVertex2,
-                      FbxToOsgVertexMap&fbxToOsgVertMap,
-                      OsgToFbxNormalMap&osgToFbxNormMap,
+                      FbxToOsgVertexMap &fbxToOsgVertMap,
+                      OsgToFbxNormalMap &osgToFbxNormMap,
                       const FbxVector4 *pFbxVertices,
                       const FbxLayerElementNormal *pFbxNormals,
                       const FbxLayerElementUV *pFbxUVs_diffuse,
@@ -723,7 +723,7 @@ typedef std::vector<PolygonRef> PolygonRefList;
 osgDB::ReaderWriter::ReadResult OsgFbxReader::readMesh(
     FbxNode *pNode,
     FbxMesh *fbxMesh,
-    std::vector<StateSetContent>&stateSetList,
+    std::vector<StateSetContent> &stateSetList,
     const char *szName)
 {
     GeometryMap geometryMap;
@@ -1059,14 +1059,14 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readMesh(
                          it != fbxToOsgVertMap.end() &&
                          it->first == fbxIndex; ++it)
                     {
-                        GIPair                   gi   = it->second;
-                        osgAnimation::RigGeometry&rig =
+                        GIPair                    gi   = it->second;
+                        osgAnimation::RigGeometry &rig =
                             dynamic_cast<osgAnimation::RigGeometry&>(
                                 *old2newGeometryMap[gi.first]);
                         addBindMatrix(boneBindMatrices, pBone, bindMatrix, &rig);
-                        osgAnimation::VertexInfluenceMap&vim =
+                        osgAnimation::VertexInfluenceMap &vim =
                             *rig.getInfluenceMap();
-                        osgAnimation::VertexInfluence&vi =
+                        osgAnimation::VertexInfluence &vi =
                             getVertexInfluence(vim, pBone->GetName());
                         vi.push_back(osgAnimation::VertexIndexWeight(
                                          gi.second, weight));
@@ -1081,7 +1081,7 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readMesh(
         {
             osg::Geometry *pGeometry = pGeode->getDrawable(i)->asGeometry();
 
-            osgAnimation::MorphGeometry&morph = dynamic_cast<osgAnimation::MorphGeometry&>(*pGeometry);
+            osgAnimation::MorphGeometry &morph = dynamic_cast<osgAnimation::MorphGeometry&>(*pGeometry);
 
             pGeode->addUpdateCallback(new osgAnimation::UpdateMorph(morph.getName()));
 
@@ -1170,8 +1170,8 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readMesh(
                          it != fbxToOsgVertMap.end() &&
                          it->first == fbxIndex; ++it)
                     {
-                        GIPair                     gi         = it->second;
-                        osgAnimation::MorphGeometry&morphGeom =
+                        GIPair                      gi         = it->second;
+                        osgAnimation::MorphGeometry &morphGeom =
                             dynamic_cast<osgAnimation::MorphGeometry&>(*gi.first);
                         osg::Geometry *pGeometry = morphGeom.getMorphTarget(nMorphTarget).getGeometry();
 
@@ -1256,7 +1256,7 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readMesh(
 }
 
 osgDB::ReaderWriter::ReadResult OsgFbxReader::readFbxMesh(FbxNode *pNode,
-                                                          std::vector<StateSetContent>&stateSetList)
+                                                          std::vector<StateSetContent> &stateSetList)
 {
     FbxMesh *lMesh = FbxCast<FbxMesh>(pNode->GetNodeAttribute());
 

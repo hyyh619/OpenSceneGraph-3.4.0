@@ -35,7 +35,7 @@ ReaderWriterTGZ()
     supportsExtension("tgz", "Tar gzip'd archive format");
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

@@ -32,7 +32,7 @@ FixedFunctionTechnique::FixedFunctionTechnique() :
     _numSlices(500)
 {}
 
-FixedFunctionTechnique::FixedFunctionTechnique(const FixedFunctionTechnique&fft, const osg::CopyOp&copyop) :
+FixedFunctionTechnique::FixedFunctionTechnique(const FixedFunctionTechnique &fft, const osg::CopyOp &copyop) :
     VolumeTechnique(fft, copyop),
     _numSlices(fft._numSlices)
 {}
@@ -51,7 +51,7 @@ void FixedFunctionTechnique::setNumSlices(unsigned int numSlices)
         _volumeTile->setDirty(true);
 }
 
-osg::Node* createCube(const osg::Vec3&center, float size, unsigned int numSlices)
+osg::Node* createCube(const osg::Vec3 &center, float size, unsigned int numSlices)
 {
     // set up the Geometry.
     osg::Geometry *geom = new osg::Geometry;
@@ -266,7 +266,7 @@ void FixedFunctionTechnique::cleanSceneGraph()
     OSG_NOTICE << "FixedFunctionTechnique::cleanSceneGraph()" << std::endl;
 }
 
-void FixedFunctionTechnique::traverse(osg::NodeVisitor&nv)
+void FixedFunctionTechnique::traverse(osg::NodeVisitor &nv)
 {
     // OSG_NOTICE<<"FixedFunctionTechnique::traverse(osg::NodeVisitor& nv)"<<std::endl;
     if (!_volumeTile)

@@ -42,14 +42,14 @@ struct TileIdentifier : public osg::Referenced
         lod(alod)
     {}
 
-    TileIdentifier(const TileIdentifier&rhs) :
+    TileIdentifier(const TileIdentifier &rhs) :
         osg::Referenced(),
                                     x(rhs.x),
         y(rhs.y),
         lod(rhs.lod)
     {}
 
-    TileIdentifier&operator =(const TileIdentifier&rhs)
+    TileIdentifier&operator =(const TileIdentifier &rhs)
     {
         if (this == &rhs)
             return *this;
@@ -67,7 +67,7 @@ struct TileIdentifier : public osg::Referenced
         lod = alod;
     }
 
-    bool operator <(const TileIdentifier&rhs) const
+    bool operator <(const TileIdentifier &rhs) const
     {
         if (lod < rhs.lod)
             return true;
@@ -108,17 +108,17 @@ virtual osg::Vec3 getEyePoint() const
 {
     return getEyeLocal();
 }
-virtual float getDistanceToEyePoint(const osg::Vec3&pos, bool withLODScale) const;
-virtual float getDistanceFromEyePoint(const osg::Vec3&pos, bool withLODScale) const;
+virtual float getDistanceToEyePoint(const osg::Vec3 &pos, bool withLODScale) const;
+virtual float getDistanceFromEyePoint(const osg::Vec3 &pos, bool withLODScale) const;
 
-virtual void apply(osg::Node&node);
-virtual void apply(osg::Group&node);
-virtual void apply(osg::Geode&node);
-virtual void apply(osg::PagedLOD&node);
+virtual void apply(osg::Node &node);
+virtual void apply(osg::Group &node);
+virtual void apply(osg::Geode &node);
+virtual void apply(osg::PagedLOD &node);
 
-void insertTile(const TileIdentifier&tid);
+void insertTile(const TileIdentifier &tid);
 
-bool isTileNeighbourALowerLODLevel(const TileIdentifier&tid, int dx, int dy) const;
+bool isTileNeighbourALowerLODLevel(const TileIdentifier &tid, int dx, int dy) const;
 
 protected:
 

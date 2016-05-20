@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool Scribe_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Scribe_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Scribe_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Scribe_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Scribe_Proxy)
 (
@@ -17,10 +17,10 @@ REGISTER_DOTOSGWRAPPER(Scribe_Proxy)
     Scribe_writeLocalData
 );
 
-bool Scribe_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Scribe_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgFX::Scribe&myobj     = static_cast<osgFX::Scribe&>(obj);
-    bool         itAdvanced = false;
+    osgFX::Scribe &myobj     = static_cast<osgFX::Scribe&>(obj);
+    bool          itAdvanced = false;
 
     if (fr[0].matchWord("wireframeColor"))
     {
@@ -48,9 +48,9 @@ bool Scribe_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool Scribe_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Scribe_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgFX::Scribe&myobj = static_cast<const osgFX::Scribe&>(obj);
+    const osgFX::Scribe &myobj = static_cast<const osgFX::Scribe&>(obj);
 
     fw.indent() << "wireframeColor " <<     myobj.getWireframeColor() << "\n";
     fw.indent() << "wireframeLineWidth " << myobj.getWireframeLineWidth() << "\n";

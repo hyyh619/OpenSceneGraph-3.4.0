@@ -6,7 +6,7 @@
 const unsigned glesUtil::Remapper::invalidIndex = std::numeric_limits<unsigned>::max();
 
 
-osg::Node* OpenGLESGeometryOptimizer::optimize(osg::Node&node)
+osg::Node* OpenGLESGeometryOptimizer::optimize(osg::Node &node)
 {
     osg::ref_ptr<osg::Node> model = osg::clone(&node);
 

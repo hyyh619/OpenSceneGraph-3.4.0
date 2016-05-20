@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkPositionList(const osg::Billboard&node)
+static bool checkPositionList(const osg::Billboard &node)
 {
     return node.getPositionList().size() > 0;
 }
 
-static bool readPositionList(osgDB::InputStream&is, osg::Billboard&node)
+static bool readPositionList(osgDB::InputStream &is, osg::Billboard &node)
 {
     unsigned int size = is.readSize();
 
@@ -24,9 +24,9 @@ static bool readPositionList(osgDB::InputStream&is, osg::Billboard&node)
     return true;
 }
 
-static bool writePositionList(osgDB::OutputStream&os, const osg::Billboard&node)
+static bool writePositionList(osgDB::OutputStream &os, const osg::Billboard &node)
 {
-    const osg::Billboard::PositionList&posList = node.getPositionList();
+    const osg::Billboard::PositionList &posList = node.getPositionList();
 
     os.writeSize(posList.size());
     os << os.BEGIN_BRACKET << std::endl;

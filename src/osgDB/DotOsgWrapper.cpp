@@ -16,8 +16,8 @@
 using namespace osgDB;
 
 DotOsgWrapper::DotOsgWrapper(osg::Object *proto,
-                             const std::string&name,
-                             const std::string&associates,
+                             const std::string &name,
+                             const std::string &associates,
                              ReadFunc readFunc,
                              WriteFunc writeFunc,
                              ReadWriteMode readWriteMode)
@@ -53,8 +53,8 @@ DotOsgWrapper::DotOsgWrapper(osg::Object *proto,
 
 
 RegisterDotOsgWrapperProxy::RegisterDotOsgWrapperProxy(osg::Object *proto,
-                                                       const std::string&name,
-                                                       const std::string&associates,
+                                                       const std::string &name,
+                                                       const std::string &associates,
                                                        DotOsgWrapper::ReadFunc readFunc,
                                                        DotOsgWrapper::WriteFunc writeFunc,
                                                        DotOsgWrapper::ReadWriteMode readWriteMode)
@@ -82,7 +82,7 @@ void DeprecatedDotOsgWrapperManager::addDotOsgWrapper(DotOsgWrapper *wrapper)
         return;
 
     // OSG_INFO << "osg::Registry::addDotOsgWrapper("<<wrapper->getName()<<")"<< std::endl;
-    const DotOsgWrapper::Associates&assoc = wrapper->getAssociates();
+    const DotOsgWrapper::Associates &assoc = wrapper->getAssociates();
 
     for (DotOsgWrapper::Associates::const_iterator itr = assoc.begin();
          itr != assoc.end();
@@ -148,7 +148,7 @@ void DeprecatedDotOsgWrapperManager::addDotOsgWrapper(DotOsgWrapper *wrapper)
 // need to change to delete all instances of wrapper, since we
 // now can have a wrapper entered twice with the addition of the
 // library::class composite name.
-void DeprecatedDotOsgWrapperManager::eraseWrapper(DotOsgWrapperMap&wrappermap, DotOsgWrapper *wrapper)
+void DeprecatedDotOsgWrapperManager::eraseWrapper(DotOsgWrapperMap &wrappermap, DotOsgWrapper *wrapper)
 {
     typedef std::vector<DotOsgWrapperMap::iterator> EraseList;
     EraseList eraseList;
@@ -196,12 +196,12 @@ struct concrete_wrapper : basic_type_wrapper
 };
 
 
-osg::Object* DeprecatedDotOsgWrapperManager::readObjectOfType(const osg::Object&compObj, Input&fr)
+osg::Object* DeprecatedDotOsgWrapperManager::readObjectOfType(const osg::Object &compObj, Input &fr)
 {
     return readObjectOfType(concrete_wrapper(&compObj), fr);
 }
 
-bool DeprecatedDotOsgWrapperManager::getLibraryFileNamesToTry(const std::string&name, FileNames&fileNames)
+bool DeprecatedDotOsgWrapperManager::getLibraryFileNamesToTry(const std::string &name, FileNames &fileNames)
 {
     FileNames::size_type sizeBefore = fileNames.size();
 
@@ -221,7 +221,7 @@ bool DeprecatedDotOsgWrapperManager::getLibraryFileNamesToTry(const std::string&
     return fileNames.size() != sizeBefore;
 }
 
-osg::Object* DeprecatedDotOsgWrapperManager::readObjectOfType(const basic_type_wrapper&btw, Input&fr)
+osg::Object* DeprecatedDotOsgWrapperManager::readObjectOfType(const basic_type_wrapper &btw, Input &fr)
 {
     const char *str = fr[0].getStr();
 
@@ -290,8 +290,8 @@ osg::Object* DeprecatedDotOsgWrapperManager::readObjectOfType(const basic_type_w
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        const DotOsgWrapper::Associates&assoc = wrapper->getAssociates();
-        osg::Object                    *obj   = proto->cloneType();
+        const DotOsgWrapper::Associates &assoc = wrapper->getAssociates();
+        osg::Object                     *obj   = proto->cloneType();
 
         while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
@@ -363,7 +363,7 @@ osg::Object* DeprecatedDotOsgWrapperManager::readObjectOfType(const basic_type_w
 //
 // read object from input iterator.
 //
-osg::Object* DeprecatedDotOsgWrapperManager::readObject(DotOsgWrapperMap&dowMap, Input&fr)
+osg::Object* DeprecatedDotOsgWrapperManager::readObject(DotOsgWrapperMap &dowMap, Input &fr)
 {
     const char *str = fr[0].getStr();
 
@@ -413,8 +413,8 @@ osg::Object* DeprecatedDotOsgWrapperManager::readObject(DotOsgWrapperMap&dowMap,
         int entry = fr[0].getNoNestedBrackets();
         fr += 2;
 
-        const DotOsgWrapper::Associates&assoc = wrapper->getAssociates();
-        osg::Object                    *obj   = proto->cloneType();
+        const DotOsgWrapper::Associates &assoc = wrapper->getAssociates();
+        osg::Object                     *obj   = proto->cloneType();
 
         while (!fr.eof() && fr[0].getNoNestedBrackets() > entry)
         {
@@ -487,7 +487,7 @@ osg::Object* DeprecatedDotOsgWrapperManager::readObject(DotOsgWrapperMap&dowMap,
 //
 // read object from input iterator.
 //
-osg::Object* DeprecatedDotOsgWrapperManager::readObject(Input&fr)
+osg::Object* DeprecatedDotOsgWrapperManager::readObject(Input &fr)
 {
     if (fr[0].matchWord("Use"))
     {
@@ -510,7 +510,7 @@ osg::Object* DeprecatedDotOsgWrapperManager::readObject(Input&fr)
 //
 // read image from input iterator.
 //
-osg::Image* DeprecatedDotOsgWrapperManager::readImage(Input&fr)
+osg::Image* DeprecatedDotOsgWrapperManager::readImage(Input &fr)
 {
     if (fr[0].matchWord("Use"))
     {
@@ -540,7 +540,7 @@ osg::Image* DeprecatedDotOsgWrapperManager::readImage(Input&fr)
 //
 // read drawable from input iterator.
 //
-osg::Drawable* DeprecatedDotOsgWrapperManager::readDrawable(Input&fr)
+osg::Drawable* DeprecatedDotOsgWrapperManager::readDrawable(Input &fr)
 {
     if (fr[0].matchWord("Use"))
     {
@@ -569,7 +569,7 @@ osg::Drawable* DeprecatedDotOsgWrapperManager::readDrawable(Input&fr)
 //
 // read drawable from input iterator.
 //
-osg::StateAttribute* DeprecatedDotOsgWrapperManager::readStateAttribute(Input&fr)
+osg::StateAttribute* DeprecatedDotOsgWrapperManager::readStateAttribute(Input &fr)
 {
     if (fr[0].matchWord("Use"))
     {
@@ -591,7 +591,7 @@ osg::StateAttribute* DeprecatedDotOsgWrapperManager::readStateAttribute(Input&fr
 //
 // read drawable from input iterator.
 //
-osg::Uniform* DeprecatedDotOsgWrapperManager::readUniform(Input&fr)
+osg::Uniform* DeprecatedDotOsgWrapperManager::readUniform(Input &fr)
 {
     if (fr[0].matchWord("Use"))
     {
@@ -613,7 +613,7 @@ osg::Uniform* DeprecatedDotOsgWrapperManager::readUniform(Input&fr)
 //
 // read node from input iterator.
 //
-osg::Node* DeprecatedDotOsgWrapperManager::readNode(Input&fr)
+osg::Node* DeprecatedDotOsgWrapperManager::readNode(Input &fr)
 {
     if (fr[0].matchWord("Use"))
     {
@@ -642,7 +642,7 @@ osg::Node* DeprecatedDotOsgWrapperManager::readNode(Input&fr)
 //
 // read image from input iterator.
 //
-osg::Shader* DeprecatedDotOsgWrapperManager::readShader(Input&fr)
+osg::Shader* DeprecatedDotOsgWrapperManager::readShader(Input &fr)
 {
     if (fr[0].matchWord("Use"))
     {
@@ -671,7 +671,7 @@ osg::Shader* DeprecatedDotOsgWrapperManager::readShader(Input&fr)
 //
 // Write object to output
 //
-bool DeprecatedDotOsgWrapperManager::writeObject(const osg::Object&obj, Output&fw)
+bool DeprecatedDotOsgWrapperManager::writeObject(const osg::Object &obj, Output &fw)
 {
     if (obj.referenceCount() > 1)
     {
@@ -711,8 +711,8 @@ bool DeprecatedDotOsgWrapperManager::writeObject(const osg::Object&obj, Output&f
 
     if (itr != _classNameWrapperMap.end())
     {
-        DotOsgWrapper                  *wrapper = itr->second.get();
-        const DotOsgWrapper::Associates&assoc   = wrapper->getAssociates();
+        DotOsgWrapper                   *wrapper = itr->second.get();
+        const DotOsgWrapper::Associates &assoc   = wrapper->getAssociates();
 
         if (libraryName == "osg")
         {

@@ -7,8 +7,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  RandomRateCounter_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  RandomRateCounter_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  RandomRateCounter_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  RandomRateCounter_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(RandomRateCounter_Proxy)
 (

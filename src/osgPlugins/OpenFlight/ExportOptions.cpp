@@ -127,7 +127,7 @@ ExportOptions::parseOptionsString()
     // Parse out the option string and store values directly in
     //   ExportOptions member variables.
 
-    const std::string&str = getOptionString();
+    const std::string &str = getOptionString();
 
     if (str.empty())
         return;

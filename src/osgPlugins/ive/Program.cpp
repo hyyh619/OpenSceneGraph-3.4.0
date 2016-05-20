@@ -38,7 +38,7 @@ void Program::write(DataOutputStream *out)
         out->writeInt(getParameter(GL_GEOMETRY_OUTPUT_TYPE_EXT));
     }
 
-    const AttribBindingList&abl = getAttribBindingList();
+    const AttribBindingList &abl = getAttribBindingList();
     out->writeUInt(abl.size());
 
     for (AttribBindingList::const_iterator itr = abl.begin();

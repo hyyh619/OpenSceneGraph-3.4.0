@@ -18,7 +18,7 @@
 
 using namespace osgParticle;
 
-void BounceOperator::handleTriangle(const Domain&domain, Particle *P, double dt)
+void BounceOperator::handleTriangle(const Domain &domain, Particle *P, double dt)
 {
     osg::Vec3 nextpos  = P->getPosition() + P->getVelocity() * dt;
     float     distance = domain.plane.distance(P->getPosition());
@@ -46,7 +46,7 @@ void BounceOperator::handleTriangle(const Domain&domain, Particle *P, double dt)
         P->setVelocity(vt * (1.0f - _friction) - vn * _resilience);
 }
 
-void BounceOperator::handleRectangle(const Domain&domain, Particle *P, double dt)
+void BounceOperator::handleRectangle(const Domain &domain, Particle *P, double dt)
 {
     osg::Vec3 nextpos  = P->getPosition() + P->getVelocity() * dt;
     float     distance = domain.plane.distance(P->getPosition());
@@ -74,7 +74,7 @@ void BounceOperator::handleRectangle(const Domain&domain, Particle *P, double dt
         P->setVelocity(vt * (1.0f - _friction) - vn * _resilience);
 }
 
-void BounceOperator::handlePlane(const Domain&domain, Particle *P, double dt)
+void BounceOperator::handlePlane(const Domain &domain, Particle *P, double dt)
 {
     osg::Vec3 nextpos  = P->getPosition() + P->getVelocity() * dt;
     float     distance = domain.plane.distance(P->getPosition());
@@ -96,7 +96,7 @@ void BounceOperator::handlePlane(const Domain&domain, Particle *P, double dt)
         P->setVelocity(vt * (1.0f - _friction) - vn * _resilience);
 }
 
-void BounceOperator::handleSphere(const Domain&domain, Particle *P, double dt)
+void BounceOperator::handleSphere(const Domain &domain, Particle *P, double dt)
 {
     osg::Vec3 nextpos   = P->getPosition() + P->getVelocity() * dt;
     float     distance1 = (P->getPosition() - domain.v1).length();
@@ -154,7 +154,7 @@ void BounceOperator::handleSphere(const Domain&domain, Particle *P, double dt)
     }
 }
 
-void BounceOperator::handleDisk(const Domain&domain, Particle *P, double dt)
+void BounceOperator::handleDisk(const Domain &domain, Particle *P, double dt)
 {
     osg::Vec3 nextpos  = P->getPosition() + P->getVelocity() * dt;
     float     distance = domain.plane.distance(P->getPosition());

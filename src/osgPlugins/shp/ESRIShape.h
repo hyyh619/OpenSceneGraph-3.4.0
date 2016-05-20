@@ -106,7 +106,7 @@ struct Box
     Double Xmin, Ymin, Xmax, Ymax;
 
     Box();
-    Box(const Box&b);
+    Box(const Box &b);
     bool read(int fd);
 };
 
@@ -114,7 +114,7 @@ struct Range
 {
     Double min, max;
     Range();
-    Range(const Range&r);
+    Range(const Range &r);
 
     bool read(int fd);
 };
@@ -132,7 +132,7 @@ struct Point : public ShapeObject
     Double x, y;
 
     Point();
-    Point(const Point&p);
+    Point(const Point &p);
     virtual ~Point();
 
     bool read(int fd);
@@ -153,7 +153,7 @@ struct MultiPoint : public ShapeObject
 
     MultiPoint();
 
-    MultiPoint(const struct MultiPoint&mpoint);
+    MultiPoint(const struct MultiPoint &mpoint);
 
     virtual ~MultiPoint();
 
@@ -172,7 +172,7 @@ struct PolyLine : public ShapeObject
 
     PolyLine();
 
-    PolyLine(const PolyLine&p);
+    PolyLine(const PolyLine &p);
 
     virtual ~PolyLine();
 
@@ -191,7 +191,7 @@ struct Polygon : public ShapeObject
 
     Polygon();
 
-    Polygon(const Polygon&p);
+    Polygon(const Polygon &p);
 
     virtual ~Polygon();
 
@@ -206,7 +206,7 @@ struct PointM : public ShapeObject
 
     PointM();
 
-    PointM(const PointM&p);
+    PointM(const PointM &p);
 
     virtual ~PointM();
 
@@ -233,7 +233,7 @@ struct MultiPointM : public ShapeObject
 
     MultiPointM();
 
-    MultiPointM(const struct MultiPointM&mpointm);
+    MultiPointM(const struct MultiPointM &mpointm);
 
     virtual ~MultiPointM();
 
@@ -255,7 +255,7 @@ struct PolyLineM : public ShapeObject
 
     PolyLineM();
 
-    PolyLineM(const PolyLineM&p);
+    PolyLineM(const PolyLineM &p);
 
     virtual ~PolyLineM();
 
@@ -275,7 +275,7 @@ struct PolygonM : public ShapeObject
 
     PolygonM();
 
-    PolygonM(const PolygonM&p);
+    PolygonM(const PolygonM &p);
 
     virtual ~PolygonM();
 
@@ -295,7 +295,7 @@ struct PointZ : public ShapeObject
     Double x, y, z, m;
 
     PointZ();
-    PointZ(const PointZ&p);
+    PointZ(const PointZ &p);
     virtual ~PointZ();
 
     bool read(int fd);
@@ -340,7 +340,7 @@ struct PolyLineZ : public ShapeObject
 
     PolyLineZ();
 
-    PolyLineZ(const PolyLineZ&p);
+    PolyLineZ(const PolyLineZ &p);
 
     virtual ~PolyLineZ();
 
@@ -362,7 +362,7 @@ struct PolygonZ : public ShapeObject
 
     PolygonZ();
 
-    PolygonZ(const PolygonZ&p);
+    PolygonZ(const PolygonZ &p);
 
     virtual ~PolygonZ();
 

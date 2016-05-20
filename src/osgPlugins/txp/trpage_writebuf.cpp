@@ -161,7 +161,7 @@ void trpgMemWriteBuffer::Add(const char *val)
 }
 
 // Add(std::string)
-void trpgMemWriteBuffer::Add(std::string&val)
+void trpgMemWriteBuffer::Add(std::string &val)
 {
     Add(val.c_str());
 }
@@ -231,21 +231,21 @@ void trpgMemWriteBuffer::Add(trpgToken val)
 }
 
 // Add(tx2iPoint)
-void trpgWriteBuffer::Add(const trpg2iPoint&val)
+void trpgWriteBuffer::Add(const trpg2iPoint &val)
 {
     Add((int32)val.x);
     Add((int32)val.y);
 }
 
 // Add(tx2dPoint)
-void trpgWriteBuffer::Add(const trpg2dPoint&val)
+void trpgWriteBuffer::Add(const trpg2dPoint &val)
 {
     Add((float64)val.x);
     Add((float64)val.y);
 }
 
 // Add(trpg3dPoint)
-void trpgWriteBuffer::Add(const trpg3dPoint&val)
+void trpgWriteBuffer::Add(const trpg3dPoint &val)
 {
     Add((float64)val.x);
     Add((float64)val.y);
@@ -253,7 +253,7 @@ void trpgWriteBuffer::Add(const trpg3dPoint&val)
 }
 
 // Add(trpgColor)
-void trpgWriteBuffer::Add(const trpgColor&val)
+void trpgWriteBuffer::Add(const trpgColor &val)
 {
     Add(val.red);
     Add(val.green);
@@ -261,7 +261,7 @@ void trpgWriteBuffer::Add(const trpgColor&val)
 }
 
 // Add(std::string)
-void trpgWriteBuffer::Add(const std::string&val)
+void trpgWriteBuffer::Add(const std::string &val)
 {
     Add(val.c_str());
 }

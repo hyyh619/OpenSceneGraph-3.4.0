@@ -55,7 +55,7 @@ osg::StateAttribute* getTextureAttribute(unsigned int unit, osg::StateAttribute:
     return unit < _textureAttributeMapList.size() ? getAttribute(_textureAttributeMapList[unit], type, 0) : 0;
 }
 
-osg::Uniform* getUniform(const std::string&name) const
+osg::Uniform* getUniform(const std::string &name) const
 {
     UniformMap::const_iterator it = _uniformMap.find(name);
 
@@ -65,7 +65,7 @@ osg::Uniform* getUniform(const std::string&name) const
 
 protected:
 
-osg::StateAttribute::GLModeValue getMode(const ModeMap&modeMap,
+osg::StateAttribute::GLModeValue getMode(const ModeMap &modeMap,
                                          osg::StateAttribute::GLMode mode,
                                          osg::StateAttribute::GLModeValue def = osg::StateAttribute::INHERIT) const
 {
@@ -74,7 +74,7 @@ osg::StateAttribute::GLModeValue getMode(const ModeMap&modeMap,
     return (it != modeMap.end() && it->second.valueVec.size()) ? it->second.valueVec.back() : def;
 }
 
-osg::StateAttribute* getAttribute(const AttributeMap&attributeMap,
+osg::StateAttribute* getAttribute(const AttributeMap &attributeMap,
                                   osg::StateAttribute::Type type, unsigned int member = 0) const
 {
     AttributeMap::const_iterator it = attributeMap.find(std::make_pair(type, member));
@@ -314,7 +314,7 @@ void ShaderGenVisitor::reset()
         _state->pushStateSet(_rootStateSet.get());
 }
 
-void ShaderGenVisitor::apply(osg::Node&node)
+void ShaderGenVisitor::apply(osg::Node &node)
 {
     osg::StateSet *stateSet = node.getStateSet();
 
@@ -327,7 +327,7 @@ void ShaderGenVisitor::apply(osg::Node&node)
         _state->popStateSet();
 }
 
-void ShaderGenVisitor::apply(osg::Geode&geode)
+void ShaderGenVisitor::apply(osg::Geode &geode)
 {
     osg::StateSet *stateSet = geode.getStateSet();
 

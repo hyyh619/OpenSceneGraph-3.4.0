@@ -27,7 +27,7 @@ TexEnv::TexEnv(Mode mode)
 TexEnv::~TexEnv()
 {}
 
-void TexEnv::apply(State&state) const
+void TexEnv::apply(State &state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     if (_mode == ADD)

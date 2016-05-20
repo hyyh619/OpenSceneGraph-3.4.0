@@ -24,7 +24,7 @@ ConnectedParticleSystem::ConnectedParticleSystem() :
     _startParticle(Particle::INVALID_INDEX)
 {}
 
-ConnectedParticleSystem::ConnectedParticleSystem(const ConnectedParticleSystem&copy, const osg::CopyOp&copyop) :
+ConnectedParticleSystem::ConnectedParticleSystem(const ConnectedParticleSystem &copy, const osg::CopyOp &copyop) :
     ParticleSystem(copy, copyop),
     _lastParticleCreated(copy._lastParticleCreated),
     _maxNumberOfParticlesToSkip(200),
@@ -107,10 +107,10 @@ void ConnectedParticleSystem::reuseParticle(int particleIndex)
     ParticleSystem::reuseParticle(particleIndex);
 }
 
-void ConnectedParticleSystem::drawImplementation(osg::RenderInfo&renderInfo) const
+void ConnectedParticleSystem::drawImplementation(osg::RenderInfo &renderInfo) const
 {
-    osg::State            &state = *renderInfo.getState();
-    osg::GLBeginEndAdapter&gl    = state.getGLBeginEndAdapter();
+    osg::State             &state = *renderInfo.getState();
+    osg::GLBeginEndAdapter &gl    = state.getGLBeginEndAdapter();
 
     ScopedReadLock lock(_readWriteMutex);
 
@@ -135,8 +135,8 @@ void ConnectedParticleSystem::drawImplementation(osg::RenderInfo&renderInfo) con
 
         while (particle != 0)
         {
-            const osg::Vec4&color = particle->getCurrentColor();
-            const osg::Vec3&pos   = particle->getPosition();
+            const osg::Vec4 &color = particle->getCurrentColor();
+            const osg::Vec3 &pos   = particle->getPosition();
             gl.Color4f(color.r(), color.g(), color.b(), color.a() * particle->getCurrentAlpha());
             gl.TexCoord2f(particle->getSTexCoord(), 0.5f);
             gl.Vertex3fv(pos.ptr());
@@ -144,8 +144,8 @@ void ConnectedParticleSystem::drawImplementation(osg::RenderInfo&renderInfo) con
             const Particle *nextParticle = (particle->getNextParticle() != Particle::INVALID_INDEX) ? &_particles[particle->getNextParticle()] : 0;
             if (nextParticle)
             {
-                const osg::Vec3&nextPos   = nextParticle->getPosition();
-                osg::Vec3      startDelta = nextPos - pos;
+                const osg::Vec3 &nextPos   = nextParticle->getPosition();
+                osg::Vec3       startDelta = nextPos - pos;
                 startDelta.normalize();
                 float distance2 = 0.0;
 
@@ -155,8 +155,8 @@ void ConnectedParticleSystem::drawImplementation(osg::RenderInfo&renderInfo) con
                      ++i)
                 {
                     nextParticle = &_particles[nextParticle->getNextParticle()];
-                    const osg::Vec3&nextPos = nextParticle->getPosition();
-                    osg::Vec3      delta    = nextPos - pos;
+                    const osg::Vec3 &nextPos = nextParticle->getPosition();
+                    osg::Vec3       delta    = nextPos - pos;
                     distance2 = (delta ^ startDelta).length2();
                 }
             }
@@ -179,15 +179,15 @@ void ConnectedParticleSystem::drawImplementation(osg::RenderInfo&renderInfo) con
 
         while (particle != 0)
         {
-            const osg::Vec4&color = particle->getCurrentColor();
-            const osg::Vec3&pos   = particle->getPosition();
+            const osg::Vec4 &color = particle->getCurrentColor();
+            const osg::Vec3 &pos   = particle->getPosition();
 
             const Particle *nextParticle = (particle->getNextParticle() != Particle::INVALID_INDEX) ? &_particles[particle->getNextParticle()] : 0;
 
             if (nextParticle)
             {
-                const osg::Vec3&nextPos   = nextParticle->getPosition();
-                osg::Vec3      startDelta = nextPos - pos;
+                const osg::Vec3 &nextPos   = nextParticle->getPosition();
+                osg::Vec3       startDelta = nextPos - pos;
                 startDelta.normalize();
                 float distance2 = 0.0;
 
@@ -197,7 +197,7 @@ void ConnectedParticleSystem::drawImplementation(osg::RenderInfo&renderInfo) con
                      ++i)
                 {
                     nextParticle = &_particles[nextParticle->getNextParticle()];
-                    const osg::Vec3&nextPos = nextParticle->getPosition();
+                    const osg::Vec3 &nextPos = nextParticle->getPosition();
                     delta     = nextPos - pos;
                     distance2 = (delta ^ startDelta).length2();
                 }

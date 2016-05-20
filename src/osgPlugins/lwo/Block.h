@@ -155,10 +155,10 @@ inline Image_map&get_image_map()
     return imap_;
 }
 
-osg::Vec3 setup_texture_point(const osg::Vec3&P) const;
+osg::Vec3 setup_texture_point(const osg::Vec3 &P) const;
 
 protected:
-void read_common_attributes(const iff::Chunk_list&subchunks);
+void read_common_attributes(const iff::Chunk_list &subchunks);
 
 private:
 std::string  type_;

@@ -43,7 +43,7 @@ virtual const char* className() const
     return "ReaderWriterDirectShow";
 }
 
-virtual ReadResult readImage(const std::string&filename, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &filename, const osgDB::ReaderWriter::Options *options) const
 {
     const std::string ext = osgDB::getLowerCaseFileExtension(filename);
 
@@ -56,7 +56,7 @@ virtual ReadResult readImage(const std::string&filename, const osgDB::ReaderWrit
     return readImageStream(filename, options);
 }
 
-ReadResult readImageStream(const std::string&filename, const osgDB::ReaderWriter::Options *options) const
+ReadResult readImageStream(const std::string &filename, const osgDB::ReaderWriter::Options *options) const
 {
     OSG_INFO << "ReaderWriterDirectShow::readImage " << filename << std::endl;
     const std::string path = osgDB::containsServerAddress(filename) ?

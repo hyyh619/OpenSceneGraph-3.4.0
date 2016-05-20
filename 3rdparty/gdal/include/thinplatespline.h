@@ -106,7 +106,7 @@ void set_toler(double tx, double ty)
     _ty = ty;
 }
 
-void get_toler(double&tx, double&ty)
+void get_toler(double &tx, double &ty)
 {
     tx = _tx;
     ty = _ty;
@@ -152,7 +152,7 @@ void grow_points();
 int add_point(const double Px, const double Py, const double *Pvars);
 int delete_point(const double Px, const double Py);
 int get_point(const double Px, const double Py, double *Pvars);
-bool get_xy(int index, double&x, double&y);
+bool get_xy(int index, double &x, double &y);
 bool change_point(int index, double x, double y, double *Pvars);
 void reset(void)
 {

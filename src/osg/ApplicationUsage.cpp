@@ -23,7 +23,7 @@
 
 using namespace osg;
 
-ApplicationUsage::ApplicationUsage(const std::string&commandLineUsage) :
+ApplicationUsage::ApplicationUsage(const std::string &commandLineUsage) :
     _commandLineUsage(commandLineUsage)
 {}
 
@@ -36,7 +36,7 @@ ApplicationUsage* ApplicationUsage::instance()
 
 OSG_INIT_SINGLETON_PROXY(ApplicationUsageSingletonProxy, ApplicationUsage::instance())
 
-void ApplicationUsage::addUsageExplanation(Type type, const std::string&option, const std::string&explanation)
+void ApplicationUsage::addUsageExplanation(Type type, const std::string &option, const std::string &explanation)
 {
     switch (type)
     {
@@ -57,19 +57,19 @@ void ApplicationUsage::addUsageExplanation(Type type, const std::string&option, 
     }
 }
 
-void ApplicationUsage::addCommandLineOption(const std::string&option, const std::string&explanation, const std::string&defaultValue)
+void ApplicationUsage::addCommandLineOption(const std::string &option, const std::string &explanation, const std::string &defaultValue)
 {
     _commandLineOptions[option]         = explanation;
     _commandLineOptionsDefaults[option] = defaultValue;
 }
 
-void ApplicationUsage::addEnvironmentalVariable(const std::string&option, const std::string&explanation, const std::string&defaultValue)
+void ApplicationUsage::addEnvironmentalVariable(const std::string &option, const std::string &explanation, const std::string &defaultValue)
 {
     _environmentalVariables[option]         = explanation;
     _environmentalVariablesDefaults[option] = defaultValue;
 }
 
-void ApplicationUsage::addKeyboardMouseBinding(const std::string&prefix, int key, const std::string&explanation)
+void ApplicationUsage::addKeyboardMouseBinding(const std::string &prefix, int key, const std::string &explanation)
 {
     if (key != 0)
     {
@@ -90,17 +90,17 @@ void ApplicationUsage::addKeyboardMouseBinding(const std::string&prefix, int key
 }
 
 
-void ApplicationUsage::addKeyboardMouseBinding(int key, const std::string&explanation)
+void ApplicationUsage::addKeyboardMouseBinding(int key, const std::string &explanation)
 {
     addKeyboardMouseBinding("", key, explanation);
 }
 
-void ApplicationUsage::addKeyboardMouseBinding(const std::string&option, const std::string&explanation)
+void ApplicationUsage::addKeyboardMouseBinding(const std::string &option, const std::string &explanation)
 {
     _keyboardMouse[option] = explanation;
 }
 
-void ApplicationUsage::getFormattedString(std::string&str, const UsageMap&um, unsigned int widthOfOutput, bool showDefaults, const UsageMap&ud)
+void ApplicationUsage::getFormattedString(std::string &str, const UsageMap &um, unsigned int widthOfOutput, bool showDefaults, const UsageMap &ud)
 {
     unsigned int                               maxNumCharsInOptions = 0;
     ApplicationUsage::UsageMap::const_iterator citr;
@@ -261,7 +261,7 @@ void ApplicationUsage::getFormattedString(std::string&str, const UsageMap&um, un
     }
 }
 
-void ApplicationUsage::write(std::ostream&output, const ApplicationUsage::UsageMap&um, unsigned int widthOfOutput, bool showDefaults, const ApplicationUsage::UsageMap&ud)
+void ApplicationUsage::write(std::ostream &output, const ApplicationUsage::UsageMap &um, unsigned int widthOfOutput, bool showDefaults, const ApplicationUsage::UsageMap &ud)
 {
     std::string str;
 
@@ -269,7 +269,7 @@ void ApplicationUsage::write(std::ostream&output, const ApplicationUsage::UsageM
     output << str << std::endl;
 }
 
-void ApplicationUsage::write(std::ostream&output, unsigned int type, unsigned int widthOfOutput, bool showDefaults)
+void ApplicationUsage::write(std::ostream &output, unsigned int type, unsigned int widthOfOutput, bool showDefaults)
 {
     output << "Usage: " << getCommandLineUsage() << std::endl;
     bool needspace = false;
@@ -310,7 +310,7 @@ void ApplicationUsage::write(std::ostream&output, unsigned int type, unsigned in
 }
 
 
-void ApplicationUsage::writeEnvironmentSettings(std::ostream&output)
+void ApplicationUsage::writeEnvironmentSettings(std::ostream &output)
 {
     output << "Current Environment Settings:" << std::endl;
 

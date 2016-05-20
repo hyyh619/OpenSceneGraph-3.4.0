@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ShadeModel_readLocalData(Object&obj, Input&fr);
-bool ShadeModel_writeLocalData(const Object&obj, Output&fw);
+bool ShadeModel_readLocalData(Object &obj, Input &fr);
+bool ShadeModel_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(ShadeModel)
@@ -22,11 +22,11 @@ REGISTER_DOTOSGWRAPPER(ShadeModel)
 );
 
 
-bool ShadeModel_readLocalData(Object&obj, Input&fr)
+bool ShadeModel_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ShadeModel&shademodel = static_cast<ShadeModel&>(obj);
+    ShadeModel &shademodel = static_cast<ShadeModel&>(obj);
 
     if (fr[0].matchWord("mode"))
     {
@@ -48,9 +48,9 @@ bool ShadeModel_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool ShadeModel_writeLocalData(const Object&obj, Output&fw)
+bool ShadeModel_writeLocalData(const Object &obj, Output &fw)
 {
-    const ShadeModel&shademodel = static_cast<const ShadeModel&>(obj);
+    const ShadeModel &shademodel = static_cast<const ShadeModel&>(obj);
 
     switch (shademodel.getMode())
     {

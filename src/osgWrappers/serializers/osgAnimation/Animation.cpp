@@ -5,7 +5,7 @@
 
 // reading channel helpers
 
-static void readChannel(osgDB::InputStream&is, osgAnimation::Channel *ch)
+static void readChannel(osgDB::InputStream &is, osgAnimation::Channel *ch)
 {
     std::string name, targetName;
 
@@ -16,7 +16,7 @@ static void readChannel(osgDB::InputStream&is, osgAnimation::Channel *ch)
 }
 #include <osg/io_utils>
 template<typename ContainerType, typename ValueType>
-static void readContainer(osgDB::InputStream&is, ContainerType *container)
+static void readContainer(osgDB::InputStream &is, ContainerType *container)
 {
     typedef typename ContainerType::KeyType KeyType;
     bool hasContainer = false;
@@ -39,7 +39,7 @@ static void readContainer(osgDB::InputStream&is, ContainerType *container)
 }
 
 template<typename ContainerType, typename ValueType, typename InternalValueType>
-static void readContainer2(osgDB::InputStream&is, ContainerType *container)
+static void readContainer2(osgDB::InputStream &is, ContainerType *container)
 {
     typedef typename ContainerType::KeyType KeyType;
     bool hasContainer = false;
@@ -83,14 +83,14 @@ static void readContainer2(osgDB::InputStream&is, ContainerType *container)
 
 // writing channel helpers
 
-static void writeChannel(osgDB::OutputStream&os, osgAnimation::Channel *ch)
+static void writeChannel(osgDB::OutputStream &os, osgAnimation::Channel *ch)
 {
     os << os.PROPERTY("Name"); os.writeWrappedString(ch->getName()); os << std::endl;
     os << os.PROPERTY("TargetName"); os.writeWrappedString(ch->getTargetName()); os << std::endl;
 }
 
 template<typename ContainerType>
-static void writeContainer(osgDB::OutputStream&os, ContainerType *container)
+static void writeContainer(osgDB::OutputStream &os, ContainerType *container)
 {
     os << os.PROPERTY("KeyFrameContainer") << (container != NULL);
     if (container != NULL)
@@ -109,7 +109,7 @@ static void writeContainer(osgDB::OutputStream&os, ContainerType *container)
 }
 
 template<typename ContainerType>
-static void writeContainer2(osgDB::OutputStream&os, ContainerType *container)
+static void writeContainer2(osgDB::OutputStream &os, ContainerType *container)
 {
     typedef typename ContainerType::KeyType KeyType;
     os << os.PROPERTY("KeyFrameContainer") << (container != NULL);
@@ -119,7 +119,7 @@ static void writeContainer2(osgDB::OutputStream&os, ContainerType *container)
 
         for (unsigned int i = 0; i < container->size(); ++i)
         {
-            const KeyType&keyframe = (*container)[i];
+            const KeyType &keyframe = (*container)[i];
             os << keyframe.getTime() << keyframe.getValue().getPosition()
                << keyframe.getValue().getControlPointIn()
                << keyframe.getValue().getControlPointOut() << std::endl;
@@ -153,12 +153,12 @@ static void writeContainer2(osgDB::OutputStream&os, ContainerType *container)
 
 // _channels
 
-static bool checkChannels(const osgAnimation::Animation&ani)
+static bool checkChannels(const osgAnimation::Animation &ani)
 {
     return ani.getChannels().size() > 0;
 }
 
-static bool readChannels(osgDB::InputStream&is, osgAnimation::Animation&ani)
+static bool readChannels(osgDB::InputStream &is, osgAnimation::Animation &ani)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -204,9 +204,9 @@ static bool readChannels(osgDB::InputStream&is, osgAnimation::Animation&ani)
     return true;
 }
 
-static bool writeChannels(osgDB::OutputStream&os, const osgAnimation::Animation&ani)
+static bool writeChannels(osgDB::OutputStream &os, const osgAnimation::Animation &ani)
 {
-    const osgAnimation::ChannelList&channels = ani.getChannels();
+    const osgAnimation::ChannelList &channels = ani.getChannels();
 
     os.writeSize(channels.size()); os << os.BEGIN_BRACKET << std::endl;
 

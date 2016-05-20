@@ -35,7 +35,7 @@
 using namespace osgDAE;
 
 
-void daeWriter::writeAnimations(osg::Node&node)
+void daeWriter::writeAnimations(osg::Node &node)
 {
     const std::string nodeNameUTF(_pluginOptions.namesUseCodepage ? osgDB::convertStringFromCurrentCodePageToUTF8(node.getName()) : node.getName());
     osg::Callback     *ncb = node.getUpdateCallback();

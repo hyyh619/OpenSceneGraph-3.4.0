@@ -55,9 +55,9 @@ Node* makeSky(void)
 
     Geometry *geom = new Geometry;
 
-    Vec3Array&coords  = *(new Vec3Array(19 * nlev));
-    Vec4Array&colors  = *(new Vec4Array(19 * nlev));
-    Vec2Array&tcoords = *(new Vec2Array(19 * nlev));
+    Vec3Array &coords  = *(new Vec3Array(19 * nlev));
+    Vec4Array &colors  = *(new Vec4Array(19 * nlev));
+    Vec2Array &tcoords = *(new Vec2Array(19 * nlev));
 
 
     int ci = 0;

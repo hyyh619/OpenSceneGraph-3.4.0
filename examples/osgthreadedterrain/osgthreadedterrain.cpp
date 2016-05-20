@@ -82,7 +82,7 @@ class LoadAndCompileOperation : public osg::Operation
 {
 public:
 
-LoadAndCompileOperation(const std::string&filename, osgUtil::IncrementalCompileOperation *ico, osg::RefBlockCount *block) :
+LoadAndCompileOperation(const std::string &filename, osgUtil::IncrementalCompileOperation *ico, osg::RefBlockCount *block) :
     osg::Referenced(true),
     Operation("Load and compile Operation", false),
     _filename(filename),
@@ -128,7 +128,7 @@ typedef std::map<std::string, osg::ref_ptr<osg::Node> >  FilenameNodeMap;
 typedef std::vector<osg::ref_ptr<osg::Node> >  Nodes;
 
 
-MasterOperation(const std::string&filename, osgUtil::IncrementalCompileOperation *ico) :
+MasterOperation(const std::string &filename, osgUtil::IncrementalCompileOperation *ico) :
     osg::Referenced(true),
     Operation("Master reading operation", true),
     _filename(filename),
@@ -146,7 +146,7 @@ osg::OperationQueue* getOperationQueue()
     return _operationQueue.get();
 }
 
-bool readMasterFile(Files&files) const
+bool readMasterFile(Files &files) const
 {
     osgDB::ifstream fin(_filename.c_str());
 
@@ -495,7 +495,7 @@ public:
 FilterHandler(osgTerrain::GeometryTechnique *gt) :
     _gt(gt) {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (!_gt)
         return false;
@@ -571,7 +571,7 @@ public:
 LayerHandler(osgTerrain::Layer *layer) :
     _layer(layer) {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (!_layer)
         return false;

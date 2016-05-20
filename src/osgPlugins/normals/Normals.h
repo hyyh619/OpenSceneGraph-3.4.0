@@ -36,9 +36,9 @@ void setMode(Mode mode)
     _mode = mode;
 }
 
-virtual void apply(osg::MatrixTransform&tx);
+virtual void apply(osg::MatrixTransform &tx);
 
-virtual void apply(osg::Geode&geode);
+virtual void apply(osg::Geode &geode);
 
 osg::Vec3Array* getCoords()
 {

@@ -30,7 +30,7 @@ namespace
 {
 // This will recursively call itself up until
 // all the tiles are done
-void printBuf(int lod, int x, int y, trpgr_Archive *archive, trpgPrintGraphParser&parser, trpgMemReadBuffer&buf, trpgPrintBuffer&pBuf)
+void printBuf(int lod, int x, int y, trpgr_Archive *archive, trpgPrintGraphParser &parser, trpgMemReadBuffer &buf, trpgPrintBuffer &pBuf)
 {
     char ls[1024];
 
@@ -56,10 +56,10 @@ void printBuf(int lod, int x, int y, trpgr_Archive *archive, trpgPrintGraphParse
 
     for (unsigned int idx = 0; idx < childRefList.size(); idx++)
     {
-        const trpgChildRef&childRef = childRefList[idx];
-        trpgMemReadBuffer childBuf(archive->GetEndian());
-        trpgwAppAddress   tileAddr;
-        int               glod, gx, gy;
+        const trpgChildRef &childRef = childRefList[idx];
+        trpgMemReadBuffer  childBuf(archive->GetEndian());
+        trpgwAppAddress    tileAddr;
+        int                glod, gx, gy;
 
         childRef.GetTileAddress(tileAddr);
         childRef.GetTileLoc(gx, gy, glod);
@@ -178,7 +178,7 @@ const trpgChildRef* trpgPrintGraphParser::ReadHelper::GetChildRef(unsigned int i
    any child ref node encountered that a user can access to continue
    traversal.
  */
-void* trpgPrintGraphParser::ReadHelper::Parse(trpgToken tok, trpgReadBuffer&buf)
+void* trpgPrintGraphParser::ReadHelper::Parse(trpgToken tok, trpgReadBuffer &buf)
 {
     // This will celar any child ref list from a previous parse.
     trpgReadWriteable *obj      = NULL;
@@ -340,7 +340,7 @@ void* trpgPrintGraphParser::ReadHelper::Parse(trpgToken tok, trpgReadBuffer&buf)
    a file name and the second an opened archive where the header
    has already been read.
  */
-bool trpgPrintArchive(char *filename, trpgPrintBuffer&pBuf, int flags)
+bool trpgPrintArchive(char *filename, trpgPrintBuffer &pBuf, int flags)
 {
     trpgr_Archive archive;
 
@@ -374,7 +374,7 @@ bool trpgPrintArchive(char *filename, trpgPrintBuffer&pBuf, int flags)
 }
 #endif
 
-bool trpgPrintArchive(trpgr_Archive *archive, trpgPrintBuffer&pBuf, int flags)
+bool trpgPrintArchive(trpgr_Archive *archive, trpgPrintBuffer &pBuf, int flags)
 {
     char ls[1024];
 

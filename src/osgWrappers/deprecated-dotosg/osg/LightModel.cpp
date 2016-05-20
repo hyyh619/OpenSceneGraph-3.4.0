@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool LightModel_readLocalData(Object&obj, Input&fr);
-bool LightModel_writeLocalData(const Object&obj, Output&fw);
+bool LightModel_readLocalData(Object &obj, Input &fr);
+bool LightModel_writeLocalData(const Object &obj, Output &fw);
 
 
 // register the read and write functions with the osgDB::Registry.
@@ -24,11 +24,11 @@ REGISTER_DOTOSGWRAPPER(LightModel)
 );
 
 
-bool LightModel_readLocalData(Object&obj, Input&fr)
+bool LightModel_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    LightModel&lightmodel = static_cast<LightModel&>(obj);
+    LightModel &lightmodel = static_cast<LightModel&>(obj);
 
     osg::Vec4 ambient;
 
@@ -91,9 +91,9 @@ bool LightModel_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool LightModel_writeLocalData(const Object&obj, Output&fw)
+bool LightModel_writeLocalData(const Object &obj, Output &fw)
 {
-    const LightModel&lightmodel = static_cast<const LightModel&>(obj);
+    const LightModel &lightmodel = static_cast<const LightModel&>(obj);
 
     fw.indent() << "ambientIntensity " << lightmodel.getAmbientIntensity() << std::endl;
 

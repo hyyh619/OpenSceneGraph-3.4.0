@@ -47,7 +47,7 @@
 
 using namespace osgDB;
 
-DynamicLibrary::DynamicLibrary(const std::string&name, HANDLE handle)
+DynamicLibrary::DynamicLibrary(const std::string &name, HANDLE handle)
 {
     _name   = name;
     _handle = handle;
@@ -72,7 +72,7 @@ DynamicLibrary::~DynamicLibrary()
     }
 }
 
-DynamicLibrary* DynamicLibrary::loadLibrary(const std::string&libraryName)
+DynamicLibrary* DynamicLibrary::loadLibrary(const std::string &libraryName)
 {
     HANDLE handle = NULL;
 
@@ -92,7 +92,7 @@ DynamicLibrary* DynamicLibrary::loadLibrary(const std::string&libraryName)
     return NULL;
 }
 
-DynamicLibrary::HANDLE DynamicLibrary::getLibraryHandle(const std::string&libraryName)
+DynamicLibrary::HANDLE DynamicLibrary::getLibraryHandle(const std::string &libraryName)
 {
     HANDLE handle = NULL;
 
@@ -143,7 +143,7 @@ DynamicLibrary::HANDLE DynamicLibrary::getLibraryHandle(const std::string&librar
     return handle;
 }
 
-DynamicLibrary::PROC_ADDRESS DynamicLibrary::getProcAddress(const std::string&procName)
+DynamicLibrary::PROC_ADDRESS DynamicLibrary::getProcAddress(const std::string &procName)
 {
     if (_handle == NULL)
         return NULL;

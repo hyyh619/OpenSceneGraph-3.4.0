@@ -33,7 +33,7 @@ AnimtkUpdateCallback()
     _playing    = false;
     _lastUpdate = 0;
 }
-AnimtkUpdateCallback(const AnimtkUpdateCallback&val, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) :
+AnimtkUpdateCallback(const AnimtkUpdateCallback &val, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
     osg::Object(val, copyop),
     osg::NodeCallback(val, copyop),
     _sampler(val._sampler),
@@ -104,7 +104,7 @@ AnimtkStateSetUpdateCallback()
     _lastUpdate = 0;
 }
 
-AnimtkStateSetUpdateCallback(const AnimtkStateSetUpdateCallback&val, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) :
+AnimtkStateSetUpdateCallback(const AnimtkStateSetUpdateCallback &val, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
     osg::Object(val, copyop),
     osg::StateSet::Callback(val, copyop),
     _sampler(val._sampler),

@@ -44,7 +44,7 @@
 
 osg::Vec3 wind(1.0f, 0.0f, 0.0f);
 
-osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, double looptime)
+osg::AnimationPath* createAnimationPath(const osg::Vec3 &center, float radius, double looptime)
 {
     // set up the animation path
     osg::AnimationPath *animationPath = new osg::AnimationPath;
@@ -73,7 +73,7 @@ osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, do
     return animationPath;
 }
 
-osg::Node* createMovingModel(const osg::Vec3&center, float radius)
+osg::Node* createMovingModel(const osg::Vec3 &center, float radius)
 {
     float animationLength = 10.0f;
 
@@ -85,8 +85,8 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius)
 
     if (glider)
     {
-        const osg::BoundingSphere&bs  = glider->getBound();
-        float                    size = radius / bs.radius() * 0.15f;
+        const osg::BoundingSphere &bs  = glider->getBound();
+        float                     size = radius / bs.radius() * 0.15f;
 
         osg::MatrixTransform *positioned = new osg::MatrixTransform;
         positioned->setDataVariance(osg::Object::STATIC);
@@ -108,8 +108,8 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius)
     osg::Node *cessna = osgDB::readNodeFile("cessna.osgt");
     if (cessna)
     {
-        const osg::BoundingSphere&bs  = cessna->getBound();
-        float                    size = radius / bs.radius() * 0.15f;
+        const osg::BoundingSphere &bs  = cessna->getBound();
+        float                     size = radius / bs.radius() * 0.15f;
 
         osg::MatrixTransform *positioned = new osg::MatrixTransform;
         positioned->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
@@ -135,9 +135,9 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius)
 
 osg::Vec3 computeTerrainIntersection(osg::Node *subgraph, float x, float y)
 {
-    const osg::BoundingSphere&bs  = subgraph->getBound();
-    float                    zMax = bs.center().z() + bs.radius();
-    float                    zMin = bs.center().z() - bs.radius();
+    const osg::BoundingSphere &bs  = subgraph->getBound();
+    float                     zMax = bs.center().z() + bs.radius();
+    float                     zMin = bs.center().z() - bs.radius();
 
     osg::ref_ptr<osgUtil::LineSegmentIntersector> intersector =
         new osgUtil::LineSegmentIntersector(osg::Vec3(x, y, zMin), osg::Vec3(x, y, zMax));
@@ -252,7 +252,7 @@ public:
 
 PickHandler() {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     switch (ea.getEventType())
     {
@@ -268,7 +268,7 @@ bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
     }
 }
 
-void pick(osgViewer::Viewer *viewer, const osgGA::GUIEventAdapter&ea)
+void pick(osgViewer::Viewer *viewer, const osgGA::GUIEventAdapter &ea)
 {
     osg::Group *root = dynamic_cast<osg::Group*>(viewer->getSceneData());
 
@@ -278,10 +278,10 @@ void pick(osgViewer::Viewer *viewer, const osgGA::GUIEventAdapter&ea)
     osgUtil::LineSegmentIntersector::Intersections intersections;
     if (viewer->computeIntersections(ea, intersections))
     {
-        const osgUtil::LineSegmentIntersector::Intersection&hit = *intersections.begin();
+        const osgUtil::LineSegmentIntersector::Intersection &hit = *intersections.begin();
 
-        bool               handleMovingModels = false;
-        const osg::NodePath&nodePath          = hit.nodePath;
+        bool                handleMovingModels = false;
+        const osg::NodePath &nodePath          = hit.nodePath;
 
         for (osg::NodePath::const_iterator nitr = nodePath.begin();
              nitr != nodePath.end();
@@ -410,7 +410,7 @@ virtual ~PickHandler() {}
 };
 
 // function used in debugging
-void insertParticle(osg::Group *root, const osg::Vec3&center, float radius)
+void insertParticle(osg::Group *root, const osg::Vec3 &center, float radius)
 {
     bool handleMovingModels = false;
 

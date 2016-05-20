@@ -7,7 +7,7 @@
  * This application is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
+ */
 
 #ifndef PLUGINQUERY_H
 #define PLUGINQUERY_H
@@ -23,35 +23,33 @@
 
 namespace osgDB
 {
+    typedef std::list < std::string > FileNameList;
 
-typedef std::list<std::string> FileNameList;
+    FileNameList OSGDB_EXPORT listAllAvailablePlugins();
 
-FileNameList OSGDB_EXPORT listAllAvailablePlugins();
-
-class ReaderWriterInfo : public osg::Referenced
-{
-    public:
+    class ReaderWriterInfo: public osg::Referenced
+    {
+public:
 
         ReaderWriterInfo() {}
 
-        std::string                         plugin;
-        std::string                         description;
-        ReaderWriter::FormatDescriptionMap  protocols;
-        ReaderWriter::FormatDescriptionMap  extensions;
-        ReaderWriter::FormatDescriptionMap  options;
-        ReaderWriter::Features              features;
+        std::string                        plugin;
+        std::string                        description;
+        ReaderWriter::FormatDescriptionMap protocols;
+        ReaderWriter::FormatDescriptionMap extensions;
+        ReaderWriter::FormatDescriptionMap options;
+        ReaderWriter::Features             features;
 
-    protected:
+protected:
 
         virtual ~ReaderWriterInfo() {}
-};
+    };
 
-typedef std::list< osg::ref_ptr<ReaderWriterInfo> > ReaderWriterInfoList;
+    typedef std::list < osg::ref_ptr < ReaderWriterInfo >> ReaderWriterInfoList;
 
-bool OSGDB_EXPORT queryPlugin(const std::string& fileName, ReaderWriterInfoList& infoList);
+    bool OSGDB_EXPORT queryPlugin(const std::string &fileName, ReaderWriterInfoList &infoList);
 
-bool OSGDB_EXPORT outputPluginDetails(std::ostream& out, const std::string& fileName);
-
+    bool OSGDB_EXPORT outputPluginDetails(std::ostream &out, const std::string &fileName);
 }
 
 #endif

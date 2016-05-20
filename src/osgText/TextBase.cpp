@@ -53,7 +53,7 @@ TextBase::TextBase() :
     setSupportsDisplayList(false);
 }
 
-TextBase::TextBase(const TextBase&textBase, const osg::CopyOp&copyop) :
+TextBase::TextBase(const TextBase &textBase, const osg::CopyOp &copyop) :
     osg::Drawable(textBase, copyop),
     _color(textBase._color),
     _font(textBase._font),
@@ -81,7 +81,7 @@ TextBase::TextBase(const TextBase&textBase, const osg::CopyOp&copyop) :
 TextBase::~TextBase()
 {}
 
-void TextBase::setColor(const osg::Vec4&color)
+void TextBase::setColor(const osg::Vec4 &color)
 {
     _color = color;
 }
@@ -97,7 +97,7 @@ void TextBase::setFont(osg::ref_ptr<Font> font)
     computeGlyphRepresentation();
 }
 
-void TextBase::setFont(const std::string&fontfile)
+void TextBase::setFont(const std::string &fontfile)
 {
     setFont(readRefFontFile(fontfile));
 }
@@ -160,7 +160,7 @@ void TextBase::setLineSpacing(float lineSpacing)
 }
 
 
-void TextBase::setText(const String&text)
+void TextBase::setText(const String &text)
 {
     if (_text == text)
         return;
@@ -169,12 +169,12 @@ void TextBase::setText(const String&text)
     computeGlyphRepresentation();
 }
 
-void TextBase::setText(const std::string&text)
+void TextBase::setText(const std::string &text)
 {
     setText(String(text));
 }
 
-void TextBase::setText(const std::string&text, String::Encoding encoding)
+void TextBase::setText(const std::string &text, String::Encoding encoding)
 {
     setText(String(text, encoding));
 }
@@ -185,7 +185,7 @@ void TextBase::setText(const wchar_t *text)
     setText(String(text));
 }
 
-void TextBase::setPosition(const osg::Vec3&pos)
+void TextBase::setPosition(const osg::Vec3 &pos)
 {
     if (_position == pos)
         return;
@@ -252,7 +252,7 @@ void TextBase::setAxisAlignment(AxisAlignment axis)
     }
 }
 
-void TextBase::setRotation(const osg::Quat&quat)
+void TextBase::setRotation(const osg::Quat &quat)
 {
     _rotation = quat;
     computePositions();
@@ -308,7 +308,7 @@ osg::BoundingBox TextBase::computeBoundingBox() const
         {
             if (_autoTransformCache[i]._traversalNumber >= 0)
             {
-                osg::Matrix&matrix = _autoTransformCache[i]._matrix;
+                osg::Matrix &matrix = _autoTransformCache[i]._matrix;
                 bbox.expandBy(_textBB.corner(0) * matrix);
                 bbox.expandBy(_textBB.corner(1) * matrix);
                 bbox.expandBy(_textBB.corner(2) * matrix);
@@ -391,7 +391,7 @@ void TextBase::releaseGLObjects(osg::State *state) const
     Drawable::releaseGLObjects(state);
 }
 
-void TextBase::positionCursor(const osg::Vec2&endOfLine_coords, osg::Vec2&cursor, unsigned int linelength)
+void TextBase::positionCursor(const osg::Vec2 &endOfLine_coords, osg::Vec2 &cursor, unsigned int linelength)
 {
     switch (_layout)
     {

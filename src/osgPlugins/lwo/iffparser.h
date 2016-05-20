@@ -41,7 +41,7 @@ class GenericParser
 {
 public:
 GenericParser();
-GenericParser(std::ostream&os);
+GenericParser(std::ostream &os);
 
 virtual ~GenericParser();
 
@@ -51,8 +51,8 @@ void parse(Iter begin, Iter end);
 inline const Chunk_list&chunks() const;
 
 protected:
-virtual Chunk* parse_chunk_data(const std::string&tag, const std::string&context, Iter it, Iter end) = 0;
-Chunk* parse_chunk(Iter&it, const std::string&context);
+virtual Chunk* parse_chunk_data(const std::string &tag, const std::string &context, Iter it, Iter end) = 0;
+Chunk* parse_chunk(Iter &it, const std::string &context);
 
 inline std::ostream&os()
 {
@@ -66,8 +66,8 @@ GenericParser&operator =(const GenericParser&)
 }
 
 
-Chunk_list  chunks_;
-std::ostream&os_;
+Chunk_list   chunks_;
+std::ostream &os_;
 };
 
 /////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ IP_TMP GenericParser<Iter>::GenericParser()
     : os_(std::cout)
 {}
 
-IP_TMP GenericParser<Iter>::GenericParser(std::ostream&os)
+IP_TMP GenericParser<Iter>::GenericParser(std::ostream &os)
     : os_(os)
 {}
 
@@ -103,7 +103,7 @@ IP_TMP void GenericParser<Iter>::parse(Iter begin, Iter end)
     }
 }
 
-IP_TMP Chunk*GenericParser<Iter>::parse_chunk(Iter&it, const std::string&context)
+IP_TMP Chunk*GenericParser<Iter>::parse_chunk(Iter &it, const std::string &context)
 {
     std::string tag;
 

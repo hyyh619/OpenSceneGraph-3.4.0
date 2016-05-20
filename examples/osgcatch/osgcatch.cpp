@@ -56,11 +56,11 @@ class Character : public osg::Referenced
 public:
 Character();
 
-void setCharacter(const std::string&filename, const std::string&name, const osg::Vec3&orgin, const osg::Vec3&width, const osg::Vec3&catchPos, float positionRatio);
+void setCharacter(const std::string &filename, const std::string &name, const osg::Vec3 &orgin, const osg::Vec3 &width, const osg::Vec3 &catchPos, float positionRatio);
 
-void setLives(const std::string&filename, const osg::Vec3&orgin, const osg::Vec3&delta, unsigned int numLives);
+void setLives(const std::string &filename, const osg::Vec3 &orgin, const osg::Vec3 &delta, unsigned int numLives);
 
-void setCatches(const std::string&filename, const osg::Vec3&orgin, const osg::Vec3&delta, unsigned int numLives);
+void setCatches(const std::string &filename, const osg::Vec3 &orgin, const osg::Vec3 &delta, unsigned int numLives);
 
 void moveLeft();
 void moveRight();
@@ -117,7 +117,7 @@ Character::Character() :
 {}
 
 
-void Character::setCharacter(const std::string&filename, const std::string&name, const osg::Vec3&origin, const osg::Vec3&width, const osg::Vec3&catchPos, float positionRatio)
+void Character::setCharacter(const std::string &filename, const std::string &name, const osg::Vec3 &origin, const osg::Vec3 &width, const osg::Vec3 &catchPos, float positionRatio)
 {
     _origin        = origin;
     _width         = width;
@@ -154,7 +154,7 @@ void Character::setCharacter(const std::string&filename, const std::string&name,
     }
 }
 
-void Character::setLives(const std::string&filename, const osg::Vec3&origin, const osg::Vec3&delta, unsigned int numLives)
+void Character::setLives(const std::string &filename, const osg::Vec3 &origin, const osg::Vec3 &delta, unsigned int numLives)
 {
     float characterSize = delta.length();
 
@@ -185,7 +185,7 @@ void Character::setLives(const std::string&filename, const osg::Vec3&origin, con
     }
 }
 
-void Character::setCatches(const std::string&filename, const osg::Vec3&origin, const osg::Vec3&delta, unsigned int numCatches)
+void Character::setCatches(const std::string &filename, const osg::Vec3 &origin, const osg::Vec3 &delta, unsigned int numCatches)
 {
     float characterSize = delta.length();
 
@@ -283,11 +283,11 @@ class CatchableObject  : public osg::Referenced
 public:
 CatchableObject();
 
-void setObject(const std::string&filename, const std::string&name, const osg::Vec3&center, float size, const osg::Vec3&direction);
+void setObject(const std::string &filename, const std::string &name, const osg::Vec3 &center, float size, const osg::Vec3 &direction);
 
-bool anyInside(const osg::Vec3&lower_left, const osg::Vec3&top_right);
+bool anyInside(const osg::Vec3 &lower_left, const osg::Vec3 &top_right);
 
-bool centerInside(const osg::Vec3&center, float radius);
+bool centerInside(const osg::Vec3 &center, float radius);
 
 void explode();
 
@@ -331,7 +331,7 @@ bool _dangerous;
 
 double _timeToRemove;
 
-static void setUpCatchablesMap(const FileList&fileList);
+static void setUpCatchablesMap(const FileList &fileList);
 
 public:
 
@@ -366,7 +366,7 @@ inline float getFluidDensity() const
 
 
 /// Set the wind vector.
-inline void setWind(const osg::Vec3&wind)
+inline void setWind(const osg::Vec3 &wind)
 {
     _wind = wind;
 }
@@ -378,7 +378,7 @@ inline const osg::Vec3&getWind() const
 }
 
 /// Set the acceleration vector.
-inline void setAcceleration(const osg::Vec3&v)
+inline void setAcceleration(const osg::Vec3 &v)
 {
     _acceleration = v;
 }
@@ -434,14 +434,14 @@ CatchableObject::CatchableObject()
     setFluidToAir();
 }
 
-void CatchableObject::setUpCatchablesMap(const FileList&fileList)
+void CatchableObject::setUpCatchablesMap(const FileList &fileList)
 {
     for (FileList::const_iterator itr = fileList.begin();
          itr != fileList.end();
          ++itr)
     {
-        const std::string&filename = *itr;
-        osg::Image       *image    = osgDB::readImageFile(filename);
+        const std::string &filename = *itr;
+        osg::Image        *image    = osgDB::readImageFile(filename);
         if (image)
         {
             osg::ref_ptr<osg::StateSet> stateset = new osg::StateSet();
@@ -464,7 +464,7 @@ void CatchableObject::setUpCatchablesMap(const FileList&fileList)
     }
 }
 
-void CatchableObject::setObject(const std::string&filename, const std::string&name, const osg::Vec3&center, float characterSize, const osg::Vec3&velocity)
+void CatchableObject::setObject(const std::string &filename, const std::string &name, const osg::Vec3 &center, float characterSize, const osg::Vec3 &velocity)
 {
     _radius = 0.5f * characterSize;
     float Area   = osg::PI * _radius * _radius;
@@ -510,7 +510,7 @@ void CatchableObject::update(double dt)
     _object->setPosition(_object->getPosition() + _velocity * dt);
 }
 
-bool CatchableObject::anyInside(const osg::Vec3&lower_left, const osg::Vec3&upper_right)
+bool CatchableObject::anyInside(const osg::Vec3 &lower_left, const osg::Vec3 &upper_right)
 {
     osg::Vec3 pos = _object->getPosition();
 
@@ -529,7 +529,7 @@ bool CatchableObject::anyInside(const osg::Vec3&lower_left, const osg::Vec3&uppe
     return true;
 }
 
-bool CatchableObject::centerInside(const osg::Vec3&center, float radius)
+bool CatchableObject::centerInside(const osg::Vec3 &center, float radius)
 {
     osg::Vec3 delta = _object->getPosition() - center;
 
@@ -570,13 +570,13 @@ GameEventHandler();
 
 META_Object(osgStereImageApp, GameEventHandler);
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 osg::Matrix getCameraPosition();
 
-void compileGLObjects(osg::State&state)
+void compileGLObjects(osg::State &state)
 {
     osgUtil::GLObjectsVisitor compile;
 
@@ -862,7 +862,7 @@ GameEventHandler::GameEventHandler()
     setFOVY(osg::DegreesToRadians(60.0));
 }
 
-bool GameEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool GameEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     if (_currentIndex == _welcomeIndex)
     {
@@ -1404,7 +1404,7 @@ void GameEventHandler::createNewCatchable()
     if (catachableIndex >= _benignCatachables.size())
         catachableIndex = _benignCatachables.size() - 1;
 
-    const std::string&filename = _benignCatachables[catachableIndex];
+    const std::string &filename = _benignCatachables[catachableIndex];
 
     float ratio = ((float)rand() / (float)RAND_MAX);
     float size  = 20.0f + 100.0f * ((float)rand() / (float)RAND_MAX);

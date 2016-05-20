@@ -24,7 +24,7 @@ BlinkSequence::BlinkSequence() :
     _sequenceGroup(0)
 {}
 
-BlinkSequence::BlinkSequence(const BlinkSequence&bs, const osg::CopyOp&copyop) :
+BlinkSequence::BlinkSequence(const BlinkSequence &bs, const osg::CopyOp &copyop) :
     osg::Object(bs, copyop),
     _pulsePeriod(bs._pulsePeriod),
     _phaseShift(bs._phaseShift),
@@ -39,7 +39,7 @@ SequenceGroup::SequenceGroup()
     _baseTime = ((double)rand() / (double)RAND_MAX) * 1000.0;
 }
 
-SequenceGroup::SequenceGroup(const SequenceGroup&sg, const osg::CopyOp&copyop) :
+SequenceGroup::SequenceGroup(const SequenceGroup &sg, const osg::CopyOp &copyop) :
     osg::Object(sg, copyop),
     _baseTime(sg._baseTime)
 {}

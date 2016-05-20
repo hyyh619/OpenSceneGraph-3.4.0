@@ -48,7 +48,7 @@ virtual ~ReadThread()
     }
 }
 
-void addFileName(const std::string&filename)
+void addFileName(const std::string &filename)
 {
     _fileNames.push_back(filename);
 }
@@ -124,42 +124,42 @@ class SerializerReadFileCallback : public osgDB::Registry::ReadFileCallback
 {
 public:
 
-virtual osgDB::ReaderWriter::ReadResult openArchive(const std::string&filename, osgDB::ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, const osgDB::ReaderWriter::Options *useObjectCache)
+virtual osgDB::ReaderWriter::ReadResult openArchive(const std::string &filename, osgDB::ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, const osgDB::ReaderWriter::Options *useObjectCache)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
     return osgDB::Registry::instance()->openArchiveImplementation(filename, status, indexBlockSizeHint, useObjectCache);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readObject(const std::string&filename, const osgDB::ReaderWriter::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readObject(const std::string &filename, const osgDB::ReaderWriter::Options *options)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
     return osgDB::Registry::instance()->readObjectImplementation(filename, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readImage(const std::string&filename, const osgDB::ReaderWriter::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readImage(const std::string &filename, const osgDB::ReaderWriter::Options *options)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
     return osgDB::Registry::instance()->readImageImplementation(filename, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readHeightField(const std::string&filename, const osgDB::ReaderWriter::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readHeightField(const std::string &filename, const osgDB::ReaderWriter::Options *options)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
     return osgDB::Registry::instance()->readHeightFieldImplementation(filename, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&filename, const osgDB::ReaderWriter::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &filename, const osgDB::ReaderWriter::Options *options)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
     return osgDB::Registry::instance()->readNodeImplementation(filename, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readShader(const std::string&filename, const osgDB::ReaderWriter::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readShader(const std::string &filename, const osgDB::ReaderWriter::Options *options)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
@@ -174,7 +174,7 @@ OpenThreads::Mutex _mutex;
 
 
 
-void runMultiThreadReadTests(int numThreads, osg::ArgumentParser&arguments)
+void runMultiThreadReadTests(int numThreads, osg::ArgumentParser &arguments)
 {
 #if VERBOSE
     osg::notify(osg::NOTICE) << "runMultiThreadReadTests() -- running" << std::endl;

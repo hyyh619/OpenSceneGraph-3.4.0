@@ -27,7 +27,7 @@ namespace flt
     member variable. Otherwise, write to the specified DataOutputStream.
  */
 void
-FltExportVisitor::writeComment(const osg::Node&node, DataOutputStream *dos)
+FltExportVisitor::writeComment(const osg::Node &node, DataOutputStream *dos)
 {
     if (dos == NULL)
         dos = _records;
@@ -38,8 +38,8 @@ FltExportVisitor::writeComment(const osg::Node&node, DataOutputStream *dos)
 
     while (idx < nd)
     {
-        const std::string&com = node.getDescription(idx);
-        unsigned int     iLen = com.length() + 5;
+        const std::string &com = node.getDescription(idx);
+        unsigned int      iLen = com.length() + 5;
         if (iLen > 0xffff)
         {
             // short overrun
@@ -63,7 +63,7 @@ FltExportVisitor::writeComment(const osg::Node&node, DataOutputStream *dos)
     member variable. Otherwise, write to the specified DataOutputStream.
  */
 void
-FltExportVisitor::writeLongID(const std::string&id, DataOutputStream *dos)
+FltExportVisitor::writeLongID(const std::string &id, DataOutputStream *dos)
 {
     if (dos == NULL)
         dos = _records;

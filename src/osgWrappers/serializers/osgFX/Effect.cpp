@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkSelectedTechnique(const osgFX::Effect&effect)
+static bool checkSelectedTechnique(const osgFX::Effect &effect)
 {
     return effect.getSelectedTechnique() != osgFX::Effect::AUTO_DETECT;
 }
 
-static bool readSelectedTechnique(osgDB::InputStream&is, osgFX::Effect&effect)
+static bool readSelectedTechnique(osgDB::InputStream &is, osgFX::Effect &effect)
 {
     int sel = 0; is >> sel;
 
@@ -16,7 +16,7 @@ static bool readSelectedTechnique(osgDB::InputStream&is, osgFX::Effect&effect)
     return true;
 }
 
-static bool writeSelectedTechnique(osgDB::OutputStream&os, const osgFX::Effect&effect)
+static bool writeSelectedTechnique(osgDB::OutputStream &os, const osgFX::Effect &effect)
 {
     os << effect.getSelectedTechnique() << std::endl;
     return true;

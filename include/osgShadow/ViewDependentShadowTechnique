@@ -12,7 +12,7 @@
  *
  * ViewDependentShadow codes Copyright (C) 2008 Wojciech Lewandowski
  * Thanks to to my company http://www.ai.com.pl for allowing me free this work.
-*/
+ */
 
 #ifndef OSGSHADOW_VIEWDEPENDENTSHADOWTECHINIQUE
 #define OSGSHADOW_VIEWDEPENDENTSHADOWTECHINIQUE 1
@@ -27,16 +27,16 @@ namespace osgShadow {
     method used by derived shadow techniques to initialize their specific
     ViewData objects. initViewDependentData will be called from
     ViewDependentShadowTechnique base class to init derived class
-*/
-#define META_ViewDependentShadowTechniqueData( ShadowTechnique, TechniqueData )\
-virtual ViewDependentShadowTechnique::ViewData * initViewDependentData         \
-( osgUtil::CullVisitor *cv, ViewDependentShadowTechnique::ViewData * vd )      \
-{                                                                              \
-    TechniqueData* td = dynamic_cast<TechniqueData*>( vd );                    \
-    if ( !td ) td = new TechniqueData;                                         \
-    td->init( this, cv );                                                      \
-    return td;                                                                 \
-}
+ */
+#define META_ViewDependentShadowTechniqueData(ShadowTechnique, TechniqueData)    \
+    virtual ViewDependentShadowTechnique::ViewData * initViewDependentData       \
+        (osgUtil::CullVisitor * cv, ViewDependentShadowTechnique::ViewData * vd) \
+    {                                                                            \
+        TechniqueData *td = dynamic_cast < TechniqueData * > (vd);               \
+        if (!td) td = new TechniqueData;                                         \
+        td->init(this, cv);                                                      \
+        return td;                                                               \
+    }
 
 /**
     ViewDependentShadowTechnique is a base class for all
@@ -100,26 +100,26 @@ virtual ViewDependentShadowTechnique::ViewData * initViewDependentData         \
     is the done by this object. ViewDependentShadowTechnique::ViewData is intended
     as a base class so it does nothing. In practice the rest of dirty work will
     do new ViewData classes implemented in derived techniques.
-*/
-class OSGSHADOW_EXPORT ViewDependentShadowTechnique
+ */
+    class OSGSHADOW_EXPORT ViewDependentShadowTechnique
     : public osgShadow::ShadowTechnique
-{
-    public:
+    {
+public:
         /**
-        osgShadow::ShadowTechnique equivalent methods for view dependent techniques
-        */
+           osgShadow::ShadowTechnique equivalent methods for view dependent techniques
+         */
 
         /** Classic OSG constructor */
-        ViewDependentShadowTechnique( void );
+        ViewDependentShadowTechnique(void);
 
         /** Classic OSG cloning constructor */
         ViewDependentShadowTechnique(
-            const ViewDependentShadowTechnique& vdst,
-            const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY );
+            const ViewDependentShadowTechnique &vdst,
+            const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 
         /** Declaration of standard OSG object methods */
-        META_Object( osgShadow, ViewDependentShadowTechnique );
+        META_Object(osgShadow, ViewDependentShadowTechnique);
 
         /** Dirty view data bits and force update of view data resources */
         virtual void dirty();
@@ -128,105 +128,105 @@ class OSGSHADOW_EXPORT ViewDependentShadowTechnique
         virtual void init();
 
         /** Run the update traversal of the ShadowedScene and update any local cached data structures.*/
-        virtual void update(osg::NodeVisitor& nv);
+        virtual void update(osg::NodeVisitor &nv);
 
         /** Run the cull traversal of the ShadowedScene and set up the rendering for this ShadowTechnique.*/
-        virtual void cull(osgUtil::CullVisitor& cv);
+        virtual void cull(osgUtil::CullVisitor &cv);
 
         /** Clean scene graph from any shadow technique specific nodes, state and drawables.*/
         virtual void cleanSceneGraph();
 
         /** Traverse shadow scene graph.*/
-        virtual void traverse(osg::NodeVisitor& nv);
+        virtual void traverse(osg::NodeVisitor &nv);
 
-    protected:
+protected:
         /** Classic protected OSG destructor */
-        ~ViewDependentShadowTechnique( void );
+        ~ViewDependentShadowTechnique(void);
 
         /**
-        Base container class for view dependent shadow resources.
-        Techniques based on ViewDependentShadowTechnique will usually define
-        similar struct and derive it from ViewData to contain their specufic resources.
-        */
+           Base container class for view dependent shadow resources.
+           Techniques based on ViewDependentShadowTechnique will usually define
+           similar struct and derive it from ViewData to contain their specufic resources.
+         */
         struct OSGSHADOW_EXPORT ViewData: public osg::Referenced
         {
-            virtual const char* className() const { return "ViewData"; }
+            virtual const char* className() const
+            {
+                return "ViewData";
+            }
 
             /**
-            Method called upon ViewData instance to initialize internal variables
-            */
+               Method called upon ViewData instance to initialize internal variables
+             */
             virtual void init
-                ( ViewDependentShadowTechnique *st, osgUtil::CullVisitor *cv );
+                (ViewDependentShadowTechnique *st, osgUtil::CullVisitor *cv);
 
             /**
-            Method called by ViewDependentShadowTechnique to allow ViewData
-            do the hard work computing shadows for its associated view
-            */
+               Method called by ViewDependentShadowTechnique to allow ViewData
+               do the hard work computing shadows for its associated view
+             */
             virtual void cull();
 
             /**
-            Dirty is called by parent ViewDependentShadowTechnique to force
-            update of resources after some of them were modified in parent technique
-            */
-            virtual void dirty( bool flag );
+               Dirty is called by parent ViewDependentShadowTechnique to force
+               update of resources after some of them were modified in parent technique
+             */
+            virtual void dirty(bool flag);
 
             /**
-            Simple constructor zeroing all variables.
-            */
-            ViewData(): _dirty( true ), _cv( NULL ), _st( NULL ) { };
+               Simple constructor zeroing all variables.
+             */
+            ViewData() : _dirty(true), _cv(NULL), _st(NULL) { };
 
             /**
-            Mutex used to guard _dirty flag from override in case when parent technique calls
-            dirty() simultaneously with ViewData while it is updating resources inside init method.
-            */
-            OpenThreads::Mutex                                _mutex;
+               Mutex used to guard _dirty flag from override in case when parent technique calls
+               dirty() simultaneously with ViewData while it is updating resources inside init method.
+             */
+            OpenThreads::Mutex _mutex;
 
             /**
-            Dirty flag tells this instance to update its resources
-            */
-            bool                                              _dirty;
+               Dirty flag tells this instance to update its resources
+             */
+            bool _dirty;
 
             /**
-            View's CullVisitor associated with this ViewData instance
-            */
-            osg::observer_ptr< osgUtil::CullVisitor >         _cv;
+               View's CullVisitor associated with this ViewData instance
+             */
+            osg::observer_ptr < osgUtil::CullVisitor > _cv;
 
             /**
-            Parent ViewDependentShadowTechnique
-            */
-            osg::observer_ptr< ViewDependentShadowTechnique > _st;
-
+               Parent ViewDependentShadowTechnique
+             */
+            osg::observer_ptr < ViewDependentShadowTechnique > _st;
         };
 
         /**
-        Map of view dependent data per view cull visitor (CVs are used as indices)
-        ViewDependentShadowTechnique uses this map to find VieData for each cull vitior
-        */
+           Map of view dependent data per view cull visitor (CVs are used as indices)
+           ViewDependentShadowTechnique uses this map to find VieData for each cull vitior
+         */
 
-        typedef std::map< osg::ref_ptr< osgUtil::CullVisitor >,
-                          osg::ref_ptr< ViewData > > ViewDataMap;
+        typedef std::map < osg::ref_ptr < osgUtil::CullVisitor >,
+            osg::ref_ptr < ViewData >> ViewDataMap;
 
-        ViewDataMap                                       _viewDataMap;
+        ViewDataMap _viewDataMap;
 
 
         /**
-        Mutex used to serialize accesses to ViewDataMap
-        */
-        OpenThreads::Mutex                             _viewDataMapMutex;
+           Mutex used to serialize accesses to ViewDataMap
+         */
+        OpenThreads::Mutex _viewDataMapMutex;
 
         /** Return view dependent data for the cull visitor */
-        virtual ViewDependentShadowTechnique::ViewData * getViewDependentData( osgUtil::CullVisitor * cv );
+        virtual ViewDependentShadowTechnique::ViewData* getViewDependentData(osgUtil::CullVisitor *cv);
 
         /** Define view dependent data for the cull visitor */
-        virtual void       setViewDependentData( osgUtil::CullVisitor * cv, ViewDependentShadowTechnique::ViewData * data );
+        virtual void       setViewDependentData(osgUtil::CullVisitor *cv, ViewDependentShadowTechnique::ViewData *data);
 
         /**
-        Declare standard initViewDependentData method.
-        */
-        META_ViewDependentShadowTechniqueData( ViewDependentShadowTechnique, ViewData )
-};
-
-
+           Declare standard initViewDependentData method.
+         */
+        META_ViewDependentShadowTechniqueData(ViewDependentShadowTechnique, ViewData)
+    };
 } // namespace osgShadow
 
 #endif

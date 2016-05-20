@@ -22,7 +22,7 @@ namespace triangle_stripper
 {
 namespace detail
 {
-void make_connectivity_graph(graph_array<triangle>&Triangles, const indices&Indices);
+void make_connectivity_graph(graph_array<triangle> &Triangles, const indices &Indices);
 }
 }
 

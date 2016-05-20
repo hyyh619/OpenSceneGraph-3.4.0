@@ -15,7 +15,7 @@
 
 
 
-osg::Array* getTangentSpaceArray(osg::Geometry&geometry)
+osg::Array* getTangentSpaceArray(osg::Geometry &geometry)
 {
     for (unsigned int i = 0; i < geometry.getNumVertexAttribArrays(); ++i)
     {
@@ -48,8 +48,8 @@ void translateObject(JSONObject *json, osg::Object *osg)
 
         for (unsigned int i = 0; i < osgSim_userdata->size(); i++)
         {
-            const osgSim::ShapeAttribute&attr      = (*osgSim_userdata)[i];
-            JSONObject                  *jsonEntry = new JSONObject();
+            const osgSim::ShapeAttribute &attr      = (*osgSim_userdata)[i];
+            JSONObject                   *jsonEntry = new JSONObject();
             jsonEntry->getMaps()["Name"] = new JSONValue<std::string>(attr.getName());
             osg::ref_ptr<JSONValue<std::string> > value;
 
@@ -122,7 +122,7 @@ void translateObject(JSONObject *json, osg::Object *osg)
 }
 
 
-void getStringifiedUserValue(osg::Object *o, std::string&name, std::string&value)
+void getStringifiedUserValue(osg::Object *o, std::string &name, std::string &value)
 {
     if (getStringifiedUserValue<std::string>(o, name, value))
         return;
@@ -154,7 +154,7 @@ void getStringifiedUserValue(osg::Object *o, std::string&name, std::string&value
 
 
 template<typename T>
-bool getStringifiedUserValue(osg::Object *o, std::string&name, std::string&value)
+bool getStringifiedUserValue(osg::Object *o, std::string &name, std::string &value)
 {
     osg::TemplateValueObject<T> *vo = dynamic_cast<osg::TemplateValueObject<T>*>(o);
 
@@ -270,7 +270,7 @@ static JSONValue<std::string>* getJSONWrapMode(osg::Texture::WrapMode mode)
 }
 
 
-JSONObject* createImage(osg::Image *image, bool inlineImages, int maxTextureDimension, const std::string&baseName)
+JSONObject* createImage(osg::Image *image, bool inlineImages, int maxTextureDimension, const std::string &baseName)
 {
     if (!image)
     {
@@ -730,7 +730,7 @@ JSONObject* WriteVisitor::createJSONLight(osg::Light *light)
 }
 
 template<class T> JSONObject* createImageFromTexture(osg::Texture *texture, JSONObject *jsonTexture, bool inlineImages,
-                                                     int maxTextureDimension, const std::string&baseName = "")
+                                                     int maxTextureDimension, const std::string &baseName = "")
 {
     T *text = dynamic_cast<T*>(texture);
 

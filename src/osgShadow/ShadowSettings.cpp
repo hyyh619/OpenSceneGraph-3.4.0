@@ -38,7 +38,7 @@ ShadowSettings::ShadowSettings() :
     // _computeNearFearModeOverride = osg::CullSettings::COMPUTE_NEAR_USING_PRIMITIVES);
 }
 
-ShadowSettings::ShadowSettings(const ShadowSettings&ss, const osg::CopyOp&copyop) :
+ShadowSettings::ShadowSettings(const ShadowSettings &ss, const osg::CopyOp &copyop) :
     Object(ss, copyop),
     _receivesShadowTraversalMask(ss._receivesShadowTraversalMask),
     _castsShadowTraversalMask(ss._castsShadowTraversalMask),

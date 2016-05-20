@@ -27,8 +27,8 @@
 #include <osg/io_utils>
 
 
-bool Outline_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Outline_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Outline_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Outline_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 
 REGISTER_DOTOSGWRAPPER(Outline_Proxy)
@@ -41,10 +41,10 @@ REGISTER_DOTOSGWRAPPER(Outline_Proxy)
 );
 
 
-bool Outline_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Outline_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgFX::Outline&myobj     = static_cast<osgFX::Outline&>(obj);
-    bool          itAdvanced = false;
+    osgFX::Outline &myobj     = static_cast<osgFX::Outline&>(obj);
+    bool           itAdvanced = false;
 
     if (fr[0].matchWord("outlineWidth"))
     {
@@ -72,9 +72,9 @@ bool Outline_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool Outline_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Outline_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgFX::Outline&myobj = static_cast<const osgFX::Outline&>(obj);
+    const osgFX::Outline &myobj = static_cast<const osgFX::Outline&>(obj);
 
     fw.indent() << "outlineWidth " << myobj.getWidth() << std::endl;
     fw.indent() << "outlineColor " << myobj.getColor() << std::endl;

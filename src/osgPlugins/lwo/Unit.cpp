@@ -21,7 +21,7 @@ Unit::Unit()
     spot_maps_(new VertexMap_map)
 {}
 
-float Unit::angle_between_polygons(const Polygon&p1, const Polygon&p2) const
+float Unit::angle_between_polygons(const Polygon &p1, const Polygon &p2) const
 {
     float a = p1.face_normal(points_.get()) * p2.face_normal(points_.get());
 
@@ -34,7 +34,7 @@ float Unit::angle_between_polygons(const Polygon&p1, const Polygon&p2) const
     return acosf(a);
 }
 
-void Unit::find_shared_polygons(int vertex_index, std::vector<int>&poly_indices)
+void Unit::find_shared_polygons(int vertex_index, std::vector<int> &poly_indices)
 {
     int k = 0;
 
@@ -77,7 +77,7 @@ void Unit::generate_normals()
 
     for (Polygon_list::iterator pi = polygons_.begin(); pi != polygons_.end(); ++pi, ++pn)
     {
-        Polygon&poly = *pi;
+        Polygon &poly = *pi;
 
         float max_smoothing_angle = 0;
         if (poly.has_surface())
@@ -90,14 +90,14 @@ void Unit::generate_normals()
             osg::Vec4 N(poly.face_normal(points_.get()), 0);
             unsigned  num_smoothed = 1;
 
-            const Index_list&shared_polys = shares_.at(*j);
+            const Index_list &shared_polys = shares_.at(*j);
 
             for (unsigned k = 0; k < shared_polys.size(); ++k)
             {
                 if (shared_polys[k] != pn)
                 {
-                    const Polygon&shared_poly = polygons_.at(shared_polys[k]);
-                    float        angle        = angle_between_polygons(poly, shared_poly);
+                    const Polygon &shared_poly = polygons_.at(shared_polys[k]);
+                    float         angle        = angle_between_polygons(poly, shared_poly);
                     if (angle <= max_smoothing_angle && (poly.get_smoothing_group() == shared_poly.get_smoothing_group()))
                     {
                         N += osg::Vec4(shared_poly.face_normal(points_.get()), 0);
@@ -162,7 +162,7 @@ void Unit::flatten_maps()
     }
 }
 
-void Unit::flatten_map(Polygon&poly, const VertexMap *local_map, VertexMap *global_map)
+void Unit::flatten_map(Polygon &poly, const VertexMap *local_map, VertexMap *global_map)
 {
     int j = 0;
 
@@ -254,7 +254,7 @@ void Unit::flatten_map(Polygon&poly, const VertexMap *local_map, VertexMap *glob
     }
 }
 
-void Unit::compute_vertex_remapping(const Surface *surf, Index_list&remap) const
+void Unit::compute_vertex_remapping(const Surface *surf, Index_list &remap) const
 {
     remap.assign(points_->size(), -1);
 

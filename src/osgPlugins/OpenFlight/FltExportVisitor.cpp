@@ -128,7 +128,7 @@ FltExportVisitor::~FltExportVisitor()
 
 
 void
-FltExportVisitor::apply(osg::Group&node)
+FltExportVisitor::apply(osg::Group &node)
 {
     ScopedStatePushPop guard(this, node.getStateSet());
 
@@ -182,7 +182,7 @@ FltExportVisitor::apply(osg::Group&node)
 }
 
 void
-FltExportVisitor::apply(osg::Sequence&node)
+FltExportVisitor::apply(osg::Sequence &node)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, node.getStateSet());
@@ -194,7 +194,7 @@ FltExportVisitor::apply(osg::Sequence&node)
 }
 
 void
-FltExportVisitor::apply(osg::Switch&node)
+FltExportVisitor::apply(osg::Switch &node)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, node.getStateSet());
@@ -207,7 +207,7 @@ FltExportVisitor::apply(osg::Switch&node)
 }
 
 void
-FltExportVisitor::apply(osg::LOD&lodNode)
+FltExportVisitor::apply(osg::LOD &lodNode)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, lodNode.getStateSet());
@@ -235,7 +235,7 @@ FltExportVisitor::apply(osg::LOD&lodNode)
 }
 
 void
-FltExportVisitor::apply(osg::MatrixTransform&node)
+FltExportVisitor::apply(osg::MatrixTransform &node)
 {
     // Importer reads a Matrix record and inserts a MatrixTransform above
     //   the current node. We need to do the opposite: Write a Matrix record
@@ -277,7 +277,7 @@ FltExportVisitor::apply(osg::MatrixTransform&node)
 }
 
 void
-FltExportVisitor::apply(osg::PositionAttitudeTransform&node)
+FltExportVisitor::apply(osg::PositionAttitudeTransform &node)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, node.getStateSet());
@@ -310,7 +310,7 @@ FltExportVisitor::apply(osg::PositionAttitudeTransform&node)
 
 
 void
-FltExportVisitor::apply(osg::Transform&node)
+FltExportVisitor::apply(osg::Transform &node)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, node.getStateSet());
@@ -328,7 +328,7 @@ FltExportVisitor::apply(osg::Transform&node)
 }
 
 void
-FltExportVisitor::apply(osg::LightSource&node)
+FltExportVisitor::apply(osg::LightSource &node)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, node.getStateSet());
@@ -344,7 +344,7 @@ FltExportVisitor::apply(osg::LightSource&node)
 // the Geode to a Billboard, then they set the template mode
 // bit accordingly.
 void
-FltExportVisitor::apply(osg::Geode&node)
+FltExportVisitor::apply(osg::Geode &node)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, node.getStateSet());
@@ -447,7 +447,7 @@ FltExportVisitor::apply(osg::Geode&node)
 }
 
 void
-FltExportVisitor::apply(osg::Node&node)
+FltExportVisitor::apply(osg::Node &node)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, node.getStateSet());
@@ -471,7 +471,7 @@ FltExportVisitor::apply(osg::Node&node)
 }
 
 void
-FltExportVisitor::apply(osg::ProxyNode&node)
+FltExportVisitor::apply(osg::ProxyNode &node)
 {
     _firstNode = false;
     ScopedStatePushPop guard(this, node.getStateSet());
@@ -486,7 +486,7 @@ FltExportVisitor::apply(osg::ProxyNode&node)
 
 
 bool
-FltExportVisitor::complete(const osg::Node&node)
+FltExportVisitor::complete(const osg::Node &node)
 {
     // Always write final pop level
     writePop();

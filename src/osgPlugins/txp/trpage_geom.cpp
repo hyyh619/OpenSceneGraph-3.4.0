@@ -142,7 +142,7 @@ void trpgGeometry::SetVertices(int num, const float64 *data)
     for (int i = 0; i < 3 * num; i++)
         vertDataDouble.push_back(data[i]);
 }
-void trpgGeometry::AddVertex(DataType type, trpg3dPoint&pt)
+void trpgGeometry::AddVertex(DataType type, trpg3dPoint &pt)
 {
     if (type == FloatData)
     {
@@ -181,7 +181,7 @@ void trpgGeometry::SetNormals(int num, BindType bind, const float64 *data)
     for (int i = 0; i < 3 * num; i++)
         normDataDouble.push_back(data[i]);
 }
-void trpgGeometry::AddNormal(DataType type, trpg3dPoint&pt)
+void trpgGeometry::AddNormal(DataType type, trpg3dPoint &pt)
 {
     if (type == FloatData)
     {
@@ -271,7 +271,7 @@ void trpgGeometry::SetTexCoords(int num, BindType bind, const float64 *data)
     td.set(num, bind, data);
     texData.push_back(td);
 }
-void trpgGeometry::AddTexCoord(DataType type, trpg2dPoint&pt, int n)
+void trpgGeometry::AddTexCoord(DataType type, trpg2dPoint &pt, int n)
 {
     if ((n < 0) || (n >= (int)texData.size()))
         return;
@@ -289,7 +289,7 @@ void trpgGeometry::AddTexCoord(DataType type, trpg2dPoint&pt, int n)
         td->doubleData.push_back(pt.y);
     }
 }
-void trpgGeometry::AddTexCoord(DataType type, std::vector<trpg2dPoint>&pts)
+void trpgGeometry::AddTexCoord(DataType type, std::vector<trpg2dPoint> &pts)
 {
     if (texData.size() != pts.size())
         return;
@@ -329,7 +329,7 @@ void trpgGeometry::SetEdgeFlags(int num, const char *flags)
 }
 
 // Get methods
-bool trpgGeometry::GetPrimType(PrimType&t) const
+bool trpgGeometry::GetPrimType(PrimType &t) const
 {
     if (!isValid())
         return false;
@@ -337,7 +337,7 @@ bool trpgGeometry::GetPrimType(PrimType&t) const
     t = (PrimType)primType;
     return true;
 }
-bool trpgGeometry::GetNumPrims(int&n) const
+bool trpgGeometry::GetNumPrims(int &n) const
 {
     if (!isValid())
         return false;
@@ -355,7 +355,7 @@ bool trpgGeometry::GetPrimLengths(int *ret) const
 
     return true;
 }
-bool trpgGeometry::GetNumMaterial(int&n) const
+bool trpgGeometry::GetNumMaterial(int &n) const
 {
     if (!isValid())
         return false;
@@ -363,7 +363,7 @@ bool trpgGeometry::GetNumMaterial(int&n) const
     n = materials.size();
     return true;
 }
-bool trpgGeometry::GetMaterial(int id, int32&m, bool&isLocal) const
+bool trpgGeometry::GetMaterial(int id, int32 &m, bool &isLocal) const
 {
     isLocal = false;
     if (!isValid() || id < 0 || id >= (int)materials.size())
@@ -378,7 +378,7 @@ bool trpgGeometry::GetMaterial(int id, int32&m, bool&isLocal) const
 
     return true;
 }
-bool trpgGeometry::GetNumVertex(int&v) const
+bool trpgGeometry::GetNumVertex(int &v) const
 {
     if (!isValid())
         return false;
@@ -423,7 +423,7 @@ bool trpgGeometry::GetVertices(float64 *v) const
 
     return true;
 }
-bool trpgGeometry::GetVertex(int n, trpg3dPoint&pt) const
+bool trpgGeometry::GetVertex(int n, trpg3dPoint &pt) const
 {
     int id    = 3 * n;
     int idMax = 3 * n + 2;
@@ -446,7 +446,7 @@ bool trpgGeometry::GetVertex(int n, trpg3dPoint&pt) const
 
     return true;
 }
-bool trpgGeometry::GetNumNormal(int32&n) const
+bool trpgGeometry::GetNumNormal(int32 &n) const
 {
     if (!isValid())
         return false;
@@ -494,7 +494,7 @@ bool trpgGeometry::GetNormals(float64 *v) const
 
     return true;
 }
-bool trpgGeometry::GetNumColorSets(int&n) const
+bool trpgGeometry::GetNumColorSets(int &n) const
 {
     if (!isValid())
         return false;
@@ -510,7 +510,7 @@ bool trpgGeometry::GetColorSet(int id, trpgColorInfo *ci) const
     *ci = colors[id];
     return true;
 }
-bool trpgGeometry::GetNumTexCoordSets(int&n) const
+bool trpgGeometry::GetNumTexCoordSets(int &n) const
 {
     if (!isValid())
         return false;
@@ -533,7 +533,7 @@ const trpgTexData* trpgGeometry::GetTexCoordSet(int id) const
 
     return &(texData[id]);
 }
-bool trpgGeometry::GetNumEdgeFlag(int&n) const
+bool trpgGeometry::GetNumEdgeFlag(int &n) const
 {
     if (!isValid())
         return false;
@@ -561,7 +561,7 @@ bool trpgGeometry::isValid() const
 
 // Write geometry fields.
 // Order doesn't matter very much for this
-bool trpgGeometry::Write(trpgWriteBuffer&buf)
+bool trpgGeometry::Write(trpgWriteBuffer &buf)
 {
     unsigned int i, j;
 
@@ -673,7 +673,7 @@ bool trpgGeometry::Write(trpgWriteBuffer&buf)
     {
         for (i = 0; i < colors.size(); i++)
         {
-            trpgColorInfo&ci = colors[i];
+            trpgColorInfo &ci = colors[i];
             if (ci.data.size())
             {
                 buf.Begin(TRPG_GEOM_COLOR);
@@ -696,7 +696,7 @@ bool trpgGeometry::Write(trpgWriteBuffer&buf)
      */
     for (i = 0; i < texData.size(); i++)
     {
-        trpgTexData&td = texData[i];
+        trpgTexData &td = texData[i];
         if (td.floatData.size())
         {
             buf.Begin(TRPG_GEOM_TEX32);
@@ -749,7 +749,7 @@ void         *Parse(trpgToken, trpgReadBuffer & buf);
 trpgGeometry *geom;
 };
 
-void* geomCB::Parse(trpgToken tok, trpgReadBuffer&buf)
+void* geomCB::Parse(trpgToken tok, trpgReadBuffer &buf)
 {
     int32     *iData;
     int32     num, primType, bind, type;
@@ -970,7 +970,7 @@ void* geomCB::Parse(trpgToken tok, trpgReadBuffer&buf)
 }
 
 // Read Geometry
-bool trpgGeometry::Read(trpgReadBuffer&buf)
+bool trpgGeometry::Read(trpgReadBuffer &buf)
 {
     trpgr_Parser parse;
     geomCB       gcb;

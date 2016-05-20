@@ -4,8 +4,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool Effect_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Effect_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Effect_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Effect_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Effect_Proxy)
 (
@@ -16,10 +16,10 @@ REGISTER_DOTOSGWRAPPER(Effect_Proxy)
     Effect_writeLocalData
 );
 
-bool Effect_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Effect_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgFX::Effect&myobj     = static_cast<osgFX::Effect&>(obj);
-    bool         itAdvanced = false;
+    osgFX::Effect &myobj     = static_cast<osgFX::Effect&>(obj);
+    bool          itAdvanced = false;
 
     if (fr[0].matchWord("enabled"))
     {
@@ -59,9 +59,9 @@ bool Effect_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool Effect_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Effect_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgFX::Effect&myobj = static_cast<const osgFX::Effect&>(obj);
+    const osgFX::Effect &myobj = static_cast<const osgFX::Effect&>(obj);
 
     fw.indent() << "enabled " << (myobj.getEnabled() ? "TRUE" : "FALSE") << "\n";
     fw.indent() << "selectedTechnique ";

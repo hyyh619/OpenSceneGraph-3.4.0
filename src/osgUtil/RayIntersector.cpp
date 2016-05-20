@@ -38,14 +38,14 @@ RayIntersector::RayIntersector(CoordinateFrame cf, RayIntersector *parent,
         setPrecisionHint(parent->getPrecisionHint());
 }
 
-RayIntersector::RayIntersector(const Vec3d&start, const Vec3d&direction) :
+RayIntersector::RayIntersector(const Vec3d &start, const Vec3d &direction) :
     Intersector(),
     _parent(0),
     _start(start),
     _direction(direction)
 {}
 
-RayIntersector::RayIntersector(CoordinateFrame cf, const Vec3d&start, const Vec3d&direction,
+RayIntersector::RayIntersector(CoordinateFrame cf, const Vec3d &start, const Vec3d &direction,
                                RayIntersector *parent, Intersector::IntersectionLimit intersectionLimit) :
     Intersector(cf, intersectionLimit),
     _parent(parent),
@@ -72,7 +72,7 @@ RayIntersector::RayIntersector(CoordinateFrame cf, double x, double y) :
     }
 }
 
-Intersector* RayIntersector::clone(IntersectionVisitor&iv)
+Intersector* RayIntersector::clone(IntersectionVisitor &iv)
 {
     if (_coordinateFrame == MODEL && iv.getModelMatrix() == 0)
     {
@@ -87,7 +87,7 @@ Intersector* RayIntersector::clone(IntersectionVisitor&iv)
     return new RayIntersector(MODEL, newStart, newEnd, this, _intersectionLimit);
 }
 
-bool RayIntersector::enter(const Node&node)
+bool RayIntersector::enter(const Node &node)
 {
     if (reachedLimit())
         return false;
@@ -107,7 +107,7 @@ void RayIntersector::reset()
     _intersections.clear();
 }
 
-void RayIntersector::intersect(IntersectionVisitor&iv, Drawable *drawable)
+void RayIntersector::intersect(IntersectionVisitor &iv, Drawable *drawable)
 {
     // did we reached what we wanted as specified by setIntersectionLimit()?
     if (reachedLimit())
@@ -155,7 +155,7 @@ void RayIntersector::intersect(IntersectionVisitor&iv, Drawable *drawable)
     }
 }
 
-bool RayIntersector::intersects(const BoundingSphere&bs)
+bool RayIntersector::intersects(const BoundingSphere &bs)
 {
     // if bs not valid then return true based on the assumption that an invalid sphere is yet to be defined.
     if (!bs.valid())
@@ -198,7 +198,7 @@ bool RayIntersector::intersects(const BoundingSphere&bs)
     return true;
 }
 
-bool RayIntersector::intersectAndClip(Vec3d&s, const Vec3d&d, Vec3d&e, const BoundingBox&bbInput)
+bool RayIntersector::intersectAndClip(Vec3d &s, const Vec3d &d, Vec3d &e, const BoundingBox &bbInput)
 {
     // bounding box min and max
     Vec3d bb_min(bbInput._min);
@@ -271,7 +271,7 @@ bool RayIntersector::intersectAndClip(Vec3d&s, const Vec3d&d, Vec3d&e, const Bou
     return true;
 }
 
-Texture* RayIntersector::Intersection::getTextureLookUp(Vec3&tc) const
+Texture* RayIntersector::Intersection::getTextureLookUp(Vec3 &tc) const
 {
     Geometry  *geometry = drawable.valid() ? drawable->asGeometry() : 0;
     Vec3Array *vertices = geometry ? dynamic_cast<Vec3Array*>(geometry->getVertexArray()) : 0;
@@ -303,18 +303,18 @@ Texture* RayIntersector::Intersection::getTextureLookUp(Vec3&tc) const
             else if (texcoords_Vec2Array)
             {
                 // we have tex coord array so now we can compute the final tex coord at the point of intersection.
-                const Vec2&tc1 = (*texcoords_Vec2Array)[i1];
-                const Vec2&tc2 = (*texcoords_Vec2Array)[i2];
-                const Vec2&tc3 = (*texcoords_Vec2Array)[i3];
+                const Vec2 &tc1 = (*texcoords_Vec2Array)[i1];
+                const Vec2 &tc2 = (*texcoords_Vec2Array)[i2];
+                const Vec2 &tc3 = (*texcoords_Vec2Array)[i3];
                 tc.x() = tc1.x() * r1 + tc2.x() * r2 + tc3.x() * r3;
                 tc.y() = tc1.y() * r1 + tc2.y() * r2 + tc3.y() * r3;
             }
             else if (texcoords_Vec3Array)
             {
                 // we have tex coord array so now we can compute the final tex coord at the point of intersection.
-                const Vec3&tc1 = (*texcoords_Vec3Array)[i1];
-                const Vec3&tc2 = (*texcoords_Vec3Array)[i2];
-                const Vec3&tc3 = (*texcoords_Vec3Array)[i3];
+                const Vec3 &tc1 = (*texcoords_Vec3Array)[i1];
+                const Vec3 &tc2 = (*texcoords_Vec3Array)[i2];
+                const Vec3 &tc3 = (*texcoords_Vec3Array)[i3];
                 tc.x() = tc1.x() * r1 + tc2.x() * r2 + tc3.x() * r3;
                 tc.y() = tc1.y() * r1 + tc2.y() * r2 + tc3.y() * r3;
                 tc.z() = tc1.z() * r1 + tc2.z() * r2 + tc3.z() * r3;

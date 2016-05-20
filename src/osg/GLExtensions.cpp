@@ -99,8 +99,8 @@ bool osg::isGLExtensionSupported(unsigned int contextID, const char *extension)
 
 bool osg::isGLExtensionOrVersionSupported(unsigned int contextID, const char *extension, float requiredGLVersion)
 {
-    ExtensionSet&extensionSet   = s_glExtensionSetList[contextID];
-    std::string &rendererString = s_glRendererList[contextID];
+    ExtensionSet &extensionSet   = s_glExtensionSetList[contextID];
+    std::string  &rendererString = s_glRendererList[contextID];
 
     // first check to see if GL version number of recent enough.
     bool result = requiredGLVersion <= osg::getGLVersionNumber();
@@ -231,7 +231,7 @@ bool osg::isGLExtensionOrVersionSupported(unsigned int contextID, const char *ex
     bool extensionDisabled = false;
     if (result)
     {
-        const std::string&disableString = getGLExtensionDisableString();
+        const std::string &disableString = getGLExtensionDisableString();
         if (!disableString.empty())
         {
             std::string::size_type pos = 0;
@@ -303,7 +303,7 @@ bool osg::isGLExtensionOrVersionSupported(unsigned int contextID, const char *ex
     return result && !extensionDisabled;
 }
 
-void osg::setGLExtensionDisableString(const std::string&disableString)
+void osg::setGLExtensionDisableString(const std::string &disableString)
 {
     getGLExtensionDisableString() = disableString;
 }
@@ -1124,7 +1124,7 @@ GLuint GLExtensions::getCurrentProgram() const
 }
 
 
-bool GLExtensions::getProgramInfoLog(GLuint program, std::string&result) const
+bool GLExtensions::getProgramInfoLog(GLuint program, std::string &result) const
 {
     GLsizei bufLen = 0;        // length of buffer to allocate
     GLsizei strLen = 0;        // strlen GL actually wrote to buffer
@@ -1144,7 +1144,7 @@ bool GLExtensions::getProgramInfoLog(GLuint program, std::string&result) const
 }
 
 
-bool GLExtensions::getShaderInfoLog(GLuint shader, std::string&result) const
+bool GLExtensions::getShaderInfoLog(GLuint shader, std::string &result) const
 {
     GLsizei bufLen = 0;        // length of buffer to allocate
     GLsizei strLen = 0;        // strlen GL actually wrote to buffer
@@ -1164,7 +1164,7 @@ bool GLExtensions::getShaderInfoLog(GLuint shader, std::string&result) const
 }
 
 
-bool GLExtensions::getAttribLocation(const char *attribName, GLuint&location) const
+bool GLExtensions::getAttribLocation(const char *attribName, GLuint &location) const
 {
     // is there an active GLSL program?
     GLuint program = getCurrentProgram();
@@ -1188,7 +1188,7 @@ bool GLExtensions::getAttribLocation(const char *attribName, GLuint&location) co
 }
 
 
-bool GLExtensions::getFragDataLocation(const char *fragDataName, GLuint&location) const
+bool GLExtensions::getFragDataLocation(const char *fragDataName, GLuint &location) const
 {
     // is there an active GLSL program?
     GLuint program = getCurrentProgram();

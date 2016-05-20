@@ -267,7 +267,7 @@ static unsigned char* orderBytes(unsigned int *raster, unsigned int size)
 }
 ////////////////////////////////////////////////////////////////////////////////
 static void addTree
-    (const osg::Vec3&p,
+    (const osg::Vec3 &p,
     osg::Vec3Array *vertices, osg::Vec3Array *normals, osg::Vec2Array *texCoords,
     float r = sqrt( 3.f ), float h = 10.f, float s = 5.f)
 {
@@ -332,7 +332,7 @@ static void addTree
 }
 ////////////////////////////////////////////////////////////////////////////////
 static void addHouse
-    (const osg::Vec3&p,
+    (const osg::Vec3 &p,
     osg::Vec3Array *vertices, osg::Vec3Array *normals, osg::Vec2Array *texCoords,
     float r = 3, float h = 10.f, float s = 3.f)
 {
@@ -473,7 +473,7 @@ static osg::Geode* createObjects(osg::HeightField *grid, unsigned int density)
     return geode;
 }
 ////////////////////////////////////////////////////////////////////////////////
-osg::Node* createIsland(const osg::Vec3&center = osg::Vec3( 0, 0, 0 ), float radius = 8192* 0.5)
+osg::Node* createIsland(const osg::Vec3 &center = osg::Vec3( 0, 0, 0 ), float radius = 8192* 0.5)
 {
     float height = 1000;
 
@@ -491,7 +491,7 @@ osg::Node* createIsland(const osg::Vec3&center = osg::Vec3( 0, 0, 0 ), float rad
     {
         struct colorElevation
         {
-            colorElevation(unsigned int elev, const osg::Vec4ub&c) :
+            colorElevation(unsigned int elev, const osg::Vec4ub &c) :
                 elevation(elev), color(c) {}
 
             unsigned int elevation;

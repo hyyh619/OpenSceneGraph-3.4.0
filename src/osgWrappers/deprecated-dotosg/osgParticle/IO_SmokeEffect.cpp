@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  SmokeEffect_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  SmokeEffect_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  SmokeEffect_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  SmokeEffect_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(SmokeEffect_Proxy)
 (

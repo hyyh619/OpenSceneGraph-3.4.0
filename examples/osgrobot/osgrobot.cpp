@@ -143,7 +143,7 @@ static void rotate(float angle, osg::MatrixTransform *joint)
     joint->setMatrix(zRot * joint->getMatrix());
 }
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {

@@ -148,7 +148,7 @@ void SetVirtualProgramShader(VirtualProgram *virtualProgram,
     virtualProgram->setShader(shader_semantics, shader);
 }
 ///////////////////////////////////////////////////////////////////////////////
-void AddLabel(osg::Group *group, const std::string&label, float offset)
+void AddLabel(osg::Group *group, const std::string &label, float offset)
 {
     osg::Vec3  center(0, 0, offset * 0.5);
     osg::Geode *geode = new osg::Geode;

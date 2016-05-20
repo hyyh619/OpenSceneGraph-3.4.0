@@ -32,7 +32,7 @@ osgParticle::ParticleProcessor::ParticleProcessor()
     setCullingActive(false);
 }
 
-osgParticle::ParticleProcessor::ParticleProcessor(const ParticleProcessor&copy, const osg::CopyOp&copyop)
+osgParticle::ParticleProcessor::ParticleProcessor(const ParticleProcessor &copy, const osg::CopyOp &copyop)
     :    osg::Node(copy, copyop),
     _rf(copy._rf),
     _enabled(copy._enabled),
@@ -51,7 +51,7 @@ osgParticle::ParticleProcessor::ParticleProcessor(const ParticleProcessor&copy, 
     _frameNumber(copy._frameNumber)
 {}
 
-void osgParticle::ParticleProcessor::traverse(osg::NodeVisitor&nv)
+void osgParticle::ParticleProcessor::traverse(osg::NodeVisitor &nv)
 {
     // typecast the NodeVisitor to CullVisitor
     osgUtil::CullVisitor *cv = dynamic_cast<osgUtil::CullVisitor*>(&nv);

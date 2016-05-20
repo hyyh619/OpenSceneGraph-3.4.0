@@ -61,7 +61,7 @@ protected:
 
 virtual ~VertexPalette() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     uint32 paletteSize = in.readUInt32();
 
@@ -97,7 +97,7 @@ protected:
 
 virtual ~ColorPalette() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     if (document.getColorPoolParent())
         // Using parent's color pool -- ignore this record.
@@ -199,7 +199,7 @@ protected:
 
 virtual ~MaterialPalette() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     if (document.getMaterialPoolParent())
         // Using parent's material pool -- ignore this record.
@@ -252,7 +252,7 @@ protected:
 
 virtual ~OldMaterialPalette() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     if (document.getMaterialPoolParent())
         // Using parent's material pool -- ignore this record.
@@ -307,7 +307,7 @@ protected:
 
 virtual ~TexturePalette() {}
 
-osg::Texture2D::WrapMode convertWrapMode(int32 attrWrapMode, const Document&document) const
+osg::Texture2D::WrapMode convertWrapMode(int32 attrWrapMode, const Document &document) const
 {
     osg::Texture2D::WrapMode osgWrapMode = osg::Texture2D::REPEAT;
 
@@ -333,7 +333,7 @@ osg::Texture2D::WrapMode convertWrapMode(int32 attrWrapMode, const Document&docu
     return osgWrapMode;
 }
 
-osg::StateSet* readTexture(const std::string&filename, const Document&document) const
+osg::StateSet* readTexture(const std::string &filename, const Document &document) const
 {
     osg::ref_ptr<osg::Image> image = osgDB::readRefImageFile(filename, document.getOptions());
 
@@ -498,7 +498,7 @@ osg::StateSet* readTexture(const std::string&filename, const Document&document) 
     return stateset;
 }
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     if (document.getTexturePoolParent())
         // Using parent's texture pool -- ignore this record.
@@ -616,7 +616,7 @@ protected:
 
 virtual ~LightSourcePalette() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     if (document.getLightSourcePoolParent())
         // Using parent's texture pool -- ignore this record.
@@ -691,7 +691,7 @@ protected:
 
 virtual ~LightPointAppearancePalette() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     if (document.getLightPointAppearancePoolParent())
         // Using parent's light point appearance pool -- ignore this record.
@@ -773,7 +773,7 @@ protected:
 
 virtual ~LightPointAnimationPalette() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     if (document.getLightPointAnimationPoolParent())
         // Using parent's light point animation pool -- ignore this record.
@@ -880,7 +880,7 @@ protected:
 
 virtual ~ShaderPalette() {}
 
-virtual void readRecord(RecordInputStream&in, Document&document)
+virtual void readRecord(RecordInputStream &in, Document &document)
 {
     if (document.getShaderPoolParent())
         // Using parent's shader pool -- ignore this record.

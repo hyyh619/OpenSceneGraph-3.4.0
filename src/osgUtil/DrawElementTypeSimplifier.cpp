@@ -3,7 +3,7 @@
 #include <osg/Geode>
 
 template<typename InType, typename OutType>
-OutType* copy(InType&array)
+OutType* copy(InType &array)
 {
     unsigned int size      = array.size();
     OutType      *newArray = new OutType(array.getMode(), size);
@@ -16,7 +16,7 @@ OutType* copy(InType&array)
 }
 
 template<typename InType>
-unsigned int getMax(InType&array)
+unsigned int getMax(InType &array)
 {
     unsigned int max  = 0;
     unsigned int size = array.size();
@@ -32,7 +32,7 @@ unsigned int getMax(InType&array)
 
 namespace osgUtil
 {
-void DrawElementTypeSimplifier::simplify(osg::Geometry&geometry) const
+void DrawElementTypeSimplifier::simplify(osg::Geometry &geometry) const
 {
     osg::Geometry::PrimitiveSetList           &psl = geometry.getPrimitiveSetList();
     osg::Geometry::PrimitiveSetList::iterator it, end = psl.end();
@@ -45,7 +45,7 @@ void DrawElementTypeSimplifier::simplify(osg::Geometry&geometry) const
         {
         case osg::PrimitiveSet::DrawElementsUShortPrimitiveType:
         {
-            osg::DrawElementsUShort&de = *static_cast<osg::DrawElementsUShort*>(it->get());
+            osg::DrawElementsUShort &de = *static_cast<osg::DrawElementsUShort*>(it->get());
 
             max = getMax<osg::DrawElementsUShort>(de);
             if (max < 255)
@@ -56,7 +56,7 @@ void DrawElementTypeSimplifier::simplify(osg::Geometry&geometry) const
 
         case osg::PrimitiveSet::DrawElementsUIntPrimitiveType:
         {
-            osg::DrawElementsUInt&de = *static_cast<osg::DrawElementsUInt*>(it->get());
+            osg::DrawElementsUInt &de = *static_cast<osg::DrawElementsUInt*>(it->get());
 
             max = getMax<osg::DrawElementsUInt>(de);
             if (max < 256)
@@ -72,7 +72,7 @@ void DrawElementTypeSimplifier::simplify(osg::Geometry&geometry) const
     }
 }
 
-void DrawElementTypeSimplifierVisitor::apply(osg::Geode&node)
+void DrawElementTypeSimplifierVisitor::apply(osg::Geode &node)
 {
     DrawElementTypeSimplifier dets;
 

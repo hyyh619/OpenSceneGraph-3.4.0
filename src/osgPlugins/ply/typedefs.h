@@ -57,7 +57,7 @@ typedef size_t Index;
 // mesh exception
 struct MeshException : public std::exception
 {
-    explicit MeshException(const std::string&msg) : _message(msg) {}
+    explicit MeshException(const std::string &msg) : _message(msg) {}
     virtual ~MeshException() throw() {}
     virtual const char* what() const throw()
     {

@@ -25,26 +25,26 @@ class ApplyMatrixVisitor : public NodeVisitor
 {
 public:
 
-ApplyMatrixVisitor(const osg::Matrix&matrix) :
+ApplyMatrixVisitor(const osg::Matrix &matrix) :
     _matrix(matrix) {}
 
-virtual void apply(Camera&camera)
+virtual void apply(Camera &camera)
 {
     camera.setViewMatrix(_matrix);
 }
 
-virtual void apply(CameraView&cv)
+virtual void apply(CameraView &cv)
 {
     cv.setPosition(_matrix.getTrans());
     cv.setAttitude(_matrix.getRotate());
 }
 
-virtual void apply(MatrixTransform&mt)
+virtual void apply(MatrixTransform &mt)
 {
     mt.setMatrix(_matrix);
 }
 
-virtual void apply(PositionAttitudeTransform&pat)
+virtual void apply(PositionAttitudeTransform &pat)
 {
     pat.setPosition(_matrix.getTrans());
     pat.setAttitude(_matrix.getRotate());
@@ -106,7 +106,7 @@ void NodeTrackerCallback::operator()(Node *node, NodeVisitor *nv)
 }
 
 
-void NodeTrackerCallback::update(osg::Node&node)
+void NodeTrackerCallback::update(osg::Node &node)
 {
     osg::NodePath nodePath;
 

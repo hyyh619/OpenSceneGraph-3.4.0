@@ -14,7 +14,7 @@
 #include "dxfEntity.h"
 #include "dxfBlock.h"
 
-void dxfHeader::assign(dxfFile*, codeValue&cv)
+void dxfHeader::assign(dxfFile*, codeValue &cv)
 {
     if (cv._groupCode == 9)
     {
@@ -25,12 +25,12 @@ void dxfHeader::assign(dxfFile*, codeValue&cv)
     }
     else if (_inVariable)
     {
-        VariableList&var = getVariable(_currentVariable);
+        VariableList &var = getVariable(_currentVariable);
         var.push_back(cv);
     }
 }
 
-void dxfTables::assign(dxfFile *dxf, codeValue&cv)
+void dxfTables::assign(dxfFile *dxf, codeValue &cv)
 {
     if (cv._groupCode == 0 && cv._string == "TABLE")
     {
@@ -56,7 +56,7 @@ void dxfTables::assign(dxfFile *dxf, codeValue&cv)
     }
 }
 
-void dxfBlocks::assign(dxfFile *dxf, codeValue&cv)
+void dxfBlocks::assign(dxfFile *dxf, codeValue &cv)
 {
     if (cv._groupCode == 0 && cv._string == std::string("BLOCK"))
     {
@@ -74,7 +74,7 @@ void dxfBlocks::assign(dxfFile *dxf, codeValue&cv)
     }
 }
 
-void dxfEntities::assign(dxfFile *dxf, codeValue&cv)
+void dxfEntities::assign(dxfFile *dxf, codeValue &cv)
 {
     if (cv._groupCode == 0)
     {

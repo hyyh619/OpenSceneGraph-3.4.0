@@ -63,7 +63,7 @@ void Point::setFadeThresholdSize(float fadeThresholdSize)
 }
 
 
-void Point::setDistanceAttenuation(const Vec3&distanceAttenuation)
+void Point::setDistanceAttenuation(const Vec3 &distanceAttenuation)
 {
     _distanceAttenuation = distanceAttenuation;
 }
@@ -78,7 +78,7 @@ void Point::setMaxSize(float maxSize)
     _maxSize = maxSize;
 }
 
-void Point::apply(State&state) const
+void Point::apply(State &state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     glPointSize(_size);

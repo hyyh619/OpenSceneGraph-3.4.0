@@ -586,9 +586,9 @@ virtual CPLErr  RasterIO(int nXOff, int nYOff, int nXSize, int nYSize,
                          int nPixelSpace, int nLineSpace);
 
 void            DstToSrc(double dfX, double dfY,
-                         double&dfXOut, double&dfYOut);
+                         double &dfXOut, double &dfYOut);
 void            SrcToDst(double dfX, double dfY,
-                         double&dfXOut, double&dfYOut);
+                         double &dfXOut, double &dfYOut);
 
 virtual void   GetFileList(char ***ppapszFileList, int *pnSize,
                            int *pnMaxSize, CPLHashSet *hSetFiles);

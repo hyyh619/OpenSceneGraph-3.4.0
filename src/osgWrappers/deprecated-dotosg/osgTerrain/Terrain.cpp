@@ -5,8 +5,8 @@
 #include "osgDB/Output"
 
 // forward declare functions to use later.
-bool Terrain_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Terrain_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Terrain_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Terrain_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Terrain)
@@ -18,11 +18,11 @@ REGISTER_DOTOSGWRAPPER(Terrain)
     &Terrain_writeLocalData
 );
 
-bool Terrain_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Terrain_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    osgTerrain::Terrain&terrain = static_cast<osgTerrain::Terrain&>(obj);
+    osgTerrain::Terrain &terrain = static_cast<osgTerrain::Terrain&>(obj);
 
     float value;
 
@@ -49,9 +49,9 @@ bool Terrain_readLocalData(osg::Object&obj, osgDB::Input&fr)
 }
 
 
-bool Terrain_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Terrain_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgTerrain::Terrain&terrain = static_cast<const osgTerrain::Terrain&>(obj);
+    const osgTerrain::Terrain &terrain = static_cast<const osgTerrain::Terrain&>(obj);
 
     fw.indent() << "SampleRatio " <<   terrain.getSampleRatio() << std::endl;
     fw.indent() << "VerticalScale " << terrain.getVerticalScale() << std::endl;

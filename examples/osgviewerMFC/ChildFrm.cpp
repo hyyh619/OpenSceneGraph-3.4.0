@@ -27,7 +27,7 @@ CChildFrame::CChildFrame()
 CChildFrame::~CChildFrame()
 {}
 
-BOOL CChildFrame::PreCreateWindow(CREATESTRUCT&cs)
+BOOL CChildFrame::PreCreateWindow(CREATESTRUCT &cs)
 {
     // TODO: Modify the Window class or styles here by modifying the CREATESTRUCT cs
     if (!CMDIChildWnd::PreCreateWindow(cs))
@@ -48,7 +48,7 @@ void CChildFrame::AssertValid() const
     CMDIChildWnd::AssertValid();
 }
 
-void CChildFrame::Dump(CDumpContext&dc) const
+void CChildFrame::Dump(CDumpContext &dc) const
 {
     CMDIChildWnd::Dump(dc);
 }

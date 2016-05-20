@@ -128,13 +128,13 @@ virtual bool GetMipLevelLocalGL(int miplevel, const trpgTexture*, char *data, in
  */
 virtual bool GetImageInfoForLocalMat(const trpgLocalMaterial *locMat,
                                      const trpgMaterial **retMat, const trpgTexture **retTex,
-                                     int&totSize);
+                                     int &totSize);
 
 /* Same as above, but gets info for nth image associated with this local material
  */
 virtual bool GetNthImageInfoForLocalMat(const trpgLocalMaterial *locMat, int index,
                                         const trpgMaterial **retMat, const trpgTexture **retTex,
-                                        int&totSize);
+                                        int &totSize);
 
 /* Fetch the bytes for the given Local Material (and
    associated texture).  This is for Tile Local and
@@ -204,8 +204,8 @@ virtual bool ReadHeader(bool readAllBlocks);
 bool ReadSubArchive(int row, int col, trpgEndian cpuNess);
 // In version 2.1, only tile at lod 0 are fetchable via the tile table
 virtual bool ReadTile(uint32 x, uint32 y, uint32 lod, trpgMemReadBuffer&);
-virtual bool ReadTile(const trpgwAppAddress&addr, trpgMemReadBuffer&buf);
-virtual bool ReadExternalTile(uint32 x, uint32 y, uint32 lod, trpgMemReadBuffer&buf);
+virtual bool ReadTile(const trpgwAppAddress &addr, trpgMemReadBuffer &buf);
+virtual bool ReadExternalTile(uint32 x, uint32 y, uint32 lod, trpgMemReadBuffer &buf);
 
 // Get access to header info
 virtual const trpgHeader* GetHeader(void) const;
@@ -221,14 +221,14 @@ virtual const trpgSupportStyleTable* GetSupportStyleTable() const;
 
 // Utility routine to calculate the MBR of a given tile
 virtual bool trpgGetTileMBR(uint32 x, uint32 y, uint32 lod,
-                            trpg3dPoint&ll, trpg3dPoint&ur) const;
+                            trpg3dPoint &ll, trpg3dPoint &ur) const;
 
 trpgEndian GetEndian(void) const;
 char* getDir(void)
 {
     return dir;
 };
-virtual trpgrImageHelper* GetNewRImageHelper(trpgEndian ness, char *dir, const trpgMatTable&matTable, const trpgTexTable&texTable);
+virtual trpgrImageHelper* GetNewRImageHelper(trpgEndian ness, char *dir, const trpgMatTable &matTable, const trpgTexTable &texTable);
 virtual trpgrAppFileCache* GetNewRAppFileCache(const char *fullBase, const char *ext);
 virtual int32 GetHeaderData(char *dataPtr, int32 length, FILE *filehandle);
 virtual int32 GetMagicNumber()

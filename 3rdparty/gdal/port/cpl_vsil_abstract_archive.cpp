@@ -242,7 +242,7 @@ int VSIArchiveFilesystemHandler::FindFileInArchive(const char *archiveFilename,
 /************************************************************************/
 
 char* VSIArchiveFilesystemHandler::SplitFilename(const char *pszFilename,
-                                                 CPLString&osFileInArchive,
+                                                 CPLString &osFileInArchive,
                                                  int bCheckMainFileExists)
 {
     int i = 0;
@@ -268,7 +268,7 @@ char* VSIArchiveFilesystemHandler::SplitFilename(const char *pszFilename,
 
         for (iter = oExtensions.begin(); iter != oExtensions.end(); ++iter)
         {
-            const CPLString&osExtension = *iter;
+            const CPLString &osExtension = *iter;
             if (EQUALN(pszFilename + i, osExtension.c_str(), strlen(osExtension.c_str())))
             {
                 nToSkip = strlen(osExtension.c_str());

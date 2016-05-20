@@ -14,8 +14,8 @@
 
 using namespace osgUtil;
 
-HighlightMapGenerator::HighlightMapGenerator(const osg::Vec3&light_direction,
-                                             const osg::Vec4&light_color,
+HighlightMapGenerator::HighlightMapGenerator(const osg::Vec3 &light_direction,
+                                             const osg::Vec4 &light_color,
                                              float specular_exponent,
                                              int texture_size)
     :    CubeMapGenerator(texture_size),
@@ -26,7 +26,7 @@ HighlightMapGenerator::HighlightMapGenerator(const osg::Vec3&light_direction,
     ldir_.normalize();
 }
 
-HighlightMapGenerator::HighlightMapGenerator(const HighlightMapGenerator&copy, const osg::CopyOp&copyop)
+HighlightMapGenerator::HighlightMapGenerator(const HighlightMapGenerator &copy, const osg::CopyOp &copyop)
     :    CubeMapGenerator(copy, copyop),
     ldir_(copy.ldir_),
     lcol_(copy.lcol_),

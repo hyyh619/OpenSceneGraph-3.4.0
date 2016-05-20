@@ -38,7 +38,7 @@ using namespace std;
 namespace DX
 {
 // Tokenize a string
-void tokenize(const string&str, vector<string>&tokens, const string&delimiters)
+void tokenize(const string &str, vector<string> &tokens, const string &delimiters)
 {
     string::size_type lastPos = str.find_first_not_of(delimiters, 0);
     string::size_type pos     = str.find_first_of(delimiters, lastPos);
@@ -52,7 +52,7 @@ void tokenize(const string&str, vector<string>&tokens, const string&delimiters)
 }
 
 // Read 'TextureFilename'
-void readTexFilename(istream&fin, TextureFilename&texture)
+void readTexFilename(istream &fin, TextureFilename &texture)
 {
     char buf[256];
 
@@ -87,7 +87,7 @@ void readTexFilename(istream&fin, TextureFilename&texture)
 }
 
 // Read 'Coords2d'
-void readCoords2d(istream&fin, vector<Coords2d>&v, unsigned int count)
+void readCoords2d(istream &fin, vector<Coords2d> &v, unsigned int count)
 {
     char buf[256];
 
@@ -113,7 +113,7 @@ void readCoords2d(istream&fin, vector<Coords2d>&v, unsigned int count)
 }
 
 // Read 'Vector'
-void readVector(istream&fin, vector<Vector>&v, unsigned int count)
+void readVector(istream &fin, vector<Vector> &v, unsigned int count)
 {
     char buf[256];
 
@@ -140,7 +140,7 @@ void readVector(istream&fin, vector<Vector>&v, unsigned int count)
 }
 
 // Parse 'Material'
-void parseMaterial(istream&fin, Material&material)
+void parseMaterial(istream &fin, Material &material)
 {
     char buf[256];
 
@@ -207,7 +207,7 @@ void parseMaterial(istream&fin, Material&material)
 }
 
 // Read index list
-void readIndexList(istream&fin, vector<unsigned int>&v, unsigned int count)
+void readIndexList(istream &fin, vector<unsigned int> &v, unsigned int count)
 {
     char buf[256];
 
@@ -231,7 +231,7 @@ void readIndexList(istream&fin, vector<unsigned int>&v, unsigned int count)
 }
 
 // Read 'MeshFace'
-void readMeshFace(istream&fin, vector<MeshFace>&v, unsigned int count)
+void readMeshFace(istream &fin, vector<MeshFace> &v, unsigned int count)
 {
     char buf[256];
 

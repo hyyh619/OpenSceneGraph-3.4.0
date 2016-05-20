@@ -8,8 +8,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool CompositeViewer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool CompositeViewer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool CompositeViewer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool CompositeViewer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(CompositeViewer_Proxy)
 (

@@ -30,12 +30,12 @@
 
 const std::string FILE_IDENTIFER("osgphotoalbum photo archive");
 
-PhotoArchive::PhotoArchive(const std::string&filename)
+PhotoArchive::PhotoArchive(const std::string &filename)
 {
     readPhotoIndex(filename);
 }
 
-bool PhotoArchive::readPhotoIndex(const std::string&filename)
+bool PhotoArchive::readPhotoIndex(const std::string &filename)
 {
     osgDB::ifstream in(filename.c_str());
 
@@ -63,7 +63,7 @@ bool PhotoArchive::readPhotoIndex(const std::string&filename)
     return true;
 }
 
-void PhotoArchive::getImageFileNameList(FileNameList&filenameList)
+void PhotoArchive::getImageFileNameList(FileNameList &filenameList)
 {
     for (PhotoIndexList::const_iterator itr = _photoIndex.begin();
          itr != _photoIndex.end();
@@ -73,9 +73,9 @@ void PhotoArchive::getImageFileNameList(FileNameList&filenameList)
     }
 }
 
-osg::Image* PhotoArchive::readImage(const std::string&filename,
+osg::Image* PhotoArchive::readImage(const std::string &filename,
                                     unsigned int target_s, unsigned target_t,
-                                    float&original_s, float&original_t)
+                                    float &original_s, float &original_t)
 {
     for (PhotoIndexList::const_iterator itr = _photoIndex.begin();
          itr != _photoIndex.end();
@@ -83,7 +83,7 @@ osg::Image* PhotoArchive::readImage(const std::string&filename,
     {
         if (filename == itr->filename)
         {
-            const PhotoHeader&photoHeader = *itr;
+            const PhotoHeader &photoHeader = *itr;
 
             if (target_s <= photoHeader.thumbnail_s &&
                 target_t <= photoHeader.thumbnail_t &&
@@ -142,7 +142,7 @@ osg::Image* PhotoArchive::readImage(const std::string&filename,
     return NULL;
 }
 
-void PhotoArchive::buildArchive(const std::string&filename, const FileNameList&imageList, unsigned int thumbnailSize, unsigned int maximumSize, bool /*compressed*/)
+void PhotoArchive::buildArchive(const std::string &filename, const FileNameList &imageList, unsigned int thumbnailSize, unsigned int maximumSize, bool /*compressed*/)
 {
     PhotoIndexList photoIndex;
 
@@ -191,7 +191,7 @@ void PhotoArchive::buildArchive(const std::string&filename, const FileNameList&i
          pitr != photoIndex.end();
          ++pitr, ++photoCount)
     {
-        PhotoHeader&photoHeader = *pitr;
+        PhotoHeader &photoHeader = *pitr;
 
 
         std::cout << "Processing image " << photoCount << " of " << photoIndex.size() << " filename=" << photoHeader.filename << std::endl;

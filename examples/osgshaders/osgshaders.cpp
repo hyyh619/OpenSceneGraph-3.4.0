@@ -45,7 +45,7 @@ KeyHandler(GL2ScenePtr gl2Scene) :
     _gl2Scene(gl2Scene)
 {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     if (ea.getEventType() != osgGA::GUIEventAdapter::KEYDOWN)
         return false;

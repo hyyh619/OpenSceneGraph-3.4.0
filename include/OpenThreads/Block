@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef _OPENTHREADS_BLOCK_
 #define _OPENTHREADS_BLOCK_
@@ -20,13 +20,12 @@
 #include <OpenThreads/ScopedLock>
 
 namespace OpenThreads {
-
 /** Block is a block that can be used to halt a thread that is waiting another thread to release it.*/
-class Block
-{
-    public:
+    class Block
+    {
+public:
 
-        Block():
+        Block() :
             _released(false) {}
 
         ~Block()
@@ -36,10 +35,10 @@ class Block
 
         inline bool block()
         {
-            ScopedLock<OpenThreads::Mutex> mutlock(_mut);
-            if( !_released )
+            ScopedLock < OpenThreads::Mutex > mutlock(_mut);
+            if (!_released)
             {
-                return _cond.wait(&_mut)==0;
+                return _cond.wait(&_mut) == 0;
             }
             else
             {
@@ -49,10 +48,10 @@ class Block
 
         inline bool block(unsigned long timeout)
         {
-            ScopedLock<OpenThreads::Mutex> mutlock(_mut);
-            if( !_released )
+            ScopedLock < OpenThreads::Mutex > mutlock(_mut);
+            if (!_released)
             {
-                return _cond.wait(&_mut, timeout)==0;
+                return _cond.wait(&_mut, timeout) == 0;
             }
             else
             {
@@ -62,7 +61,7 @@ class Block
 
         inline void release()
         {
-            ScopedLock<OpenThreads::Mutex> mutlock(_mut);
+            ScopedLock < OpenThreads::Mutex > mutlock(_mut);
             if (!_released)
             {
                 _released = true;
@@ -72,36 +71,38 @@ class Block
 
         inline void reset()
         {
-            ScopedLock<OpenThreads::Mutex> mutlock(_mut);
+            ScopedLock < OpenThreads::Mutex > mutlock(_mut);
             _released = false;
         }
 
         inline void set(bool doRelease)
         {
-            if (doRelease!=_released)
+            if (doRelease != _released)
             {
-                if (doRelease) release();
-                else reset();
+                if (doRelease)
+                    release();
+                else
+                    reset();
             }
         }
 
-    protected:
+protected:
 
-        Mutex _mut;
+        Mutex     _mut;
         Condition _cond;
-        bool _released;
+        bool      _released;
 
-    private:
+private:
 
-        Block(const Block&) {}
-};
+        Block(const Block &) {}
+    };
 
 /** BlockCount is a block that can be used to halt a thread that is waiting for a specified number of operations to be completed.*/
-class BlockCount
-{
-    public:
+    class BlockCount
+    {
+public:
 
-        BlockCount(unsigned int blockCount):
+        BlockCount(unsigned int blockCount) :
             _blockCount(blockCount),
             _currentCount(0) {}
 
@@ -113,12 +114,13 @@ class BlockCount
 
         inline void completed()
         {
-            OpenThreads::ScopedLock<OpenThreads::Mutex> mutlock(_mut);
-            if (_currentCount>0)
+            OpenThreads::ScopedLock < OpenThreads::Mutex > mutlock(_mut);
+
+            if (_currentCount > 0)
             {
                 --_currentCount;
 
-                if (_currentCount==0)
+                if (_currentCount == 0)
                 {
                     // osg::notify(osg::NOTICE)<<"Released"<<std::endl;
                     _cond.broadcast();
@@ -128,24 +130,29 @@ class BlockCount
 
         inline void block()
         {
-            OpenThreads::ScopedLock<OpenThreads::Mutex> mutlock(_mut);
+            OpenThreads::ScopedLock < OpenThreads::Mutex > mutlock(_mut);
+
             if (_currentCount)
                 _cond.wait(&_mut);
         }
 
         inline void reset()
         {
-            OpenThreads::ScopedLock<OpenThreads::Mutex> mutlock(_mut);
-            if (_currentCount!=_blockCount)
+            OpenThreads::ScopedLock < OpenThreads::Mutex > mutlock(_mut);
+
+            if (_currentCount != _blockCount)
             {
-                if (_blockCount==0) _cond.broadcast();
+                if (_blockCount == 0)
+                    _cond.broadcast();
+
                 _currentCount = _blockCount;
             }
         }
 
         inline void release()
         {
-            OpenThreads::ScopedLock<OpenThreads::Mutex> mutlock(_mut);
+            OpenThreads::ScopedLock < OpenThreads::Mutex > mutlock(_mut);
+
             if (_currentCount)
             {
                 _currentCount = 0;
@@ -153,25 +160,32 @@ class BlockCount
             }
         }
 
-        inline void setBlockCount(unsigned int blockCount) { _blockCount = blockCount; }
+        inline void setBlockCount(unsigned int blockCount)
+        {
+            _blockCount = blockCount;
+        }
 
-        inline unsigned int getBlockCount() const { return _blockCount; }
+        inline unsigned int getBlockCount() const
+        {
+            return _blockCount;
+        }
 
-        inline unsigned int getCurrentCount() const { return _currentCount; }
+        inline unsigned int getCurrentCount() const
+        {
+            return _currentCount;
+        }
 
-    protected:
+protected:
 
-        OpenThreads::Mutex _mut;
+        OpenThreads::Mutex     _mut;
         OpenThreads::Condition _cond;
-        unsigned int _blockCount;
-        unsigned int _currentCount;
+        unsigned int           _blockCount;
+        unsigned int           _currentCount;
 
-    private:
+private:
 
-        BlockCount(const BlockCount&) {}
-
-};
-
+        BlockCount(const BlockCount &) {}
+    };
 }
 
 #endif

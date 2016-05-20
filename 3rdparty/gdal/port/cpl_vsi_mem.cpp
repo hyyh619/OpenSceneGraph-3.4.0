@@ -692,7 +692,7 @@ int VSIMemFilesystemHandler::Rename(const char *pszOldPath,
 /*                           NormalizePath()                            */
 /************************************************************************/
 
-void VSIMemFilesystemHandler::NormalizePath(CPLString&oPath)
+void VSIMemFilesystemHandler::NormalizePath(CPLString &oPath)
 
 {
     int i, nSize = oPath.size();

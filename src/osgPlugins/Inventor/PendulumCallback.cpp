@@ -2,7 +2,7 @@
 
 #include "PendulumCallback.h"
 
-PendulumCallback::PendulumCallback(const osg::Vec3&axis,
+PendulumCallback::PendulumCallback(const osg::Vec3 &axis,
                                    float startAngle, float endAngle,
                                    float frequency)
 {

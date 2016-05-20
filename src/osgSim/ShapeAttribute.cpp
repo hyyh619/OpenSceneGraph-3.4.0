@@ -48,7 +48,7 @@ ShapeAttribute::ShapeAttribute(const char *name, const char *value) :
     _string(value ? strdup(value) : 0)
 {}
 
-ShapeAttribute::ShapeAttribute(const ShapeAttribute&sa)
+ShapeAttribute::ShapeAttribute(const ShapeAttribute &sa)
 {
     copy(sa);
 }
@@ -75,7 +75,7 @@ void ShapeAttribute::setValue(const char *value)
     _string = (value ? strdup(value) : 0);
 }
 
-void ShapeAttribute::copy(const ShapeAttribute&sa)
+void ShapeAttribute::copy(const ShapeAttribute &sa)
 {
     _name = sa._name;
     _type = sa._type;
@@ -109,7 +109,7 @@ void ShapeAttribute::copy(const ShapeAttribute&sa)
     }
 }
 
-ShapeAttribute&ShapeAttribute::operator =(const ShapeAttribute&sa)
+ShapeAttribute&ShapeAttribute::operator =(const ShapeAttribute &sa)
 {
     if (&sa == this)
         return *this;
@@ -121,7 +121,7 @@ ShapeAttribute&ShapeAttribute::operator =(const ShapeAttribute&sa)
 }
 
 
-int ShapeAttribute::compare(const osgSim::ShapeAttribute&sa) const
+int ShapeAttribute::compare(const osgSim::ShapeAttribute &sa) const
 {
     if (_name < sa._name)
         return -1;
@@ -178,7 +178,7 @@ int ShapeAttribute::compare(const osgSim::ShapeAttribute&sa) const
 
 
 /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.*/
-int ShapeAttributeList::compare(const osgSim::ShapeAttributeList&sal) const
+int ShapeAttributeList::compare(const osgSim::ShapeAttributeList &sal) const
 {
     const_iterator salIt, thisIt, thisEnd = end();
 

@@ -44,22 +44,22 @@ void FragmentProgram::deleteFragmentProgramObject(unsigned int contextID, GLuint
 }
 
 
-void FragmentProgram::flushDeletedFragmentProgramObjects(unsigned int contextID, double /*currentTime*/, double&availableTime)
+void FragmentProgram::flushDeletedFragmentProgramObjects(unsigned int contextID, double /*currentTime*/, double &availableTime)
 {
     // if no time available don't try to flush objects.
     if (availableTime <= 0.0)
         return;
 
-    const osg::Timer&timer      = *osg::Timer::instance();
-    osg::Timer_t    start_tick  = timer.tick();
-    double          elapsedTime = 0.0;
+    const osg::Timer &timer      = *osg::Timer::instance();
+    osg::Timer_t     start_tick  = timer.tick();
+    double           elapsedTime = 0.0;
 
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedFragmentProgramObjectCache);
 
         const GLExtensions *extensions = GLExtensions::Get(contextID, true);
 
-        FragmentProgramObjectList&vpol = s_deletedFragmentProgramObjectCache[contextID];
+        FragmentProgramObjectList &vpol = s_deletedFragmentProgramObjectCache[contextID];
 
         for (FragmentProgramObjectList::iterator titr = vpol.begin();
              titr != vpol.end() && elapsedTime < availableTime;
@@ -87,7 +87,7 @@ FragmentProgram::FragmentProgram()
 {}
 
 
-FragmentProgram::FragmentProgram(const FragmentProgram&vp, const CopyOp&copyop) :
+FragmentProgram::FragmentProgram(const FragmentProgram &vp, const CopyOp &copyop) :
     osg::StateAttribute(vp, copyop)
 {
     _fragmentProgram = vp._fragmentProgram;
@@ -124,7 +124,7 @@ void FragmentProgram::dirtyFragmentProgramObject()
     }
 }
 
-void FragmentProgram::apply(State&state) const
+void FragmentProgram::apply(State &state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     const GLExtensions *extensions = state.get<GLExtensions>();
@@ -133,7 +133,7 @@ void FragmentProgram::apply(State&state) const
         return;
 
 
-    GLuint&fragmentProgramId = getFragmentProgramID(state.getContextID());
+    GLuint &fragmentProgramId = getFragmentProgramID(state.getContextID());
 
     // Fragment Program
     if (fragmentProgramId != 0)

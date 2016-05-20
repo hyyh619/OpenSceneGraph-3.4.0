@@ -42,7 +42,7 @@ trpgRange::~trpgRange(void)
     Reset();
 }
 
-trpgRange::trpgRange(const trpgRange&in) :
+trpgRange::trpgRange(const trpgRange &in) :
     trpgReadWriteable(in)
 {
     category    = NULL;
@@ -114,7 +114,7 @@ void trpgRange::SetLodInfo(double in, double out)
     outLod = out;
 }
 
-void trpgRange::GetLodInfo(double&in, double&out) const
+void trpgRange::GetLodInfo(double &in, double &out) const
 {
     in  = inLod;
     out = outLod;
@@ -125,12 +125,12 @@ void trpgRange::SetPriority(int prior)
     priority = prior;
 }
 
-void trpgRange::GetPriority(int&prior) const
+void trpgRange::GetPriority(int &prior) const
 {
     prior = priority;
 }
 
-trpgRange&trpgRange::operator =(const trpgRange&other)
+trpgRange&trpgRange::operator =(const trpgRange &other)
 {
     Reset();
     inLod  = other.inLod;
@@ -142,7 +142,7 @@ trpgRange&trpgRange::operator =(const trpgRange&other)
     return *this;
 }
 
-bool trpgRange::operator ==(const trpgRange&in) const
+bool trpgRange::operator ==(const trpgRange &in) const
 {
     if (inLod != in.inLod || outLod != in.outLod)
         return false;
@@ -183,7 +183,7 @@ bool trpgRange::operator ==(const trpgRange&in) const
     return true;
 }
 
-bool trpgRange::Write(trpgWriteBuffer&buf)
+bool trpgRange::Write(trpgWriteBuffer &buf)
 {
     buf.Begin(TRPG_RANGE);
     buf.Add(inLod);
@@ -201,7 +201,7 @@ bool trpgRange::Write(trpgWriteBuffer&buf)
     return true;
 }
 
-bool trpgRange::Read(trpgReadBuffer&buf)
+bool trpgRange::Read(trpgReadBuffer &buf)
 {
     char catStr[1024], subStr[1024];
 
@@ -266,7 +266,7 @@ void trpgRangeTable::Reset(void)
     valid = true;
 }
 
-bool trpgRangeTable::GetRange(int id, trpgRange&ret) const
+bool trpgRangeTable::GetRange(int id, trpgRange &ret) const
 {
     if (!isValid())
         return false;
@@ -284,7 +284,7 @@ bool trpgRangeTable::GetRange(int id, trpgRange&ret) const
     return true;
 }
 
-bool trpgRangeTable::SetRange(int id, trpgRange&inRange)
+bool trpgRangeTable::SetRange(int id, trpgRange &inRange)
 {
     if (!isValid())
         return false;
@@ -297,7 +297,7 @@ bool trpgRangeTable::SetRange(int id, trpgRange&inRange)
     return true;
 }
 
-int trpgRangeTable::AddRange(trpgRange&range)
+int trpgRangeTable::AddRange(trpgRange &range)
 {
     int handle = range.GetHandle();
 
@@ -310,7 +310,7 @@ int trpgRangeTable::AddRange(trpgRange&range)
     return handle;
 }
 
-int trpgRangeTable::FindAddRange(trpgRange&range)
+int trpgRangeTable::FindAddRange(trpgRange &range)
 {
     RangeMapType::iterator itr = rangeMap.begin();
 
@@ -330,7 +330,7 @@ int trpgRangeTable::FindAddRange(trpgRange&range)
     return AddRange(range);
 }
 
-bool trpgRangeTable::Write(trpgWriteBuffer&buf)
+bool trpgRangeTable::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -342,7 +342,7 @@ bool trpgRangeTable::Write(trpgWriteBuffer&buf)
 
     for (; itr != rangeMap.end(); itr++)
     {
-        trpgRange&range = itr->second;
+        trpgRange &range = itr->second;
         range.Write(buf);
     }
 
@@ -351,7 +351,7 @@ bool trpgRangeTable::Write(trpgWriteBuffer&buf)
     return true;
 }
 
-bool trpgRangeTable::Read(trpgReadBuffer&buf)
+bool trpgRangeTable::Read(trpgReadBuffer &buf)
 {
     int32     numRange;
     trpgToken tok;
@@ -393,7 +393,7 @@ bool trpgRangeTable::Read(trpgReadBuffer&buf)
     return isValid();
 }
 
-trpgRangeTable&trpgRangeTable::operator =(const trpgRangeTable&inTab)
+trpgRangeTable&trpgRangeTable::operator =(const trpgRangeTable &inTab)
 {
     Reset();
     RangeMapType::const_iterator itr = inTab.rangeMap.begin();

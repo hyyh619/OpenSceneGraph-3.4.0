@@ -53,14 +53,14 @@ unsigned int daeWriter::ArrayNIndices::getDAESize()
 
 /// Appends an OSG vector (Vec2, Vec3...) to a domListOfFloats.
 template<class VecType>
-inline void append(domListOfFloats&list, const VecType&vec)
+inline void append(domListOfFloats &list, const VecType &vec)
 {
     for (unsigned int i = 0; i < VecType::num_components; ++i)
         list.append(vec[i]);
 }
 
 /// Appends an OSG vector array (Vec2Array, Vec3Array...) to a domListOfFloats.
-bool daeWriter::ArrayNIndices::append(domListOfFloats&list)
+bool daeWriter::ArrayNIndices::append(domListOfFloats &list)
 {
     switch (getMode())
     {
@@ -472,7 +472,7 @@ void daeWriter::writeMorphGeometry(osgAnimation::MorphGeometry *pOsgMorphGeometr
     }
 }
 
-void daeWriter::apply(osg::Geode&node)
+void daeWriter::apply(osg::Geode &node)
 {
     debugPrint(node);
     updateCurrentDaeNode();
@@ -548,10 +548,10 @@ void daeWriter::appendGeometryIndices(osg::Geometry *geom,
                                       unsigned int vindex,
                                       domSource *norm,
                                       domSource *color,
-                                      const ArrayNIndices&verts,
-                                      const ArrayNIndices&normals,
-                                      const ArrayNIndices&colors,
-                                      const std::vector<ArrayNIndices>&texcoords,
+                                      const ArrayNIndices &verts,
+                                      const ArrayNIndices &normals,
+                                      const ArrayNIndices &colors,
+                                      const std::vector<ArrayNIndices> &texcoords,
                                       unsigned int ncount,
                                       unsigned int ccount)
 {
@@ -581,7 +581,7 @@ void daeWriter::appendGeometryIndices(osg::Geometry *geom,
 }
 
 
-bool daeWriter::processGeometry(osg::Geometry *geom, domGeometry *geo, const std::string&name)
+bool daeWriter::processGeometry(osg::Geometry *geom, domGeometry *geo, const std::string &name)
 {
     domMesh                 *mesh  = daeSafeCast<domMesh>(geo->add(COLLADA_ELEMENT_MESH));
     domSource               *pos   = NULL;
@@ -1424,7 +1424,7 @@ bool daeWriter::processGeometry(osg::Geometry *geom, domGeometry *geo, const std
     return valid;
 }
 
-domSource* daeWriter::createSource(daeElement *parent, const std::string&baseName, int size, bool color, bool uv)
+domSource* daeWriter::createSource(daeElement *parent, const std::string &baseName, int size, bool color, bool uv)
 {
     domSource *src = daeSafeCast<domSource>(parent->add(COLLADA_ELEMENT_SOURCE));
 
@@ -1517,7 +1517,7 @@ domSource* daeWriter::createSource(daeElement *parent, const std::string&baseNam
 }
 
 template<typename Ty>
-Ty* daeWriter::createPrimGroup(daeString type, domMesh *mesh, domSource *norm, domSource *color, const std::vector<domSource*>&texcoord)
+Ty* daeWriter::createPrimGroup(daeString type, domMesh *mesh, domSource *norm, domSource *color, const std::vector<domSource*> &texcoord)
 {
     unsigned int        offset  = 0;
     Ty                  *retVal = daeSafeCast<Ty>(mesh->add(type));

@@ -103,8 +103,8 @@ GPMaskImageData(GDALRasterBandH hMaskBand, GByte *pabyMaskLine, int iY, int nXSi
 static inline void CompareNeighbour(int nPolyId1, int nPolyId2,
                                     int *panPolyIdMap,
                                     int *panPolyValue,
-                                    std::vector<int>&anPolySizes,
-                                    std::vector<int>&anBigNeighbour)
+                                    std::vector<int> &anPolySizes,
+                                    std::vector<int> &anBigNeighbour)
 
 {
     // make sure we are working with the final merged polygon ids.

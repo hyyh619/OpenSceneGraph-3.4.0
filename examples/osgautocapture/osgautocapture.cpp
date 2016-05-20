@@ -42,7 +42,7 @@ FindTopMostNodeOfTypeVisitor() :
     _foundNode(0)
 {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     T *result = dynamic_cast<T*>(&node);
 
@@ -72,14 +72,14 @@ T* findTopMostNodeOfType(osg::Node *node)
 class WindowCaptureCallback : public osg::Camera::DrawCallback
 {
 public:
-WindowCaptureCallback(GLenum readBuffer, const std::string&name) :
+WindowCaptureCallback(GLenum readBuffer, const std::string &name) :
     _readBuffer(readBuffer),
     _fileName(name)
 {
     _image = new osg::Image;
 }
 
-virtual void operator ()(osg::RenderInfo&renderInfo) const
+virtual void operator ()(osg::RenderInfo &renderInfo) const
 {
             #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE)
     glReadBuffer(_readBuffer);

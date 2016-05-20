@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _font
-static bool checkFont(const osgText::TextBase&text)
+static bool checkFont(const osgText::TextBase &text)
 {
     return text.getFont() != NULL;
 }
 
-static bool readFont(osgDB::InputStream&is, osgText::TextBase&text)
+static bool readFont(osgDB::InputStream &is, osgText::TextBase &text)
 {
     std::string fontName; is.readWrappedString(fontName);
 
@@ -17,7 +17,7 @@ static bool readFont(osgDB::InputStream&is, osgText::TextBase&text)
     return true;
 }
 
-static bool writeFont(osgDB::OutputStream&os, const osgText::TextBase&text)
+static bool writeFont(osgDB::OutputStream &os, const osgText::TextBase &text)
 {
     os.writeWrappedString(text.getFont()->getFileName());
     os << std::endl;
@@ -25,12 +25,12 @@ static bool writeFont(osgDB::OutputStream&os, const osgText::TextBase&text)
 }
 
 // _fontSize
-static bool checkFontSize(const osgText::TextBase&text)
+static bool checkFontSize(const osgText::TextBase &text)
 {
     return true;
 }
 
-static bool readFontSize(osgDB::InputStream&is, osgText::TextBase&text)
+static bool readFontSize(osgDB::InputStream &is, osgText::TextBase &text)
 {
     unsigned int width, height; is >> width >> height;
 
@@ -38,19 +38,19 @@ static bool readFontSize(osgDB::InputStream&is, osgText::TextBase&text)
     return true;
 }
 
-static bool writeFontSize(osgDB::OutputStream&os, const osgText::TextBase&text)
+static bool writeFontSize(osgDB::OutputStream &os, const osgText::TextBase &text)
 {
     os << text.getFontWidth() << text.getFontHeight() << std::endl;
     return true;
 }
 
 // _characterHeight, _characterAspectRatio
-static bool checkCharacterSize(const osgText::TextBase&text)
+static bool checkCharacterSize(const osgText::TextBase &text)
 {
     return true;
 }
 
-static bool readCharacterSize(osgDB::InputStream&is, osgText::TextBase&text)
+static bool readCharacterSize(osgDB::InputStream &is, osgText::TextBase &text)
 {
     float height, aspectRatio; is >> height >> aspectRatio;
 
@@ -58,19 +58,19 @@ static bool readCharacterSize(osgDB::InputStream&is, osgText::TextBase&text)
     return true;
 }
 
-static bool writeCharacterSize(osgDB::OutputStream&os, const osgText::TextBase&text)
+static bool writeCharacterSize(osgDB::OutputStream &os, const osgText::TextBase &text)
 {
     os << text.getCharacterHeight() << text.getCharacterAspectRatio() << std::endl;
     return true;
 }
 
 // _text
-static bool checkText(const osgText::TextBase&text)
+static bool checkText(const osgText::TextBase &text)
 {
     return text.getText().size() > 0;
 }
 
-static bool readText(osgDB::InputStream&is, osgText::TextBase&text)
+static bool readText(osgDB::InputStream &is, osgText::TextBase &text)
 {
     bool isACString; is >> isACString;
 
@@ -98,10 +98,10 @@ static bool readText(osgDB::InputStream&is, osgText::TextBase&text)
     return true;
 }
 
-static bool writeText(osgDB::OutputStream&os, const osgText::TextBase&text)
+static bool writeText(osgDB::OutputStream &os, const osgText::TextBase &text)
 {
-    bool                 isACString = true;
-    const osgText::String&string    = text.getText();
+    bool                  isACString = true;
+    const osgText::String &string    = text.getText();
 
     for (osgText::String::const_iterator itr = string.begin(); itr != string.end(); ++itr)
     {

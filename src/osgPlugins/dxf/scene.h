@@ -34,7 +34,7 @@ class bounds
 {
 public:
 bounds() : _min(DBL_MAX, DBL_MAX, DBL_MAX), _max(-DBL_MAX, -DBL_MAX, -DBL_MAX) {}
-inline void expandBy(const osg::Vec3d&v)
+inline void expandBy(const osg::Vec3d &v)
 {
     if (v.x() < _min.x())
         _min.x() = v.x();
@@ -75,7 +75,7 @@ osg::Vec3d _max;
 
 
 static inline
-osg::Geometry* createPtGeometry(osg::PrimitiveSet::Mode pointType, osg::Vec3Array *vertices, const osg::Vec4&color)
+osg::Geometry* createPtGeometry(osg::PrimitiveSet::Mode pointType, osg::Vec3Array *vertices, const osg::Vec4 &color)
 {
     osg::Geometry *geom = new osg::Geometry;
 
@@ -91,7 +91,7 @@ osg::Geometry* createPtGeometry(osg::PrimitiveSet::Mode pointType, osg::Vec3Arra
 }
 
 static inline
-osg::Geometry* createLnGeometry(osg::PrimitiveSet::Mode lineType, osg::Vec3Array *vertices, const osg::Vec4&color)
+osg::Geometry* createLnGeometry(osg::PrimitiveSet::Mode lineType, osg::Vec3Array *vertices, const osg::Vec4 &color)
 {
     osg::Geometry *geom = new osg::Geometry;
 
@@ -107,7 +107,7 @@ osg::Geometry* createLnGeometry(osg::PrimitiveSet::Mode lineType, osg::Vec3Array
 }
 
 static inline
-osg::Geometry* createTriGeometry(osg::Vec3Array *vertices, osg::Vec3Array *normals, const osg::Vec4&color)
+osg::Geometry* createTriGeometry(osg::Vec3Array *vertices, osg::Vec3Array *normals, const osg::Vec4 &color)
 {
     osg::Geometry *geom = new osg::Geometry;
 
@@ -121,7 +121,7 @@ osg::Geometry* createTriGeometry(osg::Vec3Array *vertices, osg::Vec3Array *norma
 }
 
 static inline
-osg::Geometry* createQuadGeometry(osg::Vec3Array *vertices, osg::Vec3Array *normals, const osg::Vec4&color)
+osg::Geometry* createQuadGeometry(osg::Vec3Array *vertices, osg::Vec3Array *normals, const osg::Vec4 &color)
 {
     osg::Geometry *geom = new osg::Geometry;
 
@@ -135,7 +135,7 @@ osg::Geometry* createQuadGeometry(osg::Vec3Array *vertices, osg::Vec3Array *norm
 }
 
 static inline
-osg::Geode* createModel(const std::string&name, osg::Drawable *drawable)
+osg::Geode* createModel(const std::string &name, osg::Drawable *drawable)
 {
     osg::Geode *geode = new osg::Geode;
 
@@ -145,7 +145,7 @@ osg::Geode* createModel(const std::string&name, osg::Drawable *drawable)
 }
 
 
-static inline osg::Vec3d preMultd(const osg::Matrixd&m, const osg::Vec3d&v)
+static inline osg::Vec3d preMultd(const osg::Matrixd &m, const osg::Vec3d &v)
 {
     double d = 1.0f / (m(3, 0) * v.x() + m(3, 1) * v.y() + m(3, 2) * v.z() + m(3, 3));
 
@@ -154,7 +154,7 @@ static inline osg::Vec3d preMultd(const osg::Matrixd&m, const osg::Vec3d&v)
                       (m(0, 2) * v.x() + m(1, 2) * v.y() + m(2, 2) * v.z() + m(3, 2)) * d);
 }
 
-static inline osg::Vec3d postMultd(const osg::Matrixd&m, const osg::Vec3d&v)
+static inline osg::Vec3d postMultd(const osg::Matrixd &m, const osg::Vec3d &v)
 {
     double d = 1.0f / (m(3, 0) * v.x() + m(3, 1) * v.y() + m(3, 2) * v.z() + m(3, 3));
 
@@ -174,7 +174,7 @@ class sceneLayer : public osg::Referenced
 public:
 sceneLayer(std::string name) : _name(name) {}
 virtual ~sceneLayer() {}
-void layer2osg(osg::Group *root, bounds&b)
+void layer2osg(osg::Group *root, bounds &b)
 {
     osgPoints(root, b);
     osgLines(root, b);
@@ -207,7 +207,7 @@ std::string _name;
 
 osg::Vec4        getColor(unsigned short color);
 
-void osgPoints(osg::Group *root, bounds&b)
+void osgPoints(osg::Group *root, bounds &b)
 {
     for (MapVList::iterator mitr = _points.begin();
          mitr != _points.end(); ++mitr)
@@ -225,7 +225,7 @@ void osgPoints(osg::Group *root, bounds&b)
     }
 }
 
-void osgLines(osg::Group *root, bounds&b)
+void osgLines(osg::Group *root, bounds &b)
 {
     for (MapVListList::iterator mlitr = _linestrips.begin();
          mlitr != _linestrips.end();
@@ -267,7 +267,7 @@ void osgLines(osg::Group *root, bounds&b)
     }
 }
 
-void osgTriangles(osg::Group *root, bounds&b)
+void osgTriangles(osg::Group *root, bounds &b)
 {
     if (_triangles.size())
     {
@@ -300,7 +300,7 @@ void osgTriangles(osg::Group *root, bounds&b)
         }
     }
 }
-void osgQuads(osg::Group *root, bounds&b)
+void osgQuads(osg::Group *root, bounds &b)
 {
     if (_quads.size())
     {
@@ -333,7 +333,7 @@ void osgQuads(osg::Group *root, bounds&b)
         }
     }
 }
-void osgText(osg::Group *root, bounds&b)
+void osgText(osg::Group *root, bounds &b)
 {
     if (_textList.size())
     {
@@ -357,7 +357,7 @@ public:
 scene(dxfLayerTable *lt = NULL);
 virtual ~scene() {}
 void setLayerTable(dxfLayerTable *lt);
-void pushMatrix(const osg::Matrixd&m, bool protect = false)
+void pushMatrix(const osg::Matrixd &m, bool protect = false)
 {
     _mStack.push_back(_m);
     if (protect)     // equivalent to setMatrix
@@ -373,11 +373,11 @@ void popMatrix()
     else
         _m.makeIdentity();
 }
-void ocs(const osg::Matrixd&r)
+void ocs(const osg::Matrixd &r)
 {
     _r = r;
 }
-void blockOffset(const osg::Vec3d&t)
+void blockOffset(const osg::Vec3d &t)
 {
     _t = t;
 }
@@ -395,7 +395,7 @@ osg::Matrixd&backMatrix()
 
 osg::Vec3d addVertex(osg::Vec3d v);
 osg::Vec3d addNormal(osg::Vec3d v);
-sceneLayer* findOrCreateSceneLayer(const std::string&l)
+sceneLayer* findOrCreateSceneLayer(const std::string &l)
 {
     sceneLayer *ly = _layers[l].get();
 
@@ -407,15 +407,15 @@ sceneLayer* findOrCreateSceneLayer(const std::string&l)
 
     return ly;
 }
-unsigned short correctedColorIndex(const std::string&l, unsigned short color);
+unsigned short correctedColorIndex(const std::string &l, unsigned short color);
 
-void addPoint(const std::string&l, unsigned short color, osg::Vec3d&s);
-void addLine(const std::string&l, unsigned short color, osg::Vec3d&s, osg::Vec3d&e);
-void addLineStrip(const std::string&l, unsigned short color, std::vector<osg::Vec3d>&vertices);
-void addLineLoop(const std::string&l, unsigned short color, std::vector<osg::Vec3d>&vertices);
-void addTriangles(const std::string&l, unsigned short color, std::vector<osg::Vec3d>&vertices, bool inverted = false);
-void addQuads(const std::string&l, unsigned short color, std::vector<osg::Vec3d>&vertices, bool inverted = false);
-void addText(const std::string&l, unsigned short color, osg::Vec3d&point, osgText::Text *text);
+void addPoint(const std::string &l, unsigned short color, osg::Vec3d &s);
+void addLine(const std::string &l, unsigned short color, osg::Vec3d &s, osg::Vec3d &e);
+void addLineStrip(const std::string &l, unsigned short color, std::vector<osg::Vec3d> &vertices);
+void addLineLoop(const std::string &l, unsigned short color, std::vector<osg::Vec3d> &vertices);
+void addTriangles(const std::string &l, unsigned short color, std::vector<osg::Vec3d> &vertices, bool inverted = false);
+void addQuads(const std::string &l, unsigned short color, std::vector<osg::Vec3d> &vertices, bool inverted = false);
+void addText(const std::string &l, unsigned short color, osg::Vec3d &point, osgText::Text *text);
 
 osg::Group* scene2osg()
 {

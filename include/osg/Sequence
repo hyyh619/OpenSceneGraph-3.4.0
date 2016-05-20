@@ -18,22 +18,21 @@
 
 namespace osg
 {
-
 /** Sequence is a Group node which allows automatic, time based
-switching between children.
-*/
-class OSG_EXPORT Sequence : public Group
-{
-    public :
+   switching between children.
+ */
+    class OSG_EXPORT Sequence: public Group
+    {
+public:
 
         Sequence();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        Sequence(const Sequence&, const CopyOp& copyop=CopyOp::SHALLOW_COPY);
+        Sequence(const Sequence &, const CopyOp &copyop = CopyOp::SHALLOW_COPY);
 
         META_Node(osg, Sequence);
 
-        virtual void traverse(NodeVisitor& nv);
+        virtual void traverse(NodeVisitor &nv);
 
         // the relationship between the _frameTime vector and the _children
         // vector is a bit of a mess.  This is how it was in previous versions,
@@ -41,22 +40,28 @@ class OSG_EXPORT Sequence : public Group
         // maintained.  New code should set defaultTime and use addChild, and
         // not mess with the setTime method
 
-        virtual bool addChild( Node *child);
+        virtual bool addChild(Node *child);
 
-        virtual bool addChild( Node *child, double t);
+        virtual bool addChild(Node *child, double t);
 
-        virtual bool insertChild( unsigned int index, Node *child);
+        virtual bool insertChild(unsigned int index, Node *child);
 
-        virtual bool insertChild( unsigned int index, Node *child, double t);
+        virtual bool insertChild(unsigned int index, Node *child, double t);
 
-        virtual bool removeChild( Node *child );
+        virtual bool removeChild(Node *child);
 
-        virtual bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove);
+        virtual bool removeChildren(unsigned int pos, unsigned int numChildrenToRemove);
 
 
         /** value is which child node is to be displayed */
-        void setValue(int value) { _value = value ; }
-        int getValue() const { return _value; }
+        void setValue(int value)
+        {
+            _value = value;
+        }
+        int getValue() const
+        {
+            return _value;
+        }
 
         /** Set time in seconds for child. */
         void setTime(unsigned int frame, double t);
@@ -65,27 +70,45 @@ class OSG_EXPORT Sequence : public Group
         double getTime(unsigned int frame) const;
 
         /** Set the time list for children. */
-        void setTimeList(const std::vector<double>& timeList) { _frameTime = timeList; }
+        void setTimeList(const std::vector < double > &timeList)
+        {
+            _frameTime = timeList;
+        }
 
         /** Get the time list for children. */
-        const std::vector<double>& getTimeList() const { return _frameTime; }
+        const std::vector < double >&getTimeList() const { return _frameTime; }
 
         /** Set default time in seconds for new child.
             if t<0, t=0 */
-        void setDefaultTime(double t) {_defaultTime = (t<0.?0.:t);}
+        void setDefaultTime(double t)
+        {
+            _defaultTime = (t < 0. ? 0. : t);
+        }
 
         /** Get default time in seconds for new child. */
-        double getDefaultTime(void) const {return _defaultTime;};
+        double getDefaultTime(void) const
+        {
+            return _defaultTime;
+        };
 
         /** Set time of last frame of last loop, in seconds.
             if t<= 0, then ignored */
-        void setLastFrameTime(double t) {_lastFrameTime = (t<0.?0.:t);}
+        void setLastFrameTime(double t)
+        {
+            _lastFrameTime = (t < 0. ? 0. : t);
+        }
 
         /** Get last frame time in seconds */
-        double getLastFrameTime(void) const {return _lastFrameTime;};
+        double getLastFrameTime(void) const
+        {
+            return _lastFrameTime;
+        };
 
         /** Get number of frames */
-        inline unsigned int getNumFrames() const { return _frameTime.size(); }
+        inline unsigned int getNumFrames() const
+        {
+            return _frameTime.size();
+        }
 
         /** Interval modes. 'Loop' repeats frames 1-N; 'swing' repeats 1->N, (N-1)->1. */
         enum LoopMode
@@ -95,51 +118,81 @@ class OSG_EXPORT Sequence : public Group
         };
 
         /** Set sequence mode. */
-        void setLoopMode(LoopMode mode) { _loopMode = mode; _value = -1; }
+        void setLoopMode(LoopMode mode)
+        {
+            _loopMode = mode; _value = -1;
+        }
 
         /** Get sequence mode. */
-        LoopMode getLoopMode() const { return _loopMode; }
+        LoopMode getLoopMode() const
+        {
+            return _loopMode;
+        }
 
         /** Set interval beginning. */
-        void setBegin(int begin) { _begin = begin; _value = -1; }
+        void setBegin(int begin)
+        {
+            _begin = begin; _value = -1;
+        }
 
         /** Get interval beginning. */
-        int getBegin() const { return _begin; }
+        int getBegin() const
+        {
+            return _begin;
+        }
 
         /** Set interval ending. */
-        void setEnd(int end) { _end = end; _value = -1; }
+        void setEnd(int end)
+        {
+            _end = end; _value = -1;
+        }
 
         /** Get interval ending. */
-        int getEnd() const { return _end; }
+        int getEnd() const
+        {
+            return _end;
+        }
 
         /** Set sequence mode & interval (range of children to be displayed). */
         void setInterval(LoopMode mode, int begin, int end);
 
         /** Get sequence mode & interval. */
-        inline void getInterval(LoopMode& mode, int& begin, int& end) const
+        inline void getInterval(LoopMode &mode, int &begin, int &end) const
         {
-            mode = _loopMode;
+            mode  = _loopMode;
             begin = _begin;
-            end = _end;
+            end   = _end;
         }
 
         /** Set speed. */
-        void setSpeed(float speed) { _speed = speed; }
+        void setSpeed(float speed)
+        {
+            _speed = speed;
+        }
 
         /** Get speed. */
-        float getSpeed() const { return _speed; }
+        float getSpeed() const
+        {
+            return _speed;
+        }
 
         /** Set number of repeats. */
-        void setNumRepeats(int nreps) { _nreps = (nreps<0?-1:nreps); _nrepsRemain = _nreps; }
+        void setNumRepeats(int nreps)
+        {
+            _nreps = (nreps < 0 ? -1 : nreps); _nrepsRemain = _nreps;
+        }
 
         /** Get number of repeats. */
-        int getNumRepeats() const { return _nreps; }
+        int getNumRepeats() const
+        {
+            return _nreps;
+        }
 
         /** Set duration: speed-up & number of repeats */
         void setDuration(float speed, int nreps = -1);
 
         /** Get duration & number of repeats. */
-        inline void getDuration(float& speed, int& nreps) const
+        inline void getDuration(float &speed, int &nreps) const
         {
             speed = _speed;
             nreps = _nreps;
@@ -158,49 +211,64 @@ class OSG_EXPORT Sequence : public Group
         void setMode(SequenceMode mode);
 
         /** Get sequence mode. */
-        inline SequenceMode getMode() const { return _mode; }
+        inline SequenceMode getMode() const
+        {
+            return _mode;
+        }
 
         /** If false (default), frames will not be sync'd to frameTime.  If
             true, frames will be sync'd to frameTime. */
-        void setSync(bool sync) { _sync = sync; }
+        void setSync(bool sync)
+        {
+            _sync = sync;
+        }
 
         /** Get sync value */
-        bool getSync() const { return _sync; }
+        bool getSync() const
+        {
+            return _sync;
+        }
 
         /** If true, show no child nodes after stopping */
-        void setClearOnStop(bool clearOnStop) { _clearOnStop = clearOnStop; }
+        void setClearOnStop(bool clearOnStop)
+        {
+            _clearOnStop = clearOnStop;
+        }
 
         /** Get whether to show no child nodes after stopping */
-        bool getClearOnStop() const { return _clearOnStop; }
+        bool getClearOnStop() const
+        {
+            return _clearOnStop;
+        }
 
-    protected :
+protected:
 
         virtual ~Sequence() {}
 
         // get next _value in sequence
-        int _getNextValue(void) ;
+        int _getNextValue(void);
 
         // update local variables
-        void _update(void) ;
+        void _update(void);
 
         // init to -1 to mean "restart"
         int _value;
 
         // current time, set by traverse
-        double _now ;
+        double _now;
 
         // time this frame started.  init to -1.0f- means get current time
         double _start;
 
         // a vector of frame times, one per value
-        std::vector<double> _frameTime;
+        std::vector < double > _frameTime;
 
         // the total time for one sequence, from BEGIN to END
-        double _totalTime ;
+        double _totalTime;
 
         // true if _totalTime needs to be recalculated because setTime or
         // setInterval was invoked, or a new child was added
-        bool _resetTotalTime ;
+        bool _resetTotalTime;
 
         // store "loop mde", either LOOP or SWING
         // init to LOOP- set by setInterval
@@ -226,27 +294,25 @@ class OSG_EXPORT Sequence : public Group
 
         // default frame time for newly created frames or children- default is 1.
         // set by setDefaultTime
-        double _defaultTime ;
+        double _defaultTime;
 
         // special time to display last frame of last loop
         // <= zero means to not do anything special
-        double _lastFrameTime ;
+        double _lastFrameTime;
 
         // save the actual time of the last frame, and what value was stored
-        double _saveRealLastFrameTime ;
-        unsigned int _saveRealLastFrameValue ;
+        double       _saveRealLastFrameTime;
+        unsigned int _saveRealLastFrameValue;
 
         // the current mode
         SequenceMode _mode;
 
         // the current sync value
-        bool _sync ;
+        bool _sync;
 
         // the current clearOnStop value
-        bool _clearOnStop ;
-
-};
-
+        bool _clearOnStop;
+    };
 }
 
 #endif

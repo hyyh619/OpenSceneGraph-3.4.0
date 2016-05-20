@@ -40,7 +40,7 @@ PNGError(const char *message)
     _message  = "PNG lib error : ";
     _message += message;
 }
-friend std::ostream&operator<<(std::ostream&stream, const PNGError&err)
+friend std::ostream&operator<<(std::ostream &stream, const PNGError &err)
 {
     stream << err._message;
     return stream;
@@ -97,7 +97,7 @@ virtual const char* className() const
     return "PNG Image Reader/Writer";
 }
 
-WriteResult::WriteStatus writePngStream(std::ostream&fout, const osg::Image&img, int compression_level) const
+WriteResult::WriteStatus writePngStream(std::ostream &fout, const osg::Image &img, int compression_level) const
 {
     png_structp png  = NULL;
     png_infop   info = NULL;
@@ -180,7 +180,7 @@ WriteResult::WriteStatus writePngStream(std::ostream&fout, const osg::Image&img,
     return WriteResult::FILE_SAVED;
 }
 
-ReadResult readPNGStream(std::istream&fin) const
+ReadResult readPNGStream(std::istream &fin) const
 {
     int     trans = PNG_ALPHA;
     pngInfo pInfo;
@@ -371,7 +371,7 @@ ReadResult readPNGStream(std::istream&fin) const
         return pOsgImage;
     }
             #ifdef OSG_CPP_EXCEPTIONS_AVAILABLE
-    catch (PNGError&err)
+    catch (PNGError &err)
     {
         OSG_WARN << err << std::endl;
         png_destroy_read_struct(&png, &info, &endinfo);
@@ -401,22 +401,22 @@ int getCompressionLevel(const osgDB::ReaderWriter::Options *options) const
     return Z_DEFAULT_COMPRESSION;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const Options* = NULL) const
+virtual ReadResult readImage(std::istream &fin, const Options* = NULL) const
 {
     return readPNGStream(fin);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -438,14 +438,14 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     WriteResult::WriteStatus ws = writePngStream(fout, img, getCompressionLevel(options));
 
     return ws;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 

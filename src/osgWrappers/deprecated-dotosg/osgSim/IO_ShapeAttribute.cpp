@@ -10,8 +10,8 @@
 
 using namespace osgSim;
 
-bool ShapeAttributeList_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool ShapeAttributeList_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool ShapeAttributeList_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool ShapeAttributeList_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ShapeAttributeList_Proxy)
 (
@@ -23,10 +23,10 @@ REGISTER_DOTOSGWRAPPER(ShapeAttributeList_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool ShapeAttributeList_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ShapeAttributeList_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    bool              iteratorAdvanced = false;
-    ShapeAttributeList&sal             = static_cast<ShapeAttributeList&>(obj);
+    bool               iteratorAdvanced = false;
+    ShapeAttributeList &sal             = static_cast<ShapeAttributeList&>(obj);
 
 
     int entry = fr[0].getNoNestedBrackets();
@@ -63,9 +63,9 @@ bool ShapeAttributeList_readLocalData(osg::Object&obj, osgDB::Input&fr)
 }
 
 
-bool ShapeAttributeList_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ShapeAttributeList_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const ShapeAttributeList&sal = static_cast<const ShapeAttributeList&>(obj);
+    const ShapeAttributeList &sal = static_cast<const ShapeAttributeList&>(obj);
 
     for (ShapeAttributeList::const_iterator it = sal.begin(); it != sal.end(); ++it)
     {

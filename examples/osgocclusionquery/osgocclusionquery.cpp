@@ -78,12 +78,12 @@ virtual ~OcclusionQueryVisitor();
 void setOccluderThreshold(int vertices);
 int getOccluderThreshold() const;
 
-virtual void apply(osg::OcclusionQueryNode&oqn);
-virtual void apply(osg::Group&group);
-virtual void apply(osg::Geode&geode);
+virtual void apply(osg::OcclusionQueryNode &oqn);
+virtual void apply(osg::Group &group);
+virtual void apply(osg::Geode &geode);
 
 protected:
-void addOQN(osg::Node&node);
+void addOQN(osg::Node &node);
 
 // When an OQR creates all OQNs and each OQN shares the same OQC,
 //   these methods are used to uniquely name all OQNs. Handy
@@ -111,7 +111,7 @@ VisibilityThresholdVisitor(unsigned int threshold = 500)
     _visThreshold(threshold) {}
 virtual ~VisibilityThresholdVisitor() {}
 
-virtual void apply(osg::OcclusionQueryNode&oqn);
+virtual void apply(osg::OcclusionQueryNode &oqn);
 
 protected:
 unsigned int _visThreshold;
@@ -127,7 +127,7 @@ QueryFrameCountVisitor(int count = 5)
     _count(count) {}
 virtual ~QueryFrameCountVisitor() {}
 
-virtual void apply(osg::OcclusionQueryNode&oqn);
+virtual void apply(osg::OcclusionQueryNode &oqn);
 
 protected:
 unsigned int _count;
@@ -142,7 +142,7 @@ EnableQueryVisitor(bool enable = true)
     _enabled(enable) {}
 virtual ~EnableQueryVisitor() {}
 
-virtual void apply(osg::OcclusionQueryNode&oqn);
+virtual void apply(osg::OcclusionQueryNode &oqn);
 
 protected:
 bool _enabled;
@@ -158,7 +158,7 @@ DebugDisplayVisitor(bool debug = true)
     _debug(debug) {}
 virtual ~DebugDisplayVisitor() {}
 
-virtual void apply(osg::OcclusionQueryNode&oqn);
+virtual void apply(osg::OcclusionQueryNode &oqn);
 
 protected:
 bool _debug;
@@ -171,7 +171,7 @@ public:
 RemoveOcclusionQueryVisitor();
 virtual ~RemoveOcclusionQueryVisitor();
 
-virtual void apply(osg::OcclusionQueryNode&oqn);
+virtual void apply(osg::OcclusionQueryNode &oqn);
 
 protected:
 };
@@ -183,7 +183,7 @@ public:
 StatisticsVisitor(osg::NodeVisitor::TraversalMode mode = osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN);
 virtual ~StatisticsVisitor();
 
-virtual void apply(osg::OcclusionQueryNode&oqn);
+virtual void apply(osg::OcclusionQueryNode &oqn);
 
 void reset();
 unsigned int getNumOQNs() const;
@@ -229,7 +229,7 @@ void reset()
     _total = 0;
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     // Check for early abort. If out total already exceeds the
     //   max number of vertices, no need to traverse further.
@@ -239,7 +239,7 @@ virtual void apply(osg::Node&node)
     traverse(node);
 }
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     // Possible early abort.
     if (exceeded())
@@ -299,7 +299,7 @@ OcclusionQueryVisitor::getOccluderThreshold() const
 }
 
 void
-OcclusionQueryVisitor::apply(osg::OcclusionQueryNode&oqn)
+OcclusionQueryVisitor::apply(osg::OcclusionQueryNode &oqn)
 {
     // A subgraph is already under osgOQ control.
     // Don't traverse further.
@@ -307,7 +307,7 @@ OcclusionQueryVisitor::apply(osg::OcclusionQueryNode&oqn)
 }
 
 void
-OcclusionQueryVisitor::apply(osg::Group&group)
+OcclusionQueryVisitor::apply(osg::Group &group)
 {
     if (group.getNumParents() == 0)
     {
@@ -330,7 +330,7 @@ OcclusionQueryVisitor::apply(osg::Group&group)
 }
 
 void
-OcclusionQueryVisitor::apply(osg::Geode&geode)
+OcclusionQueryVisitor::apply(osg::Geode &geode)
 {
     if (geode.getNumParents() == 0)
     {
@@ -343,7 +343,7 @@ OcclusionQueryVisitor::apply(osg::Geode&geode)
 }
 
 void
-OcclusionQueryVisitor::addOQN(osg::Node&node)
+OcclusionQueryVisitor::addOQN(osg::Node &node)
 {
     VertexCounter vc(_occluderThreshold);
 
@@ -386,7 +386,7 @@ OcclusionQueryVisitor::getNextOQNName()
 
 //
 void
-VisibilityThresholdVisitor::apply(osg::OcclusionQueryNode&oqn)
+VisibilityThresholdVisitor::apply(osg::OcclusionQueryNode &oqn)
 {
     oqn.setVisibilityThreshold(_visThreshold);
 
@@ -394,7 +394,7 @@ VisibilityThresholdVisitor::apply(osg::OcclusionQueryNode&oqn)
 }
 
 void
-QueryFrameCountVisitor::apply(osg::OcclusionQueryNode&oqn)
+QueryFrameCountVisitor::apply(osg::OcclusionQueryNode &oqn)
 {
     oqn.setQueryFrameCount(_count);
 
@@ -402,7 +402,7 @@ QueryFrameCountVisitor::apply(osg::OcclusionQueryNode&oqn)
 }
 
 void
-EnableQueryVisitor::apply(osg::OcclusionQueryNode&oqn)
+EnableQueryVisitor::apply(osg::OcclusionQueryNode &oqn)
 {
     oqn.setQueriesEnabled(_enabled);
 
@@ -411,7 +411,7 @@ EnableQueryVisitor::apply(osg::OcclusionQueryNode&oqn)
 
 
 void
-DebugDisplayVisitor::apply(osg::OcclusionQueryNode&oqn)
+DebugDisplayVisitor::apply(osg::OcclusionQueryNode &oqn)
 {
     oqn.setDebugDisplay(_debug);
 
@@ -427,7 +427,7 @@ RemoveOcclusionQueryVisitor::~RemoveOcclusionQueryVisitor()
 {}
 
 void
-RemoveOcclusionQueryVisitor::apply(osg::OcclusionQueryNode&oqn)
+RemoveOcclusionQueryVisitor::apply(osg::OcclusionQueryNode &oqn)
 {
     if (oqn.getNumParents() == 0)
     {
@@ -469,7 +469,7 @@ StatisticsVisitor::~StatisticsVisitor()
 {}
 
 void
-StatisticsVisitor::apply(osg::OcclusionQueryNode&oqn)
+StatisticsVisitor::apply(osg::OcclusionQueryNode &oqn)
 {
     _numOQNs++;
     if (oqn.getPassed())
@@ -505,13 +505,13 @@ StatisticsVisitor::getNumPassed() const
 class KeyHandler : public osgGA::GUIEventHandler
 {
 public:
-KeyHandler(osg::Node&node)
+KeyHandler(osg::Node &node)
     : _node(node),
     _enable(true),
     _debug(false)
 {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -568,7 +568,7 @@ bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
     return false;
 }
 
-osg::Node&_node;
+osg::Node &_node;
 
 bool _enable, _debug;
 };
@@ -679,9 +679,9 @@ createRandomTriangles(unsigned int num)
 
     for (i = 0; i < num; i++)
     {
-        osg::Vec3&v0 = (*v)[i * 3 + 0];
-        osg::Vec3&v1 = (*v)[i * 3 + 1];
-        osg::Vec3&v2 = (*v)[i * 3 + 2];
+        osg::Vec3 &v0 = (*v)[i * 3 + 0];
+        osg::Vec3 &v1 = (*v)[i * 3 + 1];
+        osg::Vec3 &v2 = (*v)[i * 3 + 2];
         v0 = osg::Vec3(RAND_NEG1_TO_1, RAND_NEG1_TO_1, RAND_NEG1_TO_1);
         v1 = osg::Vec3(RAND_NEG1_TO_1, RAND_NEG1_TO_1, RAND_NEG1_TO_1);
         v2 = osg::Vec3(RAND_NEG1_TO_1, RAND_NEG1_TO_1, RAND_NEG1_TO_1);
@@ -697,7 +697,7 @@ createRandomTriangles(unsigned int num)
 
     for (i = 0; i < num; i++)
     {
-        osg::Vec4&c0 = (*c)[i];
+        osg::Vec4 &c0 = (*c)[i];
         c0 = osg::Vec4(RAND_0_TO_1, RAND_0_TO_1, RAND_0_TO_1, 1.);
     }
 

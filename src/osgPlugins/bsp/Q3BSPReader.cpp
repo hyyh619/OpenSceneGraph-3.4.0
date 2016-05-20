@@ -33,7 +33,7 @@ Q3BSPReader::Q3BSPReader()
 }
 
 
-bool Q3BSPReader::readFile(const std::string&file,
+bool Q3BSPReader::readFile(const std::string &file,
                            const osgDB::ReaderWriter::Options *options)
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
@@ -81,7 +81,7 @@ osg::Vec3f m_position;
 float      m_decalS, m_decalT;
 float      m_lightmapS, m_lightmapT;
 
-BSP_VERTEX operator+(const BSP_VERTEX&rhs) const
+BSP_VERTEX operator+(const BSP_VERTEX &rhs) const
 {
     BSP_VERTEX result;
 
@@ -164,7 +164,7 @@ std::vector<BSP_BIQUADRATIC_PATCH> m_quadraticPatches;
 
 
 osg::Geode* Q3BSPReader::convertFromBSP(
-    Q3BSPLoad&aLoadData,
+    Q3BSPLoad &aLoadData,
     const osgDB::ReaderWriter::Options *options) const
 {
     std::vector<osg::Texture2D*> texture_array;
@@ -187,7 +187,7 @@ osg::Geode* Q3BSPReader::convertFromBSP(
 
     for (i = 0; i < num_load_vertices; ++i)
     {
-        BSP_LOAD_VERTEX&vtx = aLoadData.m_loadVertices[i];
+        BSP_LOAD_VERTEX &vtx = aLoadData.m_loadVertices[i];
         // swap y and z and negate z
         (*vertex_array)[i] = (osg::Vec3d(vtx.m_position[0] * scale,
                                          -vtx.m_position[1] * scale,
@@ -207,7 +207,7 @@ osg::Geode* Q3BSPReader::convertFromBSP(
     // convert loadFaces to faces
     for (i = 0; i < num_loadfaces; ++i)
     {
-        const BSP_LOAD_FACE&current_load_face = aLoadData.m_loadFaces[i];
+        const BSP_LOAD_FACE &current_load_face = aLoadData.m_loadFaces[i];
         if (current_load_face.m_type != bspMeshFace) // skip this loadFace if it is not a mesh face
             continue;
 
@@ -218,7 +218,7 @@ osg::Geode* Q3BSPReader::convertFromBSP(
 
     for (i = 0; i < num_loadfaces; ++i)
     {
-        const BSP_LOAD_FACE&current_face = aLoadData.m_loadFaces[i];
+        const BSP_LOAD_FACE &current_face = aLoadData.m_loadFaces[i];
         if (current_face.m_type != bspPolygonFace) // skip this loadFace if it is not a polygon face
             continue;
 
@@ -230,7 +230,7 @@ osg::Geode* Q3BSPReader::convertFromBSP(
 
     for (i = 0; i < num_loadfaces; ++i)
     {
-        const BSP_LOAD_FACE&current_face = aLoadData.m_loadFaces[i];
+        const BSP_LOAD_FACE &current_face = aLoadData.m_loadFaces[i];
         if (current_face.m_type != bspPatch)      // skip this loadFace if it is not a patch face
             continue;
 
@@ -272,7 +272,7 @@ osg::Geode* Q3BSPReader::convertFromBSP(
                 {
                     for (int point = 0; point < 3; ++point)
                     {
-                        BSP_BIQUADRATIC_PATCH&curr_quadraticpatch = current_patch.m_quadraticPatches[y * numPatchesWide + x];
+                        BSP_BIQUADRATIC_PATCH &curr_quadraticpatch = current_patch.m_quadraticPatches[y * numPatchesWide + x];
 
                         osg::Vec3f vtx = (*vertex_array)[aLoadData.m_loadFaces[i].m_firstVertexIndex + (y * 2 * current_patch.m_width + x * 2) +
                                                          row * current_patch.m_width + point];
@@ -320,9 +320,9 @@ osg::Geode* Q3BSPReader::convertFromBSP(
 
 
 
-osg::Geometry* Q3BSPReader::createMeshFace(const BSP_LOAD_FACE&aLoadFace, const std::vector<osg::Texture2D*>&aTextureArray,
-                                           osg::Vec3Array&aVertexArray, std::vector<GLuint>&aIndices,
-                                           osg::Vec2Array&aTextureDecalCoords, osg::Vec2Array&aTextureLMapCoords
+osg::Geometry* Q3BSPReader::createMeshFace(const BSP_LOAD_FACE &aLoadFace, const std::vector<osg::Texture2D*> &aTextureArray,
+                                           osg::Vec3Array &aVertexArray, std::vector<GLuint> &aIndices,
+                                           osg::Vec2Array &aTextureDecalCoords, osg::Vec2Array &aTextureLMapCoords
                                            ) const
 {
     osg::Geometry *obj_geom = new osg::Geometry;
@@ -368,9 +368,9 @@ osg::Geometry* Q3BSPReader::createMeshFace(const BSP_LOAD_FACE&aLoadFace, const 
 
 
 
-osg::Geometry* Q3BSPReader::createPolygonFace(const BSP_LOAD_FACE&aLoadFace, const std::vector<osg::Texture2D*>&aTextureArray, const std::vector<osg::Texture2D*>&aTextureLMapArray,
-                                              osg::Vec3Array&aVertexArray,
-                                              osg::Vec2Array&aTextureDecalCoords, osg::Vec2Array&aTextureLMapCoords
+osg::Geometry* Q3BSPReader::createPolygonFace(const BSP_LOAD_FACE &aLoadFace, const std::vector<osg::Texture2D*> &aTextureArray, const std::vector<osg::Texture2D*> &aTextureLMapArray,
+                                              osg::Vec3Array &aVertexArray,
+                                              osg::Vec2Array &aTextureDecalCoords, osg::Vec2Array &aTextureLMapCoords
                                               ) const
 {
     osg::Texture2D *texture = aTextureArray[aLoadFace.m_texture];
@@ -430,8 +430,8 @@ osg::Geometry* Q3BSPReader::createPolygonFace(const BSP_LOAD_FACE&aLoadFace, con
 
 
 bool Q3BSPReader::loadTextures(
-    const Q3BSPLoad&aLoadData,
-    std::vector<osg::Texture2D*>&aTextureArray) const
+    const Q3BSPLoad &aLoadData,
+    std::vector<osg::Texture2D*> &aTextureArray) const
 {
     int num_textures = aLoadData.m_loadTextures.size();
 
@@ -472,8 +472,8 @@ bool Q3BSPReader::loadTextures(
 
 
 bool Q3BSPReader::loadLightMaps(
-    const Q3BSPLoad&aLoadData,
-    std::vector<osg::Texture2D*>&aTextureArray) const
+    const Q3BSPLoad &aLoadData,
+    std::vector<osg::Texture2D*> &aTextureArray) const
 {
     int num_textures = aLoadData.m_loadLightmaps.size();
 

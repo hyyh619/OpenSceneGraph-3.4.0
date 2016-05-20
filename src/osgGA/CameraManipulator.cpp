@@ -20,7 +20,7 @@ CameraManipulator::CameraManipulator()
 }
 
 
-CameraManipulator::CameraManipulator(const CameraManipulator&mm, const CopyOp&copyOp)
+CameraManipulator::CameraManipulator(const CameraManipulator &mm, const CopyOp &copyOp)
     : osg::Callback(mm, copyOp),
     inherited(mm, copyOp),
     _intersectTraversalMask(mm._intersectTraversalMask),
@@ -80,7 +80,7 @@ void CameraManipulator::computeHomePosition(const osg::Camera *camera, bool useB
             // (bounding box computes model center more precisely than bounding sphere)
             osg::ComputeBoundsVisitor cbVisitor;
             getNode()->accept(cbVisitor);
-            osg::BoundingBox&bb = cbVisitor.getBoundingBox();
+            osg::BoundingBox &bb = cbVisitor.getBoundingBox();
 
             if (bb.valid())
                 boundingSphere.expandBy(bb);

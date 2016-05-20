@@ -23,14 +23,14 @@ LightPointSpriteDrawable::LightPointSpriteDrawable() :
     _sprite = new osg::PointSprite;
 }
 
-LightPointSpriteDrawable::LightPointSpriteDrawable(const LightPointSpriteDrawable&lpsd, const osg::CopyOp&copyop) :
+LightPointSpriteDrawable::LightPointSpriteDrawable(const LightPointSpriteDrawable &lpsd, const osg::CopyOp &copyop) :
     osgSim::LightPointDrawable(lpsd, copyop)
 {}
 
-void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo&renderInfo) const
+void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo &renderInfo) const
 {
 #if !defined(OSG_GLES1_AVAILABLE) && !defined(OSG_GLES2_AVAILABLE) && !defined(OSG_GL3_AVAILABLE)
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
     if (!state.getModeValidity(GL_POINT_SPRITE_ARB))
     {
@@ -63,7 +63,7 @@ void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo&renderInfo) co
          sitr != _sizedOpaqueLightPointList.end();
          ++sitr, ++pointsize)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
         if (!lpl.empty())
         {
             glPointSize(pointsize);
@@ -83,7 +83,7 @@ void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo&renderInfo) co
          sitr != _sizedBlendedLightPointList.end();
          ++sitr, ++pointsize)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
         if (!lpl.empty())
         {
             glPointSize(pointsize);
@@ -100,7 +100,7 @@ void LightPointSpriteDrawable::drawImplementation(osg::RenderInfo&renderInfo) co
          sitr != _sizedAdditiveLightPointList.end();
          ++sitr, ++pointsize)
     {
-        const LightPointList&lpl = *sitr;
+        const LightPointList &lpl = *sitr;
         if (!lpl.empty())
         {
             // state.applyMode(GL_POINT_SMOOTH,pointsize!=1);

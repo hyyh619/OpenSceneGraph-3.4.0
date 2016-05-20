@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool Property_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Property_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Property_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Property_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Property_Proxy)
 (
@@ -43,12 +43,12 @@ REGISTER_DOTOSGWRAPPER(LightingProperty_Proxy)
     Property_writeLocalData
 );
 
-bool Property_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Property_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
     return false;
 }
 
-bool Property_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Property_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
     return true;
 }

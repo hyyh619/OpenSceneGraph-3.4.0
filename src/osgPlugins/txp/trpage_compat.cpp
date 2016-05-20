@@ -40,12 +40,12 @@ int baseMat;
 std::vector<int> texids;
 };
 
-trpgMatTable1_0::trpgMatTable1_0(const trpgMatTable&inTbl)
+trpgMatTable1_0::trpgMatTable1_0(const trpgMatTable &inTbl)
 {
     *((trpgMatTable*)this) = inTbl;
 }
 
-bool trpgMatTable1_0::Read(trpgReadBuffer&buf)
+bool trpgMatTable1_0::Read(trpgReadBuffer &buf)
 {
     trpgMaterial mat;
     trpgToken    matTok;
@@ -77,7 +77,7 @@ bool trpgMatTable1_0::Read(trpgReadBuffer&buf)
             {
                 for (j = 0; j < (unsigned int)numMat; j++)
                 {
-                    trpgShortMaterial&smat = shortTable[i * numMat + j];
+                    trpgShortMaterial &smat = shortTable[i * numMat + j];
                     buf.Get(smat.baseMat);
                     buf.Get(numTex);
 
@@ -124,8 +124,8 @@ bool trpgMatTable1_0::Read(trpgReadBuffer&buf)
     // Now convert to the new style material table
     for (i = 0; i < shortTable.size(); i++)
     {
-        trpgShortMaterial&shortMat = shortTable[i];
-        trpgMaterial     &baseMat  = baseMats[shortMat.baseMat];
+        trpgShortMaterial &shortMat = shortTable[i];
+        trpgMaterial      &baseMat  = baseMats[shortMat.baseMat];
         AddMaterial(baseMat, false);
 
         trpgMaterial newMat = baseMat;
@@ -144,7 +144,7 @@ bool trpgMatTable1_0::Read(trpgReadBuffer&buf)
     return true;
 }
 
-bool trpgMatTable1_0::Write(trpgWriteBuffer&buf)
+bool trpgMatTable1_0::Write(trpgWriteBuffer &buf)
 {
     if (!isValid())
         return false;
@@ -160,9 +160,9 @@ bool trpgMatTable1_0::Write(trpgWriteBuffer&buf)
     for (; itr != materialMap.end(); itr++)
     {
         // for (i=0;i<numTable*numMat;i++) {
-        trpgMaterial&mat = itr->second;  // matTables[i];
+        trpgMaterial &mat = itr->second;  // matTables[i];
         // Fill in the short material
-        trpgShortMaterial&sMat = shortMats[i];
+        trpgShortMaterial &sMat = shortMats[i];
         sMat.baseMat = 0;
         int numTex;
         mat.GetNumTexture(numTex);
@@ -189,7 +189,7 @@ bool trpgMatTable1_0::Write(trpgWriteBuffer&buf)
 
     for (i = 0; i < static_cast<int>(shortMats.size()); i++)
     {
-        trpgShortMaterial&sMat = shortMats[i];
+        trpgShortMaterial &sMat = shortMats[i];
         buf.Add(sMat.baseMat);
         buf.Add((int)(sMat.texids.size()));
         unsigned int j;
@@ -207,7 +207,7 @@ bool trpgMatTable1_0::Write(trpgWriteBuffer&buf)
 
     for (; itr != materialMap.end(); itr++)
     {
-        trpgMaterial&mat = itr->second;  // matTables[i];
+        trpgMaterial &mat = itr->second;  // matTables[i];
 
         // This will be bigger than the old 1.0 material, but it doesn't matter since
         //  the new stuff is on the end.
@@ -220,14 +220,14 @@ bool trpgMatTable1_0::Write(trpgWriteBuffer&buf)
     return true;
 }
 
-trpgTexture1_0 trpgTexture1_0::operator =(const trpgTexture&inTex)
+trpgTexture1_0 trpgTexture1_0::operator =(const trpgTexture &inTex)
 {
     *((trpgTexture*)this) = inTex;
 
     return *this;
 }
 
-bool trpgTexture1_0::Read(trpgReadBuffer&buf)
+bool trpgTexture1_0::Read(trpgReadBuffer &buf)
 {
     mode = External;
 
@@ -246,7 +246,7 @@ bool trpgTexture1_0::Read(trpgReadBuffer&buf)
     return true;
 }
 
-bool trpgTexture1_0::Write(trpgWriteBuffer&buf)
+bool trpgTexture1_0::Write(trpgWriteBuffer &buf)
 {
     // Can only deal with external textures in 1.0
     if (mode != External)
@@ -259,12 +259,12 @@ bool trpgTexture1_0::Write(trpgWriteBuffer&buf)
     return true;
 }
 
-trpgTexTable1_0::trpgTexTable1_0(const trpgTexTable&inTbl)
+trpgTexTable1_0::trpgTexTable1_0(const trpgTexTable &inTbl)
 {
     *((trpgTexTable*)this) = inTbl;
 }
 
-bool trpgTexTable1_0::Read(trpgReadBuffer&buf)
+bool trpgTexTable1_0::Read(trpgReadBuffer &buf)
 {
     int32 numTex;
 
@@ -290,7 +290,7 @@ bool trpgTexTable1_0::Read(trpgReadBuffer&buf)
     return true;
 }
 
-bool trpgTexTable1_0::Write(trpgWriteBuffer&buf)
+bool trpgTexTable1_0::Write(trpgWriteBuffer &buf)
 {
     int32 numTex;
 
@@ -321,7 +321,7 @@ trpgTileTable1_0::trpgTileTable1_0(const trpgTileTable& /*inTable*/)
     // Nothing to copy for now
 }
 
-bool trpgTileTable1_0::Write(trpgWriteBuffer&buf)
+bool trpgTileTable1_0::Write(trpgWriteBuffer &buf)
 {
     try
     {

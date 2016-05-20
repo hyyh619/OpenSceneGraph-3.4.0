@@ -40,7 +40,7 @@
 
 #define INTERPOLATE(member) lp.member = start.member * rstart + end.member * rend;
 
-void addToLightPointNode(osgSim::LightPointNode&lpn, osgSim::LightPoint&start, osgSim::LightPoint&end, unsigned int noSteps)
+void addToLightPointNode(osgSim::LightPointNode &lpn, osgSim::LightPoint &start, osgSim::LightPoint &end, unsigned int noSteps)
 {
     if (noSteps <= 1)
     {

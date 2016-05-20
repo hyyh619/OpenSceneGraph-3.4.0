@@ -120,13 +120,13 @@ MovieEventHandler()
 {}
 
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor *nv);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor *nv);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 protected:
 
-void setColor(osg::Geometry *geo, const osg::Vec4&color)
+void setColor(osg::Geometry *geo, const osg::Vec4 &color)
 {
     if (!geo)
         return;
@@ -146,7 +146,7 @@ osg::observer_ptr<osg::Geometry>    _currentGeometry;
 };
 
 
-bool MovieEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor *nv)
+bool MovieEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor *nv)
 {
     switch (ea.getEventType())
     {
@@ -169,9 +169,9 @@ bool MovieEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAction
         if (foundIntersection)
         {
             // use the nearest intersection
-            const osgUtil::LineSegmentIntersector::Intersection&intersection = *(intersections.begin());
-            osg::Drawable                                      *drawable     = intersection.drawable.get();
-            osg::Geometry                                      *geometry     = drawable ? drawable->asGeometry() : 0;
+            const osgUtil::LineSegmentIntersector::Intersection &intersection = *(intersections.begin());
+            osg::Drawable                                       *drawable     = intersection.drawable.get();
+            osg::Geometry                                       *geometry     = drawable ? drawable->asGeometry() : 0;
 
             if (geometry)
             {
@@ -288,7 +288,7 @@ bool MovieEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAction
     return false;
 }
 
-void MovieEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void MovieEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("p", "Play/Pause current movie");
     usage.addKeyboardMouseBinding("r", "Restart current movie");
@@ -300,7 +300,7 @@ void MovieEventHandler::getUsage(osg::ApplicationUsage&usage) const
 }
 
 
-static osgDB::DirectoryContents getSuitableFiles(osg::ArgumentParser&arguments)
+static osgDB::DirectoryContents getSuitableFiles(osg::ArgumentParser &arguments)
 {
     osgDB::DirectoryContents files;
 
@@ -373,7 +373,7 @@ osg::observer_ptr<osg::Texture>  _tex;
 osg::observer_ptr<osg::Geometry> _geo;
 };
 
-static osg::Node* readImageStream(const std::string&file_name, osg::Vec3&p, float desired_height, osgDB::Options *options)
+static osg::Node* readImageStream(const std::string &file_name, osg::Vec3 &p, float desired_height, osgDB::Options *options)
 {
     osg::ref_ptr<osg::Object>  obj = osgDB::readObjectFile(file_name, options);
     osg::ref_ptr<osg::Texture> tex = dynamic_cast<osg::Texture*>(obj.get());
@@ -464,7 +464,7 @@ ReplaceTextureVisitor(osg::Texture *tex)
     , _tex(tex)
 {}
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     apply(geode.getStateSet());
 
@@ -494,7 +494,7 @@ osg::ref_ptr<osg::Texture> _tex;
 class SlideShowEventHandler : public osgGA::GUIEventHandler
 {
 public:
-SlideShowEventHandler(osg::Node *node, const osgDB::DirectoryContents&files, osgDB::ReaderWriter::Options *options)
+SlideShowEventHandler(osg::Node *node, const osgDB::DirectoryContents &files, osgDB::ReaderWriter::Options *options)
     : osgGA::GUIEventHandler()
     , _node(node)
     , _files(files)
@@ -504,7 +504,7 @@ SlideShowEventHandler(osg::Node *node, const osgDB::DirectoryContents&files, osg
     loadSlide(_currentFile);
 }
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor *nv)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor *nv)
 {
     switch (ea.getEventType())
     {

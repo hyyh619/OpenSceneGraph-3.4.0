@@ -82,7 +82,7 @@ bool getValidateOnly() const
     return _validate;
 }
 
-void setTempDir(const std::string&dir)
+void setTempDir(const std::string &dir)
 {
     _tempDir = dir;
 }

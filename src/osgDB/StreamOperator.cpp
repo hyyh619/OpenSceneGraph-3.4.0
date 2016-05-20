@@ -40,7 +40,7 @@ void InputIterator::readComponentArray(char *s, unsigned int numElements, unsign
     }
 }
 
-void InputIterator::throwException(const std::string&msg)
+void InputIterator::throwException(const std::string &msg)
 {
     if (_inputStream)
         _inputStream->throwException(msg);

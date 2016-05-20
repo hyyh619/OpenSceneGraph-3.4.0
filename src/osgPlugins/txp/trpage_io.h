@@ -271,7 +271,7 @@ trpg2dPoint (double in_x, double in_y)
 {
     x = in_x; y = in_y;
 };
-bool operator==(const trpg2dPoint&pt) const
+bool operator==(const trpg2dPoint &pt) const
 {
     if (x != pt.x)
         return false;
@@ -281,7 +281,7 @@ bool operator==(const trpg2dPoint&pt) const
 
     return true;
 };
-bool operator!=(const trpg2dPoint&pt) const
+bool operator!=(const trpg2dPoint &pt) const
 {
     return !operator==(pt);
 };
@@ -307,7 +307,7 @@ trpg3dPoint(double in_x, double in_y, double in_z)
 {
     x = in_x; y = in_y; z = in_z;
 }
-bool operator==(const trpg3dPoint&pt) const
+bool operator==(const trpg3dPoint &pt) const
 {
     if (x != pt.x)
         return false;
@@ -320,7 +320,7 @@ bool operator==(const trpg3dPoint&pt) const
 
     return true;
 };
-bool operator!=(const trpg3dPoint&pt) const
+bool operator!=(const trpg3dPoint &pt) const
 {
     return !operator==(pt);
 };
@@ -334,7 +334,7 @@ trpgColor(float64 r, float64 g, float64 b)
     red = r; green = g; blue = b;
 }
 trpgColor(void) { };
-bool operator==(const trpgColor&color)
+bool operator==(const trpgColor &color)
 {
     if (color.red != red)
         return false;
@@ -347,7 +347,7 @@ bool operator==(const trpgColor&color)
 
     return true;
 };
-bool operator!=(const trpgColor&color)
+bool operator!=(const trpgColor &color)
 {
     return !operator==(color);
 };

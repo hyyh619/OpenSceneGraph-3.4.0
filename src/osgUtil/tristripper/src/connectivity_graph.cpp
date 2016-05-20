@@ -39,20 +39,20 @@ size_t m_TriPos;
 class cmp_tri_edge_lt
 {
 public:
-bool operator()(const tri_edge&a, const tri_edge&b) const;
+bool operator()(const tri_edge &a, const tri_edge &b) const;
 };
 
 
 typedef std::vector<tri_edge> edge_map;
 
 
-void LinkNeighbours(graph_array<triangle>&Triangles, const edge_map&EdgeMap, const tri_edge Edge);
+void LinkNeighbours(graph_array<triangle> &Triangles, const edge_map &EdgeMap, const tri_edge Edge);
 }
 
 
 
 
-void make_connectivity_graph(graph_array<triangle>&Triangles, const indices&Indices)
+void make_connectivity_graph(graph_array<triangle> &Triangles, const indices &Indices)
 {
     assert(Triangles.size() == (Indices.size() / 3));
 
@@ -66,7 +66,7 @@ void make_connectivity_graph(graph_array<triangle>&Triangles, const indices&Indi
 
     for (size_t i = 0; i < Triangles.size(); ++i)
     {
-        const triangle&Tri = *Triangles[i];
+        const triangle &Tri = *Triangles[i];
 
         EdgeMap.push_back(tri_edge(Tri.A(), Tri.B(), i));
         EdgeMap.push_back(tri_edge(Tri.B(), Tri.C(), i));
@@ -78,7 +78,7 @@ void make_connectivity_graph(graph_array<triangle>&Triangles, const indices&Indi
     // Link neighbour triangles together using the lookup table
     for (size_t i = 0; i < Triangles.size(); ++i)
     {
-        const triangle&Tri = *Triangles[i];
+        const triangle &Tri = *Triangles[i];
 
         LinkNeighbours(Triangles, EdgeMap, tri_edge(Tri.B(), Tri.A(), i));
         LinkNeighbours(Triangles, EdgeMap, tri_edge(Tri.C(), Tri.B(), i));
@@ -90,7 +90,7 @@ void make_connectivity_graph(graph_array<triangle>&Triangles, const indices&Indi
 
 namespace
 {
-inline bool cmp_tri_edge_lt::operator()(const tri_edge&a, const tri_edge&b) const
+inline bool cmp_tri_edge_lt::operator()(const tri_edge &a, const tri_edge &b) const
 {
     const index A1 = a.A();
     const index B1 = a.B();
@@ -104,7 +104,7 @@ inline bool cmp_tri_edge_lt::operator()(const tri_edge&a, const tri_edge&b) cons
 }
 
 
-void LinkNeighbours(graph_array<triangle>&Triangles, const edge_map&EdgeMap, const tri_edge Edge)
+void LinkNeighbours(graph_array<triangle> &Triangles, const edge_map &EdgeMap, const tri_edge Edge)
 {
     // Find the first edge equal to Edge
     edge_map::const_iterator it = std::lower_bound(EdgeMap.begin(), EdgeMap.end(), Edge, cmp_tri_edge_lt());

@@ -39,7 +39,7 @@ class LayerGroup : public osg::Group
 public:
 LayerGroup() : osg::Group() {}
 
-LayerGroup(const LayerGroup&gg, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) :
+LayerGroup(const LayerGroup &gg, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
     osg::Group(gg, copyop)
 {};
 
@@ -52,7 +52,7 @@ class LayerVisitor : public osg::NodeVisitor
 {
 public:
 LayerVisitor() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
-virtual void apply(osg::Group&node)
+virtual void apply(osg::Group &node)
 {
     LayerGroup *lg = dynamic_cast<LayerGroup*>(&node);
 
@@ -112,9 +112,9 @@ TXPParser::~TXPParser()
 {}
 
 osg::Group* TXPParser::parseScene(
-    trpgReadBuffer&buf,
-    std::map<int, osg::ref_ptr<osg::StateSet> >&materials,
-    std::map<int, osg::ref_ptr<osg::Node> >&models,
+    trpgReadBuffer &buf,
+    std::map<int, osg::ref_ptr<osg::StateSet> > &materials,
+    std::map<int, osg::ref_ptr<osg::Node> > &models,
     double realMinRange, double realMaxRange, double usedMaxRange)
 {
     if (_archive == 0)
@@ -291,10 +291,10 @@ DeferredLightAttribute&TXPParser::getLightAttribute(int ix)
 class FindEmptyGroupsVisitor : public osg::NodeVisitor
 {
 public:
-FindEmptyGroupsVisitor(osg::NodeList&nl) :
+FindEmptyGroupsVisitor(osg::NodeList &nl) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN), _nl(nl) {};
 
-virtual void apply(osg::Group&group)
+virtual void apply(osg::Group &group)
 {
     if (group.getNumChildren() == 0)
     {
@@ -310,7 +310,7 @@ FindEmptyGroupsVisitor&operator =(const FindEmptyGroupsVisitor&)
     return *this;
 }
 
-osg::NodeList&_nl;
+osg::NodeList &_nl;
 };
 
 void TXPParser::removeEmptyGroups()
@@ -594,7 +594,7 @@ bool TXPParser::requestModel(int ix)
 // LOD Reader Class
 //
 // ----------------------------------------------------------------------------
-void* lodRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* lodRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgLod lod;
 
@@ -647,7 +647,7 @@ void* lodRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 // Tile Header Reader Class
 //
 // ----------------------------------------------------------------------------
-void* tileHeaderRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* tileHeaderRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgTileHeader *tileHead = _parse->getTileHeaderRef();
 
@@ -663,7 +663,7 @@ void* tileHeaderRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 // Model Reference Reader Class
 //
 // ----------------------------------------------------------------------------
-void* modelRefRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* modelRefRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgModelRef model;
 
@@ -715,7 +715,7 @@ void* modelRefRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 // Billboard Reader Class
 //
 // ----------------------------------------------------------------------------
-void* billboardRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* billboardRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     // Read in the txp billboard
     trpgBillboard bill;
@@ -751,7 +751,7 @@ void* billboardRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 // Group Reader Class
 //
 // ----------------------------------------------------------------------------
-void* groupRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* groupRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgGroup group;
 
@@ -772,7 +772,7 @@ void* groupRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 // Attach Reader Class
 //
 // ----------------------------------------------------------------------------
-void* attachRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* attachRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgAttach group;
 
@@ -786,13 +786,13 @@ void* attachRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
     return (void*)1;
 }
 
-void* childRefRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* childRefRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     // This object contribute nothing to the scenegraph, except
     // where the children tile should connect.
     // It only contain location info of the children tile
     childRefList.push_back(trpgChildRef());
-    trpgReadWriteable&obj = childRefList.back();
+    trpgReadWriteable &obj = childRefList.back();
 
     if (obj.Read(buf))
         return &obj;
@@ -810,7 +810,7 @@ void childRefRead::Reset()
 // light Reader Class
 //
 // ----------------------------------------------------------------------------
-void* lightRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* lightRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgLight light;
 
@@ -988,7 +988,7 @@ void* lightRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 // Layer Reader Class
 //
 // ----------------------------------------------------------------------------
-void* layerRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* layerRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgLayer group;
 
@@ -1006,7 +1006,7 @@ void* layerRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 // Label Reader Class
 //
 // ----------------------------------------------------------------------------
-void* labelRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* labelRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgLabel label;
 
@@ -1134,8 +1134,8 @@ void* labelRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
             {
                 osg::Group *group = new osg::Group;
 
-                const osg::BoundingBox&box  = text->getBoundingBox();
-                float                 shift = box.radius() + 1.f;
+                const osg::BoundingBox &box  = text->getBoundingBox();
+                float                  shift = box.radius() + 1.f;
 
                 // front
                 text->setAlignment(osgText::Text::CENTER_CENTER);
@@ -1245,7 +1245,7 @@ void* labelRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 
                     for (unsigned int i = 0; i < supports->size(); i++)
                     {
-                        const trpg3dPoint&supPt = (*supports)[i];
+                        const trpg3dPoint &supPt = (*supports)[i];
                         (*vertices)[cnt++].set(pos);
                         (*vertices)[cnt++].set(osg::Vec3(supPt.x, supPt.y, supPt.z));
                     }
@@ -1275,7 +1275,7 @@ void* labelRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 
                     for (unsigned int i = 0; i < supports->size(); i++)
                     {
-                        const trpg3dPoint&supPt = (*supports)[i];
+                        const trpg3dPoint &supPt = (*supports)[i];
 
                         osg::Vec3 supPos(supPt.x, supPt.y, supPt.z);
                         osg::Vec3 supCenter = (supPos + pos) / 2.f;
@@ -1330,7 +1330,7 @@ public:
 osg::Matrix _m;
 osg::Matrix _im;
 
-TransformFunctor(const osg::Matrix&m)
+TransformFunctor(const osg::Matrix &m)
 {
     _m = m;
     _im.invert(_m);
@@ -1362,14 +1362,14 @@ virtual void apply(osg::Drawable::AttributeType type, unsigned int count, osg::V
     }
 }
 
-inline void SetMatrix(const osg::Matrix&m)
+inline void SetMatrix(const osg::Matrix &m)
 {
     _m = m;
     _im.invert(_m);
 }
 };
 
-void* geomRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
+void* geomRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
 {
     trpgGeometry geom;
 
@@ -1601,8 +1601,8 @@ void* geomRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
             case trpgBillboard::Individual:
             {
                 // compute center of billboard geometry
-                const osg::BoundingBox&bbox = geometry->getBoundingBox();
-                osg::Vec3             center (bbox.center());
+                const osg::BoundingBox &bbox = geometry->getBoundingBox();
+                osg::Vec3              center (bbox.center());
 
                 // make billboard geometry coordinates relative to computed center
                 osg::Matrix matrix;
@@ -1700,7 +1700,7 @@ void* geomRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 
     namespace
     {
-    void check_format(trpgTexture::ImageType type, int depth, GLenum&internalFormat, GLenum&pixelFormat, GLenum&)
+    void check_format(trpgTexture::ImageType type, int depth, GLenum &internalFormat, GLenum &pixelFormat, GLenum&)
     {
         switch (type)
         {
@@ -1783,7 +1783,7 @@ void* geomRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 
 // ----------------------------------------------------------------------------
 // Get a template texture via the image helper
-    osg::Texture2D* txp::getLocalTexture(trpgrImageHelper&image_helper, const trpgTexture *tex)
+    osg::Texture2D* txp::getLocalTexture(trpgrImageHelper &image_helper, const trpgTexture *tex)
     {
         osg::Texture2D *osg_texture = 0L;
 
@@ -1858,7 +1858,7 @@ void* geomRead::Parse(trpgToken /*tok*/, trpgReadBuffer&buf)
 
 // ----------------------------------------------------------------------------
 // Get a locale texture via the image helper
-    osg::Texture2D* txp::getTemplateTexture(trpgrImageHelper&image_helper, trpgLocalMaterial *locmat, const trpgTexture *tex, int index)
+    osg::Texture2D* txp::getTemplateTexture(trpgrImageHelper &image_helper, trpgLocalMaterial *locmat, const trpgTexture *tex, int index)
     {
         osg::Texture2D *osg_texture = 0L;
 

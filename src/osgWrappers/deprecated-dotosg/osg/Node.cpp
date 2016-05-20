@@ -10,8 +10,8 @@ using namespace osgDB;
 using namespace std;
 
 // forward declare functions to use later.
-bool Node_readLocalData(Object&obj, Input&fr);
-bool Node_writeLocalData(const Object&obj, Output&fw);
+bool Node_readLocalData(Object &obj, Input &fr);
+bool Node_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Node)
@@ -23,11 +23,11 @@ REGISTER_DOTOSGWRAPPER(Node)
     &Node_writeLocalData
 );
 
-bool Node_readLocalData(Object&obj, Input&fr)
+bool Node_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Node&node = static_cast<Node&>(obj);
+    Node &node = static_cast<Node&>(obj);
 
     unsigned int mask = node.getNodeMask();
 
@@ -200,9 +200,9 @@ bool Node_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Node_writeLocalData(const Object&obj, Output&fw)
+bool Node_writeLocalData(const Object &obj, Output &fw)
 {
-    const Node&node = static_cast<const Node&>(obj);
+    const Node &node = static_cast<const Node&>(obj);
 
     fw.indent() << "nodeMask 0x" << hex << node.getNodeMask() << dec << std::endl;
 

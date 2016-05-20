@@ -10,11 +10,11 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-extern bool  read_particle(osgDB::Input&fr, osgParticle::Particle&P);
-extern void  write_particle(const osgParticle::Particle&P, osgDB::Output&fw);
+extern bool  read_particle(osgDB::Input &fr, osgParticle::Particle &P);
+extern void  write_particle(const osgParticle::Particle &P, osgDB::Output &fw);
 
-bool  ParticleProcessor_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ParticleProcessor_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ParticleProcessor_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ParticleProcessor_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ParticleProcessor_Proxy)
 (
@@ -25,10 +25,10 @@ REGISTER_DOTOSGWRAPPER(ParticleProcessor_Proxy)
     ParticleProcessor_writeLocalData
 );
 
-bool ParticleProcessor_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ParticleProcessor_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::ParticleProcessor&myobj     = static_cast<osgParticle::ParticleProcessor&>(obj);
-    bool                          itAdvanced = false;
+    osgParticle::ParticleProcessor &myobj     = static_cast<osgParticle::ParticleProcessor&>(obj);
+    bool                           itAdvanced = false;
 
     osg::ref_ptr<osgParticle::ParticleSystem> ps_proto = new osgParticle::ParticleSystem;
 
@@ -136,9 +136,9 @@ bool ParticleProcessor_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool ParticleProcessor_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ParticleProcessor_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::ParticleProcessor&myobj = static_cast<const osgParticle::ParticleProcessor&>(obj);
+    const osgParticle::ParticleProcessor &myobj = static_cast<const osgParticle::ParticleProcessor&>(obj);
 
     if (myobj.getParticleSystem())
         fw.writeObject(*myobj.getParticleSystem());

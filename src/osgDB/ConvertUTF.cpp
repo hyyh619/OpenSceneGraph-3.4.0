@@ -24,7 +24,7 @@
 
 namespace osgDB
 {
-std::string convertUTF16toUTF8(const std::wstring&s)
+std::string convertUTF16toUTF8(const std::wstring &s)
 {
     return convertUTF16toUTF8(s.c_str(), s.length());
 }
@@ -33,7 +33,7 @@ std::string convertUTF16toUTF8(const wchar_t *s)
     return convertUTF16toUTF8(s, wcslen(s));
 }
 
-std::wstring convertUTF8toUTF16(const std::string&s)
+std::wstring convertUTF8toUTF16(const std::string &s)
 {
     return convertUTF8toUTF16(s.c_str(), s.length());
 }
@@ -42,7 +42,7 @@ std::wstring convertUTF8toUTF16(const char *s)
     return convertUTF8toUTF16(s, strlen(s));
 }
 
-std::string convertStringFromCurrentCodePageToUTF8(const std::string&s)
+std::string convertStringFromCurrentCodePageToUTF8(const std::string &s)
 {
     return convertStringFromCurrentCodePageToUTF8(s.c_str(), s.length());
 }
@@ -51,7 +51,7 @@ std::string convertStringFromCurrentCodePageToUTF8(const char *s)
     return convertStringFromCurrentCodePageToUTF8(s, strlen(s));
 }
 
-std::string convertStringFromUTF8toCurrentCodePage(const std::string&s)
+std::string convertStringFromUTF8toCurrentCodePage(const std::string &s)
 {
     return convertStringFromUTF8toCurrentCodePage(s.c_str(), s.length());
 }

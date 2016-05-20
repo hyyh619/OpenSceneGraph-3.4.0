@@ -47,7 +47,7 @@
 // for the grid data..
 #include "../osghangglide/terrain_coords.h"
 
-osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, double looptime)
+osg::AnimationPath* createAnimationPath(const osg::Vec3 &center, float radius, double looptime)
 {
     // set up the animation path
     osg::AnimationPath *animationPath = new osg::AnimationPath;
@@ -182,7 +182,7 @@ protected:
 float i;
 };
 
-osg::Node* createMovingModel(const osg::Vec3&center, float radius, osg::Geode *terrainGeode, osg::Group *root, bool createMovingRadar = false)
+osg::Node* createMovingModel(const osg::Vec3 &center, float radius, osg::Geode *terrainGeode, osg::Group *root, bool createMovingRadar = false)
 {
     float animationLength = 10.0f;
 
@@ -194,7 +194,7 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius, osg::Geode *t
 
     if (glider)
     {
-        const osg::BoundingSphere&bs = glider->getBound();
+        const osg::BoundingSphere &bs = glider->getBound();
 
         float                size        = radius / bs.radius() * 0.3f;
         osg::MatrixTransform *positioned = new osg::MatrixTransform;
@@ -247,7 +247,7 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius, osg::Geode *t
     osg::Node *cessna = osgDB::readNodeFile("cessna.osgt");
     if (cessna)
     {
-        const osg::BoundingSphere&bs = cessna->getBound();
+        const osg::BoundingSphere &bs = cessna->getBound();
 
         osgText::Text *text = new osgText::Text;
         float         size  = radius / bs.radius() * 0.3f;
@@ -289,7 +289,7 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius, osg::Geode *t
     return model;
 }
 
-osg::Group* createOverlay(const osg::Vec3&center, float radius)
+osg::Group* createOverlay(const osg::Vec3 &center, float radius)
 {
     osg::Group *group = new osg::Group;
 
@@ -324,7 +324,7 @@ osg::Group* createOverlay(const osg::Vec3&center, float radius)
 
         geom->setVertexArray(vertices);
 
-        osg::Vec4ubArray&color = *(new osg::Vec4ubArray(1));
+        osg::Vec4ubArray &color = *(new osg::Vec4ubArray(1));
         color[0].set(0, 0, 0, 255);
         geom->setColorArray(&color, osg::Array::BIND_OVERALL);
 
@@ -342,9 +342,9 @@ osg::Group* createOverlay(const osg::Vec3&center, float radius)
 
 osg::Vec3 computeTerrainIntersection(osg::Node *subgraph, float x, float y)
 {
-    const osg::BoundingSphere&bs  = subgraph->getBound();
-    float                    zMax = bs.center().z() + bs.radius();
-    float                    zMin = bs.center().z() - bs.radius();
+    const osg::BoundingSphere &bs  = subgraph->getBound();
+    float                     zMax = bs.center().z() + bs.radius();
+    float                     zMin = bs.center().z() - bs.radius();
 
     osg::ref_ptr<osgUtil::LineSegmentIntersector> intersector =
         new osgUtil::LineSegmentIntersector(osg::Vec3(x, y, zMin), osg::Vec3(x, y, zMax));
@@ -395,9 +395,9 @@ void build_world(osg::Group *root, unsigned int testCase, bool useOverlay, osgSi
 
             osg::Geometry *geometry = new osg::Geometry;
 
-            osg::Vec3Array  &v     = *(new osg::Vec3Array(numColumns * numRows));
-            osg::Vec2Array  &tc    = *(new osg::Vec2Array(numColumns * numRows));
-            osg::Vec4ubArray&color = *(new osg::Vec4ubArray(1));
+            osg::Vec3Array   &v     = *(new osg::Vec3Array(numColumns * numRows));
+            osg::Vec2Array   &tc    = *(new osg::Vec2Array(numColumns * numRows));
+            osg::Vec4ubArray &color = *(new osg::Vec4ubArray(1));
 
             color[0].set(255, 255, 255, 255);
 
@@ -450,7 +450,7 @@ void build_world(osg::Group *root, unsigned int testCase, bool useOverlay, osgSi
 
             for (r = 0; r < numRows - 1; ++r)
             {
-                osg::DrawElementsUShort&drawElements = *(new osg::DrawElementsUShort(GL_QUAD_STRIP, 2 * numColumns));
+                osg::DrawElementsUShort &drawElements = *(new osg::DrawElementsUShort(GL_QUAD_STRIP, 2 * numColumns));
                 geometry->addPrimitiveSet(&drawElements);
                 int ei = 0;
 
@@ -632,8 +632,8 @@ void build_world(osg::Group *root, unsigned int testCase, bool useOverlay, osgSi
         osgSim::OverlayNode *overlayNode = new osgSim::OverlayNode(technique);
         overlayNode->getOrCreateStateSet()->setTextureAttribute(1, new osg::TexEnv(osg::TexEnv::DECAL));
 
-        const osg::BoundingSphere&bs              = terrainGeode->getBound();
-        osg::Group               *overlaySubgraph = createOverlay(bs.center(), bs.radius() * 0.5f);
+        const osg::BoundingSphere &bs              = terrainGeode->getBound();
+        osg::Group                *overlaySubgraph = createOverlay(bs.center(), bs.radius() * 0.5f);
         overlaySubgraph->addChild(ss.get());
         overlayNode->setOverlaySubgraph(overlaySubgraph);
         overlayNode->setOverlayTextureSizeHint(1024);

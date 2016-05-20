@@ -583,7 +583,7 @@ void ViewerBase::startThreading()
     OSG_INFO << "Set up threading" << std::endl;
 }
 
-void ViewerBase::getWindows(Windows&windows, bool onlyValid)
+void ViewerBase::getWindows(Windows &windows, bool onlyValid)
 {
     windows.clear();
 
@@ -608,7 +608,7 @@ void ViewerBase::checkWindowStatus()
     checkWindowStatus(contexts);
 }
 
-void ViewerBase::checkWindowStatus(const Contexts&contexts)
+void ViewerBase::checkWindowStatus(const Contexts &contexts)
 {
     if (contexts.size() == 0)
     {
@@ -757,7 +757,7 @@ void ViewerBase::renderingTraversals()
             osgViewer::View *view = *itr;
             if (view)
             {
-                const osg::Matrixd&m = view->getCamera()->getInverseViewMatrix();
+                const osg::Matrixd &m = view->getCamera()->getInverseViewMatrix();
                 OSG_NOTICE << "View " << view << ", Master Camera position(" << m.getTrans() << "), rotation(" << m.getRotate() << ")" << std::endl;
             }
         }

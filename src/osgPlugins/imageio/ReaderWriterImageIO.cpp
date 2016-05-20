@@ -134,7 +134,7 @@ void MyConsumerReleaseInfoCallback(void *ostream_userdata)
 **************************************************************/
 
 /* Create a CGImageSourceRef from raw data */
-CGImageRef CreateCGImageFromDataStream(std::istream&fin)
+CGImageRef CreateCGImageFromDataStream(std::istream &fin)
 {
     CGImageRef       image_ref = NULL;
     CGImageSourceRef source_ref;
@@ -451,7 +451,7 @@ osg::Image* CreateOSGImageFromCGImage(CGImageRef image_ref)
  * Code adapted from
  * http://developer.apple.com/samplecode/OpenGLScreenSnapshot/listing2.html
  */
-CGImageRef CreateCGImageFromOSGData(const osg::Image&osg_image)
+CGImageRef CreateCGImageFromOSGData(const osg::Image &osg_image)
 {
     size_t image_width  = osg_image.s();
     size_t image_height = osg_image.t();
@@ -918,7 +918,7 @@ CGImageDestinationRef CreateCGImageDestinationFromFile(const char *the_path,  co
 
 /* Create a CGImageDestinationRef from a file. */
 /* Remember to CFRelease when done. */
-CGImageDestinationRef CreateCGImageDestinationFromDataStream(std::ostream&fout,  const osgDB::ReaderWriter::Options *the_options)
+CGImageDestinationRef CreateCGImageDestinationFromDataStream(std::ostream &fout,  const osgDB::ReaderWriter::Options *the_options)
 {
     CFStringRef           uti_type            = NULL;
     CGImageDestinationRef dest_ref            = NULL;
@@ -1090,7 +1090,7 @@ virtual const char* className() const
 }
 
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     // ImageIO speaks in UTIs.
     // http://developer.apple.com/graphicsimaging/workingwithimageio.html
@@ -1155,7 +1155,7 @@ virtual bool acceptsExtension(const std::string&extension) const
 
 
 
-ReadResult readImageStream(std::istream&fin) const
+ReadResult readImageStream(std::istream &fin) const
 {
     // Call ImageIO to load the image.
     CGImageRef cg_image_ref = CreateCGImageFromDataStream(fin);
@@ -1170,14 +1170,14 @@ ReadResult readImageStream(std::istream&fin) const
     return osg_image;
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options *the_options = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options *the_options = NULL) const
 {
     ReadResult read_result = readImageStream(fin);
 
     return read_result;
 }
 
-ReadResult readImageFile(const std::string&file_name) const
+ReadResult readImageFile(const std::string &file_name) const
 {
     OSG_INFO << "imageio readImageFile: " << file_name << std::endl;
 
@@ -1196,7 +1196,7 @@ ReadResult readImageFile(const std::string&file_name) const
     return osg_image;
 }
 
-virtual ReadResult readImage(const std::string&file_name, const osgDB::ReaderWriter::Options *the_options) const
+virtual ReadResult readImage(const std::string &file_name, const osgDB::ReaderWriter::Options *the_options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file_name);
 
@@ -1227,7 +1227,7 @@ virtual ReadResult readImage(const std::string&file_name, const osgDB::ReaderWri
 }
 
 
-WriteResult writeImageStream(const osg::Image&osg_image, std::ostream&fout, const osgDB::ReaderWriter::Options *the_options) const
+WriteResult writeImageStream(const osg::Image &osg_image, std::ostream &fout, const osgDB::ReaderWriter::Options *the_options) const
 {
     if (!osg_image.isDataContiguous())
     {
@@ -1263,14 +1263,14 @@ WriteResult writeImageStream(const osg::Image&osg_image, std::ostream&fout, cons
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeImage(const osg::Image&osg_image, std::ostream&fout, const osgDB::ReaderWriter::Options *the_options) const
+virtual WriteResult writeImage(const osg::Image &osg_image, std::ostream &fout, const osgDB::ReaderWriter::Options *the_options) const
 {
     WriteResult write_result = writeImageStream(osg_image, fout, the_options);
 
     return write_result;
 }
 
-WriteResult writeImageFile(const osg::Image&osg_image, const std::string&full_file_name, const osgDB::ReaderWriter::Options *the_options) const
+WriteResult writeImageFile(const osg::Image &osg_image, const std::string &full_file_name, const osgDB::ReaderWriter::Options *the_options) const
 {
     if (!osg_image.isDataContiguous())
     {
@@ -1307,7 +1307,7 @@ WriteResult writeImageFile(const osg::Image&osg_image, const std::string&full_fi
     return WriteResult::FILE_SAVED;
 }
 
-virtual WriteResult writeImage(const osg::Image&osg_image, const std::string&file_name, const osgDB::ReaderWriter::Options *the_options) const
+virtual WriteResult writeImage(const osg::Image &osg_image, const std::string &file_name, const osgDB::ReaderWriter::Options *the_options) const
 {
     std::string ext = osgDB::getFileExtension(file_name);
 
@@ -1335,12 +1335,12 @@ virtual WriteResult writeImage(const osg::Image&osg_image, const std::string&fil
 #endif
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }

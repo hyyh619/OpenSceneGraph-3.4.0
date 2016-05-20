@@ -42,7 +42,7 @@ ShadowVolume::ShadowVolume() :
     OSG_INFO << "Warning: osgShadow::ShadowVolume technique is still in development, with current limitations that make it unsuitable for deployment. Please contact the osg-users for an update of developements." << std::endl;
 }
 
-ShadowVolume::ShadowVolume(const ShadowVolume&sv, const osg::CopyOp&copyop) :
+ShadowVolume::ShadowVolume(const ShadowVolume &sv, const osg::CopyOp &copyop) :
     ShadowTechnique(sv, copyop),
     _drawMode(sv._drawMode),
     _dynamicShadowVolumes(sv._dynamicShadowVolumes)
@@ -227,12 +227,12 @@ void ShadowVolume::init()
     _dirty = false;
 }
 
-void ShadowVolume::update(osg::NodeVisitor&nv)
+void ShadowVolume::update(osg::NodeVisitor &nv)
 {
     _shadowedScene->osg::Group::traverse(nv);
 }
 
-void ShadowVolume::cull(osgUtil::CullVisitor&cv)
+void ShadowVolume::cull(osgUtil::CullVisitor &cv)
 {
     osg::ref_ptr<osgUtil::RenderBin> original_bin = cv.getCurrentRenderBin();
 
@@ -279,7 +279,7 @@ void ShadowVolume::cull(osgUtil::CullVisitor&cv)
 
         const osg::Light *selectLight = 0;
 
-        osgUtil::PositionalStateContainer::AttrMatrixList&aml = orig_rs->getPositionalStateContainer()->getAttrMatrixList();
+        osgUtil::PositionalStateContainer::AttrMatrixList &aml = orig_rs->getPositionalStateContainer()->getAttrMatrixList();
 
         for (osgUtil::PositionalStateContainer::AttrMatrixList::iterator itr = aml.begin();
              itr != aml.end();

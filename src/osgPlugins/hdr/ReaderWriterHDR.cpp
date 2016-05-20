@@ -71,7 +71,7 @@ virtual const char* className()
     return "HDR Image Reader";
 }
 
-virtual ReadResult readImage(const std::string&_file, const osgDB::ReaderWriter::Options *_opts) const
+virtual ReadResult readImage(const std::string &_file, const osgDB::ReaderWriter::Options *_opts) const
 {
     std::string filepath = osgDB::findDataFile(_file, _opts);
 
@@ -201,7 +201,7 @@ virtual ReadResult readImage(const std::string&_file, const osgDB::ReaderWriter:
 
 
 // Additional write methods
-virtual WriteResult writeImage(const osg::Image&image, const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(file);
 
@@ -215,7 +215,7 @@ virtual WriteResult writeImage(const osg::Image&image, const std::string&file, c
     return writeImage(image, fout, options);
 }
 
-virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, std::ostream &fout, const Options *options) const
 {
     bool bYFlip  = true;           // Whether to flip the vertical
     bool rawRGBE = false;        // Whether to write as raw RGBE

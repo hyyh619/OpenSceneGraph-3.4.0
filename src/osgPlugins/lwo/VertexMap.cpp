@@ -11,7 +11,7 @@
 
 using namespace lwosg;
 
-osg::Vec4Array* VertexMap::asVec4Array(int num_vertices, const osg::Vec4&default_value, const osg::Vec4&modulator) const
+osg::Vec4Array* VertexMap::asVec4Array(int num_vertices, const osg::Vec4 &default_value, const osg::Vec4 &modulator) const
 {
     osg::ref_ptr<osg::Vec4Array> array = new osg::Vec4Array;
 
@@ -30,7 +30,7 @@ osg::Vec4Array* VertexMap::asVec4Array(int num_vertices, const osg::Vec4&default
     return array.release();
 }
 
-osg::Vec2Array* VertexMap::asVec2Array(int num_vertices, const osg::Vec2&default_value, const osg::Vec2&modulator) const
+osg::Vec2Array* VertexMap::asVec2Array(int num_vertices, const osg::Vec2 &default_value, const osg::Vec2 &modulator) const
 {
     osg::ref_ptr<osg::Vec2Array> array = new osg::Vec2Array;
 
@@ -47,7 +47,7 @@ osg::Vec2Array* VertexMap::asVec2Array(int num_vertices, const osg::Vec2&default
     return array.release();
 }
 
-osg::Vec3Array* VertexMap::asVec3Array(int num_vertices, const osg::Vec3&default_value, const osg::Vec3&modulator) const
+osg::Vec3Array* VertexMap::asVec3Array(int num_vertices, const osg::Vec3 &default_value, const osg::Vec3 &modulator) const
 {
     osg::ref_ptr<osg::Vec3Array> array = new osg::Vec3Array;
 
@@ -65,7 +65,7 @@ osg::Vec3Array* VertexMap::asVec3Array(int num_vertices, const osg::Vec3&default
     return array.release();
 }
 
-VertexMap* VertexMap::remap(const std::vector<int>&remapping) const
+VertexMap* VertexMap::remap(const std::vector<int> &remapping) const
 {
     osg::ref_ptr<VertexMap> result = new VertexMap;
 
@@ -88,7 +88,7 @@ VertexMap* VertexMap::remap(const std::vector<int>&remapping) const
     return result.release();
 }
 
-VertexMap_map* VertexMap_map::remap(const std::vector<int>&remapping) const
+VertexMap_map* VertexMap_map::remap(const std::vector<int> &remapping) const
 {
     osg::ref_ptr<VertexMap_map> result = new VertexMap_map;
 

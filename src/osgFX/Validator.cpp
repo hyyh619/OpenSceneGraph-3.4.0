@@ -15,17 +15,17 @@ Validator::Validator(Effect *effect)
     _effect(effect)
 {}
 
-Validator::Validator(const Validator&copy, const osg::CopyOp&copyop)
+Validator::Validator(const Validator &copy, const osg::CopyOp &copyop)
     :    osg::StateAttribute(copy, copyop),
     _effect(static_cast<Effect*>(copyop(copy._effect)))
 {}
 
-void Validator::compileGLObjects(osg::State&state) const
+void Validator::compileGLObjects(osg::State &state) const
 {
     apply(state);
 }
 
-void Validator::apply(osg::State&state) const
+void Validator::apply(osg::State &state) const
 {
     if (!_effect)
         return;

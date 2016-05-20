@@ -12,8 +12,8 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool HeightField_readLocalData(Object&obj, Input&fr);
-bool HeightField_writeLocalData(const Object&obj, Output&fw);
+bool HeightField_readLocalData(Object &obj, Input &fr);
+bool HeightField_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(HeightField)
@@ -37,11 +37,11 @@ REGISTER_DOTOSGWRAPPER(Grid)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool HeightField_readLocalData(Object&obj, Input&fr)
+bool HeightField_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    HeightField&heightfield = static_cast<HeightField&>(obj);
+    HeightField &heightfield = static_cast<HeightField&>(obj);
 
     if (fr.matchSequence("Origin %f %f %f"))
     {
@@ -146,9 +146,9 @@ bool HeightField_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool HeightField_writeLocalData(const Object&obj, Output&fw)
+bool HeightField_writeLocalData(const Object &obj, Output &fw)
 {
-    const HeightField&heightfield = static_cast<const HeightField&>(obj);
+    const HeightField &heightfield = static_cast<const HeightField&>(obj);
 
     int prec = fw.precision();
 

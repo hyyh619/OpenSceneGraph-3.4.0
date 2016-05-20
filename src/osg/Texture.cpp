@@ -380,7 +380,7 @@ void Texture::TextureProfile::computeSize()
 //
 //  New texture object manager
 //
-Texture::TextureObjectSet::TextureObjectSet(TextureObjectManager *parent, const TextureProfile&profile) :
+Texture::TextureObjectSet::TextureObjectSet(TextureObjectManager *parent, const TextureProfile &profile) :
     _parent(parent),
     _contextID(parent->getContextID()),
     _profile(profile),
@@ -622,7 +622,7 @@ void Texture::TextureObjectSet::discardAllDeletedTextureObjects()
     _orphanedTextureObjects.clear();
 }
 
-void Texture::TextureObjectSet::flushDeletedTextureObjects(double /*currentTime*/, double&availableTime)
+void Texture::TextureObjectSet::flushDeletedTextureObjects(double /*currentTime*/, double &availableTime)
 {
     // OSG_NOTICE<<"Texture::TextureObjectSet::flushDeletedTextureObjects(..)"<<std::endl;
 
@@ -693,7 +693,7 @@ void Texture::TextureObjectSet::flushDeletedTextureObjects(double /*currentTime*
     availableTime -= timer.elapsedTime();
 }
 
-bool Texture::TextureObjectSet::makeSpace(unsigned int&size)
+bool Texture::TextureObjectSet::makeSpace(unsigned int &size)
 {
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
@@ -1082,9 +1082,9 @@ Texture::TextureObject* Texture::generateAndAssignTextureObject(
     return _textureObjectBuffer[contextID].get();
 }
 
-Texture::TextureObjectSet* Texture::TextureObjectManager::getTextureObjectSet(const TextureProfile&profile)
+Texture::TextureObjectSet* Texture::TextureObjectManager::getTextureObjectSet(const TextureProfile &profile)
 {
-    osg::ref_ptr<Texture::TextureObjectSet>&tos = _textureSetMap[profile];
+    osg::ref_ptr<Texture::TextureObjectSet> &tos = _textureSetMap[profile];
 
     if (!tos)
         tos = new Texture::TextureObjectSet(this, profile);
@@ -1154,7 +1154,7 @@ void Texture::TextureObjectManager::discardAllDeletedTextureObjects()
     }
 }
 
-void Texture::TextureObjectManager::flushDeletedTextureObjects(double currentTime, double&availableTime)
+void Texture::TextureObjectManager::flushDeletedTextureObjects(double currentTime, double &availableTime)
 {
     ElapsedTime elapsedTime(&(getDeleteTime()));
 
@@ -1185,7 +1185,7 @@ void Texture::TextureObjectManager::newFrame(osg::FrameStamp *fs)
     ++_numFrames;
 }
 
-void Texture::TextureObjectManager::reportStats(std::ostream&out)
+void Texture::TextureObjectManager::reportStats(std::ostream &out)
 {
     double numFrames(_numFrames == 0 ? 1.0 : _numFrames);
 
@@ -1212,7 +1212,7 @@ void Texture::TextureObjectManager::resetStats()
 }
 
 
-void Texture::TextureObjectManager::recomputeStats(std::ostream&out) const
+void Texture::TextureObjectManager::recomputeStats(std::ostream &out) const
 {
     out << "Texture::TextureObjectManager::recomputeStats()" << std::endl;
     unsigned int numObjectsInLists = 0;
@@ -1325,7 +1325,7 @@ void Texture::discardAllDeletedTextureObjects(unsigned int contextID)
     getTextureObjectManager(contextID)->discardAllDeletedTextureObjects();
 }
 
-void Texture::flushDeletedTextureObjects(unsigned int contextID, double currentTime, double&availbleTime)
+void Texture::flushDeletedTextureObjects(unsigned int contextID, double currentTime, double &availbleTime)
 {
     getTextureObjectManager(contextID)->flushDeletedTextureObjects(currentTime, availbleTime);
 }
@@ -1364,7 +1364,7 @@ Texture::Texture() :
     _shadow_ambient(0)
 {}
 
-Texture::Texture(const Texture&text, const CopyOp&copyop) :
+Texture::Texture(const Texture &text, const CopyOp &copyop) :
     StateAttribute(text, copyop),
     _wrap_s(text._wrap_s),
     _wrap_t(text._wrap_t),
@@ -1396,7 +1396,7 @@ Texture::~Texture()
     dirtyTextureObject();
 }
 
-int Texture::compareTexture(const Texture&rhs) const
+int Texture::compareTexture(const Texture &rhs) const
 {
     COMPARE_StateAttribute_Parameter(_wrap_s)
     COMPARE_StateAttribute_Parameter(_wrap_t)
@@ -1431,7 +1431,7 @@ int Texture::compareTexture(const Texture&rhs) const
     return 0;
 }
 
-int Texture::compareTextureObjects(const Texture&rhs) const
+int Texture::compareTextureObjects(const Texture &rhs) const
 {
     if (_textureObjectBuffer.size() < rhs._textureObjectBuffer.size())
         return -1;
@@ -1548,7 +1548,7 @@ void Texture::allocateMipmapLevels()
     _texMipmapGenerationDirtyList.setAllElementsTo(1);
 }
 
-void Texture::computeInternalFormatWithImage(const osg::Image&image) const
+void Texture::computeInternalFormatWithImage(const osg::Image &image) const
 {
     GLint internalFormat = image.getInternalTextureFormat();
 
@@ -1964,7 +1964,7 @@ bool Texture::isCompressedInternalFormat(GLint internalFormat)
     }
 }
 
-void Texture::getCompressedSize(GLenum internalFormat, GLint width, GLint height, GLint depth, GLint&blockSize, GLint&size)
+void Texture::getCompressedSize(GLenum internalFormat, GLint width, GLint height, GLint depth, GLint &blockSize, GLint &size)
 {
     if (internalFormat == GL_COMPRESSED_RGB_S3TC_DXT1_EXT || internalFormat == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
         blockSize = 8;
@@ -2029,7 +2029,7 @@ void Texture::getCompressedSize(GLenum internalFormat, GLint width, GLint height
     size = ((width + 3) / 4) * ((height + 3) / 4) * depth * blockSize;
 }
 
-void Texture::applyTexParameters(GLenum target, State&state) const
+void Texture::applyTexParameters(GLenum target, State &state) const
 {
     // get the contextID (user defined ID of 0 upwards) for the
     // current OpenGL context.
@@ -2191,7 +2191,7 @@ void Texture::applyTexParameters(GLenum target, State&state) const
     getTextureParameterDirty(state.getContextID()) = false;
 }
 
-void Texture::computeRequiredTextureDimensions(State&state, const osg::Image&image, GLsizei&inwidth, GLsizei&inheight, GLsizei&numMipmapLevels) const
+void Texture::computeRequiredTextureDimensions(State &state, const osg::Image &image, GLsizei &inwidth, GLsizei &inheight, GLsizei &numMipmapLevels) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 
@@ -2250,7 +2250,7 @@ bool Texture::areAllTextureObjectsLoaded() const
 }
 
 
-void Texture::applyTexImage2D_load(State&state, GLenum target, const Image *image, GLsizei inwidth, GLsizei inheight, GLsizei numMipmapLevels) const
+void Texture::applyTexImage2D_load(State &state, GLenum target, const Image *image, GLsizei inwidth, GLsizei inheight, GLsizei numMipmapLevels) const
 {
     // if we don't have a valid image we can't create a texture!
     if (!image || !image->data())
@@ -2647,7 +2647,7 @@ void Texture::applyTexImage2D_load(State&state, GLenum target, const Image *imag
 
 
 
-void Texture::applyTexImage2D_subload(State&state, GLenum target, const Image *image, GLsizei inwidth, GLsizei inheight, GLint inInternalFormat, GLint numMipmapLevels) const
+void Texture::applyTexImage2D_subload(State &state, GLenum target, const Image *image, GLsizei inwidth, GLsizei inheight, GLint inInternalFormat, GLint numMipmapLevels) const
 {
     // if we don't have a valid image we can't create a texture!
     if (!image || !image->data())
@@ -2874,7 +2874,7 @@ void Texture::applyTexImage2D_subload(State&state, GLenum target, const Image *i
     }
 }
 
-bool Texture::isHardwareMipmapGenerationEnabled(const State&state) const
+bool Texture::isHardwareMipmapGenerationEnabled(const State &state) const
 {
     if (_useHardwareMipMapGeneration)
     {
@@ -2894,7 +2894,7 @@ bool Texture::isHardwareMipmapGenerationEnabled(const State&state) const
     return false;
 }
 
-Texture::GenerateMipmapMode Texture::mipmapBeforeTexImage(const State&state, bool hardwareMipmapOn) const
+Texture::GenerateMipmapMode Texture::mipmapBeforeTexImage(const State &state, bool hardwareMipmapOn) const
 {
     if (hardwareMipmapOn)
     {
@@ -2930,7 +2930,7 @@ Texture::GenerateMipmapMode Texture::mipmapBeforeTexImage(const State&state, boo
     return GENERATE_MIPMAP_NONE;
 }
 
-void Texture::mipmapAfterTexImage(State&state, GenerateMipmapMode beforeResult) const
+void Texture::mipmapAfterTexImage(State &state, GenerateMipmapMode beforeResult) const
 {
     switch (beforeResult)
     {
@@ -2956,7 +2956,7 @@ void Texture::mipmapAfterTexImage(State&state, GenerateMipmapMode beforeResult) 
     }
 }
 
-void Texture::generateMipmap(State&state) const
+void Texture::generateMipmap(State &state) const
 {
     const unsigned int contextID = state.getContextID();
 
@@ -2996,7 +2996,7 @@ void Texture::generateMipmap(State&state) const
     }
 }
 
-void Texture::compileGLObjects(State&state) const
+void Texture::compileGLObjects(State &state) const
 {
     apply(state);
 }

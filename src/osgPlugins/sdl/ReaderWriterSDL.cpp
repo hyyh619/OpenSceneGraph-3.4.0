@@ -25,7 +25,7 @@ virtual const char* className() const
     return "SDL Device Integration plugin";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     if (file == "joystick.sdl")
     {

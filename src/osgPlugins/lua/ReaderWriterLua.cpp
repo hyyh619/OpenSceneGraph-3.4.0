@@ -45,7 +45,7 @@ lua::LuaScriptEngine* createScriptEngine(const osgDB::ReaderWriter::Options *opt
 }
 
 
-virtual ReadResult readObjectFromScript(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObjectFromScript(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     ReadResult result = readScript(fin, options);
 
@@ -105,12 +105,12 @@ virtual ReadResult readObjectFromScript(std::istream&fin, const osgDB::ReaderWri
         return 0;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readObjectFromScript(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     if (file == "ScriptEngine.lua")
     {
@@ -135,12 +135,12 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
     return readObject(istream, local_opt.get());
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readObjectFromScript(fin, options);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -161,12 +161,12 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return readImage(istream, local_opt.get());
 }
 
-virtual ReadResult readNode(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readNode(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readObjectFromScript(fin, options);
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -187,7 +187,7 @@ virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::O
     return readNode(istream, local_opt.get());
 }
 
-virtual ReadResult readScript(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readScript(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     osg::ref_ptr<osg::Script> script = new osg::Script;
 
@@ -209,7 +209,7 @@ virtual ReadResult readScript(std::istream&fin, const osgDB::ReaderWriter::Optio
     return script.release();
 }
 
-virtual ReadResult readScript(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readScript(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

@@ -165,7 +165,7 @@ void State::releaseGLObjects()
          aitr != _attributeMap.end();
          ++aitr)
     {
-        AttributeStack&as = aitr->second;
+        AttributeStack &as = aitr->second;
         if (as.global_default_attribute.valid())
         {
             as.global_default_attribute->releaseGLObjects(this);
@@ -179,13 +179,13 @@ void State::releaseGLObjects()
          itr != _textureAttributeMapList.end();
          ++itr)
     {
-        AttributeMap&attributeMap = *itr;
+        AttributeMap &attributeMap = *itr;
 
         for (AttributeMap::iterator aitr = attributeMap.begin();
              aitr != attributeMap.end();
              ++aitr)
         {
-            AttributeStack&as = aitr->second;
+            AttributeStack &as = aitr->second;
             if (as.global_default_attribute.valid())
             {
                 as.global_default_attribute->releaseGLObjects(this);
@@ -203,7 +203,7 @@ void State::reset()
          mitr != _modeMap.end();
          ++mitr)
     {
-        ModeStack&ms = mitr->second;
+        ModeStack &ms = mitr->second;
         ms.valueVec.clear();
         ms.last_applied_value = !ms.global_default_value;
         ms.changed            = true;
@@ -222,7 +222,7 @@ void State::reset()
          aitr != _attributeMap.end();
          ++aitr)
     {
-        AttributeStack&as = aitr->second;
+        AttributeStack &as = aitr->second;
         as.attributeVec.clear();
         as.last_applied_attribute       = NULL;
         as.last_applied_shadercomponent = NULL;
@@ -242,14 +242,14 @@ void State::reset()
          tamItr != _textureAttributeMapList.end();
          ++tamItr)
     {
-        AttributeMap&attributeMap = *tamItr;
+        AttributeMap &attributeMap = *tamItr;
 
         // go through all active StateAttribute's, setting to change to force update.
         for (AttributeMap::iterator aitr = attributeMap.begin();
              aitr != attributeMap.end();
              ++aitr)
         {
-            AttributeStack&as = aitr->second;
+            AttributeStack &as = aitr->second;
             as.attributeVec.clear();
             as.last_applied_attribute       = NULL;
             as.last_applied_shadercomponent = NULL;
@@ -288,7 +288,7 @@ void State::reset()
          uitr != _uniformMap.end();
          ++uitr)
     {
-        UniformStack&us = uitr->second;
+        UniformStack &us = uitr->second;
         us.uniformVec.clear();
     }
 }
@@ -325,8 +325,8 @@ void State::pushStateSet(const StateSet *dstate)
         pushModeList(_modeMap, dstate->getModeList());
 
         // iterator through texture modes.
-        unsigned int                   unit;
-        const StateSet::TextureModeList&ds_textureModeList = dstate->getTextureModeList();
+        unsigned int                    unit;
+        const StateSet::TextureModeList &ds_textureModeList = dstate->getTextureModeList();
 
         for (unit = 0; unit < ds_textureModeList.size(); ++unit)
         {
@@ -336,7 +336,7 @@ void State::pushStateSet(const StateSet *dstate)
         pushAttributeList(_attributeMap, dstate->getAttributeList());
 
         // iterator through texture attributes.
-        const StateSet::TextureAttributeList&ds_textureAttributeList = dstate->getTextureAttributeList();
+        const StateSet::TextureAttributeList &ds_textureAttributeList = dstate->getTextureAttributeList();
 
         for (unit = 0; unit < ds_textureAttributeList.size(); ++unit)
         {
@@ -379,8 +379,8 @@ void State::popStateSet()
         popModeList(_modeMap, dstate->getModeList());
 
         // iterator through texture modes.
-        unsigned int                   unit;
-        const StateSet::TextureModeList&ds_textureModeList = dstate->getTextureModeList();
+        unsigned int                    unit;
+        const StateSet::TextureModeList &ds_textureModeList = dstate->getTextureModeList();
 
         for (unit = 0; unit < ds_textureModeList.size(); ++unit)
         {
@@ -390,7 +390,7 @@ void State::popStateSet()
         popAttributeList(_attributeMap, dstate->getAttributeList());
 
         // iterator through texture attributes.
-        const StateSet::TextureAttributeList&ds_textureAttributeList = dstate->getTextureAttributeList();
+        const StateSet::TextureAttributeList &ds_textureAttributeList = dstate->getTextureAttributeList();
 
         for (unit = 0; unit < ds_textureAttributeList.size(); ++unit)
         {
@@ -458,7 +458,7 @@ void State::removeStateSet(unsigned int pos)
     }
 }
 
-void State::captureCurrentState(StateSet&stateset) const
+void State::captureCurrentState(StateSet &stateset) const
 {
     // empty the stateset first.
     stateset.clear();
@@ -468,7 +468,7 @@ void State::captureCurrentState(StateSet&stateset) const
          ++mitr)
     {
         // note GLMode = mitr->first
-        const ModeStack&ms = mitr->second;
+        const ModeStack &ms = mitr->second;
         if (!ms.valueVec.empty())
         {
             stateset.setMode(mitr->first, ms.valueVec.back());
@@ -479,7 +479,7 @@ void State::captureCurrentState(StateSet&stateset) const
          aitr != _attributeMap.end();
          ++aitr)
     {
-        const AttributeStack&as = aitr->second;
+        const AttributeStack &as = aitr->second;
         if (!as.attributeVec.empty())
         {
             stateset.setAttribute(const_cast<StateAttribute*>(as.attributeVec.back().first));
@@ -506,8 +506,8 @@ void State::apply(const StateSet *dstate)
         _currentShaderCompositionUniformList.clear();
 
         // apply all texture state and modes
-        const StateSet::TextureModeList     &ds_textureModeList      = dstate->getTextureModeList();
-        const StateSet::TextureAttributeList&ds_textureAttributeList = dstate->getTextureAttributeList();
+        const StateSet::TextureModeList      &ds_textureModeList      = dstate->getTextureModeList();
+        const StateSet::TextureAttributeList &ds_textureAttributeList = dstate->getTextureAttributeList();
 
         unsigned int unit;
         unsigned int unitMax = maximum(static_cast<unsigned int>(ds_textureModeList.size()), static_cast<unsigned int>(ds_textureAttributeList.size()));
@@ -660,7 +660,7 @@ void State::applyShaderComposition()
             {
                 // OSG_NOTICE<<"  itr->first="<<itr->first.first<<", "<<itr->first.second<<std::endl;
 
-                AttributeStack&as = itr->second;
+                AttributeStack &as = itr->second;
                 if (as.last_applied_shadercomponent)
                 {
                     shaderComponents.push_back(const_cast<ShaderComponent*>(as.last_applied_shadercomponent));
@@ -748,9 +748,9 @@ const StateAttribute* State::getLastAppliedTextureAttribute(unsigned int unit, S
 }
 
 
-void State::haveAppliedMode(ModeMap&modeMap, StateAttribute::GLMode mode, StateAttribute::GLModeValue value)
+void State::haveAppliedMode(ModeMap &modeMap, StateAttribute::GLMode mode, StateAttribute::GLModeValue value)
 {
-    ModeStack&ms = modeMap[mode];
+    ModeStack &ms = modeMap[mode];
 
     ms.last_applied_value = value & StateAttribute::ON;
 
@@ -759,9 +759,9 @@ void State::haveAppliedMode(ModeMap&modeMap, StateAttribute::GLMode mode, StateA
 }
 
 /** mode has been set externally, update state to reflect this setting.*/
-void State::haveAppliedMode(ModeMap&modeMap, StateAttribute::GLMode mode)
+void State::haveAppliedMode(ModeMap &modeMap, StateAttribute::GLMode mode)
 {
-    ModeStack&ms = modeMap[mode];
+    ModeStack &ms = modeMap[mode];
 
     // don't know what last applied value is can't apply it.
     // assume that it has changed by toggle the value of last_applied_value.
@@ -772,11 +772,11 @@ void State::haveAppliedMode(ModeMap&modeMap, StateAttribute::GLMode mode)
 }
 
 /** attribute has been applied externally, update state to reflect this setting.*/
-void State::haveAppliedAttribute(AttributeMap&attributeMap, const StateAttribute *attribute)
+void State::haveAppliedAttribute(AttributeMap &attributeMap, const StateAttribute *attribute)
 {
     if (attribute)
     {
-        AttributeStack&as = attributeMap[attribute->getTypeMemberPair()];
+        AttributeStack &as = attributeMap[attribute->getTypeMemberPair()];
 
         as.last_applied_attribute = attribute;
 
@@ -785,13 +785,13 @@ void State::haveAppliedAttribute(AttributeMap&attributeMap, const StateAttribute
     }
 }
 
-void State::haveAppliedAttribute(AttributeMap&attributeMap, StateAttribute::Type type, unsigned int member)
+void State::haveAppliedAttribute(AttributeMap &attributeMap, StateAttribute::Type type, unsigned int member)
 {
     AttributeMap::iterator itr = attributeMap.find(StateAttribute::TypeMemberPair(type, member));
 
     if (itr != attributeMap.end())
     {
-        AttributeStack&as = itr->second;
+        AttributeStack &as = itr->second;
         as.last_applied_attribute = 0L;
 
         // will need to update this attribute on next apply so set it to changed.
@@ -799,13 +799,13 @@ void State::haveAppliedAttribute(AttributeMap&attributeMap, StateAttribute::Type
     }
 }
 
-bool State::getLastAppliedMode(const ModeMap&modeMap, StateAttribute::GLMode mode) const
+bool State::getLastAppliedMode(const ModeMap &modeMap, StateAttribute::GLMode mode) const
 {
     ModeMap::const_iterator itr = modeMap.find(mode);
 
     if (itr != modeMap.end())
     {
-        const ModeStack&ms = itr->second;
+        const ModeStack &ms = itr->second;
         return ms.last_applied_value;
     }
     else
@@ -814,13 +814,13 @@ bool State::getLastAppliedMode(const ModeMap&modeMap, StateAttribute::GLMode mod
     }
 }
 
-const StateAttribute* State::getLastAppliedAttribute(const AttributeMap&attributeMap, StateAttribute::Type type, unsigned int member) const
+const StateAttribute* State::getLastAppliedAttribute(const AttributeMap &attributeMap, StateAttribute::Type type, unsigned int member) const
 {
     AttributeMap::const_iterator itr = attributeMap.find(StateAttribute::TypeMemberPair(type, member));
 
     if (itr != attributeMap.end())
     {
-        const AttributeStack&as = itr->second;
+        const AttributeStack &as = itr->second;
         return as.last_applied_attribute;
     }
     else
@@ -835,7 +835,7 @@ void State::dirtyAllModes()
          mitr != _modeMap.end();
          ++mitr)
     {
-        ModeStack&ms = mitr->second;
+        ModeStack &ms = mitr->second;
         ms.last_applied_value = !ms.last_applied_value;
         ms.changed            = true;
     }
@@ -848,7 +848,7 @@ void State::dirtyAllModes()
              mitr != tmmItr->end();
              ++mitr)
         {
-            ModeStack&ms = mitr->second;
+            ModeStack &ms = mitr->second;
             ms.last_applied_value = !ms.last_applied_value;
             ms.changed            = true;
         }
@@ -861,7 +861,7 @@ void State::dirtyAllAttributes()
          aitr != _attributeMap.end();
          ++aitr)
     {
-        AttributeStack&as = aitr->second;
+        AttributeStack &as = aitr->second;
         as.last_applied_attribute = 0;
         as.changed                = true;
     }
@@ -871,13 +871,13 @@ void State::dirtyAllAttributes()
          tamItr != _textureAttributeMapList.end();
          ++tamItr)
     {
-        AttributeMap&attributeMap = *tamItr;
+        AttributeMap &attributeMap = *tamItr;
 
         for (AttributeMap::iterator aitr = attributeMap.begin();
              aitr != attributeMap.end();
              ++aitr)
         {
-            AttributeStack&as = aitr->second;
+            AttributeStack &as = aitr->second;
             as.last_applied_attribute = 0;
             as.changed                = true;
         }
@@ -1171,7 +1171,7 @@ void State::setVertexAttribPointer(unsigned int index,
         if (index >= _vertexAttribArrayList.size())
             _vertexAttribArrayList.resize(index + 1);
 
-        EnabledArrayPair&eap = _vertexAttribArrayList[index];
+        EnabledArrayPair &eap = _vertexAttribArrayList[index];
 
         if (!eap._enabled || eap._dirty)
         {
@@ -1205,7 +1205,7 @@ void State::setVertexAttribIPointer(unsigned int index,
         if (index >= _vertexAttribArrayList.size())
             _vertexAttribArrayList.resize(index + 1);
 
-        EnabledArrayPair&eap = _vertexAttribArrayList[index];
+        EnabledArrayPair &eap = _vertexAttribArrayList[index];
 
         if (!eap._enabled || eap._dirty)
         {
@@ -1238,7 +1238,7 @@ void State::setVertexAttribLPointer(unsigned int index,
         if (index >= _vertexAttribArrayList.size())
             _vertexAttribArrayList.resize(index + 1);
 
-        EnabledArrayPair&eap = _vertexAttribArrayList[index];
+        EnabledArrayPair &eap = _vertexAttribArrayList[index];
 
         if (!eap._enabled || eap._dirty)
         {
@@ -1267,7 +1267,7 @@ void State::disableVertexAttribPointer(unsigned int index)
         if (index >= _vertexAttribArrayList.size())
             _vertexAttribArrayList.resize(index + 1);
 
-        EnabledArrayPair&eap = _vertexAttribArrayList[index];
+        EnabledArrayPair &eap = _vertexAttribArrayList[index];
 
         if (eap._enabled || eap._dirty)
         {
@@ -1285,7 +1285,7 @@ void State::disableVertexAttribPointersAboveAndIncluding(unsigned int index)
     {
         while (index < _vertexAttribArrayList.size())
         {
-            EnabledArrayPair&eap = _vertexAttribArrayList[index];
+            EnabledArrayPair &eap = _vertexAttribArrayList[index];
             if (eap._enabled || eap._dirty)
             {
                 eap._enabled = false;
@@ -1481,7 +1481,7 @@ void State::applyModelViewAndProjectionUniformsIfRequired()
 
 namespace State_Utils
 {
-bool replace(std::string&str, const std::string&original_phrase, const std::string&new_phrase)
+bool replace(std::string &str, const std::string &original_phrase, const std::string &new_phrase)
 {
     // Prevent infinite loop : if original_phrase is empty, do nothing and return false
     if (original_phrase.empty())
@@ -1512,7 +1512,7 @@ bool replace(std::string&str, const std::string&original_phrase, const std::stri
     return replacedStr;
 }
 
-void replaceAndInsertDeclaration(std::string&source, std::string::size_type declPos, const std::string&originalStr, const std::string&newStr, const std::string&declarationPrefix)
+void replaceAndInsertDeclaration(std::string &source, std::string::size_type declPos, const std::string &originalStr, const std::string &newStr, const std::string &declarationPrefix)
 {
     if (replace(source, originalStr, newStr))
     {
@@ -1521,7 +1521,7 @@ void replaceAndInsertDeclaration(std::string&source, std::string::size_type decl
 }
 }
 
-bool State::convertVertexShaderSourceToOsgBuiltIns(std::string&source) const
+bool State::convertVertexShaderSourceToOsgBuiltIns(std::string &source) const
 {
     OSG_INFO << "State::convertShaderSourceToOsgBuiltIns()" << std::endl;
 
@@ -1563,7 +1563,7 @@ bool State::convertVertexShaderSourceToOsgBuiltIns(std::string&source) const
 
         for (size_t i = 0; i < _texCoordAliasList.size(); i++)
         {
-            const VertexAttribAlias&texCoordAlias = _texCoordAliasList[i];
+            const VertexAttribAlias &texCoordAlias = _texCoordAliasList[i];
             State_Utils::replaceAndInsertDeclaration(source, declPos, texCoordAlias._glName, texCoordAlias._osgName, texCoordAlias._declaration);
         }
     }
@@ -1573,7 +1573,7 @@ bool State::convertVertexShaderSourceToOsgBuiltIns(std::string&source) const
     return true;
 }
 
-void State::setUpVertexAttribAlias(VertexAttribAlias&alias, GLuint location, const std::string glName, const std::string osgName, const std::string&declaration)
+void State::setUpVertexAttribAlias(VertexAttribAlias &alias, GLuint location, const std::string glName, const std::string osgName, const std::string &declaration)
 {
     alias                          = VertexAttribAlias(location, glName, osgName, declaration);
     _attributeBindingList[osgName] = location;
@@ -1641,7 +1641,7 @@ void State::applyModelViewMatrix(const osg::RefMatrix *matrix)
     }
 }
 
-void State::applyModelViewMatrix(const osg::Matrix&matrix)
+void State::applyModelViewMatrix(const osg::Matrix &matrix)
 {
     _modelViewCache->set(matrix);
     _modelView = _modelViewCache;
@@ -1684,7 +1684,7 @@ void State::drawQuads(GLint first, GLsizei count, GLsizei primCount)
 
     if (endOfIndices < 65536)
     {
-        IndicesGLushort&indices = _quadIndicesGLushort[array];
+        IndicesGLushort &indices = _quadIndicesGLushort[array];
 
         if (endOfIndices >= indices.size())
         {
@@ -1715,7 +1715,7 @@ void State::drawQuads(GLint first, GLsizei count, GLsizei primCount)
     }
     else
     {
-        IndicesGLuint&indices = _quadIndicesGLuint[array];
+        IndicesGLuint &indices = _quadIndicesGLuint[array];
 
         if (endOfIndices >= indices.size())
         {
@@ -1746,7 +1746,7 @@ void State::drawQuads(GLint first, GLsizei count, GLsizei primCount)
     }
 }
 
-void State::ModeStack::print(std::ostream&fout) const
+void State::ModeStack::print(std::ostream &fout) const
 {
     fout << "    valid = " << valid << std::endl;
     fout << "    changed = " << changed << std::endl;
@@ -1767,7 +1767,7 @@ void State::ModeStack::print(std::ostream&fout) const
     fout << " }" << std::endl;
 }
 
-void State::AttributeStack::print(std::ostream&fout) const
+void State::AttributeStack::print(std::ostream &fout) const
 {
     fout << "    changed = " << changed << std::endl;
     fout << "    last_applied_attribute = " << last_applied_attribute;
@@ -1795,7 +1795,7 @@ void State::AttributeStack::print(std::ostream&fout) const
 }
 
 
-void State::UniformStack::print(std::ostream&fout) const
+void State::UniformStack::print(std::ostream &fout) const
 {
     fout << "    UniformVec { ";
 
@@ -1816,7 +1816,7 @@ void State::UniformStack::print(std::ostream&fout) const
 
 
 
-void State::print(std::ostream&fout) const
+void State::print(std::ostream &fout) const
 {
 #if 0
     GraphicsContext *_graphicsContext;
@@ -1938,10 +1938,10 @@ bool State::DefineMap::updateCurrentDefines()
              itr != map.end();
              ++itr)
         {
-            const DefineStack::DefineVec&dv = itr->second.defineVec;
+            const DefineStack::DefineVec &dv = itr->second.defineVec;
             if (!dv.empty())
             {
-                const StateSet::DefinePair&dp = dv.back();
+                const StateSet::DefinePair &dp = dv.back();
                 if (dp.second & osg::StateAttribute::ON)
                 {
                     currentDefines[itr->first] = dp;
@@ -1957,12 +1957,12 @@ bool State::DefineMap::updateCurrentDefines()
     }
 }
 
-std::string State::getDefineString(const osg::ShaderDefines&shaderDefines)
+std::string State::getDefineString(const osg::ShaderDefines &shaderDefines)
 {
     if (_defineMap.changed)
         _defineMap.updateCurrentDefines();
 
-    const StateSet::DefineList&currentDefines = _defineMap.currentDefines;
+    const StateSet::DefineList &currentDefines = _defineMap.currentDefines;
 
     ShaderDefines::const_iterator        sd_itr = shaderDefines.begin();
     StateSet::DefineList::const_iterator cd_itr = currentDefines.begin();
@@ -1977,7 +1977,7 @@ std::string State::getDefineString(const osg::ShaderDefines&shaderDefines)
             ++cd_itr;
         else
         {
-            const StateSet::DefinePair&dp = cd_itr->second;
+            const StateSet::DefinePair &dp = cd_itr->second;
             shaderDefineStr += "#define ";
             shaderDefineStr += cd_itr->first;
             if (dp.first.empty())
@@ -1999,7 +1999,7 @@ std::string State::getDefineString(const osg::ShaderDefines&shaderDefines)
     return shaderDefineStr;
 }
 
-bool State::supportsShaderRequirements(const osg::ShaderDefines&shaderRequirements)
+bool State::supportsShaderRequirements(const osg::ShaderDefines &shaderRequirements)
 {
     if (shaderRequirements.empty())
         return true;
@@ -2007,7 +2007,7 @@ bool State::supportsShaderRequirements(const osg::ShaderDefines&shaderRequiremen
     if (_defineMap.changed)
         _defineMap.updateCurrentDefines();
 
-    const StateSet::DefineList&currentDefines = _defineMap.currentDefines;
+    const StateSet::DefineList &currentDefines = _defineMap.currentDefines;
 
     for (ShaderDefines::const_iterator sr_itr = shaderRequirements.begin();
          sr_itr != shaderRequirements.end();
@@ -2020,11 +2020,11 @@ bool State::supportsShaderRequirements(const osg::ShaderDefines&shaderRequiremen
     return true;
 }
 
-bool State::supportsShaderRequirement(const std::string&shaderRequirement)
+bool State::supportsShaderRequirement(const std::string &shaderRequirement)
 {
     if (_defineMap.changed)
         _defineMap.updateCurrentDefines();
 
-    const StateSet::DefineList&currentDefines = _defineMap.currentDefines;
+    const StateSet::DefineList &currentDefines = _defineMap.currentDefines;
     return (currentDefines.find(shaderRequirement) != currentDefines.end());
 }

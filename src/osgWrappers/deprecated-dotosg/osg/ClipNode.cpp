@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool ClipNode_readLocalData(Object&obj, Input&fr);
-bool ClipNode_writeLocalData(const Object&obj, Output&fw);
+bool ClipNode_readLocalData(Object &obj, Input &fr);
+bool ClipNode_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(ClipNode)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(ClipNode)
     &ClipNode_writeLocalData
 );
 
-bool ClipNode_readLocalData(Object&obj, Input&fr)
+bool ClipNode_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    ClipNode&clipnode = static_cast<ClipNode&>(obj);
+    ClipNode &clipnode = static_cast<ClipNode&>(obj);
 
     if (fr[0].matchWord("referenceFrame"))
     {
@@ -59,9 +59,9 @@ bool ClipNode_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool ClipNode_writeLocalData(const Object&obj, Output&fw)
+bool ClipNode_writeLocalData(const Object &obj, Output &fw)
 {
-    const ClipNode&clipnode = static_cast<const ClipNode&>(obj);
+    const ClipNode &clipnode = static_cast<const ClipNode&>(obj);
 
     fw.indent() << "referenceFrame ";
 

@@ -10,16 +10,16 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Texture3D_readLocalData(Object&obj, Input&fr);
-bool Texture3D_writeLocalData(const Object&obj, Output&fw);
+bool Texture3D_readLocalData(Object &obj, Input &fr);
+bool Texture3D_writeLocalData(const Object &obj, Output &fw);
 
-bool Texture3D_matchWrapStr(const char *str, Texture3D::WrapMode&wrap);
+bool Texture3D_matchWrapStr(const char *str, Texture3D::WrapMode &wrap);
 const char* Texture3D_getWrapStr(Texture3D::WrapMode wrap);
-bool Texture3D_matchFilterStr(const char *str, Texture3D::FilterMode&filter);
+bool Texture3D_matchFilterStr(const char *str, Texture3D::FilterMode &filter);
 const char* Texture3D_getFilterStr(Texture3D::FilterMode filter);
-bool Texture3D_matchInternalFormatModeStr(const char *str, Texture3D::InternalFormatMode&mode);
+bool Texture3D_matchInternalFormatModeStr(const char *str, Texture3D::InternalFormatMode &mode);
 const char* Texture3D_getInternalFormatModeStr(Texture3D::InternalFormatMode mode);
-bool Texture3D_matchInternalFormatStr(const char *str, int&value);
+bool Texture3D_matchInternalFormatStr(const char *str, int &value);
 const char* Texture3D_getInternalFormatStr(int value);
 
 // register the read and write functions with the osgDB::Registry.
@@ -32,11 +32,11 @@ REGISTER_DOTOSGWRAPPER(Texture3D)
     &Texture3D_writeLocalData
 );
 
-bool Texture3D_readLocalData(Object&obj, Input&fr)
+bool Texture3D_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Texture3D&texture = static_cast<Texture3D&>(obj);
+    Texture3D &texture = static_cast<Texture3D&>(obj);
 
     if (fr[0].matchWord("file") && fr[1].isString())
     {
@@ -65,9 +65,9 @@ bool Texture3D_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Texture3D_writeLocalData(const Object&obj, Output&fw)
+bool Texture3D_writeLocalData(const Object &obj, Output &fw)
 {
-    const Texture3D&texture = static_cast<const Texture3D&>(obj);
+    const Texture3D &texture = static_cast<const Texture3D&>(obj);
 
     if (texture.getImage())
     {

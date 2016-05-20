@@ -23,7 +23,7 @@ Property::Property() :
     _modifiedCount(0)
 {}
 
-Property::Property(const Property&property, const osg::CopyOp&copyop) :
+Property::Property(const Property &property, const osg::CopyOp &copyop) :
     osg::Object(property, copyop),
     _modifiedCount(0)
 {}
@@ -38,7 +38,7 @@ Property::~Property()
 CompositeProperty::CompositeProperty()
 {}
 
-CompositeProperty::CompositeProperty(const CompositeProperty&compositeProperty, const osg::CopyOp&copyop) :
+CompositeProperty::CompositeProperty(const CompositeProperty &compositeProperty, const osg::CopyOp &copyop) :
     Property(compositeProperty, copyop)
 {}
 
@@ -56,7 +56,7 @@ void CompositeProperty::clear()
 SwitchProperty::SwitchProperty() : _activeProperty(0)
 {}
 
-SwitchProperty::SwitchProperty(const SwitchProperty&switchProperty, const osg::CopyOp&copyop) :
+SwitchProperty::SwitchProperty(const SwitchProperty &switchProperty, const osg::CopyOp &copyop) :
     CompositeProperty(switchProperty, copyop),
     _activeProperty(switchProperty._activeProperty)
 {}
@@ -70,7 +70,7 @@ TransferFunctionProperty::TransferFunctionProperty(osg::TransferFunction *tf) :
     _tf(tf)
 {}
 
-TransferFunctionProperty::TransferFunctionProperty(const TransferFunctionProperty&tfp, const osg::CopyOp&copyop) :
+TransferFunctionProperty::TransferFunctionProperty(const TransferFunctionProperty &tfp, const osg::CopyOp &copyop) :
     Property(tfp, copyop),
     _tf(tfp._tf)
 {}
@@ -84,13 +84,13 @@ ScalarProperty::ScalarProperty()
     _uniform = new osg::Uniform;
 }
 
-ScalarProperty::ScalarProperty(const std::string&scalarName, float value)
+ScalarProperty::ScalarProperty(const std::string &scalarName, float value)
 {
     setName(scalarName);
     _uniform = new osg::Uniform(scalarName.c_str(), value);
 }
 
-ScalarProperty::ScalarProperty(const ScalarProperty&sp, const osg::CopyOp&copyop) :
+ScalarProperty::ScalarProperty(const ScalarProperty &sp, const osg::CopyOp &copyop) :
     Property(sp, copyop)
 {
     _uniform = new osg::Uniform(sp._uniform->getName().c_str(), getValue());
@@ -104,7 +104,7 @@ IsoSurfaceProperty::IsoSurfaceProperty(float value) :
     ScalarProperty("IsoSurfaceValue", value)
 {}
 
-IsoSurfaceProperty::IsoSurfaceProperty(const IsoSurfaceProperty&isp, const osg::CopyOp&copyop) :
+IsoSurfaceProperty::IsoSurfaceProperty(const IsoSurfaceProperty &isp, const osg::CopyOp &copyop) :
     ScalarProperty(isp, copyop)
 {}
 
@@ -119,7 +119,7 @@ AlphaFuncProperty::AlphaFuncProperty(float value) :
     _alphaFunc = new osg::AlphaFunc(osg::AlphaFunc::GREATER, value);
 }
 
-AlphaFuncProperty::AlphaFuncProperty(const AlphaFuncProperty&afp, const osg::CopyOp&copyop) :
+AlphaFuncProperty::AlphaFuncProperty(const AlphaFuncProperty &afp, const osg::CopyOp &copyop) :
     ScalarProperty(afp, copyop)
 {
     _alphaFunc = new osg::AlphaFunc(osg::AlphaFunc::GREATER, getValue());
@@ -139,7 +139,7 @@ void AlphaFuncProperty::setValue(float v)
 MaximumIntensityProjectionProperty::MaximumIntensityProjectionProperty()
 {}
 
-MaximumIntensityProjectionProperty::MaximumIntensityProjectionProperty(const MaximumIntensityProjectionProperty&isp, const osg::CopyOp&copyop) :
+MaximumIntensityProjectionProperty::MaximumIntensityProjectionProperty(const MaximumIntensityProjectionProperty &isp, const osg::CopyOp &copyop) :
     Property(isp, copyop)
 {}
 
@@ -150,7 +150,7 @@ MaximumIntensityProjectionProperty::MaximumIntensityProjectionProperty(const Max
 LightingProperty::LightingProperty()
 {}
 
-LightingProperty::LightingProperty(const LightingProperty&isp, const osg::CopyOp&copyop) :
+LightingProperty::LightingProperty(const LightingProperty &isp, const osg::CopyOp &copyop) :
     Property(isp, copyop)
 {}
 
@@ -163,7 +163,7 @@ SampleDensityProperty::SampleDensityProperty(float value) :
     ScalarProperty("SampleDensityValue", value)
 {}
 
-SampleDensityProperty::SampleDensityProperty(const SampleDensityProperty&isp, const osg::CopyOp&copyop) :
+SampleDensityProperty::SampleDensityProperty(const SampleDensityProperty &isp, const osg::CopyOp &copyop) :
     ScalarProperty(isp, copyop)
 {}
 
@@ -176,7 +176,7 @@ SampleDensityWhenMovingProperty::SampleDensityWhenMovingProperty(float value) :
     ScalarProperty("SampleDensityValue", value)
 {}
 
-SampleDensityWhenMovingProperty::SampleDensityWhenMovingProperty(const SampleDensityWhenMovingProperty&isp, const osg::CopyOp&copyop) :
+SampleDensityWhenMovingProperty::SampleDensityWhenMovingProperty(const SampleDensityWhenMovingProperty &isp, const osg::CopyOp &copyop) :
     ScalarProperty(isp, copyop)
 {}
 
@@ -188,7 +188,7 @@ SampleRatioProperty::SampleRatioProperty(float value) :
     ScalarProperty("SampleRatioValue", value)
 {}
 
-SampleRatioProperty::SampleRatioProperty(const SampleRatioProperty&srp, const osg::CopyOp&copyop) :
+SampleRatioProperty::SampleRatioProperty(const SampleRatioProperty &srp, const osg::CopyOp &copyop) :
     ScalarProperty(srp, copyop)
 {}
 
@@ -200,7 +200,7 @@ SampleRatioWhenMovingProperty::SampleRatioWhenMovingProperty(float value) :
     ScalarProperty("SampleRatioValue", value)
 {}
 
-SampleRatioWhenMovingProperty::SampleRatioWhenMovingProperty(const SampleRatioWhenMovingProperty&isp, const osg::CopyOp&copyop) :
+SampleRatioWhenMovingProperty::SampleRatioWhenMovingProperty(const SampleRatioWhenMovingProperty &isp, const osg::CopyOp &copyop) :
     ScalarProperty(isp, copyop)
 {}
 
@@ -214,7 +214,7 @@ TransparencyProperty::TransparencyProperty(float value) :
     ScalarProperty("TransparencyValue", value)
 {}
 
-TransparencyProperty::TransparencyProperty(const TransparencyProperty&isp, const osg::CopyOp&copyop) :
+TransparencyProperty::TransparencyProperty(const TransparencyProperty &isp, const osg::CopyOp &copyop) :
     ScalarProperty(isp, copyop)
 {}
 
@@ -226,7 +226,7 @@ ExteriorTransparencyFactorProperty::ExteriorTransparencyFactorProperty(float val
     ScalarProperty("ExteriorTransparencyFactorValue", value)
 {}
 
-ExteriorTransparencyFactorProperty::ExteriorTransparencyFactorProperty(const ExteriorTransparencyFactorProperty&etfp, const osg::CopyOp&copyop) :
+ExteriorTransparencyFactorProperty::ExteriorTransparencyFactorProperty(const ExteriorTransparencyFactorProperty &etfp, const osg::CopyOp &copyop) :
     ScalarProperty(etfp, copyop)
 {}
 
@@ -238,67 +238,67 @@ PropertyVisitor::PropertyVisitor(bool traverseOnlyActiveChildren) :
     _traverseOnlyActiveChildren(traverseOnlyActiveChildren)
 {}
 
-void PropertyVisitor::apply(Property&p)
+void PropertyVisitor::apply(Property &p)
 {
     p.traverse(*this);
 }
-void PropertyVisitor::apply(CompositeProperty&p)
+void PropertyVisitor::apply(CompositeProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(SwitchProperty&p)
+void PropertyVisitor::apply(SwitchProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(TransferFunctionProperty&p)
+void PropertyVisitor::apply(TransferFunctionProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(ScalarProperty&p)
+void PropertyVisitor::apply(ScalarProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(IsoSurfaceProperty&p)
+void PropertyVisitor::apply(IsoSurfaceProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(AlphaFuncProperty&p)
+void PropertyVisitor::apply(AlphaFuncProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(MaximumIntensityProjectionProperty&p)
+void PropertyVisitor::apply(MaximumIntensityProjectionProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(LightingProperty&p)
+void PropertyVisitor::apply(LightingProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(SampleRatioProperty&p)
+void PropertyVisitor::apply(SampleRatioProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(SampleRatioWhenMovingProperty&p)
+void PropertyVisitor::apply(SampleRatioWhenMovingProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(SampleDensityProperty&p)
+void PropertyVisitor::apply(SampleDensityProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(SampleDensityWhenMovingProperty&p)
+void PropertyVisitor::apply(SampleDensityWhenMovingProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(TransparencyProperty&p)
+void PropertyVisitor::apply(TransparencyProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(ExteriorTransparencyFactorProperty&p)
+void PropertyVisitor::apply(ExteriorTransparencyFactorProperty &p)
 {
     apply(static_cast<Property&>(p));
 }
-void PropertyVisitor::apply(VolumeSettings&p)
+void PropertyVisitor::apply(VolumeSettings &p)
 {
     apply(static_cast<Property&>(p));
 }
@@ -312,48 +312,48 @@ CollectPropertiesVisitor::CollectPropertiesVisitor(bool traverseOnlyActiveChildr
     PropertyVisitor(traverseOnlyActiveChildren)
 {}
 
-void CollectPropertiesVisitor::apply(TransferFunctionProperty&tf)
+void CollectPropertiesVisitor::apply(TransferFunctionProperty &tf)
 {
     _tfProperty = &tf;
 }
 void CollectPropertiesVisitor::apply(ScalarProperty&) {}
-void CollectPropertiesVisitor::apply(IsoSurfaceProperty&iso)
+void CollectPropertiesVisitor::apply(IsoSurfaceProperty &iso)
 {
     _isoProperty = &iso;
 }
-void CollectPropertiesVisitor::apply(AlphaFuncProperty&af)
+void CollectPropertiesVisitor::apply(AlphaFuncProperty &af)
 {
     _afProperty = &af;
 }
-void CollectPropertiesVisitor::apply(MaximumIntensityProjectionProperty&mip)
+void CollectPropertiesVisitor::apply(MaximumIntensityProjectionProperty &mip)
 {
     _mipProperty = &mip;
 }
-void CollectPropertiesVisitor::apply(LightingProperty&lp)
+void CollectPropertiesVisitor::apply(LightingProperty &lp)
 {
     _lightingProperty = &lp;
 }
-void CollectPropertiesVisitor::apply(SampleDensityProperty&sdp)
+void CollectPropertiesVisitor::apply(SampleDensityProperty &sdp)
 {
     _sampleDensityProperty = &sdp;
 }
-void CollectPropertiesVisitor::apply(SampleDensityWhenMovingProperty&sdp)
+void CollectPropertiesVisitor::apply(SampleDensityWhenMovingProperty &sdp)
 {
     _sampleDensityWhenMovingProperty = &sdp;
 }
-void CollectPropertiesVisitor::apply(SampleRatioProperty&srp)
+void CollectPropertiesVisitor::apply(SampleRatioProperty &srp)
 {
     _sampleRatioProperty = &srp;
 }
-void CollectPropertiesVisitor::apply(SampleRatioWhenMovingProperty&srp)
+void CollectPropertiesVisitor::apply(SampleRatioWhenMovingProperty &srp)
 {
     _sampleRatioWhenMovingProperty = &srp;
 }
-void CollectPropertiesVisitor::apply(TransparencyProperty&tp)
+void CollectPropertiesVisitor::apply(TransparencyProperty &tp)
 {
     _transparencyProperty = &tp;
 }
-void CollectPropertiesVisitor::apply(ExteriorTransparencyFactorProperty&etfp)
+void CollectPropertiesVisitor::apply(ExteriorTransparencyFactorProperty &etfp)
 {
     _exteriorTransparencyFactorProperty = &etfp;
 }
@@ -367,7 +367,7 @@ CycleSwitchVisitor(int delta) :
     _delta(delta),
     _switchModified(false) {}
 
-virtual void apply(VolumeSettings&vs)
+virtual void apply(VolumeSettings &vs)
 {
     int newValue = static_cast<int>(vs.getShadingModel()) + _delta;
 
@@ -384,7 +384,7 @@ virtual void apply(VolumeSettings&vs)
     PropertyVisitor::apply(vs);
 }
 
-virtual void apply(SwitchProperty&sp)
+virtual void apply(SwitchProperty &sp)
 {
     if (sp.getNumProperties() > 1)
     {
@@ -426,7 +426,7 @@ PropertyAdjustmentCallback::PropertyAdjustmentCallback() :
     _updateSampleDensity(false)
 {}
 
-PropertyAdjustmentCallback::PropertyAdjustmentCallback(const PropertyAdjustmentCallback&pac, const osg::CopyOp&) :
+PropertyAdjustmentCallback::PropertyAdjustmentCallback(const PropertyAdjustmentCallback &pac, const osg::CopyOp&) :
     _cyleForwardKey(pac._cyleForwardKey),
     _cyleBackwardKey(pac._cyleBackwardKey),
     _transparencyKey(pac._transparencyKey),
@@ -439,7 +439,7 @@ PropertyAdjustmentCallback::PropertyAdjustmentCallback(const PropertyAdjustmentC
     _updateSampleDensity(false)
 {}
 
-bool PropertyAdjustmentCallback::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&, osg::Object *object, osg::NodeVisitor*)
+bool PropertyAdjustmentCallback::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&, osg::Object *object, osg::NodeVisitor*)
 {
     if (ea.getHandled())
         return false;

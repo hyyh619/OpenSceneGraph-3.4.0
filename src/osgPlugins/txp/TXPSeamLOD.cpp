@@ -23,7 +23,7 @@ TXPSeamLOD::TXPSeamLOD(int x, int y, int lod, int dx, int dy) :
     _dy      = dy;
 }
 
-TXPSeamLOD::TXPSeamLOD(const TXPSeamLOD&ttg, const osg::CopyOp&copyop) :
+TXPSeamLOD::TXPSeamLOD(const TXPSeamLOD &ttg, const osg::CopyOp &copyop) :
     Group(ttg, copyop)
 {
     _tid = ttg._tid;
@@ -31,7 +31,7 @@ TXPSeamLOD::TXPSeamLOD(const TXPSeamLOD&ttg, const osg::CopyOp&copyop) :
     _dy  = ttg._dy;
 }
 
-void TXPSeamLOD::traverse(osg::NodeVisitor&nv)
+void TXPSeamLOD::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR && getNumChildren() == 2)
     {

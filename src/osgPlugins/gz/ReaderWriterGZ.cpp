@@ -50,7 +50,7 @@ virtual const char* className() const
     return "HTTP Protocol Model Reader";
 }
 
-virtual ReadResult openArchive(const std::string&fileName, ArchiveStatus status, unsigned int, const Options *options) const
+virtual ReadResult openArchive(const std::string &fileName, ArchiveStatus status, unsigned int, const Options *options) const
 {
     if (status != READ)
         return ReadResult(ReadResult::FILE_NOT_HANDLED);
@@ -58,59 +58,59 @@ virtual ReadResult openArchive(const std::string&fileName, ArchiveStatus status,
         return readFile(ARCHIVE, fileName, options);
 }
 
-virtual ReadResult readObject(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     return readFile(OBJECT, fileName, options);
 }
 
-virtual ReadResult readImage(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     return readFile(IMAGE, fileName, options);
 }
 
-virtual ReadResult readHeightField(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readHeightField(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     return readFile(HEIGHTFIELD, fileName, options);
 }
 
-virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     return readFile(NODE, fileName, options);
 }
 
-ReadResult readFile(ObjectType objectType, osgDB::ReaderWriter *rw, std::istream&fin, const osgDB::ReaderWriter::Options *options) const;
+ReadResult readFile(ObjectType objectType, osgDB::ReaderWriter *rw, std::istream &fin, const osgDB::ReaderWriter::Options *options) const;
 
-ReadResult readFile(ObjectType objectType, const std::string&fullFileName, const osgDB::ReaderWriter::Options *options) const;
+ReadResult readFile(ObjectType objectType, const std::string &fullFileName, const osgDB::ReaderWriter::Options *options) const;
 
 
 
-virtual WriteResult writeObject(const osg::Object&obj, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const osg::Object &obj, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     return writeFile(OBJECT, &obj, fileName, options);
 }
 
-virtual WriteResult writeImage(const osg::Image&image, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     return writeFile(IMAGE, &image, fileName, options);
 }
 
-virtual WriteResult writeHeightField(const osg::HeightField&hf, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeHeightField(const osg::HeightField &hf, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     return writeFile(HEIGHTFIELD, &hf, fileName, options);
 }
 
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     return writeFile(NODE, &node, fileName, options);
 }
 
-WriteResult writeFile(ObjectType objectType, const osg::Object *object, osgDB::ReaderWriter *rw, std::ostream&fin, const osgDB::ReaderWriter::Options *options) const;
+WriteResult writeFile(ObjectType objectType, const osg::Object *object, osgDB::ReaderWriter *rw, std::ostream &fin, const osgDB::ReaderWriter::Options *options) const;
 
-WriteResult writeFile(ObjectType objectType, const osg::Object *object, const std::string&fullFileName, const osgDB::ReaderWriter::Options *options) const;
+WriteResult writeFile(ObjectType objectType, const osg::Object *object, const std::string &fullFileName, const osgDB::ReaderWriter::Options *options) const;
 
 
-bool read(std::istream&fin, std::string&destination) const;
-bool write(std::ostream&fout, const std::string&source) const;
+bool read(std::istream &fin, std::string &destination) const;
+bool write(std::ostream &fout, const std::string &source) const;
 };
 
 ReaderWriterGZ::ReaderWriterGZ()
@@ -127,7 +127,7 @@ ReaderWriterGZ::~ReaderWriterGZ()
     // OSG_NOTICE<<"ReaderWriterGZ::~ReaderWriterGZ()"<<std::endl;
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterGZ::readFile(ObjectType objectType, osgDB::ReaderWriter *rw, std::istream&fin, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterGZ::readFile(ObjectType objectType, osgDB::ReaderWriter *rw, std::istream &fin, const osgDB::ReaderWriter::Options *options) const
 {
     switch (objectType)
     {
@@ -147,7 +147,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterGZ::readFile(ObjectType objectType, 
     return ReadResult::FILE_NOT_HANDLED;
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterGZ::readFile(ObjectType objectType, const std::string&fullFileName, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterGZ::readFile(ObjectType objectType, const std::string &fullFileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fullFileName);
 
@@ -200,7 +200,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterGZ::readFile(ObjectType objectType, 
 }
 
 
-osgDB::ReaderWriter::WriteResult ReaderWriterGZ::writeFile(ObjectType objectType, const osg::Object *object, osgDB::ReaderWriter *rw, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::WriteResult ReaderWriterGZ::writeFile(ObjectType objectType, const osg::Object *object, osgDB::ReaderWriter *rw, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     switch (objectType)
     {
@@ -218,7 +218,7 @@ osgDB::ReaderWriter::WriteResult ReaderWriterGZ::writeFile(ObjectType objectType
     return WriteResult::FILE_NOT_HANDLED;
 }
 
-osgDB::ReaderWriter::WriteResult ReaderWriterGZ::writeFile(ObjectType objectType, const osg::Object *object, const std::string&fullFileName, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::WriteResult ReaderWriterGZ::writeFile(ObjectType objectType, const osg::Object *object, const std::string &fullFileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fullFileName);
 
@@ -257,7 +257,7 @@ osgDB::ReaderWriter::WriteResult ReaderWriterGZ::writeFile(ObjectType objectType
 
 #define CHUNK 16384
 
-bool ReaderWriterGZ::read(std::istream&fin, std::string&destination) const
+bool ReaderWriterGZ::read(std::istream &fin, std::string &destination) const
 {
     int           ret;
     unsigned      have;
@@ -325,7 +325,7 @@ bool ReaderWriterGZ::read(std::istream&fin, std::string&destination) const
     return ret == Z_STREAM_END ? true : false;
 }
 
-bool ReaderWriterGZ::write(std::ostream&fout, const std::string&source) const
+bool ReaderWriterGZ::write(std::ostream &fout, const std::string &source) const
 {
     int           ret, flush = Z_FINISH;
     unsigned      have;

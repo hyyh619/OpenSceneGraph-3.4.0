@@ -31,19 +31,19 @@ void Locator::setTransformAsExtents(double minX, double minY, double maxX, doubl
     locatorModified();
 }
 
-bool Locator::convertLocalToModel(const osg::Vec3d&local, osg::Vec3d&world) const
+bool Locator::convertLocalToModel(const osg::Vec3d &local, osg::Vec3d &world) const
 {
     world = local * _transform;
     return true;
 }
 
-bool Locator::convertModelToLocal(const osg::Vec3d&world, osg::Vec3d&local) const
+bool Locator::convertModelToLocal(const osg::Vec3d &world, osg::Vec3d &local) const
 {
     local = world * _inverse;
     return true;
 }
 
-bool Locator::computeLocalBounds(Locator& /*source*/, osg::Vec3d&bottomLeft, osg::Vec3d&topRight) const
+bool Locator::computeLocalBounds(Locator& /*source*/, osg::Vec3d &bottomLeft, osg::Vec3d &topRight) const
 {
     typedef std::list<osg::Vec3d> Corners;
     Corners corners;
@@ -108,7 +108,7 @@ bool Locator::computeLocalBounds(Locator& /*source*/, osg::Vec3d&bottomLeft, osg
     return true;
 }
 
-bool Locator::computeLocalBounds(osg::Vec3d&bottomLeft, osg::Vec3d&topRight) const
+bool Locator::computeLocalBounds(osg::Vec3d &bottomLeft, osg::Vec3d &topRight) const
 {
     OSG_INFO << "Locator::computeLocalBounds" << std::endl;
 

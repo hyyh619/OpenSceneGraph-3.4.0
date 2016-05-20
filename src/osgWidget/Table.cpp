@@ -7,7 +7,7 @@ namespace osgWidget
 // TODO: There is a serious, outstanding bug with regards to USING a table before ALL Widgets
 // are set! FIX THIS!!!
 
-Table::Table(const std::string&name, unsigned int rows, unsigned int cols) :
+Table::Table(const std::string &name, unsigned int rows, unsigned int cols) :
     Window      (name),
     _rows       (rows),
     _cols       (cols),
@@ -17,7 +17,7 @@ Table::Table(const std::string&name, unsigned int rows, unsigned int cols) :
     _objects.resize(_rows * _cols);
 }
 
-Table::Table(const Table&table, const osg::CopyOp&co) :
+Table::Table(const Table &table, const osg::CopyOp &co) :
     Window      (table, co),
     _rows       (table._rows),
     _cols       (table._cols),
@@ -29,7 +29,7 @@ unsigned int Table::_calculateIndex(unsigned int row, unsigned int col) const
     return (row * _cols) + col;
 }
 
-void Table::_getRows(CellSizes&rows, Getter get) const
+void Table::_getRows(CellSizes &rows, Getter get) const
 {
     for (unsigned int i = 0; i < _rows; i++)
         rows.push_back(
@@ -37,7 +37,7 @@ void Table::_getRows(CellSizes&rows, Getter get) const
             );
 }
 
-void Table::_getColumns(CellSizes&cols, Getter get) const
+void Table::_getColumns(CellSizes &cols, Getter get) const
 {
     for (unsigned int i = 0; i < _cols; i++)
         cols.push_back(
@@ -200,22 +200,22 @@ bool Table::addWidget(Widget *widget, unsigned int row, unsigned int col)
     return Window::insertWidget(widget, _calculateIndex(row, col));
 }
 
-void Table::getRowHeights(CellSizes&rowHeights) const
+void Table::getRowHeights(CellSizes &rowHeights) const
 {
     _getRows(rowHeights, &Widget::getHeightTotal);
 }
 
-void Table::getRowMinHeights(CellSizes&rowMinHeights) const
+void Table::getRowMinHeights(CellSizes &rowMinHeights) const
 {
     _getRows(rowMinHeights, &Widget::getMinHeightTotal);
 }
 
-void Table::getColumnWidths(CellSizes&colWidths) const
+void Table::getColumnWidths(CellSizes &colWidths) const
 {
     _getColumns(colWidths, &Widget::getWidthTotal);
 }
 
-void Table::getColumnMinWidths(CellSizes&colMinWidths) const
+void Table::getColumnMinWidths(CellSizes &colMinWidths) const
 {
     _getColumns(colMinWidths, &Widget::getMinWidthTotal);
 }

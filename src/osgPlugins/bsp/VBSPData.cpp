@@ -15,7 +15,7 @@ VBSPData::~VBSPData()
 {}
 
 
-void VBSPData::addEntity(std::string&newEntity)
+void VBSPData::addEntity(std::string &newEntity)
 {
     entity_list.push_back(newEntity);
 }
@@ -33,7 +33,7 @@ const std::string&VBSPData::getEntity(int index) const
 }
 
 
-void VBSPData::addModel(Model&newModel)
+void VBSPData::addModel(Model &newModel)
 {
     model_list.push_back(newModel);
 }
@@ -51,7 +51,7 @@ const Model&VBSPData::getModel(int index) const
 }
 
 
-void VBSPData::addPlane(bsp::Plane&newPlane)
+void VBSPData::addPlane(bsp::Plane &newPlane)
 {
     plane_list.push_back(newPlane);
 }
@@ -69,7 +69,7 @@ const bsp::Plane&VBSPData::getPlane(int index) const
 }
 
 
-void VBSPData::addVertex(osg::Vec3f&newVertex)
+void VBSPData::addVertex(osg::Vec3f &newVertex)
 {
     // Scale the vertex from inches up to meter scale
     vertex_list.push_back(newVertex * 0.0254f);
@@ -88,7 +88,7 @@ const osg::Vec3f&VBSPData::getVertex(int index) const
 }
 
 
-void VBSPData::addEdge(Edge&newEdge)
+void VBSPData::addEdge(Edge &newEdge)
 {
     edge_list.push_back(newEdge);
 }
@@ -106,7 +106,7 @@ const Edge&VBSPData::getEdge(int index) const
 }
 
 
-void VBSPData::addSurfaceEdge(int&newSurfEdge)
+void VBSPData::addSurfaceEdge(int &newSurfEdge)
 {
     surface_edge_list.push_back(newSurfEdge);
 }
@@ -124,7 +124,7 @@ const int VBSPData::getSurfaceEdge(int index) const
 }
 
 
-void VBSPData::addFace(Face&newFace)
+void VBSPData::addFace(Face &newFace)
 {
     face_list.push_back(newFace);
 }
@@ -142,7 +142,7 @@ const Face&VBSPData::getFace(int index) const
 }
 
 
-void VBSPData::addTexInfo(TexInfo&newTexInfo)
+void VBSPData::addTexInfo(TexInfo &newTexInfo)
 {
     texinfo_list.push_back(newTexInfo);
 }
@@ -160,7 +160,7 @@ const TexInfo&VBSPData::getTexInfo(int index) const
 }
 
 
-void VBSPData::addTexData(TexData&newTexData)
+void VBSPData::addTexData(TexData &newTexData)
 {
     texdata_list.push_back(newTexData);
 }
@@ -178,7 +178,7 @@ const TexData&VBSPData::getTexData(int index) const
 }
 
 
-void VBSPData::addTexDataString(std::string&newTexDataString)
+void VBSPData::addTexDataString(std::string &newTexDataString)
 {
     texdata_string_list.push_back(newTexDataString);
 }
@@ -196,7 +196,7 @@ const std::string&VBSPData::getTexDataString(int index) const
 }
 
 
-void VBSPData::addDispInfo(DisplaceInfo&newDispInfo)
+void VBSPData::addDispInfo(DisplaceInfo &newDispInfo)
 {
     dispinfo_list.push_back(newDispInfo);
 }
@@ -214,7 +214,7 @@ const DisplaceInfo&VBSPData::getDispInfo(int index) const
 }
 
 
-void VBSPData::addDispVertex(DisplacedVertex&newDispVertex)
+void VBSPData::addDispVertex(DisplacedVertex &newDispVertex)
 {
     displaced_vertex_list.push_back(newDispVertex);
 }
@@ -232,7 +232,7 @@ const DisplacedVertex&VBSPData::getDispVertex(int index) const
 }
 
 
-void VBSPData::addStaticPropModel(std::string&newModel)
+void VBSPData::addStaticPropModel(std::string &newModel)
 {
     static_prop_model_list.push_back(newModel);
 }
@@ -250,7 +250,7 @@ const std::string&VBSPData::getStaticPropModel(int index) const
 }
 
 
-void VBSPData::addStaticProp(StaticPropV4&newProp)
+void VBSPData::addStaticProp(StaticPropV4 &newProp)
 {
     StaticProp newPropV5;
 
@@ -264,7 +264,7 @@ void VBSPData::addStaticProp(StaticPropV4&newProp)
 }
 
 
-void VBSPData::addStaticProp(StaticProp&newProp)
+void VBSPData::addStaticProp(StaticProp &newProp)
 {
     static_prop_list.push_back(newProp);
 }

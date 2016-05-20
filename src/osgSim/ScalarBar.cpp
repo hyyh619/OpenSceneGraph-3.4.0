@@ -51,7 +51,7 @@ const ScalarsToColors* ScalarBar::getScalarsToColors() const
     return _stc.get();
 }
 
-void ScalarBar::setTitle(const std::string&title)
+void ScalarBar::setTitle(const std::string &title)
 {
     _title = title;
     createDrawables();
@@ -62,7 +62,7 @@ const std::string&ScalarBar::getTitle() const
     return _title;
 }
 
-void ScalarBar::setPosition(const osg::Vec3&pos)
+void ScalarBar::setPosition(const osg::Vec3 &pos)
 {
     _position = pos;
     createDrawables();
@@ -108,7 +108,7 @@ const ScalarBar::ScalarPrinter* ScalarBar::getScalarPrinter() const
 }
 
 
-void ScalarBar::setTextProperties(const TextProperties&tp)
+void ScalarBar::setTextProperties(const TextProperties &tp)
 {
     _textProperties = tp;
     createDrawables();

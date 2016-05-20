@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  ExplosionOperator_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ExplosionOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ExplosionOperator_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ExplosionOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ExplosionOperator_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(ExplosionOperator_Proxy)
     ExplosionOperator_writeLocalData
 );
 
-bool ExplosionOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ExplosionOperator_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::ExplosionOperator&ep        = static_cast<osgParticle::ExplosionOperator&>(obj);
-    bool                          itAdvanced = false;
+    osgParticle::ExplosionOperator &ep        = static_cast<osgParticle::ExplosionOperator&>(obj);
+    bool                           itAdvanced = false;
 
     osg::Vec3 a;
 
@@ -82,10 +82,10 @@ bool ExplosionOperator_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool ExplosionOperator_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ExplosionOperator_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::ExplosionOperator&ep = static_cast<const osgParticle::ExplosionOperator&>(obj);
-    osg::Vec3                           a   = ep.getCenter();
+    const osgParticle::ExplosionOperator &ep = static_cast<const osgParticle::ExplosionOperator&>(obj);
+    osg::Vec3                            a   = ep.getCenter();
 
     fw.indent() << "center " << a.x() << " " << a.y() << " " << a.z() << std::endl;
 

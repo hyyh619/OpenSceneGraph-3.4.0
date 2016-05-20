@@ -8,8 +8,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  ModularEmitter_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ModularEmitter_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ModularEmitter_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ModularEmitter_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ModularEmitter_Proxy)
 (
@@ -20,10 +20,10 @@ REGISTER_DOTOSGWRAPPER(ModularEmitter_Proxy)
     ModularEmitter_writeLocalData
 );
 
-bool ModularEmitter_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ModularEmitter_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::ModularEmitter&myobj     = static_cast<osgParticle::ModularEmitter&>(obj);
-    bool                       itAdvanced = false;
+    osgParticle::ModularEmitter &myobj     = static_cast<osgParticle::ModularEmitter&>(obj);
+    bool                        itAdvanced = false;
 
     osgParticle::Counter *counter = static_cast<osgParticle::Counter*>(fr.readObjectOfType(osgDB::type_wrapper<osgParticle::Counter>()));
 
@@ -50,9 +50,9 @@ bool ModularEmitter_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool ModularEmitter_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ModularEmitter_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::ModularEmitter&myobj = static_cast<const osgParticle::ModularEmitter&>(obj);
+    const osgParticle::ModularEmitter &myobj = static_cast<const osgParticle::ModularEmitter&>(obj);
 
     if (myobj.getCounter())
         fw.writeObject(*myobj.getCounter());

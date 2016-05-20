@@ -164,7 +164,7 @@ GLWidget::GLWidget(QGLContext *context, QWidget *parent, const QGLWidget *shareW
     _devicePixelRatio = GETDEVICEPIXELRATIO();
 }
 
-GLWidget::GLWidget(const QGLFormat&format, QWidget *parent, const QGLWidget *shareWidget, Qt::WindowFlags f,
+GLWidget::GLWidget(const QGLFormat &format, QWidget *parent, const QGLWidget *shareWidget, Qt::WindowFlags f,
                    bool forwardKeyEvents)
     : QGLWidget(format, parent, shareWidget, f),
     _gw(NULL),
@@ -292,7 +292,7 @@ void GLWidget::setKeyboardModifiers(QInputEvent *event)
 
 void GLWidget::resizeEvent(QResizeEvent *event)
 {
-    const QSize&size = event->size();
+    const QSize &size = event->size();
 
     int scaled_width  = static_cast<int>(size.width() * _devicePixelRatio);
     int scaled_height = static_cast<int>(size.height() * _devicePixelRatio);
@@ -304,9 +304,9 @@ void GLWidget::resizeEvent(QResizeEvent *event)
 
 void GLWidget::moveEvent(QMoveEvent *event)
 {
-    const QPoint&pos          = event->pos();
-    int         scaled_width  = static_cast<int>(width() * _devicePixelRatio);
-    int         scaled_height = static_cast<int>(height() * _devicePixelRatio);
+    const QPoint &pos          = event->pos();
+    int          scaled_width  = static_cast<int>(width() * _devicePixelRatio);
+    int          scaled_height = static_cast<int>(height() * _devicePixelRatio);
 
     _gw->resized(pos.x(), pos.y(), scaled_width,  scaled_height);
     _gw->getEventQueue()->windowResize(pos.x(), pos.y(), scaled_width,  scaled_height);
@@ -636,7 +636,7 @@ QGLFormat GraphicsWindowQt::traits2qglFormat(const osg::GraphicsContext::Traits 
     return format;
 }
 
-void GraphicsWindowQt::qglFormat2traits(const QGLFormat&format, osg::GraphicsContext::Traits *traits)
+void GraphicsWindowQt::qglFormat2traits(const QGLFormat &format, osg::GraphicsContext::Traits *traits)
 {
     traits->red     = format.redBufferSize();
     traits->green   = format.greenBufferSize();
@@ -687,11 +687,11 @@ bool GraphicsWindowQt::setWindowRectangleImplementation(int x, int y, int width,
     return true;
 }
 
-void GraphicsWindowQt::getWindowRectangle(int&x, int&y, int&width, int&height)
+void GraphicsWindowQt::getWindowRectangle(int &x, int &y, int &width, int &height)
 {
     if (_widget)
     {
-        const QRect&geom = _widget->geometry();
+        const QRect &geom = _widget->geometry();
         x      = geom.x();
         y      = geom.y();
         width  = geom.width();
@@ -741,7 +741,7 @@ void GraphicsWindowQt::raiseWindow()
         _widget->raise();
 }
 
-void GraphicsWindowQt::setWindowName(const std::string&name)
+void GraphicsWindowQt::setWindowName(const std::string &name)
 {
     if (_widget)
         _widget->setWindowTitle(name.c_str());

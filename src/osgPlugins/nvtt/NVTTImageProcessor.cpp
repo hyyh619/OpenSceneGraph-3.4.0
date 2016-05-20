@@ -8,12 +8,12 @@
 class NVTTProcessor : public osgDB::ImageProcessor
 {
 public:
-virtual void compress(osg::Image&image, osg::Texture::InternalFormatMode compressedFormat, bool generateMipMap, bool resizeToPowerOfTwo, CompressionMethod method, CompressionQuality quality);
-virtual void generateMipMap(osg::Image&image, bool resizeToPowerOfTwo, CompressionMethod method);
+virtual void compress(osg::Image &image, osg::Texture::InternalFormatMode compressedFormat, bool generateMipMap, bool resizeToPowerOfTwo, CompressionMethod method, CompressionQuality quality);
+virtual void generateMipMap(osg::Image &image, bool resizeToPowerOfTwo, CompressionMethod method);
 
 protected:
 
-void process(osg::Image&texture, nvtt::Format format, bool generateMipMap, bool resizeToPowerOfTwo, CompressionMethod method, CompressionQuality quality);
+void process(osg::Image &texture, nvtt::Format format, bool generateMipMap, bool resizeToPowerOfTwo, CompressionMethod method, CompressionQuality quality);
 
 struct VPBErrorHandler : public nvtt::ErrorHandler
 {
@@ -36,7 +36,7 @@ struct OSGImageOutputHandler : public nvtt::OutputHandler
     virtual ~OSGImageOutputHandler();
 
     // create the osg image from the given format
-    bool assignImage(osg::Image&image);
+    bool assignImage(osg::Image &image);
 
     /// Indicate the start of a new compressed image that's part of the final texture.
     virtual void beginImage(int size, int width, int height, int depth, int face, int miplevel);
@@ -48,10 +48,10 @@ struct OSGImageOutputHandler : public nvtt::OutputHandler
 };
 
 // Convert RGBA to BGRA : nvtt only accepts BGRA pixel format
-void convertRGBAToBGRA(std::vector<unsigned char>&outputData, const osg::Image&image);
+void convertRGBAToBGRA(std::vector<unsigned char> &outputData, const osg::Image &image);
 
 // Convert RGB to BGRA : nvtt only accepts BGRA pixel format
-void convertRGBToBGRA(std::vector<unsigned char>&outputData, const osg::Image&image);
+void convertRGBToBGRA(std::vector<unsigned char> &outputData, const osg::Image &image);
 };
 
 /// Error handler.
@@ -103,7 +103,7 @@ NVTTProcessor::OSGImageOutputHandler::~OSGImageOutputHandler()
 }
 
 // create the osg image from the given format
-bool NVTTProcessor::OSGImageOutputHandler::assignImage(osg::Image&image)
+bool NVTTProcessor::OSGImageOutputHandler::assignImage(osg::Image &image)
 {
     // convert nvtt format to OpenGL pixel format
     GLint pixelFormat;
@@ -186,7 +186,7 @@ void NVTTProcessor::OSGImageOutputHandler::beginImage(int size, int width, int h
 bool NVTTProcessor::OSGImageOutputHandler::writeData(const void *data, int size)
 {
     // Copy mipmap data
-    std::vector<unsigned char>&dstData = *_mipmaps[_currentMipLevel];
+    std::vector<unsigned char> &dstData = *_mipmaps[_currentMipLevel];
 
     memcpy(&dstData[_currentNumberOfWritenBytes], data, size);
     _currentNumberOfWritenBytes += size;
@@ -194,7 +194,7 @@ bool NVTTProcessor::OSGImageOutputHandler::writeData(const void *data, int size)
 }
 
 // Convert RGBA to BGRA : nvtt only accepts BGRA pixel format
-void NVTTProcessor::convertRGBAToBGRA(std::vector<unsigned char>&outputData, const osg::Image&image)
+void NVTTProcessor::convertRGBAToBGRA(std::vector<unsigned char> &outputData, const osg::Image &image)
 {
     unsigned int n = 0;
 
@@ -214,7 +214,7 @@ void NVTTProcessor::convertRGBAToBGRA(std::vector<unsigned char>&outputData, con
 }
 
 // Convert RGB to BGRA : nvtt only accepts BGRA pixel format
-void NVTTProcessor::convertRGBToBGRA(std::vector<unsigned char>&outputData, const osg::Image&image)
+void NVTTProcessor::convertRGBToBGRA(std::vector<unsigned char> &outputData, const osg::Image &image)
 {
     unsigned int n = 0;
 
@@ -234,7 +234,7 @@ void NVTTProcessor::convertRGBToBGRA(std::vector<unsigned char>&outputData, cons
 }
 
 // Main interface with NVTT
-void NVTTProcessor::process(osg::Image&image, nvtt::Format format, bool generateMipMap, bool resizeToPowerOfTwo, CompressionMethod method, CompressionQuality quality)
+void NVTTProcessor::process(osg::Image &image, nvtt::Format format, bool generateMipMap, bool resizeToPowerOfTwo, CompressionMethod method, CompressionQuality quality)
 {
     // Fill input options
     nvtt::InputOptions inputOptions;
@@ -339,7 +339,7 @@ void NVTTProcessor::process(osg::Image&image, nvtt::Format format, bool generate
     outputHandler.assignImage(image);
 }
 
-void NVTTProcessor::compress(osg::Image&image, osg::Texture::InternalFormatMode compressedFormat, bool generateMipMap, bool resizeToPowerOfTwo, CompressionMethod method, CompressionQuality quality)
+void NVTTProcessor::compress(osg::Image &image, osg::Texture::InternalFormatMode compressedFormat, bool generateMipMap, bool resizeToPowerOfTwo, CompressionMethod method, CompressionQuality quality)
 {
     nvtt::Format format;
 
@@ -377,7 +377,7 @@ void NVTTProcessor::compress(osg::Image&image, osg::Texture::InternalFormatMode 
     process(image, format, generateMipMap, resizeToPowerOfTwo, method, quality);
 }
 
-void NVTTProcessor::generateMipMap(osg::Image&image, bool resizeToPowerOfTwo, CompressionMethod method)
+void NVTTProcessor::generateMipMap(osg::Image &image, bool resizeToPowerOfTwo, CompressionMethod method)
 {
     process(image, nvtt::Format_RGBA, true, resizeToPowerOfTwo, method, NORMAL);
 }

@@ -39,14 +39,14 @@ void EventQueue::clear()
 }
 
 
-void EventQueue::setEvents(Events&events)
+void EventQueue::setEvents(Events &events)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_eventQueueMutex);
 
     _eventQueue = events;
 }
 
-void EventQueue::appendEvents(Events&events)
+void EventQueue::appendEvents(Events &events)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_eventQueueMutex);
 
@@ -60,7 +60,7 @@ void EventQueue::addEvent(Event *event)
     _eventQueue.push_back(event);
 }
 
-bool EventQueue::takeEvents(Events&events)
+bool EventQueue::takeEvents(Events &events)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_eventQueueMutex);
 
@@ -75,7 +75,7 @@ bool EventQueue::takeEvents(Events&events)
     }
 }
 
-bool EventQueue::takeEvents(Events&events, double cutOffTime)
+bool EventQueue::takeEvents(Events &events, double cutOffTime)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_eventQueueMutex);
 
@@ -127,7 +127,7 @@ bool EventQueue::takeEvents(Events&events, double cutOffTime)
     }
 }
 
-bool EventQueue::copyEvents(Events&events) const
+bool EventQueue::copyEvents(Events &events) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_eventQueueMutex);
 

@@ -9,7 +9,7 @@ TXPPagedLOD::TXPPagedLOD() :
     osg::PagedLOD()
 {}
 
-TXPPagedLOD::TXPPagedLOD(const TXPPagedLOD&plod, const osg::CopyOp&copyop) :
+TXPPagedLOD::TXPPagedLOD(const TXPPagedLOD &plod, const osg::CopyOp &copyop) :
     osg::PagedLOD(plod, copyop),
     _tileIdentifier(plod._tileIdentifier)
 {}
@@ -17,7 +17,7 @@ TXPPagedLOD::TXPPagedLOD(const TXPPagedLOD&plod, const osg::CopyOp&copyop) :
 TXPPagedLOD::~TXPPagedLOD()
 {}
 
-void TXPPagedLOD::traverse(osg::NodeVisitor&nv)
+void TXPPagedLOD::traverse(osg::NodeVisitor &nv)
 {
     // TileMapper* tileMapper = dynamic_cast<TileMapper*>(nv.getUserData());
     // Modified by Brad Anderegg (May-27-08) because the black listing process appears to make tiles switch lods

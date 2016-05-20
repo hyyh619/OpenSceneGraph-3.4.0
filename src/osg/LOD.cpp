@@ -23,7 +23,7 @@ LOD::LOD() :
     _rangeMode(DISTANCE_FROM_EYE_POINT)
 {}
 
-LOD::LOD(const LOD&lod, const CopyOp&copyop) :
+LOD::LOD(const LOD &lod, const CopyOp &copyop) :
     Group(lod, copyop),
     _centerMode(lod._centerMode),
     _userDefinedCenter(lod._userDefinedCenter),
@@ -33,7 +33,7 @@ LOD::LOD(const LOD&lod, const CopyOp&copyop) :
 {}
 
 
-void LOD::traverse(NodeVisitor&nv)
+void LOD::traverse(NodeVisitor &nv)
 {
     switch (nv.getTraversalMode())
     {

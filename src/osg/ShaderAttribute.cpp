@@ -25,7 +25,7 @@ ShaderAttribute::ShaderAttribute() :
     _shaderComponent = new osg::ShaderComponent;
 }
 
-ShaderAttribute::ShaderAttribute(const ShaderAttribute&sa, const CopyOp&copyop) :
+ShaderAttribute::ShaderAttribute(const ShaderAttribute &sa, const CopyOp &copyop) :
     StateAttribute(sa, copyop),
     _type(sa._type),
     _uniforms(sa._uniforms)
@@ -42,7 +42,7 @@ osg::Object* ShaderAttribute::cloneType() const
     return sa;
 }
 
-int ShaderAttribute::compare(const StateAttribute&sa) const
+int ShaderAttribute::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -88,7 +88,7 @@ bool ShaderAttribute::getModeUsage(StateAttribute::ModeUsage& /*usage*/) const
     return false;
 }
 
-void ShaderAttribute::apply(State&state) const
+void ShaderAttribute::apply(State &state) const
 {
     for (Uniforms::const_iterator itr = _uniforms.begin();
          itr != _uniforms.end();
@@ -98,7 +98,7 @@ void ShaderAttribute::apply(State&state) const
     }
 }
 
-void ShaderAttribute::compileGLObjects(State&state) const
+void ShaderAttribute::compileGLObjects(State &state) const
 {
     if (_shaderComponent.valid())
         _shaderComponent->compileGLObjects(state);

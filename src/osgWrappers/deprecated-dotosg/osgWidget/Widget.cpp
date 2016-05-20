@@ -8,14 +8,14 @@
 #include <osgWidget/Util>
 #include <osgWidget/Widget>
 
-bool osgWidget_Widget_readData(osg::Object&obj, osgDB::Input&fr)
+bool osgWidget_Widget_readData(osg::Object &obj, osgDB::Input &fr)
 {
     osgWidget::warn() << "Widget read" << std::endl;
 
     return false;
 }
 
-bool osgWidget_Widget_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
+bool osgWidget_Widget_writeData(const osg::Object& /*obj*/, osgDB::Output &fw)
 {
     // const osgWidget::Widget& model = static_cast<const osgWidget::Widget&>(obj);
 
@@ -24,14 +24,14 @@ bool osgWidget_Widget_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
     return true;
 }
 
-bool osgWidget_NotifyWidget_readData(osg::Object& /*obj*/, osgDB::Input&fr)
+bool osgWidget_NotifyWidget_readData(osg::Object& /*obj*/, osgDB::Input &fr)
 {
     osgWidget::warn() << "NotifyWidget read" << std::endl;
 
     return false;
 }
 
-bool osgWidget_NotifyWidget_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
+bool osgWidget_NotifyWidget_writeData(const osg::Object& /*obj*/, osgDB::Output &fw)
 {
     // const osgWidget::NotifyWidget& model = static_cast<const osgWidget::NotifyWidget&>(obj);
 
@@ -40,14 +40,14 @@ bool osgWidget_NotifyWidget_writeData(const osg::Object& /*obj*/, osgDB::Output&
     return true;
 }
 
-bool osgWidget_NullWidget_readData(osg::Object& /*obj*/, osgDB::Input&fr)
+bool osgWidget_NullWidget_readData(osg::Object& /*obj*/, osgDB::Input &fr)
 {
     osgWidget::warn() << "NullWidget read" << std::endl;
 
     return false;
 }
 
-bool osgWidget_NullWidget_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
+bool osgWidget_NullWidget_writeData(const osg::Object& /*obj*/, osgDB::Output &fw)
 {
     // const osgWidget::NullWidget& model = static_cast<const osgWidget::NullWidget&>(obj);
 

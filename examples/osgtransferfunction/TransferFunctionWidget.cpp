@@ -41,7 +41,7 @@ TransferFunctionWidget::TransferFunctionWidget(osg::TransferFunction1D *tf) :
     setTransferFunction(tf);
 }
 
-TransferFunctionWidget::TransferFunctionWidget(const TransferFunctionWidget&tfw, const osg::CopyOp&copyop) :
+TransferFunctionWidget::TransferFunctionWidget(const TransferFunctionWidget &tfw, const osg::CopyOp &copyop) :
     Widget(tfw, copyop)
 {
     setExtents(tfw.getExtents());
@@ -57,7 +57,7 @@ void TransferFunctionWidget::setTransferFunction(const osg::TransferFunction1D *
 
     if (_transferFunction.valid())
     {
-        osg::TransferFunction1D::ColorMap&colorMap = _transferFunction->getColorMap();
+        osg::TransferFunction1D::ColorMap &colorMap = _transferFunction->getColorMap();
         if (colorMap.empty())
         {
             _min = FLT_MAX;
@@ -126,7 +126,7 @@ void TransferFunctionWidget::scaleVisibleRange(float center, float delta)
 }
 
 
-void TransferFunctionWidget::traverseImplementation(osg::NodeVisitor&nv)
+void TransferFunctionWidget::traverseImplementation(osg::NodeVisitor &nv)
 {
     Widget::traverseImplementation(nv);
 }
@@ -258,7 +258,7 @@ void TransferFunctionWidget::createGraphicsImplementation()
 //    OSG_NOTICE<<"Create graphics"<<std::endl;
 
     typedef osg::TransferFunction1D::ColorMap ColorMap;
-    ColorMap&colorMap = _transferFunction->getColorMap();
+    ColorMap &colorMap = _transferFunction->getColorMap();
     if (colorMap.empty())
         return;
 

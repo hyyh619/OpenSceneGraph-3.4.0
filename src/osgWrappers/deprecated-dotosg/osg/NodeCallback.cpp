@@ -9,8 +9,8 @@
 using namespace osg;
 using namespace osgDB;
 
-bool  NodeCallback_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  NodeCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw);   // register the read and write functions with the osgDB::Registry.
+bool  NodeCallback_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  NodeCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw);   // register the read and write functions with the osgDB::Registry.
 
 REGISTER_DOTOSGWRAPPER(NodeCallback)
 (
@@ -21,7 +21,7 @@ REGISTER_DOTOSGWRAPPER(NodeCallback)
     &NodeCallback_writeLocalData
 );
 
-bool NodeCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool NodeCallback_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
     NodeCallback *nc = dynamic_cast<NodeCallback*>(&obj);
 
@@ -40,7 +40,7 @@ bool NodeCallback_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool NodeCallback_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool NodeCallback_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
     const NodeCallback *nc = dynamic_cast<const NodeCallback*>(&obj);
 

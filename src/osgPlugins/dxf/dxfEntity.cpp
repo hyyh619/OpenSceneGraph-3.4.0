@@ -37,7 +37,7 @@ RegisterEntityProxy<dxfInsert>                  g_dxfInsert;
 RegisterEntityProxy<dxfText>                    g_dxfText;
 
 void
-dxfBasicEntity::assign(dxfFile*, codeValue&cv)
+dxfBasicEntity::assign(dxfFile*, codeValue &cv)
 {
     switch (cv._groupCode)
     {
@@ -52,7 +52,7 @@ dxfBasicEntity::assign(dxfFile*, codeValue&cv)
 }
 
 void
-dxf3DFace::assign(dxfFile *dxf, codeValue&cv)
+dxf3DFace::assign(dxfFile *dxf, codeValue &cv)
 {
     double d = cv._double;
 
@@ -111,7 +111,7 @@ dxf3DFace::drawScene(scene *sc)
 }
 
 void
-dxfVertex::assign(dxfFile *dxf, codeValue&cv)
+dxfVertex::assign(dxfFile *dxf, codeValue &cv)
 {
     double d = cv._double;
     // 2005.12.13 pdr: learned today that negative indices mean something and were possible
@@ -158,7 +158,7 @@ dxfVertex::assign(dxfFile *dxf, codeValue&cv)
 }
 
 void
-dxfCircle::assign(dxfFile *dxf, codeValue&cv)
+dxfCircle::assign(dxfFile *dxf, codeValue &cv)
 {
     double d = cv._double;
 
@@ -256,7 +256,7 @@ dxfCircle::drawScene(scene *sc)
 
 
 void
-dxfArc::assign(dxfFile *dxf, codeValue&cv)
+dxfArc::assign(dxfFile *dxf, codeValue &cv)
 {
     double d = cv._double;
 
@@ -376,7 +376,7 @@ dxfArc::drawScene(scene *sc)
 }
 
 void
-dxfLine::assign(dxfFile *dxf, codeValue&cv)
+dxfLine::assign(dxfFile *dxf, codeValue &cv)
 {
     double d = cv._double;
 
@@ -439,7 +439,7 @@ dxfLine::drawScene(scene *sc)
 //    sc->ocs_clear();
 }
 void
-dxfPoint::assign(dxfFile *dxf, codeValue&cv)
+dxfPoint::assign(dxfFile *dxf, codeValue &cv)
 {
     double d = cv._double;
 
@@ -474,7 +474,7 @@ dxfPoint::drawScene(scene *sc)
 }
 
 void
-dxfPolyline::assign(dxfFile *dxf, codeValue&cv)
+dxfPolyline::assign(dxfFile *dxf, codeValue &cv)
 {
     string s = cv._string;
 
@@ -847,7 +847,7 @@ dxfPolyline::drawScene(scene *sc)
 }
 
 void
-dxfLWPolyline::assign(dxfFile *dxf, codeValue&cv)
+dxfLWPolyline::assign(dxfFile *dxf, codeValue &cv)
 {
     string s = cv._string;
 
@@ -922,7 +922,7 @@ dxfLWPolyline::drawScene(scene *sc)
 }
 
 void
-dxfInsert::assign(dxfFile *dxf, codeValue&cv)
+dxfInsert::assign(dxfFile *dxf, codeValue &cv)
 {
     string s = cv._string;
 
@@ -1022,7 +1022,7 @@ dxfInsert::drawScene(scene *sc)
     sc->pushMatrix(m);
     sc->pushMatrix(back);
 
-    EntityList&l = _block->getEntityList();
+    EntityList &l = _block->getEntityList();
 
     for (EntityList::iterator itr = l.begin(); itr != l.end(); ++itr)
     {
@@ -1047,7 +1047,7 @@ dxfInsert::drawScene(scene *sc)
 }
 
 void
-dxfText::assign(dxfFile *dxf, codeValue&cv)
+dxfText::assign(dxfFile *dxf, codeValue &cv)
 {
     switch (cv._groupCode)
     {
@@ -1262,7 +1262,7 @@ void dxfEntity::drawScene(scene *sc)
 }
 
 void
-dxfEntity::assign(dxfFile *dxf, codeValue&cv)
+dxfEntity::assign(dxfFile *dxf, codeValue &cv)
 {
     string s = cv._string;
 

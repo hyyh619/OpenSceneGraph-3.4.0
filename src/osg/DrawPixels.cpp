@@ -28,7 +28,7 @@ DrawPixels::DrawPixels()
     _height      = 0;
 }
 
-DrawPixels::DrawPixels(const DrawPixels&drawimage, const CopyOp&copyop) :
+DrawPixels::DrawPixels(const DrawPixels &drawimage, const CopyOp &copyop) :
     Drawable(drawimage, copyop),
     _position(drawimage._position),
     _image(drawimage._image),
@@ -44,7 +44,7 @@ DrawPixels::~DrawPixels()
     // image will delete itself thanks to ref_ptr :-)
 }
 
-void DrawPixels::setPosition(const osg::Vec3&position)
+void DrawPixels::setPosition(const osg::Vec3 &position)
 {
     _position = position;
     dirtyBound();
@@ -59,7 +59,7 @@ void DrawPixels::setSubImageDimensions(unsigned int offsetX, unsigned int offset
     _height      = height;
 }
 
-void DrawPixels::getSubImageDimensions(unsigned int&offsetX, unsigned int&offsetY, unsigned int&width, unsigned int&height) const
+void DrawPixels::getSubImageDimensions(unsigned int &offsetX, unsigned int &offsetY, unsigned int &width, unsigned int &height) const
 {
     offsetX = _offsetX;
     offsetY = _offsetY;

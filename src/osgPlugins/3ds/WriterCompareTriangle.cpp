@@ -1,14 +1,14 @@
 #include "WriterCompareTriangle.h"
 #include <assert.h>
 
-WriterCompareTriangle::WriterCompareTriangle(const osg::Geode&geode, unsigned int nbVertices) : geode(geode)
+WriterCompareTriangle::WriterCompareTriangle(const osg::Geode &geode, unsigned int nbVertices) : geode(geode)
 {
     cutscene(nbVertices, geode.getBoundingBox());
 }
 
 bool
-WriterCompareTriangle::operator()(const std::pair<Triangle, int>&t1,
-                                  const std::pair<Triangle, int>&t2) const
+WriterCompareTriangle::operator()(const std::pair<Triangle, int> &t1,
+                                  const std::pair<Triangle, int> &t2) const
 {
     const osg::Geometry *g = geode.getDrawable(t1.second)->asGeometry();
 
@@ -30,9 +30,9 @@ WriterCompareTriangle::operator()(const std::pair<Triangle, int>&t1,
 }
 
 void
-WriterCompareTriangle::setMaxMin(int&nbVerticesX,
-                                 int&nbVerticesY,
-                                 int&nbVerticesZ) const
+WriterCompareTriangle::setMaxMin(int &nbVerticesX,
+                                 int &nbVerticesY,
+                                 int &nbVerticesZ) const
 {
     static const int min = 1;
     static const int max = 5;        // Number of blocks used to divide the scene (arbitrary but seems ok)
@@ -42,7 +42,7 @@ WriterCompareTriangle::setMaxMin(int&nbVerticesX,
     nbVerticesZ = osg::clampBetween<int>(nbVerticesZ, min, max);
 }
 
-void WriterCompareTriangle::cutscene(int nbVertices, const osg::BoundingBox&sceneBox)
+void WriterCompareTriangle::cutscene(int nbVertices, const osg::BoundingBox &sceneBox)
 {
     osg::BoundingBox::vec_type length = sceneBox._max - sceneBox._min;
 
@@ -140,7 +140,7 @@ WriterCompareTriangle::inWhichBox(const osg::BoundingBox::value_type x,
     return 0;
 }
 
-int WriterCompareTriangle::inWhichBox(const osg::BoundingBox::vec_type&point) const
+int WriterCompareTriangle::inWhichBox(const osg::BoundingBox::vec_type &point) const
 {
     return inWhichBox(point.x(), point.y(), point.z());
 }

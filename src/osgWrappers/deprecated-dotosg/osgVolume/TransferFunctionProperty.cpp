@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool TransferFunctionProperty_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool TransferFunctionProperty_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool TransferFunctionProperty_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool TransferFunctionProperty_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(TransferFunctionProperty_Proxy)
 (
@@ -26,9 +26,9 @@ REGISTER_DOTOSGWRAPPER(TransferFunctionProperty_Proxy)
 );
 
 
-bool TransferFunctionProperty_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool TransferFunctionProperty_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgVolume::TransferFunctionProperty&tfp = static_cast<osgVolume::TransferFunctionProperty&>(obj);
+    osgVolume::TransferFunctionProperty &tfp = static_cast<osgVolume::TransferFunctionProperty&>(obj);
 
     bool itrAdvanced = false;
 
@@ -44,9 +44,9 @@ bool TransferFunctionProperty_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool TransferFunctionProperty_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool TransferFunctionProperty_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgVolume::TransferFunctionProperty&tfp = static_cast<const osgVolume::TransferFunctionProperty&>(obj);
+    const osgVolume::TransferFunctionProperty &tfp = static_cast<const osgVolume::TransferFunctionProperty&>(obj);
 
     const osg::TransferFunction *tf = tfp.getTransferFunction();
 

@@ -736,7 +736,7 @@ VSIFilesystemHandler* VSIFileManager::GetHandler(const char *pszPath)
 /*                           InstallHandler()                           */
 /************************************************************************/
 
-void VSIFileManager::InstallHandler(const std::string&osPrefix,
+void VSIFileManager::InstallHandler(const std::string &osPrefix,
                                     VSIFilesystemHandler *poHandler)
 
 {

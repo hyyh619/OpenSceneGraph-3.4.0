@@ -34,13 +34,13 @@ class DataOutputStream;
 class MaterialPaletteManager
 {
 public:
-MaterialPaletteManager(ExportOptions&fltOpt);
+MaterialPaletteManager(ExportOptions &fltOpt);
 
 // Add a material to the palette and auto-assign it the next available index
 int add(osg::Material const *material);
 
 // Write the material palette records out to a DataOutputStream
-void write(DataOutputStream&dos) const;
+void write(DataOutputStream &dos) const;
 
 
 private:
@@ -61,7 +61,7 @@ struct MaterialRecord
 typedef std::map<osg::Material const*, MaterialRecord> MaterialPalette;
 MaterialPalette _materialPalette;
 
-ExportOptions&_fltOpt;
+ExportOptions &_fltOpt;
 
 protected:
 

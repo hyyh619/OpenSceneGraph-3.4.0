@@ -49,8 +49,8 @@
 namespace txp
 {
 // Gets local texture via the image helper
-osg::Texture2D* getLocalTexture(trpgrImageHelper&image_helper, const trpgTexture *tex);
-osg::Texture2D* getTemplateTexture(trpgrImageHelper&image_helper, trpgLocalMaterial *locmat, const trpgTexture *tex, int index = 0);
+osg::Texture2D* getLocalTexture(trpgrImageHelper &image_helper, const trpgTexture *tex);
+osg::Texture2D* getTemplateTexture(trpgrImageHelper &image_helper, trpgLocalMaterial *locmat, const trpgTexture *tex, int index = 0);
 
 
 
@@ -80,7 +80,7 @@ public:
 GeodeGroup() : osg::Group(), _geode(NULL)
 {}
 
-GeodeGroup(const GeodeGroup&gg, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY) :
+GeodeGroup(const GeodeGroup &gg, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
     osg::Group(gg, copyop), _geode(gg._geode)
 {}
 
@@ -124,9 +124,9 @@ inline TXPArchive* getArchive()
 
 // Scene parser
 osg::Group* parseScene(
-    trpgReadBuffer&buf,
-    std::map<int, osg::ref_ptr<osg::StateSet> >&materials,
-    std::map<int, osg::ref_ptr<osg::Node> >&models,
+    trpgReadBuffer &buf,
+    std::map<int, osg::ref_ptr<osg::StateSet> > &materials,
+    std::map<int, osg::ref_ptr<osg::Node> > &models,
     double realMinRange, double realMaxRange, double usedMaxRange);
 
 // Returns the current Top Group
@@ -200,13 +200,13 @@ struct TXPBillboardInfo
 };
 
 // Sets info for the last billboard parsed
-inline void setLastBillboardInfo(TXPBillboardInfo&info)
+inline void setLastBillboardInfo(TXPBillboardInfo &info)
 {
     _lastBillboardInfo = info;
 }
 
 // Gets info for the last billboard parsed
-inline void getLastBillboardInfo(TXPBillboardInfo&info)
+inline void getLastBillboardInfo(TXPBillboardInfo &info)
 {
     info = _lastBillboardInfo;
 }
@@ -384,7 +384,7 @@ public:
 
 geomRead(TXPParser *in_parse) : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -396,7 +396,7 @@ class groupRead : public trpgr_Callback
 public:
 groupRead(TXPParser *in_parse) : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -407,7 +407,7 @@ class attachRead : public trpgr_Callback
 public:
 attachRead(TXPParser *in_parse) : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -420,7 +420,7 @@ typedef std::vector<trpgChildRef> ChildRefList;
 childRefRead(TXPParser *in_parse) : _parse(in_parse)
 {}
 void Reset();
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 
 // After parsing this will return the number of trpgChildRef node found.
 unsigned int GetNbChildrenRef() const
@@ -453,7 +453,7 @@ class lodRead : public trpgr_Callback
 public:
 lodRead(TXPParser *in_parse) : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -464,7 +464,7 @@ class tileHeaderRead : public trpgr_Callback
 public:
 tileHeaderRead(TXPParser *in_parse) : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -476,7 +476,7 @@ class modelRefRead : public trpgr_Callback
 public:
 modelRefRead(TXPParser *in_parse) : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -487,7 +487,7 @@ class billboardRead : public trpgr_Callback
 public:
 billboardRead(TXPParser *in_parse) : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -498,7 +498,7 @@ class lightRead : public trpgr_Callback
 public:
 lightRead(TXPParser *in_parse) : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -509,7 +509,7 @@ class layerRead : public trpgr_Callback
 public:
 layerRead(TXPParser *in_parse)  : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };
@@ -520,7 +520,7 @@ class labelRead : public trpgr_Callback
 public:
 labelRead(TXPParser *in_parse)  : _parse(in_parse)
 {}
-void* Parse(trpgToken tok, trpgReadBuffer&buf);
+void* Parse(trpgToken tok, trpgReadBuffer &buf);
 protected:
 TXPParser *_parse;
 };

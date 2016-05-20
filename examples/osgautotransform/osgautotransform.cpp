@@ -34,7 +34,7 @@
 
 #include <iostream>
 
-osg::Node* createLabel(const osg::Vec3&pos, float size, const std::string&label, osgText::Text::AxisAlignment axisAlignment)
+osg::Node* createLabel(const osg::Vec3 &pos, float size, const std::string &label, osgText::Text::AxisAlignment axisAlignment)
 {
     osg::Geode *geode = new osg::Geode();
 
@@ -56,7 +56,7 @@ osg::Node* createLabel(const osg::Vec3&pos, float size, const std::string&label,
 }
 
 
-osg::Node* createLabel3(const osg::Vec3&pos, float size, const std::string&label)
+osg::Node* createLabel3(const osg::Vec3 &pos, float size, const std::string &label)
 {
     osg::Geode *geode = new osg::Geode();
 
@@ -79,7 +79,7 @@ osg::Node* createLabel3(const osg::Vec3&pos, float size, const std::string&label
     return geode;
 }
 
-osg::Node* createAxis(const osg::Vec3&s, const osg::Vec3&e, int numReps, osg::AutoTransform::AutoRotateMode autoRotateMode, osgText::Text::AxisAlignment axisAlignment, const std::string&str)
+osg::Node* createAxis(const osg::Vec3 &s, const osg::Vec3 &e, int numReps, osg::AutoTransform::AutoRotateMode autoRotateMode, osgText::Text::AxisAlignment axisAlignment, const std::string &str)
 {
     osg::Group *group = new osg::Group;
 
@@ -148,7 +148,7 @@ osg::Node* createAxis(const osg::Vec3&s, const osg::Vec3&e, int numReps, osg::Au
     return group;
 }
 
-osg::Node* createAutoScale(const osg::Vec3&position, float characterSize, const std::string&message, float minScale = 0.0, float maxScale = FLT_MAX)
+osg::Node* createAutoScale(const osg::Vec3 &position, float characterSize, const std::string &message, float minScale = 0.0, float maxScale = FLT_MAX)
 {
     std::string timesFont("fonts/arial.ttf");
 

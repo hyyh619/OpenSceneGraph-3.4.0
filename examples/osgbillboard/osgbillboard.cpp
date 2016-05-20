@@ -42,7 +42,7 @@
 typedef std::vector<osg::ref_ptr<osg::Image> > ImageList;
 
 /** create quad at specified position. */
-osg::Drawable* createSquare(const osg::Vec3&corner, const osg::Vec3&width, const osg::Vec3&height, osg::Image *image = NULL)
+osg::Drawable* createSquare(const osg::Vec3 &corner, const osg::Vec3 &width, const osg::Vec3 &height, osg::Image *image = NULL)
 {
     // set up the Geometry.
     osg::Geometry *geom = new osg::Geometry;
@@ -84,7 +84,7 @@ osg::Drawable* createSquare(const osg::Vec3&corner, const osg::Vec3&width, const
     return geom;
 }
 
-osg::Drawable* createAxis(const osg::Vec3&corner, const osg::Vec3&xdir, const osg::Vec3&ydir, const osg::Vec3&zdir)
+osg::Drawable* createAxis(const osg::Vec3 &corner, const osg::Vec3 &xdir, const osg::Vec3 &ydir, const osg::Vec3 &zdir)
 {
     // set up the Geometry.
     osg::Geometry *geom = new osg::Geometry;

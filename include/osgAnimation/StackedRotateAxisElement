@@ -22,38 +22,44 @@
 
 namespace osgAnimation
 {
-
-    class OSGANIMATION_EXPORT StackedRotateAxisElement : public StackedTransformElement
+    class OSGANIMATION_EXPORT StackedRotateAxisElement: public StackedTransformElement
     {
-    public:
+public:
         META_Object(osgAnimation, StackedRotateAxisElement);
 
         StackedRotateAxisElement();
-        StackedRotateAxisElement(const StackedRotateAxisElement&, const osg::CopyOp&);
-        StackedRotateAxisElement(const std::string& name, const osg::Vec3& axis, double angle);
-        StackedRotateAxisElement(const osg::Vec3& axis, double angle);
+        StackedRotateAxisElement(const StackedRotateAxisElement &, const osg::CopyOp &);
+        StackedRotateAxisElement(const std::string & name, const osg::Vec3 & axis, double angle);
+        StackedRotateAxisElement(const osg::Vec3 & axis, double angle);
 
-        void applyToMatrix(osg::Matrix& matrix) const;
+        void applyToMatrix(osg::Matrix &matrix) const;
         osg::Matrix getAsMatrix() const;
-        bool isIdentity() const { return (_angle == 0); }
+        bool isIdentity() const
+        {
+            return (_angle == 0);
+        }
         void update(float t = 0.0);
 
-        const osg::Vec3& getAxis() const;
+        const osg::Vec3&getAxis() const;
         double getAngle() const;
         void setAxis(const osg::Vec3&);
         void setAngle(double);
 
         virtual Target* getOrCreateTarget();
-        virtual Target* getTarget() {return _target.get();}
-        virtual const Target* getTarget() const {return _target.get();}
+        virtual Target* getTarget()
+        {
+            return _target.get();
+        }
+        virtual const Target* getTarget() const
+        {
+            return _target.get();
+        }
 
-    protected:
+protected:
         osg::Vec3 _axis;
-        double _angle;
-        osg::ref_ptr<FloatTarget> _target;
+        double    _angle;
+        osg::ref_ptr < FloatTarget > _target;
     };
-
 }
 
 #endif
-

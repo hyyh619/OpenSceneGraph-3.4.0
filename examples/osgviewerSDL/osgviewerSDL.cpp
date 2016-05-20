@@ -29,7 +29,7 @@
 
 #include <iostream>
 
-bool convertEvent(SDL_Event&event, osgGA::EventQueue&eventQueue)
+bool convertEvent(SDL_Event &event, osgGA::EventQueue &eventQueue)
 {
     switch (event.type)
     {

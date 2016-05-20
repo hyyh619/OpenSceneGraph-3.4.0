@@ -60,7 +60,7 @@ void Program::deleteGlProgram(unsigned int contextID, GLuint program)
     }
 }
 
-void Program::flushDeletedGlPrograms(unsigned int contextID, double /*currentTime*/, double&availableTime)
+void Program::flushDeletedGlPrograms(unsigned int contextID, double /*currentTime*/, double &availableTime)
 {
     // if no time available don't try to flush objects.
     if (availableTime <= 0.0)
@@ -71,12 +71,12 @@ void Program::flushDeletedGlPrograms(unsigned int contextID, double /*currentTim
     if (!extensions->isGlslSupported)
         return;
 
-    const osg::Timer&timer      = *osg::Timer::instance();
-    osg::Timer_t    start_tick  = timer.tick();
-    double          elapsedTime = 0.0;
+    const osg::Timer &timer      = *osg::Timer::instance();
+    osg::Timer_t     start_tick  = timer.tick();
+    double           elapsedTime = 0.0;
 
     {
-        GlProgramHandleList&pList = s_deletedGlProgramCache[contextID];
+        GlProgramHandleList &pList = s_deletedGlProgramCache[contextID];
 
         for (GlProgramHandleList::iterator titr = pList.begin();
              titr != pList.end() && elapsedTime < availableTime;
@@ -107,7 +107,7 @@ void Program::discardDeletedGlPrograms(unsigned int contextID)
 Program::ProgramBinary::ProgramBinary() : _format(0)
 {}
 
-Program::ProgramBinary::ProgramBinary(const ProgramBinary&rhs, const osg::CopyOp&copyop) :
+Program::ProgramBinary::ProgramBinary(const ProgramBinary &rhs, const osg::CopyOp &copyop) :
     osg::Object(rhs, copyop),
     _data(rhs._data), _format(rhs._format)
 {}
@@ -142,7 +142,7 @@ Program::Program() :
 {}
 
 
-Program::Program(const Program&rhs, const osg::CopyOp&copyop) :
+Program::Program(const Program &rhs, const osg::CopyOp &copyop) :
     osg::StateAttribute(rhs, copyop)
 {
     if ((copyop.getCopyFlags() & osg::CopyOp::DEEP_COPY_STATEATTRIBUTES) != 0)
@@ -160,14 +160,14 @@ Program::Program(const Program&rhs, const osg::CopyOp&copyop) :
         }
     }
 
-    const osg::Program::AttribBindingList&abl = rhs.getAttribBindingList();
+    const osg::Program::AttribBindingList &abl = rhs.getAttribBindingList();
 
     for (osg::Program::AttribBindingList::const_iterator attribute = abl.begin(); attribute != abl.end(); ++attribute)
     {
         addBindAttribLocation(attribute->first, attribute->second);
     }
 
-    const osg::Program::FragDataBindingList&fdl = rhs.getFragDataBindingList();
+    const osg::Program::FragDataBindingList &fdl = rhs.getFragDataBindingList();
 
     for (osg::Program::FragDataBindingList::const_iterator fragdata = fdl.begin(); fragdata != fdl.end(); ++fragdata)
     {
@@ -197,7 +197,7 @@ Program::~Program()
 }
 
 
-int Program::compare(const osg::StateAttribute&sa) const
+int Program::compare(const osg::StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -273,7 +273,7 @@ int Program::compare(const osg::StateAttribute&sa) const
 }
 
 
-void Program::compileGLObjects(osg::State&state) const
+void Program::compileGLObjects(osg::State &state) const
 {
     if (isFixedFunction())
         return;
@@ -333,11 +333,11 @@ void Program::dirtyProgram()
          itr != _shaderList.end();
          ++itr)
     {
-        Shader       *shader = itr->get();
-        ShaderDefines&sd     = shader->getShaderDefines();
+        Shader        *shader = itr->get();
+        ShaderDefines &sd     = shader->getShaderDefines();
         _shaderDefines.insert(sd.begin(), sd.end());
 
-        ShaderDefines&sr = shader->getShaderRequirements();
+        ShaderDefines &sr = shader->getShaderRequirements();
         _shaderDefines.insert(sr.begin(), sr.end());
     }
 }
@@ -488,44 +488,44 @@ void Program::setComputeGroups(GLint numGroupsX, GLint numGroupsY, GLint numGrou
     _numGroupsZ = numGroupsZ;
 }
 
-void Program::getComputeGroups(GLint&numGroupsX, GLint&numGroupsY, GLint&numGroupsZ) const
+void Program::getComputeGroups(GLint &numGroupsX, GLint &numGroupsY, GLint &numGroupsZ) const
 {
     numGroupsX = _numGroupsX;
     numGroupsY = _numGroupsY;
     numGroupsZ = _numGroupsZ;
 }
 
-void Program::addBindAttribLocation(const std::string&name, GLuint index)
+void Program::addBindAttribLocation(const std::string &name, GLuint index)
 {
     _attribBindingList[name] = index;
     dirtyProgram();
 }
 
-void Program::removeBindAttribLocation(const std::string&name)
+void Program::removeBindAttribLocation(const std::string &name)
 {
     _attribBindingList.erase(name);
     dirtyProgram();
 }
 
-void Program::addBindFragDataLocation(const std::string&name, GLuint index)
+void Program::addBindFragDataLocation(const std::string &name, GLuint index)
 {
     _fragDataBindingList[name] = index;
     dirtyProgram();
 }
 
-void Program::removeBindFragDataLocation(const std::string&name)
+void Program::removeBindFragDataLocation(const std::string &name)
 {
     _fragDataBindingList.erase(name);
     dirtyProgram();
 }
 
-void Program::addBindUniformBlock(const std::string&name, GLuint index)
+void Program::addBindUniformBlock(const std::string &name, GLuint index)
 {
     _uniformBlockBindingList[name] = index;
     dirtyProgram(); // XXX
 }
 
-void Program::removeBindUniformBlock(const std::string&name)
+void Program::removeBindUniformBlock(const std::string &name)
 {
     _uniformBlockBindingList.erase(name);
     dirtyProgram(); // XXX
@@ -534,7 +534,7 @@ void Program::removeBindUniformBlock(const std::string&name)
 
 
 #include <iostream>
-void Program::apply(osg::State&state) const
+void Program::apply(osg::State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 
@@ -549,7 +549,7 @@ void Program::apply(osg::State&state) const
     }
 
 #if 0
-    State::DefineMap&defMap = state.getDefineMap();
+    State::DefineMap &defMap = state.getDefineMap();
 
     OSG_NOTICE << "Program::apply() defMap.changed=" << defMap.changed << std::endl;
 
@@ -557,7 +557,7 @@ void Program::apply(osg::State&state) const
          itr != defMap.map.end();
          ++itr)
     {
-        const State::DefineStack&ds = itr->second;
+        const State::DefineStack &ds = itr->second;
         OSG_NOTICE << "  define [" << itr->first << "] ds.changed=" << ds.changed << " ";
         if (ds.defineVec.empty())
         {
@@ -565,7 +565,7 @@ void Program::apply(osg::State&state) const
         }
         else
         {
-            const StateSet::DefinePair&dp = ds.defineVec.back();
+            const StateSet::DefinePair &dp = ds.defineVec.back();
             OSG_NOTICE << "  value = [" << dp.first << "], overridevalue = [" << dp.second << "]" << std::endl;
         }
     }
@@ -580,13 +580,13 @@ void Program::apply(osg::State&state) const
 
 
     shaderDefineStr.clear();
-    const StateSet::DefineList&currentDefines = defMap.currentDefines;
+    const StateSet::DefineList &currentDefines = defMap.currentDefines;
 
     for (StateSet::DefineList::const_iterator itr = currentDefines.begin();
          itr != currentDefines.end();
          ++itr)
     {
-        const StateSet::DefinePair&dp = itr->second;
+        const StateSet::DefinePair &dp = itr->second;
         shaderDefineStr += "#define ";
         shaderDefineStr += itr->first;
         if (itr->second.first.empty())
@@ -639,7 +639,7 @@ Program::ProgramObjects::ProgramObjects(const osg::Program *program, unsigned in
 {}
 
 
-Program::PerContextProgram* Program::ProgramObjects::getPCP(const std::string&defineStr) const
+Program::PerContextProgram* Program::ProgramObjects::getPCP(const std::string &defineStr) const
 {
     for (PerContextPrograms::const_iterator itr = _perContextPrograms.begin();
          itr != _perContextPrograms.end();
@@ -655,7 +655,7 @@ Program::PerContextProgram* Program::ProgramObjects::getPCP(const std::string&de
     return 0;
 }
 
-Program::PerContextProgram* Program::ProgramObjects::createPerContextProgram(const std::string&defineStr)
+Program::PerContextProgram* Program::ProgramObjects::createPerContextProgram(const std::string &defineStr)
 {
     Program::PerContextProgram *pcp = new PerContextProgram(_program, _contextID);
 
@@ -696,7 +696,7 @@ void Program::ProgramObjects::addShaderToDetach(Shader *shader)
 }
 
 
-bool Program::ProgramObjects::getGlProgramInfoLog(std::string&log) const
+bool Program::ProgramObjects::getGlProgramInfoLog(std::string &log) const
 {
     bool result = false;
 
@@ -710,7 +710,7 @@ bool Program::ProgramObjects::getGlProgramInfoLog(std::string&log) const
     return result;
 }
 
-Program::PerContextProgram* Program::getPCP(State&state) const
+Program::PerContextProgram* Program::getPCP(State &state) const
 {
     unsigned int      contextID = state.getContextID();
     const std::string defineStr = state.getDefineString(getShaderDefines());
@@ -745,7 +745,7 @@ bool Program::isFixedFunction() const
 }
 
 
-bool Program::getGlProgramInfoLog(unsigned int contextID, std::string&log) const
+bool Program::getGlProgramInfoLog(unsigned int contextID, std::string &log) const
 {
     if (contextID < _pcpList.size())
         return (_pcpList[contextID])->getGlProgramInfoLog(log);
@@ -809,7 +809,7 @@ void Program::PerContextProgram::requestLink()
 }
 
 
-void Program::PerContextProgram::linkProgram(osg::State&state)
+void Program::PerContextProgram::linkProgram(osg::State &state)
 {
     if (!_needsLink)
         return;
@@ -875,7 +875,7 @@ void Program::PerContextProgram::linkProgram(osg::State&state)
     if (!_loadedBinary)
     {
         // set any explicit vertex attribute bindings
-        const AttribBindingList&programBindlist = _program->getAttribBindingList();
+        const AttribBindingList &programBindlist = _program->getAttribBindingList();
 
         for (AttribBindingList::const_iterator itr = programBindlist.begin();
              itr != programBindlist.end(); ++itr)
@@ -888,7 +888,7 @@ void Program::PerContextProgram::linkProgram(osg::State&state)
         //  that have been aliase to vertex attrib arrays
         if (state.getUseVertexAttributeAliasing())
         {
-            const AttribBindingList&stateBindlist = state.getAttributeBindingList();
+            const AttribBindingList &stateBindlist = state.getAttributeBindingList();
 
             for (AttribBindingList::const_iterator itr = stateBindlist.begin();
                  itr != stateBindlist.end(); ++itr)
@@ -899,7 +899,7 @@ void Program::PerContextProgram::linkProgram(osg::State&state)
         }
 
         // set any explicit frag data bindings
-        const FragDataBindingList&fdbindlist = _program->getFragDataBindingList();
+        const FragDataBindingList &fdbindlist = _program->getFragDataBindingList();
 
         for (FragDataBindingList::const_iterator itr = fdbindlist.begin();
              itr != fdbindlist.end(); ++itr)
@@ -973,7 +973,7 @@ void Program::PerContextProgram::linkProgram(osg::State&state)
         }
 
         // Bind any uniform blocks
-        const UniformBlockBindingList&bindingList = _program->getUniformBlockBindingList();
+        const UniformBlockBindingList &bindingList = _program->getUniformBlockBindingList();
 
         for (UniformBlockMap::iterator itr = _uniformBlockMap.begin(),
              end = _uniformBlockMap.end();
@@ -1192,12 +1192,12 @@ bool Program::PerContextProgram::validateProgram()
     return false;
 }
 
-bool Program::PerContextProgram::getInfoLog(std::string&infoLog) const
+bool Program::PerContextProgram::getInfoLog(std::string &infoLog) const
 {
     return _extensions->getProgramInfoLog(_glProgramHandle, infoLog);
 }
 
-Program::ProgramBinary* Program::PerContextProgram::compileProgramBinary(osg::State&state)
+Program::ProgramBinary* Program::PerContextProgram::compileProgramBinary(osg::State &state)
 {
     linkProgram(state);
     GLint binaryLength = 0;

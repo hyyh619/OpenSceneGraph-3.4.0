@@ -25,7 +25,7 @@ TexMat::TexMat() :
 TexMat::~TexMat()
 {}
 
-void TexMat::apply(State&state) const
+void TexMat::apply(State &state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     glMatrixMode(GL_TEXTURE);

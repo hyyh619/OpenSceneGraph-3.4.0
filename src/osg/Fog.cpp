@@ -36,7 +36,7 @@ Fog::Fog()
 Fog::~Fog()
 {}
 
-void Fog::apply(State&state) const
+void Fog::apply(State &state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
 #ifdef OSG_GLES1_AVAILABLE

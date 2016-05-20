@@ -26,7 +26,7 @@ Input::~Input()
 {}
 
 
-osg::Object* Input::getObjectForUniqueID(const std::string&uniqueID)
+osg::Object* Input::getObjectForUniqueID(const std::string &uniqueID)
 {
     UniqueIDToObjectMapping::iterator fitr = _uniqueIDToObjectMap.find(uniqueID);
 
@@ -37,18 +37,18 @@ osg::Object* Input::getObjectForUniqueID(const std::string&uniqueID)
 }
 
 
-void Input::registerUniqueIDForObject(const std::string&uniqueID, osg::Object *obj)
+void Input::registerUniqueIDForObject(const std::string &uniqueID, osg::Object *obj)
 {
     _uniqueIDToObjectMap[uniqueID] = obj;
 }
 
 
-osg::Object* Input::readObjectOfType(const osg::Object&compObj)
+osg::Object* Input::readObjectOfType(const osg::Object &compObj)
 {
     return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readObjectOfType(compObj, *this);
 }
 
-osg::Object* Input::readObjectOfType(const basic_type_wrapper&btw)
+osg::Object* Input::readObjectOfType(const basic_type_wrapper &btw)
 {
     return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readObjectOfType(btw, *this);
 }
@@ -89,7 +89,7 @@ osg::Node* Input::readNode()
     return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readNode(*this);
 }
 
-osg::Object* Input::readObject(const std::string&fileName)
+osg::Object* Input::readObject(const std::string &fileName)
 {
     return readObjectFile(fileName, _options.get());
 }
@@ -99,17 +99,17 @@ osg::Shader*  Input::readShader()
     return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->readShader(*this);
 }
 
-osg::Image*  Input::readImage(const std::string&fileName)
+osg::Image*  Input::readImage(const std::string &fileName)
 {
     return readImageFile(fileName, _options.get());
 }
 
-osg::Node* Input::readNode(const std::string&fileName)
+osg::Node* Input::readNode(const std::string &fileName)
 {
     return readNodeFile(fileName, _options.get());
 }
 
-osg::Shader*  Input::readShader(const std::string&fileName)
+osg::Shader*  Input::readShader(const std::string &fileName)
 {
     return readShaderFile(fileName, _options.get());
 }

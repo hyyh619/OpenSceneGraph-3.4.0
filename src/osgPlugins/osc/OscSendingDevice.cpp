@@ -22,7 +22,7 @@
 
 static const unsigned long BUFFER_SIZE = 2048;
 
-OscSendingDevice::OscSendingDevice(const std::string&address, int port, unsigned int num_messages_per_event, unsigned int delay_between_sends_in_millisecs)
+OscSendingDevice::OscSendingDevice(const std::string &address, int port, unsigned int num_messages_per_event, unsigned int delay_between_sends_in_millisecs)
     : osgGA::Device()
     , _transmitSocket(IpEndpointName(address.c_str(), port))
     , _buffer(new  char[BUFFER_SIZE])
@@ -51,7 +51,7 @@ OscSendingDevice::~OscSendingDevice()
     delete[] (_buffer);
 }
 
-void OscSendingDevice::sendEvent(const osgGA::Event&ea)
+void OscSendingDevice::sendEvent(const osgGA::Event &ea)
 {
     bool         msg_sent(false);
     unsigned int num_messages = _numMessagesPerEvent;
@@ -91,7 +91,7 @@ void OscSendingDevice::sendEvent(const osgGA::Event&ea)
 }
 
 
-bool OscSendingDevice::sendEventImpl(const osgGA::Event&ea, MsgIdType msg_id)
+bool OscSendingDevice::sendEventImpl(const osgGA::Event &ea, MsgIdType msg_id)
 {
     bool do_send(false);
 
@@ -122,7 +122,7 @@ bool OscSendingDevice::sendEventImpl(const osgGA::Event&ea, MsgIdType msg_id)
 
 
 
-bool OscSendingDevice::sendUIEventImpl(const osgGA::GUIEventAdapter&ea, MsgIdType msg_id)
+bool OscSendingDevice::sendUIEventImpl(const osgGA::GUIEventAdapter &ea, MsgIdType msg_id)
 {
     bool do_send(false);
 
@@ -263,7 +263,7 @@ bool OscSendingDevice::sendUIEventImpl(const osgGA::GUIEventAdapter&ea, MsgIdTyp
     return do_send;
 }
 
-int OscSendingDevice::getButtonNum(const osgGA::GUIEventAdapter&ea)
+int OscSendingDevice::getButtonNum(const osgGA::GUIEventAdapter &ea)
 {
     switch (ea.getButton())
     {
@@ -296,7 +296,7 @@ void OscSendingDevice::beginBundle(MsgIdType msg_id)
 
 
 
-void OscSendingDevice::beginSendInputRange(const osgGA::GUIEventAdapter&ea, MsgIdType msg_id)
+void OscSendingDevice::beginSendInputRange(const osgGA::GUIEventAdapter &ea, MsgIdType msg_id)
 {
     beginBundle(msg_id);
     _oscStream << osc::BeginMessage("/osgga/mouse/set_input_range") << ea.getXmin() << ea.getYmin() << ea.getXmax() << ea.getYmax() << osc::EndMessage;
@@ -318,7 +318,7 @@ void OscSendingDevice::beginMultiTouchSequence()
 }
 
 
-bool OscSendingDevice::sendMultiTouchData(const osgGA::GUIEventAdapter&ea)
+bool OscSendingDevice::sendMultiTouchData(const osgGA::GUIEventAdapter &ea)
 {
     if (!ea.isMultiTouchEvent())
         return false;
@@ -369,7 +369,7 @@ bool OscSendingDevice::sendMultiTouchData(const osgGA::GUIEventAdapter&ea)
 class OscSendingDeviceGetValueVisitor : public osg::ValueObject::GetValueVisitor
 {
 public:
-OscSendingDeviceGetValueVisitor(osc::OutboundPacketStream&stream)
+OscSendingDeviceGetValueVisitor(osc::OutboundPacketStream &stream)
     : osg::ValueObject::GetValueVisitor()
     , _stream(stream)
 {}
@@ -410,48 +410,48 @@ virtual void apply(double value)
 {
     _stream << value;
 }
-virtual void apply(const std::string&value)
+virtual void apply(const std::string &value)
 {
     _stream << value.c_str();
 }
-virtual void apply(const osg::Vec2f&value)
+virtual void apply(const osg::Vec2f &value)
 {
     _stream << value[0] << value[1];
 }
-virtual void apply(const osg::Vec3f&value)
+virtual void apply(const osg::Vec3f &value)
 {
     _stream << value[0] << value[1] << value[2];
 }
-virtual void apply(const osg::Vec4f&value)
+virtual void apply(const osg::Vec4f &value)
 {
     _stream << value[0] << value[1] << value[2] << value[3];
 }
-virtual void apply(const osg::Vec2d&value)
+virtual void apply(const osg::Vec2d &value)
 {
     _stream << value[0] << value[1];
 }
-virtual void apply(const osg::Vec3d&value)
+virtual void apply(const osg::Vec3d &value)
 {
     _stream << value[0] << value[1] << value[2];
 }
-virtual void apply(const osg::Vec4d&value)
+virtual void apply(const osg::Vec4d &value)
 {
     _stream << value[0] << value[1] << value[2] << value[3];
 }
-virtual void apply(const osg::Quat&value)
+virtual void apply(const osg::Quat &value)
 {
     _stream << value[0] << value[1] << value[2] << value[3];
 }
-virtual void apply(const osg::Plane&value)
+virtual void apply(const osg::Plane &value)
 {
     _stream << value[0] << value[1] << value[2] << value[3];
 }
-virtual void apply(const osg::Matrixf&value)
+virtual void apply(const osg::Matrixf &value)
 {
     for (unsigned int i = 0; i < 16; ++i)
         _stream << (value.ptr())[i];
 }
-virtual void apply(const osg::Matrixd&value)
+virtual void apply(const osg::Matrixd &value)
 {
     for (unsigned int i = 0; i < 16; ++i)
         _stream << (value.ptr())[i];
@@ -460,10 +460,10 @@ virtual void apply(const osg::Matrixd&value)
 virtual ~OscSendingDeviceGetValueVisitor() {}
 
 private:
-osc::OutboundPacketStream&_stream;
+osc::OutboundPacketStream &_stream;
 };
 
-std::string OscSendingDevice::transliterateKey(const std::string&key) const
+std::string OscSendingDevice::transliterateKey(const std::string &key) const
 {
     std::string result;
 
@@ -484,7 +484,7 @@ std::string OscSendingDevice::transliterateKey(const std::string&key) const
     return result;
 }
 
-void OscSendingDevice::sendUserDataContainer(const std::string&key, const osg::UserDataContainer *udc, bool asBundle, MsgIdType msg_id)
+void OscSendingDevice::sendUserDataContainer(const std::string &key, const osg::UserDataContainer *udc, bool asBundle, MsgIdType msg_id)
 {
     if (asBundle)
     {

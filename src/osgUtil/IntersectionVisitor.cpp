@@ -46,7 +46,7 @@ void IntersectorGroup::clear()
     _intersectors.clear();
 }
 
-Intersector* IntersectorGroup::clone(osgUtil::IntersectionVisitor&iv)
+Intersector* IntersectorGroup::clone(osgUtil::IntersectionVisitor &iv)
 {
     IntersectorGroup *ig = new IntersectorGroup;
 
@@ -64,7 +64,7 @@ Intersector* IntersectorGroup::clone(osgUtil::IntersectionVisitor&iv)
     return ig;
 }
 
-bool IntersectorGroup::enter(const osg::Node&node)
+bool IntersectorGroup::enter(const osg::Node &node)
 {
     if (disabled())
         return false;
@@ -105,7 +105,7 @@ void IntersectorGroup::leave()
     }
 }
 
-void IntersectorGroup::intersect(osgUtil::IntersectionVisitor&iv, osg::Drawable *drawable)
+void IntersectorGroup::intersect(osgUtil::IntersectionVisitor &iv, osg::Drawable *drawable)
 {
     if (disabled())
         return;
@@ -207,7 +207,7 @@ void IntersectionVisitor::reset()
     }
 }
 
-void IntersectionVisitor::apply(osg::Node&node)
+void IntersectionVisitor::apply(osg::Node &node)
 {
     // OSG_NOTICE<<"apply(Node&)"<<std::endl;
 
@@ -221,7 +221,7 @@ void IntersectionVisitor::apply(osg::Node&node)
     leave();
 }
 
-void IntersectionVisitor::apply(osg::Group&group)
+void IntersectionVisitor::apply(osg::Group &group)
 {
     if (!enter(group))
         return;
@@ -231,12 +231,12 @@ void IntersectionVisitor::apply(osg::Group&group)
     leave();
 }
 
-void IntersectionVisitor::apply(osg::Drawable&drawable)
+void IntersectionVisitor::apply(osg::Drawable &drawable)
 {
     intersect(&drawable);
 }
 
-void IntersectionVisitor::apply(osg::Geode&geode)
+void IntersectionVisitor::apply(osg::Geode &geode)
 {
     // OSG_NOTICE<<"apply(Geode&)"<<std::endl;
 
@@ -253,7 +253,7 @@ void IntersectionVisitor::apply(osg::Geode&geode)
     leave();
 }
 
-void IntersectionVisitor::apply(osg::Billboard&billboard)
+void IntersectionVisitor::apply(osg::Billboard &billboard)
 {
     if (!enter(billboard))
         return;
@@ -304,7 +304,7 @@ void IntersectionVisitor::apply(osg::Billboard&billboard)
     leave();
 }
 
-void IntersectionVisitor::apply(osg::LOD&lod)
+void IntersectionVisitor::apply(osg::LOD &lod)
 {
     if (!enter(lod))
         return;
@@ -315,7 +315,7 @@ void IntersectionVisitor::apply(osg::LOD&lod)
 }
 
 
-void IntersectionVisitor::apply(osg::PagedLOD&plod)
+void IntersectionVisitor::apply(osg::PagedLOD &plod)
 {
     if (!enter(plod))
         return;
@@ -414,7 +414,7 @@ void IntersectionVisitor::apply(osg::PagedLOD&plod)
 }
 
 
-void IntersectionVisitor::apply(osg::Transform&transform)
+void IntersectionVisitor::apply(osg::Transform &transform)
 {
     if (!enter(transform))
         return;
@@ -450,7 +450,7 @@ void IntersectionVisitor::apply(osg::Transform&transform)
 }
 
 
-void IntersectionVisitor::apply(osg::Projection&projection)
+void IntersectionVisitor::apply(osg::Projection &projection)
 {
     if (!enter(projection))
         return;
@@ -471,7 +471,7 @@ void IntersectionVisitor::apply(osg::Projection&projection)
 }
 
 
-void IntersectionVisitor::apply(osg::Camera&camera)
+void IntersectionVisitor::apply(osg::Camera &camera)
 {
     // OSG_NOTICE<<"apply(Camera&)"<<std::endl;
 
@@ -592,7 +592,7 @@ osg::Vec3 IntersectionVisitor::getEyePoint() const
     return _eyePoint;
 }
 
-float IntersectionVisitor::getDistanceToEyePoint(const osg::Vec3&pos, bool /*withLODScale*/) const
+float IntersectionVisitor::getDistanceToEyePoint(const osg::Vec3 &pos, bool /*withLODScale*/) const
 {
     if (_lodSelectionMode == USE_EYE_POINT_FOR_LOD_LEVEL_SELECTION)
     {

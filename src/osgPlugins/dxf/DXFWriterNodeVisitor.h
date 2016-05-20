@@ -101,7 +101,7 @@ int findColor(unsigned int rgb)
 
 protected:
 // returns hue as an angle in range 0-360, saturation and value as 0-1
-void hsv(unsigned int rgb, float&hue, float&sat, float&value)
+void hsv(unsigned int rgb, float &hue, float &sat, float &value)
 {
     int red   = rgb >> 16;
     int green = (0x0000ff00 & rgb) >> 8;
@@ -195,7 +195,7 @@ ColorMap _hueColors;     // maps hue angle to autocad index colour
 class DXFWriterNodeVisitor : public osg::NodeVisitor
 {
 public:
-DXFWriterNodeVisitor(std::ostream&fout) :
+DXFWriterNodeVisitor(std::ostream &fout) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _fout(fout),
     _currentStateSet(new osg::StateSet()),
@@ -216,19 +216,19 @@ static unsigned int getNodeRGB(osg::Geometry *geo, unsigned int index = 0)
 }
 
 
-bool writeHeader(const osg::BoundingSphere&bound);         // call after first pass to trigger draw pass
+bool writeHeader(const osg::BoundingSphere &bound);         // call after first pass to trigger draw pass
 void writeFooter();
 
 void buildColorMap();
 
-virtual void apply(osg::Geode&node);
+virtual void apply(osg::Geode &node);
 
-virtual void apply(osg::Group&node)
+virtual void apply(osg::Group &node)
 {
     osg::NodeVisitor::traverse(node);
 }
 
-void traverse(osg::Node&node)
+void traverse(osg::Node &node)
 {
     pushStateSet(node.getStateSet());
 
@@ -269,7 +269,7 @@ int getNodeAcadColor(osg::Geometry *geo, int index = 0)
 protected:
 struct CompareStateSet
 {
-    bool operator()(const osg::ref_ptr<osg::StateSet>&ss1, const osg::ref_ptr<osg::StateSet>&ss2) const
+    bool operator()(const osg::ref_ptr<osg::StateSet> &ss1, const osg::ref_ptr<osg::StateSet> &ss2) const
     {
         return ss1->compare(*ss2, true) < 0;
     }
@@ -287,14 +287,14 @@ DXFWriterNodeVisitor&operator =(const DXFWriterNodeVisitor&)
 void makeGeometryLayer(osg::Geometry *geo);
 
 // second pass - output data
-void processGeometry(osg::Geometry *geo, osg::Matrix&m);
+void processGeometry(osg::Geometry *geo, osg::Matrix &m);
 
 
-void processArray(osg::Array *array, const Layer&layer, const osg::Matrix&m = osg::Matrix::identity());
+void processArray(osg::Array *array, const Layer &layer, const osg::Matrix &m = osg::Matrix::identity());
 
 void processStateSet(osg::StateSet *stateset);
 
-std::string getLayerName(const std::string&defaultValue = "");
+std::string getLayerName(const std::string &defaultValue = "");
 
 typedef std::stack<osg::ref_ptr<osg::StateSet> > StateSetStack;
 

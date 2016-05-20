@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGGA_EVENTVISITOR
 #define OSGGA_EVENTVISITOR 1
@@ -31,82 +31,140 @@
 #include <osgGA/EventQueue>
 
 namespace osgGA {
-
 /**
  * Basic EventVisitor implementation for animating a scene.
  * This visitor traverses the scene graph, calling each nodes appCallback if
  * it exists.
  */
-class OSGGA_EXPORT EventVisitor : public osg::NodeVisitor
-{
-    public:
+    class OSGGA_EXPORT EventVisitor: public osg::NodeVisitor
+    {
+public:
 
         EventVisitor();
         virtual ~EventVisitor();
 
         META_NodeVisitor(osgGA, EventVisitor)
 
-        void setActionAdapter(osgGA::GUIActionAdapter* actionAdapter) { _actionAdapter=actionAdapter; }
+        void setActionAdapter(osgGA::GUIActionAdapter *actionAdapter)
+        {
+            _actionAdapter = actionAdapter;
+        }
 
-        osgGA::GUIActionAdapter* getActionAdapter() { return _actionAdapter; }
+        osgGA::GUIActionAdapter* getActionAdapter()
+        {
+            return _actionAdapter;
+        }
 
-        const osgGA::GUIActionAdapter* getActionAdapter() const { return _actionAdapter; }
+        const osgGA::GUIActionAdapter* getActionAdapter() const
+        {
+            return _actionAdapter;
+        }
 
-        void addEvent(Event* event);
-        void removeEvent(Event* event);
+        void addEvent(Event *event);
+        void removeEvent(Event *event);
 
-        void setEventHandled(bool handled) { _handled = handled; }
-        bool getEventHandled() const { return _handled; }
+        void setEventHandled(bool handled)
+        {
+            _handled = handled;
+        }
+        bool getEventHandled() const
+        {
+            return _handled;
+        }
 
-        void setEvents(const EventQueue::Events& events) { _events = events; }
-        EventQueue::Events& getEvents() { return _events; }
-        const EventQueue::Events& getEvents() const { return _events; }
+        void setEvents(const EventQueue::Events &events)
+        {
+            _events = events;
+        }
+        EventQueue::Events&getEvents()
+        {
+            return _events;
+        }
+        const EventQueue::Events&getEvents() const
+        {
+            return _events;
+        }
 
-    public:
+public:
 
         virtual void reset();
 
         /** During traversal each type of node calls its callbacks and its children traversed. */
-        virtual void apply(osg::Node& node)         { handle_callbacks_and_traverse(node); }
-
-
-        virtual void apply(osg::Drawable& drawable)
+        virtual void apply(osg::Node &node)
         {
-            osg::Callback* callback = drawable.getEventCallback();
+            handle_callbacks_and_traverse(node);
+        }
+
+
+        virtual void apply(osg::Drawable &drawable)
+        {
+            osg::Callback *callback = drawable.getEventCallback();
+
             if (callback)
             {
-                osg::Drawable::EventCallback* drawable_callback = dynamic_cast<osg::Drawable::EventCallback*>(callback);
-                osg::NodeCallback* node_callback = dynamic_cast<osg::NodeCallback*>(callback);
-                osg::CallbackObject* callback_object = dynamic_cast<osg::CallbackObject*>(callback);
+                osg::Drawable::EventCallback *drawable_callback = dynamic_cast < osg::Drawable::EventCallback * > (callback);
+                osg::NodeCallback            *node_callback     = dynamic_cast < osg::NodeCallback * > (callback);
+                osg::CallbackObject          *callback_object   = dynamic_cast < osg::CallbackObject * > (callback);
 
-                if (drawable_callback) drawable_callback->event(this,&drawable);
-                if (node_callback) (*node_callback)(&drawable, this);
+                if (drawable_callback)
+                    drawable_callback->event(this, &drawable);
 
-                if ((!drawable_callback && !node_callback) || callback_object)  callback_object->run(&drawable, this);
+                if (node_callback)
+                    (*node_callback)(&drawable, this);
+
+                if ((!drawable_callback && !node_callback) || callback_object)
+                    callback_object->run(&drawable, this);
             }
 
             handle_callbacks(drawable.getStateSet());
         }
 
-        virtual void apply(osg::Geode& node)        { handle_callbacks_and_traverse(node); }
-        virtual void apply(osg::Billboard& node)    { handle_callbacks_and_traverse(node); }
+        virtual void apply(osg::Geode &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
+        virtual void apply(osg::Billboard &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
 
-        virtual void apply(osg::LightSource& node)  { handle_callbacks_and_traverse(node); }
+        virtual void apply(osg::LightSource &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
 
-        virtual void apply(osg::Group& node)        { handle_callbacks_and_traverse(node); }
-        virtual void apply(osg::Transform& node)    { handle_callbacks_and_traverse(node); }
-        virtual void apply(osg::Projection& node)   { handle_callbacks_and_traverse(node); }
-        virtual void apply(osg::Switch& node)       { handle_callbacks_and_traverse(node); }
-        virtual void apply(osg::LOD& node)          { handle_callbacks_and_traverse(node); }
-        virtual void apply(osg::OccluderNode& node) { handle_callbacks_and_traverse(node); }
+        virtual void apply(osg::Group &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
+        virtual void apply(osg::Transform &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
+        virtual void apply(osg::Projection &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
+        virtual void apply(osg::Switch &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
+        virtual void apply(osg::LOD &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
+        virtual void apply(osg::OccluderNode &node)
+        {
+            handle_callbacks_and_traverse(node);
+        }
 
 
-    protected:
+protected:
 
         /** Prevent unwanted copy operator.*/
-        EventVisitor& operator = (const EventVisitor&) { return *this; }
+        EventVisitor &operator = (const EventVisitor&) { return *this; }
 
-        inline void handle_callbacks(osg::StateSet* stateset)
+        inline void handle_callbacks(osg::StateSet *stateset)
         {
             if (stateset && stateset->requiresEventTraversal())
             {
@@ -114,25 +172,25 @@ class OSGGA_EXPORT EventVisitor : public osg::NodeVisitor
             }
         }
 
-        inline void handle_callbacks_and_traverse(osg::Node& node)
+        inline void handle_callbacks_and_traverse(osg::Node &node)
         {
             handle_callbacks(node.getStateSet());
 
-            osg::Callback* callback = node.getEventCallback();
-            if (callback) callback->run(&node,this);
-            else if (node.getNumChildrenRequiringEventTraversal()>0) traverse(node);
+            osg::Callback *callback = node.getEventCallback();
+            if (callback)
+                callback->run(&node, this);
+            else if (node.getNumChildrenRequiringEventTraversal() > 0)
+                traverse(node);
         }
 
 
-        osgGA::GUIActionAdapter*        _actionAdapter;
+        osgGA::GUIActionAdapter *_actionAdapter;
 
-        osg::ref_ptr<GUIEventAdapter>   _accumulateEventState;
+        osg::ref_ptr < GUIEventAdapter > _accumulateEventState;
 
-        bool                            _handled;
-        EventQueue::Events              _events;
-};
-
+        bool               _handled;
+        EventQueue::Events _events;
+    };
 }
 
 #endif
-

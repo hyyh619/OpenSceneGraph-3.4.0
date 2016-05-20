@@ -44,22 +44,22 @@ void VertexProgram::deleteVertexProgramObject(unsigned int contextID, GLuint han
 }
 
 
-void VertexProgram::flushDeletedVertexProgramObjects(unsigned int contextID, double /*currentTime*/, double&availableTime)
+void VertexProgram::flushDeletedVertexProgramObjects(unsigned int contextID, double /*currentTime*/, double &availableTime)
 {
     // if no time available don't try to flush objects.
     if (availableTime <= 0.0)
         return;
 
-    const osg::Timer&timer      = *osg::Timer::instance();
-    osg::Timer_t    start_tick  = timer.tick();
-    double          elapsedTime = 0.0;
+    const osg::Timer &timer      = *osg::Timer::instance();
+    osg::Timer_t     start_tick  = timer.tick();
+    double           elapsedTime = 0.0;
 
     {
         OpenThreads::ScopedLock<OpenThreads::Mutex> lock(s_mutex_deletedVertexProgramObjectCache);
 
         const GLExtensions *extensions = GLExtensions::Get(contextID, true);
 
-        VertexProgramObjectList&vpol = s_deletedVertexProgramObjectCache[contextID];
+        VertexProgramObjectList &vpol = s_deletedVertexProgramObjectCache[contextID];
 
         for (VertexProgramObjectList::iterator titr = vpol.begin();
              titr != vpol.end() && elapsedTime < availableTime;
@@ -87,7 +87,7 @@ VertexProgram::VertexProgram()
 {}
 
 
-VertexProgram::VertexProgram(const VertexProgram&vp, const CopyOp&copyop) :
+VertexProgram::VertexProgram(const VertexProgram &vp, const CopyOp &copyop) :
     osg::StateAttribute(vp, copyop)
 {
     _vertexProgram = vp._vertexProgram;
@@ -124,7 +124,7 @@ void VertexProgram::dirtyVertexProgramObject()
     }
 }
 
-void VertexProgram::apply(State&state) const
+void VertexProgram::apply(State &state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     const GLExtensions *extensions = state.get<GLExtensions>();
@@ -133,7 +133,7 @@ void VertexProgram::apply(State&state) const
         return;
 
 
-    GLuint&vertexProgramId = getVertexProgramID(state.getContextID());
+    GLuint &vertexProgramId = getVertexProgramID(state.getContextID());
 
     // Vertex Program
     if (vertexProgramId != 0)

@@ -92,7 +92,7 @@ virtual void writeDouble(double d)
     _sstream << d; addToCurrentNode(_sstream.str()); _sstream.str("");
 }
 
-virtual void writeString(const std::string&s)
+virtual void writeString(const std::string &s)
 {
     addToCurrentNode(s, true);
 }
@@ -131,15 +131,15 @@ virtual void writeBase(std::ios_base& (*fn)(std::ios_base &))
     _sstream << fn;
 }
 
-virtual void writeGLenum(const osgDB::ObjectGLenum&value)
+virtual void writeGLenum(const osgDB::ObjectGLenum &value)
 {
-    GLenum           e           = value.get();
-    const std::string&enumString = osgDB::Registry::instance()->getObjectWrapperManager()->getString("GL", e);
+    GLenum            e           = value.get();
+    const std::string &enumString = osgDB::Registry::instance()->getObjectWrapperManager()->getString("GL", e);
 
     addToCurrentNode(enumString, true);
 }
 
-virtual void writeProperty(const osgDB::ObjectProperty&prop)
+virtual void writeProperty(const osgDB::ObjectProperty &prop)
 {
     std::string enumString = prop._name;
 
@@ -169,7 +169,7 @@ virtual void writeProperty(const osgDB::ObjectProperty&prop)
     }
 }
 
-virtual void writeMark(const osgDB::ObjectMark&mark)
+virtual void writeMark(const osgDB::ObjectMark &mark)
 {
     int delta = mark._indentDelta;
 
@@ -185,7 +185,7 @@ virtual void writeMark(const osgDB::ObjectMark&mark)
 
 virtual void writeCharArray(const char* /*s*/, unsigned int /*size*/) {}
 
-virtual void writeWrappedString(const std::string&str)
+virtual void writeWrappedString(const std::string &str)
 {
     std::string realStr;
 
@@ -215,7 +215,7 @@ virtual void flush()
 }
 
 protected:
-void addToCurrentNode(const std::string&str, bool isString = false)
+void addToCurrentNode(const std::string &str, bool isString = false)
 {
     if (_readLineType == FIRST_LINE)
     {
@@ -237,12 +237,12 @@ void addToCurrentNode(const std::string&str, bool isString = false)
 
     if (_readLineType == TEXT_LINE)
     {
-        std::string&text = _nodePath.back()->properties["text"];
+        std::string &text = _nodePath.back()->properties["text"];
         text += str + ' ';
     }
     else if (_nodePath.size() > 0)
     {
-        std::string&prop = _nodePath.back()->properties["attribute"];
+        std::string &prop = _nodePath.back()->properties["attribute"];
         if (!prop.empty())
             prop += ' ';
 
@@ -270,7 +270,7 @@ void addToCurrentNode(std::ostream& (*fn)(std::ostream &))
     }
 }
 
-osgDB::XmlNode* pushNode(const std::string&name)
+osgDB::XmlNode* pushNode(const std::string &name)
 {
     osg::ref_ptr<osgDB::XmlNode> node = new osgDB::XmlNode;
 
@@ -318,14 +318,14 @@ osgDB::XmlNode* popNode()
     return node;
 }
 
-void trimEndMarkers(osgDB::XmlNode *node, const std::string&name)
+void trimEndMarkers(osgDB::XmlNode *node, const std::string &name)
 {
     osgDB::XmlNode::Properties::iterator itr = node->properties.find(name);
 
     if (itr == node->properties.end())
         return;
 
-    std::string&str = itr->second;
+    std::string &str = itr->second;
     if (!str.empty())
     {
         std::string::size_type end = str.find_last_not_of(" \t\r\n");
@@ -375,7 +375,7 @@ virtual bool isBinary() const
     return false;
 }
 
-virtual void readBool(bool&b)
+virtual void readBool(bool &b)
 {
     std::string boolString;
 
@@ -388,7 +388,7 @@ virtual void readBool(bool&b)
         b = false;
 }
 
-virtual void readChar(char&c)
+virtual void readChar(char &c)
 {
     short s = 0;
 
@@ -398,7 +398,7 @@ virtual void readChar(char&c)
     c = (char)s;
 }
 
-virtual void readSChar(signed char&c)
+virtual void readSChar(signed char &c)
 {
     short s = 0;
 
@@ -408,7 +408,7 @@ virtual void readSChar(signed char&c)
     c = (signed char)s;
 }
 
-virtual void readUChar(unsigned char&c)
+virtual void readUChar(unsigned char &c)
 {
     unsigned short s = 0;
 
@@ -418,7 +418,7 @@ virtual void readUChar(unsigned char&c)
     c = (unsigned char)s;
 }
 
-virtual void readShort(short&s)
+virtual void readShort(short &s)
 {
     std::string str; if (prepareStream())
         _sstream >> str;
@@ -426,7 +426,7 @@ virtual void readShort(short&s)
     s = static_cast<short>(strtol(str.c_str(), NULL, 0));
 }
 
-virtual void readUShort(unsigned short&s)
+virtual void readUShort(unsigned short &s)
 {
     std::string str; if (prepareStream())
         _sstream >> str;
@@ -434,7 +434,7 @@ virtual void readUShort(unsigned short&s)
     s = static_cast<unsigned short>(strtoul(str.c_str(), NULL, 0));
 }
 
-virtual void readInt(int&i)
+virtual void readInt(int &i)
 {
     std::string str; if (prepareStream())
         _sstream >> str;
@@ -442,7 +442,7 @@ virtual void readInt(int&i)
     i = static_cast<int>(strtol(str.c_str(), NULL, 0));
 }
 
-virtual void readUInt(unsigned int&i)
+virtual void readUInt(unsigned int &i)
 {
     std::string str; if (prepareStream())
         _sstream >> str;
@@ -450,7 +450,7 @@ virtual void readUInt(unsigned int&i)
     i = static_cast<unsigned int>(strtoul(str.c_str(), NULL, 0));
 }
 
-virtual void readLong(long&l)
+virtual void readLong(long &l)
 {
     std::string str; if (prepareStream())
         _sstream >> str;
@@ -458,7 +458,7 @@ virtual void readLong(long&l)
     l = strtol(str.c_str(), NULL, 0);
 }
 
-virtual void readULong(unsigned long&l)
+virtual void readULong(unsigned long &l)
 {
     std::string str; if (prepareStream())
         _sstream >> str;
@@ -466,7 +466,7 @@ virtual void readULong(unsigned long&l)
     l = strtoul(str.c_str(), NULL, 0);
 }
 
-virtual void readFloat(float&f)
+virtual void readFloat(float &f)
 {
     std::string str; if (prepareStream())
         _sstream >> str;
@@ -474,7 +474,7 @@ virtual void readFloat(float&f)
     f = osg::asciiToFloat(str.c_str());
 }
 
-virtual void readDouble(double&d)
+virtual void readDouble(double &d)
 {
     std::string str; if (prepareStream())
         _sstream >> str;
@@ -482,7 +482,7 @@ virtual void readDouble(double&d)
     d = osg::asciiToDouble(str.c_str());
 }
 
-virtual void readString(std::string&s)
+virtual void readString(std::string &s)
 {
     if (prepareStream())
         _sstream >> s;
@@ -504,7 +504,7 @@ virtual void readBase(std::ios_base& (*fn)(std::ios_base &))
     _sstream >> fn;
 }
 
-virtual void readGLenum(osgDB::ObjectGLenum&value)
+virtual void readGLenum(osgDB::ObjectGLenum &value)
 {
     GLenum      e = 0;
     std::string enumString;
@@ -516,7 +516,7 @@ virtual void readGLenum(osgDB::ObjectGLenum&value)
     value.set(e);
 }
 
-virtual void readProperty(osgDB::ObjectProperty&prop)
+virtual void readProperty(osgDB::ObjectProperty &prop)
 {
     int         value = 0;
     std::string enumString;
@@ -557,7 +557,7 @@ virtual void readMark(osgDB::ObjectMark& /*mark*/) {}
 
 virtual void readCharArray(char* /*s*/, unsigned int /*size*/) {}
 
-virtual void readWrappedString(std::string&str)
+virtual void readWrappedString(std::string &str)
 {
     if (!prepareStream())
         return;
@@ -612,7 +612,7 @@ virtual void readWrappedString(std::string&str)
     }
 }
 
-virtual bool matchString(const std::string&str)
+virtual bool matchString(const std::string &str)
 {
     prepareStream();
     std::string strInStream = osgDB::trimEnclosingSpaces(_sstream.str());
@@ -673,7 +673,7 @@ bool prepareStream()
     return prepareStream();
 }
 
-bool applyPropertyToStream(osgDB::XmlNode *node, const std::string&name)
+bool applyPropertyToStream(osgDB::XmlNode *node, const std::string &name)
 {
     osgDB::XmlNode::Properties::iterator itr = node->properties.find(name);
 

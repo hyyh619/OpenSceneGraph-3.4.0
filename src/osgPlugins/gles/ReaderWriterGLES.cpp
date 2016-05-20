@@ -91,7 +91,7 @@ virtual const char* className() const
     return "GLES Optimizer";
 }
 
-virtual osg::Node* optimizeModel(const Node&node, const OptionsStruct&options) const
+virtual osg::Node* optimizeModel(const Node &node, const OptionsStruct &options) const
 {
     osg::Node *model = osg::clone(&node);
 
@@ -129,7 +129,7 @@ virtual osg::Node* optimizeModel(const Node&node, const OptionsStruct&options) c
 }
 
 
-virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 
@@ -160,8 +160,8 @@ virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWrite
     return node.release();
 }
 
-virtual osgDB::ReaderWriter::WriteResult writeNode(const Node&node,
-                                                   const std::string&fileName,
+virtual osgDB::ReaderWriter::WriteResult writeNode(const Node &node,
+                                                   const std::string &fileName,
                                                    const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
@@ -293,7 +293,7 @@ ReaderWriterGLES::OptionsStruct parseOptions(const osgDB::ReaderWriter::Options 
 }
 
 protected:
-ReaderWriter* getReaderWriter(const std::string&fileName) const
+ReaderWriter* getReaderWriter(const std::string &fileName) const
 {
     ref_ptr<osgDB::Registry> registry = osgDB::Registry::instance();
     std::string              ext      = osgDB::getLowerCaseFileExtension(fileName);

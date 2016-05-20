@@ -45,7 +45,7 @@ std::ostream&TestContext::tout(TraceLevel tl) const
 //////////////////////////////////////////////////////////////////////////////
 
 
-TestContext::TraceStream::TraceStream(std::ostream&o, TraceLevel tl) :
+TestContext::TraceStream::TraceStream(std::ostream &o, TraceLevel tl) :
     _traceLevel(tl),
     _outputStreamPtr(&o),
 #if defined(WIN32) && !(defined(__CYGWIN__) || defined(__MINGW32__))
@@ -94,7 +94,7 @@ TestSuite* TestGraph::root()
     return root_.get();
 }
 
-TestSuite* TestGraph::suite(const std::string&path, TestSuite *tsuite, bool createIfNecessary)
+TestSuite* TestGraph::suite(const std::string &path, TestSuite *tsuite, bool createIfNecessary)
 {
     using namespace std;
 
@@ -214,35 +214,35 @@ void TestRecord::stop()
     stop_ = timer_.tick();
 }
 
-void TestRecord::log(const TestFailureX&e)
+void TestRecord::log(const TestFailureX &e)
 {
     stop();
     result_  = Failure;
     problem_ = e.what();
 }
 
-void TestRecord::log(const TestErrorX&e)
+void TestRecord::log(const TestErrorX &e)
 {
     stop();
     result_  = Error;
     problem_ = e.what();
 }
 
-void TestRecord::log(const std::exception&e)
+void TestRecord::log(const std::exception &e)
 {
     stop();
     result_  = Error;
     problem_ = e.what();
 }
 
-void TestRecord::log(const std::string&s)
+void TestRecord::log(const std::string &s)
 {
     stop();
     result_  = Error;
     problem_ = s;
 }
 
-TestRecord::TestRecord(const std::string&name) :
+TestRecord::TestRecord(const std::string &name) :
     name_(name),
     start_(0),
     stop_(0),
@@ -250,7 +250,7 @@ TestRecord::TestRecord(const std::string&name) :
     problem_("No problem")
 {}
 
-std::ostream&operator<<(std::ostream&o, const TestRecord&tr)
+std::ostream&operator<<(std::ostream &o, const TestRecord &tr)
 {
     if (tr.result_ == TestRecord::Success)
         o << "pass";
@@ -277,10 +277,10 @@ std::ostream&operator<<(std::ostream&o, const TestRecord&tr)
 
 //////////////////////////////////////////////////////////////////////////////
 
-TestRunner::TestRunner(TestContext&ctx) : _ctx(ctx)
+TestRunner::TestRunner(TestContext &ctx) : _ctx(ctx)
 {}
 
-void TestRunner::specify(const std::string&sQualifiedName)
+void TestRunner::specify(const std::string &sQualifiedName)
 {
     _tests.push_back(sQualifiedName);
 }
@@ -297,11 +297,11 @@ namespace osgUtx
 {
 struct isSpecified
 {
-    const std::string&pTestName_;
+    const std::string &pTestName_;
 
-    isSpecified(const std::string&s) : pTestName_(s) {}
+    isSpecified(const std::string &s) : pTestName_(s) {}
 
-    bool operator()(const std::string&specifiedTest)
+    bool operator()(const std::string &specifiedTest)
     {
         return pTestName_.find(specifiedTest) == 0;
     }
@@ -334,7 +334,7 @@ bool TestRunner::visitLeave(TestSuite *pSuite)
 
 void TestRunner::perform(TestCase *pTest)
 {
-    TestRecord&record = _db.createRecord(currentPath() + pTest->name());
+    TestRecord &record = _db.createRecord(currentPath() + pTest->name());
 
     try
     {
@@ -343,15 +343,15 @@ void TestRunner::perform(TestCase *pTest)
         record.stop();
     }
 
-    catch (const TestFailureX&e)
+    catch (const TestFailureX &e)
     {
         record.log(e);
     }
-    catch (const TestErrorX&e)
+    catch (const TestErrorX &e)
     {
         record.log(e);
     }
-    catch (const std::exception&e)
+    catch (const std::exception &e)
     {
         record.log(e);
     }
@@ -366,7 +366,7 @@ void TestRunner::perform(TestCase *pTest)
 
 //////////////////////////////////////////////////////////////////////////////
 
-TestSuite::TestSuite(const std::string&name) : Test(name)
+TestSuite::TestSuite(const std::string &name) : Test(name)
 {}
 
 void TestSuite::add(Test *pTest)
@@ -374,7 +374,7 @@ void TestSuite::add(Test *pTest)
     _tests.push_back(pTest);
 }
 
-Test* TestSuite::findChild(const std::string&name)
+Test* TestSuite::findChild(const std::string &name)
 {
     for (Tests::iterator it = _tests.begin();
          it != _tests.end();
@@ -387,7 +387,7 @@ Test* TestSuite::findChild(const std::string&name)
     return 0;
 }
 
-bool TestSuite::accept(Test::Visitor&v)
+bool TestSuite::accept(Test::Visitor &v)
 {
     if (v.visitEnter(this))
     {

@@ -59,7 +59,7 @@ virtual void operator()(osg::Node *node, osg::NodeVisitor *nv)
 
 class DrawableDrawCallback : public osg::Drawable::DrawCallback
 {
-virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
 {
     std::cout << "draw call back - pre drawImplementation" << drawable << std::endl;
 
@@ -94,14 +94,14 @@ public:
 InsertCallbacksVisitor() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN)
 {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     node.setUpdateCallback(new UpdateCallback());
     node.setCullCallback(new CullCallback());
     traverse(node);
 }
 
-virtual void apply(osg::Geode&geode)
+virtual void apply(osg::Geode &geode)
 {
     geode.setUpdateCallback(new UpdateCallback());
 
@@ -119,7 +119,7 @@ virtual void apply(osg::Geode&geode)
     }
 }
 
-virtual void apply(osg::Transform&node)
+virtual void apply(osg::Transform &node)
 {
     apply((osg::Node&)node);
 }
@@ -128,7 +128,7 @@ virtual void apply(osg::Transform&node)
 class MyReadFileCallback : public osgDB::Registry::ReadFileCallback
 {
 public:
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options *options)
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options *options)
 {
     std::cout << "before readNode" << std::endl;
     // note when calling the Registry to do the read you have to call readNodeImplementation NOT readNode, as this will
@@ -165,7 +165,7 @@ virtual void operator()(osg::Node *node, osg::NodeVisitor *nv)
 
 struct TestDrawableUpdateCallback : public osg::Drawable::UpdateCallback
 {
-    TestDrawableUpdateCallback(const std::string&message) : _message(message) {}
+    TestDrawableUpdateCallback(const std::string &message) : _message(message) {}
 
     virtual void update(osg::NodeVisitor*, osg::Drawable *drw)
     {
@@ -176,7 +176,7 @@ struct TestDrawableUpdateCallback : public osg::Drawable::UpdateCallback
 
 struct TestNodeUpdateCallback : public osg::NodeCallback
 {
-    TestNodeUpdateCallback(const std::string&message) : _message(message) {}
+    TestNodeUpdateCallback(const std::string &message) : _message(message) {}
 
     virtual void operator()(osg::Node *node, osg::NodeVisitor *nv)
     {

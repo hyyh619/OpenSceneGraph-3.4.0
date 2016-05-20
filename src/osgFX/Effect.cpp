@@ -19,7 +19,7 @@ Effect::Effect()
     build_dummy_node();
 }
 
-Effect::Effect(const Effect&copy, const osg::CopyOp&copyop)
+Effect::Effect(const Effect &copy, const osg::CopyOp &copyop)
     :   osg::Group(copy, copyop),
     _enabled(copy._enabled),
     _global_sel_tech(copy._global_sel_tech),
@@ -46,7 +46,7 @@ Effect::~Effect()
     }
 }
 
-void Effect::traverse(osg::NodeVisitor&nv)
+void Effect::traverse(osg::NodeVisitor &nv)
 {
     // if this effect is not enabled, then go for default traversal
     if (!_enabled)

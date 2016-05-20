@@ -483,13 +483,13 @@ struct LayerAttributesOperator : public ObjectOperator
 class FindOperatorsVisitor : public osg::NodeVisitor
 {
 public:
-FindOperatorsVisitor(ActiveOperators::OperatorList&operatorList, osg::NodeVisitor::TraversalMode tm) :
+FindOperatorsVisitor(ActiveOperators::OperatorList &operatorList, osg::NodeVisitor::TraversalMode tm) :
     osg::NodeVisitor(tm),
     _operatorList(operatorList) {}
 
 META_NodeVisitor(osgPresentation, FindOperatorsVisitor)
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     if (node.getStateSet())
         process(node.getStateSet());
@@ -516,7 +516,7 @@ void apply(osg::Node&node)
     traverse(node);
 }
 
-void apply(osg::Geode&node)
+void apply(osg::Geode &node)
 {
     apply((osg::Node&)node);
 
@@ -566,7 +566,7 @@ virtual void process(osg::StateSet *ss)
 typedef std::map<osg::Referenced*, unsigned int> ObjectsHandled;
 ObjectsHandled _objectsHandled;
 
-ActiveOperators::OperatorList&_operatorList;
+ActiveOperators::OperatorList &_operatorList;
 };
 
 
@@ -710,7 +710,7 @@ public:
 FindHomePositionVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN) {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     HomePosition *homePosition = dynamic_cast<HomePosition*>(node.getUserData());
 
@@ -729,12 +729,12 @@ class FindNamedSwitchVisitor : public osg::NodeVisitor
 {
 public:
 
-FindNamedSwitchVisitor(const std::string&name) :
+FindNamedSwitchVisitor(const std::string &name) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _name(name),
     _switch(0) {}
 
-void apply(osg::Switch&sw)
+void apply(osg::Switch &sw)
 {
     if (sw.getName().find(_name) != std::string::npos)
     {
@@ -757,7 +757,7 @@ public:
 FindFilePathDataVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN) {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     FilePathData *fdd = dynamic_cast<FilePathData*>(node.getUserData());
 
@@ -775,17 +775,17 @@ class UpdateLightVisitor : public osg::NodeVisitor
 {
 public:
 
-UpdateLightVisitor(const osg::Matrixd&viewMatrix, float currentX, float currentY) :
+UpdateLightVisitor(const osg::Matrixd &viewMatrix, float currentX, float currentY) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN),
     _viewMatrix(viewMatrix),
     _currentX(currentX), _currentY(currentY) {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     traverse(node);
 }
 
-void apply(osg::LightSource&lightsource)
+void apply(osg::LightSource &lightsource)
 {
     if (lightsource.getLight())
     {
@@ -802,7 +802,7 @@ void apply(osg::LightSource&lightsource)
     traverse(lightsource);
 }
 
-void apply(const osg::Matrixd&matrix, osg::Light *light)
+void apply(const osg::Matrixd &matrix, osg::Light *light)
 {
     // compute direction of light based on a projecting onto a hemi-sphere.
     float     sum_x2_y2 = _currentX * _currentX + _currentY * _currentY;
@@ -834,7 +834,7 @@ UpdateAlphaVisitor(bool modAlphaFunc, bool modMaterial, float currentX, float cu
     _modAlphaFunc(modAlphaFunc), _modMaterial(modMaterial),
     _currentX(currentX), _currentY(currentY) {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     if (node.getStateSet())
         apply(*node.getStateSet());
@@ -842,7 +842,7 @@ void apply(osg::Node&node)
     traverse(node);
 }
 
-void apply(osg::StateSet&stateset)
+void apply(osg::StateSet &stateset)
 {
     if (_modAlphaFunc)
     {
@@ -998,7 +998,7 @@ double SlideEventHandler::getCurrentTimeDelayBetweenSlides() const
     return _timePerSlide;
 }
 
-bool SlideEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool SlideEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (!_viewer)
     {
@@ -1248,7 +1248,7 @@ bool SlideEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAction
     return false;
 }
 
-void SlideEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void SlideEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("a", "Toggle on/off the automatic advancement for image to image");
     usage.addKeyboardMouseBinding("n", "Advance to next layer or slide");
@@ -1508,7 +1508,7 @@ void SlideEventHandler::updateOperators()
     }
 }
 
-bool SlideEventHandler::home(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool SlideEventHandler::home(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     FindHomePositionVisitor fhpv;
     osg::Node               *node = _viewer->getSceneData();
@@ -1624,7 +1624,7 @@ void SlideEventHandler::forwardEventToDevices(osgGA::Event *event)
         return;
     }
 
-    osgViewer::View::Devices&devices = _viewer->getDevices();
+    osgViewer::View::Devices &devices = _viewer->getDevices();
 
     for (osgViewer::View::Devices::iterator i = devices.begin(); i != devices.end(); ++i)
     {
@@ -1657,7 +1657,7 @@ void SlideEventHandler::dispatchEvent(osgGA::Event *event)
     eq->addEvent(event);
 }
 
-void SlideEventHandler::dispatchEvent(const KeyPosition&keyPosition)
+void SlideEventHandler::dispatchEvent(const KeyPosition &keyPosition)
 {
     if (!_viewer)
     {

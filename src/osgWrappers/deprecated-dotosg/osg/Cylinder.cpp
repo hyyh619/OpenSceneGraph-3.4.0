@@ -12,8 +12,8 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool Cylinder_readLocalData(Object&obj, Input&fr);
-bool Cylinder_writeLocalData(const Object&obj, Output&fw);
+bool Cylinder_readLocalData(Object &obj, Input &fr);
+bool Cylinder_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Cylinder)
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(Cylinder)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Cylinder_readLocalData(Object&obj, Input&fr)
+bool Cylinder_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Cylinder&cylinder = static_cast<Cylinder&>(obj);
+    Cylinder &cylinder = static_cast<Cylinder&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -76,9 +76,9 @@ bool Cylinder_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Cylinder_writeLocalData(const Object&obj, Output&fw)
+bool Cylinder_writeLocalData(const Object &obj, Output &fw)
 {
-    const Cylinder&cylinder = static_cast<const Cylinder&>(obj);
+    const Cylinder &cylinder = static_cast<const Cylinder&>(obj);
 
     fw.indent() << "Center " <<   cylinder.getCenter() << std::endl;
     fw.indent() << "Radius " <<   cylinder.getRadius() << std::endl;

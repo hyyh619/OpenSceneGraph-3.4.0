@@ -225,7 +225,7 @@ int remapKey(int key)
     return key;
 }
 
-bool remapExtendedKey(int&key)
+bool remapExtendedKey(int &key)
 {
     KeyMap::iterator itr = _extendedKeymap.find(key);
 
@@ -245,7 +245,7 @@ KeyMap _extendedKeymap;
 KeyMap _standardKeymap;
 };
 
-static bool remapExtendedX11Key(int&key)
+static bool remapExtendedX11Key(int &key)
 {
     static X11KeyboardMap s_x11KeyboardMap;
 
@@ -526,7 +526,7 @@ bool GraphicsWindowX11::setWindowRectangleImplementation(int x, int y, int width
     return true;
 }
 
-void GraphicsWindowX11::setWindowName(const std::string&name)
+void GraphicsWindowX11::setWindowName(const std::string &name)
 {
     if (_window == 0)
         return;
@@ -1719,7 +1719,7 @@ void GraphicsWindowX11::grabFocusIfPointerInWindow()
     }
 }
 
-void GraphicsWindowX11::transformMouseXY(float&x, float&y)
+void GraphicsWindowX11::transformMouseXY(float &x, float &y)
 {
     if (getEventQueue()->getUseFixedMouseInputRange())
     {
@@ -1729,7 +1729,7 @@ void GraphicsWindowX11::transformMouseXY(float&x, float&y)
     }
 }
 
-void GraphicsWindowX11::adaptKey(XKeyEvent&keyevent, int&keySymbol, int&unmodifiedKeySymbol)
+void GraphicsWindowX11::adaptKey(XKeyEvent &keyevent, int &keySymbol, int &unmodifiedKeySymbol)
 {
     unsigned char buffer_return[32];
     int           bytes_buffer = 32;
@@ -1932,7 +1932,7 @@ class X11WindowingSystemInterface : public osg::GraphicsContext::WindowingSystem
 // TODO: Investigate whether or not Robert thinks we should store/restore the original
 // resolution in the destructor; I'm not sure the other ones do this, and it may be the
 // responsibility of the user.
-bool _setScreen(const osg::GraphicsContext::ScreenIdentifier&si, unsigned int width, unsigned int height, unsigned int colorDepth, double rate)
+bool _setScreen(const osg::GraphicsContext::ScreenIdentifier &si, unsigned int width, unsigned int height, unsigned int colorDepth, double rate)
 {
     if (colorDepth > 0)
         OSG_NOTICE << "X11WindowingSystemInterface::_setScreen() is not fully implemented (missing depth)." << std::endl;
@@ -2088,7 +2088,7 @@ X11WindowingSystemInterface()
     }
 }
 
-virtual unsigned int getNumScreens(const osg::GraphicsContext::ScreenIdentifier&si)
+virtual unsigned int getNumScreens(const osg::GraphicsContext::ScreenIdentifier &si)
 {
     Display *display = XOpenDisplay(si.displayName().c_str());
 
@@ -2122,7 +2122,7 @@ bool supportsRandr(Display *display) const
     return false;
 }
 
-virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, osg::GraphicsContext::ScreenSettings&resolution)
+virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, osg::GraphicsContext::ScreenSettings &resolution)
 {
     Display *display = XOpenDisplay(si.displayName().c_str());
 
@@ -2159,7 +2159,7 @@ virtual void getScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, 
     }
 }
 
-virtual bool setScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, const osg::GraphicsContext::ScreenSettings&resolution)
+virtual bool setScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, const osg::GraphicsContext::ScreenSettings &resolution)
 {
 #ifdef OSGVIEWER_USE_XRANDR
     _setScreen(si, resolution.width, resolution.height, resolution.colorDepth, resolution.refreshRate);
@@ -2169,7 +2169,7 @@ virtual bool setScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, 
     return false;
 }
 
-virtual void enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier&si, osg::GraphicsContext::ScreenSettingsList&resolutionList)
+virtual void enumerateScreenSettings(const osg::GraphicsContext::ScreenIdentifier &si, osg::GraphicsContext::ScreenSettingsList &resolutionList)
 {
     resolutionList.clear();
 

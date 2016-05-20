@@ -28,6 +28,6 @@ TX_EXDECL class TX_CLDECL trpgUtil
 {
 public:
 enum {DoReport = 1 << 0, DoCopy = 1 << 1, DoTileOpt = 1 << 2};
-int merge(trpgr_Archive&inArch1, trpgr_Archive&inArch2, trpgwArchive&outArch, int flags = 0);
+int merge(trpgr_Archive &inArch1, trpgr_Archive &inArch2, trpgwArchive &outArch, int flags = 0);
 };
 #endif

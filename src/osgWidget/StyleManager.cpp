@@ -6,13 +6,13 @@
 
 namespace osgWidget
 {
-Style::Style(const std::string&name, const std::string&style) :
+Style::Style(const std::string &name, const std::string &style) :
     _style(style)
 {
     setName(name);
 }
 
-Style::Style(const Style&style, const osg::CopyOp&co) :
+Style::Style(const Style &style, const osg::CopyOp &co) :
     osg::Object (style, co),
     _style      (style._style) {}
 
@@ -279,7 +279,7 @@ bool Style::applyStyle(Frame::Border*, Reader /*r*/)
     return false;
 }
 
-Widget::Layer Style::strToLayer(const std::string&layer)
+Widget::Layer Style::strToLayer(const std::string &layer)
 {
     std::string l = lowerCase(layer);
 
@@ -306,7 +306,7 @@ Widget::Layer Style::strToLayer(const std::string&layer)
     }
 }
 
-Widget::VerticalAlignment Style::strToVAlign(const std::string&valign)
+Widget::VerticalAlignment Style::strToVAlign(const std::string &valign)
 {
     std::string va = lowerCase(valign);
 
@@ -327,7 +327,7 @@ Widget::VerticalAlignment Style::strToVAlign(const std::string&valign)
     }
 }
 
-Widget::HorizontalAlignment Style::strToHAlign(const std::string&halign)
+Widget::HorizontalAlignment Style::strToHAlign(const std::string &halign)
 {
     std::string ha = lowerCase(halign);
 
@@ -348,7 +348,7 @@ Widget::HorizontalAlignment Style::strToHAlign(const std::string&halign)
     }
 }
 
-Widget::CoordinateMode Style::strToCoordMode(const std::string&coordmode)
+Widget::CoordinateMode Style::strToCoordMode(const std::string &coordmode)
 {
     std::string cm = lowerCase(coordmode);
 
@@ -369,7 +369,7 @@ Widget::CoordinateMode Style::strToCoordMode(const std::string&coordmode)
     }
 }
 
-bool Style::strToFill(const std::string&fill)
+bool Style::strToFill(const std::string &fill)
 {
     std::string cm = lowerCase(fill);
 
@@ -392,7 +392,7 @@ bool Style::strToFill(const std::string&fill)
 
 StyleManager::StyleManager() {}
 
-StyleManager::StyleManager(const StyleManager&manager, const osg::CopyOp&co) :
+StyleManager::StyleManager(const StyleManager &manager, const osg::CopyOp &co) :
     osg::Object(manager, co)
 {
     for (ConstIterator i = _styles.begin(); i != _styles.end(); i++)
@@ -402,7 +402,7 @@ StyleManager::StyleManager(const StyleManager&manager, const osg::CopyOp&co) :
         }
 }
 
-bool StyleManager::_applyStyleToObject(osg::Object *obj, const std::string&style)
+bool StyleManager::_applyStyleToObject(osg::Object *obj, const std::string &style)
 {
     std::string c = obj->className();
 

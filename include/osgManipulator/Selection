@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+ */
+// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #ifndef OSGMANIPULATOR_SELECTION
 #define OSGMANIPULATOR_SELECTION 1
@@ -19,11 +19,7 @@
 #include <osg/MatrixTransform>
 
 namespace osgManipulator {
-
-
-typedef osg::MatrixTransform Selection;
-
-
+    typedef osg::MatrixTransform Selection;
 }
 
 #endif

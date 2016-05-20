@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool  ExplosionEffect_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ExplosionEffect_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ExplosionEffect_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ExplosionEffect_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ExplosionEffect_Proxy)
 (

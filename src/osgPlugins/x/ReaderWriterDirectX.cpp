@@ -62,14 +62,14 @@ virtual const char* className() const
     return "DirectX Reader";
 }
 
-virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const;
-virtual ReadResult readNode(std::istream&fin, const osgDB::ReaderWriter::Options *options) const;
+virtual ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const;
+virtual ReadResult readNode(std::istream &fin, const osgDB::ReaderWriter::Options *options) const;
 
 private:
-osg::Group* convertFromDX(DX::Object&obj, bool switchToLeftHanded, bool flipTexture, float creaseAngle,
+osg::Group* convertFromDX(DX::Object &obj, bool switchToLeftHanded, bool flipTexture, float creaseAngle,
                           const osgDB::ReaderWriter::Options *options) const;
 
-osg::Geode* convertFromDX(DX::Mesh&mesh, bool switchToLeftHanded, bool flipTexture, float creaseAngle,
+osg::Geode* convertFromDX(DX::Mesh &mesh, bool switchToLeftHanded, bool flipTexture, float creaseAngle,
                           const osgDB::ReaderWriter::Options *options) const;
 };
 
@@ -78,7 +78,7 @@ REGISTER_OSGPLUGIN(x, ReaderWriterDirectX)
 
 
 // Read node
-osgDB::ReaderWriter::ReadResult ReaderWriterDirectX::readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterDirectX::readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -105,7 +105,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterDirectX::readNode(const std::string&
     return readNode(fin, local_opt.get());
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterDirectX::readNode(std::istream&fin, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterDirectX::readNode(std::istream &fin, const osgDB::ReaderWriter::Options *options) const
 {
     DX::Object obj;
 
@@ -156,7 +156,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterDirectX::readNode(std::istream&fin, 
 
 
 // Convert DirectX object
-osg::Group* ReaderWriterDirectX::convertFromDX(DX::Object&obj, bool switchToLeftHanded,
+osg::Group* ReaderWriterDirectX::convertFromDX(DX::Object &obj, bool switchToLeftHanded,
                                                bool flipTexture, float creaseAngle,
                                                const osgDB::ReaderWriter::Options *options) const
 {
@@ -179,7 +179,7 @@ osg::Group* ReaderWriterDirectX::convertFromDX(DX::Object&obj, bool switchToLeft
 }
 
 // Convert DirectX mesh to osg::Geode
-osg::Geode* ReaderWriterDirectX::convertFromDX(DX::Mesh&mesh, bool switchToLeftHanded,
+osg::Geode* ReaderWriterDirectX::convertFromDX(DX::Mesh &mesh, bool switchToLeftHanded,
                                                bool flipTexture, float creaseAngle,
                                                const osgDB::ReaderWriter::Options *options) const
 {
@@ -233,8 +233,8 @@ osg::Geode* ReaderWriterDirectX::convertFromDX(DX::Mesh&mesh, bool switchToLeftH
     {
         // std::cerr << "material " << i << std::endl;
 
-        const DX::Material&mtl   = meshMaterial->material[i];
-        osg::StateSet     *state = new osg::StateSet;
+        const DX::Material &mtl   = meshMaterial->material[i];
+        osg::StateSet      *state = new osg::StateSet;
 
         // Material
         osg::Material *material = new osg::Material;
@@ -316,7 +316,7 @@ osg::Geode* ReaderWriterDirectX::convertFromDX(DX::Mesh&mesh, bool switchToLeftH
         geom->addPrimitiveSet(new osg::DrawArrayLengths(osg::PrimitiveSet::POLYGON));
     }
 
-    const std::vector<DX::MeshFace>&faces = mesh.getFaces();
+    const std::vector<DX::MeshFace> &faces = mesh.getFaces();
     if (faces.size() != meshMaterial->faceIndices.size())
     {
         OSG_FATAL << "Error: internal error in DirectX .x loader," << std::endl;
@@ -358,7 +358,7 @@ osg::Geode* ReaderWriterDirectX::convertFromDX(DX::Mesh&mesh, bool switchToLeftH
             unsigned int vi = faces[i][jj];
             if (vertexArray)
             {
-                const DX::Vector&v = mesh.getVertices()[vi];
+                const DX::Vector &v = mesh.getVertices()[vi];
                 if (switchToLeftHanded)// Transform Xleft/Yup/Zinto to Xleft/Yinto/Zup
                     vertexArray->push_back(osg::Vec3(v.x, v.z, v.y));
                 else
@@ -369,7 +369,7 @@ osg::Geode* ReaderWriterDirectX::convertFromDX(DX::Mesh&mesh, bool switchToLeftH
             unsigned int ni = meshNormals->faceNormals[i][jj];
             if (normalArray)
             {
-                const DX::Vector&n = meshNormals->normals[ni];
+                const DX::Vector &n = meshNormals->normals[ni];
                 if (switchToLeftHanded)// Transform Xleft/Yup/Zinto to Xleft/Yinto/Zup
                     normalArray->push_back(osg::Vec3(n.x, n.z, n.y));
                 else
@@ -379,8 +379,8 @@ osg::Geode* ReaderWriterDirectX::convertFromDX(DX::Mesh&mesh, bool switchToLeftH
             // TexCoords
             if (texCoordArray)
             {
-                const DX::Coords2d&tc = (*meshTexCoords)[vi];
-                osg::Vec2         uv;
+                const DX::Coords2d &tc = (*meshTexCoords)[vi];
+                osg::Vec2          uv;
                 if (flipTexture)
                 {
                     if (switchToLeftHanded)

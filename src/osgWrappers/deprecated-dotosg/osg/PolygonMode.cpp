@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool PolygonMode_readLocalData(Object&obj, Input&fr);
-bool PolygonMode_writeLocalData(const Object&obj, Output&fw);
+bool PolygonMode_readLocalData(Object &obj, Input &fr);
+bool PolygonMode_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(PolygonMode)
@@ -22,11 +22,11 @@ REGISTER_DOTOSGWRAPPER(PolygonMode)
 );
 
 
-bool PolygonMode_readLocalData(Object&obj, Input&fr)
+bool PolygonMode_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    PolygonMode&polygonmode = static_cast<PolygonMode&>(obj);
+    PolygonMode &polygonmode = static_cast<PolygonMode&>(obj);
 
     if (fr[0].matchWord("mode"))
     {
@@ -67,9 +67,9 @@ bool PolygonMode_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool PolygonMode_writeLocalData(const Object&obj, Output&fw)
+bool PolygonMode_writeLocalData(const Object &obj, Output &fw)
 {
-    const PolygonMode&polygonmode = static_cast<const PolygonMode&>(obj);
+    const PolygonMode &polygonmode = static_cast<const PolygonMode&>(obj);
 
     if (polygonmode.getFrontAndBack())
     {

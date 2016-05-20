@@ -26,7 +26,7 @@ void BoneMapVisitor::apply(osg::Node&)
 {
     return;
 }
-void BoneMapVisitor::apply(osg::Transform&node)
+void BoneMapVisitor::apply(osg::Transform &node)
 {
     Bone *bone = dynamic_cast<Bone*>(&node);
 

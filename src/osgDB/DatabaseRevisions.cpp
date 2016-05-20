@@ -26,7 +26,7 @@ using namespace osgDB;
 FileList::FileList()
 {}
 
-FileList::FileList(const FileList&fileList, const osg::CopyOp&copyop) :
+FileList::FileList(const FileList &fileList, const osg::CopyOp &copyop) :
     osg::Object(fileList, copyop),
     _files(fileList._files)
 {}
@@ -34,7 +34,7 @@ FileList::FileList(const FileList&fileList, const osg::CopyOp&copyop) :
 FileList::~FileList()
 {}
 
-bool FileList::removeFile(const std::string&filename)
+bool FileList::removeFile(const std::string &filename)
 {
     FileNames::iterator itr = _files.find(filename);
 
@@ -63,7 +63,7 @@ void FileList::append(FileList *fileList)
 DatabaseRevision::DatabaseRevision()
 {}
 
-DatabaseRevision::DatabaseRevision(const DatabaseRevision&revision, const osg::CopyOp&copyop) :
+DatabaseRevision::DatabaseRevision(const DatabaseRevision &revision, const osg::CopyOp &copyop) :
     osg::Object(revision, copyop),
     _databasePath(revision._databasePath),
     _filesAdded(revision._filesAdded),
@@ -74,7 +74,7 @@ DatabaseRevision::DatabaseRevision(const DatabaseRevision&revision, const osg::C
 DatabaseRevision::~DatabaseRevision()
 {}
 
-bool DatabaseRevision::isFileBlackListed(const std::string&filename) const
+bool DatabaseRevision::isFileBlackListed(const std::string &filename) const
 {
     OSG_INFO << "DatabaseRevision(" << getName() << ")::isFileBlackListed(" << filename << ")" << std::endl;
 
@@ -93,7 +93,7 @@ bool DatabaseRevision::isFileBlackListed(const std::string&filename) const
 }
 
 
-bool DatabaseRevision::removeFile(const std::string&filename)
+bool DatabaseRevision::removeFile(const std::string &filename)
 {
     bool removed = false;
 
@@ -116,7 +116,7 @@ bool DatabaseRevision::removeFile(const std::string&filename)
 DatabaseRevisions::DatabaseRevisions()
 {}
 
-DatabaseRevisions::DatabaseRevisions(const DatabaseRevisions&revisions, const osg::CopyOp&copyop) :
+DatabaseRevisions::DatabaseRevisions(const DatabaseRevisions &revisions, const osg::CopyOp &copyop) :
     osg::Object(revisions, copyop),
     _databasePath(revisions._databasePath),
     _revisionList(revisions._revisionList)
@@ -161,7 +161,7 @@ void DatabaseRevisions::removeRevision(DatabaseRevision *revision)
     }
 }
 
-bool DatabaseRevisions::isFileBlackListed(const std::string&filename) const
+bool DatabaseRevisions::isFileBlackListed(const std::string &filename) const
 {
     for (DatabaseRevisionList::const_iterator itr = _revisionList.begin();
          itr != _revisionList.end();
@@ -177,7 +177,7 @@ bool DatabaseRevisions::isFileBlackListed(const std::string&filename) const
     return false;
 }
 
-bool DatabaseRevisions::removeFile(const std::string&filename)
+bool DatabaseRevisions::removeFile(const std::string &filename)
 {
     OSG_INFO << "Remove file " << filename << std::endl;
 

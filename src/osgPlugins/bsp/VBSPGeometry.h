@@ -33,7 +33,7 @@ bool         doesEdgeExist(int row, int col, int direction,
 osg::Vec3f   getNormalFromEdges(int row, int col,
                                 unsigned char edgeBits,
                                 int firstVertex, int vertsPerEdge);
-void         createDispSurface(Face&face, DisplaceInfo&dispInfo);
+void         createDispSurface(Face &face, DisplaceInfo &dispInfo);
 
 public:
 

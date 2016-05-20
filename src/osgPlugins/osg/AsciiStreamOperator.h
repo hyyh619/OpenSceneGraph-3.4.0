@@ -81,7 +81,7 @@ virtual void writeDouble(double d)
     indentIfRequired(); *_out << d << ' ';
 }
 
-virtual void writeString(const std::string&s)
+virtual void writeString(const std::string &s)
 {
     indentIfRequired(); *_out << s << ' ';
 }
@@ -100,15 +100,15 @@ virtual void writeBase(std::ios_base& (*fn)(std::ios_base &))
     indentIfRequired(); *_out << fn;
 }
 
-virtual void writeGLenum(const osgDB::ObjectGLenum&value)
+virtual void writeGLenum(const osgDB::ObjectGLenum &value)
 {
-    GLenum           e           = value.get();
-    const std::string&enumString = osgDB::Registry::instance()->getObjectWrapperManager()->getString("GL", e);
+    GLenum            e           = value.get();
+    const std::string &enumString = osgDB::Registry::instance()->getObjectWrapperManager()->getString("GL", e);
 
     indentIfRequired(); *_out << enumString << ' ';
 }
 
-virtual void writeProperty(const osgDB::ObjectProperty&prop)
+virtual void writeProperty(const osgDB::ObjectProperty &prop)
 {
     std::string enumString = prop._name;
 
@@ -120,7 +120,7 @@ virtual void writeProperty(const osgDB::ObjectProperty&prop)
     indentIfRequired(); *_out << enumString << ' ';
 }
 
-virtual void writeMark(const osgDB::ObjectMark&mark)
+virtual void writeMark(const osgDB::ObjectMark &mark)
 {
     _indent += mark._indentDelta;
     indentIfRequired(); *_out << mark._name;
@@ -128,7 +128,7 @@ virtual void writeMark(const osgDB::ObjectMark&mark)
 
 virtual void writeCharArray(const char* /*s*/, unsigned int /*size*/) {}
 
-virtual void writeWrappedString(const std::string&str)
+virtual void writeWrappedString(const std::string &str)
 {
     std::string  wrappedStr;
     unsigned int size = str.size();
@@ -182,7 +182,7 @@ virtual bool isBinary() const
     return false;
 }
 
-virtual void readBool(bool&b)
+virtual void readBool(bool &b)
 {
     std::string boolString;
 
@@ -193,7 +193,7 @@ virtual void readBool(bool&b)
         b = false;
 }
 
-virtual void readChar(char&c)
+virtual void readChar(char &c)
 {
     short s = 0;
 
@@ -201,7 +201,7 @@ virtual void readChar(char&c)
     c = (char)s;
 }
 
-virtual void readSChar(signed char&c)
+virtual void readSChar(signed char &c)
 {
     short s = 0;
 
@@ -209,7 +209,7 @@ virtual void readSChar(signed char&c)
     c = (signed char)s;
 }
 
-virtual void readUChar(unsigned char&c)
+virtual void readUChar(unsigned char &c)
 {
     short s = 0;
 
@@ -217,47 +217,47 @@ virtual void readUChar(unsigned char&c)
     c = (unsigned char)s;
 }
 
-virtual void readShort(short&s)
+virtual void readShort(short &s)
 {
     std::string str; readString(str); s = static_cast<short>(strtol(str.c_str(), NULL, 0));
 }
 
-virtual void readUShort(unsigned short&s)
+virtual void readUShort(unsigned short &s)
 {
     std::string str; readString(str); s = static_cast<unsigned short>(strtoul(str.c_str(), NULL, 0));
 }
 
-virtual void readInt(int&i)
+virtual void readInt(int &i)
 {
     std::string str; readString(str); i = static_cast<int>(strtol(str.c_str(), NULL, 0));
 }
 
-virtual void readUInt(unsigned int&i)
+virtual void readUInt(unsigned int &i)
 {
     std::string str; readString(str); i = static_cast<unsigned int>(strtoul(str.c_str(), NULL, 0));
 }
 
-virtual void readLong(long&l)
+virtual void readLong(long &l)
 {
     std::string str; readString(str); l = strtol(str.c_str(), NULL, 0);
 }
 
-virtual void readULong(unsigned long&l)
+virtual void readULong(unsigned long &l)
 {
     std::string str; readString(str); l = strtoul(str.c_str(), NULL, 0);
 }
 
-virtual void readFloat(float&f)
+virtual void readFloat(float &f)
 {
     std::string str; readString(str); f = osg::asciiToFloat(str.c_str());
 }
 
-virtual void readDouble(double&d)
+virtual void readDouble(double &d)
 {
     std::string str; readString(str); d = osg::asciiToDouble(str.c_str());
 }
 
-virtual void readString(std::string&s)
+virtual void readString(std::string &s)
 {
     if (_preReadString.empty())
         *_in >> s;
@@ -278,7 +278,7 @@ virtual void readBase(std::ios_base& (*fn)(std::ios_base &))
     *_in >> fn;
 }
 
-virtual void readGLenum(osgDB::ObjectGLenum&value)
+virtual void readGLenum(osgDB::ObjectGLenum &value)
 {
     GLenum      e = 0;
     std::string enumString;
@@ -288,7 +288,7 @@ virtual void readGLenum(osgDB::ObjectGLenum&value)
     value.set(e);
 }
 
-virtual void readProperty(osgDB::ObjectProperty&prop)
+virtual void readProperty(osgDB::ObjectProperty &prop)
 {
     int         value = 0;
     std::string enumString;
@@ -321,7 +321,7 @@ virtual void readMark(osgDB::ObjectMark& /*mark*/)
 
 virtual void readCharArray(char* /*s*/, unsigned int /*size*/) {}
 
-virtual void readWrappedString(std::string&str)
+virtual void readWrappedString(std::string &str)
 {
     char ch;
 
@@ -362,7 +362,7 @@ virtual void readWrappedString(std::string&str)
     }
 }
 
-virtual bool matchString(const std::string&str)
+virtual bool matchString(const std::string &str)
 {
     if (_preReadString.empty())
         *_in >> _preReadString;
@@ -399,7 +399,7 @@ virtual void advanceToCurrentEndBracket()
 }
 
 protected:
-void getCharacter(char&ch)
+void getCharacter(char &ch)
 {
     if (!_preReadString.empty())
     {

@@ -206,7 +206,7 @@ void CameraConfig::setRenderSurfaceOverrideRedirect(bool flag)
         _current_render_surface->useOverrideRedirect(flag);
 }
 
-void CameraConfig::setRenderSurfaceHostName(const std::string&name)
+void CameraConfig::setRenderSurfaceHostName(const std::string &name)
 {
     if (_current_render_surface != NULL)
         _current_render_surface->setHostName(name);

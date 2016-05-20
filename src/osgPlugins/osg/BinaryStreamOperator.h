@@ -81,7 +81,7 @@ virtual void writeDouble(double d)
     _out->write((char*)&d, osgDB::DOUBLE_SIZE);
 }
 
-virtual void writeString(const std::string&s)
+virtual void writeString(const std::string &s)
 {
     int size = s.size();
 
@@ -93,18 +93,18 @@ virtual void writeStream(std::ostream& (*/*fn*/)(std::ostream &)) {}
 
 virtual void writeBase(std::ios_base& (*/*fn*/)(std::ios_base &)) {}
 
-virtual void writeGLenum(const osgDB::ObjectGLenum&value)
+virtual void writeGLenum(const osgDB::ObjectGLenum &value)
 {
     GLenum e = value.get(); _out->write((char*)&e, osgDB::GLENUM_SIZE);
 }
 
-virtual void writeProperty(const osgDB::ObjectProperty&prop)
+virtual void writeProperty(const osgDB::ObjectProperty &prop)
 {
     if (prop._mapProperty)
         _out->write((char*)&(prop._value), osgDB::INT_SIZE);
 }
 
-virtual void writeMark(const osgDB::ObjectMark&mark)
+virtual void writeMark(const osgDB::ObjectMark &mark)
 {
     if (_supportBinaryBrackets)
     {
@@ -134,7 +134,7 @@ virtual void writeCharArray(const char *s, unsigned int size)
         _out->write(s, size);
 }
 
-virtual void writeWrappedString(const std::string&str)
+virtual void writeWrappedString(const std::string &str)
 {
     writeString(str);
 }
@@ -159,7 +159,7 @@ virtual bool isBinary() const
     return true;
 }
 
-virtual void readBool(bool&b)
+virtual void readBool(bool &b)
 {
     char c = 0;
 
@@ -167,50 +167,50 @@ virtual void readBool(bool&b)
     b = (c != 0);
 }
 
-virtual void readChar(char&c)
+virtual void readChar(char &c)
 {
     _in->read(&c, osgDB::CHAR_SIZE);
 }
 
-virtual void readSChar(signed char&c)
+virtual void readSChar(signed char &c)
 {
     _in->read((char*)&c, osgDB::CHAR_SIZE);
 }
 
-virtual void readUChar(unsigned char&c)
+virtual void readUChar(unsigned char &c)
 {
     _in->read((char*)&c, osgDB::CHAR_SIZE);
 }
 
-virtual void readShort(short&s)
+virtual void readShort(short &s)
 {
     _in->read((char*)&s, osgDB::SHORT_SIZE);
     if (_byteSwap)
         osg::swapBytes((char*)&s, osgDB::SHORT_SIZE);
 }
 
-virtual void readUShort(unsigned short&s)
+virtual void readUShort(unsigned short &s)
 {
     _in->read((char*)&s, osgDB::SHORT_SIZE);
     if (_byteSwap)
         osg::swapBytes((char*)&s, osgDB::SHORT_SIZE);
 }
 
-virtual void readInt(int&i)
+virtual void readInt(int &i)
 {
     _in->read((char*)&i, osgDB::INT_SIZE);
     if (_byteSwap)
         osg::swapBytes((char*)&i, osgDB::INT_SIZE);
 }
 
-virtual void readUInt(unsigned int&i)
+virtual void readUInt(unsigned int &i)
 {
     _in->read((char*)&i, osgDB::INT_SIZE);
     if (_byteSwap)
         osg::swapBytes((char*)&i, osgDB::INT_SIZE);
 }
 
-virtual void readLong(long&l)
+virtual void readLong(long &l)
 {
     // On 64-bit systems a long may not be the same size as the file value
     int32_t value;
@@ -222,7 +222,7 @@ virtual void readLong(long&l)
     l = (long)value;
 }
 
-virtual void readULong(unsigned long&l)
+virtual void readULong(unsigned long &l)
 {
     uint32_t value;
 
@@ -233,21 +233,21 @@ virtual void readULong(unsigned long&l)
     l = (unsigned long)value;
 }
 
-virtual void readFloat(float&f)
+virtual void readFloat(float &f)
 {
     _in->read((char*)&f, osgDB::FLOAT_SIZE);
     if (_byteSwap)
         osg::swapBytes((char*)&f, osgDB::FLOAT_SIZE);
 }
 
-virtual void readDouble(double&d)
+virtual void readDouble(double &d)
 {
     _in->read((char*)&d, osgDB::DOUBLE_SIZE);
     if (_byteSwap)
         osg::swapBytes((char*)&d, osgDB::DOUBLE_SIZE);
 }
 
-virtual void readString(std::string&s)
+virtual void readString(std::string &s)
 {
     int size = 0;
 
@@ -267,7 +267,7 @@ virtual void readStream(std::istream& (*/*fn*/)(std::istream &)) {}
 
 virtual void readBase(std::ios_base& (*/*fn*/)(std::ios_base &)) {}
 
-virtual void readGLenum(osgDB::ObjectGLenum&value)
+virtual void readGLenum(osgDB::ObjectGLenum &value)
 {
     GLenum e = 0;
 
@@ -278,7 +278,7 @@ virtual void readGLenum(osgDB::ObjectGLenum&value)
     value.set(e);
 }
 
-virtual void readProperty(osgDB::ObjectProperty&prop)
+virtual void readProperty(osgDB::ObjectProperty &prop)
 {
     int value = 0;
 
@@ -292,7 +292,7 @@ virtual void readProperty(osgDB::ObjectProperty&prop)
     prop.set(value);
 }
 
-virtual void readMark(osgDB::ObjectMark&mark)
+virtual void readMark(osgDB::ObjectMark &mark)
 {
     if (_supportBinaryBrackets)
     {
@@ -321,7 +321,7 @@ virtual void readCharArray(char *s, unsigned int size)
         _in->read(s, size);
 }
 
-virtual void readWrappedString(std::string&str)
+virtual void readWrappedString(std::string &str)
 {
     readString(str);
 }

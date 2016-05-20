@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_DEPTH
 #define OSG_DEPTH 1
@@ -17,32 +17,31 @@
 #include <osg/StateAttribute>
 
 namespace osg {
-
 /** Encapsulate OpenGL glDepthFunc/Mask/Range functions.
-*/
-class OSG_EXPORT Depth : public StateAttribute
-{
-    public :
+ */
+    class OSG_EXPORT Depth: public StateAttribute
+    {
+public:
 
 
         enum Function
         {
-            NEVER = GL_NEVER,
-            LESS = GL_LESS,
-            EQUAL = GL_EQUAL,
-            LEQUAL = GL_LEQUAL,
-            GREATER = GL_GREATER,
+            NEVER    = GL_NEVER,
+            LESS     = GL_LESS,
+            EQUAL    = GL_EQUAL,
+            LEQUAL   = GL_LEQUAL,
+            GREATER  = GL_GREATER,
             NOTEQUAL = GL_NOTEQUAL,
-            GEQUAL = GL_GEQUAL,
-            ALWAYS = GL_ALWAYS
+            GEQUAL   = GL_GEQUAL,
+            ALWAYS   = GL_ALWAYS
         };
 
 
-        Depth(Function func=LESS,double zNear=0.0, double zFar=1.0,bool writeMask=true);
+        Depth(Function func = LESS, double zNear = 0.0, double zFar = 1.0, bool writeMask = true);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        Depth(const Depth& dp,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
-            StateAttribute(dp,copyop),
+        Depth(const Depth &dp, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
+            StateAttribute(dp, copyop),
             _func(dp._func),
             _zNear(dp._zNear),
             _zFar(dp._zFar),
@@ -52,11 +51,11 @@ class OSG_EXPORT Depth : public StateAttribute
         META_StateAttribute(osg, Depth, DEPTH);
 
         /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.*/
-        virtual int compare(const StateAttribute& sa) const
+        virtual int compare(const StateAttribute &sa) const
         {
             // check the types are equal and then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(Depth,sa)
+            COMPARE_StateAttribute_Types(Depth, sa)
 
             // compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_func)
@@ -67,46 +66,69 @@ class OSG_EXPORT Depth : public StateAttribute
             return 0; // passed all the above comparison macros, must be equal.
         }
 
-        virtual bool getModeUsage(StateAttribute::ModeUsage& usage) const
+        virtual bool getModeUsage(StateAttribute::ModeUsage &usage) const
         {
             usage.usesMode(GL_DEPTH_TEST);
             return true;
         }
 
-        inline void setFunction(Function func) { _func = func; }
-        inline Function getFunction() const { return _func; }
+        inline void setFunction(Function func)
+        {
+            _func = func;
+        }
+        inline Function getFunction() const
+        {
+            return _func;
+        }
 
 
         inline void setRange(double zNear, double zFar)
         {
             _zNear = zNear;
-            _zFar = zFar;
+            _zFar  = zFar;
         }
 
-        inline void setZNear(double zNear) { _zNear=zNear; }
-        inline double getZNear() const { return _zNear; }
+        inline void setZNear(double zNear)
+        {
+            _zNear = zNear;
+        }
+        inline double getZNear() const
+        {
+            return _zNear;
+        }
 
-        inline void setZFar(double zFar) { _zFar=zFar; }
-        inline double getZFar() const { return _zFar; }
+        inline void setZFar(double zFar)
+        {
+            _zFar = zFar;
+        }
+        inline double getZFar() const
+        {
+            return _zFar;
+        }
 
-        inline void setWriteMask(bool mask) { _depthWriteMask = mask; }
-        inline bool getWriteMask() const { return _depthWriteMask; }
+        inline void setWriteMask(bool mask)
+        {
+            _depthWriteMask = mask;
+        }
+        inline bool getWriteMask() const
+        {
+            return _depthWriteMask;
+        }
 
 
-        virtual void apply(State& state) const;
+        virtual void apply(State &state) const;
 
-    protected:
+protected:
 
         virtual ~Depth();
 
-        Function            _func;
+        Function _func;
 
-        double              _zNear;
-        double              _zFar;
+        double _zNear;
+        double _zFar;
 
-        bool                _depthWriteMask;
-};
-
+        bool _depthWriteMask;
+    };
 }
 
 #endif

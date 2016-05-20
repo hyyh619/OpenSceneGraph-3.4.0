@@ -36,7 +36,7 @@ virtual const char* className() const
     return "osgViewer configuration loader";
 }
 
-void setPrecision(osgDB::Output&fout, const osgDB::ReaderWriter::Options *options) const
+void setPrecision(osgDB::Output &fout, const osgDB::ReaderWriter::Options *options) const
 {
     if (options)
     {
@@ -61,7 +61,7 @@ void setPrecision(osgDB::Output&fout, const osgDB::ReaderWriter::Options *option
 }
 
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -82,7 +82,7 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
     return 0L;
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::Input fr;
 
@@ -120,7 +120,7 @@ virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Optio
     }
 }
 
-virtual WriteResult writeObject(const osg::Object&obj, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const osg::Object &obj, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 
@@ -142,13 +142,13 @@ virtual WriteResult writeObject(const osg::Object&obj, const std::string&fileNam
 }
 
 
-virtual WriteResult writeObject(const osg::Object&obj, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const osg::Object &obj, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::Output foutput;
 
     foutput.setOptions(options);
 
-    std::ios&fios = foutput;
+    std::ios &fios = foutput;
     fios.rdbuf(fout.rdbuf());
 
     if (fout)

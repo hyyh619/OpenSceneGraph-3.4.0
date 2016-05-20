@@ -13,7 +13,7 @@ using namespace osgText;
 //
 struct look_ahead_iterator
 {
-    look_ahead_iterator(const std::string&string) :
+    look_ahead_iterator(const std::string &string) :
         _string(string),
         _index(0),
         _nullCharacter(0) {}
@@ -66,9 +66,9 @@ struct look_ahead_iterator
     }
 
 
-    const std::string&_string;
-    unsigned int     _index;
-    unsigned char    _nullCharacter;
+    const std::string &_string;
+    unsigned int      _index;
+    unsigned char     _nullCharacter;
 
 protected:
 
@@ -78,7 +78,7 @@ protected:
     }
 };
 
-String::Encoding findEncoding(look_ahead_iterator&charString, String::Encoding overrideEncoding)
+String::Encoding findEncoding(look_ahead_iterator &charString, String::Encoding overrideEncoding)
 {
     switch (charString[0])
     {
@@ -146,7 +146,7 @@ String::Encoding findEncoding(look_ahead_iterator&charString, String::Encoding o
 }
 
 
-unsigned int getNextCharacter(look_ahead_iterator&charString, String::Encoding encoding)
+unsigned int getNextCharacter(look_ahead_iterator &charString, String::Encoding encoding)
 {
     // For more info on unicode encodings see:
     // http://www-106.ibm.com/developerworks/unicode/library/u-encode.html
@@ -280,11 +280,11 @@ unsigned int getNextCharacter(look_ahead_iterator&charString, String::Encoding e
 // String implementation.
 //
 
-String::String(const String&str) :
+String::String(const String &str) :
     vector_type(str)
 {}
 
-String&String::operator =(const String&str)
+String&String::operator =(const String &str)
 {
     if (&str == this)
         return *this;
@@ -295,7 +295,7 @@ String&String::operator =(const String&str)
     return *this;
 }
 
-void String::set(const std::string&text)
+void String::set(const std::string &text)
 {
     clear();
 
@@ -316,7 +316,7 @@ void String::set(const wchar_t *text)
     }
 }
 
-void String::set(const std::string&text, Encoding encoding)
+void String::set(const std::string &text, Encoding encoding)
 {
     clear();
 

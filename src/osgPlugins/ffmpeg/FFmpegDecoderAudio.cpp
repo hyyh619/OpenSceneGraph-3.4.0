@@ -125,7 +125,7 @@ static int decode_audio(AVCodecContext *avctx, int16_t *samples,
 }
 
 
-FFmpegDecoderAudio::FFmpegDecoderAudio(PacketQueue&packets, FFmpegClocks&clocks) :
+FFmpegDecoderAudio::FFmpegDecoderAudio(PacketQueue &packets, FFmpegClocks &clocks) :
     m_packets(packets),
     m_clocks(clocks),
     m_stream(0),
@@ -301,7 +301,7 @@ void FFmpegDecoderAudio::run()
         decodeLoop();
     }
 
-    catch (const std::exception&error)
+    catch (const std::exception &error)
     {
         OSG_WARN << "FFmpegDecoderAudio::run : " << error.what() << std::endl;
     }

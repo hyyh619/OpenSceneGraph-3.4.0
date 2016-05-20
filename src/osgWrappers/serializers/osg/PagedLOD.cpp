@@ -5,12 +5,12 @@
 #include <osgDB/Options>
 
 // _databasePath
-static bool checkDatabasePath(const osg::PagedLOD&node)
+static bool checkDatabasePath(const osg::PagedLOD &node)
 {
     return true;
 }
 
-static bool readDatabasePath(osgDB::InputStream&is, osg::PagedLOD&node)
+static bool readDatabasePath(osgDB::InputStream &is, osg::PagedLOD &node)
 {
     bool hasPath; is >> hasPath;
 
@@ -18,7 +18,7 @@ static bool readDatabasePath(osgDB::InputStream&is, osg::PagedLOD&node)
     {
         if (is.getOptions() && !is.getOptions()->getDatabasePathList().empty())
         {
-            const std::string&optionPath = is.getOptions()->getDatabasePathList().front();
+            const std::string &optionPath = is.getOptions()->getDatabasePathList().front();
             if (!optionPath.empty())
                 node.setDatabasePath(optionPath);
         }
@@ -32,7 +32,7 @@ static bool readDatabasePath(osgDB::InputStream&is, osg::PagedLOD&node)
     return true;
 }
 
-static bool writeDatabasePath(osgDB::OutputStream&os, const osg::PagedLOD&node)
+static bool writeDatabasePath(osgDB::OutputStream &os, const osg::PagedLOD &node)
 {
     os << (!node.getDatabasePath().empty());
     if (!node.getDatabasePath().empty())
@@ -43,12 +43,12 @@ static bool writeDatabasePath(osgDB::OutputStream&os, const osg::PagedLOD&node)
 }
 
 // _perRangeDataList
-static bool checkRangeDataList(const osg::PagedLOD&node)
+static bool checkRangeDataList(const osg::PagedLOD &node)
 {
     return node.getNumFileNames() > 0;
 }
 
-static bool readRangeDataList(osgDB::InputStream&is, osg::PagedLOD&node)
+static bool readRangeDataList(osgDB::InputStream &is, osg::PagedLOD &node)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -75,7 +75,7 @@ static bool readRangeDataList(osgDB::InputStream&is, osg::PagedLOD&node)
     return true;
 }
 
-static bool writeRangeDataList(osgDB::OutputStream&os, const osg::PagedLOD&node)
+static bool writeRangeDataList(osgDB::OutputStream &os, const osg::PagedLOD &node)
 {
     unsigned int size = node.getNumFileNames();
 
@@ -102,12 +102,12 @@ static bool writeRangeDataList(osgDB::OutputStream&os, const osg::PagedLOD&node)
 }
 
 // _children
-static bool checkChildren(const osg::PagedLOD&node)
+static bool checkChildren(const osg::PagedLOD &node)
 {
     return node.getNumChildren() > 0;
 }
 
-static bool readChildren(osgDB::InputStream&is, osg::PagedLOD&node)
+static bool readChildren(osgDB::InputStream &is, osg::PagedLOD &node)
 {
     unsigned int size = 0; is >> size;
 
@@ -128,7 +128,7 @@ static bool readChildren(osgDB::InputStream&is, osg::PagedLOD&node)
     return true;
 }
 
-static bool writeChildren(osgDB::OutputStream&os, const osg::PagedLOD&node)
+static bool writeChildren(osgDB::OutputStream &os, const osg::PagedLOD &node)
 {
     unsigned int size = node.getNumFileNames(), dynamicLoadedSize = 0;
 

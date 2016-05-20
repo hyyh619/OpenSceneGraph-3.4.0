@@ -25,10 +25,10 @@ namespace lwosg
 class CoordinateSystemFixer : public osg::Referenced
 {
 public:
-virtual osg::Vec3 fix_point(const osg::Vec3&P) const  = 0;
-virtual osg::Vec4 fix_point(const osg::Vec4&P) const  = 0;
-virtual osg::Vec3 fix_vector(const osg::Vec3&V) const = 0;
-virtual osg::Vec4 fix_vector(const osg::Vec4&V) const = 0;
+virtual osg::Vec3 fix_point(const osg::Vec3 &P) const  = 0;
+virtual osg::Vec4 fix_point(const osg::Vec4 &P) const  = 0;
+virtual osg::Vec3 fix_vector(const osg::Vec3 &V) const = 0;
+virtual osg::Vec4 fix_vector(const osg::Vec4 &V) const = 0;
 virtual inline bool invert_winding() const
 {
     return false;
@@ -45,10 +45,10 @@ CoordinateSystemFixer&operator=(const CoordinateSystemFixer&)
 class LwoCoordFixer : public CoordinateSystemFixer
 {
 public:
-inline osg::Vec3 fix_point(const osg::Vec3&P) const;
-inline osg::Vec4 fix_point(const osg::Vec4&P) const;
-inline osg::Vec3 fix_vector(const osg::Vec3&V) const;
-inline osg::Vec4 fix_vector(const osg::Vec4&V) const;
+inline osg::Vec3 fix_point(const osg::Vec3 &P) const;
+inline osg::Vec4 fix_point(const osg::Vec4 &P) const;
+inline osg::Vec3 fix_vector(const osg::Vec3 &V) const;
+inline osg::Vec4 fix_vector(const osg::Vec4 &V) const;
 inline bool invert_winding() const
 {
     return true;
@@ -75,9 +75,9 @@ struct Options
 typedef std::vector<osg::ref_ptr<osg::AnimationPath> > Animation_list;
 
 SceneLoader();
-SceneLoader(const Options&options);
+SceneLoader(const Options &options);
 
-osg::Group* load(const std::string&filename, const osgDB::ReaderWriter::Options *options, bool search = false);
+osg::Group* load(const std::string &filename, const osgDB::ReaderWriter::Options *options, bool search = false);
 
 inline osg::Group* get_root()
 {
@@ -96,7 +96,7 @@ inline Options&get_options()
 {
     return options_;
 }
-inline void set_options(const Options&options)
+inline void set_options(const Options &options)
 {
     options_ = options;
 }
@@ -124,8 +124,8 @@ struct Motion_envelope
 };
 
 protected:
-bool parse_block(const std::string&name, const std::string&data);
-bool parse_block(const std::string&name, const std::vector<std::string>&data);
+bool parse_block(const std::string &name, const std::string &data);
+bool parse_block(const std::string &name, const std::vector<std::string> &data);
 void clear();
 
 private:
@@ -171,22 +171,22 @@ unsigned int version_;
 
 // INLINE METHODS
 
-inline osg::Vec3 LwoCoordFixer::fix_point(const osg::Vec3&P) const
+inline osg::Vec3 LwoCoordFixer::fix_point(const osg::Vec3 &P) const
 {
     return osg::Vec3(P.x(), P.z(), P.y());
 }
 
-inline osg::Vec4 LwoCoordFixer::fix_point(const osg::Vec4&P) const
+inline osg::Vec4 LwoCoordFixer::fix_point(const osg::Vec4 &P) const
 {
     return osg::Vec4(fix_point(osg::Vec3(P.x(), P.y(), P.z())), P.w());
 }
 
-inline osg::Vec3 LwoCoordFixer::fix_vector(const osg::Vec3&V) const
+inline osg::Vec3 LwoCoordFixer::fix_vector(const osg::Vec3 &V) const
 {
     return fix_point(V);
 }
 
-inline osg::Vec4 LwoCoordFixer::fix_vector(const osg::Vec4&V) const
+inline osg::Vec4 LwoCoordFixer::fix_vector(const osg::Vec4 &V) const
 {
     return fix_point(V);
 }

@@ -15,9 +15,9 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Fog_readLocalData(Object&obj, Input&fr);
-bool Fog_writeLocalData(const Object&obj, Output&fw);
-bool Fog_matchModeStr(const char *str, Fog::Mode&mode);
+bool Fog_readLocalData(Object &obj, Input &fr);
+bool Fog_writeLocalData(const Object &obj, Output &fw);
+bool Fog_matchModeStr(const char *str, Fog::Mode &mode);
 const char* Fog_getModeStr(Fog::Mode mode);
 
 // register the read and write functions with the osgDB::Registry.
@@ -31,11 +31,11 @@ REGISTER_DOTOSGWRAPPER(Fog)
 );
 
 
-bool Fog_readLocalData(Object&obj, Input&fr)
+bool Fog_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Fog&fog = static_cast<Fog&>(obj);
+    Fog &fog = static_cast<Fog&>(obj);
 
     Fog::Mode mode;
 
@@ -100,9 +100,9 @@ bool Fog_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Fog_writeLocalData(const Object&obj, Output&fw)
+bool Fog_writeLocalData(const Object &obj, Output &fw)
 {
-    const Fog&fog = static_cast<const Fog&>(obj);
+    const Fog &fog = static_cast<const Fog&>(obj);
 
     fw.indent() << "mode " << Fog_getModeStr(fog.getMode()) << std::endl;
     fw.indent() << "density " << fog.getDensity() << std::endl;
@@ -129,7 +129,7 @@ bool Fog_writeLocalData(const Object&obj, Output&fw)
 }
 
 
-bool Fog_matchModeStr(const char *str, Fog::Mode&mode)
+bool Fog_matchModeStr(const char *str, Fog::Mode &mode)
 {
     if (strcmp(str, "LINEAR") == 0)
         mode = Fog::LINEAR;

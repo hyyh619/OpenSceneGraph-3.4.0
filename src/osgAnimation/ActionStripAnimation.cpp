@@ -52,7 +52,7 @@ unsigned int ActionStripAnimation::getLoop() const
 }
 
 
-ActionStripAnimation::ActionStripAnimation(const ActionStripAnimation&a, const osg::CopyOp&c) : Action(a, c)
+ActionStripAnimation::ActionStripAnimation(const ActionStripAnimation &a, const osg::CopyOp &c) : Action(a, c)
 {
     _animation = a._animation;
     _blendIn   = a._blendIn;
@@ -85,7 +85,7 @@ void ActionStripAnimation::setLoop(unsigned int loop)
     _blendOut = FrameBlendOut(start, _blendOut.second);
 }
 
-void ActionStripAnimation::traverse(ActionVisitor&visitor)
+void ActionStripAnimation::traverse(ActionVisitor &visitor)
 {
     if (_blendIn.valid())
     {

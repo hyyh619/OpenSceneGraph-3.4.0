@@ -16,14 +16,14 @@
 
 using namespace osg;
 
-Stats::Stats(const std::string&name) :
+Stats::Stats(const std::string &name) :
     _name(name)
 {
     allocate(25);
 }
 
 
-Stats::Stats(const std::string&name, unsigned int numberOfFrames) :
+Stats::Stats(const std::string &name, unsigned int numberOfFrames) :
     _name(name)
 {
     allocate(numberOfFrames);
@@ -40,7 +40,7 @@ void Stats::allocate(unsigned int numberOfFrames)
 }
 
 
-bool Stats::setAttribute(unsigned int frameNumber, const std::string&attributeName, double value)
+bool Stats::setAttribute(unsigned int frameNumber, const std::string &attributeName, double value)
 {
     if (frameNumber < getEarliestFrameNumber())
         return false;
@@ -73,13 +73,13 @@ bool Stats::setAttribute(unsigned int frameNumber, const std::string&attributeNa
         return false;
     }
 
-    AttributeMap&attributeMap = _attributeMapList[index];
+    AttributeMap &attributeMap = _attributeMapList[index];
     attributeMap[attributeName] = value;
 
     return true;
 }
 
-bool Stats::getAttributeNoMutex(unsigned int frameNumber, const std::string&attributeName, double&value) const
+bool Stats::getAttributeNoMutex(unsigned int frameNumber, const std::string &attributeName, double &value) const
 {
     int index = getIndex(frameNumber);
 
@@ -95,12 +95,12 @@ bool Stats::getAttributeNoMutex(unsigned int frameNumber, const std::string&attr
     return true;
 }
 
-bool Stats::getAveragedAttribute(const std::string&attributeName, double&value, bool averageInInverseSpace) const
+bool Stats::getAveragedAttribute(const std::string &attributeName, double &value, bool averageInInverseSpace) const
 {
     return getAveragedAttribute(getEarliestFrameNumber(), getLatestFrameNumber(), attributeName, value, averageInInverseSpace);
 }
 
-bool Stats::getAveragedAttribute(unsigned int startFrameNumber, unsigned int endFrameNumber, const std::string&attributeName, double&value, bool averageInInverseSpace) const
+bool Stats::getAveragedAttribute(unsigned int startFrameNumber, unsigned int endFrameNumber, const std::string &attributeName, double &value, bool averageInInverseSpace) const
 {
     if (endFrameNumber < startFrameNumber)
     {
@@ -159,7 +159,7 @@ const Stats::AttributeMap&Stats::getAttributeMapNoMutex(unsigned int frameNumber
     return _attributeMapList[index];
 }
 
-void Stats::report(std::ostream&out, const char *indent) const
+void Stats::report(std::ostream &out, const char *indent) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
@@ -171,7 +171,7 @@ void Stats::report(std::ostream&out, const char *indent) const
     for (unsigned int i = getEarliestFrameNumber(); i <= getLatestFrameNumber(); ++i)
     {
         out << " FrameNumber " << i << std::endl;
-        const osg::Stats::AttributeMap&attributes = getAttributeMapNoMutex(i);
+        const osg::Stats::AttributeMap &attributes = getAttributeMapNoMutex(i);
 
         for (osg::Stats::AttributeMap::const_iterator itr = attributes.begin();
              itr != attributes.end();
@@ -185,7 +185,7 @@ void Stats::report(std::ostream&out, const char *indent) const
     }
 }
 
-void Stats::report(std::ostream&out, unsigned int frameNumber, const char *indent) const
+void Stats::report(std::ostream &out, unsigned int frameNumber, const char *indent) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
@@ -193,7 +193,7 @@ void Stats::report(std::ostream&out, unsigned int frameNumber, const char *inden
         out << indent;
 
     out << "Stats " << _name << " FrameNumber " << frameNumber << std::endl;
-    const osg::Stats::AttributeMap&attributes = getAttributeMapNoMutex(frameNumber);
+    const osg::Stats::AttributeMap &attributes = getAttributeMapNoMutex(frameNumber);
 
     for (osg::Stats::AttributeMap::const_iterator itr = attributes.begin();
          itr != attributes.end();

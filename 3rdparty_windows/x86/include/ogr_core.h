@@ -50,7 +50,7 @@ public:
 OGREnvelope() : MinX(0.0), MaxX(0.0), MinY(0.0), MaxY(0.0)
 {}
 
-OGREnvelope(const OGREnvelope&oOther) :
+OGREnvelope(const OGREnvelope &oOther) :
     MinX(oOther.MinX), MaxX(oOther.MaxX), MinY(oOther.MinY), MaxY(oOther.MaxY)
 {}
 
@@ -63,7 +63,7 @@ int  IsInit() const
 {
     return MinX != 0 || MinY != 0 || MaxX != 0 || MaxY != 0;
 }
-void Merge(OGREnvelope const&sOther)
+void Merge(OGREnvelope const &sOther)
 {
     if (IsInit())
     {
@@ -96,7 +96,7 @@ void Merge(double dfX, double dfY)
     }
 }
 
-void Intersect(OGREnvelope const&sOther)
+void Intersect(OGREnvelope const &sOther)
 {
     if (Intersects(sOther))
     {
@@ -124,13 +124,13 @@ void Intersect(OGREnvelope const&sOther)
     }
 }
 
-int Intersects(OGREnvelope const&other) const
+int Intersects(OGREnvelope const &other) const
 {
     return MinX <= other.MaxX && MaxX >= other.MinX &&
            MinY <= other.MaxY && MaxY >= other.MinY;
 }
 
-int Contains(OGREnvelope const&other) const
+int Contains(OGREnvelope const &other) const
 {
     return MinX <= other.MinX && MinY <= other.MinY &&
            MaxX >= other.MaxX && MaxY >= other.MaxY;
@@ -158,7 +158,7 @@ public:
 OGREnvelope3D() : OGREnvelope(), MinZ(0.0), MaxZ(0.0)
 {}
 
-OGREnvelope3D(const OGREnvelope3D&oOther) :
+OGREnvelope3D(const OGREnvelope3D &oOther) :
     OGREnvelope(oOther),
     MinZ(oOther.MinZ), MaxZ(oOther.MaxZ)
 {}
@@ -170,7 +170,7 @@ int  IsInit() const
 {
     return MinX != 0 || MinY != 0 || MaxX != 0 || MaxY != 0 || MinZ != 0 || MaxZ != 0;
 }
-void Merge(OGREnvelope3D const&sOther)
+void Merge(OGREnvelope3D const &sOther)
 {
     if (IsInit())
     {
@@ -210,7 +210,7 @@ void Merge(double dfX, double dfY, double dfZ)
     }
 }
 
-void Intersect(OGREnvelope3D const&sOther)
+void Intersect(OGREnvelope3D const &sOther)
 {
     if (Intersects(sOther))
     {
@@ -244,14 +244,14 @@ void Intersect(OGREnvelope3D const&sOther)
     }
 }
 
-int Intersects(OGREnvelope3D const&other) const
+int Intersects(OGREnvelope3D const &other) const
 {
     return MinX <= other.MaxX && MaxX >= other.MinX &&
            MinY <= other.MaxY && MaxY >= other.MinY &&
            MinZ <= other.MaxZ && MaxZ >= other.MinZ;
 }
 
-int Contains(OGREnvelope3D const&other) const
+int Contains(OGREnvelope3D const &other) const
 {
     return MinX <= other.MinX && MinY <= other.MinY &&
            MaxX >= other.MaxX && MaxY >= other.MaxY &&

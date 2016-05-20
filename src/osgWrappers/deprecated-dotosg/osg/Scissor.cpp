@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Scissor_readLocalData(Object&obj, Input&fr);
-bool Scissor_writeLocalData(const Object&obj, Output&fw);
+bool Scissor_readLocalData(Object &obj, Input &fr);
+bool Scissor_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Scissor)
@@ -22,7 +22,7 @@ REGISTER_DOTOSGWRAPPER(Scissor)
 );
 
 
-bool Scissor_readLocalData(Object&obj, Input&fr)
+bool Scissor_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
     int  x                = 0, y = 0, width = 0, height = 0;
@@ -52,15 +52,15 @@ bool Scissor_readLocalData(Object&obj, Input&fr)
         iteratorAdvanced = true;
     }
 
-    Scissor&scissor = static_cast<Scissor&>(obj);
+    Scissor &scissor = static_cast<Scissor&>(obj);
     scissor.setScissor(x, y, width, height);
     return iteratorAdvanced;
 }
 
 
-bool Scissor_writeLocalData(const Object&obj, Output&fw)
+bool Scissor_writeLocalData(const Object &obj, Output &fw)
 {
-    const Scissor&scissor = static_cast<const Scissor&>(obj);
+    const Scissor &scissor = static_cast<const Scissor&>(obj);
 
     fw.indent() << "x " <<      scissor.x() << std::endl;
     fw.indent() << "y " <<      scissor.y() << std::endl;

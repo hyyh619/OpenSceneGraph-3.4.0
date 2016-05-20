@@ -241,7 +241,7 @@ osg::Vec3 VBSPGeometry::getNormalFromEdges(int row, int col,
 }
 
 
-void VBSPGeometry::createDispSurface(Face&face, DisplaceInfo&dispInfo)
+void VBSPGeometry::createDispSurface(Face &face, DisplaceInfo &dispInfo)
 {
     TexInfo         currentTexInfo;
     TexData         currentTexData;

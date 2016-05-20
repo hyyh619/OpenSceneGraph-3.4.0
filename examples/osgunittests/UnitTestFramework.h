@@ -57,7 +57,7 @@ public:
 
 typedef TestVisitor Visitor;        // Test is redundant
 
-Test(const std::string&sName) : _name(sName) {}
+Test(const std::string &sName) : _name(sName) {}
 
 const std::string&name() const
 {
@@ -117,7 +117,7 @@ TestContext operator=(const TestContext&);
 class TraceStream
 {
 public:
-TraceStream(std::ostream&o = osg::notify(osg::NOTICE), TraceLevel tl = Results);
+TraceStream(std::ostream &o = osg::notify(osg::NOTICE), TraceLevel tl = Results);
 ~TraceStream();
 
 void setTraceLevel(TraceLevel tl);
@@ -180,9 +180,9 @@ public:
 
 typedef TestContext Context;     // Test in TestContext? is redundant
 
-TestCase(const std::string&sName) : Test(sName) {}
+TestCase(const std::string &sName) : Test(sName) {}
 
-virtual bool accept(Visitor&v)
+virtual bool accept(Visitor &v)
 {
     return v.visit(this);
 }
@@ -202,7 +202,7 @@ class TestX
 {
 public:
 
-TestX(const std::string&s) : _what(s)    {}
+TestX(const std::string &s) : _what(s)    {}
 virtual ~TestX() {}
 
 const std::string&what() const
@@ -220,7 +220,7 @@ std::string _what;
 class TestFailureX : public TestX
 {
 public:
-TestFailureX(const std::string&s) : TestX(s)    {}
+TestFailureX(const std::string &s) : TestX(s)    {}
 };
 
 /**
@@ -232,7 +232,7 @@ TestFailureX(const std::string&s) : TestX(s)    {}
 class TestErrorX : public TestX
 {
 public:
-TestErrorX(const std::string&s) : TestX(s)    {}
+TestErrorX(const std::string &s) : TestX(s)    {}
 };
 
 /**
@@ -251,13 +251,13 @@ typedef void (FixtureT::*TestMethodPtr)(const Context&);
 public:
 
 // Constructor adds the TestMethod pointer
-TestCase_(const std::string&sName, TestMethodPtr pTestMethod) :
+TestCase_(const std::string &sName, TestMethodPtr pTestMethod) :
     TestCase(sName),
     _pTestMethod(pTestMethod)
 {}
 
 // Create a TestFixture instance and invoke TestMethod?
-virtual void run(const Context&ctx)
+virtual void run(const Context &ctx)
 {
     (FixtureT().*_pTestMethod)(ctx);
 }
@@ -277,7 +277,7 @@ class TestSuite : public Test
 {
 public:
 
-TestSuite(const std::string&name);
+TestSuite(const std::string &name);
 
 /** Adds a Test to the suite. */
 void add(Test *pTest);
@@ -285,9 +285,9 @@ void add(Test *pTest);
 /**
    @returns    The immediate child denoted by name, or 0 if not found.
  */
-Test* findChild(const std::string&name);
+Test* findChild(const std::string &name);
 
-virtual bool accept(Test::Visitor&v);
+virtual bool accept(Test::Visitor &v);
 
 protected:
 
@@ -334,7 +334,7 @@ TestSuite* root();
     @param createIfNecessary    Optionally create the TestSuite(s) denoted by path if
                                 they do not exist.
  */
-TestSuite* suite(const std::string&path, TestSuite *tsuite = 0, bool createIfNecessary = false);
+TestSuite* suite(const std::string &path, TestSuite *tsuite = 0, bool createIfNecessary = false);
 
 private:
 
@@ -405,7 +405,7 @@ public:
 
 TestRecord() {}
 
-TestRecord(const TestRecord&rhs) :
+TestRecord(const TestRecord &rhs) :
     name_(rhs.name_),
     start_(rhs.start_),
     stop_(rhs.stop_),
@@ -413,7 +413,7 @@ TestRecord(const TestRecord&rhs) :
     problem_(rhs.problem_)
 {}
 
-TestRecord&operator =(const TestRecord&rhs)
+TestRecord&operator =(const TestRecord &rhs)
 {
     if (&rhs == this)
         return *this;
@@ -429,10 +429,10 @@ TestRecord&operator =(const TestRecord&rhs)
 
 void start();
 void stop();
-void log(const TestFailureX&e);
-void log(const TestErrorX&e);
-void log(const std::exception&e);
-void log(const std::string&s);
+void log(const TestFailureX &e);
+void log(const TestErrorX &e);
+void log(const std::exception &e);
+void log(const std::string &s);
 
 // FIXME: Add accessors?
 
@@ -440,14 +440,14 @@ private:
 
 // Onlye a TestReport can create a TestRecord
 friend class TestReport;
-TestRecord(const std::string&name);
+TestRecord(const std::string &name);
 
 enum Result
 {
     Success, Failure, Error
 };
 
-friend std::ostream&operator<<(std::ostream&o, const TestRecord&tr);
+friend std::ostream&operator<<(std::ostream &o, const TestRecord &tr);
 
 static osg::Timer timer_;               // To time tests
 
@@ -469,7 +469,7 @@ class TestReport
 {
 public:
 
-TestRecord&createRecord(const std::string&s)
+TestRecord&createRecord(const std::string &s)
 {
     _records.push_back(TestRecord(s));
     return _records.back();
@@ -495,7 +495,7 @@ class TestRunner : public TestQualifier
 {
 public:
 
-TestRunner(TestContext&ctx);
+TestRunner(TestContext &ctx);
 
 /**
     Tests may be specified by partial names. E.g. specifying "root"
@@ -504,7 +504,7 @@ TestRunner(TestContext&ctx);
     Specifying "root.osg.de" will run all tests (and suites) below
     \em root.osg with names beginning with the \em de.
  */
-void specify(const std::string&sQualifiedName);
+void specify(const std::string &sQualifiedName);
 
 bool visitEnter(TestSuite *pSuite);
 bool visit(TestCase *pTest);

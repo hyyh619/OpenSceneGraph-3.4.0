@@ -14,8 +14,8 @@
 
 using namespace osgSim;
 
-bool LightPointNode_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool LightPointNode_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool LightPointNode_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool LightPointNode_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(LightPointNode_Proxy)
 (
@@ -26,10 +26,10 @@ REGISTER_DOTOSGWRAPPER(LightPointNode_Proxy)
     &LightPointNode_writeLocalData
 );
 
-bool LightPointNode_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool LightPointNode_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    LightPointNode&lightpointnode = static_cast<LightPointNode&>(obj);
-    bool          itAdvanced      = false;
+    LightPointNode &lightpointnode = static_cast<LightPointNode&>(obj);
+    bool           itAdvanced      = false;
 
     if (fr.matchSequence("num_lightpoints %d"))
     {
@@ -97,9 +97,9 @@ bool LightPointNode_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool LightPointNode_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool LightPointNode_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const LightPointNode&lightpointnode = static_cast<const LightPointNode&>(obj);
+    const LightPointNode &lightpointnode = static_cast<const LightPointNode&>(obj);
 
     fw.indent() << "num_lightpoints " << lightpointnode.getNumLightPoints() << std::endl;
 

@@ -24,10 +24,10 @@ QuicktimeImportExport();
  *  @param fileTypeHint you can speed up the conversion by providing a filename with extension, so quicktime has not to guess the image's type
  *  @param sizeHint useful, if you are streaming data, if you provide a sizeHint ony sizeHint bytes are read from the stream
  */
-osg::Image* readFromStream(std::istream&inStream, const std::string&fileTypeHint, long sizeHint = 0);
+osg::Image* readFromStream(std::istream &inStream, const std::string &fileTypeHint, long sizeHint = 0);
 
 /** writes an osg::Image to a stream, using fileTypeHint as a hint whar format you want to write. */
-void writeToStream(std::ostream&outStream, osg::Image *image, const std::string&fileTypeHint);
+void writeToStream(std::ostream &outStream, osg::Image *image, const std::string &fileTypeHint);
 
 /** get the last error-message */
 const std::string getLastErrorString()
@@ -53,13 +53,13 @@ unsigned char* pepareBufferForOSG(unsigned char *buffer, int bytesPerPixel, unsi
 unsigned char* prepareBufferForQuicktime(unsigned char *buffer, GLenum pixelFormat, int bytesPerPixel, unsigned int width, unsigned int height);
 
 /** sets an error-msg */
-void setError(const std::string&msg)
+void setError(const std::string &msg)
 {
     _lastError = msg; _error = true;
 }
 
 /** do the import */
-osg::Image* doImport(unsigned char *buffer, unsigned int dataSize, const std::string&fileTypeHint);
+osg::Image* doImport(unsigned char *buffer, unsigned int dataSize, const std::string &fileTypeHint);
 
 
 private:

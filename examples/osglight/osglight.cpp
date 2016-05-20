@@ -44,7 +44,7 @@ class ModelTransformCallback : public osg::NodeCallback
 {
 public:
 
-ModelTransformCallback(const osg::BoundingSphere&bs)
+ModelTransformCallback(const osg::BoundingSphere &bs)
 {
     _firstTime = 0.0;
     _period    = 4.0f;
@@ -85,7 +85,7 @@ double _range;
 };
 
 
-osg::Node* createLights(osg::BoundingBox&bb, osg::StateSet *rootStateSet)
+osg::Node* createLights(osg::BoundingBox &bb, osg::StateSet *rootStateSet)
 {
     osg::Group *lightGroup = new osg::Group;
 
@@ -169,7 +169,7 @@ osg::Node* createLights(osg::BoundingBox&bb, osg::StateSet *rootStateSet)
     return lightGroup;
 }
 
-osg::Geometry* createWall(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, osg::StateSet *stateset)
+osg::Geometry* createWall(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, osg::StateSet *stateset)
 {
     // create a drawable for occluder.
     osg::Geometry *geom = new osg::Geometry;
@@ -239,7 +239,7 @@ osg::Node* createRoom(osg::Node *loadedModel)
 
     if (loadedModel)
     {
-        const osg::BoundingSphere&loaded_bs = loadedModel->getBound();
+        const osg::BoundingSphere &loaded_bs = loadedModel->getBound();
 
         osg::PositionAttitudeTransform *pat = new osg::PositionAttitudeTransform();
         pat->setPivotPoint(loaded_bs.center());

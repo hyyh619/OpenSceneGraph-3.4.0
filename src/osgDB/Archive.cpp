@@ -22,12 +22,12 @@
 
 using namespace osgDB;
 
-osgDB::Archive* osgDB::openArchive(const std::string&filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint)
+osgDB::Archive* osgDB::openArchive(const std::string &filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint)
 {
     return openArchive(filename, status, indexBlockSizeHint, Registry::instance()->getOptions());
 }
 
-osgDB::Archive* osgDB::openArchive(const std::string&filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, Options *options)
+osgDB::Archive* osgDB::openArchive(const std::string &filename, ReaderWriter::ArchiveStatus status, unsigned int indexBlockSizeHint, Options *options)
 {
     // ensure archive extension is in the registry list
     std::string::size_type dot = filename.find_last_of('.');
@@ -52,7 +52,7 @@ Archive::~Archive()
     OSG_INFO << "Archive::~Archive() closed" << std::endl;
 }
 
-void cleanupFileString(std::string&strFileOrDir)
+void cleanupFileString(std::string &strFileOrDir)
 {
     if (strFileOrDir.empty())
     {
@@ -81,7 +81,7 @@ void cleanupFileString(std::string&strFileOrDir)
     }
 }
 
-osgDB::DirectoryContents osgDB::Archive::getDirectoryContents(const std::string&dirName) const
+osgDB::DirectoryContents osgDB::Archive::getDirectoryContents(const std::string &dirName) const
 {
     DirectoryContents filenames;
 

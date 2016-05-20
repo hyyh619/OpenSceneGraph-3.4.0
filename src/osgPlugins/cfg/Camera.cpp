@@ -71,7 +71,7 @@ const osg::Matrix::value_type* Camera::getViewMatrix(void) const
     return _viewMatrix;
 }
 
-void Camera::setViewByMatrix(const osg::Matrix&mat)
+void Camera::setViewByMatrix(const osg::Matrix &mat)
 {
     osg::Matrix m;
 
@@ -83,7 +83,7 @@ void Camera::setViewByMatrix(const osg::Matrix&mat)
     memcpy(_viewMatrix, m.ptr(), sizeof(osg::Matrix::value_type[16]));
 }
 
-void Camera::setViewByLookat(const osg::Vec3&eye, const osg::Vec3&center, const osg::Vec3&up)
+void Camera::setViewByLookat(const osg::Vec3 &eye, const osg::Vec3 &center, const osg::Vec3 &up)
 {
     osg::Matrix m;
 
@@ -194,9 +194,9 @@ void Camera::Lens::setMatrix(const osg::Matrix::value_type matrix[16])
     setAutoAspect(false);
 }
 
-bool Camera::Lens::getFrustum(double&left, double&right,
-                              double&bottom, double&top,
-                              double&zNear, double&zFar) const
+bool Camera::Lens::getFrustum(double &left, double &right,
+                              double &bottom, double &top,
+                              double &zNear, double &zFar) const
 {
     // The following code was taken from osg's matrix implementation of getFrustum
     if (_matrix[3] != 0.0 || _matrix[7] != 0.0 || _matrix[11] != -1.0 || _matrix[15] != 0.0)
@@ -214,9 +214,9 @@ bool Camera::Lens::getFrustum(double&left, double&right,
     return true;
 }
 
-bool Camera::Lens::getOrtho(double&left, double&right,
-                            double&bottom, double&top,
-                            double&zNear, double&zFar) const
+bool Camera::Lens::getOrtho(double &left, double &right,
+                            double &bottom, double &top,
+                            double &zNear, double &zFar) const
 {
     // The following code was taken from osg's matrix implementation of getOrtho
     if (_matrix[3] != 0.0 || _matrix[7] != 0.0 || _matrix[11] != 0.0 || _matrix[15] != 1.0)
@@ -284,8 +284,8 @@ void Camera::Lens::apply(float xshear, float yshear)
     generateMatrix(xshear, yshear, _matrix);
 }
 
-void Camera::Lens::getParams(double&left, double&right, double&bottom, double&top,
-                             double&nearClip, double&farClip)
+void Camera::Lens::getParams(double &left, double &right, double &bottom, double &top,
+                             double &nearClip, double &farClip)
 {
     if (_projection == Perspective)
     {
@@ -330,8 +330,8 @@ void Camera::setProjectionRectangle(const float left, const float right,
     _projrectTop    = top;
 }
 
-void Camera::getProjectionRectangle(float&left, float&right,
-                                    float&bottom, float&top) const
+void Camera::getProjectionRectangle(float &left, float &right,
+                                    float &bottom, float &top) const
 {
     left   = _projrectLeft;
     right  = _projrectRight;
@@ -365,7 +365,7 @@ void Camera::setProjectionRectangle(int x, int y, unsigned int width, unsigned i
     _projrectTop    = float((y + height) - _y) / float(_h);
 }
 
-void Camera::getProjectionRectangle(int&x, int&y, unsigned int&width, unsigned int&height) const
+void Camera::getProjectionRectangle(int &x, int &y, unsigned int &width, unsigned int &height) const
 {
     int          _x, _y;
     unsigned int _w, _h;
@@ -406,7 +406,7 @@ void Camera::setClearColor(float r, float g, float b, float a)
     _clear_color[3] = a;
 }
 
-void Camera::getClearColor(float&red, float&green, float&blue, float&alpha)
+void Camera::getClearColor(float &red, float &green, float &blue, float &alpha)
 {
     red   = _clear_color[0];
     green = _clear_color[1];
@@ -704,7 +704,7 @@ bool Camera::removePostSwapCallback(Callback *cb)
 }
 
 
-bool Camera::_removeCallback(std::vector<ref_ptr<Callback> >&callbackList, Callback *callback)
+bool Camera::_removeCallback(std::vector<ref_ptr<Callback> > &callbackList, Callback *callback)
 {
     std::vector<Producer::ref_ptr<Producer::Camera::Callback> >::iterator p;
 

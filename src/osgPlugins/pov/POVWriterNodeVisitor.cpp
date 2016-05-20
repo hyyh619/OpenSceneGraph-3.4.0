@@ -39,13 +39,13 @@ using namespace osg;
 
 
 
-void POVWriterNodeVisitor::apply(Node&node)
+void POVWriterNodeVisitor::apply(Node &node)
 {
     POVWriterNodeVisitor::traverse(node);
 }
 
 
-void POVWriterNodeVisitor::traverse(Node&node)
+void POVWriterNodeVisitor::traverse(Node &node)
 {
     pushStateSet(node.getStateSet());
 
@@ -81,7 +81,7 @@ void POVWriterNodeVisitor::popStateSet(const StateSet *ss)
 }
 
 
-void POVWriterNodeVisitor::apply(Geode&node)
+void POVWriterNodeVisitor::apply(Geode &node)
 {
     pushStateSet(node.getStateSet());
 
@@ -130,7 +130,7 @@ class PovVec3WriterVisitor : public ConstValueVisitor
 {
 public:
 
-PovVec3WriterVisitor(ostream&fout, const Matrix&m =
+PovVec3WriterVisitor(ostream &fout, const Matrix &m =
                          Matrix::identity(), bool isNormal = false)
     : ConstValueVisitor(),
     _fout(fout),
@@ -142,12 +142,12 @@ PovVec3WriterVisitor(ostream&fout, const Matrix&m =
         _origin = Vec3(0, 0, 0) * _m;
 }
 
-virtual void apply(const Vec2&v)
+virtual void apply(const Vec2 &v)
 {
     apply(Vec3(v[0], v[1], 0.));
 }
 
-virtual void apply(const Vec3&v)
+virtual void apply(const Vec3 &v)
 {
     Vec3 a;
 
@@ -160,22 +160,22 @@ virtual void apply(const Vec3&v)
           << " >" << endl;
 }
 
-virtual void apply(const Vec2b&v)
+virtual void apply(const Vec2b &v)
 {
     apply(Vec3b(v[0], v[1], 0));
 }
 
-virtual void apply(const Vec3b&v)
+virtual void apply(const Vec3b &v)
 {
     apply(Vec3s(v[0], v[1], v[2]));
 }
 
-virtual void apply(const Vec2s&v)
+virtual void apply(const Vec2s &v)
 {
     apply(Vec3s(v[0], v[1], 0));
 }
 
-virtual void apply(const Vec3s&v)
+virtual void apply(const Vec3s &v)
 {
     apply(Vec3(v[0], v[1], v[2]));
 }
@@ -187,11 +187,11 @@ PovVec3WriterVisitor&operator =(const PovVec3WriterVisitor&)
     return *this;
 }
 
-ostream&_fout;
-Matrix _m;
-bool   _applyMatrix;
-bool   _isNormal;
-Vec3   _origin;
+ostream &_fout;
+Matrix  _m;
+bool    _applyMatrix;
+bool    _isNormal;
+Vec3    _origin;
 };
 
 
@@ -199,7 +199,7 @@ class PovVec2WriterVisitor : public ConstValueVisitor
 {
 public:
 
-PovVec2WriterVisitor(ostream&fout, const Matrix&m =
+PovVec2WriterVisitor(ostream &fout, const Matrix &m =
                          Matrix::identity(), bool isNormal = false)
     : ConstValueVisitor(),
     _fout(fout),
@@ -211,7 +211,7 @@ PovVec2WriterVisitor(ostream&fout, const Matrix&m =
         _origin = Vec3(0, 0, 0) * _m;
 }
 
-virtual void apply(const Vec2&v)
+virtual void apply(const Vec2 &v)
 {
     Vec2 a;
 
@@ -227,27 +227,27 @@ virtual void apply(const Vec2&v)
     _fout << "      < " << a[0] << ", " << a[1] << " >" << endl;
 }
 
-virtual void apply(const Vec3&v)
+virtual void apply(const Vec3 &v)
 {
     apply(Vec2(v[0], v[1]));
 }
 
-virtual void apply(const Vec2b&v)
+virtual void apply(const Vec2b &v)
 {
     apply(Vec2(v[0], v[1]));
 }
 
-virtual void apply(const Vec3b&v)
+virtual void apply(const Vec3b &v)
 {
     apply(Vec2b(v[0], v[1]));
 }
 
-virtual void apply(const Vec2s&v)
+virtual void apply(const Vec2s &v)
 {
     apply(Vec2(v[0], v[1]));
 }
 
-virtual void apply(const Vec3s&v)
+virtual void apply(const Vec3s &v)
 {
     apply(Vec2s(v[0], v[1]));
 }
@@ -259,11 +259,11 @@ PovVec2WriterVisitor&operator =(const PovVec2WriterVisitor&)
     return *this;
 }
 
-ostream&_fout;
-Matrix _m;
-bool   _applyMatrix;
-bool   _isNormal;
-Vec3   _origin;
+ostream &_fout;
+Matrix  _m;
+bool    _applyMatrix;
+bool    _isNormal;
+Vec3    _origin;
 };
 
 
@@ -271,11 +271,11 @@ class ArrayValueFunctor : public ConstArrayVisitor
 {
 public:
 
-ArrayValueFunctor(ConstValueVisitor&vv)
+ArrayValueFunctor(ConstValueVisitor &vv)
     : valueVisitor(&vv)  {}
 
 template<class ArrayType, class ValueType>
-void visitAll(const ArrayType&a)
+void visitAll(const ArrayType &a)
 {
     const ValueType *v   = static_cast<const ValueType*>(a.getDataPointer());
     unsigned int    size = a.getNumElements();
@@ -283,87 +283,87 @@ void visitAll(const ArrayType&a)
     for (unsigned int i = 0; i < size; i++)
         valueVisitor->apply(v[i]);
 }
-virtual void apply(const ByteArray&a)
+virtual void apply(const ByteArray &a)
 {
     visitAll<ByteArray, GLbyte>(a);
 }
-virtual void apply(const ShortArray&a)
+virtual void apply(const ShortArray &a)
 {
     visitAll<ShortArray, GLshort>(a);
 }
-virtual void apply(const IntArray&a)
+virtual void apply(const IntArray &a)
 {
     visitAll<IntArray, GLint>(a);
 }
-virtual void apply(const UByteArray&a)
+virtual void apply(const UByteArray &a)
 {
     visitAll<UByteArray, GLubyte>(a);
 }
-virtual void apply(const UShortArray&a)
+virtual void apply(const UShortArray &a)
 {
     visitAll<UShortArray, GLushort>(a);
 }
-virtual void apply(const UIntArray&a)
+virtual void apply(const UIntArray &a)
 {
     visitAll<UIntArray, GLuint>(a);
 }
-virtual void apply(const FloatArray&a)
+virtual void apply(const FloatArray &a)
 {
     visitAll<FloatArray, GLfloat>(a);
 }
-virtual void apply(const DoubleArray&a)
+virtual void apply(const DoubleArray &a)
 {
     visitAll<DoubleArray, GLdouble>(a);
 }
-virtual void apply(const Vec2Array&a)
+virtual void apply(const Vec2Array &a)
 {
     visitAll<Vec2Array, Vec2>(a);
 }
-virtual void apply(const Vec3Array&a)
+virtual void apply(const Vec3Array &a)
 {
     visitAll<Vec3Array, Vec3>(a);
 }
-virtual void apply(const Vec4Array&a)
+virtual void apply(const Vec4Array &a)
 {
     visitAll<Vec4Array, Vec4>(a);
 }
-virtual void apply(const Vec4ubArray&a)
+virtual void apply(const Vec4ubArray &a)
 {
     visitAll<Vec4ubArray, Vec4ub>(a);
 }
-virtual void apply(const Vec2bArray&a)
+virtual void apply(const Vec2bArray &a)
 {
     visitAll<Vec2bArray, Vec2b>(a);
 }
-virtual void apply(const Vec3bArray&a)
+virtual void apply(const Vec3bArray &a)
 {
     visitAll<Vec3bArray, Vec3b>(a);
 }
-virtual void apply(const Vec4bArray&a)
+virtual void apply(const Vec4bArray &a)
 {
     visitAll<Vec4bArray, Vec4b>(a);
 }
-virtual void apply(const Vec2sArray&a)
+virtual void apply(const Vec2sArray &a)
 {
     visitAll<Vec2sArray, Vec2s>(a);
 }
-virtual void apply(const Vec3sArray&a)
+virtual void apply(const Vec3sArray &a)
 {
     visitAll<Vec3sArray, Vec3s>(a);
 }
-virtual void apply(const Vec4sArray&a)
+virtual void apply(const Vec4sArray &a)
 {
     visitAll<Vec4sArray, Vec4s>(a);
 }
-virtual void apply(const Vec2dArray&a)
+virtual void apply(const Vec2dArray &a)
 {
     visitAll<Vec2dArray, Vec2d>(a);
 }
-virtual void apply(const Vec3dArray&a)
+virtual void apply(const Vec3dArray &a)
 {
     visitAll<Vec3dArray, Vec3d>(a);
 }
-virtual void apply(const Vec4dArray&a)
+virtual void apply(const Vec4dArray &a)
 {
     visitAll<Vec4dArray, Vec4d>(a);
 }
@@ -382,7 +382,7 @@ template<class Type>
 class PovArrayWriterFunctor : public ArrayValueFunctor
 {
 public:
-PovArrayWriterFunctor(ostream&fout, const Matrix&m =
+PovArrayWriterFunctor(ostream &fout, const Matrix &m =
                           Matrix::identity(), bool isNormal = false)
     : ArrayValueFunctor(povValueVisitor),
     povValueVisitor(fout, m, isNormal)  {}
@@ -392,8 +392,8 @@ Type povValueVisitor;
 };
 
 
-static void writeIndex(ostream&_fout, unsigned int&numTriangles,
-                       int i1, int i2, int i3, int&numOnLine)
+static void writeIndex(ostream &_fout, unsigned int &numTriangles,
+                       int i1, int i2, int i3, int &numOnLine)
 {
     // produce comma, except the first record
     if (numTriangles != 0)
@@ -412,7 +412,7 @@ static void writeIndex(ostream&_fout, unsigned int&numTriangles,
 }
 
 
-static void processDrawArrays(ostream&_fout, unsigned int&numTriangles,
+static void processDrawArrays(ostream &_fout, unsigned int &numTriangles,
                               GLenum mode, int startIndex, int stopIndex)
 {
     int numOnLine = 0;
@@ -460,19 +460,19 @@ class DrawElementsWriter : public ConstValueVisitor
 {
 public:
 
-DrawElementsWriter(ostream&fout) : _fout(fout),
+DrawElementsWriter(ostream &fout) : _fout(fout),
     numIndices(0), numOnLine(0),
     numTriangles(0)  {}
 
-virtual void apply(const GLubyte&b)
+virtual void apply(const GLubyte &b)
 {
     processIndex(b);
 }
-virtual void apply(const GLushort&s)
+virtual void apply(const GLushort &s)
 {
     processIndex(s);
 }
-virtual void apply(const GLuint&i)
+virtual void apply(const GLuint &i)
 {
     processIndex(i);
 }
@@ -526,7 +526,7 @@ virtual bool processTriangle()
 class TriangleWriter : public DrawElementsWriter
 {
 public:
-TriangleWriter(ostream&fout) : DrawElementsWriter(fout) {}
+TriangleWriter(ostream &fout) : DrawElementsWriter(fout) {}
 
 virtual void processIndex(const GLuint i)
 {
@@ -541,7 +541,7 @@ virtual void processIndex(const GLuint i)
 class TriangleStripWriter : public DrawElementsWriter
 {
 public:
-TriangleStripWriter(ostream&fout) : DrawElementsWriter(fout) {}
+TriangleStripWriter(ostream &fout) : DrawElementsWriter(fout) {}
 
 virtual void processIndex(const GLuint i)
 {
@@ -558,7 +558,7 @@ virtual void processIndex(const GLuint i)
 class TriangleFanWriter : public DrawElementsWriter
 {
 public:
-TriangleFanWriter(ostream&fout) : DrawElementsWriter(fout) {}
+TriangleFanWriter(ostream &fout) : DrawElementsWriter(fout) {}
 
 virtual void processIndex(const GLuint i)
 {
@@ -602,43 +602,43 @@ public:
 // virtual void apply( const GLuint& v )
 // virtual void apply( const GLfloat& v )
 // virtual void apply( const GLdouble& v )
-virtual void apply(const Vec4ub&v)
+virtual void apply(const Vec4ub &v)
 {
     r = Vec4(v[0], v[1], v[2], v[3]);
 }
 // virtual void apply( const Vec2& v )
-virtual void apply(const Vec3&v)
+virtual void apply(const Vec3 &v)
 {
     r = Vec4(v[0], v[1], v[2], 1.);
 }
-virtual void apply(const Vec4&v)
+virtual void apply(const Vec4 &v)
 {
     r = v;
 }
 // virtual void apply( const Vec2b& v )
-virtual void apply(const Vec3b&v)
+virtual void apply(const Vec3b &v)
 {
     r = Vec4(v[0], v[1], v[2], 1.);
 }
-virtual void apply(const Vec4b&v)
+virtual void apply(const Vec4b &v)
 {
     r = Vec4(v[0], v[1], v[2], v[3]);
 }
 // virtual void apply( const Vec2s& v )
-virtual void apply(const Vec3s&v)
+virtual void apply(const Vec3s &v)
 {
     r = Vec4(v[0], v[1], v[2], 1.);
 }
-virtual void apply(const Vec4s&v)
+virtual void apply(const Vec4s &v)
 {
     r = Vec4(v[0], v[1], v[2], v[3]);
 }
 // virtual void apply( const Vec2d& v )
-virtual void apply(const Vec3d&v)
+virtual void apply(const Vec3d &v)
 {
     r = Vec4(v[0], v[1], v[2], 1.);
 }
-virtual void apply(const Vec4d&v)
+virtual void apply(const Vec4d &v)
 {
     r = Vec4(v[0], v[1], v[2], v[3]);
 }
@@ -655,7 +655,7 @@ Vec4 r;
 
 void POVWriterNodeVisitor::processGeometry(const Geometry *g,
                                            const StateSet *ss,
-                                           const Matrix&m)
+                                           const Matrix &m)
 {
     // ignore empty geometries because they cause povray to fail loading the model
     // (seen on POV-Ray 3.6.1)
@@ -974,7 +974,7 @@ skip:
 }
 
 
-void POVWriterNodeVisitor::processLights(const StateSet *ss, const Matrix&m)
+void POVWriterNodeVisitor::processLights(const StateSet *ss, const Matrix &m)
 {
     const StateSet::AttributeList           &attributeList = ss->getAttributeList();
     StateSet::AttributeList::const_iterator it             = attributeList.begin();
@@ -1053,7 +1053,7 @@ void POVWriterNodeVisitor::processLights(const StateSet *ss, const Matrix&m)
 }
 
 
-void POVWriterNodeVisitor::apply(Transform&node)
+void POVWriterNodeVisitor::apply(Transform &node)
 {
     // push new transformation on transformation stack
     Matrix m = _transformationStack.top();
@@ -1069,7 +1069,7 @@ void POVWriterNodeVisitor::apply(Transform&node)
 }
 
 
-POVWriterNodeVisitor::POVWriterNodeVisitor(ostream&fout, const BoundingSphere&b)
+POVWriterNodeVisitor::POVWriterNodeVisitor(ostream &fout, const BoundingSphere &b)
     : NodeVisitor(TRAVERSE_ALL_CHILDREN),
     _fout(fout),
     bound(b),

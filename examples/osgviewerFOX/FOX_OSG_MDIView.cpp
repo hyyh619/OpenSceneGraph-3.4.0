@@ -16,7 +16,7 @@ FXDEFMAP(FOX_OSG_MDIView) FOX_OSG_MDIView_Map[] =
 
 FXIMPLEMENT(FOX_OSG_MDIView, FXMDIChild, FOX_OSG_MDIView_Map, ARRAYNUMBER(FOX_OSG_MDIView_Map))
 
-FOX_OSG_MDIView::FOX_OSG_MDIView(FXMDIClient *p, const FXString&name,
+FOX_OSG_MDIView::FOX_OSG_MDIView(FXMDIClient *p, const FXString &name,
                                  FXIcon *ic, FXPopup *pup, FXuint opt,
                                  FXint x, FXint y, FXint w, FXint h)
     :   FXMDIChild(p, name, ic, pup, opt, x, y, w, h)

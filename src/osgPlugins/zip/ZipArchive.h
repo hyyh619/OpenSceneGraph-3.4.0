@@ -35,13 +35,13 @@ virtual bool acceptsExtension(const std::string& /*extension*/) const
 virtual void close();
 
 /** open the archive.*/
-virtual bool open(const std::string&filename, ArchiveStatus status, const osgDB::ReaderWriter::Options *options);
+virtual bool open(const std::string &filename, ArchiveStatus status, const osgDB::ReaderWriter::Options *options);
 
 /** open the archive for reading.*/
-virtual bool open(std::istream&fin, const osgDB::ReaderWriter::Options *options);
+virtual bool open(std::istream &fin, const osgDB::ReaderWriter::Options *options);
 
 /** return true if file exists in archive.*/
-virtual bool fileExists(const std::string&filename) const;
+virtual bool fileExists(const std::string &filename) const;
 
 /** Get the filename that refers to the archived file on disk*/
 virtual std::string getArchiveFileName() const;
@@ -50,14 +50,14 @@ virtual std::string getArchiveFileName() const;
 virtual std::string getMasterFileName() const;
 
 /** Get the full list of file names available in the archive.*/
-virtual bool getFileNames(osgDB::Archive::FileNameList&fileNameList) const;
+virtual bool getFileNames(osgDB::Archive::FileNameList &fileNameList) const;
 
 /** return type of file. */
-virtual osgDB::FileType getFileType(const std::string&filename) const;
+virtual osgDB::FileType getFileType(const std::string &filename) const;
 
 /** return the contents of a directory.
  * returns an empty array on any error.*/
-virtual osgDB::DirectoryContents getDirectoryContents(const std::string&dirName) const;
+virtual osgDB::DirectoryContents getDirectoryContents(const std::string &dirName) const;
 
 virtual osgDB::ReaderWriter::ReadResult readObject(const std::string& /*fileName*/, const osgDB::ReaderWriter::Options* = NULL) const;
 virtual osgDB::ReaderWriter::ReadResult readImage(const std::string& /*fileName*/, const osgDB::ReaderWriter::Options* = NULL) const;
@@ -73,11 +73,11 @@ virtual osgDB::ReaderWriter::WriteResult writeShader(const osg::Shader& /*shader
 
 protected:
 
-osgDB::ReaderWriter* ReadFromZipEntry(const ZIPENTRY *ze, const osgDB::ReaderWriter::Options *options, std::stringstream&streamIn) const;
+osgDB::ReaderWriter* ReadFromZipEntry(const ZIPENTRY *ze, const osgDB::ReaderWriter::Options *options, std::stringstream &streamIn) const;
 
 void IndexZipFiles(HZIP hz);
-const ZIPENTRY* GetZipEntry(const std::string&filename) const;
-ZIPENTRY* GetZipEntry(const std::string&filename);
+const ZIPENTRY* GetZipEntry(const std::string &filename) const;
+ZIPENTRY* GetZipEntry(const std::string &filename);
 
 std::string ReadPassword(const osgDB::ReaderWriter::Options *options) const;
 bool CheckZipErrorCode(ZRESULT result) const;

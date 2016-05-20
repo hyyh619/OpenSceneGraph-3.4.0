@@ -152,7 +152,7 @@ void OperationQueue::remove(Operation *operation)
     }
 }
 
-void OperationQueue::remove(const std::string&name)
+void OperationQueue::remove(const std::string &name)
 {
     OSG_INFO << "Doing remove named operation" << std::endl;
 
@@ -402,7 +402,7 @@ void OperationThread::remove(Operation *operation)
         _operationQueue->remove(operation);
 }
 
-void OperationThread::remove(const std::string&name)
+void OperationThread::remove(const std::string &name)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_threadMutex);
 

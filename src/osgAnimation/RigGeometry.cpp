@@ -20,9 +20,9 @@
 using namespace osgAnimation;
 
 // The idea is to compute a bounding box with a factor x of the first step we compute the bounding box
-osg::BoundingBox RigComputeBoundingBoxCallback::computeBound(const osg::Drawable&drawable) const
+osg::BoundingBox RigComputeBoundingBoxCallback::computeBound(const osg::Drawable &drawable) const
 {
-    const osgAnimation::RigGeometry&rig = dynamic_cast<const osgAnimation::RigGeometry&>(drawable);
+    const osgAnimation::RigGeometry &rig = dynamic_cast<const osgAnimation::RigGeometry&>(drawable);
 
     // if a valid initial bounding box is set we use it without asking more
     if (rig.getInitialBound().valid())
@@ -63,7 +63,7 @@ RigGeometry::RigGeometry()
 }
 
 
-RigGeometry::RigGeometry(const RigGeometry&b, const osg::CopyOp&copyop) :
+RigGeometry::RigGeometry(const RigGeometry &b, const osg::CopyOp &copyop) :
     osg::Geometry(b, copyop),
     _geometry(b._geometry),
     _vertexInfluenceSet(b._vertexInfluenceSet),
@@ -85,7 +85,7 @@ const osg::Matrix&RigGeometry::getInvMatrixFromSkeletonToGeometry() const
 }
 
 
-void RigGeometry::drawImplementation(osg::RenderInfo&renderInfo) const
+void RigGeometry::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     osg::Geometry::drawImplementation(renderInfo);
 }
@@ -132,15 +132,15 @@ void RigGeometry::update()
         _rigTransformImplementation = new RigTransformSoftware;
     }
 
-    RigTransform&implementation = *getRigTransformImplementation();
+    RigTransform &implementation = *getRigTransformImplementation();
     (implementation)(*this);
 }
 
-void RigGeometry::copyFrom(osg::Geometry&from)
+void RigGeometry::copyFrom(osg::Geometry &from)
 {
     bool copyToSelf = (this == &from);
 
-    osg::Geometry&target = *this;
+    osg::Geometry &target = *this;
 
     if (!copyToSelf)
         target.setStateSet(from.getStateSet());
@@ -188,7 +188,7 @@ void RigGeometry::copyFrom(osg::Geometry&from)
         }
     }
 
-    osg::Geometry::ArrayList&arrayList = from.getVertexAttribArrayList();
+    osg::Geometry::ArrayList &arrayList = from.getVertexAttribArrayList();
 
     for (unsigned int vi = 0; vi < arrayList.size(); ++vi)
     {

@@ -12,7 +12,7 @@ class FFmpegAudioStream : public osg::AudioStream
 public:
 
 FFmpegAudioStream(FFmpegDecoder *decoder = 0);
-FFmpegAudioStream(const FFmpegAudioStream&audio, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+FFmpegAudioStream(const FFmpegAudioStream &audio, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 META_Object(osgFFmpeg, FFmpegAudioStream);
 

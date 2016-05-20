@@ -19,7 +19,7 @@ public:
 
 // Overrides
 public:
-virtual void Serialize(CArchive&ar);
+virtual void Serialize(CArchive &ar);
 virtual BOOL OnOpenDocument(LPCTSTR lpszPathName);
 CString GetFileName() const
 {
@@ -31,7 +31,7 @@ public:
 virtual ~CMFC_OSG_MDIDoc();
 #ifdef _DEBUG
 virtual void AssertValid() const;
-virtual void Dump(CDumpContext&dc) const;
+virtual void Dump(CDumpContext &dc) const;
 #endif
 
 protected:

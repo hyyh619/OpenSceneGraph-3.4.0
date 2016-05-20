@@ -60,7 +60,7 @@ UFOManipulator::UFOManipulator() :
 UFOManipulator::~UFOManipulator()
 {}
 
-bool UFOManipulator::intersect(const osg::Vec3d&start, const osg::Vec3d&end, osg::Vec3d&intersection) const
+bool UFOManipulator::intersect(const osg::Vec3d &start, const osg::Vec3d &end, osg::Vec3d &intersection) const
 {
     osg::ref_ptr<osgUtil::LineSegmentIntersector> lsi = new osgUtil::LineSegmentIntersector(start, end);
 
@@ -105,7 +105,7 @@ const char* UFOManipulator::className() const
     return "UFO";
 }
 
-void UFOManipulator::setByMatrix(const osg::Matrixd&mat)
+void UFOManipulator::setByMatrix(const osg::Matrixd &mat)
 {
     _inverseMatrix = mat;
     _matrix.invert(_inverseMatrix);
@@ -118,7 +118,7 @@ void UFOManipulator::setByMatrix(const osg::Matrixd&mat)
     _stop();
 }
 
-void UFOManipulator::setByInverseMatrix(const osg::Matrixd&invmat)
+void UFOManipulator::setByInverseMatrix(const osg::Matrixd &invmat)
 {
     _matrix = invmat;
     _inverseMatrix.invert(_matrix);
@@ -192,7 +192,7 @@ void UFOManipulator::init(const GUIEventAdapter&, GUIActionAdapter&)
     _stop();
 }
 
-void UFOManipulator::home(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us)
+void UFOManipulator::home(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us)
 {
     home(ea.getTime());
     us.requestRedraw();
@@ -219,7 +219,7 @@ void UFOManipulator::home(double)
     _upSpeed      = 0.0;
 }
 
-bool UFOManipulator::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool UFOManipulator::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     switch (ea.getEventType())
     {
@@ -256,7 +256,7 @@ bool UFOManipulator::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAda
     }
 }
 
-void UFOManipulator::getUsage(osg::ApplicationUsage&usage) const
+void UFOManipulator::getUsage(osg::ApplicationUsage &usage) const
 {
     /** Way too busy.  This needs to wait until we have a scrollable window
        usage.addKeyboardMouseBinding("UFO Manipulator: <SpaceBar>",        "Reset the viewing angle to 0.0");
@@ -282,7 +282,7 @@ void UFOManipulator::getUsage(osg::ApplicationUsage&usage) const
 
 
 
-void UFOManipulator::_keyUp(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+void UFOManipulator::_keyUp(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getKey())
     {
@@ -301,7 +301,7 @@ void UFOManipulator::_keyUp(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAda
     }
 }
 
-void UFOManipulator::_keyDown(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+void UFOManipulator::_keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getKey())
     {
@@ -447,7 +447,7 @@ void UFOManipulator::_keyDown(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionA
     }
 }
 
-void UFOManipulator::_frame(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+void UFOManipulator::_frame(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     double t1 = ea.getTime();
 
@@ -585,7 +585,7 @@ void UFOManipulator::_stop()
     _directionRotationRate = 0.0;
 }
 
-void UFOManipulator::getCurrentPositionAsLookAt(osg::Vec3d&eye, osg::Vec3d&center, osg::Vec3d&up)
+void UFOManipulator::getCurrentPositionAsLookAt(osg::Vec3d &eye, osg::Vec3d &center, osg::Vec3d &up)
 {
     eye    = _position;
     center = _position + _direction;

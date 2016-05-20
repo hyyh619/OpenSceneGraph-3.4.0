@@ -224,7 +224,7 @@ void GDALColorTable::SetColorEntry(int i, const GDALColorEntry *poEntry)
 
         aoEntries[i] = *poEntry;
     }
-    catch (std::exception&e)
+    catch (std::exception &e)
     {
         CPLError(CE_Failure, CPLE_AppDefined, "%s", e.what());
     }

@@ -13,8 +13,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Light_readLocalData(Object&obj, Input&fr);
-bool Light_writeLocalData(const Object&obj, Output&fw);
+bool Light_readLocalData(Object &obj, Input &fr);
+bool Light_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Light)
@@ -27,11 +27,11 @@ REGISTER_DOTOSGWRAPPER(Light)
 );
 
 
-bool Light_readLocalData(Object&obj, Input&fr)
+bool Light_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Light&light = static_cast<Light&>(obj);
+    Light &light = static_cast<Light&>(obj);
 
     if (fr[0].matchWord("light_num"))
     {
@@ -103,9 +103,9 @@ bool Light_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Light_writeLocalData(const Object&obj, Output&fw)
+bool Light_writeLocalData(const Object &obj, Output &fw)
 {
-    const Light&light = static_cast<const Light&>(obj);
+    const Light &light = static_cast<const Light&>(obj);
 
     fw.indent() << "light_num " << light.getLightNum() << std::endl;
 

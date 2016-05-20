@@ -7,7 +7,7 @@
 #include "FOX_OSG_MDIView.h"
 
 /* My frame constructor */
-MainFrame::MainFrame(FXApp *app, const FXString&name, FXIcon *ic, FXIcon *mi, FXuint opts, FXint x, FXint y, FXint w, FXint h, FXint pl, FXint pr, FXint pt, FXint pb, FXint hs, FXint vs) : FXMainWindow(app, name, ic, mi, opts, x, y, w, h, pl, pr, pt, pb, hs, vs)
+MainFrame::MainFrame(FXApp *app, const FXString &name, FXIcon *ic, FXIcon *mi, FXuint opts, FXint x, FXint y, FXint w, FXint h, FXint pl, FXint pr, FXint pt, FXint pb, FXint hs, FXint vs) : FXMainWindow(app, name, ic, mi, opts, x, y, w, h, pl, pr, pt, pb, hs, vs)
 {
     // Site where to dock
     FXDockSite *topdock = new FXDockSite(this, DOCKSITE_NO_WRAP | LAYOUT_SIDE_TOP | LAYOUT_FILL_X);

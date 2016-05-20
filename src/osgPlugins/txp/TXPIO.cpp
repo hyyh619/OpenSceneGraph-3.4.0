@@ -9,8 +9,8 @@
 
 using namespace osg;
 
-bool TXPNode_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool TXPNode_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool TXPNode_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool TXPNode_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 osgDB::RegisterDotOsgWrapperProxy TXPNode_Proxy
 (
@@ -21,10 +21,10 @@ osgDB::RegisterDotOsgWrapperProxy TXPNode_Proxy
     TXPNode_writeLocalData
 );
 
-bool TXPNode_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool TXPNode_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    txp::TXPNode&txpNode    = static_cast<txp::TXPNode&>(obj);
-    bool        itrAdvanced = false;
+    txp::TXPNode &txpNode    = static_cast<txp::TXPNode&>(obj);
+    bool         itrAdvanced = false;
 
     if (fr.matchSequence("databaseOptions %s"))
     {
@@ -53,15 +53,15 @@ bool TXPNode_readLocalData(osg::Object&obj, osgDB::Input&fr)
 class Dump2Osg : public osg::NodeVisitor
 {
 public:
-Dump2Osg(osgDB::Output&fw) : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN), _fw(fw)
+Dump2Osg(osgDB::Output &fw) : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN), _fw(fw)
 {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     _fw.writeObject(node);
     NodeVisitor::apply(node);
 }
-osgDB::Output&_fw;
+osgDB::Output &_fw;
 
 protected:
 
@@ -72,9 +72,9 @@ Dump2Osg&operator =(const Dump2Osg&)
 };
 
 
-bool TXPNode_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool TXPNode_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const txp::TXPNode&txpNode = static_cast<const txp::TXPNode&>(obj);
+    const txp::TXPNode &txpNode = static_cast<const txp::TXPNode&>(obj);
 
     if (!txpNode.getOptions().empty())
         fw.indent() << "databaseOptions \"" << txpNode.getOptions() << "\"" << std::endl;

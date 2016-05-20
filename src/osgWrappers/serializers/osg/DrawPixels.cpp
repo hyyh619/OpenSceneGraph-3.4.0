@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkArea(const osg::DrawPixels&drawable)
+static bool checkArea(const osg::DrawPixels &drawable)
 {
     return drawable.getUseSubImage();
 }
 
-static bool readArea(osgDB::InputStream&is, osg::DrawPixels&drawable)
+static bool readArea(osgDB::InputStream &is, osg::DrawPixels &drawable)
 {
     unsigned int x, y, w, h;
 
@@ -17,7 +17,7 @@ static bool readArea(osgDB::InputStream&is, osg::DrawPixels&drawable)
     return true;
 }
 
-static bool writeArea(osgDB::OutputStream&os, const osg::DrawPixels&drawable)
+static bool writeArea(osgDB::OutputStream &os, const osg::DrawPixels &drawable)
 {
     unsigned int x, y, w, h;
 

@@ -134,7 +134,7 @@ OGRSpatialReferenceH CPL_STDCALL OSRNewSpatialReference(const char *pszWKT)
 /*      Simple copy constructor.  See also Clone().                     */
 /************************************************************************/
 
-OGRSpatialReference::OGRSpatialReference(const OGRSpatialReference&oOther)
+OGRSpatialReference::OGRSpatialReference(const OGRSpatialReference &oOther)
 
 {
     bNormInfoSet = FALSE;
@@ -237,7 +237,7 @@ void OGRSpatialReference::Clear()
 /************************************************************************/
 
 OGRSpatialReference&
-OGRSpatialReference::operator=(const OGRSpatialReference&oSource)
+OGRSpatialReference::operator=(const OGRSpatialReference &oSource)
 
 {
     Clear();

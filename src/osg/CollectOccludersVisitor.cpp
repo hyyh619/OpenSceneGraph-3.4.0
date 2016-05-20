@@ -44,7 +44,7 @@ void CollectOccludersVisitor::reset()
     _occluderSet.clear();
 }
 
-float CollectOccludersVisitor::getDistanceToEyePoint(const Vec3&pos, bool withLODScale) const
+float CollectOccludersVisitor::getDistanceToEyePoint(const Vec3 &pos, bool withLODScale) const
 {
     if (withLODScale)
         return (pos - getEyeLocal()).length() * getLODScale();
@@ -52,7 +52,7 @@ float CollectOccludersVisitor::getDistanceToEyePoint(const Vec3&pos, bool withLO
         return (pos - getEyeLocal()).length();
 }
 
-float CollectOccludersVisitor::getDistanceToViewPoint(const Vec3&pos, bool withLODScale) const
+float CollectOccludersVisitor::getDistanceToViewPoint(const Vec3 &pos, bool withLODScale) const
 {
     if (withLODScale)
         return (pos - getViewPointLocal()).length() * getLODScale();
@@ -60,10 +60,10 @@ float CollectOccludersVisitor::getDistanceToViewPoint(const Vec3&pos, bool withL
         return (pos - getViewPointLocal()).length();
 }
 
-float CollectOccludersVisitor::getDistanceFromEyePoint(const Vec3&pos, bool withLODScale) const
+float CollectOccludersVisitor::getDistanceFromEyePoint(const Vec3 &pos, bool withLODScale) const
 {
-    const Matrix&matrix = *_modelviewStack.back();
-    float       dist    = -(pos[0] * matrix(0, 2) + pos[1] * matrix(1, 2) + pos[2] * matrix(2, 2) + matrix(3, 2));
+    const Matrix &matrix = *_modelviewStack.back();
+    float        dist    = -(pos[0] * matrix(0, 2) + pos[1] * matrix(1, 2) + pos[2] * matrix(2, 2) + matrix(3, 2));
 
     if (withLODScale)
         return dist * getLODScale();
@@ -71,7 +71,7 @@ float CollectOccludersVisitor::getDistanceFromEyePoint(const Vec3&pos, bool with
         return dist * getLODScale();
 }
 
-void CollectOccludersVisitor::apply(osg::Node&node)
+void CollectOccludersVisitor::apply(osg::Node &node)
 {
     if (isCulled(node))
         return;
@@ -85,7 +85,7 @@ void CollectOccludersVisitor::apply(osg::Node&node)
     popCurrentMask();
 }
 
-void CollectOccludersVisitor::apply(osg::Transform&node)
+void CollectOccludersVisitor::apply(osg::Transform &node)
 {
     if (isCulled(node))
         return;
@@ -105,7 +105,7 @@ void CollectOccludersVisitor::apply(osg::Transform&node)
     popCurrentMask();
 }
 
-void CollectOccludersVisitor::apply(osg::Projection&node)
+void CollectOccludersVisitor::apply(osg::Projection &node)
 {
     if (isCulled(node))
         return;
@@ -124,12 +124,12 @@ void CollectOccludersVisitor::apply(osg::Projection&node)
     popCurrentMask();
 }
 
-void CollectOccludersVisitor::apply(osg::Switch&node)
+void CollectOccludersVisitor::apply(osg::Switch &node)
 {
     apply((Group&)node);
 }
 
-void CollectOccludersVisitor::apply(osg::LOD&node)
+void CollectOccludersVisitor::apply(osg::LOD &node)
 {
     if (isCulled(node))
         return;
@@ -143,7 +143,7 @@ void CollectOccludersVisitor::apply(osg::LOD&node)
     popCurrentMask();
 }
 
-void CollectOccludersVisitor::apply(osg::OccluderNode&node)
+void CollectOccludersVisitor::apply(osg::OccluderNode &node)
 {
     // need to check if occlusion node is in the occluder
     // list, if so disable the appropriate ShadowOccluderVolume
@@ -212,8 +212,8 @@ void CollectOccludersVisitor::removeOccludedOccluders()
         // search for any occluders that occlude the current occluder,
         // we only need to test any occluder near the front of the set since
         // you can't be occluder by something smaller than you.
-        ShadowVolumeOccluder          &occludee = const_cast<ShadowVolumeOccluder&>(*occludeeItr);
-        ShadowVolumeOccluder::HoleList&holeList = occludee.getHoleList();
+        ShadowVolumeOccluder           &occludee = const_cast<ShadowVolumeOccluder&>(*occludeeItr);
+        ShadowVolumeOccluder::HoleList &holeList = occludee.getHoleList();
 
         for (ShadowVolumeOccluderSet::iterator occluderItr = _occluderSet.begin();
              occluderItr != occludeeItr;

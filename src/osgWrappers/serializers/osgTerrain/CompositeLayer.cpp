@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkLayers(const osgTerrain::CompositeLayer&layer)
+static bool checkLayers(const osgTerrain::CompositeLayer &layer)
 {
     return layer.getNumLayers() > 0;
 }
 
-static bool readLayers(osgDB::InputStream&is, osgTerrain::CompositeLayer&layer)
+static bool readLayers(osgDB::InputStream &is, osgTerrain::CompositeLayer &layer)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -34,7 +34,7 @@ static bool readLayers(osgDB::InputStream&is, osgTerrain::CompositeLayer&layer)
     return true;
 }
 
-static bool writeLayers(osgDB::OutputStream&os, const osgTerrain::CompositeLayer&layer)
+static bool writeLayers(osgDB::OutputStream &os, const osgTerrain::CompositeLayer &layer)
 {
     unsigned int size = layer.getNumLayers();
 

@@ -91,9 +91,9 @@ Node* makeTerrain(void)
     m = (sizeof(vertex) / (sizeof(float[3]))) / 39;
     n = 39;
 
-    Vec3Array&v   = *(new Vec3Array(m * n));
-    Vec2Array&t   = *(new Vec2Array(m * n));
-    Vec4Array&col = *(new Vec4Array(1));
+    Vec3Array &v   = *(new Vec3Array(m * n));
+    Vec2Array &t   = *(new Vec2Array(m * n));
+    Vec4Array &col = *(new Vec4Array(1));
 
     col[0][0] = col[0][1] = col[0][2] = col[0][3] = 1.0f;
 

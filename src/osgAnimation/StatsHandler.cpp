@@ -42,7 +42,7 @@ static unsigned int getRandomValueinRange(unsigned int v)
 
 namespace osgAnimation
 {
-osg::Geometry* createBackgroundRectangle(const osg::Vec3&pos, const float width, const float height, osg::Vec4&color)
+osg::Geometry* createBackgroundRectangle(const osg::Vec3 &pos, const float width, const float height, osg::Vec4 &color)
 {
     osg::StateSet *ss       = new osg::StateSet;
     osg::Geometry *geometry = new osg::Geometry;
@@ -94,7 +94,7 @@ struct StatsGraph : public osg::MatrixTransform
         setMatrix(osg::Matrix::translate(_pos));
     }
 
-    void addStatGraph(osg::Stats *viewerStats, osg::Stats *stats, const osg::Vec4&color, float max, const std::string&nameBegin, const std::string&nameEnd = "")
+    void addStatGraph(osg::Stats *viewerStats, osg::Stats *stats, const osg::Vec4 &color, float max, const std::string &nameBegin, const std::string &nameEnd = "")
     {
         _statsGraphGeode->addDrawable(new Graph(_width, _height, viewerStats, stats, color, max, nameBegin, nameEnd));
     }
@@ -118,7 +118,7 @@ struct StatsGraph : public osg::MatrixTransform
     struct Graph : public osg::Geometry
     {
         Graph(float width, float height, osg::Stats *viewerStats, osg::Stats *stats,
-              const osg::Vec4&color, float max, const std::string&nameBegin, const std::string&nameEnd = "")
+              const osg::Vec4 &color, float max, const std::string &nameBegin, const std::string &nameEnd = "")
         {
             setDataVariance(osg::Object::DYNAMIC);
             setUseDisplayList(false);
@@ -131,7 +131,7 @@ struct StatsGraph : public osg::MatrixTransform
             setCullCallback(new NeverCull);
         }
 
-        void setColor(const osg::Vec4&color)
+        void setColor(const osg::Vec4 &color)
         {
             osg::Vec4Array *colors = new osg::Vec4Array;
 
@@ -154,7 +154,7 @@ struct StatsGraph : public osg::MatrixTransform
         mutable unsigned int _frameNumber;
 
         GraphUpdateCallback(float width, float height, osg::Stats *viewerStats, osg::Stats *stats,
-                            float max, const std::string&nameBegin, const std::string&nameEnd = "")
+                            float max, const std::string &nameBegin, const std::string &nameEnd = "")
             : _width((unsigned int)width), _height((unsigned int)height), _curX(0),
             _viewerStats(viewerStats), _stats(stats), _max(max), _nameBegin(nameBegin), _nameEnd(nameEnd), _frameNumber(0)
         {}
@@ -249,14 +249,14 @@ struct StatsGraph : public osg::MatrixTransform
 // Drawcallback to draw averaged attribute
 struct ValueTextDrawCallback : public virtual osg::Drawable::DrawCallback
 {
-    ValueTextDrawCallback(osg::Stats *stats, const std::string&name) :
+    ValueTextDrawCallback(osg::Stats *stats, const std::string &name) :
         _stats(stats),
         _attributeName(name),
         _frameNumber(0)
     {}
 
     /** do customized draw code.*/
-    virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+    virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
     {
         osgText::Text *text = (osgText::Text*)drawable;
 
@@ -307,8 +307,8 @@ struct StatAction
     {
         _lastTime = 0; _fade = osgAnimation::OutCubicMotion(0, 5);
     }
-    void init(osg::Stats *stats, const std::string&name, const osg::Vec3&pos, float width, float heigh, const osg::Vec4&color);
-    void setPosition(const osg::Vec3&pos);
+    void init(osg::Stats *stats, const std::string &name, const osg::Vec3 &pos, float width, float heigh, const osg::Vec4 &color);
+    void setPosition(const osg::Vec3 &pos);
 #if 0
     void touch()
     {
@@ -448,8 +448,8 @@ struct StatsTimeline : public osg::NodeCallback
             (*it).second._group->setNodeMask(~osg::Node::NodeMask(1));
         }
 
-        const std::vector<std::string>&channels = visitor->getChannels();
-        std::map<std::string, int>    size;
+        const std::vector<std::string> &channels = visitor->getChannels();
+        std::map<std::string, int>     size;
 
         for (int i = 0; i < (int)channels.size(); i++)
         {
@@ -493,7 +493,7 @@ struct FindTimelineStats : public osg::NodeVisitor
 
     FindTimelineStats() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-    void apply(osg::Node&node)
+    void apply(osg::Node &node)
     {
         osg::Callback *cb = node.getUpdateCallback();
 
@@ -524,7 +524,7 @@ StatsHandler::StatsHandler() :
     _camera->setProjectionResizePolicy(osg::Camera::FIXED);
 }
 
-bool StatsHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool StatsHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     osgViewer::View *myview = dynamic_cast<osgViewer::View*>(&aa);
 
@@ -705,7 +705,7 @@ void StatsHandler::setUpScene(osgViewer::Viewer *viewer)
 
 
 
-void StatAction::init(osg::Stats *stats, const std::string&name, const osg::Vec3&pos, float width, float height, const osg::Vec4&color)
+void StatAction::init(osg::Stats *stats, const std::string &name, const osg::Vec3 &pos, float width, float height, const osg::Vec4 &color)
 {
     std::string font("fonts/arial.ttf");
     float       characterSize = 20.0f;
@@ -748,7 +748,7 @@ void StatAction::setAlpha(float v)
     }
 }
 
-void StatAction::setPosition(const osg::Vec3&pos)
+void StatAction::setPosition(const osg::Vec3 &pos)
 {
     float      characterSize = 20.0f;
     StatsGraph *gfx          = dynamic_cast<StatsGraph*>(_graph.get());
@@ -758,7 +758,7 @@ void StatAction::setPosition(const osg::Vec3&pos)
 }
 
 
-void StatsHandler::getUsage(osg::ApplicationUsage&usage) const
+void StatsHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("s", "On screen stats.");
     usage.addKeyboardMouseBinding("S", "Output stats to console.");

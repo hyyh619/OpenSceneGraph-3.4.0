@@ -41,7 +41,7 @@ static unsigned int getFlags(const osgDB::ReaderWriter::Options *options)
     return flags;
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -62,7 +62,7 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
     return freeTypeLibrary->getFont(fileName, 0, getFlags(options));
 }
 
-virtual ReadResult readObject(std::istream&stream, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(std::istream &stream, const osgDB::ReaderWriter::Options *options) const
 {
     FreeTypeLibrary *freeTypeLibrary = FreeTypeLibrary::instance();
 

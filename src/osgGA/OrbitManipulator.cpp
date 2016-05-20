@@ -42,7 +42,7 @@ OrbitManipulator::OrbitManipulator(int flags)
 
 
 /// Constructor.
-OrbitManipulator::OrbitManipulator(const OrbitManipulator&om, const CopyOp&copyOp)
+OrbitManipulator::OrbitManipulator(const OrbitManipulator &om, const CopyOp &copyOp)
     : osg::Callback(om, copyOp),
     inherited(om, copyOp),
     _center(om._center),
@@ -55,7 +55,7 @@ OrbitManipulator::OrbitManipulator(const OrbitManipulator&om, const CopyOp&copyO
 
 
 /** Set the position of the manipulator using a 4x4 matrix.*/
-void OrbitManipulator::setByMatrix(const osg::Matrixd&matrix)
+void OrbitManipulator::setByMatrix(const osg::Matrixd &matrix)
 {
     _center   = osg::Vec3d(0., 0., -_distance) * matrix;
     _rotation = matrix.getRotate();
@@ -67,7 +67,7 @@ void OrbitManipulator::setByMatrix(const osg::Matrixd&matrix)
 
 
 /** Set the position of the manipulator using a 4x4 matrix.*/
-void OrbitManipulator::setByInverseMatrix(const osg::Matrixd&matrix)
+void OrbitManipulator::setByInverseMatrix(const osg::Matrixd &matrix)
 {
     setByMatrix(osg::Matrixd::inverse(matrix));
 }
@@ -93,7 +93,7 @@ osg::Matrixd OrbitManipulator::getInverseMatrix() const
 
 
 // doc in parent
-void OrbitManipulator::setTransformation(const osg::Vec3d&eye, const osg::Quat&rotation)
+void OrbitManipulator::setTransformation(const osg::Vec3d &eye, const osg::Quat &rotation)
 {
     _center   = eye + rotation * osg::Vec3d(0., 0., -_distance);
     _rotation = rotation;
@@ -105,7 +105,7 @@ void OrbitManipulator::setTransformation(const osg::Vec3d&eye, const osg::Quat&r
 
 
 // doc in parent
-void OrbitManipulator::getTransformation(osg::Vec3d&eye, osg::Quat&rotation) const
+void OrbitManipulator::getTransformation(osg::Vec3d &eye, osg::Quat &rotation) const
 {
     eye      = _center - _rotation * osg::Vec3d(0., 0., -_distance);
     rotation = _rotation;
@@ -113,7 +113,7 @@ void OrbitManipulator::getTransformation(osg::Vec3d&eye, osg::Quat&rotation) con
 
 
 // doc in parent
-void OrbitManipulator::setTransformation(const osg::Vec3d&eye, const osg::Vec3d&center, const osg::Vec3d&up)
+void OrbitManipulator::setTransformation(const osg::Vec3d &eye, const osg::Vec3d &center, const osg::Vec3d &up)
 {
     Vec3d lv(center - eye);
 
@@ -141,7 +141,7 @@ void OrbitManipulator::setTransformation(const osg::Vec3d&eye, const osg::Vec3d&
 
 
 // doc in parent
-void OrbitManipulator::getTransformation(osg::Vec3d&eye, osg::Vec3d&center, osg::Vec3d&up) const
+void OrbitManipulator::getTransformation(osg::Vec3d &eye, osg::Vec3d &center, osg::Vec3d &up) const
 {
     center = _center;
     eye    = _center + _rotation * osg::Vec3d(0., 0., _distance);
@@ -218,7 +218,7 @@ double OrbitManipulator::getElevation() const
 
 
 // doc in parent
-bool OrbitManipulator::handleMouseWheel(const GUIEventAdapter&ea, GUIActionAdapter&us)
+bool OrbitManipulator::handleMouseWheel(const GUIEventAdapter &ea, GUIActionAdapter &us)
 {
     osgGA::GUIEventAdapter::ScrollingMotion sm = ea.getScrollingMotion();
 
@@ -344,7 +344,7 @@ void OrbitManipulator::applyAnimationStep(const double currentProgress, const do
 
 
 bool OrbitManipulator::startAnimationByMousePointerIntersection(
-    const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&us)
+    const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &us)
 {
     // get current transformation
     osg::Vec3d prevCenter, prevEye, prevUp;
@@ -366,7 +366,7 @@ bool OrbitManipulator::startAnimationByMousePointerIntersection(
 }
 
 
-void OrbitManipulator::OrbitAnimationData::start(const osg::Vec3d&movement, const double startTime)
+void OrbitManipulator::OrbitAnimationData::start(const osg::Vec3d &movement, const double startTime)
 {
     AnimationData::start(startTime);
 
@@ -407,7 +407,7 @@ void OrbitManipulator::rotateWithFixedVertical(const float dx, const float dy)
 
 /** Performs rotation horizontally by dx parameter and vertically by dy parameter,
     while keeping UP vector given by up parameter.*/
-void OrbitManipulator::rotateWithFixedVertical(const float dx, const float dy, const Vec3f&up)
+void OrbitManipulator::rotateWithFixedVertical(const float dx, const float dy, const Vec3f &up)
 {
     rotateYawPitch(_rotation, dx, dy, up);
 }
@@ -479,7 +479,7 @@ void OrbitManipulator::zoomModel(const float dy, bool pushForwardIfNeeded)
  * It is assumed that the arguments to this routine are in the range
  * (-1.0 ... 1.0)
  */
-void OrbitManipulator::trackball(osg::Vec3d&axis, float&angle, float p1x, float p1y, float p2x, float p2y)
+void OrbitManipulator::trackball(osg::Vec3d &axis, float &angle, float p1x, float p1y, float p2x, float p2y)
 {
     /*
      * First, figure out z-coordinates for projection of P1 and P2 to
@@ -557,7 +557,7 @@ float OrbitManipulator::getFusionDistanceValue() const
 
 
 /** Set the center of the manipulator. */
-void OrbitManipulator::setCenter(const Vec3d&center)
+void OrbitManipulator::setCenter(const Vec3d &center)
 {
     _center = center;
 }
@@ -571,7 +571,7 @@ const Vec3d&OrbitManipulator::getCenter() const
 
 
 /** Set the rotation of the manipulator. */
-void OrbitManipulator::setRotation(const Quat&rotation)
+void OrbitManipulator::setRotation(const Quat &rotation)
 {
     _rotation = rotation;
 }
@@ -599,7 +599,7 @@ double OrbitManipulator::getDistance() const
 
 
 /** Set the size of the trackball. Value is relative to the model size. */
-void OrbitManipulator::setTrackballSize(const double&size)
+void OrbitManipulator::setTrackballSize(const double &size)
 {
     /*
      * This size should really be based on the distance from the center of
@@ -626,7 +626,7 @@ void OrbitManipulator::setWheelZoomFactor(double wheelZoomFactor)
 
 /** Set the minimum distance of the eye point from the center
     before the center is pushed forward.*/
-void OrbitManipulator::setMinimumDistance(const double&minimumDistance, bool relativeToModelSize)
+void OrbitManipulator::setMinimumDistance(const double &minimumDistance, bool relativeToModelSize)
 {
     _minimumDistance = minimumDistance;
     setRelativeFlag(_minimumDistanceFlagIndex, relativeToModelSize);

@@ -145,7 +145,7 @@ void PagedLOD::read(DataInputStream *in)
 
         if (getDatabasePath().empty() && in->getOptions() && !in->getOptions()->getDatabasePathList().empty())
         {
-            const std::string&path = in->getOptions()->getDatabasePathList().front();
+            const std::string &path = in->getOptions()->getDatabasePathList().front();
             if (!path.empty())
             {
                 setDatabasePath(path);

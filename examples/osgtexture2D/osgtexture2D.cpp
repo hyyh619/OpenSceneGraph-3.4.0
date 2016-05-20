@@ -123,7 +123,7 @@ unsigned int _currPos;
 double       _prevTime;
 };
 
-osg::Node* createFilterWall(osg::BoundingBox&bb, const std::string&filename)
+osg::Node* createFilterWall(osg::BoundingBox &bb, const std::string &filename)
 {
     osg::Group *group = new osg::Group;
 
@@ -279,7 +279,7 @@ unsigned int _currPos;
 double       _prevTime;
 };
 
-osg::Node* createAnisotripicWall(osg::BoundingBox&bb, const std::string&filename)
+osg::Node* createAnisotripicWall(osg::BoundingBox &bb, const std::string &filename)
 {
     osg::Group *group = new osg::Group;
 
@@ -435,7 +435,7 @@ unsigned int _currPos;
 double       _prevTime;
 };
 
-osg::Node* createWrapWall(osg::BoundingBox&bb, const std::string&filename)
+osg::Node* createWrapWall(osg::BoundingBox &bb, const std::string &filename)
 {
     osg::Group *group = new osg::Group;
 
@@ -639,7 +639,7 @@ unsigned int _currPos;
 double       _prevTime;
 };
 
-osg::Node* createSubloadWall(osg::BoundingBox&bb)
+osg::Node* createSubloadWall(osg::BoundingBox &bb)
 {
     osg::Group *group = new osg::Group;
 

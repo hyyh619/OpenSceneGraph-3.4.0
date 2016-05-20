@@ -28,7 +28,7 @@ class DiscoveredServicesCallback;
 class AutoDiscoveryServerImpl
 {
 public:
-AutoDiscoveryServerImpl(const std::string&type, unsigned int port);
+AutoDiscoveryServerImpl(const std::string &type, unsigned int port);
 ~AutoDiscoveryServerImpl();
 
 bool needsTimer() const
@@ -47,14 +47,14 @@ typedef std::pair<std::string, unsigned int> Address;
 typedef std::vector<Address> AddressVector;
 typedef std::map<void*, AddressVector> AddressMap;
 
-AutoDiscoveryClientImpl(const std::string&type, DiscoveredServicesCallback *cb);
+AutoDiscoveryClientImpl(const std::string &type, DiscoveredServicesCallback *cb);
 ~AutoDiscoveryClientImpl();
 DiscoveredServicesCallback* getCallback()
 {
     return _cb.get();
 }
 
-void serviceAdded(void *key, const std::string&address, unsigned int port, bool is_ip6);
+void serviceAdded(void *key, const std::string &address, unsigned int port, bool is_ip6);
 void servicesRemoved(void *key);
 bool needsTimer() const
 {

@@ -36,10 +36,10 @@ public:
 
 Vec3TestFixture();
 
-void testAddition(const osgUtx::TestContext&ctx);
-void testSubtraction(const osgUtx::TestContext&ctx);
-void testScalarMultiplication(const osgUtx::TestContext&ctx);
-void testDotProduct(const osgUtx::TestContext&ctx);
+void testAddition(const osgUtx::TestContext &ctx);
+void testSubtraction(const osgUtx::TestContext &ctx);
+void testScalarMultiplication(const osgUtx::TestContext &ctx);
+void testDotProduct(const osgUtx::TestContext &ctx);
 
 private:
 
@@ -90,12 +90,12 @@ public:
 
 MatrixTestFixture();
 
-void testPreMultTranslate(const osgUtx::TestContext&ctx);
-void testPostMultTranslate(const osgUtx::TestContext&ctx);
-void testPreMultScale(const osgUtx::TestContext&ctx);
-void testPostMultScale(const osgUtx::TestContext&ctx);
-void testPreMultRotate(const osgUtx::TestContext&ctx);
-void testPostMultRotate(const osgUtx::TestContext&ctx);
+void testPreMultTranslate(const osgUtx::TestContext &ctx);
+void testPostMultTranslate(const osgUtx::TestContext &ctx);
+void testPreMultScale(const osgUtx::TestContext &ctx);
+void testPostMultScale(const osgUtx::TestContext &ctx);
+void testPreMultRotate(const osgUtx::TestContext &ctx);
+void testPostMultRotate(const osgUtx::TestContext &ctx);
 
 private:
 

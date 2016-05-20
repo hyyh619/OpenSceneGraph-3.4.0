@@ -14,7 +14,7 @@ const unsigned int MASK_2D = 0xF0000000;
 const unsigned int MASK_3D = 0x0F000000;
 
 // Here we create (and later demonstrate) the use of a simple function callback.
-bool windowClicked(osgWidget::Event&ev)
+bool windowClicked(osgWidget::Event &ev)
 {
     std::cout << "windowClicked: " << ev.getWindow()->getName() << std::endl;
 
@@ -28,7 +28,7 @@ bool windowClicked(osgWidget::Event&ev)
     return true;
 }
 
-bool windowScrolled(osgWidget::Event&ev)
+bool windowScrolled(osgWidget::Event &ev)
 {
     osgWidget::warn()
         << "scrolling up? " << ev.getWindowManager()->isMouseScrollingUp()
@@ -42,7 +42,7 @@ bool windowScrolled(osgWidget::Event&ev)
 // a function callback in that we are required to also pass the "this" argument).
 struct Object
 {
-    bool windowClicked(osgWidget::Event&ev)
+    bool windowClicked(osgWidget::Event &ev)
     {
         std::cout << "Object::windowClicked " << ev.getWindow()->getName() << std::endl;
 
@@ -56,7 +56,7 @@ struct CallbackObject : public osgWidget::Callback
     CallbackObject(osgWidget::EventType evType) :
         osgWidget::Callback(evType) {}
 
-    virtual bool operator()(osgWidget::Event&ev)
+    virtual bool operator()(osgWidget::Event &ev)
     {
         std::cout << "here" << std::endl;
 

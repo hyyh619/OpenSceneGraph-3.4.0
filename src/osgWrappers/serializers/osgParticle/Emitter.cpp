@@ -3,15 +3,15 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-extern bool readParticle(osgDB::InputStream&is, osgParticle::Particle&p);
-extern bool writeParticle(osgDB::OutputStream&os, const osgParticle::Particle&p);
+extern bool readParticle(osgDB::InputStream &is, osgParticle::Particle &p);
+extern bool writeParticle(osgDB::OutputStream &os, const osgParticle::Particle &p);
 
-static bool checkParticleTemplate(const osgParticle::Emitter&emitter)
+static bool checkParticleTemplate(const osgParticle::Emitter &emitter)
 {
     return !emitter.getUseDefaultTemplate();
 }
 
-static bool readParticleTemplate(osgDB::InputStream&is, osgParticle::Emitter&emitter)
+static bool readParticleTemplate(osgDB::InputStream &is, osgParticle::Emitter &emitter)
 {
     osgParticle::Particle p;
 
@@ -20,9 +20,9 @@ static bool readParticleTemplate(osgDB::InputStream&is, osgParticle::Emitter&emi
     return true;
 }
 
-static bool writeParticleTemplate(osgDB::OutputStream&os, const osgParticle::Emitter&emitter)
+static bool writeParticleTemplate(osgDB::OutputStream &os, const osgParticle::Emitter &emitter)
 {
-    const osgParticle::Particle&p = emitter.getParticleTemplate();
+    const osgParticle::Particle &p = emitter.getParticleTemplate();
 
     writeParticle(os, p);
     return true;

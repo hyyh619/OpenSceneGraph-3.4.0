@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkLocatorCallbacks(const osgVolume::Locator&locator)
+static bool checkLocatorCallbacks(const osgVolume::Locator &locator)
 {
     return locator.getLocatorCallbacks().size() > 0;
 }
 
-static bool readLocatorCallbacks(osgDB::InputStream&is, osgVolume::Locator&locator)
+static bool readLocatorCallbacks(osgDB::InputStream &is, osgVolume::Locator &locator)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -24,9 +24,9 @@ static bool readLocatorCallbacks(osgDB::InputStream&is, osgVolume::Locator&locat
     return true;
 }
 
-static bool writeLocatorCallbacks(osgDB::OutputStream&os, const osgVolume::Locator&locator)
+static bool writeLocatorCallbacks(osgDB::OutputStream &os, const osgVolume::Locator &locator)
 {
-    const osgVolume::Locator::LocatorCallbacks&callbacks = locator.getLocatorCallbacks();
+    const osgVolume::Locator::LocatorCallbacks &callbacks = locator.getLocatorCallbacks();
 
     os.writeSize(callbacks.size()); os << os.BEGIN_BRACKET << std::endl;
 

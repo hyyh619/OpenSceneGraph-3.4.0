@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Object_readLocalData(Object&obj, Input&fr);
-bool Object_writeLocalData(const Object&obj, Output&fw);
+bool Object_readLocalData(Object &obj, Input &fr);
+bool Object_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 // note, Object doesn't currently require any read and write.
@@ -23,7 +23,7 @@ REGISTER_DOTOSGWRAPPER(Object)
     &Object_writeLocalData
 );
 
-bool Object_readLocalData(Object&obj, Input&fr)
+bool Object_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
@@ -79,7 +79,7 @@ bool Object_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Object_writeLocalData(const Object&obj, Output&fw)
+bool Object_writeLocalData(const Object &obj, Output &fw)
 {
     switch (obj.getDataVariance())
     {

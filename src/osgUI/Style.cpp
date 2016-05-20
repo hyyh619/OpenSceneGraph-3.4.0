@@ -58,12 +58,12 @@ Style::Style()
     _disableColorWriteMask = new osg::ColorMask(false, false, false, false);
 }
 
-Style::Style(const Style&style, const osg::CopyOp&copyop) :
+Style::Style(const Style &style, const osg::CopyOp &copyop) :
     osg::Object(style, copyop),
     _clipTexture(style._clipTexture)
 {}
 
-osg::Node* Style::createFrame(const osg::BoundingBox&extents, const FrameSettings *frameSettings, const osg::Vec4&color)
+osg::Node* Style::createFrame(const osg::BoundingBox &extents, const FrameSettings *frameSettings, const osg::Vec4 &color)
 {
     // OSG_NOTICE<<"createFrame"<<std::endl;
 
@@ -184,7 +184,7 @@ osg::Node* Style::createFrame(const osg::BoundingBox&extents, const FrameSetting
     return geometry.release();
 }
 
-osg::Node* Style::createText(const osg::BoundingBox&extents, const AlignmentSettings *as, const TextSettings *ts, const std::string&text)
+osg::Node* Style::createText(const osg::BoundingBox &extents, const AlignmentSettings *as, const TextSettings *ts, const std::string &text)
 {
     // OSG_NOTICE<<"createText"<<std::endl;
 
@@ -270,7 +270,7 @@ osg::Node* Style::createText(const osg::BoundingBox&extents, const AlignmentSett
     return textDrawable.release();
 }
 
-osg::Node* Style::createIcon(const osg::BoundingBox&extents, const std::string&filename, const osg::Vec4&color)
+osg::Node* Style::createIcon(const osg::BoundingBox &extents, const std::string &filename, const osg::Vec4 &color)
 {
     osg::ref_ptr<osg::Object> object = osgDB::readObjectFile(filename);
 
@@ -381,7 +381,7 @@ osg::Node* Style::createIcon(const osg::BoundingBox&extents, const std::string&f
     }
 }
 
-osg::Node* Style::createPanel(const osg::BoundingBox&extents, const osg::Vec4&colour)
+osg::Node* Style::createPanel(const osg::BoundingBox &extents, const osg::Vec4 &colour)
 {
     // OSG_NOTICE<<"createPanel"<<std::endl;
 
@@ -408,7 +408,7 @@ osg::Node* Style::createPanel(const osg::BoundingBox&extents, const osg::Vec4&co
 }
 
 
-osg::Node* Style::createDepthSetPanel(const osg::BoundingBox&extents)
+osg::Node* Style::createDepthSetPanel(const osg::BoundingBox &extents)
 {
     // OSG_NOTICE<<"createDepthSetPanel"<<std::endl;
 
@@ -447,7 +447,7 @@ void Style::setupDialogStateSet(osg::StateSet *stateset, int binNum)
 void Style::setupPopupStateSet(osg::StateSet* /*stateset*/, int /*binNum*/)
 {}
 
-void Style::setupClipStateSet(const osg::BoundingBox&extents, osg::StateSet *stateset)
+void Style::setupClipStateSet(const osg::BoundingBox &extents, osg::StateSet *stateset)
 {
     unsigned int clipTextureUnit = 1;
 

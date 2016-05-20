@@ -22,7 +22,7 @@ using namespace osgUI;
 Label::Label()
 {}
 
-Label::Label(const osgUI::Label&label, const osg::CopyOp&copyop) :
+Label::Label(const osgUI::Label &label, const osg::CopyOp &copyop) :
     Widget(label, copyop),
     _text(label._text)
 {}

@@ -193,7 +193,7 @@ void VisualChooser::clear()
 #ifdef _OSX_AGL_IMPLEMENTATION
 #include <AGL/agl.h>
 
-void VisualChooser::applyAttribute(const VisualAttribute&va, std::vector<int>&attribs)
+void VisualChooser::applyAttribute(const VisualAttribute &va, std::vector<int> &attribs)
 {
     if (va.isExtension())
     {
@@ -324,7 +324,7 @@ VisualInfo* VisualChooser::choose(Display *dpy, int screen, bool strict_adherenc
 #endif
 
 #ifdef _OSX_CGL_IMPLEMENTATION
-void VisualChooser::applyAttribute(const VisualAttribute&va, std::vector<int>&attribs)
+void VisualChooser::applyAttribute(const VisualAttribute &va, std::vector<int> &attribs)
 {
     if (va.isExtension())
     {
@@ -436,7 +436,7 @@ VisualInfo* VisualChooser::choose(Display *dpy, int screen, bool strict_adherenc
 #ifdef _X11_IMPLEMENTATION
 #include <GL/glx.h>
 
-void VisualChooser::applyAttribute(const VisualAttribute&va, std::vector<int>&attribs)
+void VisualChooser::applyAttribute(const VisualAttribute &va, std::vector<int> &attribs)
 {
     if (va.isExtension())
     {
@@ -574,7 +574,7 @@ VisualInfo* VisualChooser::choose(Display *dpy, int screen, bool strict_adherenc
 #ifdef _WIN32_IMPLEMENTATION
 #include "WGLExtensions.h"
 
-void VisualChooser::applyAttribute(const VisualAttribute&va, std::vector<int>&attribs)
+void VisualChooser::applyAttribute(const VisualAttribute &va, std::vector<int> &attribs)
 {
     if (va.attribute() == UseGL)
     {

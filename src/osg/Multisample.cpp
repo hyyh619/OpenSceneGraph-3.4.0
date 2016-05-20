@@ -28,7 +28,7 @@ Multisample::Multisample() : _mode(DONT_CARE)
 Multisample::~Multisample()
 {}
 
-void Multisample::apply(State&state) const
+void Multisample::apply(State &state) const
 {
     const GLExtensions *extensions = state.get<GLExtensions>();
 

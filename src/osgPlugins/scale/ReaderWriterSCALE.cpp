@@ -30,7 +30,7 @@
 #define EXTENSION_NAME "scale"
 
 
-static bool getFilenameAndParams(const std::string&input, std::string&filename, std::string&params)
+static bool getFilenameAndParams(const std::string &input, std::string &filename, std::string &params)
 {
     // find the start of the params list, accounting for nesting of [] and () brackets,
     // note, we are working backwards.
@@ -113,12 +113,12 @@ virtual const char* className() const
     return "scaling pseudo-loader";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, EXTENSION_NAME);
 }
 
-virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 

@@ -127,8 +127,8 @@ virtual const char* className() const
     return "STL Reader";
 }
 
-virtual ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options*) const;
-virtual WriteResult writeNode(const osg::Node&node, const std::string&fileName, const Options* = NULL) const;
+virtual ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options*) const;
+virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName, const Options* = NULL) const;
 
 private:
 class ReaderObject
@@ -266,7 +266,7 @@ unsigned int _expectNumFacets;
 class CreateStlVisitor : public osg::NodeVisitor
 {
 public:
-CreateStlVisitor(std::string const&fout, const osgDB::ReaderWriter::Options *options = 0) :
+CreateStlVisitor(std::string const &fout, const osgDB::ReaderWriter::Options *options = 0) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN),
     counter(0)
 {
@@ -297,7 +297,7 @@ std::string i2s(int i)
     return buf;
 }
 
-virtual void apply(osg::Geode&node)
+virtual void apply(osg::Geode &node)
 {
     osg::Matrix mat = osg::computeLocalToWorld(getNodePath());
 
@@ -368,7 +368,7 @@ struct PushPoints
     osg::Matrix   m_mat;
     bool          m_dontSaveNormals;
 
-    inline void operator ()(const osg::Vec3&_v1, const osg::Vec3&_v2, const osg::Vec3&_v3, bool treatVertexDataAsTemporary)
+    inline void operator ()(const osg::Vec3 &_v1, const osg::Vec3 &_v2, const osg::Vec3 &_v3, bool treatVertexDataAsTemporary)
     {
         osg::Vec3 v1      = _v1 * m_mat;
         osg::Vec3 v2      = _v2 * m_mat;
@@ -421,7 +421,7 @@ const float          StlColorDepth = float(StlColorSize); // 2^5 - 1
 
 // Check if the file comes from magics, and retrieve the corresponding data
 // Magics files have a header with a "COLOR=" field giving the color of the whole model
-bool fileComesFromMagics(FILE *fp, osg::Vec4&magicsColor)
+bool fileComesFromMagics(FILE *fp, osg::Vec4 &magicsColor)
 {
     char        header[80];
     const float magicsColorDepth = 255.f;
@@ -450,7 +450,7 @@ bool fileComesFromMagics(FILE *fp, osg::Vec4&magicsColor)
     return false;
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterSTL::readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterSTL::readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -786,7 +786,7 @@ ReaderWriterSTL::ReaderObject::ReadResult ReaderWriterSTL::BinaryReaderObject::r
     return ReadEOF;
 }
 
-osgDB::ReaderWriter::WriteResult ReaderWriterSTL::writeNode(const osg::Node&node, const std::string&fileName, const Options *opts) const
+osgDB::ReaderWriter::WriteResult ReaderWriterSTL::writeNode(const osg::Node &node, const std::string &fileName, const Options *opts) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 

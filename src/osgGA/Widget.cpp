@@ -34,7 +34,7 @@ Widget::Widget() :
     setNumChildrenRequiringEventTraversal(1);
 }
 
-Widget::Widget(const Widget&widget, const osg::CopyOp&copyop) :
+Widget::Widget(const Widget &widget, const osg::CopyOp &copyop) :
     osg::Group(),
     _focusBehaviour(widget._focusBehaviour),
     _hasEventFocus(false),
@@ -43,19 +43,19 @@ Widget::Widget(const Widget&widget, const osg::CopyOp&copyop) :
     setNumChildrenRequiringEventTraversal(1);
 }
 
-void Widget::setExtents(const osg::BoundingBoxf&bb)
+void Widget::setExtents(const osg::BoundingBoxf &bb)
 {
     _extents = bb;
 }
 
-void Widget::updateFocus(osg::NodeVisitor&nv)
+void Widget::updateFocus(osg::NodeVisitor &nv)
 {
     osgGA::EventVisitor     *ev = dynamic_cast<osgGA::EventVisitor*>(&nv);
     osgGA::GUIActionAdapter *aa = ev ? ev->getActionAdapter() : 0;
 
     if (ev && aa)
     {
-        osgGA::EventQueue::Events&events = ev->getEvents();
+        osgGA::EventQueue::Events &events = ev->getEvents();
 
         for (osgGA::EventQueue::Events::iterator itr = events.begin();
              itr != events.end();
@@ -200,7 +200,7 @@ void Widget::leaveImplementation()
     OSG_NOTICE << "leave()" << std::endl;
 }
 
-void Widget::traverse(osg::NodeVisitor&nv)
+void Widget::traverse(osg::NodeVisitor &nv)
 {
     osg::CallbackObject *co = osg::getCallbackObject(this, "traverse");
 
@@ -224,7 +224,7 @@ void Widget::traverse(osg::NodeVisitor&nv)
     }
 }
 
-void Widget::traverseImplementation(osg::NodeVisitor&nv)
+void Widget::traverseImplementation(osg::NodeVisitor &nv)
 {
     if (!_graphicsInitialized && nv.getVisitorType() != osg::NodeVisitor::CULL_VISITOR)
         createGraphics();
@@ -240,7 +240,7 @@ void Widget::traverseImplementation(osg::NodeVisitor&nv)
             // signify that event has been taken by widget with focus
             ev->setEventHandled(true);
 
-            osgGA::EventQueue::Events&events = ev->getEvents();
+            osgGA::EventQueue::Events &events = ev->getEvents();
 
             for (osgGA::EventQueue::Events::iterator itr = events.begin();
                  itr != events.end();
@@ -302,7 +302,7 @@ bool Widget::handleImplementation(osgGA::EventVisitor *ev, osgGA::Event *event)
     return false;
 }
 
-bool Widget::computePositionInLocalCoordinates(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, osg::Vec3&localPosition) const
+bool Widget::computePositionInLocalCoordinates(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, osg::Vec3 &localPosition) const
 {
     osgGA::GUIActionAdapter                        *aa = ev ? ev->getActionAdapter() : 0;
     osgUtil::LineSegmentIntersector::Intersections intersections;

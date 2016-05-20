@@ -40,7 +40,7 @@ Normals::MakeNormalsVisitor::MakeNormalsVisitor(float normalScale, Mode mode) :
 }
 
 
-void Normals::MakeNormalsVisitor::apply(osg::MatrixTransform&tx)
+void Normals::MakeNormalsVisitor::apply(osg::MatrixTransform &tx)
 {
     _matStack.push(_mat);
     _mat = _mat * tx.getMatrix();
@@ -51,7 +51,7 @@ void Normals::MakeNormalsVisitor::apply(osg::MatrixTransform&tx)
     _matStack.pop();
 }
 
-void Normals::MakeNormalsVisitor::apply(Geode&geode)
+void Normals::MakeNormalsVisitor::apply(Geode &geode)
 {
     for (unsigned int i = 0; i < geode.getNumDrawables(); i++)
     {

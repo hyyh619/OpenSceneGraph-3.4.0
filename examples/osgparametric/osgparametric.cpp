@@ -107,7 +107,7 @@ virtual void operator ()(osg::Uniform *uniform, osg::NodeVisitor *nv)
 }
 };
 
-osg::Node* createModel(const std::string&shader, const std::string&textureFileName, const std::string&terrainFileName, bool dynamic, bool useVBO)
+osg::Node* createModel(const std::string &shader, const std::string &textureFileName, const std::string &terrainFileName, bool dynamic, bool useVBO)
 {
     osg::Geode *geode = new osg::Geode;
 

@@ -85,7 +85,7 @@ struct CommandLineOptions
         distance = sqrt(sphere_radius * sphere_radius - collar_radius * collar_radius);
     }
 
-    void read(osg::ArgumentParser&arguments)
+    void read(osg::ArgumentParser &arguments)
     {
         while (arguments.read("--width", width))
         {}
@@ -119,7 +119,7 @@ public:
 WindowResizedHandler()
 {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object *object, osg::NodeVisitor *nv)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object *object, osg::NodeVisitor *nv)
 {
     osg::Camera *camera = dynamic_cast<osg::Camera*>(object);
 
@@ -144,7 +144,7 @@ virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa,
 }
 };
 
-osg::Node* createDistortionSubgraph(CommandLineOptions&options, osg::Node *subgraph, const osg::Vec4&clearColour)
+osg::Node* createDistortionSubgraph(CommandLineOptions &options, osg::Node *subgraph, const osg::Vec4 &clearColour)
 {
     osg::Group *distortionNode = new osg::Group;
 
@@ -284,7 +284,7 @@ osg::Node* createDistortionSubgraph(CommandLineOptions&options, osg::Node *subgr
     return distortionNode;
 }
 
-void setDomeFaces(osgViewer::Viewer&viewer, CommandLineOptions&options)
+void setDomeFaces(osgViewer::Viewer &viewer, CommandLineOptions &options)
 {
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
 
@@ -387,8 +387,8 @@ void setDomeFaces(osgViewer::Viewer&viewer, CommandLineOptions&options)
     viewer.assignSceneDataToCameras();
 }
 
-osg::Geometry* createDomeDistortionMesh(const osg::Vec3&origin, const osg::Vec3&widthVector, const osg::Vec3&heightVector,
-                                        CommandLineOptions&options)
+osg::Geometry* createDomeDistortionMesh(const osg::Vec3 &origin, const osg::Vec3 &widthVector, const osg::Vec3 &heightVector,
+                                        CommandLineOptions &options)
 {
     osg::Vec3d center(0.0, 0.0, 0.0);
     osg::Vec3d eye(0.0, 0.0, 0.0);
@@ -521,7 +521,7 @@ osg::Geometry* createDomeDistortionMesh(const osg::Vec3&origin, const osg::Vec3&
     return geometry;
 }
 
-void setDomeCorrection(osgViewer::Viewer&viewer, CommandLineOptions&options)
+void setDomeCorrection(osgViewer::Viewer &viewer, CommandLineOptions &options)
 {
     osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
 

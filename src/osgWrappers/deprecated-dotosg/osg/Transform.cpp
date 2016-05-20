@@ -11,8 +11,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Transform_readLocalData(Object&obj, Input&fr);
-bool Transform_writeLocalData(const Object&obj, Output&fw);
+bool Transform_readLocalData(Object &obj, Input &fr);
+bool Transform_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Transform)
@@ -25,11 +25,11 @@ REGISTER_DOTOSGWRAPPER(Transform)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Transform_readLocalData(Object&obj, Input&fr)
+bool Transform_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Transform&transform = static_cast<Transform&>(obj);
+    Transform &transform = static_cast<Transform&>(obj);
 
     if (fr[0].matchWord("Type"))
     {
@@ -75,9 +75,9 @@ bool Transform_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Transform_writeLocalData(const Object&obj, Output&fw)
+bool Transform_writeLocalData(const Object &obj, Output &fw)
 {
-    const Transform&transform = static_cast<const Transform&>(obj);
+    const Transform &transform = static_cast<const Transform&>(obj);
 
     fw.indent() << "referenceFrame ";
 

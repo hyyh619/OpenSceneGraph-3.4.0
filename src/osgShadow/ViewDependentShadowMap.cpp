@@ -85,7 +85,7 @@ void traverse(const osgUtil::RenderStage *rs)
 
 void traverse(const osgUtil::RenderBin *renderBin)
 {
-    const osgUtil::RenderBin::RenderBinList&rbl = renderBin->getRenderBinList();
+    const osgUtil::RenderBin::RenderBinList &rbl = renderBin->getRenderBinList();
 
     for (osgUtil::RenderBin::RenderBinList::const_iterator itr = rbl.begin();
          itr != rbl.end();
@@ -94,7 +94,7 @@ void traverse(const osgUtil::RenderBin *renderBin)
         traverse(itr->second.get());
     }
 
-    const osgUtil::RenderBin::RenderLeafList&rll = renderBin->getRenderLeafList();
+    const osgUtil::RenderBin::RenderLeafList &rll = renderBin->getRenderLeafList();
 
     for (osgUtil::RenderBin::RenderLeafList::const_iterator itr = rll.begin();
          itr != rll.end();
@@ -103,7 +103,7 @@ void traverse(const osgUtil::RenderBin *renderBin)
         handle(*itr);
     }
 
-    const osgUtil::RenderBin::StateGraphList&rgl = renderBin->getStateGraphList();
+    const osgUtil::RenderBin::StateGraphList &rgl = renderBin->getStateGraphList();
 
     for (osgUtil::RenderBin::StateGraphList::const_iterator itr = rgl.begin();
          itr != rgl.end();
@@ -115,7 +115,7 @@ void traverse(const osgUtil::RenderBin *renderBin)
 
 void traverse(const osgUtil::StateGraph *stateGraph)
 {
-    const osgUtil::StateGraph::ChildList&cl = stateGraph->_children;
+    const osgUtil::StateGraph::ChildList &cl = stateGraph->_children;
 
     for (osgUtil::StateGraph::ChildList::const_iterator itr = cl.begin();
          itr != cl.end();
@@ -124,7 +124,7 @@ void traverse(const osgUtil::StateGraph *stateGraph)
         traverse(itr->second.get());
     }
 
-    const osgUtil::StateGraph::LeafList&ll = stateGraph->_leaves;
+    const osgUtil::StateGraph::LeafList &ll = stateGraph->_leaves;
 
     for (osgUtil::StateGraph::LeafList::const_iterator itr = ll.begin();
          itr != ll.end();
@@ -148,7 +148,7 @@ class VDSMCameraCullCallback : public osg::NodeCallback
 {
 public:
 
-VDSMCameraCullCallback(ViewDependentShadowMap *vdsm, osg::Polytope&polytope);
+VDSMCameraCullCallback(ViewDependentShadowMap *vdsm, osg::Polytope &polytope);
 
 virtual void operator()(osg::Node*, osg::NodeVisitor *nv);
 
@@ -169,7 +169,7 @@ osg::ref_ptr<osgUtil::RenderStage> _renderStage;
 osg::Polytope                      _polytope;
 };
 
-VDSMCameraCullCallback::VDSMCameraCullCallback(ViewDependentShadowMap *vdsm, osg::Polytope&polytope) :
+VDSMCameraCullCallback::VDSMCameraCullCallback(ViewDependentShadowMap *vdsm, osg::Polytope &polytope) :
     _vdsm(vdsm),
     _polytope(polytope)
 {}
@@ -186,7 +186,7 @@ void VDSMCameraCullCallback::operator()(osg::Node *node, osg::NodeVisitor *nv)
     {
         OSG_INFO << "Pushing custom Polytope" << std::endl;
 
-        osg::CullingSet&cs = cv->getProjectionCullingStack().back();
+        osg::CullingSet &cs = cv->getProjectionCullingStack().back();
 
         cs.setFrustum(_polytope);
 
@@ -261,7 +261,7 @@ void VDSMCameraCullCallback::operator()(osg::Node *node, osg::NodeVisitor *nv)
 class ComputeLightSpaceBounds : public osg::NodeVisitor, public osg::CullStack
 {
 public:
-ComputeLightSpaceBounds(osg::Viewport *viewport, const osg::Matrixd&projectionMatrix, osg::Matrixd&viewMatrix) :
+ComputeLightSpaceBounds(osg::Viewport *viewport, const osg::Matrixd &projectionMatrix, osg::Matrixd &viewMatrix) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN)
 {
     setCullingMode(osg::CullSettings::VIEW_FRUSTUM_CULLING);
@@ -271,7 +271,7 @@ ComputeLightSpaceBounds(osg::Viewport *viewport, const osg::Matrixd&projectionMa
     pushModelViewMatrix(new osg::RefMatrix(viewMatrix), osg::Transform::ABSOLUTE_RF);
 }
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     if (isCulled(node))
         return;
@@ -285,7 +285,7 @@ void apply(osg::Node&node)
     popCurrentMask();
 }
 
-void apply(osg::Geode&node)
+void apply(osg::Geode &node)
 {
     if (isCulled(node))
         return;
@@ -317,7 +317,7 @@ void apply(osg::Projection&)
     return;
 }
 
-void apply(osg::Transform&transform)
+void apply(osg::Transform &transform)
 {
     if (isCulled(transform))
         return;
@@ -347,12 +347,12 @@ void apply(osg::Camera&)
     return;
 }
 
-void updateBound(const osg::BoundingBox&bb)
+void updateBound(const osg::BoundingBox &bb)
 {
     if (!bb.valid())
         return;
 
-    const osg::Matrix&matrix = *getModelViewMatrix() * *getProjectionMatrix();
+    const osg::Matrix &matrix = *getModelViewMatrix() * *getProjectionMatrix();
 
     update(bb.corner(0) * matrix);
     update(bb.corner(1) * matrix);
@@ -364,7 +364,7 @@ void updateBound(const osg::BoundingBox&bb)
     update(bb.corner(7) * matrix);
 }
 
-void update(const osg::Vec3&v)
+void update(const osg::Vec3 &v)
 {
     if (v.z() < -1.0f)
     {
@@ -401,7 +401,7 @@ ViewDependentShadowMap::LightData::LightData(ViewDependentShadowMap::ViewDepende
     directionalLight(false)
 {}
 
-void ViewDependentShadowMap::LightData::setLightData(osg::RefMatrix *lm, const osg::Light *l, const osg::Matrixd&modelViewMatrix)
+void ViewDependentShadowMap::LightData::setLightData(osg::RefMatrix *lm, const osg::Light *l, const osg::Matrixd &modelViewMatrix)
 {
     lightMatrix = lm;
     light       = l;
@@ -698,7 +698,7 @@ ViewDependentShadowMap::ViewDependentShadowMap() :
     _shadowRecievingPlaceholderStateSet = new osg::StateSet;
 }
 
-ViewDependentShadowMap::ViewDependentShadowMap(const ViewDependentShadowMap&vdsm, const osg::CopyOp&copyop) :
+ViewDependentShadowMap::ViewDependentShadowMap(const ViewDependentShadowMap &vdsm, const osg::CopyOp &copyop) :
     ShadowTechnique(vdsm, copyop)
 {
     _shadowRecievingPlaceholderStateSet = new osg::StateSet;
@@ -743,13 +743,13 @@ ViewDependentShadowMap::ViewDependentData* ViewDependentShadowMap::getViewDepend
     return vdd.release();
 }
 
-void ViewDependentShadowMap::update(osg::NodeVisitor&nv)
+void ViewDependentShadowMap::update(osg::NodeVisitor &nv)
 {
     OSG_INFO << "ViewDependentShadowMap::update(osg::NodeVisitor& " << &nv << ")" << std::endl;
     _shadowedScene->osg::Group::traverse(nv);
 }
 
-void ViewDependentShadowMap::cull(osgUtil::CullVisitor&cv)
+void ViewDependentShadowMap::cull(osgUtil::CullVisitor &cv)
 {
     OSG_INFO << std::endl << std::endl << "ViewDependentShadowMap::cull(osg::CullVisitor&" << &cv << ")" << std::endl;
 
@@ -775,7 +775,7 @@ void ViewDependentShadowMap::cull(osgUtil::CullVisitor&cv)
 
     osg::CullSettings::ComputeNearFarMode cachedNearFarMode = cv.getComputeNearFarMode();
 
-    osg::RefMatrix&viewProjectionMatrix = *cv.getProjectionMatrix();
+    osg::RefMatrix &viewProjectionMatrix = *cv.getProjectionMatrix();
 
     // check whether this main views projection is perspective or orthographic
     bool orthographicViewFrustum = viewProjectionMatrix(0, 3) == 0.0 &&
@@ -858,7 +858,7 @@ void ViewDependentShadowMap::cull(osgUtil::CullVisitor&cv)
         numShadowMapsPerLight = 2;
     }
 
-    LightDataList&pll = vdd->getLightDataList();
+    LightDataList &pll = vdd->getLightDataList();
 
     for (LightDataList::iterator itr = pll.begin();
          itr != pll.end();
@@ -867,7 +867,7 @@ void ViewDependentShadowMap::cull(osgUtil::CullVisitor&cv)
         // 3. create per light/per shadow map division of lightspace/frustum
         //    create a list of light/shadow map data structures
 
-        LightData&pl = **itr;
+        LightData &pl = **itr;
 
         // 3.1 compute light space polytope
         //
@@ -905,7 +905,7 @@ void ViewDependentShadowMap::cull(osgUtil::CullVisitor&cv)
             osg::Polytope local_polytope(polytope);
             local_polytope.transformProvidingInverse(invertModelView);
 
-            osg::CullingSet&cs = clsb.getProjectionCullingStack().back();
+            osg::CullingSet &cs = clsb.getProjectionCullingStack().back();
             cs.setFrustum(local_polytope);
             clsb.pushCullingSet();
 
@@ -1130,7 +1130,7 @@ bool ViewDependentShadowMap::selectActiveLights(osgUtil::CullVisitor *cv, ViewDe
 {
     OSG_INFO << "selectActiveLights" << std::endl;
 
-    LightDataList&pll = vdd->getLightDataList();
+    LightDataList &pll = vdd->getLightDataList();
 
     LightDataList previous_ldl;
     previous_ldl.swap(pll);
@@ -1142,7 +1142,7 @@ bool ViewDependentShadowMap::selectActiveLights(osgUtil::CullVisitor *cv, ViewDe
 
     osg::Matrixd modelViewMatrix = *(cv->getModelViewMatrix());
 
-    osgUtil::PositionalStateContainer::AttrMatrixList&aml =
+    osgUtil::PositionalStateContainer::AttrMatrixList &aml =
         rs->getPositionalStateContainer()->getAttrMatrixList();
 
 
@@ -1297,7 +1297,7 @@ void ViewDependentShadowMap::createShaders()
     }
 }
 
-osg::Polytope ViewDependentShadowMap::computeLightViewFrustumPolytope(Frustum&frustum, LightData&positionedLight)
+osg::Polytope ViewDependentShadowMap::computeLightViewFrustumPolytope(Frustum &frustum, LightData &positionedLight)
 {
     OSG_INFO << "computeLightViewFrustumPolytope()" << std::endl;
 
@@ -1337,9 +1337,9 @@ osg::Polytope ViewDependentShadowMap::computeLightViewFrustumPolytope(Frustum&fr
     }
     else
     {
-        const osg::Polytope::PlaneList&planes       = polytope.getPlaneList();
-        osg::Polytope::ClippingMask   selector_mask = 0x1;
-        osg::Polytope::ClippingMask   result_mask   = 0x0;
+        const osg::Polytope::PlaneList &planes       = polytope.getPlaneList();
+        osg::Polytope::ClippingMask    selector_mask = 0x1;
+        osg::Polytope::ClippingMask    result_mask   = 0x0;
 
         for (unsigned int i = 0; i < planes.size(); ++i, selector_mask <<= 1)
         {
@@ -1367,7 +1367,7 @@ osg::Polytope ViewDependentShadowMap::computeLightViewFrustumPolytope(Frustum&fr
 
     for (unsigned int i = 0; i < 12; ++i)
     {
-        Frustum::Indices&indices = frustum.edges[i];
+        Frustum::Indices &indices = frustum.edges[i];
 
         unsigned int corner_a      = indices[0];
         unsigned int corner_b      = indices[1];
@@ -1415,7 +1415,7 @@ osg::Polytope ViewDependentShadowMap::computeLightViewFrustumPolytope(Frustum&fr
     }
 
 
-    const osg::Polytope::PlaneList&planes = lightVolumePolytope.getPlaneList();
+    const osg::Polytope::PlaneList &planes = lightVolumePolytope.getPlaneList();
 
     for (unsigned int i = 0; i < planes.size(); ++i)
     {
@@ -1425,7 +1425,7 @@ osg::Polytope ViewDependentShadowMap::computeLightViewFrustumPolytope(Frustum&fr
     return lightVolumePolytope;
 }
 
-bool ViewDependentShadowMap::computeShadowCameraSettings(Frustum&frustum, LightData&positionedLight, osg::Matrixd&projectionMatrix, osg::Matrixd&viewMatrix)
+bool ViewDependentShadowMap::computeShadowCameraSettings(Frustum &frustum, LightData &positionedLight, osg::Matrixd &projectionMatrix, osg::Matrixd &viewMatrix)
 {
     OSG_INFO << "standardShadowMapCameraSettings()" << std::endl;
 
@@ -1605,7 +1605,7 @@ struct ConvexHull
         return !_edges.empty();
     }
 
-    void setToFrustum(ViewDependentShadowMap::Frustum&frustum)
+    void setToFrustum(ViewDependentShadowMap::Frustum &frustum)
     {
         _edges.push_back(Edge(frustum.corners[0], frustum.corners[1]));
         _edges.push_back(Edge(frustum.corners[1], frustum.corners[2]));
@@ -1623,7 +1623,7 @@ struct ConvexHull
         _edges.push_back(Edge(frustum.corners[3], frustum.corners[7]));
     }
 
-    void transform(const osg::Matrixd&m)
+    void transform(const osg::Matrixd &m)
     {
         for (Edges::iterator itr = _edges.begin();
              itr != _edges.end();
@@ -1634,7 +1634,7 @@ struct ConvexHull
         }
     }
 
-    void clip(const osg::Plane&plane)
+    void clip(const osg::Plane &plane)
     {
         Vertices intersections;
 
@@ -1752,9 +1752,9 @@ struct ConvexHull
         // OSG_NOTICE<<"  after clip("<<plane<<") edges.size()="<<_edges.size()<<std::endl;
     }
 
-    void clip(const osg::Polytope&polytope)
+    void clip(const osg::Polytope &polytope)
     {
-        const osg::Polytope::PlaneList&planes = polytope.getPlaneList();
+        const osg::Polytope::PlaneList &planes = polytope.getPlaneList();
 
         for (osg::Polytope::PlaneList::const_iterator itr = planes.begin();
              itr != planes.end();
@@ -1772,7 +1772,7 @@ struct ConvexHull
              itr != _edges.end();
              ++itr)
         {
-            const Edge&edge = *itr;
+            const Edge &edge = *itr;
             if (edge.first[index] < m)
                 m = edge.first[index];
 
@@ -1791,7 +1791,7 @@ struct ConvexHull
              itr != _edges.end();
              ++itr)
         {
-            const Edge&edge = *itr;
+            const Edge &edge = *itr;
             if (edge.first[index] > m)
                 m = edge.first[index];
 
@@ -1802,7 +1802,7 @@ struct ConvexHull
         return m;
     }
 
-    double minRatio(const osg::Vec3d&eye, unsigned int index) const
+    double minRatio(const osg::Vec3d &eye, unsigned int index) const
     {
         double     m = DBL_MAX;
         osg::Vec3d delta;
@@ -1812,7 +1812,7 @@ struct ConvexHull
              itr != _edges.end();
              ++itr)
         {
-            const Edge&edge = *itr;
+            const Edge &edge = *itr;
 
             delta = edge.first - eye;
             ratio = delta[index] / delta[1];
@@ -1828,7 +1828,7 @@ struct ConvexHull
         return m;
     }
 
-    double maxRatio(const osg::Vec3d&eye, unsigned int index) const
+    double maxRatio(const osg::Vec3d &eye, unsigned int index) const
     {
         double     m = -DBL_MAX;
         osg::Vec3d delta;
@@ -1838,7 +1838,7 @@ struct ConvexHull
              itr != _edges.end();
              ++itr)
         {
-            const Edge&edge = *itr;
+            const Edge &edge = *itr;
 
             delta = edge.first - eye;
             ratio = delta[index] / delta[1];
@@ -1854,7 +1854,7 @@ struct ConvexHull
         return m;
     }
 
-    void output(std::ostream&out)
+    void output(std::ostream &out)
     {
         out << "ConvexHull" << std::endl;
 
@@ -1862,7 +1862,7 @@ struct ConvexHull
              itr != _edges.end();
              ++itr)
         {
-            const Edge&edge = *itr;
+            const Edge &edge = *itr;
             out << "   edge (" << edge.first << ") (" << edge.second << ")" << std::endl;
         }
     }
@@ -1890,7 +1890,7 @@ struct RenderLeafBounds
         // OSG_NOTICE<<std::endl<<"RenderLeafBounds"<<std::endl;
     }
 
-    void set(const osg::Matrixd&p)
+    void set(const osg::Matrixd &p)
     {
         computeRatios = false;
         light_p       = p;
@@ -1902,7 +1902,7 @@ struct RenderLeafBounds
         min_z         = DBL_MAX; max_z = -DBL_MAX;
     }
 
-    void set(const osg::Matrixd&p, osg::Vec3d&e_ls, double nr)
+    void set(const osg::Matrixd &p, osg::Vec3d &e_ls, double nr)
     {
         computeRatios = true;
         light_p       = p;
@@ -1935,7 +1935,7 @@ struct RenderLeafBounds
             // OSG_INFO<<"Reusing light_mvp "<<light_mvp<<std::endl;
         }
 
-        const osg::BoundingBox&bb = renderLeaf->_drawable->getBoundingBox();
+        const osg::BoundingBox &bb = renderLeaf->_drawable->getBoundingBox();
         if (bb.valid())
         {
             // OSG_NOTICE<<"checked extents of "<<renderLeaf->_drawable->getName()<<std::endl;
@@ -1954,7 +1954,7 @@ struct RenderLeafBounds
         }
     }
 
-    void handle(const osg::Vec3d&v)
+    void handle(const osg::Vec3d &v)
     {
         osg::Vec3d ls = v * light_mvp;
 
@@ -2060,7 +2060,7 @@ struct RenderLeafBounds
     double min_z, max_z;
 };
 
-bool ViewDependentShadowMap::adjustPerspectiveShadowMapCameraSettings(osgUtil::RenderStage *renderStage, Frustum&frustum, LightData& /*positionedLight*/, osg::Camera *camera)
+bool ViewDependentShadowMap::adjustPerspectiveShadowMapCameraSettings(osgUtil::RenderStage *renderStage, Frustum &frustum, LightData& /*positionedLight*/, osg::Camera *camera)
 {
     const ShadowSettings *settings = getShadowedScene()->getShadowSettings();
 
@@ -2441,7 +2441,7 @@ void ViewDependentShadowMap::cullShadowCastingScene(osgUtil::CullVisitor *cv, os
     return;
 }
 
-osg::StateSet* ViewDependentShadowMap::selectStateSetForRenderingShadow(ViewDependentData&vdd) const
+osg::StateSet* ViewDependentShadowMap::selectStateSetForRenderingShadow(ViewDependentData &vdd) const
 {
     OSG_INFO << "   selectStateSetForRenderingShadow() " << vdd.getStateSet() << std::endl;
 
@@ -2466,7 +2466,7 @@ osg::StateSet* ViewDependentShadowMap::selectStateSetForRenderingShadow(ViewDepe
         stateset->setAttribute(_program.get());
     }
 
-    LightDataList&pll = vdd.getLightDataList();
+    LightDataList &pll = vdd.getLightDataList();
 
     for (LightDataList::iterator itr = pll.begin();
          itr != pll.end();
@@ -2475,7 +2475,7 @@ osg::StateSet* ViewDependentShadowMap::selectStateSetForRenderingShadow(ViewDepe
         // 3. create per light/per shadow map division of lightspace/frustum
         //    create a list of light/shadow map data structures
 
-        LightData&pl = (**itr);
+        LightData &pl = (**itr);
 
         // if no texture units have been activated for this light then no shadow state required.
         if (pl.textureUnits.empty())
@@ -2495,7 +2495,7 @@ osg::StateSet* ViewDependentShadowMap::selectStateSetForRenderingShadow(ViewDepe
                                               osg::StateAttribute::ON;
 
 
-    ShadowDataList&sdl = vdd.getShadowDataList();
+    ShadowDataList &sdl = vdd.getShadowDataList();
 
     for (ShadowDataList::iterator itr = sdl.begin();
          itr != sdl.end();
@@ -2504,7 +2504,7 @@ osg::StateSet* ViewDependentShadowMap::selectStateSetForRenderingShadow(ViewDepe
         // 3. create per light/per shadow map division of lightspace/frustum
         //    create a list of light/shadow map data structures
 
-        ShadowData&sd = (**itr);
+        ShadowData &sd = (**itr);
 
         OSG_INFO << "   ShadowData for " << sd._textureUnit << std::endl;
 

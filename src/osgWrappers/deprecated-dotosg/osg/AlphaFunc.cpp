@@ -10,9 +10,9 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool AlphaFunc_readLocalData(Object&obj, Input&fr);
-bool AlphaFunc_writeLocalData(const Object&obj, Output&fw);
-bool AlphaFunc_matchFuncStr(const char *str, AlphaFunc::ComparisonFunction&func);
+bool AlphaFunc_readLocalData(Object &obj, Input &fr);
+bool AlphaFunc_writeLocalData(const Object &obj, Output &fw);
+bool AlphaFunc_matchFuncStr(const char *str, AlphaFunc::ComparisonFunction &func);
 const char* AlphaFunc_getFuncStr(AlphaFunc::ComparisonFunction func);
 
 // register the read and write functions with the osgDB::Registry.
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(AlphaFunc)
 );
 
 
-bool AlphaFunc_readLocalData(Object&obj, Input&fr)
+bool AlphaFunc_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    AlphaFunc&alphaFunc = static_cast<AlphaFunc&>(obj);
+    AlphaFunc &alphaFunc = static_cast<AlphaFunc&>(obj);
 
     AlphaFunc::ComparisonFunction func = alphaFunc.getFunction();
 
@@ -54,9 +54,9 @@ bool AlphaFunc_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool AlphaFunc_writeLocalData(const Object&obj, Output&fw)
+bool AlphaFunc_writeLocalData(const Object &obj, Output &fw)
 {
-    const AlphaFunc&alphaFunc = static_cast<const AlphaFunc&>(obj);
+    const AlphaFunc &alphaFunc = static_cast<const AlphaFunc&>(obj);
 
     fw.indent() << "comparisonFunc " << AlphaFunc_getFuncStr(alphaFunc.getFunction()) << std::endl;
     fw.indent() << "referenceValue " << alphaFunc.getReferenceValue() << std::endl;
@@ -64,7 +64,7 @@ bool AlphaFunc_writeLocalData(const Object&obj, Output&fw)
 }
 
 
-bool AlphaFunc_matchFuncStr(const char *str, AlphaFunc::ComparisonFunction&func)
+bool AlphaFunc_matchFuncStr(const char *str, AlphaFunc::ComparisonFunction &func)
 {
     if (strcmp(str, "NEVER") == 0)
         func = AlphaFunc::NEVER;

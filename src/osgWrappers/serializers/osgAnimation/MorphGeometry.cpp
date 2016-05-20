@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkMorphTargets(const osgAnimation::MorphGeometry&geom)
+static bool checkMorphTargets(const osgAnimation::MorphGeometry &geom)
 {
     return geom.getMorphTargetList().size() > 0;
 }
 
-static bool readMorphTargets(osgDB::InputStream&is, osgAnimation::MorphGeometry&geom)
+static bool readMorphTargets(osgDB::InputStream &is, osgAnimation::MorphGeometry &geom)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -25,9 +25,9 @@ static bool readMorphTargets(osgDB::InputStream&is, osgAnimation::MorphGeometry&
     return true;
 }
 
-static bool writeMorphTargets(osgDB::OutputStream&os, const osgAnimation::MorphGeometry&geom)
+static bool writeMorphTargets(osgDB::OutputStream &os, const osgAnimation::MorphGeometry &geom)
 {
-    const osgAnimation::MorphGeometry::MorphTargetList&targets = geom.getMorphTargetList();
+    const osgAnimation::MorphGeometry::MorphTargetList &targets = geom.getMorphTargetList();
 
     os.writeSize(targets.size()); os << os.BEGIN_BRACKET << std::endl;
 

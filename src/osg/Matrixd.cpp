@@ -17,18 +17,18 @@
 // specialise Matrix_implementaiton to be Matrixd
 #define  Matrix_implementation Matrixd
 
-osg::Matrixd::Matrixd(const osg::Matrixf&mat)
+osg::Matrixd::Matrixd(const osg::Matrixf &mat)
 {
     set(mat.ptr());
 }
 
-osg::Matrixd&osg::Matrixd::operator =(const osg::Matrixf&rhs)
+osg::Matrixd&osg::Matrixd::operator =(const osg::Matrixf &rhs)
 {
     set(rhs.ptr());
     return *this;
 }
 
-void osg::Matrixd::set(const osg::Matrixf&rhs)
+void osg::Matrixd::set(const osg::Matrixf &rhs)
 {
     set(rhs.ptr());
 }

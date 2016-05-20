@@ -306,7 +306,7 @@ void swq_expr_node::Dump(FILE *fp, int depth)
 /*      Add quoting necessary to unparse a string.                      */
 /************************************************************************/
 
-void swq_expr_node::Quote(CPLString&osTarget)
+void swq_expr_node::Quote(CPLString &osTarget)
 
 {
     CPLString osNew;

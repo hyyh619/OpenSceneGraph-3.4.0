@@ -6,7 +6,7 @@
 
 namespace osgWidget
 {
-Label::Label(const std::string&name, const std::string&label) :
+Label::Label(const std::string &name, const std::string &label) :
     Widget     (name, 0, 0),
     _text      (new osgText::Text()),
     _textIndex (0)
@@ -35,14 +35,14 @@ Label::Label(const std::string&name, const std::string&label) :
     setColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
-Label::Label(const Label&label, const osg::CopyOp&co) :
+Label::Label(const Label &label, const osg::CopyOp &co) :
     Widget     (label, co),
     _textIndex (label._textIndex)
 {
     _text = new osgText::Text(*label._text, co);
 }
 
-void Label::_calculateSize(const XYCoord&size)
+void Label::_calculateSize(const XYCoord &size)
 {
     // if(size.x() && size.y()) setMinimumSize(size.x(), size.y());
 
@@ -115,21 +115,21 @@ void Label::positioned()
     _text->setPosition(osg::Vec3(x, y, z));
 }
 
-void Label::setLabel(const std::string&label)
+void Label::setLabel(const std::string &label)
 {
     _text->setText(label);
 
     _calculateSize(getTextSize());
 }
 
-void Label::setLabel(const osgText::String&label)
+void Label::setLabel(const osgText::String &label)
 {
     _text->setText(label);
 
     _calculateSize(getTextSize());
 }
 
-void Label::setFont(const std::string&font)
+void Label::setFont(const std::string &font)
 {
     _text->setFont(font);
 
@@ -144,7 +144,7 @@ void Label::setFontSize(unsigned int size)
     _calculateSize(getTextSize());
 }
 
-void Label::setFontColor(const Color&c)
+void Label::setFontColor(const Color &c)
 {
     _text->setColor(c);
 }
@@ -160,7 +160,7 @@ void Label::setShadow(point_type offset)
 
 XYCoord Label::getTextSize() const
 {
-    const osg::BoundingBox&bb = _text->getBoundingBox();
+    const osg::BoundingBox &bb = _text->getBoundingBox();
 
     return XYCoord(
         osg::round(bb.xMax() - bb.xMin()),

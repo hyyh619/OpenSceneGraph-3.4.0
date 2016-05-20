@@ -11,7 +11,7 @@ osgParticle::ModularEmitter::ModularEmitter()
     _shooter(new RadialShooter)
 {}
 
-osgParticle::ModularEmitter::ModularEmitter(const ModularEmitter&copy, const osg::CopyOp&copyop) :
+osgParticle::ModularEmitter::ModularEmitter(const ModularEmitter &copy, const osg::CopyOp &copyop) :
     Emitter(copy, copyop),
     _numParticleToCreateMovementCompensationRatio(copy._numParticleToCreateMovementCompensationRatio),
     _counter(static_cast<Counter*>(copyop(copy._counter.get()))),

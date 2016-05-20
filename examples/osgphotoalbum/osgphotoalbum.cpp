@@ -48,7 +48,7 @@ class Page : public osg::Transform
 public:
 
 
-static Page* createPage(Album *album, unsigned int pageNo, const std::string&frontFileName, const std::string&backFileName, float width, float height)
+static Page* createPage(Album *album, unsigned int pageNo, const std::string &frontFileName, const std::string &backFileName, float width, float height)
 {
     osg::ref_ptr<Page> page = new Page(album, pageNo, frontFileName, backFileName, width, height);
 
@@ -58,7 +58,7 @@ static Page* createPage(Album *album, unsigned int pageNo, const std::string&fro
         return 0;
 }
 
-virtual void traverse(osg::NodeVisitor&nv);
+virtual void traverse(osg::NodeVisitor &nv);
 
 void setRotation(float angle)
 {
@@ -101,7 +101,7 @@ const osg::Switch* getSwitch() const
 
 public:
 
-virtual bool computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor*) const
+virtual bool computeLocalToWorldMatrix(osg::Matrix &matrix, osg::NodeVisitor*) const
 {
     if (_referenceFrame == RELATIVE_RF)
     {
@@ -116,9 +116,9 @@ virtual bool computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor*) co
 }
 
 /** Get the transformation matrix which moves from world coords to local coords.*/
-virtual bool computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor*) const
+virtual bool computeWorldToLocalMatrix(osg::Matrix &matrix, osg::NodeVisitor*) const
 {
-    const osg::Matrix&inverse = getInverseMatrix();
+    const osg::Matrix &inverse = getInverseMatrix();
 
     if (_referenceFrame == RELATIVE_RF)
     {
@@ -143,7 +143,7 @@ osg::Matrix getInverseMatrix() const
 
 protected:
 
-Page(Album *album, unsigned int pageNo, const std::string&frontFileName, const std::string&backFileName, float width, float height);
+Page(Album *album, unsigned int pageNo, const std::string &frontFileName, const std::string &backFileName, float width, float height);
 
 float       _rotation;
 osg::Matrix _pageOffset;
@@ -160,7 +160,7 @@ class Album : public osg::Referenced
 {
 public:
 
-Album(osg::ArgumentParser&ap, float width, float height);
+Album(osg::ArgumentParser &ap, float width, float height);
 
 osg::Group* getScene()
 {
@@ -212,7 +212,7 @@ float        _deltaAngleBetweenPages;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-Page::Page(Album *album, unsigned int pageNo, const std::string&frontFileName, const std::string&backFileName, float width, float height)
+Page::Page(Album *album, unsigned int pageNo, const std::string &frontFileName, const std::string &backFileName, float width, float height)
 {
     // set up transform parts.
     _rotation         = 0;
@@ -449,7 +449,7 @@ Page::Page(Album *album, unsigned int pageNo, const std::string&frontFileName, c
     addChild(_switch.get());
 }
 
-void Page::traverse(osg::NodeVisitor&nv)
+void Page::traverse(osg::NodeVisitor &nv)
 {
     // if app traversal update the frame count.
     if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
@@ -479,7 +479,7 @@ void Page::traverse(osg::NodeVisitor&nv)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Album::Album(osg::ArgumentParser&arguments, float width, float height)
+Album::Album(osg::ArgumentParser &arguments, float width, float height)
 {
     typedef std::vector<std::string> FileList;
     FileList fileList;
@@ -604,9 +604,9 @@ META_Object(osgStereImageApp, SlideEventHandler);
 
 void set(Album *album, float timePerSlide, bool autoSteppingActive);
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 protected:
 
@@ -636,7 +636,7 @@ void SlideEventHandler::set(Album *album, float timePerSlide, bool autoSteppingA
     _autoSteppingActive = autoSteppingActive;
 }
 
-bool SlideEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool SlideEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -687,7 +687,7 @@ bool SlideEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAction
     }
 }
 
-void SlideEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void SlideEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("Space", "Reset the image position to center");
     usage.addKeyboardMouseBinding("a", "Toggle on/off the automatic advancement for image to image");

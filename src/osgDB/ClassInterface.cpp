@@ -105,21 +105,21 @@ virtual void writeDouble(double d)
 {
     write(d);
 }
-virtual void writeString(const std::string&s)
+virtual void writeString(const std::string &s)
 {
     _str.insert(_str.end(), s.begin(), s.end());
 }
 virtual void writeStream(std::ostream& (*fn)(std::ostream &)) {}
 virtual void writeBase(std::ios_base& (*fn)(std::ios_base &)) {}
-virtual void writeGLenum(const osgDB::ObjectGLenum&value)
+virtual void writeGLenum(const osgDB::ObjectGLenum &value)
 {
     writeInt(value.get());
 }
-virtual void writeProperty(const osgDB::ObjectProperty&prop)
+virtual void writeProperty(const osgDB::ObjectProperty &prop)
 {
     _propertyName = prop._name;
 }
-virtual void writeMark(const osgDB::ObjectMark&mark)
+virtual void writeMark(const osgDB::ObjectMark &mark)
 {
     _markName = mark._name;
 }
@@ -127,7 +127,7 @@ virtual void writeCharArray(const char *s, unsigned int size)
 {
     _str.insert(std::string::npos, s, size);
 }
-virtual void writeWrappedString(const std::string&str)
+virtual void writeWrappedString(const std::string &str)
 {
     _str.insert(_str.end(), str.begin(), str.end());
 }
@@ -173,61 +173,61 @@ virtual bool isBinary() const
 }
 
 template<typename T>
-void read(T&value)
+void read(T &value)
 {
     memcpy(reinterpret_cast<char*>(&value), _currentPtr, sizeof(T));
     _currentPtr += sizeof(T);
 }
 
-virtual void readBool(bool&b)
+virtual void readBool(bool &b)
 {
     char c; read(c); b = (c != 0);
 }
-virtual void readChar(char&c)
+virtual void readChar(char &c)
 {
     read(c);
 }
-virtual void readSChar(signed char&c)
+virtual void readSChar(signed char &c)
 {
     read(c);
 }
-virtual void readUChar(unsigned char&c)
+virtual void readUChar(unsigned char &c)
 {
     read(c);
 }
-virtual void readShort(short&s)
+virtual void readShort(short &s)
 {
     read(s);
 }
-virtual void readUShort(unsigned short&s)
+virtual void readUShort(unsigned short &s)
 {
     read(s);
 }
-virtual void readInt(int&i)
+virtual void readInt(int &i)
 {
     read(i);
 }
-virtual void readUInt(unsigned int&i)
+virtual void readUInt(unsigned int &i)
 {
     read(i);
 }
-virtual void readLong(long&l)
+virtual void readLong(long &l)
 {
     read(l);
 }
-virtual void readULong(unsigned long&l)
+virtual void readULong(unsigned long &l)
 {
     read(l);
 }
-virtual void readFloat(float&f)
+virtual void readFloat(float &f)
 {
     read(f);
 }
-virtual void readDouble(double&d)
+virtual void readDouble(double &d)
 {
     read(d);
 }
-virtual void readString(std::string&s)
+virtual void readString(std::string &s)
 {
     s = std::string(_bufferData, _bufferSize);
 }
@@ -235,18 +235,18 @@ virtual void readString(std::string&s)
 virtual void readStream(std::istream& (*fn)(std::istream &)) {}
 virtual void readBase(std::ios_base& (*fn)(std::ios_base &)) {}
 
-virtual void readGLenum(ObjectGLenum&value)
+virtual void readGLenum(ObjectGLenum &value)
 {
     readUInt(value._value);
 }
-virtual void readProperty(ObjectProperty&prop) {}
-virtual void readMark(ObjectMark&mark) {}
+virtual void readProperty(ObjectProperty &prop) {}
+virtual void readMark(ObjectMark &mark) {}
 virtual void readCharArray(char *s, unsigned int size)
 {
     if (size > 0)
         _in->read(s, size);
 }
-virtual void readWrappedString(std::string&str)
+virtual void readWrappedString(std::string &str)
 {
     readString(str);
 }
@@ -257,7 +257,7 @@ virtual bool matchString(const std::string& /*str*/)
 }
 
 template<typename T>
-void set(const T&value)
+void set(const T &value)
 {
     if (_bufferData)
         delete[] _bufferData;
@@ -420,7 +420,7 @@ std::string ClassInterface::getTypeName(osgDB::BaseSerializer::Type type) const
         return std::string();
 }
 
-osgDB::BaseSerializer::Type ClassInterface::getType(const std::string&typeName) const
+osgDB::BaseSerializer::Type ClassInterface::getType(const std::string &typeName) const
 {
     TypeNameToTypeMap::const_iterator itr = _typeNameToTypeMap.find(typeName);
 
@@ -436,14 +436,14 @@ osgDB::ObjectWrapper* ClassInterface::getObjectWrapper(const osg::Object *object
     return osgDB::Registry::instance()->getObjectWrapperManager()->findWrapper(object->getCompoundClassName());
 }
 
-osgDB::BaseSerializer* ClassInterface::getSerializer(const osg::Object *object, const std::string&propertyName, osgDB::BaseSerializer::Type&type) const
+osgDB::BaseSerializer* ClassInterface::getSerializer(const osg::Object *object, const std::string &propertyName, osgDB::BaseSerializer::Type &type) const
 {
     osgDB::ObjectWrapper *ow = getObjectWrapper(object);
 
     return (ow != 0) ? ow->getSerializer(propertyName, type) : 0;
 }
 
-osg::Object* ClassInterface::createObject(const std::string&compoundClassName) const
+osg::Object* ClassInterface::createObject(const std::string &compoundClassName) const
 {
     osgDB::ObjectWrapper *ow = osgDB::Registry::instance()->getObjectWrapperManager()->findWrapper(compoundClassName);
 
@@ -462,7 +462,7 @@ osg::Object* ClassInterface::createObject(const std::string&compoundClassName) c
     // return (ow!=0) ? ow->createInstance() : 0;
 }
 
-bool ClassInterface::copyPropertyDataFromObject(const osg::Object *object, const std::string&propertyName, void *valuePtr, unsigned int valueSize, osgDB::BaseSerializer::Type valueType)
+bool ClassInterface::copyPropertyDataFromObject(const osg::Object *object, const std::string &propertyName, void *valuePtr, unsigned int valueSize, osgDB::BaseSerializer::Type valueType)
 {
     _poi->flush();
 
@@ -505,7 +505,7 @@ bool ClassInterface::copyPropertyDataFromObject(const osg::Object *object, const
     }
 }
 
-bool ClassInterface::copyPropertyDataToObject(osg::Object *object, const std::string&propertyName, const void *valuePtr, unsigned int valueSize, osgDB::BaseSerializer::Type valueType)
+bool ClassInterface::copyPropertyDataToObject(osg::Object *object, const std::string &propertyName, const void *valuePtr, unsigned int valueSize, osgDB::BaseSerializer::Type valueType)
 {
     // copy data to PropertyInputIterator
     if (valueType == osgDB::BaseSerializer::RW_STRING)
@@ -539,7 +539,7 @@ bool ClassInterface::copyPropertyDataToObject(osg::Object *object, const std::st
     }
 }
 
-bool ClassInterface::copyPropertyObjectFromObject(const osg::Object *object, const std::string&propertyName, void *valuePtr, unsigned int valueSize, osgDB::BaseSerializer::Type valueType)
+bool ClassInterface::copyPropertyObjectFromObject(const osg::Object *object, const std::string &propertyName, void *valuePtr, unsigned int valueSize, osgDB::BaseSerializer::Type valueType)
 {
     osgDB::BaseSerializer::Type sourceType;
     osgDB::BaseSerializer       *serializer = getSerializer(object, propertyName, sourceType);
@@ -563,7 +563,7 @@ bool ClassInterface::copyPropertyObjectFromObject(const osg::Object *object, con
     }
 }
 
-bool ClassInterface::copyPropertyObjectToObject(osg::Object *object, const std::string&propertyName, const void *valuePtr, unsigned int valueSize, osgDB::BaseSerializer::Type valueType)
+bool ClassInterface::copyPropertyObjectToObject(osg::Object *object, const std::string &propertyName, const void *valuePtr, unsigned int valueSize, osgDB::BaseSerializer::Type valueType)
 {
     osgDB::BaseSerializer::Type destinationType;
     osgDB::BaseSerializer       *serializer = getSerializer(object, propertyName, destinationType);
@@ -694,7 +694,7 @@ virtual void apply(const osg::BoundingSphered& /*value*/)
 }
 };
 
-bool ClassInterface::getPropertyType(const osg::Object *object, const std::string&propertyName, osgDB::BaseSerializer::Type&type) const
+bool ClassInterface::getPropertyType(const osg::Object *object, const std::string &propertyName, osgDB::BaseSerializer::Type &type) const
 {
     if (getSerializer(object, propertyName, type) != 0)
         return true;
@@ -717,7 +717,7 @@ bool ClassInterface::getPropertyType(const osg::Object *object, const std::strin
 }
 
 
-bool ClassInterface::getSupportedProperties(const osg::Object *object, PropertyMap&properties, bool searchAssociates) const
+bool ClassInterface::getSupportedProperties(const osg::Object *object, PropertyMap &properties, bool searchAssociates) const
 {
     osgDB::ObjectWrapper *ow = getObjectWrapper(object);
 
@@ -737,7 +737,7 @@ bool ClassInterface::getSupportedProperties(const osg::Object *object, PropertyM
 
     if (searchAssociates)
     {
-        const osgDB::StringList&associates = ow->getAssociates();
+        const osgDB::StringList &associates = ow->getAssociates();
 
         for (osgDB::StringList::const_iterator aitr = associates.begin();
              aitr != associates.end();
@@ -746,15 +746,15 @@ bool ClassInterface::getSupportedProperties(const osg::Object *object, PropertyM
             osgDB::ObjectWrapper *associate_wrapper = osgDB::Registry::instance()->getObjectWrapperManager()->findWrapper(*aitr);
             if (associate_wrapper)
             {
-                const osgDB::ObjectWrapper::SerializerList&associate_serializers = associate_wrapper->getSerializerList();
-                unsigned int                              i                      = 0;
+                const osgDB::ObjectWrapper::SerializerList &associate_serializers = associate_wrapper->getSerializerList();
+                unsigned int                               i                      = 0;
 
                 for (osgDB::ObjectWrapper::SerializerList::const_iterator sitr = associate_serializers.begin();
                      sitr != associate_serializers.end();
                      ++sitr, ++i)
                 {
-                    const std::string&propertyName  = (*sitr)->getName();
-                    bool             notBlackListed = (bl_itr == _blackList.end()) || (bl_itr->second.count(propertyName) == 0);
+                    const std::string &propertyName  = (*sitr)->getName();
+                    bool              notBlackListed = (bl_itr == _blackList.end()) || (bl_itr->second.count(propertyName) == 0);
                     if (notBlackListed)
                         properties[propertyName] = associate_wrapper->getTypeList()[i];
                 }
@@ -763,15 +763,15 @@ bool ClassInterface::getSupportedProperties(const osg::Object *object, PropertyM
     }
     else
     {
-        const osgDB::ObjectWrapper::SerializerList&serializers = ow->getSerializerList();
-        unsigned int                              i            = 0;
+        const osgDB::ObjectWrapper::SerializerList &serializers = ow->getSerializerList();
+        unsigned int                               i            = 0;
 
         for (osgDB::ObjectWrapper::SerializerList::const_iterator itr = serializers.begin();
              itr != serializers.end();
              ++itr, ++i)
         {
-            const std::string&propertyName  = (*itr)->getName();
-            bool             notBlackListed = (bl_itr == _blackList.end()) || (bl_itr->second.count(propertyName) == 0);
+            const std::string &propertyName  = (*itr)->getName();
+            bool              notBlackListed = (bl_itr == _blackList.end()) || (bl_itr->second.count(propertyName) == 0);
             if (notBlackListed)
                 properties[propertyName] = ow->getTypeList()[i];
         }
@@ -781,7 +781,7 @@ bool ClassInterface::getSupportedProperties(const osg::Object *object, PropertyM
     return true;
 }
 
-bool ClassInterface::isObjectOfType(const osg::Object *object, const std::string&compoundClassName) const
+bool ClassInterface::isObjectOfType(const osg::Object *object, const std::string &compoundClassName) const
 {
     if (!object)
         return false;
@@ -795,7 +795,7 @@ bool ClassInterface::isObjectOfType(const osg::Object *object, const std::string
         return false;
     }
 
-    const osgDB::StringList&associates = ow->getAssociates();
+    const osgDB::StringList &associates = ow->getAssociates();
 
     for (osgDB::StringList::const_iterator aitr = associates.begin();
          aitr != associates.end();
@@ -808,7 +808,7 @@ bool ClassInterface::isObjectOfType(const osg::Object *object, const std::string
     return false;
 }
 
-bool ClassInterface::run(void *objectPtr, const std::string&compoundClassName, const std::string&methodName, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+bool ClassInterface::run(void *objectPtr, const std::string &compoundClassName, const std::string &methodName, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
 {
     ObjectWrapper *ow = osgDB::Registry::instance()->getObjectWrapperManager()->findWrapper(compoundClassName);
 
@@ -827,7 +827,7 @@ bool ClassInterface::run(void *objectPtr, const std::string&compoundClassName, c
         ++itr;
     }
 
-    const osgDB::StringList&associates = ow->getAssociates();
+    const osgDB::StringList &associates = ow->getAssociates();
 
     for (osgDB::StringList::const_iterator aitr = associates.begin();
          aitr != associates.end();
@@ -853,12 +853,12 @@ bool ClassInterface::run(void *objectPtr, const std::string&compoundClassName, c
     return false;
 }
 
-bool ClassInterface::run(osg::Object *object, const std::string&methodName, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+bool ClassInterface::run(osg::Object *object, const std::string &methodName, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
 {
     return run(object, object->getCompoundClassName(), methodName, inputParameters, outputParameters);
 }
 
-bool ClassInterface::hasMethod(const std::string&compoundClassName, const std::string&methodName) const
+bool ClassInterface::hasMethod(const std::string &compoundClassName, const std::string &methodName) const
 {
     ObjectWrapper *ow = osgDB::Registry::instance()->getObjectWrapperManager()->findWrapper(compoundClassName);
 
@@ -870,7 +870,7 @@ bool ClassInterface::hasMethod(const std::string&compoundClassName, const std::s
     if (itr != methodObjectMap.end())
         return true;
 
-    const osgDB::StringList&associates = ow->getAssociates();
+    const osgDB::StringList &associates = ow->getAssociates();
 
     for (osgDB::StringList::const_iterator aitr = associates.begin();
          aitr != associates.end();
@@ -889,7 +889,7 @@ bool ClassInterface::hasMethod(const std::string&compoundClassName, const std::s
     return false;
 }
 
-bool ClassInterface::hasMethod(const osg::Object *object, const std::string&methodName) const
+bool ClassInterface::hasMethod(const osg::Object *object, const std::string &methodName) const
 {
     return hasMethod(object->getCompoundClassName(), methodName);
 }

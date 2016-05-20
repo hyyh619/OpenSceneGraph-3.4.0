@@ -249,7 +249,7 @@ MultipassTechnique::MultipassTileData::MultipassTileData(osgUtil::CullVisitor *c
     }
 }
 
-void MultipassTechnique::MultipassTileData::setUp(osg::ref_ptr<osg::Camera>&camera, osg::ref_ptr<osg::Texture2D>&depthTexture, int width, int height)
+void MultipassTechnique::MultipassTileData::setUp(osg::ref_ptr<osg::Camera> &camera, osg::ref_ptr<osg::Texture2D> &depthTexture, int width, int height)
 {
     depthTexture = new osg::Texture2D;
     depthTexture->setTextureSize(width, height);
@@ -336,7 +336,7 @@ void MultipassTechnique::MultipassTileData::update(osgUtil::CullVisitor *cv)
 MultipassTechnique::MultipassTechnique()
 {}
 
-MultipassTechnique::MultipassTechnique(const MultipassTechnique&fft, const osg::CopyOp&copyop) :
+MultipassTechnique::MultipassTechnique(const MultipassTechnique &fft, const osg::CopyOp &copyop) :
     VolumeTechnique(fft, copyop)
 {}
 
@@ -971,23 +971,23 @@ ShadingModelVisitor() :
     _shadingModel(VolumeSettings::Standard),
     _usesTransferFunction(false) {}
 
-virtual void apply(IsoSurfaceProperty&iso)
+virtual void apply(IsoSurfaceProperty &iso)
 {
     _shadingModel = VolumeSettings::Isosurface;
 }
-virtual void apply(MaximumIntensityProjectionProperty&mip)
+virtual void apply(MaximumIntensityProjectionProperty &mip)
 {
     _shadingModel = VolumeSettings::MaximumIntensityProjection;
 }
-virtual void apply(LightingProperty&lp)
+virtual void apply(LightingProperty &lp)
 {
     _shadingModel = VolumeSettings::Light;
 }
-virtual void apply(TransferFunctionProperty&tf)
+virtual void apply(TransferFunctionProperty &tf)
 {
     _usesTransferFunction = true;
 }
-virtual void apply(VolumeSettings&vs)
+virtual void apply(VolumeSettings &vs)
 {
     _shadingModel = vs.getShadingModel();
 }
@@ -1185,7 +1185,7 @@ void MultipassTechnique::cleanSceneGraph()
     OSG_NOTICE << "MultipassTechnique::cleanSceneGraph()" << std::endl;
 }
 
-void MultipassTechnique::traverse(osg::NodeVisitor&nv)
+void MultipassTechnique::traverse(osg::NodeVisitor &nv)
 {
     // OSG_NOTICE<<"MultipassTechnique::traverse(osg::NodeVisitor& nv)"<<std::endl;
     if (!_volumeTile)

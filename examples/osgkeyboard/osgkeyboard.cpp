@@ -54,7 +54,7 @@ protected:
 
 ~KeyboardModel() {}
 
-osg::Switch* addKey(osg::Vec3&pos, int key, const std::string&text, float width, float height);
+osg::Switch* addKey(osg::Vec3 &pos, int key, const std::string &text, float width, float height);
 
 void createKeyboard();
 
@@ -103,7 +103,7 @@ void KeyboardModel::keyChange(int key, int virtualKey, int value)
     }
 }
 
-osg::Switch* KeyboardModel::addKey(osg::Vec3&pos, int key, const std::string&text, float width, float height)
+osg::Switch* KeyboardModel::addKey(osg::Vec3 &pos, int key, const std::string &text, float width, float height)
 {
     osg::Geode *geodeUp = new osg::Geode;
     {
@@ -362,7 +362,7 @@ public:
 KeyboardEventHandler(KeyboardModel *keyboardModel) :
     _keyboardModel(keyboardModel) {}
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
 #if 1
 //            osg::notify(osg::NOTICE)<<"Mouse "<<ea.getButtonMask()<<std::endl;

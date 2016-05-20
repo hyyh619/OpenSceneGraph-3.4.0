@@ -26,7 +26,7 @@ LightPoint::LightPoint() :
     _blendingMode(BLENDED)
 {}
 
-LightPoint::LightPoint(const osg::Vec3&position, const osg::Vec4&color) :
+LightPoint::LightPoint(const osg::Vec3 &position, const osg::Vec4 &color) :
     _on(true),
     _position(position),
     _color(color),
@@ -38,8 +38,8 @@ LightPoint::LightPoint(const osg::Vec3&position, const osg::Vec4&color) :
 {}
 
 LightPoint::LightPoint(bool on,
-                       const osg::Vec3&position,
-                       const osg::Vec4&color,
+                       const osg::Vec3 &position,
+                       const osg::Vec4 &color,
                        float intensity,
                        float radius,
                        Sector *sector,
@@ -55,7 +55,7 @@ LightPoint::LightPoint(bool on,
     _blendingMode(blendingMode)
 {}
 
-LightPoint::LightPoint(const LightPoint&lp) :
+LightPoint::LightPoint(const LightPoint &lp) :
     _on(lp._on),
     _position(lp._position),
     _color(lp._color),
@@ -66,7 +66,7 @@ LightPoint::LightPoint(const LightPoint&lp) :
     _blendingMode(lp._blendingMode)
 {}
 
-LightPoint&LightPoint::operator =(const LightPoint&lp)
+LightPoint&LightPoint::operator =(const LightPoint &lp)
 {
     _on            = lp._on;
     _position      = lp._position;

@@ -82,7 +82,7 @@ enum ShadingModel
 };
 
 
-osg::Image* createTexture3D(osg::ImageList&imageList,
+osg::Image* createTexture3D(osg::ImageList &imageList,
                             unsigned int numComponentsDesired,
                             int s_maximumTextureSize,
                             int t_maximumTextureSize,
@@ -125,32 +125,32 @@ struct ScaleOperator
 {
     ScaleOperator() : _scale(1.0f) {}
     ScaleOperator(float scale) : _scale(scale) {}
-    ScaleOperator(const ScaleOperator&so) : _scale(so._scale) {}
+    ScaleOperator(const ScaleOperator &so) : _scale(so._scale) {}
 
-    ScaleOperator&operator =(const ScaleOperator&so)
+    ScaleOperator&operator =(const ScaleOperator &so)
     {
         _scale = so._scale; return *this;
     }
 
     float _scale;
 
-    inline void luminance(float&l) const
+    inline void luminance(float &l) const
     {
         l *= _scale;
     }
-    inline void alpha(float&a) const
+    inline void alpha(float &a) const
     {
         a *= _scale;
     }
-    inline void luminance_alpha(float&l, float&a) const
+    inline void luminance_alpha(float &l, float &a) const
     {
         l *= _scale; a *= _scale;
     }
-    inline void rgb(float&r, float&g, float&b) const
+    inline void rgb(float &r, float &g, float &b) const
     {
         r *= _scale; g *= _scale; b *= _scale;
     }
-    inline void rgba(float&r, float&g, float&b, float&a) const
+    inline void rgba(float &r, float &g, float &b, float &a) const
     {
         r *= _scale; g *= _scale; b *= _scale; a *= _scale;
     }
@@ -193,29 +193,29 @@ struct WriteRowOperator
     std::vector<osg::Vec4> _colours;
     mutable unsigned int   _pos;
 
-    inline void luminance(float&l) const
+    inline void luminance(float &l) const
     {
         l = _colours[_pos++].r();
     }
-    inline void alpha(float&a) const
+    inline void alpha(float &a) const
     {
         a = _colours[_pos++].a();
     }
-    inline void luminance_alpha(float&l, float&a) const
+    inline void luminance_alpha(float &l, float &a) const
     {
         l = _colours[_pos].r(); a = _colours[_pos++].a();
     }
-    inline void rgb(float&r, float&g, float&b) const
+    inline void rgb(float &r, float &g, float &b) const
     {
         r = _colours[_pos].r(); g = _colours[_pos].g(); b = _colours[_pos].b();
     }
-    inline void rgba(float&r, float&g, float&b, float&a) const
+    inline void rgba(float &r, float &g, float &b, float &a) const
     {
         r = _colours[_pos].r(); g = _colours[_pos].g(); b = _colours[_pos].b(); a = _colours[_pos++].a();
     }
 };
 
-void clampToNearestValidPowerOfTwo(int&sizeX, int&sizeY, int&sizeZ, int s_maximumTextureSize, int t_maximumTextureSize, int r_maximumTextureSize)
+void clampToNearestValidPowerOfTwo(int &sizeX, int &sizeY, int &sizeZ, int s_maximumTextureSize, int t_maximumTextureSize, int r_maximumTextureSize)
 {
     // compute nearest powers of two for each axis.
     int s_nearestPowerOfTwo = 1;
@@ -238,7 +238,7 @@ void clampToNearestValidPowerOfTwo(int&sizeX, int&sizeY, int&sizeZ, int s_maximu
     sizeZ = r_nearestPowerOfTwo;
 }
 
-osg::Image* readRaw(int sizeX, int sizeY, int sizeZ, int numberBytesPerComponent, int numberOfComponents, const std::string&endian, const std::string&raw_filename)
+osg::Image* readRaw(int sizeX, int sizeY, int sizeZ, int numberBytesPerComponent, int numberOfComponents, const std::string &endian, const std::string &raw_filename)
 {
     osgDB::ifstream fin(raw_filename.c_str(), std::ifstream::binary);
 
@@ -407,7 +407,7 @@ DraggerVolumeTileCallback(osgVolume::VolumeTile *volume, osgVolume::Locator *loc
     _locator(locator) {}
 
 
-virtual bool receive(const osgManipulator::MotionCommand&command);
+virtual bool receive(const osgManipulator::MotionCommand &command);
 
 
 osg::observer_ptr<osgVolume::VolumeTile> _volume;
@@ -419,7 +419,7 @@ osg::Matrix _localToWorld;
 osg::Matrix _worldToLocal;
 };
 
-bool DraggerVolumeTileCallback::receive(const osgManipulator::MotionCommand&command)
+bool DraggerVolumeTileCallback::receive(const osgManipulator::MotionCommand &command)
 {
     if (!_locator)
         return false;

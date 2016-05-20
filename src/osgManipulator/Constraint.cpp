@@ -28,7 +28,7 @@ double round_to_nearest_int(double x)
     return floor(x + 0.5);
 }
 
-osg::Vec3d snap_point_to_grid(const osg::Vec3d&point, const osg::Vec3d&origin, const osg::Vec3d&spacing)
+osg::Vec3d snap_point_to_grid(const osg::Vec3d &point, const osg::Vec3d &origin, const osg::Vec3d &spacing)
 {
     osg::Vec3d scale;
 
@@ -57,11 +57,11 @@ void Constraint::computeLocalToWorldAndWorldToLocal() const
     _worldToLocal = osg::computeWorldToLocal(pathToRoot);
 }
 
-GridConstraint::GridConstraint(osg::Node&refNode, const osg::Vec3d&origin, const osg::Vec3d&spacing)
+GridConstraint::GridConstraint(osg::Node &refNode, const osg::Vec3d &origin, const osg::Vec3d &spacing)
     : Constraint(refNode), _origin(origin), _spacing(spacing)
 {}
 
-bool GridConstraint::constrain(TranslateInLineCommand&command) const
+bool GridConstraint::constrain(TranslateInLineCommand &command) const
 {
     if (command.getStage() == osgManipulator::MotionCommand::START)
         computeLocalToWorldAndWorldToLocal();
@@ -79,7 +79,7 @@ bool GridConstraint::constrain(TranslateInLineCommand&command) const
     return true;
 }
 
-bool GridConstraint::constrain(TranslateInPlaneCommand&command) const
+bool GridConstraint::constrain(TranslateInPlaneCommand &command) const
 {
     if (command.getStage() == osgManipulator::MotionCommand::START)
         computeLocalToWorldAndWorldToLocal();
@@ -105,7 +105,7 @@ bool GridConstraint::constrain(TranslateInPlaneCommand&command) const
     return true;
 }
 
-bool GridConstraint::constrain(Scale1DCommand&command) const
+bool GridConstraint::constrain(Scale1DCommand &command) const
 {
     if (command.getStage() == osgManipulator::MotionCommand::START)
         computeLocalToWorldAndWorldToLocal();
@@ -131,7 +131,7 @@ bool GridConstraint::constrain(Scale1DCommand&command) const
     return true;
 }
 
-bool GridConstraint::constrain(Scale2DCommand&command) const
+bool GridConstraint::constrain(Scale2DCommand &command) const
 {
     if (command.getStage() == osgManipulator::MotionCommand::START)
         computeLocalToWorldAndWorldToLocal();

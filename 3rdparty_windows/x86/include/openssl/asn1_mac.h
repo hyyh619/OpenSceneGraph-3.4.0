@@ -96,12 +96,12 @@ extern "C" {
     if (a != NULL) (*a) = ret;        \
     return (ret);
 
-#define M_ASN1_D2I_Finish(a, func, e)                              \
-    M_ASN1_D2I_Finish_2(a);                                        \
-err:                                                               \
-    ASN1_MAC_H_err((e), c.error, c.line);                          \
-    asn1_add_error(*(const unsigned char**)pp, (int)(c.q - *pp));  \
-    if ((ret != NULL) && ((a == NULL) || (*a != ret))) func(ret);  \
+#define M_ASN1_D2I_Finish(a, func, e)                             \
+    M_ASN1_D2I_Finish_2(a);                                       \
+err:                                                              \
+    ASN1_MAC_H_err((e), c.error, c.line);                         \
+    asn1_add_error(*(const unsigned char**)pp, (int)(c.q - *pp)); \
+    if ((ret != NULL) && ((a == NULL) || (*a != ret))) func(ret); \
     return (NULL)
 
 #define M_ASN1_D2I_start_sequence()     \
@@ -112,14 +112,14 @@ err:                                                               \
     c.slen = length;
 
 /* End reading ASN1 with no check on length */
-#define M_ASN1_D2I_Finish_nolen(a, func, e)                        \
-    *pp = c.p;                                                     \
-    if (a != NULL) (*a) = ret;                                     \
-    return (ret);                                                  \
-err:                                                               \
-    ASN1_MAC_H_err((e), c.error, c.line);                          \
-    asn1_add_error(*pp, (int)(c.q - *pp));                         \
-    if ((ret != NULL) && ((a == NULL) || (*a != ret))) func(ret);  \
+#define M_ASN1_D2I_Finish_nolen(a, func, e)                       \
+    *pp = c.p;                                                    \
+    if (a != NULL) (*a) = ret;                                    \
+    return (ret);                                                 \
+err:                                                              \
+    ASN1_MAC_H_err((e), c.error, c.line);                         \
+    asn1_add_error(*pp, (int)(c.q - *pp));                        \
+    if ((ret != NULL) && ((a == NULL) || (*a != ret))) func(ret); \
     return (NULL)
 
 #define M_ASN1_D2I_end_sequence()         \

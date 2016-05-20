@@ -9,14 +9,14 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 // Code by: Jeremy Moles (cubicool) 2007-2008
 
 #ifndef OSGWIDGET_EXPORT_
 #define OSGWIDGET_EXPORT_ 1
 
-#include<osg/Config>
+#include <osg/Config>
 
 #if defined(_MSC_VER) && defined(OSG_DISABLE_MSVC_WARNINGS)
     #pragma warning( disable : 4121 )
@@ -30,13 +30,13 @@
     #pragma warning( disable : 4996 )
 #endif
 
-#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__)
-    #  if defined( OSG_LIBRARY_STATIC )
+#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BCPLUSPLUS__)
+    #  if defined(OSG_LIBRARY_STATIC)
     #    define OSGWIDGET_EXPORT
-    #  elif defined( OSGWIDGET_LIBRARY )
-    #    define OSGWIDGET_EXPORT   __declspec(dllexport)
+    #  elif defined(OSGWIDGET_LIBRARY)
+    #    define OSGWIDGET_EXPORT __declspec(dllexport)
     #  else
-    #    define OSGWIDGET_EXPORT   __declspec(dllimport)
+    #    define OSGWIDGET_EXPORT __declspec(dllimport)
     #  endif
 #else
     #  define OSGWIDGET_EXPORT
@@ -44,9 +44,9 @@
 
 /**
 
-\namespace osgWidget
+   \namespace osgWidget
 
-The osgWidget library is a NodeKit that extends the core scene graph to support a 2D (and eventually 3D) GUI widget set.
-*/
+   The osgWidget library is a NodeKit that extends the core scene graph to support a 2D (and eventually 3D) GUI widget set.
+ */
 
 #endif

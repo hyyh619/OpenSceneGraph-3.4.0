@@ -9,8 +9,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool AutoTransform_readLocalData(Object&obj, Input&fr);
-bool AutoTransform_writeLocalData(const Object&obj, Output&fw);
+bool AutoTransform_readLocalData(Object &obj, Input &fr);
+bool AutoTransform_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(AutoTransform)
@@ -23,11 +23,11 @@ REGISTER_DOTOSGWRAPPER(AutoTransform)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool AutoTransform_readLocalData(Object&obj, Input&fr)
+bool AutoTransform_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    AutoTransform&transform = static_cast<AutoTransform&>(obj);
+    AutoTransform &transform = static_cast<AutoTransform&>(obj);
 
     if (fr.matchSequence("position %f %f %f"))
     {
@@ -160,9 +160,9 @@ bool AutoTransform_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool AutoTransform_writeLocalData(const Object&obj, Output&fw)
+bool AutoTransform_writeLocalData(const Object &obj, Output &fw)
 {
-    const AutoTransform&transform = static_cast<const AutoTransform&>(obj);
+    const AutoTransform &transform = static_cast<const AutoTransform&>(obj);
 
     fw.indent() << "position " << transform.getPosition() << std::endl;
     fw.indent() << "rotation " << transform.getRotation() << std::endl;

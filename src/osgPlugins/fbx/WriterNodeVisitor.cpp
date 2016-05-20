@@ -32,7 +32,7 @@ class PrimitiveIndexWriter : public osg::PrimitiveIndexFunctor
 {
 public:
 PrimitiveIndexWriter(const osg::Geometry *geo,
-                     ListTriangle&listTriangles,
+                     ListTriangle &listTriangles,
                      unsigned int drawable_n,
                      unsigned int material) :
     _drawable_n(drawable_n),
@@ -320,8 +320,8 @@ void PrimitiveIndexWriter::drawArrays(GLenum mode, GLint first, GLsizei count)
         ++_curNormalIndex;
 }
 
-WriterNodeVisitor::Material::Material(WriterNodeVisitor&writerNodeVisitor,
-                                      osgDB::ExternalFileWriter&externalWriter,
+WriterNodeVisitor::Material::Material(WriterNodeVisitor &writerNodeVisitor,
+                                      osgDB::ExternalFileWriter &externalWriter,
                                       const osg::StateSet *stateset,
                                       const osg::Material *mat,
                                       const osg::Texture *tex,
@@ -449,7 +449,7 @@ int WriterNodeVisitor::processStateSet(const osg::StateSet *ss)
     return -1;
 }
 
-unsigned int addPolygon(MapIndices&index_vert, unsigned int vertIndex, unsigned int normIndex, unsigned int drawableNum)
+unsigned int addPolygon(MapIndices &index_vert, unsigned int vertIndex, unsigned int normIndex, unsigned int drawableNum)
 {
     VertexIndex          vert(vertIndex, drawableNum, normIndex);
     MapIndices::iterator itIndex = index_vert.find(vert);
@@ -464,7 +464,7 @@ unsigned int addPolygon(MapIndices&index_vert, unsigned int vertIndex, unsigned 
     return itIndex->second;
 }
 
-void addPolygon(FbxMesh *mesh, MapIndices&index_vert, const Triangle&tri, unsigned int drawableNum)
+void addPolygon(FbxMesh *mesh, MapIndices &index_vert, const Triangle &tri, unsigned int drawableNum)
 {
     mesh->AddPolygon(addPolygon(index_vert, tri.t1, tri.normalIndex1, drawableNum));
     mesh->AddPolygon(addPolygon(index_vert, tri.t2, tri.normalIndex2, drawableNum));
@@ -503,8 +503,8 @@ WriterNodeVisitor::setLayerTextureAndMaterial(FbxMesh *mesh)
 }
 
 void
-WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode&geo,
-                                                  MapIndices&index_vert,
+WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode &geo,
+                                                  MapIndices &index_vert,
                                                   bool texcoords,
                                                   FbxMesh *mesh)
 {
@@ -542,12 +542,12 @@ WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode&geo,
         FbxVector4 vertex;
         if (basevecs->getType() == osg::Array::Vec3ArrayType)
         {
-            const osg::Vec3&vec = (*static_cast<const osg::Vec3Array*>(basevecs))[vertexIndex];
+            const osg::Vec3 &vec = (*static_cast<const osg::Vec3Array*>(basevecs))[vertexIndex];
             vertex.Set(vec.x(), vec.y(), vec.z());
         }
         else if (basevecs->getType() == osg::Array::Vec3dArrayType)
         {
-            const osg::Vec3d&vec = (*static_cast<const osg::Vec3dArray*>(basevecs))[vertexIndex];
+            const osg::Vec3d &vec = (*static_cast<const osg::Vec3dArray*>(basevecs))[vertexIndex];
             vertex.Set(vec.x(), vec.y(), vec.z());
         }
         else
@@ -568,12 +568,12 @@ WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode&geo,
             FbxVector4 normal;
             if (basenormals->getType() == osg::Array::Vec3ArrayType)
             {
-                const osg::Vec3&vec = (*static_cast<const osg::Vec3Array*>(basenormals))[normalIndex];
+                const osg::Vec3 &vec = (*static_cast<const osg::Vec3Array*>(basenormals))[normalIndex];
                 normal.Set(vec.x(), vec.y(), vec.z(), 0);
             }
             else if (basenormals->getType() == osg::Array::Vec3dArrayType)
             {
-                const osg::Vec3d&vec = (*static_cast<const osg::Vec3dArray*>(basenormals))[normalIndex];
+                const osg::Vec3d &vec = (*static_cast<const osg::Vec3dArray*>(basenormals))[normalIndex];
                 normal.Set(vec.x(), vec.y(), vec.z(), 0);
             }
             else
@@ -601,12 +601,12 @@ WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode&geo,
                 FbxVector2 texcoord;
                 if (basetexcoords->getType() == osg::Array::Vec2ArrayType)
                 {
-                    const osg::Vec2&vec = (*static_cast<const osg::Vec2Array*>(basetexcoords))[vertexIndex];
+                    const osg::Vec2 &vec = (*static_cast<const osg::Vec2Array*>(basetexcoords))[vertexIndex];
                     texcoord.Set(vec.x(), vec.y());
                 }
                 else if (basetexcoords->getType() == osg::Array::Vec2dArrayType)
                 {
-                    const osg::Vec2d&vec = (*static_cast<const osg::Vec2dArray*>(basetexcoords))[vertexIndex];
+                    const osg::Vec2d &vec = (*static_cast<const osg::Vec2dArray*>(basetexcoords))[vertexIndex];
                     texcoord.Set(vec.x(), vec.y());
                 }
                 else
@@ -623,8 +623,8 @@ WriterNodeVisitor::setControlPointAndNormalsAndUV(const osg::Geode&geo,
     }
 }
 
-void WriterNodeVisitor::buildFaces(const osg::Geode&geo,
-                                   ListTriangle&listTriangles,
+void WriterNodeVisitor::buildFaces(const osg::Geode &geo,
+                                   ListTriangle &listTriangles,
                                    bool texcoords)
 {
     MapIndices index_vert;
@@ -666,9 +666,9 @@ void WriterNodeVisitor::buildFaces(const osg::Geode&geo,
 }
 
 void WriterNodeVisitor::createListTriangle(const osg::Geometry *geo,
-                                           ListTriangle&listTriangles,
-                                           bool&texcoords,
-                                           unsigned int&drawable_n)
+                                           ListTriangle &listTriangles,
+                                           bool &texcoords,
+                                           unsigned int &drawable_n)
 {
     unsigned int nbVertices = 0;
     {
@@ -706,7 +706,7 @@ void WriterNodeVisitor::createListTriangle(const osg::Geometry *geo,
     }
 }
 
-void WriterNodeVisitor::apply(osg::Geode&node)
+void WriterNodeVisitor::apply(osg::Geode &node)
 {
     FbxNode *parent  = _curFbxNode;
     FbxNode *nodeFBX = FbxNode::Create(_pSdkManager, node.getName().empty() ? "DefaultName" : node.getName().c_str());
@@ -753,7 +753,7 @@ void WriterNodeVisitor::apply(osg::Geode&node)
     _curFbxNode = parent;
 }
 
-void WriterNodeVisitor::apply(osg::Group&node)
+void WriterNodeVisitor::apply(osg::Group &node)
 {
     FbxNode *parent = _curFbxNode;
 
@@ -765,16 +765,16 @@ void WriterNodeVisitor::apply(osg::Group&node)
     _curFbxNode = parent;
 }
 
-void WriterNodeVisitor::apply(osg::MatrixTransform&node)
+void WriterNodeVisitor::apply(osg::MatrixTransform &node)
 {
     FbxNode *parent = _curFbxNode;
 
     _curFbxNode = FbxNode::Create(_pSdkManager, node.getName().empty() ? "DefaultName" : node.getName().c_str());
     parent->AddChild(_curFbxNode);
 
-    const osg::Matrix&matrix = node.getMatrix();
-    osg::Vec3d       pos, scl;
-    osg::Quat        rot, so;
+    const osg::Matrix &matrix = node.getMatrix();
+    osg::Vec3d        pos, scl;
+    osg::Quat         rot, so;
 
     matrix.decompose(pos, rot, scl, so);
     _curFbxNode->LclTranslation.Set(FbxDouble3(pos.x(), pos.y(), pos.z()));

@@ -36,7 +36,7 @@ public:
 LightPointDrawable();
 
 /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-LightPointDrawable(const LightPointDrawable&, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY);
+LightPointDrawable(const LightPointDrawable&, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
 virtual osg::Object* cloneType() const
 {
@@ -62,17 +62,17 @@ struct ColorPosition
     unsigned int first;
     osg::Vec3    second;
     ColorPosition() {}
-    ColorPosition(unsigned int f, const osg::Vec3&s) : first(f), second(s) {}
+    ColorPosition(unsigned int f, const osg::Vec3 &s) : first(f), second(s) {}
 };
 
 void reset();
 
-inline unsigned int asRGBA(const osg::Vec4&color) const
+inline unsigned int asRGBA(const osg::Vec4 &color) const
 {
     return _endian == osg::BigEndian ? color.asABGR() : color.asRGBA();
 }
 
-inline void addOpaqueLightPoint(unsigned int pointSize, const osg::Vec3&position, const osg::Vec4&color)
+inline void addOpaqueLightPoint(unsigned int pointSize, const osg::Vec3 &position, const osg::Vec4 &color)
 {
     if (pointSize >= _sizedOpaqueLightPointList.size())
         _sizedOpaqueLightPointList.resize(pointSize + 1);
@@ -80,7 +80,7 @@ inline void addOpaqueLightPoint(unsigned int pointSize, const osg::Vec3&position
     _sizedOpaqueLightPointList[pointSize].push_back(ColorPosition(asRGBA(color), position));
 }
 
-inline void addAdditiveLightPoint(unsigned int pointSize, const osg::Vec3&position, const osg::Vec4&color)
+inline void addAdditiveLightPoint(unsigned int pointSize, const osg::Vec3 &position, const osg::Vec4 &color)
 {
     if (pointSize >= _sizedAdditiveLightPointList.size())
         _sizedAdditiveLightPointList.resize(pointSize + 1);
@@ -88,7 +88,7 @@ inline void addAdditiveLightPoint(unsigned int pointSize, const osg::Vec3&positi
     _sizedAdditiveLightPointList[pointSize].push_back(ColorPosition(asRGBA(color), position));
 }
 
-inline void addBlendedLightPoint(unsigned int pointSize, const osg::Vec3&position, const osg::Vec4&color)
+inline void addBlendedLightPoint(unsigned int pointSize, const osg::Vec3 &position, const osg::Vec4 &color)
 {
     if (pointSize >= _sizedBlendedLightPointList.size())
         _sizedBlendedLightPointList.resize(pointSize + 1);
@@ -97,7 +97,7 @@ inline void addBlendedLightPoint(unsigned int pointSize, const osg::Vec3&positio
 }
 
 /** draw LightPoints. */
-virtual void drawImplementation(osg::RenderInfo&renderInfo) const;
+virtual void drawImplementation(osg::RenderInfo &renderInfo) const;
 
 
 void setSimulationTime(double time)

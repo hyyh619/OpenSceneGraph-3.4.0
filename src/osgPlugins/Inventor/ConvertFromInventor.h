@@ -100,11 +100,11 @@ osg::ref_ptr<osg::StateSet> getStateSet(SoCallbackAction *action);
 osg::Texture2D* convertIVTexToOSGTex(const SoNode *soNode,
                                      SoCallbackAction *action);
 
-void transformLight(SoCallbackAction *action, const SbVec3f&vec,
-                    osg::Vec3&transVec);
+void transformLight(SoCallbackAction *action, const SbVec3f &vec,
+                    osg::Vec3 &transVec);
 
 // OSG doesn't seem to have a transpose function for matrices
-void transposeMatrix(osg::Matrix&mat);
+void transposeMatrix(osg::Matrix &mat);
 
 private:
 
@@ -198,7 +198,7 @@ IvStateItem(const SoNode *initiator, osg::Group *root = NULL) :
     currentAmbientLight(SbColor(0.2f, 0.2f, 0.2f)),
     osgStateRoot(root ? root : new osg::Group) {}
 
-IvStateItem(const IvStateItem&i, const SoCallbackAction *action,
+IvStateItem(const IvStateItem &i, const SoCallbackAction *action,
             const SoNode *initiator, const int f,
             osg::Group *root) :
     flags(f),

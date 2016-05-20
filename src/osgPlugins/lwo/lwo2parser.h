@@ -20,7 +20,7 @@ namespace lwo2
 class parser_error : public std::runtime_error
 {
 public:
-parser_error(const std::string&message) : std::runtime_error("[LWO2 parser error] " + message) {}
+parser_error(const std::string &message) : std::runtime_error("[LWO2 parser error] " + message) {}
 };
 
 template<typename Iter>
@@ -28,13 +28,13 @@ class Parser : public iff::GenericParser<Iter>
 {
 public:
 Parser();
-Parser(std::ostream&os);
+Parser(std::ostream &os);
 
 virtual ~Parser();
 
 protected:
-virtual iff::Chunk* parse_chunk_data(const std::string&tag, const std::string&context, Iter it, Iter end);
-iff::Chunk* parse_subchunk(Iter&it, const std::string&context);
+virtual iff::Chunk* parse_chunk_data(const std::string &tag, const std::string &context, Iter it, Iter end);
+iff::Chunk* parse_subchunk(Iter &it, const std::string &context);
 
 Parser&operator =(const Parser&)
 {
@@ -52,14 +52,14 @@ LP_TMP Parser<Iter>::Parser()
     : iff::GenericParser<Iter>()
 {}
 
-LP_TMP Parser<Iter>::Parser(std::ostream&os)
+LP_TMP Parser<Iter>::Parser(std::ostream &os)
     : iff::GenericParser<Iter>(os)
 {}
 
 LP_TMP Parser<Iter>::~Parser()
 {}
 
-LP_TMP iff::Chunk*Parser<Iter>::parse_chunk_data(const std::string&tag, const std::string&context, Iter it, Iter end)
+LP_TMP iff::Chunk*Parser<Iter>::parse_chunk_data(const std::string &tag, const std::string &context, Iter it, Iter end)
 {
     // GLOBAL CONTEXT
     if (context.empty())
@@ -1084,7 +1084,7 @@ LP_TMP iff::Chunk*Parser<Iter>::parse_chunk_data(const std::string&tag, const st
     return 0;
 }
 
-LP_TMP iff::Chunk*Parser<Iter>::parse_subchunk(Iter&it, const std::string&context)
+LP_TMP iff::Chunk*Parser<Iter>::parse_subchunk(Iter &it, const std::string &context)
 {
     std::string tag;
 

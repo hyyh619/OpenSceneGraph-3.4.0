@@ -52,16 +52,16 @@ GeometryPool::GeometryPool() :
 GeometryPool::~GeometryPool()
 {}
 
-bool GeometryPool::createKeyForTile(TerrainTile *tile, GeometryKey&key)
+bool GeometryPool::createKeyForTile(TerrainTile *tile, GeometryKey &key)
 {
     const osgTerrain::Locator *masterLocator = computeMasterLocator(tile);
 
     if (masterLocator)
     {
-        const osg::Matrixd&matrix      = masterLocator->getTransform();
-        osg::Vec3d        bottom_left  = osg::Vec3d(0.0, 0.0, 0.0) * matrix;
-        osg::Vec3d        bottom_right = osg::Vec3d(1.0, 0.0, 0.0) * matrix;
-        osg::Vec3d        top_left     = osg::Vec3d(1.0, 1.0, 0.0) * matrix;
+        const osg::Matrixd &matrix      = masterLocator->getTransform();
+        osg::Vec3d         bottom_left  = osg::Vec3d(0.0, 0.0, 0.0) * matrix;
+        osg::Vec3d         bottom_right = osg::Vec3d(1.0, 0.0, 0.0) * matrix;
+        osg::Vec3d         top_left     = osg::Vec3d(1.0, 1.0, 0.0) * matrix;
         key.sx = static_cast<float>((bottom_right - bottom_left).length());
         key.sy = static_cast<float>((top_left - bottom_left).length());
 
@@ -112,7 +112,7 @@ osg::ref_ptr<SharedGeometry> GeometryPool::getOrCreateGeometry(osgTerrain::Terra
 
     osg::ref_ptr<osg::VertexBufferObject> vbo = new osg::VertexBufferObject;
 
-    SharedGeometry::VertexToHeightFieldMapping&vthfm = geometry->getVertexToHeightFieldMapping();
+    SharedGeometry::VertexToHeightFieldMapping &vthfm = geometry->getVertexToHeightFieldMapping();
 
     osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array(osg::Array::BIND_PER_VERTEX);
     vertices->setVertexBufferObject(vbo.get());
@@ -416,12 +416,12 @@ osg::ref_ptr<SharedGeometry> GeometryPool::getOrCreateGeometry(osgTerrain::Terra
 
             for (int i = 0; i < numVertices; ++i)
             {
-                const osg::Vec4d&location = locationCoords[i];
-                double          height    = (*vertices)[i].z();
-                osg::Vec3d      pos       = osg::Vec3d(location.x(), location.y(), 0.0) * matrix;
+                const osg::Vec4d &location = locationCoords[i];
+                double           height    = (*vertices)[i].z();
+                osg::Vec3d       pos       = osg::Vec3d(location.x(), location.y(), 0.0) * matrix;
                 em->convertLatLongHeightToXYZ(pos.y(), pos.x(), height, pos.x(), pos.y(), pos.z());
 
-                osg::Vec4&tc = (*texcoords)[i];
+                osg::Vec4 &tc = (*texcoords)[i];
 
                 osg::Vec3d pos_right = osg::Vec3d(location.x() + location[2], location.y(), 0.0) * matrix;
                 em->convertLatLongHeightToXYZ(pos_right.y(), pos_right.x(), height, pos_right.x(), pos_right.y(), pos_right.z());
@@ -512,10 +512,10 @@ osg::ref_ptr<osg::MatrixTransform> GeometryPool::getTileSubgraph(osgTerrain::Ter
         }
     }
 
-    osg::Vec3Array                                  *shared_vertices = dynamic_cast<osg::Vec3Array*>(geometry->getVertexArray());
-    osg::Vec3Array                                  *shared_normals  = dynamic_cast<osg::Vec3Array*>(geometry->getNormalArray());
-    osg::FloatArray                                 *heights         = hf->getFloatArray();
-    const SharedGeometry::VertexToHeightFieldMapping&vthfm           = geometry->getVertexToHeightFieldMapping();
+    osg::Vec3Array                                   *shared_vertices = dynamic_cast<osg::Vec3Array*>(geometry->getVertexArray());
+    osg::Vec3Array                                   *shared_normals  = dynamic_cast<osg::Vec3Array*>(geometry->getNormalArray());
+    osg::FloatArray                                  *heights         = hf->getFloatArray();
+    const SharedGeometry::VertexToHeightFieldMapping &vthfm           = geometry->getVertexToHeightFieldMapping();
 
     if (hf && shared_vertices && shared_normals && (shared_vertices->size() == shared_normals->size()))
     {
@@ -546,10 +546,10 @@ osg::ref_ptr<osg::MatrixTransform> GeometryPool::getTileSubgraph(osgTerrain::Ter
             {
                 for (unsigned int c = 0; c < nc; ++c)
                 {
-                    unsigned int   i  = r * nc + c;
-                    float          h  = (*heights)[i];
-                    const osg::Vec3&v = (*shared_vertices)[i];
-                    const osg::Vec3&n = (*shared_normals)[i];
+                    unsigned int    i  = r * nc + c;
+                    float           h  = (*heights)[i];
+                    const osg::Vec3 &v = (*shared_vertices)[i];
+                    const osg::Vec3 &n = (*shared_normals)[i];
 
                     const osg::Vec3 vt(v + n * h);
                     bb.expandBy(vt);
@@ -571,7 +571,7 @@ osg::ref_ptr<osg::MatrixTransform> GeometryPool::getTileSubgraph(osgTerrain::Ter
     return transform;
 }
 
-osg::ref_ptr<osg::Program> GeometryPool::getOrCreateProgram(LayerTypes&layerTypes)
+osg::ref_ptr<osg::Program> GeometryPool::getOrCreateProgram(LayerTypes &layerTypes)
 {
     // OpenThreads::ScopedLock<OpenThreads::Mutex>  lock(_programMapMutex);
     ProgramMap::iterator itr = _programMap.find(layerTypes);
@@ -852,7 +852,7 @@ SharedGeometry::SharedGeometry()
     _supportsVertexBufferObjects = true;
 }
 
-SharedGeometry::SharedGeometry(const SharedGeometry&rhs, const osg::CopyOp&copyop) :
+SharedGeometry::SharedGeometry(const SharedGeometry &rhs, const osg::CopyOp &copyop) :
     osg::Drawable(rhs, copyop),
     _vertexArray(rhs._vertexArray),
     _normalArray(rhs._normalArray),
@@ -867,7 +867,7 @@ SharedGeometry::SharedGeometry(const SharedGeometry&rhs, const osg::CopyOp&copyo
 SharedGeometry::~SharedGeometry()
 {}
 
-void SharedGeometry::compileGLObjects(osg::RenderInfo&renderInfo) const
+void SharedGeometry::compileGLObjects(osg::RenderInfo &renderInfo) const
 {
     if (!_vertexArray)
         return;
@@ -938,12 +938,12 @@ void SharedGeometry::releaseGLObjects(osg::State *state) const
         ebo->releaseGLObjects(state);
 }
 
-void SharedGeometry::drawImplementation(osg::RenderInfo&renderInfo) const
+void SharedGeometry::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     bool computeDiagonals = renderInfo.getState()->supportsShaderRequirement("COMPUTE_DIAGONALS");
     // OSG_NOTICE<<"SharedGeometry "<<computeDiagonals<<std::endl;
 
-    osg::State&state = *renderInfo.getState();
+    osg::State &state = *renderInfo.getState();
 
 
     // state.checkGLErrors("Before SharedGeometry::drawImplementation.");
@@ -954,7 +954,7 @@ void SharedGeometry::drawImplementation(osg::RenderInfo&renderInfo) const
     if (checkForGLErrors)
         state.checkGLErrors("start of SharedGeometry::drawImplementation()");
 
-    osg::ArrayDispatchers&arrayDispatchers = state.getArrayDispatchers();
+    osg::ArrayDispatchers &arrayDispatchers = state.getArrayDispatchers();
 
     arrayDispatchers.reset();
     arrayDispatchers.setUseVertexAttribAlias(state.getUseVertexAttributeAliasing());
@@ -1022,7 +1022,7 @@ void SharedGeometry::drawImplementation(osg::RenderInfo&renderInfo) const
         state.checkGLErrors("end of SharedGeometry::drawImplementation().");
 }
 
-void SharedGeometry::accept(osg::Drawable::AttributeFunctor&af)
+void SharedGeometry::accept(osg::Drawable::AttributeFunctor &af)
 {
     osg::AttributeFunctorArrayVisitor afav(af);
 
@@ -1032,7 +1032,7 @@ void SharedGeometry::accept(osg::Drawable::AttributeFunctor&af)
     afav.applyArray(TEXTURE_COORDS_0, _texcoordArray.get());
 }
 
-void SharedGeometry::accept(osg::Drawable::ConstAttributeFunctor&af) const
+void SharedGeometry::accept(osg::Drawable::ConstAttributeFunctor &af) const
 {
     osg::ConstAttributeFunctorArrayVisitor afav(af);
 
@@ -1042,14 +1042,14 @@ void SharedGeometry::accept(osg::Drawable::ConstAttributeFunctor&af) const
     afav.applyArray(TEXTURE_COORDS_0, _texcoordArray.get());
 }
 
-void SharedGeometry::accept(osg::PrimitiveFunctor&pf) const
+void SharedGeometry::accept(osg::PrimitiveFunctor &pf) const
 {
     pf.setVertexArray(_vertexArray->getNumElements(), static_cast<const osg::Vec3*>(_vertexArray->getDataPointer()));
 
     _drawElements->accept(pf);
 }
 
-void SharedGeometry::accept(osg::PrimitiveIndexFunctor&pif) const
+void SharedGeometry::accept(osg::PrimitiveIndexFunctor &pif) const
 {
     pif.setVertexArray(_vertexArray->getNumElements(), static_cast<const osg::Vec3*>(_vertexArray->getDataPointer()));
 
@@ -1066,7 +1066,7 @@ HeightFieldDrawable::HeightFieldDrawable()
     setSupportsDisplayList(false);
 }
 
-HeightFieldDrawable::HeightFieldDrawable(const HeightFieldDrawable&rhs, const osg::CopyOp&copyop) :
+HeightFieldDrawable::HeightFieldDrawable(const HeightFieldDrawable &rhs, const osg::CopyOp &copyop) :
     osg::Drawable(rhs, copyop),
     _heightField(rhs._heightField),
     _geometry(rhs._geometry),
@@ -1078,13 +1078,13 @@ HeightFieldDrawable::HeightFieldDrawable(const HeightFieldDrawable&rhs, const os
 HeightFieldDrawable::~HeightFieldDrawable()
 {}
 
-void HeightFieldDrawable::drawImplementation(osg::RenderInfo&renderInfo) const
+void HeightFieldDrawable::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     if (_geometry.valid())
         _geometry->draw(renderInfo);
 }
 
-void HeightFieldDrawable::compileGLObjects(osg::RenderInfo&renderInfo) const
+void HeightFieldDrawable::compileGLObjects(osg::RenderInfo &renderInfo) const
 {
     if (_geometry.valid())
         _geometry->compileGLObjects(renderInfo);
@@ -1102,19 +1102,19 @@ void HeightFieldDrawable::releaseGLObjects(osg::State *state) const
         _geometry->releaseGLObjects(state);
 }
 
-void HeightFieldDrawable::accept(osg::Drawable::AttributeFunctor&af)
+void HeightFieldDrawable::accept(osg::Drawable::AttributeFunctor &af)
 {
     if (_geometry)
         _geometry->accept(af);
 }
 
-void HeightFieldDrawable::accept(osg::Drawable::ConstAttributeFunctor&caf) const
+void HeightFieldDrawable::accept(osg::Drawable::ConstAttributeFunctor &caf) const
 {
     if (_geometry)
         _geometry->accept(caf);
 }
 
-void HeightFieldDrawable::accept(osg::PrimitiveFunctor&pf) const
+void HeightFieldDrawable::accept(osg::PrimitiveFunctor &pf) const
 {
     // use the cached vertex positions for PrimitiveFunctor operations
     if (!_geometry)
@@ -1144,7 +1144,7 @@ void HeightFieldDrawable::accept(osg::PrimitiveFunctor&pf) const
     }
 }
 
-void HeightFieldDrawable::accept(osg::PrimitiveIndexFunctor&pif) const
+void HeightFieldDrawable::accept(osg::PrimitiveIndexFunctor &pif) const
 {
     if (_vertices.valid())
     {

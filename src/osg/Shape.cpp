@@ -60,7 +60,7 @@ HeightField::HeightField() :
     _heights = new osg::FloatArray;
 }
 
-HeightField::HeightField(const HeightField&mesh, const CopyOp&copyop) :
+HeightField::HeightField(const HeightField &mesh, const CopyOp &copyop) :
     Shape(mesh, copyop),
     _columns(mesh._columns),
     _rows(mesh._rows),

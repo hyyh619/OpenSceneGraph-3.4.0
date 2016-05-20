@@ -10,10 +10,10 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool BlendEquation_readLocalData(Object&obj, Input&fr);
-bool BlendEquation_writeLocalData(const Object&obj, Output&fw);
+bool BlendEquation_readLocalData(Object &obj, Input &fr);
+bool BlendEquation_writeLocalData(const Object &obj, Output &fw);
 
-bool BlendEquation_matchModeStr(const char *str, int&mode);
+bool BlendEquation_matchModeStr(const char *str, int &mode);
 const char* BlendEquation_getModeStr(int value);
 
 // register the read and write functions with the osgDB::Registry.
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(BlendEquation)
     &BlendEquation_writeLocalData
 );
 
-bool BlendEquation_readLocalData(Object&obj, Input&fr)
+bool BlendEquation_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    BlendEquation&blendeq = static_cast<BlendEquation&>(obj);
+    BlendEquation &blendeq = static_cast<BlendEquation&>(obj);
 
     int mode;
 
@@ -58,9 +58,9 @@ bool BlendEquation_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool BlendEquation_writeLocalData(const Object&obj, Output&fw)
+bool BlendEquation_writeLocalData(const Object &obj, Output &fw)
 {
-    const BlendEquation&blendeq = static_cast<const BlendEquation&>(obj);
+    const BlendEquation &blendeq = static_cast<const BlendEquation&>(obj);
 
     if (blendeq.getEquationRGB() == blendeq.getEquationAlpha())
     {
@@ -77,7 +77,7 @@ bool BlendEquation_writeLocalData(const Object&obj, Output&fw)
 
 
 
-bool BlendEquation_matchModeStr(const char *str, int&mode)
+bool BlendEquation_matchModeStr(const char *str, int &mode)
 {
     if (strcmp(str, "RGBA_MIN") == 0)
         mode = BlendEquation::RGBA_MIN;

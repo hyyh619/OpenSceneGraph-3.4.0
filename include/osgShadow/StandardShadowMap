@@ -12,7 +12,7 @@
  *
  * ViewDependentShadow codes Copyright (C) 2008 Wojciech Lewandowski
  * Thanks to to my company http://www.ai.com.pl for allowing me free this work.
-*/
+ */
 
 #ifndef OSGSHADOW_STANDARDSHADOWMAP
 #define OSGSHADOW_STANDARDSHADOWMAP 1
@@ -20,36 +20,43 @@
 #include <osgShadow/DebugShadowMap>
 
 namespace osgShadow {
-
-class OSGSHADOW_EXPORT StandardShadowMap : public DebugShadowMap
-{
-    public :
+    class OSGSHADOW_EXPORT StandardShadowMap: public DebugShadowMap
+    {
+public:
         /** Convenient typedef used in definition of ViewData struct and methods */
         typedef StandardShadowMap ThisClass;
         /** Convenient typedef used in definition of ViewData struct and methods */
-        typedef DebugShadowMap    BaseClass;
+        typedef DebugShadowMap BaseClass;
 
         /** Classic OSG constructor */
         StandardShadowMap();
 
         /** Classic OSG cloning constructor */
-        StandardShadowMap(const StandardShadowMap& ssm,
-                          const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+        StandardShadowMap(const StandardShadowMap &ssm,
+                          const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         /** Declaration of standard OSG object methods */
-        META_Object( osgShadow, StandardShadowMap );
+        META_Object(osgShadow, StandardShadowMap);
 
-        void setBaseTextureUnit( unsigned int unit )
-            { _baseTextureUnit = unit; dirty(); }
+        void setBaseTextureUnit(unsigned int unit)
+        {
+            _baseTextureUnit = unit; dirty();
+        }
 
-        unsigned int getBaseTextureUnit( void ) const
-            { return _baseTextureUnit; }
+        unsigned int getBaseTextureUnit(void) const
+        {
+            return _baseTextureUnit;
+        }
 
-        void setShadowTextureUnit( unsigned int unit )
-            { _shadowTextureUnit = unit; dirty(); }
+        void setShadowTextureUnit(unsigned int unit)
+        {
+            _shadowTextureUnit = unit; dirty();
+        }
 
-        unsigned int getShadowTextureUnit( void ) const
-            { return _shadowTextureUnit; }
+        unsigned int getShadowTextureUnit(void) const
+        {
+            return _shadowTextureUnit;
+        }
 
         // Texture Indices are changed by search and replace on shader source
         // Carefully order these calls when changing both base and shadow indices
@@ -68,91 +75,125 @@ class OSGSHADOW_EXPORT StandardShadowMap : public DebugShadowMap
         // // finally change base from 100 to 0
         // setBaseTextureCoordIndex( 1 );
 
-        void setBaseTextureCoordIndex( unsigned int index )
-            { updateTextureCoordIndices( _baseTextureCoordIndex, index );
-              _baseTextureCoordIndex = index; }
+        void setBaseTextureCoordIndex(unsigned int index)
+        {
+            updateTextureCoordIndices(_baseTextureCoordIndex, index);
+            _baseTextureCoordIndex = index;
+        }
 
-        unsigned int getBaseTextureCoordIndex( void ) const
-            { return _baseTextureCoordIndex; }
+        unsigned int getBaseTextureCoordIndex(void) const
+        {
+            return _baseTextureCoordIndex;
+        }
 
         // Texture Indices are changed by search and replace on shader source
         // Look at the comment above setBaseTextureCoordIndex
 
-        void setShadowTextureCoordIndex( unsigned int index )
-            { updateTextureCoordIndices( _shadowTextureCoordIndex, index );
-              _shadowTextureCoordIndex = index; }
+        void setShadowTextureCoordIndex(unsigned int index)
+        {
+            updateTextureCoordIndices(_shadowTextureCoordIndex, index);
+            _shadowTextureCoordIndex = index;
+        }
 
-        unsigned int getShadowTextureCoordIndex( void ) const
-            { return _shadowTextureCoordIndex; }
+        unsigned int getShadowTextureCoordIndex(void) const
+        {
+            return _shadowTextureCoordIndex;
+        }
 
-        void setTextureSize( const osg::Vec2s& textureSize )
-            { _textureSize = textureSize; dirty(); }
+        void setTextureSize(const osg::Vec2s &textureSize)
+        {
+            _textureSize = textureSize; dirty();
+        }
 
-        const osg::Vec2s& getTextureSize() const
-            { return _textureSize; }
+        const osg::Vec2s&getTextureSize() const
+        {
+            return _textureSize;
+        }
 
-        void setLight( osg::Light* light )
-            { _light = light; }
+        void setLight(osg::Light *light)
+        {
+            _light = light;
+        }
 
-        osg::Light* getLight( void )
-            { return _light.get(); }
+        osg::Light* getLight(void)
+        {
+            return _light.get();
+        }
 
-        const osg::Light* getLight( void ) const
-            { return _light.get(); }
+        const osg::Light* getLight(void) const
+        {
+            return _light.get();
+        }
 
-        osg::Shader * getShadowVertexShader()
-            { return _shadowVertexShader.get(); }
+        osg::Shader* getShadowVertexShader()
+        {
+            return _shadowVertexShader.get();
+        }
 
-        osg::Shader * getShadowFragmentShader()
-            { return _shadowFragmentShader.get(); }
+        osg::Shader* getShadowFragmentShader()
+        {
+            return _shadowFragmentShader.get();
+        }
 
-        osg::Shader * getMainVertexShader( )
-            { return _mainVertexShader.get(); }
+        osg::Shader* getMainVertexShader()
+        {
+            return _mainVertexShader.get();
+        }
 
-        osg::Shader * getMainFragmentShader( )
-            { return _mainFragmentShader.get(); }
+        osg::Shader* getMainFragmentShader()
+        {
+            return _mainFragmentShader.get();
+        }
 
-        void setShadowVertexShader( osg::Shader * shader )
-            { _shadowVertexShader = shader; }
+        void setShadowVertexShader(osg::Shader *shader)
+        {
+            _shadowVertexShader = shader;
+        }
 
-        void setShadowFragmentShader( osg::Shader * shader )
-            { _shadowFragmentShader = shader; }
+        void setShadowFragmentShader(osg::Shader *shader)
+        {
+            _shadowFragmentShader = shader;
+        }
 
-        void setMainVertexShader( osg::Shader * shader )
-            { _mainVertexShader = shader; }
+        void setMainVertexShader(osg::Shader *shader)
+        {
+            _mainVertexShader = shader;
+        }
 
-        void setMainFragmentShader( osg::Shader * shader )
-            { _mainFragmentShader = shader; }
+        void setMainFragmentShader(osg::Shader *shader)
+        {
+            _mainFragmentShader = shader;
+        }
 
-    protected:
+protected:
         /** Classic protected OSG destructor */
         virtual ~StandardShadowMap(void);
 
         virtual void updateTextureCoordIndices
-                ( unsigned int baseTexCoordIndex, unsigned int shadowTexCoordIndex );
+            (unsigned int baseTexCoordIndex, unsigned int shadowTexCoordIndex);
 
         virtual void searchAndReplaceShaderSource
-                ( osg::Shader*, std::string fromString, std::string toString );
+            (osg::Shader*, std::string fromString, std::string toString);
 
-        osg::ref_ptr< osg::Shader >   _mainVertexShader;
-        osg::ref_ptr< osg::Shader >   _mainFragmentShader;
-        osg::ref_ptr< osg::Shader >   _shadowVertexShader;
-        osg::ref_ptr< osg::Shader >   _shadowFragmentShader;
+        osg::ref_ptr < osg::Shader > _mainVertexShader;
+        osg::ref_ptr < osg::Shader > _mainFragmentShader;
+        osg::ref_ptr < osg::Shader > _shadowVertexShader;
+        osg::ref_ptr < osg::Shader > _shadowFragmentShader;
 
-        osg::ref_ptr< osg::Light >    _light;
-        float                         _polygonOffsetFactor;
-        float                         _polygonOffsetUnits;
-        osg::Vec2s                      _textureSize;
-        unsigned int                  _baseTextureUnit;
-        unsigned int                  _shadowTextureUnit;
-        unsigned int                  _baseTextureCoordIndex;
-        unsigned int                  _shadowTextureCoordIndex;
+        osg::ref_ptr < osg::Light > _light;
+        float        _polygonOffsetFactor;
+        float        _polygonOffsetUnits;
+        osg::Vec2s   _textureSize;
+        unsigned int _baseTextureUnit;
+        unsigned int _shadowTextureUnit;
+        unsigned int _baseTextureCoordIndex;
+        unsigned int _shadowTextureCoordIndex;
 
         struct OSGSHADOW_EXPORT ViewData: public BaseClass::ViewData
         {
-            osg::ref_ptr< osg::Light > *  _lightPtr;
-            unsigned int               *  _baseTextureUnitPtr;
-            unsigned int               *  _shadowTextureUnitPtr;
+            osg::ref_ptr < osg::Light > *_lightPtr;
+            unsigned int *_baseTextureUnitPtr;
+            unsigned int *_shadowTextureUnitPtr;
 
             // ShadowMap texture is defined by base DebugShadowMap
             // osg::ref_ptr<osg::Texture2D>  _texture;
@@ -160,41 +201,40 @@ class OSGSHADOW_EXPORT StandardShadowMap : public DebugShadowMap
             // ShadowMap camera is defined by base DebugShadowMap
             // osg::ref_ptr<osg::Camera>     _camera;
 
-            osg::ref_ptr<osg::TexGen>     _texgen;
-            osg::ref_ptr<osg::StateSet>   _stateset;
+            osg::ref_ptr < osg::TexGen > _texgen;
+            osg::ref_ptr < osg::StateSet > _stateset;
 
-            virtual void init( ThisClass * st, osgUtil::CullVisitor * cv );
+            virtual void init(ThisClass *st, osgUtil::CullVisitor *cv);
 
-            virtual void cull( );
+            virtual void cull();
 
             virtual void aimShadowCastingCamera(
                 const osg::BoundingSphere &bounds,
                 const osg::Light *light,
                 const osg::Vec4 &worldLightPos,
                 const osg::Vec3 &worldLightDir,
-                const osg::Vec3 &worldLightUp = osg::Vec3(0,1,0) );
+                const osg::Vec3 &worldLightUp = osg::Vec3(0, 1, 0));
 
-            virtual void cullShadowReceivingScene( );
+            virtual void cullShadowReceivingScene();
 
-            virtual void cullShadowCastingScene( );
+            virtual void cullShadowCastingScene();
 
-            virtual void addShadowReceivingTexGen( );
+            virtual void addShadowReceivingTexGen();
 
-            virtual const osg::Light* selectLight( osg::Vec4 &viewLightPos,
-                osg::Vec3 &viewLightDir );
+            virtual const osg::Light* selectLight(osg::Vec4 &viewLightPos,
+                                                  osg::Vec3 &viewLightDir);
 
-            virtual void aimShadowCastingCamera( const osg::Light *light,
-                const osg::Vec4 &worldLightPos,
-                const osg::Vec3 &worldLightDir,
-                const osg::Vec3 &worldLightUp
-                = osg::Vec3(0,1,0) );
+            virtual void aimShadowCastingCamera(const osg::Light *light,
+                                                const osg::Vec4 &worldLightPos,
+                                                const osg::Vec3 &worldLightDir,
+                                                const osg::Vec3 &worldLightUp
+                                                    = osg::Vec3(0, 1, 0));
         };
 
         friend struct ViewData;
 
-        META_ViewDependentShadowTechniqueData( ThisClass, ThisClass::ViewData )
-};
-
+        META_ViewDependentShadowTechniqueData(ThisClass, ThisClass::ViewData)
+    };
 } // namespace osgShadow
 
 #endif

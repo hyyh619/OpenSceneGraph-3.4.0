@@ -47,7 +47,7 @@ META_dispose(_roadSegment)
 protected:
 
 virtual ~RoadSegment() {}
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     _roadSegment = new osg::Group;
     std::string id = in.readString(8);
@@ -84,7 +84,7 @@ META_dispose(_roadConstruction)
 protected:
 
 virtual ~RoadConstruction() {}
-virtual void readRecord(RecordInputStream&in, Document& /*document*/)
+virtual void readRecord(RecordInputStream &in, Document& /*document*/)
 {
     _roadConstruction = new osg::Group;
 

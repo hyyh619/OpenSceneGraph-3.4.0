@@ -27,7 +27,7 @@ TerrainManipulator::TerrainManipulator(int flags)
 
 
 /// Constructor.
-TerrainManipulator::TerrainManipulator(const TerrainManipulator&tm, const CopyOp&copyOp)
+TerrainManipulator::TerrainManipulator(const TerrainManipulator &tm, const CopyOp &copyOp)
     : osg::Callback(tm, copyOp),
     inherited(tm, copyOp),
     _previousUp(tm._previousUp)
@@ -67,7 +67,7 @@ void TerrainManipulator::setNode(Node *node)
 }
 
 
-void TerrainManipulator::setByMatrix(const Matrixd&matrix)
+void TerrainManipulator::setByMatrix(const Matrixd &matrix)
 {
     Vec3d lookVector(-matrix(2, 0), -matrix(2, 1), -matrix(2, 2));
     Vec3d eye(matrix(3, 0), matrix(3, 1), matrix(3, 2));
@@ -85,10 +85,10 @@ void TerrainManipulator::setByMatrix(const Matrixd&matrix)
 
 
     // need to reintersect with the terrain
-    const BoundingSphere&bs           = _node->getBound();
-    float               distance      = (eye - bs.center()).length() + _node->getBound().radius();
-    Vec3d               start_segment = eye;
-    Vec3d               end_segment   = eye + lookVector * distance;
+    const BoundingSphere &bs           = _node->getBound();
+    float                distance      = (eye - bs.center()).length() + _node->getBound().radius();
+    Vec3d                start_segment = eye;
+    Vec3d                end_segment   = eye + lookVector * distance;
 
     Vec3d ip;
     bool  hitFound = false;
@@ -134,7 +134,7 @@ void TerrainManipulator::setByMatrix(const Matrixd&matrix)
 }
 
 
-void TerrainManipulator::setTransformation(const osg::Vec3d&eye, const osg::Vec3d&center, const osg::Vec3d&up)
+void TerrainManipulator::setTransformation(const osg::Vec3d &eye, const osg::Vec3d &center, const osg::Vec3d &up)
 {
     if (!_node)
         return;
@@ -186,7 +186,7 @@ void TerrainManipulator::setTransformation(const osg::Vec3d&eye, const osg::Vec3
 }
 
 
-bool TerrainManipulator::intersect(const Vec3d&start, const Vec3d&end, Vec3d&intersection) const
+bool TerrainManipulator::intersect(const Vec3d &start, const Vec3d &end, Vec3d &intersection) const
 {
     ref_ptr<osgUtil::LineSegmentIntersector> lsi = new osgUtil::LineSegmentIntersector(start, end);
 

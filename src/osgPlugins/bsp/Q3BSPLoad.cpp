@@ -5,7 +5,7 @@
 using namespace bsp;
 
 
-bool Q3BSPLoad::Load(const std::string&filename, int curveTessellation)
+bool Q3BSPLoad::Load(const std::string &filename, int curveTessellation)
 {
     osgDB::ifstream file(filename.c_str(), std::ios::binary);
 
@@ -71,7 +71,7 @@ bool Q3BSPLoad::Load(const std::string&filename, int curveTessellation)
 
 
 
-void Q3BSPLoad::LoadVertices(std::ifstream&aFile)
+void Q3BSPLoad::LoadVertices(std::ifstream &aFile)
 {
     // calculate number of vertices
     int num_vertices = m_header.m_directoryEntries[bspVertices].m_length / sizeof(BSP_LOAD_VERTEX);
@@ -95,7 +95,7 @@ void Q3BSPLoad::LoadVertices(std::ifstream&aFile)
 
 
 
-void Q3BSPLoad::LoadFaces(std::ifstream&aFile, int /*curveTessellation*/)
+void Q3BSPLoad::LoadFaces(std::ifstream &aFile, int /*curveTessellation*/)
 {
     // calculate number of load faces
     int numTotalFaces = m_header.m_directoryEntries[bspFaces].m_length / sizeof(BSP_LOAD_FACE);
@@ -122,7 +122,7 @@ void Q3BSPLoad::LoadFaces(std::ifstream&aFile, int /*curveTessellation*/)
 
 
 
-void Q3BSPLoad::LoadTextures(std::ifstream&aFile)
+void Q3BSPLoad::LoadTextures(std::ifstream &aFile)
 {
     // Calculate number of textures
     int num_textures = m_header.m_directoryEntries[bspTextures].m_length / sizeof(BSP_LOAD_TEXTURE);
@@ -145,7 +145,7 @@ void Q3BSPLoad::LoadTextures(std::ifstream&aFile)
 
 
 
-void Q3BSPLoad::LoadLightmaps(std::ifstream&aFile)
+void Q3BSPLoad::LoadLightmaps(std::ifstream &aFile)
 {
     // Calculate number of lightmaps
     int num_lightmaps = m_header.m_directoryEntries[bspLightmaps].m_length / sizeof(BSP_LOAD_LIGHTMAP);
@@ -211,7 +211,7 @@ void Q3BSPLoad::LoadLightmaps(std::ifstream&aFile)
 
 
 
-void Q3BSPLoad::LoadBSPData(std::ifstream&aFile)
+void Q3BSPLoad::LoadBSPData(std::ifstream &aFile)
 {
     // Load leaves
     // Calculate number of leaves

@@ -61,11 +61,11 @@ PickHandler(osgGA::Device *device) :
 
 ~PickHandler() {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa);
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
 
-virtual void pick(osgViewer::View *view, const osgGA::GUIEventAdapter&ea);
+virtual void pick(osgViewer::View *view, const osgGA::GUIEventAdapter &ea);
 
-void setLabel(const std::string&name, float x, float y)
+void setLabel(const std::string &name, float x, float y)
 {
     osg::ref_ptr<osgGA::GUIEventAdapter> ea = new osgGA::GUIEventAdapter();
 
@@ -83,7 +83,7 @@ protected:
 osg::ref_ptr<osgGA::Device> _device;
 };
 
-bool PickHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool PickHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     switch (ea.getEventType())
     {
@@ -121,7 +121,7 @@ bool PickHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapte
     }
 }
 
-void PickHandler::pick(osgViewer::View *view, const osgGA::GUIEventAdapter&ea)
+void PickHandler::pick(osgViewer::View *view, const osgGA::GUIEventAdapter &ea)
 {
     osgUtil::LineSegmentIntersector::Intersections intersections;
 
@@ -148,7 +148,7 @@ void PickHandler::pick(osgViewer::View *view, const osgGA::GUIEventAdapter&ea)
 
             os << "        local coords vertex(" << hitr->getLocalIntersectPoint() << ")" << "  normal(" << hitr->getLocalIntersectNormal() << ")" << std::endl;
             os << "        world coords vertex(" << hitr->getWorldIntersectPoint() << ")" << "  normal(" << hitr->getWorldIntersectNormal() << ")" << std::endl;
-            const osgUtil::LineSegmentIntersector::Intersection::IndexList&vil = hitr->indexList;
+            const osgUtil::LineSegmentIntersector::Intersection::IndexList &vil = hitr->indexList;
 
             for (unsigned int i = 0; i < vil.size(); ++i)
             {
@@ -216,47 +216,47 @@ virtual void apply(double value)
 {
     _ss << value << " (double)";
 }
-virtual void apply(const std::string&value)
+virtual void apply(const std::string &value)
 {
     _ss << value << " (std::string)";
 }
-virtual void apply(const osg::Vec2f&value)
+virtual void apply(const osg::Vec2f &value)
 {
     _ss << value << " (osg::Vec2f)";
 }
-virtual void apply(const osg::Vec3f&value)
+virtual void apply(const osg::Vec3f &value)
 {
     _ss << value << " (osg::Vec3f)";
 }
-virtual void apply(const osg::Vec4f&value)
+virtual void apply(const osg::Vec4f &value)
 {
     _ss << value << " (osg::Vec4f)";
 }
-virtual void apply(const osg::Vec2d&value)
+virtual void apply(const osg::Vec2d &value)
 {
     _ss << value << " (osg::Vec2d)";
 }
-virtual void apply(const osg::Vec3d&value)
+virtual void apply(const osg::Vec3d &value)
 {
     _ss << value << " (osg::Vec3d)";
 }
-virtual void apply(const osg::Vec4d&value)
+virtual void apply(const osg::Vec4d &value)
 {
     _ss << value << " (osg::Vec4d)";
 }
-virtual void apply(const osg::Quat&value)
+virtual void apply(const osg::Quat &value)
 {
     _ss << value << " (osg::Quat)";
 }
-virtual void apply(const osg::Plane&value)
+virtual void apply(const osg::Plane &value)
 {
     _ss << value << " (osg::Plane)";
 }
-virtual void apply(const osg::Matrixf&value)
+virtual void apply(const osg::Matrixf &value)
 {
     _ss << value << " (osg::Matrixf)";
 }
-virtual void apply(const osg::Matrixd&value)
+virtual void apply(const osg::Matrixd &value)
 {
     _ss << value << " (osg::Matrixd)";
 }

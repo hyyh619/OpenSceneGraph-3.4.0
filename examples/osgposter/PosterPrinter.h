@@ -14,13 +14,13 @@ typedef std::set<std::string> PagedNodeNameSet;
 PosterVisitor();
 META_NodeVisitor(osgPoster, PosterVisitor);
 
-void insertName(const std::string&name)
+void insertName(const std::string &name)
 {
     if (_pagedNodeNames.insert(name).second)
         _needToApplyCount++;
 }
 
-void eraseName(const std::string&name)
+void eraseName(const std::string &name)
 {
     if (_pagedNodeNames.erase(name) > 0)
         _needToApplyCount--;
@@ -66,8 +66,8 @@ bool getAddingCallbacks() const
     return _addingCallbacks;
 }
 
-virtual void apply(osg::LOD&node);
-virtual void apply(osg::PagedLOD&node);
+virtual void apply(osg::LOD &node);
+virtual void apply(osg::PagedLOD &node);
 
 protected:
 
@@ -93,7 +93,7 @@ class PosterIntersector : public osgUtil::Intersector
 public:
 typedef std::set<std::string> PagedNodeNameSet;
 
-PosterIntersector(const osg::Polytope&polytope);
+PosterIntersector(const osg::Polytope &polytope);
 PosterIntersector(double xMin, double yMin, double xMax, double yMax);
 
 void setPosterVisitor(PosterVisitor *pcv)
@@ -109,17 +109,17 @@ const PosterVisitor* getPosterVisitor() const
     return _visitor.get();
 }
 
-virtual Intersector* clone(osgUtil::IntersectionVisitor&iv);
+virtual Intersector* clone(osgUtil::IntersectionVisitor &iv);
 
 virtual bool containsIntersections()
 {
     return _visitor.valid() && _visitor->getNumNames() > 0;
 }
 
-virtual bool enter(const osg::Node&node);
+virtual bool enter(const osg::Node &node);
 virtual void leave() {}
 virtual void reset();
-virtual void intersect(osgUtil::IntersectionVisitor&iv, osg::Drawable *drawable);
+virtual void intersect(osgUtil::IntersectionVisitor &iv, osg::Drawable *drawable);
 
 protected:
 osgUtil::IntersectionVisitor *_intersectionVisitor;
@@ -148,7 +148,7 @@ bool getOutputTiles() const
 }
 
 /** Set the output sub-image-tile extension, e.g. bmp */
-void setOutputTileExtension(const std::string&ext)
+void setOutputTileExtension(const std::string &ext)
 {
     _outputTileExt = ext;
 }
@@ -158,7 +158,7 @@ const std::string&getOutputTileExtension() const
 }
 
 /** Set the output poster name, e.g. output.bmp */
-void setOutputPosterName(const std::string&name)
+void setOutputPosterName(const std::string &name)
 {
     _outputPosterName = name;
 }
@@ -222,7 +222,7 @@ bool done() const
 }
 
 void init(const osg::Camera *camera);
-void init(const osg::Matrixd&view, const osg::Matrixd&proj);
+void init(const osg::Matrixd &view, const osg::Matrixd &proj);
 void frame(const osg::FrameStamp *fs, osg::Node *node);
 
 protected:

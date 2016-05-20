@@ -25,7 +25,7 @@ TexEnvFilter::TexEnvFilter(float lodBias) :
 TexEnvFilter::~TexEnvFilter()
 {}
 
-void TexEnvFilter::apply(State&state) const
+void TexEnvFilter::apply(State &state) const
 {
 #ifdef OSG_GL_FIXED_FUNCTION_AVAILABLE
     // note from RO, need to adapt to do testing per graphics context.

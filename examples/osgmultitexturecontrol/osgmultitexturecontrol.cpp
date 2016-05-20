@@ -56,7 +56,7 @@ FindTopMostNodeOfTypeVisitor() :
     _foundNode(0)
 {}
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     T *result = dynamic_cast<T*>(&node);
 
@@ -92,7 +92,7 @@ public:
 
 typedef std::vector<double> Elevations;
 
-ElevationLayerBlendingCallback(osgFX::MultiTextureControl *mtc, const Elevations&elevations, float animationTime = 4.0f) :
+ElevationLayerBlendingCallback(osgFX::MultiTextureControl *mtc, const Elevations &elevations, float animationTime = 4.0f) :
     _previousFrame(0),
     _previousTime(0.0),
     _animationTime(animationTime),
@@ -189,7 +189,7 @@ public:
 TerrainHandler(osgTerrain::Terrain *terrain) :
     _terrain(terrain) {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     switch (ea.getEventType())
     {

@@ -93,7 +93,7 @@ WindowManager::WindowManager(
     getOrCreateStateSet()->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
 }
 
-WindowManager::WindowManager(const WindowManager&wm, const osg::CopyOp&co) :
+WindowManager::WindowManager(const WindowManager &wm, const osg::CopyOp &co) :
     osg::Switch(wm, co),
     _width          (wm._width),
     _height         (wm._height),
@@ -125,7 +125,7 @@ WindowManager::~WindowManager()
         _python->close();
 }
 
-void WindowManager::setEventFromInterface(Event&ev, EventInterface *ei)
+void WindowManager::setEventFromInterface(Event &ev, EventInterface *ei)
 {
     Widget *widget = dynamic_cast<Widget*>(ei);
     Window *window = dynamic_cast<Window*>(ei);
@@ -140,7 +140,7 @@ void WindowManager::setEventFromInterface(Event&ev, EventInterface *ei)
         ev._window = window;
 }
 
-bool WindowManager::_handleMousePushed(float x, float y, bool&down)
+bool WindowManager::_handleMousePushed(float x, float y, bool &down)
 {
     down = true;
 
@@ -181,7 +181,7 @@ bool WindowManager::_handleMousePushed(float x, float y, bool&down)
     return _lastPush->callMethodAndCallbacks(ev);
 }
 
-bool WindowManager::_handleMouseReleased(float /*x*/, float /*y*/, bool&down)
+bool WindowManager::_handleMouseReleased(float /*x*/, float /*y*/, bool &down)
 {
     down = false;
 
@@ -204,7 +204,7 @@ bool WindowManager::_handleMouseReleased(float /*x*/, float /*y*/, bool&down)
     return handled;
 }
 
-void WindowManager::_getPointerXYDiff(float&x, float&y)
+void WindowManager::_getPointerXYDiff(float &x, float &y)
 {
     x -= _lastX;
     y -= _lastY;
@@ -329,7 +329,7 @@ void WindowManager::childRemoved(unsigned int start, unsigned int numChildren)
 // This method performs intersection testing at the given XY coords, and returns true if
 // any intersections were found. It will break after processing the first pickable Window
 // it finds.
-bool WindowManager::pickAtXY(float x, float y, WidgetList&wl)
+bool WindowManager::pickAtXY(float x, float y, WidgetList &wl)
 {
     Intersections intr;
 

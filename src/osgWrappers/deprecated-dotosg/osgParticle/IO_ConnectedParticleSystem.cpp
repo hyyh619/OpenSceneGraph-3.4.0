@@ -10,11 +10,11 @@
 #include <iostream>
 #include <string>
 
-extern bool  read_particle(osgDB::Input&fr, osgParticle::Particle&P);
-extern void  write_particle(const osgParticle::Particle&P, osgDB::Output&fw);
+extern bool  read_particle(osgDB::Input &fr, osgParticle::Particle &P);
+extern void  write_particle(const osgParticle::Particle &P, osgDB::Output &fw);
 
-bool  ConnectedParticleSystem_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  ConnectedParticleSystem_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  ConnectedParticleSystem_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  ConnectedParticleSystem_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ConnectedParticleSystem_Proxy)
 (

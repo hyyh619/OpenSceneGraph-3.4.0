@@ -66,7 +66,7 @@ TerrainTile::TerrainTile() :
     setThreadSafeRefUnref(true);
 }
 
-TerrainTile::TerrainTile(const TerrainTile&terrain, const osg::CopyOp&copyop) :
+TerrainTile::TerrainTile(const TerrainTile &terrain, const osg::CopyOp &copyop) :
     Group(terrain, copyop),
     _terrain(0),
     _dirtyMask(NOT_DIRTY),
@@ -108,7 +108,7 @@ void TerrainTile::setTerrain(Terrain *ts)
         _terrain->registerTerrainTile(this);
 }
 
-void TerrainTile::setTileID(const TileID&tileID)
+void TerrainTile::setTileID(const TileID &tileID)
 {
     if (_tileID == tileID)
         return;
@@ -123,13 +123,13 @@ void TerrainTile::setTileID(const TileID&tileID)
 }
 
 
-void TerrainTile::traverse(osg::NodeVisitor&nv)
+void TerrainTile::traverse(osg::NodeVisitor &nv)
 {
     if (!_hasBeenTraversal)
     {
         if (!_terrain)
         {
-            osg::NodePath&nodePath = nv.getNodePath();
+            osg::NodePath &nodePath = nv.getNodePath();
             if (!nodePath.empty())
             {
                 for (osg::NodePath::reverse_iterator itr = nodePath.rbegin();
@@ -303,7 +303,7 @@ WhiteListTileLoadedCallback::WhiteListTileLoadedCallback()
 WhiteListTileLoadedCallback::~WhiteListTileLoadedCallback()
 {}
 
-bool WhiteListTileLoadedCallback::layerAcceptable(const std::string&setname) const
+bool WhiteListTileLoadedCallback::layerAcceptable(const std::string &setname) const
 {
     if (_allowAll)
         return true;

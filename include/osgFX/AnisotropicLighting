@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
-//osgFX - Copyright (C) 2003 Marco Jez
+ */
+// osgFX - Copyright (C) 2003 Marco Jez
 
 #ifndef OSGFX_ANISOTROPICLIGHTING_
 #define OSGFX_ANISOTROPICLIGHTING_
@@ -23,44 +23,43 @@
 
 namespace osgFX
 {
-
     /**
-     This single-pass effect implements a sort of anisotropic
-     lighting that replaces the standard OpenGL lighting model.
-     The final color of vertices is not computed directly, it is
-     the result of a texture lookup on a user-supplied lighting
-     image map. A vertex program is used to compute the s and t
-     texture coordinates as follows: s = (N dot H) ; t = (N dot L)
-     where N is the vertex normal, L is the light-to-vertex vector,
-     H is the half-way vector. This is a good example of how you
-     can use the State::getInitialViewMatrix() method to retrieve
-     the view matrix and perform view-dependant effects without
-     fakes of any kind.
-     This effect requires the ARB_vertex_program extension.
+       This single-pass effect implements a sort of anisotropic
+       lighting that replaces the standard OpenGL lighting model.
+       The final color of vertices is not computed directly, it is
+       the result of a texture lookup on a user-supplied lighting
+       image map. A vertex program is used to compute the s and t
+       texture coordinates as follows: s = (N dot H) ; t = (N dot L)
+       where N is the vertex normal, L is the light-to-vertex vector,
+       H is the half-way vector. This is a good example of how you
+       can use the State::getInitialViewMatrix() method to retrieve
+       the view matrix and perform view-dependant effects without
+       fakes of any kind.
+       This effect requires the ARB_vertex_program extension.
      */
     class OSGFX_EXPORT AnisotropicLighting: public Effect {
-    public:
+public:
         AnisotropicLighting();
-        AnisotropicLighting(const AnisotropicLighting& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
+        AnisotropicLighting(const AnisotropicLighting &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Effect(osgFX, AnisotropicLighting,
 
-            "Anisotropic Lighting",
+                    "Anisotropic Lighting",
 
-            "This single-pass effect implements a sort of anisotropic "
-            "lighting that replaces the standard OpenGL lighting model.\n"
-            "The final color of vertices is not computed directly, it is "
-            "the result of a texture lookup on a user-supplied lighting "
-            "image map. A vertex program is used to compute the s and t "
-            "texture coordinates as follows: s = (N dot H) ; t = (N dot L) "
-            "where N is the vertex normal, L is the light-to-vertex vector, "
-            "H is the half-way vector. This is a good example of how you "
-            "can use the State::getInitialViewMatrix() method to retrieve "
-            "the view matrix and perform view-dependant effects without "
-            "fakes of any kind.\n"
-            "This effect requires the ARB_vertex_program extension.",
+                    "This single-pass effect implements a sort of anisotropic "
+                    "lighting that replaces the standard OpenGL lighting model.\n"
+                    "The final color of vertices is not computed directly, it is "
+                    "the result of a texture lookup on a user-supplied lighting "
+                    "image map. A vertex program is used to compute the s and t "
+                    "texture coordinates as follows: s = (N dot H) ; t = (N dot L) "
+                    "where N is the vertex normal, L is the light-to-vertex vector, "
+                    "H is the half-way vector. This is a good example of how you "
+                    "can use the State::getInitialViewMatrix() method to retrieve "
+                    "the view matrix and perform view-dependant effects without "
+                    "fakes of any kind.\n"
+                    "This effect requires the ARB_vertex_program extension.",
 
-            "Marco Jez");
+                    "Marco Jez");
 
 
         /** get the lighting map */
@@ -70,7 +69,7 @@ namespace osgFX
         inline const osg::Image* getLightingMap() const;
 
         /** set the lighting map */
-        inline void setLightingMap(osg::Image* image);
+        inline void setLightingMap(osg::Image *image);
 
         /** get the OpenGL light number */
         inline int getLightNumber() const;
@@ -78,15 +77,15 @@ namespace osgFX
         /** set the OpenGL light number that will be used in lighting computations */
         inline void setLightNumber(int n);
 
-    protected:
+protected:
         virtual ~AnisotropicLighting() {}
-        AnisotropicLighting& operator=(const AnisotropicLighting&) { return *this; }
+        AnisotropicLighting &operator = (const AnisotropicLighting&) { return *this; }
 
         bool define_techniques();
 
-    private:
+private:
         int _lightnum;
-        osg::ref_ptr<osg::Texture2D> _texture;
+        osg::ref_ptr < osg::Texture2D > _texture;
     };
 
     // INLINE METHODS
@@ -101,7 +100,7 @@ namespace osgFX
         return _texture->getImage();
     }
 
-    inline void AnisotropicLighting::setLightingMap(osg::Image* image)
+    inline void AnisotropicLighting::setLightingMap(osg::Image *image)
     {
         _texture->setImage(image);
     }
@@ -116,7 +115,6 @@ namespace osgFX
         _lightnum = n;
         dirtyTechniques();
     }
-
 }
 
 #endif

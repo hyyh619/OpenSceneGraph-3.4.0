@@ -12,7 +12,7 @@ namespace osgFFmpeg
 // Note from Jason Daly in a osg-submissions thread, "The pix_fmt field of AVCodecContext will indicate the pixel format of the decoded video"
 
 
-FFmpegDecoderVideo::FFmpegDecoderVideo(PacketQueue&packets, FFmpegClocks&clocks) :
+FFmpegDecoderVideo::FFmpegDecoderVideo(PacketQueue &packets, FFmpegClocks &clocks) :
     m_packets(packets),
     m_clocks(clocks),
     m_stream(0),
@@ -135,7 +135,7 @@ void FFmpegDecoderVideo::run()
         decodeLoop();
     }
 
-    catch (const std::exception&error)
+    catch (const std::exception &error)
     {
         OSG_WARN << "FFmpegDecoderVideo::run : " << error.what() << std::endl;
     }

@@ -150,9 +150,9 @@ void gvBurnPoint(void *pCBData, int nY, int nX, double dfVariant)
 
 static void GDALCollectRingsFromGeometry(
     OGRGeometry *poShape,
-    std::vector<double>&aPointX, std::vector<double>&aPointY,
-    std::vector<double>&aPointVariant,
-    std::vector<int>&aPartSize, GDALBurnValueSrc eBurnValueSrc)
+    std::vector<double> &aPointX, std::vector<double> &aPointY,
+    std::vector<double> &aPointVariant,
+    std::vector<int> &aPartSize, GDALBurnValueSrc eBurnValueSrc)
 
 {
     if (poShape == NULL)

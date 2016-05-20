@@ -75,7 +75,7 @@ index B() const
     return m_B;
 }
 
-bool operator ==(const triangle_edge&Right) const
+bool operator ==(const triangle_edge &Right) const
 {
     return ((A() == Right.A()) && (B() == Right.B()));
 }

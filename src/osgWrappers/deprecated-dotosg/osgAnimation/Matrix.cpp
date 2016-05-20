@@ -1,7 +1,7 @@
 #include "Matrix.h"
 
 
-bool readMatrix(osg::Matrix&matrix, osgDB::Input&fr, const char *keyword)
+bool readMatrix(osg::Matrix &matrix, osgDB::Input &fr, const char *keyword)
 {
     bool iteratorAdvanced = false;
 
@@ -40,7 +40,7 @@ bool readMatrix(osg::Matrix&matrix, osgDB::Input&fr, const char *keyword)
 }
 
 
-bool writeMatrix(const osg::Matrix&matrix, osgDB::Output&fw, const char *keyword)
+bool writeMatrix(const osg::Matrix &matrix, osgDB::Output &fw, const char *keyword)
 {
     fw.indent() << keyword << " {" << std::endl;
     fw.moveIn();

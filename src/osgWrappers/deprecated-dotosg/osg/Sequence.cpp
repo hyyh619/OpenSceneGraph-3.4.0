@@ -10,8 +10,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Sequence_readLocalData(Object&obj, Input&fr);
-bool Sequence_writeLocalData(const Object&obj, Output&fw);
+bool Sequence_readLocalData(Object &obj, Input &fr);
+bool Sequence_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Sequence)
@@ -24,7 +24,7 @@ REGISTER_DOTOSGWRAPPER(Sequence)
 );
 
 static bool Sequence_matchLoopMode(const char *str,
-                                   Sequence::LoopMode&mode)
+                                   Sequence::LoopMode &mode)
 {
     if (strcmp(str, "LOOP") == 0)
     {
@@ -57,7 +57,7 @@ static const char* Sequence_getLoopMode(Sequence::LoopMode mode)
 
 // only storing 'START' and 'STOP' since 'PAUSE' doesn't make sense to me
 static bool Sequence_matchSeqMode(const char *str,
-                                  Sequence::SequenceMode&mode)
+                                  Sequence::SequenceMode &mode)
 {
     if (strcmp(str, "START") == 0)
     {
@@ -87,11 +87,11 @@ static const char* Sequence_getSeqMode(Sequence::SequenceMode mode)
     }
 }
 
-bool Sequence_readLocalData(Object&obj, Input&fr)
+bool Sequence_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Sequence&sw = static_cast<Sequence&>(obj);
+    Sequence &sw = static_cast<Sequence&>(obj);
 
     if (fr.matchSequence("defaultTime"))
     {
@@ -197,9 +197,9 @@ bool Sequence_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Sequence_writeLocalData(const Object&obj, Output&fw)
+bool Sequence_writeLocalData(const Object &obj, Output &fw)
 {
-    const Sequence&sw = static_cast<const Sequence&>(obj);
+    const Sequence &sw = static_cast<const Sequence&>(obj);
 
     // default frame time
     fw.indent() << "defaultTime " << sw.getDefaultTime() << std::endl;

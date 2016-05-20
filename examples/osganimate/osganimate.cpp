@@ -36,7 +36,7 @@
 #include <osgViewer/Viewer>
 #include <iostream>
 
-osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, double looptime)
+osg::AnimationPath* createAnimationPath(const osg::Vec3 &center, float radius, double looptime)
 {
     // set up the animation path
     osg::AnimationPath *animationPath = new osg::AnimationPath;
@@ -65,7 +65,7 @@ osg::AnimationPath* createAnimationPath(const osg::Vec3&center, float radius, do
     return animationPath;
 }
 
-osg::Node* createBase(const osg::Vec3&center, float radius)
+osg::Node* createBase(const osg::Vec3 &center, float radius)
 {
     int numTilesX = 10;
     int numTilesY = 10;
@@ -131,7 +131,7 @@ osg::Node* createBase(const osg::Vec3&center, float radius)
     return geode;
 }
 
-osg::Node* createMovingModel(const osg::Vec3&center, float radius)
+osg::Node* createMovingModel(const osg::Vec3 &center, float radius)
 {
     float animationLength = 10.0f;
 
@@ -143,7 +143,7 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius)
 
     if (glider)
     {
-        const osg::BoundingSphere&bs = glider->getBound();
+        const osg::BoundingSphere &bs = glider->getBound();
 
         float                size        = radius / bs.radius() * 0.3f;
         osg::MatrixTransform *positioned = new osg::MatrixTransform;
@@ -164,7 +164,7 @@ osg::Node* createMovingModel(const osg::Vec3&center, float radius)
     osg::Node *cessna = osgDB::readNodeFile("cessna.osgt");
     if (cessna)
     {
-        const osg::BoundingSphere&bs = cessna->getBound();
+        const osg::BoundingSphere &bs = cessna->getBound();
 
         float                size        = radius / bs.radius() * 0.3f;
         osg::MatrixTransform *positioned = new osg::MatrixTransform;

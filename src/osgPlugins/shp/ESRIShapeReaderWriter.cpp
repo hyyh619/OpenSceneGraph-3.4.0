@@ -27,17 +27,17 @@ virtual const char* className()
     return "ESRI Shape ReaderWriter";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "shp");
 }
 
-virtual ReadResult readObject(const std::string&fileName, const Options *opt) const
+virtual ReadResult readObject(const std::string &fileName, const Options *opt) const
 {
     return readNode(fileName, opt);
 }
 
-virtual ReadResult readNode(const std::string&file, const Options *options) const
+virtual ReadResult readNode(const std::string &file, const Options *options) const
 {
     std::string ext = osgDB::getFileExtension(file);
 

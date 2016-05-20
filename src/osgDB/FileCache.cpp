@@ -23,7 +23,7 @@ using namespace osgDB;
 //
 // FileCache
 //
-FileCache::FileCache(const std::string&path) :
+FileCache::FileCache(const std::string &path) :
     osg::Referenced(true),
     _fileCachePath(path)
 {
@@ -35,12 +35,12 @@ FileCache::~FileCache()
     OSG_INFO << "Destructed FileCache " << std::endl;
 }
 
-bool FileCache::isFileAppropriateForFileCache(const std::string&originalFileName) const
+bool FileCache::isFileAppropriateForFileCache(const std::string &originalFileName) const
 {
     return osgDB::containsServerAddress(originalFileName);
 }
 
-std::string FileCache::createCacheFileName(const std::string&originalFileName) const
+std::string FileCache::createCacheFileName(const std::string &originalFileName) const
 {
     std::string serverAddress = osgDB::getServerAddress(originalFileName);
     std::string cacheFileName = _fileCachePath + "/" +
@@ -52,7 +52,7 @@ std::string FileCache::createCacheFileName(const std::string&originalFileName) c
     return cacheFileName;
 }
 
-bool FileCache::existsInCache(const std::string&originalFileName) const
+bool FileCache::existsInCache(const std::string &originalFileName) const
 {
     if (osgDB::fileExists(createCacheFileName(originalFileName)))
     {
@@ -62,7 +62,7 @@ bool FileCache::existsInCache(const std::string&originalFileName) const
     return false;
 }
 
-ReaderWriter::ReadResult FileCache::readObject(const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::ReadResult FileCache::readObject(const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -77,7 +77,7 @@ ReaderWriter::ReadResult FileCache::readObject(const std::string&originalFileNam
     }
 }
 
-ReaderWriter::WriteResult FileCache::writeObject(const osg::Object&object, const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::WriteResult FileCache::writeObject(const osg::Object &object, const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -104,7 +104,7 @@ ReaderWriter::WriteResult FileCache::writeObject(const osg::Object&object, const
     return ReaderWriter::WriteResult::FILE_NOT_HANDLED;
 }
 
-ReaderWriter::ReadResult FileCache::readImage(const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::ReadResult FileCache::readImage(const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -119,7 +119,7 @@ ReaderWriter::ReadResult FileCache::readImage(const std::string&originalFileName
     }
 }
 
-ReaderWriter::WriteResult FileCache::writeImage(const osg::Image&image, const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::WriteResult FileCache::writeImage(const osg::Image &image, const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -146,7 +146,7 @@ ReaderWriter::WriteResult FileCache::writeImage(const osg::Image&image, const st
     return ReaderWriter::WriteResult::FILE_NOT_HANDLED;
 }
 
-ReaderWriter::ReadResult FileCache::readHeightField(const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::ReadResult FileCache::readHeightField(const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -161,7 +161,7 @@ ReaderWriter::ReadResult FileCache::readHeightField(const std::string&originalFi
     }
 }
 
-ReaderWriter::WriteResult FileCache::writeHeightField(const osg::HeightField&hf, const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::WriteResult FileCache::writeHeightField(const osg::HeightField &hf, const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -188,7 +188,7 @@ ReaderWriter::WriteResult FileCache::writeHeightField(const osg::HeightField&hf,
     return ReaderWriter::WriteResult::FILE_NOT_HANDLED;
 }
 
-ReaderWriter::ReadResult FileCache::readNode(const std::string&originalFileName, const osgDB::Options *options, bool buildKdTreeIfRequired) const
+ReaderWriter::ReadResult FileCache::readNode(const std::string &originalFileName, const osgDB::Options *options, bool buildKdTreeIfRequired) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -203,7 +203,7 @@ ReaderWriter::ReadResult FileCache::readNode(const std::string&originalFileName,
     }
 }
 
-ReaderWriter::WriteResult FileCache::writeNode(const osg::Node&node, const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::WriteResult FileCache::writeNode(const osg::Node &node, const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -231,7 +231,7 @@ ReaderWriter::WriteResult FileCache::writeNode(const osg::Node&node, const std::
 }
 
 
-ReaderWriter::ReadResult FileCache::readShader(const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::ReadResult FileCache::readShader(const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -246,7 +246,7 @@ ReaderWriter::ReadResult FileCache::readShader(const std::string&originalFileNam
     }
 }
 
-ReaderWriter::WriteResult FileCache::writeShader(const osg::Shader&shader, const std::string&originalFileName, const osgDB::Options *options) const
+ReaderWriter::WriteResult FileCache::writeShader(const osg::Shader &shader, const std::string &originalFileName, const osgDB::Options *options) const
 {
     std::string cacheFileName = createCacheFileName(originalFileName);
 
@@ -274,7 +274,7 @@ ReaderWriter::WriteResult FileCache::writeShader(const osg::Shader&shader, const
 }
 
 
-bool FileCache::isCachedFileBlackListed(const std::string&originalFileName) const
+bool FileCache::isCachedFileBlackListed(const std::string &originalFileName) const
 {
     for (DatabaseRevisionsList::const_iterator itr = _databaseRevisionsList.begin();
          itr != _databaseRevisionsList.end();
@@ -287,7 +287,7 @@ bool FileCache::isCachedFileBlackListed(const std::string&originalFileName) cons
     return false;
 }
 
-bool FileCache::removeFileFromBlackListed(const std::string&originalFileName) const
+bool FileCache::removeFileFromBlackListed(const std::string &originalFileName) const
 {
     for (DatabaseRevisionsList::const_iterator dr_itr = _databaseRevisionsList.begin();
          dr_itr != _databaseRevisionsList.end();
@@ -346,7 +346,7 @@ bool FileCache::removeFileFromBlackListed(const std::string&originalFileName) co
     return false;
 }
 
-bool FileCache::loadDatabaseRevisionsForFile(const std::string&originalFileName)
+bool FileCache::loadDatabaseRevisionsForFile(const std::string &originalFileName)
 {
     OSG_INFO << "FileCache::loadDatabaseRevisionsForFile(" << originalFileName << ")" << std::endl;
 
@@ -497,7 +497,7 @@ bool FileCache::loadDatabaseRevisionsForFile(const std::string&originalFileName)
     }
 }
 
-FileList* FileCache::readFileList(const std::string&originalFileName) const
+FileList* FileCache::readFileList(const std::string &originalFileName) const
 {
     osg::ref_ptr<FileList> fileList;
 

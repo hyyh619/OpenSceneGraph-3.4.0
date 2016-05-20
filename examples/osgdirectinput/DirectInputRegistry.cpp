@@ -109,8 +109,8 @@ void DirectInputRegistry::updateState(osgGA::EventQueue *eventQueue)
         {
             for (KeyMap::iterator itr = g_keyMap.begin(); itr != g_keyMap.end(); ++itr)
             {
-                KeyValue&key  = itr->second;
-                char    value = buffer[itr->first];
+                KeyValue &key  = itr->second;
+                char     value = buffer[itr->first];
                 if (key.second == value)
                     continue;
 

@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkArea(const osg::Viewport&attr)
+static bool checkArea(const osg::Viewport &attr)
 {
     return true;
 }
 
-static bool readArea(osgDB::InputStream&is, osg::Viewport&attr)
+static bool readArea(osgDB::InputStream &is, osg::Viewport &attr)
 {
     double x, y, w, h;
 
@@ -17,7 +17,7 @@ static bool readArea(osgDB::InputStream&is, osg::Viewport&attr)
     return true;
 }
 
-static bool writeArea(osgDB::OutputStream&os, const osg::Viewport&attr)
+static bool writeArea(osgDB::OutputStream &os, const osg::Viewport &attr)
 {
     os << attr.x() << attr.y() << attr.width() << attr.height() << std::endl;
     return true;

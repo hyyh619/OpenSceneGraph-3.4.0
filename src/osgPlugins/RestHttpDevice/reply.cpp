@@ -123,7 +123,7 @@ std::vector<asio::const_buffer> reply::to_buffers()
 
     for (std::size_t i = 0; i < headers.size(); ++i)
     {
-        header&h = headers[i];
+        header &h = headers[i];
         buffers.push_back(asio::buffer(h.name));
         buffers.push_back(asio::buffer(misc_strings::name_value_separator));
         buffers.push_back(asio::buffer(h.value));

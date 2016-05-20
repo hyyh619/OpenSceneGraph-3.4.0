@@ -149,7 +149,7 @@ void createTouchRepresentations(osg::Group *parent_group, unsigned int num_objec
     parent_group->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
 }
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa, osg::Object*, osg::NodeVisitor*)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor*)
 {
     if (ea.getEventType() != osgGA::GUIEventAdapter::FRAME)
     {
@@ -197,9 +197,9 @@ virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa,
 
         for (osgGA::GUIEventAdapter::TouchData::iterator i = ea.getTouchData()->begin(); i != ea.getTouchData()->end(); ++i, ++j)
         {
-            const osgGA::GUIEventAdapter::TouchData::TouchPoint&tp = (*i);
-            float                                              x   = ea.getTouchPointNormalizedX(j);
-            float                                              y   = ea.getTouchPointNormalizedY(j);
+            const osgGA::GUIEventAdapter::TouchData::TouchPoint &tp = (*i);
+            float                                               x   = ea.getTouchPointNormalizedX(j);
+            float                                               y   = ea.getTouchPointNormalizedY(j);
 
             // std::cout << j << ": " << tp.x << "/" << tp.y <<" "<< x << " " << y << " " << _w << " " << _h << std::endl;
 

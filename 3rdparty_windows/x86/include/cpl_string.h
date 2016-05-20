@@ -227,7 +227,7 @@ public:
 
 
 CPLString(void) {}
-CPLString(const std::string&oStr) : gdal_std_string(oStr) {}
+CPLString(const std::string &oStr) : gdal_std_string(oStr) {}
 CPLString(const char *pszStr) : gdal_std_string(pszStr) {}
 
 operator const char* (void) const { return c_str(); }
@@ -277,7 +277,7 @@ CPLString&Trim();
 CPLString&Recode(const char *pszSrcEncoding, const char *pszDstEncoding);
 
 /* case insensitive find alternates */
-size_t    ifind(const std::string&str, size_t pos = 0) const;
+size_t    ifind(const std::string &str, size_t pos = 0) const;
 size_t    ifind(const char *s, size_t pos = 0) const;
 CPLString&toupper(void);
 CPLString&tolower(void);
@@ -311,7 +311,7 @@ int    FindSortedInsertionPoint(const char *pszLine);
 public:
 CPLStringList();
 CPLStringList(char **papszList, int bTakeOwnership = TRUE);
-CPLStringList(const CPLStringList&oOther);
+CPLStringList(const CPLStringList &oOther);
 ~CPLStringList();
 
 CPLStringList&Clear();
@@ -355,7 +355,7 @@ CPLStringList&operator=(char **papszListIn)
 {
     return Assign(papszListIn, TRUE);
 }
-CPLStringList&operator=(const CPLStringList&oOther);
+CPLStringList&operator=(const CPLStringList &oOther);
 
 char* operator[](int i);
 char* operator[](size_t i)

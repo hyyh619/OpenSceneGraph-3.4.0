@@ -28,7 +28,7 @@ public:
 
 LibVncImage();
 
-bool connect(const std::string&hostname);
+bool connect(const std::string &hostname);
 
 void close();
 
@@ -220,7 +220,7 @@ char* LibVncImage::getPassword(rfbClient *client)
 }
 
 
-bool LibVncImage::connect(const std::string&hostname)
+bool LibVncImage::connect(const std::string &hostname)
 {
     if (hostname.empty())
         return false;
@@ -397,12 +397,12 @@ virtual const char* className() const
     return "VNC plugin";
 }
 
-virtual osgDB::ReaderWriter::ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual osgDB::ReaderWriter::ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     return readImage(file, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readImage(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual osgDB::ReaderWriter::ReadResult readImage(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     if (!osgDB::equalCaseInsensitive(osgDB::getFileExtension(fileName), "vnc"))
     {
@@ -447,7 +447,7 @@ virtual osgDB::ReaderWriter::ReadResult readImage(const std::string&fileName, co
     return image.get();
 }
 
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult result = readImage(fileName, options);
 

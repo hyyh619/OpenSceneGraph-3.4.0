@@ -51,7 +51,7 @@ MyArray(unsigned int no, osg::Vec3 *ptr) :
     _ptr(ptr) {}
 
 /** Copy ctor. */
-MyArray(const MyArray&other, const osg::CopyOp&copyop) :
+MyArray(const MyArray &other, const osg::CopyOp &copyop) :
     osg::Array(osg::Array::Vec3ArrayType, 3, GL_FLOAT),
     _numElements(other._numElements),
     _ptr(other._ptr) {}
@@ -63,7 +63,7 @@ virtual Object* cloneType() const
 }
 
 /** Create a copy of the object. */
-virtual osg::Object* clone(const osg::CopyOp&copyop) const
+virtual osg::Object* clone(const osg::CopyOp &copyop) const
 {
     return new MyArray(*this, copyop);
 }
@@ -72,7 +72,7 @@ virtual osg::Object* clone(const osg::CopyOp&copyop) const
  *
  * @note This will end up in ArrayVisitor::apply(osg::Array&).
  */
-virtual void accept(osg::ArrayVisitor&av)
+virtual void accept(osg::ArrayVisitor &av)
 {
     av.apply(*this);
 }
@@ -81,19 +81,19 @@ virtual void accept(osg::ArrayVisitor&av)
  *
  * @note This will end up in ConstArrayVisitor::apply(const osg::Array&).
  */
-virtual void accept(osg::ConstArrayVisitor&cav) const
+virtual void accept(osg::ConstArrayVisitor &cav) const
 {
     cav.apply(*this);
 }
 
 /** Accept method for ValueVisitors. */
-virtual void accept(unsigned int index, osg::ValueVisitor&vv)
+virtual void accept(unsigned int index, osg::ValueVisitor &vv)
 {
     vv.apply(_ptr[index]);
 }
 
 /** Const accept method for ValueVisitors. */
-virtual void accept(unsigned int index, osg::ConstValueVisitor&cvv) const
+virtual void accept(unsigned int index, osg::ConstValueVisitor &cvv) const
 {
     cvv.apply(_ptr[index]);
 }
@@ -104,8 +104,8 @@ virtual void accept(unsigned int index, osg::ConstValueVisitor&cvv) const
  */
 virtual int compare(unsigned int lhs, unsigned int rhs) const
 {
-    const osg::Vec3&elem_lhs = _ptr[lhs];
-    const osg::Vec3&elem_rhs = _ptr[rhs];
+    const osg::Vec3 &elem_lhs = _ptr[lhs];
+    const osg::Vec3 &elem_rhs = _ptr[rhs];
 
     if (elem_lhs < elem_rhs)
         return -1;

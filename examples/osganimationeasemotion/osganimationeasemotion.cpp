@@ -66,7 +66,7 @@ osg::Vec3 _pos;
 
 osg::ref_ptr<osgAnimation::Motion> _motion;
 
-EaseMotionSampler(const osg::Vec3&pos) :
+EaseMotionSampler(const osg::Vec3 &pos) :
     _previous (0.0f),
     _pos      (pos) {}
 
@@ -132,7 +132,7 @@ struct ColorLabel : public osgWidget::Label
 
         p->hide();
 
-        const std::string&name = getName();
+        const std::string &name = getName();
 
         if (!name.compare("OutQuadMotion"))
             EASE_MOTION_SAMPLER->setMotion<osgAnimation::OutQuadMotion>()

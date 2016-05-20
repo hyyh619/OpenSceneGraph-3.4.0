@@ -21,27 +21,27 @@
 
 using namespace osgPresentation;
 
-KeyEventHandler::KeyEventHandler(int key, osgPresentation::Operation operation, const JumpData&jumpData) :
+KeyEventHandler::KeyEventHandler(int key, osgPresentation::Operation operation, const JumpData &jumpData) :
     _key(key),
     _operation(operation),
     _jumpData(jumpData)
 {}
 
-KeyEventHandler::KeyEventHandler(int key, const std::string&str, osgPresentation::Operation operation, const JumpData&jumpData) :
+KeyEventHandler::KeyEventHandler(int key, const std::string &str, osgPresentation::Operation operation, const JumpData &jumpData) :
     _key(key),
     _command(str),
     _operation(operation),
     _jumpData(jumpData)
 {}
 
-KeyEventHandler::KeyEventHandler(int key, const osgPresentation::KeyPosition&keyPos, const JumpData&jumpData) :
+KeyEventHandler::KeyEventHandler(int key, const osgPresentation::KeyPosition &keyPos, const JumpData &jumpData) :
     _key(key),
     _keyPos(keyPos),
     _operation(osgPresentation::EVENT),
     _jumpData(jumpData)
 {}
 
-bool KeyEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object*, osg::NodeVisitor* /*nv*/)
+bool KeyEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object*, osg::NodeVisitor* /*nv*/)
 {
     if (ea.getHandled())
         return false;
@@ -78,7 +78,7 @@ void KeyEventHandler::doOperation()
         OSG_NOTICE << "Run " << _command << std::endl;
 
 #if 0
-        osgDB::FilePathList&paths = osgDB::getDataFilePathList();
+        osgDB::FilePathList &paths = osgDB::getDataFilePathList();
         if (!paths.empty())
         {
             #ifdef _WIN32

@@ -31,7 +31,7 @@
 using namespace osg;
 using namespace osgDB;
 
-Object* osgDB::readObjectFile(const std::string&filename, const Options *options)
+Object* osgDB::readObjectFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readObject(filename, options);
 
@@ -45,7 +45,7 @@ Object* osgDB::readObjectFile(const std::string&filename, const Options *options
 }
 
 
-Image* osgDB::readImageFile(const std::string&filename, const Options *options)
+Image* osgDB::readImageFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readImage(filename, options);
 
@@ -58,7 +58,7 @@ Image* osgDB::readImageFile(const std::string&filename, const Options *options)
     return NULL;
 }
 
-Shader* osgDB::readShaderFile(const std::string&filename, const Options *options)
+Shader* osgDB::readShaderFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readShader(filename, options);
 
@@ -72,7 +72,7 @@ Shader* osgDB::readShaderFile(const std::string&filename, const Options *options
 }
 
 
-HeightField* osgDB::readHeightFieldFile(const std::string&filename, const Options *options)
+HeightField* osgDB::readHeightFieldFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readHeightField(filename, options);
 
@@ -86,7 +86,7 @@ HeightField* osgDB::readHeightFieldFile(const std::string&filename, const Option
 }
 
 
-Node* osgDB::readNodeFile(const std::string&filename, const Options *options)
+Node* osgDB::readNodeFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readNode(filename, options);
 
@@ -102,7 +102,7 @@ Node* osgDB::readNodeFile(const std::string&filename, const Options *options)
     return NULL;
 }
 
-Node* osgDB::readNodeFiles(std::vector<std::string>&fileList, const Options *options)
+Node* osgDB::readNodeFiles(std::vector<std::string> &fileList, const Options *options)
 {
     typedef std::vector<osg::Node*> NodeList;
     NodeList nodeList;
@@ -146,7 +146,7 @@ Node* osgDB::readNodeFiles(std::vector<std::string>&fileList, const Options *opt
     }
 }
 
-Node* osgDB::readNodeFiles(osg::ArgumentParser&arguments, const Options *options)
+Node* osgDB::readNodeFiles(osg::ArgumentParser &arguments, const Options *options)
 {
     typedef std::vector<osg::ref_ptr<osg::Node> > NodeList;
     NodeList nodeList;
@@ -280,7 +280,7 @@ Node* osgDB::readNodeFiles(osg::ArgumentParser&arguments, const Options *options
 }
 
 
-Script* osgDB::readScriptFile(const std::string&filename, const Options *options)
+Script* osgDB::readScriptFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readScript(filename, options);
 
@@ -294,7 +294,7 @@ Script* osgDB::readScriptFile(const std::string&filename, const Options *options
 }
 
 
-osg::ref_ptr<osg::Object> osgDB::readRefObjectFile(const std::string&filename, const Options *options)
+osg::ref_ptr<osg::Object> osgDB::readRefObjectFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readObject(filename, options);
 
@@ -307,7 +307,7 @@ osg::ref_ptr<osg::Object> osgDB::readRefObjectFile(const std::string&filename, c
     return NULL;
 }
 
-osg::ref_ptr<osg::Image> osgDB::readRefImageFile(const std::string&filename, const Options *options)
+osg::ref_ptr<osg::Image> osgDB::readRefImageFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readImage(filename, options);
 
@@ -320,7 +320,7 @@ osg::ref_ptr<osg::Image> osgDB::readRefImageFile(const std::string&filename, con
     return NULL;
 }
 
-osg::ref_ptr<osg::Shader> osgDB::readRefShaderFile(const std::string&filename, const Options *options)
+osg::ref_ptr<osg::Shader> osgDB::readRefShaderFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readShader(filename, options);
 
@@ -333,7 +333,7 @@ osg::ref_ptr<osg::Shader> osgDB::readRefShaderFile(const std::string&filename, c
     return NULL;
 }
 
-osg::ref_ptr<osg::HeightField> osgDB::readRefHeightFieldFile(const std::string&filename, const Options *options)
+osg::ref_ptr<osg::HeightField> osgDB::readRefHeightFieldFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readHeightField(filename, options);
 
@@ -346,7 +346,7 @@ osg::ref_ptr<osg::HeightField> osgDB::readRefHeightFieldFile(const std::string&f
     return NULL;
 }
 
-osg::ref_ptr<osg::Node> osgDB::readRefNodeFile(const std::string&filename, const Options *options)
+osg::ref_ptr<osg::Node> osgDB::readRefNodeFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readNode(filename, options);
 
@@ -359,7 +359,7 @@ osg::ref_ptr<osg::Node> osgDB::readRefNodeFile(const std::string&filename, const
     return NULL;
 }
 
-osg::ref_ptr<osg::Script> osgDB::readRefScriptFile(const std::string&filename, const Options *options)
+osg::ref_ptr<osg::Script> osgDB::readRefScriptFile(const std::string &filename, const Options *options)
 {
     ReaderWriter::ReadResult rr = Registry::instance()->readScript(filename, options);
 

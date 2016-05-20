@@ -9,7 +9,7 @@ using namespace FX;
 class MainFrame : public FXMainWindow
 {
 public:
-MainFrame(FXApp *a, const FXString&name,
+MainFrame(FXApp *a, const FXString &name,
           FXIcon *ic = NULL, FXIcon *mi = NULL,
           FXuint opts = DECOR_ALL,
           FXint x = 0, FXint y = 0,

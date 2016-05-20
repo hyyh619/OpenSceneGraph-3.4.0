@@ -23,7 +23,7 @@ Block::Block(const lwo2::FORM::SURF::BLOK *blok)
     }
 }
 
-void Block::read_common_attributes(const iff::Chunk_list&subchunks)
+void Block::read_common_attributes(const iff::Chunk_list &subchunks)
 {
     for (iff::Chunk_list::const_iterator i = subchunks.begin(); i != subchunks.end(); ++i)
     {
@@ -160,11 +160,11 @@ void Block::compile(const lwo2::FORM::SURF::BLOK *blok)
     }
 }
 
-osg::Vec3 Block::setup_texture_point(const osg::Vec3&P) const
+osg::Vec3 Block::setup_texture_point(const osg::Vec3 &P) const
 {
     osg::Vec3 Q = P;
 
-    const osg::Vec3&ypr = imap_.mapping.rotation_;
+    const osg::Vec3 &ypr = imap_.mapping.rotation_;
 
     Q -= imap_.mapping.center_;
     Q  = Q * osg::Matrix::rotate(ypr.z(), osg::Vec3(0, 0, -1));

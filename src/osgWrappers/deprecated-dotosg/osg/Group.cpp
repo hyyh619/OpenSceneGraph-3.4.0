@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Group_readLocalData(Object&obj, Input&fr);
-bool Group_writeLocalData(const Object&obj, Output&fw);
+bool Group_readLocalData(Object &obj, Input &fr);
+bool Group_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Group)
@@ -21,11 +21,11 @@ REGISTER_DOTOSGWRAPPER(Group)
     &Group_writeLocalData
 );
 
-bool Group_readLocalData(Object&obj, Input&fr)
+bool Group_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Group&group = static_cast<Group&>(obj);
+    Group &group = static_cast<Group&>(obj);
 
     int num_children;
 
@@ -49,9 +49,9 @@ bool Group_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool Group_writeLocalData(const Object&obj, Output&fw)
+bool Group_writeLocalData(const Object &obj, Output &fw)
 {
-    const Group&group = static_cast<const Group&>(obj);
+    const Group &group = static_cast<const Group&>(obj);
 
     if (group.getNumChildren() != 0)
         fw.indent() << "num_children " << group.getNumChildren() << std::endl;

@@ -22,7 +22,7 @@
 
 using namespace txp;
 
-float TileMapper::getDistanceToEyePoint(const osg::Vec3&pos, bool withLODScale) const
+float TileMapper::getDistanceToEyePoint(const osg::Vec3 &pos, bool withLODScale) const
 {
     if (withLODScale)
         return (pos - getEyeLocal()).length() * getLODScale();
@@ -30,7 +30,7 @@ float TileMapper::getDistanceToEyePoint(const osg::Vec3&pos, bool withLODScale) 
         return (pos - getEyeLocal()).length();
 }
 
-inline TileMapper::value_type distance(const osg::Vec3&coord, const osg::Matrix&matrix)
+inline TileMapper::value_type distance(const osg::Vec3 &coord, const osg::Matrix &matrix)
 {
     return -((TileMapper::value_type)coord[0] * (TileMapper::value_type)matrix(0, 2) +
              (TileMapper::value_type)coord[1] * (TileMapper::value_type)matrix(1, 2) +
@@ -38,10 +38,10 @@ inline TileMapper::value_type distance(const osg::Vec3&coord, const osg::Matrix&
              matrix(3, 2));
 }
 
-float TileMapper::getDistanceFromEyePoint(const osg::Vec3&pos, bool withLODScale) const
+float TileMapper::getDistanceFromEyePoint(const osg::Vec3 &pos, bool withLODScale) const
 {
-    const osg::Matrix&matrix = *_modelviewStack.back();
-    float            dist    = distance(pos, matrix);
+    const osg::Matrix &matrix = *_modelviewStack.back();
+    float             dist    = distance(pos, matrix);
 
     if (withLODScale)
         return dist * getLODScale();
@@ -49,7 +49,7 @@ float TileMapper::getDistanceFromEyePoint(const osg::Vec3&pos, bool withLODScale
         return dist;
 }
 
-void TileMapper::apply(osg::Node&node)
+void TileMapper::apply(osg::Node &node)
 {
     if (node.getName() == "TileContent")
     {
@@ -69,7 +69,7 @@ void TileMapper::apply(osg::Node&node)
     popCurrentMask();
 }
 
-void TileMapper::apply(osg::Group&node)
+void TileMapper::apply(osg::Group &node)
 {
     if (node.getName() == "TileContent")
     {
@@ -111,7 +111,7 @@ void TileMapper::apply(osg::Geode&)
     _containsGeode = true;
 }
 
-void TileMapper::apply(osg::PagedLOD&node)
+void TileMapper::apply(osg::PagedLOD &node)
 {
     if (isCulled(node))
         return;
@@ -141,13 +141,13 @@ void TileMapper::apply(osg::PagedLOD&node)
     popCurrentMask();
 }
 
-void TileMapper::insertTile(const TileIdentifier&tid)
+void TileMapper::insertTile(const TileIdentifier &tid)
 {
     _tileMap.insert(TileMap::value_type(tid, 1));
 }
 
 
-bool TileMapper::isTileNeighbourALowerLODLevel(const TileIdentifier&tid, int dx, int dy) const
+bool TileMapper::isTileNeighbourALowerLODLevel(const TileIdentifier &tid, int dx, int dy) const
 {
     if (_tileMap.count(TileIdentifier(tid.x + dx, tid.y + dy, tid.lod)) != 0)
     {

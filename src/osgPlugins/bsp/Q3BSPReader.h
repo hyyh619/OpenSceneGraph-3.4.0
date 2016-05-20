@@ -40,7 +40,7 @@ public:
 
 Q3BSPReader();
 
-bool readFile(const std::string&fileName,
+bool readFile(const std::string &fileName,
               const osgDB::ReaderWriter::Options*);
 
 osg::ref_ptr<osg::Node>  getRootNode();
@@ -49,31 +49,31 @@ private:
 
 osg::ref_ptr<osg::Node> root_node;
 
-osg::Geode* convertFromBSP(Q3BSPLoad&aLoadData,
+osg::Geode* convertFromBSP(Q3BSPLoad &aLoadData,
                            const osgDB::ReaderWriter::Options*) const;
 
 osg::Geometry* createMeshFace(
-    const BSP_LOAD_FACE&aLoadFace,
-    const std::vector<osg::Texture2D*>&aTextureArray,
-    osg::Vec3Array&aVertexArray,
-    std::vector<GLuint>&aIndices,
-    osg::Vec2Array&aTextureDecalCoords,
-    osg::Vec2Array&aTextureLMapCoords) const;
+    const BSP_LOAD_FACE &aLoadFace,
+    const std::vector<osg::Texture2D*> &aTextureArray,
+    osg::Vec3Array &aVertexArray,
+    std::vector<GLuint> &aIndices,
+    osg::Vec2Array &aTextureDecalCoords,
+    osg::Vec2Array &aTextureLMapCoords) const;
 
 osg::Geometry* createPolygonFace(
-    const BSP_LOAD_FACE&aLoadFace,
-    const std::vector<osg::Texture2D*>&aTextureArray,
-    const std::vector<osg::Texture2D*>&aTextureLMapArray,
-    osg::Vec3Array&aVertexArray,
-    osg::Vec2Array&aTextureDecalCoords,
-    osg::Vec2Array&aTextureLMapCoords) const;
+    const BSP_LOAD_FACE &aLoadFace,
+    const std::vector<osg::Texture2D*> &aTextureArray,
+    const std::vector<osg::Texture2D*> &aTextureLMapArray,
+    osg::Vec3Array &aVertexArray,
+    osg::Vec2Array &aTextureDecalCoords,
+    osg::Vec2Array &aTextureLMapCoords) const;
 
 bool        loadTextures(
-    const Q3BSPLoad&aLoadData,
-    std::vector<osg::Texture2D*>&aTextureArray) const;
+    const Q3BSPLoad &aLoadData,
+    std::vector<osg::Texture2D*> &aTextureArray) const;
 
 bool        loadLightMaps(
-    const Q3BSPLoad&aLoadData,
-    std::vector<osg::Texture2D*>&aTextureArray) const;
+    const Q3BSPLoad &aLoadData,
+    std::vector<osg::Texture2D*> &aTextureArray) const;
 };
 }

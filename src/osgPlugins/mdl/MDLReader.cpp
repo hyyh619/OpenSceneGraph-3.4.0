@@ -31,7 +31,7 @@ using namespace osgDB;
 namespace
 {
 // Turn any '\' into '/', so that the path is usable on Windows and Unix.
-void sanitizePath(std::string&path)
+void sanitizePath(std::string &path)
 {
     size_t pos = 0;
 
@@ -43,9 +43,9 @@ void sanitizePath(std::string&path)
 }
 
 // Try to find 'searchPath'/'filename'.'extension' in 'materials' directory.
-std::string findFileInPath(const std::string&searchPath,
-                           const std::string&filename,
-                           const std::string&extension)
+std::string findFileInPath(const std::string &searchPath,
+                           const std::string &filename,
+                           const std::string &extension)
 {
     std::string filepath;
 
@@ -67,10 +67,10 @@ std::string findFileInPath(const std::string&searchPath,
 }
 
 // Try to find 'searchPath'/'path'/'filename'.'extension' in 'materials' directory.
-std::string findFileInPath(const std::string&searchPath,
-                           const std::string&path,
-                           const std::string&filename,
-                           const std::string&extension)
+std::string findFileInPath(const std::string &searchPath,
+                           const std::string &path,
+                           const std::string &filename,
+                           const std::string &extension)
 {
     std::string filepath;
 
@@ -104,7 +104,7 @@ MDLReader::~MDLReader()
 
 
 std::string MDLReader::getToken(std::string str, const char *delim,
-                                size_t&index)
+                                size_t &index)
 {
     size_t      start;
     size_t      end = std::string::npos;
@@ -591,7 +591,7 @@ Mesh* MDLReader::processMesh(std::istream *str, int offset)
 }
 
 
-bool MDLReader::readFile(const std::string&file)
+bool MDLReader::readFile(const std::string &file)
 {
     std::string   baseName;
     std::string   fileName;

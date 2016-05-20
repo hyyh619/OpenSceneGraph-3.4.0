@@ -32,7 +32,7 @@ const char* ReaderWriterKTX::className() const
     return "KTX Image Reader/Writer";
 }
 
-bool ReaderWriterKTX::correctByteOrder(KTXTexHeader&header) const
+bool ReaderWriterKTX::correctByteOrder(KTXTexHeader &header) const
 {
     if (header.endianness == MyEndian)
         return true;
@@ -48,7 +48,7 @@ bool ReaderWriterKTX::correctByteOrder(KTXTexHeader&header) const
     return true;
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriterKTX::readKTXStream(std::istream&fin) const
+osgDB::ReaderWriter::ReadResult ReaderWriterKTX::readKTXStream(std::istream &fin) const
 {
     KTXTexHeader header;
 
@@ -201,13 +201,13 @@ osgDB::ReaderWriter::ReadResult ReaderWriterKTX::readKTXStream(std::istream&fin)
 }
 
 
-osgDB::ReaderWriter::ReadResult ReaderWriterKTX::readImage(std::istream&fin, const osgDB::ReaderWriter::Options*) const
+osgDB::ReaderWriter::ReadResult ReaderWriterKTX::readImage(std::istream &fin, const osgDB::ReaderWriter::Options*) const
 {
     return readKTXStream(fin);
 }
 
 
-osgDB::ReaderWriter::ReadResult ReaderWriterKTX::readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterKTX::readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

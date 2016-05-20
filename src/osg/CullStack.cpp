@@ -32,7 +32,7 @@ CullStack::CullStack()
     _referenceViewPoints.push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
 }
 
-CullStack::CullStack(const CullStack&cs) :
+CullStack::CullStack(const CullStack &cs) :
     CullSettings(cs)
 {
     _frustumVolume           = -1.0f;
@@ -101,9 +101,9 @@ void CullStack::pushCullingSet()
     }
     else
     {
-        const osg::Viewport&W = *_viewportStack.back();
-        const osg::Matrix  &P = *_projectionStack.back();
-        const osg::Matrix  &M = *_modelviewStack.back();
+        const osg::Viewport &W = *_viewportStack.back();
+        const osg::Matrix   &P = *_projectionStack.back();
+        const osg::Matrix   &M = *_modelviewStack.back();
 
         osg::Vec4 pixelSizeVector = CullingSet::computePixelSizeVector(W, P, M);
 
@@ -154,7 +154,7 @@ void CullStack::pushProjectionMatrix(RefMatrix *matrix)
     _projectionStack.push_back(matrix);
 
     _projectionCullingStack.push_back(osg::CullingSet());
-    osg::CullingSet&cullingSet = _projectionCullingStack.back();
+    osg::CullingSet &cullingSet = _projectionCullingStack.back();
 
     // set up view frustum.
     cullingSet.getFrustum().setToUnitFrustum(((_cullingMode & NEAR_PLANE_CULLING) != 0), ((_cullingMode & FAR_PLANE_CULLING) != 0));

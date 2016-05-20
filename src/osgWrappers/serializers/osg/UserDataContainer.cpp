@@ -4,12 +4,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkUDC_UserData(const osg::DefaultUserDataContainer&udc)
+static bool checkUDC_UserData(const osg::DefaultUserDataContainer &udc)
 {
     return dynamic_cast<const osg::Object*>(udc.getUserData()) != 0;
 }
 
-static bool readUDC_UserData(osgDB::InputStream&is, osg::DefaultUserDataContainer&udc)
+static bool readUDC_UserData(osgDB::InputStream &is, osg::DefaultUserDataContainer &udc)
 {
     is >> is.BEGIN_BRACKET;
     osg::Object *object = is.readObject();
@@ -20,7 +20,7 @@ static bool readUDC_UserData(osgDB::InputStream&is, osg::DefaultUserDataContaine
     return true;
 }
 
-static bool writeUDC_UserData(osgDB::OutputStream&os, const osg::DefaultUserDataContainer&udc)
+static bool writeUDC_UserData(osgDB::OutputStream &os, const osg::DefaultUserDataContainer &udc)
 {
     os << os.BEGIN_BRACKET << std::endl;
     os.writeObject(dynamic_cast<const osg::Object*>(udc.getUserData()));
@@ -29,12 +29,12 @@ static bool writeUDC_UserData(osgDB::OutputStream&os, const osg::DefaultUserData
 }
 
 // _descriptions
-static bool checkUDC_Descriptions(const osg::DefaultUserDataContainer&udc)
+static bool checkUDC_Descriptions(const osg::DefaultUserDataContainer &udc)
 {
     return udc.getNumDescriptions() > 0;
 }
 
-static bool readUDC_Descriptions(osgDB::InputStream&is, osg::DefaultUserDataContainer&udc)
+static bool readUDC_Descriptions(osgDB::InputStream &is, osg::DefaultUserDataContainer &udc)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -49,9 +49,9 @@ static bool readUDC_Descriptions(osgDB::InputStream&is, osg::DefaultUserDataCont
     return true;
 }
 
-static bool writeUDC_Descriptions(osgDB::OutputStream&os, const osg::DefaultUserDataContainer&udc)
+static bool writeUDC_Descriptions(osgDB::OutputStream &os, const osg::DefaultUserDataContainer &udc)
 {
-    const osg::UserDataContainer::DescriptionList&slist = udc.getDescriptions();
+    const osg::UserDataContainer::DescriptionList &slist = udc.getDescriptions();
 
     os.writeSize(slist.size()); os << os.BEGIN_BRACKET << std::endl;
 
@@ -67,12 +67,12 @@ static bool writeUDC_Descriptions(osgDB::OutputStream&os, const osg::DefaultUser
 }
 
 
-static bool checkUDC_UserObjects(const osg::DefaultUserDataContainer&udc)
+static bool checkUDC_UserObjects(const osg::DefaultUserDataContainer &udc)
 {
     return udc.getNumUserObjects() > 0;
 }
 
-static bool readUDC_UserObjects(osgDB::InputStream&is, osg::DefaultUserDataContainer&udc)
+static bool readUDC_UserObjects(osgDB::InputStream &is, osg::DefaultUserDataContainer &udc)
 {
     unsigned int size = is.readSize(); is >> is.BEGIN_BRACKET;
 
@@ -87,7 +87,7 @@ static bool readUDC_UserObjects(osgDB::InputStream&is, osg::DefaultUserDataConta
     return true;
 }
 
-static bool writeUDC_UserObjects(osgDB::OutputStream&os, const osg::DefaultUserDataContainer&udc)
+static bool writeUDC_UserObjects(osgDB::OutputStream &os, const osg::DefaultUserDataContainer &udc)
 {
     unsigned int numObjects = udc.getNumUserObjects();
 

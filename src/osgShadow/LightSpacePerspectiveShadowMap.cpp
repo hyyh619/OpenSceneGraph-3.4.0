@@ -167,7 +167,7 @@ void LightSpacePerspectiveShadowMapAlgorithm::operator()
     osg::BoundingBox bb       = hullShadowedView->computeBoundingBox(cameraMain->getViewMatrix());
     double           nearDist = -bb._max[2];
 
-    const osg::Matrix&eyeViewToWorld = cameraMain->getInverseViewMatrix();
+    const osg::Matrix &eyeViewToWorld = cameraMain->getInverseViewMatrix();
 
     osg::Matrix lightViewToWorld = cameraShadow->getInverseViewMatrix();
 
@@ -423,17 +423,17 @@ class LispSM
 public:
 typedef std::vector<osg::Vec3d> Vertices;
 
-void setProjectionMatrix(const osg::Matrix&projectionMatrix)
+void setProjectionMatrix(const osg::Matrix &projectionMatrix)
 {
     _projectionMatrix = projectionMatrix;
 }
 
-void setViewMatrix(const osg::Matrix&viewMatrix)
+void setViewMatrix(const osg::Matrix &viewMatrix)
 {
     _viewMatrix = viewMatrix;
 }
 
-void setHull(const ConvexPolyhedron&hull)
+void setHull(const ConvexPolyhedron &hull)
 {
     _hull = hull;
 }
@@ -483,7 +483,7 @@ void setUseOldFormula(bool use)
     _useOldFormula = use;
 }
 
-void setN(const double&n)
+void setN(const double &n)
 {
     _N = n;
 }
@@ -499,7 +499,7 @@ const double getNearDist() const
     return _nearDist;
 }
 
-void setNearDist(const double&nearDist)
+void setNearDist(const double &nearDist)
 {
     _nearDist = nearDist;
 }
@@ -509,7 +509,7 @@ const double getFarDist() const
     return _farDist;
 }
 
-void setFarDist(const double&farDist)
+void setFarDist(const double &farDist)
 {
     _farDist = farDist;
 }
@@ -552,38 +552,38 @@ ConvexPolyhedron _hull;
 osg::Matrix _viewMatrix;
 osg::Matrix _projectionMatrix;
 
-double      getN(const osg::Matrix lightSpace, const osg::BoundingBox&B_ls) const;
+double      getN(const osg::Matrix lightSpace, const osg::BoundingBox &B_ls) const;
 
 osg::Vec3d  getNearCameraPointE() const;
 
 osg::Vec3d  getZ0_ls
-    (const osg::Matrix&lightSpace, const osg::Vec3d&e, const double&b_lsZmax, const osg::Vec3d&eyeDir) const;
+    (const osg::Matrix &lightSpace, const osg::Vec3d &e, const double &b_lsZmax, const osg::Vec3d &eyeDir) const;
 
 double      calcNoptGeneral
-    (const osg::Matrix lightSpace, const osg::BoundingBox&B_ls) const;
+    (const osg::Matrix lightSpace, const osg::BoundingBox &B_ls) const;
 
 double      calcNoptOld
     (const double gamma_ = 999) const;
 
 osg::Matrix getLispSmMtx
-    (const osg::Matrix&lightSpace) const;
+    (const osg::Matrix &lightSpace) const;
 
 osg::Vec3d  getProjViewDir_ls
-    (const osg::Matrix&lightSpace) const;
+    (const osg::Matrix &lightSpace) const;
 
 void        updateLightMtx
-    (osg::Matrix&lightView, osg::Matrix&lightProj, const std::vector<osg::Vec3d>&B) const;
+    (osg::Matrix &lightView, osg::Matrix &lightProj, const std::vector<osg::Vec3d> &B) const;
 
 public:
 LispSM() : _useLiSPSM(true), _useFormula(true), _useOldFormula(false), _N(1), _nearDist(1), _farDist(10) { }
 
-virtual void updateLightMtx(osg::Matrix&lightView, osg::Matrix&lightProj) const;
+virtual void updateLightMtx(osg::Matrix &lightView, osg::Matrix &lightProj) const;
 };
 }
 
 osg::Vec3d LispSM::getNearCameraPointE() const
 {
-    const osg::Matrix&eyeView = getViewMatrix();
+    const osg::Matrix &eyeView = getViewMatrix();
 
     ConvexPolyhedron::Vertices LVS;
 
@@ -612,7 +612,7 @@ osg::Vec3d LispSM::getNearCameraPointE() const
 // z0 is the point that lies on the plane A parallel to the near plane through e
 // and on the near plane of the C frustum (the plane z = bZmax) and on the line x = e.x
 osg::Vec3d LispSM::getZ0_ls
-    (const osg::Matrix&lightSpace, const osg::Vec3d&e, const double&b_lsZmax, const osg::Vec3d&eyeDir) const
+    (const osg::Matrix &lightSpace, const osg::Vec3d &e, const double &b_lsZmax, const osg::Vec3d &eyeDir) const
 {
     // to calculate the parallel plane to the near plane through e we
     // calculate the plane A with the three points
@@ -644,7 +644,7 @@ osg::Vec3d LispSM::getZ0_ls
     return v;
 }
 
-double LispSM::calcNoptGeneral(const osg::Matrix lightSpace, const osg::BoundingBox&B_ls) const
+double LispSM::calcNoptGeneral(const osg::Matrix lightSpace, const osg::BoundingBox &B_ls) const
 {
     const osg::Matrix &eyeView      = getViewMatrix();
     const osg::Matrix invLightSpace = osg::Matrix::inverse(lightSpace);
@@ -723,7 +723,7 @@ double LispSM::calcNoptOld(const double gamma_) const
     return N;
 }
 
-double LispSM::getN(const osg::Matrix lightSpace, const osg::BoundingBox&B_ls) const
+double LispSM::getN(const osg::Matrix lightSpace, const osg::BoundingBox &B_ls) const
 {
     if (getUseFormula())
     {
@@ -738,7 +738,7 @@ double LispSM::getN(const osg::Matrix lightSpace, const osg::BoundingBox&B_ls) c
     }
 }
 // this is the algorithm discussed in the article
-osg::Matrix LispSM::getLispSmMtx(const osg::Matrix&lightSpace) const
+osg::Matrix LispSM::getLispSmMtx(const osg::Matrix &lightSpace) const
 {
     const osg::BoundingBox B_ls = _hull.computeBoundingBox(lightSpace);
 
@@ -781,7 +781,7 @@ osg::Matrix LispSM::getLispSmMtx(const osg::Matrix&lightSpace) const
     return projectionCenter * P;
 }
 
-osg::Vec3d LispSM::getProjViewDir_ls(const osg::Matrix&lightSpace) const
+osg::Vec3d LispSM::getProjViewDir_ls(const osg::Matrix &lightSpace) const
 {
     // get the point in the LVS volume that is nearest to the camera
     const osg::Vec3d e = _E;
@@ -816,7 +816,7 @@ osg::Vec3d LispSM::getProjViewDir_ls(const osg::Matrix&lightSpace) const
 }
 
 void LispSM::updateLightMtx
-    (osg::Matrix&lightView, osg::Matrix&lightProj) const
+    (osg::Matrix &lightView, osg::Matrix &lightProj) const
 {
     // calculate standard light space for spot or directional lights
     // this routine returns two matrices:
@@ -910,8 +910,8 @@ void LightSpacePerspectiveShadowMapAlgorithm::operator()
     lispsm->setLightDir(lightDir);
 
 
-    osg::Matrix&proj = cameraShadow->getProjectionMatrix();
-    double     l, r, b, t, n, f;
+    osg::Matrix &proj = cameraShadow->getProjectionMatrix();
+    double      l, r, b, t, n, f;
     if (proj.getOrtho(l, r, b, t, n, f))
     {
         osg::Vec3d camPosInLightSpace =

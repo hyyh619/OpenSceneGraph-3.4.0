@@ -20,7 +20,7 @@ GStreamerImageStream::GStreamerImageStream() :
     _loop = g_main_loop_new(NULL, FALSE);
 }
 
-GStreamerImageStream::GStreamerImageStream(const GStreamerImageStream&image, const osg::CopyOp&copyop) :
+GStreamerImageStream::GStreamerImageStream(const GStreamerImageStream &image, const osg::CopyOp &copyop) :
     osg::ImageStream(image, copyop),
     _loop(0),
     _pipeline(0),
@@ -49,7 +49,7 @@ GStreamerImageStream::~GStreamerImageStream()
     free(_internal_buffer);
 }
 
-bool GStreamerImageStream::open(const std::string&filename)
+bool GStreamerImageStream::open(const std::string &filename)
 {
     setFileName(filename);
 

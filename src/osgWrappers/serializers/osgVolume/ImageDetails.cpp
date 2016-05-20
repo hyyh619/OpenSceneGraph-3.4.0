@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkMatrix(const osgVolume::ImageDetails&details)
+static bool checkMatrix(const osgVolume::ImageDetails &details)
 {
     return details.getMatrix() != NULL;
 }
 
-static bool readMatrix(osgDB::InputStream&is, osgVolume::ImageDetails&details)
+static bool readMatrix(osgDB::InputStream &is, osgVolume::ImageDetails &details)
 {
     osg::Matrixd matrix; is >> matrix;
 
@@ -16,7 +16,7 @@ static bool readMatrix(osgDB::InputStream&is, osgVolume::ImageDetails&details)
     return true;
 }
 
-static bool writeMatrix(osgDB::OutputStream&os, const osgVolume::ImageDetails&details)
+static bool writeMatrix(osgDB::OutputStream &os, const osgVolume::ImageDetails &details)
 {
     os << *(details.getMatrix()) << std::endl;
     return true;

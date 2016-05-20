@@ -57,10 +57,10 @@ struct InstanceLOD
     InstanceLOD()
         : bbMin(FLT_MAX, FLT_MAX, FLT_MAX, 1.0f), bbMax(-FLT_MAX, -FLT_MAX, -FLT_MAX, 1.0f)
     {}
-    InstanceLOD(const InstanceLOD&iLod)
+    InstanceLOD(const InstanceLOD &iLod)
         : bbMin(iLod.bbMin), bbMax(iLod.bbMax), indirectTargetParams(iLod.indirectTargetParams), distances(iLod.distances)
     {}
-    InstanceLOD&operator=(const InstanceLOD&iLod)
+    InstanceLOD&operator=(const InstanceLOD &iLod)
     {
         if (&iLod != this)
         {
@@ -73,7 +73,7 @@ struct InstanceLOD
         return *this;
     }
 
-    inline void setBoundingBox(const osg::BoundingBox&bbox)
+    inline void setBoundingBox(const osg::BoundingBox &bbox)
     {
         bbMin = osg::Vec4f(bbox.xMin(), bbox.yMin(), bbox.zMin(), 1.0f);
         bbMax = osg::Vec4f(bbox.xMax(), bbox.yMax(), bbox.zMax(), 1.0f);
@@ -100,13 +100,13 @@ struct InstanceType
         for (unsigned int i = 0; i < OSGGPUCULL_MAXIMUM_LOD_NUMBER; ++i)
             lods[i] = InstanceLOD();
     }
-    InstanceType(const InstanceType&iType)
+    InstanceType(const InstanceType &iType)
         : bbMin(iType.bbMin), bbMax(iType.bbMax), params(iType.params)
     {
         for (unsigned int i = 0; i < OSGGPUCULL_MAXIMUM_LOD_NUMBER; ++i)
             lods[i] = iType.lods[i];
     }
-    InstanceType&operator=(const InstanceType&iType)
+    InstanceType&operator=(const InstanceType &iType)
     {
         if (&iType != this)
         {
@@ -120,7 +120,7 @@ struct InstanceType
 
         return *this;
     }
-    inline void setLodDefinition(unsigned int i, unsigned int targetID, unsigned int indexInTarget, const osg::Vec4&distance, unsigned int offsetInTarget, unsigned int maxQuantity, const osg::BoundingBox&lodBBox)
+    inline void setLodDefinition(unsigned int i, unsigned int targetID, unsigned int indexInTarget, const osg::Vec4 &distance, unsigned int offsetInTarget, unsigned int maxQuantity, const osg::BoundingBox &lodBBox)
     {
         if (i >= OSGGPUCULL_MAXIMUM_LOD_NUMBER)
             return;
@@ -131,14 +131,14 @@ struct InstanceType
         lods[i].setBoundingBox(lodBBox);
         expandBy(lodBBox);
     }
-    inline void expandBy(const osg::BoundingBox&bbox)
+    inline void expandBy(const osg::BoundingBox &bbox)
     {
         osg::BoundingBox myBBox = getBoundingBox();
 
         myBBox.expandBy(bbox);
         setBoundingBox(myBBox);
     }
-    inline void setBoundingBox(const osg::BoundingBox&bbox)
+    inline void setBoundingBox(const osg::BoundingBox &bbox)
     {
         bbMin = osg::Vec4f(bbox.xMin(), bbox.yMin(), bbox.zMin(), 1.0f);
         bbMax = osg::Vec4f(bbox.xMax(), bbox.yMax(), bbox.zMax(), 1.0f);
@@ -227,7 +227,7 @@ struct IndirectTarget
         instanceTarget->setUsageHint(GL_DYNAMIC_DRAW);
         instanceTarget->bindToImageUnit(OSGGPUCULL_MAXIMUM_INDIRECT_TARGET_NUMBER + index, osg::Texture::READ_WRITE);
     }
-    void addIndirectCommandData(const std::string&uniformNamePrefix, int index, osg::StateSet *stateset)
+    void addIndirectCommandData(const std::string &uniformNamePrefix, int index, osg::StateSet *stateset)
     {
         std::string  uniformName = uniformNamePrefix + char( '0' + index );
         osg::Uniform *uniform    = new osg::Uniform(uniformName.c_str(), (int)index);
@@ -235,7 +235,7 @@ struct IndirectTarget
         stateset->addUniform(uniform);
         stateset->setTextureAttribute(index, indirectCommandTextureBuffer.get());
     }
-    void addIndirectTargetData(bool cullPhase, const std::string&uniformNamePrefix, int index, osg::StateSet *stateset)
+    void addIndirectTargetData(bool cullPhase, const std::string &uniformNamePrefix, int index, osg::StateSet *stateset)
     {
         std::string uniformName;
 
@@ -248,7 +248,7 @@ struct IndirectTarget
         stateset->addUniform(uniform);
         stateset->setTextureAttribute(OSGGPUCULL_MAXIMUM_INDIRECT_TARGET_NUMBER + index, instanceTarget.get());
     }
-    void addDrawProgram(const std::string&uniformBlockName, osg::StateSet *stateset)
+    void addDrawProgram(const std::string &uniformBlockName, osg::StateSet *stateset)
     {
         drawProgram->addBindUniformBlock(uniformBlockName, 1);
         stateset->setAttributeAndModes(drawProgram.get(), osg::StateAttribute::ON);
@@ -288,7 +288,7 @@ struct GPUCullData
 
         targets[index] = IndirectTarget(agv, targetDrawProgram);
     }
-    bool registerType(unsigned int typeID, unsigned int targetID, osg::Node *node, const osg::Vec4&lodDistances, float maxDensityPerSquareKilometer)
+    bool registerType(unsigned int typeID, unsigned int targetID, osg::Node *node, const osg::Vec4 &lodDistances, float maxDensityPerSquareKilometer)
     {
         if (typeID >= instanceTypes->getData().size())
             instanceTypes->getData().resize(typeID + 1);
@@ -332,8 +332,8 @@ struct GPUCullData
 
         for (unsigned int i = 0; i < instanceTypes->getData().size(); ++i)
         {
-            InstanceType&iType = instanceTypes->getData().at(i);
-            int         sum    = 0;
+            InstanceType &iType = instanceTypes->getData().at(i);
+            int          sum    = 0;
             OSG_INFO << "Type " << i << " : ( ";
             int lodCount = iType.params.x();
 
@@ -353,7 +353,7 @@ struct GPUCullData
         {
             for (unsigned j = 0; j < it->second.indirectCommands->getData().size(); ++j)
             {
-                DrawArraysIndirectCommand&iComm = it->second.indirectCommands->getData().at(j);
+                DrawArraysIndirectCommand &iComm = it->second.indirectCommands->getData().at(j);
                 OSG_INFO << "(" << iComm.first << " " << iComm.primCount << " " << iComm.count << ") ";
             }
 
@@ -381,7 +381,7 @@ struct GPUCullData
 // to describe color, waving amplitude, waving frequency and waving offset )
 struct StaticInstance
 {
-    StaticInstance(unsigned int typeID, unsigned int id, const osg::Matrixf&m, const osg::Vec4&params)
+    StaticInstance(unsigned int typeID, unsigned int id, const osg::Matrixf &m, const osg::Vec4 &params)
         : position(m), extraParams(params), idParams(typeID, id, 0, 0)
     {}
     osg::Vec3d getPosition() const
@@ -400,7 +400,7 @@ const unsigned int OSGGPUCULL_MAXIMUM_BONES_NUMBER = 8;
 
 struct DynamicInstance
 {
-    DynamicInstance(unsigned int typeID, unsigned int id, const osg::Matrixf&m, const osg::Vec4&params)
+    DynamicInstance(unsigned int typeID, unsigned int id, const osg::Matrixf &m, const osg::Vec4 &params)
         : position(m), extraParams(params), idParams(typeID, id, 0, 0)
     {
         for (unsigned int i = 0; i < OSGGPUCULL_MAXIMUM_BONES_NUMBER; ++i)
@@ -426,7 +426,7 @@ typedef std::vector<osg::ref_ptr<InstanceCell<T> > > InstanceCellList;
 
 InstanceCell() : _parent(0) {}
 
-InstanceCell(osg::BoundingBox&bb) : _parent(0), _bb(bb) {}
+InstanceCell(osg::BoundingBox &bb) : _parent(0), _bb(bb) {}
 
 void addCell(InstanceCell *cell)
 {
@@ -435,7 +435,7 @@ void addCell(InstanceCell *cell)
 
 void computeBound();
 
-bool contains(const osg::Vec3&position) const
+bool contains(const osg::Vec3 &position) const
 {
     return _bb.contains(position);
 }
@@ -607,7 +607,7 @@ void InstanceCell<T>::bin()
 }
 
 // Every geometry in the static instance tree stores matrix and additional parameters on the vertex attributtes number 10-15.
-osg::Geometry* buildGPUCullGeometry(const std::vector<StaticInstance>&instances)
+osg::Geometry* buildGPUCullGeometry(const std::vector<StaticInstance> &instances)
 {
     osg::Vec3Array *vertexArray = new osg::Vec3Array;
 
@@ -651,7 +651,7 @@ osg::Geometry* buildGPUCullGeometry(const std::vector<StaticInstance>&instances)
 }
 
 template<typename T>
-osg::Node* createInstanceGraph(InstanceCell<T> *cell, const osg::BoundingBox&objectsBBox)
+osg::Node* createInstanceGraph(InstanceCell<T> *cell, const osg::BoundingBox &objectsBBox)
 {
     bool needGroup     = !(cell->_cells.empty());
     bool needInstances = !(cell->_instances.empty());
@@ -696,7 +696,7 @@ osg::Node* createInstanceGraph(InstanceCell<T> *cell, const osg::BoundingBox&obj
 }
 
 template<typename T>
-osg::Node* createInstanceTree(const std::vector<T>&instances, const osg::BoundingBox&objectsBBox, unsigned int maxNumInstancesPerCell)
+osg::Node* createInstanceTree(const std::vector<T> &instances, const osg::BoundingBox &objectsBBox, unsigned int maxNumInstancesPerCell)
 {
     osg::ref_ptr<InstanceCell<T> > rootCell = new InstanceCell<T>();
 
@@ -762,7 +762,7 @@ struct InvokeMemoryBarrier : public osg::Drawable::DrawCallback
     InvokeMemoryBarrier(GLbitfield barriers)
         : _barriers(barriers)
     {}
-    virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+    virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
     {
         DrawIndirectGLExtensions *ext = DrawIndirectGLExtensions::getExtensions(renderInfo.getContextID(), true);
 
@@ -772,7 +772,7 @@ struct InvokeMemoryBarrier : public osg::Drawable::DrawCallback
     GLbitfield _barriers;
 };
 
-osg::Program* createProgram(const std::string&name, const std::string&vertexSource, const std::string&fragmentSource)
+osg::Program* createProgram(const std::string &name, const std::string &vertexSource, const std::string &fragmentSource)
 {
     osg::ref_ptr<osg::Program> program = new osg::Program;
 
@@ -794,7 +794,7 @@ float random(float min, float max)
     return min + (max - min) * (float)rand() / (float)RAND_MAX;
 }
 
-osg::Group* createConiferTree(float detailRatio, const osg::Vec4&leafColor, const osg::Vec4&trunkColor)
+osg::Group* createConiferTree(float detailRatio, const osg::Vec4 &leafColor, const osg::Vec4 &trunkColor)
 {
     osg::ref_ptr<osg::TessellationHints> tessHints = new osg::TessellationHints;
 
@@ -818,7 +818,7 @@ osg::Group* createConiferTree(float detailRatio, const osg::Vec4&leafColor, cons
 // Vertex size in all objects is controlled using single float parameter ( detailRatio )
 // Thanks to this ( and "--triangle-modifier" application parameter ) we may experiment with
 // triangle quantity of the scene and how it affects the time statistics
-osg::Group* createDecidousTree(float detailRatio, const osg::Vec4&leafColor, const osg::Vec4&trunkColor)
+osg::Group* createDecidousTree(float detailRatio, const osg::Vec4 &leafColor, const osg::Vec4 &trunkColor)
 {
     osg::ref_ptr<osg::TessellationHints> tessHints = new osg::TessellationHints;
 
@@ -839,7 +839,7 @@ osg::Group* createDecidousTree(float detailRatio, const osg::Vec4&leafColor, con
 }
 
 
-osg::Group* createSimpleHouse(float detailRatio, const osg::Vec4&buildingColor, const osg::Vec4&chimneyColor)
+osg::Group* createSimpleHouse(float detailRatio, const osg::Vec4 &buildingColor, const osg::Vec4 &chimneyColor)
 {
     osg::ref_ptr<osg::TessellationHints> tessHints = new osg::TessellationHints;
 
@@ -872,7 +872,7 @@ osg::Group* createSimpleHouse(float detailRatio, const osg::Vec4&buildingColor, 
     return root.release();
 }
 
-osg::MatrixTransform* createPropeller(float detailRatio, int propNum, float propRadius, const osg::Vec4&color)
+osg::MatrixTransform* createPropeller(float detailRatio, int propNum, float propRadius, const osg::Vec4 &color)
 {
     osg::ref_ptr<osg::TessellationHints> tessHints = new osg::TessellationHints;
 
@@ -899,7 +899,7 @@ osg::MatrixTransform* createPropeller(float detailRatio, int propNum, float prop
 }
 
 
-osg::Group* createBlimp(float detailRatio, const osg::Vec4&hullColor, const osg::Vec4&propColor)
+osg::Group* createBlimp(float detailRatio, const osg::Vec4 &hullColor, const osg::Vec4 &propColor)
 {
     osg::ref_ptr<osg::TessellationHints> tessHints = new osg::TessellationHints;
 
@@ -938,7 +938,7 @@ osg::Group* createBlimp(float detailRatio, const osg::Vec4&hullColor, const osg:
     return root.release();
 }
 
-osg::Group* createCar(float detailRatio, const osg::Vec4&hullColor, const osg::Vec4&wheelColor)
+osg::Group* createCar(float detailRatio, const osg::Vec4 &hullColor, const osg::Vec4 &wheelColor)
 {
     osg::ref_ptr<osg::TessellationHints> tessHints = new osg::TessellationHints;
 
@@ -985,7 +985,7 @@ osg::Group* createCar(float detailRatio, const osg::Vec4&hullColor, const osg::V
     return root.release();
 }
 
-osg::Group* createAirplane(float detailRatio, const osg::Vec4&hullColor, const osg::Vec4&propColor)
+osg::Group* createAirplane(float detailRatio, const osg::Vec4 &hullColor, const osg::Vec4 &propColor)
 {
     osg::ref_ptr<osg::TessellationHints> tessHints = new osg::TessellationHints;
 
@@ -1033,7 +1033,7 @@ osg::Group* createAirplane(float detailRatio, const osg::Vec4&hullColor, const o
 // Indirect command is bound as a GL_DRAW_INDIRECT_BUFFER and glDrawArraysIndirect() function is called. Thanks to this - proper number
 // of instances is rendered without time-consuming GPU->CPU roundtrip. Draw shader renders an aggregate geometry - an osg::Geometry object
 // that contains all objects to render ( for specific indirect target ).
-void createStaticRendering(osg::Group *root, GPUCullData&gpuData, const osg::Vec2&minArea, const osg::Vec2&maxArea, unsigned int maxNumInstancesPerCell, float lodModifier, float densityModifier, float triangleModifier, bool exportInstanceObjects)
+void createStaticRendering(osg::Group *root, GPUCullData &gpuData, const osg::Vec2 &minArea, const osg::Vec2 &maxArea, unsigned int maxNumInstancesPerCell, float lodModifier, float densityModifier, float triangleModifier, bool exportInstanceObjects)
 {
     // Creating objects using ShapeToGeometry - its vertex count my vary according to triangleModifier variable.
     // Every object may be stored to file if you want to inspect it ( to show how many vertices it has for example ).
@@ -1189,7 +1189,7 @@ void createStaticRendering(osg::Group *root, GPUCullData&gpuData, const osg::Vec
 // Dynamic instances are stored in a single osg::Geometry. This geometry holds only a "pointer"
 // to texture buffer that contains all info about particular instance. When we animate instances
 // we only change information in this texture buffer
-osg::Geometry* buildGPUCullGeometry(const std::vector<DynamicInstance>&instances)
+osg::Geometry* buildGPUCullGeometry(const std::vector<DynamicInstance> &instances)
 {
     osg::Vec3Array  *vertexArray = new osg::Vec3Array;
     osg::Vec4iArray *attrib10    = new osg::Vec4iArray;
@@ -1222,7 +1222,7 @@ osg::Geometry* buildGPUCullGeometry(const std::vector<DynamicInstance>&instances
 // Object parts are animated ( wheels and propellers )
 struct AnimateObjectsCallback : public osg::Drawable::UpdateCallback
 {
-    AnimateObjectsCallback(osg::BufferTemplate<std::vector<DynamicInstance> > *instances, osg::Image *instancesImage, const osg::BoundingBox&bbox, unsigned int quantityPerType)
+    AnimateObjectsCallback(osg::BufferTemplate<std::vector<DynamicInstance> > *instances, osg::Image *instancesImage, const osg::BoundingBox &bbox, unsigned int quantityPerType)
         : _instances(instances), _instancesImage(instancesImage), _bbox(bbox), _quantityPerType(quantityPerType), _lastTime(0.0)
     {
         _destination = new osg::Vec2Array;
@@ -1321,7 +1321,7 @@ struct AnimateObjectsCallback : public osg::Drawable::UpdateCallback
         (*vertexArray)[index] = newPosition;
         return newPosition;
     }
-    void setRotationUsingRotSpeed(unsigned int index, unsigned int boneIndex, const osg::Matrix&zeroMatrix, double currentTime, double rotSpeed)
+    void setRotationUsingRotSpeed(unsigned int index, unsigned int boneIndex, const osg::Matrix &zeroMatrix, double currentTime, double rotSpeed)
     {
         // setRotationUsingRotSpeed() is a very unoptimally writen ( because it uses osg::Matrix::inverse() ),
         // and that is done on purpose : in real life scenario functions making updates may take long time
@@ -1348,7 +1348,7 @@ struct AnimateObjectsCallback : public osg::Drawable::UpdateCallback
 // - draw shader shows how to animate objects using "bones". Each vertex in rendered geometry is associated with single "bone". Such association is
 //   sufficient to animate mechanical objects. It is also possible to animate organic objects ( large crowds of people ) but it is far beyond
 //   the scope of this example.
-void createDynamicRendering(osg::Group *root, GPUCullData&gpuData, osg::BufferTemplate<std::vector<DynamicInstance> > *instances, const osg::Vec2&minArea, const osg::Vec2&maxArea, float lodModifier, float densityModifier, float triangleModifier, bool exportInstanceObjects)
+void createDynamicRendering(osg::Group *root, GPUCullData &gpuData, osg::BufferTemplate<std::vector<DynamicInstance> > *instances, const osg::Vec2 &minArea, const osg::Vec2 &maxArea, float lodModifier, float densityModifier, float triangleModifier, bool exportInstanceObjects)
 {
     // Creating objects using ShapeToGeometry - its vertex count my vary according to triangleModifier variable.
     // Every object may be stored to file if you want to inspect it ( to show how many vertices it has for example ).

@@ -76,7 +76,7 @@ T* get() const      // never throws
     return px;
 }
 
-void swap(scoped_array&b)       // never throws
+void swap(scoped_array &b)       // never throws
 {
     T *tmp = b.px;
 
@@ -87,7 +87,7 @@ void swap(scoped_array&b)       // never throws
 
 
 
-void copyLib3dsMatrixToOsgMatrix(osg::Matrix&osg_matrix, const Lib3dsMatrix lib3ds_matrix)
+void copyLib3dsMatrixToOsgMatrix(osg::Matrix &osg_matrix, const Lib3dsMatrix lib3ds_matrix)
 {
     osg_matrix.set(
         lib3ds_matrix[0][0], lib3ds_matrix[0][1], lib3ds_matrix[0][2], lib3ds_matrix[0][3],
@@ -124,7 +124,7 @@ osg::Quat copyLib3dsQuatToOsgQuat(const float quat[4])
 class PrintVisitor : public NodeVisitor
 {
 public:
-PrintVisitor(std::ostream&out) :
+PrintVisitor(std::ostream &out) :
     NodeVisitor(NodeVisitor::TRAVERSE_ALL_CHILDREN),
     _out(out)
 {
@@ -146,7 +146,7 @@ inline void writeIndent()
         _out << " ";
 }
 
-virtual void apply(Node&node)
+virtual void apply(Node &node)
 {
     moveIn();
     writeIndent(); _out << node.className() << std::endl;
@@ -154,40 +154,40 @@ virtual void apply(Node&node)
     moveOut();
 }
 
-virtual void apply(Geode&node)
+virtual void apply(Geode &node)
 {
     apply((Node&)node);
 }
-virtual void apply(Billboard&node)
+virtual void apply(Billboard &node)
 {
     apply((Geode&)node);
 }
-virtual void apply(LightSource&node)
+virtual void apply(LightSource &node)
 {
     apply((Group&)node);
 }
-virtual void apply(ClipNode&node)
+virtual void apply(ClipNode &node)
 {
     apply((Group&)node);
 }
 
-virtual void apply(Group&node)
+virtual void apply(Group &node)
 {
     apply((Node&)node);
 }
-virtual void apply(Transform&node)
+virtual void apply(Transform &node)
 {
     apply((Group&)node);
 }
-virtual void apply(Projection&node)
+virtual void apply(Projection &node)
 {
     apply((Group&)node);
 }
-virtual void apply(Switch&node)
+virtual void apply(Switch &node)
 {
     apply((Group&)node);
 }
-virtual void apply(LOD&node)
+virtual void apply(LOD &node)
 {
     apply((Group&)node);
 }
@@ -199,9 +199,9 @@ PrintVisitor&operator =(const PrintVisitor&)
     return *this;
 }
 
-std::ostream&_out;
-int         _indent;
-int         _step;
+std::ostream &_out;
+int          _indent;
+int          _step;
 };
 
 /// Possible options:
@@ -219,25 +219,25 @@ virtual const char* className() const
     return "3DS Auto Studio Reader/Writer";
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const;
-virtual ReadResult readNode(std::istream&fin, const Options *options) const;
-virtual ReadResult doReadNode(std::istream&fin, const Options *options, const std::string&fileNamelib3ds) const;               ///< Subfunction of readNode()s functions.
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const;
+virtual ReadResult readNode(std::istream &fin, const Options *options) const;
+virtual ReadResult doReadNode(std::istream &fin, const Options *options, const std::string &fileNamelib3ds) const;               ///< Subfunction of readNode()s functions.
 
 virtual WriteResult writeNode(const osg::Node& /*node*/, const std::string& /*fileName*/, const Options* = NULL) const;
 virtual WriteResult writeNode(const osg::Node& /*node*/, std::ostream& /*fout*/, const Options* = NULL) const;
-virtual WriteResult doWriteNode(const osg::Node& /*node*/, std::ostream& /*fout*/, const Options*, const std::string&fileNamelib3ds) const;
+virtual WriteResult doWriteNode(const osg::Node& /*node*/, std::ostream& /*fout*/, const Options*, const std::string &fileNamelib3ds) const;
 
 protected:
-ReadResult constructFrom3dsFile(Lib3dsFile *f, const std::string&filename, const Options *options) const;
+ReadResult constructFrom3dsFile(Lib3dsFile *f, const std::string &filename, const Options *options) const;
 
-bool createFileObject(const osg::Node&node, Lib3dsFile *file3ds, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const;
+bool createFileObject(const osg::Node &node, Lib3dsFile *file3ds, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const;
 
 /// An OSG state set with the original 3DS material attached (used to get info such as UV scaling & offset)
 struct StateSetInfo
 {
     StateSetInfo(osg::StateSet *stateset = NULL, Lib3dsMaterial *lib3dsmat = NULL) : stateset(stateset), lib3dsmat(lib3dsmat) {}
-    StateSetInfo(const StateSetInfo&v) : stateset(v.stateset), lib3dsmat(v.lib3dsmat) {}
-    StateSetInfo&operator=(const StateSetInfo&v)
+    StateSetInfo(const StateSetInfo &v) : stateset(v.stateset), lib3dsmat(v.lib3dsmat) {}
+    StateSetInfo&operator=(const StateSetInfo &v)
     {
         stateset = v.stateset; lib3dsmat = v.lib3dsmat; return *this;
     }
@@ -255,23 +255,23 @@ typedef std::vector<StateSetInfo> StateSetMap;
 typedef std::vector<int> FaceList;
 typedef std::map<std::string, osg::StateSet*> GeoStateMap;
 
-osg::Texture2D* createTexture(Lib3dsTextureMap *texture, const char *label, bool&transparancy);
+osg::Texture2D* createTexture(Lib3dsTextureMap *texture, const char *label, bool &transparancy);
 StateSetInfo createStateSet(Lib3dsMaterial *materials);
-osg::Drawable* createDrawable(Lib3dsMesh *meshes, FaceList&faceList, const osg::Matrix *matrix, StateSetInfo&ssi, bool smoothVertexNormals);
+osg::Drawable* createDrawable(Lib3dsMesh *meshes, FaceList &faceList, const osg::Matrix *matrix, StateSetInfo &ssi, bool smoothVertexNormals);
 
 std::string _directory;
 bool        _useSmoothingGroups;
 
 // MIKEC
-osg::Node* processMesh(StateSetMap&drawStateMap, osg::Group *parent, Lib3dsMesh *mesh, const osg::Matrix *matrix);
-osg::Node* processNode(StateSetMap&drawStateMap, Lib3dsFile *f, Lib3dsNode *node);
+osg::Node* processMesh(StateSetMap &drawStateMap, osg::Group *parent, Lib3dsMesh *mesh, const osg::Matrix *matrix);
+osg::Node* processNode(StateSetMap &drawStateMap, Lib3dsFile *f, Lib3dsNode *node);
 private:
 const osgDB::ReaderWriter::Options *options;
 bool                               noMatrixTransforms; ///< Should the plugin apply matrices into the mesh vertices ("old behaviour"), instead of restoring matrices ("new behaviour")?
 bool                               checkForEspilonIdentityMatrices;
 bool                               restoreMatrixTransformsNoMeshes;
 typedef std::map<unsigned int, FaceList> SmoothingFaceMap;
-void addDrawableFromFace(osg::Geode *geode, FaceList&faceList, Lib3dsMesh *mesh, const osg::Matrix *matrix, StateSetInfo&ssi);
+void addDrawableFromFace(osg::Geode *geode, FaceList &faceList, Lib3dsMesh *mesh, const osg::Matrix *matrix, StateSetInfo &ssi);
 
 typedef std::map<std::string, osg::ref_ptr<osg::Texture2D> > TexturesMap;                // Should be an unordered map (faster)
 TexturesMap texturesMap;
@@ -425,10 +425,10 @@ void print(Lib3dsNode *node, int level)
     }
 }
 
-void ReaderWriter3DS::ReaderObject::addDrawableFromFace(osg::Geode *geode, FaceList&faceList,
+void ReaderWriter3DS::ReaderObject::addDrawableFromFace(osg::Geode *geode, FaceList &faceList,
                                                         Lib3dsMesh *mesh,
                                                         const osg::Matrix *matrix,
-                                                        StateSetInfo&ssi)
+                                                        StateSetInfo &ssi)
 {
     if (_useSmoothingGroups)
     {
@@ -487,7 +487,7 @@ void ReaderWriter3DS::ReaderObject::addDrawableFromFace(osg::Geode *geode, FaceL
 // Transforms points by matrix if 'matrix' is not NULL
 // Creates a Geode and Geometry (as parent,child) and adds the Geode to 'parent' parameter iff 'parent' is non-NULL
 // Returns ptr to the Geode
-osg::Node* ReaderWriter3DS::ReaderObject::processMesh(StateSetMap&drawStateMap, osg::Group *parent, Lib3dsMesh *mesh, const osg::Matrix *matrix)
+osg::Node* ReaderWriter3DS::ReaderObject::processMesh(StateSetMap &drawStateMap, osg::Group *parent, Lib3dsMesh *mesh, const osg::Matrix *matrix)
 {
     typedef std::vector<FaceList> MaterialFaceMap;
     MaterialFaceMap materialFaceMap;
@@ -537,7 +537,7 @@ osg::Node* ReaderWriter3DS::ReaderObject::processMesh(StateSetMap&drawStateMap, 
 
 
 /// Returns true if a matrix is 'almost' identity, meaning that the difference between each value and the corresponding identity value is less than an epsilon value.
-bool isIdentityEquivalent(const osg::Matrix&mat, osg::Matrix::value_type epsilon = 1e-6)
+bool isIdentityEquivalent(const osg::Matrix &mat, osg::Matrix::value_type epsilon = 1e-6)
 {
     return osg::equivalent(mat(0, 0), 1, epsilon) && osg::equivalent(mat(0, 1), 0, epsilon) && osg::equivalent(mat(0, 2), 0, epsilon) && osg::equivalent(mat(0, 3), 0, epsilon) &&
            osg::equivalent(mat(1, 0), 0, epsilon) && osg::equivalent(mat(1, 1), 1, epsilon) && osg::equivalent(mat(1, 2), 0, epsilon) && osg::equivalent(mat(1, 3), 0, epsilon) &&
@@ -559,7 +559,7 @@ bool isIdentityEquivalent(const osg::Matrix&mat, osg::Matrix::value_type epsilon
     Transform the node by the node matrix, which does the orientation about the pivot point, (and currently) transforms the object back by a translation to the PP.
 
  */
-osg::Node* ReaderWriter3DS::ReaderObject::processNode(StateSetMap&drawStateMap, Lib3dsFile *f, Lib3dsNode *node)
+osg::Node* ReaderWriter3DS::ReaderObject::processNode(StateSetMap &drawStateMap, Lib3dsFile *f, Lib3dsNode *node)
 {
     // Get mesh
     Lib3dsMeshInstanceNode *object = (node->type == LIB3DS_NODE_MESH_INSTANCE) ? reinterpret_cast<Lib3dsMeshInstanceNode*>(node) : NULL;
@@ -794,7 +794,7 @@ static void fileio_log_func(void *self, Lib3dsLogLevel level, int indent, const 
 }
 
 
-osgDB::ReaderWriter::ReadResult ReaderWriter3DS::readNode(std::istream&fin,  const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriter3DS::readNode(std::istream &fin,  const osgDB::ReaderWriter::Options *options) const
 {
     std::string optFileName;
 
@@ -808,7 +808,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriter3DS::readNode(std::istream&fin,  con
     return doReadNode(fin, options, optFileName);
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriter3DS::doReadNode(std::istream&fin,  const osgDB::ReaderWriter::Options *options, const std::string&fileNamelib3ds) const
+osgDB::ReaderWriter::ReadResult ReaderWriter3DS::doReadNode(std::istream &fin,  const osgDB::ReaderWriter::Options *options, const std::string &fileNamelib3ds) const
 {
     osg::ref_ptr<Options> local_opt = options ? static_cast<Options*>(options->clone(osg::CopyOp::SHALLOW_COPY)) : new Options;
 
@@ -835,7 +835,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriter3DS::doReadNode(std::istream&fin,  c
     return(result);
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriter3DS::readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriter3DS::readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -871,7 +871,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriter3DS::readNode(const std::string&file
  */
 }
 
-osgDB::ReaderWriter::ReadResult ReaderWriter3DS::constructFrom3dsFile(Lib3dsFile *f, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriter3DS::constructFrom3dsFile(Lib3dsFile *f, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     if (f == NULL)
         return ReadResult::FILE_NOT_HANDLED;
@@ -1012,12 +1012,12 @@ bool isNumber(float x)
  */
 static void addVertex(
     const Lib3dsMesh *mesh,
-    RemappedFace&remappedFace,
+    RemappedFace &remappedFace,
     unsigned int i,
     osg::Geometry *geometry,
-    std::vector<int>&origToNewMapping,
-    std::vector<int>&splitVertexChain,
-    const VertexParams&params)
+    std::vector<int> &origToNewMapping,
+    std::vector<int> &splitVertexChain,
+    const VertexParams &params)
 {
     osg::Vec3Array *vertices  = (osg::Vec3Array*)geometry->getVertexArray();
     osg::Vec3Array *normals   = (osg::Vec3Array*)geometry->getNormalArray();
@@ -1113,11 +1113,11 @@ static void addVertex(
 
 static bool addFace(
     const Lib3dsMesh *mesh,
-    RemappedFace&remappedFace,
+    RemappedFace &remappedFace,
     osg::Geometry *geometry,
-    std::vector<int>&origToNewMapping,
-    std::vector<int>&splitVertexChain,
-    const VertexParams&params)
+    std::vector<int> &origToNewMapping,
+    std::vector<int> &splitVertexChain,
+    const VertexParams &params)
 {
     if (isFaceValid(mesh, remappedFace.face))
     {
@@ -1135,7 +1135,7 @@ static bool addFace(
 }
 
 template<typename Prim>
-void fillTriangles(osg::Geometry&geom, const std::vector<RemappedFace>&remappedFaces, unsigned int numIndices)
+void fillTriangles(osg::Geometry &geom, const std::vector<RemappedFace> &remappedFaces, unsigned int numIndices)
 {
     // if (m->nvertices < std::numeric_limits<unsigned short>::max()) {
     osg::ref_ptr<Prim> elements(new Prim(osg::PrimitiveSet::TRIANGLES, numIndices));
@@ -1144,7 +1144,7 @@ void fillTriangles(osg::Geometry&geom, const std::vector<RemappedFace>&remappedF
 
     for (unsigned int i = 0; i < remappedFaces.size(); ++i)
     {
-        const RemappedFace&remappedFace = remappedFaces[i];
+        const RemappedFace &remappedFace = remappedFaces[i];
         if (remappedFace.face != NULL)
         {
             *(index_itr++) = remappedFace.index[0];
@@ -1160,7 +1160,7 @@ void fillTriangles(osg::Geometry&geom, const std::vector<RemappedFace>&remappedF
 /**
    use matrix to pretransform geometry, or NULL to do nothing
  */
-osg::Drawable* ReaderWriter3DS::ReaderObject::createDrawable(Lib3dsMesh *m, FaceList&faceList, const osg::Matrix *matrix, StateSetInfo&ssi, bool smoothVertexNormals)
+osg::Drawable* ReaderWriter3DS::ReaderObject::createDrawable(Lib3dsMesh *m, FaceList &faceList, const osg::Matrix *matrix, StateSetInfo &ssi, bool smoothVertexNormals)
 {
     // Avoid creating geoms for empty face list because otherwise osg asserts/crashes during render traversal.
     if (faceList.empty())
@@ -1196,7 +1196,7 @@ osg::Drawable* ReaderWriter3DS::ReaderObject::createDrawable(Lib3dsMesh *m, Face
         // Texture 0 parameters (only one texture supported for now)
         if (ssi.lib3dsmat && *(ssi.lib3dsmat->texture1_map.name))     // valid texture = name not empty
         {
-            Lib3dsTextureMap&tex3ds = ssi.lib3dsmat->texture1_map;
+            Lib3dsTextureMap &tex3ds = ssi.lib3dsmat->texture1_map;
             params.scaleUV  = osg::Vec2f(tex3ds.scale[0], tex3ds.scale[1]);
             params.offsetUV = osg::Vec2f(tex3ds.offset[0], tex3ds.offset[1]);
             if (tex3ds.rotation != 0)
@@ -1228,8 +1228,8 @@ osg::Drawable* ReaderWriter3DS::ReaderObject::createDrawable(Lib3dsMesh *m, Face
 
         normal.normalize();
 
-        Lib3dsFace  &face = m->faces[*itr];
-        RemappedFace&rf   = remappedFaces[faceIndex];
+        Lib3dsFace   &face = m->faces[*itr];
+        RemappedFace &rf   = remappedFaces[faceIndex];
         rf.face   = &face;
         rf.normal = normal;
         if (addFace(m, rf, geom, origToNewMapping, splitVertexChain, params))
@@ -1279,7 +1279,7 @@ osg::Drawable* ReaderWriter3DS::ReaderObject::createDrawable(Lib3dsMesh *m, Face
 }
 
 
-osg::Texture2D*  ReaderWriter3DS::ReaderObject::createTexture(Lib3dsTextureMap *texture, const char *label, bool&transparency)
+osg::Texture2D*  ReaderWriter3DS::ReaderObject::createTexture(Lib3dsTextureMap *texture, const char *label, bool &transparency)
 {
     if (texture && *(texture->name))
     {
@@ -1598,7 +1598,7 @@ ReaderWriter3DS::StateSetInfo ReaderWriter3DS::ReaderObject::createStateSet(Lib3
 }
 
 
-osgDB::ReaderWriter::WriteResult ReaderWriter3DS::writeNode(const osg::Node&node, const std::string&fileName, const Options *options) const
+osgDB::ReaderWriter::WriteResult ReaderWriter3DS::writeNode(const osg::Node &node, const std::string &fileName, const Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(fileName);
 
@@ -1627,7 +1627,7 @@ osgDB::ReaderWriter::WriteResult ReaderWriter3DS::writeNode(const osg::Node&node
 }
 
 
-osgDB::ReaderWriter::WriteResult ReaderWriter3DS::writeNode(const osg::Node&node, std::ostream&fout, const Options *options) const
+osgDB::ReaderWriter::WriteResult ReaderWriter3DS::writeNode(const osg::Node &node, std::ostream &fout, const Options *options) const
 {
     // OSG_WARN << "!!WARNING!! 3DS write support is incomplete" << std::endl;
     std::string optFileName;
@@ -1640,7 +1640,7 @@ osgDB::ReaderWriter::WriteResult ReaderWriter3DS::writeNode(const osg::Node&node
     return doWriteNode(node, fout, options, optFileName);
 }
 
-osgDB::ReaderWriter::WriteResult ReaderWriter3DS::doWriteNode(const osg::Node&node, std::ostream&fout, const Options *options, const std::string&fileNamelib3ds) const
+osgDB::ReaderWriter::WriteResult ReaderWriter3DS::doWriteNode(const osg::Node &node, std::ostream &fout, const Options *options, const std::string &fileNamelib3ds) const
 {
     osg::ref_ptr<Options> local_opt = options ? static_cast<Options*>(options->clone(osg::CopyOp::SHALLOW_COPY)) : new Options;
 
@@ -1671,7 +1671,7 @@ osgDB::ReaderWriter::WriteResult ReaderWriter3DS::doWriteNode(const osg::Node&no
     // return ok ? WriteResult(WriteResult::FILE_SAVED) : WriteResult(WriteResult::FILE_NOT_HANDLED);
 }
 
-bool ReaderWriter3DS::createFileObject(const osg::Node&node, Lib3dsFile *file3ds, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+bool ReaderWriter3DS::createFileObject(const osg::Node &node, Lib3dsFile *file3ds, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     plugin3ds::WriterNodeVisitor w(file3ds, fileName, options, osgDB::getFilePath(node.getName()));
 

@@ -17,7 +17,7 @@ CaptureSettings::CaptureSettings() :
     _numberOfFrames(0.0)
 {}
 
-CaptureSettings::CaptureSettings(const CaptureSettings&cs, const osg::CopyOp&copyop) :
+CaptureSettings::CaptureSettings(const CaptureSettings &cs, const osg::CopyOp &copyop) :
     osg::Object(cs, copyop),
     _inputFileName(cs._inputFileName),
     _outputFileName(cs._outputFileName),
@@ -40,7 +40,7 @@ CaptureSettings::CaptureSettings(const CaptureSettings&cs, const osg::CopyOp&cop
     _properties(cs._properties)
 {}
 
-void CaptureSettings::setOutputFileName(const std::string&filename)
+void CaptureSettings::setOutputFileName(const std::string &filename)
 {
     _outputFileName = filename;
 
@@ -83,12 +83,12 @@ bool CaptureSettings::valid() const
 //
 // Serialization support
 //
-static bool checkEventHandlers(const gsc::CaptureSettings&cs)
+static bool checkEventHandlers(const gsc::CaptureSettings &cs)
 {
     return !cs.getEventHandlers().empty();
 }
 
-static bool readEventHandlers(osgDB::InputStream&is, gsc::CaptureSettings&cs)
+static bool readEventHandlers(osgDB::InputStream &is, gsc::CaptureSettings &cs)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -104,10 +104,10 @@ static bool readEventHandlers(osgDB::InputStream&is, gsc::CaptureSettings&cs)
     return true;
 }
 
-static bool writeEventHandlers(osgDB::OutputStream&os, const gsc::CaptureSettings&cs)
+static bool writeEventHandlers(osgDB::OutputStream &os, const gsc::CaptureSettings &cs)
 {
-    const gsc::CaptureSettings::EventHandlers&pl  = cs.getEventHandlers();
-    unsigned int                             size = pl.size();
+    const gsc::CaptureSettings::EventHandlers &pl  = cs.getEventHandlers();
+    unsigned int                              size = pl.size();
 
     os << size << os.BEGIN_BRACKET << std::endl;
 
@@ -120,12 +120,12 @@ static bool writeEventHandlers(osgDB::OutputStream&os, const gsc::CaptureSetting
     return true;
 }
 
-static bool checkProperties(const gsc::CaptureSettings&cs)
+static bool checkProperties(const gsc::CaptureSettings &cs)
 {
     return !cs.getProperties().empty();
 }
 
-static bool readProperties(osgDB::InputStream&is, gsc::CaptureSettings&cs)
+static bool readProperties(osgDB::InputStream &is, gsc::CaptureSettings &cs)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -141,10 +141,10 @@ static bool readProperties(osgDB::InputStream&is, gsc::CaptureSettings&cs)
     return true;
 }
 
-static bool writeProperties(osgDB::OutputStream&os, const gsc::CaptureSettings&cs)
+static bool writeProperties(osgDB::OutputStream &os, const gsc::CaptureSettings &cs)
 {
-    const gsc::CaptureSettings::Properties&pl  = cs.getProperties();
-    unsigned int                          size = pl.size();
+    const gsc::CaptureSettings::Properties &pl  = cs.getProperties();
+    unsigned int                           size = pl.size();
 
     os << size << os.BEGIN_BRACKET << std::endl;
 

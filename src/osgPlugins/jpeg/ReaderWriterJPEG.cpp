@@ -480,7 +480,7 @@ copyScanline(unsigned char *currPtr, unsigned char *from, int cnt)
     return currPtr;
 }
 
-unsigned char* simage_jpeg_load(std::istream&fin,
+unsigned char* simage_jpeg_load(std::istream &fin,
                                 int *width_ret,
                                 int *height_ret,
                                 int *numComponents_ret,
@@ -671,7 +671,7 @@ unsigned char* simage_jpeg_load(std::istream&fin,
 
 class ReaderWriterJPEG : public osgDB::ReaderWriter
 {
-WriteResult::WriteStatus write_JPEG_file(std::ostream&fout, const osg::Image&img, int quality = 100) const
+WriteResult::WriteStatus write_JPEG_file(std::ostream &fout, const osg::Image &img, int quality = 100) const
 {
     if (!img.isDataContiguous())
     {
@@ -857,7 +857,7 @@ virtual const char* className() const
     return "JPEG Image Reader/Writer";
 }
 
-ReadResult readJPGStream(std::istream&fin) const
+ReadResult readJPGStream(std::istream &fin) const
 {
     unsigned char *imageData = NULL;
     int           width_ret;
@@ -973,22 +973,22 @@ ReadResult readJPGStream(std::istream&fin) const
     return pOsgImage.release();
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options = NULL) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options = NULL) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readImage(std::istream&fin, const osgDB::ReaderWriter::Options* = NULL) const
+virtual ReadResult readImage(std::istream &fin, const osgDB::ReaderWriter::Options* = NULL) const
 {
     return readJPGStream(fin);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -1010,7 +1010,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, std::ostream&fout, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, std::ostream &fout, const osgDB::ReaderWriter::Options *options) const
 {
     osg::ref_ptr<osg::Image> tmp_img = new osg::Image(img);
 
@@ -1019,7 +1019,7 @@ virtual WriteResult writeImage(const osg::Image&img, std::ostream&fout, const os
     return ws;
 }
 
-virtual WriteResult writeImage(const osg::Image&img, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &img, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 

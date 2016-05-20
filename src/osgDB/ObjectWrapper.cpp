@@ -61,7 +61,7 @@
 
 using namespace osgDB;
 
-void osgDB::split(const std::string&src, StringList&list, char separator)
+void osgDB::split(const std::string &src, StringList &list, char separator)
 {
     std::string::size_type start = src.find_first_not_of(separator);
 
@@ -85,16 +85,16 @@ void osgDB::split(const std::string&src, StringList&list, char separator)
 //
 // ObjectWrapper
 //
-ObjectWrapper::ObjectWrapper(CreateInstanceFunc *createInstanceFunc, const std::string&name,
-                             const std::string&associates)
+ObjectWrapper::ObjectWrapper(CreateInstanceFunc *createInstanceFunc, const std::string &name,
+                             const std::string &associates)
     :   osg::Referenced(),
     _createInstanceFunc(createInstanceFunc), _name(name), _version(0)
 {
     split(associates, _associates);
 }
 
-ObjectWrapper::ObjectWrapper(CreateInstanceFunc *createInstanceFunc, const std::string&domain, const std::string&name,
-                             const std::string&associates)
+ObjectWrapper::ObjectWrapper(CreateInstanceFunc *createInstanceFunc, const std::string &domain, const std::string &name,
+                             const std::string &associates)
     :   osg::Referenced(),
     _createInstanceFunc(createInstanceFunc), _domain(domain), _name(name), _version(0)
 {
@@ -108,7 +108,7 @@ void ObjectWrapper::addSerializer(BaseSerializer *s, BaseSerializer::Type t)
     _typeList.push_back(t);
 }
 
-void ObjectWrapper::markSerializerAsRemoved(const std::string&name)
+void ObjectWrapper::markSerializerAsRemoved(const std::string &name)
 {
     for (SerializerList::iterator itr = _serializers.begin(); itr != _serializers.end(); ++itr)
     {
@@ -120,7 +120,7 @@ void ObjectWrapper::markSerializerAsRemoved(const std::string&name)
     }
 }
 
-BaseSerializer* ObjectWrapper::getSerializer(const std::string&name)
+BaseSerializer* ObjectWrapper::getSerializer(const std::string &name)
 {
     for (SerializerList::iterator itr = _serializers.begin(); itr != _serializers.end(); ++itr)
     {
@@ -130,8 +130,8 @@ BaseSerializer* ObjectWrapper::getSerializer(const std::string&name)
 
     for (StringList::const_iterator itr = _associates.begin(); itr != _associates.end(); ++itr)
     {
-        const std::string&assocName    = *itr;
-        ObjectWrapper    *assocWrapper = Registry::instance()->getObjectWrapperManager()->findWrapper(assocName);
+        const std::string &assocName    = *itr;
+        ObjectWrapper     *assocWrapper = Registry::instance()->getObjectWrapperManager()->findWrapper(assocName);
         if (!assocWrapper)
         {
             osg::notify(osg::WARN) << "ObjectWrapper::getSerializer(): Unsupported associated class "
@@ -150,7 +150,7 @@ BaseSerializer* ObjectWrapper::getSerializer(const std::string&name)
     return NULL;
 }
 
-BaseSerializer* ObjectWrapper::getSerializer(const std::string&name, BaseSerializer::Type&type)
+BaseSerializer* ObjectWrapper::getSerializer(const std::string &name, BaseSerializer::Type &type)
 {
     unsigned int i = 0;
 
@@ -167,8 +167,8 @@ BaseSerializer* ObjectWrapper::getSerializer(const std::string&name, BaseSeriali
 
     for (StringList::const_iterator itr = _associates.begin(); itr != _associates.end(); ++itr)
     {
-        const std::string&assocName    = *itr;
-        ObjectWrapper    *assocWrapper = Registry::instance()->getObjectWrapperManager()->findWrapper(assocName);
+        const std::string &assocName    = *itr;
+        ObjectWrapper     *assocWrapper = Registry::instance()->getObjectWrapperManager()->findWrapper(assocName);
         if (!assocWrapper)
         {
             osg::notify(osg::WARN) << "ObjectWrapper::getSerializer(): Unsupported associated class "
@@ -194,7 +194,7 @@ BaseSerializer* ObjectWrapper::getSerializer(const std::string&name, BaseSeriali
     return NULL;
 }
 
-bool ObjectWrapper::read(InputStream&is, osg::Object&obj)
+bool ObjectWrapper::read(InputStream &is, osg::Object &obj)
 {
     bool readOK       = true;
     int  inputVersion = is.getFileVersion(_domain);
@@ -230,7 +230,7 @@ bool ObjectWrapper::read(InputStream&is, osg::Object&obj)
     return readOK;
 }
 
-bool ObjectWrapper::write(OutputStream&os, const osg::Object&obj)
+bool ObjectWrapper::write(OutputStream &os, const osg::Object &obj)
 {
     bool writeOK       = true;
     int  outputVersion = os.getFileVersion(_domain);
@@ -259,7 +259,7 @@ bool ObjectWrapper::write(OutputStream&os, const osg::Object&obj)
     return writeOK;
 }
 
-bool ObjectWrapper::readSchema(const StringList&properties, const TypeList&)
+bool ObjectWrapper::readSchema(const StringList &properties, const TypeList&)
 {
     // FIXME: At present, I didn't do anything to determine serializers from their types...
     if (!_backupSerializers.size())
@@ -279,7 +279,7 @@ bool ObjectWrapper::readSchema(const StringList&properties, const TypeList&)
             break;
         }
 
-        const std::string&prop = properties[i];
+        const std::string &prop = properties[i];
         if (prop == _backupSerializers[i]->getName())
         {
             _serializers.push_back(_backupSerializers[i]);
@@ -309,7 +309,7 @@ bool ObjectWrapper::readSchema(const StringList&properties, const TypeList&)
     return size == _serializers.size();
 }
 
-void ObjectWrapper::writeSchema(StringList&properties, TypeList&types)
+void ObjectWrapper::writeSchema(StringList &properties, TypeList &types)
 {
     SerializerList::iterator sitr = _serializers.begin();
     TypeList::iterator       titr = _typeList.begin();
@@ -327,7 +327,7 @@ void ObjectWrapper::writeSchema(StringList&properties, TypeList&types)
     }
 }
 
-void ObjectWrapper::addMethodObject(const std::string&methodName, MethodObject *mo)
+void ObjectWrapper::addMethodObject(const std::string &methodName, MethodObject *mo)
 {
     _methodObjectMap.insert(MethodObjectMap::value_type(methodName, mo));
 }
@@ -337,8 +337,8 @@ void ObjectWrapper::addMethodObject(const std::string&methodName, MethodObject *
 //
 // RegisterWrapperProxy
 //
-RegisterWrapperProxy::RegisterWrapperProxy(ObjectWrapper::CreateInstanceFunc *createInstanceFunc, const std::string&name,
-                                           const std::string&associates, AddPropFunc func)
+RegisterWrapperProxy::RegisterWrapperProxy(ObjectWrapper::CreateInstanceFunc *createInstanceFunc, const std::string &name,
+                                           const std::string &associates, AddPropFunc func)
 {
     _wrapper = new ObjectWrapper(createInstanceFunc, name, associates);
     if (func)
@@ -363,8 +363,8 @@ RegisterWrapperProxy::~RegisterWrapperProxy()
 // RegisterCustomWrapperProxy
 //
 RegisterCustomWrapperProxy::RegisterCustomWrapperProxy(
-    ObjectWrapper::CreateInstanceFunc *createInstanceFunc, const std::string&domain, const std::string&name,
-    const std::string&associates, AddPropFunc func)
+    ObjectWrapper::CreateInstanceFunc *createInstanceFunc, const std::string &domain, const std::string &name,
+    const std::string &associates, AddPropFunc func)
 {
     _wrapper = new ObjectWrapper(createInstanceFunc, domain, name, associates);
     if (func)
@@ -394,7 +394,7 @@ RegisterCustomWrapperProxy::~RegisterCustomWrapperProxy()
 //
 ObjectWrapperManager::ObjectWrapperManager()
 {
-    IntLookup&glTable = _globalMap["GL"];
+    IntLookup &glTable = _globalMap["GL"];
 
     // Modes
     glTable.add("GL_ALPHA_TEST", GL_ALPHA_TEST);
@@ -587,7 +587,7 @@ ObjectWrapperManager::ObjectWrapperManager()
     glTable.add("NICEST", GL_NICEST);
     glTable.add("DONT_CARE", GL_DONT_CARE);
 
-    IntLookup&arrayTable = _globalMap["ArrayType"];
+    IntLookup &arrayTable = _globalMap["ArrayType"];
 
     arrayTable.add("ByteArray", ID_BYTE_ARRAY);
     arrayTable.add("UByteArray", ID_UBYTE_ARRAY);
@@ -624,7 +624,7 @@ ObjectWrapperManager::ObjectWrapperManager()
     arrayTable.add("Vec3uiArray", ID_VEC3UI_ARRAY);
     arrayTable.add("Vec4uiArray", ID_VEC4UI_ARRAY);
 
-    IntLookup&primitiveTable = _globalMap["PrimitiveType"];
+    IntLookup &primitiveTable = _globalMap["PrimitiveType"];
 
     primitiveTable.add("DrawArrays", ID_DRAWARRAYS);
     primitiveTable.add("DrawArraysLength", ID_DRAWARRAY_LENGTH);
@@ -689,7 +689,7 @@ void ObjectWrapperManager::removeWrapper(ObjectWrapper *wrapper)
         _wrappers.erase(itr);
 }
 
-ObjectWrapper* ObjectWrapperManager::findWrapper(const std::string&name)
+ObjectWrapper* ObjectWrapperManager::findWrapper(const std::string &name)
 {
     OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_wrapperMutex);
 
@@ -749,7 +749,7 @@ void ObjectWrapperManager::removeCompressor(BaseCompressor *compressor)
         _compressors.erase(itr);
 }
 
-BaseCompressor* ObjectWrapperManager::findCompressor(const std::string&name)
+BaseCompressor* ObjectWrapperManager::findCompressor(const std::string &name)
 {
     OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_wrapperMutex);
 
@@ -778,7 +778,7 @@ BaseCompressor* ObjectWrapperManager::findCompressor(const std::string&name)
 //
 // RegisytrCompressorProxy
 //
-RegisterCompressorProxy::RegisterCompressorProxy(const std::string&name, BaseCompressor *compressor) :
+RegisterCompressorProxy::RegisterCompressorProxy(const std::string &name, BaseCompressor *compressor) :
     _compressor(compressor)
 {
     _compressor->setName(name);

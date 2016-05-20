@@ -22,7 +22,7 @@ V8ScriptEngine::V8ScriptEngine() :
     initialize();
 }
 
-V8ScriptEngine::V8ScriptEngine(const V8ScriptEngine&rhs, const osg::CopyOp&) :
+V8ScriptEngine::V8ScriptEngine(const V8ScriptEngine &rhs, const osg::CopyOp&) :
     osg::ScriptEngine("js"),
     _isolate(0)
 {
@@ -40,7 +40,7 @@ void V8ScriptEngine::initialize()
     _isolate = v8::Isolate::New();
 }
 
-bool V8ScriptEngine::run(osg::Script *script, const std::string&entryPoint, osg::Parameters&inputParameters, osg::Parameters&outputParameters)
+bool V8ScriptEngine::run(osg::Script *script, const std::string &entryPoint, osg::Parameters &inputParameters, osg::Parameters &outputParameters)
 {
     if (!script || !_isolate)
         return false;

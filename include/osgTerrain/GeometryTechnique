@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGTERRAIN_GEOMETRYTECHNIQUE
 #define OSGTERRAIN_GEOMETRYTECHNIQUE 1
@@ -22,15 +22,14 @@
 #include <osgTerrain/Locator>
 
 namespace osgTerrain {
-
-class OSGTERRAIN_EXPORT GeometryTechnique : public TerrainTechnique
-{
-    public:
+    class OSGTERRAIN_EXPORT GeometryTechnique: public TerrainTechnique
+    {
+public:
 
         GeometryTechnique();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        GeometryTechnique(const GeometryTechnique&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+        GeometryTechnique(const GeometryTechnique &, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Object(osgTerrain, GeometryTechnique);
 
@@ -39,24 +38,36 @@ class OSGTERRAIN_EXPORT GeometryTechnique : public TerrainTechnique
         virtual Locator* computeMasterLocator();
 
 
-        virtual void update(osgUtil::UpdateVisitor* nv);
+        virtual void update(osgUtil::UpdateVisitor *nv);
 
-        virtual void cull(osgUtil::CullVisitor* nv);
+        virtual void cull(osgUtil::CullVisitor *nv);
 
         /** Traverse the terain subgraph.*/
-        virtual void traverse(osg::NodeVisitor& nv);
+        virtual void traverse(osg::NodeVisitor &nv);
 
         virtual void cleanSceneGraph();
 
         void setFilterBias(float filterBias);
-        float getFilterBias() const { return _filterBias; }
+        float getFilterBias() const
+        {
+            return _filterBias;
+        }
 
         void setFilterWidth(float filterWidth);
-        float getFilterWidth() const { return _filterWidth; }
+        float getFilterWidth() const
+        {
+            return _filterWidth;
+        }
 
-        void setFilterMatrix(const osg::Matrix3& matrix);
-        osg::Matrix3& getFilterMatrix() { return _filterMatrix; }
-        const osg::Matrix3& getFilterMatrix() const { return _filterMatrix; }
+        void setFilterMatrix(const osg::Matrix3 &matrix);
+        osg::Matrix3&getFilterMatrix()
+        {
+            return _filterMatrix;
+        }
+        const osg::Matrix3&getFilterMatrix() const
+        {
+            return _filterMatrix;
+        }
 
         enum FilterType
         {
@@ -68,49 +79,48 @@ class OSGTERRAIN_EXPORT GeometryTechnique : public TerrainTechnique
         void setFilterMatrixAs(FilterType filterType);
 
         /** If State is non-zero, this function releases any associated OpenGL objects for
-        * the specified graphics context. Otherwise, releases OpenGL objects
-        * for all graphics contexts. */
+         * the specified graphics context. Otherwise, releases OpenGL objects
+         * for all graphics contexts. */
         virtual void releaseGLObjects(osg::State* = 0) const;
 
 
-    protected:
+protected:
 
         virtual ~GeometryTechnique();
 
-        class BufferData : public osg::Referenced
+        class BufferData: public osg::Referenced
         {
-        public:
+public:
             BufferData() {}
 
-            osg::ref_ptr<osg::MatrixTransform>  _transform;
-            osg::ref_ptr<osg::Geode>            _geode;
-            osg::ref_ptr<osg::Geometry>         _geometry;
+            osg::ref_ptr < osg::MatrixTransform > _transform;
+            osg::ref_ptr < osg::Geode > _geode;
+            osg::ref_ptr < osg::Geometry > _geometry;
 
-        protected:
+protected:
             ~BufferData() {}
         };
 
-        virtual osg::Vec3d computeCenterModel(BufferData& buffer, Locator* masterLocator);
+        virtual osg::Vec3d computeCenterModel(BufferData &buffer, Locator *masterLocator);
 
-        virtual void generateGeometry(BufferData& buffer, Locator* masterLocator, const osg::Vec3d& centerModel);
+        virtual void generateGeometry(BufferData &buffer, Locator *masterLocator, const osg::Vec3d &centerModel);
 
-        virtual void applyColorLayers(BufferData& buffer);
+        virtual void applyColorLayers(BufferData &buffer);
 
-        virtual void applyTransparency(BufferData& buffer);
+        virtual void applyTransparency(BufferData &buffer);
 
 
-        OpenThreads::Mutex                  _writeBufferMutex;
-        osg::ref_ptr<BufferData>            _currentBufferData;
-        osg::ref_ptr<BufferData>            _newBufferData;
+        OpenThreads::Mutex _writeBufferMutex;
+        osg::ref_ptr < BufferData > _currentBufferData;
+        osg::ref_ptr < BufferData > _newBufferData;
 
-        float                               _filterBias;
-        osg::ref_ptr<osg::Uniform>          _filterBiasUniform;
-        float                               _filterWidth;
-        osg::ref_ptr<osg::Uniform>          _filterWidthUniform;
-        osg::Matrix3                        _filterMatrix;
-        osg::ref_ptr<osg::Uniform>          _filterMatrixUniform;
-};
-
+        float _filterBias;
+        osg::ref_ptr < osg::Uniform > _filterBiasUniform;
+        float _filterWidth;
+        osg::ref_ptr < osg::Uniform > _filterWidthUniform;
+        osg::Matrix3 _filterMatrix;
+        osg::ref_ptr < osg::Uniform > _filterMatrixUniform;
+    };
 }
 
 #endif

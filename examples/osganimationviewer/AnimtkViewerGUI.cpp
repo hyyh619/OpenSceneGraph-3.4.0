@@ -237,7 +237,7 @@ AnimtkViewerGUI::AnimtkViewerGUI(osgViewer::View *view, float w, float h, unsign
     _buttonBox->resizeAdd(0.0f, 10.0f);
 }
 
-osgWidget::Widget* AnimtkViewerGUI::_createButton(const std::string&name)
+osgWidget::Widget* AnimtkViewerGUI::_createButton(const std::string &name)
 {
     osgWidget::Widget *b = new osgWidget::Widget(name, 64.0f, 64.0f);
 
@@ -258,7 +258,7 @@ osgWidget::Widget* AnimtkViewerGUI::_createButton(const std::string&name)
     return b;
 }
 
-bool AnimtkViewerGUI::_listMouseHover(osgWidget::Event&ev)
+bool AnimtkViewerGUI::_listMouseHover(osgWidget::Event &ev)
 {
     osgWidget::Label *l = dynamic_cast<osgWidget::Label*>(ev.getWidget());
 
@@ -282,7 +282,7 @@ bool AnimtkViewerGUI::_listMouseHover(osgWidget::Event&ev)
     return true;
 }
 
-bool AnimtkViewerGUI::_buttonPush(osgWidget::Event&ev)
+bool AnimtkViewerGUI::_buttonPush(osgWidget::Event &ev)
 {
     if (!ev.getWidget())
         return false;
@@ -298,8 +298,8 @@ bool AnimtkViewerGUI::_buttonPush(osgWidget::Event&ev)
         return false;
 
     // We're safe at this point, so begin processing.
-    AnimtkViewerModelController&mc  = AnimtkViewerModelController::instance();
-    std::string                name = ev.getWidget()->getName();
+    AnimtkViewerModelController &mc  = AnimtkViewerModelController::instance();
+    std::string                 name = ev.getWidget()->getName();
 
     if (name == "play")
         mc.play();
@@ -377,7 +377,7 @@ void AnimtkViewerGUI::_createListBox()
 {
     _listBox = new osgWidget::Box("listBox", osgWidget::Box::VERTICAL);
 
-    const AnimtkViewerModelController::AnimationMapVector&amv =
+    const AnimtkViewerModelController::AnimationMapVector &amv =
         AnimtkViewerModelController::instance().getAnimationMap()
     ;
 

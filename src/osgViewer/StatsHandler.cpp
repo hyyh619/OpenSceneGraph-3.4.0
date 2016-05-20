@@ -52,7 +52,7 @@ StatsHandler::StatsHandler() :
     _camera->setProjectionResizePolicy(osg::Camera::FIXED);
 }
 
-bool StatsHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool StatsHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     osgViewer::View *myview = dynamic_cast<osgViewer::View*>(&aa);
 
@@ -220,7 +220,7 @@ bool StatsHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapt
                      gcitr != contexts.end();
                      ++gcitr)
                 {
-                    osg::GraphicsContext::Cameras&cameras = (*gcitr)->getCameras();
+                    osg::GraphicsContext::Cameras &cameras = (*gcitr)->getCameras();
 
                     for (osg::GraphicsContext::Cameras::iterator itr = cameras.begin();
                          itr != cameras.end();
@@ -289,15 +289,15 @@ void StatsHandler::reset()
     _camera->removeChildren(0, _camera->getNumChildren());
 }
 
-void StatsHandler::addUserStatsLine(const std::string&label, const osg::Vec4&textColor, const osg::Vec4&barColor,
-                                    const std::string&timeTakenName, float multiplier, bool average, bool averageInInverseSpace,
-                                    const std::string&beginTimeName, const std::string&endTimeName, float maxValue)
+void StatsHandler::addUserStatsLine(const std::string &label, const osg::Vec4 &textColor, const osg::Vec4 &barColor,
+                                    const std::string &timeTakenName, float multiplier, bool average, bool averageInInverseSpace,
+                                    const std::string &beginTimeName, const std::string &endTimeName, float maxValue)
 {
     _userStatsLines.push_back(UserStatsLine(label, textColor, barColor, timeTakenName, multiplier, average, averageInInverseSpace, beginTimeName, endTimeName, maxValue));
     reset();        // Rebuild the stats display with the new user stats line.
 }
 
-void StatsHandler::removeUserStatsLine(const std::string&label)
+void StatsHandler::removeUserStatsLine(const std::string &label)
 {
     // Hopefully the labels are unique... This could be enforced.
     for (unsigned int i = 0; i < _userStatsLines.size(); ++i)
@@ -377,7 +377,7 @@ void StatsHandler::setWindowSize(int width, int height)
 // Drawcallback to draw averaged attribute
 struct AveragedValueTextDrawCallback : public virtual osg::Drawable::DrawCallback
 {
-    AveragedValueTextDrawCallback(osg::Stats *stats, const std::string&name, int frameDelta, bool averageInInverseSpace, double multiplier) :
+    AveragedValueTextDrawCallback(osg::Stats *stats, const std::string &name, int frameDelta, bool averageInInverseSpace, double multiplier) :
         _stats(stats),
         _attributeName(name),
         _frameDelta(frameDelta),
@@ -387,7 +387,7 @@ struct AveragedValueTextDrawCallback : public virtual osg::Drawable::DrawCallbac
     {}
 
     /** do customized draw code.*/
-    virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+    virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
     {
         osgText::Text *text = (osgText::Text*)drawable;
 
@@ -424,7 +424,7 @@ struct AveragedValueTextDrawCallback : public virtual osg::Drawable::DrawCallbac
 // Drawcallback to draw raw attribute
 struct RawValueTextDrawCallback : public virtual osg::Drawable::DrawCallback
 {
-    RawValueTextDrawCallback(osg::Stats *stats, const std::string&name, int frameDelta, double multiplier) :
+    RawValueTextDrawCallback(osg::Stats *stats, const std::string &name, int frameDelta, double multiplier) :
         _stats(stats),
         _attributeName(name),
         _frameDelta(frameDelta),
@@ -433,7 +433,7 @@ struct RawValueTextDrawCallback : public virtual osg::Drawable::DrawCallback
     {}
 
     /** do customized draw code.*/
-    virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+    virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
     {
         osgText::Text *text = (osgText::Text*)drawable;
 
@@ -477,7 +477,7 @@ struct CameraSceneStatsTextDrawCallback : public virtual osg::Drawable::DrawCall
     {}
 
     /** do customized draw code.*/
-    virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+    virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
     {
         if (!_camera)
             return;
@@ -570,7 +570,7 @@ struct ViewSceneStatsTextDrawCallback : public virtual osg::Drawable::DrawCallba
     {}
 
     /** do customized draw code.*/
-    virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+    virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
     {
         if (!_view)
             return;
@@ -653,7 +653,7 @@ struct ViewSceneStatsTextDrawCallback : public virtual osg::Drawable::DrawCallba
 
 struct BlockDrawCallback : public virtual osg::Drawable::DrawCallback
 {
-    BlockDrawCallback(StatsHandler *statsHandler, float xPos, osg::Stats *viewerStats, osg::Stats *stats, const std::string&beginName, const std::string&endName, int frameDelta, int numFrames) :
+    BlockDrawCallback(StatsHandler *statsHandler, float xPos, osg::Stats *viewerStats, osg::Stats *stats, const std::string &beginName, const std::string &endName, int frameDelta, int numFrames) :
         _statsHandler(statsHandler),
         _xPos(xPos),
         _viewerStats(viewerStats),
@@ -664,7 +664,7 @@ struct BlockDrawCallback : public virtual osg::Drawable::DrawCallback
         _numFrames(numFrames) {}
 
     /** do customized draw code.*/
-    virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+    virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
     {
         osg::Geometry *geom      = (osg::Geometry*)drawable;
         osg::Vec3Array *vertices = (osg::Vec3Array*)geom->getVertexArray();
@@ -710,7 +710,7 @@ struct BlockDrawCallback : public virtual osg::Drawable::DrawCallback
     int _numFrames;
 };
 
-osg::Geometry* StatsHandler::createBackgroundRectangle(const osg::Vec3&pos, const float width, const float height, osg::Vec4&color)
+osg::Geometry* StatsHandler::createBackgroundRectangle(const osg::Vec3 &pos, const float width, const float height, osg::Vec4 &color)
 {
     osg::StateSet *ss = new osg::StateSet;
 
@@ -754,7 +754,7 @@ struct StatsGraph : public osg::MatrixTransform
         addChild(_statsGraphGeode.get());
     }
 
-    void addStatGraph(osg::Stats *viewerStats, osg::Stats *stats, const osg::Vec4&color, float max, const std::string&nameBegin, const std::string&nameEnd = "")
+    void addStatGraph(osg::Stats *viewerStats, osg::Stats *stats, const osg::Vec4 &color, float max, const std::string &nameBegin, const std::string &nameEnd = "")
     {
         _statsGraphGeode->addDrawable(new Graph(_pos, _width, _height, viewerStats, stats, color, max, nameBegin, nameEnd));
     }
@@ -768,8 +768,8 @@ struct StatsGraph : public osg::MatrixTransform
 protected:
     struct Graph : public osg::Geometry
     {
-        Graph(const osg::Vec3&pos, float width, float height, osg::Stats *viewerStats, osg::Stats *stats,
-              const osg::Vec4&color, float max, const std::string&nameBegin, const std::string&nameEnd = "")
+        Graph(const osg::Vec3 &pos, float width, float height, osg::Stats *viewerStats, osg::Stats *stats,
+              const osg::Vec4 &color, float max, const std::string &nameBegin, const std::string &nameEnd = "")
         {
             setUseDisplayList(false);
 
@@ -785,13 +785,13 @@ protected:
 
     struct GraphUpdateCallback : public osg::Drawable::DrawCallback
     {
-        GraphUpdateCallback(const osg::Vec3&pos, float width, float height, osg::Stats *viewerStats, osg::Stats *stats,
-                            float max, const std::string&nameBegin, const std::string&nameEnd = "")
+        GraphUpdateCallback(const osg::Vec3 &pos, float width, float height, osg::Stats *viewerStats, osg::Stats *stats,
+                            float max, const std::string &nameBegin, const std::string &nameEnd = "")
             : _pos(pos), _width((unsigned int)width), _height((unsigned int)height), _curX(0),
             _viewerStats(viewerStats), _stats(stats), _max(max), _nameBegin(nameBegin), _nameEnd(nameEnd)
         {}
 
-        virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+        virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
         {
             osg::Geometry *geometry = const_cast<osg::Geometry*>(drawable->asGeometry());
 
@@ -893,7 +893,7 @@ protected:
 unsigned int StatsGraph::GraphUpdateCallback::_frameNumber = 0;
 
 
-osg::Geometry* StatsHandler::createGeometry(const osg::Vec3&pos, float height, const osg::Vec4&colour, unsigned int numBlocks)
+osg::Geometry* StatsHandler::createGeometry(const osg::Vec3 &pos, float height, const osg::Vec4 &colour, unsigned int numBlocks)
 {
     osg::Geometry *geometry = new osg::Geometry;
 
@@ -931,7 +931,7 @@ struct FrameMarkerDrawCallback : public virtual osg::Drawable::DrawCallback
         _numFrames(numFrames) {}
 
     /** do customized draw code.*/
-    virtual void drawImplementation(osg::RenderInfo&renderInfo, const osg::Drawable *drawable) const
+    virtual void drawImplementation(osg::RenderInfo &renderInfo, const osg::Drawable *drawable) const
     {
         osg::Geometry *geom      = (osg::Geometry*)drawable;
         osg::Vec3Array *vertices = (osg::Vec3Array*)geom->getVertexArray();
@@ -1048,7 +1048,7 @@ struct PagerCallback : public virtual osg::NodeCallback
 };
 
 
-osg::Geometry* StatsHandler::createFrameMarkers(const osg::Vec3&pos, float height, const osg::Vec4&colour, unsigned int numBlocks)
+osg::Geometry* StatsHandler::createFrameMarkers(const osg::Vec3 &pos, float height, const osg::Vec4 &colour, unsigned int numBlocks)
 {
     osg::Geometry *geometry = new osg::Geometry;
 
@@ -1073,7 +1073,7 @@ osg::Geometry* StatsHandler::createFrameMarkers(const osg::Vec3&pos, float heigh
     return geometry;
 }
 
-osg::Geometry* StatsHandler::createTick(const osg::Vec3&pos, float height, const osg::Vec4&colour, unsigned int numTicks)
+osg::Geometry* StatsHandler::createTick(const osg::Vec3 &pos, float height, const osg::Vec4 &colour, unsigned int numTicks)
 {
     osg::Geometry *geometry = new osg::Geometry;
 
@@ -1253,7 +1253,7 @@ void StatsHandler::setUpScene(osgViewer::ViewerBase *viewer)
         {
             pos.x() = _leftPos;
 
-            UserStatsLine&line = _userStatsLines[i];
+            UserStatsLine &line = _userStatsLines[i];
             createTimeStatsLine(line.label, pos, line.textColor, line.barColor, viewer->getViewerStats(), viewer->getViewerStats(),
                                 line.timeTakenName, line.multiplier, line.average, line.averageInInverseSpace, line.beginTimeName, line.endTimeName);
 
@@ -1325,7 +1325,7 @@ void StatsHandler::setUpScene(osgViewer::ViewerBase *viewer)
 
             for (unsigned int i = 0; i < _userStatsLines.size(); ++i)
             {
-                UserStatsLine&line = _userStatsLines[i];
+                UserStatsLine &line = _userStatsLines[i];
                 if (!line.timeTakenName.empty() && line.average)
                 {
                     statsGraph->addStatGraph(viewer->getViewerStats(), viewer->getViewerStats(), line.textColor, line.maxValue, line.timeTakenName);
@@ -1647,11 +1647,11 @@ void StatsHandler::setUpScene(osgViewer::ViewerBase *viewer)
     }
 }
 
-void StatsHandler::createTimeStatsLine(const std::string&lineLabel,
-                                       osg::Vec3 pos, const osg::Vec4&textColor, const osg::Vec4&barColor,
+void StatsHandler::createTimeStatsLine(const std::string &lineLabel,
+                                       osg::Vec3 pos, const osg::Vec4 &textColor, const osg::Vec4 &barColor,
                                        osg::Stats *viewerStats, osg::Stats *stats,
-                                       const std::string&timeTakenName, float multiplier, bool average, bool averageInInverseSpace,
-                                       const std::string&beginTimeName, const std::string&endTimeName)
+                                       const std::string &timeTakenName, float multiplier, bool average, bool averageInInverseSpace,
+                                       const std::string &beginTimeName, const std::string &endTimeName)
 {
     osg::ref_ptr<osgText::Text> label = new osgText::Text;
 
@@ -1695,7 +1695,7 @@ void StatsHandler::createTimeStatsLine(const std::string&lineLabel,
     }
 }
 
-void StatsHandler::createCameraTimeStats(osg::Vec3&pos, bool acquireGPUStats, osg::Stats *viewerStats, osg::Camera *camera)
+void StatsHandler::createCameraTimeStats(osg::Vec3 &pos, bool acquireGPUStats, osg::Stats *viewerStats, osg::Camera *camera)
 {
     osg::Stats *stats = camera->getStats();
 
@@ -1739,7 +1739,7 @@ void StatsHandler::createCameraTimeStats(osg::Vec3&pos, bool acquireGPUStats, os
 }
 
 
-void StatsHandler::getUsage(osg::ApplicationUsage&usage) const
+void StatsHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding(_keyEventTogglesOnScreenStats, "On screen stats.");
     usage.addKeyboardMouseBinding(_keyEventPrintsOutStats, "Output stats to console.");

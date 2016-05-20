@@ -37,7 +37,7 @@ AutoDiscovery::~AutoDiscovery()
 }
 
 
-void AutoDiscovery::registerService(const std::string&type, unsigned int port)
+void AutoDiscovery::registerService(const std::string &type, unsigned int port)
 {
     deregisterServices();
     _serverImpl = new AutoDiscoveryServerImpl(type, port);
@@ -63,7 +63,7 @@ void AutoDiscovery::update()
         _clientImpl->update();
 }
 
-void AutoDiscovery::discoverServices(const std::string&type, DiscoveredServicesCallback *cb)
+void AutoDiscovery::discoverServices(const std::string &type, DiscoveredServicesCallback *cb)
 {
     _clientImpl = new AutoDiscoveryClientImpl(type, cb);
 }

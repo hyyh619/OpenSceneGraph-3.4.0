@@ -9,7 +9,7 @@
 /* PagedLoadingCallback: Callback for loading paged nodes while doing intersecting test */
 struct PagedLoadingCallback : public osgUtil::IntersectionVisitor::ReadCallback
 {
-    virtual osg::Node* readNodeFile(const std::string&filename)
+    virtual osg::Node* readNodeFile(const std::string &filename)
     {
         return osgDB::readNodeFile(filename);
     }
@@ -87,7 +87,7 @@ PosterVisitor::PosterVisitor()
     _addingCallbacks(true)
 {}
 
-void PosterVisitor::apply(osg::LOD&node)
+void PosterVisitor::apply(osg::LOD &node)
 {
     /*if ( !hasCullCallback(node.getCullCallback(), g_lodCullingCallback.get()) )
        {
@@ -109,7 +109,7 @@ void PosterVisitor::apply(osg::LOD&node)
     traverse(node);
 }
 
-void PosterVisitor::apply(osg::PagedLOD&node)
+void PosterVisitor::apply(osg::PagedLOD &node)
 {
     if (!hasCullCallback(node.getCullCallback(), g_pagedCullingCallback.get()))
     {
@@ -139,7 +139,7 @@ void PosterVisitor::apply(osg::PagedLOD&node)
 }
 
 /* PosterIntersector: A simple polytope intersector for updating pagedLODs in each image-tile */
-PosterIntersector::PosterIntersector(const osg::Polytope&polytope)
+PosterIntersector::PosterIntersector(const osg::Polytope &polytope)
     :   _intersectionVisitor(0), _parent(0), _polytope(polytope)
 {}
 
@@ -153,7 +153,7 @@ PosterIntersector::PosterIntersector(double xMin, double yMin, double xMax, doub
     _polytope.add(osg::Plane(0.0, -1.0, 0.0, yMax));
 }
 
-osgUtil::Intersector* PosterIntersector::clone(osgUtil::IntersectionVisitor&iv)
+osgUtil::Intersector* PosterIntersector::clone(osgUtil::IntersectionVisitor &iv)
 {
     osg::Matrix matrix;
 
@@ -175,7 +175,7 @@ osgUtil::Intersector* PosterIntersector::clone(osgUtil::IntersectionVisitor&iv)
     return pi.release();
 }
 
-bool PosterIntersector::enter(const osg::Node&node)
+bool PosterIntersector::enter(const osg::Node &node)
 {
     if (!node.isCullingActive())
         return true;
@@ -202,7 +202,7 @@ void PosterIntersector::reset()
     Intersector::reset();
 }
 
-void PosterIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Drawable *drawable)
+void PosterIntersector::intersect(osgUtil::IntersectionVisitor &iv, osg::Drawable *drawable)
 {
     if (!_polytope.contains(drawable->getBoundingBox()))
         return;
@@ -211,7 +211,7 @@ void PosterIntersector::intersect(osgUtil::IntersectionVisitor&iv, osg::Drawable
         return;
 
     // Find and collect all paged LODs in the node path
-    osg::NodePath&nodePath = iv.getNodePath();
+    osg::NodePath &nodePath = iv.getNodePath();
 
     for (osg::NodePath::iterator itr = nodePath.begin(); itr != nodePath.end(); ++itr)
     {
@@ -261,7 +261,7 @@ void PosterPrinter::init(const osg::Camera *camera)
         init(camera->getViewMatrix(), camera->getProjectionMatrix());
 }
 
-void PosterPrinter::init(const osg::Matrixd&view, const osg::Matrixd&proj)
+void PosterPrinter::init(const osg::Matrixd &view, const osg::Matrixd &proj)
 {
     if (_isRunning)
         return;

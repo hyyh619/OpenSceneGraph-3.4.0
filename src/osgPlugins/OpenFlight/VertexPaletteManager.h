@@ -42,10 +42,10 @@ namespace flt
 class VertexPaletteManager
 {
 public:
-VertexPaletteManager(const ExportOptions&fltOpt);
+VertexPaletteManager(const ExportOptions &fltOpt);
 ~VertexPaletteManager();
 
-void add(const osg::Geometry&geom);
+void add(const osg::Geometry &geom);
 void add(const osg::Array *key,
          const osg::Vec3dArray *v, const osg::Vec4Array *c,
          const osg::Vec3Array *n, const osg::Vec2Array *t,
@@ -53,7 +53,7 @@ void add(const osg::Array *key,
 
 unsigned int byteOffset(unsigned int idx) const;
 
-void write(DataOutputStream&dos) const;
+void write(DataOutputStream &dos) const;
 
 /*!
    Static utility routines for handling the morass of array
@@ -101,7 +101,7 @@ mutable osgDB::ofstream _verticesStr;
 DataOutputStream        *_vertices;
 std::string             _verticesTempName;
 
-const ExportOptions&_fltOpt;
+const ExportOptions &_fltOpt;
 };
 }
 

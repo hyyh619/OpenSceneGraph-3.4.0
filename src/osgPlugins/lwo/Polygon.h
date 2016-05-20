@@ -117,7 +117,7 @@ inline const std::string&get_part_name() const
 {
     return part_;
 }
-inline void set_part_name(const std::string&n)
+inline void set_part_name(const std::string &n)
 {
     part_ = n;
 }
@@ -130,7 +130,7 @@ inline const std::string&get_smoothing_group() const
 {
     return smoothing_group_;
 }
-inline void set_smoothing_group(const std::string&n)
+inline void set_smoothing_group(const std::string &n)
 {
     smoothing_group_ = n;
 }
@@ -172,9 +172,9 @@ inline const osg::Vec3&Polygon::face_normal(const osg::Vec3Array *points) const
         normal_.set(0, 0, 0);
         if (indices_.size() >= 3)
         {
-            const osg::Vec3&A = points->at(indices_.front());
-            const osg::Vec3&B = points->at(indices_[1]);
-            const osg::Vec3&C = points->at(indices_.back());
+            const osg::Vec3 &A = points->at(indices_.front());
+            const osg::Vec3 &B = points->at(indices_[1]);
+            const osg::Vec3 &C = points->at(indices_.back());
             if (invert_normal_)
             {
                 normal_ = (C - A) ^ (B - A);

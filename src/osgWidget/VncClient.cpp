@@ -17,12 +17,12 @@
 
 using namespace osgWidget;
 
-VncClient::VncClient(const std::string&hostname, const GeometryHints&hints)
+VncClient::VncClient(const std::string &hostname, const GeometryHints &hints)
 {
     connect(hostname, hints);
 }
 
-bool VncClient::assign(VncImage *vncImage, const GeometryHints&hints)
+bool VncClient::assign(VncImage *vncImage, const GeometryHints &hints)
 {
     if (!vncImage)
         return false;
@@ -74,7 +74,7 @@ bool VncClient::assign(VncImage *vncImage, const GeometryHints&hints)
     return true;
 }
 
-bool VncClient::connect(const std::string&hostname, const GeometryHints&hints)
+bool VncClient::connect(const std::string &hostname, const GeometryHints &hints)
 {
     osg::ref_ptr<osg::Image> image = osgDB::readImageFile(hostname + ".vnc");
 

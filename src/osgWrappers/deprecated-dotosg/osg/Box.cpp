@@ -12,8 +12,8 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool Box_readLocalData(Object&obj, Input&fr);
-bool Box_writeLocalData(const Object&obj, Output&fw);
+bool Box_readLocalData(Object &obj, Input &fr);
+bool Box_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Box)
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(Box)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Box_readLocalData(Object&obj, Input&fr)
+bool Box_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    Box&box = static_cast<Box&>(obj);
+    Box &box = static_cast<Box&>(obj);
 
     if (fr.matchSequence("Center %f %f %f"))
     {
@@ -69,9 +69,9 @@ bool Box_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool Box_writeLocalData(const Object&obj, Output&fw)
+bool Box_writeLocalData(const Object &obj, Output &fw)
 {
-    const Box&box = static_cast<const Box&>(obj);
+    const Box &box = static_cast<const Box&>(obj);
 
     fw.indent() << "Center " <<      box.getCenter() << std::endl;
     fw.indent() << "HalfLengths " << box.getHalfLengths() << std::endl;

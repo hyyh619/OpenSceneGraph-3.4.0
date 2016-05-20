@@ -27,7 +27,7 @@
 
 namespace flt
 {
-TexturePaletteManager::TexturePaletteManager(const FltExportVisitor&nv, const ExportOptions&fltOpt)
+TexturePaletteManager::TexturePaletteManager(const FltExportVisitor &nv, const ExportOptions &fltOpt)
     : _currIndex(0),
     _nv(nv),
     _fltOpt(fltOpt)
@@ -57,7 +57,7 @@ TexturePaletteManager::add(int unit, const osg::Texture2D *texture)
 }
 
 void
-TexturePaletteManager::write(DataOutputStream&dos) const
+TexturePaletteManager::write(DataOutputStream &dos) const
 {
     int                             x(0), y(0), height(0);
     TextureIndexMap::const_iterator it = _indexMap.begin();

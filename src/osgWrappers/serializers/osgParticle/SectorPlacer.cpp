@@ -10,7 +10,7 @@
         obj.set ## PROP(min, max); return true;                                                  \
     }                                                                                            \
     static bool write ## PROP(osgDB::OutputStream & os, const osgParticle::SectorPlacer & obj) { \
-        const osgParticle::rangef&range = obj.get ## PROP();                                     \
+        const osgParticle::rangef &range = obj.get ## PROP();                                    \
         os << range.minimum << range.maximum << std::endl;                                       \
         return true;                                                                             \
     }

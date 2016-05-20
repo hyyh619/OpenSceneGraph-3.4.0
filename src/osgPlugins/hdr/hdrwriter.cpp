@@ -36,7 +36,7 @@
 #include <ctype.h>
 
 
-bool HDRWriter::writeRAW(const osg::Image *img, std::ostream&fout)
+bool HDRWriter::writeRAW(const osg::Image *img, std::ostream &fout)
 {
     bool result = true;
 
@@ -61,7 +61,7 @@ bool HDRWriter::writeRAW(const osg::Image *img, std::ostream&fout)
 #define  MAXELEN 0x7fff               // maximum scanline length for encoding
 
 /* default minimal header. modify if you want more information in header */
-bool HDRWriter::writeHeader(const osg::Image *img, std::ostream&fout)
+bool HDRWriter::writeHeader(const osg::Image *img, std::ostream &fout)
 {
     std::stringstream stream;    // for conversion to strings
 
@@ -84,7 +84,7 @@ bool HDRWriter::writeHeader(const osg::Image *img, std::ostream&fout)
 /* simple write routine that does not use run length encoding */
 /* These routines can be made faster by allocating a larger buffer and
    fread-ing and fwrite-ing the data in larger chunks */
-bool HDRWriter::writeNoRLE(std::ostream&fout, const osg::Image *img)
+bool HDRWriter::writeNoRLE(std::ostream &fout, const osg::Image *img)
 {
     unsigned char rgbe[4];
 
@@ -108,7 +108,7 @@ bool HDRWriter::writeNoRLE(std::ostream&fout, const osg::Image *img)
     return true;
 }
 
-bool HDRWriter::writePixelsRAW(std::ostream&fout, unsigned char *data, int numpixels)
+bool HDRWriter::writePixelsRAW(std::ostream &fout, unsigned char *data, int numpixels)
 {
     unsigned char rgbe[4];
 
@@ -129,7 +129,7 @@ bool HDRWriter::writePixelsRAW(std::ostream&fout, unsigned char *data, int numpi
 /* Run length encoding adds considerable complexity but does */
 /* save some space.  For each scanline, each channel (r,g,b,e) is */
 /* encoded separately for better compression. */
-bool HDRWriter::writeBytesRLE(std::ostream&fout, unsigned char *data, int numbytes)
+bool HDRWriter::writeBytesRLE(std::ostream &fout, unsigned char *data, int numbytes)
 {
 #define MINRUNLENGTH 4
     int           cur, beg_run, run_count, old_run_count, nonrun_count;
@@ -197,7 +197,7 @@ bool HDRWriter::writeBytesRLE(std::ostream&fout, unsigned char *data, int numbyt
 #undef MINRUNLENGTH
 }
 
-bool HDRWriter::writeRLE(const osg::Image *img, std::ostream&fout)
+bool HDRWriter::writeRLE(const osg::Image *img, std::ostream &fout)
 {
     int scanline_width = img->s();
     int num_scanlines  = img->t();

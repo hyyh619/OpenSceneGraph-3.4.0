@@ -293,7 +293,7 @@ bool OutboundPacketStream::IsBundleInProgress() const
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const BundleInitiator&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const BundleInitiator &rhs)
 {
     if (IsMessageInProgress())
         throw MessageInProgressException();
@@ -312,7 +312,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(const BundleInitiator&rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const BundleTerminator&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const BundleTerminator &rhs)
 {
     (void) rhs;
 
@@ -328,7 +328,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(const BundleTerminator&rhs
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const BeginMessage&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const BeginMessage &rhs)
 {
     if (IsMessageInProgress())
         throw MessageInProgressException();
@@ -359,7 +359,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(const BeginMessage&rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const MessageTerminator&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const MessageTerminator &rhs)
 {
     (void) rhs;
 
@@ -425,7 +425,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(bool rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const NilType&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const NilType &rhs)
 {
     (void) rhs;
     CheckForAvailableArgumentSpace(0);
@@ -436,7 +436,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(const NilType&rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const InfinitumType&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const InfinitumType &rhs)
 {
     (void) rhs;
     CheckForAvailableArgumentSpace(0);
@@ -500,7 +500,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(char rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const RgbaColor&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const RgbaColor &rhs)
 {
     CheckForAvailableArgumentSpace(4);
 
@@ -512,7 +512,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(const RgbaColor&rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const MidiMessage&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const MidiMessage &rhs)
 {
     CheckForAvailableArgumentSpace(4);
 
@@ -536,7 +536,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(int64 rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const TimeTag&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const TimeTag &rhs)
 {
     CheckForAvailableArgumentSpace(8);
 
@@ -603,7 +603,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(const char *rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const Symbol&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const Symbol &rhs)
 {
     CheckForAvailableArgumentSpace(static_cast<long>(RoundUp4(strlen(rhs) + 1)));
 
@@ -625,7 +625,7 @@ OutboundPacketStream&OutboundPacketStream::operator<<(const Symbol&rhs)
 }
 
 
-OutboundPacketStream&OutboundPacketStream::operator<<(const Blob&rhs)
+OutboundPacketStream&OutboundPacketStream::operator<<(const Blob &rhs)
 {
     CheckForAvailableArgumentSpace(4 + RoundUp4(rhs.size));
 

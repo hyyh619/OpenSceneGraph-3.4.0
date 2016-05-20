@@ -20,7 +20,7 @@ using namespace p3d;
 ShowEventHandler::ShowEventHandler()
 {}
 
-bool ShowEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object *object, osg::NodeVisitor* /*nv*/)
+bool ShowEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter& /*aa*/, osg::Object *object, osg::NodeVisitor* /*nv*/)
 {
     switch (ea.getEventType())
     {

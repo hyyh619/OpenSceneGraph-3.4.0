@@ -8,8 +8,8 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool CullFace_readLocalData(Object&obj, Input&fr);
-bool CullFace_writeLocalData(const Object&obj, Output&fw);
+bool CullFace_readLocalData(Object &obj, Input &fr);
+bool CullFace_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(CullFace)
@@ -22,11 +22,11 @@ REGISTER_DOTOSGWRAPPER(CullFace)
 );
 
 
-bool CullFace_readLocalData(Object&obj, Input&fr)
+bool CullFace_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    CullFace&cullface = static_cast<CullFace&>(obj);
+    CullFace &cullface = static_cast<CullFace&>(obj);
 
     if (fr[0].matchWord("mode"))
     {
@@ -54,9 +54,9 @@ bool CullFace_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool CullFace_writeLocalData(const Object&obj, Output&fw)
+bool CullFace_writeLocalData(const Object &obj, Output &fw)
 {
-    const CullFace&cullface = static_cast<const CullFace&>(obj);
+    const CullFace &cullface = static_cast<const CullFace&>(obj);
 
     switch (cullface.getMode())
     {

@@ -12,7 +12,7 @@
  *
  * ViewDependentShadow codes Copyright (C) 2008 Wojciech Lewandowski
  * Thanks to to my company http://www.ai.com.pl for allowing me free this work.
-*/
+ */
 
 
 #ifndef OSGSHADOW_MINIMALDRAWBOUNDSSHADOWMAP
@@ -21,110 +21,110 @@
 #include <osgShadow/MinimalShadowMap>
 
 namespace osgShadow {
-
-class OSGSHADOW_EXPORT MinimalDrawBoundsShadowMap
+    class OSGSHADOW_EXPORT MinimalDrawBoundsShadowMap
     : public MinimalShadowMap
-{
-    public :
+    {
+public:
         /** Convenient typedef used in definition of ViewData struct and methods */
         typedef MinimalDrawBoundsShadowMap ThisClass;
         /** Convenient typedef used in definition of ViewData struct and methods */
-        typedef MinimalShadowMap           BaseClass;
+        typedef MinimalShadowMap BaseClass;
 
         /** Classic OSG constructor */
         MinimalDrawBoundsShadowMap();
 
         /** Classic OSG cloning constructor */
         MinimalDrawBoundsShadowMap(
-            const MinimalDrawBoundsShadowMap& mdbsm,
-            const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+            const MinimalDrawBoundsShadowMap &mdbsm,
+            const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
         /** Declaration of standard OSG object methods */
-        META_Object( osgShadow, MinimalDrawBoundsShadowMap );
+        META_Object(osgShadow, MinimalDrawBoundsShadowMap);
 
-    protected:
+protected:
         /** Classic protected OSG destructor */
         virtual ~MinimalDrawBoundsShadowMap(void);
 
         struct OSGSHADOW_EXPORT ViewData: public BaseClass::ViewData
         {
-            osg::ref_ptr< osg::RefMatrix >       _projection;
-            osg::Vec2s                           _boundAnalysisSize;
-            osg::ref_ptr< osg::Image >           _boundAnalysisImage;
-            osg::ref_ptr< osg::Texture2D >       _boundAnalysisTexture;
-            osg::ref_ptr< osg::Camera >          _boundAnalysisCamera;
-            osg::observer_ptr< osg::Camera >     _mainCamera;
+            osg::ref_ptr < osg::RefMatrix > _projection;
+            osg::Vec2s _boundAnalysisSize;
+            osg::ref_ptr < osg::Image > _boundAnalysisImage;
+            osg::ref_ptr < osg::Texture2D > _boundAnalysisTexture;
+            osg::ref_ptr < osg::Camera > _boundAnalysisCamera;
+            osg::observer_ptr < osg::Camera > _mainCamera;
 
-            void setShadowCameraProjectionMatrixPtr( osg::RefMatrix * projection )
-            { _projection = projection; }
+            void setShadowCameraProjectionMatrixPtr(osg::RefMatrix *projection)
+            {
+                _projection = projection;
+            }
 
-            osg::RefMatrix * getShadowCameraProjectionMatrixPtr( void )
-            { return _projection.get(); }
+            osg::RefMatrix* getShadowCameraProjectionMatrixPtr(void)
+            {
+                return _projection.get();
+            }
 
-            virtual void init( ThisClass * st, osgUtil::CullVisitor * cv );
+            virtual void init(ThisClass *st, osgUtil::CullVisitor *cv);
 
-            virtual void cullShadowReceivingScene( );
+            virtual void cullShadowReceivingScene();
 
-            virtual void createDebugHUD( );
+            virtual void createDebugHUD();
 
-            virtual void recordShadowMapParams( );
+            virtual void recordShadowMapParams();
 
-            virtual void cullBoundAnalysisScene( );
+            virtual void cullBoundAnalysisScene();
 
-            static osg::BoundingBox scanImage( const osg::Image * image, osg::Matrix m );
+            static osg::BoundingBox scanImage(const osg::Image *image, osg::Matrix m);
 
-            virtual void performBoundAnalysis( const osg::Camera& camera );
+            virtual void performBoundAnalysis(const osg::Camera &camera);
 
-            ViewData( void ): _boundAnalysisSize( 64, 64 ) {}
+            ViewData(void) : _boundAnalysisSize(64, 64) {}
         };
 
         friend struct ViewData;
 
-        META_ViewDependentShadowTechniqueData( ThisClass, ThisClass::ViewData )
+        META_ViewDependentShadowTechniqueData(ThisClass, ThisClass::ViewData)
 
 
-        struct CameraPostDrawCallback : public osg::Camera::DrawCallback {
+        struct CameraPostDrawCallback : public osg::Camera::DrawCallback
+        {
+            CameraPostDrawCallback(ViewData * vd) : _vd(vd)
+            {}
 
-            CameraPostDrawCallback( ViewData * vd ): _vd( vd )
+            virtual void operator()(const osg::Camera & camera) const
             {
+                if (_vd.valid())
+                    _vd->performBoundAnalysis(camera);
             }
 
-            virtual void operator ()( const osg::Camera& camera ) const
-            {
-                if( _vd.valid() )
-                    _vd->performBoundAnalysis( camera );
-            }
-
-            osg::observer_ptr< ViewData > _vd;
+            osg::observer_ptr < ViewData > _vd;
         };
 
-        struct CameraCullCallback: public osg::Callback {
+        struct CameraCullCallback : public osg::Callback
+        {
+            CameraCullCallback(ViewData * vd, osg::Callback * nc) : _vd(vd), _nc(nc)
+            {}
 
-            CameraCullCallback(ViewData * vd, osg::Callback * nc): _vd(vd), _nc(nc)
+            virtual bool run(osg::Object *object, osg::Object *data)
             {
-            }
+                osgUtil::CullVisitor *cv = dynamic_cast < osgUtil::CullVisitor * > (data);
 
-            virtual bool run(osg::Object* object, osg::Object* data)
-            {
-                osgUtil::CullVisitor *cv = dynamic_cast< osgUtil::CullVisitor *>( data );
-
-                if( _nc.valid() )
+                if (_nc.valid())
                     _nc->run(object, data);
                 else
                     traverse(object, data);
 
-                if( cv )
-                    _vd->recordShadowMapParams( );
+                if (cv)
+                    _vd->recordShadowMapParams();
 
                 return true;
             }
 
-        protected:
-            osg::observer_ptr< ViewData >     _vd;
-            osg::ref_ptr< osg::Callback >       _nc;
+protected:
+            osg::observer_ptr < ViewData > _vd;
+            osg::ref_ptr < osg::Callback > _nc;
         };
-};
-
+    };
 } // namespace osgShadow
 
 #endif

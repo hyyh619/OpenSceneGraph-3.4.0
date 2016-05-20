@@ -12,8 +12,8 @@ using namespace osgDB;
 
 //////////////////////////////////////////////////////////////////////////////
 // forward declare functions to use later.
-bool CompositeShape_readLocalData(Object&obj, Input&fr);
-bool CompositeShape_writeLocalData(const Object&obj, Output&fw);
+bool CompositeShape_readLocalData(Object &obj, Input &fr);
+bool CompositeShape_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(CompositeShape)
@@ -26,11 +26,11 @@ REGISTER_DOTOSGWRAPPER(CompositeShape)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool CompositeShape_readLocalData(Object&obj, Input&fr)
+bool CompositeShape_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    CompositeShape&composite = static_cast<CompositeShape&>(obj);
+    CompositeShape &composite = static_cast<CompositeShape&>(obj);
 
     ref_ptr<Object> readObject;
     if (fr[0].matchWord("Shape"))
@@ -58,9 +58,9 @@ bool CompositeShape_readLocalData(Object&obj, Input&fr)
     return iteratorAdvanced;
 }
 
-bool CompositeShape_writeLocalData(const Object&obj, Output&fw)
+bool CompositeShape_writeLocalData(const Object &obj, Output &fw)
 {
-    const CompositeShape&composite = static_cast<const CompositeShape&>(obj);
+    const CompositeShape &composite = static_cast<const CompositeShape&>(obj);
 
     if (composite.getShape())
     {

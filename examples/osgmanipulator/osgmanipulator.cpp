@@ -50,30 +50,30 @@ class PlaneConstraint : public osgManipulator::Constraint
 public:
 PlaneConstraint() {}
 
-virtual bool constrain(osgManipulator::TranslateInLineCommand&command) const
+virtual bool constrain(osgManipulator::TranslateInLineCommand &command) const
 {
     OSG_NOTICE << "PlaneConstraint TranslateInLineCommand " << command.getTranslation() << std::endl;
     return true;
 }
-virtual bool constrain(osgManipulator::TranslateInPlaneCommand&command) const
+virtual bool constrain(osgManipulator::TranslateInPlaneCommand &command) const
 {
     // command.setTranslation(osg::Vec3(0.0f,0.0f,0.0f));
     OSG_NOTICE << "PlaneConstraint TranslateInPlaneCommand " << command.getTranslation() << std::endl;
     return true;
 }
-virtual bool constrain(osgManipulator::Scale1DCommand&command) const
+virtual bool constrain(osgManipulator::Scale1DCommand &command) const
 {
     // command.setScale(1.0f);
     OSG_NOTICE << "PlaneConstraint Scale1DCommand" << command.getScale() << std::endl;
     return true;
 }
-virtual bool constrain(osgManipulator::Scale2DCommand&command) const
+virtual bool constrain(osgManipulator::Scale2DCommand &command) const
 {
     // command.setScale(osg::Vec2d(1.0,1.0));
     OSG_NOTICE << "PlaneConstraint Scale2DCommand " << command.getScale() << std::endl;
     return true;
 }
-virtual bool constrain(osgManipulator::ScaleUniformCommand&command) const
+virtual bool constrain(osgManipulator::ScaleUniformCommand &command) const
 {
     OSG_NOTICE << "PlaneConstraint ScaleUniformCommand" << command.getScale() << std::endl;
     return true;
@@ -82,7 +82,7 @@ virtual bool constrain(osgManipulator::ScaleUniformCommand&command) const
 
 
 
-osgManipulator::Dragger* createDragger(const std::string&name)
+osgManipulator::Dragger* createDragger(const std::string &name)
 {
     osgManipulator::Dragger *dragger = 0;
 
@@ -180,7 +180,7 @@ class DraggerContainer : public osg::Group
 public:
 DraggerContainer() : _draggerSize(240.0f), _active(true) {}
 
-DraggerContainer(const DraggerContainer&copy, const osg::CopyOp&copyop = osg::CopyOp::SHALLOW_COPY)
+DraggerContainer(const DraggerContainer &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY)
     : osg::Group(copy, copyop),
     _dragger(copy._dragger), _draggerSize(copy._draggerSize), _active(copy._active)
 {}
@@ -221,7 +221,7 @@ bool getActive() const
     return _active;
 }
 
-void traverse(osg::NodeVisitor&nv)
+void traverse(osg::NodeVisitor &nv)
 {
     if (_dragger.valid())
     {
@@ -250,7 +250,7 @@ float                                 _draggerSize;
 bool                                  _active;
 };
 
-osg::Node* addDraggerToScene(osg::Node *scene, const std::string&name, bool fixedSizeInScreen)
+osg::Node* addDraggerToScene(osg::Node *scene, const std::string &name, bool fixedSizeInScreen)
 {
     scene->getOrCreateStateSet()->setMode(GL_NORMALIZE, osg::StateAttribute::ON);
 

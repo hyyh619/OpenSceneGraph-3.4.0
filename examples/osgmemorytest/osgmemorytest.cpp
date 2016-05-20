@@ -38,7 +38,7 @@ public:
 class GLObject : public osg::Referenced
 {
 public:
-virtual void apply(osg::RenderInfo&renderInfo) = 0;
+virtual void apply(osg::RenderInfo &renderInfo) = 0;
 };
 
 class GLMemoryTest : public MemoryTest
@@ -110,7 +110,7 @@ public:
 
 StateAttributeObject(osg::StateAttribute *sa) : _attribute(sa) {}
 
-void apply(osg::RenderInfo&renderInfo)
+void apply(osg::RenderInfo &renderInfo)
 {
     _attribute->apply(*renderInfo.getState());
 
@@ -231,7 +231,7 @@ public:
 
 DrawableObject(osg::Drawable *drawable) : _drawable(drawable) {}
 
-void apply(osg::RenderInfo&renderInfo)
+void apply(osg::RenderInfo &renderInfo)
 {
     _drawable->draw(renderInfo);
 

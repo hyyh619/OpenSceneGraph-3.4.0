@@ -2221,7 +2221,7 @@ GDALDatasetH GDALOpenInternal(const char *pszFilename, GDALAccess eAccess,
     return GDALOpenInternal(oOpenInfo, papszAllowedDrivers);
 }
 
-GDALDatasetH GDALOpenInternal(GDALOpenInfo&oOpenInfo,
+GDALDatasetH GDALOpenInternal(GDALOpenInfo &oOpenInfo,
                               const char* const *papszAllowedDrivers)
 {
     VALIDATE_POINTER1(oOpenInfo.pszFilename, "GDALOpen", NULL);

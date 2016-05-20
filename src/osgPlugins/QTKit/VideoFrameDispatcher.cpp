@@ -25,7 +25,7 @@ VideoImageStream::VideoImageStream()
     , _queue(NULL)
 {}
 
-VideoImageStream::VideoImageStream(const VideoImageStream&image, const osg::CopyOp&copyop)
+VideoImageStream::VideoImageStream(const VideoImageStream &image, const osg::CopyOp &copyop)
     : osg::ImageStream(image, copyop)
     , _needsDispatching(image._needsDispatching)
     , _dispatcher(image._dispatcher)

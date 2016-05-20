@@ -116,7 +116,7 @@ std::string Output::wrapString(const char *str)
     return wrapString(std::string(str));
 }
 
-std::string Output::wrapString(const std::string&str)
+std::string Output::wrapString(const std::string &str)
 {
     std::string newstring;
 
@@ -142,13 +142,13 @@ std::string Output::wrapString(const std::string&str)
     return newstring;
 }
 
-bool Output::writeObject(const osg::Object&obj)
+bool Output::writeObject(const osg::Object &obj)
 {
     return Registry::instance()->getDeprecatedDotOsgObjectWrapperManager()->writeObject(obj, *this);
 }
 
 
-void Output::writeBeginObject(const std::string&name)
+void Output::writeBeginObject(const std::string &name)
 {
     indent() << name << " {" << std::endl;
 }
@@ -158,17 +158,17 @@ void Output::writeEndObject()
     indent() << "}" << std::endl;
 }
 
-void Output::writeUseID(const std::string&id)
+void Output::writeUseID(const std::string &id)
 {
     indent() << "Use " << id << std::endl;
 }
 
-void Output::writeUniqueID(const std::string&id)
+void Output::writeUniqueID(const std::string &id)
 {
     indent() << "UniqueID " << id << std::endl;
 }
 
-bool Output::getUniqueIDForObject(const osg::Object *obj, std::string&uniqueID)
+bool Output::getUniqueIDForObject(const osg::Object *obj, std::string &uniqueID)
 {
     UniqueIDToLabelMapping::iterator fitr = _objectToUniqueIDMap.find(obj);
 
@@ -182,7 +182,7 @@ bool Output::getUniqueIDForObject(const osg::Object *obj, std::string&uniqueID)
 }
 
 
-bool Output::createUniqueIDForObject(const osg::Object *obj, std::string&uniqueID)
+bool Output::createUniqueIDForObject(const osg::Object *obj, std::string &uniqueID)
 {
     char str[256];
 
@@ -192,13 +192,13 @@ bool Output::createUniqueIDForObject(const osg::Object *obj, std::string&uniqueI
 }
 
 
-bool Output::registerUniqueIDForObject(const osg::Object *obj, std::string&uniqueID)
+bool Output::registerUniqueIDForObject(const osg::Object *obj, std::string &uniqueID)
 {
     _objectToUniqueIDMap[obj] = uniqueID;
     return true;
 }
 
-std::string Output::getFileNameForOutput(const std::string&filename) const
+std::string Output::getFileNameForOutput(const std::string &filename) const
 {
     switch (_pathNameHint)
     {
@@ -261,12 +261,12 @@ std::string Output::getShaderFileNameForOutput()
     return fileName;
 }
 
-void Output::setExternalFileWritten(const std::string&filename, bool hasBeenWritten)
+void Output::setExternalFileWritten(const std::string &filename, bool hasBeenWritten)
 {
     _externalFileWritten[filename] = hasBeenWritten;
 }
 
-bool Output::getExternalFileWritten(const std::string&filename) const
+bool Output::getExternalFileWritten(const std::string &filename) const
 {
     ExternalFileWrittenMap::const_iterator itr = _externalFileWritten.find(filename);
 

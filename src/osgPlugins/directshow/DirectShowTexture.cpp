@@ -686,7 +686,7 @@ HRESULT GetPin(IBaseFilter *pFilter, LPCWSTR pName, IPin **ppPin)
 // FindPinInterface
 // Attempt to locate the interface on the pin with the specified format or on the first pin if no
 // format is provided.
-HRESULT FindPinInterface(IBaseFilter *pFilter, const GUID *pFormat, PIN_DIRECTION PinDir, const IID&riid, void **ppvInterface)
+HRESULT FindPinInterface(IBaseFilter *pFilter, const GUID *pFormat, PIN_DIRECTION PinDir, const IID &riid, void **ppvInterface)
 {
     HRESULT hr = S_OK;
 
@@ -749,7 +749,7 @@ std::string getStringFromGUID(const GUID *pGUID)
     CoTaskMemFree(pwszClsid);
     return std::string(szCLSID);
 }
-const GUID* getGUIDFromString(const std::string&str)
+const GUID* getGUIDFromString(const std::string &str)
 {
     int i = 0;
 
@@ -781,7 +781,7 @@ static std::string getErrorMessage(HRESULT hr)
     return std::string("");
 }
 
-static bool checkError(const std::string&prefix, HRESULT hr)
+static bool checkError(const std::string &prefix, HRESULT hr)
 {
     if (FAILED(hr))
     {
@@ -854,7 +854,7 @@ struct ListDeviceAvailable
         std::string _name;
         std::string _clsid;
         IMoniker    *_device;
-        DeviceEntry(const std::string&name = "", const std::string&clsid = "", IMoniker *device = 0) : _name(name), _clsid(clsid), _device(device) {}
+        DeviceEntry(const std::string &name = "", const std::string &clsid = "", IMoniker *device = 0) : _name(name), _clsid(clsid), _device(device) {}
     };
     std::vector<DeviceEntry> _listDevice;
     IEnumMoniker             *_enumMoniker;
@@ -869,7 +869,7 @@ struct ListDeviceAvailable
                 _listDevice[i]._device->Release();
     }
 
-    void displayDevicesFound(const std::string&prefixForMessage, osg::NotifySeverity serverity = osg::NOTICE) const
+    void displayDevicesFound(const std::string &prefixForMessage, osg::NotifySeverity serverity = osg::NOTICE) const
     {
         for (int i = 0; i < (int)_listDevice.size(); i++)
         {
@@ -877,7 +877,7 @@ struct ListDeviceAvailable
         }
     }
 
-    DeviceEntry getDevice(const std::string&name)
+    DeviceEntry getDevice(const std::string &name)
     {
         for (int i = 0; i < (int)_listDevice.size(); i++)
             if (_listDevice[i]._name == name)
@@ -995,7 +995,7 @@ struct ListCapDeviceAvailable
                 DeleteMediaType(_capsList[i].first);
     }
 
-    void displayCapsFound(const std::string&prefixForMessage = "") const
+    void displayCapsFound(const std::string &prefixForMessage = "") const
     {
         for (int i = 0; i < (int)_capsList.size(); i++)
         {
@@ -1004,7 +1004,7 @@ struct ListCapDeviceAvailable
         }
     }
 
-    static void displayCap(VIDEOINFOHEADER *video, const std::string&prefix = "")
+    static void displayCap(VIDEOINFOHEADER *video, const std::string &prefix = "")
     {
         if (!video)
             return;
@@ -1159,7 +1159,7 @@ bool CTextureRenderer::setupOutputSoundDevice(ICreateDevEnum *devs)
     return true;
 }
 
-bool CTextureRenderer::openVideoCaptureDevice(const std::string&capture, int wantWidth, int wantHeight, double wantFps)
+bool CTextureRenderer::openVideoCaptureDevice(const std::string &capture, int wantWidth, int wantHeight, double wantFps)
 {
     std::string prefixForMessage;
     {
@@ -1258,7 +1258,7 @@ bool CTextureRenderer::openVideoCaptureDevice(const std::string&capture, int wan
 }
 
 
-bool CTextureRenderer::openSoundCaptureDevice(const std::string&capture, int nbChannels)
+bool CTextureRenderer::openSoundCaptureDevice(const std::string &capture, int nbChannels)
 {
     std::string prefixForMessage;
     {
@@ -1444,7 +1444,7 @@ bool CTextureRenderer::openSoundCaptureDevice(const std::string&capture, int nbC
 }
 
 
-bool CTextureRenderer::openCaptureDevices(const DirectShowImageStream::Options&o)
+bool CTextureRenderer::openCaptureDevices(const DirectShowImageStream::Options &o)
 {
     std::string prefixForMessage;
     {
@@ -1491,7 +1491,7 @@ bool CTextureRenderer::openCaptureDevices(const DirectShowImageStream::Options&o
 }
 
 
-bool CTextureRenderer::openFile(const std::string&file)
+bool CTextureRenderer::openFile(const std::string &file)
 {
     syncStreams(true);
     WCHAR wFileName[MAX_PATH];
@@ -1817,7 +1817,7 @@ DirectShowImageStream::DirectShowImageStream()
         OSG_WARN << this << " error in constructor " << getErrorMessage(hr) << std::endl;
     }
 }
-DirectShowImageStream::DirectShowImageStream(const DirectShowImageStream&d, const osg::CopyOp&c) : osg::ImageStream(d, c)
+DirectShowImageStream::DirectShowImageStream(const DirectShowImageStream &d, const osg::CopyOp &c) : osg::ImageStream(d, c)
 {
     // i guess it's invalid
 }
@@ -1828,7 +1828,7 @@ DirectShowImageStream::~DirectShowImageStream()
     CoUninitialize();
 }
 
-bool DirectShowImageStream::openFile(const std::string&file)
+bool DirectShowImageStream::openFile(const std::string &file)
 {
     HRESULT valid = S_OK;
 
@@ -1962,7 +1962,7 @@ double DirectShowImageStream::getCurrentTime() const
     return currentTime;
 }
 
-void DirectShowImageStream::setOptions(const Options&map)
+void DirectShowImageStream::setOptions(const Options &map)
 {
     for (Options::const_iterator it = map.begin(); it != map.end(); it++)
         _options[it->first] = it->second;

@@ -78,7 +78,7 @@ public:
 FFmpegDecoder();
 ~FFmpegDecoder();
 
-bool open(const std::string&filename, FFmpegParameters *parameters);
+bool open(const std::string &filename, FFmpegParameters *parameters);
 void close(bool waitForThreadToExit);
 
 bool readNextPacket();

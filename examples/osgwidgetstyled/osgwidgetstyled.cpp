@@ -8,20 +8,20 @@
 
 const unsigned int MASK_2D = 0xF0000000;
 
-const std::string&STYLE1 =
+const std::string &STYLE1 =
     "color 0 0 0 128\n"
     "padding 5\n"
 ;
 
-const std::string&STYLE2 =
+const std::string &STYLE2 =
     "color 1.0 0.5 0.0\n"
 ;
 
-const std::string&STYLE3 =
+const std::string &STYLE3 =
     "fill true\n"
 ;
 
-const std::string&STYLE4 =
+const std::string &STYLE4 =
     "pos 100.0 100.0\n"
     "size 600 600\n"
 ;

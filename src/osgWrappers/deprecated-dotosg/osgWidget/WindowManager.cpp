@@ -7,14 +7,14 @@
 #include <osgDB/FileUtils>
 #include <osgWidget/WindowManager>
 
-bool osgWidget_WindowManager_readData(osg::Object& /*obj*/, osgDB::Input&fr)
+bool osgWidget_WindowManager_readData(osg::Object& /*obj*/, osgDB::Input &fr)
 {
     osgWidget::warn() << "WindowManager read" << std::endl;
 
     return false;
 }
 
-bool osgWidget_WindowManager_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
+bool osgWidget_WindowManager_writeData(const osg::Object& /*obj*/, osgDB::Output &fw)
 {
     // const osgWidget::WindowManager& model = static_cast<const osgWidget::WindowManager&>(obj);
 

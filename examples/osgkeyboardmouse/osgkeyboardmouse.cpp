@@ -50,7 +50,7 @@ CreateModelToSaveVisitor() :
     _addToModel = false;
 }
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     osgFX::Scribe *scribe = dynamic_cast<osgFX::Scribe*>(&node);
 
@@ -79,7 +79,7 @@ DeleteSelectedNodesVisitor() :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN)
 {}
 
-virtual void apply(osg::Node&node)
+virtual void apply(osg::Node &node)
 {
     osgFX::Scribe *scribe = dynamic_cast<osgFX::Scribe*>(&node);
 
@@ -127,7 +127,7 @@ PickHandler() :
 
 ~PickHandler() {}
 
-bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     osgViewer::Viewer *viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 
@@ -206,7 +206,7 @@ bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
     }
 }
 
-void pick(const osgGA::GUIEventAdapter&ea, osgViewer::Viewer *viewer)
+void pick(const osgGA::GUIEventAdapter &ea, osgViewer::Viewer *viewer)
 {
     osg::Node *scene = viewer->getSceneData();
 
@@ -259,7 +259,7 @@ void pick(const osgGA::GUIEventAdapter&ea, osgViewer::Viewer *viewer)
                                      << intersection.numIntersectionPoints
                                      << std::endl;
 
-            osg::NodePath&nodePath = intersection.nodePath;
+            osg::NodePath &nodePath = intersection.nodePath;
             node   = (nodePath.size() >= 1) ? nodePath[nodePath.size() - 1] : 0;
             parent = (nodePath.size() >= 2) ? dynamic_cast<osg::Group*>(nodePath[nodePath.size() - 2]) : 0;
 
@@ -296,7 +296,7 @@ void pick(const osgGA::GUIEventAdapter&ea, osgViewer::Viewer *viewer)
             osgUtil::LineSegmentIntersector::Intersection intersection = picker->getFirstIntersection();
             osg::notify(osg::NOTICE) << "Picked " << intersection.localIntersectionPoint << std::endl;
 
-            osg::NodePath&nodePath = intersection.nodePath;
+            osg::NodePath &nodePath = intersection.nodePath;
             node   = (nodePath.size() >= 1) ? nodePath[nodePath.size() - 1] : 0;
             parent = (nodePath.size() >= 2) ? dynamic_cast<osg::Group*>(nodePath[nodePath.size() - 2]) : 0;
 

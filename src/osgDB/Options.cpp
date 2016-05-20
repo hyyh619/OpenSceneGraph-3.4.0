@@ -16,7 +16,7 @@
 
 using namespace osgDB;
 
-Options::Options(const Options&options, const osg::CopyOp&copyop) :
+Options::Options(const Options &options, const osg::CopyOp &copyop) :
     osg::Object(options, copyop),
     _str(options._str),
     _databasePaths(options._databasePaths),
@@ -34,7 +34,7 @@ Options::Options(const Options&options, const osg::CopyOp&copyop) :
     _terrain(options._terrain),
     _parentGroup(options._parentGroup) {}
 
-void Options::parsePluginStringData(const std::string&str, char separator1, char separator2)
+void Options::parsePluginStringData(const std::string &str, char separator1, char separator2)
 {
     StringList valueList;
 

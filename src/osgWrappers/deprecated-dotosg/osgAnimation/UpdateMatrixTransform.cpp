@@ -25,12 +25,12 @@
 using namespace osg;
 using namespace osgDB;
 
-bool UpdateMatrixTransform_readLocalData(Object&obj, Input&fr)
+bool UpdateMatrixTransform_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    osgAnimation::UpdateMatrixTransform&updateCallback   = dynamic_cast<osgAnimation::UpdateMatrixTransform&>(obj);
-    osgAnimation::StackedTransform     &stackedTransform = updateCallback.getStackedTransforms();
+    osgAnimation::UpdateMatrixTransform &updateCallback   = dynamic_cast<osgAnimation::UpdateMatrixTransform&>(obj);
+    osgAnimation::StackedTransform      &stackedTransform = updateCallback.getStackedTransforms();
 
     int entry = fr[0].getNoNestedBrackets();
 
@@ -46,7 +46,7 @@ bool UpdateMatrixTransform_readLocalData(Object&obj, Input&fr)
 
 
 
-bool UpdateMatrixTransform_writeLocalData(const Object&obj, Output&fw)
+bool UpdateMatrixTransform_writeLocalData(const Object &obj, Output &fw)
 {
     const osgAnimation::UpdateMatrixTransform *uc         = dynamic_cast<const osgAnimation::UpdateMatrixTransform*>(&obj);
     const osgAnimation::StackedTransform      &transforms = uc->getStackedTransforms();

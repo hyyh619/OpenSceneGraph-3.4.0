@@ -258,7 +258,7 @@ bool ArgumentParser::isNumber(int pos) const
 }
 
 
-int ArgumentParser::find(const std::string&str) const
+int ArgumentParser::find(const std::string &str) const
 {
     for (int pos = 1; pos < *_argc; ++pos)
     {
@@ -271,7 +271,7 @@ int ArgumentParser::find(const std::string&str) const
     return -1;
 }
 
-bool ArgumentParser::match(int pos, const std::string&str) const
+bool ArgumentParser::match(int pos, const std::string &str) const
 {
     return pos < *_argc && str == _argv[pos];
 }
@@ -307,7 +307,7 @@ void ArgumentParser::remove(int pos, int num)
     *_argc -= num;
 }
 
-bool ArgumentParser::read(const std::string&str)
+bool ArgumentParser::read(const std::string &str)
 {
     int pos = find(str);
 
@@ -318,7 +318,7 @@ bool ArgumentParser::read(const std::string&str)
     return true;
 }
 
-bool ArgumentParser::read(const std::string&str, Parameter value1)
+bool ArgumentParser::read(const std::string &str, Parameter value1)
 {
     int pos = find(str);
 
@@ -328,7 +328,7 @@ bool ArgumentParser::read(const std::string&str, Parameter value1)
     return read(pos, str, value1);
 }
 
-bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter value2)
+bool ArgumentParser::read(const std::string &str, Parameter value1, Parameter value2)
 {
     int pos = find(str);
 
@@ -338,7 +338,7 @@ bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter val
     return read(pos, str, value1, value2);
 }
 
-bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter value2, Parameter value3)
+bool ArgumentParser::read(const std::string &str, Parameter value1, Parameter value2, Parameter value3)
 {
     int pos = find(str);
 
@@ -348,7 +348,7 @@ bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter val
     return read(pos, str, value1, value2, value3);
 }
 
-bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4)
+bool ArgumentParser::read(const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4)
 {
     int pos = find(str);
 
@@ -358,7 +358,7 @@ bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter val
     return read(pos, str, value1, value2, value3, value4);
 }
 
-bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5)
+bool ArgumentParser::read(const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5)
 {
     int pos = find(str);
 
@@ -368,7 +368,7 @@ bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter val
     return read(pos, str, value1, value2, value3, value4, value5);
 }
 
-bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6)
+bool ArgumentParser::read(const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6)
 {
     int pos = find(str);
 
@@ -378,7 +378,7 @@ bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter val
     return read(pos, str, value1, value2, value3, value4, value5, value6);
 }
 
-bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7)
+bool ArgumentParser::read(const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7)
 {
     int pos = find(str);
 
@@ -388,7 +388,7 @@ bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter val
     return read(pos, str, value1, value2, value3, value4, value5, value6, value7);
 }
 
-bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7, Parameter value8)
+bool ArgumentParser::read(const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6, Parameter value7, Parameter value8)
 {
     int pos = find(str);
 
@@ -400,7 +400,7 @@ bool ArgumentParser::read(const std::string&str, Parameter value1, Parameter val
 
 /** if the argument value at the position pos matches specified string, and subsequent
  * Parameters are also matched then set the Parameter values and remove the from the list of arguments.*/
-bool ArgumentParser::read(int pos, const std::string&str)
+bool ArgumentParser::read(int pos, const std::string &str)
 {
     if (match(pos, str))
     {
@@ -411,7 +411,7 @@ bool ArgumentParser::read(int pos, const std::string&str)
     return false;
 }
 
-bool ArgumentParser::read(int pos, const std::string&str, Parameter value1)
+bool ArgumentParser::read(int pos, const std::string &str, Parameter value1)
 {
     if (match(pos, str))
     {
@@ -435,7 +435,7 @@ bool ArgumentParser::read(int pos, const std::string&str, Parameter value1)
     return false;
 }
 
-bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Parameter value2)
+bool ArgumentParser::read(int pos, const std::string &str, Parameter value1, Parameter value2)
 {
     if (match(pos, str))
     {
@@ -461,7 +461,7 @@ bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Para
     return false;
 }
 
-bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Parameter value2, Parameter value3)
+bool ArgumentParser::read(int pos, const std::string &str, Parameter value1, Parameter value2, Parameter value3)
 {
     if (match(pos, str))
     {
@@ -489,7 +489,7 @@ bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Para
     return false;
 }
 
-bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4)
+bool ArgumentParser::read(int pos, const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4)
 {
     if (match(pos, str))
     {
@@ -519,7 +519,7 @@ bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Para
     return false;
 }
 
-bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5)
+bool ArgumentParser::read(int pos, const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5)
 {
     if (match(pos, str))
     {
@@ -551,7 +551,7 @@ bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Para
     return false;
 }
 
-bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6)
+bool ArgumentParser::read(int pos, const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5, Parameter value6)
 {
     if (match(pos, str))
     {
@@ -585,7 +585,7 @@ bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Para
     return false;
 }
 
-bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5,  Parameter value6,  Parameter value7)
+bool ArgumentParser::read(int pos, const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5,  Parameter value6,  Parameter value7)
 {
     if (match(pos, str))
     {
@@ -621,7 +621,7 @@ bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Para
     return false;
 }
 
-bool ArgumentParser::read(int pos, const std::string&str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5,  Parameter value6,  Parameter value7,  Parameter value8)
+bool ArgumentParser::read(int pos, const std::string &str, Parameter value1, Parameter value2, Parameter value3, Parameter value4, Parameter value5,  Parameter value6,  Parameter value7,  Parameter value8)
 {
     if (match(pos, str))
     {
@@ -672,7 +672,7 @@ bool ArgumentParser::errors(ErrorSeverity severity) const
     return false;
 }
 
-void ArgumentParser::reportError(const std::string&message, ErrorSeverity severity)
+void ArgumentParser::reportError(const std::string &message, ErrorSeverity severity)
 {
     _errorMessageMap[message] = severity;
 }
@@ -717,7 +717,7 @@ void ArgumentParser::reportRemainingOptionsAsUnrecognized(ErrorSeverity severity
         }
     }
 }
-void ArgumentParser::writeErrorMessages(std::ostream&output, ErrorSeverity severity)
+void ArgumentParser::writeErrorMessages(std::ostream &output, ErrorSeverity severity)
 {
     for (ErrorMessageMap::iterator itr = _errorMessageMap.begin();
          itr != _errorMessageMap.end();

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef QWIDGETIMAGE
 #define QWIDGETIMAGE
@@ -20,18 +20,29 @@
 
 namespace osgQt
 {
+    class OSGQT_EXPORT QWidgetImage: public osg::Image
+    {
+public:
 
-class OSGQT_EXPORT QWidgetImage : public osg::Image
-{
-    public:
+        QWidgetImage(QWidget * widget = 0);
 
-        QWidgetImage( QWidget* widget=0 );
+        QWidget* getQWidget()
+        {
+            return _widget;
+        }
+        QGraphicsViewAdapter* getQGraphicsViewAdapter()
+        {
+            return _adapter;
+        }
 
-        QWidget* getQWidget() { return _widget; }
-        QGraphicsViewAdapter* getQGraphicsViewAdapter() { return _adapter; }
-
-        virtual bool requiresUpdateCall() const { return true; }
-        virtual void update( osg::NodeVisitor* nv ) { render(); }
+        virtual bool requiresUpdateCall() const
+        {
+            return true;
+        }
+        virtual void update(osg::NodeVisitor *nv)
+        {
+            render();
+        }
 
         void clearWriteBuffer();
 
@@ -39,7 +50,7 @@ class OSGQT_EXPORT QWidgetImage : public osg::Image
 
         /// Overridden scaleImage used to catch cases where the image is
         /// fullscreen and the window is resized.
-        virtual void scaleImage(int s,int t,int r, GLenum newDataType);
+        virtual void scaleImage(int s, int t, int r, GLenum newDataType);
 
         virtual bool sendFocusHint(bool focus);
 
@@ -47,14 +58,13 @@ class OSGQT_EXPORT QWidgetImage : public osg::Image
 
         virtual bool sendKeyEvent(int key, bool keyDown);
 
-        virtual void setFrameLastRendered(const osg::FrameStamp* frameStamp);
+        virtual void setFrameLastRendered(const osg::FrameStamp *frameStamp);
 
-    protected:
+protected:
 
-        QPointer<QGraphicsViewAdapter>  _adapter;
-        QPointer<QWidget>               _widget;
-};
-
+        QPointer < QGraphicsViewAdapter > _adapter;
+        QPointer < QWidget > _widget;
+    };
 }
 
 #endif

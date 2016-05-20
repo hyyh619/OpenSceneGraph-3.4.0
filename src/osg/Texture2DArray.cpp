@@ -27,7 +27,7 @@ Texture2DArray::Texture2DArray() :
     _numMipmapLevels(0)
 {}
 
-Texture2DArray::Texture2DArray(const Texture2DArray&text, const CopyOp&copyop) :
+Texture2DArray::Texture2DArray(const Texture2DArray &text, const CopyOp &copyop) :
     Texture(text, copyop),
     _textureWidth(text._textureWidth),
     _textureHeight(text._textureHeight),
@@ -51,7 +51,7 @@ Texture2DArray::~Texture2DArray()
     }
 }
 
-int Texture2DArray::compare(const StateAttribute&sa) const
+int Texture2DArray::compare(const StateAttribute &sa) const
 {
     // check the types are equal and then create the rhs variable
     // used by the COMPARE_StateAttribute_Parameter macros below.
@@ -251,7 +251,7 @@ GLsizei Texture2DArray::computeTextureDepth() const
 }
 
 
-void Texture2DArray::apply(State&state) const
+void Texture2DArray::apply(State &state) const
 {
     // get the contextID (user defined ID of 0 upwards) for the
     // current OpenGL context.
@@ -479,7 +479,7 @@ void Texture2DArray::apply(State&state) const
 }
 
 
-void Texture2DArray::applyTexImage2DArray_subload(State&state, Image *image, GLsizei layer, GLsizei inwidth, GLsizei inheight, GLsizei indepth, GLint inInternalFormat, GLsizei&numMipmapLevels) const
+void Texture2DArray::applyTexImage2DArray_subload(State &state, Image *image, GLsizei layer, GLsizei inwidth, GLsizei inheight, GLsizei indepth, GLint inInternalFormat, GLsizei &numMipmapLevels) const
 {
     // if we don't have a valid image we can't create a texture!
     if (!imagesValid())
@@ -635,7 +635,7 @@ void Texture2DArray::applyTexImage2DArray_subload(State&state, Image *image, GLs
 }
 
 
-void Texture2DArray::copyTexSubImage2DArray(State&state, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height)
+void Texture2DArray::copyTexSubImage2DArray(State &state, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height)
 {
     const unsigned int contextID   = state.getContextID();
     const GLExtensions *extensions = state.get<GLExtensions>();
@@ -660,7 +660,7 @@ void Texture2DArray::copyTexSubImage2DArray(State&state, int xoffset, int yoffse
     }
 }
 
-void Texture2DArray::allocateMipmap(State&state) const
+void Texture2DArray::allocateMipmap(State &state) const
 {
     const unsigned int contextID = state.getContextID();
 

@@ -17,8 +17,8 @@
 
 #include <osgVolume/VolumeTile>
 
-bool ImageLayer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool ImageLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool ImageLayer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool ImageLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(ImageLayer_Proxy)
 (
@@ -29,9 +29,9 @@ REGISTER_DOTOSGWRAPPER(ImageLayer_Proxy)
     ImageLayer_writeLocalData
 );
 
-bool ImageLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool ImageLayer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgVolume::ImageLayer&layer = static_cast<osgVolume::ImageLayer&>(obj);
+    osgVolume::ImageLayer &layer = static_cast<osgVolume::ImageLayer&>(obj);
 
     bool itrAdvanced = false;
 
@@ -97,9 +97,9 @@ bool ImageLayer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool ImageLayer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool ImageLayer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgVolume::ImageLayer&layer = static_cast<const osgVolume::ImageLayer&>(obj);
+    const osgVolume::ImageLayer &layer = static_cast<const osgVolume::ImageLayer&>(obj);
 
     if (!layer.getFileName().empty())
     {

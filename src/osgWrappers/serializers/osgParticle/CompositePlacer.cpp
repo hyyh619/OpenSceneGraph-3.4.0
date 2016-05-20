@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkPlacers(const osgParticle::CompositePlacer&cp)
+static bool checkPlacers(const osgParticle::CompositePlacer &cp)
 {
     return cp.getNumPlacers() > 0;
 }
 
-static bool readPlacers(osgDB::InputStream&is, osgParticle::CompositePlacer&cp)
+static bool readPlacers(osgDB::InputStream &is, osgParticle::CompositePlacer &cp)
 {
     unsigned int size = 0; is >> size >> is.BEGIN_BRACKET;
 
@@ -23,7 +23,7 @@ static bool readPlacers(osgDB::InputStream&is, osgParticle::CompositePlacer&cp)
     return true;
 }
 
-static bool writePlacers(osgDB::OutputStream&os, const osgParticle::CompositePlacer&cp)
+static bool writePlacers(osgDB::OutputStream &os, const osgParticle::CompositePlacer &cp)
 {
     unsigned int size = cp.getNumPlacers();
 

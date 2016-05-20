@@ -50,12 +50,12 @@ FILTER_FUNCTIONS(MAG_FILTER, osg::Texture::MAG_FILTER)
 GL_FORMAT_FUNCTIONS(SourceFormat)
 GL_FORMAT_FUNCTIONS(SourceType)
 
-static bool checkInternalFormat(const osg::Texture&tex)
+static bool checkInternalFormat(const osg::Texture &tex)
 {
     return tex.getInternalFormatMode() == osg::Texture::USE_USER_DEFINED_FORMAT;
 }
 
-static bool readInternalFormat(osgDB::InputStream&is, osg::Texture&tex)
+static bool readInternalFormat(osgDB::InputStream &is, osg::Texture &tex)
 {
     DEF_GLENUM(mode); is >> mode;
     if (tex.getInternalFormatMode() == osg::Texture::USE_USER_DEFINED_FORMAT)
@@ -64,7 +64,7 @@ static bool readInternalFormat(osgDB::InputStream&is, osg::Texture&tex)
     return true;
 }
 
-static bool writeInternalFormat(osgDB::OutputStream&os, const osg::Texture&tex)
+static bool writeInternalFormat(osgDB::OutputStream &os, const osg::Texture &tex)
 {
     if (os.isBinary() && tex.getInternalFormatMode() != osg::Texture::USE_USER_DEFINED_FORMAT)
         os << GLENUM(GL_NONE) << std::endl;  // Avoid use of OpenGL extensions
@@ -75,12 +75,12 @@ static bool writeInternalFormat(osgDB::OutputStream&os, const osg::Texture&tex)
 }
 
 // _imageAttachment
-static bool checkImageAttachment(const osg::Texture&attr)
+static bool checkImageAttachment(const osg::Texture &attr)
 {
     return attr.getImageAttachment().access != 0;
 }
 
-static bool readImageAttachment(osgDB::InputStream&is, osg::Texture&attr)
+static bool readImageAttachment(osgDB::InputStream &is, osg::Texture &attr)
 {
     osg::Texture::ImageAttachment attachment;
 
@@ -91,9 +91,9 @@ static bool readImageAttachment(osgDB::InputStream&is, osg::Texture&attr)
     return true;
 }
 
-static bool writeImageAttachment(osgDB::OutputStream&os, const osg::Texture&attr)
+static bool writeImageAttachment(osgDB::OutputStream &os, const osg::Texture &attr)
 {
-    const osg::Texture::ImageAttachment&attachment = attr.getImageAttachment();
+    const osg::Texture::ImageAttachment &attachment = attr.getImageAttachment();
 
     os << attachment.unit << attachment.level << attachment.layered
        << attachment.layer << attachment.access << attachment.format << std::endl;
@@ -101,7 +101,7 @@ static bool writeImageAttachment(osgDB::OutputStream&os, const osg::Texture&attr
 }
 
 // _swizzle
-static bool checkSwizzle(const osg::Texture&attr)
+static bool checkSwizzle(const osg::Texture &attr)
 {
     return true;
 }
@@ -164,7 +164,7 @@ static GLint characterToSwizzle(unsigned char character, GLint defaultSwizzle)
     return defaultSwizzle;
 }
 
-static std::string swizzleToString(const osg::Vec4i&swizzle)
+static std::string swizzleToString(const osg::Vec4i &swizzle)
 {
     std::string result;
 
@@ -176,7 +176,7 @@ static std::string swizzleToString(const osg::Vec4i&swizzle)
     return result;
 }
 
-static osg::Vec4i stringToSwizzle(const std::string&swizzleString)
+static osg::Vec4i stringToSwizzle(const std::string &swizzleString)
 {
     osg::Vec4i swizzle;
 
@@ -188,7 +188,7 @@ static osg::Vec4i stringToSwizzle(const std::string&swizzleString)
     return swizzle;
 }
 
-static bool readSwizzle(osgDB::InputStream&is, osg::Texture&attr)
+static bool readSwizzle(osgDB::InputStream &is, osg::Texture &attr)
 {
     std::string swizzleString;
 
@@ -198,7 +198,7 @@ static bool readSwizzle(osgDB::InputStream&is, osg::Texture&attr)
     return true;
 }
 
-static bool writeSwizzle(osgDB::OutputStream&os, const osg::Texture&attr)
+static bool writeSwizzle(osgDB::OutputStream &os, const osg::Texture &attr)
 {
     os << swizzleToString(attr.getSwizzle()) << std::endl;
 

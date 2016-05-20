@@ -40,7 +40,7 @@ KeyboardEventHandler(osg::StateSet *stateset) :
     _stateset->setAttribute(_point.get());
 }
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {

@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkFilterMatrix(const osgTerrain::GeometryTechnique&tech)
+static bool checkFilterMatrix(const osgTerrain::GeometryTechnique &tech)
 {
     return true;
 }
 
-static bool readFilterMatrix(osgDB::InputStream&is, osgTerrain::GeometryTechnique&tech)
+static bool readFilterMatrix(osgDB::InputStream &is, osgTerrain::GeometryTechnique &tech)
 {
     osg::Matrix3 matrix;
 
@@ -24,9 +24,9 @@ static bool readFilterMatrix(osgDB::InputStream&is, osgTerrain::GeometryTechniqu
     return true;
 }
 
-static bool writeFilterMatrix(osgDB::OutputStream&os, const osgTerrain::GeometryTechnique&tech)
+static bool writeFilterMatrix(osgDB::OutputStream &os, const osgTerrain::GeometryTechnique &tech)
 {
-    const osg::Matrix3&matrix = tech.getFilterMatrix();
+    const osg::Matrix3 &matrix = tech.getFilterMatrix();
 
     os << os.BEGIN_BRACKET << std::endl;
 

@@ -8,7 +8,7 @@ static bool checkRestartIndex(const osg::PrimitiveRestartIndex&)
     return true;
 }
 
-static bool readRestartIndex(osgDB::InputStream&is, osg::PrimitiveRestartIndex&attr)
+static bool readRestartIndex(osgDB::InputStream &is, osg::PrimitiveRestartIndex &attr)
 {
     if (is.getFileVersion() > 97)
     {
@@ -20,7 +20,7 @@ static bool readRestartIndex(osgDB::InputStream&is, osg::PrimitiveRestartIndex&a
     return true;
 }
 
-static bool writeRestartIndex(osgDB::OutputStream&os, const osg::PrimitiveRestartIndex&attr)
+static bool writeRestartIndex(osgDB::OutputStream &os, const osg::PrimitiveRestartIndex &attr)
 {
     os << attr.getRestartIndex() << std::endl;
     return true;

@@ -108,10 +108,10 @@ ConvertFromInventor::restructure(void *data, SoCallbackAction *action,
               << node->getTypeId().getName().getString();
 #endif
 
-    int                           childrenTotal       = 0;
-    int                           numModifiedChildren = 0;
-    int                           numRemovedNodes     = 0;
-    std::vector<std::vector<int> >&stack              = *((std::vector<std::vector<int> >*)data);
+    int                            childrenTotal       = 0;
+    int                            numModifiedChildren = 0;
+    int                            numRemovedNodes     = 0;
+    std::vector<std::vector<int> > &stack              = *((std::vector<std::vector<int> >*)data);
 
     if (node->isOfType(SoGroup::getClassTypeId()))
     {
@@ -146,7 +146,7 @@ ConvertFromInventor::restructure(void *data, SoCallbackAction *action,
                     {
                         // Get the appropriate stack level of nodesToRemove
                         assert(stackLevel >= 0);
-                        std::vector<int>&nodesToRemove = stack[stackLevel];
+                        std::vector<int> &nodesToRemove = stack[stackLevel];
 
                         // Get parent and index of the current group
                         SoNode            *parent    = path->getNode(j);
@@ -200,7 +200,7 @@ SoCallbackAction::Response
 ConvertFromInventor::restructurePreNode(void *data, SoCallbackAction *action,
                                         const SoNode *node)
 {
-    std::vector<std::vector<int> >&stack = *((std::vector<std::vector<int> >*)data);
+    std::vector<std::vector<int> > &stack = *((std::vector<std::vector<int> >*)data);
 
     stack.push_back(std::vector<int>());
 
@@ -211,10 +211,10 @@ SoCallbackAction::Response
 ConvertFromInventor::restructurePostNode(void *data, SoCallbackAction *action,
                                          const SoNode *node)
 {
-    std::vector<std::vector<int> >&stack = *((std::vector<std::vector<int> >*)data);
+    std::vector<std::vector<int> > &stack = *((std::vector<std::vector<int> >*)data);
 
     assert(stack.size() > 0 && "Stack is empty");
-    std::vector<int>&nodesToRemove = stack.back();
+    std::vector<int> &nodesToRemove = stack.back();
 
     if (nodesToRemove.size() > 0)
     {
@@ -382,7 +382,7 @@ ConvertFromInventor::convert(SoNode *ivRootNode)
 }
 ///////////////////////////////////////////////////////////////////
 static void
-notifyAboutMatrixContent(const osg::NotifySeverity level, const SbMatrix&m)
+notifyAboutMatrixContent(const osg::NotifySeverity level, const SbMatrix &m)
 {
     SbVec3f    t, s;
     SbRotation r, so;
@@ -400,9 +400,9 @@ notifyAboutMatrixContent(const osg::NotifySeverity level, const SbMatrix&m)
 void
 ConvertFromInventor::appendNode(osg::Node *n, const SoCallbackAction *action)
 {
-    IvStateItem&ivState        = ivStateStack.top();
-    SbMatrix   currentMatrix   = action->getModelMatrix();
-    SbMatrix   inheritedMatrix = ivState.inheritedTransformation;
+    IvStateItem &ivState        = ivStateStack.top();
+    SbMatrix    currentMatrix   = action->getModelMatrix();
+    SbMatrix    inheritedMatrix = ivState.inheritedTransformation;
 
     // Keep children order - this must be done for some nodes like
     // SoSwitch, SoLOD,...
@@ -544,7 +544,7 @@ ConvertFromInventor::ivPopState(const SoCallbackAction *action,
         if ((ivState.flags & (IvStateItem::UPDATE_STATE |
                               IvStateItem::UPDATE_STATE_EXCEPT_TRANSFORM)) != 0)
         {
-            IvStateItem&newTop = ivStateStack.top();
+            IvStateItem &newTop = ivStateStack.top();
             newTop.currentTexture   = ivState.currentTexture;
             newTop.currentLights    = ivState.currentLights;
             newTop.currentGLProgram = ivState.currentGLProgram;
@@ -857,7 +857,7 @@ ConvertFromInventor::preShape(void *data, SoCallbackAction *action,
 // for matrices                                           //
 ///////////////////////////////////////////////////////////
 void
-ConvertFromInventor::transposeMatrix(osg::Matrix&mat)
+ConvertFromInventor::transposeMatrix(osg::Matrix &mat)
 {
     float tmp;
 
@@ -899,7 +899,7 @@ ConvertFromInventor::postShape(void *data, SoCallbackAction *action,
     if (thisPtr->normalBinding == deprecated_osg::Geometry::BIND_OVERALL)
     {
         norms = new osg::Vec3Array(1);
-        const SbVec3f&norm = action->getNormal(0);
+        const SbVec3f &norm = action->getNormal(0);
         (*norms)[0].set(norm[0], norm[1], norm[2]);
     }
     else
@@ -1407,8 +1407,8 @@ ConvertFromInventor::postTexture(void *data, SoCallbackAction*,
 }
 //////////////////////////////////////////////////////////////////
 void ConvertFromInventor::transformLight(SoCallbackAction *action,
-                                         const SbVec3f&vec,
-                                         osg::Vec3&transVec)
+                                         const SbVec3f &vec,
+                                         osg::Vec3 &transVec)
 {
     osg::Matrix modelMat;
 
@@ -1674,7 +1674,7 @@ ConvertFromInventor::getStateSet(SoCallbackAction *action)
     stateSet->clear();
 
     // Inventor State Stack
-    IvStateItem&ivState = ivStateStack.top();
+    IvStateItem &ivState = ivStateStack.top();
 
     // Convert the IV texture to OSG texture if any
     osg::ref_ptr<osg::Texture2D> texture;
@@ -1923,7 +1923,7 @@ update: The mentioned bug is probably just
     {
         for (int i = 0, c = ivState.currentGLProgram->getNumShaders(); i < c; i++)
         {
-            const std::string&shaderCode = ivState.currentGLProgram->getShader(i)->getShaderSource();
+            const std::string &shaderCode = ivState.currentGLProgram->getShader(i)->getShaderSource();
             if (shaderCode.find("coin_texunit0_model") != std::string::npos)
             {
                 int mode = (ivTexture != NULL) ? action->getTextureModel() : 0;

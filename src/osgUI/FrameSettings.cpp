@@ -21,7 +21,7 @@ FrameSettings::FrameSettings() :
     _lineWidth(0.01)
 {}
 
-FrameSettings::FrameSettings(const FrameSettings&frameSettings, const osg::CopyOp&copyop) :
+FrameSettings::FrameSettings(const FrameSettings &frameSettings, const osg::CopyOp &copyop) :
     osg::Object(frameSettings, copyop),
     _shape(frameSettings._shape),
     _shadow(frameSettings._shadow),

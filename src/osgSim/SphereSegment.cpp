@@ -45,7 +45,7 @@ Surface() : _ss(0)
         "Warning: unexpected call to osgSim::SphereSegment::Surface() default constructor" << std::endl;
 }
 
-Surface(const Surface&rhs, const osg::CopyOp&co = osg::CopyOp::SHALLOW_COPY) : osg::Drawable(rhs, co), _ss(0)
+Surface(const Surface &rhs, const osg::CopyOp &co = osg::CopyOp::SHALLOW_COPY) : osg::Drawable(rhs, co), _ss(0)
 {
     OSG_WARN <<
         "Warning: unexpected call to osgSim::SphereSegment::Surface() copy constructor" << std::endl;
@@ -53,7 +53,7 @@ Surface(const Surface&rhs, const osg::CopyOp&co = osg::CopyOp::SHALLOW_COPY) : o
 
 META_Object(osgSim, Surface)
 
-void drawImplementation(osg::RenderInfo&renderInfo) const;
+void drawImplementation(osg::RenderInfo &renderInfo) const;
 
 virtual osg::BoundingBox computeBoundingBox() const;
 
@@ -64,7 +64,7 @@ private:
 SphereSegment *_ss;
 };
 
-void SphereSegment::Surface::drawImplementation(osg::RenderInfo&renderInfo) const
+void SphereSegment::Surface::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     _ss->Surface_drawImplementation(*renderInfo.getState());
 }
@@ -97,7 +97,7 @@ EdgeLine() : _ss(0)
         "Warning: unexpected call to osgSim::SphereSegment::EdgeLine() default constructor" << std::endl;
 }
 
-EdgeLine(const EdgeLine&rhs, const osg::CopyOp&co = osg::CopyOp::SHALLOW_COPY) : osg::Drawable(rhs, co), _ss(0)
+EdgeLine(const EdgeLine &rhs, const osg::CopyOp &co = osg::CopyOp::SHALLOW_COPY) : osg::Drawable(rhs, co), _ss(0)
 {
     OSG_WARN <<
         "Warning: unexpected call to osgSim::SphereSegment::EdgeLine() copy constructor" << std::endl;
@@ -105,7 +105,7 @@ EdgeLine(const EdgeLine&rhs, const osg::CopyOp&co = osg::CopyOp::SHALLOW_COPY) :
 
 META_Object(osgSim, EdgeLine)
 
-void drawImplementation(osg::RenderInfo&renderInfo) const;
+void drawImplementation(osg::RenderInfo &renderInfo) const;
 
 protected:
 
@@ -125,7 +125,7 @@ private:
 SphereSegment *_ss;
 };
 
-void SphereSegment::EdgeLine::drawImplementation(osg::RenderInfo&renderInfo) const
+void SphereSegment::EdgeLine::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     _ss->EdgeLine_drawImplementation(*renderInfo.getState());
 }
@@ -152,7 +152,7 @@ Side(SphereSegment *ss, SphereSegment::SideOrientation po, SphereSegment::Bounda
 
 META_Object(osgSim, Side)
 
-void drawImplementation(osg::RenderInfo&renderInfo) const;
+void drawImplementation(osg::RenderInfo &renderInfo) const;
 
 protected:
 
@@ -162,7 +162,7 @@ Side() : _ss(0), _planeOrientation(SphereSegment::AZIM), _BoundaryAngle(SphereSe
         "Warning: unexpected call to osgSim::SphereSegment::Side() default constructor" << std::endl;
 }
 
-Side(const Side&rhs, const osg::CopyOp&co = osg:: CopyOp::SHALLOW_COPY) :
+Side(const Side &rhs, const osg::CopyOp &co = osg:: CopyOp::SHALLOW_COPY) :
     osg::Drawable(rhs, co),
     _ss(0),
     _planeOrientation(rhs._planeOrientation),
@@ -181,7 +181,7 @@ SphereSegment::BoundaryAngle   _BoundaryAngle;
 };
 
 
-void SphereSegment::Side::drawImplementation(osg::RenderInfo&renderInfo) const
+void SphereSegment::Side::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     _ss->Side_drawImplementation(*renderInfo.getState(), _planeOrientation, _BoundaryAngle);
 }
@@ -210,7 +210,7 @@ Spoke(SphereSegment *ss, SphereSegment::BoundaryAngle azAngle, SphereSegment::Bo
 
 META_Object(osgSim, Spoke)
 
-void drawImplementation(osg::RenderInfo&renderInfo) const;
+void drawImplementation(osg::RenderInfo &renderInfo) const;
 
 protected:
 
@@ -221,7 +221,7 @@ Spoke() : _ss(0)
         "Warning: unexpected call to osgSim::SphereSegment::Spoke() default constructor" << std::endl;
 }
 
-Spoke(const Spoke&rhs, const osg::CopyOp&co = osg:: CopyOp::SHALLOW_COPY) :
+Spoke(const Spoke &rhs, const osg::CopyOp &co = osg:: CopyOp::SHALLOW_COPY) :
     osg::Drawable(rhs, co),
     _ss(0),
     _azAngle(rhs._azAngle), _elevAngle(rhs._elevAngle)
@@ -246,7 +246,7 @@ SphereSegment                *_ss;
 SphereSegment::BoundaryAngle _azAngle, _elevAngle;
 };
 
-void SphereSegment::Spoke::drawImplementation(osg::RenderInfo&renderInfo) const
+void SphereSegment::Spoke::drawImplementation(osg::RenderInfo &renderInfo) const
 {
     _ss->Spoke_drawImplementation(*renderInfo.getState(), _azAngle, _elevAngle);
 }
@@ -259,7 +259,7 @@ osg::BoundingBox SphereSegment::Spoke::computeBoundingBox() const
     return bbox;
 }
 
-SphereSegment::SphereSegment(const osg::Vec3&centre, float radius, const osg::Vec3&vec, float azRange,
+SphereSegment::SphereSegment(const osg::Vec3 &centre, float radius, const osg::Vec3 &vec, float azRange,
                              float elevRange, int density) :
     osg::Geode(),
     _centre(centre), _radius(radius),
@@ -273,7 +273,7 @@ SphereSegment::SphereSegment(const osg::Vec3&centre, float radius, const osg::Ve
     init();
 }
 
-void SphereSegment::setCentre(const osg::Vec3&c)
+void SphereSegment::setCentre(const osg::Vec3 &c)
 {
     _centre = c;
     dirtyAllDrawableDisplayLists();
@@ -300,7 +300,7 @@ float SphereSegment::getRadius() const
 }
 
 
-void SphereSegment::setArea(const osg::Vec3&v, float azRange, float elevRange)
+void SphereSegment::setArea(const osg::Vec3 &v, float azRange, float elevRange)
 {
     osg::Vec3 vec(v);
 
@@ -326,7 +326,7 @@ void SphereSegment::setArea(const osg::Vec3&v, float azRange, float elevRange)
     dirtyBound();
 }
 
-void SphereSegment::getArea(osg::Vec3&vec, float&azRange, float&elevRange) const
+void SphereSegment::getArea(osg::Vec3 &vec, float &azRange, float &elevRange) const
 {
     azRange   = _azMax - _azMin;
     elevRange = _elevMax - _elevMin;
@@ -349,8 +349,8 @@ void SphereSegment::setArea(float azMin, float azMax,
     dirtyBound();
 }
 
-void SphereSegment::getArea(float&azMin, float&azMax,
-                            float&elevMin, float&elevMax) const
+void SphereSegment::getArea(float &azMin, float &azMax,
+                            float &elevMin, float &elevMax) const
 {
     azMin   = _azMin;
     azMax   = _azMax;
@@ -406,7 +406,7 @@ void SphereSegment::dirtyAllDrawableBounds()
     }
 }
 
-void SphereSegment::Surface_drawImplementation(osg::State&state) const
+void SphereSegment::Surface_drawImplementation(osg::State &state) const
 {
     const float azIncr   = (_azMax - _azMin) / _density;
     const float elevIncr = (_elevMax - _elevMin) / _density;
@@ -415,7 +415,7 @@ void SphereSegment::Surface_drawImplementation(osg::State&state) const
     // ---------------------------------------------
     if (_drawMask & SURFACE)
     {
-        osg::GLBeginEndAdapter&gl = (state.getGLBeginEndAdapter());
+        osg::GLBeginEndAdapter &gl = (state.getGLBeginEndAdapter());
 
         gl.Color4fv(_surfaceColor.ptr());
 
@@ -521,7 +521,7 @@ void SphereSegment::Surface_drawImplementation(osg::State&state) const
     }
 }
 
-bool SphereSegment::Surface_computeBound(osg::BoundingBox&bbox) const
+bool SphereSegment::Surface_computeBound(osg::BoundingBox &bbox) const
 {
     bbox.init();
 
@@ -547,7 +547,7 @@ bool SphereSegment::Surface_computeBound(osg::BoundingBox&bbox) const
     return true;
 }
 
-void SphereSegment::EdgeLine_drawImplementation(osg::State&state) const
+void SphereSegment::EdgeLine_drawImplementation(osg::State &state) const
 {
     const float azIncr   = (_azMax - _azMin) / _density;
     const float elevIncr = (_elevMax - _elevMin) / _density;
@@ -556,7 +556,7 @@ void SphereSegment::EdgeLine_drawImplementation(osg::State&state) const
     // ------------------------------
     if (_drawMask & EDGELINE)
     {
-        osg::GLBeginEndAdapter&gl = (state.getGLBeginEndAdapter());
+        osg::GLBeginEndAdapter &gl = (state.getGLBeginEndAdapter());
 
         gl.Color4fv(_edgeLineColor.ptr());
 
@@ -620,7 +620,7 @@ void SphereSegment::EdgeLine_drawImplementation(osg::State&state) const
     }
 }
 
-bool SphereSegment::EdgeLine_computeBound(osg::BoundingBox&bbox) const
+bool SphereSegment::EdgeLine_computeBound(osg::BoundingBox &bbox) const
 {
     bbox.init();
 
@@ -674,7 +674,7 @@ bool SphereSegment::EdgeLine_computeBound(osg::BoundingBox&bbox) const
     return true;
 }
 
-void SphereSegment::Side_drawImplementation(osg::State&state,
+void SphereSegment::Side_drawImplementation(osg::State &state,
                                             SphereSegment::SideOrientation orientation,
                                             SphereSegment::BoundaryAngle boundaryAngle) const
 {
@@ -682,7 +682,7 @@ void SphereSegment::Side_drawImplementation(osg::State&state,
     // ----------------------------
     if (_drawMask & SIDES)
     {
-        osg::GLBeginEndAdapter&gl = (state.getGLBeginEndAdapter());
+        osg::GLBeginEndAdapter &gl = (state.getGLBeginEndAdapter());
 
         bool drawBackSide  = true;
         bool drawFrontSide = true;
@@ -843,7 +843,7 @@ void SphereSegment::Side_drawImplementation(osg::State&state,
     }
 }
 
-bool SphereSegment::Side_computeBound(osg::BoundingBox&bbox,
+bool SphereSegment::Side_computeBound(osg::BoundingBox &bbox,
                                       SphereSegment::SideOrientation orientation,
                                       SphereSegment::BoundaryAngle boundaryAngle) const
 {
@@ -882,11 +882,11 @@ bool SphereSegment::Side_computeBound(osg::BoundingBox&bbox,
     return true;
 }
 
-void SphereSegment::Spoke_drawImplementation(osg::State&state, BoundaryAngle azAngle, BoundaryAngle elevAngle) const
+void SphereSegment::Spoke_drawImplementation(osg::State &state, BoundaryAngle azAngle, BoundaryAngle elevAngle) const
 {
     if (_drawMask & SPOKES)
     {
-        osg::GLBeginEndAdapter&gl = (state.getGLBeginEndAdapter());
+        osg::GLBeginEndAdapter &gl = (state.getGLBeginEndAdapter());
 
         gl.Color4fv(_spokeColor.ptr());
 
@@ -902,7 +902,7 @@ void SphereSegment::Spoke_drawImplementation(osg::State&state, BoundaryAngle azA
     }
 }
 
-bool SphereSegment::Spoke_computeBound(osg::BoundingBox&bbox, BoundaryAngle azAngle, BoundaryAngle elevAngle) const
+bool SphereSegment::Spoke_computeBound(osg::BoundingBox &bbox, BoundaryAngle azAngle, BoundaryAngle elevAngle) const
 {
     const float az   = (azAngle == MIN ? _azMin : _azMax);
     const float elev = (elevAngle == MIN ? _elevMin : _elevMax);
@@ -925,9 +925,9 @@ void SphereSegment::setDrawMask(int dm)
 
 struct ActivateTransparencyOnType
 {
-    ActivateTransparencyOnType(const std::type_info&t) : _t(t) {}
+    ActivateTransparencyOnType(const std::type_info &t) : _t(t) {}
 
-    void operator()(osg::ref_ptr<osg::Node>&nptr) const
+    void operator()(osg::ref_ptr<osg::Node> &nptr) const
     {
         const osg::Node *ptr = nptr.get();
 
@@ -944,7 +944,7 @@ struct ActivateTransparencyOnType
         }
     }
 
-    const std::type_info&_t;
+    const std::type_info &_t;
 
 protected:
 
@@ -956,9 +956,9 @@ protected:
 
 struct DeactivateTransparencyOnType
 {
-    DeactivateTransparencyOnType(const std::type_info&t) : _t(t) {}
+    DeactivateTransparencyOnType(const std::type_info &t) : _t(t) {}
 
-    void operator()(osg::ref_ptr<osg::Node>&nptr) const
+    void operator()(osg::ref_ptr<osg::Node> &nptr) const
     {
         const osg::Node *ptr = nptr.get();
 
@@ -973,7 +973,7 @@ struct DeactivateTransparencyOnType
         }
     }
 
-    const std::type_info&_t;
+    const std::type_info &_t;
 
 protected:
 
@@ -983,7 +983,7 @@ protected:
     }
 };
 
-void SphereSegment::setSurfaceColor(const osg::Vec4&c)
+void SphereSegment::setSurfaceColor(const osg::Vec4 &c)
 {
     _surfaceColor = c;
 
@@ -993,7 +993,7 @@ void SphereSegment::setSurfaceColor(const osg::Vec4&c)
         std::for_each(_children.begin(), _children.end(), DeactivateTransparencyOnType(typeid(Surface)));
 }
 
-void SphereSegment::setSpokeColor(const osg::Vec4&c)
+void SphereSegment::setSpokeColor(const osg::Vec4 &c)
 {
     _spokeColor = c;
 
@@ -1003,7 +1003,7 @@ void SphereSegment::setSpokeColor(const osg::Vec4&c)
         std::for_each(_children.begin(), _children.end(), DeactivateTransparencyOnType(typeid(Spoke)));
 }
 
-void SphereSegment::setEdgeLineColor(const osg::Vec4&c)
+void SphereSegment::setEdgeLineColor(const osg::Vec4 &c)
 {
     _edgeLineColor = c;
 
@@ -1013,7 +1013,7 @@ void SphereSegment::setEdgeLineColor(const osg::Vec4&c)
         std::for_each(_children.begin(), _children.end(), DeactivateTransparencyOnType(typeid(EdgeLine)));
 }
 
-void SphereSegment::setSideColor(const osg::Vec4&c)
+void SphereSegment::setSideColor(const osg::Vec4 &c)
 {
     _planeColor = c;
 
@@ -1023,7 +1023,7 @@ void SphereSegment::setSideColor(const osg::Vec4&c)
         std::for_each(_children.begin(), _children.end(), DeactivateTransparencyOnType(typeid(Side)));
 }
 
-void SphereSegment::setAllColors(const osg::Vec4&c)
+void SphereSegment::setAllColors(const osg::Vec4 &c)
 {
     setSurfaceColor(c);
     setSpokeColor(c);
@@ -1044,7 +1044,7 @@ typedef std::vector<MatrixPolytopePair> PolytopeStack;
 
 struct Hit
 {
-    Hit(const osg::Matrix&matrix, osg::NodePath&nodePath, osg::Drawable *drawable) :
+    Hit(const osg::Matrix &matrix, osg::NodePath &nodePath, osg::Drawable *drawable) :
         _matrix(matrix),
         _nodePath(nodePath),
         _drawable(drawable) {}
@@ -1057,7 +1057,7 @@ struct Hit
 typedef std::vector<Hit> HitList;
 
 
-PolytopeVisitor(const osg::Matrix&matrix, const osg::Polytope&polytope) :
+PolytopeVisitor(const osg::Matrix &matrix, const osg::Polytope &polytope) :
     osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN)
 {
     _polytopeStack.push_back(MatrixPolytopePair());
@@ -1073,7 +1073,7 @@ void reset()
     _hits.clear();
 }
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     if (_polytopeStack.back().second.contains(node.getBound()))
     {
@@ -1081,7 +1081,7 @@ void apply(osg::Node&node)
     }
 }
 
-void apply(osg::Transform&transform)
+void apply(osg::Transform &transform)
 {
     if (_polytopeStack.back().second.contains(transform.getBound()))
     {
@@ -1098,7 +1098,7 @@ void apply(osg::Transform&transform)
     }
 }
 
-void apply(osg::Geode&node)
+void apply(osg::Geode &node)
 {
     if (_polytopeStack.back().second.contains(node.getBound()))
     {
@@ -1126,7 +1126,7 @@ HitList       _hits;
 };
 
 
-SphereSegment::LineList SphereSegment::computeIntersection(const osg::Matrixd&transform, osg::Node *subgraph)
+SphereSegment::LineList SphereSegment::computeIntersection(const osg::Matrixd &transform, osg::Node *subgraph)
 {
     OSG_INFO << "Creating line intersection between sphere segment and subgraph." << std::endl;
 
@@ -1157,7 +1157,7 @@ SphereSegment::LineList SphereSegment::computeIntersection(const osg::Matrixd&tr
 
     // compute the line intersections with each of the hit drawables
     OSG_INFO << "Hits found. " << polytopeVisitor.getHits().size() << std::endl;
-    PolytopeVisitor::HitList&hits = polytopeVisitor.getHits();
+    PolytopeVisitor::HitList &hits = polytopeVisitor.getHits();
 
     for (PolytopeVisitor::HitList::iterator itr = hits.begin();
          itr != hits.end();
@@ -1172,7 +1172,7 @@ SphereSegment::LineList SphereSegment::computeIntersection(const osg::Matrixd&tr
     return all_lines;
 }
 
-osg::Node* SphereSegment::computeIntersectionSubgraph(const osg::Matrixd&transform, osg::Node *subgraph)
+osg::Node* SphereSegment::computeIntersectionSubgraph(const osg::Matrixd &transform, osg::Node *subgraph)
 {
     OSG_INFO << "Creating line intersection between sphere segment and subgraph." << std::endl;
 
@@ -1203,7 +1203,7 @@ osg::Node* SphereSegment::computeIntersectionSubgraph(const osg::Matrixd&transfo
 
     // compute the line intersections with each of the hit drawables
     OSG_INFO << "Hits found. " << polytopeVisitor.getHits().size() << std::endl;
-    PolytopeVisitor::HitList&hits = polytopeVisitor.getHits();
+    PolytopeVisitor::HitList &hits = polytopeVisitor.getHits();
 
     for (PolytopeVisitor::HitList::iterator itr = hits.begin();
          itr != hits.end();
@@ -1222,7 +1222,7 @@ namespace SphereSegmentIntersector
 struct dereference_less
 {
     template<class T, class U>
-    inline bool operator()(const T&lhs, const U&rhs) const
+    inline bool operator()(const T &lhs, const U &rhs) const
     {
         return *lhs < *rhs;
     }
@@ -1232,7 +1232,7 @@ struct SortFunctor
 {
     typedef std::vector<osg::Vec3> VertexArray;
 
-    SortFunctor(VertexArray&vertices) :
+    SortFunctor(VertexArray &vertices) :
         _vertices(vertices) {}
 
     bool operator()(unsigned int p1, unsigned int p2) const
@@ -1240,7 +1240,7 @@ struct SortFunctor
         return _vertices[p1] < _vertices[p2];
     }
 
-    VertexArray&_vertices;
+    VertexArray &_vertices;
 
 protected:
 
@@ -1307,7 +1307,7 @@ struct TriangleIntersectOperator
             }
         }
 
-        bool operator <(const Edge&edge) const
+        bool operator <(const Edge &edge) const
         {
             if (_p1 < edge._p1)
                 return true;
@@ -1365,7 +1365,7 @@ struct TriangleIntersectOperator
             sort();
         }
 
-        bool operator <(const Triangle&rhs) const
+        bool operator <(const Triangle &rhs) const
         {
             if (_p1 < rhs._p1)
                 return true;
@@ -1379,12 +1379,12 @@ struct TriangleIntersectOperator
                 return (_p3 < rhs._p3);
         }
 
-        bool operator ==(const Triangle&rhs) const
+        bool operator ==(const Triangle &rhs) const
         {
             return (_p1 == rhs._p1) && (_p2 != rhs._p2) && (_p3 != rhs._p3);
         }
 
-        bool operator !=(const Triangle&rhs) const
+        bool operator !=(const Triangle &rhs) const
         {
             return (_p1 != rhs._p1) || (_p2 != rhs._p2) || (_p3 != rhs._p3);
         }
@@ -1451,7 +1451,7 @@ struct TriangleIntersectOperator
 
 
 
-        void classify(const osg::Vec3&vertex, double radius2, double azimMin, double azimMax, double elevMin, double elevMax)
+        void classify(const osg::Vec3 &vertex, double radius2, double azimMin, double azimMax, double elevMin, double elevMax)
         {
             double azimCenter = (azimMax + azimMin) * 0.5;
             double azimRange  = (azimMax - azimMin) * 0.5;
@@ -1551,7 +1551,7 @@ struct TriangleIntersectOperator
             _intersects_topSurface(0) {}
 
 
-        void add(const Region&region)
+        void add(const Region &region)
         {
             ++_numVertices;
 
@@ -1724,7 +1724,7 @@ struct TriangleIntersectOperator
 
     SphereSegment::LineList _generatedLines;
 
-    void computePositionAndRegions(const osg::Matrixd&matrix, osg::Vec3Array&array)
+    void computePositionAndRegions(const osg::Matrixd &matrix, osg::Vec3Array &array)
     {
         _originalVertices.resize(array.size());
         _regions.resize(array.size());
@@ -1954,7 +1954,7 @@ struct TriangleIntersectOperator
         }
     }
 
-    SphereSegment::LineList connectIntersections(EdgeList&hitEdges)
+    SphereSegment::LineList connectIntersections(EdgeList &hitEdges)
     {
         SphereSegment::LineList lineList;
 
@@ -2104,7 +2104,7 @@ struct TriangleIntersectOperator
     }
 
     template<class I>
-    void trim(SphereSegment::LineList&lineList, osg::Vec3Array *sourceLine, I intersector)
+    void trim(SphereSegment::LineList &lineList, osg::Vec3Array *sourceLine, I intersector)
     {
         if (sourceLine->empty())
             return;
@@ -2174,7 +2174,7 @@ struct TriangleIntersectOperator
     // handle a paired of surfaces that work to enclose a convex region, which means that
     // points can be inside either surface to be valid, and be outside both surfaces to be invalid.
     template<class I>
-    void trim(SphereSegment::LineList&lineList, osg::Vec3Array *sourceLine, I intersector1, I intersector2)
+    void trim(SphereSegment::LineList &lineList, osg::Vec3Array *sourceLine, I intersector1, I intersector2)
     {
         if (sourceLine->empty())
             return;
@@ -2344,7 +2344,7 @@ struct TriangleIntersectOperator
     }
 
     template<class I>
-    void trim(SphereSegment::LineList&lineList, I intersector)
+    void trim(SphereSegment::LineList &lineList, I intersector)
     {
         SphereSegment::LineList newLines;
 
@@ -2362,7 +2362,7 @@ struct TriangleIntersectOperator
 
 
     template<class I>
-    void trim(SphereSegment::LineList&lineList, I intersector1, I intersector2)
+    void trim(SphereSegment::LineList &lineList, I intersector1, I intersector2)
     {
         SphereSegment::LineList newLines;
 
@@ -2387,7 +2387,7 @@ struct TriangleIntersectOperator
             _neighbourLineEnd(0),
             _distance(FLT_MAX) {}
 
-        bool operator <(const LinePair&linePair) const
+        bool operator <(const LinePair &linePair) const
         {
             return _distance < linePair._distance;
         }
@@ -2653,7 +2653,7 @@ struct TriangleIntersectOperator
     }
 };
 
-bool computeQuadraticSolution(double a, double b, double c, double&s1, double&s2)
+bool computeQuadraticSolution(double a, double b, double c, double &s1, double &s2)
 {
     // avoid division by zero.
     if (a == 0.0)
@@ -2682,7 +2682,7 @@ bool computeQuadraticSolution(double a, double b, double c, double&s1, double&s2
 
 struct AzimPlaneIntersector
 {
-    AzimPlaneIntersector(TriangleIntersectOperator&tif, double azim, bool lowerOutside) :
+    AzimPlaneIntersector(TriangleIntersectOperator &tif, double azim, bool lowerOutside) :
         _tif(tif),
         _lowerOutside(lowerOutside)
     {
@@ -2690,17 +2690,17 @@ struct AzimPlaneIntersector
         _endPlane.set(sin(azim), cos(azim), 0.0, 0.0);
     }
 
-    TriangleIntersectOperator&_tif;
-    osg::Plane               _plane;
-    osg::Plane               _endPlane;
-    bool                     _lowerOutside;
+    TriangleIntersectOperator &_tif;
+    osg::Plane                _plane;
+    osg::Plane                _endPlane;
+    bool                      _lowerOutside;
 
     inline bool operator()(TriangleIntersectOperator::Edge *edge)
     {
         edge->_intersectionType = TriangleIntersectOperator::Edge::NO_INTERSECTION;
 
-        osg::Vec3&v1 = _tif._originalVertices[edge->_p1];
-        osg::Vec3&v2 = _tif._originalVertices[edge->_p2];
+        osg::Vec3 &v1 = _tif._originalVertices[edge->_p1];
+        osg::Vec3 &v2 = _tif._originalVertices[edge->_p2];
 
         double d1 = _plane.distance(v1);
         double d2 = _plane.distance(v2);
@@ -2759,7 +2759,7 @@ struct AzimPlaneIntersector
     }
 
     // compute the intersection between line segment and surface
-    osg::Vec3 intersectionPoint(const osg::Vec3&v1, const osg::Vec3&v2)
+    osg::Vec3 intersectionPoint(const osg::Vec3 &v1, const osg::Vec3 &v2)
     {
         double d1 = _plane.distance(v1);
         double d2 = _plane.distance(v2);
@@ -2778,7 +2778,7 @@ struct AzimPlaneIntersector
     }
 
     // positive distance to the inside.
-    double distance(const osg::Vec3&v)
+    double distance(const osg::Vec3 &v)
     {
         return _lowerOutside ? _plane.distance(v) : -_plane.distance(v);
     }
@@ -2793,21 +2793,21 @@ protected:
 
 struct ElevationIntersector
 {
-    ElevationIntersector(TriangleIntersectOperator&tif, double elev, bool lowerOutside) :
+    ElevationIntersector(TriangleIntersectOperator &tif, double elev, bool lowerOutside) :
         _tif(tif),
         _elev(elev),
         _lowerOutside(lowerOutside) {}
 
-    TriangleIntersectOperator&_tif;
-    double                   _elev;
-    bool                     _lowerOutside;
+    TriangleIntersectOperator &_tif;
+    double                    _elev;
+    bool                      _lowerOutside;
 
     inline bool operator()(TriangleIntersectOperator::Edge *edge)
     {
         edge->_intersectionType = TriangleIntersectOperator::Edge::NO_INTERSECTION;
 
-        osg::Vec3&v1 = _tif._originalVertices[edge->_p1];
-        osg::Vec3&v2 = _tif._originalVertices[edge->_p2];
+        osg::Vec3 &v1 = _tif._originalVertices[edge->_p1];
+        osg::Vec3 &v2 = _tif._originalVertices[edge->_p2];
 
         double length_xy1 = sqrt(v1.x() * v1.x() + v1.y() * v1.y());
         double elev1      = atan2((double)v1.z(), length_xy1);
@@ -2885,7 +2885,7 @@ struct ElevationIntersector
     }
 
     // compute the intersection between line segment and surface
-    osg::Vec3 intersectionPoint(const osg::Vec3&v1, const osg::Vec3&v2)
+    osg::Vec3 intersectionPoint(const osg::Vec3 &v1, const osg::Vec3 &v2)
     {
         double dx = v2.x() - v1.x();
         double dy = v2.y() - v1.y();
@@ -2924,7 +2924,7 @@ struct ElevationIntersector
     }
 
     // positive distance to the inside.
-    double distance(const osg::Vec3&v)
+    double distance(const osg::Vec3 &v)
     {
         double length_xy    = sqrt(v.x() * v.x() + v.y() * v.y());
         double computedElev = atan2((double)v.z(), length_xy);
@@ -2942,19 +2942,19 @@ protected:
 
 struct RadiusIntersector
 {
-    RadiusIntersector(TriangleIntersectOperator&tif) :
+    RadiusIntersector(TriangleIntersectOperator &tif) :
         _tif(tif) {}
 
-    TriangleIntersectOperator&_tif;
+    TriangleIntersectOperator &_tif;
 
     inline bool operator()(TriangleIntersectOperator::Edge *edge)
     {
         edge->_intersectionType = TriangleIntersectOperator::Edge::NO_INTERSECTION;
 
-        osg::Vec3&v1     = _tif._originalVertices[edge->_p1];
-        osg::Vec3&v2     = _tif._originalVertices[edge->_p2];
-        double   radius1 = v1.length();
-        double   radius2 = v2.length();
+        osg::Vec3 &v1     = _tif._originalVertices[edge->_p1];
+        osg::Vec3 &v2     = _tif._originalVertices[edge->_p2];
+        double    radius1 = v1.length();
+        double    radius2 = v2.length();
 
         edge->_p1Outside = radius1 > _tif._radius;
         edge->_p2Outside = radius2 > _tif._radius;
@@ -3024,7 +3024,7 @@ struct RadiusIntersector
     }
 
     // compute the intersection between line segment and surface
-    osg::Vec3 intersectionPoint(const osg::Vec3&v1, const osg::Vec3&v2)
+    osg::Vec3 intersectionPoint(const osg::Vec3 &v1, const osg::Vec3 &v2)
     {
         double dx = v2.x() - v1.x();
         double dy = v2.y() - v1.y();
@@ -3061,7 +3061,7 @@ struct RadiusIntersector
     }
 
     // positive distance to the inside.
-    double distance(const osg::Vec3&v)
+    double distance(const osg::Vec3 &v)
     {
         return _tif._radius - v.length();
     }
@@ -3078,7 +3078,7 @@ protected:
 
 using namespace SphereSegmentIntersector;
 
-SphereSegment::LineList SphereSegment::computeIntersection(const osg::Matrixd&matrix, osg::Drawable *drawable)
+SphereSegment::LineList SphereSegment::computeIntersection(const osg::Matrixd &matrix, osg::Drawable *drawable)
 {
     // cast to Geometry, return empty handed if Drawable not a Geometry.
     osg::Geometry *geometry = dynamic_cast<osg::Geometry*>(drawable);
@@ -3207,7 +3207,7 @@ SphereSegment::LineList SphereSegment::computeIntersection(const osg::Matrixd&ma
     return tif._generatedLines;
 }
 
-osg::Node* SphereSegment::computeIntersectionSubgraph(const osg::Matrixd&matrix, osg::Drawable *drawable)
+osg::Node* SphereSegment::computeIntersectionSubgraph(const osg::Matrixd &matrix, osg::Drawable *drawable)
 {
     SphereSegment::LineList generatedLines = computeIntersection(matrix, drawable);
 

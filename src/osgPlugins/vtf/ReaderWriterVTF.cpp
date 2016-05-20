@@ -162,8 +162,8 @@ struct DXT1TexelsBlock
 };
 
 
-bool ConvertImageFormat(unsigned int vtfFormat, int&internalFormat,
-                        int&pixelFormat, int&dataType)
+bool ConvertImageFormat(unsigned int vtfFormat, int &internalFormat,
+                        int &pixelFormat, int &dataType)
 {
     bool supported;
 
@@ -347,7 +347,7 @@ bool ConvertImageFormat(unsigned int vtfFormat, int&internalFormat,
 }
 
 
-osg::Image* ReadVTFFile(std::istream&_istream)
+osg::Image* ReadVTFFile(std::istream &_istream)
 {
     VTFFileHeader vtf_header;
     bool          supported;
@@ -708,7 +708,7 @@ osg::Image* ReadVTFFile(std::istream&_istream)
 }
 
 
-bool WriteVTFFile(const osg::Image *img, std::ostream&fout)
+bool WriteVTFFile(const osg::Image *img, std::ostream &fout)
 {
     // Not supported
     return false;
@@ -723,22 +723,22 @@ virtual const char* className() const
     return "VTF Image Reader/Writer";
 }
 
-virtual bool acceptsExtension(const std::string&extension) const
+virtual bool acceptsExtension(const std::string &extension) const
 {
     return osgDB::equalCaseInsensitive(extension, "vtf");
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     return readImage(file, options);
 }
 
-virtual ReadResult readObject(std::istream&fin, const Options *options) const
+virtual ReadResult readObject(std::istream &fin, const Options *options) const
 {
     return readImage(fin, options);
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -761,7 +761,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return rr;
 }
 
-virtual ReadResult readImage(std::istream&fin, const Options *options) const
+virtual ReadResult readImage(std::istream &fin, const Options *options) const
 {
     osg::Image *osgImage = ReadVTFFile(fin);
 
@@ -776,7 +776,7 @@ virtual ReadResult readImage(std::istream&fin, const Options *options) const
     return osgImage;
 }
 
-virtual WriteResult writeObject(const osg::Object&object, const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     const osg::Image *image = dynamic_cast<const osg::Image*>(&object);
 
@@ -786,7 +786,7 @@ virtual WriteResult writeObject(const osg::Object&object, const std::string&file
     return writeImage(*image, file, options);
 }
 
-virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, const Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, std::ostream &fout, const Options *options) const
 {
     const osg::Image *image = dynamic_cast<const osg::Image*>(&object);
 
@@ -797,7 +797,7 @@ virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, con
 }
 
 
-virtual WriteResult writeImage(const osg::Image&image, const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeImage(const osg::Image &image, const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(file);
 
@@ -811,7 +811,7 @@ virtual WriteResult writeImage(const osg::Image&image, const std::string&file, c
     return writeImage(image, fout, options);
 }
 
-virtual WriteResult writeImage(const osg::Image&image, std::ostream&fout, const Options*) const
+virtual WriteResult writeImage(const osg::Image &image, std::ostream &fout, const Options*) const
 {
     bool success = WriteVTFFile(&image, fout);
 

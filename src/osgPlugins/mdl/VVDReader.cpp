@@ -43,7 +43,7 @@ VVDReader::~VVDReader()
 }
 
 
-bool VVDReader::readFile(const std::string&file)
+bool VVDReader::readFile(const std::string &file)
 {
     osgDB::ifstream *vvdFile;
     VVDHeader       header;

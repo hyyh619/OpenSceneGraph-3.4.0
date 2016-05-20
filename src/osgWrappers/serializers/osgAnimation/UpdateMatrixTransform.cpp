@@ -6,15 +6,15 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkStackedTransforms(const osgAnimation::UpdateMatrixTransform&obj)
+static bool checkStackedTransforms(const osgAnimation::UpdateMatrixTransform &obj)
 {
     return obj.getStackedTransforms().size() > 0;
 }
 
-static bool readStackedTransforms(osgDB::InputStream&is, osgAnimation::UpdateMatrixTransform&obj)
+static bool readStackedTransforms(osgDB::InputStream &is, osgAnimation::UpdateMatrixTransform &obj)
 {
-    osgAnimation::StackedTransform&transform = obj.getStackedTransforms();
-    unsigned int                  size       = is.readSize(); is >> is.BEGIN_BRACKET;
+    osgAnimation::StackedTransform &transform = obj.getStackedTransforms();
+    unsigned int                   size       = is.readSize(); is >> is.BEGIN_BRACKET;
 
     for (unsigned int i = 0; i < size; ++i)
     {
@@ -28,9 +28,9 @@ static bool readStackedTransforms(osgDB::InputStream&is, osgAnimation::UpdateMat
     return true;
 }
 
-static bool writeStackedTransforms(osgDB::OutputStream&os, const osgAnimation::UpdateMatrixTransform&obj)
+static bool writeStackedTransforms(osgDB::OutputStream &os, const osgAnimation::UpdateMatrixTransform &obj)
 {
-    const osgAnimation::StackedTransform&transform = obj.getStackedTransforms();
+    const osgAnimation::StackedTransform &transform = obj.getStackedTransforms();
 
     os.writeSize(transform.size()); os << os.BEGIN_BRACKET << std::endl;
 

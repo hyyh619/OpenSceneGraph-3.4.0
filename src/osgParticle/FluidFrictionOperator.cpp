@@ -16,7 +16,7 @@ osgParticle::FluidFrictionOperator::FluidFrictionOperator() :
     setFluidToAir();
 }
 
-osgParticle::FluidFrictionOperator::FluidFrictionOperator(const FluidFrictionOperator&copy, const osg::CopyOp&copyop)
+osgParticle::FluidFrictionOperator::FluidFrictionOperator(const FluidFrictionOperator &copy, const osg::CopyOp &copyop)
     :    Operator(copy, copyop),
     _coeff_A(copy._coeff_A),
     _coeff_B(copy._coeff_B),

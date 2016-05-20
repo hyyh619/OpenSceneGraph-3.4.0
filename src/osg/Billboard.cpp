@@ -28,7 +28,7 @@ Billboard::Billboard()
     updateCache();
 }
 
-Billboard::Billboard(const Billboard&billboard, const CopyOp&copyop) :
+Billboard::Billboard(const Billboard &billboard, const CopyOp &copyop) :
     Geode(billboard, copyop),
     _mode(billboard._mode),
     _axis(billboard._axis),
@@ -50,14 +50,14 @@ void Billboard::setMode(Mode mode)
     updateCache();
 }
 
-void Billboard::setAxis(const Vec3&axis)
+void Billboard::setAxis(const Vec3 &axis)
 {
     _axis = axis;
     _axis.normalize();
     updateCache();
 }
 
-void Billboard::setNormal(const Vec3&normal)
+void Billboard::setNormal(const Vec3 &normal)
 {
     _normal = normal;
     _normal.normalize();
@@ -125,7 +125,7 @@ bool Billboard::addDrawable(Drawable *gset)
 }
 
 
-bool Billboard::addDrawable(Drawable *gset, const Vec3&pos)
+bool Billboard::addDrawable(Drawable *gset, const Vec3 &pos)
 {
     if (Geode::addDrawable(gset))
     {
@@ -162,7 +162,7 @@ bool Billboard::removeDrawable(Drawable *gset)
     return false;
 }
 
-bool Billboard::computeMatrix(Matrix&modelview, const Vec3&eye_local, const Vec3&pos_local) const
+bool Billboard::computeMatrix(Matrix &modelview, const Vec3 &eye_local, const Vec3 &pos_local) const
 {
     // Vec3 up_local(matrix(0,1),matrix(1,1),matrix(2,1));
 
@@ -344,7 +344,7 @@ BoundingSphere Billboard::computeBound() const
         const Drawable *drawable = _children[i].valid() ? _children[i]->asDrawable() : 0;
         if (drawable)
         {
-            const BoundingBox&bbox = drawable->getBoundingBox();
+            const BoundingBox &bbox = drawable->getBoundingBox();
 
             bsphere._center += bbox.center();
             bsphere._center += _positionList[i];
@@ -360,8 +360,8 @@ BoundingSphere Billboard::computeBound() const
         const Drawable *drawable = _children[i].valid() ? _children[i]->asDrawable() : 0;
         if (drawable)
         {
-            const BoundingBox&bbox        = drawable->getBoundingBox();
-            Vec3             local_center = bsphere._center - _positionList[i];
+            const BoundingBox &bbox        = drawable->getBoundingBox();
+            Vec3              local_center = bsphere._center - _positionList[i];
 
             for (unsigned int c = 0; c < 8; ++c)
             {

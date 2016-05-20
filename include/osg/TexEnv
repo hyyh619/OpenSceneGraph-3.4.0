@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSG_TEXENV
 #define OSG_TEXENV 1
@@ -19,47 +19,50 @@
 #include <osg/Vec4>
 
 #ifndef OSG_GL_FIXED_FUNCTION_AVAILABLE
-    #define GL_MODULATE         0x2100
-    #define GL_ADD              0x0104
-    #define GL_MODULATE         0x2100
-    #define GL_DECAL            0x2101
+    #define GL_MODULATE 0x2100
+    #define GL_ADD      0x0104
+    #define GL_MODULATE 0x2100
+    #define GL_DECAL    0x2101
 #endif
 
 namespace osg {
-
 /** TexEnv encapsulates the OpenGL glTexEnv (texture environment) state.
-*/
-class OSG_EXPORT TexEnv : public StateAttribute
-{
-    public :
+ */
+    class OSG_EXPORT TexEnv: public StateAttribute
+    {
+public:
 
-        enum Mode {
-            DECAL     = GL_DECAL,
-            MODULATE  = GL_MODULATE,
-            BLEND     = GL_BLEND,
-            REPLACE   = GL_REPLACE,
-            ADD       = GL_ADD
+        enum Mode
+        {
+            DECAL    = GL_DECAL,
+            MODULATE = GL_MODULATE,
+            BLEND    = GL_BLEND,
+            REPLACE  = GL_REPLACE,
+            ADD      = GL_ADD
         };
 
-        TexEnv(Mode mode=MODULATE);
+        TexEnv(Mode mode = MODULATE);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        TexEnv(const TexEnv& texenv,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
-            StateAttribute(texenv,copyop),
+        TexEnv(const TexEnv &texenv, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
+            StateAttribute(texenv, copyop),
             _mode(texenv._mode),
             _color(texenv._color) {}
 
 
         META_StateAttribute(osg, TexEnv, TEXENV);
 
-        virtual bool isTextureAttribute() const { return true; }
+        virtual bool isTextureAttribute() const
+        {
+            return true;
+        }
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute& sa) const
+        virtual int compare(const StateAttribute &sa) const
         {
             // Check for equal types, then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(TexEnv,sa)
+            COMPARE_StateAttribute_Types(TexEnv, sa)
 
             // Compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_mode)
@@ -69,27 +72,41 @@ class OSG_EXPORT TexEnv : public StateAttribute
         }
 
 
-        void setMode( Mode mode ) { _mode = mode; }
+        void setMode(Mode mode)
+        {
+            _mode = mode;
+        }
 
-        Mode getMode() const { return _mode; }
+        Mode getMode() const
+        {
+            return _mode;
+        }
 
-        void setColor( const Vec4& color ) { _color = color; }
+        void setColor(const Vec4 &color)
+        {
+            _color = color;
+        }
 
-        Vec4& getColor() { return _color; }
+        Vec4&getColor()
+        {
+            return _color;
+        }
 
-        const Vec4& getColor() const { return _color; }
+        const Vec4&getColor() const
+        {
+            return _color;
+        }
 
 
-        virtual void apply(State& state) const;
+        virtual void apply(State &state) const;
 
-    protected :
+protected:
 
-        virtual ~TexEnv( void );
+        virtual ~TexEnv(void);
 
-        Mode        _mode;
-        osg::Vec4   _color;
-};
-
+        Mode      _mode;
+        osg::Vec4 _color;
+    };
 }
 
 #endif

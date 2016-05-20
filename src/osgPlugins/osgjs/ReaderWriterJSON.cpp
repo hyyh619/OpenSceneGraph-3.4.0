@@ -81,10 +81,10 @@ virtual const char* className() const
     return "OSGJS json Writer";
 }
 
-virtual ReadResult readNode(const std::string&fileName, const Options *options) const;
+virtual ReadResult readNode(const std::string &fileName, const Options *options) const;
 
-virtual WriteResult writeNode(const Node&node,
-                              const std::string&fileName,
+virtual WriteResult writeNode(const Node &node,
+                              const std::string &fileName,
                               const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
@@ -104,8 +104,8 @@ virtual WriteResult writeNode(const Node&node,
     return WriteResult("Unable to open file for output");
 }
 
-virtual WriteResult writeNode(const Node&node,
-                              json_stream&fout,
+virtual WriteResult writeNode(const Node &node,
+                              json_stream &fout,
                               const osgDB::ReaderWriter::Options *options) const
 {
     if (!fout)
@@ -118,7 +118,7 @@ virtual WriteResult writeNode(const Node&node,
     return writeNodeModel(node, fout, "stream", _options);
 }
 
-virtual WriteResult writeNodeModel(const Node&node, json_stream&fout, const std::string&basename, const OptionsStruct&options) const
+virtual WriteResult writeNodeModel(const Node &node, json_stream &fout, const std::string &basename, const OptionsStruct &options) const
 {
     // process regular model
     osg::ref_ptr<osg::Node> model = osg::clone(&node);
@@ -247,7 +247,7 @@ ReaderWriterJSON::OptionsStruct parseOptions(const osgDB::ReaderWriter::Options 
 }
 };
 
-osgDB::ReaderWriter::ReadResult ReaderWriterJSON::readNode(const std::string&file, const Options *options) const
+osgDB::ReaderWriter::ReadResult ReaderWriterJSON::readNode(const std::string &file, const Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

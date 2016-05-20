@@ -7,7 +7,7 @@
 #include <osgDB/FileUtils>
 #include <osgWidget/Box>
 
-bool osgWidget_Box_readData(osg::Object& /*obj*/, osgDB::Input&fr)
+bool osgWidget_Box_readData(osg::Object& /*obj*/, osgDB::Input &fr)
 {
     /*
        osgWidget::Box& box = static_cast<osgWidgegt::Box&>(obj);
@@ -46,7 +46,7 @@ bool osgWidget_Box_readData(osg::Object& /*obj*/, osgDB::Input&fr)
     return false;
 }
 
-bool osgWidget_Box_writeData(const osg::Object& /*obj*/, osgDB::Output&fw)
+bool osgWidget_Box_writeData(const osg::Object& /*obj*/, osgDB::Output &fw)
 {
     // const osgWidget::Box& model = static_cast<const osgWidget::Box&>(obj);
 

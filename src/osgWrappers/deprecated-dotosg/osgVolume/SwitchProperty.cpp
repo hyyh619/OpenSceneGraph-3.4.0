@@ -13,8 +13,8 @@
 #include <osgDB/Output>
 #include <osgDB/ParameterOutput>
 
-bool SwitchProperty_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool SwitchProperty_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool SwitchProperty_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool SwitchProperty_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(SwitchProperty_Proxy)
 (
@@ -26,9 +26,9 @@ REGISTER_DOTOSGWRAPPER(SwitchProperty_Proxy)
 );
 
 
-bool SwitchProperty_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool SwitchProperty_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgVolume::SwitchProperty&sp = static_cast<osgVolume::SwitchProperty&>(obj);
+    osgVolume::SwitchProperty &sp = static_cast<osgVolume::SwitchProperty&>(obj);
 
     bool itrAdvanced = false;
 
@@ -43,9 +43,9 @@ bool SwitchProperty_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itrAdvanced;
 }
 
-bool SwitchProperty_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool SwitchProperty_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgVolume::SwitchProperty&sp = static_cast<const osgVolume::SwitchProperty&>(obj);
+    const osgVolume::SwitchProperty &sp = static_cast<const osgVolume::SwitchProperty&>(obj);
 
     fw.indent() << "activeProperty " << sp.getActiveProperty() << std::endl;
 

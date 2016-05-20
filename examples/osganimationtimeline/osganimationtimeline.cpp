@@ -68,8 +68,8 @@ struct ExampleTimelineUsage : public osgGA::GUIEventHandler
         _releaseKey = false;
         _manager    = manager;
 
-        const osgAnimation::AnimationList&list = _manager->getAnimationList();
-        osgAnimation::AnimationMap       map;
+        const osgAnimation::AnimationList &list = _manager->getAnimationList();
+        osgAnimation::AnimationMap        map;
 
         for (osgAnimation::AnimationList::const_iterator it = list.begin(); it != list.end(); it++)
             map[(*it)->getName()] = *it;
@@ -114,7 +114,7 @@ struct ExampleTimelineUsage : public osgGA::GUIEventHandler
         _scratchNose->setCallback(_scratchNose->getNumFrames() - 1, new NoseEnd);
     }
 
-    bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+    bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
     {
         if (ea.getEventType() == osgGA::GUIEventAdapter::KEYUP)
         {

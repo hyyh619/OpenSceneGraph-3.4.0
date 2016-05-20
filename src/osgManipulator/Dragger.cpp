@@ -24,7 +24,7 @@ using namespace osgManipulator;
 //
 // computeNodePathToRoot
 //
-void osgManipulator::computeNodePathToRoot(osg::Node&node, osg::NodePath&np)
+void osgManipulator::computeNodePathToRoot(osg::Node &node, osg::NodePath &np)
 {
     np.clear();
 
@@ -50,7 +50,7 @@ DraggerTransformCallback::DraggerTransformCallback(osg::MatrixTransform *transfo
     _transform(transform)
 {}
 
-bool DraggerTransformCallback::receive(const MotionCommand&command)
+bool DraggerTransformCallback::receive(const MotionCommand &command)
 {
     if (!_transform)
         return false;
@@ -97,7 +97,7 @@ bool DraggerTransformCallback::receive(const MotionCommand&command)
     }
 }
 
-bool DraggerTransformCallback::receive(const TranslateInLineCommand&command)
+bool DraggerTransformCallback::receive(const TranslateInLineCommand &command)
 {
     if ((_handleCommandMask & HANDLE_TRANSLATE_IN_LINE) != 0)
         return receive(static_cast<const MotionCommand&>(command));
@@ -105,7 +105,7 @@ bool DraggerTransformCallback::receive(const TranslateInLineCommand&command)
     return false;
 }
 
-bool DraggerTransformCallback::receive(const TranslateInPlaneCommand&command)
+bool DraggerTransformCallback::receive(const TranslateInPlaneCommand &command)
 {
     if ((_handleCommandMask & HANDLE_TRANSLATE_IN_PLANE) != 0)
         return receive(static_cast<const MotionCommand&>(command));
@@ -113,7 +113,7 @@ bool DraggerTransformCallback::receive(const TranslateInPlaneCommand&command)
     return false;
 }
 
-bool DraggerTransformCallback::receive(const Scale1DCommand&command)
+bool DraggerTransformCallback::receive(const Scale1DCommand &command)
 {
     if ((_handleCommandMask & HANDLE_SCALED_1D) != 0)
         return receive(static_cast<const MotionCommand&>(command));
@@ -121,7 +121,7 @@ bool DraggerTransformCallback::receive(const Scale1DCommand&command)
     return false;
 }
 
-bool DraggerTransformCallback::receive(const Scale2DCommand&command)
+bool DraggerTransformCallback::receive(const Scale2DCommand &command)
 {
     if ((_handleCommandMask & HANDLE_SCALED_2D) != 0)
         return receive(static_cast<const MotionCommand&>(command));
@@ -129,7 +129,7 @@ bool DraggerTransformCallback::receive(const Scale2DCommand&command)
     return false;
 }
 
-bool DraggerTransformCallback::receive(const ScaleUniformCommand&command)
+bool DraggerTransformCallback::receive(const ScaleUniformCommand &command)
 {
     if ((_handleCommandMask & HANDLE_SCALED_UNIFORM) != 0)
         return receive(static_cast<const MotionCommand&>(command));
@@ -137,7 +137,7 @@ bool DraggerTransformCallback::receive(const ScaleUniformCommand&command)
     return false;
 }
 
-bool DraggerTransformCallback::receive(const Rotate3DCommand&command)
+bool DraggerTransformCallback::receive(const Rotate3DCommand &command)
 {
     if ((_handleCommandMask & HANDLE_ROTATE_3D) != 0)
         return receive(static_cast<const MotionCommand&>(command));
@@ -166,7 +166,7 @@ bool PointerInfo::contains(const osg::Node *node) const
         return false;
 }
 
-bool PointerInfo::projectWindowXYIntoObject(const osg::Vec2d&windowCoord, osg::Vec3d&nearPoint, osg::Vec3d&farPoint) const
+bool PointerInfo::projectWindowXYIntoObject(const osg::Vec2d &windowCoord, osg::Vec3d &nearPoint, osg::Vec3d &farPoint) const
 {
     nearPoint = osg::Vec3d(windowCoord.x(), windowCoord.y(), 0.0) * _inverseMVPW;
     farPoint  = osg::Vec3d(windowCoord.x(), windowCoord.y(), 1.0) * _inverseMVPW;
@@ -196,7 +196,7 @@ Dragger::Dragger() :
     _selfUpdater = new DraggerTransformCallback(this);
 }
 
-Dragger::Dragger(const Dragger&rhs, const osg::CopyOp&copyop) :
+Dragger::Dragger(const Dragger &rhs, const osg::CopyOp &copyop) :
     osg::MatrixTransform(rhs, copyop),
     _handleEvents(rhs._handleEvents),
     _draggerActive(false),
@@ -313,7 +313,7 @@ void Dragger::removeDraggerCallback(DraggerCallback *dc)
 }
 
 
-void Dragger::traverse(osg::NodeVisitor&nv)
+void Dragger::traverse(osg::NodeVisitor &nv)
 {
     if (_handleEvents && nv.getVisitorType() == osg::NodeVisitor::EVENT_VISITOR)
     {
@@ -336,7 +336,7 @@ void Dragger::traverse(osg::NodeVisitor&nv)
     MatrixTransform::traverse(nv);
 }
 
-bool Dragger::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool Dragger::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (ea.getHandled())
         return false;
@@ -478,7 +478,7 @@ bool Dragger::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa
     return handled;
 }
 
-bool Dragger::receive(const MotionCommand&command)
+bool Dragger::receive(const MotionCommand &command)
 {
     if (_selfUpdater.valid())
         return _selfUpdater->receive(command);
@@ -486,7 +486,7 @@ bool Dragger::receive(const MotionCommand&command)
         return false;
 }
 
-void Dragger::dispatch(MotionCommand&command)
+void Dragger::dispatch(MotionCommand &command)
 {
     // apply any constraints
     for (Constraints::iterator itr = _constraints.begin();
@@ -524,13 +524,13 @@ void Dragger::dispatch(MotionCommand&command)
 //
 // CompositeDragger
 //
-CompositeDragger::CompositeDragger(const CompositeDragger&rhs, const osg::CopyOp&copyop) :
+CompositeDragger::CompositeDragger(const CompositeDragger &rhs, const osg::CopyOp &copyop) :
     Dragger(rhs, copyop)
 {
     OSG_NOTICE << "CompositeDragger::CompositeDragger(const CompositeDragger& rhs, const osg::CopyOp& copyop) not Implemented yet." << std::endl;
 }
 
-bool CompositeDragger::handle(const PointerInfo&pi, const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+bool CompositeDragger::handle(const PointerInfo &pi, const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     // Check if the dragger node is in the nodepath.
     if (!pi.contains(this))
@@ -619,14 +619,14 @@ virtual bool cull(osg::NodeVisitor*, osg::Drawable*, osg::State*) const
 }
 };
 
-void osgManipulator::setDrawableToAlwaysCull(osg::Drawable&drawable)
+void osgManipulator::setDrawableToAlwaysCull(osg::Drawable &drawable)
 {
     ForceCullCallback *cullCB = new ForceCullCallback;
 
     drawable.setCullCallback (cullCB);
 }
 
-void osgManipulator::setMaterialColor(const osg::Vec4&color, osg::Node&node)
+void osgManipulator::setMaterialColor(const osg::Vec4 &color, osg::Node &node)
 {
     osg::Material *mat = dynamic_cast<osg::Material*>(node.getOrCreateStateSet()->getAttribute(osg::StateAttribute::MATERIAL));
 

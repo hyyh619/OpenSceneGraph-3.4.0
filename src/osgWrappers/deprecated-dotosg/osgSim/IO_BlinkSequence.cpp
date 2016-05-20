@@ -11,8 +11,8 @@
 
 using namespace osgSim;
 
-bool BlinkSequence_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool BlinkSequence_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool BlinkSequence_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool BlinkSequence_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(BlinkSequence_Proxy)
 (
@@ -24,10 +24,10 @@ REGISTER_DOTOSGWRAPPER(BlinkSequence_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool BlinkSequence_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool BlinkSequence_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    bool         iteratorAdvanced = false;
-    BlinkSequence&seq             = static_cast<BlinkSequence&>(obj);
+    bool          iteratorAdvanced = false;
+    BlinkSequence &seq             = static_cast<BlinkSequence&>(obj);
 
     if (fr.matchSequence("phaseShift %f"))
     {
@@ -65,9 +65,9 @@ bool BlinkSequence_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return iteratorAdvanced;
 }
 
-bool BlinkSequence_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool BlinkSequence_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const BlinkSequence&seq = static_cast<const BlinkSequence&>(obj);
+    const BlinkSequence &seq = static_cast<const BlinkSequence&>(obj);
 
     fw.indent() << "phaseShift " << seq.getPhaseShift() << std::endl;
 
@@ -89,8 +89,8 @@ bool BlinkSequence_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
 
 /******************************************************/
 
-bool BlinkSequence_SequenceGroup_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool BlinkSequence_SequenceGroup_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool BlinkSequence_SequenceGroup_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool BlinkSequence_SequenceGroup_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(BlinkSequence_SequenceGroup_Proxy)
 (
@@ -102,10 +102,10 @@ REGISTER_DOTOSGWRAPPER(BlinkSequence_SequenceGroup_Proxy)
     osgDB::DotOsgWrapper::READ_AND_WRITE
 );
 
-bool BlinkSequence_SequenceGroup_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool BlinkSequence_SequenceGroup_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    bool         iteratorAdvanced = false;
-    SequenceGroup&sg              = static_cast<SequenceGroup&>(obj);
+    bool          iteratorAdvanced = false;
+    SequenceGroup &sg              = static_cast<SequenceGroup&>(obj);
 
     if (fr.matchSequence("baseTime %f"))
     {
@@ -117,9 +117,9 @@ bool BlinkSequence_SequenceGroup_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return iteratorAdvanced;
 }
 
-bool BlinkSequence_SequenceGroup_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool BlinkSequence_SequenceGroup_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const SequenceGroup&sg = static_cast<const SequenceGroup&>(obj);
+    const SequenceGroup &sg = static_cast<const SequenceGroup&>(obj);
 
     fw.indent() << "baseTime " << sg._baseTime << std::endl;
     return true;

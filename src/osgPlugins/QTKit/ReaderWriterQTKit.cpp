@@ -80,7 +80,7 @@ virtual const char* className() const
     return "QTKit ImageStream Reader";
 }
 
-virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -131,7 +131,7 @@ virtual ReadResult readImage(const std::string&file, const osgDB::ReaderWriter::
     return video->valid() ? video.release() : NULL;
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     ReadResult rr = readImage(file, options);
 

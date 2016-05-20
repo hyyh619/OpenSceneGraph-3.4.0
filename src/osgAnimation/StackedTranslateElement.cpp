@@ -17,24 +17,24 @@
 using namespace osgAnimation;
 
 
-StackedTranslateElement::StackedTranslateElement(const std::string&name, const osg::Vec3&translate) : _translate(translate)
+StackedTranslateElement::StackedTranslateElement(const std::string &name, const osg::Vec3 &translate) : _translate(translate)
 {
     setName(name);
 }
-StackedTranslateElement::StackedTranslateElement(const osg::Vec3&translate) : _translate(translate)
+StackedTranslateElement::StackedTranslateElement(const osg::Vec3 &translate) : _translate(translate)
 {
     setName("translate");
 }
 
 
 StackedTranslateElement::StackedTranslateElement() {}
-StackedTranslateElement::StackedTranslateElement(const StackedTranslateElement&rhs, const osg::CopyOp&) : StackedTransformElement(rhs), _translate(rhs._translate)
+StackedTranslateElement::StackedTranslateElement(const StackedTranslateElement &rhs, const osg::CopyOp&) : StackedTransformElement(rhs), _translate(rhs._translate)
 {
     if (rhs._target.valid())
         _target = new Vec3Target(*rhs._target);
 }
 
-void StackedTranslateElement::applyToMatrix(osg::Matrix&matrix) const
+void StackedTranslateElement::applyToMatrix(osg::Matrix &matrix) const
 {
     matrix.preMultTranslate(_translate);
 }
@@ -50,7 +50,7 @@ const osg::Vec3&StackedTranslateElement::getTranslate() const
 {
     return _translate;
 }
-void StackedTranslateElement::setTranslate(const osg::Vec3&value)
+void StackedTranslateElement::setTranslate(const osg::Vec3 &value)
 {
     _translate = value;
 }

@@ -16,16 +16,16 @@
 
 using namespace osgAnimation;
 
-StackedScaleElement::StackedScaleElement(const std::string&name, const osg::Vec3&scale) : _scale(scale)
+StackedScaleElement::StackedScaleElement(const std::string &name, const osg::Vec3 &scale) : _scale(scale)
 {
     setName(name);
 }
-StackedScaleElement::StackedScaleElement(const osg::Vec3&scale) : _scale(scale)
+StackedScaleElement::StackedScaleElement(const osg::Vec3 &scale) : _scale(scale)
 {
     setName("scale");
 }
 
-StackedScaleElement::StackedScaleElement(const StackedScaleElement&rhs, const osg::CopyOp&) : StackedTransformElement(rhs), _scale(rhs._scale)
+StackedScaleElement::StackedScaleElement(const StackedScaleElement &rhs, const osg::CopyOp&) : StackedTransformElement(rhs), _scale(rhs._scale)
 {
     if (rhs._target.valid())
         _target = new Vec3Target(*rhs._target);
@@ -35,7 +35,7 @@ const osg::Vec3&StackedScaleElement::getScale() const
 {
     return _scale;
 }
-void StackedScaleElement::setScale(const osg::Vec3&scale)
+void StackedScaleElement::setScale(const osg::Vec3 &scale)
 {
     _scale = scale;
 }
@@ -59,7 +59,7 @@ osg::Matrix StackedScaleElement::getAsMatrix() const
     return osg::Matrix::scale(_scale);
 }
 
-void StackedScaleElement::applyToMatrix(osg::Matrix&matrix) const
+void StackedScaleElement::applyToMatrix(osg::Matrix &matrix) const
 {
     matrix.preMultScale(_scale);
 }

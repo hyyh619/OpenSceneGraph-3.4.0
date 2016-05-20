@@ -20,7 +20,7 @@ FieldReaderIterator::FieldReaderIterator()
 }
 
 
-FieldReaderIterator::FieldReaderIterator(const FieldReaderIterator&ic)
+FieldReaderIterator::FieldReaderIterator(const FieldReaderIterator &ic)
 {
     _copy(ic);
 }
@@ -32,7 +32,7 @@ FieldReaderIterator::~FieldReaderIterator()
 }
 
 
-FieldReaderIterator&FieldReaderIterator::operator =(const FieldReaderIterator&ic)
+FieldReaderIterator&FieldReaderIterator::operator =(const FieldReaderIterator &ic)
 {
     if (this == &ic)
         return *this;
@@ -77,7 +77,7 @@ void FieldReaderIterator::_init()
 }
 
 
-void FieldReaderIterator::_copy(const FieldReaderIterator&ic)
+void FieldReaderIterator::_copy(const FieldReaderIterator &ic)
 {
     _reader = ic._reader;
 
@@ -456,7 +456,7 @@ bool FieldReaderIterator::matchSequence(const char *str)
 }
 
 
-bool FieldReaderIterator::readSequence(const char *keyword, std::string&value)
+bool FieldReaderIterator::readSequence(const char *keyword, std::string &value)
 {
     if ((*this)[0].matchWord(keyword) && (*this)[1].isString())
     {
@@ -468,7 +468,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, std::string&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, unsigned int&value)
+bool FieldReaderIterator::readSequence(const char *keyword, unsigned int &value)
 {
     if ((*this)[0].matchWord(keyword) && (*this)[1].getUInt(value))
     {
@@ -479,7 +479,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, unsigned int&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, int&value)
+bool FieldReaderIterator::readSequence(const char *keyword, int &value)
 {
     if ((*this)[0].matchWord(keyword) && (*this)[1].getInt(value))
     {
@@ -490,7 +490,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, int&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, float&value)
+bool FieldReaderIterator::readSequence(const char *keyword, float &value)
 {
     if ((*this)[0].matchWord(keyword) &&
         (*this)[1].getFloat(value))
@@ -502,7 +502,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, float&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec2f&value)
+bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec2f &value)
 {
     if ((*this)[0].matchWord(keyword) &&
         (*this)[1].getFloat(value[0]) &&
@@ -515,7 +515,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec2f&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec3f&value)
+bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec3f &value)
 {
     if ((*this)[0].matchWord(keyword) &&
         (*this)[1].getFloat(value[0]) &&
@@ -529,7 +529,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec3f&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec4f&value)
+bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec4f &value)
 {
     if ((*this)[0].matchWord(keyword) &&
         (*this)[1].getFloat(value[0]) &&
@@ -544,7 +544,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec4f&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec2d&value)
+bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec2d &value)
 {
     if ((*this)[0].matchWord(keyword) &&
         (*this)[1].getFloat(value[0]) &&
@@ -557,7 +557,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec2d&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec3d&value)
+bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec3d &value)
 {
     if ((*this)[0].matchWord(keyword) &&
         (*this)[1].getFloat(value[0]) &&
@@ -571,7 +571,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec3d&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec4d&value)
+bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec4d &value)
 {
     if ((*this)[0].matchWord(keyword) &&
         (*this)[1].getFloat(value[0]) &&
@@ -586,7 +586,7 @@ bool FieldReaderIterator::readSequence(const char *keyword, osg::Vec4d&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(std::string&value)
+bool FieldReaderIterator::readSequence(std::string &value)
 {
     if ((*this)[0].isString())
     {
@@ -598,7 +598,7 @@ bool FieldReaderIterator::readSequence(std::string&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(unsigned int&value)
+bool FieldReaderIterator::readSequence(unsigned int &value)
 {
     if ((*this)[0].getUInt(value))
     {
@@ -609,7 +609,7 @@ bool FieldReaderIterator::readSequence(unsigned int&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(int&value)
+bool FieldReaderIterator::readSequence(int &value)
 {
     if ((*this)[0].getInt(value))
     {
@@ -620,7 +620,7 @@ bool FieldReaderIterator::readSequence(int&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(float&value)
+bool FieldReaderIterator::readSequence(float &value)
 {
     if ((*this)[0].getFloat(value))
     {
@@ -631,7 +631,7 @@ bool FieldReaderIterator::readSequence(float&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(osg::Vec2f&value)
+bool FieldReaderIterator::readSequence(osg::Vec2f &value)
 {
     if ((*this)[0].getFloat(value[0]) &&
         (*this)[1].getFloat(value[1]))
@@ -643,7 +643,7 @@ bool FieldReaderIterator::readSequence(osg::Vec2f&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(osg::Vec3f&value)
+bool FieldReaderIterator::readSequence(osg::Vec3f &value)
 {
     if ((*this)[0].getFloat(value[0]) &&
         (*this)[1].getFloat(value[1]) &&
@@ -656,7 +656,7 @@ bool FieldReaderIterator::readSequence(osg::Vec3f&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(osg::Vec4f&value)
+bool FieldReaderIterator::readSequence(osg::Vec4f &value)
 {
     if ((*this)[0].getFloat(value[0]) &&
         (*this)[1].getFloat(value[1]) &&
@@ -671,7 +671,7 @@ bool FieldReaderIterator::readSequence(osg::Vec4f&value)
 }
 
 
-bool FieldReaderIterator::readSequence(osg::Vec2d&value)
+bool FieldReaderIterator::readSequence(osg::Vec2d &value)
 {
     if ((*this)[0].getFloat(value[0]) &&
         (*this)[1].getFloat(value[1]))
@@ -683,7 +683,7 @@ bool FieldReaderIterator::readSequence(osg::Vec2d&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(osg::Vec3d&value)
+bool FieldReaderIterator::readSequence(osg::Vec3d &value)
 {
     if ((*this)[0].getFloat(value[0]) &&
         (*this)[1].getFloat(value[1]) &&
@@ -696,7 +696,7 @@ bool FieldReaderIterator::readSequence(osg::Vec3d&value)
     return false;
 }
 
-bool FieldReaderIterator::readSequence(osg::Vec4d&value)
+bool FieldReaderIterator::readSequence(osg::Vec4d &value)
 {
     if ((*this)[0].getFloat(value[0]) &&
         (*this)[1].getFloat(value[1]) &&

@@ -33,7 +33,7 @@ struct GeometryFinder : public osg::NodeVisitor
 {
     osg::ref_ptr<osg::Geometry> _geom;
     GeometryFinder() :          osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
-    void apply(osg::Geode&geode)
+    void apply(osg::Geode &geode)
     {
         if (_geom.valid())
             return;
@@ -50,7 +50,7 @@ struct GeometryFinder : public osg::NodeVisitor
     }
 };
 
-osg::ref_ptr<osg::Geometry> getShape(const std::string&name)
+osg::ref_ptr<osg::Geometry> getShape(const std::string &name)
 {
     osg::ref_ptr<osg::Node> shape0 = osgDB::readNodeFile(name);
 

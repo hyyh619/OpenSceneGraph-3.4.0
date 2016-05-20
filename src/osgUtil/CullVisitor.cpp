@@ -61,7 +61,7 @@ CullVisitor::CullVisitor() :
     _identifier = new Identifier;
 }
 
-CullVisitor::CullVisitor(const CullVisitor&rhs) :
+CullVisitor::CullVisitor(const CullVisitor &rhs) :
     NodeVisitor(rhs),
     CullStack(rhs),
     _currentStateGraph(NULL),
@@ -138,7 +138,7 @@ void CullVisitor::reset()
     _farPlaneCandidateMap.clear();
 }
 
-float CullVisitor::getDistanceToEyePoint(const Vec3&pos, bool withLODScale) const
+float CullVisitor::getDistanceToEyePoint(const Vec3 &pos, bool withLODScale) const
 {
     if (withLODScale)
         return (pos - getEyeLocal()).length() * getLODScale();
@@ -146,7 +146,7 @@ float CullVisitor::getDistanceToEyePoint(const Vec3&pos, bool withLODScale) cons
         return (pos - getEyeLocal()).length();
 }
 
-float CullVisitor::getDistanceToViewPoint(const Vec3&pos, bool withLODScale) const
+float CullVisitor::getDistanceToViewPoint(const Vec3 &pos, bool withLODScale) const
 {
     if (withLODScale)
         return (pos - getViewPointLocal()).length() * getLODScale();
@@ -154,15 +154,15 @@ float CullVisitor::getDistanceToViewPoint(const Vec3&pos, bool withLODScale) con
         return (pos - getViewPointLocal()).length();
 }
 
-inline CullVisitor::value_type distance(const osg::Vec3&coord, const osg::Matrix&matrix)
+inline CullVisitor::value_type distance(const osg::Vec3 &coord, const osg::Matrix &matrix)
 {
     return -((CullVisitor::value_type)coord[0] * (CullVisitor::value_type)matrix(0, 2) + (CullVisitor::value_type)coord[1] * (CullVisitor::value_type)matrix(1, 2) + (CullVisitor::value_type)coord[2] * (CullVisitor::value_type)matrix(2, 2) + matrix(3, 2));
 }
 
-float CullVisitor::getDistanceFromEyePoint(const osg::Vec3&pos, bool withLODScale) const
+float CullVisitor::getDistanceFromEyePoint(const osg::Vec3 &pos, bool withLODScale) const
 {
-    const Matrix&matrix = *_modelviewStack.back();
-    float       dist    = distance(pos, matrix);
+    const Matrix &matrix = *_modelviewStack.back();
+    float        dist    = distance(pos, matrix);
 
     if (withLODScale)
         return dist * getLODScale();
@@ -247,7 +247,7 @@ void CullVisitor::popProjectionMatrix()
 
         // adjust the projection matrix so that it encompases the local coords.
         // so it doesn't cull them out.
-        osg::Matrix&projection = *_projectionStack.back();
+        osg::Matrix &projection = *_projectionStack.back();
 
         value_type tmp_znear = _computed_znear;
         value_type tmp_zfar  = _computed_zfar;
@@ -263,7 +263,7 @@ void CullVisitor::popProjectionMatrix()
 }
 
 template<class matrix_type, class value_type>
-bool _clampProjectionMatrix(matrix_type&projection, double&znear, double&zfar, value_type nearFarRatio)
+bool _clampProjectionMatrix(matrix_type &projection, double &znear, double &zfar, value_type nearFarRatio)
 {
     double epsilon = 1e-6;
 
@@ -349,12 +349,12 @@ bool _clampProjectionMatrix(matrix_type&projection, double&znear, double&zfar, v
 }
 
 
-bool CullVisitor::clampProjectionMatrixImplementation(osg::Matrixf&projection, double&znear, double&zfar) const
+bool CullVisitor::clampProjectionMatrixImplementation(osg::Matrixf &projection, double &znear, double &zfar) const
 {
     return _clampProjectionMatrix(projection, znear, zfar, _nearFarRatio);
 }
 
-bool CullVisitor::clampProjectionMatrixImplementation(osg::Matrixd&projection, double&znear, double&zfar) const
+bool CullVisitor::clampProjectionMatrixImplementation(osg::Matrixd &projection, double &znear, double &zfar) const
 {
     return _clampProjectionMatrix(projection, znear, zfar, _nearFarRatio);
 }
@@ -365,7 +365,7 @@ struct ComputeNearFarFunctor
     ComputeNearFarFunctor() :
         _planes(0) {}
 
-    void set(CullVisitor::value_type znear, const osg::Matrix&matrix, const osg::Polytope::PlaneList *planes)
+    void set(CullVisitor::value_type znear, const osg::Matrix &matrix, const osg::Polytope::PlaneList *planes)
     {
         _znear  = znear;
         _matrix = matrix;
@@ -386,7 +386,7 @@ struct ComputeNearFarFunctor
     Polygon _pointCache;
 
     // Handle Points
-    inline void operator()(const osg::Vec3&v1, bool)
+    inline void operator()(const osg::Vec3 &v1, bool)
     {
         CullVisitor::value_type n1 = distance(v1, _matrix);
 
@@ -410,8 +410,8 @@ struct ComputeNearFarFunctor
              pitr != _planes->end();
              ++pitr)
         {
-            const osg::Plane&plane = *pitr;
-            float           d1     = plane.distance(v1);
+            const osg::Plane &plane = *pitr;
+            float            d1     = plane.distance(v1);
 
             if (d1 < 0.0)
             {
@@ -427,7 +427,7 @@ struct ComputeNearFarFunctor
     }
 
     // Handle Lines
-    inline void operator()(const osg::Vec3&v1, const osg::Vec3&v2, bool)
+    inline void operator()(const osg::Vec3 &v1, const osg::Vec3 &v2, bool)
     {
         CullVisitor::value_type n1 = distance(v1, _matrix);
         CullVisitor::value_type n2 = distance(v2, _matrix);
@@ -457,9 +457,9 @@ struct ComputeNearFarFunctor
              pitr != _planes->end();
              ++pitr)
         {
-            const osg::Plane&plane = *pitr;
-            float           d1     = plane.distance(v1);
-            float           d2     = plane.distance(v2);
+            const osg::Plane &plane = *pitr;
+            float            d1     = plane.distance(v1);
+            float            d2     = plane.distance(v2);
 
             unsigned int numOutside = ((d1 < 0.0) ? 1 : 0) + ((d2 < 0.0) ? 1 : 0);
             if (numOutside == 2)
@@ -500,7 +500,7 @@ struct ComputeNearFarFunctor
             if (active_mask & selector_mask)
             {
                 // clip line to plane
-                const osg::Plane&plane = *pitr;
+                const osg::Plane &plane = *pitr;
 
                 // assign the distance from the current plane.
                 p1.first = plane.distance(p1.second);
@@ -538,7 +538,7 @@ struct ComputeNearFarFunctor
     }
 
     // Handle Triangles
-    inline void operator()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, bool)
+    inline void operator()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, bool)
     {
         CullVisitor::value_type n1 = distance(v1, _matrix);
         CullVisitor::value_type n2 = distance(v2, _matrix);
@@ -572,10 +572,10 @@ struct ComputeNearFarFunctor
              pitr != _planes->end();
              ++pitr)
         {
-            const osg::Plane&plane = *pitr;
-            float           d1     = plane.distance(v1);
-            float           d2     = plane.distance(v2);
-            float           d3     = plane.distance(v3);
+            const osg::Plane &plane = *pitr;
+            float            d1     = plane.distance(v1);
+            float            d2     = plane.distance(v2);
+            float            d3     = plane.distance(v3);
 
             unsigned int numOutside = ((d1 < 0.0) ? 1 : 0) + ((d2 < 0.0) ? 1 : 0) + ((d3 < 0.0) ? 1 : 0);
             if (numOutside == 3)
@@ -624,7 +624,7 @@ struct ComputeNearFarFunctor
             if (active_mask & selector_mask)
             {
                 // polygon bisects plane so need to divide it up.
-                const osg::Plane&plane = *pitr;
+                const osg::Plane &plane = *pitr;
                 _polygonNew.clear();
 
                 // assign the distance from the current plane.
@@ -682,7 +682,7 @@ struct ComputeNearFarFunctor
     }
 
     // Handle Quadrilaterals
-    inline void operator()(const osg::Vec3&v1, const osg::Vec3&v2, const osg::Vec3&v3, const osg::Vec3&v4, bool treatVertexDataAsTemporary)
+    inline void operator()(const osg::Vec3 &v1, const osg::Vec3 &v2, const osg::Vec3 &v3, const osg::Vec3 &v4, bool treatVertexDataAsTemporary)
     {
         this->operator()(v1, v2, v3, treatVertexDataAsTemporary);
         this->operator()(v1, v3, v4, treatVertexDataAsTemporary);
@@ -733,7 +733,7 @@ struct GreaterComparator
 typedef ComputeNearFarFunctor<GreaterComparator> ComputeFurthestPointFunctor;
 
 
-CullVisitor::value_type CullVisitor::computeNearestPointInFrustum(const osg::Matrix&matrix, const osg::Polytope::PlaneList&planes, const osg::Drawable&drawable)
+CullVisitor::value_type CullVisitor::computeNearestPointInFrustum(const osg::Matrix &matrix, const osg::Polytope::PlaneList &planes, const osg::Drawable &drawable)
 {
     // OSG_NOTICE<<"CullVisitor::computeNearestPointInFrustum("<<getTraversalNumber()<<"\t"<<planes.size()<<std::endl;
 
@@ -746,7 +746,7 @@ CullVisitor::value_type CullVisitor::computeNearestPointInFrustum(const osg::Mat
     return cnpf._znear;
 }
 
-CullVisitor::value_type CullVisitor::computeFurthestPointInFrustum(const osg::Matrix&matrix, const osg::Polytope::PlaneList&planes, const osg::Drawable&drawable)
+CullVisitor::value_type CullVisitor::computeFurthestPointInFrustum(const osg::Matrix &matrix, const osg::Polytope::PlaneList &planes, const osg::Drawable &drawable)
 {
     // OSG_NOTICE<<"CullVisitor::computeFurthestPointInFrustum("<<getTraversalNumber()<<"\t"<<planes.size()<<")"<<std::endl;
 
@@ -759,7 +759,7 @@ CullVisitor::value_type CullVisitor::computeFurthestPointInFrustum(const osg::Ma
     return cnpf._znear;
 }
 
-bool CullVisitor::updateCalculatedNearFar(const osg::Matrix&matrix, const osg::BoundingBox&bb)
+bool CullVisitor::updateCalculatedNearFar(const osg::Matrix &matrix, const osg::BoundingBox &bb)
 {
     // efficient computation of near and far, only taking into account the nearest and furthest
     // corners of the bounding box.
@@ -791,9 +791,9 @@ bool CullVisitor::updateCalculatedNearFar(const osg::Matrix&matrix, const osg::B
     return true;
 }
 
-bool CullVisitor::updateCalculatedNearFar(const osg::Matrix&matrix, const osg::Drawable&drawable, bool isBillboard)
+bool CullVisitor::updateCalculatedNearFar(const osg::Matrix &matrix, const osg::Drawable &drawable, bool isBillboard)
 {
-    const osg::BoundingBox&bb = drawable.getBoundingBox();
+    const osg::BoundingBox &bb = drawable.getBoundingBox();
 
     value_type d_near, d_far;
 
@@ -893,7 +893,7 @@ bool CullVisitor::updateCalculatedNearFar(const osg::Matrix&matrix, const osg::D
     {
         if (d_near < _computed_znear || d_far > _computed_zfar)
         {
-            osg::Polytope&frustum = getCurrentCullingSet().getFrustum();
+            osg::Polytope &frustum = getCurrentCullingSet().getFrustum();
             if (frustum.getResultMask())
             {
                 MatrixPlanesDrawables mpd;
@@ -978,13 +978,13 @@ bool CullVisitor::updateCalculatedNearFar(const osg::Matrix&matrix, const osg::D
 
     return true;
 }
-void CullVisitor::updateCalculatedNearFar(const osg::Vec3&pos)
+void CullVisitor::updateCalculatedNearFar(const osg::Vec3 &pos)
 {
     float d;
 
     if (!_modelviewStack.empty())
     {
-        const osg::Matrix&matrix = *(_modelviewStack.back());
+        const osg::Matrix &matrix = *(_modelviewStack.back());
         d = distance(pos, matrix);
     }
     else
@@ -1003,7 +1003,7 @@ void CullVisitor::updateCalculatedNearFar(const osg::Vec3&pos)
         _computed_zfar = d;
 }
 
-void CullVisitor::apply(Node&node)
+void CullVisitor::apply(Node &node)
 {
     if (isCulled(node))
         return;
@@ -1027,7 +1027,7 @@ void CullVisitor::apply(Node&node)
 }
 
 
-void CullVisitor::apply(Geode&node)
+void CullVisitor::apply(Geode &node)
 {
     if (isCulled(node))
         return;
@@ -1050,11 +1050,11 @@ void CullVisitor::apply(Geode&node)
     popCurrentMask();
 }
 
-void CullVisitor::apply(osg::Drawable&drawable)
+void CullVisitor::apply(osg::Drawable &drawable)
 {
-    RefMatrix&matrix = *getModelViewMatrix();
+    RefMatrix &matrix = *getModelViewMatrix();
 
-    const BoundingBox&bb = drawable.getBoundingBox();
+    const BoundingBox &bb = drawable.getBoundingBox();
 
     if (drawable.getCullCallback())
     {
@@ -1087,10 +1087,10 @@ void CullVisitor::apply(osg::Drawable&drawable)
         pushStateSet(stateset);
     }
 
-    CullingSet&cs = getCurrentCullingSet();
+    CullingSet &cs = getCurrentCullingSet();
     if (!cs.getStateFrustumList().empty())
     {
-        osg::CullingSet::StateFrustumList&sfl = cs.getStateFrustumList();
+        osg::CullingSet::StateFrustumList &sfl = cs.getStateFrustumList();
 
         for (osg::CullingSet::StateFrustumList::iterator itr = sfl.begin();
              itr != sfl.end();
@@ -1130,7 +1130,7 @@ void CullVisitor::apply(osg::Drawable&drawable)
 }
 
 
-void CullVisitor::apply(Billboard&node)
+void CullVisitor::apply(Billboard &node)
 {
     if (isCulled(node))
         return;
@@ -1143,12 +1143,12 @@ void CullVisitor::apply(Billboard&node)
     // Don't traverse billboard, since drawables are handled manually below
     // handle_cull_callbacks_and_traverse(node);
 
-    const Vec3     &eye_local = getEyeLocal();
-    const RefMatrix&modelview = *getModelViewMatrix();
+    const Vec3      &eye_local = getEyeLocal();
+    const RefMatrix &modelview = *getModelViewMatrix();
 
     for (unsigned int i = 0; i < node.getNumDrawables(); ++i)
     {
-        const Vec3&pos = node.getPosition(i);
+        const Vec3 &pos = node.getPosition(i);
 
         Drawable *drawable = node.getDrawable(i);
         // need to modify isCulled to handle the billboard offset.
@@ -1212,7 +1212,7 @@ void CullVisitor::apply(Billboard&node)
 }
 
 
-void CullVisitor::apply(LightSource&node)
+void CullVisitor::apply(LightSource &node)
 {
     // push the node's state.
     StateSet *node_state = node.getStateSet();
@@ -1225,7 +1225,7 @@ void CullVisitor::apply(LightSource&node)
     {
         if (node.getReferenceFrame() == osg::LightSource::RELATIVE_RF)
         {
-            RefMatrix&matrix = *getModelViewMatrix();
+            RefMatrix &matrix = *getModelViewMatrix();
             addPositionedAttribute(&matrix, light);
         }
         else
@@ -1242,7 +1242,7 @@ void CullVisitor::apply(LightSource&node)
         popStateSet();
 }
 
-void CullVisitor::apply(ClipNode&node)
+void CullVisitor::apply(ClipNode &node)
 {
     // push the node's state.
     StateSet *node_state = node.getStateSet();
@@ -1250,9 +1250,9 @@ void CullVisitor::apply(ClipNode&node)
     if (node_state)
         pushStateSet(node_state);
 
-    RefMatrix&matrix = *getModelViewMatrix();
+    RefMatrix &matrix = *getModelViewMatrix();
 
-    const ClipNode::ClipPlaneList&planes = node.getClipPlaneList();
+    const ClipNode::ClipPlaneList &planes = node.getClipPlaneList();
 
     for (ClipNode::ClipPlaneList::const_iterator itr = planes.begin();
          itr != planes.end();
@@ -1275,7 +1275,7 @@ void CullVisitor::apply(ClipNode&node)
         popStateSet();
 }
 
-void CullVisitor::apply(TexGenNode&node)
+void CullVisitor::apply(TexGenNode &node)
 {
     // push the node's state.
     StateSet *node_state = node.getStateSet();
@@ -1286,7 +1286,7 @@ void CullVisitor::apply(TexGenNode&node)
 
     if (node.getReferenceFrame() == osg::TexGenNode::RELATIVE_RF)
     {
-        RefMatrix&matrix = *getModelViewMatrix();
+        RefMatrix &matrix = *getModelViewMatrix();
         addPositionedTextureAttribute(node.getTextureUnit(), &matrix, node.getTexGen());
     }
     else
@@ -1301,7 +1301,7 @@ void CullVisitor::apply(TexGenNode&node)
         popStateSet();
 }
 
-void CullVisitor::apply(Group&node)
+void CullVisitor::apply(Group &node)
 {
     if (isCulled(node))
         return;
@@ -1324,7 +1324,7 @@ void CullVisitor::apply(Group&node)
     popCurrentMask();
 }
 
-void CullVisitor::apply(Transform&node)
+void CullVisitor::apply(Transform &node)
 {
     if (isCulled(node))
         return;
@@ -1353,7 +1353,7 @@ void CullVisitor::apply(Transform&node)
     popCurrentMask();
 }
 
-void CullVisitor::apply(Projection&node)
+void CullVisitor::apply(Projection &node)
 {
     // push the culling mode.
     pushCurrentMask();
@@ -1410,13 +1410,13 @@ void CullVisitor::apply(Projection&node)
     popCurrentMask();
 }
 
-void CullVisitor::apply(Switch&node)
+void CullVisitor::apply(Switch &node)
 {
     apply((Group&)node);
 }
 
 
-void CullVisitor::apply(LOD&node)
+void CullVisitor::apply(LOD &node)
 {
     if (isCulled(node))
         return;
@@ -1439,7 +1439,7 @@ void CullVisitor::apply(LOD&node)
     popCurrentMask();
 }
 
-void CullVisitor::apply(osg::ClearNode&node)
+void CullVisitor::apply(osg::ClearNode &node)
 {
     // simply override the current earth sky.
     if (node.getRequiresClear())
@@ -1545,7 +1545,7 @@ RenderStageMap     _renderStageMap;
 };
 }
 
-void CullVisitor::apply(osg::Camera&camera)
+void CullVisitor::apply(osg::Camera &camera)
 {
     // push the node's state.
     StateSet *node_state = camera.getStateSet();
@@ -1601,7 +1601,7 @@ void CullVisitor::apply(osg::Camera&camera)
     if (mustSetCullMask)
         setTraversalMask(camera.getCullMask());
 
-    RefMatrix&originalModelView = *getModelViewMatrix();
+    RefMatrix &originalModelView = *getModelViewMatrix();
 
     osg::RefMatrix *projection = 0;
     osg::RefMatrix *modelview  = 0;
@@ -1819,7 +1819,7 @@ void CullVisitor::apply(osg::Camera&camera)
         popStateSet();
 }
 
-void CullVisitor::apply(osg::OccluderNode&node)
+void CullVisitor::apply(osg::OccluderNode &node)
 {
     // need to check if occlusion node is in the occluder
     // list, if so disable the appropriate ShadowOccluderVolume
@@ -1855,7 +1855,7 @@ void CullVisitor::apply(osg::OccluderNode&node)
     popOccludersCurrentMask(_nodePath);
 }
 
-void CullVisitor::apply(osg::OcclusionQueryNode&node)
+void CullVisitor::apply(osg::OcclusionQueryNode &node)
 {
     if (isCulled(node))
         return;

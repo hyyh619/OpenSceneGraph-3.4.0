@@ -77,7 +77,7 @@ OutputStream::OutputStream(const osgDB::Options *options)
 OutputStream::~OutputStream()
 {}
 
-int OutputStream::getFileVersion(const std::string&d) const
+int OutputStream::getFileVersion(const std::string &d) const
 {
     if (d.empty())
         return OPENSCENEGRAPH_SOVERSION;
@@ -86,167 +86,167 @@ int OutputStream::getFileVersion(const std::string&d) const
     return itr == _domainVersionMap.end() ? 0 : itr->second;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec2b&v)
+OutputStream&OutputStream::operator<<(const osg::Vec2b &v)
 {
     *this << v.x() << v.y(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec3b&v)
+OutputStream&OutputStream::operator<<(const osg::Vec3b &v)
 {
     *this << v.x() << v.y() << v.z(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec4b&v)
+OutputStream&OutputStream::operator<<(const osg::Vec4b &v)
 {
     *this << v.x() << v.y() << v.z() << v.w(); return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::Vec2ub&v)
+OutputStream&OutputStream::operator<<(const osg::Vec2ub &v)
 {
     *this << v.x() << v.y(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec3ub&v)
+OutputStream&OutputStream::operator<<(const osg::Vec3ub &v)
 {
     *this << v.x() << v.y() << v.z(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec4ub&v)
+OutputStream&OutputStream::operator<<(const osg::Vec4ub &v)
 {
     *this << v.r() << v.g() << v.b() << v.a(); return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::Vec2s&v)
+OutputStream&OutputStream::operator<<(const osg::Vec2s &v)
 {
     *this << v.x() << v.y(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec3s&v)
+OutputStream&OutputStream::operator<<(const osg::Vec3s &v)
 {
     *this << v.x() << v.y() << v.z(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec4s&v)
+OutputStream&OutputStream::operator<<(const osg::Vec4s &v)
 {
     *this << v.x() << v.y() << v.z() << v.w(); return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::Vec2us&v)
+OutputStream&OutputStream::operator<<(const osg::Vec2us &v)
 {
     *this << v.x() << v.y(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec3us&v)
+OutputStream&OutputStream::operator<<(const osg::Vec3us &v)
 {
     *this << v.x() << v.y() << v.z(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec4us&v)
+OutputStream&OutputStream::operator<<(const osg::Vec4us &v)
 {
     *this << v.x() << v.y() << v.z() << v.w(); return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::Vec2f&v)
+OutputStream&OutputStream::operator<<(const osg::Vec2f &v)
 {
     *this << v.x() << v.y(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec3f&v)
+OutputStream&OutputStream::operator<<(const osg::Vec3f &v)
 {
     *this << v.x() << v.y() << v.z(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec4f&v)
+OutputStream&OutputStream::operator<<(const osg::Vec4f &v)
 {
     *this << v.x() << v.y() << v.z() << v.w(); return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::Vec2d&v)
+OutputStream&OutputStream::operator<<(const osg::Vec2d &v)
 {
     *this << v.x() << v.y(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec3d&v)
+OutputStream&OutputStream::operator<<(const osg::Vec3d &v)
 {
     *this << v.x() << v.y() << v.z(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec4d&v)
+OutputStream&OutputStream::operator<<(const osg::Vec4d &v)
 {
     *this << v.x() << v.y() << v.z() << v.w(); return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::Vec2i&v)
+OutputStream&OutputStream::operator<<(const osg::Vec2i &v)
 {
     *this << v.x() << v.y(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec3i&v)
+OutputStream&OutputStream::operator<<(const osg::Vec3i &v)
 {
     *this << v.x() << v.y() << v.z(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec4i&v)
+OutputStream&OutputStream::operator<<(const osg::Vec4i &v)
 {
     *this << v.x() << v.y() << v.z() << v.w(); return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::Vec2ui&v)
+OutputStream&OutputStream::operator<<(const osg::Vec2ui &v)
 {
     *this << v.x() << v.y(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec3ui&v)
+OutputStream&OutputStream::operator<<(const osg::Vec3ui &v)
 {
     *this << v.x() << v.y() << v.z(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Vec4ui&v)
+OutputStream&OutputStream::operator<<(const osg::Vec4ui &v)
 {
     *this << v.x() << v.y() << v.z() << v.w(); return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::Quat&q)
+OutputStream&OutputStream::operator<<(const osg::Quat &q)
 {
     *this << q.x() << q.y() << q.z() << q.w(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Plane&p)
+OutputStream&OutputStream::operator<<(const osg::Plane &p)
 {
     *this << (double)p[0] << (double)p[1] << (double)p[2] << (double)p[3]; return *this;
 }
 
 
-OutputStream&OutputStream::operator<<(const osg::BoundingBoxf&bb)
+OutputStream&OutputStream::operator<<(const osg::BoundingBoxf &bb)
 {
     *this << bb.xMin() << bb.yMin() << bb.zMin() << bb.xMax() << bb.yMax() << bb.zMax(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::BoundingBoxd&bb)
+OutputStream&OutputStream::operator<<(const osg::BoundingBoxd &bb)
 {
     *this << bb.xMin() << bb.yMin() << bb.zMin() << bb.xMax() << bb.yMax() << bb.zMax(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::BoundingSpheref&bs)
+OutputStream&OutputStream::operator<<(const osg::BoundingSpheref &bs)
 {
     *this << bs.center().x() << bs.center().y() << bs.center().z() << bs.radius(); return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::BoundingSphered&bs)
+OutputStream&OutputStream::operator<<(const osg::BoundingSphered &bs)
 {
     *this << bs.center().x() << bs.center().y() << bs.center().z() << bs.radius(); return *this;
 }
 
 #if 0
-OutputStream&OutputStream::operator<<(const osg::Matrixf&mat)
+OutputStream&OutputStream::operator<<(const osg::Matrixf &mat)
 {
     *this << PROPERTY("Matrixf") << BEGIN_BRACKET << std::endl;
 
@@ -260,7 +260,7 @@ OutputStream&OutputStream::operator<<(const osg::Matrixf&mat)
     return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Matrixd&mat)
+OutputStream&OutputStream::operator<<(const osg::Matrixd &mat)
 {
     *this << PROPERTY("Matrixd") << BEGIN_BRACKET << std::endl;
 
@@ -274,7 +274,7 @@ OutputStream&OutputStream::operator<<(const osg::Matrixd&mat)
     return *this;
 }
 #else
-OutputStream&OutputStream::operator<<(const osg::Matrixf&mat)
+OutputStream&OutputStream::operator<<(const osg::Matrixf &mat)
 {
     *this << BEGIN_BRACKET << std::endl;
 
@@ -288,7 +288,7 @@ OutputStream&OutputStream::operator<<(const osg::Matrixf&mat)
     return *this;
 }
 
-OutputStream&OutputStream::operator<<(const osg::Matrixd&mat)
+OutputStream&OutputStream::operator<<(const osg::Matrixd &mat)
 {
     *this << BEGIN_BRACKET << std::endl;
 
@@ -773,7 +773,7 @@ void OutputStream::writeObjectFields(const osg::Object *obj)
     writeObjectFields(obj, name);
 }
 
-void OutputStream::writeObjectFields(const osg::Object *obj, const std::string&name)
+void OutputStream::writeObjectFields(const osg::Object *obj, const std::string &name)
 {
     // OSG_NOTICE<<"OutputStream::writeObjectFields("<<obj->className()<<", name="<<name<<")"<<std::endl;
 
@@ -786,12 +786,12 @@ void OutputStream::writeObjectFields(const osg::Object *obj, const std::string&n
         return;
     }
 
-    const StringList&associates = wrapper->getAssociates();
+    const StringList &associates = wrapper->getAssociates();
 
     for (StringList::const_iterator itr = associates.begin(); itr != associates.end(); ++itr)
     {
-        const std::string&assocName    = *itr;
-        ObjectWrapper    *assocWrapper = Registry::instance()->getObjectWrapperManager()->findWrapper(assocName);
+        const std::string &assocName    = *itr;
+        ObjectWrapper     *assocWrapper = Registry::instance()->getObjectWrapperManager()->findWrapper(assocName);
         if (!assocWrapper)
         {
             OSG_WARN << "OutputStream::writeObject(): Unsupported associated class "
@@ -998,10 +998,10 @@ void OutputStream::compress(std::ostream *ostream)
     }
 }
 
-void OutputStream::writeSchema(std::ostream&fout)
+void OutputStream::writeSchema(std::ostream &fout)
 {
     // Write to external ascii stream
-    const ObjectWrapperManager::WrapperMap&wrappers = Registry::instance()->getObjectWrapperManager()->getWrapperMap();
+    const ObjectWrapperManager::WrapperMap &wrappers = Registry::instance()->getObjectWrapperManager()->getWrapperMap();
 
     for (ObjectWrapperManager::WrapperMap::const_iterator itr = wrappers.begin();
          itr != wrappers.end(); ++itr)
@@ -1056,7 +1056,7 @@ void OutputStream::writeArrayImplementation(const T *a, int write_size, unsigned
     *this << END_BRACKET << std::endl;
 }
 
-unsigned int OutputStream::findOrCreateArrayID(const osg::Array *array, bool&newID)
+unsigned int OutputStream::findOrCreateArrayID(const osg::Array *array, bool &newID)
 {
     ArrayMap::iterator itr = _arrayMap.find(array);
 
@@ -1072,7 +1072,7 @@ unsigned int OutputStream::findOrCreateArrayID(const osg::Array *array, bool&new
     return itr->second;
 }
 
-unsigned int OutputStream::findOrCreateObjectID(const osg::Object *obj, bool&newID)
+unsigned int OutputStream::findOrCreateObjectID(const osg::Object *obj, bool &newID)
 {
     ObjectMap::iterator itr = _objectMap.find(obj);
 

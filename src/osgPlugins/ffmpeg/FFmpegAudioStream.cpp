@@ -19,7 +19,7 @@ FFmpegAudioStream::FFmpegAudioStream(FFmpegDecoder *decoder) :
 
 
 
-FFmpegAudioStream::FFmpegAudioStream(const FFmpegAudioStream&audio, const osg::CopyOp&copyop) :
+FFmpegAudioStream::FFmpegAudioStream(const FFmpegAudioStream &audio, const osg::CopyOp &copyop) :
     osg::AudioStream(audio, copyop)
 {}
 

@@ -9,8 +9,8 @@ using namespace osgSim;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool MultiSwitch_readLocalData(Object&obj, Input&fr);
-bool MultiSwitch_writeLocalData(const Object&obj, Output&fw);
+bool MultiSwitch_readLocalData(Object &obj, Input &fr);
+bool MultiSwitch_writeLocalData(const Object &obj, Output &fw);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(g_simSwitchProxy)
@@ -22,11 +22,11 @@ REGISTER_DOTOSGWRAPPER(g_simSwitchProxy)
     &MultiSwitch_writeLocalData
 );
 
-bool MultiSwitch_readLocalData(Object&obj, Input&fr)
+bool MultiSwitch_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    MultiSwitch&sw = static_cast<MultiSwitch&>(obj);
+    MultiSwitch &sw = static_cast<MultiSwitch&>(obj);
 
     if (fr[0].matchWord("NewChildDefaultValue"))
     {
@@ -95,17 +95,17 @@ bool MultiSwitch_readLocalData(Object&obj, Input&fr)
 }
 
 
-bool MultiSwitch_writeLocalData(const Object&obj, Output&fw)
+bool MultiSwitch_writeLocalData(const Object &obj, Output &fw)
 {
-    const MultiSwitch&sw = static_cast<const MultiSwitch&>(obj);
+    const MultiSwitch &sw = static_cast<const MultiSwitch&>(obj);
 
 
     fw.indent() << "NewChildDefaultValue " << sw.getNewChildDefaultValue() << std::endl;
 
     fw.indent() << "ActiveSwitchSet " << sw.getActiveSwitchSet() << std::endl;
 
-    unsigned int                            pos        = 0;
-    const osgSim::MultiSwitch::SwitchSetList&switchset = sw.getSwitchSetList();
+    unsigned int                             pos        = 0;
+    const osgSim::MultiSwitch::SwitchSetList &switchset = sw.getSwitchSetList();
 
     for (osgSim::MultiSwitch::SwitchSetList::const_iterator sitr = switchset.begin();
          sitr != switchset.end();
@@ -113,7 +113,7 @@ bool MultiSwitch_writeLocalData(const Object&obj, Output&fw)
     {
         fw.indent() << "ValueList " << pos << " {" << std::endl;
         fw.moveIn();
-        const MultiSwitch::ValueList&values = *sitr;
+        const MultiSwitch::ValueList &values = *sitr;
 
         for (MultiSwitch::ValueList::const_iterator itr = values.begin();
              itr != values.end();

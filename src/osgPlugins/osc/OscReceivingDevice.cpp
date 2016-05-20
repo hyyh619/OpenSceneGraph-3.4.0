@@ -27,7 +27,7 @@ template<class T, int SIZE>
 struct NativeTypeTraits
 {
     typedef T type;
-    static T create(const std::vector<T>&t)
+    static T create(const std::vector<T> &t)
     {
         return type(t);
     }
@@ -37,7 +37,7 @@ template<>
 struct NativeTypeTraits<float, 2>
 {
     typedef osg::Vec2f type;
-    static type create(const std::vector<float>&t)
+    static type create(const std::vector<float> &t)
     {
         return type(t[0], t[1]);
     }
@@ -47,7 +47,7 @@ template<>
 struct NativeTypeTraits<float, 3>
 {
     typedef osg::Vec3f type;
-    static type create(const std::vector<float>&t)
+    static type create(const std::vector<float> &t)
     {
         return type(t[0], t[1], t[2]);
     }
@@ -57,7 +57,7 @@ template<>
 struct NativeTypeTraits<float, 4>
 {
     typedef osg::Vec4f type;
-    static type create(const std::vector<float>&t)
+    static type create(const std::vector<float> &t)
     {
         return type(t[0], t[1], t[2], t[3]);
     }
@@ -67,7 +67,7 @@ template<>
 struct NativeTypeTraits<float, 16>
 {
     typedef osg::Matrixf type;
-    static type create(const std::vector<float>&t)
+    static type create(const std::vector<float> &t)
     {
         return type(&t.front());
     }
@@ -78,7 +78,7 @@ template<>
 struct NativeTypeTraits<double, 2>
 {
     typedef osg::Vec2d type;
-    static type create(const std::vector<double>&t)
+    static type create(const std::vector<double> &t)
     {
         return type(t[0], t[1]);
     }
@@ -88,7 +88,7 @@ template<>
 struct NativeTypeTraits<double, 3>
 {
     typedef osg::Vec3d type;
-    static type create(const std::vector<double>&t)
+    static type create(const std::vector<double> &t)
     {
         return type(t[0], t[1], t[2]);
     }
@@ -98,7 +98,7 @@ template<>
 struct NativeTypeTraits<double, 4>
 {
     typedef osg::Vec4d type;
-    static type create(const std::vector<double>&t)
+    static type create(const std::vector<double> &t)
     {
         return type(t[0], t[1], t[2], t[3]);
     }
@@ -108,7 +108,7 @@ template<>
 struct NativeTypeTraits<double, 16>
 {
     typedef osg::Matrixd type;
-    static type create(const std::vector<double>&t)
+    static type create(const std::vector<double> &t)
     {
         return type(&t.front());
     }
@@ -119,23 +119,23 @@ struct NativeTypeTraits<double, 16>
 class StandardRequestHandler : public OscReceivingDevice::RequestHandler
 {
 public:
-StandardRequestHandler(const std::string&request_handler, bool treat_first_argument_as_value_name)
+StandardRequestHandler(const std::string &request_handler, bool treat_first_argument_as_value_name)
     : OscReceivingDevice::RequestHandler(request_handler)
     , _treatFirstArgumentAsValueName(treat_first_argument_as_value_name)
 {}
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint);
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint);
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << ": add all transmitted arguments as ValueObjects to an event";
     if (_treatFirstArgumentAsValueName)
         out << ", the first argument is used as the name of the value, if it's a string";
 }
 private:
-void addArgumentToUdc(osg::UserDataContainer *udc, const std::string&key, const osc::ReceivedMessageArgumentIterator&itr);
+void addArgumentToUdc(osg::UserDataContainer *udc, const std::string &key, const osc::ReceivedMessageArgumentIterator &itr);
 
 template<class T>
-bool addNativeTypeFromVector(osg::UserDataContainer *udc, const std::string&key, const std::vector<T>&arr)
+bool addNativeTypeFromVector(osg::UserDataContainer *udc, const std::string &key, const std::vector<T> &arr)
 {
     switch (arr.size())
     {
@@ -171,7 +171,7 @@ bool _treatFirstArgumentAsValueName;
 
 
 
-bool StandardRequestHandler::operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+bool StandardRequestHandler::operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -262,7 +262,7 @@ bool StandardRequestHandler::operator()(const std::string&request_path, const st
 
         return true;
     }
-    catch (osc::Exception&e)
+    catch (osc::Exception &e)
     {
         handleException(e);
         return false;
@@ -271,7 +271,7 @@ bool StandardRequestHandler::operator()(const std::string&request_path, const st
 }
 
 
-void StandardRequestHandler::addArgumentToUdc(osg::UserDataContainer *udc, const std::string&key, const osc::ReceivedMessageArgumentIterator&itr)
+void StandardRequestHandler::addArgumentToUdc(osg::UserDataContainer *udc, const std::string &key, const osc::ReceivedMessageArgumentIterator &itr)
 {
     switch ((*itr).TypeTag())
     {
@@ -337,7 +337,7 @@ SetMouseInputRangeRequestHandler()
     : OscReceivingDevice::RequestHandler("/osgga/mouse/set_input_range")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -357,7 +357,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(float x_min, float y_min, float x_max, float y_max): sets the mouse-input-range" << std::dec;
 }
@@ -371,7 +371,7 @@ SetMouseOrientationRequestHandler()
     : OscReceivingDevice::RequestHandler("/osgga/mouse/y_orientation_increasing_upwards")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -392,7 +392,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(float x_min, float y_min, float x_max, float y_max): sets the mouse-input-range" << std::dec;
 }
@@ -407,7 +407,7 @@ KeyCodeRequestHandler(bool handle_key_press)
     , _handleKeyPress(handle_key_press)
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -430,7 +430,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(int keycode): send KEY_" << (_handleKeyPress ? "DOWN" : "UP");
 }
@@ -446,7 +446,7 @@ KeyPressAndReleaseRequestHandler()
     : OscReceivingDevice::RequestHandler("/osgga/key/press_and_release")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -467,7 +467,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(int keycode): send KEY_DOWN and KEY_UP";
 }
@@ -485,7 +485,7 @@ MouseMotionRequestHandler()
     , _lastY(0.0f)
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -503,7 +503,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(float x, float y): send mouse motion";
 }
@@ -527,7 +527,7 @@ MouseScrollRequestHandler()
     : OscReceivingDevice::RequestHandler("/osgga/mouse/scroll")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -552,7 +552,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(int scroll_motion, float x, float y): send mouse scroll-motion";
 }
@@ -563,13 +563,13 @@ virtual void describeTo(std::ostream&out) const
 class MouseButtonToggleRequestHandler : public OscReceivingDevice::RequestHandler
 {
 public:
-MouseButtonToggleRequestHandler(const std::string&btn_name, MouseMotionRequestHandler *mm_handler)
+MouseButtonToggleRequestHandler(const std::string &btn_name, MouseMotionRequestHandler *mm_handler)
     : OscReceivingDevice::RequestHandler("/osgga/mouse/toggle/" + btn_name)
     , _mmHandler(mm_handler)
     , _btnNum(atoi(btn_name.c_str()))
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     float down(0.0f);
 
@@ -592,7 +592,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(float down): toggle mouse button";
 }
@@ -627,7 +627,7 @@ MouseButtonRequestHandler(Mode mode)
     }
 }
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     float      x(0.0f), y(0.0f);
     osc::int32 btn(0);
@@ -661,7 +661,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(float x, float y, int btn): send mouse ";
 
@@ -690,7 +690,7 @@ PenPressureRequestHandler()
     : OscReceivingDevice::RequestHandler("/osgga/pen/pressure")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -709,7 +709,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(float pressure): send pen pressure";
 }
@@ -723,7 +723,7 @@ PenProximityRequestHandler(bool handle_enter)
     , _handleEnter(handle_enter)
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -743,7 +743,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(int table_pointer_type): send pen proximity " << (_handleEnter ? "enter" : "leave");
 }
@@ -759,7 +759,7 @@ PenOrientationRequestHandler()
     : OscReceivingDevice::RequestHandler("/osgga/pen/orientation")
 {}
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     try
     {
@@ -778,7 +778,7 @@ virtual bool operator()(const std::string&request_path, const std::string&full_r
     return false;
 }
 
-virtual void describeTo(std::ostream&out) const
+virtual void describeTo(std::ostream &out) const
 {
     out << getRequestPath() << "(float rotation, float tilt_x, float tilt_y): send pen orientation";
 }
@@ -823,7 +823,7 @@ virtual void setDevice(OscReceivingDevice *device)
 }
 
 
-virtual bool operator()(const std::string&request_path, const std::string&full_request_path, const osc::ReceivedMessage&m, const IpEndpointName&remoteEndPoint)
+virtual bool operator()(const std::string &request_path, const std::string &full_request_path, const osc::ReceivedMessage &m, const IpEndpointName &remoteEndPoint)
 {
     // std::cout << m << std::endl;
 
@@ -1007,13 +1007,13 @@ virtual void operator()(osgGA::EventQueue *queue)
 }
 
 
-inline void updateSourceIdMap(const std::string&source)
+inline void updateSourceIdMap(const std::string &source)
 {
     if (_sourceIdMap.find(source) == _sourceIdMap.end())
         _sourceIdMap[source] = _sourceIdMap.size();
 }
 
-inline unsigned int getSourceId(const std::string&source)
+inline unsigned int getSourceId(const std::string &source)
 {
     return _sourceIdMap[source];
 }
@@ -1028,7 +1028,7 @@ SourceIdMap          _sourceIdMap;
 
 
 
-OscReceivingDevice::OscReceivingDevice(const std::string&server_address, int listening_port)
+OscReceivingDevice::OscReceivingDevice(const std::string &server_address, int listening_port)
     : osgGA::Device()
     , OpenThreads::Thread()
     , osc::OscPacketListener()
@@ -1099,7 +1099,7 @@ void OscReceivingDevice::run()
 }
 
 
-void OscReceivingDevice::ProcessMessage(const osc::ReceivedMessage&m, const IpEndpointName&remoteEndpoint)
+void OscReceivingDevice::ProcessMessage(const osc::ReceivedMessage &m, const IpEndpointName &remoteEndpoint)
 {
     std::string in_request_path(m.AddressPattern());
 
@@ -1132,16 +1132,16 @@ void OscReceivingDevice::ProcessMessage(const osc::ReceivedMessage&m, const IpEn
     while ((pos != std::string::npos) && (pos > 0) && !handled);
 }
 
-void OscReceivingDevice::ProcessBundle(const osc::ReceivedBundle&b,
-                                       const IpEndpointName&remoteEndpoint)
+void OscReceivingDevice::ProcessBundle(const osc::ReceivedBundle &b,
+                                       const IpEndpointName &remoteEndpoint)
 {
     // find msg-id
     MsgIdType msg_id(0);
 
     for (osc::ReceivedBundle::const_iterator i = b.ElementsBegin(); i != b.ElementsEnd(); ++i)
     {
-        const osc::ReceivedMessage&m = osc::ReceivedMessage(*i);
-        std::string               address_pattern(m.AddressPattern());
+        const osc::ReceivedMessage &m = osc::ReceivedMessage(*i);
+        std::string                address_pattern(m.AddressPattern());
         if (address_pattern == "/osc/msg_id")
         {
             osc::ReceivedMessageArgumentStream args = m.ArgumentStream();
@@ -1192,13 +1192,13 @@ void OscReceivingDevice::ProcessBundle(const osc::ReceivedBundle&b,
 
 
 
-void OscReceivingDevice::ProcessPacket(const char *data, int size, const IpEndpointName&remoteEndpoint)
+void OscReceivingDevice::ProcessPacket(const char *data, int size, const IpEndpointName &remoteEndpoint)
 {
     try
     {
         osc::OscPacketListener::ProcessPacket(data, size, remoteEndpoint);
     }
-    catch (const osc::Exception&e)
+    catch (const osc::Exception &e)
     {
         OSG_WARN << "OscDevice :: could not process UDP-packet: " << e.what() << std::endl;
     }
@@ -1230,7 +1230,7 @@ void OscReceivingDevice::addRequestHandler(RequestHandler *handler)
     }
 }
 
-void OscReceivingDevice::describeTo(std::ostream&out) const
+void OscReceivingDevice::describeTo(std::ostream &out) const
 {
     out << "OscDevice :: listening on " << _listeningAddress << ":" << _listeningPort << std::endl;
     out << std::endl;

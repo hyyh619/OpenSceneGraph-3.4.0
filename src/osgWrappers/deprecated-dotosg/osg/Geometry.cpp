@@ -17,18 +17,18 @@ using namespace osg;
 using namespace osgDB;
 
 // forward declare functions to use later.
-bool Geometry_readLocalData(Object&obj, Input&fr);
-bool Geometry_writeLocalData(const Object&obj, Output&fw);
+bool Geometry_readLocalData(Object &obj, Input &fr);
+bool Geometry_writeLocalData(const Object &obj, Output &fw);
 
-bool Geometry_matchBindingTypeStr(const char *str, deprecated_osg::Geometry::AttributeBinding&mode);
+bool Geometry_matchBindingTypeStr(const char *str, deprecated_osg::Geometry::AttributeBinding &mode);
 const char* Geometry_getBindingTypeStr(deprecated_osg::Geometry::AttributeBinding mode);
 
-bool Geometry_matchPrimitiveModeStr(const char *str, GLenum&mode);
+bool Geometry_matchPrimitiveModeStr(const char *str, GLenum &mode);
 const char* Geometry_getPrimitiveModeStr(GLenum mode);
 
-Array* Array_readLocalData(Input&fr);
+Array* Array_readLocalData(Input &fr);
 
-bool Primitive_readLocalData(Input&fr, osg::Geometry&geom);
+bool Primitive_readLocalData(Input &fr, osg::Geometry &geom);
 
 // register the read and write functions with the osgDB::Registry.
 REGISTER_DOTOSGWRAPPER(Geometry)
@@ -41,11 +41,11 @@ REGISTER_DOTOSGWRAPPER(Geometry)
     DotOsgWrapper::READ_AND_WRITE
 );
 
-bool Geometry_readLocalData(Object&obj, Input&fr)
+bool Geometry_readLocalData(Object &obj, Input &fr)
 {
     bool iteratorAdvanced = false;
 
-    deprecated_osg::Geometry&geom = static_cast<deprecated_osg::Geometry&>(obj);
+    deprecated_osg::Geometry &geom = static_cast<deprecated_osg::Geometry&>(obj);
 
     if (fr.matchSequence("Primitives %i {") || fr.matchSequence("PrimitiveSets %i {"))
     {
@@ -54,7 +54,7 @@ bool Geometry_readLocalData(Object&obj, Input&fr)
         int capacity;
         fr[1].getInt(capacity);
 
-        Geometry::PrimitiveSetList&primitives = geom.getPrimitiveSetList();
+        Geometry::PrimitiveSetList &primitives = geom.getPrimitiveSetList();
         if (capacity > 0)
             primitives.reserve(capacity);
 
@@ -390,7 +390,7 @@ bool Geometry_readLocalData(Object&obj, Input&fr)
 }
 
 
-Array* Array_readLocalData(Input&fr)
+Array* Array_readLocalData(Input &fr)
 {
     if (fr[0].matchWord("Use"))
     {
@@ -876,7 +876,7 @@ Array* Array_readLocalData(Input&fr)
 }
 
 
-bool Array_writeLocalData(const Array& array, Output& fw)
+bool Array_writeLocalData(const Array &array, Output &fw)
 {
     if (array.referenceCount() > 1)
     {
@@ -1102,7 +1102,7 @@ bool Array_writeLocalData(const Array& array, Output& fw)
 }
 
 
-bool Primitive_readLocalData(Input&fr, osg::Geometry&geom)
+bool Primitive_readLocalData(Input &fr, osg::Geometry &geom)
 {
     bool iteratorAdvanced = false;
     bool firstMatched     = false;
@@ -1315,13 +1315,13 @@ bool Primitive_readLocalData(Input&fr, osg::Geometry&geom)
     return iteratorAdvanced;
 }
 
-bool Primitive_writeLocalData(const PrimitiveSet&prim, Output&fw)
+bool Primitive_writeLocalData(const PrimitiveSet &prim, Output &fw)
 {
     switch (prim.getType())
     {
     case (PrimitiveSet::DrawArraysPrimitiveType):
     {
-        const DrawArrays&cprim = static_cast<const DrawArrays&>(prim);
+        const DrawArrays &cprim = static_cast<const DrawArrays&>(prim);
         fw << cprim.className() << " " << Geometry_getPrimitiveModeStr(cprim.getMode()) << " " << cprim.getFirst() << " " << cprim.getCount();
         if (prim.getNumInstances() > 0)
             fw << " " << prim.getNumInstances();
@@ -1333,7 +1333,7 @@ bool Primitive_writeLocalData(const PrimitiveSet&prim, Output&fw)
 
     case (PrimitiveSet::DrawArrayLengthsPrimitiveType):
     {
-        const DrawArrayLengths&cprim = static_cast<const DrawArrayLengths&>(prim);
+        const DrawArrayLengths &cprim = static_cast<const DrawArrayLengths&>(prim);
         fw << cprim.className() << " " << Geometry_getPrimitiveModeStr(cprim.getMode()) << " " << cprim.getFirst() << " " << cprim.size();
         if (prim.getNumInstances() > 0)
             fw << " " << prim.getNumInstances();
@@ -1346,7 +1346,7 @@ bool Primitive_writeLocalData(const PrimitiveSet&prim, Output&fw)
 
     case (PrimitiveSet::DrawElementsUBytePrimitiveType):
     {
-        const DrawElementsUByte&cprim = static_cast<const DrawElementsUByte&>(prim);
+        const DrawElementsUByte &cprim = static_cast<const DrawElementsUByte&>(prim);
         fw << cprim.className() << " " << Geometry_getPrimitiveModeStr(cprim.getMode()) << " " << cprim.size();
         if (prim.getNumInstances() > 0)
             fw << " " << prim.getNumInstances();
@@ -1359,7 +1359,7 @@ bool Primitive_writeLocalData(const PrimitiveSet&prim, Output&fw)
 
     case (PrimitiveSet::DrawElementsUShortPrimitiveType):
     {
-        const DrawElementsUShort&cprim = static_cast<const DrawElementsUShort&>(prim);
+        const DrawElementsUShort &cprim = static_cast<const DrawElementsUShort&>(prim);
         fw << cprim.className() << " " << Geometry_getPrimitiveModeStr(cprim.getMode()) << " " << cprim.size();
         if (prim.getNumInstances() > 0)
             fw << " " << prim.getNumInstances();
@@ -1372,7 +1372,7 @@ bool Primitive_writeLocalData(const PrimitiveSet&prim, Output&fw)
 
     case (PrimitiveSet::DrawElementsUIntPrimitiveType):
     {
-        const DrawElementsUInt&cprim = static_cast<const DrawElementsUInt&>(prim);
+        const DrawElementsUInt &cprim = static_cast<const DrawElementsUInt&>(prim);
         fw << cprim.className() << " " << Geometry_getPrimitiveModeStr(cprim.getMode()) << " " << cprim.size();
         if (prim.getNumInstances() > 0)
             fw << " " << prim.getNumInstances();
@@ -1388,11 +1388,11 @@ bool Primitive_writeLocalData(const PrimitiveSet&prim, Output&fw)
     }
 }
 
-bool Geometry_writeLocalData(const Object&obj, Output&fw)
+bool Geometry_writeLocalData(const Object &obj, Output &fw)
 {
-    const deprecated_osg::Geometry&geom = static_cast<const deprecated_osg::Geometry&>(obj);
+    const deprecated_osg::Geometry &geom = static_cast<const deprecated_osg::Geometry&>(obj);
 
-    const Geometry::PrimitiveSetList&primitives = geom.getPrimitiveSetList();
+    const Geometry::PrimitiveSetList &primitives = geom.getPrimitiveSetList();
 
     if (!primitives.empty())
     {
@@ -1485,8 +1485,8 @@ bool Geometry_writeLocalData(const Object&obj, Output&fw)
         Array_writeLocalData(*geom.getFogCoordIndices(), fw);
     }
 
-    const Geometry::ArrayList&tcal = geom.getTexCoordArrayList();
-    unsigned int             i;
+    const Geometry::ArrayList &tcal = geom.getTexCoordArrayList();
+    unsigned int              i;
 
     for (i = 0; i < tcal.size(); ++i)
     {
@@ -1505,7 +1505,7 @@ bool Geometry_writeLocalData(const Object&obj, Output&fw)
         }
     }
 
-    const Geometry::ArrayList&vaal = geom.getVertexAttribArrayList();
+    const Geometry::ArrayList &vaal = geom.getVertexAttribArrayList();
 
     for (i = 0; i < vaal.size(); ++i)
     {
@@ -1535,7 +1535,7 @@ bool Geometry_writeLocalData(const Object&obj, Output&fw)
     return true;
 }
 
-bool Geometry_matchBindingTypeStr(const char *str, deprecated_osg::Geometry::AttributeBinding&mode)
+bool Geometry_matchBindingTypeStr(const char *str, deprecated_osg::Geometry::AttributeBinding &mode)
 {
     if (strcmp(str, "OFF") == 0)
         mode = deprecated_osg::Geometry::BIND_OFF;

@@ -34,7 +34,7 @@
 /// Returns true if the given node is a basic root group with no special information.
 /// Used in conjunction with UseFbxRoot option.
 /// Identity transforms are considered as basic root nodes.
-bool isBasicRootNode(const osg::Node&node)
+bool isBasicRootNode(const osg::Node &node)
 {
     const osg::Group *osgGroup = node.asGroup();
 
@@ -103,7 +103,7 @@ explicit CleanUpFbx(FbxManager *pSdkManager) : m_pSdkManager(pSdkManager)
 
 // Some files don't correctly mark their skeleton nodes, so this function infers
 // them from the nodes that skin deformers linked to.
-void findLinkedFbxSkeletonNodes(FbxNode *pNode, std::set<const FbxNode*>&fbxSkeletons)
+void findLinkedFbxSkeletonNodes(FbxNode *pNode, std::set<const FbxNode*> &fbxSkeletons)
 {
     if (const FbxGeometry *pMesh = FbxCast<FbxGeometry>(pNode->GetNodeAttribute()))
     {
@@ -126,9 +126,9 @@ void findLinkedFbxSkeletonNodes(FbxNode *pNode, std::set<const FbxNode*>&fbxSkel
 }
 
 void resolveBindMatrices(
-    osg::Node&root,
-    const BindMatrixMap&boneBindMatrices,
-    const std::map<FbxNode*, osg::Node*>&nodeMap)
+    osg::Node &root,
+    const BindMatrixMap &boneBindMatrices,
+    const std::map<FbxNode*, osg::Node*> &nodeMap)
 {
     std::set<std::string> nodeNames;
 
@@ -144,8 +144,8 @@ void resolveBindMatrices(
         std::map<FbxNode*, osg::Node*>::const_iterator nodeIt  = nodeMap.find(fbxBone);
         if (nodeIt != nodeMap.end())
         {
-            const osg::Matrix bindMatrix = it->second;
-            osgAnimation::Bone&osgBone   = dynamic_cast<osgAnimation::Bone&>(*nodeIt->second);
+            const osg::Matrix  bindMatrix = it->second;
+            osgAnimation::Bone &osgBone   = dynamic_cast<osgAnimation::Bone&>(*nodeIt->second);
             osgBone.setInvBindMatrixInSkeletonSpace(bindMatrix);
 
             ++it;
@@ -182,7 +182,7 @@ void resolveBindMatrices(
                         osgAnimation::VertexInfluence vi;
                         vi.swap(vimIt->second);
                         vertexInfluences->erase(vimIt);
-                        osgAnimation::VertexInfluence&vi2 = (*vertexInfluences)[name];
+                        osgAnimation::VertexInfluence &vi2 = (*vertexInfluences)[name];
                         vi.swap(vi2);
                         vi2.setName(name);
                     }
@@ -202,7 +202,7 @@ void resolveBindMatrices(
 }
 
 osgDB::ReaderWriter::ReadResult
-ReaderWriterFBX::readNode(const std::string&filenameInit,
+ReaderWriterFBX::readNode(const std::string &filenameInit,
                           const Options *options) const
 {
     try
@@ -487,8 +487,8 @@ ReaderWriterFBX::readNode(const std::string&filenameInit,
 }
 
 osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
-    const osg::Node&node,
-    const std::string&filename,
+    const osg::Node &node,
+    const std::string &filename,
     const Options *options) const
 {
     try
@@ -648,7 +648,7 @@ osgDB::ReaderWriter::WriteResult ReaderWriterFBX::writeNode(
 
         return WriteResult::FILE_SAVED;
     }
-    catch (const std::string&s)
+    catch (const std::string &s)
     {
         return s;
     }

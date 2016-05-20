@@ -58,7 +58,7 @@ StateToCompile::StateToCompile(GLObjectsVisitor::Mode mode, osg::Object *markerO
     _markerObject(markerObject)
 {}
 
-void StateToCompile::apply(osg::Node&node)
+void StateToCompile::apply(osg::Node &node)
 {
     if (node.getStateSet())
     {
@@ -68,7 +68,7 @@ void StateToCompile::apply(osg::Node&node)
     traverse(node);
 }
 
-void StateToCompile::apply(osg::Drawable&drawable)
+void StateToCompile::apply(osg::Drawable &drawable)
 {
     if (_drawablesHandled.count(&drawable) != 0)
         return;
@@ -117,7 +117,7 @@ void StateToCompile::apply(osg::Drawable&drawable)
     }
 }
 
-void StateToCompile::apply(osg::StateSet&stateset)
+void StateToCompile::apply(osg::StateSet &stateset)
 {
     if (_statesetsHandled.count(&stateset) != 0)
         return;
@@ -137,7 +137,7 @@ void StateToCompile::apply(osg::StateSet&stateset)
                 program->setUserData(_markerObject.get());
         }
 
-        const osg::StateSet::TextureAttributeList&tal = stateset.getTextureAttributeList();
+        const osg::StateSet::TextureAttributeList &tal = stateset.getTextureAttributeList();
 
         for (osg::StateSet::TextureAttributeList::const_iterator itr = tal.begin();
              itr != tal.end();
@@ -165,7 +165,7 @@ void StateToCompile::apply(osg::StateSet&stateset)
     }
 }
 
-void StateToCompile::apply(osg::Texture&texture)
+void StateToCompile::apply(osg::Texture &texture)
 {
     // don't make any changes if Texture already processed
     if (_markerObject.get() == texture.getUserData())
@@ -234,7 +234,7 @@ IncrementalCompileOperation::CompileDrawableOp::CompileDrawableOp(osg::Drawable 
     _drawable(drawable)
 {}
 
-double IncrementalCompileOperation::CompileDrawableOp::estimatedTimeForCompile(CompileInfo&compileInfo) const
+double IncrementalCompileOperation::CompileDrawableOp::estimatedTimeForCompile(CompileInfo &compileInfo) const
 {
     osg::GraphicsCostEstimator *gce      = compileInfo.getState()->getGraphicsCostEstimator();
     osg::Geometry              *geometry = _drawable->asGeometry();
@@ -247,7 +247,7 @@ double IncrementalCompileOperation::CompileDrawableOp::estimatedTimeForCompile(C
         return 0.0;
 }
 
-bool IncrementalCompileOperation::CompileDrawableOp::compile(CompileInfo&compileInfo)
+bool IncrementalCompileOperation::CompileDrawableOp::compile(CompileInfo &compileInfo)
 {
     // OSG_NOTICE<<"CompileDrawableOp::compile(..)"<<std::endl;
     _drawable->compileGLObjects(compileInfo);
@@ -258,7 +258,7 @@ IncrementalCompileOperation::CompileTextureOp::CompileTextureOp(osg::Texture *te
     _texture(texture)
 {}
 
-double IncrementalCompileOperation::CompileTextureOp::estimatedTimeForCompile(CompileInfo&compileInfo) const
+double IncrementalCompileOperation::CompileTextureOp::estimatedTimeForCompile(CompileInfo &compileInfo) const
 {
     osg::GraphicsCostEstimator *gce = compileInfo.getState()->getGraphicsCostEstimator();
 
@@ -268,7 +268,7 @@ double IncrementalCompileOperation::CompileTextureOp::estimatedTimeForCompile(Co
         return 0.0;
 }
 
-bool IncrementalCompileOperation::CompileTextureOp::compile(CompileInfo&compileInfo)
+bool IncrementalCompileOperation::CompileTextureOp::compile(CompileInfo &compileInfo)
 {
     // OSG_NOTICE<<"CompileTextureOp::compile(..)"<<std::endl;
     osg::Geometry *forceDownloadGeometry = compileInfo.incrementalCompileOperation->getForceTextureDownloadGeometry();
@@ -298,7 +298,7 @@ IncrementalCompileOperation::CompileProgramOp::CompileProgramOp(osg::Program *pr
     _program(program)
 {}
 
-double IncrementalCompileOperation::CompileProgramOp::estimatedTimeForCompile(CompileInfo&compileInfo) const
+double IncrementalCompileOperation::CompileProgramOp::estimatedTimeForCompile(CompileInfo &compileInfo) const
 {
     osg::GraphicsCostEstimator *gce = compileInfo.getState()->getGraphicsCostEstimator();
 
@@ -308,7 +308,7 @@ double IncrementalCompileOperation::CompileProgramOp::estimatedTimeForCompile(Co
         return 0.0;
 }
 
-bool IncrementalCompileOperation::CompileProgramOp::compile(CompileInfo&compileInfo)
+bool IncrementalCompileOperation::CompileProgramOp::compile(CompileInfo &compileInfo)
 {
     // OSG_NOTICE<<"CompileProgramOp::compile(..)"<<std::endl;
     _program->apply(*compileInfo.getState());
@@ -340,7 +340,7 @@ void IncrementalCompileOperation::CompileList::add(CompileOp *compileOp)
     _compileOps.push_back(compileOp);
 }
 
-double IncrementalCompileOperation::CompileList::estimatedTimeForCompile(CompileInfo&compileInfo) const
+double IncrementalCompileOperation::CompileList::estimatedTimeForCompile(CompileInfo &compileInfo) const
 {
     double estimateTime = 0.0;
 
@@ -354,7 +354,7 @@ double IncrementalCompileOperation::CompileList::estimatedTimeForCompile(Compile
     return estimateTime;
 }
 
-bool IncrementalCompileOperation::CompileList::compile(CompileInfo&compileInfo)
+bool IncrementalCompileOperation::CompileList::compile(CompileInfo &compileInfo)
 {
 // #define USE_TIME_ESTIMATES
 
@@ -395,7 +395,7 @@ bool IncrementalCompileOperation::CompileList::compile(CompileInfo&compileInfo)
 //
 // CompileSet
 //
-void IncrementalCompileOperation::CompileSet::buildCompileMap(ContextSet&contexts, StateToCompile&stc)
+void IncrementalCompileOperation::CompileSet::buildCompileMap(ContextSet &contexts, StateToCompile &stc)
 {
     if (contexts.empty() || stc.empty())
         return;
@@ -410,7 +410,7 @@ void IncrementalCompileOperation::CompileSet::buildCompileMap(ContextSet&context
         // increment the number of compile lists that will need to compile
         ++_numberCompileListsToCompile;
 
-        CompileList&cl = _compileMap[*itr];
+        CompileList &cl = _compileMap[*itr];
 
         for (StateToCompile::DrawableSet::iterator ditr = stc._drawables.begin();
              ditr != stc._drawables.end();
@@ -435,7 +435,7 @@ void IncrementalCompileOperation::CompileSet::buildCompileMap(ContextSet&context
     }
 }
 
-void IncrementalCompileOperation::CompileSet::buildCompileMap(ContextSet&contexts, GLObjectsVisitor::Mode mode)
+void IncrementalCompileOperation::CompileSet::buildCompileMap(ContextSet &contexts, GLObjectsVisitor::Mode mode)
 {
     if (contexts.empty() || !_subgraphToCompile)
         return;
@@ -446,9 +446,9 @@ void IncrementalCompileOperation::CompileSet::buildCompileMap(ContextSet&context
     buildCompileMap(contexts, stc);
 }
 
-bool IncrementalCompileOperation::CompileSet::compile(CompileInfo&compileInfo)
+bool IncrementalCompileOperation::CompileSet::compile(CompileInfo &compileInfo)
 {
-    CompileList&compileList = _compileMap[compileInfo.getState()->getGraphicsContext()];
+    CompileList &compileList = _compileMap[compileInfo.getState()->getGraphicsContext()];
 
     if (!compileList.empty())
     {
@@ -537,7 +537,7 @@ void IncrementalCompileOperation::assignForceTextureDownloadGeometry()
     _forceTextureDownloadGeometry = geometry;
 }
 
-void IncrementalCompileOperation::assignContexts(Contexts&contexts)
+void IncrementalCompileOperation::assignContexts(Contexts &contexts)
 {
     for (Contexts::iterator itr = contexts.begin();
          itr != contexts.end();
@@ -548,7 +548,7 @@ void IncrementalCompileOperation::assignContexts(Contexts&contexts)
     }
 }
 
-void IncrementalCompileOperation::removeContexts(Contexts&contexts)
+void IncrementalCompileOperation::removeContexts(Contexts &contexts)
 {
     for (Contexts::iterator itr = contexts.begin();
          itr != contexts.end();
@@ -578,7 +578,7 @@ void IncrementalCompileOperation::removeGraphicsContext(osg::GraphicsContext *gc
     }
 }
 
-bool IncrementalCompileOperation::requiresCompile(StateToCompile&stateToCompile)
+bool IncrementalCompileOperation::requiresCompile(StateToCompile &stateToCompile)
 {
     return isActive() && !stateToCompile.empty();
 }
@@ -755,7 +755,7 @@ void IncrementalCompileOperation::operator ()(osg::GraphicsContext *context)
     // glFinish();
 }
 
-void IncrementalCompileOperation::compileSets(CompileSets&toCompile, CompileInfo&compileInfo)
+void IncrementalCompileOperation::compileSets(CompileSets &toCompile, CompileInfo &compileInfo)
 {
     osg::NotifySeverity level = osg::INFO;
 

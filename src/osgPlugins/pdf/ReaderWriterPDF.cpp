@@ -124,7 +124,7 @@ int getNumOfPages()
     return _doc ? poppler_document_get_n_pages(_doc) : 0;
 }
 
-bool open(const std::string&filename)
+bool open(const std::string &filename)
 {
     OSG_NOTICE << "open(" << filename << ")" << std::endl;
 
@@ -253,12 +253,12 @@ virtual const char* className() const
     return "PDF plugin";
 }
 
-virtual osgDB::ReaderWriter::ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual osgDB::ReaderWriter::ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     return readImage(file, options);
 }
 
-virtual osgDB::ReaderWriter::ReadResult readImage(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual osgDB::ReaderWriter::ReadResult readImage(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     if (!osgDB::equalCaseInsensitive(osgDB::getFileExtension(fileName), "pdf"))
     {
@@ -284,7 +284,7 @@ virtual osgDB::ReaderWriter::ReadResult readImage(const std::string&fileName, co
     return image.get();
 }
 
-virtual osgDB::ReaderWriter::ReadResult readNode(const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual osgDB::ReaderWriter::ReadResult readNode(const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     osgDB::ReaderWriter::ReadResult result = readImage(fileName, options);
 

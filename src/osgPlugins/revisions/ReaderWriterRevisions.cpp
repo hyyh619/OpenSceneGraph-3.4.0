@@ -21,7 +21,7 @@ virtual const char* className() const
     return "Revisions Font Reader/Writer";
 }
 
-virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 
@@ -40,7 +40,7 @@ virtual ReadResult readObject(const std::string&file, const osgDB::ReaderWriter:
         return readFileList(fin, file, options);
 }
 
-virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Options *options) const
 {
     std::string fileName = options->getPluginStringData("filename");
 
@@ -60,7 +60,7 @@ virtual ReadResult readObject(std::istream&fin, const osgDB::ReaderWriter::Optio
         return readFileList(fin, fileName, options);
 }
 
-ReadResult readFileList(std::istream&fin, const std::string&name, const osgDB::ReaderWriter::Options *options) const
+ReadResult readFileList(std::istream &fin, const std::string &name, const osgDB::ReaderWriter::Options *options) const
 {
     OSG_INFO << "    readFileList=" << name << std::endl;
 
@@ -80,7 +80,7 @@ ReadResult readFileList(std::istream&fin, const std::string&name, const osgDB::R
     return fileList.get();
 }
 
-ReadResult readRevisions(std::istream&fin, const std::string&name, const osgDB::ReaderWriter::Options *options) const
+ReadResult readRevisions(std::istream &fin, const std::string &name, const osgDB::ReaderWriter::Options *options) const
 {
     osg::ref_ptr<osgDB::DatabaseRevisions> revisions = new osgDB::DatabaseRevisions;
 
@@ -115,7 +115,7 @@ ReadResult readRevisions(std::istream&fin, const std::string&name, const osgDB::
             std::string revisionName = osgDB::getNameLessExtension(filename);
             if (!revisionName.empty())
             {
-                osg::ref_ptr<osgDB::DatabaseRevision>&dbRevision = revisionMap[revisionName];
+                osg::ref_ptr<osgDB::DatabaseRevision> &dbRevision = revisionMap[revisionName];
                 if (!dbRevision)
                 {
                     dbRevision = new osgDB::DatabaseRevision;
@@ -166,13 +166,13 @@ ReadResult readRevisions(std::istream&fin, const std::string&name, const osgDB::
     return revisions.get();
 }
 
-virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, const osgDB::ReaderWriter::Options*) const
+virtual WriteResult writeObject(const osg::Object &object, std::ostream &fout, const osgDB::ReaderWriter::Options*) const
 {
     const osgDB::FileList *fileList = dynamic_cast<const osgDB::FileList*>(&object);
 
     if (fileList)
     {
-        const osgDB::FileList::FileNames&fileNames = fileList->getFileNames();
+        const osgDB::FileList::FileNames &fileNames = fileList->getFileNames();
 
         for (osgDB::FileList::FileNames::const_iterator itr = fileNames.begin();
              itr != fileNames.end();
@@ -188,7 +188,7 @@ virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, con
     if (revisions)
     {
         typedef osgDB::DatabaseRevisions::DatabaseRevisionList RevisionList;
-        const RevisionList&revisionList = revisions->getDatabaseRevisionList();
+        const RevisionList &revisionList = revisions->getDatabaseRevisionList();
 
         for (RevisionList::const_iterator itr = revisionList.begin();
              itr != revisionList.end();
@@ -224,7 +224,7 @@ virtual WriteResult writeObject(const osg::Object&object, std::ostream&fout, con
     return WriteResult::FILE_NOT_HANDLED;
 }
 
-virtual WriteResult writeObject(const osg::Object&object, const std::string&fileName, const osgDB::ReaderWriter::Options *options) const
+virtual WriteResult writeObject(const osg::Object &object, const std::string &fileName, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getFileExtension(fileName);
 

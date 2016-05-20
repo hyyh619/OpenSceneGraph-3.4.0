@@ -32,7 +32,7 @@ MinimalShadowMap::MinimalShadowMap() :
 {}
 
 MinimalShadowMap::MinimalShadowMap
-    (const MinimalShadowMap&copy, const osg::CopyOp&copyop) :
+    (const MinimalShadowMap &copy, const osg::CopyOp &copyop) :
     BaseClass(copy, copyop),
     _maxFarPlane(copy._maxFarPlane),
     _minLightMargin(copy._minLightMargin),
@@ -113,19 +113,19 @@ osg::BoundingBox MinimalShadowMap::ViewData::computeShadowReceivingCoarseBounds(
 }
 
 void MinimalShadowMap::ViewData::aimShadowCastingCamera(
-    const osg::BoundingSphere&bs,
+    const osg::BoundingSphere &bs,
     const osg::Light *light,
-    const osg::Vec4&lightPos,
-    const osg::Vec3&lightDir,
-    const osg::Vec3&lightUpVector
+    const osg::Vec4 &lightPos,
+    const osg::Vec3 &lightDir,
+    const osg::Vec3 &lightUpVector
     /* by default = osg::Vec3( 0, 1 0 )*/)
 {
     BaseClass::ViewData::aimShadowCastingCamera(bs, light, lightPos, lightDir, lightUpVector);
 }
 
 void MinimalShadowMap::ViewData::aimShadowCastingCamera
-    (const osg::Light *light, const osg::Vec4&lightPos,
-    const osg::Vec3&lightDir, const osg::Vec3&lightUp)
+    (const osg::Light *light, const osg::Vec4 &lightPos,
+    const osg::Vec3 &lightDir, const osg::Vec3 &lightUp)
 {
     osg::BoundingBox bb = computeScenePolytopeBounds();
 
@@ -338,8 +338,8 @@ void MinimalShadowMap::ViewData::init(ThisClass *st, osgUtil::CullVisitor *cv)
 
 void MinimalShadowMap::ViewData::cutScenePolytope
     (const osg::Matrix& /*transform*/,
-    const osg::Matrix&inverse,
-    const osg::BoundingBox&bb)
+    const osg::Matrix &inverse,
+    const osg::BoundingBox &bb)
 {
     _sceneReceivingShadowPolytopePoints.clear();
 
@@ -366,7 +366,7 @@ osg::BoundingBox MinimalShadowMap::ViewData::computeScenePolytopeBounds()
     return bb;
 }
 
-osg::BoundingBox MinimalShadowMap::ViewData::computeScenePolytopeBounds(const osg::Matrix&m)
+osg::BoundingBox MinimalShadowMap::ViewData::computeScenePolytopeBounds(const osg::Matrix &m)
 {
     osg::BoundingBox bb;
 
@@ -381,7 +381,7 @@ osg::BoundingBox MinimalShadowMap::ViewData::computeScenePolytopeBounds(const os
 // Utility methods for adjusting projection matrices
 
 void MinimalShadowMap::ViewData::trimProjection
-    (osg::Matrixd&projectionMatrix, osg::BoundingBox bb, unsigned int trimMask)
+    (osg::Matrixd &projectionMatrix, osg::BoundingBox bb, unsigned int trimMask)
 {
 #if 1
     if (!bb.valid() || !(trimMask & (1 | 2 | 4 | 8 | 16 | 32)))
@@ -513,7 +513,7 @@ void MinimalShadowMap::ViewData::trimProjection
 }
 
 void MinimalShadowMap::ViewData::clampProjection
-    (osg::Matrixd&projection, float new_near, float new_far)
+    (osg::Matrixd &projection, float new_near, float new_far)
 {
     double r, l, t, b, n, f;
     bool   perspective = projection.getFrustum(l, r, b, t, n, f);
@@ -558,7 +558,7 @@ void MinimalShadowMap::ViewData::clampProjection
 // Method computes such new projection which maintains perpective/world ratio
 
 void MinimalShadowMap::ViewData::extendProjection
-    (osg::Matrixd&projection, osg::Viewport *viewport, const osg::Vec2&margin)
+    (osg::Matrixd &projection, osg::Viewport *viewport, const osg::Vec2 &margin)
 {
     double l, r, b, t, n, f;
 

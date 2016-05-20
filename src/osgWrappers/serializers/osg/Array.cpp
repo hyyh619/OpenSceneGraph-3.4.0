@@ -9,7 +9,7 @@ namespace ArrayWrappers
 #if 0
 struct ResizeArray : public osgDB::MethodObject
 {
-    virtual bool run(void *objectPtr, osg::Parameters&inputParameters, osg::Parameters&outputParameters) const
+    virtual bool run(void *objectPtr, osg::Parameters &inputParameters, osg::Parameters &outputParameters) const
     {
         if (inputParameters.empty())
             return false;

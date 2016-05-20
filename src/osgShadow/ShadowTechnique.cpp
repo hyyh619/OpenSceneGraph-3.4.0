@@ -35,7 +35,7 @@ ShadowTechnique::ShadowTechnique() :
     _dirty(true)
 {}
 
-ShadowTechnique::ShadowTechnique(const ShadowTechnique&copy, const osg::CopyOp&copyop) :
+ShadowTechnique::ShadowTechnique(const ShadowTechnique &copy, const osg::CopyOp &copyop) :
     osg::Object(copy, copyop),
     _shadowedScene(0),
     _dirty(true)
@@ -51,13 +51,13 @@ void ShadowTechnique::init()
     _dirty = false;
 }
 
-void ShadowTechnique::update(osg::NodeVisitor&nv)
+void ShadowTechnique::update(osg::NodeVisitor &nv)
 {
     OSG_NOTICE << className() << "::update(osg::NodeVisitor&) not implemented yet." << std::endl;
     _shadowedScene->osg::Group::traverse(nv);
 }
 
-void ShadowTechnique::cull(osgUtil::CullVisitor&cv)
+void ShadowTechnique::cull(osgUtil::CullVisitor &cv)
 {
     OSG_NOTICE << className() << "::cull(osgUtl::CullVisitor&) not implemented yet." << std::endl;
     _shadowedScene->osg::Group::traverse(cv);
@@ -68,7 +68,7 @@ void ShadowTechnique::cleanSceneGraph()
     OSG_NOTICE << className() << "::cleanSceneGraph()) not implemented yet." << std::endl;
 }
 
-void ShadowTechnique::traverse(osg::NodeVisitor&nv)
+void ShadowTechnique::traverse(osg::NodeVisitor &nv)
 {
     if (!_shadowedScene)
         return;
@@ -94,7 +94,7 @@ void ShadowTechnique::traverse(osg::NodeVisitor&nv)
     }
 }
 
-osg::Vec3 ShadowTechnique::computeOrthogonalVector(const osg::Vec3&direction) const
+osg::Vec3 ShadowTechnique::computeOrthogonalVector(const osg::Vec3 &direction) const
 {
     float     length           = direction.length();
     osg::Vec3 orthogonalVector = direction ^ osg::Vec3(0.0f, 1.0f, 0.0f);

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
-*/
+ */
 
 #ifndef OSGSIM_SECTOR
 #define OSGSIM_SECTOR 1
@@ -24,71 +24,84 @@
 #include <osg/Object>
 
 namespace osgSim {
-
-class Sector : public osg::Object
-{
-    public:
+    class Sector: public osg::Object
+    {
+public:
 
         Sector() {}
 
-        Sector(const Sector& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY):
-            osg::Object(copy,copyop) {}
+        Sector(const Sector &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
+            osg::Object(copy, copyop) {}
 
-        virtual const char *libraryName() const { return "osgSim"; }
-        virtual const char *className() const { return "Sector"; }
-        virtual bool isSameKindAs(const osg::Object *obj) const { return dynamic_cast<const Sector *>(obj) != 0; }
+        virtual const char* libraryName() const
+        {
+            return "osgSim";
+        }
+        virtual const char* className() const
+        {
+            return "Sector";
+        }
+        virtual bool isSameKindAs(const osg::Object *obj) const
+        {
+            return dynamic_cast < const Sector * > (obj) != 0;
+        }
 
-        virtual float operator() (const osg::Vec3& /*eyeLocal*/) const = 0;
+        virtual float operator()(const osg::Vec3 & /*eyeLocal*/) const = 0;
 
-    protected:
+protected:
 
         virtual ~Sector() {}
-};
+    };
 
-class OSGSIM_EXPORT AzimRange
-{
-    public:
+    class OSGSIM_EXPORT AzimRange
+    {
+public:
 
-       AzimRange():
+        AzimRange() :
             _cosAzim(1.0f),
             _sinAzim(0.0f),
             _cosAngle(-1.0f),
             _cosFadeAngle(-1.0f) {}
 
-        void setAzimuthRange(float minAzimuth,float maxAzimuth,float fadeAngle=0.0f);
-        void getAzimuthRange(float& minAzimuth, float& maxAzimuth, float& fadeAngle) const;
+        void setAzimuthRange(float minAzimuth, float maxAzimuth, float fadeAngle = 0.0f);
+        void getAzimuthRange(float &minAzimuth, float &maxAzimuth, float &fadeAngle) const;
 
 
-        inline float azimSector(const osg::Vec3& eyeLocal) const
+        inline float azimSector(const osg::Vec3 &eyeLocal) const
         {
-            float dotproduct = eyeLocal.x()*_sinAzim+eyeLocal.y()*_cosAzim;
-            float length = sqrt(osg::square(eyeLocal.x())+osg::square(eyeLocal.y()));
-            if (dotproduct<_cosFadeAngle*length) return 0.0f; // out of sector.
-            if (dotproduct>=_cosAngle*length) return 1.0f; // fully in sector.
-            return (dotproduct-_cosFadeAngle*length)/((_cosAngle-_cosFadeAngle)*length);
+            float dotproduct = eyeLocal.x() * _sinAzim + eyeLocal.y() * _cosAzim;
+            float length     = sqrt(osg::square(eyeLocal.x()) + osg::square(eyeLocal.y()));
+
+            if (dotproduct < _cosFadeAngle * length)
+                return 0.0f;                                  // out of sector.
+
+            if (dotproduct >= _cosAngle * length)
+                return 1.0f;                               // fully in sector.
+
+            return (dotproduct - _cosFadeAngle * length) / ((_cosAngle - _cosFadeAngle) * length);
         }
 
-    protected:
+protected:
 
         float _cosAzim;
         float _sinAzim;
         float _cosAngle;
         float _cosFadeAngle;
-};
+    };
 
 
-class OSGSIM_EXPORT ElevationRange
-{
-    public:
+    class OSGSIM_EXPORT ElevationRange
+    {
+public:
 
 
-        ElevationRange():
+        ElevationRange() :
             _cosMinElevation(-1.0f),
             _cosMinFadeElevation(-1.0f),
             _cosMaxElevation(1.0),
             _cosMaxFadeElevation(1.0) {}
 
-        void setElevationRange(float minElevation,float maxElevation,float fadeAngle=0.0f);
+        void setElevationRange(float minElevation, float maxElevation, float fadeAngle = 0.0f);
 
         float getMinElevation() const;
 
@@ -96,170 +109,179 @@ class OSGSIM_EXPORT ElevationRange
 
         float getFadeAngle() const;
 
-        inline float elevationSector(const osg::Vec3& eyeLocal) const
+        inline float elevationSector(const osg::Vec3 &eyeLocal) const
         {
             float dotproduct = eyeLocal.z(); // against z axis - eyeLocal*(0,0,1).
-            float length = eyeLocal.length();
-            if (dotproduct>_cosMaxFadeElevation*length) return 0.0f; // out of sector
-            if (dotproduct<_cosMinFadeElevation*length) return 0.0f; // out of sector
-            if (dotproduct>_cosMaxElevation*length)
+            float length     = eyeLocal.length();
+
+            if (dotproduct > _cosMaxFadeElevation * length)
+                return 0.0f;                                         // out of sector
+
+            if (dotproduct < _cosMinFadeElevation * length)
+                return 0.0f;                                         // out of sector
+
+            if (dotproduct > _cosMaxElevation * length)
             {
                 // in uppoer fade band.
-                return (dotproduct-_cosMaxFadeElevation*length)/((_cosMaxElevation-_cosMaxFadeElevation)*length);
+                return (dotproduct - _cosMaxFadeElevation * length) / ((_cosMaxElevation - _cosMaxFadeElevation) * length);
             }
-            if (dotproduct<_cosMinElevation*length)
+
+            if (dotproduct < _cosMinElevation * length)
             {
                 // in lower fade band.
-                return (dotproduct-_cosMinFadeElevation*length)/((_cosMinElevation-_cosMinFadeElevation)*length);
+                return (dotproduct - _cosMinFadeElevation * length) / ((_cosMinElevation - _cosMinFadeElevation) * length);
             }
+
             return 1.0f; // fully in sector
         }
 
-    protected:
+protected:
 
         float _cosMinElevation;
         float _cosMinFadeElevation;
         float _cosMaxElevation;
         float _cosMaxFadeElevation;
-};
+    };
 
-class OSGSIM_EXPORT AzimSector : public Sector, public AzimRange
-{
-    public:
+    class OSGSIM_EXPORT AzimSector: public Sector, public AzimRange
+    {
+public:
 
-        AzimSector():
+        AzimSector() :
             Sector(),
             AzimRange() {}
 
-        AzimSector(const AzimSector& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY):
-            Sector(copy,copyop),
+        AzimSector(const AzimSector &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
+            Sector(copy, copyop),
             AzimRange(copy) {}
 
-        AzimSector(float minAzimuth,float maxAzimuth,float fadeAngle=0.0f);
+        AzimSector(float minAzimuth, float maxAzimuth, float fadeAngle = 0.0f);
 
-        META_Object(osgSim,AzimSector);
+        META_Object(osgSim, AzimSector);
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        virtual float operator()(const osg::Vec3 & eyeLocal) const;
 
-    protected:
+protected:
 
         virtual ~AzimSector() {}
+    };
 
-};
-
-class OSGSIM_EXPORT ElevationSector : public Sector, public ElevationRange
-{
-    public:
+    class OSGSIM_EXPORT ElevationSector: public Sector, public ElevationRange
+    {
+public:
 
 
-        ElevationSector():
+        ElevationSector() :
             Sector(),
             ElevationRange() {}
 
-        ElevationSector(const ElevationSector& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY):
-            Sector(copy,copyop),
+        ElevationSector(const ElevationSector &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
+            Sector(copy, copyop),
             ElevationRange(copy) {}
 
-        ElevationSector(float minElevation,float maxElevation,float fadeAngle=0.0f);
+        ElevationSector(float minElevation, float maxElevation, float fadeAngle = 0.0f);
 
-        META_Object(osgSim,ElevationSector);
+        META_Object(osgSim, ElevationSector);
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        virtual float operator()(const osg::Vec3 & eyeLocal) const;
 
-    protected:
+protected:
 
         virtual ~ElevationSector() {}
-};
+    };
 
 
-class OSGSIM_EXPORT AzimElevationSector : public Sector, public AzimRange, public ElevationRange
-{
-    public:
+    class OSGSIM_EXPORT AzimElevationSector: public Sector, public AzimRange, public ElevationRange
+    {
+public:
 
-        AzimElevationSector():
+        AzimElevationSector() :
             Sector(),
             AzimRange(),
             ElevationRange() {}
 
-        AzimElevationSector(const AzimElevationSector& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY):
-            Sector(copy,copyop),
+        AzimElevationSector(const AzimElevationSector &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
+            Sector(copy, copyop),
             AzimRange(copy),
             ElevationRange(copy) {}
 
-        AzimElevationSector(float minAzimuth,float maxAzimuth,float minElevation,float maxElevation,float fadeAngle=0.0f);
+        AzimElevationSector(float minAzimuth, float maxAzimuth, float minElevation, float maxElevation, float fadeAngle = 0.0f);
 
-        META_Object(osgSim,AzimElevationSector);
+        META_Object(osgSim, AzimElevationSector);
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        virtual float operator()(const osg::Vec3 & eyeLocal) const;
 
-    protected:
+protected:
 
         virtual ~AzimElevationSector() {}
-};
+    };
 
 
-class OSGSIM_EXPORT ConeSector : public Sector
-{
-    public:
+    class OSGSIM_EXPORT ConeSector: public Sector
+    {
+public:
 
-        ConeSector():
+        ConeSector() :
             Sector(),
-            _axis(0.0f,0.0f,1.0f),
+            _axis(0.0f, 0.0f, 1.0f),
             _cosAngle(-1.0f),
             _cosAngleFade(-1.0f) {}
 
-        ConeSector(const ConeSector& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY):
-            Sector(copy,copyop),
+        ConeSector(const ConeSector &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
+            Sector(copy, copyop),
             _axis(copy._axis),
             _cosAngle(copy._cosAngle),
             _cosAngleFade(copy._cosAngleFade) {}
 
-        ConeSector(const osg::Vec3& axis,float angle,float fadeangle=0.0f);
+        ConeSector(const osg::Vec3 & axis, float angle, float fadeangle = 0.0f);
 
-        META_Object(osgSim,ConeSector);
+        META_Object(osgSim, ConeSector);
 
-        void setAxis(const osg::Vec3& axis);
+        void setAxis(const osg::Vec3 &axis);
 
-        const osg::Vec3& getAxis() const;
+        const osg::Vec3&getAxis() const;
 
-        void setAngle(float angle,float fadeangle=0.0f);
+        void setAngle(float angle, float fadeangle = 0.0f);
 
         float getAngle() const;
 
         float getFadeAngle() const;
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        virtual float operator()(const osg::Vec3 & eyeLocal) const;
 
-    protected:
+protected:
 
         virtual ~ConeSector() {}
 
-        osg::Vec3   _axis;
-        float       _cosAngle;
-        float       _cosAngleFade;
-};
+        osg::Vec3 _axis;
+        float     _cosAngle;
+        float     _cosAngleFade;
+    };
 
 
 /* The DirectionalSector class was created to better handle OpenFlight directional
-  lightpoints.  The Elevation and Azimuth Sectors above impose invalid limits on
-  the elevation range which cause lightpoints whose direction vectors are not
-  on the XY plane to be displayed incorrectly.  Corbin Holtz 4/04 */
+   lightpoints.  The Elevation and Azimuth Sectors above impose invalid limits on
+   the elevation range which cause lightpoints whose direction vectors are not
+   on the XY plane to be displayed incorrectly.  Corbin Holtz 4/04 */
 
-class OSGSIM_EXPORT DirectionalSector : public Sector
-{
-    public:
+    class OSGSIM_EXPORT DirectionalSector: public Sector
+    {
+public:
 
-        DirectionalSector():
+        DirectionalSector() :
             Sector(),
             _direction(0.0f, 0.0f, 1.0f),
             _rollAngle(0.0f),
             _cosHorizAngle(-1.0f),
             _cosVertAngle(-1.0f),
             _cosHorizFadeAngle(-1.0f),
-            _cosVertFadeAngle(-1.0f) {computeMatrix();}
+            _cosVertFadeAngle(-1.0f)
+        {
+            computeMatrix();
+        }
 
-        DirectionalSector(const DirectionalSector& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY):
-            Sector(copy,copyop),
+        DirectionalSector(const DirectionalSector &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
+            Sector(copy, copyop),
             _direction(copy._direction),
             _rollAngle(copy._rollAngle),
             _local_to_LP(copy._local_to_LP),
@@ -268,13 +290,13 @@ class OSGSIM_EXPORT DirectionalSector : public Sector
             _cosHorizFadeAngle(copy._cosHorizFadeAngle),
             _cosVertFadeAngle(copy._cosVertFadeAngle) {}
 
-        DirectionalSector(const osg::Vec3& direction,float horizLobeAngle, float vertLobeAngle, float lobeRollAngle, float fadeAngle=0.0f);
+        DirectionalSector(const osg::Vec3 & direction, float horizLobeAngle, float vertLobeAngle, float lobeRollAngle, float fadeAngle = 0.0f);
 
-        META_Object(osgSim,DirectionalSector);
+        META_Object(osgSim, DirectionalSector);
 
-        void setDirection(const osg::Vec3& direction);
+        void setDirection(const osg::Vec3 &direction);
 
-        const osg::Vec3& getDirection() const;
+        const osg::Vec3&getDirection() const;
 
         void setHorizLobeAngle(float angle);
 
@@ -292,23 +314,22 @@ class OSGSIM_EXPORT DirectionalSector : public Sector
 
         float getFadeAngle() const;
 
-        virtual float operator() (const osg::Vec3& eyeLocal) const;
+        virtual float operator()(const osg::Vec3 & eyeLocal) const;
 
-        void computeMatrix() ;
+        void computeMatrix();
 
-    protected:
+protected:
 
         virtual ~DirectionalSector() {}
 
-        osg::Vec3   _direction ;
-        float       _rollAngle ;
-        osg::Matrix _local_to_LP ;
+        osg::Vec3   _direction;
+        float       _rollAngle;
+        osg::Matrix _local_to_LP;
         float       _cosHorizAngle;
         float       _cosVertAngle;
         float       _cosHorizFadeAngle;
         float       _cosVertFadeAngle;
-};
-
+    };
 }
 
 #endif

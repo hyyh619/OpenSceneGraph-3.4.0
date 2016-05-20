@@ -3,12 +3,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkArea(const osgSim::SphereSegment&sphere)
+static bool checkArea(const osgSim::SphereSegment &sphere)
 {
     return true;
 }
 
-static bool readArea(osgDB::InputStream&is, osgSim::SphereSegment&sphere)
+static bool readArea(osgDB::InputStream &is, osgSim::SphereSegment &sphere)
 {
     float azMin, azMax, elevMin, elevMax;
 
@@ -17,7 +17,7 @@ static bool readArea(osgDB::InputStream&is, osgSim::SphereSegment&sphere)
     return true;
 }
 
-static bool writeArea(osgDB::OutputStream&os, const osgSim::SphereSegment&sphere)
+static bool writeArea(osgDB::OutputStream &os, const osgSim::SphereSegment &sphere)
 {
     float azMin, azMax, elevMin, elevMax;
 

@@ -70,7 +70,7 @@ void setWidth(float w)
 }
 
 /// Set outline color.
-void setColor(const osg::Vec4&color)
+void setColor(const osg::Vec4 &color)
 {
     _color = color;
     if (_material.valid())
@@ -182,7 +182,7 @@ void Outline::setWidth(float w)
     }
 }
 
-void Outline::setColor(const osg::Vec4&color)
+void Outline::setColor(const osg::Vec4 &color)
 {
     _color = color;
     if (_technique)

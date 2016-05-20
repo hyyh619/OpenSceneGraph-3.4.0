@@ -5,8 +5,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool Cartoon_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool Cartoon_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool Cartoon_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool Cartoon_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(Cartoon_Proxy)
 (
@@ -17,10 +17,10 @@ REGISTER_DOTOSGWRAPPER(Cartoon_Proxy)
     Cartoon_writeLocalData
 );
 
-bool Cartoon_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool Cartoon_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgFX::Cartoon&myobj     = static_cast<osgFX::Cartoon&>(obj);
-    bool          itAdvanced = false;
+    osgFX::Cartoon &myobj     = static_cast<osgFX::Cartoon&>(obj);
+    bool           itAdvanced = false;
 
     if (fr[0].matchWord("lightNumber"))
     {
@@ -59,9 +59,9 @@ bool Cartoon_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool Cartoon_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool Cartoon_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgFX::Cartoon&myobj = static_cast<const osgFX::Cartoon&>(obj);
+    const osgFX::Cartoon &myobj = static_cast<const osgFX::Cartoon&>(obj);
 
     fw.indent() << "lightNumber " <<      myobj.getLightNumber() << "\n";
     fw.indent() << "outlineColor " <<     myobj.getOutlineColor() << "\n";

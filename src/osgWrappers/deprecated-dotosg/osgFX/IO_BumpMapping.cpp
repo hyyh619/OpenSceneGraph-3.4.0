@@ -4,8 +4,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
-bool BumpMapping_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool BumpMapping_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool BumpMapping_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool BumpMapping_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(BumpMapping_Proxy)
 (
@@ -16,10 +16,10 @@ REGISTER_DOTOSGWRAPPER(BumpMapping_Proxy)
     BumpMapping_writeLocalData
 );
 
-bool BumpMapping_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool BumpMapping_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgFX::BumpMapping&myobj     = static_cast<osgFX::BumpMapping&>(obj);
-    bool              itAdvanced = false;
+    osgFX::BumpMapping &myobj     = static_cast<osgFX::BumpMapping&>(obj);
+    bool               itAdvanced = false;
 
     if (fr[0].matchWord("lightNumber"))
     {
@@ -71,9 +71,9 @@ bool BumpMapping_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool BumpMapping_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool BumpMapping_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgFX::BumpMapping&myobj = static_cast<const osgFX::BumpMapping&>(obj);
+    const osgFX::BumpMapping &myobj = static_cast<const osgFX::BumpMapping&>(obj);
 
     fw.indent() << "lightNumber " <<   myobj.getLightNumber() << "\n";
     fw.indent() << "diffuseUnit " <<   myobj.getDiffuseTextureUnit() << "\n";

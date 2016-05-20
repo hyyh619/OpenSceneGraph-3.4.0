@@ -8,7 +8,7 @@ static bool checkMasks(const osg::SampleMaski&)
     return true;
 }
 
-static bool readMasks(osgDB::InputStream&is, osg::SampleMaski&attr)
+static bool readMasks(osgDB::InputStream &is, osg::SampleMaski &attr)
 {
     if (is.getFileVersion() > 96)
     {
@@ -21,7 +21,7 @@ static bool readMasks(osgDB::InputStream&is, osg::SampleMaski&attr)
     return true;
 }
 
-static bool writeMasks(osgDB::OutputStream&os, const osg::SampleMaski&attr)
+static bool writeMasks(osgDB::OutputStream &os, const osg::SampleMaski &attr)
 {
     os << attr.getMask(0u) << attr.getMask(1u) << std::endl;
     return true;

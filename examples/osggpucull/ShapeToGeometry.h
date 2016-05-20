@@ -81,13 +81,13 @@ void drawCylinderBody(unsigned int numSegments, float radius, float height);
 void drawHalfSphere(unsigned int numSegments, unsigned int numRows, float radius, SphereHalf which, float zOffset = 0.0f);
 };
 
-osg::Geometry* convertShapeToGeometry(const osg::Shape&shape, const osg::TessellationHints *hints);
+osg::Geometry* convertShapeToGeometry(const osg::Shape &shape, const osg::TessellationHints *hints);
 
-osg::Geometry* convertShapeToGeometry(const osg::Shape&shape, const osg::TessellationHints *hints, const osg::Vec4&color);
+osg::Geometry* convertShapeToGeometry(const osg::Shape &shape, const osg::TessellationHints *hints, const osg::Vec4 &color);
 
-osg::Geode* convertShapeToGeode(const osg::Shape&shape, const osg::TessellationHints *hints);
+osg::Geode* convertShapeToGeode(const osg::Shape &shape, const osg::TessellationHints *hints);
 
-osg::Geode* convertShapeToGeode(const osg::Shape&shape, const osg::TessellationHints *hints, const osg::Vec4&color);
+osg::Geode* convertShapeToGeode(const osg::Shape &shape, const osg::TessellationHints *hints, const osg::Vec4 &color);
 
 
 // example : how to use convertShapeToGeometry()

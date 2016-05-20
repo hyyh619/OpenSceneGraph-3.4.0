@@ -258,7 +258,7 @@ void GLBeginEndAdapter::End()
 
     if (!_matrixStack.empty())
     {
-        const osg::Matrixd&matrix = _matrixStack.back();
+        const osg::Matrixd &matrix = _matrixStack.back();
         if (_mode == APPLY_LOCAL_MATRICES_TO_VERTICES)
         {
             osg::Matrix inverse;

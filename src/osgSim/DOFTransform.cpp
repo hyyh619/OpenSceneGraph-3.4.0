@@ -35,7 +35,7 @@ DOFTransform::DOFTransform() :
     _multOrder(PRH)
 {}
 
-DOFTransform::DOFTransform(const DOFTransform&dof, const osg::CopyOp&copyop) :
+DOFTransform::DOFTransform(const DOFTransform &dof, const osg::CopyOp &copyop) :
     osg::Transform(dof, copyop),
     _previousTraversalNumber(dof._previousTraversalNumber),
     _previousTime(dof._previousTime),
@@ -62,7 +62,7 @@ DOFTransform::DOFTransform(const DOFTransform&dof, const osg::CopyOp&copyop) :
         setNumChildrenRequiringUpdateTraversal(getNumChildrenRequiringUpdateTraversal() + 1);
 }
 
-void DOFTransform::traverse(osg::NodeVisitor&nv)
+void DOFTransform::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getVisitorType() == osg::NodeVisitor::UPDATE_VISITOR)
     {
@@ -83,7 +83,7 @@ void DOFTransform::traverse(osg::NodeVisitor&nv)
     Transform::traverse(nv);
 }
 
-bool DOFTransform::computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisitor*) const
+bool DOFTransform::computeLocalToWorldMatrix(osg::Matrix &matrix, osg::NodeVisitor*) const
 {
     // put the PUT matrix first:
     osg::Matrix l2w(getPutMatrix());
@@ -154,7 +154,7 @@ bool DOFTransform::computeLocalToWorldMatrix(osg::Matrix&matrix, osg::NodeVisito
 }
 
 
-bool DOFTransform::computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisitor*) const
+bool DOFTransform::computeWorldToLocalMatrix(osg::Matrix &matrix, osg::NodeVisitor*) const
 {
     // put the PUT matrix first:
     osg::Matrix w2l(getInversePutMatrix());
@@ -224,7 +224,7 @@ bool DOFTransform::computeWorldToLocalMatrix(osg::Matrix&matrix, osg::NodeVisito
 }
 
 
-void DOFTransform::updateCurrentHPR(const osg::Vec3&hpr)
+void DOFTransform::updateCurrentHPR(const osg::Vec3 &hpr)
 {
     // if there is constrain on animation
     if (_limitationFlags & ROTATION_ROLL_LIMIT_BIT)
@@ -307,7 +307,7 @@ void DOFTransform::updateCurrentHPR(const osg::Vec3&hpr)
 }
 
 
-void DOFTransform::updateCurrentTranslate(const osg::Vec3&translate)
+void DOFTransform::updateCurrentTranslate(const osg::Vec3 &translate)
 {
     if (_limitationFlags & TRANSLATION_Z_LIMIT_BIT)
     {
@@ -385,7 +385,7 @@ void DOFTransform::updateCurrentTranslate(const osg::Vec3&translate)
 }
 
 
-void DOFTransform::updateCurrentScale(const osg::Vec3&scale)
+void DOFTransform::updateCurrentScale(const osg::Vec3 &scale)
 {
     if (_limitationFlags & SCALE_Z_LIMIT_BIT)
     {

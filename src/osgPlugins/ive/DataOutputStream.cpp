@@ -268,7 +268,7 @@ DataOutputStream::~DataOutputStream()
 #include <zlib.h>
 
 #define CHUNK 16384
-bool DataOutputStream::compress(std::ostream&fout, const std::string&source) const
+bool DataOutputStream::compress(std::ostream &fout, const std::string &source) const
 {
     int           ret, flush = Z_FINISH;
     unsigned      have;
@@ -330,7 +330,7 @@ bool DataOutputStream::compress(std::ostream&fout, const std::string&source) con
     return true;
 }
 #else
-bool DataOutputStream::compress(std::ostream&fout, const std::string&source) const
+bool DataOutputStream::compress(std::ostream &fout, const std::string &source) const
 {
     return false;
 }
@@ -426,7 +426,7 @@ void DataOutputStream::writeDouble(double d)
         std::cout << "read/writeDouble() [" << d << "]" << std::endl;
 }
 
-void DataOutputStream::writeString(const std::string&s)
+void DataOutputStream::writeString(const std::string &s)
 {
     writeInt(s.size());
     _ostream->write(s.c_str(), s.size());
@@ -443,7 +443,7 @@ void DataOutputStream::writeCharArray(const char *data, int size)
         std::cout << "read/writeCharArray() [" << data << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec2(const osg::Vec2&v)
+void DataOutputStream::writeVec2(const osg::Vec2 &v)
 {
     writeFloat(v.x());
     writeFloat(v.y());
@@ -452,7 +452,7 @@ void DataOutputStream::writeVec2(const osg::Vec2&v)
         std::cout << "read/writeVec2() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec3(const osg::Vec3&v)
+void DataOutputStream::writeVec3(const osg::Vec3 &v)
 {
     writeFloat(v.x());
     writeFloat(v.y());
@@ -462,7 +462,7 @@ void DataOutputStream::writeVec3(const osg::Vec3&v)
         std::cout << "read/writeVec3() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec4(const osg::Vec4&v)
+void DataOutputStream::writeVec4(const osg::Vec4 &v)
 {
     writeFloat(v.x());
     writeFloat(v.y());
@@ -473,7 +473,7 @@ void DataOutputStream::writeVec4(const osg::Vec4&v)
         std::cout << "read/writeVec4() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec2d(const osg::Vec2d&v)
+void DataOutputStream::writeVec2d(const osg::Vec2d &v)
 {
     writeDouble(v.x());
     writeDouble(v.y());
@@ -482,7 +482,7 @@ void DataOutputStream::writeVec2d(const osg::Vec2d&v)
         std::cout << "read/writeVec2() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec3d(const osg::Vec3d&v)
+void DataOutputStream::writeVec3d(const osg::Vec3d &v)
 {
     writeDouble(v.x());
     writeDouble(v.y());
@@ -492,7 +492,7 @@ void DataOutputStream::writeVec3d(const osg::Vec3d&v)
         std::cout << "read/writeVec3d() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec4d(const osg::Vec4d&v)
+void DataOutputStream::writeVec4d(const osg::Vec4d &v)
 {
     writeDouble(v.x());
     writeDouble(v.y());
@@ -503,7 +503,7 @@ void DataOutputStream::writeVec4d(const osg::Vec4d&v)
         std::cout << "read/writeVec4d() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writePlane(const osg::Plane&v)
+void DataOutputStream::writePlane(const osg::Plane &v)
 {
     writeDouble(v[0]);
     writeDouble(v[1]);
@@ -514,7 +514,7 @@ void DataOutputStream::writePlane(const osg::Plane&v)
         std::cout << "read/writePlane() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec4ub(const osg::Vec4ub&v)
+void DataOutputStream::writeVec4ub(const osg::Vec4ub &v)
 {
     writeChar(v.r());
     writeChar(v.g());
@@ -525,7 +525,7 @@ void DataOutputStream::writeVec4ub(const osg::Vec4ub&v)
         std::cout << "read/writeVec4ub() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec2b(const osg::Vec2b&v)
+void DataOutputStream::writeVec2b(const osg::Vec2b &v)
 {
     writeChar(v.r());
     writeChar(v.g());
@@ -534,7 +534,7 @@ void DataOutputStream::writeVec2b(const osg::Vec2b&v)
         std::cout << "read/writeVec2b() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec3b(const osg::Vec3b&v)
+void DataOutputStream::writeVec3b(const osg::Vec3b &v)
 {
     writeChar(v.r());
     writeChar(v.g());
@@ -544,7 +544,7 @@ void DataOutputStream::writeVec3b(const osg::Vec3b&v)
         std::cout << "read/writeVec3b() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeVec4b(const osg::Vec4b&v)
+void DataOutputStream::writeVec4b(const osg::Vec4b &v)
 {
     writeChar(v.r());
     writeChar(v.g());
@@ -555,7 +555,7 @@ void DataOutputStream::writeVec4b(const osg::Vec4b&v)
         std::cout << "read/writeVec4b() [" << v << "]" << std::endl;
 }
 
-void DataOutputStream::writeQuat(const osg::Quat&q)
+void DataOutputStream::writeQuat(const osg::Quat &q)
 {
     writeFloat(q.x());
     writeFloat(q.y());
@@ -1083,7 +1083,7 @@ void DataOutputStream::writeVec4dArray(const osg::Vec4dArray *a)
         std::cout << "read/writeVec4dArray() [" << size << "]" << std::endl;
 }
 
-void DataOutputStream::writeMatrixf(const osg::Matrixf&mat)
+void DataOutputStream::writeMatrixf(const osg::Matrixf &mat)
 {
     for (int r = 0; r < 4; r++)
     {
@@ -1097,7 +1097,7 @@ void DataOutputStream::writeMatrixf(const osg::Matrixf&mat)
         std::cout << "read/writeMatrix() [" << mat << "]" << std::endl;
 }
 
-void DataOutputStream::writeMatrixd(const osg::Matrixd&mat)
+void DataOutputStream::writeMatrixd(const osg::Matrixd &mat)
 {
     for (int r = 0; r < 4; r++)
     {
@@ -2205,12 +2205,12 @@ std::string DataOutputStream::getTextureFileNameForOutput()
 
 
 
-void DataOutputStream::setExternalFileWritten(const std::string&filename, bool hasBeenWritten)
+void DataOutputStream::setExternalFileWritten(const std::string &filename, bool hasBeenWritten)
 {
     _externalFileWritten[filename] = hasBeenWritten;
 }
 
-bool DataOutputStream::getExternalFileWritten(const std::string&filename) const
+bool DataOutputStream::getExternalFileWritten(const std::string &filename) const
 {
     ExternalFileWrittenMap::const_iterator itr = _externalFileWritten.find(filename);
 

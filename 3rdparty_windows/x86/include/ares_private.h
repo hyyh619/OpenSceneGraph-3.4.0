@@ -345,10 +345,10 @@ long ares__tvdiff(struct timeval t1, struct timeval t2);
 #define ARES_SWAP_BYTE(a, b) \
     { unsigned char swapByte = *(a);  *(a) = *(b);  *(b) = swapByte; }
 
-#define SOCK_STATE_CALLBACK(c, s, r, w)                                  \
-    do {                                                                 \
-        if ((c)->sock_state_cb)                                          \
-            (c)->sock_state_cb((c)->sock_state_cb_data, (s), (r), (w));  \
+#define SOCK_STATE_CALLBACK(c, s, r, w)                                 \
+    do {                                                                \
+        if ((c)->sock_state_cb)                                         \
+            (c)->sock_state_cb((c)->sock_state_cb_data, (s), (r), (w)); \
     } WHILE_FALSE
 
 #ifdef CURLDEBUG

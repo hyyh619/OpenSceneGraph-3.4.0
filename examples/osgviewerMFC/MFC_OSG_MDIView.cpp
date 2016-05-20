@@ -27,7 +27,7 @@ CMFC_OSG_MDIView::CMFC_OSG_MDIView() :
 CMFC_OSG_MDIView::~CMFC_OSG_MDIView()
 {}
 
-BOOL CMFC_OSG_MDIView::PreCreateWindow(CREATESTRUCT&cs)
+BOOL CMFC_OSG_MDIView::PreCreateWindow(CREATESTRUCT &cs)
 {
     return CView::PreCreateWindow(cs);
 }
@@ -47,7 +47,7 @@ void CMFC_OSG_MDIView::AssertValid() const
     CView::AssertValid();
 }
 
-void CMFC_OSG_MDIView::Dump(CDumpContext&dc) const
+void CMFC_OSG_MDIView::Dump(CDumpContext &dc) const
 {
     CView::Dump(dc);
 }

@@ -28,7 +28,7 @@ ConvertFromPerformer();
 
 osg::Node* convert(pfNode *node);
 
-void setSaveImageDirectory(const std::string&directory)
+void setSaveImageDirectory(const std::string &directory)
 {
     _saveImageDirectory = directory;
 }

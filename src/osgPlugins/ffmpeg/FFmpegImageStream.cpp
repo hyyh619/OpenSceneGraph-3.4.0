@@ -30,7 +30,7 @@ FFmpegImageStream::FFmpegImageStream() :
 
 
 
-FFmpegImageStream::FFmpegImageStream(const FFmpegImageStream&image, const osg::CopyOp&copyop) :
+FFmpegImageStream::FFmpegImageStream(const FFmpegImageStream &image, const osg::CopyOp &copyop) :
     osg::ImageStream(image, copyop)
 {
     // TODO: probably incorrect or incomplete
@@ -61,7 +61,7 @@ FFmpegImageStream::~FFmpegImageStream()
 
 
 
-bool FFmpegImageStream::open(const std::string&filename, FFmpegParameters *parameters)
+bool FFmpegImageStream::open(const std::string &filename, FFmpegParameters *parameters)
 {
     setFileName(filename);
 
@@ -236,7 +236,7 @@ void FFmpegImageStream::run()
         }
     }
 
-    catch (const std::exception&error)
+    catch (const std::exception &error)
     {
         OSG_WARN << "FFmpegImageStream::run : " << error.what() << std::endl;
     }

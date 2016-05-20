@@ -298,7 +298,7 @@ void setNBegin(int n1)
 {
     nVertStart = n1;
 }
-void norm(Vec3&n, const Vec3 side, const Vec3 s2) const
+void norm(Vec3 &n, const Vec3 side, const Vec3 s2) const
 {
     n = s2 ^ side; // perpendicular
     n.normalize();     // unit norm
@@ -307,7 +307,7 @@ const Vec3 getnorm(void) const
 {
     return nrm;
 }                                                  // use the predefined normal
-void getside12(Vec3&s1, Vec3&s2, const std::vector<Vec3> verts) const
+void getside12(Vec3 &s1, Vec3 &s2, const std::vector<Vec3> verts) const
 {
     int ic = 0;   // counter for later vertices to ensure not coincident
     int i1 = idx[0];   // first vertex of face
@@ -347,7 +347,7 @@ void getnorm(const std::vector<Vec3> verts)
     getside12(side, s2, verts);
     norm(nrm, s2, side);
 }
-void settrans(Matrix&mx, const Vec3 nrm, const std::vector<Vec3> verts, const dwmaterial *mat) const
+void settrans(Matrix &mx, const Vec3 nrm, const std::vector<Vec3> verts, const dwmaterial *mat) const
 {
     // define the matrix perpendcular to normal for mapping textures
     float wid = mat->getRepWid();
@@ -477,7 +477,7 @@ void setnorm(const std::vector<Vec3> verts)       // set the face normal
         }
     }
 }
-void setposes(avertex&poses, const int j, const std::vector<Vec3> verts) const
+void setposes(avertex &poses, const int j, const std::vector<Vec3> verts) const
 {
     poses.pos[0] = verts[idx[j]].x();
     poses.pos[1] = verts[idx[j]].y();
@@ -485,7 +485,7 @@ void setposes(avertex&poses, const int j, const std::vector<Vec3> verts) const
     poses.nrmv   = nrm;
     poses.idx    = idx[j];
 }
-void tessellate(const std::vector<Vec3>&verts, const dwmaterial *themat,
+void tessellate(const std::vector<Vec3> &verts, const dwmaterial *themat,
                 GLUtesselator *ts, _dwobj *dwob, const RefMatrix *tmat) const;
 
 void link(const int idop, const _face *f2, const int idop2, const std::vector<Vec3> verts, const dwmaterial *themat) const;    // to join up opposed faces of a hole
@@ -617,7 +617,7 @@ void linkholes(const std::vector<Vec3> verts, const dwmaterial *themat,
     drw = new osg::DrawArrays(osg::PrimitiveSet::QUADS, n1, 4);
     gset->addPrimitiveSet(drw);
 }
-void tessellate(_face&fc, const std::vector<Vec3>&verts, const dwmaterial *themat, GLUtesselator *ts, _dwobj *dwob)
+void tessellate(_face &fc, const std::vector<Vec3> &verts, const dwmaterial *themat, GLUtesselator *ts, _dwobj *dwob)
 {        // generates a set of primitives all of one type (eg tris, qstrip trifan...)
     fc.setNBegin(vertices->size());
     fc.tessellate(verts, themat, ts, dwob, tmat.get());
@@ -883,11 +883,11 @@ int addvtx(float x, float y, float z)       // add a single vertex to the object
     nverts++;
     return nverts - 1;
 }
-void settmat(const Matrix&mx)
+void settmat(const Matrix &mx)
 {
     tmat = new RefMatrix(mx);
 }
-void makeuv(Vec2&uv, const double pos[])
+void makeuv(Vec2 &uv, const double pos[])
 {
     Vec3 p;
     Vec3 txc;
@@ -916,7 +916,7 @@ osg::ref_ptr<RefMatrix> tmat;
 osg::ref_ptr<RefMatrix> mx;     // current uvw transform for currently tessealting face
 };
 
-void _face::tessellate(const std::vector<Vec3>&verts, const dwmaterial *themat,
+void _face::tessellate(const std::vector<Vec3> &verts, const dwmaterial *themat,
                        GLUtesselator *ts, _dwobj *dwob, const RefMatrix* /*tmat*/) const
 {
     int     nvall  = getallverts();
@@ -1082,7 +1082,7 @@ virtual const char* className() const
     return "Design Workshop Database Reader";
 }
 
-virtual ReadResult readNode(const std::string&file, const osgDB::ReaderWriter::Options *options) const
+virtual ReadResult readNode(const std::string &file, const osgDB::ReaderWriter::Options *options) const
 {
     std::string ext = osgDB::getLowerCaseFileExtension(file);
 

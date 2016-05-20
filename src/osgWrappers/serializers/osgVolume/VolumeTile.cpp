@@ -4,12 +4,12 @@
 #include <osgDB/InputStream>
 #include <osgDB/OutputStream>
 
-static bool checkTileID(const osgVolume::VolumeTile&tile)
+static bool checkTileID(const osgVolume::VolumeTile &tile)
 {
     return true;
 }
 
-static bool readTileID(osgDB::InputStream&is, osgVolume::VolumeTile&tile)
+static bool readTileID(osgDB::InputStream &is, osgVolume::VolumeTile &tile)
 {
     osgVolume::TileID id;
 
@@ -18,9 +18,9 @@ static bool readTileID(osgDB::InputStream&is, osgVolume::VolumeTile&tile)
     return true;
 }
 
-static bool writeTileID(osgDB::OutputStream&os, const osgVolume::VolumeTile&tile)
+static bool writeTileID(osgDB::OutputStream &os, const osgVolume::VolumeTile &tile)
 {
-    const osgVolume::TileID&id = tile.getTileID();
+    const osgVolume::TileID &id = tile.getTileID();
 
     os << id.level << id.x << id.y << id.z << std::endl;
     return true;

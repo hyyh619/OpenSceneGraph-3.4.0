@@ -20,7 +20,7 @@
 #include <osg/ShaderAttribute>
 #include <osg/PositionAttitudeTransform>
 
-osg::Node* createOldShaderCompositionScene(osg::ArgumentParser&arguments)
+osg::Node* createOldShaderCompositionScene(osg::ArgumentParser &arguments)
 {
     osg::Node *node = osgDB::readNodeFiles(arguments);
 

@@ -74,7 +74,7 @@ struct AnimationManagerFinder : public osg::NodeVisitor
 {
     osg::ref_ptr<osgAnimation::BasicAnimationManager> _am;
     AnimationManagerFinder() :                        osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
-    void apply(osg::Node&node)
+    void apply(osg::Node &node)
     {
         if (_am.valid())
             return;
@@ -97,7 +97,7 @@ struct AnimationManagerFinder : public osg::NodeVisitor
 struct AddHelperBone : public osg::NodeVisitor
 {
     AddHelperBone() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
-    void apply(osg::Transform&node)
+    void apply(osg::Transform &node)
     {
         osgAnimation::Bone *bone = dynamic_cast<osgAnimation::Bone*>(&node);
 

@@ -50,7 +50,7 @@ bool _useStateSets;
 bool _useDisplayLists;
 bool _useVBO;
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     if (!_useStateSets && node.getStateSet())
         node.setStateSet(0);
@@ -58,7 +58,7 @@ void apply(osg::Node&node)
     traverse(node);
 }
 
-void apply(osg::Drawable&drawable)
+void apply(osg::Drawable &drawable)
 {
     if (!_useStateSets && drawable.getStateSet())
     {
@@ -83,13 +83,13 @@ osg::ref_ptr<osgDB::ImageProcessor> _imageProcessor;
 bool                                _compressImages;
 bool                                _generateMipmaps;
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     processStateSet(node.getStateSet());
     traverse(node);
 }
 
-void apply(osg::Geode&node)
+void apply(osg::Geode &node)
 {
     processStateSet(node.getStateSet());
 
@@ -150,7 +150,7 @@ SwapArrayVisitor(osg::Array *array) :
     _array(array) {}
 
 template<class ARRAY>
-void apply_imp(ARRAY&array)
+void apply_imp(ARRAY &array)
 {
     if (array.getType() != _array->getType())
     {
@@ -162,47 +162,47 @@ void apply_imp(ARRAY&array)
     array.swap(*static_cast<ARRAY*>(_array));
 }
 
-virtual void apply(osg::ByteArray&ba)
+virtual void apply(osg::ByteArray &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::ShortArray&ba)
+virtual void apply(osg::ShortArray &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::IntArray&ba)
+virtual void apply(osg::IntArray &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::UByteArray&ba)
+virtual void apply(osg::UByteArray &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::UShortArray&ba)
+virtual void apply(osg::UShortArray &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::UIntArray&ba)
+virtual void apply(osg::UIntArray &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::Vec4ubArray&ba)
+virtual void apply(osg::Vec4ubArray &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::FloatArray&ba)
+virtual void apply(osg::FloatArray &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::Vec2Array&ba)
+virtual void apply(osg::Vec2Array &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::Vec3Array&ba)
+virtual void apply(osg::Vec3Array &ba)
 {
     apply_imp(ba);
 }
-virtual void apply(osg::Vec4Array&ba)
+virtual void apply(osg::Vec4Array &ba)
 {
     apply_imp(ba);
 }
@@ -225,13 +225,13 @@ void reset()
     _primitiveSetMap.clear();
 }
 
-void apply(osg::Node&node)
+void apply(osg::Node &node)
 {
     _nodes.insert(&node);
     traverse(node);
 }
 
-void apply(osg::Geode&geode)
+void apply(osg::Geode &geode)
 {
     _nodes.insert(&geode);
 
@@ -290,7 +290,7 @@ void apply(osg::Geometry *geometry, osg::PrimitiveSet *primitiveSet)
     _primitiveSetMap[primitiveSet].insert(geometry);
 }
 
-void report(std::ostream&out)
+void report(std::ostream &out)
 {
     out << "Nodes " << _nodes.size() << std::endl;
     out << "Geometries " << _geometryMap.size() << std::endl;
@@ -344,7 +344,7 @@ typedef std::vector<ArrayPair> ArrayVector;
 typedef std::pair<osg::PrimitiveSet*, osg::PrimitiveSet*> PrimitiveSetPair;
 typedef std::vector<PrimitiveSetPair> PrimitiveSetVector;
 
-osg::Array* cloneArray(ArrayVector&arrayVector, osg::Array *array)
+osg::Array* cloneArray(ArrayVector &arrayVector, osg::Array *array)
 {
     if (!array)
         return 0;
@@ -354,7 +354,7 @@ osg::Array* cloneArray(ArrayVector&arrayVector, osg::Array *array)
     return newArray;
 }
 
-osg::PrimitiveSet* clonePrimitiveSet(PrimitiveSetVector&psVector, osg::PrimitiveSet *ps)
+osg::PrimitiveSet* clonePrimitiveSet(PrimitiveSetVector &psVector, osg::PrimitiveSet *ps)
 {
     if (!ps)
         return 0;
@@ -444,7 +444,7 @@ SceneGraphProcessor()
     _init();
 }
 
-SceneGraphProcessor(osg::ArgumentParser&arguments)
+SceneGraphProcessor(osg::ArgumentParser &arguments)
 {
     _init();
 
@@ -637,8 +637,8 @@ class DatabasePagingOperation : public osg::Operation, public osgUtil::Increment
 {
 public:
 
-DatabasePagingOperation(const std::string&filename,
-                        const std::string&outputFilename,
+DatabasePagingOperation(const std::string &filename,
+                        const std::string &outputFilename,
                         SceneGraphProcessor *sceneGraphProcessor,
                         osgUtil::IncrementalCompileOperation *ico) :
     osg::Referenced(true),
@@ -712,7 +712,7 @@ osg::ref_ptr<osgUtil::IncrementalCompileOperation> _incrementalCompileOperation;
 class TexturePoolHandler : public osgGA::GUIEventHandler
 {
 public:
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa)
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)
 {
     if (ea.getEventType() == osgGA::GUIEventAdapter::KEYUP)
     {

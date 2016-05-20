@@ -30,7 +30,7 @@
 #include <iostream>
 
 void
-createDAIGeometry(osg::Geometry&geom, int nInstances = 1)
+createDAIGeometry(osg::Geometry &geom, int nInstances = 1)
 {
     const float halfDimX(.5);
     const float halfDimZ(.5);

@@ -215,9 +215,9 @@ void set(osg::Switch *sw, float offsetX, float offsetY, osg::TexMat *texmatLeft,
 void set(FileList fileList, osg::Switch *sw, float offsetX, float offsetY, osg::TexMat *texmatLeft, osg::TexMat *texmatRight, float radius, float height, float length, float timePerSlide, bool autoSteppingActive);
 
 
-virtual bool handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&);
+virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&);
 
-virtual void getUsage(osg::ApplicationUsage&usage) const;
+virtual void getUsage(osg::ApplicationUsage &usage) const;
 
 virtual void operator()(osg::Node *node, osg::NodeVisitor *nv);
 
@@ -317,7 +317,7 @@ void SlideEventHandler::set(FileList fileList, osg::Switch *sw, float offsetX, f
 }
 
 
-bool SlideEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&)
+bool SlideEventHandler::handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter&)
 {
     switch (ea.getEventType())
     {
@@ -400,7 +400,7 @@ bool SlideEventHandler::handle(const osgGA::GUIEventAdapter&ea, osgGA::GUIAction
     }
 }
 
-void SlideEventHandler::getUsage(osg::ApplicationUsage&usage) const
+void SlideEventHandler::getUsage(osg::ApplicationUsage &usage) const
 {
     usage.addKeyboardMouseBinding("Space", "Reset the image position to center");
     usage.addKeyboardMouseBinding("a", "Toggle on/off the automatic advancement for image to image");

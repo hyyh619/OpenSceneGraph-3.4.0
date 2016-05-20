@@ -23,7 +23,7 @@ ClipNode::ClipNode() :
     setStateSet(new StateSet);
 }
 
-ClipNode::ClipNode(const ClipNode&cn, const CopyOp&copyop) :
+ClipNode::ClipNode(const ClipNode &cn, const CopyOp &copyop) :
     Group(cn, copyop),
     _value(cn._value),
     _referenceFrame(cn._referenceFrame)
@@ -53,7 +53,7 @@ void ClipNode::setReferenceFrame(ReferenceFrame rf)
 }
 
 // Create a 6 clip planes to create a clip box.
-void ClipNode::createClipBox(const BoundingBox&bb, unsigned int clipPlaneNumberBase)
+void ClipNode::createClipBox(const BoundingBox &bb, unsigned int clipPlaneNumberBase)
 {
     _planes.clear();
     if (!_stateset.valid())
@@ -138,7 +138,7 @@ bool ClipNode::removeClipPlane(unsigned int pos)
 }
 
 // Set the GLModes on StateSet associated with the ClipPlanes.
-void ClipNode::setStateSetModes(StateSet&stateset, StateAttribute::GLModeValue value) const
+void ClipNode::setStateSetModes(StateSet &stateset, StateAttribute::GLModeValue value) const
 {
     for (ClipPlaneList::const_iterator itr = _planes.begin();
          itr != _planes.end();

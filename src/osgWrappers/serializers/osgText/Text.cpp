@@ -4,12 +4,12 @@
 #include <osgDB/OutputStream>
 
 // _backdropHorizontalOffset, _backdropVerticalOffset
-static bool checkBackdropOffset(const osgText::Text&text)
+static bool checkBackdropOffset(const osgText::Text &text)
 {
     return true;
 }
 
-static bool readBackdropOffset(osgDB::InputStream&is, osgText::Text&text)
+static bool readBackdropOffset(osgDB::InputStream &is, osgText::Text &text)
 {
     float horizontal, vertical; is >> horizontal >> vertical;
 
@@ -17,7 +17,7 @@ static bool readBackdropOffset(osgDB::InputStream&is, osgText::Text&text)
     return true;
 }
 
-static bool writeBackdropOffset(osgDB::OutputStream&os, const osgText::Text&text)
+static bool writeBackdropOffset(osgDB::OutputStream &os, const osgText::Text &text)
 {
     os << text.getBackdropHorizontalOffset()
        << text.getBackdropVerticalOffset() << std::endl;
@@ -25,12 +25,12 @@ static bool writeBackdropOffset(osgDB::OutputStream&os, const osgText::Text&text
 }
 
 // _colorGradientTopLeft .. _colorGradientBottomRight
-static bool checkColorGradientCorners(const osgText::Text&text)
+static bool checkColorGradientCorners(const osgText::Text &text)
 {
     return true;
 }
 
-static bool readColorGradientCorners(osgDB::InputStream&is, osgText::Text&text)
+static bool readColorGradientCorners(osgDB::InputStream &is, osgText::Text &text)
 {
     osg::Vec4d lt, lb, rb, rt;
 
@@ -44,7 +44,7 @@ static bool readColorGradientCorners(osgDB::InputStream&is, osgText::Text&text)
     return true;
 }
 
-static bool writeColorGradientCorners(osgDB::OutputStream&os, const osgText::Text&text)
+static bool writeColorGradientCorners(osgDB::OutputStream &os, const osgText::Text &text)
 {
     os << os.BEGIN_BRACKET << std::endl;
     os << os.PROPERTY("TopLeft") << osg::Vec4d(text.getColorGradientTopLeft()) << std::endl;

@@ -41,7 +41,7 @@ extern void getDatabaseCenterRadius(float dbcenter[3], float *dbradius);
 static float radius = 2.0;
 static float dbcenter[3], dbradius;
 
-static void conv(const Vec3&a, const Matrix&mat, Vec3&b)
+static void conv(const Vec3 &a, const Matrix &mat, Vec3 &b)
 {
     int  i;
     Vec3 t;
@@ -77,8 +77,8 @@ Node* makeTank(void)
         );
 
     // 42 required for sides, 22 for the top.
-    Vec3Array&vc = *(new Vec3Array(42 + 22));
-    Vec2Array&tc = *(new Vec2Array(42 + 22));
+    Vec3Array &vc = *(new Vec3Array(42 + 22));
+    Vec2Array &tc = *(new Vec2Array(42 + 22));
 
     Geometry *gset = new Geometry;
     gset->setVertexArray(&vc);

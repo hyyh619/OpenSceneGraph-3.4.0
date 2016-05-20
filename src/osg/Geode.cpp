@@ -24,7 +24,7 @@ using namespace osg;
 Geode::Geode()
 {}
 
-Geode::Geode(const Geode&geode, const CopyOp&copyop) :
+Geode::Geode(const Geode &geode, const CopyOp &copyop) :
     Group(geode, copyop)
 {}
 
@@ -90,7 +90,7 @@ BoundingSphere Geode::computeBound() const
     return bsphere;
 }
 
-void Geode::compileDrawables(RenderInfo&renderInfo)
+void Geode::compileDrawables(RenderInfo &renderInfo)
 {
     for (NodeList::iterator itr = _children.begin();
          itr != _children.end();

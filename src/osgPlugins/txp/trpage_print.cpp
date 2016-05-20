@@ -123,7 +123,7 @@ bool trpgFilePrintBuffer::prnLine(const char *str)
 
 /* Print out the header information.
  */
-bool trpgHeader::Print(trpgPrintBuffer&buf) const
+bool trpgHeader::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -157,7 +157,7 @@ bool trpgHeader::Print(trpgPrintBuffer&buf) const
 
 /* Print out texture environment information
  */
-bool trpgTextureEnv::Print(trpgPrintBuffer&buf) const
+bool trpgTextureEnv::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -174,7 +174,7 @@ bool trpgTextureEnv::Print(trpgPrintBuffer&buf) const
 
 /* Print out the material information
  */
-bool trpgMaterial::Print(trpgPrintBuffer&buf) const
+bool trpgMaterial::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -213,7 +213,7 @@ bool trpgMaterial::Print(trpgPrintBuffer&buf) const
 
 /* Print out the material tables.
  */
-bool trpgMatTable::Print(trpgPrintBuffer&buf) const
+bool trpgMatTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -244,7 +244,7 @@ bool trpgMatTable::Print(trpgPrintBuffer&buf) const
 
 /* Print out texture.
  */
-bool trpgTexture::Print(trpgPrintBuffer&buf) const
+bool trpgTexture::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -267,7 +267,7 @@ bool trpgTexture::Print(trpgPrintBuffer&buf) const
 
 /* Print out texture table
  */
-bool trpgTexTable::Print(trpgPrintBuffer&buf) const
+bool trpgTexTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -290,7 +290,7 @@ bool trpgTexTable::Print(trpgPrintBuffer&buf) const
 
 /* Print out model table
  */
-bool trpgModelTable::Print(trpgPrintBuffer&buf) const
+bool trpgModelTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -313,7 +313,7 @@ bool trpgModelTable::Print(trpgPrintBuffer&buf) const
 
 /* Print out a model
  */
-bool trpgModel::Print(trpgPrintBuffer&buf) const
+bool trpgModel::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -336,7 +336,7 @@ bool trpgModel::Print(trpgPrintBuffer&buf) const
 
 /* Print out a tile header
  */
-bool trpgTileHeader::Print(trpgPrintBuffer&buf) const
+bool trpgTileHeader::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -380,7 +380,7 @@ bool trpgTileHeader::Print(trpgPrintBuffer&buf) const
 
 /* Print out color info
  */
-bool trpgColorInfo::Print(trpgPrintBuffer&buf) const
+bool trpgColorInfo::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -404,7 +404,7 @@ bool trpgColorInfo::Print(trpgPrintBuffer&buf) const
 
 /* Print out tex data info
  */
-bool trpgTexData::Print(trpgPrintBuffer&buf) const
+bool trpgTexData::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -448,7 +448,7 @@ bool trpgTexData::Print(trpgPrintBuffer&buf) const
 
 /* Print out geometry data
  */
-bool trpgGeometry::Print(trpgPrintBuffer&buf) const
+bool trpgGeometry::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -581,7 +581,7 @@ bool trpgGeometry::Print(trpgPrintBuffer&buf) const
 
 /* Print group info
  */
-bool trpgGroup::Print(trpgPrintBuffer&buf) const
+bool trpgGroup::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -599,7 +599,7 @@ bool trpgGroup::Print(trpgPrintBuffer&buf) const
 
 /* Print Attach info
  */
-bool trpgAttach::Print(trpgPrintBuffer&buf) const
+bool trpgAttach::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -616,7 +616,7 @@ bool trpgAttach::Print(trpgPrintBuffer&buf) const
 
 /* Print ChildRef info
  */
-bool trpgChildRef::Print(trpgPrintBuffer&buf) const
+bool trpgChildRef::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -634,7 +634,7 @@ bool trpgChildRef::Print(trpgPrintBuffer&buf) const
 
 /* Print billboard info
  */
-bool trpgBillboard::Print(trpgPrintBuffer&buf) const
+bool trpgBillboard::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -653,7 +653,7 @@ bool trpgBillboard::Print(trpgPrintBuffer&buf) const
 
 /* Print LOD info
  */
-bool trpgLod::Print(trpgPrintBuffer&buf) const
+bool trpgLod::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -674,7 +674,7 @@ bool trpgLod::Print(trpgPrintBuffer&buf) const
 
 /* Print Layer info
  */
-bool trpgLayer::Print(trpgPrintBuffer&buf) const
+bool trpgLayer::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -691,7 +691,7 @@ bool trpgLayer::Print(trpgPrintBuffer&buf) const
 
 /* Print Transform
  */
-bool trpgTransform::Print(trpgPrintBuffer&buf) const
+bool trpgTransform::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -716,7 +716,7 @@ bool trpgTransform::Print(trpgPrintBuffer&buf) const
 
 /* Print Model Reference
  */
-bool trpgModelRef::Print(trpgPrintBuffer&buf) const
+bool trpgModelRef::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -739,7 +739,7 @@ bool trpgModelRef::Print(trpgPrintBuffer&buf) const
 
 /* Tile Table Print
  */
-bool trpgTileTable::Print(trpgPrintBuffer&buf) const
+bool trpgTileTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -768,7 +768,7 @@ bool trpgTileTable::Print(trpgPrintBuffer&buf) const
 
     for (unsigned int i = 0; i < lodInfo.size(); i++)
     {
-        const LodInfo&li = lodInfo[i];
+        const LodInfo &li = lodInfo[i];
         sprintf(ls, "LOD %d, numX = %d, numY = %d", i, li.numX, li.numY);  buf.prnLine(ls);
         buf.prnLine("File ID, Offset, Zmin, Zmax");
         buf.IncreaseIndent();
@@ -789,7 +789,7 @@ bool trpgTileTable::Print(trpgPrintBuffer&buf) const
 
 /* Local Material Print
  */
-bool trpgLocalMaterial::Print(trpgPrintBuffer&buf) const
+bool trpgLocalMaterial::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -812,7 +812,7 @@ bool trpgLocalMaterial::Print(trpgPrintBuffer&buf) const
 
 /* Light Attribute Print
  */
-bool trpgLightAttr::Print(trpgPrintBuffer&buf) const
+bool trpgLightAttr::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -912,7 +912,7 @@ bool trpgLightAttr::Print(trpgPrintBuffer&buf) const
 
 /* Print out light table
  */
-bool trpgLightTable::Print(trpgPrintBuffer&buf) const
+bool trpgLightTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -936,7 +936,7 @@ bool trpgLightTable::Print(trpgPrintBuffer&buf) const
 /* Print out a light node
  */
 
-bool trpgLight::Print(trpgPrintBuffer&buf) const
+bool trpgLight::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -956,7 +956,7 @@ bool trpgLight::Print(trpgPrintBuffer&buf) const
 /* Print out a single range
  */
 
-bool trpgRange::Print(trpgPrintBuffer&buf) const
+bool trpgRange::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -974,7 +974,7 @@ bool trpgRange::Print(trpgPrintBuffer&buf) const
 /* Print out the whole range table
  */
 
-bool trpgRangeTable::Print(trpgPrintBuffer&buf) const
+bool trpgRangeTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -995,7 +995,7 @@ bool trpgRangeTable::Print(trpgPrintBuffer&buf) const
 
 // Print out a label
 
-bool trpgLabel::Print(trpgPrintBuffer&buf) const
+bool trpgLabel::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -1027,7 +1027,7 @@ bool trpgLabel::Print(trpgPrintBuffer&buf) const
 
 // Print out a text style
 
-bool trpgTextStyle::Print(trpgPrintBuffer&buf) const
+bool trpgTextStyle::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -1044,7 +1044,7 @@ bool trpgTextStyle::Print(trpgPrintBuffer&buf) const
 
 // Print out the text style table
 
-bool trpgTextStyleTable::Print(trpgPrintBuffer&buf) const
+bool trpgTextStyleTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -1069,7 +1069,7 @@ bool trpgTextStyleTable::Print(trpgPrintBuffer&buf) const
 
 // Print out a support style
 
-bool trpgSupportStyle::Print(trpgPrintBuffer&buf) const
+bool trpgSupportStyle::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -1084,7 +1084,7 @@ bool trpgSupportStyle::Print(trpgPrintBuffer&buf) const
 
 // Print out the support style table
 
-bool trpgSupportStyleTable::Print(trpgPrintBuffer&buf) const
+bool trpgSupportStyleTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -1109,7 +1109,7 @@ bool trpgSupportStyleTable::Print(trpgPrintBuffer&buf) const
 
 // Print out a label property
 
-bool trpgLabelProperty::Print(trpgPrintBuffer&buf) const
+bool trpgLabelProperty::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 
@@ -1126,7 +1126,7 @@ bool trpgLabelProperty::Print(trpgPrintBuffer&buf) const
 
 // Print out the text style table
 
-bool trpgLabelPropertyTable::Print(trpgPrintBuffer&buf) const
+bool trpgLabelPropertyTable::Print(trpgPrintBuffer &buf) const
 {
     char ls[1024];
 

@@ -24,18 +24,18 @@ VisibilityGroup::VisibilityGroup() :
     _segmentLength(0.f)
 {}
 
-VisibilityGroup::VisibilityGroup(const VisibilityGroup&sw, const osg::CopyOp&copyop) :
+VisibilityGroup::VisibilityGroup(const VisibilityGroup &sw, const osg::CopyOp &copyop) :
     osg::Group(sw, copyop),
     _volumeIntersectionMask(0xFFFFFFFF),
     _segmentLength(0.f)
 {}
 
-void VisibilityGroup::traverse(osg::NodeVisitor&nv)
+void VisibilityGroup::traverse(osg::NodeVisitor &nv)
 {
     if (nv.getTraversalMode() == osg::NodeVisitor::TRAVERSE_ACTIVE_CHILDREN && nv.getVisitorType() == osg::NodeVisitor::CULL_VISITOR)
     {
         // cast to cullvisitor
-        osgUtil::CullVisitor&cv = (osgUtil::CullVisitor&) nv;
+        osgUtil::CullVisitor &cv = (osgUtil::CullVisitor&) nv;
 
         // here we test if we are inside the visibilityvolume
 
@@ -66,7 +66,7 @@ void VisibilityGroup::traverse(osg::NodeVisitor&nv)
         // now examine the hit record
         if (iv.hits())
         {
-            osgUtil::IntersectVisitor::HitList&hitList = iv.getHitList(lineseg.get());
+            osgUtil::IntersectVisitor::HitList &hitList = iv.getHitList(lineseg.get());
             if (!hitList.empty()) // we actually hit something
             {
                 //                OSG_INFO << "Hit obstruction"<< std::endl;

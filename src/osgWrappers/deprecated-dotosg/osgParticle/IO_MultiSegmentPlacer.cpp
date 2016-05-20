@@ -9,8 +9,8 @@
 
 #include <iostream>
 
-bool  MultiSegmentPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr);
-bool  MultiSegmentPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw);
+bool  MultiSegmentPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr);
+bool  MultiSegmentPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw);
 
 REGISTER_DOTOSGWRAPPER(MultiSegmentPlacer_Proxy)
 (
@@ -21,10 +21,10 @@ REGISTER_DOTOSGWRAPPER(MultiSegmentPlacer_Proxy)
     MultiSegmentPlacer_writeLocalData
 );
 
-bool MultiSegmentPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
+bool MultiSegmentPlacer_readLocalData(osg::Object &obj, osgDB::Input &fr)
 {
-    osgParticle::MultiSegmentPlacer&myobj     = static_cast<osgParticle::MultiSegmentPlacer&>(obj);
-    bool                           itAdvanced = false;
+    osgParticle::MultiSegmentPlacer &myobj     = static_cast<osgParticle::MultiSegmentPlacer&>(obj);
+    bool                            itAdvanced = false;
 
     osg::Vec3 v;
 
@@ -41,9 +41,9 @@ bool MultiSegmentPlacer_readLocalData(osg::Object&obj, osgDB::Input&fr)
     return itAdvanced;
 }
 
-bool MultiSegmentPlacer_writeLocalData(const osg::Object&obj, osgDB::Output&fw)
+bool MultiSegmentPlacer_writeLocalData(const osg::Object &obj, osgDB::Output &fw)
 {
-    const osgParticle::MultiSegmentPlacer&myobj = static_cast<const osgParticle::MultiSegmentPlacer&>(obj);
+    const osgParticle::MultiSegmentPlacer &myobj = static_cast<const osgParticle::MultiSegmentPlacer&>(obj);
 
     int n = myobj.numVertices();
 

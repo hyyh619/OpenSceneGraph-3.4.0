@@ -19,7 +19,7 @@ using namespace osgVolume;
 Volume::Volume()
 {}
 
-Volume::Volume(const Volume&ts, const osg::CopyOp&copyop) :
+Volume::Volume(const Volume &ts, const osg::CopyOp &copyop) :
     osg::Group(ts, copyop)
 {}
 
@@ -39,12 +39,12 @@ Volume::~Volume()
     _volumeTileMap.clear();
 }
 
-void Volume::traverse(osg::NodeVisitor&nv)
+void Volume::traverse(osg::NodeVisitor &nv)
 {
     Group::traverse(nv);
 }
 
-VolumeTile* Volume::getVolumeTile(const TileID&tileID)
+VolumeTile* Volume::getVolumeTile(const TileID &tileID)
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
@@ -56,7 +56,7 @@ VolumeTile* Volume::getVolumeTile(const TileID&tileID)
     return itr->second;
 }
 
-const VolumeTile* Volume::getVolumeTile(const TileID&tileID) const
+const VolumeTile* Volume::getVolumeTile(const TileID &tileID) const
 {
     OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_mutex);
 
