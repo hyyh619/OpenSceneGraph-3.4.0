@@ -12,6 +12,8 @@
 #include <osgDB/Input>
 #include <osgDB/Output>
 
+#include <TqcLog.h>
+
 using namespace osg;
 using namespace osgDB;
 

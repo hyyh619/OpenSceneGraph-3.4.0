@@ -234,11 +234,15 @@ class OSGDB_EXPORT Registry : public osg::Referenced
         ReaderWriter::ReadResult readNode(const std::string& fileName,const Options* options, bool buildKdTreeIfRequired=true)
         {
             ReaderWriter::ReadResult result;
-            if (options && options->getReadFileCallback()) result = options->getReadFileCallback()->readNode(fileName,options);
-            else if (_readFileCallback.valid()) result = _readFileCallback->readNode(fileName,options);
-            else result = readNodeImplementation(fileName,options);
+            if (options && options->getReadFileCallback()) 
+                result = options->getReadFileCallback()->readNode(fileName,options);
+            else if (_readFileCallback.valid())
+                result = _readFileCallback->readNode(fileName,options);
+            else
+                result = readNodeImplementation(fileName,options);
 
-            if (buildKdTreeIfRequired) _buildKdTreeIfRequired(result, options);
+            if (buildKdTreeIfRequired)
+                _buildKdTreeIfRequired(result, options);
 
             return result;
         }

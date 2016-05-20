@@ -1,0 +1,10 @@
+# Android Studio NDK for gnustl_static. this build ok using cmd. GLES2
+cmake .. -G"Unix Makefiles"  -DANDROID_NDK=C:/Users/Administrator/AppData/Local/Android/sdk/ndk-bundle -DCMAKE_MAKE_PROGRAM=C:/Users/Administrator/AppData/Local/Android/sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe -DCMAKE_TOOLCHAIN_FILE=../PlatformSpecifics/Android/android.toolchain.cmake -DOSG_CPP_EXCEPTIONS_AVAILABLE=ON  -DOPENGL_PROFILE="GLES2" -DDYNAMIC_OPENTHREADS=OFF -DDYNAMIC_OPENSCENEGRAPH=OFF -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_ABI=armeabi-v7a -DANDROID_STL=gnustl_static -DCMAKE_INSTALL_PREFIX=D:/hy_code/GameEngine/OpenSceneGraph/OpenSceneGraph-3.4.0/Android_Studio_gnustl_static/libs
+
+# Android Studio NDK for gnustl_static. this build ok using cmd. GLES1
+cmake .. -G"Unix Makefiles"  -DANDROID_NDK=C:/Users/Administrator/AppData/Local/Android/sdk/ndk-bundle -DCMAKE_MAKE_PROGRAM=C:/Users/Administrator/AppData/Local/Android/sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe -DCMAKE_TOOLCHAIN_FILE=../PlatformSpecifics/Android/android.toolchain.cmake -DOSG_CPP_EXCEPTIONS_AVAILABLE=ON  -DOPENGL_PROFILE="GLES1" -DDYNAMIC_OPENTHREADS=OFF -DDYNAMIC_OPENSCENEGRAPH=OFF -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_ABI=armeabi-v7a -DANDROID_STL=gnustl_static -DCMAKE_INSTALL_PREFIX=D:/hy_code/GameEngine/OpenSceneGraph/OpenSceneGraph-3.4.0/Android_Studio_gnustl_static/libs
+
+# Dynamic Library
+cmake .. -G"Unix Makefiles"  -DANDROID_NDK=C:/Users/Administrator/AppData/Local/Android/sdk/ndk-bundle -DCMAKE_MAKE_PROGRAM=C:/Users/Administrator/AppData/Local/Android/sdk/ndk-bundle/prebuilt/windows-x86_64/bin/make.exe -DCMAKE_TOOLCHAIN_FILE=../PlatformSpecifics/Android/android.toolchain.cmake -DOSG_CPP_EXCEPTIONS_AVAILABLE=ON  -DOPENGL_PROFILE="GLES2" -DDYNAMIC_OPENTHREADS=ON -DDYNAMIC_OPENSCENEGRAPH=ON -DANDROID_NATIVE_API_LEVEL=19 -DANDROID_ABI=armeabi-v7a -DANDROID_STL=gnustl_static -DCMAKE_INSTALL_PREFIX=D:/hy_code/GameEngine/OpenSceneGraph/OpenSceneGraph-3.4.0/Android_Studio_gnustl_static/libs
+
+C:/Users/Administrator/AppData/Local/Android/sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/bin/arm-linux-androideabi-objdump.exe

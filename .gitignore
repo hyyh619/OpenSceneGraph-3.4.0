@@ -260,11 +260,10 @@ pip-log.txt
 3rdparty/gdal/port/.svn/
 3rdparty/gdal/port/.libs/
 
-
-Android_MinGW/
-Android_MinGW_Dynamic_Library/
 project/
-Android_Studio_gnustl_static/
+Android_Studio_gnustl_static_OES2/
+Windows_Dynamic_OES11/
+Windows_Static/
 
 *.Po
 Android_Build.xls

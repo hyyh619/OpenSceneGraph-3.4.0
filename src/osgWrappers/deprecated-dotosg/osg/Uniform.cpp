@@ -16,7 +16,7 @@ using namespace osgDB;
 using namespace std;
 
 // reuse from Geometry.cpp
-bool Array_writeLocalData(const Array&array, Output&fw);
+bool Array_writeLocalData(const Array& array, Output& fw);
 Array* Array_readLocalData(Input&fr);
 
 // forward declare functions to use later.

@@ -36,6 +36,7 @@
 #include <memory>
 
 #include <stdlib.h>
+#include <TqcLog.h>
 
 #if defined(__sgi)
     #include <ctype.h>
@@ -1389,11 +1390,17 @@ ReaderWriter::ReadResult Registry::read(const ReadFunctor&readFunctor)
     {
         switch (result.status())
         {
-        case (ReaderWriter::ReadResult::FILE_NOT_HANDLED): result.message() = "Warning: reading \"" + readFunctor._filename + "\" not supported."; break;
+        case (ReaderWriter::ReadResult::FILE_NOT_HANDLED):
+            result.message() = "Warning: reading \"" + readFunctor._filename + "\" not supported.";
+            break;
 
-        case (ReaderWriter::ReadResult::FILE_NOT_FOUND): result.message() = "Warning: could not find file \"" + readFunctor._filename + "\"."; break;
+        case (ReaderWriter::ReadResult::FILE_NOT_FOUND):
+            result.message() = "Warning: could not find file \"" + readFunctor._filename + "\".";
+            break;
 
-        case (ReaderWriter::ReadResult::ERROR_IN_READING_FILE): result.message() = "Warning: Error in reading to \"" + readFunctor._filename + "\"."; break;
+        case (ReaderWriter::ReadResult::ERROR_IN_READING_FILE):
+            result.message() = "Warning: Error in reading to \"" + readFunctor._filename + "\".";
+            break;
 
         default: break;
         }
@@ -1692,7 +1699,7 @@ ReaderWriter::ReadResult Registry::readNodeImplementation(const std::string&file
 
 ReaderWriter::WriteResult Registry::writeNodeImplementation(const Node&node, const std::string&fileName, const Options *options)
 {
-    // record the errors reported by readerwriters.
+    // record the errors reported by reader&writer.
     typedef std::vector<ReaderWriter::WriteResult> Results;
     Results results;
 

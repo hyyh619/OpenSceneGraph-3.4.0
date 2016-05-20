@@ -26,6 +26,8 @@
 #include <osgDB/Registry>
 #include <osgDB/ReadFile>
 
+#include "TqcLog.h"
+
 using namespace osg;
 using namespace osgDB;
 
@@ -95,7 +97,7 @@ Node* osgDB::readNodeFile(const std::string&filename, const Options *options)
         OSG_WARN << rr.message() << std::endl;
 
     if (rr.notEnoughMemory())
-        OSG_INFO << "Not enought memory to load file " << filename << std::endl;
+        OSG_INFO << "Not enough memory to load file " << filename << std::endl;
 
     return NULL;
 }
