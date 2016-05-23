@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
-// osgParticle - Copyright (C) 2002 Marco Jez
+*/
+//osgParticle - Copyright (C) 2002 Marco Jez
 
 #ifndef OSGPARTICLE_POINT_PLACER
 #define OSGPARTICLE_POINT_PLACER 1
@@ -23,42 +23,45 @@
 
 namespace osgParticle
 {
+
     /**    A point-shaped particle placer.
         This placer class uses the center point defined in its base class <CODE>CenteredPlacer</CODE>
         to place there all incoming particles.
-     */
+    */
     class PointPlacer: public CenteredPlacer {
-public:
+    public:
         inline PointPlacer();
-        inline PointPlacer(const PointPlacer &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        inline PointPlacer(const PointPlacer& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Object(osgParticle, PointPlacer);
 
         /** Place a particle.
             This method is called automatically by <CODE>ModularEmitter</CODE> and should not be called
             manually.
-         */
-        inline void place(Particle *P) const;
+        */
+        inline void place(Particle* P) const;
 
         /// return the control position
         inline osg::Vec3 getControlPosition() const;
 
-protected:
+    protected:
         virtual ~PointPlacer() {}
-        PointPlacer &operator = (const PointPlacer&) { return *this; }
+        PointPlacer& operator=(const PointPlacer&) { return *this; }
     };
 
     // INLINE FUNCTIONS
 
     inline PointPlacer::PointPlacer()
-        : CenteredPlacer()
-    {}
+    : CenteredPlacer()
+    {
+    }
 
-    inline PointPlacer::PointPlacer(const PointPlacer &copy, const osg::CopyOp &copyop)
-        : CenteredPlacer(copy, copyop)
-    {}
+    inline PointPlacer::PointPlacer(const PointPlacer& copy, const osg::CopyOp& copyop)
+    : CenteredPlacer(copy, copyop)
+    {
+    }
 
-    inline void PointPlacer::place(Particle *P) const
+    inline void PointPlacer::place(Particle* P) const
     {
         P->setPosition(getCenter());
     }
@@ -68,6 +71,7 @@ protected:
     {
         return getCenter();
     }
+
 }
 
 

@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGSIM_LINEOFSIGHT
 #define OSGSIM_LINEOFSIGHT 1
@@ -19,46 +19,41 @@
 #include <osgSim/Export>
 
 namespace osgSim {
-    class OSGSIM_EXPORT DatabaseCacheReadCallback: public osgUtil::IntersectionVisitor::ReadCallback
-    {
-public:
+
+class OSGSIM_EXPORT DatabaseCacheReadCallback : public osgUtil::IntersectionVisitor::ReadCallback
+{
+    public:
         DatabaseCacheReadCallback();
 
-        void setMaximumNumOfFilesToCache(unsigned int maxNumFilesToCache)
-        {
-            _maxNumFilesToCache = maxNumFilesToCache;
-        }
-        unsigned int  getMaximumNumOfFilesToCache() const
-        {
-            return _maxNumFilesToCache;
-        }
+        void setMaximumNumOfFilesToCache(unsigned int maxNumFilesToCache) { _maxNumFilesToCache = maxNumFilesToCache; }
+        unsigned int  getMaximumNumOfFilesToCache() const { return _maxNumFilesToCache; }
 
         void clearDatabaseCache();
 
         void pruneUnusedDatabaseCache();
 
-        virtual osg::Node* readNodeFile(const std::string &filename);
+        virtual osg::Node* readNodeFile(const std::string& filename);
 
-protected:
+    protected:
 
-        typedef std::map < std::string, osg::ref_ptr < osg::Node >> FileNameSceneMap;
+        typedef std::map<std::string, osg::ref_ptr<osg::Node> > FileNameSceneMap;
 
-        unsigned int       _maxNumFilesToCache;
-        OpenThreads::Mutex _mutex;
-        FileNameSceneMap   _filenameSceneMap;
-    };
+        unsigned int _maxNumFilesToCache;
+        OpenThreads::Mutex  _mutex;
+        FileNameSceneMap    _filenameSceneMap;
+};
 
 /** Helper class for setting up and acquiring line of sight intersections with terrain.
- * By default assigns a osgSim::DatabaseCacheReadCallback that enables automatic loading
- * of external PagedLOD tiles to ensure that the highest level of detail is used in intersections.
- * This automatic loading of tiles is done by the intersection traversal that is done within
- * the computeIntersections(..) method, so can result in long intersection times when external
- * tiles have to be loaded.
- * The external loading of tiles can be disabled by removing the read callback, this is done by
- * calling the setDatabaseCacheReadCallback(DatabaseCacheReadCallback*) method with a value of 0.*/
-    class OSGSIM_EXPORT LineOfSight
-    {
-public:
+  * By default assigns a osgSim::DatabaseCacheReadCallback that enables automatic loading
+  * of external PagedLOD tiles to ensure that the highest level of detail is used in intersections.
+  * This automatic loading of tiles is done by the intersection traversal that is done within
+  * the computeIntersections(..) method, so can result in long intersection times when external
+  * tiles have to be loaded.
+  * The external loading of tiles can be disabled by removing the read callback, this is done by
+  * calling the setDatabaseCacheReadCallback(DatabaseCacheReadCallback*) method with a value of 0.*/
+class OSGSIM_EXPORT LineOfSight
+{
+    public :
 
         LineOfSight();
 
@@ -66,92 +61,69 @@ public:
         void clear();
 
         /** Add a line of sight test, consisting of start and end point. Returns the index number of the newly adding LOS test.*/
-        unsigned int addLOS(const osg::Vec3d &start, const osg::Vec3d &end);
+        unsigned int addLOS(const osg::Vec3d& start, const osg::Vec3d& end);
 
         /** Get the number of line of sight tests.*/
-        unsigned int getNumLOS() const
-        {
-            return _LOSList.size();
-        }
+        unsigned int getNumLOS() const { return _LOSList.size(); }
 
         /** Set the start point of single line of sight test.*/
-        void setStartPoint(unsigned int i, const osg::Vec3d &start)
-        {
-            _LOSList[i]._start = start;
-        }
+        void setStartPoint(unsigned int i, const osg::Vec3d& start) { _LOSList[i]._start = start; }
 
         /** Get the start point of single line of sight test.*/
-        const osg::Vec3d&getStartPoint(unsigned int i) const
-        {
-            return _LOSList[i]._start;
-        }
+        const osg::Vec3d& getStartPoint(unsigned int i) const { return _LOSList[i]._start; }
 
         /** Set the end point of single line of sight test.*/
-        void setEndPoint(unsigned int i, const osg::Vec3d &end)
-        {
-            _LOSList[i]._end = end;
-        }
+        void setEndPoint(unsigned int i, const osg::Vec3d& end) { _LOSList[i]._end = end; }
 
         /** Get the end point of single line of sight test.*/
-        const osg::Vec3d&getEndPoint(unsigned int i) const
-        {
-            return _LOSList[i]._end;
-        }
+        const osg::Vec3d& getEndPoint(unsigned int i) const { return _LOSList[i]._end; }
 
-        typedef std::vector < osg::Vec3d > Intersections;
+        typedef std::vector<osg::Vec3d> Intersections;
 
         /** Get the intersection points for a single line of sight test.*/
-        const Intersections&getIntersections(unsigned int i) const
-        {
-            return _LOSList[i]._intersections;
-        }
+        const Intersections& getIntersections(unsigned int i) const  { return _LOSList[i]._intersections; }
 
         /** Compute the LOS intersections with the specified scene graph.
-         * The results are all stored in the form of Intersections list, one per LOS test.*/
-        void computeIntersections(osg::Node *scene, osg::Node::NodeMask traversalMask = 0xffffffff);
+          * The results are all stored in the form of Intersections list, one per LOS test.*/
+        void computeIntersections(osg::Node* scene, osg::Node::NodeMask traversalMask=0xffffffff);
 
         /** Compute the intersection between the specified scene graph and a single LOS start,end pair. Returns an IntersectionList, of all the points intersected.*/
-        static Intersections computeIntersections(osg::Node *scene, const osg::Vec3d &start, const osg::Vec3d &end, osg::Node::NodeMask traversalMask = 0xffffffff);
+        static Intersections computeIntersections(osg::Node* scene, const osg::Vec3d& start, const osg::Vec3d& end, osg::Node::NodeMask traversalMask=0xffffffff);
 
 
         /** Clear the database cache.*/
-        void clearDatabaseCache()
-        {
-            if (_dcrc.valid())
-                _dcrc->clearDatabaseCache();
-        }
+        void clearDatabaseCache() { if (_dcrc.valid()) _dcrc->clearDatabaseCache(); }
 
         /** Set the ReadCallback that does the reading of external PagedLOD models, and caching of loaded subgraphs.
-         * Note, if you have multiple LineOfSight or HeightAboveTerrain objects in use at one time then you should share a single
-         * DatabaseCacheReadCallback between all of them. */
-        void setDatabaseCacheReadCallback(DatabaseCacheReadCallback *dcrc);
+          * Note, if you have multiple LineOfSight or HeightAboveTerrain objects in use at one time then you should share a single
+          * DatabaseCacheReadCallback between all of them. */
+        void setDatabaseCacheReadCallback(DatabaseCacheReadCallback* dcrc);
 
         /** Get the ReadCallback that does the reading of external PagedLOD models, and caching of loaded subgraphs.*/
-        DatabaseCacheReadCallback* getDatabaseCacheReadCallback()
-        {
-            return _dcrc.get();
-        }
+        DatabaseCacheReadCallback* getDatabaseCacheReadCallback() { return _dcrc.get(); }
 
-protected:
+    protected :
 
         struct LOS
         {
-            LOS(const osg::Vec3d & start, const osg::Vec3d & end) :
+            LOS(const osg::Vec3d& start, const osg::Vec3d& end):
                 _start(start),
                 _end(end) {}
 
 
-            osg::Vec3d    _start;
-            osg::Vec3d    _end;
-            Intersections _intersections;
+            osg::Vec3d      _start;
+            osg::Vec3d      _end;
+            Intersections   _intersections;
         };
 
-        typedef std::vector < LOS > LOSList;
+        typedef std::vector<LOS> LOSList;
         LOSList _LOSList;
 
-        osg::ref_ptr < DatabaseCacheReadCallback > _dcrc;
-        osgUtil::IntersectionVisitor _intersectionVisitor;
-    };
+        osg::ref_ptr<DatabaseCacheReadCallback> _dcrc;
+        osgUtil::IntersectionVisitor            _intersectionVisitor;
+
+};
+
 }
 
 #endif

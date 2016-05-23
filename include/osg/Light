@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_LIGHT
 #define OSG_LIGHT 1
@@ -34,18 +34,19 @@
 #endif
 
 namespace osg {
+
 /** Light state class which encapsulates OpenGL glLight() functionality. */
-    class OSG_EXPORT Light: public StateAttribute
-    {
-public:
+class OSG_EXPORT Light : public StateAttribute
+{
+    public :
 
         Light();
 
         Light(unsigned int lightnum);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        Light(const Light &light, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            StateAttribute(light, copyop),
+        Light(const Light& light,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            StateAttribute(light,copyop),
             _lightnum(light._lightnum),
             _ambient(light._ambient),
             _diffuse(light._diffuse),
@@ -58,37 +59,19 @@ public:
             _spot_exponent(light._spot_exponent),
             _spot_cutoff(light._spot_cutoff) {}
 
-        virtual osg::Object* cloneType() const
-        {
-            return new Light(_lightnum);
-        }
-        virtual osg::Object* clone(const osg::CopyOp &copyop) const
-        {
-            return new Light(*this, copyop);
-        }
-        virtual bool isSameKindAs(const osg::Object *obj) const
-        {
-            return dynamic_cast < const Light * > (obj) != NULL;
-        }
-        virtual const char* libraryName() const
-        {
-            return "osg";
-        }
-        virtual const char* className() const
-        {
-            return "Light";
-        }
-        virtual Type getType() const
-        {
-            return LIGHT;
-        }
+        virtual osg::Object* cloneType() const { return new Light(_lightnum); }
+        virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new Light(*this,copyop); }
+        virtual bool isSameKindAs(const osg::Object* obj) const { return dynamic_cast<const Light *>(obj)!=NULL; }
+        virtual const char* libraryName() const { return "osg"; }
+        virtual const char* className() const { return "Light"; }
+        virtual Type getType() const { return LIGHT; }
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute &sa) const
+        virtual int compare(const StateAttribute& sa) const
         {
             // check the types are equal and then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(Light, sa)
+            COMPARE_StateAttribute_Types(Light,sa)
 
             // compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_lightnum)
@@ -106,14 +89,11 @@ public:
             return 0; // passed all the above comparison macros, must be equal.
         }
 
-        virtual unsigned int getMember() const
-        {
-            return _lightnum;
-        }
+        virtual unsigned int getMember() const { return _lightnum; }
 
-        virtual bool getModeUsage(StateAttribute::ModeUsage &usage) const
+        virtual bool getModeUsage(StateAttribute::ModeUsage& usage) const
         {
-            usage.usesMode(GL_LIGHT0 + _lightnum);
+            usage.usesMode(GL_LIGHT0+_lightnum);
             return true;
         }
 
@@ -123,140 +103,77 @@ public:
         void setLightNum(int num);
 
         /** Get which OpenGL light this osg::Light operates on. */
-        int getLightNum() const
-        {
-            return _lightnum;
-        }
+        int getLightNum() const { return _lightnum; }
 
         /** Set the ambient component of the light. */
-        inline void setAmbient(const Vec4 &ambient)
-        {
-            _ambient = ambient;
-        }
+        inline void setAmbient( const Vec4& ambient ) { _ambient = ambient; }
 
         /** Get the ambient component of the light. */
-        inline const Vec4&getAmbient() const
-        {
-            return _ambient;
-        }
+        inline const Vec4& getAmbient() const { return _ambient; }
 
         /** Set the diffuse component of the light. */
-        inline void setDiffuse(const Vec4 &diffuse)
-        {
-            _diffuse = diffuse;
-        }
+        inline void setDiffuse( const Vec4& diffuse ) { _diffuse = diffuse; }
 
         /** Get the diffuse component of the light. */
-        inline const Vec4&getDiffuse() const
-        {
-            return _diffuse;
-        }
+        inline const Vec4& getDiffuse() const { return _diffuse; }
 
         /** Set the specular component of the light. */
-        inline void setSpecular(const Vec4 &specular)
-        {
-            _specular = specular;
-        }
+        inline void setSpecular( const Vec4& specular ) { _specular = specular; }
 
         /** Get the specular component of the light. */
-        inline const Vec4&getSpecular() const
-        {
-            return _specular;
-        }
+        inline const Vec4& getSpecular() const { return _specular; }
 
         /** Set the position of the light. */
-        inline void setPosition(const Vec4 &position)
-        {
-            _position = position;
-        }
+        inline void setPosition( const Vec4& position ) { _position = position; }
 
         /** Get the position of the light. */
-        inline const Vec4&getPosition() const
-        {
-            return _position;
-        }
+        inline const Vec4& getPosition() const { return _position; }
 
         /** Set the direction of the light. */
-        inline void setDirection(const Vec3 &direction)
-        {
-            _direction = direction;
-        }
+        inline void setDirection( const Vec3& direction ) { _direction = direction; }
 
         /** Get the direction of the light. */
-        inline const Vec3&getDirection() const
-        {
-            return _direction;
-        }
+        inline const Vec3& getDirection() const { return _direction; }
 
         /** Set the constant attenuation of the light. */
-        inline void setConstantAttenuation(float constant_attenuation)
-        {
-            _constant_attenuation = constant_attenuation;
-        }
+        inline void setConstantAttenuation( float constant_attenuation )     { _constant_attenuation = constant_attenuation; }
 
         /** Get the constant attenuation of the light. */
-        inline float getConstantAttenuation() const
-        {
-            return _constant_attenuation;
-        }
+        inline float getConstantAttenuation() const { return _constant_attenuation; }
 
         /** Set the linear attenuation of the light. */
-        inline void setLinearAttenuation(float linear_attenuation)
-        {
-            _linear_attenuation = linear_attenuation;
-        }
+        inline void setLinearAttenuation ( float linear_attenuation )        { _linear_attenuation = linear_attenuation; }
 
         /** Get the linear attenuation of the light. */
-        inline float getLinearAttenuation() const
-        {
-            return _linear_attenuation;
-        }
+        inline float getLinearAttenuation () const { return _linear_attenuation; }
 
         /** Set the quadratic attenuation of the light. */
-        inline void setQuadraticAttenuation(float quadratic_attenuation)
-        {
-            _quadratic_attenuation = quadratic_attenuation;
-        }
+        inline void setQuadraticAttenuation ( float quadratic_attenuation )  { _quadratic_attenuation = quadratic_attenuation; }
 
         /** Get the quadratic attenuation of the light. */
-        inline float getQuadraticAttenuation()  const
-        {
-            return _quadratic_attenuation;
-        }
+        inline float getQuadraticAttenuation()  const { return _quadratic_attenuation; }
 
         /** Set the spot exponent of the light. */
-        inline void setSpotExponent(float spot_exponent)
-        {
-            _spot_exponent = spot_exponent;
-        }
+        inline void setSpotExponent( float spot_exponent )                   { _spot_exponent = spot_exponent; }
 
         /** Get the spot exponent of the light. */
-        inline float getSpotExponent() const
-        {
-            return _spot_exponent;
-        }
+        inline float getSpotExponent() const { return _spot_exponent; }
 
         /** Set the spot cutoff of the light. */
-        inline void setSpotCutoff(float spot_cutoff)
-        {
-            _spot_cutoff = spot_cutoff;
-        }
+        inline void setSpotCutoff( float spot_cutoff )                       { _spot_cutoff = spot_cutoff; }
 
         /** Get the spot cutoff of the light. */
-        inline float getSpotCutoff() const
-        {
-            return _spot_cutoff;
-        }
+        inline float getSpotCutoff() const                                   { return _spot_cutoff; }
 
         /** Capture the lighting settings of the current OpenGL state
-         * and store them in this object.
-         */
+          * and store them in this object.
+        */
         void captureLightState();
 
         /** Apply the light's state to the OpenGL state machine. */
-        virtual void apply(State &state) const;
+        virtual void apply(State& state) const;
 
-protected:
+    protected :
 
         virtual ~Light();
 
@@ -265,17 +182,18 @@ protected:
 
         int _lightnum;                           // OpenGL light number
 
-        Vec4  _ambient;                          // r, g, b, w
-        Vec4  _diffuse;                          // r, g, b, w
-        Vec4  _specular;                         // r, g, b, w
-        Vec4  _position;                         // x, y, z, w
-        Vec3  _direction;                        // x, y, z
+        Vec4 _ambient;                           // r, g, b, w
+        Vec4 _diffuse;                           // r, g, b, w
+        Vec4 _specular;                          // r, g, b, w
+        Vec4 _position;                          // x, y, z, w
+        Vec3 _direction;                         // x, y, z
         float _constant_attenuation;             // constant
         float _linear_attenuation;               // linear
         float _quadratic_attenuation;            // quadratic
         float _spot_exponent;                    // exponent
         float _spot_cutoff;                      // spread
-    };
+};
+
 }
 
 #endif

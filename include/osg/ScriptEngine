@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_SCRIPTENGINE
 #define OSG_SCRIPTENGINE 1
@@ -21,134 +21,102 @@
 
 namespace osg
 {
+
 // forward declare
-    class ScriptEngine;
+class ScriptEngine;
 
 /* Script class for wrapping a script and the language used in the script.*/
-    class Script: public osg::Object
-    {
-public:
-        Script() : _modifiedCount(0) {}
-        Script(const std::string & language, const std::string & str) : _language(language), _script(str), _modifiedCount(0)  {}
-        Script(const Script &rhs, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) : osg::Object(rhs, copyop), _language(rhs._language), _script(rhs._script), _modifiedCount(0) {}
+class Script : public osg::Object
+{
+    public:
+        Script():_modifiedCount(0) {}
+        Script(const std::string& language, const std::string& str): _language(language), _script(str), _modifiedCount(0)  {}
+        Script(const Script& rhs, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY): osg::Object(rhs,copyop), _language(rhs._language), _script(rhs._script), _modifiedCount(0) {}
 
         META_Object(osg, Script)
 
-        void setLanguage(const std::string &language)
-        {
-            _language = language; dirty();
-        }
-        const std::string&getLanguage()
-        {
-            return _language;
-        }
+        void setLanguage(const std::string& language) { _language = language; dirty(); }
+        const std::string& getLanguage() { return _language; }
 
-        void setScript(const std::string &str)
-        {
-            _script = str; dirty();
-        }
-        const std::string&getScript() const
-        {
-            return _script;
-        }
+        void setScript(const std::string& str) { _script = str; dirty(); }
+        const std::string& getScript() const { return _script; }
 
-        void dirty()
-        {
-            ++_modifiedCount;
-        }
-        unsigned int getModifiedCount() const
-        {
-            return _modifiedCount;
-        }
+        void dirty() { ++_modifiedCount; }
+        unsigned int getModifiedCount() const { return _modifiedCount; }
 
-protected:
+    protected:
 
         virtual ~Script() {}
 
-        std::string  _language;
-        std::string  _script;
+        std::string _language;
+        std::string _script;
         unsigned int _modifiedCount;
-    };
+};
 
 
 /** NodeCallback for attaching a script to a NodeCallback so that it can be called as an update or event callback.*/
-    class OSG_EXPORT ScriptNodeCallback: public osg::NodeCallback
-    {
-public:
-        ScriptNodeCallback(Script * script = 0, const std::string &entryPoint = "") : _script(script), _entryPoint(entryPoint) {}
-        ScriptNodeCallback(const ScriptNodeCallback &rhs, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
-            osg::Object(rhs, copyop),
-            osg::Callback(rhs, copyop),
-            osg::NodeCallback(rhs, copyop), _script(rhs._script) {}
+class OSG_EXPORT ScriptNodeCallback : public osg::NodeCallback
+{
+    public:
+        ScriptNodeCallback(Script* script=0, const std::string& entryPoint="") : _script(script), _entryPoint(entryPoint) {}
+        ScriptNodeCallback(const ScriptNodeCallback& rhs, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY):
+            osg::Object(rhs,copyop),
+            osg::Callback(rhs,copyop),
+            osg::NodeCallback(rhs,copyop), _script(rhs._script) {}
 
         META_Object(osg, ScriptNodeCallback)
 
         /** Set the script to call.*/
-        void setScript(osg::Script *script)
-        {
-            _script = script;
-        }
+        void setScript(osg::Script* script) { _script  = script; }
 
         /** Get the script to call.*/
-        osg::Script* getScript()
-        {
-            return _script.get();
-        }
+        osg::Script* getScript() { return _script.get(); }
 
         /** Get the script to call.*/
-        const osg::Script* getScript() const
-        {
-            return _script.get();
-        }
+        const osg::Script* getScript() const { return _script.get(); }
 
         /** find the ScriptEngine from looking at the UserDataContainers of nodes in scene graph above the ScriptCallback.*/
-        osg::ScriptEngine* getScriptEngine(osg::NodePath &nodePath);
+        osg::ScriptEngine* getScriptEngine(osg::NodePath& nodePath);
 
         /** NodeCallback method, calls the Script.*/
-        virtual void operator()(osg::Node * node, osg::NodeVisitor * nv);
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 
-protected:
+    protected:
 
         virtual ~ScriptNodeCallback() {}
 
-        osg::ref_ptr < Script > _script;
-        std::string _entryPoint;
-    };
+        osg::ref_ptr<Script>    _script;
+        std::string             _entryPoint;
+};
 
 /** ScriptEngine base class for integrating different scripting languages.
  *  Concrete ScriptEngine's are provided by osgDB::readFile<ScriptEngine> */
-    class ScriptEngine: public osg::Object
-    {
-public:
+class ScriptEngine : public osg::Object
+{
+    public:
 
         /** get the scripting language supported by the ScriptEngine.*/
-        inline const std::string&getLanguage() const
-        {
-            return _language;
-        }
+        inline const std::string& getLanguage() const { return _language; }
 
         /** run a Script.*/
-        bool run(osg::Script *script)
+        bool run(osg::Script* script)
         {
             // assumpt empty input and output parameters lists
             Parameters inputParameters, outputParameters;
-
             return run(script, "", inputParameters, outputParameters);
         }
 
         /** run a Script.*/
-        virtual bool run(osg::Script *script, const std::string &entryPoint, Parameters &inputParameters, Parameters &outputParameters) = 0;
+        virtual bool run(osg::Script* script, const std::string& entryPoint, Parameters& inputParameters, Parameters& outputParameters) = 0;
 
-protected:
+    protected:
 
-        ScriptEngine(const std::string & language) : _language(language)
-        {
-            setName(language);
-        }
+        ScriptEngine(const std::string& language):_language(language) { setName(language); }
         virtual ~ScriptEngine() {}
 
         std::string _language;
-    };
+};
+
 }
 
 #endif

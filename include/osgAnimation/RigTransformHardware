@@ -27,37 +27,25 @@ namespace osgAnimation
     class RigGeometry;
 
     /// This class manage format for hardware skinning
-    class OSGANIMATION_EXPORT RigTransformHardware: public RigTransform
+    class OSGANIMATION_EXPORT RigTransformHardware : public RigTransform
     {
-public:
+    public:
         typedef osg::Matrix MatrixType;
         typedef osgAnimation::Bone BoneType;
-        typedef std::vector < osg::ref_ptr < osg::Vec4Array >> BoneWeightAttribList;
-        typedef std::vector < osg::ref_ptr < BoneType >> BonePalette;
+        typedef std::vector<osg::ref_ptr<osg::Vec4Array> > BoneWeightAttribList;
+        typedef std::vector<osg::ref_ptr<BoneType> > BonePalette;
 
-        typedef std::vector < osg::Matrix > MatrixPalette;
+        typedef std::vector<osg::Matrix> MatrixPalette;
         struct IndexWeightEntry
         {
-            int   _boneIndex;
+            int _boneIndex;
             float _boneWeight;
-            IndexWeightEntry()
-            {
-                _boneIndex = 0; _boneWeight = 0;
-            }
-            IndexWeightEntry(int index, float weight)
-            {
-                _boneIndex = index; _boneWeight = weight;
-            }
-            int getIndex() const
-            {
-                return _boneIndex;
-            }
-            float getWeight() const
-            {
-                return _boneWeight;
-            }
+            IndexWeightEntry() { _boneIndex = 0; _boneWeight = 0;}
+            IndexWeightEntry(int index, float weight) { _boneIndex = index; _boneWeight = weight;}
+            int getIndex() const { return _boneIndex; }
+            float getWeight() const { return _boneWeight; }
         };
-        typedef std::vector < std::vector < IndexWeightEntry >> VertexIndexWeightList;
+        typedef std::vector<std::vector<IndexWeightEntry> > VertexIndexWeightList;
 
         RigTransformHardware();
 
@@ -65,30 +53,30 @@ public:
         int getNumVertexAttrib();
 
         osg::Uniform* getMatrixPaletteUniform();
-        void computeMatrixPaletteUniform(const osg::Matrix &transformFromSkeletonToGeometry, const osg::Matrix &invTransformFromSkeletonToGeometry);
+        void computeMatrixPaletteUniform(const osg::Matrix& transformFromSkeletonToGeometry, const osg::Matrix& invTransformFromSkeletonToGeometry);
 
         int getNumBonesPerVertex() const;
         int getNumVertexes() const;
 
-        bool createPalette(int nbVertexes, BoneMap boneMap, const VertexInfluenceSet::VertexIndexToBoneWeightMap &vertexIndexToBoneWeightMap);
+        bool createPalette(int nbVertexes, BoneMap boneMap, const VertexInfluenceSet::VertexIndexToBoneWeightMap& vertexIndexToBoneWeightMap);
 
-        virtual void operator()(RigGeometry &);
+        virtual void operator()(RigGeometry&);
         void setShader(osg::Shader*);
 
-protected:
+    protected:
 
         bool init(RigGeometry&);
 
         BoneWeightAttribList createVertexAttribList();
         osg::Uniform* createVertexUniform();
 
-        int                   _bonesPerVertex;
-        int                   _nbVertexes;
+        int _bonesPerVertex;
+        int _nbVertexes;
         VertexIndexWeightList _vertexIndexMatrixWeightList;
-        BonePalette           _bonePalette;
-        BoneWeightAttribList  _boneWeightAttribArrays;
-        osg::ref_ptr < osg::Uniform > _uniformMatrixPalette;
-        osg::ref_ptr < osg::Shader > _shader;
+        BonePalette _bonePalette;
+        BoneWeightAttribList _boneWeightAttribArrays;
+        osg::ref_ptr<osg::Uniform> _uniformMatrixPalette;
+        osg::ref_ptr<osg::Shader> _shader;
 
         bool _needInit;
     };

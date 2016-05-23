@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
- */
+*/
 
 #ifndef OSG_COMPILESLIDECALLBACK
 #define OSG_COMPILESLIDECALLBACK 1
@@ -17,29 +17,29 @@
 #include <osgPresentation/Export>
 
 namespace osgPresentation {
-    class OSGPRESENTATION_EXPORT CompileSlideCallback: public osg::Camera::DrawCallback
-    {
-public:
 
-        CompileSlideCallback() :
+class OSGPRESENTATION_EXPORT CompileSlideCallback : public osg::Camera::DrawCallback
+{
+    public:
+
+        CompileSlideCallback():
             _needCompile(false),
             _frameNumber(0) {}
 
-        virtual void operator()(const osg::Camera & camera) const;
+        virtual void operator()(const osg::Camera& camera) const;
 
-        void needCompile(osg::Node *node)
-        {
-            _needCompile = true; _sceneToCompile = node;
-        }
+        void needCompile(osg::Node* node) { _needCompile=true; _sceneToCompile = node; }
 
-protected:
+    protected:
 
         virtual ~CompileSlideCallback() {}
 
-        mutable bool         _needCompile;
-        mutable unsigned int _frameNumber;
-        osg::ref_ptr < osg::Node > _sceneToCompile;
-    };
+        mutable bool                _needCompile;
+        mutable unsigned int        _frameNumber;
+        osg::ref_ptr<osg::Node>     _sceneToCompile;
+
+};
+
 }
 
 #endif

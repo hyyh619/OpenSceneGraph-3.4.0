@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGSIM_INSERTIMPOSTORSVISITOR
 #define OSGSIM_INSERTIMPOSTORSVISITOR
@@ -18,60 +18,51 @@
 #include <osgSim/Impostor>
 
 namespace osgSim {
+
 /** Insert impostor nodes into scene graph.
- * For example of usage see examples/osgimpostor.
- */
-    class OSGSIM_EXPORT InsertImpostorsVisitor: public osg::NodeVisitor
-    {
-public:
+  * For example of usage see examples/osgimpostor.
+  */
+class OSGSIM_EXPORT InsertImpostorsVisitor : public osg::NodeVisitor
+{
+    public:
 
         /** Default to traversing all children. */
         InsertImpostorsVisitor();
 
         META_NodeVisitor(osgSim, InsertImpostorsVisitor)
 
-        void setImpostorThresholdRatio(float ratio)
-        {
-            _impostorThresholdRatio = ratio;
-        }
-        float getImpostorThresholdRatio() const
-        {
-            return _impostorThresholdRatio;
-        }
+        void setImpostorThresholdRatio(float ratio) { _impostorThresholdRatio = ratio; }
+        float getImpostorThresholdRatio() const { return _impostorThresholdRatio; }
 
-        void setMaximumNumberOfNestedImpostors(unsigned int num)
-        {
-            _maximumNumNestedImpostors = num;
-        }
-        unsigned int getMaximumNumberOfNestedImpostors() const
-        {
-            return _maximumNumNestedImpostors;
-        }
+        void setMaximumNumberOfNestedImpostors(unsigned int num) { _maximumNumNestedImpostors = num; }
+        unsigned int getMaximumNumberOfNestedImpostors() const { return _maximumNumNestedImpostors; }
 
         /** Empty visitor, make it ready for next traversal. */
         void reset();
 
-        virtual void apply(osg::Node &node);
+        virtual void apply(osg::Node& node);
 
-        virtual void apply(osg::Group &node);
+        virtual void apply(osg::Group& node);
 
-        virtual void apply(osg::LOD &node);
+        virtual void apply(osg::LOD& node);
 
         /* Insert the required impostors into the scene graph. */
         void insertImpostors();
 
-protected:
+    protected:
 
-        typedef std::vector < osg::Group* > GroupList;
-        typedef std::vector < osg::LOD* > LODList;
+        typedef std::vector< osg::Group* >  GroupList;
+        typedef std::vector< osg::LOD* >    LODList;
 
-        GroupList _groupList;
-        LODList   _lodList;
+        GroupList       _groupList;
+        LODList         _lodList;
 
-        float        _impostorThresholdRatio;
-        unsigned int _maximumNumNestedImpostors;
-        unsigned int _numNestedImpostors;
-    };
+        float           _impostorThresholdRatio;
+        unsigned int    _maximumNumNestedImpostors;
+        unsigned int    _numNestedImpostors;
+
+};
+
 }
 
 #endif

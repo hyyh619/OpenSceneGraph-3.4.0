@@ -20,15 +20,17 @@
 
 namespace osgAnimation
 {
-    class OSGANIMATION_EXPORT UpdateBone: public UpdateMatrixTransform
+
+    class OSGANIMATION_EXPORT UpdateBone : public UpdateMatrixTransform
     {
-public:
+    public:
         META_Object(osgAnimation, UpdateBone);
 
-        UpdateBone(const std::string &name = "");
-        UpdateBone(const UpdateBone &, const osg::CopyOp &);
-        void operator()(osg::Node * node, osg::NodeVisitor * nv);
+        UpdateBone(const std::string& name = "");
+        UpdateBone(const UpdateBone&,const osg::CopyOp&);
+        void operator()(osg::Node* node, osg::NodeVisitor* nv);
     };
+
 }
 
 #endif

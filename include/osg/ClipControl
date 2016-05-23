@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_CLIPCONTROL
 #define OSG_CLIPCONTROL 1
@@ -17,16 +17,17 @@
 #include <osg/StateAttribute>
 
 #ifndef GL_VERSION_4_5
-    #define GL_NEGATIVE_ONE_TO_ONE 0x935E
-    #define GL_ZERO_TO_ONE         0x935F
+    #define GL_NEGATIVE_ONE_TO_ONE            0x935E
+    #define GL_ZERO_TO_ONE                    0x935F
 #endif
 
 namespace osg {
+
 /** Encapsulate OpenGL glClipControl functions.
- */
-    class OSG_EXPORT ClipControl: public StateAttribute
-    {
-public:
+*/
+class OSG_EXPORT ClipControl : public StateAttribute
+{
+    public :
 
         enum Origin
         {
@@ -41,20 +42,20 @@ public:
         };
 
 
-        ClipControl(Origin origin = LOWER_LEFT, DepthMode depthMode = NEGATIVE_ONE_TO_ONE);
+        ClipControl(Origin origin=LOWER_LEFT, DepthMode depthMode=NEGATIVE_ONE_TO_ONE);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        ClipControl(const ClipControl &clipControl, const CopyOp &copyop = CopyOp::SHALLOW_COPY);
+        ClipControl(const ClipControl& clipControl,const CopyOp& copyop=CopyOp::SHALLOW_COPY);
 
 
         META_StateAttribute(osg, ClipControl, CLIPCONTROL);
 
         /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.*/
-        virtual int compare(const StateAttribute &sa) const
+        virtual int compare(const StateAttribute& sa) const
         {
             // check the types are equal and then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(ClipControl, sa)
+            COMPARE_StateAttribute_Types(ClipControl,sa)
 
             // compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_origin)
@@ -63,33 +64,22 @@ public:
             return 0; // passed all the above comparison macros, must be equal.
         }
 
-        void setOrigin(Origin origin)
-        {
-            _origin = origin;
-        }
-        Origin getOrigin() const
-        {
-            return _origin;
-        }
+        void setOrigin(Origin origin) { _origin = origin; }
+        Origin getOrigin() const { return _origin; }
 
-        void setDepthMode(DepthMode depthMode)
-        {
-            _depthMode = depthMode;
-        }
-        DepthMode getDepthMode() const
-        {
-            return _depthMode;
-        }
+        void setDepthMode(DepthMode depthMode) { _depthMode = depthMode; }
+        DepthMode getDepthMode() const { return _depthMode; }
 
-        virtual void apply(State &state) const;
+        virtual void apply(State& state) const;
 
-protected:
+    protected:
 
         virtual ~ClipControl();
 
-        Origin    _origin;
-        DepthMode _depthMode;
-    };
+        Origin              _origin;
+        DepthMode           _depthMode;
+};
+
 }
 
 #endif

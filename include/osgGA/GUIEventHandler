@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGGA_GUIEVENTHANDLER
 #define OSGGA_GUIEVENTHANDLER 1
@@ -26,55 +26,52 @@
 
 // #define COMPILE_COMPOSITE_EVENTHANDLER
 
-namespace osgGA {
+namespace osgGA{
+
 /**
 
-   GUIEventHandler provides a basic interface for any class which wants to handle
-   a GUI Events.
+GUIEventHandler provides a basic interface for any class which wants to handle
+a GUI Events.
 
-   The GUIEvent is supplied by a GUIEventAdapter. Feedback resulting from the
-   handle method is supplied by a GUIActionAdapter, which allows the GUIEventHandler
-   to ask the GUI to take some action in response to an incoming event.
+The GUIEvent is supplied by a GUIEventAdapter. Feedback resulting from the
+handle method is supplied by a GUIActionAdapter, which allows the GUIEventHandler
+to ask the GUI to take some action in response to an incoming event.
 
-   For example, consider a Trackball Viewer class which takes mouse events and
-   manipulates a scene camera in response. The Trackball Viewer is a GUIEventHandler,
-   and receives the events via the handle method. If the user 'throws' the model,
-   the Trackball Viewer class can detect this via the incoming events, and
-   request that the GUI set up a timer callback to continually redraw the view.
-   This request is made via the GUIActionAdapter class.
+For example, consider a Trackball Viewer class which takes mouse events and
+manipulates a scene camera in response. The Trackball Viewer is a GUIEventHandler,
+and receives the events via the handle method. If the user 'throws' the model,
+the Trackball Viewer class can detect this via the incoming events, and
+request that the GUI set up a timer callback to continually redraw the view.
+This request is made via the GUIActionAdapter class.
 
- */
+*/
 
-    class OSGGA_EXPORT GUIEventHandler: public EventHandler
-    {
+class OSGGA_EXPORT GUIEventHandler : public EventHandler
+{
 public:
 
         GUIEventHandler() {}
-        GUIEventHandler(const GUIEventHandler &eh, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
+        GUIEventHandler(const GUIEventHandler& eh,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY):
             osg::Object(eh, copyop),
             osg::Callback(eh, copyop),
             EventHandler(eh, copyop) {}
 
-        META_Object(osgGA, GUIEventHandler);
+        META_Object(osgGA,GUIEventHandler);
 
         /** Handle event. Override the handle(..) method in your event handlers to respond to events. */
-        virtual bool handle(osgGA::Event *event, osg::Object *object, osg::NodeVisitor *nv);
+        virtual bool handle(osgGA::Event* event, osg::Object* object, osg::NodeVisitor* nv);
 
         /** Handle events, return true if handled, false otherwise. */
-        virtual bool handle(const GUIEventAdapter &ea, GUIActionAdapter &aa, osg::Object*, osg::NodeVisitor*)
-        {
-            return handle(ea, aa);
-        }
+        virtual bool handle(const GUIEventAdapter& ea,GUIActionAdapter& aa, osg::Object*, osg::NodeVisitor*) { return handle(ea,aa); }
 
         /** Deprecated, Handle events, return true if handled, false otherwise. */
-        virtual bool handle(const GUIEventAdapter&, GUIActionAdapter&)
-        {
-            return false;
-        }
+        virtual bool handle(const GUIEventAdapter&,GUIActionAdapter&) { return false; }
 
 protected:
         virtual ~GUIEventHandler();
-    };
+
+};
+
 }
 
 #endif

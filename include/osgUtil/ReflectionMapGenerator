@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 #ifndef OSGUTIL_REFLECTIONMAPGENERATOR_
 #define OSGUTIL_REFLECTIONMAPGENERATOR_
 
@@ -17,17 +17,18 @@
 
 namespace osgUtil
 {
+
     /** This is the most simple cube map generator. It performs a direct association
         between reflection vector and RGBA color (C = R).
-     */
+    */
     class ReflectionMapGenerator: public CubeMapGenerator {
-public:
+    public:
         inline ReflectionMapGenerator(int texture_size = 64);
         inline ReflectionMapGenerator(const ReflectionMapGenerator &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
 
-protected:
+    protected:
         virtual ~ReflectionMapGenerator() {}
-        ReflectionMapGenerator &operator = (const ReflectionMapGenerator&) { return *this; }
+        ReflectionMapGenerator &operator=(const ReflectionMapGenerator &) { return *this; }
 
         inline virtual osg::Vec4 compute_color(const osg::Vec3 &R) const;
     };
@@ -36,16 +37,19 @@ protected:
 
     inline ReflectionMapGenerator::ReflectionMapGenerator(int texture_size)
         : CubeMapGenerator(texture_size)
-    {}
+    {
+    }
 
     inline ReflectionMapGenerator::ReflectionMapGenerator(const ReflectionMapGenerator &copy, const osg::CopyOp &copyop)
         : CubeMapGenerator(copy, copyop)
-    {}
+    {
+    }
 
     inline osg::Vec4 ReflectionMapGenerator::compute_color(const osg::Vec3 &R) const
     {
         return vector_to_color(R / R.length());
     }
+
 }
 
 #endif

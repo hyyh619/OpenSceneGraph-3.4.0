@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_SWITCH
 #define OSG_SWITCH 1
@@ -17,98 +17,82 @@
 #include <osg/Group>
 
 namespace osg {
+
 /** Switch is a Group node that allows switching between children.
- * Typical uses would be for objects which might need to be rendered
- * differently at different times, for instance a switch could be used
- * to represent the different states of a traffic light.
- */
-    class OSG_EXPORT Switch: public Group
-    {
-public:
+  * Typical uses would be for objects which might need to be rendered
+  * differently at different times, for instance a switch could be used
+  * to represent the different states of a traffic light.
+*/
+class OSG_EXPORT Switch : public Group
+{
+    public :
 
 
         Switch();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        Switch(const Switch &, const CopyOp &copyop = CopyOp::SHALLOW_COPY);
+        Switch(const Switch&,const CopyOp& copyop=CopyOp::SHALLOW_COPY);
 
-        virtual Switch* asSwitch()
-        {
-            return this;
-        }
-        virtual const Switch* asSwitch() const
-        {
-            return this;
-        }
+        virtual Switch* asSwitch() { return this; }
+        virtual const Switch* asSwitch() const { return this; }
 
 
         META_Node(osg, Switch);
 
-        virtual void traverse(NodeVisitor &nv);
+        virtual void traverse(NodeVisitor& nv);
 
-        void setNewChildDefaultValue(bool value)
-        {
-            _newChildDefaultValue = value;
-        }
+        void setNewChildDefaultValue(bool value) { _newChildDefaultValue = value; }
 
-        bool getNewChildDefaultValue() const
-        {
-            return _newChildDefaultValue;
-        }
+        bool getNewChildDefaultValue() const { return _newChildDefaultValue; }
 
-        virtual bool addChild(Node *child);
+        virtual bool addChild( Node *child );
 
-        virtual bool addChild(Node *child, bool value);
+        virtual bool addChild( Node *child, bool value );
 
-        virtual bool insertChild(unsigned int index, Node *child);
+        virtual bool insertChild( unsigned int index, Node *child );
 
-        virtual bool insertChild(unsigned int index, Node *child, bool value);
+        virtual bool insertChild( unsigned int index, Node *child, bool value );
 
-        virtual bool removeChildren(unsigned int pos, unsigned int numChildrenToRemove);
+        virtual bool removeChildren(unsigned int pos,unsigned int numChildrenToRemove);
 
 
-        void setValue(unsigned int pos, bool value);
+        void setValue(unsigned int pos,bool value);
 
         bool getValue(unsigned int pos) const;
 
-        void setChildValue(const Node *child, bool value);
+        void setChildValue(const Node* child,bool value);
 
-        bool getChildValue(const Node *child) const;
+        bool getChildValue(const Node* child) const;
 
         /** Set all the children off (false), and set the new default child
-         * value to off (false). */
+          * value to off (false). */
         bool setAllChildrenOff();
 
         /** Set all the children on (true), and set the new default child
-         * value to on (true). */
+          * value to on (true). */
         bool setAllChildrenOn();
 
         /** Set a single child on, switch off all other children. */
         bool setSingleChildOn(unsigned int pos);
 
 
-        typedef std::vector < bool > ValueList;
+        typedef std::vector<bool>   ValueList;
 
-        void setValueList(const ValueList &values)
-        {
-            _values = values;
-        }
+        void setValueList(const ValueList& values) { _values=values; }
 
-        const ValueList&getValueList() const
-        {
-            return _values;
-        }
+        const ValueList& getValueList() const { return _values; }
 
         virtual BoundingSphere computeBound() const;
 
-protected:
+    protected :
 
         virtual ~Switch() {}
 
         // This is effectively a bit mask.
-        bool      _newChildDefaultValue;
-        ValueList _values;
-    };
+        bool        _newChildDefaultValue;
+        ValueList   _values;
+};
+
 }
 
 #endif

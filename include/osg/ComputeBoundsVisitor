@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_COMPUTEBOUNDSVISITOR
 #define OSG_COMPUTEBOUNDSVISITOR 1
@@ -19,53 +19,43 @@
 #include <osg/Polytope>
 
 namespace osg {
-    class OSG_EXPORT ComputeBoundsVisitor: public osg::NodeVisitor
-    {
+
+class OSG_EXPORT ComputeBoundsVisitor : public osg::NodeVisitor
+{
 public:
 
-        ComputeBoundsVisitor(TraversalMode traversalMode = TRAVERSE_ALL_CHILDREN);
+    ComputeBoundsVisitor(TraversalMode traversalMode = TRAVERSE_ALL_CHILDREN);
 
-        META_NodeVisitor(osg, ComputeBoundsVisitor)
+    META_NodeVisitor(osg, ComputeBoundsVisitor)
 
-        virtual void reset();
+    virtual void reset();
 
-        osg::BoundingBox&getBoundingBox()
-        {
-            return _bb;
-        }
+    osg::BoundingBox& getBoundingBox() { return _bb; }
 
-        void getPolytope(osg::Polytope &polytope, float margin = 0.1) const;
+    void getPolytope(osg::Polytope& polytope, float margin=0.1) const;
 
-        void getBase(osg::Polytope &polytope, float margin = 0.1) const;
+    void getBase(osg::Polytope& polytope, float margin=0.1) const;
 
-        void apply(osg::Drawable &drawable);
+    void apply(osg::Drawable& drawable);
 
-        void apply(osg::Transform &transform);
+    void apply(osg::Transform& transform);
 
-        inline void pushMatrix(osg::Matrix &matrix)
-        {
-            _matrixStack.push_back(matrix);
-        }
+    inline void pushMatrix(osg::Matrix& matrix) { _matrixStack.push_back(matrix); }
 
-        inline void popMatrix()
-        {
-            _matrixStack.pop_back();
-        }
+    inline void popMatrix() { _matrixStack.pop_back(); }
 
 
-        void applyBoundingBox(const osg::BoundingBox&);
+    void applyBoundingBox(const osg::BoundingBox&);
 
-        typedef std::vector < osg::Matrix > MatrixStack;
+    typedef std::vector<osg::Matrix> MatrixStack;
 
-        const MatrixStack&getMatrixStack() const
-        {
-            return _matrixStack;
-        }
+    const MatrixStack& getMatrixStack() const { return _matrixStack; }
 
 protected:
-        MatrixStack      _matrixStack;
-        osg::BoundingBox _bb;
-    };
+    MatrixStack         _matrixStack;
+    osg::BoundingBox    _bb;
+};
+
 }
 
 #endif

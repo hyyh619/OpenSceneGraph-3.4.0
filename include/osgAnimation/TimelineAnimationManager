@@ -22,27 +22,23 @@
 
 namespace osgAnimation
 {
-    class OSGANIMATION_EXPORT TimelineAnimationManager: public AnimationManagerBase
-    {
-protected:
-        osg::ref_ptr < Timeline > _timeline;
 
-public:
+    class OSGANIMATION_EXPORT TimelineAnimationManager : public AnimationManagerBase
+    {
+    protected:
+        osg::ref_ptr<Timeline> _timeline;
+
+    public:
         META_Object(osgAnimation, TimelineAnimationManager);
         TimelineAnimationManager();
-        TimelineAnimationManager(const AnimationManagerBase &manager);
-        TimelineAnimationManager(const TimelineAnimationManager &nc, const osg::CopyOp &);
+        TimelineAnimationManager(const AnimationManagerBase& manager);
+        TimelineAnimationManager(const TimelineAnimationManager& nc,const osg::CopyOp&);
 
-        Timeline* getTimeline()
-        {
-            return _timeline.get();
-        }
-        const Timeline* getTimeline() const
-        {
-            return _timeline.get();
-        }
+        Timeline* getTimeline() { return _timeline.get(); }
+        const Timeline* getTimeline() const { return _timeline.get(); }
         void update(double time);
     };
+
 }
 
 #endif

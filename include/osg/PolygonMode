@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_POLYGONMODE
 #define OSG_POLYGONMODE 1
@@ -18,27 +18,26 @@
 #include <osg/GL>
 
 #if defined(OSG_GLES1_AVAILABLE) || defined(OSG_GLES2_AVAILABLE)
-    #define GL_POINT 0x1B00
-    #define GL_LINE  0x1B01
-    #define GL_FILL  0x1B02
+    #define GL_POINT    0x1B00
+    #define GL_LINE     0x1B01
+    #define GL_FILL     0x1B02
 #endif
 
 namespace osg {
-/** State Class for setting OpenGL's polygon culling mode.
- */
-    class OSG_EXPORT PolygonMode: public StateAttribute
-    {
-public:
 
-        enum Mode
-        {
+/** State Class for setting OpenGL's polygon culling mode.
+*/
+class OSG_EXPORT PolygonMode : public StateAttribute
+{
+    public :
+
+        enum Mode {
             POINT = GL_POINT,
-            LINE  = GL_LINE,
-            FILL  = GL_FILL
+            LINE = GL_LINE,
+            FILL = GL_FILL
         };
 
-        enum Face
-        {
+        enum Face {
             FRONT_AND_BACK,
             FRONT,
             BACK
@@ -46,22 +45,22 @@ public:
 
         PolygonMode();
 
-        PolygonMode(Face face, Mode mode);
+        PolygonMode(Face face,Mode mode);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        PolygonMode(const PolygonMode &pm, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            StateAttribute(pm, copyop),
+        PolygonMode(const PolygonMode& pm,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            StateAttribute(pm,copyop),
             _modeFront(pm._modeFront),
             _modeBack(pm._modeBack) {}
 
         META_StateAttribute(osg, PolygonMode, POLYGONMODE);
 
         /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.*/
-        virtual int compare(const StateAttribute &sa) const
+        virtual int compare(const StateAttribute& sa) const
         {
             // check the types are equal and then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(PolygonMode, sa)
+            COMPARE_StateAttribute_Types(PolygonMode,sa)
 
             // compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_modeFront)
@@ -70,23 +69,22 @@ public:
             return 0; // passed all the above comparison macros, must be equal.
         }
 
-        void setMode(Face face, Mode mode);
+        void setMode(Face face,Mode mode);
         Mode getMode(Face face) const;
 
-        inline bool getFrontAndBack() const
-        {
-            return _modeFront == _modeBack;
-        }
+        inline bool getFrontAndBack() const { return _modeFront==_modeBack; }
 
-        virtual void apply(State &state) const;
+        virtual void apply(State& state) const;
 
-protected:
+    protected:
 
         virtual ~PolygonMode();
 
         Mode _modeFront;
         Mode _modeBack;
-    };
+
+};
+
 }
 
 #endif

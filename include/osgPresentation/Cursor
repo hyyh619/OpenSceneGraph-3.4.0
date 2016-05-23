@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGPRESENTATION_CURSOR
 #define OSGPRESENTATION_CURSOR 1
@@ -19,40 +19,29 @@
 #include <osgPresentation/Export>
 
 namespace osgPresentation {
-    class OSGPRESENTATION_EXPORT Cursor: public osg::Group
-    {
-public:
+
+class OSGPRESENTATION_EXPORT Cursor : public osg::Group
+{
+    public:
 
         Cursor();
 
-        Cursor(const std::string & filename, float size);
+        Cursor(const std::string& filename, float size);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        Cursor(const Cursor &rhs, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        Cursor(const Cursor& rhs,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
         META_Node(osgPresentation, Cursor)
 
-        void setFilename(const std::string &filename)
-        {
-            _filename = filename; _cursorDirty = true;
-        }
-        const std::string&getFilename() const
-        {
-            return _filename;
-        }
+        void setFilename(const std::string& filename) { _filename = filename; _cursorDirty=true; }
+        const std::string& getFilename() const { return _filename; }
 
-        void setSize(float size)
-        {
-            _size = size; _cursorDirty = true;
-        }
-        float getSize() const
-        {
-            return _size;
-        }
+        void setSize(float size) { _size = size; _cursorDirty=true; }
+        float getSize() const { return _size; }
 
-        virtual void traverse(osg::NodeVisitor &nv);
+        virtual void traverse(osg::NodeVisitor& nv);
 
-protected:
+    protected:
 
         virtual ~Cursor();
 
@@ -64,11 +53,13 @@ protected:
 
         bool _cursorDirty;
 
-        osg::ref_ptr < osg::AutoTransform > _transform;
+        osg::ref_ptr<osg::AutoTransform> _transform;
 
-        osg::Vec2 _cursorXY;
-        osg::observer_ptr < osg::Camera > _camera;
-    };
+        osg::Vec2                       _cursorXY;
+        osg::observer_ptr<osg::Camera>  _camera;
+
+};
+
 }
 
 #endif

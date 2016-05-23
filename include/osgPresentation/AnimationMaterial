@@ -8,7 +8,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * include LICENSE.txt for more details.
- */
+*/
 
 #ifndef OSG_ANIMATIONMATERIAL
 #define OSG_ANIMATIONMATERIAL 1
@@ -23,47 +23,33 @@
 #include <float.h>
 
 namespace osgPresentation {
+
 /** AnimationMaterial for specify the time varying transformation pathway to use when update camera and model objects.
- * Subclassed from Transform::ComputeTransformCallback allows AnimationMaterial to
- * be attached directly to Transform nodes to move subgraphs around the scene.
- */
-    class OSGPRESENTATION_EXPORT AnimationMaterial: public virtual osg::Object
-    {
-public:
+  * Subclassed from Transform::ComputeTransformCallback allows AnimationMaterial to
+  * be attached directly to Transform nodes to move subgraphs around the scene.
+*/
+class OSGPRESENTATION_EXPORT AnimationMaterial : public virtual osg::Object
+{
+    public:
 
-        AnimationMaterial() : _loopMode(LOOP) {}
+        AnimationMaterial():_loopMode(LOOP) {}
 
-        AnimationMaterial(const AnimationMaterial &ap, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY) :
-            Object(ap, copyop),
+        AnimationMaterial(const AnimationMaterial& ap, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY):
+            Object(ap,copyop),
             _timeControlPointMap(ap._timeControlPointMap),
             _loopMode(ap._loopMode) {}
 
-        META_Object(osg, AnimationMaterial);
+        META_Object(osg,AnimationMaterial);
 
 
         /** get the transformation matrix for a point in time.*/
-        bool getMaterial(double time, osg::Material &material) const;
+        bool getMaterial(double time,osg::Material& material) const;
 
-        void insert(double time, osg::Material *material);
+        void insert(double time,osg::Material* material);
 
-        double getFirstTime() const
-        {
-            if (!_timeControlPointMap.empty())
-                return _timeControlPointMap.begin()->first;
-            else
-                return 0.0;
-        }
-        double getLastTime() const
-        {
-            if (!_timeControlPointMap.empty())
-                return _timeControlPointMap.rbegin()->first;
-            else
-                return 0.0;
-        }
-        double getPeriod() const
-        {
-            return getLastTime() - getFirstTime();
-        }
+        double getFirstTime() const { if (!_timeControlPointMap.empty()) return _timeControlPointMap.begin()->first; else return 0.0;}
+        double getLastTime() const { if (!_timeControlPointMap.empty()) return _timeControlPointMap.rbegin()->first; else return 0.0;}
+        double getPeriod() const { return getLastTime()-getFirstTime();}
 
         enum LoopMode
         {
@@ -72,53 +58,42 @@ public:
             NO_LOOPING
         };
 
-        void setLoopMode(LoopMode lm)
-        {
-            _loopMode = lm;
-        }
+        void setLoopMode(LoopMode lm) { _loopMode = lm; }
 
-        LoopMode getLoopMode() const
-        {
-            return _loopMode;
-        }
+        LoopMode getLoopMode() const { return _loopMode; }
 
 
-        typedef std::map < double, osg::ref_ptr < osg::Material >> TimeControlPointMap;
+        typedef std::map<double, osg::ref_ptr<osg::Material> > TimeControlPointMap;
 
-        TimeControlPointMap&getTimeControlPointMap()
-        {
-            return _timeControlPointMap;
-        }
+        TimeControlPointMap& getTimeControlPointMap() { return _timeControlPointMap; }
 
-        const TimeControlPointMap&getTimeControlPointMap() const
-        {
-            return _timeControlPointMap;
-        }
+        const TimeControlPointMap& getTimeControlPointMap() const { return _timeControlPointMap; }
 
         /** read the anumation path from a flat ascii file stream.*/
-        void read(std::istream &in);
+        void read(std::istream& in);
 
         /** write the anumation path to a flat ascii file stream.*/
-        void write(std::ostream &out) const;
+        void write(std::ostream& out) const;
 
         bool requiresBlending() const;
 
-protected:
+    protected:
 
         virtual ~AnimationMaterial() {}
 
-        void interpolate(osg::Material &material, float r, const osg::Material &lhs, const osg::Material &rhs) const;
+        void interpolate(osg::Material& material, float r, const osg::Material& lhs,const osg::Material& rhs) const;
 
         TimeControlPointMap _timeControlPointMap;
         LoopMode            _loopMode;
-    };
+
+};
 
 
-    class OSGPRESENTATION_EXPORT AnimationMaterialCallback: public osg::NodeCallback
-    {
-public:
+class OSGPRESENTATION_EXPORT AnimationMaterialCallback : public osg::NodeCallback
+{
+    public:
 
-        AnimationMaterialCallback() :
+        AnimationMaterialCallback():
             _timeOffset(0.0),
             _timeMultiplier(1.0),
             _firstTime(DBL_MAX),
@@ -127,8 +102,8 @@ public:
             _pauseTime(0.0) {}
 
 
-        AnimationMaterialCallback(const AnimationMaterialCallback &apc, const osg::CopyOp & copyop) :
-            osg::NodeCallback(apc, copyop),
+        AnimationMaterialCallback(const AnimationMaterialCallback& apc,const osg::CopyOp& copyop):
+            osg::NodeCallback(apc,copyop),
             _animationMaterial(apc._animationMaterial),
             _useInverseMatrix(apc._useInverseMatrix),
             _timeOffset(apc._timeOffset),
@@ -139,9 +114,9 @@ public:
             _pauseTime(apc._pauseTime) {}
 
 
-        META_Object(osg, AnimationMaterialCallback);
+        META_Object(osg,AnimationMaterialCallback);
 
-        AnimationMaterialCallback(AnimationMaterial * ap, double timeOffset = 0.0f, double timeMultiplier = 1.0f) :
+        AnimationMaterialCallback(AnimationMaterial* ap,double timeOffset=0.0f,double timeMultiplier=1.0f):
             _animationMaterial(ap),
             _useInverseMatrix(false),
             _timeOffset(timeOffset),
@@ -151,67 +126,48 @@ public:
             _pause(false),
             _pauseTime(0.0) {}
 
-        void setAnimationMaterial(AnimationMaterial *path)
-        {
-            _animationMaterial = path;
-        }
+        void setAnimationMaterial(AnimationMaterial* path) { _animationMaterial = path; }
 
-        AnimationMaterial* getAnimationMaterial()
-        {
-            return _animationMaterial.get();
-        }
+        AnimationMaterial* getAnimationMaterial() { return _animationMaterial.get(); }
 
-        const AnimationMaterial* getAnimationMaterial() const
-        {
-            return _animationMaterial.get();
-        }
+        const AnimationMaterial* getAnimationMaterial() const { return _animationMaterial.get(); }
 
-        void setTimeOffset(double offset)
-        {
-            _timeOffset = offset;
-        }
-        double getTimeOffset() const
-        {
-            return _timeOffset;
-        }
+        void setTimeOffset(double offset) { _timeOffset = offset; }
+        double getTimeOffset() const { return _timeOffset; }
 
-        void setTimeMultiplier(double multiplier)
-        {
-            _timeMultiplier = multiplier;
-        }
-        double getTimeMultiplier() const
-        {
-            return _timeMultiplier;
-        }
+        void setTimeMultiplier(double multiplier) { _timeMultiplier = multiplier; }
+        double getTimeMultiplier() const { return _timeMultiplier; }
 
         void reset();
 
         void setPause(bool pause);
 
         /** get the animation time that is used to specify the position along the AnimationMaterial.
-         * Animation time is computed from the formula ((_latestTime-_firstTime)-_timeOffset)*_timeMultiplier.*/
+          * Animation time is computed from the formula ((_latestTime-_firstTime)-_timeOffset)*_timeMultiplier.*/
         double getAnimationTime() const;
 
         /** implements the callback*/
-        virtual void operator()(osg::Node * node, osg::NodeVisitor * nv);
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 
-        void update(osg::Node &node);
+        void update(osg::Node& node);
 
-public:
+    public:
 
-        osg::ref_ptr < AnimationMaterial > _animationMaterial;
-        bool   _useInverseMatrix;
-        double _timeOffset;
-        double _timeMultiplier;
-        double _firstTime;
-        double _latestTime;
-        bool   _pause;
-        double _pauseTime;
+        osg::ref_ptr<AnimationMaterial>     _animationMaterial;
+        bool                                _useInverseMatrix;
+        double                              _timeOffset;
+        double                              _timeMultiplier;
+        double                              _firstTime;
+        double                              _latestTime;
+        bool                                _pause;
+        double                              _pauseTime;
 
-protected:
+    protected:
 
         ~AnimationMaterialCallback(){}
-    };
+
+};
+
 }
 
 #endif

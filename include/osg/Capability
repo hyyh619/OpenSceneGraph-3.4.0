@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_ENABLEI
 #define OSG_ENABLEI 1
@@ -18,28 +18,29 @@
 #include <osg/StateAttribute>
 
 namespace osg {
-    class OSG_EXPORT Capability: public osg::StateAttribute
-    {
-public:
+
+class OSG_EXPORT Capability : public osg::StateAttribute
+{
+    public :
 
         Capability();
 
-        Capability(GLenum capability) :
+        Capability(GLenum capability):
             _capability(capability) {}
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        Capability(const Capability &cap, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
+        Capability(const Capability& cap,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
             StateAttribute(cap, copyop),
             _capability(cap._capability) {}
 
         META_Object(osg, Capability);
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute &sa) const
+        virtual int compare(const StateAttribute& sa) const
         {
             // Check for equal types, then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(Capability, sa)
+            COMPARE_StateAttribute_Types(Capability,sa)
 
             COMPARE_StateAttribute_Parameter(_capability);
 
@@ -47,53 +48,45 @@ public:
         }
 
         /** Return the Type identifier of the attribute's class type.*/
-        virtual Type getType() const
-        {
-            return static_cast < Type > (CAPABILITY + _capability);
-        }
+        virtual Type getType() const { return static_cast<Type>(CAPABILITY+_capability); }
 
-        void setCapability(GLenum capability)
-        {
-            _capability = capability;
-        }
+        void setCapability(GLenum capability) { _capability = capability; }
 
-        GLenum getCapability() const
-        {
-            return _capability;
-        }
+        GLenum getCapability() const { return _capability; }
 
-protected:
+    protected:
 
         virtual ~Capability();
 
-        GLenum _capability;
-    };
+        GLenum          _capability;
+
+};
 
 /** Encapsulates glEnablei/glDisablei
- */
-    class OSG_EXPORT Capabilityi: public osg::Capability
-    {
-public:
+*/
+class OSG_EXPORT Capabilityi : public osg::Capability
+{
+    public :
 
         Capabilityi();
 
-        Capabilityi(GLenum capability, unsigned int buf) :
+        Capabilityi(GLenum capability, unsigned int buf):
             Capability(capability),
             _index(buf) {}
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        Capabilityi(const Capabilityi &cap, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            Capability(cap, copyop),
+        Capabilityi(const Capabilityi& cap,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            Capability(cap,copyop),
             _index(cap._index) {}
 
         META_Object(osg, Capabilityi);
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute &sa) const
+        virtual int compare(const StateAttribute& sa) const
         {
             // Check for equal types, then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(Capabilityi, sa)
+            COMPARE_StateAttribute_Types(Capabilityi,sa)
 
             COMPARE_StateAttribute_Parameter(_index);
             COMPARE_StateAttribute_Parameter(_capability);
@@ -102,42 +95,34 @@ public:
         }
 
         /** Return the member identifier within the attribute's class type. Used for light number/clip plane number etc.*/
-        virtual unsigned int getMember() const
-        {
-            return _index;
-        }
+        virtual unsigned int getMember() const { return _index; }
 
         /** Set the renderbuffer index of the Enablei. */
-        void setIndex(unsigned int buf)
-        {
-            _index = buf;
-        }
+        void setIndex(unsigned int buf) { _index = buf; }
 
         /** Get the renderbuffer index of the Enablei. */
-        unsigned int getIndex() const
-        {
-            return _index;
-        }
+        unsigned int getIndex() const { return _index; }
 
 protected:
 
         virtual ~Capabilityi();
 
-        unsigned int _index;
-    };
+        unsigned int    _index;
 
-    class OSG_EXPORT Enablei: public Capabilityi
-    {
-public:
+};
+
+class OSG_EXPORT Enablei : public Capabilityi
+{
+    public :
 
         Enablei() {}
 
-        Enablei(unsigned int buf, GLenum capability) :
+        Enablei(unsigned int buf, GLenum capability):
             Capabilityi(buf, capability) {}
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        Enablei(const Enablei &ei, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            Capabilityi(ei, copyop) {}
+        Enablei(const Enablei& ei,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            Capabilityi(ei,copyop) {}
 
         META_Object(osg, Capabilityi);
 
@@ -146,30 +131,31 @@ public:
 protected:
 
         virtual ~Enablei() {}
-    };
+};
 
 
-    class OSG_EXPORT Disablei: public Capabilityi
-    {
-public:
+class OSG_EXPORT Disablei : public Capabilityi
+{
+    public :
 
         Disablei() {}
 
-        Disablei(unsigned int buf, GLenum capability) :
+        Disablei(unsigned int buf, GLenum capability):
             Capabilityi(buf, capability) {}
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        Disablei(const Disablei &ei, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            Capabilityi(ei, copyop) {}
+        Disablei(const Disablei& ei,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            Capabilityi(ei,copyop) {}
 
         META_Object(osg, Capabilityi);
 
         virtual void apply(State&) const;
 
-protected:
+    protected:
 
         virtual ~Disablei() {}
-    };
+};
+
 }
 
 #endif

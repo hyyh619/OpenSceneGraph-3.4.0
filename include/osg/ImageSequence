@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_IMAGESEQUENCE
 #define OSG_IMAGESEQUENCE 1
@@ -21,71 +21,45 @@
 #include <set>
 
 namespace osg {
+
 /**
- * Image Buffer class.
- */
-    class OSG_EXPORT ImageSequence: public ImageStream
-    {
-public:
+  * Image Buffer class.
+*/
+class OSG_EXPORT ImageSequence : public ImageStream
+{
+    public:
         ImageSequence();
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        ImageSequence(const ImageSequence &ImageSequence, const CopyOp &copyop = CopyOp::SHALLOW_COPY);
+        ImageSequence(const ImageSequence& ImageSequence, const CopyOp& copyop=CopyOp::SHALLOW_COPY);
 
-        virtual Object* cloneType() const
-        {
-            return new ImageSequence();
-        }
-        virtual Object* clone(const CopyOp &copyop) const
-        {
-            return new ImageSequence(*this, copyop);
-        }
-        virtual bool isSameKindAs(const Object *obj) const
-        {
-            return dynamic_cast < const ImageSequence * > (obj) != 0;
-        }
-        virtual const char* libraryName() const
-        {
-            return "osg";
-        }
-        virtual const char* className() const
-        {
-            return "ImageSequence";
-        }
+        virtual Object* cloneType() const { return new ImageSequence(); }
+        virtual Object* clone(const CopyOp& copyop) const { return new ImageSequence(*this,copyop); }
+        virtual bool isSameKindAs(const Object* obj) const { return dynamic_cast<const ImageSequence*>(obj)!=0; }
+        virtual const char* libraryName() const { return "osg"; }
+        virtual const char* className() const { return "ImageSequence"; }
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const Image &rhs) const;
+        virtual int compare(const Image& rhs) const;
 
-        virtual void setReferenceTime(double t)
-        {
-            _referenceTime = t;
-        }
-        virtual double getReferenceTime() const
-        {
-            return _referenceTime;
-        }
+        virtual void setReferenceTime(double t) { _referenceTime = t; }
+        virtual double getReferenceTime() const { return _referenceTime; }
 
-        virtual void setTimeMultiplier(double tm)
-        {
-            _timeMultiplier = tm;
-        }
-        virtual double getTimeMultiplier() const
-        {
-            return _timeMultiplier;
-        }
+        virtual void setTimeMultiplier(double tm) { _timeMultiplier = tm; }
+        virtual double getTimeMultiplier() const { return _timeMultiplier; }
 
         struct OSG_EXPORT ImageData
         {
             ImageData();
-            ImageData(const ImageData &id);
-            ImageData &operator = (const ImageData &id);
+            ImageData(const ImageData& id);
+            ImageData& operator = (const ImageData& id);
 
-            std::string _filename;
-            osg::ref_ptr < osg::Image > _image;
-            osg::ref_ptr < osg::Referenced > _imageRequest;
+            std::string                     _filename;
+            osg::ref_ptr<osg::Image>        _image;
+            osg::ref_ptr<osg::Referenced>   _imageRequest;
         };
 
-        typedef std::vector < ImageData > ImageDataList;
+        typedef std::vector<ImageData> ImageDataList;
 
         virtual void seek(double time);
 
@@ -105,81 +79,51 @@ public:
         };
 
         void setMode(Mode mode);
-        Mode getMode() const
-        {
-            return _mode;
-        }
+        Mode getMode() const { return _mode; }
 
         void setLength(double length);
-        virtual double getLength() const
-        {
-            return _length;
-        }
+        virtual double getLength() const { return _length; }
 
 
-        void addImageFile(const std::string &fileName);
+        void addImageFile(const std::string& fileName);
 
-        void setImageFile(unsigned int pos, const std::string &fileName);
+        void setImageFile(unsigned int pos, const std::string& fileName);
         std::string getImageFile(unsigned int pos) const;
 
-        void addImage(osg::Image *image);
+        void addImage(osg::Image* image);
 
-        void setImage(int s, int t, int r,
+        void setImage(int s,int t,int r,
                       GLint internalTextureformat,
-                      GLenum pixelFormat, GLenum type,
-                      unsigned char *data,
+                      GLenum pixelFormat,GLenum type,
+                      unsigned char* data,
                       AllocationMode mode,
-                      int packing = 1)
-        {
-            Image::setImage(s, t, r, internalTextureformat, pixelFormat, type, data, mode, packing);
-        }
+                      int packing=1) { Image::setImage(s,t,r,internalTextureformat, pixelFormat, type, data, mode, packing); }
 
-        void setImage(unsigned int pos, osg::Image *image);
+        void setImage(unsigned int pos, osg::Image* image);
         Image* getImage(unsigned int pos);
         const Image* getImage(unsigned int pos) const;
 
-        unsigned int getNumImageData() const
-        {
-            return _imageDataList.size();
-        }
+        unsigned int getNumImageData() const { return _imageDataList.size(); }
 
-        ImageDataList&getImageDataList()
-        {
-            return _imageDataList;
-        }
-        const ImageDataList&getImageDataList() const
-        {
-            return _imageDataList;
-        }
+        ImageDataList& getImageDataList() { return _imageDataList; }
+        const ImageDataList& getImageDataList() const { return _imageDataList; }
 
-
+        
         /** ImageSequence requires a call to update(NodeVisitor*) during the update traversal so return true.*/
-        virtual bool requiresUpdateCall() const
-        {
-            return true;
-        }
+        virtual bool requiresUpdateCall() const { return true; }
 
         /** update method for osg::Image subclasses that update themselves during the update traversal.*/
-        virtual void update(NodeVisitor *nv);
+        virtual void update(NodeVisitor* nv);
 
 
         /** Set the optional osgDB::Options object to use when reading images.*/
-        void setReadOptions(osg::Referenced *options)
-        {
-            _readOptions = options;
-        }
+        void setReadOptions(osg::Referenced* options) { _readOptions = options; }
 
         /** Get the optional osgDB::Options object used when reading images.*/
-        osg::Referenced* getReadOptions()
-        {
-            return _readOptions.get();
-        }
+        osg::Referenced* getReadOptions() { return _readOptions.get(); }
 
         /** Get the optional osgDB::Options object used when reading images.*/
-        const osg::Referenced* getReadOptions() const
-        {
-            return _readOptions.get();
-        }
+        const osg::Referenced* getReadOptions() const { return _readOptions.get(); }
 
 protected:
 
@@ -194,28 +138,30 @@ protected:
         int imageIndex(double time);
 
         // setImage without acquiring mutex.
-        void _setImage(unsigned int pos, osg::Image *image);
+        void _setImage(unsigned int pos, osg::Image* image);
 
-        double _referenceTime;
-        double _timeMultiplier;
+        double                          _referenceTime;
+        double                          _timeMultiplier;
 
-        Mode   _mode;
-        double _length;
+        Mode                            _mode;
+        double                          _length;
 
-        double _timePerImage;
+        double                          _timePerImage;
 
-        mutable OpenThreads::Mutex _mutex;
+        mutable OpenThreads::Mutex      _mutex;
 
-        ImageDataList _imageDataList;
+        ImageDataList                   _imageDataList;
 
-        int _previousAppliedImageIndex;
+        int                             _previousAppliedImageIndex;
 
 
-        bool   _seekTimeSet;
-        double _seekTime;
+        bool                            _seekTimeSet;
+        double                          _seekTime;
 
-        osg::ref_ptr < osg::Referenced > _readOptions;
-    };
+        osg::ref_ptr<osg::Referenced>       _readOptions;
+
+};
+
 } // namespace
 
 #endif

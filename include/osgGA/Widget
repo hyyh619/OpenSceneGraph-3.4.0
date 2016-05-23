@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGUI_WIDGET
 #define OSGUI_WIDGET
@@ -23,75 +23,68 @@
 
 namespace osgGA
 {
-    class OSGGA_EXPORT Widget: public osg::Group
-    {
+
+class OSGGA_EXPORT Widget : public osg::Group
+{
 public:
-        Widget();
-        Widget(const Widget &tfw, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
-        META_Node(osgGA, Widget);
+    Widget();
+    Widget(const Widget& tfw, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+    META_Node(osgGA, Widget);
 
-        virtual void traverse(osg::NodeVisitor &nv);
-        virtual void traverseImplementation(osg::NodeVisitor &nv);
+    virtual void traverse(osg::NodeVisitor& nv);
+    virtual void traverseImplementation(osg::NodeVisitor& nv);
 
-        virtual bool handle(osgGA::EventVisitor *ev, osgGA::Event *event);
-        virtual bool handleImplementation(osgGA::EventVisitor *ev, osgGA::Event *event);
+    virtual bool handle(osgGA::EventVisitor* ev, osgGA::Event* event);
+    virtual bool handleImplementation(osgGA::EventVisitor* ev, osgGA::Event* event);
 
-        virtual bool computePositionInLocalCoordinates(osgGA::EventVisitor *ev, osgGA::GUIEventAdapter *event, osg::Vec3 &localPosition) const;
+    virtual bool computePositionInLocalCoordinates(osgGA::EventVisitor* ev, osgGA::GUIEventAdapter* event, osg::Vec3& localPosition) const;
 
-        virtual void createGraphics();
-        virtual void createGraphicsImplementation();
+    virtual void createGraphics();
+    virtual void createGraphicsImplementation();
 
-        virtual void setExtents(const osg::BoundingBoxf &bb);
-        const osg::BoundingBoxf&getExtents() const
-        {
-            return _extents;
-        }
+    virtual void setExtents(const osg::BoundingBoxf& bb);
+    const osg::BoundingBoxf& getExtents() const { return _extents; }
 
-        enum FocusBehaviour
-        {
-            CLICK_TO_FOCUS,
-            FOCUS_FOLLOWS_POINTER,
-            EVENT_DRIVEN_FOCUS_DISABLED
-        };
+    enum FocusBehaviour
+    {
+        CLICK_TO_FOCUS,
+        FOCUS_FOLLOWS_POINTER,
+        EVENT_DRIVEN_FOCUS_DISABLED
+    };
 
-        void setFocusBehaviour(FocusBehaviour behaviour)
-        {
-            _focusBehaviour = behaviour;
-        }
-        FocusBehaviour getFocusBehaviour() const
-        {
-            return _focusBehaviour;
-        }
+    void setFocusBehaviour(FocusBehaviour behaviour) { _focusBehaviour = behaviour; }
+    FocusBehaviour getFocusBehaviour() const { return _focusBehaviour; }
 
-        /** update the focus according to events.*/
-        virtual void updateFocus(osg::NodeVisitor &nv);
+    /** update the focus according to events.*/
+    virtual void updateFocus(osg::NodeVisitor& nv);
 
-        /** set whether the widget has focus or not.*/
-        virtual void setHasEventFocus(bool focus);
+    /** set whether the widget has focus or not.*/
+    virtual void setHasEventFocus(bool focus);
 
-        /** get whether the widget has focus or not.*/
-        virtual bool getHasEventFocus() const;
+    /** get whether the widget has focus or not.*/
+    virtual bool getHasEventFocus() const;
 
-        virtual osg::BoundingSphere computeBound() const;
+    virtual osg::BoundingSphere computeBound() const;
 
-        /** update any focus related graphics+state to the focused state.*/
-        virtual void enter();
-        virtual void enterImplementation();
+    /** update any focus related graphics+state to the focused state.*/
+    virtual void enter();
+    virtual void enterImplementation();
 
-        /** update any focus related graphics+state to the unfocused state.*/
-        virtual void leave();
-        virtual void leaveImplementation();
+    /** update any focus related graphics+state to the unfocused state.*/
+    virtual void leave();
+    virtual void leaveImplementation();
 
 
 protected:
-        virtual ~Widget() {}
+    virtual ~Widget() {}
 
-        FocusBehaviour _focusBehaviour;
-        bool           _hasEventFocus;
-        bool           _graphicsInitialized;
+    FocusBehaviour      _focusBehaviour;
+    bool                _hasEventFocus;
+    bool                _graphicsInitialized;
 
-        osg::BoundingBoxf _extents;
-    };
+    osg::BoundingBoxf   _extents;
+};
+
 }
 
 #endif

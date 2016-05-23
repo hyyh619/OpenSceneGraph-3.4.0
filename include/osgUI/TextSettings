@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGUI_TEXTSETTINGS
 #define OSGUI_TEXTSETTINGS
@@ -21,38 +21,29 @@
 
 namespace osgUI
 {
-    class OSGUI_EXPORT TextSettings: public osg::Object
-    {
+
+class OSGUI_EXPORT TextSettings : public osg::Object
+{
 public:
-        TextSettings();
-        TextSettings(const TextSettings &textSettings, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
-        META_Object(osgUI, TextSettings);
+    TextSettings();
+    TextSettings(const TextSettings& textSettings, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+    META_Object(osgUI, TextSettings);
 
-        void setFont(const std::string &font)
-        {
-            _font = font;
-        }
-        const std::string&getFont() const
-        {
-            return _font;
-        }
+    void setFont(const std::string& font) { _font = font; }
+    const std::string& getFont() const { return _font; }
 
-        void setCharacterSize(float characterSize)
-        {
-            _characterSize = characterSize;
-        }
-        float getCharacterSize() const
-        {
-            return _characterSize;
-        }
+    void setCharacterSize(float characterSize) { _characterSize = characterSize; }
+    float getCharacterSize() const { return _characterSize; }
 
 protected:
 
-        virtual ~TextSettings() {}
+    virtual ~TextSettings() {}
 
-        std::string _font;
-        float       _characterSize;
-    };
+    std::string                 _font;
+    float                       _characterSize;
+};
+
+
 }
 
 #endif

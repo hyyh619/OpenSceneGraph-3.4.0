@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGANIMATION_MORPHGEOMETRY_H
 #define OSGANIMATION_MORPHGEOMETRY_H
@@ -21,109 +21,65 @@
 
 namespace osgAnimation
 {
-    class OSGANIMATION_EXPORT MorphGeometry: public osg::Geometry
-    {
-public:
 
-        enum Method
-        {
+    class OSGANIMATION_EXPORT MorphGeometry : public osg::Geometry
+    {
+
+    public:
+
+        enum Method {
             NORMALIZED,
             RELATIVE
         };
 
         class MorphTarget
         {
-protected:
-            osg::ref_ptr < osg::Geometry > _geom;
+        protected:
+            osg::ref_ptr<osg::Geometry> _geom;
             float _weight;
-public:
-            MorphTarget(osg::Geometry * geom, float w = 1.0) : _geom(geom), _weight(w) {}
-            void setWeight(float weight)
-            {
-                _weight = weight;
-            }
-            float getWeight() const
-            {
-                return _weight;
-            }
-            osg::Geometry* getGeometry()
-            {
-                return _geom.get();
-            }
-            const osg::Geometry* getGeometry() const
-            {
-                return _geom.get();
-            }
-            void setGeometry(osg::Geometry *geom)
-            {
-                _geom = geom;
-            }
+        public:
+            MorphTarget(osg::Geometry* geom, float w = 1.0) : _geom(geom), _weight(w) {}
+            void setWeight(float weight) { _weight = weight; }
+            float getWeight() const { return _weight; }
+            osg::Geometry* getGeometry() { return _geom.get(); }
+            const osg::Geometry* getGeometry() const { return _geom.get(); }
+            void setGeometry(osg::Geometry* geom) { _geom = geom; }
         };
 
-        typedef std::vector < MorphTarget > MorphTargetList;
+        typedef std::vector<MorphTarget> MorphTargetList;
 
         MorphGeometry();
-        MorphGeometry(const osg::Geometry & b);
-        MorphGeometry(const MorphGeometry &b, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        MorphGeometry(const osg::Geometry& b);
+        MorphGeometry(const MorphGeometry& b, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
-        virtual osg::Object* cloneType() const
-        {
-            return new MorphGeometry();
-        }
-        virtual osg::Object* clone(const osg::CopyOp &copyop) const
-        {
-            return new MorphGeometry(*this, copyop);
-        }
-        virtual bool isSameKindAs(const osg::Object *obj) const
-        {
-            return dynamic_cast < const MorphGeometry * > (obj) != NULL;
-        }
-        virtual const char* libraryName() const
-        {
-            return "osgAnimation";
-        }
-        virtual const char* className() const
-        {
-            return "MorphGeometry";
-        }
+        virtual osg::Object* cloneType() const { return new MorphGeometry(); }
+        virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new MorphGeometry(*this,copyop); }
+        virtual bool isSameKindAs(const osg::Object* obj) const { return dynamic_cast<const MorphGeometry*>(obj)!=NULL; }
+        virtual const char* libraryName() const { return "osgAnimation"; }
+        virtual const char* className() const { return "MorphGeometry"; }
 
         virtual void transformSoftwareMethod();
 
         /** Set the morphing method. */
-        void setMethod(Method method)
-        {
-            _method = method;
-        }
+        void setMethod(Method method) { _method = method; }
         /** Get the morphing method. */
-        inline Method getMethod() const
-        {
-            return _method;
-        }
+        inline Method getMethod() const { return _method; }
 
         /** Set flag for morphing normals. */
-        void setMorphNormals(bool morphNormals)
-        {
-            _morphNormals = morphNormals;
-        }
+        void setMorphNormals(bool morphNormals) { _morphNormals = morphNormals; }
         /** Get the flag for morphing normals. */
-        inline bool getMorphNormals() const
-        {
-            return _morphNormals;
-        }
+        inline bool getMorphNormals() const { return _morphNormals; }
 
         /** Add a \c MorphTarget to the \c MorphGeometry.
-         * If \c MorphTarget is not \c NULL and is not contained in the \c MorphGeometry
-         * then increment its reference count, add it to the MorphTargets list and
-         * dirty the bounding sphere to force it to be recomputed on the next
-         * call to \c getBound().
-         * @param morphTarget The \c MorphTarget to be added to the \c MorphGeometry.
-         * @param weight The weight to be added to the \c MorphGeometry.
-         * @return  \c true for success; \c false otherwise.
-         */
-        virtual void addMorphTarget(osg::Geometry *morphTarget, float weight = 1.0)
-        {
-            _morphTargets.push_back(MorphTarget(morphTarget, weight)); _dirty = true;
-        }
+          * If \c MorphTarget is not \c NULL and is not contained in the \c MorphGeometry
+          * then increment its reference count, add it to the MorphTargets list and
+          * dirty the bounding sphere to force it to be recomputed on the next
+          * call to \c getBound().
+          * @param morphTarget The \c MorphTarget to be added to the \c MorphGeometry.
+          * @param weight The weight to be added to the \c MorphGeometry.
+          * @return  \c true for success; \c false otherwise.
+        */
+        virtual void addMorphTarget( osg::Geometry *morphTarget, float weight = 1.0 ) { _morphTargets.push_back(MorphTarget(morphTarget, weight)); _dirty = true; }
 
         void setWeight(unsigned int index, float morphWeight)
         {
@@ -135,85 +91,71 @@ public:
         }
 
         /** Set the MorphGeometry dirty.*/
-        void dirty()
-        {
-            _dirty = true;
-        }
+        void dirty() { _dirty = true; }
 
         /** Get the list of MorphTargets.*/
-        const MorphTargetList&getMorphTargetList() const
-        {
-            return _morphTargets;
-        }
+        const MorphTargetList& getMorphTargetList() const { return _morphTargets; }
 
         /** Get the list of MorphTargets. Warning if you modify this array you will have to call dirty() */
-        MorphTargetList&getMorphTargetList()
-        {
-            return _morphTargets;
-        }
+        MorphTargetList& getMorphTargetList() { return _morphTargets; }
 
         /** Return the \c MorphTarget at position \c i.*/
-        inline const MorphTarget&getMorphTarget(unsigned int i) const
-        {
-            return _morphTargets[i];
-        }
+        inline const MorphTarget& getMorphTarget( unsigned int i ) const { return _morphTargets[i]; }
 
         /** Return the \c MorphTarget at position \c i.*/
-        inline MorphTarget&getMorphTarget(unsigned int i)
-        {
-            return _morphTargets[i];
-        }
+        inline MorphTarget& getMorphTarget( unsigned int i ) { return _morphTargets[i]; }
 
-protected:
+    protected:
         /// Do we need to recalculate the morphed geometry?
         bool _dirty;
 
         Method          _method;
         MorphTargetList _morphTargets;
 
-        std::vector < osg::Vec3 > _positionSource;
-        std::vector < osg::Vec3 > _normalSource;
+        std::vector<osg::Vec3> _positionSource;
+        std::vector<osg::Vec3> _normalSource;
 
         /// Do we also morph between normals?
         bool _morphNormals;
     };
 
-    class OSGANIMATION_EXPORT UpdateMorph: public AnimationUpdateCallback < osg::NodeCallback >
+    class OSGANIMATION_EXPORT UpdateMorph : public AnimationUpdateCallback<osg::NodeCallback>
     {
-protected:
-        std::map < int, osg::ref_ptr < osgAnimation::FloatTarget >> _weightTargets;
+    protected:
+        std::map<int, osg::ref_ptr<osgAnimation::FloatTarget> > _weightTargets;
 
-public:
+    public:
 
         META_Object(osgAnimation, UpdateMorph);
 
-        UpdateMorph(const std::string &name = "");
-        UpdateMorph(const UpdateMorph &apc, const osg::CopyOp & copyop);
+        UpdateMorph(const std::string& name = "");
+        UpdateMorph(const UpdateMorph& apc,const osg::CopyOp& copyop);
 
         /** Callback method called by the NodeVisitor when visiting a node.*/
-        virtual void operator()(osg::Node * node, osg::NodeVisitor * nv);
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
         bool needLink() const;
-        bool link(osgAnimation::Channel *channel);
+        bool link(osgAnimation::Channel* channel);
     };
 
     struct UpdateMorphGeometry : public osg::Drawable::UpdateCallback
     {
         UpdateMorphGeometry() {}
 
-        UpdateMorphGeometry(const UpdateMorphGeometry &, const osg::CopyOp &) {}
+        UpdateMorphGeometry(const UpdateMorphGeometry&, const osg::CopyOp&) {}
 
         META_Object(osgAnimation, UpdateMorphGeometry);
 
-        virtual void update(osg::NodeVisitor*, osg::Drawable *drw)
+        virtual void update(osg::NodeVisitor*, osg::Drawable* drw)
         {
-            MorphGeometry *geom = dynamic_cast < MorphGeometry * > (drw);
-
+            MorphGeometry* geom = dynamic_cast<MorphGeometry*>(drw);
             if (!geom)
                 return;
 
             geom->transformSoftwareMethod();
         }
     };
+
+
 }
 
 #endif

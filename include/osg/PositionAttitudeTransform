@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_POSITIONATTITUDETRANSFORM
 #define OSG_POSITIONATTITUDETRANSFORM 1
@@ -21,16 +21,17 @@
 #include <osg/Quat>
 
 namespace osg {
+
 /** PositionAttitudeTransform - is a Transform. Sets the coordinate transform
     via a Vec3 position and Quat attitude.
- */
-    class OSG_EXPORT PositionAttitudeTransform: public Transform
-    {
-public:
+*/
+class OSG_EXPORT PositionAttitudeTransform : public Transform
+{
+    public :
         PositionAttitudeTransform();
 
-        PositionAttitudeTransform(const PositionAttitudeTransform &pat, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            Transform(pat, copyop),
+        PositionAttitudeTransform(const PositionAttitudeTransform& pat,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            Transform(pat,copyop),
             _position(pat._position),
             _attitude(pat._attitude),
             _scale(pat._scale),
@@ -39,68 +40,39 @@ public:
 
         META_Node(osg, PositionAttitudeTransform);
 
-        virtual PositionAttitudeTransform* asPositionAttitudeTransform()
-        {
-            return this;
-        }
-        virtual const PositionAttitudeTransform* asPositionAttitudeTransform() const
-        {
-            return this;
-        }
+        virtual PositionAttitudeTransform* asPositionAttitudeTransform() { return this; }
+        virtual const PositionAttitudeTransform* asPositionAttitudeTransform() const { return this; }
 
-        inline void setPosition(const Vec3d &pos)
-        {
-            _position = pos; dirtyBound();
-        }
-        inline const Vec3d&getPosition() const
-        {
-            return _position;
-        }
+        inline void setPosition(const Vec3d& pos) { _position = pos; dirtyBound(); }
+        inline const Vec3d& getPosition() const { return _position; }
 
 
-        inline void setAttitude(const Quat &quat)
-        {
-            _attitude = quat; dirtyBound();
-        }
-        inline const Quat&getAttitude() const
-        {
-            return _attitude;
-        }
+        inline void setAttitude(const Quat& quat) { _attitude = quat; dirtyBound(); }
+        inline const Quat& getAttitude() const { return _attitude; }
 
 
-        inline void setScale(const Vec3d &scale)
-        {
-            _scale = scale; dirtyBound();
-        }
-        inline const Vec3d&getScale() const
-        {
-            return _scale;
-        }
+        inline void setScale(const Vec3d& scale) { _scale = scale; dirtyBound(); }
+        inline const Vec3d& getScale() const { return _scale; }
 
 
-        inline void setPivotPoint(const Vec3d &pivot)
-        {
-            _pivotPoint = pivot; dirtyBound();
-        }
-        inline const Vec3d&getPivotPoint() const
-        {
-            return _pivotPoint;
-        }
+        inline void setPivotPoint(const Vec3d& pivot) { _pivotPoint = pivot; dirtyBound(); }
+        inline const Vec3d& getPivotPoint() const { return _pivotPoint; }
 
 
-        virtual bool computeLocalToWorldMatrix(Matrix &matrix, NodeVisitor *nv) const;
-        virtual bool computeWorldToLocalMatrix(Matrix &matrix, NodeVisitor *nv) const;
+        virtual bool computeLocalToWorldMatrix(Matrix& matrix,NodeVisitor* nv) const;
+        virtual bool computeWorldToLocalMatrix(Matrix& matrix,NodeVisitor* nv) const;
 
 
-protected:
+    protected :
 
         virtual ~PositionAttitudeTransform() {}
 
         Vec3d _position;
-        Quat  _attitude;
+        Quat _attitude;
         Vec3d _scale;
         Vec3d _pivotPoint;
-    };
+};
+
 }
 
 #endif

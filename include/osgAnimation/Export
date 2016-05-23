@@ -9,13 +9,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 // The following symbol has a underscore suffix for compatibility.
 #ifndef OSGANIMATION_EXPORT_
 #define OSGANIMATION_EXPORT_ 1
 
-#include <osg/Config>
+#include<osg/Config>
 
 #if defined(_MSC_VER) && defined(OSG_DISABLE_MSVC_WARNINGS)
     #pragma warning( disable : 4244 )
@@ -28,13 +28,13 @@
     #pragma warning( disable : 4996 )
 #endif
 
-#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BCPLUSPLUS__) || defined(__MWERKS__)
-    #  if defined(OSG_LIBRARY_STATIC)
+#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__) || defined( __MWERKS__)
+    #  if defined( OSG_LIBRARY_STATIC )
     #    define OSGANIMATION_EXPORT
-    #  elif defined(OSGANIMATION_LIBRARY)
-    #    define OSGANIMATION_EXPORT __declspec(dllexport)
+    #  elif defined( OSGANIMATION_LIBRARY )
+    #    define OSGANIMATION_EXPORT   __declspec(dllexport)
     #  else
-    #    define OSGANIMATION_EXPORT __declspec(dllimport)
+    #    define OSGANIMATION_EXPORT   __declspec(dllimport)
     #endif
 #else
     #define OSGANIMATION_EXPORT
@@ -50,18 +50,18 @@
 
 #ifndef NULL
     #ifdef  __cplusplus
-        #define NULL 0
+        #define NULL    0
     #else
-        #define NULL ((void*)0)
+        #define NULL    ((void *)0)
     #endif
 #endif
 
 /**
 
-   \namespace osgAnimation
+\namespace osgAnimation
 
-   The osgAnimation library provides general purpose utility classes for animation.
+The osgAnimation library provides general purpose utility classes for animation.
 
- */
+*/
 
 #endif

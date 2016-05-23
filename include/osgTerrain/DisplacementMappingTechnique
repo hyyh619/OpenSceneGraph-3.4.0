@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGTERRAIN_DISPLACEMENTMAPPINGTECHNIQUE
 #define OSGTERRAIN_DISPLACEMENTMAPPINGTECHNIQUE
@@ -21,34 +21,37 @@
 
 namespace osgTerrain
 {
-    class OSGTERRAIN_EXPORT DisplacementMappingTechnique: public osgTerrain::TerrainTechnique
-    {
-public:
+
+class OSGTERRAIN_EXPORT DisplacementMappingTechnique : public osgTerrain::TerrainTechnique
+{
+    public:
 
         DisplacementMappingTechnique();
 
-        DisplacementMappingTechnique(const DisplacementMappingTechnique &, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        DisplacementMappingTechnique(const DisplacementMappingTechnique&,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
         META_Object(osgTerrain, DisplacementMappingTechnique);
 
         virtual void init(int dirtyMask, bool assumeMultiThreaded);
-        virtual void update(osgUtil::UpdateVisitor *uv);
-        virtual void cull(osgUtil::CullVisitor *cv);
-        virtual void traverse(osg::NodeVisitor &nv);
+        virtual void update(osgUtil::UpdateVisitor* uv);
+        virtual void cull(osgUtil::CullVisitor* cv);
+        virtual void traverse(osg::NodeVisitor& nv);
         virtual void cleanSceneGraph();
-        virtual void releaseGLObjects(osg::State *state) const;
+        virtual void releaseGLObjects(osg::State* state) const;
 
-protected:
+    protected:
 
         virtual ~DisplacementMappingTechnique();
 
-        mutable OpenThreads::Mutex _traversalMutex;
+        mutable OpenThreads::Mutex              _traversalMutex;
 
-        mutable OpenThreads::Mutex _transformMutex;
-        osg::ref_ptr < osg::MatrixTransform > _transform;
+        mutable OpenThreads::Mutex              _transformMutex;
+        osg::ref_ptr<osg::MatrixTransform>      _transform;
 
-        OpenThreads::Atomic _currentTraversalCount;
-    };
+        OpenThreads::Atomic                     _currentTraversalCount;
+
+};
+
 }
 
 #endif

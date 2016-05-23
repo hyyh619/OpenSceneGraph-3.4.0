@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGDB_FILECACHE
 #define OSGDB_FILECACHE 1
@@ -22,49 +22,44 @@
 #include <set>
 
 namespace osgDB {
-    class OSGDB_EXPORT FileCache: public osg::Referenced
-    {
-public:
 
-        FileCache(const std::string & path);
+class OSGDB_EXPORT FileCache : public osg::Referenced
+{
+    public:
 
-        const std::string&getFileCachePath() const
-        {
-            return _fileCachePath;
-        }
+        FileCache(const std::string& path);
 
-        virtual bool isFileAppropriateForFileCache(const std::string &originalFileName) const;
+        const std::string& getFileCachePath() const { return _fileCachePath; }
 
-        virtual std::string createCacheFileName(const std::string &originalFileName) const;
+        virtual bool isFileAppropriateForFileCache(const std::string& originalFileName) const;
 
-        virtual bool existsInCache(const std::string &originalFileName) const;
+        virtual std::string createCacheFileName(const std::string& originalFileName) const;
 
-        virtual ReaderWriter::ReadResult readImage(const std::string &originalFileName, const osgDB::Options *options) const;
-        virtual ReaderWriter::WriteResult writeImage(const osg::Image &image, const std::string &originalFileName, const osgDB::Options *options) const;
+        virtual bool existsInCache(const std::string& originalFileName) const;
 
-        virtual ReaderWriter::ReadResult readObject(const std::string &originalFileName, const osgDB::Options *options) const;
-        virtual ReaderWriter::WriteResult writeObject(const osg::Object &object, const std::string &originalFileName, const osgDB::Options *options) const;
+        virtual ReaderWriter::ReadResult readImage(const std::string& originalFileName, const osgDB::Options* options) const;
+        virtual ReaderWriter::WriteResult writeImage(const osg::Image& image, const std::string& originalFileName, const osgDB::Options* options) const;
 
-        virtual ReaderWriter::ReadResult readHeightField(const std::string &originalFileName, const osgDB::Options *options) const;
-        virtual ReaderWriter::WriteResult writeHeightField(const osg::HeightField &hf, const std::string &originalFileName, const osgDB::Options *options) const;
+        virtual ReaderWriter::ReadResult readObject(const std::string& originalFileName, const osgDB::Options* options) const;
+        virtual ReaderWriter::WriteResult writeObject(const osg::Object& object, const std::string& originalFileName, const osgDB::Options* options) const;
 
-        virtual ReaderWriter::ReadResult readNode(const std::string &originalFileName, const osgDB::Options *options, bool buildKdTreeIfRequired = true) const;
-        virtual ReaderWriter::WriteResult writeNode(const osg::Node &node, const std::string &originalFileName, const osgDB::Options *options) const;
+        virtual ReaderWriter::ReadResult readHeightField(const std::string& originalFileName, const osgDB::Options* options) const;
+        virtual ReaderWriter::WriteResult writeHeightField(const osg::HeightField& hf, const std::string& originalFileName, const osgDB::Options* options) const;
 
-        virtual ReaderWriter::ReadResult readShader(const std::string &originalFileName, const osgDB::Options *options) const;
-        virtual ReaderWriter::WriteResult writeShader(const osg::Shader &shader, const std::string &originalFileName, const osgDB::Options *options) const;
+        virtual ReaderWriter::ReadResult readNode(const std::string& originalFileName, const osgDB::Options* options, bool buildKdTreeIfRequired=true) const;
+        virtual ReaderWriter::WriteResult writeNode(const osg::Node& node, const std::string& originalFileName, const osgDB::Options* options) const;
 
-        bool loadDatabaseRevisionsForFile(const std::string &originanlFileName);
+        virtual ReaderWriter::ReadResult readShader(const std::string& originalFileName, const osgDB::Options* options) const;
+        virtual ReaderWriter::WriteResult writeShader(const osg::Shader& shader, const std::string& originalFileName, const osgDB::Options* options) const;
 
-        typedef std::list < osg::ref_ptr < DatabaseRevisions >> DatabaseRevisionsList;
-        DatabaseRevisionsList&getDatabaseRevisionsList()
-        {
-            return _databaseRevisionsList;
-        }
+        bool loadDatabaseRevisionsForFile(const std::string& originanlFileName);
 
-        bool isCachedFileBlackListed(const std::string &originalFileName) const;
+        typedef std::list< osg::ref_ptr<DatabaseRevisions> > DatabaseRevisionsList;
+        DatabaseRevisionsList& getDatabaseRevisionsList() { return _databaseRevisionsList; }
 
-protected:
+        bool isCachedFileBlackListed(const std::string& originalFileName) const;
+
+    protected:
 
         virtual ~FileCache();
 
@@ -72,9 +67,11 @@ protected:
 
         DatabaseRevisionsList _databaseRevisionsList;
 
-        FileList* readFileList(const std::string &originalFileName) const;
-        bool removeFileFromBlackListed(const std::string &originalFileName) const;
-    };
+        FileList* readFileList(const std::string& originalFileName) const;
+        bool removeFileFromBlackListed(const std::string& originalFileName) const;
+
+};
+
 }
 
 #endif

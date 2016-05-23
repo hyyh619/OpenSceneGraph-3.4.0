@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
-// osgParticle - Copyright (C) 2002 Marco Jez
+*/
+//osgParticle - Copyright (C) 2002 Marco Jez
 
 #ifndef OSGPARTICLE_FLUIDFRICTIONOPERATOR
 #define OSGPARTICLE_FLUIDFRICTIONOPERATOR 1
@@ -24,6 +24,7 @@
 
 namespace osgParticle
 {
+
     class Particle;
 
     /**    An operator that simulates the friction of a fluid.
@@ -31,12 +32,12 @@ namespace osgParticle
         and <I>viscosity</I>. There are two functions to quickly setup the parameters for pure water
         and air. You can decide whether to compute the forces using the particle's physical
         radius or another value, by calling the <CODE>setOverrideRadius()</CODE> method.
-     */
+    */
     class OSGPARTICLE_EXPORT FluidFrictionOperator: public Operator {
-public:
+    public:
 
         FluidFrictionOperator();
-        FluidFrictionOperator(const FluidFrictionOperator &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        FluidFrictionOperator(const FluidFrictionOperator& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
         META_Object(osgParticle, FluidFrictionOperator);
 
@@ -53,16 +54,10 @@ public:
         inline float getFluidViscosity() const;
 
         /// Set the wind vector.
-        inline void setWind(const osg::Vec3 &wind)
-        {
-            _wind = wind;
-        }
+        inline void setWind(const osg::Vec3& wind) { _wind = wind; }
 
         /// Get the wind vector.
-        inline const osg::Vec3&getWind() const
-        {
-            return _wind;
-        }
+        inline const osg::Vec3& getWind() const { return _wind; }
 
         /// Set the overriden radius value (pass 0 if you want to use particle's radius).
         inline void setOverrideRadius(float r);
@@ -77,23 +72,23 @@ public:
         inline void setFluidToWater();
 
         /// Apply the friction forces to a particle. Do not call this method manually.
-        void operate(Particle *P, double dt);
+        void operate(Particle* P, double dt);
 
         /// Perform some initializations. Do not call this method manually.
-        inline void beginOperate(Program *prg);
+        inline void beginOperate(Program* prg);
 
-protected:
+    protected:
         virtual ~FluidFrictionOperator() {}
-        FluidFrictionOperator &operator = (const FluidFrictionOperator&) { return *this; }
+        FluidFrictionOperator &operator=(const FluidFrictionOperator &) { return *this; }
 
-private:
-        float     _coeff_A;
-        float     _coeff_B;
-        float     _density;
-        float     _viscosity;
-        float     _ovr_rad;
-        osg::Vec3 _wind;
-        Program   *_current_program;
+    private:
+        float       _coeff_A;
+        float       _coeff_B;
+        float       _density;
+        float       _viscosity;
+        float       _ovr_rad;
+        osg::Vec3   _wind;
+        Program*    _current_program;
     };
 
     // INLINE FUNCTIONS
@@ -117,7 +112,7 @@ private:
     inline void FluidFrictionOperator::setFluidViscosity(float v)
     {
         _viscosity = v;
-        _coeff_A   = 6 * osg::PI * _viscosity;
+        _coeff_A = 6 * osg::PI * _viscosity;
     }
 
     inline void FluidFrictionOperator::setFluidToAir()
@@ -142,10 +137,11 @@ private:
         _ovr_rad = r;
     }
 
-    inline void FluidFrictionOperator::beginOperate(Program *prg)
+    inline void FluidFrictionOperator::beginOperate(Program* prg)
     {
         _current_program = prg;
     }
+
 }
 
 

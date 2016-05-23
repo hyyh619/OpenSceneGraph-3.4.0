@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGANIMATION_RIGTRANSFORM
 #define OSGANIMATION_RIGTRANSFORM 1
@@ -19,15 +19,18 @@
 
 namespace osgAnimation
 {
+
     class RigGeometry;
 
-    class RigTransform: public osg::Referenced
+    class RigTransform : public osg::Referenced
     {
-public:
+    public:
         RigTransform() {}
         virtual ~RigTransform() {}
-        virtual void operator()(RigGeometry &) {}
+        virtual void operator()(RigGeometry&) {}
+
     };
+
 }
 
 #endif

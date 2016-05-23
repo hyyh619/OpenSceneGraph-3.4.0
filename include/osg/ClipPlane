@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_CLIPPLANE
 #define OSG_CLIPPLANE 1
@@ -28,69 +28,43 @@
 #endif
 
 namespace osg {
+
 /** Encapsulates OpenGL glClipPlane().
- */
-    class OSG_EXPORT ClipPlane: public StateAttribute
-    {
-public:
+*/
+class OSG_EXPORT ClipPlane : public StateAttribute
+{
+    public :
 
         ClipPlane();
-        inline ClipPlane(unsigned int no) : _clipPlaneNum(no) {}
-        inline ClipPlane(unsigned int no, const Vec4d &plane) : _clipPlaneNum(no)
-        {
-            setClipPlane(plane);
-        }
-        inline ClipPlane(unsigned int no, const Plane &plane) : _clipPlaneNum(no)
-        {
-            setClipPlane(plane);
-        }
-        inline ClipPlane(unsigned int no, double a, double b, double c, double d) : _clipPlaneNum(no)
-        {
-            setClipPlane(a, b, c, d);
-        }
+        inline ClipPlane(unsigned int no):_clipPlaneNum(no) {}
+        inline ClipPlane(unsigned int no,const Vec4d& plane):_clipPlaneNum(no) { setClipPlane(plane); }
+        inline ClipPlane(unsigned int no,const Plane& plane):_clipPlaneNum(no) { setClipPlane(plane); }
+        inline ClipPlane(unsigned int no,double a,double b,double c,double d): _clipPlaneNum(no) { setClipPlane(a,b,c,d); }
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy. */
-        ClipPlane(const ClipPlane &cp, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            StateAttribute(cp, copyop)
+        ClipPlane(const ClipPlane& cp,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            StateAttribute(cp,copyop)
         {
-            _clipPlane[0] = cp._clipPlane[0];
-            _clipPlane[1] = cp._clipPlane[1];
-            _clipPlane[2] = cp._clipPlane[2];
-            _clipPlane[3] = cp._clipPlane[3];
-            _clipPlaneNum = cp._clipPlaneNum;
+            _clipPlane[0]=cp._clipPlane[0];
+            _clipPlane[1]=cp._clipPlane[1];
+            _clipPlane[2]=cp._clipPlane[2];
+            _clipPlane[3]=cp._clipPlane[3];
+            _clipPlaneNum=cp._clipPlaneNum;
         }
 
-        virtual osg::Object* cloneType() const
-        {
-            return new ClipPlane(_clipPlaneNum);
-        }
-        virtual osg::Object* clone(const osg::CopyOp &copyop) const
-        {
-            return new ClipPlane(*this, copyop);
-        }
-        virtual bool isSameKindAs(const osg::Object *obj) const
-        {
-            return dynamic_cast < const ClipPlane * > (obj) != NULL;
-        }
-        virtual const char* libraryName() const
-        {
-            return "osg";
-        }
-        virtual const char* className() const
-        {
-            return "ClipPlane";
-        }
-        virtual Type getType() const
-        {
-            return CLIPPLANE;
-        }
+        virtual osg::Object* cloneType() const { return new ClipPlane( _clipPlaneNum ); }
+        virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new ClipPlane(*this,copyop); }
+        virtual bool isSameKindAs(const osg::Object* obj) const { return dynamic_cast<const ClipPlane *>(obj)!=NULL; }
+        virtual const char* libraryName() const { return "osg"; }
+        virtual const char* className() const { return "ClipPlane"; }
+        virtual Type getType() const { return CLIPPLANE; }
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute &sa) const
+        virtual int compare(const StateAttribute& sa) const
         {
             // Check for equal types, then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(ClipPlane, sa)
+            COMPARE_StateAttribute_Types(ClipPlane,sa)
 
             // Compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_clipPlaneNum)
@@ -102,41 +76,32 @@ public:
             return 0; // Passed all the above comparison macros, so must be equal.
         }
 
-        virtual unsigned int getMember() const
-        {
-            return _clipPlaneNum;
-        }
+        virtual unsigned int getMember() const { return _clipPlaneNum; }
 
-        virtual bool getModeUsage(StateAttribute::ModeUsage &usage) const
+        virtual bool getModeUsage(StateAttribute::ModeUsage& usage) const
         {
-            usage.usesMode((GLMode)(GL_CLIP_PLANE0 + _clipPlaneNum));
+            usage.usesMode((GLMode)(GL_CLIP_PLANE0+_clipPlaneNum));
             return true;
         }
 
 
         /** Set the clip plane with the given Plane. */
-        void setClipPlane(const Plane &plane)
+        void setClipPlane(const Plane& plane)
         {
-            _clipPlane.set(plane[0], plane[1], plane[2], plane[3]);
+           _clipPlane.set(plane[0],plane[1],plane[2],plane[3]);
         }
 
         /** Defines the plane as [ a b c d ]. */
-        void setClipPlane(double a, double b, double c, double d)
+        void setClipPlane(double a,double b,double c,double d)
         {
-            _clipPlane.set(a, b, c, d);
+            _clipPlane.set(a,b,c,d);
         }
 
         /** Set the clip plane with the given Vec4. */
-        inline void setClipPlane(const Vec4d &plane)
-        {
-            _clipPlane = plane;
-        }
+        inline void setClipPlane(const Vec4d& plane) { _clipPlane = plane; }
 
         /** Gets the clip plane as a Vec4d. */
-        const Vec4d&getClipPlane() const
-        {
-            return _clipPlane;
-        }
+        const Vec4d& getClipPlane() const { return _clipPlane; }
 
 
         /** Sets the clip plane number. */
@@ -146,15 +111,17 @@ public:
         unsigned int getClipPlaneNum() const;
 
         /** Applies the clip plane's state to the OpenGL state machine. */
-        virtual void apply(State &state) const;
+        virtual void apply(State& state) const;
 
-protected:
+    protected :
 
         virtual ~ClipPlane();
 
-        Vec4d        _clipPlane;
-        unsigned int _clipPlaneNum;
-    };
+        Vec4d               _clipPlane;
+        unsigned int        _clipPlaneNum;
+
+};
+
 }
 
 #endif

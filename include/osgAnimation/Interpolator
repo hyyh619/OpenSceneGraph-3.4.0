@@ -24,59 +24,51 @@
 
 namespace osgAnimation
 {
-    template < class TYPE, class KEY >
+
+    template <class TYPE, class KEY>
     class TemplateInterpolatorBase
     {
-public:
+    public:
         typedef KEY KeyframeType;
         typedef TYPE UsingType;
 
-public:
+    public:
         TemplateInterpolatorBase() {}
 
-        int getKeyIndexFromTime(const TemplateKeyframeContainer < KEY > &keys, double time) const
+        int getKeyIndexFromTime(const TemplateKeyframeContainer<KEY>& keys, double time) const
         {
             int key_size = keys.size();
-
-            if (!key_size)
-            {
+            if (!key_size) {
                 osg::notify(osg::WARN) << "TemplateInterpolatorBase::getKeyIndexFromTime the container is empty, impossible to get key index from time" << std::endl;;
                 return -1;
             }
-
-            const TemplateKeyframe < KeyframeType > *keysVector = &keys.front();
-            int   k   = 0;
-            int   l   = key_size;
-            int   mid = key_size / 2;
-
-            while (mid != k)
-            {
+            const TemplateKeyframe<KeyframeType>* keysVector = &keys.front();
+            int k = 0;
+            int l = key_size;
+            int mid = key_size/2;
+            while(mid != k){
                 double time1 = keysVector[mid].getTime();
-                if (time1 < time)
-                {
+                if(time1 < time){
                     k = mid;
-                }
-                else
-                {
+                } else {
                     l = mid;
                 }
-
-                mid = (l + k) / 2;
+                mid = (l+k)/2;
             }
-
             return k;
         }
     };
 
 
-    template < class TYPE, class KEY = TYPE >
-                                       class TemplateStepInterpolator: public TemplateInterpolatorBase < TYPE, KEY >
+    template <class TYPE, class KEY=TYPE>
+    class TemplateStepInterpolator : public TemplateInterpolatorBase<TYPE,KEY>
     {
-public:
+    public:
 
         TemplateStepInterpolator() {}
-        void getValue(const TemplateKeyframeContainer < KEY > &keyframes, double time, TYPE &result) const
+        void getValue(const TemplateKeyframeContainer<KEY>& keyframes, double time, TYPE& result) const
         {
+
             if (time >= keyframes.back().getTime())
             {
                 result = keyframes.back().getValue();
@@ -88,20 +80,21 @@ public:
                 return;
             }
 
-            int i = this->getKeyIndexFromTime(keyframes, time);
+            int i = this->getKeyIndexFromTime(keyframes,time);
             result = keyframes[i].getValue();
         }
     };
 
 
-    template < class TYPE, class KEY = TYPE >
-                                       class TemplateLinearInterpolator: public TemplateInterpolatorBase < TYPE, KEY >
+    template <class TYPE, class KEY=TYPE>
+    class TemplateLinearInterpolator : public TemplateInterpolatorBase<TYPE,KEY>
     {
-public:
+    public:
 
         TemplateLinearInterpolator() {}
-        void getValue(const TemplateKeyframeContainer < KEY > &keyframes, double time, TYPE &result) const
+        void getValue(const TemplateKeyframeContainer<KEY>& keyframes, double time, TYPE& result) const
         {
+
             if (time >= keyframes.back().getTime())
             {
                 result = keyframes.back().getValue();
@@ -113,21 +106,21 @@ public:
                 return;
             }
 
-            int        i     = this->getKeyIndexFromTime(keyframes, time);
-            float      blend = (time - keyframes[i].getTime()) / (keyframes[i + 1].getTime() - keyframes[i].getTime());
-            const TYPE &v1   = keyframes[i].getValue();
-            const TYPE &v2   = keyframes[i + 1].getValue();
-            result = v1 * (1 - blend) + v2 * blend;
+            int i = this->getKeyIndexFromTime(keyframes,time);
+            float blend = (time - keyframes[i].getTime()) / ( keyframes[i+1].getTime() -  keyframes[i].getTime());
+            const TYPE& v1 =  keyframes[i].getValue();
+            const TYPE& v2 =  keyframes[i+1].getValue();
+            result = v1*(1-blend) + v2*blend;
         }
     };
 
 
-    template < class TYPE, class KEY = TYPE >
-                                       class TemplateSphericalLinearInterpolator: public TemplateInterpolatorBase < TYPE, KEY >
+    template <class TYPE, class KEY=TYPE>
+    class TemplateSphericalLinearInterpolator : public TemplateInterpolatorBase<TYPE,KEY>
     {
-public:
+    public:
         TemplateSphericalLinearInterpolator() {}
-        void getValue(const TemplateKeyframeContainer < KEY > &keyframes, double time, TYPE &result) const
+        void getValue(const TemplateKeyframeContainer<KEY>& keyframes, double time, TYPE& result) const
         {
             if (time >= keyframes.back().getTime())
             {
@@ -140,22 +133,22 @@ public:
                 return;
             }
 
-            int        i     = this->getKeyIndexFromTime(keyframes, time);
-            float      blend = (time - keyframes[i].getTime()) / (keyframes[i + 1].getTime() - keyframes[i].getTime());
-            const TYPE &q1   = keyframes[i].getValue();
-            const TYPE &q2   = keyframes[i + 1].getValue();
-            result.slerp(blend, q1, q2);
+            int i = this->getKeyIndexFromTime(keyframes,time);
+            float blend = (time -  keyframes[i].getTime()) / ( keyframes[i+1].getTime() -  keyframes[i].getTime());
+            const TYPE& q1 =  keyframes[i].getValue();
+            const TYPE& q2 =  keyframes[i+1].getValue();
+            result.slerp(blend,q1,q2);
         }
     };
 
 
-    template < class TYPE, class KEY >
-    class TemplateLinearPackedInterpolator: public TemplateInterpolatorBase < TYPE, KEY >
+    template <class TYPE, class KEY>
+    class TemplateLinearPackedInterpolator : public TemplateInterpolatorBase<TYPE,KEY>
     {
-public:
+    public:
 
         TemplateLinearPackedInterpolator() {}
-        void getValue(const TemplateKeyframeContainer < KEY > &keyframes, double time, TYPE &result) const
+        void getValue(const TemplateKeyframeContainer<KEY>& keyframes, double time, TYPE& result) const
         {
             if (time >= keyframes.back().getTime())
             {
@@ -168,25 +161,26 @@ public:
                 return;
             }
 
-            int   i     = this->getKeyIndexFromTime(keyframes, time);
-            float blend = (time - keyframes[i].getTime()) / (keyframes[i + 1].getTime() - keyframes[i].getTime());
-            TYPE  v1, v2;
+            int i = this->getKeyIndexFromTime(keyframes,time);
+            float blend = (time - keyframes[i].getTime()) / ( keyframes[i+1].getTime() -  keyframes[i].getTime());
+            TYPE v1,v2;
             keyframes[i].getValue().uncompress(keyframes.mScale, keyframes.mMin, v1);
-            keyframes[i + 1].getValue().uncompress(keyframes.mScale, keyframes.mMin, v2);
-            result = v1 * (1 - blend) + v2 * blend;
+            keyframes[i+1].getValue().uncompress(keyframes.mScale, keyframes.mMin, v2);
+            result = v1*(1-blend) + v2*blend;
         }
     };
 
 
     // http://en.wikipedia.org/wiki/B%C3%A9zier_curve
-    template < class TYPE, class KEY = TYPE >
-                                       class TemplateCubicBezierInterpolator: public TemplateInterpolatorBase < TYPE, KEY >
+    template <class TYPE, class KEY=TYPE>
+    class TemplateCubicBezierInterpolator : public TemplateInterpolatorBase<TYPE,KEY>
     {
-public:
+    public:
 
         TemplateCubicBezierInterpolator() {}
-        void getValue(const TemplateKeyframeContainer < KEY > &keyframes, double time, TYPE &result) const
+        void getValue(const TemplateKeyframeContainer<KEY>& keyframes, double time, TYPE& result) const
         {
+
             if (time >= keyframes.back().getTime())
             {
                 result = keyframes.back().getValue().getPosition();
@@ -198,44 +192,45 @@ public:
                 return;
             }
 
-            int i = this->getKeyIndexFromTime(keyframes, time);
+            int i = this->getKeyIndexFromTime(keyframes,time);
 
-            float t            = (time - keyframes[i].getTime()) / (keyframes[i + 1].getTime() - keyframes[i].getTime());
-            float one_minus_t  = 1.0 - t;
+            float t = (time - keyframes[i].getTime()) / ( keyframes[i+1].getTime() -  keyframes[i].getTime());
+            float one_minus_t = 1.0-t;
             float one_minus_t2 = one_minus_t * one_minus_t;
             float one_minus_t3 = one_minus_t2 * one_minus_t;
-            float t2           = t * t;
+            float t2 = t * t;
 
             TYPE v0 = keyframes[i].getValue().getPosition() * one_minus_t3;
             TYPE v1 = keyframes[i].getValue().getControlPointIn() * (3.0 * t * one_minus_t2);
             TYPE v2 = keyframes[i].getValue().getControlPointOut() * (3.0 * t2 * one_minus_t);
-            TYPE v3 = keyframes[i + 1].getValue().getPosition() * (t2 * t);
+            TYPE v3 = keyframes[i+1].getValue().getPosition() * (t2 * t);
 
             result = v0 + v1 + v2 + v3;
         }
     };
 
-    typedef TemplateStepInterpolator < double, double > DoubleStepInterpolator;
-    typedef TemplateStepInterpolator < float, float > FloatStepInterpolator;
-    typedef TemplateStepInterpolator < osg::Vec2, osg::Vec2 > Vec2StepInterpolator;
-    typedef TemplateStepInterpolator < osg::Vec3, osg::Vec3 > Vec3StepInterpolator;
-    typedef TemplateStepInterpolator < osg::Vec3, Vec3Packed > Vec3PackedStepInterpolator;
-    typedef TemplateStepInterpolator < osg::Vec4, osg::Vec4 > Vec4StepInterpolator;
-    typedef TemplateStepInterpolator < osg::Quat, osg::Quat > QuatStepInterpolator;
+    typedef TemplateStepInterpolator<double, double> DoubleStepInterpolator;
+    typedef TemplateStepInterpolator<float, float> FloatStepInterpolator;
+    typedef TemplateStepInterpolator<osg::Vec2, osg::Vec2> Vec2StepInterpolator;
+    typedef TemplateStepInterpolator<osg::Vec3, osg::Vec3> Vec3StepInterpolator;
+    typedef TemplateStepInterpolator<osg::Vec3, Vec3Packed> Vec3PackedStepInterpolator;
+    typedef TemplateStepInterpolator<osg::Vec4, osg::Vec4> Vec4StepInterpolator;
+    typedef TemplateStepInterpolator<osg::Quat, osg::Quat> QuatStepInterpolator;
 
-    typedef TemplateLinearInterpolator < double, double > DoubleLinearInterpolator;
-    typedef TemplateLinearInterpolator < float, float > FloatLinearInterpolator;
-    typedef TemplateLinearInterpolator < osg::Vec2, osg::Vec2 > Vec2LinearInterpolator;
-    typedef TemplateLinearInterpolator < osg::Vec3, osg::Vec3 > Vec3LinearInterpolator;
-    typedef TemplateLinearInterpolator < osg::Vec3, Vec3Packed > Vec3PackedLinearInterpolator;
-    typedef TemplateLinearInterpolator < osg::Vec4, osg::Vec4 > Vec4LinearInterpolator;
-    typedef TemplateSphericalLinearInterpolator < osg::Quat, osg::Quat > QuatSphericalLinearInterpolator;
-    typedef TemplateLinearInterpolator < osg::Matrixf, osg::Matrixf > MatrixLinearInterpolator;
+    typedef TemplateLinearInterpolator<double, double> DoubleLinearInterpolator;
+    typedef TemplateLinearInterpolator<float, float> FloatLinearInterpolator;
+    typedef TemplateLinearInterpolator<osg::Vec2, osg::Vec2> Vec2LinearInterpolator;
+    typedef TemplateLinearInterpolator<osg::Vec3, osg::Vec3> Vec3LinearInterpolator;
+    typedef TemplateLinearInterpolator<osg::Vec3, Vec3Packed> Vec3PackedLinearInterpolator;
+    typedef TemplateLinearInterpolator<osg::Vec4, osg::Vec4> Vec4LinearInterpolator;
+    typedef TemplateSphericalLinearInterpolator<osg::Quat, osg::Quat> QuatSphericalLinearInterpolator;
+    typedef TemplateLinearInterpolator<osg::Matrixf, osg::Matrixf> MatrixLinearInterpolator;
 
-    typedef TemplateCubicBezierInterpolator < float, FloatCubicBezier > FloatCubicBezierInterpolator;
-    typedef TemplateCubicBezierInterpolator < double, DoubleCubicBezier > DoubleCubicBezierInterpolator;
-    typedef TemplateCubicBezierInterpolator < osg::Vec2, Vec2CubicBezier > Vec2CubicBezierInterpolator;
-    typedef TemplateCubicBezierInterpolator < osg::Vec3, Vec3CubicBezier > Vec3CubicBezierInterpolator;
-    typedef TemplateCubicBezierInterpolator < osg::Vec4, Vec4CubicBezier > Vec4CubicBezierInterpolator;
+    typedef TemplateCubicBezierInterpolator<float, FloatCubicBezier > FloatCubicBezierInterpolator;
+    typedef TemplateCubicBezierInterpolator<double, DoubleCubicBezier> DoubleCubicBezierInterpolator;
+    typedef TemplateCubicBezierInterpolator<osg::Vec2, Vec2CubicBezier> Vec2CubicBezierInterpolator;
+    typedef TemplateCubicBezierInterpolator<osg::Vec3, Vec3CubicBezier> Vec3CubicBezierInterpolator;
+    typedef TemplateCubicBezierInterpolator<osg::Vec4, Vec4CubicBezier> Vec4CubicBezierInterpolator;
+
 }
 #endif

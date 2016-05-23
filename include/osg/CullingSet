@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_CullingSet
 #define OSG_CullingSet 1
@@ -22,19 +22,21 @@
 
 
 namespace osg {
+
 #define COMPILE_WITH_SHADOW_OCCLUSION_CULLING
 
 /** A CullingSet class which contains a frustum and a list of occluders. */
-    class OSG_EXPORT CullingSet: public Referenced
-    {
-public:
+class OSG_EXPORT CullingSet : public Referenced
+{
 
-        typedef std::pair < osg::ref_ptr < osg::StateSet >, osg::Polytope > StateFrustumPair;
-        typedef std::vector < StateFrustumPair > StateFrustumList;
+    public:
+
+        typedef std::pair< osg::ref_ptr<osg::StateSet>, osg::Polytope > StateFrustumPair;
+        typedef std::vector< StateFrustumPair > StateFrustumList;
 
         CullingSet();
 
-        CullingSet(const CullingSet &cs) :
+        CullingSet(const CullingSet& cs):
             Referenced(),
             _mask(cs._mask),
             _frustum(cs._frustum),
@@ -42,9 +44,10 @@ public:
             _occluderList(cs._occluderList),
             _pixelSizeVector(cs._pixelSizeVector),
             _smallFeatureCullingPixelSize(cs._smallFeatureCullingPixelSize)
-        {}
+        {
+        }
 
-        CullingSet(const CullingSet &cs, const Matrix &matrix, const Vec4 &pixelSizeVector) :
+        CullingSet(const CullingSet& cs,const Matrix& matrix, const Vec4& pixelSizeVector):
             _mask(cs._mask),
             _frustum(cs._frustum),
             _stateFrustumList(cs._stateFrustumList),
@@ -53,214 +56,155 @@ public:
             _smallFeatureCullingPixelSize(cs._smallFeatureCullingPixelSize)
         {
             _frustum.transformProvidingInverse(matrix);
-
-            for (OccluderList::iterator itr = _occluderList.begin();
-                 itr != _occluderList.end();
-                 ++itr)
+            for(OccluderList::iterator itr=_occluderList.begin();
+                itr!=_occluderList.end();
+                ++itr)
             {
                 itr->transformProvidingInverse(matrix);
             }
         }
 
-        CullingSet &operator = (const CullingSet &cs)
+        CullingSet& operator = (const CullingSet& cs)
         {
-            if (this == &cs)
-                return *this;
+            if (this==&cs) return *this;
 
-            _mask                         = cs._mask;
-            _frustum                      = cs._frustum;
-            _stateFrustumList             = cs._stateFrustumList;
-            _occluderList                 = cs._occluderList;
-            _pixelSizeVector              = cs._pixelSizeVector;
+            _mask = cs._mask;
+            _frustum = cs._frustum;
+            _stateFrustumList = cs._stateFrustumList;
+            _occluderList = cs._occluderList;
+            _pixelSizeVector = cs._pixelSizeVector;
             _smallFeatureCullingPixelSize = cs._smallFeatureCullingPixelSize;
 
             return *this;
         }
 
 
-        inline void set(const CullingSet &cs)
+        inline void set(const CullingSet& cs)
         {
-            _mask                         = cs._mask;
-            _frustum                      = cs._frustum;
-            _stateFrustumList             = cs._stateFrustumList;
-            _occluderList                 = cs._occluderList;
-            _pixelSizeVector              = cs._pixelSizeVector;
+            _mask = cs._mask;
+            _frustum = cs._frustum;
+            _stateFrustumList = cs._stateFrustumList;
+            _occluderList = cs._occluderList;
+            _pixelSizeVector = cs._pixelSizeVector;
             _smallFeatureCullingPixelSize = cs._smallFeatureCullingPixelSize;
         }
 
-        inline void set(const CullingSet &cs, const Matrix &matrix, const Vec4 &pixelSizeVector)
+        inline void set(const CullingSet& cs,const Matrix& matrix, const Vec4& pixelSizeVector)
         {
-            _mask                         = cs._mask;
-            _stateFrustumList             = cs._stateFrustumList;
-            _occluderList                 = cs._occluderList;
-            _pixelSizeVector              = pixelSizeVector;
+            _mask = cs._mask;
+            _stateFrustumList = cs._stateFrustumList;
+            _occluderList = cs._occluderList;
+            _pixelSizeVector = pixelSizeVector;
             _smallFeatureCullingPixelSize = cs._smallFeatureCullingPixelSize;
 
-            // _frustum = cs._frustum;
-            // _frustum.transformProvidingInverse(matrix);
+            //_frustum = cs._frustum;
+            //_frustum.transformProvidingInverse(matrix);
 
-            _frustum.setAndTransformProvidingInverse(cs._frustum, matrix);
+            _frustum.setAndTransformProvidingInverse(cs._frustum,matrix);
 
-            for (StateFrustumList::iterator sitr = _stateFrustumList.begin();
-                 sitr != _stateFrustumList.end();
-                 ++sitr)
+            for(StateFrustumList::iterator sitr=_stateFrustumList.begin();
+                sitr!=_stateFrustumList.end();
+                ++sitr)
             {
                 sitr->second.transformProvidingInverse(matrix);
             }
 
-            for (OccluderList::iterator oitr = _occluderList.begin();
-                 oitr != _occluderList.end();
-                 ++oitr)
+            for(OccluderList::iterator oitr=_occluderList.begin();
+                oitr!=_occluderList.end();
+                ++oitr)
             {
                 oitr->transformProvidingInverse(matrix);
             }
+
         }
 
-        typedef std::vector < ShadowVolumeOccluder > OccluderList;
+        typedef std::vector<ShadowVolumeOccluder>   OccluderList;
 
         typedef int Mask;
 
         enum MaskValues
         {
-            NO_CULLING                 = 0x0,
-            VIEW_FRUSTUM_SIDES_CULLING = 0x1,
-            NEAR_PLANE_CULLING         = 0x2,
-            FAR_PLANE_CULLING          = 0x4,
-            VIEW_FRUSTUM_CULLING       = VIEW_FRUSTUM_SIDES_CULLING |
-                                         NEAR_PLANE_CULLING |
-                                         FAR_PLANE_CULLING,
-            SMALL_FEATURE_CULLING    = 0x8,
-            SHADOW_OCCLUSION_CULLING = 0x10,
-            DEFAULT_CULLING          = VIEW_FRUSTUM_SIDES_CULLING |
-                                       SMALL_FEATURE_CULLING |
-                                       SHADOW_OCCLUSION_CULLING,
-            ENABLE_ALL_CULLING = VIEW_FRUSTUM_CULLING |
-                                 SMALL_FEATURE_CULLING |
-                                 SHADOW_OCCLUSION_CULLING
+            NO_CULLING                  = 0x0,
+            VIEW_FRUSTUM_SIDES_CULLING  = 0x1,
+            NEAR_PLANE_CULLING          = 0x2,
+            FAR_PLANE_CULLING           = 0x4,
+            VIEW_FRUSTUM_CULLING        = VIEW_FRUSTUM_SIDES_CULLING|
+                                          NEAR_PLANE_CULLING|
+                                          FAR_PLANE_CULLING,
+            SMALL_FEATURE_CULLING       = 0x8,
+            SHADOW_OCCLUSION_CULLING    = 0x10,
+            DEFAULT_CULLING             = VIEW_FRUSTUM_SIDES_CULLING|
+                                          SMALL_FEATURE_CULLING|
+                                          SHADOW_OCCLUSION_CULLING,
+            ENABLE_ALL_CULLING          = VIEW_FRUSTUM_CULLING|
+                                          SMALL_FEATURE_CULLING|
+                                          SHADOW_OCCLUSION_CULLING
         };
 
-        void setCullingMask(Mask mask)
-        {
-            _mask = mask;
-        }
-        Mask getCullingMask() const
-        {
-            return _mask;
-        }
+        void setCullingMask(Mask mask) { _mask = mask; }
+        Mask getCullingMask() const { return _mask; }
 
-        void setFrustum(Polytope &cv)
-        {
-            _frustum = cv;
-        }
+        void setFrustum(Polytope& cv) { _frustum = cv; }
 
-        Polytope&getFrustum()
-        {
-            return _frustum;
-        }
-        const Polytope&getFrustum() const
-        {
-            return _frustum;
-        }
+        Polytope& getFrustum() { return _frustum; }
+        const Polytope& getFrustum() const { return _frustum; }
 
-        void addStateFrustum(StateSet *stateset, Polytope &polytope)
-        {
-            _stateFrustumList.push_back(StateFrustumPair(stateset, polytope));
-        }
+        void addStateFrustum(StateSet* stateset, Polytope& polytope) { _stateFrustumList.push_back(StateFrustumPair(stateset,polytope)); }
 
-        void getStateFrustumList(StateFrustumList &sfl)
-        {
-            _stateFrustumList = sfl;
-        }
-        StateFrustumList&getStateFrustumList()
-        {
-            return _stateFrustumList;
-        }
+        void getStateFrustumList(StateFrustumList& sfl) { _stateFrustumList = sfl; }
+        StateFrustumList& getStateFrustumList() { return _stateFrustumList; }
 
-        void addOccluder(ShadowVolumeOccluder &cv)
-        {
-            _occluderList.push_back(cv);
-        }
+        void addOccluder(ShadowVolumeOccluder& cv) { _occluderList.push_back(cv); }
 
-        void setPixelSizeVector(const Vec4 &v)
-        {
-            _pixelSizeVector = v;
-        }
+        void setPixelSizeVector(const Vec4& v) { _pixelSizeVector = v; }
 
-        Vec4&getPixelSizeVector()
-        {
-            return _pixelSizeVector;
-        }
-        const Vec4&getPixelSizeVector() const
-        {
-            return _pixelSizeVector;
-        }
+        Vec4& getPixelSizeVector() { return _pixelSizeVector; }
+        const Vec4& getPixelSizeVector() const { return _pixelSizeVector; }
 
         /** Threshold at which small features are culled.
-           \param value Bounding volume size in screen space. Default is 2.0. */
-        void setSmallFeatureCullingPixelSize(float value)
-        {
-            _smallFeatureCullingPixelSize = value;
-        }
+        \param value Bounding volume size in screen space. Default is 2.0. */
+        void setSmallFeatureCullingPixelSize(float value) { _smallFeatureCullingPixelSize=value; }
 
-        float&getSmallFeatureCullingPixelSize()
-        {
-            return _smallFeatureCullingPixelSize;
-        }
+        float& getSmallFeatureCullingPixelSize() { return _smallFeatureCullingPixelSize; }
 
-        float getSmallFeatureCullingPixelSize() const
-        {
-            return _smallFeatureCullingPixelSize;
-        }
+        float getSmallFeatureCullingPixelSize() const { return _smallFeatureCullingPixelSize; }
 
 
         /** Compute the pixel of an object at position v, with specified radius.*/
-        float pixelSize(const Vec3 &v, float radius) const
-        {
-            return radius / (v * _pixelSizeVector);
-        }
+        float pixelSize(const Vec3& v,float radius) const { return radius/(v*_pixelSizeVector); }
 
         /** Compute the pixel of a bounding sphere.*/
-        float pixelSize(const BoundingSphere &bs) const
-        {
-            return bs.radius() / (bs.center() * _pixelSizeVector);
-        }
+        float pixelSize(const BoundingSphere& bs) const { return bs.radius()/(bs.center()*_pixelSizeVector); }
 
         /** Compute the pixel of an object at position v, with specified radius. fabs()ed to always be positive. */
-        float clampedPixelSize(const Vec3 &v, float radius) const
-        {
-            return fabs(pixelSize(v, radius));
-        }
+        float clampedPixelSize(const Vec3& v,float radius) const { return fabs(pixelSize(v, radius)); }
 
         /** Compute the pixel of a bounding sphere. fabs()ed to always be positive. */
-        float clampedPixelSize(const BoundingSphere &bs) const
-        {
-            return fabs(pixelSize(bs));
-        }
+        float clampedPixelSize(const BoundingSphere& bs) const { return fabs(pixelSize(bs)); }
 
 
-        inline bool isCulled(const std::vector < Vec3 > &vertices)
+        inline bool isCulled(const std::vector<Vec3>& vertices)
         {
-            if (_mask & VIEW_FRUSTUM_CULLING)
+            if (_mask&VIEW_FRUSTUM_CULLING)
             {
                 // is it outside the view frustum...
-                if (!_frustum.contains(vertices))
-                    return true;
+                if (!_frustum.contains(vertices)) return true;
             }
 
-            if (_mask & SMALL_FEATURE_CULLING)
-            {}
+            if (_mask&SMALL_FEATURE_CULLING)
+            {
+            }
 
-            if (_mask & SHADOW_OCCLUSION_CULLING)
+            if (_mask&SHADOW_OCCLUSION_CULLING)
             {
                 // is it in one of the shadow occluder volumes.
                 if (!_occluderList.empty())
                 {
-                    for (OccluderList::iterator itr = _occluderList.begin();
-                         itr != _occluderList.end();
-                         ++itr)
+                    for(OccluderList::iterator itr=_occluderList.begin();
+                        itr!=_occluderList.end();
+                        ++itr)
                     {
-                        if (itr->contains(vertices))
-                            return true;
+                        if (itr->contains(vertices)) return true;
                     }
                 }
             }
@@ -268,29 +212,28 @@ public:
             return false;
         }
 
-        inline bool isCulled(const BoundingBox &bb)
+        inline bool isCulled(const BoundingBox& bb)
         {
-            if (_mask & VIEW_FRUSTUM_CULLING)
+            if (_mask&VIEW_FRUSTUM_CULLING)
             {
                 // is it outside the view frustum...
-                if (!_frustum.contains(bb))
-                    return true;
+                if (!_frustum.contains(bb)) return true;
             }
 
-            if (_mask & SMALL_FEATURE_CULLING)
-            {}
+            if (_mask&SMALL_FEATURE_CULLING)
+            {
+            }
 
-            if (_mask & SHADOW_OCCLUSION_CULLING)
+            if (_mask&SHADOW_OCCLUSION_CULLING)
             {
                 // is it in one of the shadow occluder volumes.
                 if (!_occluderList.empty())
                 {
-                    for (OccluderList::iterator itr = _occluderList.begin();
-                         itr != _occluderList.end();
-                         ++itr)
+                    for(OccluderList::iterator itr=_occluderList.begin();
+                        itr!=_occluderList.end();
+                        ++itr)
                     {
-                        if (itr->contains(bb))
-                            return true;
+                        if (itr->contains(bb)) return true;
                     }
                 }
             }
@@ -298,33 +241,29 @@ public:
             return false;
         }
 
-        inline bool isCulled(const BoundingSphere &bs)
+        inline bool isCulled(const BoundingSphere& bs)
         {
-            if (_mask & VIEW_FRUSTUM_CULLING)
+            if (_mask&VIEW_FRUSTUM_CULLING)
             {
                 // is it outside the view frustum...
-                if (!_frustum.contains(bs))
-                    return true;
+                if (!_frustum.contains(bs)) return true;
             }
 
-            if (_mask & SMALL_FEATURE_CULLING)
+            if (_mask&SMALL_FEATURE_CULLING)
             {
-                if (((bs.center() * _pixelSizeVector) * _smallFeatureCullingPixelSize) > bs.radius())
-                    return true;
+                if (((bs.center()*_pixelSizeVector)*_smallFeatureCullingPixelSize)>bs.radius()) return true;
             }
-
 #ifdef COMPILE_WITH_SHADOW_OCCLUSION_CULLING
-            if (_mask & SHADOW_OCCLUSION_CULLING)
+            if (_mask&SHADOW_OCCLUSION_CULLING)
             {
                 // is it in one of the shadow occluder volumes.
                 if (!_occluderList.empty())
                 {
-                    for (OccluderList::iterator itr = _occluderList.begin();
-                         itr != _occluderList.end();
-                         ++itr)
+                    for(OccluderList::iterator itr=_occluderList.begin();
+                        itr!=_occluderList.end();
+                        ++itr)
                     {
-                        if (itr->contains(bs))
-                            return true;
+                        if (itr->contains(bs)) return true;
                     }
                 }
             }
@@ -333,12 +272,10 @@ public:
         }
 
 #ifdef OSG_USE_BOUND
-        inline bool isCulled(const Bound &bound)
+        inline bool isCulled(const Bound& bound)
         {
-            if (bound.bb)
-                return isCulled(*bound.bb);
-            else
-                return isCulled(*bound.bs);
+            if (bound.bb) return isCulled(*bound.bb);
+            else return isCulled(*bound.bs);
         }
 #endif
         inline void pushCurrentMask()
@@ -347,9 +284,9 @@ public:
 
             if (!_stateFrustumList.empty())
             {
-                for (StateFrustumList::iterator itr = _stateFrustumList.begin();
-                     itr != _stateFrustumList.end();
-                     ++itr)
+                for(StateFrustumList::iterator itr=_stateFrustumList.begin();
+                    itr!=_stateFrustumList.end();
+                    ++itr)
                 {
                     itr->second.pushCurrentMask();
                 }
@@ -359,9 +296,9 @@ public:
 #ifdef COMPILE_WITH_SHADOW_OCCLUSION_CULLING
             if (!_occluderList.empty())
             {
-                for (OccluderList::iterator itr = _occluderList.begin();
-                     itr != _occluderList.end();
-                     ++itr)
+                for(OccluderList::iterator itr=_occluderList.begin();
+                    itr!=_occluderList.end();
+                    ++itr)
                 {
                     itr->pushCurrentMask();
                 }
@@ -375,9 +312,9 @@ public:
 
             if (!_stateFrustumList.empty())
             {
-                for (StateFrustumList::iterator itr = _stateFrustumList.begin();
-                     itr != _stateFrustumList.end();
-                     ++itr)
+                for(StateFrustumList::iterator itr=_stateFrustumList.begin();
+                    itr!=_stateFrustumList.end();
+                    ++itr)
                 {
                     itr->second.popCurrentMask();
                 }
@@ -386,9 +323,9 @@ public:
 #ifdef COMPILE_WITH_SHADOW_OCCLUSION_CULLING
             if (!_occluderList.empty())
             {
-                for (OccluderList::iterator itr = _occluderList.begin();
-                     itr != _occluderList.end();
-                     ++itr)
+                for(OccluderList::iterator itr=_occluderList.begin();
+                    itr!=_occluderList.end();
+                    ++itr)
                 {
                     itr->popCurrentMask();
                 }
@@ -401,25 +338,27 @@ public:
             _frustum.setResultMask(_frustum.getCurrentMask());
         }
 
-        void disableAndPushOccludersCurrentMask(NodePath &nodePath);
+        void disableAndPushOccludersCurrentMask(NodePath& nodePath);
 
-        void popOccludersCurrentMask(NodePath &nodePath);
+        void popOccludersCurrentMask(NodePath& nodePath);
 
-        static osg::Vec4 computePixelSizeVector(const Viewport &W, const Matrix &P, const Matrix &M);
+        static osg::Vec4 computePixelSizeVector(const Viewport& W, const Matrix& P, const Matrix& M);
 
         virtual ~CullingSet();
 
 
-protected:
+    protected:
 
 
-        Mask             _mask;
-        Polytope         _frustum;
-        StateFrustumList _stateFrustumList;
-        OccluderList     _occluderList;
-        Vec4             _pixelSizeVector;
-        float            _smallFeatureCullingPixelSize;
-    };
+        Mask                _mask;
+        Polytope            _frustum;
+        StateFrustumList    _stateFrustumList;
+        OccluderList        _occluderList;
+        Vec4                _pixelSizeVector;
+        float               _smallFeatureCullingPixelSize;
+
+};
+
 }    // end of namespace
 
 #endif

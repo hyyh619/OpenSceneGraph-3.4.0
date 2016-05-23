@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGVIEWER_RENDERER
 #define OSGVIEWER_RENDERER 1
@@ -21,51 +21,37 @@
 #include <osgViewer/Export>
 
 namespace osgViewer {
-    class OSGVIEWER_EXPORT OpenGLQuerySupport: public osg::Referenced
-    {
-public:
+
+class OSGVIEWER_EXPORT OpenGLQuerySupport : public osg::Referenced
+{
+    public:
         OpenGLQuerySupport();
 
-        virtual void checkQuery(osg::Stats *stats, osg::State *state,
+        virtual void checkQuery(osg::Stats* stats, osg::State* state,
                                 osg::Timer_t startTick) = 0;
 
-        virtual void beginQuery(unsigned int frameNumber, osg::State *state) = 0;
-        virtual void endQuery(osg::State *state)                             = 0;
-        virtual void initialize(osg::State *state, osg::Timer_t startTick);
-protected:
+        virtual void beginQuery(unsigned int frameNumber, osg::State* state) = 0;
+        virtual void endQuery(osg::State* state) = 0;
+        virtual void initialize(osg::State* state, osg::Timer_t startTick);
+    protected:
 
-        const osg::GLExtensions *_extensions;
-    };
+        const osg::GLExtensions*            _extensions;
+};
 
-    class OSGVIEWER_EXPORT Renderer: public osg::GraphicsOperation
-    {
-public:
+class OSGVIEWER_EXPORT Renderer : public osg::GraphicsOperation
+{
+    public:
 
-        Renderer(osg::Camera * camera);
+        Renderer(osg::Camera* camera);
 
-        osgUtil::SceneView* getSceneView(unsigned int i)
-        {
-            return _sceneView[i].get();
-        }
-        const osgUtil::SceneView* getSceneView(unsigned int i) const
-        {
-            return _sceneView[i].get();
-        }
+        osgUtil::SceneView* getSceneView(unsigned int i) { return _sceneView[i].get(); }
+        const osgUtil::SceneView* getSceneView(unsigned int i) const { return _sceneView[i].get(); }
 
-        void setDone(bool done)
-        {
-            _done = done;
-        }
-        bool getDone()
-        {
-            return _done;
-        }
+        void setDone(bool done) { _done = done; }
+        bool getDone() { return _done; }
 
         void setGraphicsThreadDoesCull(bool flag);
-        bool getGraphicsThreadDoesCull() const
-        {
-            return _graphicsThreadDoesCull;
-        }
+        bool getGraphicsThreadDoesCull() const { return _graphicsThreadDoesCull; }
 
 
         virtual void cull();
@@ -74,18 +60,12 @@ public:
 
         virtual void compile();
 
-        void setCompileOnNextDraw(bool flag)
-        {
-            _compileOnNextDraw = flag;
-        }
-        bool getCompileOnNextDraw() const
-        {
-            return _compileOnNextDraw;
-        }
+        void setCompileOnNextDraw(bool flag) { _compileOnNextDraw = flag; }
+        bool getCompileOnNextDraw() const { return _compileOnNextDraw; }
 
-        virtual void operator()(osg::Object * object);
+        virtual void operator () (osg::Object* object);
 
-        virtual void operator()(osg::GraphicsContext * context);
+        virtual void operator () (osg::GraphicsContext* context);
 
         virtual void release();
 
@@ -95,28 +75,28 @@ public:
         void setCameraRequiresSetUp(bool flag);
         bool getCameraRequiresSetUp() const;
 
-protected:
-        void initialize(osg::State *state);
+    protected:
+        void initialize(osg::State* state);
         virtual ~Renderer();
 
-        virtual void updateSceneView(osgUtil::SceneView *sceneView);
+        virtual void updateSceneView(osgUtil::SceneView* sceneView);
 
-        osg::observer_ptr < osg::Camera > _camera;
+        osg::observer_ptr<osg::Camera>                      _camera;
 
-        bool _done;
-        bool _graphicsThreadDoesCull;
-        bool _compileOnNextDraw;
-        bool _serializeDraw;
+        bool                                                _done;
+        bool                                                _graphicsThreadDoesCull;
+        bool                                                _compileOnNextDraw;
+        bool                                                _serializeDraw;
 
-        osg::ref_ptr < osgUtil::SceneView > _sceneView[2];
+        osg::ref_ptr<osgUtil::SceneView>                    _sceneView[2];
 
         struct OSGVIEWER_EXPORT ThreadSafeQueue
         {
-            OpenThreads::Mutex     _mutex;
+            OpenThreads::Mutex _mutex;
             OpenThreads::Condition _cond;
-            typedef std::list < osgUtil::SceneView* > SceneViewList;
+            typedef std::list<osgUtil::SceneView*> SceneViewList;
             SceneViewList _queue;
-            bool          _isReleased;
+            bool _isReleased;
 
             ThreadSafeQueue();
             ~ThreadSafeQueue();
@@ -131,7 +111,7 @@ protected:
             osgUtil::SceneView* takeFront();
 
             /**  Add a SceneView object to the back of the queue. */
-            void add(osgUtil::SceneView *sv);
+            void add(osgUtil::SceneView* sv);
         };
 
 
@@ -139,9 +119,10 @@ protected:
         ThreadSafeQueue _drawQueue;
 
         bool _initialized;
-        osg::ref_ptr < OpenGLQuerySupport > _querySupport;
+        osg::ref_ptr<OpenGLQuerySupport> _querySupport;
         osg::Timer_t _startTick;
-    };
+};
+
 }
 
 #endif

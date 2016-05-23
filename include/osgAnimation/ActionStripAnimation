@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGANIMATION_ACTION_STRIPANIMATION_H
 #define OSGANIMATION_ACTION_STRIPANIMATION_H
@@ -24,14 +24,15 @@
 
 namespace osgAnimation
 {
+
     // encapsulate animation with blend in blend out for classic usage
-    class OSGANIMATION_EXPORT ActionStripAnimation: public Action
+    class OSGANIMATION_EXPORT ActionStripAnimation : public Action
     {
-public:
+    public:
         META_Action(osgAnimation, ActionStripAnimation);
         ActionStripAnimation() {}
-        ActionStripAnimation(const ActionStripAnimation &a, const osg::CopyOp & c);
-        ActionStripAnimation(Animation * animation, double blendInDuration = 0.0, double blendOutDuration = 0.0, double blendInWeightTarget = 1.0);
+        ActionStripAnimation(const ActionStripAnimation& a, const osg::CopyOp& c);
+        ActionStripAnimation(Animation* animation, double blendInDuration = 0.0, double blendOutDuration = 0.0, double blendInWeightTarget = 1.0  );
         ActionAnimation* getAnimation();
         ActionBlendIn* getBlendIn();
         ActionBlendOut* getBlendOut();
@@ -42,14 +43,15 @@ public:
 
         unsigned int getLoop() const;
         void setLoop(unsigned int loop);
-        void traverse(ActionVisitor &visitor);
+        void traverse(ActionVisitor& visitor);
 
-protected:
-        typedef std::pair < unsigned int, osg::ref_ptr < ActionBlendOut >> FrameBlendOut;
-        osg::ref_ptr < ActionBlendIn > _blendIn;
+    protected:
+        typedef std::pair<unsigned int, osg::ref_ptr<ActionBlendOut> > FrameBlendOut;
+        osg::ref_ptr<ActionBlendIn> _blendIn;
         FrameBlendOut _blendOut;
-        osg::ref_ptr < ActionAnimation > _animation;
+        osg::ref_ptr<ActionAnimation> _animation;
     };
+
 }
 
 #endif

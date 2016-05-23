@@ -22,22 +22,23 @@
 
 namespace osgAnimation
 {
-    class OSGANIMATION_EXPORT UpdateMaterial: public AnimationUpdateCallback < osg::StateAttributeCallback >
-    {
-protected:
-        osg::ref_ptr < Vec4Target > _diffuse;
 
-public:
+    class OSGANIMATION_EXPORT UpdateMaterial : public AnimationUpdateCallback<osg::StateAttributeCallback>
+    {
+    protected:
+        osg::ref_ptr<Vec4Target> _diffuse;
+
+    public:
 
         META_Object(osgAnimation, UpdateMaterial);
 
-        UpdateMaterial(const std::string &name = "");
-        UpdateMaterial(const UpdateMaterial &apc, const osg::CopyOp & copyop);
+        UpdateMaterial(const std::string& name = "");
+        UpdateMaterial(const UpdateMaterial& apc,const osg::CopyOp& copyop);
 
         /** Callback method called by the NodeVisitor when visiting a node.*/
-        virtual void operator()(osg::StateAttribute*, osg::NodeVisitor*);
-        void update(osg::Material &material);
-        bool link(Channel *channel);
+        virtual void operator () (osg::StateAttribute*, osg::NodeVisitor*);
+        void update(osg::Material& material);
+        bool link(Channel* channel);
         Vec4Target* getDiffuse();
     };
 }

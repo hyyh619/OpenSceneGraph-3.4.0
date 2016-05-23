@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGANIMATION_ANIMATION_MANAGER_BASE
 #define OSGANIMATION_ANIMATION_MANAGER_BASE 1
@@ -25,27 +25,24 @@
 
 namespace osgAnimation
 {
-    class OSGANIMATION_EXPORT AnimationManagerBase: public osg::NodeCallback
+    class OSGANIMATION_EXPORT AnimationManagerBase : public osg::NodeCallback
     {
-public:
-        typedef std::set < osg::ref_ptr < Target >> TargetSet;
+    public:
+        typedef std::set<osg::ref_ptr<Target> > TargetSet;
 
         AnimationManagerBase();
-        AnimationManagerBase(const AnimationManagerBase &b, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        AnimationManagerBase(const AnimationManagerBase& b, const osg::CopyOp& copyop= osg::CopyOp::SHALLOW_COPY);
         virtual ~AnimationManagerBase();
         virtual void buildTargetReference();
-        virtual void registerAnimation(Animation*);
-        virtual void unregisterAnimation(Animation*);
-        virtual void link(osg::Node *subgraph);
+        virtual void registerAnimation (Animation*);
+        virtual void unregisterAnimation (Animation*);
+        virtual void link(osg::Node* subgraph);
         virtual void update(double t) = 0;
         virtual bool needToLink() const;
-        const AnimationList&getAnimationList() const
-        {
-            return _animations;
-        }
+        const AnimationList& getAnimationList() const { return _animations;}
 
         /** Callback method called by the NodeVisitor when visiting a node.*/
-        virtual void operator()(osg::Node * node, osg::NodeVisitor * nv);
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 
         /** Reset the value of targets
             this Operation must be done each frame */
@@ -58,19 +55,16 @@ public:
         /// set a flag to define the behaviour
         void setAutomaticLink(bool);
         bool getAutomaticLink() const;
-        bool isAutomaticLink() const
-        {
-            return getAutomaticLink();
-        }
+        bool isAutomaticLink() const { return getAutomaticLink(); }
         void dirty();
 
-protected:
+    protected:
 
-        osg::ref_ptr < LinkVisitor > _linker;
+        osg::ref_ptr<LinkVisitor> _linker;
         AnimationList _animations;
-        TargetSet     _targets;
-        bool          _needToLink;
-        bool          _automaticLink;
+        TargetSet _targets;
+        bool _needToLink;
+        bool _automaticLink;
     };
 }
 #endif

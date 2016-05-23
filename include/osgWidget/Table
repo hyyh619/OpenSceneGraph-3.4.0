@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 // Code by: Jeremy Moles (cubicool) 2007-2008
 
@@ -19,30 +19,31 @@
 #include <osgWidget/Window>
 
 namespace osgWidget {
-    class OSGWIDGET_EXPORT Table: public Window
-    {
-public:
 
-        typedef std::vector < point_type > CellSizes;
+class OSGWIDGET_EXPORT Table: public Window
+{
+    public:
+
+        typedef std::vector<point_type> CellSizes;
 
         META_Object   (osgWidget, Table);
 
         Table (const std::string& = "", unsigned int = 0, unsigned int = 0);
-        Table (const Table &, const osg::CopyOp &);
+        Table (const Table&, const osg::CopyOp&);
 
-        virtual bool addWidget(Widget*);
-        virtual bool addWidget(Widget*, unsigned int, unsigned int);
+        virtual bool addWidget (Widget*);
+        virtual bool addWidget (Widget*, unsigned int, unsigned int);
 
-        void getRowHeights(CellSizes&) const;
-        void getRowMinHeights(CellSizes&) const;
-        void getColumnWidths(CellSizes&) const;
-        void getColumnMinWidths(CellSizes&) const;
+        void getRowHeights      (CellSizes&) const;
+        void getRowMinHeights   (CellSizes&) const;
+        void getColumnWidths    (CellSizes&) const;
+        void getColumnMinWidths (CellSizes&) const;
 
-        void addHeightToRow(unsigned int, point_type);
-        void addWidthToColumn(unsigned int, point_type);
+        void addHeightToRow   (unsigned int, point_type);
+        void addWidthToColumn (unsigned int, point_type);
 
-        bool isRowVerticallyFillable(unsigned int) const;
-        bool isColumnHorizontallyFillable(unsigned int) const;
+        bool isRowVerticallyFillable      (unsigned int) const;
+        bool isColumnHorizontallyFillable (unsigned int) const;
 
         Widget* getByRowCol(unsigned int row, unsigned int col)
         {
@@ -54,7 +55,7 @@ public:
             return getObjects()[_calculateIndex(row, col)].get();
         }
 
-protected:
+    protected:
 
         unsigned int _rows;
         unsigned int _cols;
@@ -63,14 +64,15 @@ protected:
 
         unsigned int _calculateIndex(unsigned int, unsigned int) const;
 
-        void _getRows(CellSizes&, Getter) const;
-        void _getColumns(CellSizes&, Getter) const;
+        void _getRows    (CellSizes&, Getter) const;
+        void _getColumns (CellSizes&, Getter) const;
 
         virtual void _resizeImplementation(point_type, point_type);
 
-        virtual Sizes _getWidthImplementation() const;
-        virtual Sizes _getHeightImplementation() const;
-    };
+        virtual Sizes _getWidthImplementation  () const;
+        virtual Sizes _getHeightImplementation () const;
+};
+
 }
 
 #endif

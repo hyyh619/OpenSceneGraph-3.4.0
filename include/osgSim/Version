@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGSIM_VERSION
 #define OSGSIM_VERSION 1
@@ -17,6 +17,7 @@
 #include <osgSim/Export>
 
 extern "C" {
+
 /**
  * osgSimGetVersion() returns the library version number.
  * Numbering convention : OpenSceneGraph-1.0 will return 1.0 from osgSimGetVersion.
@@ -25,20 +26,21 @@ extern "C" {
  * library using autoconf and its m4 macro AC_CHECK_LIB.
  *
  * Here is the code to add to your configure.in:
-   \verbatim
+ \verbatim
  #
  # Check for the OpenSceneGraph (OSG) Sim library
  #
-   AC_CHECK_LIB(osg, osgSimGetVersion, ,
+ AC_CHECK_LIB(osg, osgSimGetVersion, ,
     [AC_MSG_ERROR(OpenSceneGraph Sim library not found. See http://www.openscenegraph.org)],)
-   \endverbatim
- */
+ \endverbatim
+*/
 extern OSGSIM_EXPORT const char* osgSimGetVersion();
 
 /**
  * osgSimGetLibraryName() returns the library name in human friendly form.
- */
+*/
 extern OSGSIM_EXPORT const char* osgSimGetLibraryName();
+
 }
 
 #endif

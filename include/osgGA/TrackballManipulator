@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSGGA_TRACKBALL_MANIPULATOR
 #define OSGGA_TRACKBALL_MANIPULATOR 1
@@ -18,18 +18,23 @@
 
 
 namespace osgGA {
-    class OSGGA_EXPORT TrackballManipulator: public OrbitManipulator
-    {
+
+
+class OSGGA_EXPORT TrackballManipulator : public OrbitManipulator
+{
         typedef OrbitManipulator inherited;
 
-public:
+    public:
 
-        TrackballManipulator(int flags = DEFAULT_SETTINGS);
-        TrackballManipulator(const TrackballManipulator &tm,
-                             const osg::CopyOp &copyOp = osg::CopyOp::SHALLOW_COPY);
+        TrackballManipulator( int flags = DEFAULT_SETTINGS );
+        TrackballManipulator( const TrackballManipulator& tm,
+                              const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY );
 
-        META_Object(osgGA, TrackballManipulator);
-    };
+        META_Object( osgGA, TrackballManipulator );
+
+};
+
+
 }
 
 #endif /* OSGGA_TRACKBALL_MANIPULATOR */

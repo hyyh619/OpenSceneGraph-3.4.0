@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
-// C++ header
+*/
+//C++ header
 
 #ifndef OSGUTIL_TRANSFORMCALLBACK
 #define OSGUTIL_TRANSFORMCALLBACK 1
@@ -20,31 +20,32 @@
 
 namespace osgUtil
 {
+
 /** TransformCallback is now deprecated, use osg::AnimationPathCallback instead.*/
-    class OSGUTIL_EXPORT TransformCallback: public osg::NodeCallback
-    {
-public:
+class OSGUTIL_EXPORT TransformCallback : public osg::NodeCallback
+{
 
-        TransformCallback(const osg::Vec3 & pivot, const osg::Vec3 & axis, float angularVelocity);
+    public:
 
-        void setPause(bool pause)
-        {
-            _pause = pause;
-        }
+        TransformCallback(const osg::Vec3& pivot,const osg::Vec3& axis,float angularVelocity);
+
+        void setPause(bool pause) { _pause = pause; }
 
         /** implements the callback*/
-        virtual void operator()(osg::Node * node, osg::NodeVisitor * nv);
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 
-protected:
+    protected:
 
-        float     _angular_velocity;
-        osg::Vec3 _pivot;
-        osg::Vec3 _axis;
+        float               _angular_velocity;
+        osg::Vec3           _pivot;
+        osg::Vec3           _axis;
 
-        unsigned int _previousTraversalNumber;
-        double       _previousTime;
-        bool         _pause;
-    };
+        unsigned int        _previousTraversalNumber;
+        double              _previousTime;
+        bool                _pause;
+
+};
+
 }
 
 #endif

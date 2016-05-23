@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
-// osgFX - Copyright (C) 2003 Marco Jez
+*/
+//osgFX - Copyright (C) 2003 Marco Jez
 
 #ifndef OSGFX__effect
 #define OSGFX__effect
@@ -28,66 +28,58 @@
 #include <vector>
 
 /**
-   An helper macro that defines the methods like effectName() and effectDescription()
-   making them return the strings passed as parameters, after the usual library name
-   and class name.
+ An helper macro that defines the methods like effectName() and effectDescription()
+ making them return the strings passed as parameters, after the usual library name
+ and class name.
  */
 #define META_Effect(library, classname, effectname, effectdescription, effectauthor) \
-    META_Node(library, classname)                                                    \
-    virtual const char*effectName() const { return effectname; }                     \
-    virtual const char*effectDescription() const { return effectdescription; }       \
-    virtual const char*effectAuthor() const { return effectauthor; }
+    META_Node(library, classname) \
+    virtual const char *effectName() const        { return effectname; } \
+    virtual const char *effectDescription() const { return effectdescription; } \
+    virtual const char *effectAuthor() const      { return effectauthor; }
 
 
 namespace osgFX
 {
+
     /**
-       The base class for special effects. An effect is basically a collection of
-       state attributes and an interface for configuring them in a predefined
-       fashion. The Effect class does more however, as it handles multipass
-       rendering transparently and it allows more than one "technique" to be
-       defined. Each technique tries to implement the effect in a different way,
-       often using different OpenGL extensions. The active technique can be
-       selected either manually, with selectTechnique(), or automatically, in which
-       case the first technique that is supported by all active rendering contexts
-       is chosen.
-       If you are an Effect user, then simply use it as a node group. Create an
-       instance of your desired effect, add it to your scene graph and call its
-       addChild() method to add a child node as you would do with a Group.
-       If you are an Effect developer, you will have to implement the method
-       define_techniques() to define the different techniques that can be used
-       for obtaining the desired effect. In define_techniques() you will usually
-       create one or more instances of custom classes derived from Technique and
-       you will add them to the effect with addTechnique(). The order is important:
-       techniques added first will have higher priority and will be used first as
-       soon as all rendering contexts support it.
+     The base class for special effects. An effect is basically a collection of
+     state attributes and an interface for configuring them in a predefined
+     fashion. The Effect class does more however, as it handles multipass
+     rendering transparently and it allows more than one "technique" to be
+     defined. Each technique tries to implement the effect in a different way,
+     often using different OpenGL extensions. The active technique can be
+     selected either manually, with selectTechnique(), or automatically, in which
+     case the first technique that is supported by all active rendering contexts
+     is chosen.
+     If you are an Effect user, then simply use it as a node group. Create an
+     instance of your desired effect, add it to your scene graph and call its
+     addChild() method to add a child node as you would do with a Group.
+     If you are an Effect developer, you will have to implement the method
+     define_techniques() to define the different techniques that can be used
+     for obtaining the desired effect. In define_techniques() you will usually
+     create one or more instances of custom classes derived from Technique and
+     you will add them to the effect with addTechnique(). The order is important:
+     techniques added first will have higher priority and will be used first as
+     soon as all rendering contexts support it.
      */
     class OSGFX_EXPORT Effect: public osg::Group {
-public:
+    public:
         Effect();
-        Effect(const Effect &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        Effect(const Effect& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
-        virtual inline bool isSameKindAs(const osg::Object *obj) const
-        {
-            return dynamic_cast < const Effect * > (obj) != NULL;
-        }
-        virtual inline const char* libraryName() const
-        {
-            return "osgFX";
-        }
-        virtual inline const char* className() const
-        {
-            return "Effect";
-        }
+        virtual inline bool isSameKindAs(const osg::Object* obj) const { return dynamic_cast<const Effect*>(obj) != NULL; }
+        virtual inline const char* libraryName() const { return "osgFX"; }
+        virtual inline const char* className() const { return "Effect"; }
 
         /** get the name of this Effect */
-        virtual const char* effectName() const = 0;
+        virtual const char *effectName() const        = 0;
 
         /** get a brief description of this Effect*/
-        virtual const char* effectDescription() const = 0;
+        virtual const char *effectDescription() const = 0;
 
         /** get the effect author's name */
-        virtual const char* effectAuthor() const = 0;
+        virtual const char *effectAuthor() const      = 0;
 
         /** get whether the effect is enabled or not */
         inline bool getEnabled() const;
@@ -96,10 +88,10 @@ public:
         inline void setEnabled(bool v);
 
         /**
-           optional: set effect parameters to produce a visually significant
-           result to be used in demo applications like osgfxbrowser. Default
-           is to do nothing.
-         */
+         optional: set effect parameters to produce a visually significant
+         result to be used in demo applications like osgfxbrowser. Default
+         is to do nothing.
+        */
         inline virtual void setUpDemo()   {}
 
         /** get the number of techniques defined for this Effect */
@@ -114,8 +106,7 @@ public:
         /** get the index of the currently selected Technique */
         inline int getSelectedTechnique() const;
 
-        enum TechniqueSelection
-        {
+        enum TechniqueSelection {
             AUTO_DETECT = -1
         };
 
@@ -123,47 +114,47 @@ public:
         inline void selectTechnique(int i = AUTO_DETECT);
 
         /** custom traversal */
-        virtual void traverse(osg::NodeVisitor &nv);
+        virtual void traverse(osg::NodeVisitor& nv);
 
         /** default traversal */
-        inline void inherited_traverse(osg::NodeVisitor &nv);
+        inline void inherited_traverse(osg::NodeVisitor& nv);
 
-protected:
+    protected:
         virtual ~Effect();
-        Effect &operator = (const Effect&) { return *this; }
+        Effect &operator=(const Effect &) { return *this; }
 
         /** force rebuilding of techniques on next traversal */
         inline void dirtyTechniques();
 
         /** add a technique to the Effect */
-        inline void addTechnique(Technique *tech);
+        inline void addTechnique(Technique* tech);
 
         /**
-           abstract method to be implemented in derived classes; its purpose
-           if to create the techniques that can be used for obtaining the
-           desired effect. You will usually call addTechnique() inside
-           this method.
+         abstract method to be implemented in derived classes; its purpose
+         if to create the techniques that can be used for obtaining the
+         desired effect. You will usually call addTechnique() inside
+         this method.
          */
         virtual bool define_techniques() = 0;
 
-private:
+    private:
         friend class Validator;
 
         bool _enabled;
 
-        typedef std::vector < osg::ref_ptr < Technique >> Technique_list;
+        typedef std::vector<osg::ref_ptr<Technique> > Technique_list;
         Technique_list _techs;
 
-        mutable osg::buffered_value < int > _sel_tech;
+        mutable osg::buffered_value<int> _sel_tech;
 
         // use int instead of bool to avoid errors
-        mutable osg::buffered_value < int > _tech_selected;
+        mutable osg::buffered_value<int> _tech_selected;
 
         int _global_sel_tech;
 
         bool _techs_defined;
 
-        osg::ref_ptr < osg::Geode > _dummy_for_validation;
+        osg::ref_ptr<osg::Geode> _dummy_for_validation;
 
         void build_dummy_node();
     };
@@ -182,7 +173,7 @@ private:
 
     inline int Effect::getNumTechniques() const
     {
-        return static_cast < int > (_techs.size());
+        return static_cast<int>(_techs.size());
     }
 
     inline Technique* Effect::getTechnique(int i)
@@ -205,7 +196,7 @@ private:
         _global_sel_tech = i;
     }
 
-    inline void Effect::addTechnique(Technique *tech)
+    inline void Effect::addTechnique(Technique* tech)
     {
         _techs.push_back(tech);
     }
@@ -215,11 +206,12 @@ private:
         _techs_defined = false;
     }
 
-    inline void Effect::inherited_traverse(osg::NodeVisitor &nv)
+    inline void Effect::inherited_traverse(osg::NodeVisitor& nv)
     {
         typedef osg::Group inherited;
         inherited::traverse(nv);
     }
+
 }
 
 #endif

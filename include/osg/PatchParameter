@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_PATCHPARAMETER
 #define OSG_PATCHPARAMETER 1
@@ -19,17 +19,18 @@
 #include <osg/StateAttribute>
 
 namespace osg {
-/** Class which encapsulates glPatchParameter(..).
- */
-    class OSG_EXPORT PatchParameter: public StateAttribute
-    {
-public:
 
-        PatchParameter(GLint vertices = 3);
+/** Class which encapsulates glPatchParameter(..).
+*/
+class OSG_EXPORT PatchParameter : public StateAttribute
+{
+    public :
+
+        PatchParameter(GLint vertices=3);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        PatchParameter(const PatchParameter &rhs, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            StateAttribute(rhs, copyop),
+        PatchParameter(const PatchParameter& rhs,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            StateAttribute(rhs,copyop),
             _vertices(rhs._vertices),
             _patchDefaultInnerLevel(rhs._patchDefaultInnerLevel),
             _patchDefaultOuterLevel(rhs._patchDefaultOuterLevel) {}
@@ -38,11 +39,11 @@ public:
         META_StateAttribute(osg, PatchParameter, PATCH_PARAMETER);
 
         /** return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs.*/
-        virtual int compare(const StateAttribute &sa) const
+        virtual int compare(const StateAttribute& sa) const
         {
             // check the types are equal and then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(PatchParameter, sa)
+            COMPARE_StateAttribute_Types(PatchParameter,sa)
 
             // compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_vertices)
@@ -53,51 +54,34 @@ public:
         }
 
         /** Set GL_PATCH_VERTICES parameter.*/
-        void setVertices(GLint vertices)
-        {
-            _vertices = vertices;
-        }
+        void setVertices(GLint vertices) { _vertices = vertices; }
 
         /** Get GL_PATCH_VERTICES parameter.*/
-        GLint getVertices() const
-        {
-            return _vertices;
-        }
+        GLint getVertices() const { return _vertices; }
 
         /** Set GL_PATCH_DEFAULT_INNER_LEVEL parameter.*/
-        void setPatchDefaultInnerLevel(const osg::Vec2 &level)
-        {
-            _patchDefaultInnerLevel = level;
-        }
+        void setPatchDefaultInnerLevel(const osg::Vec2& level) { _patchDefaultInnerLevel = level; }
 
         /** Get GL_PATCH_DEFAULT_INNER_LEVEL parameter.*/
-        const osg::Vec2&getPatchDefaultInnerLevel() const
-        {
-            return _patchDefaultInnerLevel;
-        }
+        const osg::Vec2& getPatchDefaultInnerLevel() const { return _patchDefaultInnerLevel; }
 
         /** Set GL_PATCH_DEFAULT_OUTER_LEVEL parameter.*/
-        void setPatchDefaultOuterLevel(const osg::Vec4 &level)
-        {
-            _patchDefaultOuterLevel = level;
-        }
+        void setPatchDefaultOuterLevel(const osg::Vec4& level) { _patchDefaultOuterLevel = level; }
 
         /** Get GL_PATCH_DEFAULT_INNER_LEVEL parameter.*/
-        const osg::Vec4&getPatchDefaultOuterLevel() const
-        {
-            return _patchDefaultOuterLevel;
-        }
+        const osg::Vec4& getPatchDefaultOuterLevel() const { return _patchDefaultOuterLevel; }
 
-        virtual void apply(State &state) const;
+        virtual void apply(State& state) const;
 
-protected:
+    protected:
 
         virtual ~PatchParameter();
 
-        GLint     _vertices;
-        osg::Vec2 _patchDefaultInnerLevel;
-        osg::Vec4 _patchDefaultOuterLevel;
-    };
+        GLint           _vertices;
+        osg::Vec2       _patchDefaultInnerLevel;
+        osg::Vec4       _patchDefaultOuterLevel;
+};
+
 }
 
 #endif

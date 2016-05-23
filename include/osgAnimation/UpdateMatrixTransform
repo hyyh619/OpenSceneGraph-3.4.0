@@ -23,30 +23,26 @@
 
 namespace osgAnimation
 {
-    class OSGANIMATION_EXPORT UpdateMatrixTransform: public AnimationUpdateCallback < osg::NodeCallback >
+
+    class OSGANIMATION_EXPORT UpdateMatrixTransform : public AnimationUpdateCallback<osg::NodeCallback>
     {
-public:
+    public:
         META_Object(osgAnimation, UpdateMatrixTransform);
 
-        UpdateMatrixTransform(const std::string &name = "");
-        UpdateMatrixTransform(const UpdateMatrixTransform &apc, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY);
+        UpdateMatrixTransform(const std::string& name = "");
+        UpdateMatrixTransform(const UpdateMatrixTransform& apc,const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 
         // Callback method called by the NodeVisitor when visiting a node.
-        virtual void operator()(osg::Node * node, osg::NodeVisitor * nv);
-        virtual bool link(osgAnimation::Channel *channel);
+        virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
+        virtual bool link(osgAnimation::Channel* channel);
 
-        StackedTransform&getStackedTransforms()
-        {
-            return _transforms;
-        }
-        const StackedTransform&getStackedTransforms() const
-        {
-            return _transforms;
-        }
+        StackedTransform& getStackedTransforms() { return _transforms;}
+        const StackedTransform& getStackedTransforms() const { return _transforms;}
 
-protected:
+    protected:
         StackedTransform _transforms;
     };
+
 }
 
 #endif

@@ -9,19 +9,19 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
-// osgFX - Copyright (C) 2003 Marco Jez
+*/
+//osgFX - Copyright (C) 2003 Marco Jez
 
 #ifndef OSGFX_EXPORT_
 #define OSGFX_EXPORT_
 
-#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__BCPLUSPLUS__) || defined(__MWERKS__)
-    #  if defined(OSG_LIBRARY_STATIC)
+#if defined(_MSC_VER) || defined(__CYGWIN__) || defined(__MINGW32__) || defined( __BCPLUSPLUS__)  || defined( __MWERKS__)
+    #  if defined( OSG_LIBRARY_STATIC )
     #    define OSGFX_EXPORT
-    #  elif defined(OSGFX_LIBRARY)
-    #    define OSGFX_EXPORT __declspec(dllexport)
+    #  elif defined( OSGFX_LIBRARY )
+    #    define OSGFX_EXPORT   __declspec(dllexport)
     #  else
-    #    define OSGFX_EXPORT __declspec(dllimport)
+    #    define OSGFX_EXPORT   __declspec(dllimport)
     #  endif
 #else
     #  define OSGFX_EXPORT
@@ -29,12 +29,12 @@
 
 /**
 
-   \namespace osgFX
+\namespace osgFX
 
-   The osgFX library is a NodeKit that extends the core scene graph to provide a special effects framework.
-   osgFX's framework allows multiple rendering techniques to be provide for each effect, thereby provide the use
-   appropriate rendering techniques for each different class of graphics hardware, i.e. support for both modern
-   programmable graphics hardware and still have standard OpenGL 1.1 support as a fallback.
- */
+The osgFX library is a NodeKit that extends the core scene graph to provide a special effects framework.
+osgFX's framework allows multiple rendering techniques to be provide for each effect, thereby provide the use
+appropriate rendering techniques for each different class of graphics hardware, i.e. support for both modern
+programmable graphics hardware and still have standard OpenGL 1.1 support as a fallback.
+*/
 
 #endif

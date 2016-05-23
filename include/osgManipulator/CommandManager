@@ -9,8 +9,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
-// osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
+*/
+//osgManipulator - Copyright (C) 2007 Fugro-Jason B.V.
 
 #ifndef OSGMANIPULATOR_COMMANDMANAGER
 #define OSGMANIPULATOR_COMMANDMANAGER 1
@@ -20,32 +20,33 @@
 #include <osgManipulator/Constraint>
 
 namespace osgManipulator {
+
 /**
  * Deprecated.
  * CommandManager class is now no longer required as Dragger now matains all references to Constraints and Selections (now just generic MatrixTransforms).
  * To replace CommandManager usage simple replace cmdMgr->connect(*dragger, *selection) with dragger->addTransformUpdating(selection) and
  * cmdMgr->connect(*dragger, *selection) with dragger->addConstaint(constraint).
  */
-    class CommandManager: public osg::Referenced
-    {
-public:
+class CommandManager : public osg::Referenced
+{
+    public:
         CommandManager() {}
 
-        bool connect(Dragger &dragger, Selection &selection)
+        bool connect(Dragger& dragger, Selection& selection)
         {
             dragger.addTransformUpdating(&selection);
 
             return true;
         }
 
-        bool connect(Dragger &dragger, Constraint &constraint)
+        bool connect(Dragger& dragger, Constraint& constraint)
         {
             dragger.addConstraint(&constraint);
 
             return true;
         }
 
-        bool disconnect(Dragger &dragger)
+        bool disconnect(Dragger& dragger)
         {
             dragger.getConstraints().clear();
             dragger.getDraggerCallbacks().clear();
@@ -53,29 +54,30 @@ public:
             return true;
         }
 
-        typedef std::list < osg::ref_ptr < Selection >> Selections;
+        typedef std::list< osg::ref_ptr<Selection> > Selections;
 
-        Selections getConnectedSelections(Dragger &dragger)
+        Selections getConnectedSelections(Dragger& dragger)
         {
             Selections selections;
 
-            for (Dragger::DraggerCallbacks::iterator itr = dragger.getDraggerCallbacks().begin();
-                 itr != dragger.getDraggerCallbacks().end();
-                 ++itr)
+            for(Dragger::DraggerCallbacks::iterator itr = dragger.getDraggerCallbacks().begin();
+                itr != dragger.getDraggerCallbacks().end();
+                ++itr)
             {
-                DraggerCallback          *dc  = itr->get();
-                DraggerTransformCallback *dtc = dynamic_cast < DraggerTransformCallback * > (dc);
-                if (dtc && dtc->getTransform())
-                    selections.push_back(dtc->getTransform());
+                DraggerCallback* dc = itr->get();
+                DraggerTransformCallback* dtc = dynamic_cast<DraggerTransformCallback*>(dc);
+                if (dtc && dtc->getTransform()) selections.push_back(dtc->getTransform());
             }
 
             return selections;
         }
 
-protected:
+    protected:
 
         virtual ~CommandManager() {}
-    };
+
+};
+
 }
 
 #endif

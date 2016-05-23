@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 #ifndef OSG_BLENDCOLOR
 #define OSG_BLENDCOLOR 1
@@ -21,28 +21,29 @@
 
 
 namespace osg {
+
 /** Encapsulates OpenGL blend/transparency state. */
-    class OSG_EXPORT BlendColor: public StateAttribute
-    {
-public:
+class OSG_EXPORT BlendColor : public StateAttribute
+{
+    public :
 
         BlendColor();
 
-        BlendColor(const osg::Vec4 & constantColor);
+        BlendColor(const osg::Vec4& constantColor);
 
         /** Copy constructor using CopyOp to manage deep vs shallow copy.*/
-        BlendColor(const BlendColor &trans, const CopyOp &copyop = CopyOp::SHALLOW_COPY) :
-            StateAttribute(trans, copyop),
+        BlendColor(const BlendColor& trans,const CopyOp& copyop=CopyOp::SHALLOW_COPY):
+            StateAttribute(trans,copyop),
             _constantColor(trans._constantColor) {}
 
-        META_StateAttribute(osg, BlendColor, BLENDCOLOR);
+        META_StateAttribute(osg, BlendColor,BLENDCOLOR);
 
         /** Return -1 if *this < *rhs, 0 if *this==*rhs, 1 if *this>*rhs. */
-        virtual int compare(const StateAttribute &sa) const
+        virtual int compare(const StateAttribute& sa) const
         {
             // Check for equal types, then create the rhs variable
             // used by the COMPARE_StateAttribute_Parameter macros below.
-            COMPARE_StateAttribute_Types(BlendColor, sa)
+            COMPARE_StateAttribute_Types(BlendColor,sa)
 
             // Compare each parameter in turn against the rhs.
             COMPARE_StateAttribute_Parameter(_constantColor)
@@ -50,35 +51,27 @@ public:
             return 0; // Passed all the above comparison macros, so must be equal.
         }
 
-        virtual bool getModeUsage(StateAttribute::ModeUsage &usage) const
+        virtual bool getModeUsage(StateAttribute::ModeUsage& usage) const
         {
             usage.usesMode(GL_BLEND);
             return true;
         }
 
-        void setConstantColor(const osg::Vec4 &color)
-        {
-            _constantColor = color;
-        }
+        void setConstantColor(const osg::Vec4& color) { _constantColor = color; }
 
-        inline osg::Vec4&getConstantColor()
-        {
-            return _constantColor;
-        }
+        inline osg::Vec4& getConstantColor() { return _constantColor; }
 
-        inline const osg::Vec4&getConstantColor() const
-        {
-            return _constantColor;
-        }
+        inline const osg::Vec4& getConstantColor() const { return _constantColor; }
 
-        virtual void apply(State &state) const;
+        virtual void apply(State& state) const;
 
-protected:
+    protected :
 
         virtual ~BlendColor();
 
         osg::Vec4 _constantColor;
-    };
+};
+
 }
 
 #endif

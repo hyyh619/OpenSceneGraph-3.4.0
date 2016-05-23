@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 #ifndef OSG_STATEATTRIBUTECALLBACK
 #define OSG_STATEATTRIBUTECALLBACK 1
 

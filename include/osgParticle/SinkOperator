@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 // Written by Wang Rui, (C) 2010
 
 #ifndef OSGPARTICLE_SINKOPERATOR
@@ -20,92 +20,81 @@
 
 namespace osgParticle
 {
+
+
 /** A sink operator kills particles if positions or velocities inside/outside the specified domain.
     Refer to David McAllister's Particle System API (http://www.particlesystems.org)
- */
-    class OSGPARTICLE_EXPORT SinkOperator: public DomainOperator
-    {
+*/
+class OSGPARTICLE_EXPORT SinkOperator : public DomainOperator
+{
 public:
-        enum SinkTarget { SINK_POSITION, SINK_VELOCITY, SINK_ANGULAR_VELOCITY };
-        enum SinkStrategy { SINK_INSIDE, SINK_OUTSIDE };
+    enum SinkTarget { SINK_POSITION, SINK_VELOCITY, SINK_ANGULAR_VELOCITY };
+    enum SinkStrategy { SINK_INSIDE, SINK_OUTSIDE };
 
-        SinkOperator()
-            : DomainOperator(), _sinkTarget(SINK_POSITION), _sinkStrategy(SINK_INSIDE)
-        {}
+    SinkOperator()
+    : DomainOperator(), _sinkTarget(SINK_POSITION), _sinkStrategy(SINK_INSIDE)
+    {}
 
-        SinkOperator(const SinkOperator &copy, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_COPY)
-            : DomainOperator(copy, copyop), _sinkTarget(copy._sinkTarget), _sinkStrategy(copy._sinkStrategy)
-        {}
+    SinkOperator( const SinkOperator& copy, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY )
+    : DomainOperator(copy, copyop), _sinkTarget(copy._sinkTarget), _sinkStrategy(copy._sinkStrategy)
+    {}
 
-        META_Object(osgParticle, SinkOperator);
+    META_Object( osgParticle, SinkOperator );
 
-        /// Set the sink strategy
-        void setSinkTarget(SinkTarget so)
-        {
-            _sinkTarget = so;
-        }
+    /// Set the sink strategy
+    void setSinkTarget( SinkTarget so ) { _sinkTarget = so; }
 
-        /// Get the sink strategy
-        SinkTarget getSinkTarget() const
-        {
-            return _sinkTarget;
-        }
+    /// Get the sink strategy
+    SinkTarget getSinkTarget() const { return _sinkTarget; }
 
-        /// Set the sink strategy
-        void setSinkStrategy(SinkStrategy ss)
-        {
-            _sinkStrategy = ss;
-        }
+    /// Set the sink strategy
+    void setSinkStrategy( SinkStrategy ss ) { _sinkStrategy = ss; }
 
-        /// Get the sink strategy
-        SinkStrategy getSinkStrategy() const
-        {
-            return _sinkStrategy;
-        }
+    /// Get the sink strategy
+    SinkStrategy getSinkStrategy() const { return _sinkStrategy; }
 
-        /// Perform some initializations. Do not call this method manually.
-        void beginOperate(Program *prg);
+    /// Perform some initializations. Do not call this method manually.
+    void beginOperate( Program* prg );
 
 protected:
-        virtual ~SinkOperator() {}
-        SinkOperator &operator = ( const SinkOperator& ) { return *this; }
+    virtual ~SinkOperator() {}
+    SinkOperator& operator=( const SinkOperator& ) { return *this; }
 
-        virtual void handlePoint(const Domain &domain, Particle *P, double dt);
-        virtual void handleLineSegment(const Domain &domain, Particle *P, double dt);
-        virtual void handleTriangle(const Domain &domain, Particle *P, double dt);
-        virtual void handleRectangle(const Domain &domain, Particle *P, double dt);
-        virtual void handlePlane(const Domain &domain, Particle *P, double dt);
-        virtual void handleSphere(const Domain &domain, Particle *P, double dt);
-        virtual void handleBox(const Domain &domain, Particle *P, double dt);
-        virtual void handleDisk(const Domain &domain, Particle *P, double dt);
+    virtual void handlePoint( const Domain& domain, Particle* P, double dt );
+    virtual void handleLineSegment( const Domain& domain, Particle* P, double dt );
+    virtual void handleTriangle( const Domain& domain, Particle* P, double dt );
+    virtual void handleRectangle( const Domain& domain, Particle* P, double dt );
+    virtual void handlePlane( const Domain& domain, Particle* P, double dt );
+    virtual void handleSphere( const Domain& domain, Particle* P, double dt );
+    virtual void handleBox( const Domain& domain, Particle* P, double dt );
+    virtual void handleDisk( const Domain& domain, Particle* P, double dt );
 
-        inline const osg::Vec3&getValue(Particle *P);
-        inline void kill(Particle *P, bool insideDomain);
+    inline const osg::Vec3& getValue( Particle* P );
+    inline void kill( Particle* P, bool insideDomain );
 
-        SinkTarget   _sinkTarget;
-        SinkStrategy _sinkStrategy;
-    };
+    SinkTarget _sinkTarget;
+    SinkStrategy _sinkStrategy;
+};
 
 // INLINE METHODS
 
-    inline const osg::Vec3&SinkOperator::getValue(Particle *P)
+inline const osg::Vec3& SinkOperator::getValue( Particle* P )
+{
+    switch ( _sinkTarget )
     {
-        switch (_sinkTarget)
-        {
-        case SINK_VELOCITY: return P->getVelocity();
-
-        case SINK_ANGULAR_VELOCITY: return P->getAngularVelocity();
-
-        case SINK_POSITION:
-        default: return P->getPosition();
-        }
+    case SINK_VELOCITY: return P->getVelocity();
+    case SINK_ANGULAR_VELOCITY: return P->getAngularVelocity();
+    case SINK_POSITION: default: return P->getPosition();
     }
+}
 
-    inline void SinkOperator::kill(Particle *P, bool insideDomain)
-    {
-        if (!((_sinkStrategy == SINK_INSIDE) ^ insideDomain))
-            P->kill();
-    }
+inline void SinkOperator::kill( Particle* P, bool insideDomain )
+{
+    if ( !((_sinkStrategy==SINK_INSIDE) ^ insideDomain) )
+        P->kill();
+}
+
+
 }
 
 #endif

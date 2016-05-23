@@ -10,7 +10,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * OpenSceneGraph Public License for more details.
- */
+*/
 
 
 #ifndef OSGANIMATION_TARGET
@@ -26,49 +26,35 @@
 
 namespace osgAnimation
 {
+
     class Channel;
 
-    class OSGANIMATION_EXPORT Target: public osg::Referenced
+    class OSGANIMATION_EXPORT Target : public osg::Referenced
     {
-public:
+    public:
 
         Target();
         virtual ~Target() {}
-        void reset()
-        {
-            _weight = 0; _priorityWeight = 0;
-        }
-        int getCount() const
-        {
-            return referenceCount();
-        }
-        float getWeight() const
-        {
-            return _weight;
-        }
-protected:
+        void reset() { _weight = 0; _priorityWeight = 0; }
+        int getCount() const { return referenceCount(); }
+        float getWeight() const { return _weight; }
+    protected:
         float _weight;
         float _priorityWeight;
-        int   _lastPriority;
+        int _lastPriority;
     };
 
 
-    template < class T >
-    class TemplateTarget: public Target
+    template <class T>
+    class TemplateTarget : public Target
     {
-public:
+    public:
 
         TemplateTarget() : _target() {}
-        TemplateTarget(const T &v)
-        {
-            setValue(v);
-        }
-        TemplateTarget(const TemplateTarget &v)
-        {
-            setValue(v.getValue());
-        }
+        TemplateTarget(const T& v) { setValue(v); }
+        TemplateTarget(const TemplateTarget& v) { setValue(v.getValue()); }
 
-        inline void lerp(float t, const T &a, const T &b);
+        inline void lerp(float t, const T& a, const T& b);
 
         /**
          *  The priority is used to detect a change of priority
@@ -79,7 +65,7 @@ public:
          *  all animation with priority -1
          *  ...
          */
-        void update(float weight, const T &val, int priority)
+        void update(float weight, const T& val, int priority)
         {
             if (_weight || _priorityWeight)
             {
@@ -87,9 +73,9 @@ public:
                 {
                     // change in priority
                     // add to weight with the same previous priority cumulated weight
-                    _weight        += _priorityWeight * (1.0 - _weight);
+                    _weight += _priorityWeight * (1.0 - _weight);
                     _priorityWeight = 0;
-                    _lastPriority   = priority;
+                    _lastPriority = priority;
                 }
 
                 _priorityWeight += weight;
@@ -99,33 +85,27 @@ public:
             else
             {
                 _priorityWeight = weight;
-                _lastPriority   = priority;
-                _target         = val;
+                _lastPriority = priority;
+                _target = val;
             }
         }
-        const T&getValue() const
-        {
-            return _target;
-        }
+        const T& getValue() const { return _target; }
 
-        void setValue(const T &value)
-        {
-            _target = value;
-        }
+        void setValue(const T& value) { _target = value; }
 
-protected:
+    protected:
 
         T _target;
     };
 
-    template < class T >
-    inline void TemplateTarget < T > ::lerp(float t, const T &a, const T &b)
+    template <class T>
+    inline void TemplateTarget<T>::lerp(float t, const T& a, const T& b)
     {
         _target = a * (1.0f - t) + b * t;
     }
 
-    template < >
-    inline void TemplateTarget < osg::Quat > ::lerp(float t, const osg::Quat & a, const osg::Quat & b)
+    template <>
+    inline void TemplateTarget<osg::Quat>::lerp(float t, const osg::Quat& a, const osg::Quat& b)
     {
         if (a.asVec4() * b.asVec4() < 0.0)
         {
@@ -137,17 +117,18 @@ protected:
         }
 
         osg::Quat::value_type len2 = _target.length2();
-        if (len2 != 1.0 && len2 != 0.0)
-            _target *= 1.0 / sqrt(len2);
+        if ( len2 != 1.0 && len2 != 0.0)
+            _target *= 1.0/sqrt(len2);
     }
 
-    typedef TemplateTarget < osg::Matrixf > MatrixTarget;
-    typedef TemplateTarget < osg::Quat > QuatTarget;
-    typedef TemplateTarget < osg::Vec3 > Vec3Target;
-    typedef TemplateTarget < osg::Vec4 > Vec4Target;
-    typedef TemplateTarget < osg::Vec2 > Vec2Target;
-    typedef TemplateTarget < float > FloatTarget;
-    typedef TemplateTarget < double > DoubleTarget;
+    typedef TemplateTarget<osg::Matrixf> MatrixTarget;
+    typedef TemplateTarget<osg::Quat> QuatTarget;
+    typedef TemplateTarget<osg::Vec3> Vec3Target;
+    typedef TemplateTarget<osg::Vec4> Vec4Target;
+    typedef TemplateTarget<osg::Vec2> Vec2Target;
+    typedef TemplateTarget<float> FloatTarget;
+    typedef TemplateTarget<double> DoubleTarget;
+
 }
 
 #endif
