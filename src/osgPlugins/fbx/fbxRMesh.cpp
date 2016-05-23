@@ -135,7 +135,7 @@ FbxT getElement(const FbxLayerElementTemplate<FbxT> *pLayerElement,
                                                      pLayerElement, fbxMesh, nPolygon, nPolyVertex, nMeshVertex));
 }
 
-typedef std::map<unsigned, osg::ref_ptr<osg::Geometry>> GeometryMap;
+typedef std::map<unsigned, osg::ref_ptr<osg::Geometry> > GeometryMap;
 
 osg::Array* createVec2Array(bool doublePrecision)
 {
@@ -348,7 +348,7 @@ osg::Geometry* getGeometry(osg::Geode *pGeode, GeometryMap &geometryMap,
         }
     }
 
-    geometryMap.insert(std::pair<unsigned, osg::ref_ptr<osg::Geometry>>(mti, pGeometry));
+    geometryMap.insert(std::pair<unsigned, osg::ref_ptr<osg::Geometry> >(mti, pGeometry));
     pGeode->addDrawable(pGeometry.get());
 
     return pGeometry.get();
@@ -435,8 +435,8 @@ void readAnimation(FbxNode *pNode, FbxScene &fbxScene, const std::string &target
                 continue;
             }
 
-            osgAnimation::FloatLinearChannel                   *pChannel     = new osgAnimation::FloatLinearChannel;
-            std::vector<osgAnimation::TemplateKeyframe<float>> &keyFrameCntr = *pChannel->getOrCreateSampler()->getOrCreateKeyframeContainer();
+            osgAnimation::FloatLinearChannel                    *pChannel     = new osgAnimation::FloatLinearChannel;
+            std::vector<osgAnimation::TemplateKeyframe<float> > &keyFrameCntr = *pChannel->getOrCreateSampler()->getOrCreateKeyframeContainer();
 
             for (int k = 0; k < nKeys; ++k)
             {
@@ -1008,7 +1008,7 @@ osgDB::ReaderWriter::ReadResult OsgFbxReader::readMesh(
     if (geomType == GEOMETRY_RIG)
     {
         typedef std::map<osg::ref_ptr<osg::Geometry>,
-                         osg::ref_ptr<osgAnimation::RigGeometry>> GeometryRigGeometryMap;
+                         osg::ref_ptr<osgAnimation::RigGeometry> > GeometryRigGeometryMap;
         GeometryRigGeometryMap old2newGeometryMap;
 
         for (unsigned i = 0; i < pGeode->getNumDrawables(); ++i)

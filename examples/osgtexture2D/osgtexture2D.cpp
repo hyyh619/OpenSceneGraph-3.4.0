@@ -625,7 +625,7 @@ void setValues()
 protected:
 
 
-typedef std::vector<osg::ref_ptr<osg::Image>> ImageList;
+typedef std::vector<osg::ref_ptr<osg::Image> > ImageList;
 typedef std::vector<std::string>                TextList;
 
 osg::ref_ptr<osg::Texture2D> _texture;

@@ -103,7 +103,7 @@ void Terrain::traverse(osg::NodeVisitor &nv)
         osgUtil::UpdateVisitor *uv = dynamic_cast<osgUtil::UpdateVisitor*>(&nv);
         if (uv)
         {
-            typedef std::list<osg::ref_ptr<TerrainTile>>  TerrainTileList;
+            typedef std::list<osg::ref_ptr<TerrainTile> >  TerrainTileList;
             TerrainTileList tiles;
             {
                 OpenThreads::ScopedLock<OpenThreads::ReentrantMutex> lock(_mutex);

@@ -58,7 +58,7 @@ osg::Switch* addKey(osg::Vec3 &pos, int key, const std::string &text, float widt
 
 void createKeyboard();
 
-typedef std::map<int, osg::ref_ptr<osg::Switch>> KeyModelMap;
+typedef std::map<int, osg::ref_ptr<osg::Switch> > KeyModelMap;
 
 osg::ref_ptr<osg::Group>    _scene;
 KeyModelMap                 _keyModelMap;

@@ -78,7 +78,7 @@ friend class VideoFrameDispatchQueue;
 class VideoFrameDispatchQueue : public OpenThreads::Thread, public osg::Referenced
 {
 public:
-typedef std::set<osg::observer_ptr<VideoImageStream>> Queue;
+typedef std::set<osg::observer_ptr<VideoImageStream> > Queue;
 
 VideoFrameDispatchQueue();
 ~VideoFrameDispatchQueue();
@@ -113,7 +113,7 @@ class VideoFrameDispatcher : public osg::Referenced
 {
 public:
 
-typedef std::vector<osg::ref_ptr<VideoFrameDispatchQueue>> DispatchQueues;
+typedef std::vector<osg::ref_ptr<VideoFrameDispatchQueue> > DispatchQueues;
 
 VideoFrameDispatcher(unsigned int num_threads = 0);
 

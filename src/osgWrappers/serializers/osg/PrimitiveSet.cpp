@@ -66,7 +66,7 @@ REGISTER_OBJECT_WRAPPER(PrimitiveSet,
     ADD_UINT_SERIALIZER_NO_SET(NumIndices, 0);
 
     wrapper->addSerializer(
-        new osgDB::PropByValSerializer<osg::PrimitiveSet, bool> ("supportsBufferObject", false, &osg::PrimitiveSet::supportsBufferObject, 0, osgDB::BaseSerializer::RW_BOOL)
+        new osgDB::PropByValSerializer<osg::PrimitiveSet, bool>("supportsBufferObject", false, &osg::PrimitiveSet::supportsBufferObject, 0, osgDB::BaseSerializer::RW_BOOL)
         );
 #endif
 }

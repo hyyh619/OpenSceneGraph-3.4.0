@@ -135,12 +135,12 @@ float Hat(float x, float y, float z)
 
     i = 0;
 
-    while (i<((m - 1)*39) && x> (vertex[i + n][0] - dbcenter[0]))
+    while (i<((m - 1)*39) && x>(vertex[i + n][0] - dbcenter[0]))
         i += n;
 
     j = 0;
 
-    while (j<n - 1 && y> (vertex[i + j + 1][1] - dbcenter[1]))
+    while (j<n - 1 && y>(vertex[i + j + 1][1] - dbcenter[1]))
         j++;
 
     tri[0][0] = vertex[i + 0 + j + 0][0] - dbcenter[0];

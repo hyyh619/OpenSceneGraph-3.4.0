@@ -47,7 +47,7 @@ virtual osg::Vec2 getKerning(unsigned int leftcharcode, unsigned int rightcharco
 bool loadFont(std::istream &stream);
 
 protected:
-typedef std::map<unsigned int, osg::ref_ptr<osgText::Glyph>> GlyphMap;
+typedef std::map<unsigned int, osg::ref_ptr<osgText::Glyph> > GlyphMap;
 
 std::string _filename;
 GlyphMap    _chars;

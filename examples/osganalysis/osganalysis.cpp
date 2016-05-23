@@ -302,8 +302,8 @@ void reallocate()
 {
     OSG_NOTICE << "Reallocating Arrays" << std::endl;
 
-    typedef std::vector<osg::ref_ptr<osg::Array>> ArrayVector;
-    typedef std::vector<osg::ref_ptr<osg::Geometry>> GeometryVector;
+    typedef std::vector<osg::ref_ptr<osg::Array> > ArrayVector;
+    typedef std::vector<osg::ref_ptr<osg::Geometry> > GeometryVector;
     ArrayVector    newArrays;
     GeometryVector newGeometries;
 
@@ -338,7 +338,7 @@ void reallocate()
     }
 }
 
-typedef std::vector<osg::ref_ptr<osg::Geometry>> GeometryVector;
+typedef std::vector<osg::ref_ptr<osg::Geometry> > GeometryVector;
 typedef std::pair<osg::Array*, osg::Array*> ArrayPair;
 typedef std::vector<ArrayPair> ArrayVector;
 typedef std::pair<osg::PrimitiveSet*, osg::PrimitiveSet*> PrimitiveSetPair;

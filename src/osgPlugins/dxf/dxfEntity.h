@@ -290,19 +290,19 @@ virtual int                    vertexCount()
 virtual void                drawScene(scene *sc);
 
 protected:
-dxfVertex                            *_currentVertex;
-std::vector<osg::ref_ptr<dxfVertex>> _vertices;
-std::vector<osg::ref_ptr<dxfVertex>> _indices;
-double                               _elevation;
-unsigned short                       _flag;
-unsigned int                         _mcount;
-unsigned int                         _ncount;
-unsigned short                       _nstart;  // 71
-unsigned short                       _nend;  // 72
-osg::Vec3d                           _ocs;  // 210 220 230
-unsigned short                       _mdensity;  // 73
-unsigned short                       _ndensity;  // 74
-unsigned short                       _surfacetype;  // 75
+dxfVertex                             *_currentVertex;
+std::vector<osg::ref_ptr<dxfVertex> > _vertices;
+std::vector<osg::ref_ptr<dxfVertex> > _indices;
+double                                _elevation;
+unsigned short                        _flag;
+unsigned int                          _mcount;
+unsigned int                          _ncount;
+unsigned short                        _nstart; // 71
+unsigned short                        _nend; // 72
+osg::Vec3d                            _ocs; // 210 220 230
+unsigned short                        _mdensity; // 73
+unsigned short                        _ndensity; // 74
+unsigned short                        _surfacetype; // 75
 };
 
 class dxfLWPolyline : public dxfBasicEntity
@@ -457,10 +457,10 @@ static dxfBasicEntity* getRegistryEntity(std::string s)
 }
 
 protected:
-std::vector<osg::ref_ptr<dxfBasicEntity>>                  _entityList;
-static std::map<std::string, osg::ref_ptr<dxfBasicEntity>> _registry;
-dxfBasicEntity                                             *_entity;
-bool                                                       _seqend;  // bypass 0 codes. needs a 0 seqend to close.
+std::vector<osg::ref_ptr<dxfBasicEntity> >                  _entityList;
+static std::map<std::string, osg::ref_ptr<dxfBasicEntity> > _registry;
+dxfBasicEntity                                              *_entity;
+bool                                                        _seqend; // bypass 0 codes. needs a 0 seqend to close.
 };
 
 /** Proxy class for automatic registration of dxf entities reader/writers.*/

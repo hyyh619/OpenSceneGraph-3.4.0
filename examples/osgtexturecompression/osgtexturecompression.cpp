@@ -165,7 +165,7 @@ int main(int argc, char **argv)
 
     osg::ref_ptr<osgGA::TrackballManipulator> trackball = new osgGA::TrackballManipulator;
 
-    typedef std::vector<osg::ref_ptr<osg::Node>> Models;
+    typedef std::vector<osg::ref_ptr<osg::Node> > Models;
 
     Models models;
     models.push_back(creatQuad("no compression", image.get(), osg::Texture::USE_IMAGE_DATA_FORMAT, osg::Texture::LINEAR));

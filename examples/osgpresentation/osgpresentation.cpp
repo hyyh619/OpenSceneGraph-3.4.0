@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     osgViewer::Viewer viewer(arguments);
 
 #if 0
-    typedef std::list<osg::ref_ptr<osg::Script>> Scripts;
+    typedef std::list<osg::ref_ptr<osg::Script> > Scripts;
     Scripts scripts;
 
     osg::ref_ptr<osg::Group> model = new osg::Group;

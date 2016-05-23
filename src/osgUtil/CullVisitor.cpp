@@ -1514,7 +1514,7 @@ RenderStage* getRenderStage(osgUtil::CullVisitor *cv)
     return _renderStageMap[cv].get();
 }
 
-typedef std::map<CullVisitor*, osg::ref_ptr<RenderStage>> RenderStageMap;
+typedef std::map<CullVisitor*, osg::ref_ptr<RenderStage> > RenderStageMap;
 
 /** Resize any per context GLObject buffers to specified size. */
 virtual void resizeGLObjectBuffers(unsigned int maxSize)

@@ -608,7 +608,7 @@ private:
 unsigned int                  _mask;
 Producer::ref_ptr<EventQueue> q;
 };
-std::vector<Producer::ref_ptr<Client>>clients;
+std::vector<Producer::ref_ptr<Client> > clients;
 void dispatch(ref_ptr<Event> );
 
 int _ownWindow;
@@ -621,9 +621,9 @@ HINSTANCE _hinstance;
 BOOL CreateGLWindow(char *title, int width, int height, int bits, bool fullscreenflag);
 void KillGLWindow();
 
-LONG WINAPI                            proc(Window, UINT, WPARAM, LPARAM);
-static LONG WINAPI                     s_proc(Window, UINT, WPARAM, LPARAM);
-static std::map<Window, RenderSurface*>registry;
+LONG WINAPI                             proc(Window, UINT, WPARAM, LPARAM);
+static LONG WINAPI                      s_proc(Window, UINT, WPARAM, LPARAM);
+static std::map<Window, RenderSurface*> registry;
 
 /* mouse things */
 int          _mx, _my;

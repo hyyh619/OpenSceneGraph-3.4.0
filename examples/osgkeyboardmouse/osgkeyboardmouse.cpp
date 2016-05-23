@@ -111,7 +111,7 @@ void pruneSelectedNodes()
     }
 }
 
-typedef std::vector<osg::ref_ptr<osgFX::Scribe>> SelectedNodes;
+typedef std::vector<osg::ref_ptr<osgFX::Scribe> > SelectedNodes;
 SelectedNodes _selectedNodes;
 };
 

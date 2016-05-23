@@ -509,7 +509,7 @@ void Thread::Init()
 //
 int Thread::getThreadId()
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     return pd->uniqueId;
 }
@@ -522,7 +522,7 @@ int Thread::getThreadId()
 //
 size_t Thread::getProcessId()
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     if (pd->idSet == false)
         return (size_t)(pthread_self());
@@ -538,7 +538,7 @@ size_t Thread::getProcessId()
 //
 int Thread::setProcessorAffinity(unsigned int cpunum)
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     pd->cpunum = cpunum;
     if (pd->cpunum < 0)
@@ -586,7 +586,7 @@ int Thread::setProcessorAffinity(unsigned int cpunum)
 //
 bool Thread::isRunning()
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     return pd->isRunning();
 }
@@ -608,7 +608,7 @@ int Thread::start()
         return status;
     }
 
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     // -------------------------------------------------------------------------
     // Set the stack size if requested, but not less than a platform reasonable
@@ -695,7 +695,7 @@ int Thread::startThread()
 //
 int Thread::detach()
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     return pthread_detach(pd->tid);
 }
@@ -709,7 +709,7 @@ int Thread::detach()
 int Thread::join()
 {
     void               *threadResult = 0; // Dummy var.
-    PThreadPrivateData *pd           = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd           = static_cast<PThreadPrivateData*>(_prvData);
 
     return pthread_join(pd->tid, &threadResult);
 }
@@ -723,7 +723,7 @@ int Thread::join()
 int Thread::testCancel()
 {
 #if defined(HAVE_PTHREAD_TESTCANCEL)
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     if (pthread_self() != pd->tid)
         return -1;
@@ -746,7 +746,7 @@ int Thread::testCancel()
 int Thread::cancel()
 {
 #if defined(HAVE_PTHREAD_CANCEL)
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
     if (pd->isRunning())
     {
         pd->isCanceled = true;
@@ -822,7 +822,7 @@ int Thread::setCancelModeDeferred()
 int Thread::setSchedulePriority(ThreadPriority priority)
 {
 #ifdef ALLOW_PRIORITY_SCHEDULING
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     pd->threadPriority = priority;
 
@@ -844,7 +844,7 @@ int Thread::setSchedulePriority(ThreadPriority priority)
 //
 int Thread::getSchedulePriority()
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     return pd->threadPriority;
 }
@@ -858,7 +858,7 @@ int Thread::getSchedulePriority()
 int Thread::setSchedulePolicy(ThreadPolicy policy)
 {
 #ifdef ALLOW_PRIORITY_SCHEDULING
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     pd->threadPolicy = policy;
 
@@ -880,7 +880,7 @@ int Thread::setSchedulePolicy(ThreadPolicy policy)
 //
 int Thread::getSchedulePolicy()
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     return pd->threadPolicy;
 }
@@ -894,7 +894,7 @@ int Thread::getSchedulePolicy()
 //
 int Thread::setStackSize(size_t stackSize)
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     if (pd->stackSizeLocked == true)
         return 13;                              // EACESS
@@ -912,7 +912,7 @@ int Thread::setStackSize(size_t stackSize)
 //
 size_t Thread::getStackSize()
 {
-    PThreadPrivateData *pd = static_cast<PThreadPrivateData*> (_prvData);
+    PThreadPrivateData *pd = static_cast<PThreadPrivateData*>(_prvData);
 
     return pd->stackSize;
 }

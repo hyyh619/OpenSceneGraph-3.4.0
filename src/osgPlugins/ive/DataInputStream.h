@@ -130,19 +130,19 @@ bool getLoadExternalReferenceFiles()
 };
 
 
-typedef std::map<std::string, osg::ref_ptr<osg::Image>>    ImageMap;
-typedef std::map<int, osg::ref_ptr<osg::StateSet>>          StateSetMap;
-typedef std::map<int, osg::ref_ptr<osg::StateAttribute>>    StateAttributeMap;
-typedef std::map<int, osg::ref_ptr<osg::Uniform>>           UniformMap;
-typedef std::map<int, osg::ref_ptr<osg::Shader>>            ShaderMap;
-typedef std::map<int, osg::ref_ptr<osg::Drawable>>          DrawableMap;
-typedef std::map<int, osg::ref_ptr<osg::Shape>>             ShapeMap;
-typedef std::map<int, osg::ref_ptr<osg::Node>>              NodeMap;
-typedef std::map<int, osg::ref_ptr<osgTerrain::Layer>>      LayerMap;
-typedef std::map<int, osg::ref_ptr<osgTerrain::Locator>>    LocatorMap;
-typedef std::map<int, osg::ref_ptr<osgVolume::Layer>>       VolumeLayerMap;
-typedef std::map<int, osg::ref_ptr<osgVolume::Locator>>     VolumeLocatorMap;
-typedef std::map<int, osg::ref_ptr<osgVolume::Property>>    VolumePropertyMap;
+typedef std::map<std::string, osg::ref_ptr<osg::Image> >    ImageMap;
+typedef std::map<int, osg::ref_ptr<osg::StateSet> >          StateSetMap;
+typedef std::map<int, osg::ref_ptr<osg::StateAttribute> >    StateAttributeMap;
+typedef std::map<int, osg::ref_ptr<osg::Uniform> >           UniformMap;
+typedef std::map<int, osg::ref_ptr<osg::Shader> >            ShaderMap;
+typedef std::map<int, osg::ref_ptr<osg::Drawable> >          DrawableMap;
+typedef std::map<int, osg::ref_ptr<osg::Shape> >             ShapeMap;
+typedef std::map<int, osg::ref_ptr<osg::Node> >              NodeMap;
+typedef std::map<int, osg::ref_ptr<osgTerrain::Layer> >      LayerMap;
+typedef std::map<int, osg::ref_ptr<osgTerrain::Locator> >    LocatorMap;
+typedef std::map<int, osg::ref_ptr<osgVolume::Layer> >       VolumeLayerMap;
+typedef std::map<int, osg::ref_ptr<osgVolume::Locator> >     VolumeLocatorMap;
+typedef std::map<int, osg::ref_ptr<osgVolume::Property> >    VolumePropertyMap;
 
 bool         _verboseOutput;
 std::istream *_istream;

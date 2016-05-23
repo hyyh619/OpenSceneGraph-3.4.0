@@ -62,7 +62,7 @@ struct SceneSingleton
         return 0;
     }
 
-    typedef std::vector<osg::observer_ptr<Scene>>  SceneCache;
+    typedef std::vector<osg::observer_ptr<Scene> >  SceneCache;
     SceneCache         _cache;
     OpenThreads::Mutex _mutex;
 };

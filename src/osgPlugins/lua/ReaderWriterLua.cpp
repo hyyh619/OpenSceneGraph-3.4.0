@@ -68,7 +68,7 @@ virtual ReadResult readObjectFromScript(std::istream &fin, const osgDB::ReaderWr
     if (outputParameters.empty())
         return 0;
 
-    typedef std::vector<osg::ref_ptr<osg::Object>> Objects;
+    typedef std::vector<osg::ref_ptr<osg::Object> > Objects;
     Objects objects;
 
     for (osg::Parameters::iterator itr = outputParameters.begin();

@@ -63,7 +63,7 @@ struct VertexIndex
     }
 };
 
-typedef std::vector<std::pair<Triangle, int>> ListTriangle;  // the int is the drawable of the triangle
+typedef std::vector<std::pair<Triangle, int> > ListTriangle;  // the int is the drawable of the triangle
 typedef std::map<VertexIndex, unsigned int> MapIndices;        ///< Map OSG indices to FBX mesh indices
 
 namespace pluginfbx
@@ -234,7 +234,7 @@ void createListTriangle(const osg::Geometry *geo,
 ///Store the material of the stateset in the MaterialMap.
 int processStateSet(const osg::StateSet *stateset);
 
-typedef std::stack<osg::ref_ptr<osg::StateSet>> StateSetStack;
+typedef std::stack<osg::ref_ptr<osg::StateSet> > StateSetStack;
 typedef std::map<osg::ref_ptr<const osg::StateSet>, Material, CompareStateSet> MaterialMap;
 
 ///We need this for every new Node we create.

@@ -162,7 +162,7 @@ private:
     string path = uri.substr(uri.find_first_of('/', 7));
 
     auto_ptr<resource_istream> in(new file_resource_istream(path));
-    static_cast<file_resource_istream*> (in.get())->url(uri);
+    static_cast<file_resource_istream*>(in.get())->url(uri);
 
     return in;
 }
@@ -194,7 +194,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterVRML2::readNode(const std::string &f
 
     try
     {
-        const std::vector<boost::intrusive_ptr<openvrml::node>> &mfn = b->create_vrml_from_stream(vrml_stream);
+        const std::vector<boost::intrusive_ptr<openvrml::node> > &mfn = b->create_vrml_from_stream(vrml_stream);
 
         if (mfn.empty())
         {

@@ -1279,7 +1279,7 @@ bool Texture::TextureObjectManager::checkConsistency() const
 
 osg::ref_ptr<Texture::TextureObjectManager>&Texture::getTextureObjectManager(unsigned int contextID)
 {
-    typedef osg::buffered_object<ref_ptr<Texture::TextureObjectManager>> TextureObjectManagerBuffer;
+    typedef osg::buffered_object<ref_ptr<Texture::TextureObjectManager> > TextureObjectManagerBuffer;
     static TextureObjectManagerBuffer s_TextureObjectManager;
     if (!s_TextureObjectManager[contextID])
         s_TextureObjectManager[contextID] = new Texture::TextureObjectManager(contextID);

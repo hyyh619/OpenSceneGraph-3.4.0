@@ -106,7 +106,7 @@ char                             *_strIndent;
 
 map<osg::ref_ptr<osg::Texture2D>, std::string> _texMap;
 map<osg::ref_ptr<osg::Material>, std::string>  _matMap;
-vector<osg::ref_ptr<osg::StateSet>>            _stack;
+vector<osg::ref_ptr<osg::StateSet> >           _stack;
 osg::ref_ptr<osg::Image>                       _defaultImage;
 std::string                                    _pathToOutput;
 std::string                                    _pathRelativeToOutput;

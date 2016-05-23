@@ -144,8 +144,8 @@ virtual WriteResult writeNode(const osg::Node &node, const std::string &fileName
     if (!acceptsExtension(ext))
         return WriteResult::FILE_NOT_HANDLED;
 
-    geodeVisitor             vs; // this collects geodes.
-    std::vector<unsigned int>iNumMaterials;
+    geodeVisitor              vs; // this collects geodes.
+    std::vector<unsigned int> iNumMaterials;
     const_cast<osg::Node&>(node).accept(vs);         // this parses the tree to streamd Geodes
     std::vector<const osg::Geode*> glist = vs.getGeodes();
     osgDB::ofstream                fout(fileName.c_str(), std::ios::out | std::ios::binary);

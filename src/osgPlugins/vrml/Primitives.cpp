@@ -141,7 +141,7 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97IndexedLineSet(openv
 osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97Box(openvrml::node *vrml_box) const
 {
     std::auto_ptr<openvrml::field_value> fv    = vrml_box->field("size");
-    const openvrml::vec3f                &size = static_cast<const openvrml::sfvec3f*> (fv.get())->value();
+    const openvrml::vec3f                &size = static_cast<const openvrml::sfvec3f*>(fv.get())->value();
 
     osg::Vec3 halfSize(size[0] * 0.5f, size[1] * 0.5f, size[2] * 0.5f);
 
@@ -223,7 +223,7 @@ osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97Box(openvrml::node *
 osg::ref_ptr<osg::Geometry> ReaderWriterVRML2::convertVRML97Sphere(openvrml::node *vrml_sphere) const
 {
     std::auto_ptr<openvrml::field_value> fv     = vrml_sphere->field("radius");
-    const float                          radius = static_cast<const openvrml::sffloat*> (fv.get())->value();
+    const float                          radius = static_cast<const openvrml::sffloat*>(fv.get())->value();
 
     SphereLibrary::const_iterator it = m_sphereLibrary.find(radius);
 

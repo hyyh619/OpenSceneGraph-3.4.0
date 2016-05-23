@@ -86,7 +86,7 @@ ReadResult readRevisions(std::istream &fin, const std::string &name, const osgDB
 
     revisions->setName(name);
 
-    typedef std::map<std::string, osg::ref_ptr<osgDB::DatabaseRevision>> RevisionMap;
+    typedef std::map<std::string, osg::ref_ptr<osgDB::DatabaseRevision> > RevisionMap;
     RevisionMap revisionMap;
 
     std::string revisions_path;

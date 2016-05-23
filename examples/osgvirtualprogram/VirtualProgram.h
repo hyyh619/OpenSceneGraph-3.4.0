@@ -46,10 +46,10 @@ osg::Shader* setShader(const std::string &shaderSemantic,
                        osg::Shader *shader);
 
 protected:
-typedef std::vector<osg::ref_ptr<osg::Shader>>            ShaderList;
+typedef std::vector<osg::ref_ptr<osg::Shader> >            ShaderList;
 typedef std::pair<std::string, osg::Shader::Type>           ShaderSemantic;
-typedef std::map<ShaderSemantic, osg::ref_ptr<osg::Shader>> ShaderMap;
-typedef std::map<ShaderList, osg::ref_ptr<osg::Program>>    ProgramMap;
+typedef std::map<ShaderSemantic, osg::ref_ptr<osg::Shader> > ShaderMap;
+typedef std::map<ShaderList, osg::ref_ptr<osg::Program> >    ProgramMap;
 
 mutable ProgramMap _programMap;
 ShaderMap          _shaderMap;

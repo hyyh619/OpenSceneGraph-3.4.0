@@ -55,7 +55,7 @@
 #include <iostream>
 
 
-typedef std::vector<osg::ref_ptr<osg::GraphicsThread>> GraphicsThreads;
+typedef std::vector<osg::ref_ptr<osg::GraphicsThread> > GraphicsThreads;
 
 struct ReleaseBlockOnCompileCompleted : public osgUtil::IncrementalCompileOperation::CompileCompletedCallback
 {
@@ -124,8 +124,8 @@ class MasterOperation : public osg::Operation
 public:
 
 typedef std::set<std::string> Files;
-typedef std::map<std::string, osg::ref_ptr<osg::Node>>  FilenameNodeMap;
-typedef std::vector<osg::ref_ptr<osg::Node>>  Nodes;
+typedef std::map<std::string, osg::ref_ptr<osg::Node> >  FilenameNodeMap;
+typedef std::vector<osg::ref_ptr<osg::Node> >  Nodes;
 
 
 MasterOperation(const std::string &filename, osgUtil::IncrementalCompileOperation *ico) :
@@ -279,7 +279,7 @@ void load()
     FilenameNodeMap nodesToAdd;
     if (!newFiles.empty())
     {
-        typedef std::vector<osg::ref_ptr<osg::GraphicsThread>> GraphicsThreads;
+        typedef std::vector<osg::ref_ptr<osg::GraphicsThread> > GraphicsThreads;
         GraphicsThreads threads;
 
         for (unsigned int i = 0; i <= osg::GraphicsContext::getMaxContextID(); ++i)
@@ -298,7 +298,7 @@ void load()
 
             _endOfLoadBlock->reset();
 
-            typedef std::list<osg::ref_ptr<LoadAndCompileOperation>> LoadAndCompileList;
+            typedef std::list<osg::ref_ptr<LoadAndCompileOperation> > LoadAndCompileList;
             LoadAndCompileList loadAndCompileList;
 
             for (Files::iterator nitr = newFiles.begin();
@@ -911,7 +911,7 @@ int main(int argc, char **argv)
     // start operation thread if a master file has been used.
     osg::ref_ptr<osg::OperationThread> masterOperationThread;
 
-    typedef std::list<osg::ref_ptr<osg::OperationThread>> OperationThreadList;
+    typedef std::list<osg::ref_ptr<osg::OperationThread> > OperationThreadList;
     OperationThreadList generalThreadList;
 
     if (masterOperation.valid())

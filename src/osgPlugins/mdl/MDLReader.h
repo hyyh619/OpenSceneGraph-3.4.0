@@ -162,7 +162,7 @@ osg::ref_ptr<osg::Node> root_node;
 typedef std::vector<std::string>    StringList;
 StringList texture_paths;
 
-typedef std::vector<osg::ref_ptr<osg::StateSet>>    StateSetList;
+typedef std::vector<osg::ref_ptr<osg::StateSet> >    StateSetList;
 StateSetList state_sets;
 
 std::string    getToken(std::string str, const char *delim, size_t &index);

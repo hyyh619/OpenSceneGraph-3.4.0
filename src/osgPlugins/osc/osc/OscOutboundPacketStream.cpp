@@ -194,7 +194,7 @@ void OutboundPacketStream::EndElement(char *endPtr)
 
         // then we store the element size in the slot, note that the element
         // size does not include the size slot, hence the - 4 below.
-        uint32 elementSize = static_cast<uint32> (endPtr - reinterpret_cast<char*>(elementSizePtr_)) - 4;
+        uint32 elementSize = static_cast<uint32>(endPtr - reinterpret_cast<char*>(elementSizePtr_)) - 4;
         FromUInt32(reinterpret_cast<char*>(elementSizePtr_), elementSize);
 
         // finally, we reset the element size ptr to the containing element

@@ -605,7 +605,7 @@ void* tileHeaderCB::Parse(trpgToken tok, trpgReadBuffer &buf)
                 throw 1;
 
             std::vector<trpgLocalMaterial> *locMats;
-            locMats = const_cast<std::vector<trpgLocalMaterial>*> (head->GetLocalMaterialList());
+            locMats = const_cast<std::vector<trpgLocalMaterial>*>(head->GetLocalMaterialList());
             locMats->resize(numLocMat);
 
             for (i = 0; i < numLocMat; i++)

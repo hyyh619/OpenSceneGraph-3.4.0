@@ -311,7 +311,7 @@ AlignmentMap         _alignmentMap;
 CharacterSizeModeMap _characterSizeModeMap;
 StringKeyMap         _stringKeyMap;
 
-typedef std::map<std::string, osg::ref_ptr<osgDB::XmlNode>> TemplateMap;
+typedef std::map<std::string, osg::ref_ptr<osgDB::XmlNode> > TemplateMap;
 mutable TemplateMap _templateMap;
 
 osg::NotifySeverity _notifyLevel;
@@ -2817,7 +2817,7 @@ public:
 
 osgDB::FilePathList _paths;
 
-typedef std::map<std::string, osg::ref_ptr<osg::Object>>  ObjectCache;
+typedef std::map<std::string, osg::ref_ptr<osg::Object> >  ObjectCache;
 
 enum ObjectType
 {

@@ -95,10 +95,10 @@ virtual ReadResult readNode(const std::string&, const osgDB::Options *options) c
 virtual WriteResult writeNode(const osg::Node&, const std::string &filename, const osgDB::ReaderWriter::Options *options) const;
 
 private:
-typedef std::map<float, osg::ref_ptr<osg::Geometry>> SphereLibrary;
-typedef std::map<osg::Vec3, osg::ref_ptr<osg::Geometry>> BoxLibrary;
-typedef std::map<QuadricKey, osg::ref_ptr<osg::Geometry>> ConeLibrary;
-typedef std::map<QuadricKey, osg::ref_ptr<osg::Geometry>> CylinderLibrary;
+typedef std::map<float, osg::ref_ptr<osg::Geometry> > SphereLibrary;
+typedef std::map<osg::Vec3, osg::ref_ptr<osg::Geometry> > BoxLibrary;
+typedef std::map<QuadricKey, osg::ref_ptr<osg::Geometry> > ConeLibrary;
+typedef std::map<QuadricKey, osg::ref_ptr<osg::Geometry> > CylinderLibrary;
 
 osg::Node* convertFromVRML(openvrml::node *obj) const;
 

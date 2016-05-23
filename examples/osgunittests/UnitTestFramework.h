@@ -293,7 +293,7 @@ protected:
 
 virtual ~TestSuite() {}
 
-typedef std::vector<osg::ref_ptr<Test>> Tests;
+typedef std::vector<osg::ref_ptr<Test> > Tests;
 Tests _tests;      // Collection of Suites and/or Cases
 };
 

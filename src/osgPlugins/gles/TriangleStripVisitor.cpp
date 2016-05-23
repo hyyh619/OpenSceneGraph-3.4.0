@@ -74,7 +74,7 @@ void TriangleStripVisitor::mergeTrianglesStrip(osg::Geometry &geometry)
                 else if (ps->getType() == osg::PrimitiveSet::DrawArraysPrimitiveType)
                 {
                     // trip strip can generate drawarray of 5 elements we want to merge them too
-                    osg::DrawArrays *da = dynamic_cast<osg::DrawArrays*> (ps);
+                    osg::DrawArrays *da = dynamic_cast<osg::DrawArrays*>(ps);
                     // if connection needed insert degenerate triangles
                     if (ndw->getNumIndices() != 0 && ndw->back() != da->getFirst())
                     {

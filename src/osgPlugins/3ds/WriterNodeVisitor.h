@@ -46,7 +46,7 @@
 void copyOsgMatrixToLib3dsMatrix(Lib3dsMatrix lib3ds_matrix, const osg::Matrix &osg_matrix);
 
 typedef std::map<std::pair<unsigned int, unsigned int>, unsigned int> MapIndices;
-typedef std::vector<std::pair<Triangle, int>> ListTriangle;  // the int is the drawable of the triangle
+typedef std::vector<std::pair<Triangle, int> > ListTriangle;  // the int is the drawable of the triangle
 
 namespace plugin3ds
 {
@@ -201,7 +201,7 @@ std::string getUniqueName(const std::string &defaultvalue, bool isNodeName, cons
 std::string getMaterialName(const std::string &inputMaterialName);
 std::string export3DSTexture(const osg::Image *image, const std::string &fileName);
 
-typedef std::stack<osg::ref_ptr<osg::StateSet>> StateSetStack;
+typedef std::stack<osg::ref_ptr<osg::StateSet> > StateSetStack;
 typedef std::map<osg::ref_ptr<osg::StateSet>, Material, CompareStateSet> MaterialMap;
 
 void apply3DSMatrixNode(osg::Node &node, const osg::Matrix *m, const char* const prefix);

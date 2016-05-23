@@ -145,7 +145,7 @@ void daeReader::processSkins()
 
 void getJointsAndInverseObjectspaceBindMatrices(domInstance_controller *pDomInstanceController,
                                                 domNode *pDomSkeletonNode,
-                                                std::vector<std::pair<domNode*, osg::Matrix>> &jointsAndBindMatrices)
+                                                std::vector<std::pair<domNode*, osg::Matrix> > &jointsAndBindMatrices)
 {
     domController *pDomController = daeSafeCast<domController>(getElementFromURI(pDomInstanceController->getUrl()));
 
@@ -251,7 +251,7 @@ void daeReader::processSkeletonSkins(domNode *skeletonRoot, const domInstance_co
     {
         domInstance_controller *instanceController = instanceControllers[i];
 
-        std::vector<std::pair<domNode*, osg::Matrix>> jointsAndInverseBindMatrices;
+        std::vector<std::pair<domNode*, osg::Matrix> > jointsAndInverseBindMatrices;
         getJointsAndInverseObjectspaceBindMatrices(instanceController, skeletonRoot, jointsAndInverseBindMatrices);
 
         for (size_t j = 0; j < jointsAndInverseBindMatrices.size(); ++j)

@@ -47,116 +47,122 @@
 #include <map>
 #include <set>
 
-class OBJWriterNodeVisitor: public osg::NodeVisitor {
+class OBJWriterNodeVisitor : public osg::NodeVisitor
+{
+public:
+OBJWriterNodeVisitor(std::ostream &fout, const std::string materialFileName = "") :
+    osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
+    _fout(fout),
+    _currentStateSet(new osg::StateSet()),
+    _lastVertexIndex(1),
+    _lastNormalIndex(1),
+    _lastTexIndex(1)
+{
+    _fout << "# file written by OpenSceneGraph" << std::endl << std::endl;
 
-    public:
-        OBJWriterNodeVisitor(std::ostream& fout, const std::string materialFileName = "") :
-            osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN),
-            _fout(fout),
-            _currentStateSet(new osg::StateSet()),
-            _lastVertexIndex(1),
-            _lastNormalIndex(1),
-            _lastTexIndex(1)
-        {
-            _fout << "# file written by OpenSceneGraph" << std::endl << std::endl;
+    if (!materialFileName.empty())
+    {
+        _fout << "mtllib " << materialFileName << std::endl << std::endl;
+    }
+}
 
-            if (!materialFileName.empty()) {
-                _fout << "mtllib " << materialFileName << std::endl << std::endl;
-            }
-        }
+virtual void apply(osg::Geode &node);
 
-        virtual void apply(osg::Geode &node);
+virtual void apply(osg::Group &node)
+{
+    _nameStack.push_back(node.getName().empty() ? node.className() : node.getName());
+    _fout << std::endl;
+    _fout << "g " << getUniqueName() << std::endl;
 
-        virtual void apply(osg::Group &node)
-        {
-            _nameStack.push_back( node.getName().empty() ? node.className() : node.getName() );
-            _fout << std::endl;
-            _fout << "g " << getUniqueName() << std::endl;
+    osg::NodeVisitor::traverse(node);
+    _nameStack.pop_back();
+}
 
-            osg::NodeVisitor::traverse( node );
-            _nameStack.pop_back();
-        }
+void traverse(osg::Node &node)
+{
+    pushStateSet(node.getStateSet());
 
-        void traverse (osg::Node &node)
-        {
-            pushStateSet(node.getStateSet());
+    osg::NodeVisitor::traverse(node);
 
-            osg::NodeVisitor::traverse( node );
+    popStateSet(node.getStateSet());
+}
 
-            popStateSet(node.getStateSet());
-        }
+void pushStateSet(osg::StateSet *ss)
+{
+    if (NULL != ss)
+    {
+        // Save our current stateset
+        _stateSetStack.push(_currentStateSet.get());
 
-        void pushStateSet(osg::StateSet* ss)
-        {
-          if (NULL!=ss) {
-            // Save our current stateset
-            _stateSetStack.push(_currentStateSet.get());
-
-            // merge with node stateset
-            _currentStateSet = static_cast<osg::StateSet*>(_currentStateSet->clone(osg::CopyOp::SHALLOW_COPY));
-            _currentStateSet->merge(*ss);
-          }
-        }
-
-
-        void popStateSet(osg::StateSet* ss)
-        {
-            if (NULL!=ss) {
-              // restore the previous stateset
-              _currentStateSet = _stateSetStack.top();
-              _stateSetStack.pop();
-            }
-        }
+        // merge with node stateset
+        _currentStateSet = static_cast<osg::StateSet*>(_currentStateSet->clone(osg::CopyOp::SHALLOW_COPY));
+        _currentStateSet->merge(*ss);
+    }
+}
 
 
-        void writeMaterials(std::ostream& fout);
+void popStateSet(osg::StateSet *ss)
+{
+    if (NULL != ss)
+    {
+        // restore the previous stateset
+        _currentStateSet = _stateSetStack.top();
+        _stateSetStack.pop();
+    }
+}
+
+
+void writeMaterials(std::ostream &fout);
 
 
 
-        class OBJMaterial {
-            public:
-                OBJMaterial() {}
-                OBJMaterial(osg::Material* mat, osg::Texture* tex);
+class OBJMaterial
+{
+public:
+OBJMaterial() {}
+OBJMaterial(osg::Material *mat, osg::Texture *tex);
 
-                osg::Vec4  diffuse, ambient, specular;
-                std::string    image;
-                std::string name;
-        };
+osg::Vec4   diffuse, ambient, specular;
+std::string image;
+std::string name;
+};
 
-    protected:
-        struct CompareStateSet
-        {
-            bool operator()(const osg::ref_ptr<osg::StateSet>& ss1, const osg::ref_ptr<osg::StateSet>& ss2) const
-            {
-                //std::cout << "CompareStateSet: " << ss1->compare(*ss2, false) << " " << ss1 << " " << ss2 << std::endl;
-                return ss1->compare(*ss2, true) < 0;
-            }
-        };
-
-
-    private:
-
-        OBJWriterNodeVisitor& operator = (const OBJWriterNodeVisitor&) { return *this; }
-
-        void processGeometry(osg::Geometry* geo, osg::Matrix& m);
-        void processArray(const std::string& key, osg::Array* array, const osg::Matrix& m = osg::Matrix::identity(), bool isNormal = false);
-
-        void processStateSet(osg::StateSet* stateset);
-
-        std::string getUniqueName(const std::string& defaultValue = "");
-
-        typedef std::stack<osg::ref_ptr<osg::StateSet> > StateSetStack;
-        typedef std::map< osg::ref_ptr<osg::StateSet>, OBJMaterial, CompareStateSet> MaterialMap;
+protected:
+struct CompareStateSet
+{
+    bool operator()(const osg::ref_ptr<osg::StateSet> &ss1, const osg::ref_ptr<osg::StateSet> &ss2) const
+    {
+        // std::cout << "CompareStateSet: " << ss1->compare(*ss2, false) << " " << ss1 << " " << ss2 << std::endl;
+        return ss1->compare(*ss2, true) < 0;
+    }
+};
 
 
-        std::ostream&                            _fout;
-        std::list<std::string>                    _nameStack;
-        StateSetStack                            _stateSetStack;
-        osg::ref_ptr<osg::StateSet>                _currentStateSet;
-        std::map<std::string, unsigned int>        _nameMap;
-        unsigned int                            _lastVertexIndex, _lastNormalIndex, _lastTexIndex;
-        MaterialMap                                _materialMap;
+private:
 
+OBJWriterNodeVisitor&operator =(const OBJWriterNodeVisitor&)
+{
+    return *this;
+}
+
+void processGeometry(osg::Geometry *geo, osg::Matrix &m);
+void processArray(const std::string &key, osg::Array *array, const osg::Matrix &m = osg::Matrix::identity(), bool isNormal = false);
+
+void processStateSet(osg::StateSet *stateset);
+
+std::string getUniqueName(const std::string &defaultValue = "");
+
+typedef std::stack<osg::ref_ptr<osg::StateSet> > StateSetStack;
+typedef std::map<osg::ref_ptr<osg::StateSet>, OBJMaterial, CompareStateSet> MaterialMap;
+
+
+std::ostream                        &_fout;
+std::list<std::string>              _nameStack;
+StateSetStack                       _stateSetStack;
+osg::ref_ptr<osg::StateSet>         _currentStateSet;
+std::map<std::string, unsigned int> _nameMap;
+unsigned int                        _lastVertexIndex, _lastNormalIndex, _lastTexIndex;
+MaterialMap                         _materialMap;
 };
 
 #endif

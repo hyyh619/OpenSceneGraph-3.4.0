@@ -258,7 +258,7 @@ struct FindSharpEdgesFunctor
         unsigned int _p3;
     };
 
-    typedef std::list<osg::ref_ptr<Triangle>> Triangles;
+    typedef std::list<osg::ref_ptr<Triangle> > Triangles;
 
     struct ProblemVertex : public osg::Referenced
     {
@@ -269,9 +269,9 @@ struct FindSharpEdgesFunctor
         Triangles    _triangles;
     };
 
-    typedef std::vector<osg::ref_ptr<ProblemVertex>> ProblemVertexVector;
-    typedef std::list<osg::ref_ptr<ProblemVertex>> ProblemVertexList;
-    typedef std::list<osg::ref_ptr<osg::Array>> ArrayList;
+    typedef std::vector<osg::ref_ptr<ProblemVertex> > ProblemVertexVector;
+    typedef std::list<osg::ref_ptr<ProblemVertex> > ProblemVertexList;
+    typedef std::list<osg::ref_ptr<osg::Array> > ArrayList;
 
     bool set(osg::Geometry *geom, float creaseAngle)
     {

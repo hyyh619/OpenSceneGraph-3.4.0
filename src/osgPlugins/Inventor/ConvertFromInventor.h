@@ -166,8 +166,8 @@ const SoNode *inheritedTexture;
 const SoNode *currentTexture;
 
 // List of active lights
-std::vector<osg::ref_ptr<osg::Light>> inheritedLights;
-std::vector<osg::ref_ptr<osg::Light>> currentLights;
+std::vector<osg::ref_ptr<osg::Light> > inheritedLights;
+std::vector<osg::ref_ptr<osg::Light> > currentLights;
 
 // Active OpenGL glProgram and associated shaders
 osg::ref_ptr<osg::Program> inheritedGLProgram;

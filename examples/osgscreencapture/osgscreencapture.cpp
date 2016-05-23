@@ -165,7 +165,7 @@ struct ContextData : public osg::Referenced
 
     void multiPBO(osg::GLExtensions *ext);
 
-    typedef std::vector<osg::ref_ptr<osg::Image>>             ImageBuffer;
+    typedef std::vector<osg::ref_ptr<osg::Image> >             ImageBuffer;
     typedef std::vector<GLuint> PBOBuffer;
 
     osg::GraphicsContext *_gc;
@@ -231,7 +231,7 @@ virtual void operator ()(osg::RenderInfo &renderInfo) const
     cd->read();
 }
 
-typedef std::map<osg::GraphicsContext*, osg::ref_ptr<ContextData>> ContextDataMap;
+typedef std::map<osg::GraphicsContext*, osg::ref_ptr<ContextData> > ContextDataMap;
 
 Mode                       _mode;
 FramePosition              _position;

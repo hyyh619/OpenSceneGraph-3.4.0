@@ -154,8 +154,8 @@ void buildMotion(osgDB::Input &fr, osgAnimation::Animation *anim)
     }
 
     // Each joint has a position animating channel and an euler animating channel
-    std::vector<osg::ref_ptr<osgAnimation::Vec3LinearChannel>>          posChannels;
-    std::vector<osg::ref_ptr<osgAnimation::QuatSphericalLinearChannel>> rotChannels;
+    std::vector<osg::ref_ptr<osgAnimation::Vec3LinearChannel> >          posChannels;
+    std::vector<osg::ref_ptr<osgAnimation::QuatSphericalLinearChannel> > rotChannels;
 
     for (JointList::iterator itr = _joints.begin(); itr != _joints.end(); ++itr)
     {

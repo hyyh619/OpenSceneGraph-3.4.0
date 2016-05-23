@@ -1354,7 +1354,7 @@ struct TriangleIntersectOperator
         SurfaceType      _intersectionEdge;
     };
 
-    typedef std::list<osg::ref_ptr<Edge>>                     EdgeList;
+    typedef std::list<osg::ref_ptr<Edge> >                     EdgeList;
 
     struct Triangle : public osg::Referenced
     {
@@ -1703,7 +1703,7 @@ struct TriangleIntersectOperator
     typedef std::vector<Region>                               RegionArray;
     typedef std::vector<bool>                                 BoolArray;
     typedef std::vector<unsigned int>                         IndexArray;
-    typedef std::vector<osg::ref_ptr<Triangle>>               TriangleArray;
+    typedef std::vector<osg::ref_ptr<Triangle> >               TriangleArray;
     typedef std::set<osg::ref_ptr<Edge>, dereference_less>    EdgeSet;
 
     VertexArray   _originalVertices;

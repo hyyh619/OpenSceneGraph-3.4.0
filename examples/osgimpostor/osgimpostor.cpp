@@ -113,12 +113,12 @@ void CreateHouses()
 
     for (int q = 0; q < HOUSES_SIZE; q++)
     {
-        float xPos = ((static_cast<double> (rand()) /
-                       static_cast<double> (RAND_MAX))
+        float xPos = ((static_cast<double>(rand()) /
+                       static_cast<double>(RAND_MAX))
                       * 2.0 * XDim) - XDim;
 
-        float yPos = ((static_cast<double> (rand()) /
-                       static_cast<double> (RAND_MAX))
+        float yPos = ((static_cast<double>(rand()) /
+                       static_cast<double>(RAND_MAX))
                       * 2 * ZDim) - ZDim;
 
         float scale = 10.0f;
@@ -205,9 +205,9 @@ void LayoutAsGrid()
 
         osg::Material *material = new osg::Material();
         osg::Vec4     color     = osg::Vec4(
-            0.5f + (static_cast<double> (rand()) / (2.0 * static_cast<double> (RAND_MAX))),
-            0.5f + (static_cast<double> (rand()) / (2.0 * static_cast<double> (RAND_MAX))),
-            0.5f + (static_cast<double> (rand()) / (2.0 * static_cast<double>(RAND_MAX))),
+            0.5f + (static_cast<double>(rand()) / (2.0 * static_cast<double>(RAND_MAX))),
+            0.5f + (static_cast<double>(rand()) / (2.0 * static_cast<double>(RAND_MAX))),
+            0.5f + (static_cast<double>(rand()) / (2.0 * static_cast<double>(RAND_MAX))),
             1.0f);
 
         material->setAmbient(osg::Material::FRONT_AND_BACK, color);
@@ -219,7 +219,7 @@ void LayoutAsGrid()
         if (UseImpostor)
         {
             osgSim::Impostor *impostor = new osgSim::Impostor();
-            impostor->setImpostorThreshold(static_cast<float> (Threshold));
+            impostor->setImpostorThreshold(static_cast<float>(Threshold));
             impostor->addChild(groups[i]);
             impostor->setRange(0, 0.0f, 1e7f);
             impostor->setCenter(groups[i]->getBound().center());

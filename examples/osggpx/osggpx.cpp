@@ -91,7 +91,7 @@ Track(const Track &track, const osg::CopyOp = osg::CopyOp::SHALLOW_COPY) {}
 
 META_Object(osg, Track)
 
-typedef std::vector<osg::ref_ptr<TrackSegment>> TrackSegments;
+typedef std::vector<osg::ref_ptr<TrackSegment> > TrackSegments;
 
 void addTrackSegment(TrackSegment *trackSegment)
 {
@@ -451,7 +451,7 @@ int main(int argv, char **argc)
 {
     osg::ArgumentParser arguments(&argv, argc);
 
-    typedef std::list<osg::ref_ptr<Track>> Tracks;
+    typedef std::list<osg::ref_ptr<Track> > Tracks;
     Tracks tracks;
 
     bool average = false;

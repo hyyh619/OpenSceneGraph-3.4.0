@@ -168,7 +168,7 @@ AttributeDispatch* dispatcher(const Array *array)
     }
 }
 
-typedef std::vector<ref_ptr<AttributeDispatch>>  AttributeDispatchList;
+typedef std::vector<ref_ptr<AttributeDispatch> >  AttributeDispatchList;
 AttributeDispatchList _attributeDispatchList;
 };
 

@@ -78,12 +78,12 @@ unsigned int getNumProducedTriangles() const
 }
 protected:
 
-std::ostream                            &_fout;
-osg::BoundingSphere                     bound;
-std::stack<osg::ref_ptr<osg::StateSet>> _stateSetStack;
-std::stack<osg::Matrix>                 _transformationStack;
-unsigned int                            numProducedTriangles;
-std::map<osg::Light*, int>              lights;
+std::ostream                             &_fout;
+osg::BoundingSphere                      bound;
+std::stack<osg::ref_ptr<osg::StateSet> > _stateSetStack;
+std::stack<osg::Matrix>                  _transformationStack;
+unsigned int                             numProducedTriangles;
+std::map<osg::Light*, int>               lights;
 
 void pushStateSet(const osg::StateSet *ss);
 void popStateSet(const osg::StateSet *ss);

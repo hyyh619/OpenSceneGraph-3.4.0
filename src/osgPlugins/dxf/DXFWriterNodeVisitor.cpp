@@ -229,7 +229,7 @@ virtual void drawElements(GLenum mode, GLsizei count, const GLuint *indices)
 
 protected:
 
-template<typename T>void drawElementsImplementation(GLenum mode, GLsizei count, const T *indices)
+template<typename T> void drawElementsImplementation(GLenum mode, GLsizei count, const T *indices)
 {
     if (indices == 0 || count == 0)
         return;

@@ -444,7 +444,7 @@ osg::Group* scene2osg()
 
     child->setName("Layers");
 
-    for (std::map<std::string, osg::ref_ptr<sceneLayer>>::iterator litr = _layers.begin();
+    for (std::map<std::string, osg::ref_ptr<sceneLayer> >::iterator litr = _layers.begin();
          litr != _layers.end(); ++litr)
     {
         sceneLayer *ly = (*litr).second.get();
@@ -460,13 +460,13 @@ osg::Group* scene2osg()
     return root;
 }
 protected:
-osg::Matrixd                                    _m;
-osg::Matrixd                                    _r;
-osg::Vec3d                                      _t;
-bounds                                          _b;
-std::map<std::string, osg::ref_ptr<sceneLayer>> _layers;
-std::vector<osg::Matrixd>                       _mStack;
-dxfLayerTable                                   *_layerTable;
+osg::Matrixd                                     _m;
+osg::Matrixd                                     _r;
+osg::Vec3d                                       _t;
+bounds                                           _b;
+std::map<std::string, osg::ref_ptr<sceneLayer> > _layers;
+std::vector<osg::Matrixd>                        _mStack;
+dxfLayerTable                                    *_layerTable;
 };
 
 #endif

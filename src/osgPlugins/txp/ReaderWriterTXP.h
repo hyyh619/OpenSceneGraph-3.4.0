@@ -92,8 +92,8 @@ bool extractChildrenLocations(const std::string &name, int parentLod, std::vecto
 
 mutable OpenThreads::ReentrantMutex _serializerMutex;
 
-std::map<int, osg::ref_ptr<TXPArchive>> _archives;
-static int                              _archiveId;
+std::map<int, osg::ref_ptr<TXPArchive> > _archives;
+static int                               _archiveId;
 };
 } // namespace
 

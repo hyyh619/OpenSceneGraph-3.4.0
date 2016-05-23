@@ -489,7 +489,7 @@ float StatsTimeline::_statsWidth;
 
 struct FindTimelineStats : public osg::NodeVisitor
 {
-    std::vector<osg::ref_ptr<osgAnimation::Timeline>> _timelines;
+    std::vector<osg::ref_ptr<osgAnimation::Timeline> > _timelines;
 
     FindTimelineStats() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 

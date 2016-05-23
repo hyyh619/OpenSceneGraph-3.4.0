@@ -767,7 +767,7 @@ void DelaunayConstraint::merge(DelaunayConstraint *dco)
         for (ipr = 0; ipr < dco->getNumPrimitiveSets(); ipr++)
         {
             osg::PrimitiveSet *prset = dco->getPrimitiveSet(ipr);
-            osg::DrawArrays   *drarr = dynamic_cast<osg::DrawArrays*> (prset);
+            osg::DrawArrays   *drarr = dynamic_cast<osg::DrawArrays*>(prset);
             if (drarr)
             {
                 // need to add the offset of vmerge->size to each prset indices.

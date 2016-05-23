@@ -148,7 +148,7 @@ Node* osgDB::readNodeFiles(std::vector<std::string> &fileList, const Options *op
 
 Node* osgDB::readNodeFiles(osg::ArgumentParser &arguments, const Options *options)
 {
-    typedef std::vector<osg::ref_ptr<osg::Node>> NodeList;
+    typedef std::vector<osg::ref_ptr<osg::Node> > NodeList;
     NodeList nodeList;
 
     std::string filename;

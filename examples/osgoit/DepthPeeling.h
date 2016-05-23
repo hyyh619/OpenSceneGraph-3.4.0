@@ -95,11 +95,11 @@ osg::ref_ptr<osg::Group> _transparentscene;
 osg::ref_ptr<osg::Camera> _compositeCamera;
 
 #ifdef USE_TEXTURE_RECTANGLE
-std::vector<osg::ref_ptr<osg::TextureRectangle>> _depthTextures;
-std::vector<osg::ref_ptr<osg::TextureRectangle>> _colorTextures;
+std::vector<osg::ref_ptr<osg::TextureRectangle> > _depthTextures;
+std::vector<osg::ref_ptr<osg::TextureRectangle> > _colorTextures;
 #else
-std::vector<osg::ref_ptr<osg::Texture2D>> _depthTextures;
-std::vector<osg::ref_ptr<osg::Texture2D>> _colorTextures;
+std::vector<osg::ref_ptr<osg::Texture2D> > _depthTextures;
+std::vector<osg::ref_ptr<osg::Texture2D> > _colorTextures;
 #endif
 };
 #endif // #ifndef DEPTHPEELING_H

@@ -823,7 +823,7 @@ OSGTEXT_EXPORT osg::Geometry* computeGlyphGeometry(const osgText::Glyph3D *glyph
 #define HANDLE_SHELL 0
 
 
-    typedef std::vector<osg::ref_ptr<Boundary>> Boundaries;
+    typedef std::vector<osg::ref_ptr<Boundary> > Boundaries;
     Boundaries innerBoundaries;
     Boundaries outerBoundaries;
 

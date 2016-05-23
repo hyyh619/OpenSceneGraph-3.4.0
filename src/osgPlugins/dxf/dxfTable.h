@@ -84,8 +84,8 @@ dxfLayer* findOrCreateLayer(std::string name)
 }
 
 protected:
-std::map<std::string, osg::ref_ptr<dxfLayer>> _layers;
-osg::ref_ptr<dxfLayer>                        _currentLayer;
+std::map<std::string, osg::ref_ptr<dxfLayer> > _layers;
+osg::ref_ptr<dxfLayer>                         _currentLayer;
 };
 
 #endif

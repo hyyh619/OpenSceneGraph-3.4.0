@@ -27,7 +27,7 @@ namespace PolytopeIntersectorUtils
 typedef osg::Plane::Vec3_type Vec3_type;
 typedef Vec3_type::value_type value_type;
 typedef osg::Polytope::ClippingMask PlaneMask;
-typedef std::vector<std::pair<PlaneMask, Vec3_type>> CandList_t;
+typedef std::vector<std::pair<PlaneMask, Vec3_type> > CandList_t;
 
 
 class PolytopeIntersection

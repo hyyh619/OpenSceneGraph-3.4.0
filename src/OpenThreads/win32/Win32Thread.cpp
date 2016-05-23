@@ -327,7 +327,7 @@ void Thread::Init()
 //
 int Thread::getThreadId()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     return pd->uniqueId;
 }
@@ -349,7 +349,7 @@ size_t Thread::getProcessId()
 //
 bool Thread::isRunning()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     return pd->isRunning;
 }
@@ -361,7 +361,7 @@ bool Thread::isRunning()
 //
 int Thread::start()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
     // -------------------------------------------------------------------------
     // Prohibit the stack size from being changed.
     // (bb 5/13/2005) it actually doesn't matter.
@@ -404,7 +404,7 @@ int Thread::startThread()
 //
 int Thread::join()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     if (pd->detached)
         return -1; // cannot wait for detached ;
@@ -419,7 +419,7 @@ int Thread::join()
 
 int Thread::detach()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     pd->detached = true;
     return 0;
@@ -434,7 +434,7 @@ int Thread::detach()
 //
 int Thread::cancel()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     if (pd->isRunning)
     {
@@ -463,7 +463,7 @@ int Thread::cancel()
 
 int Thread::testCancel()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     if (WaitForSingleObject(pd->cancelEvent.get(), 0) != WAIT_OBJECT_0)
         return 0;
@@ -493,7 +493,7 @@ int Thread::testCancel()
 //
 int Thread::setCancelModeDisable()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     pd->cancelMode = 2;
     return 0;
@@ -507,7 +507,7 @@ int Thread::setCancelModeDisable()
 //
 int Thread::setCancelModeAsynchronous()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     pd->cancelMode = 1;
     return 0;
@@ -521,7 +521,7 @@ int Thread::setCancelModeAsynchronous()
 //
 int Thread::setCancelModeDeferred()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     pd->cancelMode = 0;
     return 0;
@@ -535,7 +535,7 @@ int Thread::setCancelModeDeferred()
 //
 int Thread::setSchedulePriority(ThreadPriority priority)
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     pd->threadPriority = priority;
 
@@ -554,7 +554,7 @@ int Thread::setSchedulePriority(ThreadPriority priority)
 //
 int Thread::getSchedulePriority()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     return pd->threadPriority;
 }
@@ -567,7 +567,7 @@ int Thread::getSchedulePriority()
 //
 int Thread::setSchedulePolicy(ThreadPolicy policy)
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     pd->threadPolicy = policy;
 
@@ -585,7 +585,7 @@ int Thread::setSchedulePolicy(ThreadPolicy policy)
 //
 int Thread::getSchedulePolicy()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     return pd->threadPolicy;
 }
@@ -598,7 +598,7 @@ int Thread::getSchedulePolicy()
 //
 int Thread::setStackSize(size_t stackSize)
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     if (pd->isRunning)
         return 13;                // cannot set stack size of running thread  return EACESS
@@ -614,7 +614,7 @@ int Thread::setStackSize(size_t stackSize)
 //
 size_t Thread::getStackSize()
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     return pd->stackSize;
 }
@@ -627,7 +627,7 @@ size_t Thread::getStackSize()
 //
 int Thread::setProcessorAffinity(unsigned int cpunum)
 {
-    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*> (_prvData);
+    Win32ThreadPrivateData *pd = static_cast<Win32ThreadPrivateData*>(_prvData);
 
     pd->cpunum = cpunum;
     if (!pd->isRunning)

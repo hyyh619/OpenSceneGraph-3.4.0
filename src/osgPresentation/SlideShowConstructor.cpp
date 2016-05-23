@@ -2619,10 +2619,10 @@ struct CollectVolumeSettingsVisitor : public osgVolume::PropertyVisitor, public 
         _vsList.push_back(&vs);
     }
 
-    typedef std::vector<osg::ref_ptr<osgVolume::VolumeSettings>> VolumeSettingsList;
+    typedef std::vector<osg::ref_ptr<osgVolume::VolumeSettings> > VolumeSettingsList;
     VolumeSettingsList _vsList;
 
-    typedef std::vector<osg::ref_ptr<osgUI::Widget>> WidgetList;
+    typedef std::vector<osg::ref_ptr<osgUI::Widget> > WidgetList;
     WidgetList _widgets;
 };
 
@@ -2754,7 +2754,7 @@ void SlideShowConstructor::addVolume(const std::string &filename, const Position
         // make sure images are in alphabetical order.
         std::sort(filenames.begin(), filenames.end(), osgDB::FileNameComparator());
 
-        typedef std::vector<osg::ref_ptr<osg::Image>> Images;
+        typedef std::vector<osg::ref_ptr<osg::Image> > Images;
         Images images;
 
         for (osgDB::DirectoryContents::iterator itr = filenames.begin();

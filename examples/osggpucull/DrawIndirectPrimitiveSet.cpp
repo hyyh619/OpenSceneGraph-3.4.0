@@ -130,7 +130,7 @@ void DrawIndirectGLExtensions::glMemoryBarrier(GLbitfield barriers)
 }
 
 
-typedef osg::buffered_value<osg::ref_ptr<DrawIndirectGLExtensions>> BufferedDrawIndirectGLExtensions;
+typedef osg::buffered_value<osg::ref_ptr<DrawIndirectGLExtensions> > BufferedDrawIndirectGLExtensions;
 static BufferedDrawIndirectGLExtensions bdiExtensions;
 
 DrawIndirectGLExtensions* DrawIndirectGLExtensions::getExtensions(unsigned int contextID, bool createIfNotInitalized)

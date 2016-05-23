@@ -587,7 +587,7 @@ osg::ref_ptr<TXPArchive> ReaderWriterTXP::getArchive(int id, const std::string &
 {
     osg::ref_ptr<TXPArchive> archive = NULL;
 
-    std::map<int, osg::ref_ptr<TXPArchive>>::iterator iter = _archives.find(id);
+    std::map<int, osg::ref_ptr<TXPArchive> >::iterator iter = _archives.find(id);
 
     if (iter != _archives.end())
     {

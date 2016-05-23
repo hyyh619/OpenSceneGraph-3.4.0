@@ -72,7 +72,7 @@ struct Options
     Options() : csf(new LwoCoordFixer) {}
 };
 
-typedef std::vector<osg::ref_ptr<osg::AnimationPath>> Animation_list;
+typedef std::vector<osg::ref_ptr<osg::AnimationPath> > Animation_list;
 
 SceneLoader();
 SceneLoader(const Options &options);
@@ -129,7 +129,7 @@ bool parse_block(const std::string &name, const std::vector<std::string> &data);
 void clear();
 
 private:
-typedef std::map<std::string, osg::ref_ptr<osg::Group>> Object_map;
+typedef std::map<std::string, osg::ref_ptr<osg::Group> > Object_map;
 Object_map objects_;
 
 Animation_list camera_animations_;

@@ -21,7 +21,7 @@ namespace detail
 {
 // mutable heap
 // can be interfaced pretty muck like an array
-template<class T, class CmpT = std::less<T>>
+template<class T, class CmpT = std::less<T> >
 class heap_array
 {
 public:

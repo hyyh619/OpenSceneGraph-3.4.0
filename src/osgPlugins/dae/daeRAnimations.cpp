@@ -318,7 +318,7 @@ void convertHermiteToBezier(osgAnimation::TemplateKeyframeContainer<T> &keyframe
 // osgAnimation requires control points to be in a weird order. This function
 // reorders them from the conventional order to osgAnimation order.
 template<typename T>
-void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T>> &vkfCont)
+void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> > &vkfCont)
 {
     if (vkfCont.size() <= 1)
     {
@@ -459,8 +459,8 @@ void daeReader::processAnimationMap(const TargetChannelPartMap &tcm, osgAnimatio
             ChannelPart *channelPart = lb->second.get();
             extractTargetName(channelPart->name, channelName, targetName, componentName);
 
-            typedef osgAnimation::TemplateKeyframe<osgAnimation::TemplateCubicBezier<osg::Matrixf>> MatrixCubicBezierKeyframe;
-            typedef osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<osg::Matrixf>> MatrixCubicBezierKeyframeContainer;
+            typedef osgAnimation::TemplateKeyframe<osgAnimation::TemplateCubicBezier<osg::Matrixf> > MatrixCubicBezierKeyframe;
+            typedef osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<osg::Matrixf> > MatrixCubicBezierKeyframeContainer;
 
             if (osgAnimation::FloatCubicBezierKeyframeContainer *kfCntr =
                     dynamic_cast<osgAnimation::FloatCubicBezierKeyframeContainer*>(channelPart->keyframes.get()))
@@ -515,8 +515,8 @@ osgAnimation::KeyframeContainer* makeKeyframes(
     TArray *pOsgOutTanArray,
     daeReader::InterpolationType &interpolationType)
 {
-    osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T>> *keyframes =
-        new osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T>>;
+    osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> > *keyframes =
+        new osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> >;
 
     for (size_t i = 0; i < pOsgTimesArray->size(); i++)
     {
@@ -541,7 +541,7 @@ osgAnimation::KeyframeContainer* makeKeyframes(
         }
 
         keyframes->push_back(
-            osgAnimation::TemplateKeyframe<osgAnimation::TemplateCubicBezier<T>>(
+            osgAnimation::TemplateKeyframe<osgAnimation::TemplateCubicBezier<T> >(
                 (*pOsgTimesArray)[i],
                 osgAnimation::TemplateCubicBezier<T>(pt, cpIn, cpOut)));
     }

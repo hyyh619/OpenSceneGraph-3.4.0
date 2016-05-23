@@ -44,25 +44,25 @@ osg::Node* transformNode(const osg::Node &root)
 
     if (strcmp(root.className(), "MatrixTransform") == 0)
     {
-        const osg::MatrixTransform &aMat = static_cast<const osg::MatrixTransform&> (root);
+        const osg::MatrixTransform &aMat = static_cast<const osg::MatrixTransform&>(root);
         osg::MatrixTransform       *node = new osg::MatrixTransform(aMat);
         ret->addChild(node);
     }
     else if (strcmp(root.className(), "Group") == 0)
     {
-        const osg::Group &aGroup = static_cast<const osg::Group&> (root);
+        const osg::Group &aGroup = static_cast<const osg::Group&>(root);
         osg::Group       *node   = new osg::Group(aGroup);
         ret->addChild(node);
     }
     else if (strcmp(root.className(), "PositionAttitudeTransform") == 0)
     {
-        const osg::PositionAttitudeTransform &aPAT = static_cast<const osg::PositionAttitudeTransform&> (root);
+        const osg::PositionAttitudeTransform &aPAT = static_cast<const osg::PositionAttitudeTransform&>(root);
         osg::PositionAttitudeTransform       *node = new osg::PositionAttitudeTransform(aPAT);
         ret->addChild(node);
     }
     else if (strcmp(root.className(), "Geode") == 0)
     {
-        const osg::Geode &aGeode = static_cast<const osg::Geode&> (root);
+        const osg::Geode &aGeode = static_cast<const osg::Geode&>(root);
         osg::Geode       *node   = new osg::Geode(aGeode);
         ret->addChild(node);
     }
@@ -404,7 +404,7 @@ void ToVRML::apply(osg::Geometry *geom)
                 else if (type == osg::PrimitiveSet::DrawArraysPrimitiveType)
                 {
                     // std::cout << "osg::PrimitiveSet::DrawArraysPrimitiveType" << std::endl;
-                    osg::ref_ptr<osg::DrawArrays> dra = dynamic_cast<osg::DrawArrays*> (geom->getPrimitiveSet(p));
+                    osg::ref_ptr<osg::DrawArrays> dra = dynamic_cast<osg::DrawArrays*>(geom->getPrimitiveSet(p));
 
                     unsigned int *indices = new unsigned int[dra->getCount()];
 
@@ -419,7 +419,7 @@ void ToVRML::apply(osg::Geometry *geom)
                 else if (type == osg::PrimitiveSet::DrawArrayLengthsPrimitiveType)
                 {
                     // osg::notify(osg::WARN) << " osg::PrimitiveSet::DrawArrayLengthsPrimitiveType not supported by VRML Writer" << std::endl;
-                    osg::ref_ptr<osg::DrawArrayLengths> dal = dynamic_cast<osg::DrawArrayLengths*> (geom->getPrimitiveSet(p));
+                    osg::ref_ptr<osg::DrawArrayLengths> dal = dynamic_cast<osg::DrawArrayLengths*>(geom->getPrimitiveSet(p));
 
                     // std::cout<<dal->getFirst()<<" "<<dal->getNumPrimitives()<<" "<<   dal->getNumIndices ()<<" "<< dal->getNumInstances()<<std::endl;
                     int first = 0;
@@ -445,7 +445,7 @@ void ToVRML::apply(osg::Geometry *geom)
                 {
                     // std::cout << "osg::PrimitiveSet::DrawElementsUBytePrimitiveType" << std::endl;
 
-                    osg::ref_ptr<osg::DrawElementsUByte> drui     = dynamic_cast<osg::DrawElementsUByte*> (geom->getPrimitiveSet(p));
+                    osg::ref_ptr<osg::DrawElementsUByte> drui     = dynamic_cast<osg::DrawElementsUByte*>(geom->getPrimitiveSet(p));
                     const unsigned char                  *indices = (const unsigned char*) (drui->getDataPointer());
                     writeCoordIndex(mode, indices, drui->getNumIndices(), primitiveSetFaces, primitiveFaces);
                 }
@@ -453,7 +453,7 @@ void ToVRML::apply(osg::Geometry *geom)
                 {
                     // std::cout << "osg::PrimitiveSet::DrawElementsUShortPrimitiveType" << std::endl;
 
-                    osg::ref_ptr<osg::DrawElementsUShort> drui     = dynamic_cast<osg::DrawElementsUShort*> (geom->getPrimitiveSet(p));
+                    osg::ref_ptr<osg::DrawElementsUShort> drui     = dynamic_cast<osg::DrawElementsUShort*>(geom->getPrimitiveSet(p));
                     const unsigned short                  *indices = (const unsigned short*) (drui->getDataPointer());
                     writeCoordIndex(mode, indices, drui->getNumIndices(), primitiveSetFaces, primitiveFaces);
                 }
@@ -461,7 +461,7 @@ void ToVRML::apply(osg::Geometry *geom)
                 {
                     // std::cout << "osg::PrimitiveSet::DrawElementsUIntPrimitiveType" << std::endl;
 
-                    osg::ref_ptr<osg::DrawElementsUInt> drui     = dynamic_cast<osg::DrawElementsUInt*> (geom->getPrimitiveSet(p));
+                    osg::ref_ptr<osg::DrawElementsUInt> drui     = dynamic_cast<osg::DrawElementsUInt*>(geom->getPrimitiveSet(p));
                     const unsigned int                  *indices = (const unsigned int*) (drui->getDataPointer());
                     writeCoordIndex(mode, indices, drui->getNumIndices(), primitiveSetFaces, primitiveFaces);
                 }
@@ -1257,8 +1257,8 @@ void ToVRML::writeTexCoord(osg::Vec2Array *array, osg::Vec3Array *array2)
         return;
     }
 
-    osg::ref_ptr<osg::TexGen> texGen = dynamic_cast<osg::TexGen*> (ss->getTextureAttribute(_txtUnit, osg::StateAttribute::TEXGEN));
-    osg::ref_ptr<osg::TexEnv> texEnv = dynamic_cast<osg::TexEnv*> (ss->getTextureAttribute(_txtUnit, osg::StateAttribute::TEXENV));
+    osg::ref_ptr<osg::TexGen> texGen = dynamic_cast<osg::TexGen*>(ss->getTextureAttribute(_txtUnit, osg::StateAttribute::TEXGEN));
+    osg::ref_ptr<osg::TexEnv> texEnv = dynamic_cast<osg::TexEnv*>(ss->getTextureAttribute(_txtUnit, osg::StateAttribute::TEXENV));
 
     osg::Texture::WrapMode wrap_s = tex->getWrap(osg::Texture::WRAP_S);// osg::Texture::REPEAT;
     osg::Texture::WrapMode wrap_t = tex->getWrap(osg::Texture::WRAP_T);// osg::Texture::REPEAT;

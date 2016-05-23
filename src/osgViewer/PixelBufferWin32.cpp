@@ -402,10 +402,10 @@ WGLExtensions();
 ~WGLExtensions();
 
 private:
-static std::map<HGLRC, osg::ref_ptr<WGLExtensions>> _instances;
+static std::map<HGLRC, osg::ref_ptr<WGLExtensions> > _instances;
 };
 
-std::map<HGLRC, osg::ref_ptr<WGLExtensions>> WGLExtensions::_instances;
+std::map<HGLRC, osg::ref_ptr<WGLExtensions> > WGLExtensions::_instances;
 WGLExtensions::WGLExtensions()
 {
     wglCreatePbufferARB      = (WGLCreatePBufferProc)wglGetProcAddress("wglCreatePbufferARB");

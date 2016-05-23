@@ -197,7 +197,7 @@ void runMultiThreadReadTests(int numThreads, osg::ArgumentParser &arguments)
     osg::ref_ptr<RefBarrier> startBarrier = new RefBarrier(numThreads + 1);
     osg::ref_ptr<RefBarrier> endBarrier   = new RefBarrier(numThreads + 1);
 
-    typedef std::list<osg::ref_ptr<ReadThread>> ReadThreads;
+    typedef std::list<osg::ref_ptr<ReadThread> > ReadThreads;
     ReadThreads readThreads;
 
     for (int i = 0; i < numThreads; ++i)

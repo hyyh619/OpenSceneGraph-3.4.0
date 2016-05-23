@@ -621,7 +621,7 @@ FltExportVisitor::writeLocalVertexPool(const osg::Geometry &geom)
     if (t && !t2)
         return;
 
-    std::vector<osg::ref_ptr<const osg::Vec2Array>> mtc;
+    std::vector<osg::ref_ptr<const osg::Vec2Array> > mtc;
     mtc.resize(8);
     int unit = 1;
 

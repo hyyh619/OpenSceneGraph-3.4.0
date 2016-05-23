@@ -747,11 +747,11 @@ void Tessellator::collectTessellation(osg::Geometry &geom, unsigned int /*origin
             switch (colours->getType())
             {
             case osg::Array::Vec4ArrayType:
-                cols4 = dynamic_cast<osg::Vec4Array*> (colours);
+                cols4 = dynamic_cast<osg::Vec4Array*>(colours);
                 break;
 
             case osg::Array::Vec3ArrayType:
-                cols3 = dynamic_cast<osg::Vec3Array*> (colours);
+                cols3 = dynamic_cast<osg::Vec3Array*>(colours);
                 break;
 
             default:

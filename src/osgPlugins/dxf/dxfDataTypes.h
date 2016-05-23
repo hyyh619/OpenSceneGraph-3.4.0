@@ -15,7 +15,7 @@
 
 #include <osg/Group>
 
-typedef std::map<std::string, osg::ref_ptr<osg::Group>> LayerTable;
+typedef std::map<std::string, osg::ref_ptr<osg::Group> > LayerTable;
 
 class dxfDataType
 {

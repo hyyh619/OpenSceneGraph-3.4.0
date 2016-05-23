@@ -217,7 +217,7 @@ void UpdateMorph::operator()(osg::Node *node, osg::NodeVisitor *nv)
                 if (morph)
                 {
                     // Update morph weights
-                    std::map<int, osg::ref_ptr<osgAnimation::FloatTarget>>::iterator iter = _weightTargets.begin();
+                    std::map<int, osg::ref_ptr<osgAnimation::FloatTarget> >::iterator iter = _weightTargets.begin();
 
                     while (iter != _weightTargets.end())
                     {

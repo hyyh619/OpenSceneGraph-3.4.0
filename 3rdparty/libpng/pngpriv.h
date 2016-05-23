@@ -37,7 +37,7 @@
  * debatable if they should be exported at all.  In the future, when it
  * is possible to have run-time registry of chunk-handling functions,
  * some of these will be made available again.
- ****#define PNG_EXTERN extern
+ ******#define PNG_EXTERN extern
  */
 #define PNG_EXTERN
 

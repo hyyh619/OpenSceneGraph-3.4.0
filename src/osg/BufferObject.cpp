@@ -1076,7 +1076,7 @@ void GLBufferObjectManager::recomputeStats(std::ostream &out)
 
 osg::ref_ptr<GLBufferObjectManager>&GLBufferObjectManager::getGLBufferObjectManager(unsigned int contextID)
 {
-    typedef osg::buffered_object<ref_ptr<GLBufferObjectManager>> GLBufferObjectManagerBuffer;
+    typedef osg::buffered_object<ref_ptr<GLBufferObjectManager> > GLBufferObjectManagerBuffer;
     static GLBufferObjectManagerBuffer s_GLBufferObjectManager;
     if (!s_GLBufferObjectManager[contextID])
         s_GLBufferObjectManager[contextID] = new GLBufferObjectManager(contextID);

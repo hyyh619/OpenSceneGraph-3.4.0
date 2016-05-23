@@ -70,7 +70,7 @@ template<typename T> inline T*
 cplusplus_typeof(T*,
                  void  *v)
 {
-    return static_cast<T*> (v);
+    return static_cast<T*>(v);
 }
 
 #define FT_ASSIGNP(p, val) (p) = cplusplus_typeof((p), (val))

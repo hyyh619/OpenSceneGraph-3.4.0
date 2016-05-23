@@ -166,7 +166,7 @@ bool removeExpiredChildrenAndFindPagedLODs(osg::PagedLOD *plod, double expiryTim
     return sizeBefore != removedChildren.size();
 }
 
-typedef std::set<osg::ref_ptr<osg::PagedLOD>> PagedLODset;
+typedef std::set<osg::ref_ptr<osg::PagedLOD> > PagedLODset;
 PagedLODset _childPagedLODs;
 private:
 void markRequestsExpired(osg::PagedLOD *plod)
@@ -191,7 +191,7 @@ class SetBasedPagedLODList : public DatabasePager::PagedLODList
 {
 public:
 
-typedef std::set<osg::observer_ptr<osg::PagedLOD>> PagedLODs;
+typedef std::set<osg::observer_ptr<osg::PagedLOD> > PagedLODs;
 PagedLODs _pagedLODs;
 
 

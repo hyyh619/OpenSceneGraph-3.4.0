@@ -37,7 +37,7 @@ io_service_pool::io_service_pool(std::size_t pool_size)
 void io_service_pool::run()
 {
     // Create a pool of threads to run all of the io_services.
-    std::vector<boost::shared_ptr<asio::thread>> threads;
+    std::vector<boost::shared_ptr<asio::thread> > threads;
 
     for (std::size_t i = 0; i < io_services_.size(); ++i)
     {

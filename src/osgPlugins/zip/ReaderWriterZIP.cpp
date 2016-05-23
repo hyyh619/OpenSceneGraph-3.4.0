@@ -78,7 +78,7 @@ osgDB::ReaderWriter::ReadResult readNodeFromArchive(osgDB::Archive &archive, con
         osgDB::Archive::FileNameList fileNameList;
         if (archive.getFileNames(fileNameList))
         {
-            typedef std::list<osg::ref_ptr<osg::Node>> Nodes;
+            typedef std::list<osg::ref_ptr<osg::Node> > Nodes;
             Nodes nodes;
 
             for (osgDB::Archive::FileNameList::iterator itr = fileNameList.begin();

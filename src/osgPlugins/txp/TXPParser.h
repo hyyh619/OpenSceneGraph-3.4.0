@@ -125,8 +125,8 @@ inline TXPArchive* getArchive()
 // Scene parser
 osg::Group* parseScene(
     trpgReadBuffer &buf,
-    std::map<int, osg::ref_ptr<osg::StateSet>> &materials,
-    std::map<int, osg::ref_ptr<osg::Node>> &models,
+    std::map<int, osg::ref_ptr<osg::StateSet> > &materials,
+    std::map<int, osg::ref_ptr<osg::Node> > &models,
     double realMinRange, double realMaxRange, double usedMaxRange);
 
 // Returns the current Top Group
@@ -142,7 +142,7 @@ inline void setPotentionalTileGroup(osg::Group *grp)
 }
 
 // Return the current material list (passed in to ParseScene())
-inline std::map<int, osg::ref_ptr<osg::StateSet>>* getMaterials()
+inline std::map<int, osg::ref_ptr<osg::StateSet> >* getMaterials()
 {
     return _materialMap;
 }
@@ -154,7 +154,7 @@ inline void loadMaterial(int ix)
 }
 
 // New to TerraPage 2.0 - local materials
-std::vector<osg::ref_ptr<osg::StateSet>>* getLocalMaterials()
+std::vector<osg::ref_ptr<osg::StateSet> >* getLocalMaterials()
 {
     return &_localMaterials;
 }
@@ -163,7 +163,7 @@ std::vector<osg::ref_ptr<osg::StateSet>>* getLocalMaterials()
 void loadLocalMaterials();
 
 // Return the current model list
-std::map<int, osg::ref_ptr<osg::Node>>* getModels()
+std::map<int, osg::ref_ptr<osg::Node> >* getModels()
 {
     return _models;
 }
@@ -325,14 +325,14 @@ std::map<osg::Group*, int> _tileGroups;
 void replaceTileLod(osg::Group*);
 
 // Materials
-typedef std::map<int, osg::ref_ptr<osg::StateSet>>*MaterialMapType;
+typedef std::map<int, osg::ref_ptr<osg::StateSet> >*MaterialMapType;
 MaterialMapType _materialMap;
 
 // Local materials
-std::vector<osg::ref_ptr<osg::StateSet>> _localMaterials;
+std::vector<osg::ref_ptr<osg::StateSet> > _localMaterials;
 
 // Model list
-typedef std::map<int, osg::ref_ptr<osg::Node>> OSGModelsMapType;
+typedef std::map<int, osg::ref_ptr<osg::Node> > OSGModelsMapType;
 OSGModelsMapType *_models;
 
 // Tile header

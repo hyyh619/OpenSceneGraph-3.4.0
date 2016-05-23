@@ -220,7 +220,7 @@ osg::ref_ptr<osg::Node> p3d::readShowFiles(osg::ArgumentParser &arguments, const
 
     local_options->setOptionString("main");
 
-    typedef std::vector<osg::ref_ptr<osg::Node>> NodeList;
+    typedef std::vector<osg::ref_ptr<osg::Node> > NodeList;
     NodeList nodeList;
 
     std::string filename;

@@ -48,7 +48,7 @@ VertexMap&operator=(const VertexMap&)
 /////////////////////////////////////////////////////////////////////////
 // VERTEX MAP MAP
 
-typedef std::map<std::string, osg::ref_ptr<VertexMap>> VertexMap_map_impl;
+typedef std::map<std::string, osg::ref_ptr<VertexMap> > VertexMap_map_impl;
 typedef std::multimap<std::string, int> VertexMap_binding_map;
 
 class VertexMap_map : public VertexMap_map_impl, public osg::Referenced

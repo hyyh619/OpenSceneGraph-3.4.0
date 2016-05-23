@@ -881,7 +881,7 @@ int main(int argc, char **argv)
     }
 
     // create the hud.
-    osg::Group *gload = dynamic_cast<osg::Group*> (loadedModel.get());
+    osg::Group *gload = dynamic_cast<osg::Group*>(loadedModel.get());
     gload->addChild(createHUD());
 
 

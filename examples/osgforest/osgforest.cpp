@@ -88,12 +88,12 @@ float        _height;
 unsigned int _type;
 };
 
-typedef std::vector<osg::ref_ptr<Tree>> TreeList;
+typedef std::vector<osg::ref_ptr<Tree> > TreeList;
 
 class Cell : public osg::Referenced
 {
 public:
-typedef std::vector<osg::ref_ptr<Cell>> CellList;
+typedef std::vector<osg::ref_ptr<Cell> > CellList;
 
 Cell() : _parent(0) {}
 Cell(osg::BoundingBox &bb) : _parent(0), _bb(bb) {}
