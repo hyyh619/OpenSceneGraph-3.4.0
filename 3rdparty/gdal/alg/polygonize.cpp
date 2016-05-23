@@ -58,7 +58,7 @@ RPolygon(int nValue)
 int nPolyValue;
 int nLastLineUpdated;
 
-std::vector<std::vector<int> > aanXY;
+std::vector<std::vector<int>> aanXY;
 
 void             AddSegment(int x1, int y1, int x2, int y2);
 void             Dump();

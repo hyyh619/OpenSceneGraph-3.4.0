@@ -267,7 +267,7 @@ struct CompareStateSet
 
 
 typedef std::map<osg::ref_ptr<osg::StateSet>, domMaterial*, CompareStateSet> MaterialMap;
-typedef std::stack<osg::ref_ptr<osg::StateSet> > StateSetStack;
+typedef std::stack<osg::ref_ptr<osg::StateSet>> StateSetStack;
 typedef std::map<osg::Geometry*, domGeometry*> OsgGeometryDomGeometryMap;
 typedef std::map<osgAnimation::RigGeometry*, domController*> OsgRigGeometryDomControllerMap;
 typedef std::map<osgAnimation::MorphGeometry*, domController*> OsgMorphGeometryDomControllerMap;

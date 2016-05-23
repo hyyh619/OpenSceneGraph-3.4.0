@@ -113,8 +113,8 @@ TXPParser::~TXPParser()
 
 osg::Group* TXPParser::parseScene(
     trpgReadBuffer &buf,
-    std::map<int, osg::ref_ptr<osg::StateSet> > &materials,
-    std::map<int, osg::ref_ptr<osg::Node> > &models,
+    std::map<int, osg::ref_ptr<osg::StateSet>> &materials,
+    std::map<int, osg::ref_ptr<osg::Node>> &models,
     double realMinRange, double realMaxRange, double usedMaxRange)
 {
     if (_archive == 0)
@@ -683,8 +683,8 @@ void* modelRefRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
         );
 
     // Note: Array check before you do this
-    osg::Node                               *osg_Model = NULL;
-    std::map<int, osg::ref_ptr<osg::Node> > *modelList = _parse->getModels();
+    osg::Node                              *osg_Model = NULL;
+    std::map<int, osg::ref_ptr<osg::Node>> *modelList = _parse->getModels();
     // if( modelList->size() )
     {
         osg_Model = (*modelList)[modelID].get();
@@ -1397,7 +1397,7 @@ void* geomRead::Parse(trpgToken /*tok*/, trpgReadBuffer &buf)
     ;
     int num_tex;
     geom.GetNumTexCoordSets(num_tex);
-    std::vector<osg::ref_ptr<osg::Vec2Array> > tex_coords(num_tex);
+    std::vector<osg::ref_ptr<osg::Vec2Array>> tex_coords(num_tex);
 
     for (int texno = 0; texno < num_tex; texno++)
     {

@@ -91,7 +91,7 @@ osg::Image* readImage_Archive(DataReference &dr, float &s, float &t);
 osg::Image* readImage_DynamicSampling(DataReference &dr, float &s, float &t);
 
 typedef std::map<std::string, DataReference> DataReferenceMap;
-typedef std::vector<osg::ref_ptr<PhotoArchive> > PhotoArchiveList;
+typedef std::vector<osg::ref_ptr<PhotoArchive>> PhotoArchiveList;
 
 DataReferenceMap _dataReferences;
 PhotoArchiveList _photoArchiveList;

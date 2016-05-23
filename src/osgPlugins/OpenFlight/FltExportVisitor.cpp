@@ -255,7 +255,7 @@ FltExportVisitor::apply(osg::MatrixTransform &node)
             (*m) *= *rm;
     }
 
-    typedef std::vector<osg::ref_ptr<osg::Referenced> > UserDataList;
+    typedef std::vector<osg::ref_ptr<osg::Referenced>> UserDataList;
 
     UserDataList saveUserDataList(node.getNumChildren());
 
@@ -288,7 +288,7 @@ FltExportVisitor::apply(osg::PositionAttitudeTransform &node)
         osg::Matrix::rotate(node.getAttitude()) *
         osg::Matrix::translate(node.getPosition()));
 
-    typedef std::vector<osg::ref_ptr<osg::Referenced> > UserDataList;
+    typedef std::vector<osg::ref_ptr<osg::Referenced>> UserDataList;
     UserDataList saveUserDataList(node.getNumChildren());
 
     unsigned int idx;

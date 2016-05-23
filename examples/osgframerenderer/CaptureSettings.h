@@ -165,7 +165,7 @@ unsigned int getNumberOfFrames() const
     return _numberOfFrames;
 }
 
-typedef std::vector<osg::ref_ptr<osgGA::GUIEventHandler> > EventHandlers;
+typedef std::vector<osg::ref_ptr<osgGA::GUIEventHandler>> EventHandlers;
 void setEventHandlers(const EventHandlers &eh);
 EventHandlers&getEventHandlers()
 {
@@ -176,7 +176,7 @@ const EventHandlers&getEventHandlers() const
     return _eventHandlers;
 }
 
-typedef std::vector<osg::ref_ptr<UpdateProperty> > Properties;
+typedef std::vector<osg::ref_ptr<UpdateProperty>> Properties;
 
 void addUpdateProperty(UpdateProperty *up)
 {

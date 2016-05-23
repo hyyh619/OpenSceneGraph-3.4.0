@@ -437,7 +437,7 @@ osg::ref_ptr<LightPointAppearancePool> _lightPointAppearancePool;
 osg::ref_ptr<LightPointAnimationPool>  _lightPointAnimationPool;
 osg::ref_ptr<ShaderPool>               _shaderPool;
 
-typedef std::map<int, osg::ref_ptr<osg::PolygonOffset> > SubSurfacePolygonOffsets;
+typedef std::map<int, osg::ref_ptr<osg::PolygonOffset>> SubSurfacePolygonOffsets;
 SubSurfacePolygonOffsets _subsurfacePolygonOffsets;
 osg::ref_ptr<osg::Depth> _subsurfaceDepth;
 
@@ -451,11 +451,11 @@ bool _shaderPoolParent;
 
 osg::ref_ptr<PrimaryRecord> _currentPrimaryRecord;
 
-typedef std::vector<osg::ref_ptr<PrimaryRecord> > LevelStack;
+typedef std::vector<osg::ref_ptr<PrimaryRecord>> LevelStack;
 LevelStack _levelStack;
 LevelStack _extensionStack;
 
-typedef std::map<int, osg::ref_ptr<osg::Node> > InstanceDefinitionMap;
+typedef std::map<int, osg::ref_ptr<osg::Node>> InstanceDefinitionMap;
 InstanceDefinitionMap _instanceDefinitionMap;
 };
 

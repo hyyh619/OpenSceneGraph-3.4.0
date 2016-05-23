@@ -48,9 +48,9 @@ void newRenderPass(MapMode mapMode);
  */
 void remRenderPass(MapMode mapMode);
 
-osg::ref_ptr<osg::Group>                      root;
-std::map<MapMode, osg::ref_ptr<osg::Camera> > Cameras;
-std::map<MapMode, osg::ref_ptr<osg::Group> >  settingNodes;
+osg::ref_ptr<osg::Group>                     root;
+std::map<MapMode, osg::ref_ptr<osg::Camera>> Cameras;
+std::map<MapMode, osg::ref_ptr<osg::Group>>  settingNodes;
 };
 
 #endif

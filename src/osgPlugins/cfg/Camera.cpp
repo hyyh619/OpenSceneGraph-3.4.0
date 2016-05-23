@@ -704,9 +704,9 @@ bool Camera::removePostSwapCallback(Callback *cb)
 }
 
 
-bool Camera::_removeCallback(std::vector<ref_ptr<Callback> > &callbackList, Callback *callback)
+bool Camera::_removeCallback(std::vector<ref_ptr<Callback>> &callbackList, Callback *callback)
 {
-    std::vector<Producer::ref_ptr<Producer::Camera::Callback> >::iterator p;
+    std::vector<Producer::ref_ptr<Producer::Camera::Callback>>::iterator p;
 
     p = std::find(callbackList.begin(), callbackList.end(), callback);
     if (p == callbackList.end())

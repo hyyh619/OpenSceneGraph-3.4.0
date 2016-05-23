@@ -115,7 +115,7 @@ OscReceivingDevice *_device;
 friend class OscReceivingDevice;
 };
 
-typedef std::multimap<std::string, osg::ref_ptr<RequestHandler> > RequestHandlerMap;
+typedef std::multimap<std::string, osg::ref_ptr<RequestHandler>> RequestHandlerMap;
 
 OscReceivingDevice(const std::string &server_address, int listening_port);
 ~OscReceivingDevice();

@@ -289,23 +289,23 @@ osg::ref_ptr<osgAnimation::KeyframeContainer> keyframes;
 InterpolationType                             interpolation;
 };
 
-typedef std::map<domGeometry*, osg::ref_ptr<osg::Geode> >    domGeometryGeodeMap;
-typedef std::map<domMaterial*, osg::ref_ptr<osg::StateSet> > domMaterialStateSetMap;
-typedef std::map<std::string, osg::ref_ptr<osg::StateSet> >    MaterialStateSetMap;
+typedef std::map<domGeometry*, osg::ref_ptr<osg::Geode>>    domGeometryGeodeMap;
+typedef std::map<domMaterial*, osg::ref_ptr<osg::StateSet>> domMaterialStateSetMap;
+typedef std::map<std::string, osg::ref_ptr<osg::StateSet>>    MaterialStateSetMap;
 typedef std::multimap<daeElement*, domChannel*> daeElementDomChannelMap;
-typedef std::map<domChannel*, osg::ref_ptr<osg::Callback> > domChannelOsgAnimationUpdateCallbackMap;
-typedef std::map<domNode*, osg::ref_ptr<osgAnimation::Bone> > domNodeOsgBoneMap;
-typedef std::map<domNode*, osg::ref_ptr<osgAnimation::Skeleton> > domNodeOsgSkeletonMap;
-typedef std::map<TextureParameters, osg::ref_ptr<osg::Texture2D> > TextureParametersMap;
+typedef std::map<domChannel*, osg::ref_ptr<osg::Callback>> domChannelOsgAnimationUpdateCallbackMap;
+typedef std::map<domNode*, osg::ref_ptr<osgAnimation::Bone>> domNodeOsgBoneMap;
+typedef std::map<domNode*, osg::ref_ptr<osgAnimation::Skeleton>> domNodeOsgSkeletonMap;
+typedef std::map<TextureParameters, osg::ref_ptr<osg::Texture2D>> TextureParametersMap;
 typedef std::map<std::pair<const osg::StateSet*, TextureUnitUsage>, std::string> TextureToCoordSetMap;
 typedef std::map<std::string, size_t> IdToCoordIndexMap;
 
 typedef std::map<daeElement*, domSourceReader> SourceMap;
-typedef std::map<int, osg::IntArray*, std::less<int> > IndexMap;
-typedef std::map<int, osg::Array*, std::less<int> > ArrayMap;
+typedef std::map<int, osg::IntArray*, std::less<int>> IndexMap;
+typedef std::map<int, osg::Array*, std::less<int>> ArrayMap;
 
-typedef std::multimap<osgAnimation::Target*, osg::ref_ptr<ChannelPart> > TargetChannelPartMap;
-typedef std::multimap<std::pair<const domMesh*, size_t>, std::pair<osg::ref_ptr<osg::Geometry>, GLuint> > OldToNewIndexMap;
+typedef std::multimap<osgAnimation::Target*, osg::ref_ptr<ChannelPart>> TargetChannelPartMap;
+typedef std::multimap<std::pair<const domMesh*, size_t>, std::pair<osg::ref_ptr<osg::Geometry>, GLuint>> OldToNewIndexMap;
 
 private:
 bool processDocument(const std::string&);
@@ -386,7 +386,7 @@ void processPolygons(osg::Geode *geode, const domMesh *pDomMesh, const T *group,
 void resolveMeshArrays(const domP_Array&,
                        const domInputLocalOffset_Array &inputs, const domMesh *pDomMesh,
                        osg::Geometry *geometry, SourceMap &sources,
-                       std::vector<std::vector<GLuint> > &vertexLists);
+                       std::vector<std::vector<GLuint>> &vertexLists);
 
 // material/effect processing
 void processBindMaterial(domBind_material *bm, domGeometry *geom, osg::Geode *geode, osg::Geode *cachedGeode);

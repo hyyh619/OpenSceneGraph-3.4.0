@@ -50,9 +50,9 @@ private:        /*methods*/
 osg::ref_ptr<osg::Group> buildScene();
 
 private:        /*data*/
-osg::ref_ptr<osg::Group>                 _rootNode;
-std::vector<osg::ref_ptr<osg::Program> > _programList;
-bool                                     _shadersEnabled;
+osg::ref_ptr<osg::Group>                _rootNode;
+std::vector<osg::ref_ptr<osg::Program>> _programList;
+bool                                    _shadersEnabled;
 };
 
 typedef osg::ref_ptr<GL2Scene> GL2ScenePtr;

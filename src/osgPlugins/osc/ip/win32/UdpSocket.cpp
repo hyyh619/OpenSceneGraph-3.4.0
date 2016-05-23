@@ -314,8 +314,8 @@ class SocketReceiveMultiplexer::Implementation
 {
 NetworkInitializer networkInitializer_;
 
-std::vector<std::pair<PacketListener*, UdpSocket*> > socketListeners_;
-std::vector<AttachedTimerListener>                   timerListeners_;
+std::vector<std::pair<PacketListener*, UdpSocket*>> socketListeners_;
+std::vector<AttachedTimerListener>                  timerListeners_;
 
 volatile bool break_;
 HANDLE        breakEvent_;
@@ -349,7 +349,7 @@ void AttachSocketListener(UdpSocket *socket, PacketListener *listener)
 
 void DetachSocketListener(UdpSocket *socket, PacketListener *listener)
 {
-    std::vector<std::pair<PacketListener*, UdpSocket*> >::iterator i =
+    std::vector<std::pair<PacketListener*, UdpSocket*>>::iterator i =
         std::find(socketListeners_.begin(), socketListeners_.end(), std::make_pair(listener, socket));
 
     assert(i != socketListeners_.end());
@@ -395,7 +395,7 @@ void Run()
     std::vector<HANDLE> events(socketListeners_.size() + 1, 0);
     int                 j = 0;
 
-    for (std::vector<std::pair<PacketListener*, UdpSocket*> >::iterator i = socketListeners_.begin();
+    for (std::vector<std::pair<PacketListener*, UdpSocket*>>::iterator i = socketListeners_.begin();
          i != socketListeners_.end(); ++i, ++j)
     {
         HANDLE event = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -411,7 +411,7 @@ void Run()
     double currentTimeMs = GetCurrentTimeMs();
 
     // expiry time ms, listener
-    std::vector<std::pair<double, AttachedTimerListener> > timerQueue_;
+    std::vector<std::pair<double, AttachedTimerListener>> timerQueue_;
 
     for (std::vector<AttachedTimerListener>::iterator i = timerListeners_.begin();
          i != timerListeners_.end(); ++i)
@@ -457,7 +457,7 @@ void Run()
         currentTimeMs = GetCurrentTimeMs();
         bool resort = false;
 
-        for (std::vector<std::pair<double, AttachedTimerListener> >::iterator i = timerQueue_.begin();
+        for (std::vector<std::pair<double, AttachedTimerListener>>::iterator i = timerQueue_.begin();
              i != timerQueue_.end() && i->first <= currentTimeMs; ++i)
         {
             i->second.listener->TimerExpired();
@@ -477,7 +477,7 @@ void Run()
     // free events
     j = 0;
 
-    for (std::vector<std::pair<PacketListener*, UdpSocket*> >::iterator i = socketListeners_.begin();
+    for (std::vector<std::pair<PacketListener*, UdpSocket*>>::iterator i = socketListeners_.begin();
          i != socketListeners_.end(); ++i, ++j)
     {
         WSAEventSelect(i->second->impl_->Socket(), events[j], 0);                   // remove association between socket and event

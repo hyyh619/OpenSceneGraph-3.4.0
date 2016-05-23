@@ -1399,7 +1399,7 @@ static osg::Array* expandIndexArray(const osg::Array *sourceArray, const osg::In
     return targetArray.release();
 }
 
-typedef std::pair<osg::ref_ptr<osg::Array>, osg::ref_ptr<osg::Array> > ArrayPair;
+typedef std::pair<osg::ref_ptr<osg::Array>, osg::ref_ptr<osg::Array>> ArrayPair;
 typedef std::vector<ArrayPair> ArrayPairs;
 static void duplicateArray(ArrayPairs &pairs, osg::ref_ptr<osg::Array> &sourceArray, unsigned int numVertices)
 {

@@ -39,7 +39,7 @@
 //
 
 
-typedef std::vector<osg::ref_ptr<osg::Image> > ImageList;
+typedef std::vector<osg::ref_ptr<osg::Image>> ImageList;
 
 /** create quad at specified position. */
 osg::Drawable* createSquare(const osg::Vec3 &corner, const osg::Vec3 &width, const osg::Vec3 &height, osg::Image *image = NULL)

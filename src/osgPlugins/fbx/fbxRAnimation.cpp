@@ -26,7 +26,7 @@ osg::Quat makeQuat(const osg::Vec3 &radians, EFbxRotationOrder fbxRotOrder)
 
 void readKeys(FbxAnimCurve *curveX, FbxAnimCurve *curveY, FbxAnimCurve *curveZ,
               const FbxDouble3 &defaultValue,
-              std::vector<osgAnimation::TemplateKeyframe<osg::Vec3> > &keyFrameCntr, float scalar = 1.0f)
+              std::vector<osgAnimation::TemplateKeyframe<osg::Vec3>> &keyFrameCntr, float scalar = 1.0f)
 {
     FbxAnimCurve *curves[3] = {curveX, curveY, curveZ};
 
@@ -154,7 +154,7 @@ void readKeys(FbxAnimCurve *curveX, FbxAnimCurve *curveY, FbxAnimCurve *curveZ,
 // osgAnimation requires control points to be in a weird order. This function
 // reorders them from the conventional order to osgAnimation order.
 template<typename T>
-void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T> > &vkfCont)
+void reorderControlPoints(osgAnimation::TemplateKeyframeContainer<osgAnimation::TemplateCubicBezier<T>> &vkfCont)
 {
     if (vkfCont.size() <= 1)
     {
@@ -273,7 +273,7 @@ osgAnimation::Channel* readFbxChannelsQuat(
     osgAnimation::QuatSphericalLinearChannel *pChannel = new osgAnimation::QuatSphericalLinearChannel;
     pChannel->setTargetName(targetName);
     pChannel->setName("quaternion");
-    typedef std::vector<osgAnimation::TemplateKeyframe<osg::Vec3> > KeyFrameCntr;
+    typedef std::vector<osgAnimation::TemplateKeyframe<osg::Vec3>> KeyFrameCntr;
     KeyFrameCntr eulerFrameCntr;
     readKeys(curveX, curveY, curveZ, defaultValue, eulerFrameCntr, static_cast<float>(osg::PI / 180.0));
 

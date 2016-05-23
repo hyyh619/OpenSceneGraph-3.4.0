@@ -140,9 +140,9 @@ struct FadeTextUserData : public osg::Referenced
 
 struct GlobalFadeText : public osg::Referenced
 {
-    typedef std::set<osg::ref_ptr<FadeTextUserData> > UserDataSet;
+    typedef std::set<osg::ref_ptr<FadeTextUserData>> UserDataSet;
     typedef std::set<FadeText*> FadeTextSet;
-    typedef std::multimap<double, osg::ref_ptr<FadeTextPolytopeData> > FadeTextPolytopeMap;
+    typedef std::multimap<double, osg::ref_ptr<FadeTextPolytopeData>> FadeTextPolytopeMap;
     typedef std::map<osg::View*, UserDataSet> ViewUserDataMap;
     typedef std::map<osg::View*, FadeTextSet> ViewFadeTextMap;
 

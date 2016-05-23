@@ -34,7 +34,7 @@
 // A simple demo demonstrating use osg::Texture3D to create a blended animation between four separate images packed together into a 3d texture
 //
 
-typedef std::vector<osg::ref_ptr<osg::Image> > ImageList;
+typedef std::vector<osg::ref_ptr<osg::Image>> ImageList;
 
 osg::StateSet* createState()
 {

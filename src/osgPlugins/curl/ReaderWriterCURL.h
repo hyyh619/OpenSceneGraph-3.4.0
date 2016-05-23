@@ -188,7 +188,7 @@ bool read(std::istream &fin, std::string &destination) const;
 protected:
 void getConnectionOptions(const osgDB::ReaderWriter::Options *options, std::string &proxyAddress, long &connectTimeout, long &timeout) const;
 
-typedef std::map<OpenThreads::Thread*, osg::ref_ptr<EasyCurl> >    ThreadCurlMap;
+typedef std::map<OpenThreads::Thread*, osg::ref_ptr<EasyCurl>>    ThreadCurlMap;
 
 mutable OpenThreads::Mutex _threadCurlMapMutex;
 mutable ThreadCurlMap      _threadCurlMap;

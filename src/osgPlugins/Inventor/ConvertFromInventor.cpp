@@ -108,10 +108,10 @@ ConvertFromInventor::restructure(void *data, SoCallbackAction *action,
               << node->getTypeId().getName().getString();
 #endif
 
-    int                            childrenTotal       = 0;
-    int                            numModifiedChildren = 0;
-    int                            numRemovedNodes     = 0;
-    std::vector<std::vector<int> > &stack              = *((std::vector<std::vector<int> >*)data);
+    int                           childrenTotal       = 0;
+    int                           numModifiedChildren = 0;
+    int                           numRemovedNodes     = 0;
+    std::vector<std::vector<int>> &stack              = *((std::vector<std::vector<int>>*)data);
 
     if (node->isOfType(SoGroup::getClassTypeId()))
     {
@@ -200,7 +200,7 @@ SoCallbackAction::Response
 ConvertFromInventor::restructurePreNode(void *data, SoCallbackAction *action,
                                         const SoNode *node)
 {
-    std::vector<std::vector<int> > &stack = *((std::vector<std::vector<int> >*)data);
+    std::vector<std::vector<int>> &stack = *((std::vector<std::vector<int>>*)data);
 
     stack.push_back(std::vector<int>());
 
@@ -211,7 +211,7 @@ SoCallbackAction::Response
 ConvertFromInventor::restructurePostNode(void *data, SoCallbackAction *action,
                                          const SoNode *node)
 {
-    std::vector<std::vector<int> > &stack = *((std::vector<std::vector<int> >*)data);
+    std::vector<std::vector<int>> &stack = *((std::vector<std::vector<int>>*)data);
 
     assert(stack.size() > 0 && "Stack is empty");
     std::vector<int> &nodesToRemove = stack.back();
@@ -247,8 +247,8 @@ ConvertFromInventor::preprocess(SoNode *root)
     OSG_DEBUG << NOTIFY_HEADER << "Preprocessing..." << std::endl;
 #endif
 
-    SoCallbackAction               action;
-    std::vector<std::vector<int> > stackOfNodesToRemove;
+    SoCallbackAction              action;
+    std::vector<std::vector<int>> stackOfNodesToRemove;
 
     // Callbacks for troublesome nodes
     action.addPreCallback(SoNode::getClassTypeId(),

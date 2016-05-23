@@ -1074,7 +1074,7 @@ void Program::PerContextProgram::linkProgram(osg::State &state)
                      << " buffer bind= " << bufferIndex[j] << ".\n";
         }
 
-        std::map<int, std::vector<int> > bufferIndexToUniformIndices;
+        std::map<int, std::vector<int>> bufferIndexToUniformIndices;
 
         for (unsigned int i = 0; i < bufferIndex.size(); ++i)
         {

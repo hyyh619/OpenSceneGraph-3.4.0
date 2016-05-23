@@ -195,7 +195,7 @@ void setVisibility();
 
 protected:
 
-typedef std::vector<osg::ref_ptr<Page> > PageList;
+typedef std::vector<osg::ref_ptr<Page>> PageList;
 
 osg::ref_ptr<osg::Group> _group;
 PageList                 _pages;

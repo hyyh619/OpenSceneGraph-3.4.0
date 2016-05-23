@@ -64,7 +64,7 @@ bool _old;     // true if version <= 13
 };
 
 
-class TexturePool : public osg::Referenced, public std::map<int, osg::ref_ptr<osg::StateSet> >
+class TexturePool : public osg::Referenced, public std::map<int, osg::ref_ptr<osg::StateSet>>
 {
 public:
 
@@ -86,7 +86,7 @@ virtual ~TexturePool() {}
 };
 
 
-class MaterialPool : public osg::Referenced, public std::map<int, osg::ref_ptr<osg::Material> >
+class MaterialPool : public osg::Referenced, public std::map<int, osg::ref_ptr<osg::Material>>
 {
 public:
 
@@ -130,12 +130,12 @@ struct MaterialParameters
 };
 
 // Material from palette combined with face color stored here for reuse.
-typedef std::map<MaterialParameters, osg::ref_ptr<osg::Material> > FinalMaterialMap;
+typedef std::map<MaterialParameters, osg::ref_ptr<osg::Material>> FinalMaterialMap;
 FinalMaterialMap _finalMaterialMap;
 };
 
 
-class LightSourcePool : public osg::Referenced, public std::map<int, osg::ref_ptr<osg::Light> >
+class LightSourcePool : public osg::Referenced, public std::map<int, osg::ref_ptr<osg::Light>>
 {
 public:
 
@@ -201,7 +201,7 @@ struct LPAppearance : public osg::Referenced
 };
 
 
-class LightPointAppearancePool : public osg::Referenced, public std::map<int, osg::ref_ptr<LPAppearance> >
+class LightPointAppearancePool : public osg::Referenced, public std::map<int, osg::ref_ptr<LPAppearance>>
 {
 public:
 
@@ -274,7 +274,7 @@ struct LPAnimation : public osg::Referenced
 };
 
 
-class LightPointAnimationPool : public osg::Referenced, public std::map<int, osg::ref_ptr<LPAnimation> >
+class LightPointAnimationPool : public osg::Referenced, public std::map<int, osg::ref_ptr<LPAnimation>>
 {
 public:
 
@@ -295,7 +295,7 @@ protected:
 virtual ~LightPointAnimationPool() {}
 };
 
-class ShaderPool : public osg::Referenced, public std::map<int, osg::ref_ptr<osg::Program> >
+class ShaderPool : public osg::Referenced, public std::map<int, osg::ref_ptr<osg::Program>>
 {
 public:
 

@@ -58,7 +58,7 @@ void addRenderSurface(RenderSurface *s)
 {
     _rs.push_back(s);
 }
-std::vector<osg::ref_ptr<RenderSurface> > _rs;
+std::vector<osg::ref_ptr<RenderSurface>> _rs;
 };
 
 #undef notImplemented
@@ -233,13 +233,13 @@ std::map<std::string, VisualChooser*> _visual_map;
 osg::ref_ptr<VisualChooser>           _current_visual_chooser;
 bool                                  _can_add_visual_attributes;
 
-std::map<std::string,  osg::ref_ptr<RenderSurface> > _render_surface_map;
-osg::ref_ptr<RenderSurface>                          _current_render_surface;
-bool                                                 _can_add_render_surface_attributes;
+std::map<std::string,  osg::ref_ptr<RenderSurface>> _render_surface_map;
+osg::ref_ptr<RenderSurface>                         _current_render_surface;
+bool                                                _can_add_render_surface_attributes;
 
-std::map<std::string,  osg::ref_ptr<Camera> > _camera_map;
-osg::ref_ptr<Camera>                          _current_camera;
-bool                                          _can_add_camera_attributes;
+std::map<std::string,  osg::ref_ptr<Camera>> _camera_map;
+osg::ref_ptr<Camera>                         _current_camera;
+bool                                         _can_add_camera_attributes;
 
 osg::ref_ptr<InputArea> _input_area;
 bool                    _can_add_input_area_entries;

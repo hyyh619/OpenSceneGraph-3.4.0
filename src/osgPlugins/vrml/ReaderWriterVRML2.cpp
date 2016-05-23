@@ -194,7 +194,7 @@ osgDB::ReaderWriter::ReadResult ReaderWriterVRML2::readNode(const std::string &f
 
     try
     {
-        const std::vector<boost::intrusive_ptr<openvrml::node> > &mfn = b->create_vrml_from_stream(vrml_stream);
+        const std::vector<boost::intrusive_ptr<openvrml::node>> &mfn = b->create_vrml_from_stream(vrml_stream);
 
         if (mfn.empty())
         {

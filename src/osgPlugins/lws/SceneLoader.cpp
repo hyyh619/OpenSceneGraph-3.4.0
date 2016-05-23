@@ -182,7 +182,7 @@ osg::Group* SceneLoader::load(const std::string &filename, const osgDB::ReaderWr
     }
 
     // build objects and object animations
-    typedef std::map<int, osg::ref_ptr<osg::PositionAttitudeTransform> > PAT_map;
+    typedef std::map<int, osg::ref_ptr<osg::PositionAttitudeTransform>> PAT_map;
     PAT_map pats;
     int     j = 0;
 

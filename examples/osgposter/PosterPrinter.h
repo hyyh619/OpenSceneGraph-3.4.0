@@ -133,7 +133,7 @@ class PosterPrinter : public osg::Referenced
 {
 public:
 typedef std::pair<unsigned int, unsigned int> TilePosition;
-typedef std::map<TilePosition, osg::ref_ptr<osg::Image> > TileImages;
+typedef std::map<TilePosition, osg::ref_ptr<osg::Image>> TileImages;
 
 PosterPrinter();
 

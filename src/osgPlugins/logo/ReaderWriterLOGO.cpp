@@ -245,7 +245,7 @@ Logos&operator =(const Logos&)
 
 virtual ~Logos() {}
 private:
-typedef std::vector<osg::ref_ptr<osg::Image> >  Images;
+typedef std::vector<osg::ref_ptr<osg::Image>>  Images;
 
 Images                      _logos[last_position];
 osg::ref_ptr<osg::Viewport> _viewport;

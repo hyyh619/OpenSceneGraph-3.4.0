@@ -24,17 +24,17 @@ using namespace std;
 using namespace osg;
 
 // static
-std::map<std::string, ref_ptr<dxfBasicEntity> > dxfEntity::_registry;
-RegisterEntityProxy<dxf3DFace>                  g_dxf3DFace;
-RegisterEntityProxy<dxfCircle>                  g_dxfCircle;
-RegisterEntityProxy<dxfArc>                     g_dxfArc;
-RegisterEntityProxy<dxfPoint>                   g_dxfPoint;
-RegisterEntityProxy<dxfLine>                    g_dxfLine;
-RegisterEntityProxy<dxfVertex>                  g_dxfVertex;
-RegisterEntityProxy<dxfPolyline>                g_dxfPolyline;
-RegisterEntityProxy<dxfLWPolyline>              g_dxfLWPolyline;
-RegisterEntityProxy<dxfInsert>                  g_dxfInsert;
-RegisterEntityProxy<dxfText>                    g_dxfText;
+std::map<std::string, ref_ptr<dxfBasicEntity>> dxfEntity::_registry;
+RegisterEntityProxy<dxf3DFace>                 g_dxf3DFace;
+RegisterEntityProxy<dxfCircle>                 g_dxfCircle;
+RegisterEntityProxy<dxfArc>                    g_dxfArc;
+RegisterEntityProxy<dxfPoint>                  g_dxfPoint;
+RegisterEntityProxy<dxfLine>                   g_dxfLine;
+RegisterEntityProxy<dxfVertex>                 g_dxfVertex;
+RegisterEntityProxy<dxfPolyline>               g_dxfPolyline;
+RegisterEntityProxy<dxfLWPolyline>             g_dxfLWPolyline;
+RegisterEntityProxy<dxfInsert>                 g_dxfInsert;
+RegisterEntityProxy<dxfText>                   g_dxfText;
 
 void
 dxfBasicEntity::assign(dxfFile*, codeValue &cv)
@@ -1245,7 +1245,7 @@ dxfEntity::registerEntity(dxfBasicEntity *entity)
 void
 dxfEntity::unregisterEntity(dxfBasicEntity *entity)
 {
-    map<string, ref_ptr<dxfBasicEntity> >::iterator itr = _registry.find(entity->name());
+    map<string, ref_ptr<dxfBasicEntity>>::iterator itr = _registry.find(entity->name());
     if (itr != _registry.end())
     {
         _registry.erase(itr);
@@ -1254,7 +1254,7 @@ dxfEntity::unregisterEntity(dxfBasicEntity *entity)
 
 void dxfEntity::drawScene(scene *sc)
 {
-    for (std::vector<ref_ptr<dxfBasicEntity> >::iterator itr = _entityList.begin();
+    for (std::vector<ref_ptr<dxfBasicEntity>>::iterator itr = _entityList.begin();
          itr != _entityList.end(); ++itr)
     {
         (*itr)->drawScene(sc);

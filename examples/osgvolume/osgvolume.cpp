@@ -804,7 +804,7 @@ int main(int argc, char **argv)
            arguments.read("--sd", sequenceLength))
     {}
 
-    typedef std::list<osg::ref_ptr<osg::Image> > Images;
+    typedef std::list<osg::ref_ptr<osg::Image>> Images;
     Images images;
 
 

@@ -51,7 +51,7 @@ void translateObject(JSONObject *json, osg::Object *osg)
             const osgSim::ShapeAttribute &attr      = (*osgSim_userdata)[i];
             JSONObject                   *jsonEntry = new JSONObject();
             jsonEntry->getMaps()["Name"] = new JSONValue<std::string>(attr.getName());
-            osg::ref_ptr<JSONValue<std::string> > value;
+            osg::ref_ptr<JSONValue<std::string>> value;
 
             switch (attr.getType())
             {
@@ -664,7 +664,7 @@ JSONObject* WriteVisitor::createJSONCullFace(osg::CullFace *sa)
 
     translateObject(json.get(), sa);
 
-    osg::ref_ptr<JSONValue<std::string> > mode = new JSONValue<std::string>("BACK");
+    osg::ref_ptr<JSONValue<std::string>> mode = new JSONValue<std::string>("BACK");
     if (sa->getMode() == osg::CullFace::FRONT)
     {
         mode = new JSONValue<std::string>("BACK");
@@ -765,7 +765,7 @@ JSONObject* WriteVisitor::createJSONPagedLOD(osg::PagedLOD *plod)
 
 
     // Center Mode
-    osg::ref_ptr<JSONValue<std::string> > centerMode = new JSONValue<std::string>("USE_BOUNDING_SPHERE_CENTER");
+    osg::ref_ptr<JSONValue<std::string>> centerMode = new JSONValue<std::string>("USE_BOUNDING_SPHERE_CENTER");
     if (plod->getCenterMode() == osg::LOD::USER_DEFINED_CENTER)
     {
         centerMode = new JSONValue<std::string>("USER_DEFINED_CENTER");
@@ -781,7 +781,7 @@ JSONObject* WriteVisitor::createJSONPagedLOD(osg::PagedLOD *plod)
 
 
     // Range Mode
-    osg::ref_ptr<JSONValue<std::string> > rangeMode = new JSONValue<std::string>("DISTANCE_FROM_EYE_POINT");
+    osg::ref_ptr<JSONValue<std::string>> rangeMode = new JSONValue<std::string>("DISTANCE_FROM_EYE_POINT");
     if (plod->getRangeMode() == osg::LOD::PIXEL_SIZE_ON_SCREEN)
     {
         rangeMode = new JSONValue<std::string>("PIXEL_SIZE_ON_SCREEN");

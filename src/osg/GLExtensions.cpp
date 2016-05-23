@@ -416,7 +416,7 @@ void* osg::getGLExtensionFuncPtr(const char *funcName)
 ///////////////////////////////////////////////////////////////////////////
 // Static array of percontext osg::GLExtensions instances
 
-typedef osg::buffered_object<osg::ref_ptr<GLExtensions> > BufferedExtensions;
+typedef osg::buffered_object<osg::ref_ptr<GLExtensions>> BufferedExtensions;
 static BufferedExtensions s_extensions;
 
 GLExtensions* GLExtensions::Get(unsigned int contextID, bool createIfNotInitalized)

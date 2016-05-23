@@ -164,8 +164,8 @@ VisualChooser* CameraConfig::findVisual(const char *name)
 
 void CameraConfig::beginRenderSurface(const char *name)
 {
-    std::pair<std::map<std::string,  osg::ref_ptr<RenderSurface> >::iterator, bool> res =
-        _render_surface_map.insert(std::pair<std::string, osg::ref_ptr<RenderSurface> >(
+    std::pair<std::map<std::string,  osg::ref_ptr<RenderSurface>>::iterator, bool> res =
+        _render_surface_map.insert(std::pair<std::string, osg::ref_ptr<RenderSurface>>(
                                        std::string(name),
                                        new RenderSurface));
 
@@ -270,7 +270,7 @@ void CameraConfig::endRenderSurface(void)
 
 RenderSurface* CameraConfig::findRenderSurface(const char *name)
 {
-    std::map<std::string,  osg::ref_ptr<RenderSurface> >::iterator p;
+    std::map<std::string,  osg::ref_ptr<RenderSurface>>::iterator p;
 
     p = _render_surface_map.find(std::string(name));
     if (p == _render_surface_map.end())
@@ -289,7 +289,7 @@ RenderSurface* CameraConfig::getRenderSurface(unsigned int index)
     if (index >= _render_surface_map.size())
         return NULL;
 
-    std::map<std::string,  osg::ref_ptr<RenderSurface> >::iterator p;
+    std::map<std::string,  osg::ref_ptr<RenderSurface>>::iterator p;
 
     unsigned int i = 0;
 
@@ -305,8 +305,8 @@ RenderSurface* CameraConfig::getRenderSurface(unsigned int index)
 
 void CameraConfig::addCamera(std::string name, Camera *camera)
 {
-    std::pair<std::map<std::string, osg::ref_ptr<Camera> >::iterator, bool> res =
-        _camera_map.insert(std::pair<std::string, osg::ref_ptr<Camera> >(name, camera));
+    std::pair<std::map<std::string, osg::ref_ptr<Camera>>::iterator, bool> res =
+        _camera_map.insert(std::pair<std::string, osg::ref_ptr<Camera>>(name, camera));
 
     _current_camera            = (res.first)->second.get();
     _can_add_camera_attributes = true;
@@ -319,15 +319,15 @@ void CameraConfig::addCamera(std::string name, Camera *camera)
         rs->setWindowName(name);
     }
 
-    _render_surface_map.insert(std::pair<std::string, osg::ref_ptr<RenderSurface> >(rs->getWindowName(), rs));
+    _render_surface_map.insert(std::pair<std::string, osg::ref_ptr<RenderSurface>>(rs->getWindowName(), rs));
 }
 
 
 void CameraConfig::beginCamera(std::string name)
 {
-    Camera                                                                   *camera = new Camera;
-    std::pair<std::map<std::string,  osg::ref_ptr<Camera> >::iterator, bool> res     =
-        _camera_map.insert(std::pair<std::string, osg::ref_ptr<Camera> >(name, camera));
+    Camera                                                                  *camera = new Camera;
+    std::pair<std::map<std::string,  osg::ref_ptr<Camera>>::iterator, bool> res     =
+        _camera_map.insert(std::pair<std::string, osg::ref_ptr<Camera>>(name, camera));
 
     _current_camera            = (res.first)->second.get();
     _can_add_camera_attributes = true;
@@ -450,7 +450,7 @@ void CameraConfig::endCamera(void)
 
 Camera* CameraConfig::findCamera(const char *name)
 {
-    std::map<std::string,  osg::ref_ptr<Camera> >::iterator p;
+    std::map<std::string,  osg::ref_ptr<Camera>>::iterator p;
 
     p = _camera_map.find(std::string(name));
     if (p == _camera_map.end())
@@ -469,8 +469,8 @@ const Camera* CameraConfig::getCamera(unsigned int n) const
     if (n >= _camera_map.size())
         return NULL;
 
-    unsigned int                                                  i;
-    std::map<std::string,  osg::ref_ptr<Camera> >::const_iterator p;
+    unsigned int                                                 i;
+    std::map<std::string,  osg::ref_ptr<Camera>>::const_iterator p;
 
     for (i = 0, p = _camera_map.begin(); p != _camera_map.end(); p++)
         if (i++ == n)
@@ -487,8 +487,8 @@ Camera* CameraConfig::getCamera(unsigned int n)
     if (n >= _camera_map.size())
         return NULL;
 
-    unsigned int                                            i;
-    std::map<std::string,  osg::ref_ptr<Camera> >::iterator p;
+    unsigned int                                           i;
+    std::map<std::string,  osg::ref_ptr<Camera>>::iterator p;
 
     for (i = 0, p = _camera_map.begin(); p != _camera_map.end(); p++)
         if (i++ == n)
@@ -543,7 +543,7 @@ const InputArea* CameraConfig::getInputArea() const
 #if 0
 void CameraConfig::realize(void)
 {
-    std::map<std::string,  osg::ref_ptr<RenderSurface> >::iterator p;
+    std::map<std::string,  osg::ref_ptr<RenderSurface>>::iterator p;
 
     for (p = _render_surface_map.begin(); p != _render_surface_map.end(); p++)
     {
@@ -665,10 +665,10 @@ bool CameraConfig::defaultConfig()
 
     for (unsigned int i = 0; i < numScreens; i++)
     {
-        std::stringstream                                                       sstr; sstr << "Screen" << i;
-        std::string                                                             name = sstr.str();
-        std::pair<std::map<std::string, osg::ref_ptr<Camera> >::iterator, bool> res  =
-            _camera_map.insert(std::pair<std::string, osg::ref_ptr<Camera> >(name, new Camera));
+        std::stringstream                                                      sstr; sstr << "Screen" << i;
+        std::string                                                            name = sstr.str();
+        std::pair<std::map<std::string, osg::ref_ptr<Camera>>::iterator, bool> res  =
+            _camera_map.insert(std::pair<std::string, osg::ref_ptr<Camera>>(name, new Camera));
 
         ((res.first)->second)->getRenderSurface()->setScreenNum(i);
         ((res.first)->second)->setLensShear(xshear, yshear);
@@ -683,7 +683,7 @@ bool CameraConfig::defaultConfig()
         }
 
         _render_surface_map.insert(std::pair<std::string,
-                                             osg::ref_ptr<RenderSurface> >(rs->getWindowName(), rs));
+                                             osg::ref_ptr<RenderSurface>>(rs->getWindowName(), rs));
 
         xshear -= 2.0;
     }

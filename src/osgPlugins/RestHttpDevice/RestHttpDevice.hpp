@@ -151,7 +151,7 @@ friend class RestHttpDevice;
 };
 
 
-typedef std::multimap<std::string, osg::ref_ptr<RequestHandler> > RequestHandlerMap;
+typedef std::multimap<std::string, osg::ref_ptr<RequestHandler>> RequestHandlerMap;
 
 RestHttpDevice(const std::string &listening_address, const std::string &listening_port, const std::string &doc_path);
 ~RestHttpDevice();

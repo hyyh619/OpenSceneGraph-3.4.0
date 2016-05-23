@@ -49,9 +49,9 @@ osg::Transform* daeReader::processOsgMatrixTransform(domNode *node, bool isBone)
         resultNode = new osg::MatrixTransform;
     }
 
-    osg::Callback                                                     *pNodeCallback = resultNode->getUpdateCallback();
-    std::vector<osg::ref_ptr<osgAnimation::StackedTransformElement> > transformElements;
-    osg::ref_ptr<osgAnimation::StackedTransformElement>               pLastStaticTransformElement;
+    osg::Callback                                                    *pNodeCallback = resultNode->getUpdateCallback();
+    std::vector<osg::ref_ptr<osgAnimation::StackedTransformElement>> transformElements;
+    osg::ref_ptr<osgAnimation::StackedTransformElement>              pLastStaticTransformElement;
 
     // Process all coordinate system contributing elements in order!
     size_t count = node->getContents().getCount();

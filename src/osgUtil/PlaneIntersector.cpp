@@ -44,8 +44,8 @@ class PolylineConnector
 {
 public:
 
-typedef std::map<osg::Vec4d, osg::ref_ptr<RefPolyline> > PolylineMap;
-typedef std::vector<osg::ref_ptr<RefPolyline> > PolylineList;
+typedef std::map<osg::Vec4d, osg::ref_ptr<RefPolyline>> PolylineMap;
+typedef std::vector<osg::ref_ptr<RefPolyline>> PolylineList;
 
 PolylineList                      _polylines;
 PolylineMap                       _startPolylineMap;

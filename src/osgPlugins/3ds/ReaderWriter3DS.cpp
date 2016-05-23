@@ -273,7 +273,7 @@ bool                               restoreMatrixTransformsNoMeshes;
 typedef std::map<unsigned int, FaceList> SmoothingFaceMap;
 void addDrawableFromFace(osg::Geode *geode, FaceList &faceList, Lib3dsMesh *mesh, const osg::Matrix *matrix, StateSetInfo &ssi);
 
-typedef std::map<std::string, osg::ref_ptr<osg::Texture2D> > TexturesMap;                // Should be an unordered map (faster)
+typedef std::map<std::string, osg::ref_ptr<osg::Texture2D>> TexturesMap;                 // Should be an unordered map (faster)
 TexturesMap texturesMap;
 };
 };

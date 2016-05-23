@@ -2047,7 +2047,7 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode &geode)
         // OSG_NOTICE<<"Before "<<geode.getNumDrawables()<<std::endl;
 
         typedef std::vector<osg::Geometry*>                         DuplicateList;
-        typedef std::vector<osg::ref_ptr<osg::Drawable> >          DrawableList;
+        typedef std::vector<osg::ref_ptr<osg::Drawable>>          DrawableList;
         typedef std::map<osg::Geometry*, DuplicateList, LessGeometry> GeometryDuplicateMap;
 
         typedef std::vector<DuplicateList> MergeList;
@@ -2211,7 +2211,7 @@ bool Optimizer::MergeGeometryVisitor::mergeGeode(osg::Geode &geode)
         if (needToDoMerge)
         {
             // first take a reference to all the drawables to prevent them being deleted prematurely
-            typedef std::vector<osg::ref_ptr<osg::Drawable> >          DrawableList;
+            typedef std::vector<osg::ref_ptr<osg::Drawable>>          DrawableList;
             DrawableList keepDrawables;
             keepDrawables.resize(geode.getNumDrawables());
 
@@ -3026,7 +3026,7 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group *group, unsigned int 
 
     unsigned int numChildrenOnEntry = group->getNumChildren();
 
-    typedef std::pair<osg::BoundingBox, osg::ref_ptr<osg::Group> > BoxGroupPair;
+    typedef std::pair<osg::BoundingBox, osg::ref_ptr<osg::Group>> BoxGroupPair;
     typedef std::vector<BoxGroupPair> Boxes;
     Boxes boxes;
     boxes.push_back(BoxGroupPair(bb, new osg::Group));
@@ -3088,7 +3088,7 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group *group, unsigned int 
 
 
     // bin each child into associated bb group
-    typedef std::vector<osg::ref_ptr<osg::Node> > NodeList;
+    typedef std::vector<osg::ref_ptr<osg::Node>> NodeList;
     NodeList unassignedList;
 
     for (i = 0; i < group->getNumChildren(); ++i)
@@ -3125,7 +3125,7 @@ bool Optimizer::SpatializeGroupsVisitor::divide(osg::Group *group, unsigned int 
     group->removeChildren(0, group->getNumChildren());
 
     // add in the bb groups
-    typedef std::vector<osg::ref_ptr<osg::Group> > GroupList;
+    typedef std::vector<osg::ref_ptr<osg::Group>> GroupList;
     GroupList groupsToDivideList;
 
     for (Boxes::iterator itr = boxes.begin();

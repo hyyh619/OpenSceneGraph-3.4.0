@@ -608,7 +608,7 @@ private:
 unsigned int                  _mask;
 Producer::ref_ptr<EventQueue> q;
 };
-std::vector<Producer::ref_ptr<Client> >clients;
+std::vector<Producer::ref_ptr<Client>>clients;
 void dispatch(ref_ptr<Event> );
 
 int _ownWindow;

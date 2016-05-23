@@ -47,7 +47,7 @@
 #include <sstream>
 
 typedef std::vector<std::string> FileList;
-typedef std::map<std::string, osg::ref_ptr<osg::Node> >  ObjectMap;
+typedef std::map<std::string, osg::ref_ptr<osg::Node>>  ObjectMap;
 
 static ObjectMap s_objectMap;
 
@@ -724,7 +724,7 @@ void addPlayer(Players player)
 }
 
 
-typedef std::vector<osg::ref_ptr<osgText::Text> > TextList;
+typedef std::vector<osg::ref_ptr<osgText::Text>> TextList;
 
 void updateScoreWithCatch()
 {
@@ -807,7 +807,7 @@ TextList                    _scoreTextList;
 unsigned int _numberOfPlayers;
 Character    _players[2];
 
-typedef std::list<osg::ref_ptr<CatchableObject> > CatchableObjectList;
+typedef std::list<osg::ref_ptr<CatchableObject>> CatchableObjectList;
 CatchableObjectList _catchableObjects;
 
 FileList _backgroundFiles;

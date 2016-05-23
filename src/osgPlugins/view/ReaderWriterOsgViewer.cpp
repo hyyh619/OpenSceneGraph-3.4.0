@@ -89,7 +89,7 @@ virtual ReadResult readObject(std::istream &fin, const osgDB::ReaderWriter::Opti
     fr.attach(&fin);
     fr.setOptions(options);
 
-    typedef std::vector<osg::ref_ptr<osgViewer::View> > ViewList;
+    typedef std::vector<osg::ref_ptr<osgViewer::View>> ViewList;
     ViewList viewList;
 
     // load all nodes in file, placing them in a group.

@@ -687,7 +687,7 @@ bool applyPropertyToStream(osgDB::XmlNode *node, const std::string &name)
     return false;
 }
 
-typedef std::vector<osg::ref_ptr<osgDB::XmlNode> > XmlNodePath;
+typedef std::vector<osg::ref_ptr<osgDB::XmlNode>> XmlNodePath;
 XmlNodePath _nodePath;
 
 osg::ref_ptr<osgDB::XmlNode> _root;

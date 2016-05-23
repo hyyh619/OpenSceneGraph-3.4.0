@@ -144,7 +144,7 @@ error_type computeErrorMetric(Edge *edge, Point *point) const
     }
     else if (point)
     {
-        typedef std::set<osg::ref_ptr<Triangle> > LocalTriangleSet;
+        typedef std::set<osg::ref_ptr<Triangle>> LocalTriangleSet;
         LocalTriangleSet triangles;
         std::copy(edge->_p1->_triangles.begin(), edge->_p1->_triangles.end(), std::inserter(triangles, triangles.begin()));
         std::copy(edge->_p2->_triangles.begin(), edge->_p2->_triangles.end(), std::inserter(triangles, triangles.begin()));
@@ -210,7 +210,7 @@ void updateErrorMetricForEdge(Edge *edge)
 
 void updateErrorMetricForAllEdges()
 {
-    typedef std::vector<osg::ref_ptr<Edge> > LocalEdgeList;
+    typedef std::vector<osg::ref_ptr<Edge>> LocalEdgeList;
     LocalEdgeList edges;
     std::copy(_edgeSet.begin(), _edgeSet.end(), std::back_inserter(edges));
 
@@ -287,9 +287,9 @@ void copyBackToGeometry();
 typedef std::vector<float>                                                  FloatList;
 typedef std::set<osg::ref_ptr<Edge>, dereference_less>                      EdgeSet;
 typedef std::set<osg::ref_ptr<Point>, dereference_less>                    PointSet;
-typedef std::vector<osg::ref_ptr<Point> >                                  PointList;
-typedef std::list<osg::ref_ptr<Triangle> >                                 TriangleList;
-typedef std::set<osg::ref_ptr<Triangle> >                                  TriangleSet;
+typedef std::vector<osg::ref_ptr<Point>>                                  PointList;
+typedef std::list<osg::ref_ptr<Triangle>>                                 TriangleList;
+typedef std::set<osg::ref_ptr<Triangle>>                                  TriangleSet;
 typedef std::map<osg::ref_ptr<Triangle>, unsigned int, dereference_less>  TriangleMap;
 
 struct Point : public osg::Referenced
@@ -903,7 +903,7 @@ bool collapseEdge(Edge *edge, Point *pNew)
     }
 #endif
 
-    typedef std::set<osg::ref_ptr<Edge> > LocalEdgeList;
+    typedef std::set<osg::ref_ptr<Edge>> LocalEdgeList;
 
     osg::ref_ptr<Edge>  keep_edge_locally_referenced_to_prevent_premature_deletion  = edge;
     osg::ref_ptr<Point> keep_point_locally_referenced_to_prevent_premature_deletion = pNew;
@@ -1100,7 +1100,7 @@ bool divideEdge(Edge *edge, Point *pNew)
     // unsigned int numBoundaryEdges1 = computeNumBoundaryEdges();
     // unsigned int numEdges1 = _edgeSet.size();
 
-    typedef std::set<osg::ref_ptr<Edge> > LocalEdgeList;
+    typedef std::set<osg::ref_ptr<Edge>> LocalEdgeList;
     LocalEdgeList         edges2UpdateErrorMetric;
     TriangleSet::iterator titr;
 
@@ -1353,7 +1353,7 @@ unsigned int testAllPoints()
 
 // protected:
 
-typedef std::vector<osg::ref_ptr<osg::Array> > ArrayList;
+typedef std::vector<osg::ref_ptr<osg::Array>> ArrayList;
 
 osg::Geometry *_geometry;
 

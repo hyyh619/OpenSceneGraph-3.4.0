@@ -133,7 +133,7 @@ class UpdateCameraAndTexGenCallback : public osg::NodeCallback
 {
 public:
 
-typedef std::vector<osg::ref_ptr<osg::Camera> >  CameraList;
+typedef std::vector<osg::ref_ptr<osg::Camera>>  CameraList;
 
 UpdateCameraAndTexGenCallback(osg::NodePath &reflectorNodePath, CameraList &Cameras) :
     _reflectorNodePath(reflectorNodePath),

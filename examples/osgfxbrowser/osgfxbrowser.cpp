@@ -281,7 +281,7 @@ void rebuild_client_area(const osgfxbrowser::Rect &client_rect)
 
 private:
 int _selected_fx;
-typedef std::vector<osg::ref_ptr<osgFX::Effect> > Effect_list;
+typedef std::vector<osg::ref_ptr<osgFX::Effect>> Effect_list;
 Effect_list              _effects;
 bool                     _fxen;
 osg::ref_ptr<osg::Group> _root;

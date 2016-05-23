@@ -199,7 +199,7 @@ void convert()
 }
 
 
-typedef std::set<osg::ref_ptr<osg::LOD> >  LODSet;
+typedef std::set<osg::ref_ptr<osg::LOD>>  LODSet;
 LODSet      _lodSet;
 std::string _basename;
 std::string _extension;

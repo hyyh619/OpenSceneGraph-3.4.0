@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 
     osgViewer::Viewer viewer;
 
-    typedef std::list<osg::ref_ptr<gsc::CaptureSettings> > CaptureSettingsList;
+    typedef std::list<osg::ref_ptr<gsc::CaptureSettings>> CaptureSettingsList;
     CaptureSettingsList frameCaptureList;
 
     osg::ref_ptr<gsc::CaptureSettings> fc = new gsc::CaptureSettings;

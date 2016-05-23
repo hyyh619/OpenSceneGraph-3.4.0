@@ -206,7 +206,7 @@ StaticPropModelList static_prop_model_list;
 typedef std::vector<StaticProp>   StaticPropList;
 StaticPropList static_prop_list;
 
-typedef std::vector<osg::ref_ptr<osg::StateSet> >  StateSetList;
+typedef std::vector<osg::ref_ptr<osg::StateSet>>  StateSetList;
 StateSetList state_set_list;
 
 virtual ~VBSPData();

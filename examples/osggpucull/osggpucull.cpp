@@ -180,12 +180,12 @@ struct IndirectTarget
     IndirectTarget()
         : maxTargetQuantity(0)
     {
-        indirectCommands = new osg::BufferTemplate<std::vector<DrawArraysIndirectCommand> >;
+        indirectCommands = new osg::BufferTemplate<std::vector<DrawArraysIndirectCommand>>;
     }
     IndirectTarget(AggregateGeometryVisitor *agv, osg::Program *program)
         : geometryAggregator(agv), drawProgram(program), maxTargetQuantity(0)
     {
-        indirectCommands = new osg::BufferTemplate<std::vector<DrawArraysIndirectCommand> >;
+        indirectCommands = new osg::BufferTemplate<std::vector<DrawArraysIndirectCommand>>;
     }
     void endRegister(unsigned int index, unsigned int rowsPerInstance, GLenum pixelFormat, GLenum type, GLint internalFormat, bool useMultiDrawArraysIndirect)
     {
@@ -254,12 +254,12 @@ struct IndirectTarget
         stateset->setAttributeAndModes(drawProgram.get(), osg::StateAttribute::ON);
     }
 
-    osg::ref_ptr<osg::BufferTemplate<std::vector<DrawArraysIndirectCommand> > > indirectCommands;
-    osg::ref_ptr<osg::TextureBuffer>                                            indirectCommandTextureBuffer;
-    osg::ref_ptr<AggregateGeometryVisitor>                                      geometryAggregator;
-    osg::ref_ptr<osg::Program>                                                  drawProgram;
-    osg::ref_ptr<osg::TextureBuffer>                                            instanceTarget;
-    unsigned int                                                                maxTargetQuantity;
+    osg::ref_ptr<osg::BufferTemplate<std::vector<DrawArraysIndirectCommand>>> indirectCommands;
+    osg::ref_ptr<osg::TextureBuffer>                                          indirectCommandTextureBuffer;
+    osg::ref_ptr<AggregateGeometryVisitor>                                    geometryAggregator;
+    osg::ref_ptr<osg::Program>                                                drawProgram;
+    osg::ref_ptr<osg::TextureBuffer>                                          instanceTarget;
+    unsigned int                                                              maxTargetQuantity;
 };
 
 // This is the main structure holding all information about particular 2-phase instance rendering
@@ -269,7 +269,7 @@ struct GPUCullData
     GPUCullData()
     {
         useMultiDrawArraysIndirect = false;
-        instanceTypes              = new osg::BufferTemplate<std::vector<InstanceType> >;
+        instanceTypes              = new osg::BufferTemplate<std::vector<InstanceType>>;
         // build Uniform BufferObject with instanceTypes data
         instanceTypesUBO = new osg::UniformBufferObject;
 //        instanceTypesUBO->setUsage( GL_STREAM_DRAW );
@@ -367,10 +367,10 @@ struct GPUCullData
             it->second.endRegister(it->first, rowsPerInstance, pixelFormat, type, internalFormat, useMultiDrawArraysIndirect);
     }
 
-    bool                                                           useMultiDrawArraysIndirect;
-    osg::ref_ptr<osg::BufferTemplate<std::vector<InstanceType> > > instanceTypes;
-    osg::ref_ptr<osg::UniformBufferObject>                         instanceTypesUBO;
-    osg::ref_ptr<osg::UniformBufferBinding>                        instanceTypesUBB;
+    bool                                                         useMultiDrawArraysIndirect;
+    osg::ref_ptr<osg::BufferTemplate<std::vector<InstanceType>>> instanceTypes;
+    osg::ref_ptr<osg::UniformBufferObject>                       instanceTypesUBO;
+    osg::ref_ptr<osg::UniformBufferBinding>                      instanceTypesUBB;
 
     std::map<unsigned int, IndirectTarget> targets;
 };
@@ -422,7 +422,7 @@ template<typename T>
 class InstanceCell : public osg::Referenced
 {
 public:
-typedef std::vector<osg::ref_ptr<InstanceCell<T> > > InstanceCellList;
+typedef std::vector<osg::ref_ptr<InstanceCell<T>>> InstanceCellList;
 
 InstanceCell() : _parent(0) {}
 
@@ -698,7 +698,7 @@ osg::Node* createInstanceGraph(InstanceCell<T> *cell, const osg::BoundingBox &ob
 template<typename T>
 osg::Node* createInstanceTree(const std::vector<T> &instances, const osg::BoundingBox &objectsBBox, unsigned int maxNumInstancesPerCell)
 {
-    osg::ref_ptr<InstanceCell<T> > rootCell = new InstanceCell<T>();
+    osg::ref_ptr<InstanceCell<T>> rootCell = new InstanceCell<T>();
 
     rootCell->_instances = instances;
     rootCell->divide(maxNumInstancesPerCell);
@@ -1222,7 +1222,7 @@ osg::Geometry* buildGPUCullGeometry(const std::vector<DynamicInstance> &instance
 // Object parts are animated ( wheels and propellers )
 struct AnimateObjectsCallback : public osg::Drawable::UpdateCallback
 {
-    AnimateObjectsCallback(osg::BufferTemplate<std::vector<DynamicInstance> > *instances, osg::Image *instancesImage, const osg::BoundingBox &bbox, unsigned int quantityPerType)
+    AnimateObjectsCallback(osg::BufferTemplate<std::vector<DynamicInstance>> *instances, osg::Image *instancesImage, const osg::BoundingBox &bbox, unsigned int quantityPerType)
         : _instances(instances), _instancesImage(instancesImage), _bbox(bbox), _quantityPerType(quantityPerType), _lastTime(0.0)
     {
         _destination = new osg::Vec2Array;
@@ -1332,13 +1332,13 @@ struct AnimateObjectsCallback : public osg::Drawable::UpdateCallback
     }
 
 
-    osg::ref_ptr<osg::BufferTemplate<std::vector<DynamicInstance> > > _instances;
-    osg::ref_ptr<osg::Image>                                          _instancesImage;
-    osg::BoundingBox                                                  _bbox;
-    unsigned int                                                      _quantityPerType;
-    osg::ref_ptr<osg::Vec2Array>                                      _destination;
-    std::vector<float>                                                _speed;
-    double                                                            _lastTime;
+    osg::ref_ptr<osg::BufferTemplate<std::vector<DynamicInstance>>> _instances;
+    osg::ref_ptr<osg::Image>                                        _instancesImage;
+    osg::BoundingBox                                                _bbox;
+    unsigned int                                                    _quantityPerType;
+    osg::ref_ptr<osg::Vec2Array>                                    _destination;
+    std::vector<float>                                              _speed;
+    double                                                          _lastTime;
 };
 
 // createDynamicRendering() is similar to earlier createStaticRendering() method. The differences are as follows :
@@ -1348,7 +1348,7 @@ struct AnimateObjectsCallback : public osg::Drawable::UpdateCallback
 // - draw shader shows how to animate objects using "bones". Each vertex in rendered geometry is associated with single "bone". Such association is
 //   sufficient to animate mechanical objects. It is also possible to animate organic objects ( large crowds of people ) but it is far beyond
 //   the scope of this example.
-void createDynamicRendering(osg::Group *root, GPUCullData &gpuData, osg::BufferTemplate<std::vector<DynamicInstance> > *instances, const osg::Vec2 &minArea, const osg::Vec2 &maxArea, float lodModifier, float densityModifier, float triangleModifier, bool exportInstanceObjects)
+void createDynamicRendering(osg::Group *root, GPUCullData &gpuData, osg::BufferTemplate<std::vector<DynamicInstance>> *instances, const osg::Vec2 &minArea, const osg::Vec2 &maxArea, float lodModifier, float densityModifier, float triangleModifier, bool exportInstanceObjects)
 {
     // Creating objects using ShapeToGeometry - its vertex count my vary according to triangleModifier variable.
     // Every object may be stored to file if you want to inspect it ( to show how many vertices it has for example ).
@@ -1629,10 +1629,10 @@ int main(int argc, char **argv)
     // create dynamic objects and setup its rendering
     GPUCullData dynamicGpuData;
     dynamicGpuData.setUseMultiDrawArraysIndirect(useMultiDrawArraysIndirect);
-    osg::ref_ptr<osg::BufferTemplate<std::vector<DynamicInstance> > > dynamicInstances;
+    osg::ref_ptr<osg::BufferTemplate<std::vector<DynamicInstance>>> dynamicInstances;
     if (showDynamicRendering)
     {
-        dynamicInstances = new osg::BufferTemplate<std::vector<DynamicInstance> >();
+        dynamicInstances = new osg::BufferTemplate<std::vector<DynamicInstance>>();
         createDynamicRendering(root.get(), dynamicGpuData, dynamicInstances.get(), osg::Vec2(-0.5 * dynamicAreaSize, -0.5 * dynamicAreaSize), osg::Vec2(0.5 * dynamicAreaSize, 0.5 * dynamicAreaSize), lodModifier, densityModifier, triangleModifier, exportInstanceObjects);
     }
 

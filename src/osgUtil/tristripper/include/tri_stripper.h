@@ -86,7 +86,7 @@ void SetPushCacheHits(bool Enabled = true);
 private:
 
 typedef detail::graph_array<detail::triangle> triangle_graph;
-typedef detail::heap_array<size_t, std::greater<size_t> > triangle_heap;
+typedef detail::heap_array<size_t, std::greater<size_t>> triangle_heap;
 typedef std::vector<size_t> candidates;
 typedef triangle_graph::node_iterator tri_iterator;
 typedef triangle_graph::const_node_iterator const_tri_iterator;

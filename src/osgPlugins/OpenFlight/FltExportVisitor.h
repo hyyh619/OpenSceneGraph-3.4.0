@@ -181,7 +181,7 @@ DataOutputStream *_records;
 std::string      _recordsTempName;
 
 // Track state changes during a scene graph walk.
-typedef std::vector<osg::ref_ptr<osg::StateSet> > StateSetStack;
+typedef std::vector<osg::ref_ptr<osg::StateSet>> StateSetStack;
 StateSetStack _stateSetStack;
 
 std::auto_ptr<MaterialPaletteManager>    _materialPalette;

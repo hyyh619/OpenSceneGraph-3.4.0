@@ -408,7 +408,7 @@ class FindVolumeTiles : public osg::NodeVisitor
 public:
 FindVolumeTiles() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
 
-typedef std::vector<osg::ref_ptr<osgVolume::VolumeTile> > Tiles;
+typedef std::vector<osg::ref_ptr<osgVolume::VolumeTile>> Tiles;
 Tiles _tiles;
 
 void apply(osg::Group &group)
@@ -578,7 +578,7 @@ int main(int argc, char **argv)
 #else
     osg::ref_ptr<osg::Node> model = osgDB::readNodeFiles(arguments);
 #endif
-    typedef std::vector<osg::ref_ptr<osg::Node> > Nodes;
+    typedef std::vector<osg::ref_ptr<osg::Node>> Nodes;
     Nodes nodes;
 
     if (!model && !tf)

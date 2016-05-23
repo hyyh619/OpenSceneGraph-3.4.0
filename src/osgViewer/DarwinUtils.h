@@ -60,7 +60,7 @@ protected:
 ~MenubarController();
 
 private:
-typedef std::list<osg::ref_ptr<WindowAdapter> > WindowList;
+typedef std::list<osg::ref_ptr<WindowAdapter>> WindowList;
 WindowList         _list;
 bool               _menubarShown;
 CGRect             _availRect;

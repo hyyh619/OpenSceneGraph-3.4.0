@@ -116,10 +116,10 @@ static osgViewer::View* load(const std::string &file, const osgDB::ReaderWriter:
     // std::cout << "Parse file " << file << std::endl;
     config->parseFile(file);
 
-    RenderSurface                                                 *rs = 0;
-    Camera                                                        *cm = 0;
-    std::map<RenderSurface*, osg::ref_ptr<osg::GraphicsContext> > surfaces;
-    osg::ref_ptr<osgViewer::View>                                 _view = new osgViewer::View;
+    RenderSurface                                                *rs = 0;
+    Camera                                                       *cm = 0;
+    std::map<RenderSurface*, osg::ref_ptr<osg::GraphicsContext>> surfaces;
+    osg::ref_ptr<osgViewer::View>                                _view = new osgViewer::View;
 
     if (config->getNumberOfCameras() == 1)
     {

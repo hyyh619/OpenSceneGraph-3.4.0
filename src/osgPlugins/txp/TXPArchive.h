@@ -84,7 +84,7 @@ bool loadLightAttributes();
 
 // Load the text styles from the archive
 bool loadTextStyles();
-inline std::map<int, osg::ref_ptr<osgText::Font> >&getStyles()
+inline std::map<int, osg::ref_ptr<osgText::Font>>&getStyles()
 {
     return _fonts;
 }
@@ -249,7 +249,7 @@ trpg2dPoint _neExtents;
 osg::ref_ptr<TXPParser> _parser;
 
 // Textures
-typedef std::map<int, osg::ref_ptr<osg::Texture2D> > OSGTexMapType;
+typedef std::map<int, osg::ref_ptr<osg::Texture2D>> OSGTexMapType;
 OSGTexMapType _texmap;
 
 void SetTexMap(int key, osg::ref_ptr<osg::Texture2D> ref);
@@ -257,21 +257,21 @@ osg::ref_ptr<osg::Texture2D> GetTexMapEntry(int key);
 
 
 // States
-typedef std::map<int, osg::ref_ptr<osg::StateSet> > OSGStatesMapType;
+typedef std::map<int, osg::ref_ptr<osg::StateSet>> OSGStatesMapType;
 OSGStatesMapType _statesMap;
 
 void SetStatesMap(int key, osg::ref_ptr<osg::StateSet> ref);
 osg::ref_ptr<osg::StateSet> GetStatesMapEntry(int key);
 
 // Models
-typedef std::map<int, osg::ref_ptr<osg::Node> > OSGModelsMapType;
+typedef std::map<int, osg::ref_ptr<osg::Node>> OSGModelsMapType;
 OSGModelsMapType _models;
 
 // Light attributes vector
 std::map<int, DeferredLightAttribute> _lights;
 
 // Text styles / Fonts
-std::map<int, osg::ref_ptr<osgText::Font> > _fonts;
+std::map<int, osg::ref_ptr<osgText::Font>> _fonts;
 
 // Text colors
 std::map<int, osg::Vec4> _fcolors;

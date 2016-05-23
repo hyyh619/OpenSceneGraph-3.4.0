@@ -74,10 +74,10 @@ dxfLayerTable*    getOrCreateLayerTable()
 }
 
 protected:
-bool                                 _inLayerTable;
-osg::ref_ptr<dxfLayerTable>          _layerTable;
-std::vector<osg::ref_ptr<dxfTable> > _others;
-osg::ref_ptr<dxfTable>               _currentTable;
+bool                                _inLayerTable;
+osg::ref_ptr<dxfLayerTable>         _layerTable;
+std::vector<osg::ref_ptr<dxfTable>> _others;
+osg::ref_ptr<dxfTable>              _currentTable;
 };
 
 class dxfEntities : public dxfSection
@@ -102,9 +102,9 @@ virtual void assign(dxfFile *dxf, codeValue &cv);
 dxfBlock* findBlock(std::string s);
 
 protected:
-dxfBlock                             *_currentBlock;
-std::map<std::string, dxfBlock*>     _blockNameList;
-std::vector<osg::ref_ptr<dxfBlock> > _blockList;
+dxfBlock                            *_currentBlock;
+std::map<std::string, dxfBlock*>    _blockNameList;
+std::vector<osg::ref_ptr<dxfBlock>> _blockList;
 };
 
 #endif

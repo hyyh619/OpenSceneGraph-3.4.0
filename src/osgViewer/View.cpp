@@ -645,7 +645,7 @@ struct MyUpdateSlaveCallback : public osg::View::Slave::UpdateSlaveCallback
 };
 
 
-typedef std::list<osg::ref_ptr<osg::Camera> > Cameras;
+typedef std::list<osg::ref_ptr<osg::Camera>> Cameras;
 
 Cameras getActiveCameras(osg::View &view)
 {
@@ -1427,7 +1427,7 @@ void View::assignStereoOrKeystoneToCamera(osg::Camera *camera, osg::DisplaySetti
 
     ds->setUseSceneViewForStereoHint(false);
 
-    typedef std::vector<osg::ref_ptr<Keystone> > Keystones;
+    typedef std::vector<osg::ref_ptr<Keystone>> Keystones;
     Keystones keystones;
     if (ds->getKeystoneHint() && !ds->getKeystones().empty())
     {

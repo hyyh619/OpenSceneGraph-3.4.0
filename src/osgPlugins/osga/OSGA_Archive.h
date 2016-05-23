@@ -227,7 +227,7 @@ struct WriteShaderFunctor;
 osgDB::ReaderWriter::ReadResult read(const ReadFunctor &readFunctor);
 osgDB::ReaderWriter::WriteResult write(const WriteFunctor &writeFunctor);
 
-typedef std::list<osg::ref_ptr<IndexBlock> >   IndexBlockList;
+typedef std::list<osg::ref_ptr<IndexBlock>>   IndexBlockList;
 
 bool _open(std::istream &fin);
 

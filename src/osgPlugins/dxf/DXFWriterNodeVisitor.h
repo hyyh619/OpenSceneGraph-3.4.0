@@ -296,7 +296,7 @@ void processStateSet(osg::StateSet *stateset);
 
 std::string getLayerName(const std::string &defaultValue = "");
 
-typedef std::stack<osg::ref_ptr<osg::StateSet> > StateSetStack;
+typedef std::stack<osg::ref_ptr<osg::StateSet>> StateSetStack;
 
 
 

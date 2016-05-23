@@ -60,7 +60,7 @@ virtual bool handle(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &a
 
 virtual void getUsage(osg::ApplicationUsage &usage) const;
 
-typedef std::vector<osg::observer_ptr<osg::ImageStream> > ImageStreamList;
+typedef std::vector<osg::observer_ptr<osg::ImageStream>> ImageStreamList;
 
 protected:
 

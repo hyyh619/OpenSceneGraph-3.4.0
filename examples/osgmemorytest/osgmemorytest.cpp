@@ -360,8 +360,8 @@ int main(int argc, char **argv)
     }
 
 
-    typedef std::list<osg::ref_ptr<GLMemoryTest> > GLMemoryTests;
-    typedef std::list<osg::ref_ptr<ContextTest> > ContextTests;
+    typedef std::list<osg::ref_ptr<GLMemoryTest>> GLMemoryTests;
+    typedef std::list<osg::ref_ptr<ContextTest>> ContextTests;
 
     ContextTests  contextTests;
     GLMemoryTests glMemoryTests;
@@ -475,8 +475,8 @@ int main(int argc, char **argv)
     }
 #endif
 
-    typedef std::list<osg::ref_ptr<osg::GraphicsContext> > Contexts;
-    typedef std::list<osg::ref_ptr<GLObject> > GLObjects;
+    typedef std::list<osg::ref_ptr<osg::GraphicsContext>> Contexts;
+    typedef std::list<osg::ref_ptr<GLObject>> GLObjects;
     Contexts  allocatedContexts;
     GLObjects glObjects;
 

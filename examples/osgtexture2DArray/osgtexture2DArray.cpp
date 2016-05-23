@@ -37,7 +37,7 @@
 //
 
 
-typedef std::vector<osg::ref_ptr<osg::Image> > ImageList;
+typedef std::vector<osg::ref_ptr<osg::Image>> ImageList;
 
 class SubloadCallback : public osg::Texture2DArray::SubloadCallback
 {

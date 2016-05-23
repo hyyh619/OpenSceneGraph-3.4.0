@@ -86,7 +86,7 @@ struct OSGVIEWER_EXPORT ContextData : public osg::Referenced
     void singlePBO(osg::GLExtensions *ext);
     void multiPBO(osg::GLExtensions *ext);
 
-    typedef std::vector<osg::ref_ptr<osg::Image> >             ImageBuffer;
+    typedef std::vector<osg::ref_ptr<osg::Image>>             ImageBuffer;
     typedef std::vector<GLuint> PBOBuffer;
 
     osg::GraphicsContext *_gc;
@@ -117,7 +117,7 @@ struct OSGVIEWER_EXPORT ContextData : public osg::Referenced
     osg::ref_ptr<ScreenCaptureHandler::CaptureOperation> _captureOperation;
 };
 
-typedef std::map<osg::GraphicsContext*, osg::ref_ptr<ContextData> > ContextDataMap;
+typedef std::map<osg::GraphicsContext*, osg::ref_ptr<ContextData>> ContextDataMap;
 
 ContextData* createContextData(osg::GraphicsContext *gc) const;
 ContextData* getContextData(osg::GraphicsContext *gc) const;

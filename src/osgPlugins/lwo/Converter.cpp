@@ -73,7 +73,7 @@ osg::Group* Converter::convert(Object &obj)
 void Converter::build_scene_graph(Object &obj)
 {
     // generate layer structure
-    typedef std::map<int, osg::ref_ptr<osg::Group> > Layer_group_map;
+    typedef std::map<int, osg::ref_ptr<osg::Group>> Layer_group_map;
     Layer_group_map lymap;
 
     OSG_DEBUG << "DEBUG INFO: lwosg::Converter: creating layer structure\n";

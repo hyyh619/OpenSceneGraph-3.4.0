@@ -223,7 +223,7 @@ void write(const std::string &dir)
     }
 }
 
-typedef std::set<osg::ref_ptr<osg::Texture> > TextureSet;
+typedef std::set<osg::ref_ptr<osg::Texture>> TextureSet;
 TextureSet                       _textureSet;
 osg::Texture::InternalFormatMode _internalFormatMode;
 };

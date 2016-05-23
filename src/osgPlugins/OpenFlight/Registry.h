@@ -60,17 +60,17 @@ protected:
 
 Registry();
 
-typedef std::map<int, osg::ref_ptr<Record> > RecordProtoMap;
+typedef std::map<int, osg::ref_ptr<Record>> RecordProtoMap;
 RecordProtoMap _recordProtoMap;
 
 ExternalQueue _externalReadQueue;
 
 // External cache
-typedef std::map<std::string, osg::ref_ptr<osg::Node> > ExternalCacheMap;
+typedef std::map<std::string, osg::ref_ptr<osg::Node>> ExternalCacheMap;
 ExternalCacheMap _externalCacheMap;
 
 // Texture cache
-typedef std::map<std::string, osg::ref_ptr<osg::StateSet> > TextureCacheMap;
+typedef std::map<std::string, osg::ref_ptr<osg::StateSet>> TextureCacheMap;
 TextureCacheMap _textureCacheMap;
 };
 

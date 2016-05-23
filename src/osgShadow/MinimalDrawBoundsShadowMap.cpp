@@ -257,7 +257,7 @@ void MinimalDrawBoundsShadowMap::ViewData::recordShadowMapParams()
 
     pass++;
 
-    std::set<osg::ref_ptr<osg::RefMatrix> > projections;
+    std::set<osg::ref_ptr<osg::RefMatrix>> projections;
 
     MinimalShadowMap::GetRenderLeaves(, rll);
 

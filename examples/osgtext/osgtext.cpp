@@ -665,7 +665,7 @@ virtual void release()
     _waitOnMergeBlock.release();
 }
 
-typedef std::list<osg::ref_ptr<osg::Geode> > AvailableList;
+typedef std::list<osg::ref_ptr<osg::Geode>> AvailableList;
 
 osg::Vec3    _center;
 float        _diameter;
@@ -689,7 +689,7 @@ int main(int argc, char **argv)
     // construct the viewer.
     osgViewer::Viewer viewer(arguments);
 
-    typedef std::list<osg::ref_ptr<osg::OperationThread> > Threads;
+    typedef std::list<osg::ref_ptr<osg::OperationThread>> Threads;
 
     Threads                           operationThreads;
     osg::ref_ptr<UpdateTextOperation> updateOperation;

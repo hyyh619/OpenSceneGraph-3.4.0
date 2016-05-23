@@ -25,7 +25,7 @@ class dxfFile;
 class codeValue;
 class dxfEntity;
 
-typedef std::vector<osg::ref_ptr<dxfEntity> > EntityList;
+typedef std::vector<osg::ref_ptr<dxfEntity>> EntityList;
 
 class dxfBlock : public osg::Referenced
 {

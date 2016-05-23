@@ -335,7 +335,7 @@ virtual void apply(osg::Node &node)
     traverse(node);
 }
 
-typedef std::vector<osg::ref_ptr<osg::Node> > NodeList;
+typedef std::vector<osg::ref_ptr<osg::Node>> NodeList;
 
 std::string _name;
 NodeList    _foundNodes;

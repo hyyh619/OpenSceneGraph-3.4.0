@@ -492,7 +492,7 @@ void daeReader::processSinglePPrimitive(osg::Geode *geode,
 
     domP_Array domPArray;
     domPArray.append(group->getP());
-    std::vector<std::vector<GLuint> > indexLists;
+    std::vector<std::vector<GLuint>> indexLists;
     resolveMeshArrays(domPArray, group->getInput_array(), pDomMesh, geometry.get(), sources, indexLists);
     if (!indexLists.front().empty())
     {
@@ -512,7 +512,7 @@ void daeReader::processMultiPPrimitive(osg::Geode *geode,
 
     geode->addDrawable(geometry);
 
-    std::vector<std::vector<GLuint> > indexLists;
+    std::vector<std::vector<GLuint>> indexLists;
     resolveMeshArrays(group->getP_array(), group->getInput_array(), pDomMesh,
                       geometry, sources, indexLists);
 
@@ -540,8 +540,8 @@ void daeReader::processPolylist(osg::Geode *geode, const domMesh *pDomMesh, cons
 
     geode->addDrawable(geometry);
 
-    std::vector<std::vector<GLuint> > vertexLists;
-    domP_Array                        domPArray;
+    std::vector<std::vector<GLuint>> vertexLists;
+    domP_Array                       domPArray;
     domPArray.append(group->getP());
     resolveMeshArrays(domPArray, group->getInput_array(), pDomMesh, geometry, sources, vertexLists);
 
@@ -619,7 +619,7 @@ void daeReader::processPolygons(osg::Geode *geode,
     geometry->setName(group->getMaterial());
     geode->addDrawable(geometry);
 
-    std::vector<std::vector<GLuint> > indexLists;
+    std::vector<std::vector<GLuint>> indexLists;
     resolveMeshArrays(group->getP_array(), group->getInput_array(), pDomMesh,
                       geometry, sources, indexLists);
 
@@ -629,7 +629,7 @@ void daeReader::processPolygons(osg::Geode *geode,
         osg::DrawElementsUInt *pDrawElements = new osg::DrawElementsUInt(GL_TRIANGLES);
         geometry->addPrimitiveSet(pDrawElements);
 
-        std::vector<std::vector<GLuint> > indexLists;
+        std::vector<std::vector<GLuint>> indexLists;
         resolveMeshArrays(group->getP_array(), group->getInput_array(), pDomMesh,
                           geometry, sources, indexLists);
 
@@ -901,7 +901,7 @@ inline osg::Array* createGeometryArray(domSourceReader &sourceReader, const Vert
 void daeReader::resolveMeshArrays(const domP_Array &domPArray,
                                   const domInputLocalOffset_Array &inputs, const domMesh *pDomMesh,
                                   osg::Geometry *geometry, SourceMap &sources,
-                                  std::vector<std::vector<GLuint> > &vertexLists)
+                                  std::vector<std::vector<GLuint>> &vertexLists)
 {
     daeElement *position_source                               = NULL;
     daeElement *color_source                                  = NULL;

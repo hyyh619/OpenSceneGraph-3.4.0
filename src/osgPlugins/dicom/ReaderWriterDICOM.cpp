@@ -319,7 +319,7 @@ virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter:
     }
 
 
-    typedef std::vector<osg::ref_ptr<osg::Image> > Images;
+    typedef std::vector<osg::ref_ptr<osg::Image>> Images;
     Images images;
 
     for (Files::iterator itr = files.begin();
@@ -340,7 +340,7 @@ virtual ReadResult readImage(const std::string &file, const osgDB::ReaderWriter:
         return images[0].get();
 
 
-    typedef std::map<float, osg::ref_ptr<osg::Image> > DistanceImageMap;
+    typedef std::map<float, osg::ref_ptr<osg::Image>> DistanceImageMap;
     typedef std::map<osg::Vec3, DistanceImageMap> OrientationDistanceImageMap;
     OrientationDistanceImageMap orientationDistanceImageMap;
 
