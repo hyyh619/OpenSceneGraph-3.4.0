@@ -646,11 +646,11 @@ public:
 
         virtual bool set(osg::Object &obj, void *value)
         {
-            C &object = OBJECT_CAST < C & > (obj); (object.*_setter)(*(reinterpret_cast<P**>(value))); return true;
+            C &object = OBJECT_CAST < C & > (obj); (object.*_setter)(*(reinterpret_cast< P** >(value))); return true;
         }
         virtual bool get(const osg::Object &obj, void *value)
         {
-            const C &object = OBJECT_CAST < const C & > (obj); *(reinterpret_cast<const P**>(value)) = (object.*_getter)(); return true;
+            const C &object = OBJECT_CAST < const C & > (obj); *(reinterpret_cast< const P** >(value)) = (object.*_getter)(); return true;
         }
 
         virtual bool read(InputStream &is, osg::Object &obj)
@@ -733,11 +733,11 @@ public:
 
         virtual bool set(osg::Object &obj, void *value)
         {
-            C &object = OBJECT_CAST < C & > (obj); (object.*_setter)(*(reinterpret_cast<P**>(value))); return true;
+            C &object = OBJECT_CAST < C & > (obj); (object.*_setter)(*(reinterpret_cast< P** >(value))); return true;
         }
         virtual bool get(const osg::Object &obj, void *value)
         {
-            const C &object = OBJECT_CAST < const C & > (obj); *(reinterpret_cast<const P**>(value)) = (object.*_getter)(); return true;
+            const C &object = OBJECT_CAST < const C & > (obj); *(reinterpret_cast< const P** >(value)) = (object.*_getter)(); return true;
         }
 
         virtual bool read(InputStream &is, osg::Object &obj)
@@ -1075,7 +1075,7 @@ public:
             C &object = OBJECT_CAST < C & > (obj);
             P &list   = (object.*_getter)();
 
-            list.push_back(*reinterpret_cast<ValueType*>(ptr));
+            list.push_back(*reinterpret_cast< ValueType* >(ptr));
         }
         virtual void insertElement(osg::Object &obj, unsigned int index, void *ptr) const
         {
@@ -1085,7 +1085,7 @@ public:
             if (index >= list.size())
                 list.resize(index + 1);
 
-            list.insert(list.begin() + index, *reinterpret_cast<ValueType*>(ptr));
+            list.insert(list.begin() + index, *reinterpret_cast< ValueType* >(ptr));
         }
         virtual void setElement(osg::Object &obj, unsigned int index, void *ptr) const
         {
@@ -1095,7 +1095,7 @@ public:
             if (index >= list.size())
                 list.resize(index + 1);
 
-            list[index] = *reinterpret_cast<ValueType*>(ptr);
+            list[index] = *reinterpret_cast< ValueType* >(ptr);
         }
         virtual void* getElement(osg::Object &obj, unsigned int index) const
         {
@@ -1273,7 +1273,7 @@ public:
         {
             C &list = OBJECT_CAST < C & > (obj);
 
-            list.push_back(*reinterpret_cast<ValueType*>(ptr));
+            list.push_back(*reinterpret_cast< ValueType* >(ptr));
         }
         virtual void insertElement(osg::Object &obj, unsigned int index, void *ptr) const
         {
@@ -1282,7 +1282,7 @@ public:
             if (index >= list.size())
                 list.resize(index + 1);
 
-            list.insert(list.begin() + index, *reinterpret_cast<ValueType*>(ptr));
+            list.insert(list.begin() + index, *reinterpret_cast< ValueType* >(ptr));
         }
         virtual void setElement(osg::Object &obj, unsigned int index, void *ptr) const
         {
@@ -1291,7 +1291,7 @@ public:
             if (index >= list.size())
                 list.resize(index + 1);
 
-            list[index] = *reinterpret_cast<ValueType*>(ptr);
+            list[index] = *reinterpret_cast< ValueType* >(ptr);
         }
         virtual void* getElement(osg::Object &obj, unsigned int index) const
         {
@@ -1572,7 +1572,7 @@ public:
             C &object = OBJECT_CAST < C & > (obj);
             P &map    = (object.*_getter)();
 
-            map[*reinterpret_cast<KeyType*>(ptrKey)] = *reinterpret_cast<ElementType*>(ptrValue);
+            map[*reinterpret_cast< KeyType* >(ptrKey)] = *reinterpret_cast< ElementType* >(ptrValue);
         }
 
         virtual void* getElement(osg::Object &obj, void *ptrKey) const
@@ -1580,14 +1580,14 @@ public:
             C &object = OBJECT_CAST < C & > (obj);
             P &map    = (object.*_getter)();
 
-            return &(map[*reinterpret_cast<KeyType*>(ptrKey)]);
+            return &(map[*reinterpret_cast< KeyType* >(ptrKey)]);
         }
 
         virtual const void* getElement(const osg::Object &obj, void *ptrKey) const
         {
             const C       &object = OBJECT_CAST < const C & > (obj);
             const P       &map    = (object.*_constgetter)();
-            ConstIterator itr     = map.find(*reinterpret_cast<KeyType*>(ptrKey));
+            ConstIterator itr     = map.find(*reinterpret_cast< KeyType* >(ptrKey));
 
             if (itr == map.end())
                 return 0;
@@ -1635,7 +1635,7 @@ public:
             virtual void setElement(void *ptr) const
             {
                 if (valid())
-                    _itr->second = *reinterpret_cast<ElementType*>(ptr);
+                    _itr->second = *reinterpret_cast< ElementType* >(ptr);
             }
         };
 
@@ -1671,7 +1671,7 @@ public:
             virtual void setElement(void *ptr) const
             {
                 if (valid())
-                    _itr->second = *reinterpret_cast<ElementType*>(ptr);
+                    _itr->second = *reinterpret_cast< ElementType* >(ptr);
             }
         };
 
@@ -2253,7 +2253,7 @@ protected:
         {                                                                                 \
             virtual bool run(void *objectPtr, osg::Parameters &, osg::Parameters &) const \
             {                                                                             \
-                MyClass *obj = reinterpret_cast<MyClass*>(objectPtr);                     \
+                MyClass *obj = reinterpret_cast< MyClass* >(objectPtr);                   \
                 obj->METHODNAME();                                                        \
                 return true;                                                              \
             }                                                                             \

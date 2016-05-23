@@ -95,7 +95,7 @@ protected:
         ref_ptr < Callback > _nestedCallback;
     };
 
-    typedef std::vector < osg::ref_ptr < osg::Object >> Parameters;
+    typedef std::vector < osg::ref_ptr < osg::Object > > Parameters;
 
 /** Callback for attaching a script to a Node's via there UserDataContainer for the purpose of overriding class methods within scripts.*/
     class OSG_EXPORT CallbackObject: public virtual osg::Callback

@@ -357,7 +357,7 @@ private:
 
         struct OSG_EXPORT ShaderObjects: public osg::Referenced
         {
-            typedef std::vector < osg::ref_ptr < PerContextShader >> PerContextShaders;
+            typedef std::vector < osg::ref_ptr < PerContextShader > > PerContextShaders;
 
             ShaderObjects(const Shader * shader, unsigned int contextID);
 
@@ -439,7 +439,7 @@ public:
 
 protected:
 
-        typedef std::vector < osg::ref_ptr < osg::Shader >> Shaders;
+        typedef std::vector < osg::ref_ptr < osg::Shader > > Shaders;
         Shaders _shaders;
     };
 }

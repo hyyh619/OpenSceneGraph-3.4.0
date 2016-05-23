@@ -84,7 +84,7 @@ namespace osg {
     template < typename T >
     void swapBytes(T &t)
     {
-        swapBytes(reinterpret_cast<char*>(&t), sizeof(T));
+        swapBytes(reinterpret_cast< char* >(&t), sizeof(T));
     }
 }
 

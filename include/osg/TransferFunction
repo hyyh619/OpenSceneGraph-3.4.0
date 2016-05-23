@@ -91,7 +91,7 @@ public:
         {
             if (_image.valid() && i < static_cast < unsigned int > (_image->s()))
             {
-                return *reinterpret_cast<osg::Vec4*>(_image->data(i));
+                return *reinterpret_cast< osg::Vec4* >(_image->data(i));
             }
             else
             {

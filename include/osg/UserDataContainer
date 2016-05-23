@@ -188,7 +188,7 @@ protected:
 
         virtual ~DefaultUserDataContainer() {}
 
-        typedef std::vector < osg::ref_ptr < osg::Object >> ObjectList;
+        typedef std::vector < osg::ref_ptr < osg::Object > > ObjectList;
 
         ref_ptr < Referenced > _userData;
         DescriptionList _descriptionList;
