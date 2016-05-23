@@ -39,7 +39,7 @@ Layout(const Layout &layout, const osg::CopyOp &copyop = osg::CopyOp::SHALLOW_CO
 META_Object(osgText, Layout)
 
 /// default Layout implementation used if no other is specified on TextNode
-static osg::ref_ptr<Layout>&getDefaultLayout();
+static osg::ref_ptr<Layout> &getDefaultLayout();
 
 virtual void layout(TextNode &text) const;
 

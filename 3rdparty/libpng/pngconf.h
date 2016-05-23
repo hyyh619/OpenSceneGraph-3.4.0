@@ -172,7 +172,7 @@
  * large file), zlib needs to know how big of a chunk it can use, and
  * libpng thus makes sure to check any memory allocation to verify it
  * will fit into memory.
- ******#define PNG_MAX_MALLOC_64K
+ *******#define PNG_MAX_MALLOC_64K
  */
 #if defined(MAXSEG_64K) && !defined(PNG_MAX_MALLOC_64K)
 #  define PNG_MAX_MALLOC_64K
@@ -754,7 +754,7 @@ __dont__ include it again.;
  #  ifndef PNG_READ_16_TO_8_ACCURATE_SCALE_SUPPORTED
  #    define PNG_READ_16_TO_8_ACCURATE_SCALE_SUPPORTED
  #  endif
- #######endif
+ ########endif
  */
 
 /* This is only for PowerPC big-endian and 680x0 systems */
@@ -762,7 +762,7 @@ __dont__ include it again.;
 /*
    #ifndef PNG_READ_BIG_ENDIAN_SUPPORTED
  #  define PNG_READ_BIG_ENDIAN_SUPPORTED
- #######endif
+ ########endif
  */
 
 #if !defined(PNG_NO_USE_READ_MACROS) && !defined(PNG_USE_READ_MACROS)

@@ -1426,7 +1426,7 @@ float DelaunayConstraint::windingNumber(const osg::Vec3 &testpoint) const
                     {
                         if (cth < 0.99999)
                         {
-                            float dang  = (cth<1 && cth>-1) ? acos(edge * pi) : 0; // this is unsigned angle
+                            float dang  = (cth<1 && cth> -1) ? acos(edge * pi) : 0; // this is unsigned angle
                             float zsign = edge.x() * pi.y() - pi.x() * edge.y(); // z component of..(edge^pi).z();
                             if (zsign > 0)
                                 theta += dang;        // add the angle subtended appropriately

@@ -167,11 +167,11 @@ class GraphicsWindowEmbedded;
 
 
 // Official methods for drag and drop (view as target)
-- (unsigned int) draggingEntered:(id<NSDraggingInfo>)the_sender;
-- (void) draggingExited:(id<NSDraggingInfo>)the_sender;
-- (BOOL) prepareForDragOperation:(id<NSDraggingInfo>)the_sender;
-- (BOOL) performDragOperation:(id<NSDraggingInfo>)the_sender;
-- (void) concludeDragOperation:(id<NSDraggingInfo>)the_sender;
+- (unsigned int) draggingEntered:(id<NSDraggingInfo> )the_sender;
+- (void) draggingExited:(id<NSDraggingInfo> )the_sender;
+- (BOOL) prepareForDragOperation:(id<NSDraggingInfo> )the_sender;
+- (BOOL) performDragOperation:(id<NSDraggingInfo> )the_sender;
+- (void) concludeDragOperation:(id<NSDraggingInfo> )the_sender;
 
 // Official method for copy (i.e. copy & paste)
 - (IBAction) copy:(id)sender;

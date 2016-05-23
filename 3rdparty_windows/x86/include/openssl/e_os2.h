@@ -245,7 +245,7 @@ extern "C" {
    #ifdef SOME_BUILD_FLAG_MACRO
  # undef OPENSSL_EXTERN
  # define OPENSSL_EXTERN OPENSSL_EXPORT
- ######endif
+ #######endif
 
    The default is to have OPENSSL_EXPORT, OPENSSL_IMPORT and OPENSSL_GLOBAL
    have some generally sensible values, and for OPENSSL_EXTERN to have the

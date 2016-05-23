@@ -57,7 +57,7 @@ void SinkOperator::handleTriangle(const Domain &domain, Particle *P, double /*dt
     {
         float upos = offset * domain.s1;
         float vpos = offset * domain.s2;
-        insideDomain = !(upos < 0.0f || vpos<0.0f || (upos + vpos)>1.0f);
+        insideDomain = !(upos < 0.0f || vpos<0.0f || (upos + vpos)> 1.0f);
     }
 
     kill(P, insideDomain);
@@ -75,7 +75,7 @@ void SinkOperator::handleRectangle(const Domain &domain, Particle *P, double /*d
     {
         float upos = offset * domain.s1;
         float vpos = offset * domain.s2;
-        insideDomain = !(upos<0.0f || upos>1.0f || vpos<0.0f || vpos>1.0f);
+        insideDomain = !(upos<0.0f || upos> 1.0f || vpos<0.0f || vpos> 1.0f);
     }
 
     kill(P, insideDomain);
